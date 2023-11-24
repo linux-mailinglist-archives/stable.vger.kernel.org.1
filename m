@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E7A7F7E26
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D587F7C0B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F78C282148
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD2C4B21127
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01DF3A8F3;
-	Fri, 24 Nov 2023 18:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116F13A8C3;
+	Fri, 24 Nov 2023 18:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyP6krii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VrxKhWcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9BD364C8;
-	Fri, 24 Nov 2023 18:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2669C433C8;
-	Fri, 24 Nov 2023 18:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C494B39FDD;
+	Fri, 24 Nov 2023 18:11:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F60C433C7;
+	Fri, 24 Nov 2023 18:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850627;
-	bh=E8iU4Fzx1Wxfotr8x3jhFZOj+dCi/iY0p7Ks920nZOw=;
+	s=korg; t=1700849471;
+	bh=knFllUDGp/6031slD2X2Ko5jmCqnB2ZL8tAK44PjGIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MyP6kriiLdAo4mJmhLjEuaInGMvlKS9I57MvZz21Lq0l0zg+GocEZtJWrDQAY7Joe
-	 CMC1G6yvCdiqlcFbcQTNOOCZVLr7jBY+fT415qoMkguVpNLJU1G+rgKpgFCdKGsjWH
-	 jluxA3ZUzYoNa3EUD/h2rgbTnlygyvpZsfn2TEoM=
+	b=VrxKhWcMRRvA9hbduO9stZGCA85txi1ohqvMHTQs4QVPLUtUbO0wtLrqWjy6lzphF
+	 eyVSdTevGO5OMqA2ORIdqDpSokprBhiIvUop7IvEXY0FYgUD3+ACk0wrhcSVT2eAiD
+	 9VOwzYWUoTEy3yeYOSWTaVBNDF2TQj7KXd6rvhfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com,
-	Marco Elver <elver@google.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 125/491] 9p/trans_fd: Annotate data-racy writes to file::f_flags
+Subject: [PATCH 6.6 195/530] tipc: Fix kernel-infoleak due to uninitialized TLV value
 Date: Fri, 24 Nov 2023 17:46:01 +0000
-Message-ID: <20231124172028.262973834@linuxfoundation.org>
+Message-ID: <20231124172034.000820003@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,96 +54,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Elver <elver@google.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 355f074609dbf3042900ea9d30fcd2b0c323a365 ]
+[ Upstream commit fb317eb23b5ee4c37b0656a9a52a3db58d9dd072 ]
 
-syzbot reported:
+KMSAN reported the following kernel-infoleak issue:
 
- | BUG: KCSAN: data-race in p9_fd_create / p9_fd_create
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15599 on cpu 0:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | read-write to 0xffff888130fb3d48 of 4 bytes by task 15563 on cpu 1:
- |  p9_fd_open net/9p/trans_fd.c:842 [inline]
- |  p9_fd_create+0x210/0x250 net/9p/trans_fd.c:1092
- |  p9_client_create+0x595/0xa70 net/9p/client.c:1010
- |  v9fs_session_init+0xf9/0xd90 fs/9p/v9fs.c:410
- |  v9fs_mount+0x69/0x630 fs/9p/vfs_super.c:123
- |  legacy_get_tree+0x74/0xd0 fs/fs_context.c:611
- |  vfs_get_tree+0x51/0x190 fs/super.c:1519
- |  do_new_mount+0x203/0x660 fs/namespace.c:3335
- |  path_mount+0x496/0xb30 fs/namespace.c:3662
- |  do_mount fs/namespace.c:3675 [inline]
- |  __do_sys_mount fs/namespace.c:3884 [inline]
- |  [...]
- |
- | value changed: 0x00008002 -> 0x00008802
+=====================================================
+BUG: KMSAN: kernel-infoleak in instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+BUG: KMSAN: kernel-infoleak in copy_to_user_iter lib/iov_iter.c:24 [inline]
+BUG: KMSAN: kernel-infoleak in iterate_ubuf include/linux/iov_iter.h:29 [inline]
+BUG: KMSAN: kernel-infoleak in iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
+BUG: KMSAN: kernel-infoleak in iterate_and_advance include/linux/iov_iter.h:271 [inline]
+BUG: KMSAN: kernel-infoleak in _copy_to_iter+0x4ec/0x2bc0 lib/iov_iter.c:186
+ instrument_copy_to_user include/linux/instrumented.h:114 [inline]
+ copy_to_user_iter lib/iov_iter.c:24 [inline]
+ iterate_ubuf include/linux/iov_iter.h:29 [inline]
+ iterate_and_advance2 include/linux/iov_iter.h:245 [inline]
+ iterate_and_advance include/linux/iov_iter.h:271 [inline]
+ _copy_to_iter+0x4ec/0x2bc0 lib/iov_iter.c:186
+ copy_to_iter include/linux/uio.h:197 [inline]
+ simple_copy_to_iter net/core/datagram.c:532 [inline]
+ __skb_datagram_iter.5+0x148/0xe30 net/core/datagram.c:420
+ skb_copy_datagram_iter+0x52/0x210 net/core/datagram.c:546
+ skb_copy_datagram_msg include/linux/skbuff.h:3960 [inline]
+ netlink_recvmsg+0x43d/0x1630 net/netlink/af_netlink.c:1967
+ sock_recvmsg_nosec net/socket.c:1044 [inline]
+ sock_recvmsg net/socket.c:1066 [inline]
+ __sys_recvfrom+0x476/0x860 net/socket.c:2246
+ __do_sys_recvfrom net/socket.c:2264 [inline]
+ __se_sys_recvfrom net/socket.c:2260 [inline]
+ __x64_sys_recvfrom+0x130/0x200 net/socket.c:2260
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Within p9_fd_open(), O_NONBLOCK is added to f_flags of the read and
-write files. This may happen concurrently if e.g. mounting process
-modifies the fd in another thread.
+Uninit was created at:
+ slab_post_alloc_hook+0x103/0x9e0 mm/slab.h:768
+ slab_alloc_node mm/slub.c:3478 [inline]
+ kmem_cache_alloc_node+0x5f7/0xb50 mm/slub.c:3523
+ kmalloc_reserve+0x13c/0x4a0 net/core/skbuff.c:560
+ __alloc_skb+0x2fd/0x770 net/core/skbuff.c:651
+ alloc_skb include/linux/skbuff.h:1286 [inline]
+ tipc_tlv_alloc net/tipc/netlink_compat.c:156 [inline]
+ tipc_get_err_tlv+0x90/0x5d0 net/tipc/netlink_compat.c:170
+ tipc_nl_compat_recv+0x1042/0x15d0 net/tipc/netlink_compat.c:1324
+ genl_family_rcv_msg_doit net/netlink/genetlink.c:972 [inline]
+ genl_family_rcv_msg net/netlink/genetlink.c:1052 [inline]
+ genl_rcv_msg+0x1220/0x12c0 net/netlink/genetlink.c:1067
+ netlink_rcv_skb+0x4a4/0x6a0 net/netlink/af_netlink.c:2545
+ genl_rcv+0x41/0x60 net/netlink/genetlink.c:1076
+ netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
+ netlink_unicast+0xf4b/0x1230 net/netlink/af_netlink.c:1368
+ netlink_sendmsg+0x1242/0x1420 net/netlink/af_netlink.c:1910
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg net/socket.c:745 [inline]
+ ____sys_sendmsg+0x997/0xd60 net/socket.c:2588
+ ___sys_sendmsg+0x271/0x3b0 net/socket.c:2642
+ __sys_sendmsg net/socket.c:2671 [inline]
+ __do_sys_sendmsg net/socket.c:2680 [inline]
+ __se_sys_sendmsg net/socket.c:2678 [inline]
+ __x64_sys_sendmsg+0x2fa/0x4a0 net/socket.c:2678
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Mark the plain read-modify-writes as intentional data-races, with the
-assumption that the result of executing the accesses concurrently will
-always result in the same result despite the accesses themselves not
-being atomic.
+Bytes 34-35 of 36 are uninitialized
+Memory access of size 36 starts at ffff88802d464a00
+Data copied to user address 00007ff55033c0a0
 
-Reported-by: syzbot+e441aeeb422763cc5511@syzkaller.appspotmail.com
-Signed-off-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/ZO38mqkS0TYUlpFp@elver.google.com
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Message-ID: <20231025103445.1248103-1-asmadeus@codewreck.org>
+CPU: 0 PID: 30322 Comm: syz-executor.0 Not tainted 6.6.0-14500-g1c41041124bd #10
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
+=====================================================
+
+tipc_add_tlv() puts TLV descriptor and value onto `skb`. This size is
+calculated with TLV_SPACE() macro. It adds the size of struct tlv_desc and
+the length of TLV value passed as an argument, and aligns the result to a
+multiple of TLV_ALIGNTO, i.e., a multiple of 4 bytes.
+
+If the size of struct tlv_desc plus the length of TLV value is not aligned,
+the current implementation leaves the remaining bytes uninitialized. This
+is the cause of the above kernel-infoleak issue.
+
+This patch resolves this issue by clearing data up to an aligned size.
+
+Fixes: d0796d1ef63d ("tipc: convert legacy nl bearer dump to nl compat")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/trans_fd.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/tipc/netlink_compat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/9p/trans_fd.c b/net/9p/trans_fd.c
-index 00b684616e8d9..9374790f17ce4 100644
---- a/net/9p/trans_fd.c
-+++ b/net/9p/trans_fd.c
-@@ -832,14 +832,21 @@ static int p9_fd_open(struct p9_client *client, int rfd, int wfd)
- 		goto out_free_ts;
- 	if (!(ts->rd->f_mode & FMODE_READ))
- 		goto out_put_rd;
--	/* prevent workers from hanging on IO when fd is a pipe */
--	ts->rd->f_flags |= O_NONBLOCK;
-+	/* Prevent workers from hanging on IO when fd is a pipe.
-+	 * It's technically possible for userspace or concurrent mounts to
-+	 * modify this flag concurrently, which will likely result in a
-+	 * broken filesystem. However, just having bad flags here should
-+	 * not crash the kernel or cause any other sort of bug, so mark this
-+	 * particular data race as intentional so that tooling (like KCSAN)
-+	 * can allow it and detect further problems.
-+	 */
-+	data_race(ts->rd->f_flags |= O_NONBLOCK);
- 	ts->wr = fget(wfd);
- 	if (!ts->wr)
- 		goto out_put_rd;
- 	if (!(ts->wr->f_mode & FMODE_WRITE))
- 		goto out_put_wr;
--	ts->wr->f_flags |= O_NONBLOCK;
-+	data_race(ts->wr->f_flags |= O_NONBLOCK);
+diff --git a/net/tipc/netlink_compat.c b/net/tipc/netlink_compat.c
+index 5bc076f2fa74a..c763008a8adba 100644
+--- a/net/tipc/netlink_compat.c
++++ b/net/tipc/netlink_compat.c
+@@ -102,6 +102,7 @@ static int tipc_add_tlv(struct sk_buff *skb, u16 type, void *data, u16 len)
+ 		return -EMSGSIZE;
  
- 	client->trans = ts;
- 	client->status = Connected;
+ 	skb_put(skb, TLV_SPACE(len));
++	memset(tlv, 0, TLV_SPACE(len));
+ 	tlv->tlv_type = htons(type);
+ 	tlv->tlv_len = htons(TLV_LENGTH(len));
+ 	if (len && data)
 -- 
 2.42.0
 
