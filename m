@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 194C77F83A4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1D07F824E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AB931C260D8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196E31C230BA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173123418E;
-	Fri, 24 Nov 2023 19:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530A2364A5;
+	Fri, 24 Nov 2023 19:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bFKObX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqY2XFlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A5E2FC36;
-	Fri, 24 Nov 2023 19:19:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A56CC433C7;
-	Fri, 24 Nov 2023 19:19:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCBE33CFD;
+	Fri, 24 Nov 2023 19:06:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D337C433C7;
+	Fri, 24 Nov 2023 19:06:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853575;
-	bh=9qa9t7GMXtaSpOUCZKRMCzL0yqg9tda6GA82HCYZeEQ=;
+	s=korg; t=1700852789;
+	bh=te2Tw9lZDMZ58f6FRoj9MQOmCSw/dLPznUwVURrzhpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bFKObX9H2oLJeZz8YORWbRByQlcaDGOy+9dkHtgUILuNEwGEATTZTlhJZef2W83+
-	 NX4DxsSu5l+OAz5zoevQ/x2hdgbrD81al+wS8dcOyJNkey5fU7KfUXNNgd7h7wIf3y
-	 hZJPgLKxJUiEWviJvf/oPeyLlNOT7ymRrx6x8sQc=
+	b=PqY2XFlMlyLUwA94Z0EIcM1GvNed8D5LTmlpAsarqPfMFslQAJKhBmI/AkLilY2gx
+	 bP4a3/1ZeSbA98FUzW9vpjD6qpIFeu9Ke19bMae92O9ZGMfyi7bPxIIltUewH+uqYe
+	 aKg/BFFg+MNX0UYQKRkKj4G9WyrsInqOhjSOABVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 5.15 209/297] selftests/resctrl: Remove duplicate feature check from CMT test
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 5.10 124/193] wifi: ath11k: fix htt pktlog locking
 Date: Fri, 24 Nov 2023 17:54:11 +0000
-Message-ID: <20231124172007.525931846@linuxfoundation.org>
+Message-ID: <20231124171952.182813755@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +50,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 030b48fb2cf045dead8ee2c5ead560930044c029 upstream.
+commit 3f77c7d605b29df277d77e9ee75d96e7ad145d2d upstream.
 
-The test runner run_cmt_test() in resctrl_tests.c checks for CMT
-feature and does not run cmt_resctrl_val() if CMT is not supported.
-Then cmt_resctrl_val() also check is CMT is supported.
+The ath11k active pdevs are protected by RCU but the htt pktlog handling
+code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-Remove the duplicated feature check for CMT from cmt_resctrl_val().
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Compile tested only.
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019112521.2071-1-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/resctrl/cmt_test.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/resctrl/cmt_test.c
-+++ b/tools/testing/selftests/resctrl/cmt_test.c
-@@ -91,9 +91,6 @@ int cmt_resctrl_val(int cpu_no, int n, c
- 	if (ret)
- 		return ret;
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1578,14 +1578,20 @@ static void ath11k_htt_pktlog(struct ath
+ 	u8 pdev_id;
  
--	if (!validate_resctrl_feature_request(CMT_STR))
--		return -1;
--
- 	ret = get_cbm_mask("L3", cbm_mask);
- 	if (ret)
- 		return ret;
+ 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
++
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
+-		return;
++		goto out;
+ 	}
+ 
+ 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
+ 				ar->ab->pktlog_defs_checksum);
++
++out:
++	rcu_read_unlock();
+ }
+ 
+ static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
 
 
 
