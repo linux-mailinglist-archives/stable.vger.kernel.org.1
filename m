@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-2459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A123F7F8443
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18F0B7F8290
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D226F1C25B02
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 317671C23952
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C1837170;
-	Fri, 24 Nov 2023 19:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351CD35F1A;
+	Fri, 24 Nov 2023 19:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1910JOLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZ4NQGjN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E4F35EE6;
-	Fri, 24 Nov 2023 19:25:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD33C433C8;
-	Fri, 24 Nov 2023 19:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93471A5A4;
+	Fri, 24 Nov 2023 19:08:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D59C433C8;
+	Fri, 24 Nov 2023 19:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853935;
-	bh=5Z9aXwaOI5cgt/+7fWJLUQqCGU13CVLXT6Ubn3vDJJQ=;
+	s=korg; t=1700852927;
+	bh=leoMlySp039icMtDUjXfTgqefXxgjPF5I+eJs8vmw0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1910JOLSObdfYwLa257P1GzBB8Sv++ZfN9NJlr/RzyBB1aftGWSUsjT15SP/CTkny
-	 E326EV1zZjLCsFT0OTqDFUhe5OKWWuMTt0dLZ6/FaII8gWrQFa+fqxrbCkrIol9NLA
-	 JwqDpFw6PFx98gE0rO5SewTJPt3hK3TtAUPmbLFY=
+	b=kZ4NQGjNf9hVBnNWgCPhX9YseNmt5W/OOBRb4sNWKBFBMZnAUXNt/0k2nerds3UoO
+	 gCPTo4USVmstjosyNoa/TTC52McNDsNisk9r91UxcGe8FMRmscUseifmFMBMH5Oe1o
+	 bWO+N1wkfcuRs8NfnGkeHPkWc+69ZNg+MXhchbtQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 089/159] btrfs: dont arbitrarily slow down delalloc if were committing
+	"J. Bruce Fields" <bfields@redhat.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 179/193] ext4: apply umask if ACL support is disabled
 Date: Fri, 24 Nov 2023 17:55:06 +0000
-Message-ID: <20231124171945.618962428@linuxfoundation.org>
+Message-ID: <20231124171954.323341990@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 11aeb97b45ad2e0040cbb2a589bc403152526345 upstream.
+commit 484fd6c1de13b336806a967908a927cc0356e312 upstream.
 
-We have a random schedule_timeout() if the current transaction is
-committing, which seems to be a holdover from the original delalloc
-reservation code.
+The function ext4_init_acl() calls posix_acl_create() which is
+responsible for applying the umask.  But without
+CONFIG_EXT4_FS_POSIX_ACL, ext4_init_acl() is an empty inline function,
+and nobody applies the umask.
 
-Remove this, we have the proper flushing stuff, we shouldn't be hoping
-for random timing things to make everything work.  This just induces
-latency for no reason.
+This fixes a bug which causes the umask to be ignored with O_TMPFILE
+on ext4:
 
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+ https://github.com/MusicPlayerDaemon/MPD/issues/558
+ https://bugs.gentoo.org/show_bug.cgi?id=686142#c3
+ https://bugzilla.kernel.org/show_bug.cgi?id=203625
+
+Reviewed-by: "J. Bruce Fields" <bfields@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Link: https://lore.kernel.org/r/20230919081824.1096619-1-max.kellermann@ionos.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delalloc-space.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/ext4/acl.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/btrfs/delalloc-space.c
-+++ b/fs/btrfs/delalloc-space.c
-@@ -324,9 +324,6 @@ int btrfs_delalloc_reserve_metadata(stru
- 	} else {
- 		if (current->journal_info)
- 			flush = BTRFS_RESERVE_FLUSH_LIMIT;
--
--		if (btrfs_transaction_in_commit(fs_info))
--			schedule_timeout(1);
- 	}
- 
- 	if (delalloc_lock)
+--- a/fs/ext4/acl.h
++++ b/fs/ext4/acl.h
+@@ -67,6 +67,11 @@ extern int ext4_init_acl(handle_t *, str
+ static inline int
+ ext4_init_acl(handle_t *handle, struct inode *inode, struct inode *dir)
+ {
++	/* usually, the umask is applied by posix_acl_create(), but if
++	   ext4 ACL support is disabled at compile time, we need to do
++	   it here, because posix_acl_create() will never be called */
++	inode->i_mode &= ~current_umask();
++
+ 	return 0;
+ }
+ #endif  /* CONFIG_EXT4_FS_POSIX_ACL */
 
 
 
