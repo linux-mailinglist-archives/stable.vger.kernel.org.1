@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-2001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631A97F8258
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 028C57F841E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 917111C231B9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 336DC1C27130
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971A334189;
-	Fri, 24 Nov 2023 19:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EB9381A2;
+	Fri, 24 Nov 2023 19:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sX9wYHTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g308pRgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543AE2EAEA;
-	Fri, 24 Nov 2023 19:06:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5486C433C8;
-	Fri, 24 Nov 2023 19:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AC96339BE;
+	Fri, 24 Nov 2023 19:24:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8E2C433C7;
+	Fri, 24 Nov 2023 19:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852802;
-	bh=R5p9maeyMubWHsvQcM+weCZYlivlrlxmcB7Si3xONsg=;
+	s=korg; t=1700853853;
+	bh=uK9KlzHatce1xYM+GtbObCxQlcGI1kSsrfraVMm/Dso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sX9wYHTSRmvolMRYVvbkOshmb8ECsWo7KQQlR48merLTEtF/iSggyKvDz4h7yG6dI
-	 GH1Q2MQTOw3t1avxiwk89AjgYLIbGW2jobPAaKqFD79WmiCDpvPVhJ7jkNv4l/HrSV
-	 WYbHKh3ONbBKdHUpBL9UVRB7kivhkPBFazHdY454=
+	b=g308pRgEE0wrIvTvlTt1BRcHJKnSPiK7jRNRzpJUZWf2yC/zRWSCzXswTJ++1CNgp
+	 g9usTJq+DI0lWORadsB+GucfHOtBPhARUPDLqih3up/+8VXeq5CFYlQFtRy7LxTl65
+	 rYQUinGj7yPM5QBVz29ATn2UPXomY2G8ouFgb/k4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 129/193] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
+	Jun Lei <jun.lei@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 039/159] drm/amd/display: Avoid NULL dereference of timing generator
 Date: Fri, 24 Nov 2023 17:54:16 +0000
-Message-ID: <20231124171952.389464996@linuxfoundation.org>
+Message-ID: <20231124171943.546159359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,99 +56,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Wayne Lin <wayne.lin@amd.com>
 
-commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
+[ Upstream commit b1904ed480cee3f9f4036ea0e36d139cb5fee2d6 ]
 
-JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
-however, other process could intercept the EIO information from bdev's
-mapping, which leads journal recovering successful even EIO occurs during
-data written back to fs device.
+[Why & How]
+Check whether assigned timing generator is NULL or not before
+accessing its funcs to prevent NULL dereference.
 
-We found this problem in our product, iscsi + multipath is chosen for block
-device of ext4. Unstable network may trigger kpartx to rescan partitions in
-device mapper layer. Detailed process is shown as following:
-
-  mount          kpartx          irq
-jbd2_journal_recover
- do_one_pass
-  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
-  mark_buffer_dirty // mark bh dirty
-         vfs_read
-	  generic_file_read_iter // dio
-	   filemap_write_and_wait_range
-	    __filemap_fdatawrite_range
-	     do_writepages
-	      block_write_full_folio
-	       submit_bh_wbc
-	            >>  EIO occurs in disk  <<
-	                     end_buffer_async_write
-			      mark_buffer_write_io_error
-			       mapping_set_error
-			        set_bit(AS_EIO, &mapping->flags) // set!
-	    filemap_check_errors
-	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
- err2 = sync_blockdev
-  filemap_write_and_wait
-   filemap_check_errors
-    test_and_clear_bit(AS_EIO, &mapping->flags) // false
- err2 = 0
-
-Filesystem is mounted successfully even data from journal is failed written
-into disk, and ext4/ocfs2 could become corrupted.
-
-Fix it by comparing the wb_err state in fs block device before recovering
-and after recovering.
-
-A reproducer can be found in the kernel bugzilla referenced below.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Hersen Wu <hersenxs.wu@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/recovery.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/jbd2/recovery.c
-+++ b/fs/jbd2/recovery.c
-@@ -287,6 +287,8 @@ int jbd2_journal_recover(journal_t *jour
- 	journal_superblock_t *	sb;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+index bb09243758fe3..71b10b45a9b9e 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -492,7 +492,7 @@ uint32_t dc_stream_get_vblank_counter(const struct dc_stream_state *stream)
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
  
- 	struct recovery_info	info;
-+	errseq_t		wb_err;
-+	struct address_space	*mapping;
+-		if (res_ctx->pipe_ctx[i].stream != stream)
++		if (res_ctx->pipe_ctx[i].stream != stream || !tg)
+ 			continue;
  
- 	memset(&info, 0, sizeof(info));
- 	sb = journal->j_superblock;
-@@ -304,6 +306,9 @@ int jbd2_journal_recover(journal_t *jour
- 		return 0;
- 	}
+ 		return tg->funcs->get_frame_count(tg);
+@@ -551,7 +551,7 @@ bool dc_stream_get_scanoutpos(const struct dc_stream_state *stream,
+ 	for (i = 0; i < MAX_PIPES; i++) {
+ 		struct timing_generator *tg = res_ctx->pipe_ctx[i].stream_res.tg;
  
-+	wb_err = 0;
-+	mapping = journal->j_fs_dev->bd_inode->i_mapping;
-+	errseq_check_and_advance(&mapping->wb_err, &wb_err);
- 	err = do_one_pass(journal, &info, PASS_SCAN);
- 	if (!err)
- 		err = do_one_pass(journal, &info, PASS_REVOKE);
-@@ -324,6 +329,9 @@ int jbd2_journal_recover(journal_t *jour
- 	err2 = sync_blockdev(journal->j_fs_dev);
- 	if (!err)
- 		err = err2;
-+	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
-+	if (!err)
-+		err = err2;
- 	/* Make sure all replayed data is on permanent storage */
- 	if (journal->j_flags & JBD2_BARRIER) {
- 		err2 = blkdev_issue_flush(journal->j_fs_dev, GFP_KERNEL);
+-		if (res_ctx->pipe_ctx[i].stream != stream)
++		if (res_ctx->pipe_ctx[i].stream != stream || !tg)
+ 			continue;
+ 
+ 		tg->funcs->get_scanoutpos(tg,
+-- 
+2.42.0
+
 
 
 
