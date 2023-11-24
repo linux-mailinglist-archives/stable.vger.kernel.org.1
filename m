@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A68C7F8294
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0687F83DB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B4B71C23998
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA57E289175
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A6D9364C8;
-	Fri, 24 Nov 2023 19:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B4E321AD;
+	Fri, 24 Nov 2023 19:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ms4eGEkP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/ZTRJUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7752E858;
-	Fri, 24 Nov 2023 19:08:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1084C433C8;
-	Fri, 24 Nov 2023 19:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7082E64F;
+	Fri, 24 Nov 2023 19:21:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CF2C433C7;
+	Fri, 24 Nov 2023 19:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852935;
-	bh=Oiaj8DqQJ0d0ZbGR/61aNn2AEmQ52DY8HEf9+UVufxE=;
+	s=korg; t=1700853698;
+	bh=lNQWSvBK3+GsjSjXxNeUB7I7tgKm2g+fj5rNBklVi7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ms4eGEkPZ73pCAOeBocm4dUh3R5b3dwNqKG3yVEn4lZbvj/IP5yZyGQXM3PlBNc99
-	 eL8ycBzdYg+EPndWH4FnSgAZ3c3zpVxspdIlyfddU8pv0++LuR9gh6r6INUDj2gdBE
-	 7EEHApL7LNq8j9C95QIXY8UzKCy6js5pgFoHW004=
+	b=p/ZTRJUEqAPU0svbOM9vUkZ4MsMYq+ZP7369oC0vokMSeHgqQfL/iS8VOqcS7D+B9
+	 y52fe8Dao3GiImBcoWFIOZlK2e1gM7QWezOGaqEgo3GjPd1MqVMrLerJMG7z7Pcnor
+	 ub+ovlD7InPTbAmu0kJEKy7F4L16GaugO5e3XUK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.10 182/193] ext4: correct the start block of counting reserved clusters
-Date: Fri, 24 Nov 2023 17:55:09 +0000
-Message-ID: <20231124171954.444714416@linuxfoundation.org>
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 268/297] media: venus: hfi: add checks to handle capabilities from firmware
+Date: Fri, 24 Nov 2023 17:55:10 +0000
+Message-ID: <20231124172009.526964764@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 40ea98396a3659062267d1fe5f99af4f7e4f05e3 upstream.
+commit 8d0b89398b7ebc52103e055bf36b60b045f5258f upstream.
 
-When big allocate feature is enabled, we need to count and update
-reserved clusters before removing a delayed only extent_status entry.
-{init|count|get}_rsvd() have already done this, but the start block
-number of this counting isn't correct in the following case.
+The hfi parser, parses the capabilities received from venus firmware and
+copies them to core capabilities. Consider below api, for example,
+fill_caps - In this api, caps in core structure gets updated with the
+number of capabilities received in firmware data payload. If the same api
+is called multiple times, there is a possibility of copying beyond the max
+allocated size in core caps.
+Similar possibilities in fill_raw_fmts and fill_profile_level functions.
 
-  lblk            end
-   |               |
-   v               v
-          -------------------------
-          |                       | orig_es
-          -------------------------
-                   ^              ^
-      len1 is 0    |     len2     |
-
-If the start block of the orig_es entry founded is bigger than lblk, we
-passed lblk as start block to count_rsvd(), but the length is correct,
-finally, the range to be counted is offset. This patch fix this by
-passing the start blocks to 'orig_es->lblk + len1'.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230824092619.1327976-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: stable@vger.kernel.org
+Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_parser.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1366,8 +1366,8 @@ retry:
- 			}
- 		}
- 		if (count_reserved)
--			count_rsvd(inode, lblk, orig_es.es_len - len1 - len2,
--				   &orig_es, &rc);
-+			count_rsvd(inode, orig_es.es_lblk + len1,
-+				   orig_es.es_len - len1 - len2, &orig_es, &rc);
- 		goto out_get_reserved;
- 	}
+--- a/drivers/media/platform/qcom/venus/hfi_parser.c
++++ b/drivers/media/platform/qcom/venus/hfi_parser.c
+@@ -89,6 +89,9 @@ static void fill_profile_level(struct hf
+ {
+ 	const struct hfi_profile_level *pl = data;
+ 
++	if (cap->num_pl + num >= HFI_MAX_PROFILE_COUNT)
++		return;
++
+ 	memcpy(&cap->pl[cap->num_pl], pl, num * sizeof(*pl));
+ 	cap->num_pl += num;
+ }
+@@ -114,6 +117,9 @@ fill_caps(struct hfi_plat_caps *cap, con
+ {
+ 	const struct hfi_capability *caps = data;
+ 
++	if (cap->num_caps + num >= MAX_CAP_ENTRIES)
++		return;
++
+ 	memcpy(&cap->caps[cap->num_caps], caps, num * sizeof(*caps));
+ 	cap->num_caps += num;
+ }
+@@ -140,6 +146,9 @@ static void fill_raw_fmts(struct hfi_pla
+ {
+ 	const struct raw_formats *formats = fmts;
+ 
++	if (cap->num_fmts + num_fmts >= MAX_FMT_ENTRIES)
++		return;
++
+ 	memcpy(&cap->fmts[cap->num_fmts], formats, num_fmts * sizeof(*formats));
+ 	cap->num_fmts += num_fmts;
+ }
+@@ -162,6 +171,9 @@ parse_raw_formats(struct venus_core *cor
+ 		rawfmts[i].buftype = fmt->buffer_type;
+ 		i++;
+ 
++		if (i >= MAX_FMT_ENTRIES)
++			return;
++
+ 		if (pinfo->num_planes > MAX_PLANES)
+ 			break;
  
 
 
