@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6437F7D09
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F9E7F7ABC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 487BC281D25
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E15422817BA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89C23A8C3;
-	Fri, 24 Nov 2023 18:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B7739FC6;
+	Fri, 24 Nov 2023 17:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Th2se05j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPMNmJsz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7524839FD0;
-	Fri, 24 Nov 2023 18:20:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0935C433C8;
-	Fri, 24 Nov 2023 18:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C54B381D8;
+	Fri, 24 Nov 2023 17:58:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD736C433C8;
+	Fri, 24 Nov 2023 17:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850048;
-	bh=F3Db+A/s41z/4lZPB3VLkUjThVHd+Uo288WxOIQZAXA=;
+	s=korg; t=1700848689;
+	bh=qQ7w8x/mffr6B1zqQqHoQdECHfxzh3GKyGWd0pEWJSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Th2se05jnG7Se1SJRe9vOrC1HfrKB7rRvprNNXPvxNWmEeNhSVl29WkVQGTeS0lhi
-	 pdwU77RVnjAh82hrpjzFdgrhufkjY76EcrCKflqYfpmLjV8a0hU+npqhThL/vkyYSS
-	 xrIHgGo7Qkg/wv3QXV+Nd7TD05yWRk+ZfySycmy8=
+	b=ZPMNmJszTivS4LPme6S1Qfk/xcxi3NW5PyfsixeVorwBv+narXNdCXJzQxUIT0ZxL
+	 hbBTPzMuMNzHmhrQ24f0LsyH79SGUfiQKMlexq2etdxmoIwrr3P3UjAyS/Rmcqy3lg
+	 acAeONUsBFXJQxwArqwCosbXc9J61w7bTHuMPQRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Bachmakov <e.bachmakov@gmail.com>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 424/530] smb: client: fix mount when dns_resolver key is not available
+	Lu Jialin <lujialin4@huawei.com>,
+	Guo Zihua <guozihua@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 17/97] crypto: pcrypt - Fix hungtask for PADATA_RESET
 Date: Fri, 24 Nov 2023 17:49:50 +0000
-Message-ID: <20231124172040.970792168@linuxfoundation.org>
+Message-ID: <20231124171934.776205344@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +54,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Lu Jialin <lujialin4@huawei.com>
 
-commit 5e2fd17f434d2fed78efb123e2fc6711e4f598f1 upstream.
+[ Upstream commit 8f4f68e788c3a7a696546291258bfa5fdb215523 ]
 
-There was a wrong assumption that with CONFIG_CIFS_DFS_UPCALL=y there
-would always be a dns_resolver key set up so we could unconditionally
-upcall to resolve UNC hostname rather than using the value provided by
-mount(2).
+We found a hungtask bug in test_aead_vec_cfg as follows:
 
-Only require it when performing automount of junctions within a DFS
-share so users that don't have dns_resolver key still can mount their
-regular shares with server hostname resolved by mount.cifs(8).
+INFO: task cryptomgr_test:391009 blocked for more than 120 seconds.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Call trace:
+ __switch_to+0x98/0xe0
+ __schedule+0x6c4/0xf40
+ schedule+0xd8/0x1b4
+ schedule_timeout+0x474/0x560
+ wait_for_common+0x368/0x4e0
+ wait_for_completion+0x20/0x30
+ wait_for_completion+0x20/0x30
+ test_aead_vec_cfg+0xab4/0xd50
+ test_aead+0x144/0x1f0
+ alg_test_aead+0xd8/0x1e0
+ alg_test+0x634/0x890
+ cryptomgr_test+0x40/0x70
+ kthread+0x1e0/0x220
+ ret_from_fork+0x10/0x18
+ Kernel panic - not syncing: hung_task: blocked tasks
 
-Fixes: 348a04a8d113 ("smb: client: get rid of dfs code dep in namespace.c")
-Cc: stable@vger.kernel.org
-Tested-by: Eduard Bachmakov <e.bachmakov@gmail.com>
-Reported-by: Eduard Bachmakov <e.bachmakov@gmail.com>
-Closes: https://lore.kernel.org/all/CADCRUiNvZuiUZ0VGZZO9HRyPyw6x92kiA7o7Q4tsX5FkZqUkKg@mail.gmail.com/
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For padata_do_parallel, when the return err is 0 or -EBUSY, it will call
+wait_for_completion(&wait->completion) in test_aead_vec_cfg. In normal
+case, aead_request_complete() will be called in pcrypt_aead_serial and the
+return err is 0 for padata_do_parallel. But, when pinst->flags is
+PADATA_RESET, the return err is -EBUSY for padata_do_parallel, and it
+won't call aead_request_complete(). Therefore, test_aead_vec_cfg will
+hung at wait_for_completion(&wait->completion), which will cause
+hungtask.
+
+The problem comes as following:
+(padata_do_parallel)                 |
+    rcu_read_lock_bh();              |
+    err = -EINVAL;                   |   (padata_replace)
+                                     |     pinst->flags |= PADATA_RESET;
+    err = -EBUSY                     |
+    if (pinst->flags & PADATA_RESET) |
+        rcu_read_unlock_bh()         |
+        return err
+
+In order to resolve the problem, we replace the return err -EBUSY with
+-EAGAIN, which means parallel_data is changing, and the caller should call
+it again.
+
+v3:
+remove retry and just change the return err.
+v2:
+introduce padata_try_do_parallel() in pcrypt_aead_encrypt and
+pcrypt_aead_decrypt to solve the hungtask.
+
+Signed-off-by: Lu Jialin <lujialin4@huawei.com>
+Signed-off-by: Guo Zihua <guozihua@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/dfs.c        |   18 +++++++++++++-----
- fs/smb/client/fs_context.h |    1 +
- fs/smb/client/namespace.c  |   17 +++++++++++++++--
- 3 files changed, 29 insertions(+), 7 deletions(-)
+ crypto/pcrypt.c | 4 ++++
+ kernel/padata.c | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/dfs.c
-+++ b/fs/smb/client/dfs.c
-@@ -263,15 +263,23 @@ out:
- 	return rc;
+diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
+index 62e11835f220e..1e9de81ef84fa 100644
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -174,6 +174,8 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
+ 	err = pcrypt_do_parallel(padata, &ctx->cb_cpu, &pencrypt);
+ 	if (!err)
+ 		return -EINPROGRESS;
++	if (err == -EBUSY)
++		return -EAGAIN;
+ 
+ 	return err;
  }
+@@ -218,6 +220,8 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
+ 	err = pcrypt_do_parallel(padata, &ctx->cb_cpu, &pdecrypt);
+ 	if (!err)
+ 		return -EINPROGRESS;
++	if (err == -EBUSY)
++		return -EAGAIN;
  
--/* Resolve UNC hostname in @ctx->source and set ip addr in @ctx->dstaddr */
-+/*
-+ * If @ctx->dfs_automount, then update @ctx->dstaddr earlier with the DFS root
-+ * server from where we'll start following any referrals.  Otherwise rely on the
-+ * value provided by mount(2) as the user might not have dns_resolver key set up
-+ * and therefore failing to upcall to resolve UNC hostname under @ctx->source.
-+ */
- static int update_fs_context_dstaddr(struct smb3_fs_context *ctx)
- {
- 	struct sockaddr *addr = (struct sockaddr *)&ctx->dstaddr;
--	int rc;
-+	int rc = 0;
- 
--	rc = dns_resolve_server_name_to_ip(ctx->source, addr, NULL);
--	if (!rc)
--		cifs_set_port(addr, ctx->port);
-+	if (!ctx->nodfs && ctx->dfs_automount) {
-+		rc = dns_resolve_server_name_to_ip(ctx->source, addr, NULL);
-+		if (!rc)
-+			cifs_set_port(addr, ctx->port);
-+		ctx->dfs_automount = false;
-+	}
- 	return rc;
+ 	return err;
  }
- 
---- a/fs/smb/client/fs_context.h
-+++ b/fs/smb/client/fs_context.h
-@@ -268,6 +268,7 @@ struct smb3_fs_context {
- 	bool witness:1; /* use witness protocol */
- 	char *leaf_fullpath;
- 	struct cifs_ses *dfs_root_ses;
-+	bool dfs_automount:1; /* set for dfs automount only */
- };
- 
- extern const struct fs_parameter_spec smb3_fs_parameters[];
---- a/fs/smb/client/namespace.c
-+++ b/fs/smb/client/namespace.c
-@@ -117,6 +117,18 @@ cifs_build_devname(char *nodename, const
- 	return dev;
- }
- 
-+static bool is_dfs_mount(struct dentry *dentry)
-+{
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(dentry->d_sb);
-+	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
-+	bool ret;
-+
-+	spin_lock(&tcon->tc_lock);
-+	ret = !!tcon->origin_fullpath;
-+	spin_unlock(&tcon->tc_lock);
-+	return ret;
-+}
-+
- /* Return full path out of a dentry set for automount */
- static char *automount_fullpath(struct dentry *dentry, void *page)
- {
-@@ -212,8 +224,9 @@ static struct vfsmount *cifs_do_automoun
- 		ctx->source = NULL;
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 7f2b6d369fd47..a9e14183e1884 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -121,7 +121,7 @@ int padata_do_parallel(struct padata_instance *pinst,
+ 	if (!cpumask_test_cpu(cb_cpu, pd->cpumask.cbcpu))
  		goto out;
- 	}
--	cifs_dbg(FYI, "%s: ctx: source=%s UNC=%s prepath=%s\n",
--		 __func__, ctx->source, ctx->UNC, ctx->prepath);
-+	ctx->dfs_automount = is_dfs_mount(mntpt);
-+	cifs_dbg(FYI, "%s: ctx: source=%s UNC=%s prepath=%s dfs_automount=%d\n",
-+		 __func__, ctx->source, ctx->UNC, ctx->prepath, ctx->dfs_automount);
  
- 	mnt = fc_mount(fc);
- out:
+-	err =  -EBUSY;
++	err = -EBUSY;
+ 	if ((pinst->flags & PADATA_RESET))
+ 		goto out;
+ 
+-- 
+2.42.0
+
 
 
 
