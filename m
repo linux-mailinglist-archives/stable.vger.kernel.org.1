@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-1423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C87747F7F92
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBBE7F8144
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84124282520
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D62C1C21666
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4CD33090;
-	Fri, 24 Nov 2023 18:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8975F35F04;
+	Fri, 24 Nov 2023 18:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WebwGu9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1C0DXjF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BB033CC2;
-	Fri, 24 Nov 2023 18:42:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8BC433C7;
-	Fri, 24 Nov 2023 18:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460A42EAEA;
+	Fri, 24 Nov 2023 18:57:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58B4C433C8;
+	Fri, 24 Nov 2023 18:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851361;
-	bh=BS+08XHBEddB4/hxG1qZ0sn1zFzjPtumJyu3vIfyDsU=;
+	s=korg; t=1700852222;
+	bh=Mu9w67G/hVG5FCjiLPFJ1WT0XHjLYicHOdS14QGfmI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WebwGu9imjlAxjDaIaLRRjiC259qdI9Mf0jTPf0R/BY0gc3Skr9Iu8q7pFUOZvmEM
-	 9a3t3LOeBP8ZrTLzG9G+25OV0Mp48HAVrUJA5fWsAuyA4oIndbohoOv2QNoewT9N7B
-	 ZSJI1TaPqj6DQBJX+jpJ2wDWeB0ravs2daOE1C38=
+	b=X1C0DXjFEzGsFQ7gwMjPJsacPAcbjsdmduzOpilEe/T82N7xZ69XvRyTh7LGBhSKn
+	 swFLdUFjlqJ4jR/pVCT1Gv7xe7902+Q0E/y9OSnXAlU7RMyorxvfyt4pwAeutWZpnc
+	 mA7Z/GReOfu0G2sFWNRhabXZZSXcKIPSL56Ce634=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.5 418/491] f2fs: set the default compress_level on ioctl
-Date: Fri, 24 Nov 2023 17:50:54 +0000
-Message-ID: <20231124172037.164404042@linuxfoundation.org>
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 268/372] smb3: fix creating FIFOs when mounting with "sfu" mount option
+Date: Fri, 24 Nov 2023 17:50:55 +0000
+Message-ID: <20231124172019.412644058@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,47 +52,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit f5f3bd903a5d3e3b2ba89f11e0e29db25e60c048 upstream.
+commit 72bc63f5e23a38b65ff2a201bdc11401d4223fa9 upstream.
 
-Otherwise, we'll get a broken inode.
+Fixes some xfstests including generic/564 and generic/157
 
- # touch $FILE
- # f2fs_io setflags compression $FILE
- # f2fs_io set_coption 2 8 $FILE
-
-[  112.227612] F2FS-fs (dm-51): sanity_check_compress_inode: inode (ino=8d3fe) has unsupported compress level: 0, run fsck to fix
+The "sfu" mount option can be useful for creating special files (character
+and block devices in particular) but could not create FIFOs. It did
+recognize existing empty files with the "system" attribute flag as FIFOs
+but this is too general, so to support creating FIFOs more safely use a new
+tag (but the same length as those for char and block devices ie "IntxLNK"
+and "IntxBLK") "LnxFIFO" to indicate that the file should be treated as a
+FIFO (when mounted with the "sfu").   For some additional context note that
+"sfu" followed the way that "Services for Unix" on Windows handled these
+special files (at least for character and block devices and symlinks),
+which is different than newer Windows which can handle special files
+as reparse points (which isn't an option to many servers).
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/smb/client/cifspdu.h |    2 +-
+ fs/smb/client/inode.c   |    4 ++++
+ fs/smb/client/smb2ops.c |    8 +++++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -4006,6 +4006,15 @@ static int f2fs_ioc_set_compress_option(
- 	F2FS_I(inode)->i_compress_algorithm = option.algorithm;
- 	F2FS_I(inode)->i_log_cluster_size = option.log_cluster_size;
- 	F2FS_I(inode)->i_cluster_size = BIT(option.log_cluster_size);
-+	/* Set default level */
-+	if (F2FS_I(inode)->i_compress_algorithm == COMPRESS_ZSTD)
-+		F2FS_I(inode)->i_compress_level = F2FS_ZSTD_DEFAULT_CLEVEL;
-+	else
-+		F2FS_I(inode)->i_compress_level = 0;
-+	/* Adjust mount option level */
-+	if (option.algorithm == F2FS_OPTION(sbi).compress_algorithm &&
-+	    F2FS_OPTION(sbi).compress_level)
-+		F2FS_I(inode)->i_compress_level = F2FS_OPTION(sbi).compress_level;
- 	f2fs_mark_inode_dirty_sync(inode, true);
+--- a/fs/smb/client/cifspdu.h
++++ b/fs/smb/client/cifspdu.h
+@@ -2570,7 +2570,7 @@ typedef struct {
  
- 	if (!f2fs_is_compress_backend_ready(inode))
+ 
+ struct win_dev {
+-	unsigned char type[8]; /* IntxCHR or IntxBLK */
++	unsigned char type[8]; /* IntxCHR or IntxBLK or LnxFIFO*/
+ 	__le64 major;
+ 	__le64 minor;
+ } __attribute__((packed));
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -567,6 +567,10 @@ cifs_sfu_type(struct cifs_fattr *fattr,
+ 			cifs_dbg(FYI, "Symlink\n");
+ 			fattr->cf_mode |= S_IFLNK;
+ 			fattr->cf_dtype = DT_LNK;
++		} else if (memcmp("LnxFIFO", pbuf, 8) == 0) {
++			cifs_dbg(FYI, "FIFO\n");
++			fattr->cf_mode |= S_IFIFO;
++			fattr->cf_dtype = DT_FIFO;
+ 		} else {
+ 			fattr->cf_mode |= S_IFREG; /* file? */
+ 			fattr->cf_dtype = DT_REG;
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5215,7 +5215,7 @@ smb2_make_node(unsigned int xid, struct
+ 	 * over SMB2/SMB3 and Samba will do this with SMB3.1.1 POSIX Extensions
+ 	 */
+ 
+-	if (!S_ISCHR(mode) && !S_ISBLK(mode))
++	if (!S_ISCHR(mode) && !S_ISBLK(mode) && !S_ISFIFO(mode))
+ 		return rc;
+ 
+ 	cifs_dbg(FYI, "sfu compat create special file\n");
+@@ -5263,6 +5263,12 @@ smb2_make_node(unsigned int xid, struct
+ 		pdev->minor = cpu_to_le64(MINOR(dev));
+ 		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+ 							&bytes_written, iov, 1);
++	} else if (S_ISFIFO(mode)) {
++		memcpy(pdev->type, "LnxFIFO", 8);
++		pdev->major = 0;
++		pdev->minor = 0;
++		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
++							&bytes_written, iov, 1);
+ 	}
+ 	tcon->ses->server->ops->close(xid, tcon, &fid);
+ 	d_drop(dentry);
 
 
 
