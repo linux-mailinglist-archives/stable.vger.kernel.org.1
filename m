@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-1768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AC27F8146
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 889E87F7D38
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04DF12825CA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E7E282139
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74F1E35F04;
-	Fri, 24 Nov 2023 18:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3B139FFD;
+	Fri, 24 Nov 2023 18:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjMoTcvi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjBkMjAg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F6533CD1;
-	Fri, 24 Nov 2023 18:57:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADECBC433C7;
-	Fri, 24 Nov 2023 18:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F72239FE3;
+	Fri, 24 Nov 2023 18:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96F3CC433C8;
+	Fri, 24 Nov 2023 18:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852227;
-	bh=JIU44eoLhHKSBFymy4/Rek9l9yrJBWA8ECcZd6xONEc=;
+	s=korg; t=1700850154;
+	bh=X6JhS/p5f6ppIcf8O9L/tts2MV2ednrmZQ3S1veGYns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjMoTcvipLS1k9UZ+JYuTmqLGf/oMRQRF4tN6gYE24csDSYWs9WyIkp/az/XmIJLc
-	 ElzExlA9sdSmGQx62bG8HBP3c/xKLZzOikQBE24tBNzetV/94svTD9lv28Wgvkrbon
-	 nWQt8Rti59VuPFdrZUvabGw6X9e5i1O3ktesS5YM=
+	b=kjBkMjAgPc1wVSp73WXmvIK4BbX++ArnItOINJEB6OU1XhXwxyvpOPedpPkGDn8vs
+	 6f1UQUdMA0lezpvG5pDOtV77JShFBV75ljG6hyPYXzjRGJuS++gm6JKbhLFIG096WP
+	 mAKxtfa/nlldbnCYixbdaF8Xt/3LmZuR++W3LvLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	kernel test robot <lkp@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 246/372] tracing: Have the user copy of synthetic event address use correct context
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.6 467/530] tracing: fprobe-event: Fix to check tracepoint event and return
 Date: Fri, 24 Nov 2023 17:50:33 +0000
-Message-ID: <20231124172018.737112780@linuxfoundation.org>
+Message-ID: <20231124172042.287962381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +51,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-commit 4f7969bcd6d33042d62e249b41b5578161e4c868 upstream.
+commit ce51e6153f7781bcde0f8bb4c81d6fd85ee422e6 upstream.
 
-A synthetic event is created by the synthetic event interface that can
-read both user or kernel address memory. In reality, it reads any
-arbitrary memory location from within the kernel. If the address space is
-in USER (where CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE is set) then
-it uses strncpy_from_user_nofault() to copy strings otherwise it uses
-strncpy_from_kernel_nofault().
+Fix to check the tracepoint event is not valid with $retval.
+The commit 08c9306fc2e3 ("tracing/fprobe-event: Assume fprobe is
+a return event by $retval") introduced automatic return probe
+conversion with $retval. But since tracepoint event does not
+support return probe, $retval is not acceptable.
 
-But since both functions use the same variable there's no annotation to
-what that variable is (ie. __user). This makes sparse complain.
+Without this fix, ftracetest, tprobe_syntax_errors.tc fails;
 
-Quiet sparse by typecasting the strncpy_from_user_nofault() variable to
-a __user pointer.
+[22] Tracepoint probe event parser error log check      [FAIL]
+ ----
+ # tail 22-tprobe_syntax_errors.tc-log.mRKroL
+ + ftrace_errlog_check trace_fprobe t kfree ^$retval dynamic_events
+ + printf %s t kfree
+ + wc -c
+ + pos=8
+ + printf %s t kfree ^$retval
+ + tr -d ^
+ + command=t kfree $retval
+ + echo Test command: t kfree $retval
+ Test command: t kfree $retval
+ + echo
+ ----
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231031151033.73c42e23@gandalf.local.home
+So 't kfree $retval' should fail (tracepoint doesn't support
+return probe) but passed it.
 
+Link: https://lore.kernel.org/all/169944555933.45057.12831706585287704173.stgit@devnote2/
+
+Fixes: 08c9306fc2e3 ("tracing/fprobe-event: Assume fprobe is a return event by $retval")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Fixes: 0934ae9977c2 ("tracing: Fix reading strings from synthetic events");
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311010013.fm8WTxa5-lkp@intel.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_synth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_fprobe.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -473,7 +473,7 @@ static unsigned int trace_string(struct
- 
- #ifdef CONFIG_ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 		if ((unsigned long)str_val < TASK_SIZE)
--			ret = strncpy_from_user_nofault(str_field, str_val, STR_VAR_LEN_MAX);
-+			ret = strncpy_from_user_nofault(str_field, (const void __user *)str_val, STR_VAR_LEN_MAX);
- 		else
- #endif
- 			ret = strncpy_from_kernel_nofault(str_field, str_val, STR_VAR_LEN_MAX);
+diff --git a/kernel/trace/trace_fprobe.c b/kernel/trace/trace_fprobe.c
+index 8bfe23af9c73..7d2ddbcfa377 100644
+--- a/kernel/trace/trace_fprobe.c
++++ b/kernel/trace/trace_fprobe.c
+@@ -927,11 +927,12 @@ static int parse_symbol_and_return(int argc, const char *argv[],
+ 	for (i = 2; i < argc; i++) {
+ 		tmp = strstr(argv[i], "$retval");
+ 		if (tmp && !isalnum(tmp[7]) && tmp[7] != '_') {
++			if (is_tracepoint) {
++				trace_probe_log_set_index(i);
++				trace_probe_log_err(tmp - argv[i], RETVAL_ON_PROBE);
++				return -EINVAL;
++			}
+ 			*is_return = true;
+-			/*
+-			 * NOTE: Don't check is_tracepoint here, because it will
+-			 * be checked when the argument is parsed.
+-			 */
+ 			break;
+ 		}
+ 	}
+-- 
+2.43.0
+
 
 
 
