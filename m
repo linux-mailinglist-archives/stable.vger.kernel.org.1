@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-1584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612277F8069
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35677F7EA6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91E911C21566
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E4D261C21350
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF9C34189;
-	Fri, 24 Nov 2023 18:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF1B364C1;
+	Fri, 24 Nov 2023 18:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="big7Zx63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lKyfzVzg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0696E28DBB;
-	Fri, 24 Nov 2023 18:49:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42015C433B6;
-	Fri, 24 Nov 2023 18:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3441C341AE;
+	Fri, 24 Nov 2023 18:34:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69D3C433C8;
+	Fri, 24 Nov 2023 18:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851765;
-	bh=OOnjR9akOPkR2kyZid6tUV7+vjDAA2IC8Zxi/1+42WI=;
+	s=korg; t=1700850890;
+	bh=wCADJHrJaPj3lzd2veSsOdKLCbtsnW2Io/TaTEtDy4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=big7Zx634af6gJ/f3URqjphPwYDPEdee+G7ZuZkJLE7CsgamxkH2yxhzBSseA303k
-	 bX33va9BsvdmRMplueFr8jd8YDyUV1wk6L4F3sRyIRkyi9z/ULxIHu/eWQSrg+MoWr
-	 07abOWMQaoproBB6d4YJu2UwipWNAh3VEu45d4iU=
+	b=lKyfzVzgDNGlRjx6lQ9JHhINb7i5jv+s272m6FmSX3amM/9Yl7yLQ6nYrDSDAs/DK
+	 g95XsCuFmruNe6CqBD0xrA6he8JBrcfcGew6L6B+Ni4Cy/X04OkKQt6CSog+lvR/9h
+	 fgUGBMpeepulcJc9X4hwz7Q2kYrCpRBNP90KVNww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Nirmoy Das <nirmoy.das@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/372] PCI: Use FIELD_GET() in Sapphire RX 5600 XT Pulse quirk
+	linux-hardening@vger.kernel.org,
+	Lukas Loidolt <e1634039@student.tuwien.ac.at>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.5 230/491] randstruct: Fix gcc-plugin performance mode to stay in group
 Date: Fri, 24 Nov 2023 17:47:46 +0000
-Message-ID: <20231124172013.150003008@linuxfoundation.org>
+Message-ID: <20231124172031.467754103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,62 +51,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 04e82fa5951ca66495d7b05665eff673aa3852b4 ]
+commit 381fdb73d1e2a48244de7260550e453d1003bb8e upstream.
 
-Use FIELD_GET() to remove dependences on the field position, i.e., the
-shift value.  No functional change intended.
+The performance mode of the gcc-plugin randstruct was shuffling struct
+members outside of the cache-line groups. Limit the range to the
+specified group indexes.
 
-Separate because this isn't as trivial as the other FIELD_GET() changes.
-
-See 907830b0fc9e ("PCI: Add a REBAR size quirk for Sapphire RX 5600 XT
-Pulse")
-
-Link: https://lore.kernel.org/r/20231010204436.1000644-3-helgaas@kernel.org
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Cc: Nirmoy Das <nirmoy.das@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-hardening@vger.kernel.org
+Cc: stable@vger.kernel.org
+Reported-by: Lukas Loidolt <e1634039@student.tuwien.ac.at>
+Closes: https://lore.kernel.org/all/f3ca77f0-e414-4065-83a5-ae4c4d25545d@student.tuwien.ac.at
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ scripts/gcc-plugins/randomize_layout_plugin.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 4f37885017200..8df156c28aade 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -3713,14 +3713,14 @@ u32 pci_rebar_get_possible_sizes(struct pci_dev *pdev, int bar)
- 		return 0;
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -191,12 +191,14 @@ static void partition_struct(tree *field
  
- 	pci_read_config_dword(pdev, pos + PCI_REBAR_CAP, &cap);
--	cap &= PCI_REBAR_CAP_SIZES;
-+	cap = FIELD_GET(PCI_REBAR_CAP_SIZES, cap);
+ static void performance_shuffle(tree *newtree, unsigned long length, ranctx *prng_state)
+ {
+-	unsigned long i, x;
++	unsigned long i, x, index;
+ 	struct partition_group size_group[length];
+ 	unsigned long num_groups = 0;
+ 	unsigned long randnum;
  
- 	/* Sapphire RX 5600 XT Pulse has an invalid cap dword for BAR 0 */
- 	if (pdev->vendor == PCI_VENDOR_ID_ATI && pdev->device == 0x731f &&
--	    bar == 0 && cap == 0x7000)
--		cap = 0x3f000;
-+	    bar == 0 && cap == 0x700)
-+		return 0x3f00;
+ 	partition_struct(newtree, length, (struct partition_group *)&size_group, &num_groups);
++
++	/* FIXME: this group shuffle is currently a no-op. */
+ 	for (i = num_groups - 1; i > 0; i--) {
+ 		struct partition_group tmp;
+ 		randnum = ranval(prng_state) % (i + 1);
+@@ -206,11 +208,14 @@ static void performance_shuffle(tree *ne
+ 	}
  
--	return cap >> 4;
-+	return cap;
- }
- EXPORT_SYMBOL(pci_rebar_get_possible_sizes);
- 
--- 
-2.42.0
-
+ 	for (x = 0; x < num_groups; x++) {
+-		for (i = size_group[x].start + size_group[x].length - 1; i > size_group[x].start; i--) {
++		for (index = size_group[x].length - 1; index > 0; index--) {
+ 			tree tmp;
++
++			i = size_group[x].start + index;
+ 			if (DECL_BIT_FIELD_TYPE(newtree[i]))
+ 				continue;
+-			randnum = ranval(prng_state) % (i + 1);
++			randnum = ranval(prng_state) % (index + 1);
++			randnum += size_group[x].start;
+ 			// we could handle this case differently if desired
+ 			if (DECL_BIT_FIELD_TYPE(newtree[randnum]))
+ 				continue;
 
 
 
