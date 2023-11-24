@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B823D7F7F70
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A2047F811F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA7DE1C21497
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 247FF282479
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC7528DA1;
-	Fri, 24 Nov 2023 18:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709B9364AE;
+	Fri, 24 Nov 2023 18:55:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stpW8EwP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZ+c2MlD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2C92D626;
-	Fri, 24 Nov 2023 18:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C9FC433C8;
-	Fri, 24 Nov 2023 18:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09931339BE;
+	Fri, 24 Nov 2023 18:55:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832E3C433C7;
+	Fri, 24 Nov 2023 18:55:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851291;
-	bh=U0xx4Z0x5Hb1RiCqvn43z9/+Hg99OwyCu+ddMpHoqDc=;
+	s=korg; t=1700852149;
+	bh=ugVu3sOfdnAn6wYyMZ5LjbVcFwXUpghH4hLHcZO3jak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stpW8EwPlUy0Y9lixXGpLDCqYZWgQ2jf539OwuJTCtr2/kPB41hFXGLWZCMvpabv3
-	 e+w20br10C3VuyNmHb0hSAJqYraQG4fH+rueUSn7ZcFX7naFXpObvOxmYarha2g0pO
-	 0IdHoAaA75vP89Q+7nLEEy5tRgFLQkt/9VyEzyfo=
+	b=KZ+c2MlDJe4ijO//DPxcsdq0qoBLtdRUO2fyL5HOofYe7Nse0ufGRskjJkUYnzrkL
+	 /881tz90rq2fFMi107b31L6FiNmojwGXtKttliMCzj3im4kPRPvB9ySeJtqvNI+1tI
+	 uawbWscTijqIdFs52cl+0YTka9NDk+pOZKpjGiD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 390/491] smb: client: fix use-after-free bug in cifs_debug_data_proc_show()
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.1 239/372] selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
 Date: Fri, 24 Nov 2023 17:50:26 +0000
-Message-ID: <20231124172036.323700710@linuxfoundation.org>
+Message-ID: <20231124172018.487967241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +52,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit d328c09ee9f15ee5a26431f5aad7c9239fa85e62 upstream.
+commit ef43c30858754d99373a63dff33280a9969b49bc upstream.
 
-Skip SMB sessions that are being teared down
-(e.g. @ses->ses_status == SES_EXITING) in cifs_debug_data_proc_show()
-to avoid use-after-free in @ses.
+The initial value of 5% chosen for the maximum allowed percentage
+difference between resctrl mbm value and IMC mbm value in
 
-This fixes the following GPF when reading from /proc/fs/cifs/DebugData
-while mounting and umounting
+commit 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting
+       format") was "randomly chosen value" (as admitted by the changelog).
 
-  [ 816.251274] general protection fault, probably for non-canonical
-  address 0x6b6b6b6b6b6b6d81: 0000 [#1] PREEMPT SMP NOPTI
-  ...
-  [  816.260138] Call Trace:
-  [  816.260329]  <TASK>
-  [  816.260499]  ? die_addr+0x36/0x90
-  [  816.260762]  ? exc_general_protection+0x1b3/0x410
-  [  816.261126]  ? asm_exc_general_protection+0x26/0x30
-  [  816.261502]  ? cifs_debug_tcon+0xbd/0x240 [cifs]
-  [  816.261878]  ? cifs_debug_tcon+0xab/0x240 [cifs]
-  [  816.262249]  cifs_debug_data_proc_show+0x516/0xdb0 [cifs]
-  [  816.262689]  ? seq_read_iter+0x379/0x470
-  [  816.262995]  seq_read_iter+0x118/0x470
-  [  816.263291]  proc_reg_read_iter+0x53/0x90
-  [  816.263596]  ? srso_alias_return_thunk+0x5/0x7f
-  [  816.263945]  vfs_read+0x201/0x350
-  [  816.264211]  ksys_read+0x75/0x100
-  [  816.264472]  do_syscall_64+0x3f/0x90
-  [  816.264750]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-  [  816.265135] RIP: 0033:0x7fd5e669d381
+When running tests in our lab across a large number platforms, 5%
+difference upper bound for success seems a bit on the low side for the
+MBA and MBM tests. Some platforms produce outliers that are slightly
+above that, typically 6-7%, which leads MBA/MBM test frequently
+failing.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Replace the "randomly chosen value" with a success bound that is based
+on those measurements across large number of platforms by relaxing the
+MBA/MBM success bound to 8%. The relaxed bound removes the failures due
+the frequent outliers.
+
+Fixed commit description style error during merge:
+Shuah Khan <skhan@linuxfoundation.org>
+
+Fixes: 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting format")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_debug.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/selftests/resctrl/mba_test.c |    2 +-
+ tools/testing/selftests/resctrl/mbm_test.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -452,6 +452,11 @@ skip_rdma:
- 		seq_printf(m, "\n\n\tSessions: ");
- 		i = 0;
- 		list_for_each_entry(ses, &server->smb_ses_list, smb_ses_list) {
-+			spin_lock(&ses->ses_lock);
-+			if (ses->ses_status == SES_EXITING) {
-+				spin_unlock(&ses->ses_lock);
-+				continue;
-+			}
- 			i++;
- 			if ((ses->serverDomain == NULL) ||
- 				(ses->serverOS == NULL) ||
-@@ -472,6 +477,7 @@ skip_rdma:
- 				ses->ses_count, ses->serverOS, ses->serverNOS,
- 				ses->capabilities, ses->ses_status);
- 			}
-+			spin_unlock(&ses->ses_lock);
+--- a/tools/testing/selftests/resctrl/mba_test.c
++++ b/tools/testing/selftests/resctrl/mba_test.c
+@@ -12,7 +12,7 @@
  
- 			seq_printf(m, "\n\tSecurity type: %s ",
- 				get_security_type_str(server->ops->select_sectype(server, ses->sectype)));
+ #define RESULT_FILE_NAME	"result_mba"
+ #define NUM_OF_RUNS		5
+-#define MAX_DIFF_PERCENT	5
++#define MAX_DIFF_PERCENT	8
+ #define ALLOCATION_MAX		100
+ #define ALLOCATION_MIN		10
+ #define ALLOCATION_STEP		10
+--- a/tools/testing/selftests/resctrl/mbm_test.c
++++ b/tools/testing/selftests/resctrl/mbm_test.c
+@@ -11,7 +11,7 @@
+ #include "resctrl.h"
+ 
+ #define RESULT_FILE_NAME	"result_mbm"
+-#define MAX_DIFF_PERCENT	5
++#define MAX_DIFF_PERCENT	8
+ #define NUM_OF_RUNS		5
+ 
+ static int
 
 
 
