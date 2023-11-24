@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B7B7F81BF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5155E7F81F1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2B8F1C21E5C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3F62839CF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB61364A7;
-	Fri, 24 Nov 2023 19:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2A533CFD;
+	Fri, 24 Nov 2023 19:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9MBB3Eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYxBwuBH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BC228DBB;
-	Fri, 24 Nov 2023 19:01:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1229C433C8;
-	Fri, 24 Nov 2023 19:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DB7D2E84A;
+	Fri, 24 Nov 2023 19:02:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE729C433C7;
+	Fri, 24 Nov 2023 19:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852471;
-	bh=rEnGORpb3kou98DU4x6Cfr6GBUJBXQVBK1e/ynvkUy4=;
+	s=korg; t=1700852571;
+	bh=Edwe6yTc6MH5GTXj6hPOfePr/viv6PQzxyPkYTpjS+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9MBB3Eotr3nGvhhvG63mssrBX8Dro6UyXqYixkY/IkQoTmFMGAuzHOBw3aaN/BiY
-	 PC8n0PJT5c7Y3sIVFQEQHJYgNw53KOtDP+12x/iGOXLsIpFoQ0/52LVl6sX0r4kSTn
-	 tK/r/PnFbulFcjfGpMGN14N9/rbbBSoYmoZRf+ew=
+	b=hYxBwuBHf2RpsPS58j/EnUVH3qcVanWMU9R83Yi4MMIb515LqHvUBY3N8bdC6fZiI
+	 dO6fzR3+kjOKL4gVIF/cmDy/1jCE/W4JJ2w67iv2tVNFBA+nZMDTf5aioTDfZ/c+Rd
+	 abt+UIxt4IGtaVf0q4TpeKrVZbol7mpQLv1n9tcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 352/372] ext4: correct return value of ext4_convert_meta_bg
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 012/193] net: annotate data-races around sk->sk_dst_pending_confirm
 Date: Fri, 24 Nov 2023 17:52:19 +0000
-Message-ID: <20231124172022.067299376@linuxfoundation.org>
+Message-ID: <20231124171947.665084026@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 48f1551592c54f7d8e2befc72a99ff4e47f7dca0 upstream.
+[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
 
-Avoid to ignore error in "err".
+This field can be read or written without socket lock being held.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Link: https://lore.kernel.org/r/20230826174712.4059355-4-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add annotations to avoid load-store tearing.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/resize.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/net/sock.h    | 6 +++---
+ net/core/sock.c       | 2 +-
+ net/ipv4/tcp_output.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1985,9 +1985,7 @@ static int ext4_convert_meta_bg(struct s
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 9d5e603a10f5a..87ee284ea9cb3 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2013,7 +2013,7 @@ static inline void __dst_negative_advice(struct sock *sk)
+ 		if (ndst != dst) {
+ 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
+ 			sk_tx_queue_clear(sk);
+-			sk->sk_dst_pending_confirm = 0;
++			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		}
+ 	}
+ }
+@@ -2030,7 +2030,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
  
- errout:
- 	ret = ext4_journal_stop(handle);
--	if (!err)
--		err = ret;
--	return ret;
-+	return err ? err : ret;
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
+ 					    lockdep_sock_is_held(sk));
+ 	rcu_assign_pointer(sk->sk_dst_cache, dst);
+@@ -2043,7 +2043,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
  
- invalid_resize_inode:
- 	ext4_error(sb, "corrupted/inconsistent resize inode");
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
+ 	dst_release(old_dst);
+ }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index fcb998dc2dc68..a069b5476df46 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -532,7 +532,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
+ 
+ 	if (dst && dst->obsolete && dst->ops->check(dst, cookie) == NULL) {
+ 		sk_tx_queue_clear(sk);
+-		sk->sk_dst_pending_confirm = 0;
++		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
+ 		dst_release(dst);
+ 		return NULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 4df287885dd75..f8ad8465f76cb 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1320,7 +1320,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 	skb_set_hash_from_sk(skb, sk);
+ 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
+ 
+-	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
++	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
+ 
+ 	/* Build TCP header and checksum it. */
+ 	th = (struct tcphdr *)skb->data;
+-- 
+2.42.0
+
 
 
 
