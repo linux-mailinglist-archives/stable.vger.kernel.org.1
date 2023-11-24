@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-1530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD5E7F8027
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24FBF7F7C59
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FA60B219AA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 567F11C2118A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A0B381D4;
-	Fri, 24 Nov 2023 18:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C1E3A8C5;
+	Fri, 24 Nov 2023 18:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKFUWCvL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqrl97WL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108BE2FC21;
-	Fri, 24 Nov 2023 18:47:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDF0C433C9;
-	Fri, 24 Nov 2023 18:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5159E39FE3;
+	Fri, 24 Nov 2023 18:14:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39D0C433C7;
+	Fri, 24 Nov 2023 18:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851630;
-	bh=tgXET1yJ6iFgtlL5zkPXeWhFcpbEi9iBLlaQ7CzWXRo=;
+	s=korg; t=1700849662;
+	bh=y5L0h772cZC3OCGdu7RuD0vH8cPpA7AJ5y+eHE85LUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKFUWCvLjOcZISRiHAwKMSClKtDVK8eJLVaKEx5Rq31SV60YbvRmYSurDk5eVVZJj
-	 PwrY3AcGgdg1LaP87INbdjGH9gDg3iVFPrWxl79D8N0HVJ3hkS7lRpUjkBK3AW+I8W
-	 3wGZf9pcdC14hFxaRAeAsMcz9ThfE2Z2X0JE5Ph4=
+	b=sqrl97WLjQNDl/R7DRlLKXLw4wEJ0M9rYX9VJCRw4wK3nXoTlzBtJ5wiIAjr825IG
+	 dw9qGtuL65SScpxuLj0/zhyC8FNeYH5MqMWl2Sp7qFI/LZvJ2znmq9LAXhuL3Z7P+q
+	 ktU/foUD93rA2oGRJ0QWZbmclyBK/2oiMXooWqPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	youwan Wang <wangyouwan@126.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/372] Bluetooth: btusb: Add date->evt_skb is NULL check
+	Mohamed Mahmoud <mmahmoud@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Tao Lyu <tao.lyu@epfl.ch>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.6 246/530] bpf: Fix precision tracking for BPF_ALU | BPF_TO_BE | BPF_END
 Date: Fri, 24 Nov 2023 17:46:52 +0000
-Message-ID: <20231124172011.324340998@linuxfoundation.org>
+Message-ID: <20231124172035.542906837@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +54,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: youwan Wang <wangyouwan@126.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-[ Upstream commit 624820f7c8826dd010e8b1963303c145f99816e9 ]
+commit 291d044fd51f8484066300ee42afecf8c8db7b3a upstream.
 
-fix crash because of null pointers
+BPF_END and BPF_NEG has a different specification for the source bit in
+the opcode compared to other ALU/ALU64 instructions, and is either
+reserved or use to specify the byte swap endianness. In both cases the
+source bit does not encode source operand location, and src_reg is a
+reserved field.
 
-[ 6104.969662] BUG: kernel NULL pointer dereference, address: 00000000000000c8
-[ 6104.969667] #PF: supervisor read access in kernel mode
-[ 6104.969668] #PF: error_code(0x0000) - not-present page
-[ 6104.969670] PGD 0 P4D 0
-[ 6104.969673] Oops: 0000 [#1] SMP NOPTI
-[ 6104.969684] RIP: 0010:btusb_mtk_hci_wmt_sync+0x144/0x220 [btusb]
-[ 6104.969688] RSP: 0018:ffffb8d681533d48 EFLAGS: 00010246
-[ 6104.969689] RAX: 0000000000000000 RBX: ffff8ad560bb2000 RCX: 0000000000000006
-[ 6104.969691] RDX: 0000000000000000 RSI: ffffb8d681533d08 RDI: 0000000000000000
-[ 6104.969692] RBP: ffffb8d681533d70 R08: 0000000000000001 R09: 0000000000000001
-[ 6104.969694] R10: 0000000000000001 R11: 00000000fa83b2da R12: ffff8ad461d1d7c0
-[ 6104.969695] R13: 0000000000000000 R14: ffff8ad459618c18 R15: ffffb8d681533d90
-[ 6104.969697] FS:  00007f5a1cab9d40(0000) GS:ffff8ad578200000(0000) knlGS:00000
-[ 6104.969699] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 6104.969700] CR2: 00000000000000c8 CR3: 000000018620c001 CR4: 0000000000760ef0
-[ 6104.969701] PKRU: 55555554
-[ 6104.969702] Call Trace:
-[ 6104.969708]  btusb_mtk_shutdown+0x44/0x80 [btusb]
-[ 6104.969732]  hci_dev_do_close+0x470/0x5c0 [bluetooth]
-[ 6104.969748]  hci_rfkill_set_block+0x56/0xa0 [bluetooth]
-[ 6104.969753]  rfkill_set_block+0x92/0x160
-[ 6104.969755]  rfkill_fop_write+0x136/0x1e0
-[ 6104.969759]  __vfs_write+0x18/0x40
-[ 6104.969761]  vfs_write+0xdf/0x1c0
-[ 6104.969763]  ksys_write+0xb1/0xe0
-[ 6104.969765]  __x64_sys_write+0x1a/0x20
-[ 6104.969769]  do_syscall_64+0x51/0x180
-[ 6104.969771]  entry_SYSCALL_64_after_hwframe+0x44/0xa9
-[ 6104.969773] RIP: 0033:0x7f5a21f18fef
-[ 6104.9] RSP: 002b:00007ffeefe39010 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-[ 6104.969780] RAX: ffffffffffffffda RBX: 000055c10a7560a0 RCX: 00007f5a21f18fef
-[ 6104.969781] RDX: 0000000000000008 RSI: 00007ffeefe39060 RDI: 0000000000000012
-[ 6104.969782] RBP: 00007ffeefe39060 R08: 0000000000000000 R09: 0000000000000017
-[ 6104.969784] R10: 00007ffeefe38d97 R11: 0000000000000293 R12: 0000000000000002
-[ 6104.969785] R13: 00007ffeefe39220 R14: 00007ffeefe391a0 R15: 000055c10a72acf0
+backtrack_insn() currently does not differentiate BPF_END and BPF_NEG
+from other ALU/ALU64 instructions, which leads to r0 being incorrectly
+marked as precise when processing BPF_ALU | BPF_TO_BE | BPF_END
+instructions. This commit teaches backtrack_insn() to correctly mark
+precision for such case.
 
-Signed-off-by: youwan Wang <wangyouwan@126.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While precise tracking of BPF_NEG and other BPF_END instructions are
+correct and does not need fixing, this commit opt to process all BPF_NEG
+and BPF_END instructions within the same if-clause to better align with
+current convention used in the verifier (e.g. check_alu_op).
+
+Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
+Cc: stable@vger.kernel.org
+Reported-by: Mohamed Mahmoud <mmahmoud@redhat.com>
+Closes: https://lore.kernel.org/r/87jzrrwptf.fsf@toke.dk
+Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Tao Lyu <tao.lyu@epfl.ch>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20231102053913.12004-2-shung-hsi.yu@suse.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/verifier.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 96d4f48e36011..4a6369d1dd171 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -2638,6 +2638,9 @@ static int btusb_mtk_hci_wmt_sync(struct hci_dev *hdev,
- 		goto err_free_wc;
- 	}
- 
-+	if (data->evt_skb == NULL)
-+		goto err_free_wc;
-+
- 	/* Parse and handle the return WMT event */
- 	wmt_evt = (struct btmtk_hci_wmt_evt *)data->evt_skb->data;
- 	if (wmt_evt->whdr.op != hdr->op) {
--- 
-2.42.0
-
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3444,7 +3444,12 @@ static int backtrack_insn(struct bpf_ver
+ 	if (class == BPF_ALU || class == BPF_ALU64) {
+ 		if (!bt_is_reg_set(bt, dreg))
+ 			return 0;
+-		if (opcode == BPF_MOV) {
++		if (opcode == BPF_END || opcode == BPF_NEG) {
++			/* sreg is reserved and unused
++			 * dreg still need precision before this insn
++			 */
++			return 0;
++		} else if (opcode == BPF_MOV) {
+ 			if (BPF_SRC(insn->code) == BPF_X) {
+ 				/* dreg = sreg or dreg = (s8, s16, s32)sreg
+ 				 * dreg needs precision after this insn
 
 
 
