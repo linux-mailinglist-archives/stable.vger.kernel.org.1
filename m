@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-1755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4497D7F8136
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCC67F7AF8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3E992821B0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A59EB20DD3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 980EB33CD1;
-	Fri, 24 Nov 2023 18:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5666E39FEA;
+	Fri, 24 Nov 2023 18:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRkg7BkZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcQvd3ca"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 482B22EAEA;
-	Fri, 24 Nov 2023 18:56:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBD61C433C8;
-	Fri, 24 Nov 2023 18:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125A939FD9;
+	Fri, 24 Nov 2023 18:00:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 919CCC433C7;
+	Fri, 24 Nov 2023 18:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852195;
-	bh=9m+KTb0DFHpFeaDe2RXvbgwUqP2F1vb8InO9dErzz70=;
+	s=korg; t=1700848832;
+	bh=5n+Qvt5g9B2mSxH+egOZ5s8bZrtqOXrFcOrRBKFYQU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IRkg7BkZbHr7LctSfZB83b0KYRJtGu+ktnwwhyY1cefAniXdcAnpf7aDA0J9v5hzJ
-	 +JZvaY+KHGiMOWvIRHD3Na5JEHpIxJtMFQILovf9cg6NL3XYRwMKC/ik9mN3QF78jl
-	 BeHWhWFI30igMMrTG7z66iQtyUZHcUvRITqqfY9E=
+	b=NcQvd3ca53DG5oHCyh+6HTkYqMfburm9rB0y8zIsIva64J2rCXDTxtjt5kdwGwShf
+	 Ib/CroHz/ED7LafZO184F55posOxjg/PyyDPXVxsbN10j+4qB2GNZvYCELIT/Ofut9
+	 ptrAGWdmjqjHn9fxdeGt/sHNqTpyrmlqK/PtN3vE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 258/372] i3c: master: svc: fix race condition in ibi work thread
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 4.19 72/97] parisc/pgtable: Do not drop upper 5 address bits of physical address
 Date: Fri, 24 Nov 2023 17:50:45 +0000
-Message-ID: <20231124172019.099418915@linuxfoundation.org>
+Message-ID: <20231124171936.831223040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,120 +51,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 6bf3fc268183816856c96b8794cd66146bc27b35 upstream.
+commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
 
-The ibi work thread operates asynchronously with other transfers, such as
-svc_i3c_master_priv_xfers(). Introduce mutex protection to ensure the
-completion of the entire i3c/i2c transaction.
+When calculating the pfn for the iitlbt/idtlbt instruction, do not
+drop the upper 5 address bits. This doesn't seem to have an effect
+on physical hardware which uses less physical address bits, but in
+qemu the missing bits are visible.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Helge Deller <deller@gmx.de>
 Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-2-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ arch/parisc/kernel/entry.S |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -168,6 +168,7 @@ struct svc_i3c_xfer {
-  * @ibi.slots: Available IBI slots
-  * @ibi.tbq_slot: To be queued IBI slot
-  * @ibi.lock: IBI lock
-+ * @lock: Transfer lock, protect between IBI work thread and callbacks from master
-  */
- struct svc_i3c_master {
- 	struct i3c_master_controller base;
-@@ -195,6 +196,7 @@ struct svc_i3c_master {
- 		/* Prevent races within IBI handlers */
- 		spinlock_t lock;
- 	} ibi;
-+	struct mutex lock;
- };
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -522,13 +522,13 @@
+ 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
+ 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
+ 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
++	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
  
- /**
-@@ -376,6 +378,7 @@ static void svc_i3c_master_ibi_work(stru
- 	u32 status, val;
- 	int ret;
+ 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
+ 	.macro		convert_for_tlb_insert20 pte,tmp
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	copy		\pte,\tmp
+-	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
+-				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
++	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
  
-+	mutex_lock(&master->lock);
- 	/* Acknowledge the incoming interrupt with the AUTOIBI mechanism */
- 	writel(SVC_I3C_MCTRL_REQUEST_AUTO_IBI |
- 	       SVC_I3C_MCTRL_IBIRESP_AUTO,
-@@ -452,6 +455,7 @@ static void svc_i3c_master_ibi_work(stru
- 
- reenable_ibis:
- 	svc_i3c_master_enable_interrupts(master, SVC_I3C_MINT_SLVSTART);
-+	mutex_unlock(&master->lock);
- }
- 
- static irqreturn_t svc_i3c_master_irq_handler(int irq, void *dev_id)
-@@ -1191,9 +1195,11 @@ static int svc_i3c_master_send_bdcast_cc
- 	cmd->read_len = 0;
- 	cmd->continued = false;
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	kfree(buf);
-@@ -1237,9 +1243,11 @@ static int svc_i3c_master_send_direct_cc
- 	cmd->read_len = read_len;
- 	cmd->continued = false;
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	if (cmd->read_len != xfer_len)
- 		ccc->dests[0].payload.len = cmd->read_len;
-@@ -1296,9 +1304,11 @@ static int svc_i3c_master_priv_xfers(str
- 		cmd->continued = (i + 1) < nxfers;
- 	}
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	svc_i3c_master_free_xfer(xfer);
-@@ -1334,9 +1344,11 @@ static int svc_i3c_master_i2c_xfers(stru
- 		cmd->continued = (i + 1 < nxfers);
- 	}
- 
-+	mutex_lock(&master->lock);
- 	svc_i3c_master_enqueue_xfer(master, xfer);
- 	if (!wait_for_completion_timeout(&xfer->comp, msecs_to_jiffies(1000)))
- 		svc_i3c_master_dequeue_xfer(master, xfer);
-+	mutex_unlock(&master->lock);
- 
- 	ret = xfer->ret;
- 	svc_i3c_master_free_xfer(xfer);
-@@ -1527,6 +1539,8 @@ static int svc_i3c_master_probe(struct p
- 
- 	INIT_WORK(&master->hj_work, svc_i3c_master_hj_work);
- 	INIT_WORK(&master->ibi_work, svc_i3c_master_ibi_work);
-+	mutex_init(&master->lock);
-+
- 	ret = devm_request_irq(dev, master->irq, svc_i3c_master_irq_handler,
- 			       IRQF_NO_SUSPEND, "svc-i3c-irq", master);
- 	if (ret)
+ 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
+ 				(63-58)+PAGE_ADD_SHIFT,\pte
+@@ -536,8 +536,7 @@
+ 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
+ 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
+ #else /* Huge pages disabled */
+-	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
+-				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
++	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
+ 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
+ 				(63-58)+PAGE_ADD_SHIFT,\pte
+ #endif
 
 
 
