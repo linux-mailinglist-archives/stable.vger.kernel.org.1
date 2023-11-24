@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AE67F7BCB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F877F7DBA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB001C21092
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A36E41C20951
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B042B39FF8;
-	Fri, 24 Nov 2023 18:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEF739FF8;
+	Fri, 24 Nov 2023 18:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PbfUQVyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E506tNI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 679A8381DF;
-	Fri, 24 Nov 2023 18:08:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A920CC433C8;
-	Fri, 24 Nov 2023 18:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6206039FD9;
+	Fri, 24 Nov 2023 18:26:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AB1C433C8;
+	Fri, 24 Nov 2023 18:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849322;
-	bh=JykbmziV6DL5hniM/FPVRCgQK76mMd/XFFWOO+CJS7A=;
+	s=korg; t=1700850417;
+	bh=MbtdrZomPyBlWz/YaQwE7DWbfzS+qnQv1SjVDqLfneM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PbfUQVyyWsdQVlzUs60JOCtXOECK/iXi5zdMliROtLj7eA/78iSM884wNYNj85LFL
-	 puqtJEM5Rq05DTmb7KXSZnCDLeM7ZllZ0GSH3byRnd+l7SEG4Oa8rgtzVxyTQEcS8F
-	 t4M+K6OOhhcVvjtsBm1VdwKIbq49HNncHF49MnuQ=
+	b=E506tNI3inFV/RXGzRSOiEofPcXFxKw7/yo7xcErCRBfzfAcSOc7EJdmXV7IMAho+
+	 hc2ovmt4MI8qemqZ565AZ+byzvm7s5jxExZMISNefYAZox8XSwHNqAVXJDl6QZxCmA
+	 H7bUqJY51+NNrIFitZdof4GtFPOIWlPyBISjg9CI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/530] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
+Subject: [PATCH 6.5 041/491] gpiolib: acpi: Add a ignore interrupt quirk for Peaq C1010
 Date: Fri, 24 Nov 2023 17:44:37 +0000
-Message-ID: <20231124172031.499581486@linuxfoundation.org>
+Message-ID: <20231124172025.920528624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +54,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
+[ Upstream commit 6cc64f6173751d212c9833bde39e856b4f585a3e ]
 
-Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
-can be used for testing PCIe EP on R-Car S4-8.
+On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
+a "dolby" button. At the ACPI level an _AEI event-handler
+is connected which sets an ACPI variable to 1 on both
+edges. This variable can be polled + cleared to 0 using WMI.
 
-Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Since the variable is set on both edges the WMI interface is pretty
+useless even when polling. So instead of writing a custom WMI
+driver for this the x86-android-tablets code instantiates
+a gpio-keys platform device for the "dolby" button.
+
+Add an ignore_interrupt quirk for INT33FC:00 pin 3 on the Peaq C1010,
+so that it is not seen as busy when the gpio-keys driver requests it.
+
+Note this replaces a hack in x86-android-tablets where it would
+call acpi_gpiochip_free_interrupts() on the INT33FC:00 GPIO
+controller. acpi_gpiochip_free_interrupts() is considered private
+(internal) gpiolib API so x86-android-tablets should stop using it.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20230909141816.58358-3-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/pci_endpoint_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpio/gpiolib-acpi.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 7e1acc68d4359..af519088732d9 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -82,6 +82,7 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
- #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
-+#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
- 
- static DEFINE_IDA(pci_endpoint_test_ida);
- 
-@@ -991,6 +992,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
-+	  .driver_data = (kernel_ulong_t)&default_data,
-+	},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
- 	  .driver_data = (kernel_ulong_t)&j721e_data,
+diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+index a775d2bdac94f..980ec04892173 100644
+--- a/drivers/gpio/gpiolib-acpi.c
++++ b/drivers/gpio/gpiolib-acpi.c
+@@ -1655,6 +1655,26 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
+ 			.ignore_wake = "SYNA1202:00@16",
+ 		},
  	},
++	{
++		/*
++		 * On the Peaq C1010 2-in-1 INT33FC:00 pin 3 is connected to
++		 * a "dolby" button. At the ACPI level an _AEI event-handler
++		 * is connected which sets an ACPI variable to 1 on both
++		 * edges. This variable can be polled + cleared to 0 using
++		 * WMI. But since the variable is set on both edges the WMI
++		 * interface is pretty useless even when polling.
++		 * So instead the x86-android-tablets code instantiates
++		 * a gpio-keys platform device for it.
++		 * Ignore the _AEI handler for the pin, so that it is not busy.
++		 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "PEAQ"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "PEAQ PMM C1010 MD99187"),
++		},
++		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
++			.ignore_interrupt = "INT33FC:00@3",
++		},
++	},
+ 	{} /* Terminating entry */
+ };
+ 
 -- 
 2.42.0
 
