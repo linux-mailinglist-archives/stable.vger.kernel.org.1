@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B51B7F7AEA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7D27F7F97
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 225BC1F20E38
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3ACD28254E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590A939FE8;
-	Fri, 24 Nov 2023 17:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09063364BA;
+	Fri, 24 Nov 2023 18:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XItPbPZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZ5HUg8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DA939FD4;
-	Fri, 24 Nov 2023 17:59:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E32C433C8;
-	Fri, 24 Nov 2023 17:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDFD34189;
+	Fri, 24 Nov 2023 18:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB03C433C8;
+	Fri, 24 Nov 2023 18:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848798;
-	bh=CtkJ3DtwuiuW7M+bUaHTBxUD8GCrC9lXYRIN+LAylW0=;
+	s=korg; t=1700851371;
+	bh=75jklDXUAaHkb/ra+wgrROa7b6G9YWC/K78w2BQx5E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XItPbPZfHXs67DmhDpmrE9dNkMeiTLSOnmXWJeTMNrqFnHbUxoIS5K+Ck1XHhqa37
-	 BO+qE4C1lhIhW+XYyoYBesM2BDR9Bsew+pB8i/fn61TCjNFnyEAC5lQz+agEYZ/CoJ
-	 Jb+5xWD2DIkVq2JS3ASkFz53iq7Vos5vzvIgNvT4=
+	b=IZ5HUg8z54mBD+5Q4LZzAykatf34+Bqhfwg8cmqBsgDqWiDVjgyHAwEcKzCTT1Mkj
+	 IW+jPLxfwTfU/xlCiv2jl+QRuh66hvNun46vLrBKaho9Wg29p+PGfIbP+UaKOzftN8
+	 Ns1qXQAauic5I5Vm5ni3ZIWYRLmxWz3aCMUIwnD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Joe Ferner <joe.m.ferner@gmail.com>,
 	Sean Young <sean@mess.org>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 4.19 85/97] media: sharp: fix sharp encoding
+Subject: [PATCH 6.5 422/491] media: sharp: fix sharp encoding
 Date: Fri, 24 Nov 2023 17:50:58 +0000
-Message-ID: <20231124171937.356518894@linuxfoundation.org>
+Message-ID: <20231124172037.287422235@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -78,8 +78,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/media/rc/ir-sharp-decoder.c
 +++ b/drivers/media/rc/ir-sharp-decoder.c
-@@ -23,7 +23,9 @@
- #define SHARP_UNIT		40000  /* ns */
+@@ -15,7 +15,9 @@
+ #define SHARP_UNIT		40  /* us */
  #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
  #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
 -#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
@@ -89,7 +89,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
  #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
-@@ -176,8 +178,8 @@ static const struct ir_raw_timings_pd ir
+@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
  	.header_pulse  = 0,
  	.header_space  = 0,
  	.bit_pulse     = SHARP_BIT_PULSE,
