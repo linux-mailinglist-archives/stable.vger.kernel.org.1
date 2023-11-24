@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D2C7F81DD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A5577F81B2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F0A1C2217E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAB19282E0B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277F32C1A2;
-	Fri, 24 Nov 2023 19:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA64364A5;
+	Fri, 24 Nov 2023 19:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVcMIcJR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kYnBZiHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9A82E64F;
-	Fri, 24 Nov 2023 19:02:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68994C433C7;
-	Fri, 24 Nov 2023 19:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2224D2E84A;
+	Fri, 24 Nov 2023 19:00:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BC7C433C7;
+	Fri, 24 Nov 2023 19:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852528;
-	bh=NboABnYlYccK6Tf5TjwF2LZBE2D6N2loNjevu/QP6LE=;
+	s=korg; t=1700852449;
+	bh=4WMDsdUc2wOeQH+hcS1Y551vdY25JELelcovV00pclc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVcMIcJRGUYDp7gOJROJNtxYLK5HVDDQZ+LxCOQvE2SMQ5aHof/e44gTTicxOto6J
-	 CV4Cnoifw70+oieudcIkff+idH+gdggawXRHQAHWmgpZB3uUJzI4hTZd7ahPEMeEs1
-	 SO2oijVK9dFcU01rL8obWrw+Yj9jR+xkPmbkUlTI=
+	b=kYnBZiHDEMnQS0ySXlToukpW/yBS5aOek/VXPxeIMJ1JH24f8N0ky/MY/cxU/wyEM
+	 lD1/nwPbOLD2KszKrQDK2FUjPKjl1bCM6sACde28P3c7PgqPAr0w1u2yf6DWyd3nir
+	 JGi9llhVOYQoNcZTHZKQnIC2zgs7W99Ly5j+KoGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/193] drm/amd: Fix UBSAN array-index-out-of-bounds for Polaris and Tonga
-Date: Fri, 24 Nov 2023 17:52:27 +0000
-Message-ID: <20231124171947.983440856@linuxfoundation.org>
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 361/372] drm/amdgpu/smu13: drop compute workload workaround
+Date: Fri, 24 Nov 2023 17:52:28 +0000
+Message-ID: <20231124172022.329072321@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,86 +52,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 0f0e59075b5c22f1e871fbd508d6e4f495048356 ]
+commit 23170863ea0a0965d224342c0eb2ad8303b1f267 upstream.
 
-For pptable structs that use flexible array sizes, use flexible arrays.
+This was fixed in PMFW before launch and is no longer
+required.
 
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h    | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 +------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-index d5a4a08c6d392..0c61e2bc14cde 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
-@@ -164,7 +164,7 @@ typedef struct _ATOM_Tonga_State {
- typedef struct _ATOM_Tonga_State_Array {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries;		/* Number of entries. */
--	ATOM_Tonga_State entries[1];	/* Dynamically allocate entries. */
-+	ATOM_Tonga_State entries[];	/* Dynamically allocate entries. */
- } ATOM_Tonga_State_Array;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -1645,38 +1645,10 @@ static int smu_v13_0_0_set_power_profile
+ 		}
+ 	}
  
- typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
-@@ -210,7 +210,7 @@ typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
- typedef struct _ATOM_Polaris_SCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries;							/* Number of entries. */
--	ATOM_Polaris_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
-+	ATOM_Polaris_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
- } ATOM_Polaris_SCLK_Dependency_Table;
+-	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE &&
+-		(((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xC8)) ||
+-		((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xCC)))) {
+-		ret = smu_cmn_update_table(smu,
+-					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
+-					   WORKLOAD_PPLIB_COMPUTE_BIT,
+-					   (void *)(&activity_monitor_external),
+-					   false);
+-		if (ret) {
+-			dev_err(smu->adev->dev, "[%s] Failed to get activity monitor!", __func__);
+-			return ret;
+-		}
+-
+-		ret = smu_cmn_update_table(smu,
+-					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
+-					   WORKLOAD_PPLIB_CUSTOM_BIT,
+-					   (void *)(&activity_monitor_external),
+-					   true);
+-		if (ret) {
+-			dev_err(smu->adev->dev, "[%s] Failed to set activity monitor!", __func__);
+-			return ret;
+-		}
+-
+-		workload_type = smu_cmn_to_asic_specific_index(smu,
+-						       CMN2ASIC_MAPPING_WORKLOAD,
+-						       PP_SMC_POWER_PROFILE_CUSTOM);
+-	} else {
+-		/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
+-		workload_type = smu_cmn_to_asic_specific_index(smu,
++	/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
++	workload_type = smu_cmn_to_asic_specific_index(smu,
+ 						       CMN2ASIC_MAPPING_WORKLOAD,
+ 						       smu->power_profile_mode);
+-	}
  
- typedef struct _ATOM_Tonga_PCIE_Record {
-@@ -222,7 +222,7 @@ typedef struct _ATOM_Tonga_PCIE_Record {
- typedef struct _ATOM_Tonga_PCIE_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_PCIE_Record entries[1];							/* Dynamically allocate entries. */
-+	ATOM_Tonga_PCIE_Record entries[];							/* Dynamically allocate entries. */
- } ATOM_Tonga_PCIE_Table;
- 
- typedef struct _ATOM_Polaris10_PCIE_Record {
-@@ -235,7 +235,7 @@ typedef struct _ATOM_Polaris10_PCIE_Record {
- typedef struct _ATOM_Polaris10_PCIE_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries;                                         /* Number of entries. */
--	ATOM_Polaris10_PCIE_Record entries[1];                      /* Dynamically allocate entries. */
-+	ATOM_Polaris10_PCIE_Record entries[];                      /* Dynamically allocate entries. */
- } ATOM_Polaris10_PCIE_Table;
- 
- 
-@@ -252,7 +252,7 @@ typedef struct _ATOM_Tonga_MM_Dependency_Record {
- typedef struct _ATOM_Tonga_MM_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_MM_Dependency_Record entries[1]; 			   /* Dynamically allocate entries. */
-+	ATOM_Tonga_MM_Dependency_Record entries[]; 			   /* Dynamically allocate entries. */
- } ATOM_Tonga_MM_Dependency_Table;
- 
- typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
-@@ -265,7 +265,7 @@ typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
- typedef struct _ATOM_Tonga_Voltage_Lookup_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_Voltage_Lookup_Record entries[1];				/* Dynamically allocate entries. */
-+	ATOM_Tonga_Voltage_Lookup_Record entries[];				/* Dynamically allocate entries. */
- } ATOM_Tonga_Voltage_Lookup_Table;
- 
- typedef struct _ATOM_Tonga_Fan_Table {
--- 
-2.42.0
-
+ 	if (workload_type < 0)
+ 		return -EINVAL;
 
 
 
