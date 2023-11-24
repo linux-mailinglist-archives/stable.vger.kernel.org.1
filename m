@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 934BC7F80D3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 604257F7CEF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54251C21617
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE02B214E6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017C914F7B;
-	Fri, 24 Nov 2023 18:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2033A8CF;
+	Fri, 24 Nov 2023 18:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMFmXf3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YK2oSasL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22C4339BE;
-	Fri, 24 Nov 2023 18:53:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42769C433C8;
-	Fri, 24 Nov 2023 18:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813139FD9;
+	Fri, 24 Nov 2023 18:19:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606F2C433C8;
+	Fri, 24 Nov 2023 18:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851989;
-	bh=8weSAZh5bz7SEjptIHA1xYUqlBnyC7i0grRSsn+H6z8=;
+	s=korg; t=1700849982;
+	bh=2IKiglihdtkb7wuA8k4IopQtSFbDoPazKhSRXuY2WdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMFmXf3D+bZahHzNs4wlnRGrWeWanSlUFQJ9GGFzQsjtx6oH3SqzATRv1tZB8FC7s
-	 xZxvUtDx8k3NKFnZL/IYDRl5PXAWLVly1jJhEjDmoRfJmcVlW2AE/2f8PROU03Tv12
-	 u9bUyKf/nczPxfm4k2tm9qo4bPLhIaBZ7Tmlq6II=
+	b=YK2oSasLztGO1bHZpYYbH9avIwrRnxf6Cguy+Mj2NrHI69+4N7xG03jrGJ0hmnW5Q
+	 70RwNqoTETRYzNl64izjLYDHVStJzuxxC99ZlIpGEq8WFm+aYTpoFS2yXf+RDqoyQb
+	 k6aIEwgEtn2Y8eN7HUwjZCDk4AMpEkajvKUxPJh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Su <tao1.su@linux.intel.com>,
-	Yi Lai <yi1.lai@intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 176/372] KVM: x86: Clear bit12 of ICR after APIC-write VM-exit
-Date: Fri, 24 Nov 2023 17:49:23 +0000
-Message-ID: <20231124172016.330891436@linuxfoundation.org>
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	John Johansen <john.johansen@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 398/530] apparmor: Fix kernel-doc warnings in apparmor/policy.c
+Date: Fri, 24 Nov 2023 17:49:24 +0000
+Message-ID: <20231124172040.137224917@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,90 +53,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Su <tao1.su@linux.intel.com>
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
 
-commit 629d3698f6958ee6f8131ea324af794f973b12ac upstream.
+[ Upstream commit 25ff0ff2d6286928dc516c74b879809c691c2dd8 ]
 
-When IPI virtualization is enabled, a WARN is triggered if bit12 of ICR
-MSR is set after APIC-write VM-exit. The reason is kvm_apic_send_ipi()
-thinks the APIC_ICR_BUSY bit should be cleared because KVM has no delay,
-but kvm_apic_write_nodecode() doesn't clear the APIC_ICR_BUSY bit.
+Fix kernel-doc warnings:
 
-Under the x2APIC section, regarding ICR, the SDM says:
+security/apparmor/policy.c:294: warning: Function parameter or
+member 'proxy' not described in 'aa_alloc_profile'
+security/apparmor/policy.c:785: warning: Function parameter or
+member 'label' not described in 'aa_policy_view_capable'
+security/apparmor/policy.c:785: warning: Function parameter or
+member 'ns' not described in 'aa_policy_view_capable'
+security/apparmor/policy.c:847: warning: Function parameter or
+member 'ns' not described in 'aa_may_manage_policy'
+security/apparmor/policy.c:964: warning: Function parameter or
+member 'hname' not described in '__lookup_replace'
+security/apparmor/policy.c:964: warning: Function parameter or
+member 'info' not described in '__lookup_replace'
+security/apparmor/policy.c:964: warning: Function parameter or
+member 'noreplace' not described in '__lookup_replace'
+security/apparmor/policy.c:964: warning: Function parameter or
+member 'ns' not described in '__lookup_replace'
+security/apparmor/policy.c:964: warning: Function parameter or
+member 'p' not described in '__lookup_replace'
 
-  It remains readable only to aid in debugging; however, software should
-  not assume the value returned by reading the ICR is the last written
-  value.
-
-I.e. the guest is allowed to set bit 12.  However, the SDM also gives KVM
-free reign to do whatever it wants with the bit, so long as KVM's behavior
-doesn't confuse userspace or break KVM's ABI.
-
-Clear bit 12 so that it reads back as '0'. This approach is safer than
-"do nothing" and is consistent with the case where IPI virtualization is
-disabled or not supported, i.e.,
-
-  handle_fastpath_set_x2apic_icr_irqoff() -> kvm_x2apic_icr_write()
-
-Opportunistically replace the TODO with a comment calling out that eating
-the write is likely faster than a conditional branch around the busy bit.
-
-Link: https://lore.kernel.org/all/ZPj6iF0Q7iynn62p@google.com/
-Fixes: 5413bcba7ed5 ("KVM: x86: Add support for vICR APIC-write VM-Exits in x2APIC mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Tested-by: Yi Lai <yi1.lai@intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/r/20230914055504.151365-1-tao1.su@linux.intel.com
-[sean: tweak changelog, replace TODO with comment, drop local "val"]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Stable-dep-of: 157a3537d6bc ("apparmor: Fix regression in mount mediation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ security/apparmor/policy.c | 17 ++++++++++-------
+ 1 file changed, 10 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2294,22 +2294,22 @@ EXPORT_SYMBOL_GPL(kvm_lapic_set_eoi);
- void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
- {
- 	struct kvm_lapic *apic = vcpu->arch.apic;
--	u64 val;
+diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
+index ec695a6caac7d..b9aaaac84d8a2 100644
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -286,6 +286,7 @@ void aa_free_profile(struct aa_profile *profile)
+ /**
+  * aa_alloc_profile - allocate, initialize and return a new profile
+  * @hname: name of the profile  (NOT NULL)
++ * @proxy: proxy to use OR null if to allocate a new one
+  * @gfp: allocation type
+  *
+  * Returns: refcount profile or NULL on failure
+@@ -775,8 +776,9 @@ static int policy_ns_capable(struct aa_label *label,
  
- 	/*
--	 * ICR is a single 64-bit register when x2APIC is enabled.  For legacy
--	 * xAPIC, ICR writes need to go down the common (slightly slower) path
--	 * to get the upper half from ICR2.
-+	 * ICR is a single 64-bit register when x2APIC is enabled, all others
-+	 * registers hold 32-bit values.  For legacy xAPIC, ICR writes need to
-+	 * go down the common path to get the upper half from ICR2.
-+	 *
-+	 * Note, using the write helpers may incur an unnecessary write to the
-+	 * virtual APIC state, but KVM needs to conditionally modify the value
-+	 * in certain cases, e.g. to clear the ICR busy bit.  The cost of extra
-+	 * conditional branches is likely a wash relative to the cost of the
-+	 * maybe-unecessary write, and both are in the noise anyways.
- 	 */
--	if (apic_x2apic_mode(apic) && offset == APIC_ICR) {
--		val = kvm_lapic_get_reg64(apic, APIC_ICR);
--		kvm_apic_send_ipi(apic, (u32)val, (u32)(val >> 32));
--		trace_kvm_apic_write(APIC_ICR, val);
--	} else {
--		/* TODO: optimize to just emulate side effect w/o one more write */
--		val = kvm_lapic_get_reg(apic, offset);
--		kvm_lapic_reg_write(apic, offset, (u32)val);
--	}
-+	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
-+		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
-+	else
-+		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
- }
- EXPORT_SYMBOL_GPL(kvm_apic_write_nodecode);
+ /**
+  * aa_policy_view_capable - check if viewing policy in at @ns is allowed
+- * label: label that is trying to view policy in ns
+- * ns: namespace being viewed by @label (may be NULL if @label's ns)
++ * @label: label that is trying to view policy in ns
++ * @ns: namespace being viewed by @label (may be NULL if @label's ns)
++ *
+  * Returns: true if viewing policy is allowed
+  *
+  * If @ns is NULL then the namespace being viewed is assumed to be the
+@@ -840,6 +842,7 @@ bool aa_current_policy_admin_capable(struct aa_ns *ns)
+ /**
+  * aa_may_manage_policy - can the current task manage policy
+  * @label: label to check if it can manage policy
++ * @ns: namespace being managed by @label (may be NULL if @label's ns)
+  * @mask: contains the policy manipulation operation being done
+  *
+  * Returns: 0 if the task is allowed to manipulate policy else error
+@@ -951,11 +954,11 @@ static void __replace_profile(struct aa_profile *old, struct aa_profile *new)
  
+ /**
+  * __lookup_replace - lookup replacement information for a profile
+- * @ns - namespace the lookup occurs in
+- * @hname - name of profile to lookup
+- * @noreplace - true if not replacing an existing profile
+- * @p - Returns: profile to be replaced
+- * @info - Returns: info string on why lookup failed
++ * @ns: namespace the lookup occurs in
++ * @hname: name of profile to lookup
++ * @noreplace: true if not replacing an existing profile
++ * @p: Returns - profile to be replaced
++ * @info: Returns - info string on why lookup failed
+  *
+  * Returns: profile to replace (no ref) on success else ptr error
+  */
+-- 
+2.42.0
+
 
 
 
