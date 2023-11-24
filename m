@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 836C17F83DC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8837F8465
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ED8D289336
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F5C28B128
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5996364B7;
-	Fri, 24 Nov 2023 19:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C01381DE;
+	Fri, 24 Nov 2023 19:26:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAqtObOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZa3SOVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6754D35EE6;
-	Fri, 24 Nov 2023 19:21:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97C51C433C7;
-	Fri, 24 Nov 2023 19:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF304339BE;
+	Fri, 24 Nov 2023 19:26:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6D1C433C8;
+	Fri, 24 Nov 2023 19:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853700;
-	bh=fkDXDbjPhpqDVKAe1o22m+b8lhcTXqENqbIt9wT0c6M=;
+	s=korg; t=1700854009;
+	bh=PZqX/cpQXuzx4JedAWhwklKIB6HLYcPycrmBGvLpV0c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAqtObOfuvsmqg7wQM/4jiAMBaUOvSlXSD+P1Fu4pl87zDVHPkOYLOyXuOm1JFgWd
-	 l/xeCHZtSM5TMVxvBKlhZtcbm2hgNgwIFZWPnRB4TtHhCoOHvUqELstb5trEaUqVk7
-	 nzUqtYo/6P7R0ykGj5pXT7R1mZvz24NcB4wIh3xs=
+	b=sZa3SOVdzSQC9dxHAX9lgUzTqkIL3cegODAjqoIITliUkGlfcS/goTW6xT177icQ6
+	 RP+YGldXHtaAH5+E6HgDXe+aCfKiCrlYEL2Ay/Used/2UGXy7fsSslOTPjVEdQvsZK
+	 HaNYoRmfUFitKvagqS0AGmblIuAnTxVpwQUriRps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 269/297] media: ccs: Correctly initialise try compose rectangle
-Date: Fri, 24 Nov 2023 17:55:11 +0000
-Message-ID: <20231124172009.559525527@linuxfoundation.org>
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 095/159] dmaengine: stm32-mdma: correct desc prep when channel running
+Date: Fri, 24 Nov 2023 17:55:12 +0000
+Message-ID: <20231124171945.847316176@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit 724ff68e968b19d786870d333f9952bdd6b119cb upstream.
+commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
 
-Initialise the try sink compose rectangle size to the sink compose
-rectangle for binner and scaler sub-devices. This was missed due to the
-faulty condition that lead to the compose rectangles to be initialised for
-the pixel array sub-device where it is not relevant.
+In case of the prep descriptor while the channel is already running, the
+CCR register value stored into the channel could already have its EN bit
+set.  This would lead to a bad transfer since, at start transfer time,
+enabling the channel while other registers aren't yet properly set.
+To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
+into the mdma channel structure.
 
-Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Tested-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/stm32-mdma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ccs/ccs-core.c
-+++ b/drivers/media/i2c/ccs/ccs-core.c
-@@ -3089,7 +3089,7 @@ static int ccs_open(struct v4l2_subdev *
- 		try_fmt->code = sensor->internal_csi_format->code;
- 		try_fmt->field = V4L2_FIELD_NONE;
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -510,7 +510,7 @@ static int stm32_mdma_set_xfer_param(str
+ 	src_maxburst = chan->dma_config.src_maxburst;
+ 	dst_maxburst = chan->dma_config.dst_maxburst;
  
--		if (ssd != sensor->pixel_array)
-+		if (ssd == sensor->pixel_array)
- 			continue;
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
  
- 		try_comp = v4l2_subdev_get_try_compose(sd, fh->state, i);
+@@ -938,7 +938,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
+ 	if (!desc)
+ 		return NULL;
+ 
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
 
 
 
