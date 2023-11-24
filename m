@@ -1,119 +1,97 @@
-Return-Path: <stable+bounces-2539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9C27F84C7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:38:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE6D7F84C9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6583A28BC40
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BDAB1C274C7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1584F2C1BA;
-	Fri, 24 Nov 2023 19:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E55F2D787;
+	Fri, 24 Nov 2023 19:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZdHCEggD"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="T1SM1sus"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE78C33E9
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 19:38:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427D7C433C7;
-	Fri, 24 Nov 2023 19:38:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1700854687;
-	bh=DP5NUUdB7xET5l6lwH7jM7TLniHfbNE/zFe/XD/9GvE=;
-	h=Date:To:From:Subject:From;
-	b=ZdHCEggDoNB33fYCkL3ws255VeIUGnjuT6dE/pw93s3n+XrUB/dAjK/lg2NJ3Q8WG
-	 FdhKQfBTXgLwao4fDlgGPShHdt1csKT0qBkkN7McHMD7by7FgOqbY72RYSaK7K0YHs
-	 BOZcl1y8BsnyCPcBZHnKBGSb4jPU3yW07sVOI38I=
-Date: Fri, 24 Nov 2023 11:38:06 -0800
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,gaoxu2@hihonor.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [nacked] mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch removed from -mm tree
-Message-Id: <20231124193807.427D7C433C7@smtp.kernel.org>
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1546F98;
+	Fri, 24 Nov 2023 11:38:17 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 75138FF809;
+	Fri, 24 Nov 2023 19:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1700854696;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gK80R0M7dvN1cmSQk+8Hk9wbTsrIf4Z+IhzQHo3PHu8=;
+	b=T1SM1suskaIuCwd4kbvQdQEiCDN0oAjSleDEKrXTCILUIxzphNI0zhgJybSIQIrmryz7u6
+	/YnbjIthrPPA0P0XS/XbSETl0b5bvcraz1J7zgh3OpmKFVws61sAhJyKQC4od1wZ0zKV4a
+	gJ7aRuJowhbUd693yO0AMyFGYvQcUqN6wEoB1METfs1byt7wZAvYW//nGnGXluRlC1OZpm
+	YyNG4yJzmcLh6SCr5qTpsO7AhTckcVJLxpx4hV/2kjm4/ZB9eSf909vqMpK03xTx1xJe64
+	CbpNxyvWlVIqiP/MSqUVwtp8E/CiUzuOmMynCt+i9twpmHLtcvtBLN1n8FDGHg==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: <linux-kernel@vger.kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	stable@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH] nvmem: Do not expect fixed layouts to grab a layout driver
+Date: Fri, 24 Nov 2023 20:38:14 +0100
+Message-Id: <20231124193814.360552-1-miquel.raynal@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: miquel.raynal@bootlin.com
 
+Two series lived in parallel for some time, which led to this situation:
+- The nvmem-layout container is used for dynamic layouts
+- We now expect fixed layouts to also use the nvmem-layout container but
+this does not require any additional driver, the support is built-in the
+nvmem core.
 
-The quilt patch titled
-     Subject: mm,oom_reaper: avoid run queue_oom_reaper if task is not oom
-has been removed from the -mm tree.  Its filename was
-     mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch
+Ensure we don't refuse to probe for wrong reasons.
 
-This patch was dropped because it was nacked
-
-------------------------------------------------------
-From: gaoxu <gaoxu2@hihonor.com>
-Subject: mm,oom_reaper: avoid run queue_oom_reaper if task is not oom
-Date: Wed, 22 Nov 2023 12:46:44 +0000
-
-queue_oom_reaper() tests and sets tsk->signal->oom_mm->flags.  However, it
-is necessary to check if 'tsk' is an OOM victim before executing
-'queue_oom_reaper' because the variable may be NULL.
-
-We encountered such an issue, and the log is as follows:
-[3701:11_see]Out of memory: Killed process 3154 (system_server)
-total-vm:23662044kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB,
-UID:1000 pgtables:4056kB oom_score_adj:-900
-[3701:11_see][RB/E]rb_sreason_str_set: sreason_str set null_pointer
-[3701:11_see][RB/E]rb_sreason_str_set: sreason_str set unknown_addr
-[3701:11_see]Unable to handle kernel NULL pointer dereference at virtual
-address 0000000000000328
-[3701:11_see]user pgtable: 4k pages, 39-bit VAs, pgdp=3D00000000821de000
-[3701:11_see][0000000000000328] pgd=3D0000000000000000,
-p4d=3D0000000000000000,pud=3D0000000000000000
-[3701:11_see]tracing off
-[3701:11_see]Internal error: Oops: 96000005 [#1] PREEMPT SMP
-[3701:11_see]Call trace:
-[3701:11_see] queue_oom_reaper+0x30/0x170
-[3701:11_see] __oom_kill_process+0x590/0x860
-[3701:11_see] oom_kill_process+0x140/0x274
-[3701:11_see] out_of_memory+0x2f4/0x54c
-[3701:11_see] __alloc_pages_slowpath+0x5d8/0xaac
-[3701:11_see] __alloc_pages+0x774/0x800
-[3701:11_see] wp_page_copy+0xc4/0x116c
-[3701:11_see] do_wp_page+0x4bc/0x6fc
-[3701:11_see] handle_pte_fault+0x98/0x2a8
-[3701:11_see] __handle_mm_fault+0x368/0x700
-[3701:11_see] do_handle_mm_fault+0x160/0x2cc
-[3701:11_see] do_page_fault+0x3e0/0x818
-[3701:11_see] do_mem_abort+0x68/0x17c
-[3701:11_see] el0_da+0x3c/0xa0
-[3701:11_see] el0t_64_sync_handler+0xc4/0xec
-[3701:11_see] el0t_64_sync+0x1b4/0x1b8
-[3701:11_see]tracing off
-
-Link: https://lkml.kernel.org/r/400d13bddb524ef6af37cb2220808c75@hihonor.com
-Signed-off-by: Gao Xu <gaoxu2@hihonor.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 27f699e578b1 ("nvmem: core: add support for fixed cells *layout*")
+Cc: stable@vger.kernel.org
+Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 ---
 
- mm/oom_kill.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please note this is a temporary fix as this piece of code is going to
+disappear when the NVMEM layouts 'as devices' series gets in.
 
---- a/mm/oom_kill.c~mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom
-+++ a/mm/oom_kill.c
-@@ -984,7 +984,7 @@ static void __oom_kill_process(struct ta
- 	}
- 	rcu_read_unlock();
+ drivers/nvmem/core.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index bf42b7e826db..608b352a7d91 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -796,6 +796,12 @@ static struct nvmem_layout *nvmem_layout_get(struct nvmem_device *nvmem)
+ 	if (!layout_np)
+ 		return NULL;
  
--	if (can_oom_reap)
-+	if (can_oom_reap && tsk_is_oom_victim(victim))
- 		queue_oom_reaper(victim);
- 
- 	mmdrop(mm);
-_
-
-Patches currently in -mm which might be from gaoxu2@hihonor.com are
-
++	/* Fixed layouts don't have a matching driver */
++	if (of_device_is_compatible(layout_np, "fixed-layout")) {
++		of_node_put(layout_np);
++		return NULL;
++	}
++
+ 	/*
+ 	 * In case the nvmem device was built-in while the layout was built as a
+ 	 * module, we shall manually request the layout driver loading otherwise
+-- 
+2.34.1
 
 
