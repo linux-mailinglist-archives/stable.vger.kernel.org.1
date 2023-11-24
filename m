@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6880A7F7D3F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E307F7B08
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A670B2159F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35054280F5A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F5E3A8D6;
-	Fri, 24 Nov 2023 18:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2E8381D8;
+	Fri, 24 Nov 2023 18:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnhSpuaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbzlau8d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B05139FE3;
-	Fri, 24 Nov 2023 18:22:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A54DC433C7;
-	Fri, 24 Nov 2023 18:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899CC39FDA;
+	Fri, 24 Nov 2023 18:01:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18884C433C8;
+	Fri, 24 Nov 2023 18:01:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850169;
-	bh=WxRUYn0Aqsv7gQpjzY7jiOmrQ5ih9EjyjVxEUXRzj00=;
+	s=korg; t=1700848870;
+	bh=BbIl4uNIg1xDsD2eDQ0hZ4xU5c5c8y8FRAD1n2kBvtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnhSpuaXGeqcc+kObAUkDDcb1uWRMomn+sy6YW+6hHeSDcDNd4Hw5H2Of8Vvl0Nps
-	 HxBDBNY9hGgMlx3WbKon+KoGvBHe7TglU5OtC0EFbQqfTupcfJvt//ZjQGJ91Mguoh
-	 6+wNgKf0MBm17o2079b/WKTSdmietAUHGxjfUpLY=
+	b=jbzlau8dg9wBB/riJ26f+ztUYK9HeF/HWLDP5vxOnuTMPAps0JS7IhFXX2S9RLd3y
+	 iWZ6BREgRmSeaEKCKUWer6TM1DiiY6vNtA1pMAopykq7cy4Ho7V3Q9Ko6eiEedY4GG
+	 VLWmD1G9RFfaDzgeLHYHg4OwfJB7EF/3Jir4E65I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Song Shuai <suagrfillet@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.6 473/530] riscv: correct pt_level name via pgtable_l5/4_enabled
+	syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com,
+	Juntong Deng <juntong.deng@outlook.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 15/57] fs/jfs: Add validity check for db_maxag and db_agpref
 Date: Fri, 24 Nov 2023 17:50:39 +0000
-Message-ID: <20231124172042.467210099@linuxfoundation.org>
+Message-ID: <20231124171930.846872367@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Shuai <suagrfillet@gmail.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-commit e59e5e2754bf983fc58ad18f99b5eec01f1a0745 upstream.
+[ Upstream commit 64933ab7b04881c6c18b21ff206c12278341c72e ]
 
-The pt_level uses CONFIG_PGTABLE_LEVELS to display page table names.
-But if page mode is downgraded from kernel cmdline or restricted by
-the hardware in 64BIT, it will give a wrong name.
+Both db_maxag and db_agpref are used as the index of the
+db_agfree array, but there is currently no validity check for
+db_maxag and db_agpref, which can lead to errors.
 
-Like, using no4lvl for sv39, ptdump named the 1G-mapping as "PUD"
-that should be "PGD":
+The following is related bug reported by Syzbot:
 
-0xffffffd840000000-0xffffffd900000000    0x00000000c0000000         3G PUD     D A G . . W R V
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:639:20
+index 7936 is out of range for type 'atomic_t[128]'
 
-So select "P4D/PUD" or "PGD" via pgtable_l5/4_enabled to correct it.
+Add checking that the values of db_maxag and db_agpref are valid
+indexes for the db_agfree array.
 
-Fixes: e8a62cc26ddf ("riscv: Implement sv48 support")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Link: https://lore.kernel.org/r/20230712115740.943324-1-suagrfillet@gmail.com
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230830044129.11481-3-palmer@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=38e876a8aa44b7115c76
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/ptdump.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/jfs/jfs_dmap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/riscv/mm/ptdump.c
-+++ b/arch/riscv/mm/ptdump.c
-@@ -384,6 +384,9 @@ static int __init ptdump_init(void)
- 
- 	kernel_ptd_info.base_addr = KERN_VIRT_START;
- 
-+	pg_level[1].name = pgtable_l5_enabled ? "P4D" : "PGD";
-+	pg_level[2].name = pgtable_l4_enabled ? "PUD" : "PGD";
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 070638718be32..713f11dee52aa 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -208,6 +208,12 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
+ 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
+ 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
++	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
++		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
++		err = -EINVAL;
++		goto err_release_metapage;
++	}
 +
- 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
- 		for (j = 0; j < ARRAY_SIZE(pte_bits); j++)
- 			pg_level[i].mask |= pte_bits[j].mask;
+ 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
+ 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
+ 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
+-- 
+2.42.0
+
 
 
 
