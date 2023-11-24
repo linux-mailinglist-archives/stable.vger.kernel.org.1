@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCE707F8467
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788F77F829A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7813628B2AB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 928271C23A96
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06870381CB;
-	Fri, 24 Nov 2023 19:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D847A364C8;
+	Fri, 24 Nov 2023 19:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pp9YQ1OK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2nrMGtQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CAE33CCA;
-	Fri, 24 Nov 2023 19:26:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B24C433C7;
-	Fri, 24 Nov 2023 19:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970EA35F04;
+	Fri, 24 Nov 2023 19:09:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A58C433C8;
+	Fri, 24 Nov 2023 19:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700854014;
-	bh=rA9JBAQKHTkRLsqXb60EVn8k4qdTIytWsk4kJCPLvfY=;
+	s=korg; t=1700852952;
+	bh=D6mAYZneYMA5QejgN4mgqe1l6DNaOsYjVd/RoETVmHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pp9YQ1OKtuRBlQuXHLALH/EZvuQUhuDYU3bC+jy50qtXsa1NgATaBsJbCxo+JP7oh
-	 YpxkBABDounRwvBUGmtOiezXDqrPVeJFHPURGyZNb6Lj57XNfxsvZW3eKfTXPoUlxg
-	 c/FdlN/G7+yg19c341H/vP4bPmmE4jKy6bqC5OpI=
+	b=w2nrMGtQqK2tQO2MhUKOpur4ivb0TEFpRA82MYiXF1u5Zau9XEMlRYlCkqHwTxR5b
+	 DcnDv//5VPfGWKt/QB24QiO0rPwc7sojKtmPqm6t+lK+lG1879jE+ckb2SNWA6mfb6
+	 UnMPjEMvGaN6AIvj6m46qU3EYKYXgwW3LWvqXXHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.4 097/159] s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
-Date: Fri, 24 Nov 2023 17:55:14 +0000
-Message-ID: <20231124171945.932094043@linuxfoundation.org>
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	He Gao <hegao@google.com>
+Subject: [PATCH 5.10 188/193] io_uring/fdinfo: lock SQ thread while retrieving thread cpu/pid
+Date: Fri, 24 Nov 2023 17:55:15 +0000
+Message-ID: <20231124171954.709375244@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 84bb41d5df48868055d159d9247b80927f1f70f9 upstream.
+commit 7644b1a1c9a7ae8ab99175989bfc8676055edb46 upstream.
 
-If the cmma no-dat feature is available the kernel page tables are walked
-to identify and mark all pages which are used for address translation (all
-region, segment, and page tables). In a subsequent loop all other pages are
-marked as "no-dat" pages with the ESSA instruction.
+We could race with SQ thread exit, and if we do, we'll hit a NULL pointer
+dereference when the thread is cleared. Grab the SQPOLL data lock before
+attempting to get the task cpu and pid for fdinfo, this ensures we have a
+stable view of it.
 
-This information is visible to the hypervisor, so that the hypervisor can
-optimize purging of guest TLB entries. All pages used for swapper_pg_dir
-and invalid_pg_dir are incorrectly marked as no-dat, which in turn can
-result in incorrect guest TLB flushes.
-
-Fix this by marking those pages correctly as being used for DAT.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218032
+Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: He Gao <hegao@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/page-states.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ io_uring/io_uring.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/arch/s390/mm/page-states.c
-+++ b/arch/s390/mm/page-states.c
-@@ -198,6 +198,12 @@ void __init cmma_init_nodat(void)
- 		return;
- 	/* Mark pages used in kernel page tables */
- 	mark_kernel_pgd();
-+	page = virt_to_page(&swapper_pg_dir);
-+	for (i = 0; i < 4; i++)
-+		set_bit(PG_arch_1, &page[i].flags);
-+	page = virt_to_page(&invalid_pg_dir);
-+	for (i = 0; i < 4; i++)
-+		set_bit(PG_arch_1, &page[i].flags);
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -10238,7 +10238,7 @@ static int io_uring_show_cred(struct seq
  
- 	/* Set all kernel pages not used for page tables to stable/no-dat */
- 	for_each_memblock(memory, reg) {
+ static void __io_uring_show_fdinfo(struct io_ring_ctx *ctx, struct seq_file *m)
+ {
+-	struct io_sq_data *sq = NULL;
++	int sq_pid = -1, sq_cpu = -1;
+ 	bool has_lock;
+ 	int i;
+ 
+@@ -10251,13 +10251,19 @@ static void __io_uring_show_fdinfo(struc
+ 	has_lock = mutex_trylock(&ctx->uring_lock);
+ 
+ 	if (has_lock && (ctx->flags & IORING_SETUP_SQPOLL)) {
+-		sq = ctx->sq_data;
+-		if (!sq->thread)
+-			sq = NULL;
++		struct io_sq_data *sq = ctx->sq_data;
++
++		if (mutex_trylock(&sq->lock)) {
++			if (sq->thread) {
++				sq_pid = task_pid_nr(sq->thread);
++				sq_cpu = task_cpu(sq->thread);
++			}
++			mutex_unlock(&sq->lock);
++		}
+ 	}
+ 
+-	seq_printf(m, "SqThread:\t%d\n", sq ? task_pid_nr(sq->thread) : -1);
+-	seq_printf(m, "SqThreadCpu:\t%d\n", sq ? task_cpu(sq->thread) : -1);
++	seq_printf(m, "SqThread:\t%d\n", sq_pid);
++	seq_printf(m, "SqThreadCpu:\t%d\n", sq_cpu);
+ 	seq_printf(m, "UserFiles:\t%u\n", ctx->nr_user_files);
+ 	for (i = 0; has_lock && i < ctx->nr_user_files; i++) {
+ 		struct file *f = io_file_from_index(ctx, i);
 
 
 
