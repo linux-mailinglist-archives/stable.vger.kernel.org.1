@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EE97F7BC9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C857F7DB9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98630B2106F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A08F5282057
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0143381D8;
-	Fri, 24 Nov 2023 18:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F71739FF7;
+	Fri, 24 Nov 2023 18:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rmmoRQQX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNaP8k28"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF9239FDD;
-	Fri, 24 Nov 2023 18:08:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A345C433C7;
-	Fri, 24 Nov 2023 18:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9D39FC3;
+	Fri, 24 Nov 2023 18:26:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0D9C433CA;
+	Fri, 24 Nov 2023 18:26:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849319;
-	bh=Nt/Vf+n0x/Rh9bpyweOiT7GQ9hER7+Wr4gpKFeyaUQM=;
+	s=korg; t=1700850414;
+	bh=atqGYbNOBw5H0ZfSnn0aLkCd9qwsDVo6WrSSJ80Oe/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmmoRQQXPn1ylTR9ssiPcrBQLtnETUTrDq6Xi7umTQUZmqkOdvtf12gPSQBPeWQm9
-	 fOYcwQkU85kbdAYjcBN9NTlKPh0n+f0H9F3T02ezIR2Ey1iLU+nHOtCtLi0Phc1j6u
-	 osgqIztaBlcZ0maBfftWQwpFUHcgMMpESrfYcKaI=
+	b=mNaP8k285WNkuH1BteFlNRfnKRVhEWI2thhF6a5UxcI8sI+nouysWpfM5txLJkY10
+	 MWmSBc5Hf9NikMmIqC2S71E3pamK33Rgnngamb1XwZADfuMnFDxADOqpmGrnhwNV9K
+	 TbfvW3qmhqUBxTUrHb7mFZEXrthp+tSTAW+XkQgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	kernel test robot <lkp@intel.com>,
+	Gerhard Engleder <gerhard@engleder-embedded.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/530] PCI: dwc: Add missing PCI_EXP_LNKCAP_MLW handling
+Subject: [PATCH 6.5 040/491] tsnep: Fix tsnep_request_irq() format-overflow warning
 Date: Fri, 24 Nov 2023 17:44:36 +0000
-Message-ID: <20231124172031.475719737@linuxfoundation.org>
+Message-ID: <20231124172025.894620685@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,77 +53,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
 
-[ Upstream commit 89db0793c9f2da265ecb6c1681f899d9af157f37 ]
+[ Upstream commit 00e984cb986b31e9313745e51daceaa1e1eb7351 ]
 
-Update dw_pcie_link_set_max_link_width() to set PCI_EXP_LNKCAP_MLW.
+Compiler warns about a possible format-overflow in tsnep_request_irq():
+drivers/net/ethernet/engleder/tsnep_main.c:884:55: warning: 'sprintf' may write a terminating nul past the end of the destination [-Wformat-overflow=]
+                         sprintf(queue->name, "%s-rx-%d", name,
+                                                       ^
+drivers/net/ethernet/engleder/tsnep_main.c:881:55: warning: 'sprintf' may write a terminating nul past the end of the destination [-Wformat-overflow=]
+                         sprintf(queue->name, "%s-tx-%d", name,
+                                                       ^
+drivers/net/ethernet/engleder/tsnep_main.c:878:49: warning: '-txrx-' directive writing 6 bytes into a region of size between 5 and 25 [-Wformat-overflow=]
+                         sprintf(queue->name, "%s-txrx-%d", name,
+                                                 ^~~~~~
 
-In accordance with the DW PCIe RC/EP HW manuals [1,2,3,...] aside with
-the PORT_LINK_CTRL_OFF.LINK_CAPABLE and GEN2_CTRL_OFF.NUM_OF_LANES[8:0]
-field there is another one which needs to be updated.
+Actually overflow cannot happen. Name is limited to IFNAMSIZ, because
+netdev_name() is called during ndo_open(). queue_index is single char,
+because less than 10 queues are supported.
 
-It's LINK_CAPABILITIES_REG.PCIE_CAP_MAX_LINK_WIDTH. If it isn't done at
-the very least the maximum link-width capability CSR won't expose the
-actual maximum capability.
+Fix warning with snprintf(). Additionally increase buffer to 32 bytes,
+because those 7 additional bytes were unused anyway.
 
-[1] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
-    Version 4.60a, March 2015, p.1032
-[2] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
-    Version 4.70a, March 2016, p.1065
-[3] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
-    Version 4.90a, March 2016, p.1057
-...
-[X] DesignWare Cores PCI Express Controller Databook - DWC PCIe Endpoint,
-      Version 5.40a, March 2019, p.1396
-[X+1] DesignWare Cores PCI Express Controller Databook - DWC PCIe Root Port,
-      Version 5.40a, March 2019, p.1266
-
-Suggested-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-4-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310182028.vmDthIUa-lkp@intel.com/
+Signed-off-by: Gerhard Engleder <gerhard@engleder-embedded.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20231023183856.58373-1-gerhard@engleder-embedded.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/engleder/tsnep.h      |  2 +-
+ drivers/net/ethernet/engleder/tsnep_main.c | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.c b/drivers/pci/controller/dwc/pcie-designware.c
-index da4aba4aee623..2b60d20dfdf59 100644
---- a/drivers/pci/controller/dwc/pcie-designware.c
-+++ b/drivers/pci/controller/dwc/pcie-designware.c
-@@ -734,7 +734,8 @@ static void dw_pcie_link_set_max_speed(struct dw_pcie *pci, u32 link_gen)
+diff --git a/drivers/net/ethernet/engleder/tsnep.h b/drivers/net/ethernet/engleder/tsnep.h
+index 11b29f56aaf9c..b91abe9efb517 100644
+--- a/drivers/net/ethernet/engleder/tsnep.h
++++ b/drivers/net/ethernet/engleder/tsnep.h
+@@ -142,7 +142,7 @@ struct tsnep_rx {
  
- static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num_lanes)
- {
--	u32 lwsc, plc;
-+	u32 lnkcap, lwsc, plc;
-+	u8 cap;
+ struct tsnep_queue {
+ 	struct tsnep_adapter *adapter;
+-	char name[IFNAMSIZ + 9];
++	char name[IFNAMSIZ + 16];
  
- 	if (!num_lanes)
- 		return;
-@@ -770,6 +771,12 @@ static void dw_pcie_link_set_max_link_width(struct dw_pcie *pci, u32 num_lanes)
+ 	struct tsnep_tx *tx;
+ 	struct tsnep_rx *rx;
+diff --git a/drivers/net/ethernet/engleder/tsnep_main.c b/drivers/net/ethernet/engleder/tsnep_main.c
+index 479156576bc8a..e3fc894fa3f6f 100644
+--- a/drivers/net/ethernet/engleder/tsnep_main.c
++++ b/drivers/net/ethernet/engleder/tsnep_main.c
+@@ -1778,14 +1778,14 @@ static int tsnep_request_irq(struct tsnep_queue *queue, bool first)
+ 		dev = queue->adapter;
+ 	} else {
+ 		if (queue->tx && queue->rx)
+-			sprintf(queue->name, "%s-txrx-%d", name,
+-				queue->rx->queue_index);
++			snprintf(queue->name, sizeof(queue->name), "%s-txrx-%d",
++				 name, queue->rx->queue_index);
+ 		else if (queue->tx)
+-			sprintf(queue->name, "%s-tx-%d", name,
+-				queue->tx->queue_index);
++			snprintf(queue->name, sizeof(queue->name), "%s-tx-%d",
++				 name, queue->tx->queue_index);
+ 		else
+-			sprintf(queue->name, "%s-rx-%d", name,
+-				queue->rx->queue_index);
++			snprintf(queue->name, sizeof(queue->name), "%s-rx-%d",
++				 name, queue->rx->queue_index);
+ 		handler = tsnep_irq_txrx;
+ 		dev = queue;
  	}
- 	dw_pcie_writel_dbi(pci, PCIE_PORT_LINK_CONTROL, plc);
- 	dw_pcie_writel_dbi(pci, PCIE_LINK_WIDTH_SPEED_CONTROL, lwsc);
-+
-+	cap = dw_pcie_find_capability(pci, PCI_CAP_ID_EXP);
-+	lnkcap = dw_pcie_readl_dbi(pci, cap + PCI_EXP_LNKCAP);
-+	lnkcap &= ~PCI_EXP_LNKCAP_MLW;
-+	lnkcap |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, num_lanes);
-+	dw_pcie_writel_dbi(pci, cap + PCI_EXP_LNKCAP, lnkcap);
- }
- 
- void dw_pcie_iatu_detect(struct dw_pcie *pci)
 -- 
 2.42.0
 
