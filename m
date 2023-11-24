@@ -1,52 +1,48 @@
-Return-Path: <stable+bounces-1752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 142BB7F8133
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C917F7AEC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 463991C2157A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D5DD2819DC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3203418B;
-	Fri, 24 Nov 2023 18:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CA239FF2;
+	Fri, 24 Nov 2023 18:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNUVb8iB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZKQyq/h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4292228DBA;
-	Fri, 24 Nov 2023 18:56:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65837C433C8;
-	Fri, 24 Nov 2023 18:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581FD39FDD;
+	Fri, 24 Nov 2023 18:00:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1663C433C8;
+	Fri, 24 Nov 2023 18:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852187;
-	bh=J4AOv1Xk+Z0QWG4Vox8fa38dcECudEoSCzAGu8D5YhU=;
+	s=korg; t=1700848804;
+	bh=7uFe/QJ0YzcR5HdAmy3tSKnjFW6SB+Ua75PI87dPjPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XNUVb8iBumsZ9PNbs4tKAovykvBUzGJWFAx/X6S3sAuamYq026zUeHYTAvhB96MFU
-	 aDpSyUZAHSIZhmgmkr8WjpwJMMFlqsXhoYXryhGDTV6yEuKxYRwz1n04phr46J+Oxm
-	 T2OBupXXjqV2n5/c7l2ZolYQ3/VIr/pRa4pZYySQ=
+	b=lZKQyq/hDMpAhNug3Mmj/a4BYO1DFW+Caudt11Nnv4U96IJPM4TqbbC0fWZ7i2EHs
+	 jtJQkLk57tQ+AbupmlT094ejFxDQA0DRXV7Bgwz9VJX95VPAmCEgK0a+zME3qv8g5V
+	 JoEaCrAfyxYy4iFrgGuZLFEybKUaqSJy6/AL0T4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	David Hildenbrand <david@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 255/372] mm/memory_hotplug: use pfn math in place of direct struct page manipulation
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 4.19 69/97] s390/cmma: fix initial kernel address space page table walk
 Date: Fri, 24 Nov 2023 17:50:42 +0000
-Message-ID: <20231124172019.015294353@linuxfoundation.org>
+Message-ID: <20231124171936.711235962@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,51 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 1640a0ef80f6d572725f5b0330038c18e98ea168 upstream.
+commit 16ba44826a04834d3eeeda4b731c2ea3481062b7 upstream.
 
-When dealing with hugetlb pages, manipulating struct page pointers
-directly can get to wrong struct page, since struct page is not guaranteed
-to be contiguous on SPARSEMEM without VMEMMAP.  Use pfn calculation to
-handle it properly.
+If the cmma no-dat feature is available the kernel page tables are walked
+to identify and mark all pages which are used for address translation (all
+region, segment, and page tables). In a subsequent loop all other pages are
+marked as "no-dat" pages with the ESSA instruction.
 
-Without the fix, a wrong number of page might be skipped. Since skip cannot be
-negative, scan_movable_page() will end early and might miss a movable page with
--ENOENT. This might fail offline_pages(). No bug is reported. The fix comes
-from code inspection.
+This information is visible to the hypervisor, so that the hypervisor can
+optimize purging of guest TLB entries. The initial loop however does not
+cover the complete kernel address space. This can result in pages being
+marked as not being used for dynamic address translation, even though they
+are. In turn guest TLB entries incorrectly may not be purged.
 
-Link: https://lkml.kernel.org/r/20230913201248.452081-4-zi.yan@sent.com
-Fixes: eeb0efd071d8 ("mm,memory_hotplug: fix scan_movable_pages() for gigantic hugepages")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fix this by adjusting the end address of the kernel address range being
+walked.
+
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory_hotplug.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/mm/page-states.c |   13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1611,7 +1611,7 @@ static int scan_movable_pages(unsigned l
- 		 */
- 		if (HPageMigratable(head))
- 			goto found;
--		skip = compound_nr(head) - (page - head);
-+		skip = compound_nr(head) - (pfn - page_to_pfn(head));
- 		pfn += skip - 1;
- 	}
- 	return -ENOENT;
+--- a/arch/s390/mm/page-states.c
++++ b/arch/s390/mm/page-states.c
+@@ -167,15 +167,22 @@ static void mark_kernel_p4d(pgd_t *pgd,
+ 
+ static void mark_kernel_pgd(void)
+ {
+-	unsigned long addr, next;
++	unsigned long addr, next, max_addr;
+ 	struct page *page;
+ 	pgd_t *pgd;
+ 	int i;
+ 
+ 	addr = 0;
++	/*
++	 * Figure out maximum virtual address accessible with the
++	 * kernel ASCE. This is required to keep the page table walker
++	 * from accessing non-existent entries.
++	 */
++	max_addr = (S390_lowcore.kernel_asce.val & _ASCE_TYPE_MASK) >> 2;
++	max_addr = 1UL << (max_addr * 11 + 31);
+ 	pgd = pgd_offset_k(addr);
+ 	do {
+-		next = pgd_addr_end(addr, MODULES_END);
++		next = pgd_addr_end(addr, max_addr);
+ 		if (pgd_none(*pgd))
+ 			continue;
+ 		if (!pgd_folded(*pgd)) {
+@@ -184,7 +191,7 @@ static void mark_kernel_pgd(void)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+ 		mark_kernel_p4d(pgd, addr, next);
+-	} while (pgd++, addr = next, addr != MODULES_END);
++	} while (pgd++, addr = next, addr != max_addr);
+ }
+ 
+ void __init cmma_init_nodat(void)
 
 
 
