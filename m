@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-2403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA3D27F8406
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 194C77F83A4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184041C26DCB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AB931C260D8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0DF2E853;
-	Fri, 24 Nov 2023 19:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173123418E;
+	Fri, 24 Nov 2023 19:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtBiYhk8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bFKObX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2372FC36;
-	Fri, 24 Nov 2023 19:23:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCD4C433C8;
-	Fri, 24 Nov 2023 19:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A5E2FC36;
+	Fri, 24 Nov 2023 19:19:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A56CC433C7;
+	Fri, 24 Nov 2023 19:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853798;
-	bh=eekctiC6gnU/9jtHGLSjH2AxVkt3LL/GEgjHunsw0Og=;
+	s=korg; t=1700853575;
+	bh=9qa9t7GMXtaSpOUCZKRMCzL0yqg9tda6GA82HCYZeEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtBiYhk8dent+joAI4o22HPewaw0NWiK956YiUSlwseNKOCct6qgxIwT0iNssTtW7
-	 gRuOfUYW/ML24DLVMPkaW3EyZW0LHIl+pFoZ3JzEazfixy0SPVqK4Q8JLeV0j5g6ks
-	 NWu1pf31S6FpHlSWQ5mdg9sMDwL2sOE1ATWgrlFo=
+	b=2bFKObX9H2oLJeZz8YORWbRByQlcaDGOy+9dkHtgUILuNEwGEATTZTlhJZef2W83+
+	 NX4DxsSu5l+OAz5zoevQ/x2hdgbrD81al+wS8dcOyJNkey5fU7KfUXNNgd7h7wIf3y
+	 hZJPgLKxJUiEWviJvf/oPeyLlNOT7ymRrx6x8sQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Lin <axel.lin@ingics.com>,
-	Boris Brezillon <boris.brezillon@free-electrons.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 034/159] i2c: sun6i-p2wi: Prevent potential division by zero
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.15 209/297] selftests/resctrl: Remove duplicate feature check from CMT test
 Date: Fri, 24 Nov 2023 17:54:11 +0000
-Message-ID: <20231124171943.322981947@linuxfoundation.org>
+Message-ID: <20231124172007.525931846@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +52,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Axel Lin <axel.lin@ingics.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 5ac61d26b8baff5b2e5a9f3dc1ef63297e4b53e7 ]
+commit 030b48fb2cf045dead8ee2c5ead560930044c029 upstream.
 
-Make sure we don't OOPS in case clock-frequency is set to 0 in a DT. The
-variable set here is later used as a divisor.
+The test runner run_cmt_test() in resctrl_tests.c checks for CMT
+feature and does not run cmt_resctrl_val() if CMT is not supported.
+Then cmt_resctrl_val() also check is CMT is supported.
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
-Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the duplicated feature check for CMT from cmt_resctrl_val().
+
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-sun6i-p2wi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/resctrl/cmt_test.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-sun6i-p2wi.c b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-index 7c07ce116e384..540c33f4e3500 100644
---- a/drivers/i2c/busses/i2c-sun6i-p2wi.c
-+++ b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-@@ -202,6 +202,11 @@ static int p2wi_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+--- a/tools/testing/selftests/resctrl/cmt_test.c
++++ b/tools/testing/selftests/resctrl/cmt_test.c
+@@ -91,9 +91,6 @@ int cmt_resctrl_val(int cpu_no, int n, c
+ 	if (ret)
+ 		return ret;
  
-+	if (clk_freq == 0) {
-+		dev_err(dev, "clock-frequency is set to 0 in DT\n");
-+		return -EINVAL;
-+	}
-+
- 	if (of_get_child_count(np) > 1) {
- 		dev_err(dev, "P2WI only supports one slave device\n");
- 		return -EINVAL;
--- 
-2.42.0
-
+-	if (!validate_resctrl_feature_request(CMT_STR))
+-		return -1;
+-
+ 	ret = get_cbm_mask("L3", cbm_mask);
+ 	if (ret)
+ 		return ret;
 
 
 
