@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4E07F7BB0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B3E57F7D96
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D61BB203D8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DADCF28162E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B195639FED;
-	Fri, 24 Nov 2023 18:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D32F3A8DD;
+	Fri, 24 Nov 2023 18:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgnNVL97"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvlTJXko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C3139FC6;
-	Fri, 24 Nov 2023 18:07:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5732C433C7;
-	Fri, 24 Nov 2023 18:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1874C39FE9;
+	Fri, 24 Nov 2023 18:25:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96153C433C7;
+	Fri, 24 Nov 2023 18:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849259;
-	bh=xfPWXGgWC6LeMAUH5afBrj+OTDXeY1LQu6IZChf2Mb0=;
+	s=korg; t=1700850353;
+	bh=icKYJFVYmdqLbGqTl+czGdBVCBY1RjGX2ZF+fpwePEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgnNVL97IELroSuPlYg6Usuutl+b4ZPllz42Aluw4P1rKAMeZ7pisy72DjNnfbvRM
-	 Mcz9NKMYv12q4AaoAkEMgzsDJ5N7OI/PKImQWINDoT9s4BM6kTkYrwcZiX8MWaWZYx
-	 Umz6cO7A2nuc8llzxQKkUdJeHg46yAXSiiVsnwUo=
+	b=PvlTJXkodxfx9QC3lnt8jYp4PQ2pgESIvR/qhgvU0+vSBliMnOMU8Q4zoxtqfkehw
+	 F3oLULU2m+oFZTDcaHht1HlyIDEwq8eQP6iybFxOaWx6DJMtlWyjgREVEoSWw2fryU
+	 0ZLvMTMCkdZiMZjKK/PJ38gDUmUj/ed51elhiWwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/530] ASoC: cs35l56: Use PCI SSID as the firmware UID
+Subject: [PATCH 6.5 016/491] wifi: plfxlc: fix clang-specific fortify warning
 Date: Fri, 24 Nov 2023 17:44:12 +0000
-Message-ID: <20231124172030.699845115@linuxfoundation.org>
+Message-ID: <20231124172025.172097600@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,71 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 1a1c3d794ef65ef2978c5e65e1aed3fe6f014e90 ]
+[ Upstream commit a763e92c78615ea838f5b9a841398b1d4adb968e ]
 
-If the driver properties do not define a cirrus,firmware-uid try to get the
-PCI SSID as the UID.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-On PCI-based systems the PCI SSID is used to uniquely identify the specific
-sound hardware. This is the standard mechanism for x86 systems and is the
-way to get a unique system identifier for systems that use the CS35L56 on
-SoundWire.
+In file included from drivers/net/wireless/purelifi/plfxlc/mac.c:6:
+In file included from ./include/linux/netdevice.h:24:
+In file included from ./include/linux/timer.h:6:
+In file included from ./include/linux/ktime.h:24:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
 
-For non-SoundWire systems there is no Windows equivalent of the ASoC driver
-in I2C/SPI mode. These would be:
+The compiler actually complains on 'plfxlc_get_et_strings()' where
+fortification logic inteprets call to 'memcpy()' as an attempt to copy
+the whole 'et_strings' array from its first member and so issues an
+overread warning. This warning may be silenced by passing an address
+of the whole array and not the first member to 'memcpy()'.
 
-1. HDA systems, which are handled by the HDA subsystem.
-2. Linux-specific systems.
-3. Composite devices where the cs35l56 is not present in ACPI and is
-   configured using software nodes.
-
-Case 2 can use the firmware-uid property, though the PCI SSID is supported
-as an alternative, as it is the standard PCI mechanism.
-
-Case 3 is a SoundWire system where some other codec is the SoundWire bridge
-device and CS35L56 is not listed in ACPI. As these are SoundWire systems
-they will normally use the PCI SSID.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230912163207.3498161-5-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230829094541.234751-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l56.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/purelifi/plfxlc/mac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l56.c b/sound/soc/codecs/cs35l56.c
-index f9059780b7a7b..32d4ab2cd6724 100644
---- a/sound/soc/codecs/cs35l56.c
-+++ b/sound/soc/codecs/cs35l56.c
-@@ -772,9 +772,20 @@ static int cs35l56_component_probe(struct snd_soc_component *component)
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index 94ee831b5de35..506d2f31efb5a 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -666,7 +666,7 @@ static void plfxlc_get_et_strings(struct ieee80211_hw *hw,
+ 				  u32 sset, u8 *data)
  {
- 	struct cs35l56_private *cs35l56 = snd_soc_component_get_drvdata(component);
- 	struct dentry *debugfs_root = component->debugfs_root;
-+	unsigned short vendor, device;
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *et_strings, sizeof(et_strings));
++		memcpy(data, et_strings, sizeof(et_strings));
+ }
  
- 	BUILD_BUG_ON(ARRAY_SIZE(cs35l56_tx_input_texts) != ARRAY_SIZE(cs35l56_tx_input_values));
- 
-+	if (!cs35l56->dsp.system_name &&
-+	    (snd_soc_card_get_pci_ssid(component->card, &vendor, &device) == 0)) {
-+		cs35l56->dsp.system_name = devm_kasprintf(cs35l56->base.dev,
-+							  GFP_KERNEL,
-+							  "%04x%04x",
-+							  vendor, device);
-+		if (!cs35l56->dsp.system_name)
-+			return -ENOMEM;
-+	}
-+
- 	if (!wait_for_completion_timeout(&cs35l56->init_completion,
- 					 msecs_to_jiffies(5000))) {
- 		dev_err(cs35l56->base.dev, "%s: init_completion timed out\n", __func__);
+ static void plfxlc_get_et_stats(struct ieee80211_hw *hw,
 -- 
 2.42.0
 
