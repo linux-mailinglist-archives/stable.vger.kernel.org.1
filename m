@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADC47F820F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241F57F8328
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC9921C22840
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBB1FB25A01
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE25722F1D;
-	Fri, 24 Nov 2023 19:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24157381A2;
+	Fri, 24 Nov 2023 19:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ir+oOl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObStHEiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4CB2EAEA;
-	Fri, 24 Nov 2023 19:04:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C15C433C7;
-	Fri, 24 Nov 2023 19:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1713418E;
+	Fri, 24 Nov 2023 19:14:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51447C433C7;
+	Fri, 24 Nov 2023 19:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852640;
-	bh=gtfPxiH8c3lVoU7a/jaJF3NFNXbDgUAHs9qjLgfWbIM=;
+	s=korg; t=1700853276;
+	bh=hGMa2jJcvb1Veb/ww+alhaeetR7Ku0UJzpG9AWn2jso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ir+oOl+YlHLdFxevcj49hI9IAtSHK1jdiszuQT1Z3k1ZcZ/BPT+hnndZVaYH3unb
-	 jVd6SJWTtgC1oB+bmNx4eatMrsKpoHnBeqgfq0q6m6lfX5BRlXWste4MvOefjMRD9f
-	 tt7EgmJvm1+l0n4RQJSEHwUingVwAirHc+GvmwtM=
+	b=ObStHEiOFBpnLj8tvB0mBid63URY+StB8m0sps56wHiJ1BnAcUYv75IhnYy1frazd
+	 JOVpRbvXDK4Wwv4mhuZymOBGMah3kP3kF6tYW2rhXFiRKtnFE3khHtc3HmrxKU3gsP
+	 bDcN6mBvdu09WCOSBGbm2WgClKGrCIZDiYh9c20k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenchao Hao <haowenchao2@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/193] scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
+Subject: [PATCH 5.15 124/297] netfilter: nf_tables: fix pointer math issue in nft_byteorder_eval()
 Date: Fri, 24 Nov 2023 17:52:46 +0000
-Message-ID: <20231124171948.796952297@linuxfoundation.org>
+Message-ID: <20231124172004.643455328@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +53,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenchao Hao <haowenchao2@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 4df105f0ce9f6f30cda4e99f577150d23f0c9c5f ]
+[ Upstream commit c301f0981fdd3fd1ffac6836b423c4d7a8e0eb63 ]
 
-fc_lport_ptp_setup() did not check the return value of fc_rport_create()
-which can return NULL and would cause a NULL pointer dereference. Address
-this issue by checking return value of fc_rport_create() and log error
-message on fc_rport_create() failed.
+The problem is in nft_byteorder_eval() where we are iterating through a
+loop and writing to dst[0], dst[1], dst[2] and so on...  On each
+iteration we are writing 8 bytes.  But dst[] is an array of u32 so each
+element only has space for 4 bytes.  That means that every iteration
+overwrites part of the previous element.
 
-Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
-Link: https://lore.kernel.org/r/20231011130350.819571-1-haowenchao2@huawei.com
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+I spotted this bug while reviewing commit caf3ef7468f7 ("netfilter:
+nf_tables: prevent OOB access in nft_byteorder_eval") which is a related
+issue.  I think that the reason we have not detected this bug in testing
+is that most of time we only write one element.
+
+Fixes: ce1e7989d989 ("netfilter: nft_byteorder: provide 64bit le/be conversion")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libfc/fc_lport.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/netfilter/nf_tables.h | 4 ++--
+ net/netfilter/nft_byteorder.c     | 5 +++--
+ net/netfilter/nft_meta.c          | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
-index abb14b206be04..82b8477c7d737 100644
---- a/drivers/scsi/libfc/fc_lport.c
-+++ b/drivers/scsi/libfc/fc_lport.c
-@@ -238,6 +238,12 @@ static void fc_lport_ptp_setup(struct fc_lport *lport,
- 	}
- 	mutex_lock(&lport->disc.disc_mutex);
- 	lport->ptp_rdata = fc_rport_create(lport, remote_fid);
-+	if (!lport->ptp_rdata) {
-+		printk(KERN_WARNING "libfc: Failed to setup lport 0x%x\n",
-+			lport->port_id);
-+		mutex_unlock(&lport->disc.disc_mutex);
-+		return;
-+	}
- 	kref_get(&lport->ptp_rdata->kref);
- 	lport->ptp_rdata->ids.port_name = remote_wwpn;
- 	lport->ptp_rdata->ids.node_name = remote_wwnn;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index df91b9f422551..8e9c5bc1a9e69 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -164,9 +164,9 @@ static inline __be32 nft_reg_load_be32(const u32 *sreg)
+ 	return *(__force __be32 *)sreg;
+ }
+ 
+-static inline void nft_reg_store64(u32 *dreg, u64 val)
++static inline void nft_reg_store64(u64 *dreg, u64 val)
+ {
+-	put_unaligned(val, (u64 *)dreg);
++	put_unaligned(val, dreg);
+ }
+ 
+ static inline u64 nft_reg_load64(const u32 *sreg)
+diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
+index d3e1467e576fb..adf208b7929fd 100644
+--- a/net/netfilter/nft_byteorder.c
++++ b/net/netfilter/nft_byteorder.c
+@@ -38,13 +38,14 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 
+ 	switch (priv->size) {
+ 	case 8: {
++		u64 *dst64 = (void *)dst;
+ 		u64 src64;
+ 
+ 		switch (priv->op) {
+ 		case NFT_BYTEORDER_NTOH:
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = nft_reg_load64(&src[i]);
+-				nft_reg_store64(&dst[i],
++				nft_reg_store64(&dst64[i],
+ 						be64_to_cpu((__force __be64)src64));
+ 			}
+ 			break;
+@@ -52,7 +53,7 @@ void nft_byteorder_eval(const struct nft_expr *expr,
+ 			for (i = 0; i < priv->len / 8; i++) {
+ 				src64 = (__force __u64)
+ 					cpu_to_be64(nft_reg_load64(&src[i]));
+-				nft_reg_store64(&dst[i], src64);
++				nft_reg_store64(&dst64[i], src64);
+ 			}
+ 			break;
+ 		}
+diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
+index 14412f69a34e8..35aba304a25b9 100644
+--- a/net/netfilter/nft_meta.c
++++ b/net/netfilter/nft_meta.c
+@@ -63,7 +63,7 @@ nft_meta_get_eval_time(enum nft_meta_keys key,
+ {
+ 	switch (key) {
+ 	case NFT_META_TIME_NS:
+-		nft_reg_store64(dest, ktime_get_real_ns());
++		nft_reg_store64((u64 *)dest, ktime_get_real_ns());
+ 		break;
+ 	case NFT_META_TIME_DAY:
+ 		nft_reg_store8(dest, nft_meta_weekday());
 -- 
 2.42.0
 
