@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D2357F7C7B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D267C7F8048
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A425CB2153B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7593EB209AB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB583A8C3;
-	Fri, 24 Nov 2023 18:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF9563A1;
+	Fri, 24 Nov 2023 18:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lz9Br/cK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvnHcFwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB12381D5;
-	Fri, 24 Nov 2023 18:15:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EF4C433C8;
-	Fri, 24 Nov 2023 18:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F54C33CC7;
+	Fri, 24 Nov 2023 18:48:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888F1C433C8;
+	Fri, 24 Nov 2023 18:48:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849728;
-	bh=Uk13xlhWTYRpgUU8KCGDlXVWSCgJ7hPyuk6uIZGLFv8=;
+	s=korg; t=1700851697;
+	bh=6Z6DYO3H6Fbn74VXfj/V/4kvbgcWq90Ixc6x95ffgG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lz9Br/cKyh2wynz4IrjZTyyXiR6IY4CxnzYiIkMAbdrq3rrxHqNWAlmooPTnqUe4J
-	 gG1Tt9ATvJ/TYzQLmssxT5/A6zKOxgyu011lQMMhAFtmtHO+uu5U8wDe3hcg6cgJXb
-	 2IFRqmKypAUs+oZOLDtcLCGoYBquGVH9aA9hgDo8=
+	b=yvnHcFwzKxHv8rRIBZQAxpYPgHZxN4XXWqUPj3DkwxSaWPqikMqT+LCS7WbU3ztkg
+	 6Dhj7CkbD4uVk2SsaM6ofvJopQGjFK+CmGmSZJqv4orOHE5Ej5a5iBXbc5zswnRL+j
+	 j8jpvNbntNM9kRv/+6uMG/y9iL7dEHZQarRSjaxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 272/530] PCI/sysfs: Protect drivers D3cold preference from user space
-Date: Fri, 24 Nov 2023 17:47:18 +0000
-Message-ID: <20231124172036.317271205@linuxfoundation.org>
+	Qu Huang <qu.huang@linux.dev>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 052/372] drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL
+Date: Fri, 24 Nov 2023 17:47:19 +0000
+Message-ID: <20231124172012.214588943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +53,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Qu Huang <qu.huang@linux.dev>
 
-commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
+[ Upstream commit 5104fdf50d326db2c1a994f8b35dcd46e63ae4ad ]
 
-struct pci_dev contains two flags which govern whether the device may
-suspend to D3cold:
+In certain types of chips, such as VEGA20, reading the amdgpu_regs_smc file could result in an abnormal null pointer access when the smc_rreg pointer is NULL. Below are the steps to reproduce this issue and the corresponding exception log:
 
-* no_d3cold provides an opt-out for drivers (e.g. if a device is known
-  to not wake from D3cold)
+1. Navigate to the directory: /sys/kernel/debug/dri/0
+2. Execute command: cat amdgpu_regs_smc
+3. Exception Log::
+[4005007.702554] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[4005007.702562] #PF: supervisor instruction fetch in kernel mode
+[4005007.702567] #PF: error_code(0x0010) - not-present page
+[4005007.702570] PGD 0 P4D 0
+[4005007.702576] Oops: 0010 [#1] SMP NOPTI
+[4005007.702581] CPU: 4 PID: 62563 Comm: cat Tainted: G           OE     5.15.0-43-generic #46-Ubunt       u
+[4005007.702590] RIP: 0010:0x0
+[4005007.702598] Code: Unable to access opcode bytes at RIP 0xffffffffffffffd6.
+[4005007.702600] RSP: 0018:ffffa82b46d27da0 EFLAGS: 00010206
+[4005007.702605] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffa82b46d27e68
+[4005007.702609] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff9940656e0000
+[4005007.702612] RBP: ffffa82b46d27dd8 R08: 0000000000000000 R09: ffff994060c07980
+[4005007.702615] R10: 0000000000020000 R11: 0000000000000000 R12: 00007f5e06753000
+[4005007.702618] R13: ffff9940656e0000 R14: ffffa82b46d27e68 R15: 00007f5e06753000
+[4005007.702622] FS:  00007f5e0755b740(0000) GS:ffff99479d300000(0000) knlGS:0000000000000000
+[4005007.702626] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[4005007.702629] CR2: ffffffffffffffd6 CR3: 00000003253fc000 CR4: 00000000003506e0
+[4005007.702633] Call Trace:
+[4005007.702636]  <TASK>
+[4005007.702640]  amdgpu_debugfs_regs_smc_read+0xb0/0x120 [amdgpu]
+[4005007.703002]  full_proxy_read+0x5c/0x80
+[4005007.703011]  vfs_read+0x9f/0x1a0
+[4005007.703019]  ksys_read+0x67/0xe0
+[4005007.703023]  __x64_sys_read+0x19/0x20
+[4005007.703028]  do_syscall_64+0x5c/0xc0
+[4005007.703034]  ? do_user_addr_fault+0x1e3/0x670
+[4005007.703040]  ? exit_to_user_mode_prepare+0x37/0xb0
+[4005007.703047]  ? irqentry_exit_to_user_mode+0x9/0x20
+[4005007.703052]  ? irqentry_exit+0x19/0x30
+[4005007.703057]  ? exc_page_fault+0x89/0x160
+[4005007.703062]  ? asm_exc_page_fault+0x8/0x30
+[4005007.703068]  entry_SYSCALL_64_after_hwframe+0x44/0xae
+[4005007.703075] RIP: 0033:0x7f5e07672992
+[4005007.703079] Code: c0 e9 b2 fe ff ff 50 48 8d 3d fa b2 0c 00 e8 c5 1d 02 00 0f 1f 44 00 00 f3 0f        1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 0f 05 <48> 3d 00 f0 ff ff 77 56 c3 0f 1f 44 00 00 48 83 e       c 28 48 89 54 24
+[4005007.703083] RSP: 002b:00007ffe03097898 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+[4005007.703088] RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007f5e07672992
+[4005007.703091] RDX: 0000000000020000 RSI: 00007f5e06753000 RDI: 0000000000000003
+[4005007.703094] RBP: 00007f5e06753000 R08: 00007f5e06752010 R09: 00007f5e06752010
+[4005007.703096] R10: 0000000000000022 R11: 0000000000000246 R12: 0000000000022000
+[4005007.703099] R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
+[4005007.703105]  </TASK>
+[4005007.703107] Modules linked in: nf_tables libcrc32c nfnetlink algif_hash af_alg binfmt_misc nls_       iso8859_1 ipmi_ssif ast intel_rapl_msr intel_rapl_common drm_vram_helper drm_ttm_helper amd64_edac t       tm edac_mce_amd kvm_amd ccp mac_hid k10temp kvm acpi_ipmi ipmi_si rapl sch_fq_codel ipmi_devintf ipm       i_msghandler msr parport_pc ppdev lp parport mtd pstore_blk efi_pstore ramoops pstore_zone reed_solo       mon ip_tables x_tables autofs4 ib_uverbs ib_core amdgpu(OE) amddrm_ttm_helper(OE) amdttm(OE) iommu_v       2 amd_sched(OE) amdkcl(OE) drm_kms_helper syscopyarea sysfillrect sysimgblt fb_sys_fops cec rc_core        drm igb ahci xhci_pci libahci i2c_piix4 i2c_algo_bit xhci_pci_renesas dca
+[4005007.703184] CR2: 0000000000000000
+[4005007.703188] ---[ end trace ac65a538d240da39 ]---
+[4005007.800865] RIP: 0010:0x0
+[4005007.800871] Code: Unable to access opcode bytes at RIP 0xffffffffffffffd6.
+[4005007.800874] RSP: 0018:ffffa82b46d27da0 EFLAGS: 00010206
+[4005007.800878] RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffa82b46d27e68
+[4005007.800881] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff9940656e0000
+[4005007.800883] RBP: ffffa82b46d27dd8 R08: 0000000000000000 R09: ffff994060c07980
+[4005007.800886] R10: 0000000000020000 R11: 0000000000000000 R12: 00007f5e06753000
+[4005007.800888] R13: ffff9940656e0000 R14: ffffa82b46d27e68 R15: 00007f5e06753000
+[4005007.800891] FS:  00007f5e0755b740(0000) GS:ffff99479d300000(0000) knlGS:0000000000000000
+[4005007.800895] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[4005007.800898] CR2: ffffffffffffffd6 CR3: 00000003253fc000 CR4: 00000000003506e0
 
-* d3cold_allowed provides an opt-out for user space (default is true,
-  user space may set to false)
-
-Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
-the user space setting overwrites the driver setting.  Essentially user
-space is trusted to know better than the driver whether D3cold is
-working.
-
-That feels unsafe and wrong.  Assume that the change was introduced
-inadvertently and do not overwrite no_d3cold when d3cold_allowed is
-modified.  Instead, consider d3cold_allowed in addition to no_d3cold
-when choosing a suspend state for the device.
-
-That way, user space may opt out of D3cold if the driver hasn't, but it
-may no longer force an opt in if the driver has opted out.
-
-Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Cc: stable@vger.kernel.org	# v4.8+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Qu Huang <qu.huang@linux.dev>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c  |    2 +-
- drivers/pci/pci-sysfs.c |    5 +----
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -911,7 +911,7 @@ pci_power_t acpi_pci_choose_state(struct
- {
- 	int acpi_state, d_max;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index de61a85c4b022..fd796574f87a5 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -589,6 +589,9 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
+ 	ssize_t result = 0;
+ 	int r;
  
--	if (pdev->no_d3cold)
-+	if (pdev->no_d3cold || !pdev->d3cold_allowed)
- 		d_max = ACPI_STATE_D3_HOT;
- 	else
- 		d_max = ACPI_STATE_D3_COLD;
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -529,10 +529,7 @@ static ssize_t d3cold_allowed_store(stru
++	if (!adev->smc_rreg)
++		return -EPERM;
++
+ 	if (size & 0x3 || *pos & 0x3)
  		return -EINVAL;
  
- 	pdev->d3cold_allowed = !!val;
--	if (pdev->d3cold_allowed)
--		pci_d3cold_enable(pdev);
--	else
--		pci_d3cold_disable(pdev);
-+	pci_bridge_d3_update(pdev);
+@@ -645,6 +648,9 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
+ 	ssize_t result = 0;
+ 	int r;
  
- 	pm_runtime_resume(dev);
++	if (!adev->smc_wreg)
++		return -EPERM;
++
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
+-- 
+2.42.0
+
 
 
 
