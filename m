@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF3B7F7E4B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C348C7F801E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9655228225F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FBCB2824C7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38EF3A8FB;
-	Fri, 24 Nov 2023 18:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E4E381D4;
+	Fri, 24 Nov 2023 18:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKPLzcJ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPeD48dU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F593A8EA;
-	Fri, 24 Nov 2023 18:31:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCE9C433C8;
-	Fri, 24 Nov 2023 18:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE24933CC7;
+	Fri, 24 Nov 2023 18:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3F7C433C7;
+	Fri, 24 Nov 2023 18:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850701;
-	bh=EkXSuWQU0H9ZED3aif/5qLynFoYqnnM1X5BwHP7e5J4=;
+	s=korg; t=1700851610;
+	bh=A99W1N+nyDsWe5JPHDjXOYMbo8Fv2WzUgHcs9TAAs+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKPLzcJ/3WsjbZr/ON1FOs8FANHXC05SIdpBMThPNEgE7INj099/drXt70UmwLD5P
-	 s5igVZaMfs/vRXTyRGHZXiroVG8fyfLZpq2ZMv8cBi3xfl9wPotlJRIjkO5oPpAz1G
-	 niT6Xf3OkNOSQnHC33uFEMQ3OiLkP/oQBiFjnYVI=
+	b=iPeD48dUxgHs9b4cN4PL4ctK7L9OTLE2yUTsT9JSMJdzz5cQm5i/mXF2ZaCx1zxSp
+	 AesFo9WB43QwFzlyBgbNwHWUMU2m5300MKoo4SxVV4Sl5fAWFE20fUAUaDNRM9yprs
+	 36z0bm9tao4jexz9sy6qfkByIlAP9lhg9QokOOOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinghao Jia <jinghao@linux.ibm.com>,
-	Ruowen Qin <ruowenq2@illinois.edu>,
-	Jinghao Jia <jinghao7@illinois.edu>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 154/491] samples/bpf: syscall_tp_user: Fix array out-of-bound access
+Subject: [PATCH 6.1 003/372] perf/core: Bail out early if the request AUX area is out of bound
 Date: Fri, 24 Nov 2023 17:46:30 +0000
-Message-ID: <20231124172029.102558433@linuxfoundation.org>
+Message-ID: <20231124172010.546160199@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,89 +54,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinghao Jia <jinghao@linux.ibm.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-[ Upstream commit 9220c3ef6fefbf18f24aeedb1142a642b3de0596 ]
+[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
 
-Commit 06744f24696e ("samples/bpf: Add openat2() enter/exit tracepoint
-to syscall_tp sample") added two more eBPF programs to support the
-openat2() syscall. However, it did not increase the size of the array
-that holds the corresponding bpf_links. This leads to an out-of-bound
-access on that array in the bpf_object__for_each_program loop and could
-corrupt other variables on the stack. On our testing QEMU, it corrupts
-the map1_fds array and causes the sample to fail:
+When perf-record with a large AUX area, e.g 4GB, it fails with:
 
-  # ./syscall_tp
-  prog #0: map ids 4 5
-  verify map:4 val: 5
-  map_lookup failed: Bad file descriptor
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-Dynamically allocate the array based on the number of programs reported
-by libbpf to prevent similar inconsistencies in the future
+and it reveals a WARNING with __alloc_pages():
 
-Fixes: 06744f24696e ("samples/bpf: Add openat2() enter/exit tracepoint to syscall_tp sample")
-Signed-off-by: Jinghao Jia <jinghao@linux.ibm.com>
-Signed-off-by: Ruowen Qin <ruowenq2@illinois.edu>
-Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
-Link: https://lore.kernel.org/r/20230917214220.637721-4-jinghao7@illinois.edu
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+	------------[ cut here ]------------
+	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
+	Call trace:
+	 __alloc_pages+0x1ec/0x248
+	 __kmalloc_large_node+0xc0/0x1f8
+	 __kmalloc_node+0x134/0x1e8
+	 rb_alloc_aux+0xe0/0x298
+	 perf_mmap+0x440/0x660
+	 mmap_region+0x308/0x8a8
+	 do_mmap+0x3c0/0x528
+	 vm_mmap_pgoff+0xf4/0x1b8
+	 ksys_mmap_pgoff+0x18c/0x218
+	 __arm64_sys_mmap+0x38/0x58
+	 invoke_syscall+0x50/0x128
+	 el0_svc_common.constprop.0+0x58/0x188
+	 do_el0_svc+0x34/0x50
+	 el0_svc+0x34/0x108
+	 el0t_64_sync_handler+0xb8/0xc0
+	 el0t_64_sync+0x1a4/0x1a8
+
+'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
+maintains AUX trace pages. The allocated page for this array is physically
+contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
+size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
+WARNING.
+
+So bail out early with -ENOMEM if the request AUX area is out of bound,
+e.g.:
+
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/bpf/syscall_tp_user.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ kernel/events/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/samples/bpf/syscall_tp_user.c b/samples/bpf/syscall_tp_user.c
-index 18c94c7e8a40e..7a09ac74fac07 100644
---- a/samples/bpf/syscall_tp_user.c
-+++ b/samples/bpf/syscall_tp_user.c
-@@ -48,7 +48,7 @@ static void verify_map(int map_id)
- static int test(char *filename, int nr_tests)
- {
- 	int map0_fds[nr_tests], map1_fds[nr_tests], fd, i, j = 0;
--	struct bpf_link *links[nr_tests * 4];
-+	struct bpf_link **links = NULL;
- 	struct bpf_object *objs[nr_tests];
- 	struct bpf_program *prog;
- 
-@@ -60,6 +60,19 @@ static int test(char *filename, int nr_tests)
- 			goto cleanup;
- 		}
- 
-+		/* One-time initialization */
-+		if (!links) {
-+			int nr_progs = 0;
-+
-+			bpf_object__for_each_program(prog, objs[i])
-+				nr_progs += 1;
-+
-+			links = calloc(nr_progs * nr_tests, sizeof(struct bpf_link *));
-+
-+			if (!links)
-+				goto cleanup;
-+		}
-+
- 		/* load BPF program */
- 		if (bpf_object__load(objs[i])) {
- 			fprintf(stderr, "loading BPF object file failed\n");
-@@ -107,8 +120,12 @@ static int test(char *filename, int nr_tests)
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 273a0fe7910a5..45965f13757e4 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -699,6 +699,12 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
+ 		watermark = 0;
  	}
  
- cleanup:
--	for (j--; j >= 0; j--)
--		bpf_link__destroy(links[j]);
-+	if (links) {
-+		for (j--; j >= 0; j--)
-+			bpf_link__destroy(links[j]);
-+
-+		free(links);
-+	}
- 
- 	for (i--; i >= 0; i--)
- 		bpf_object__close(objs[i]);
++	/*
++	 * kcalloc_node() is unable to allocate buffer if the size is larger
++	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
++	 */
++	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
++		return -ENOMEM;
+ 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
+ 				     node);
+ 	if (!rb->aux_pages)
 -- 
 2.42.0
 
