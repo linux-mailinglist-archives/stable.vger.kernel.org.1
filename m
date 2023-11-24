@@ -1,47 +1,54 @@
-Return-Path: <stable+bounces-1818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2B67F817F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF907F7FDD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95601282697
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E950C1C214FA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B869364A5;
-	Fri, 24 Nov 2023 18:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47BB35F04;
+	Fri, 24 Nov 2023 18:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnvqbaDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJgtJzrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4A22E64F;
-	Fri, 24 Nov 2023 18:59:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A4BC433C8;
-	Fri, 24 Nov 2023 18:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 005CD364A7;
+	Fri, 24 Nov 2023 18:44:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AD9C433C7;
+	Fri, 24 Nov 2023 18:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852347;
-	bh=Bg40pEClUyAbPJIIeWKIS7z+mknXnTOW8QRjlFA/648=;
+	s=korg; t=1700851491;
+	bh=0+EsvImk43SeTnm6yrFUYl9kui2L6E5yH3XOKIgXotI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnvqbaDpHRSW/0+hUrnn5FERLmHvCd2CeeC1CqaX785jFvShHy/SjBfC+VKR/IP0F
-	 kZQZFzVoPSvNkNK7+7HL1yfmPd1j1XwZPUrIhoqrZXkX7of54KwgEaSsnZubL67qJj
-	 ujIgjGnzbHMlrNmzg9UAS1VxXBFDORDjHGHIL5Xw=
+	b=XJgtJzrPyJaXPk17ps12oHvQZdoYn/5SAvKRuL5GIR55ONn/BEbjNSmipWQ7h9prb
+	 F6Pv54flOpEoeg/eTb1V8CwPZZmmmVZIzK39Of3lnVCnDqoD6Xw6HpqcIm1GBDplzc
+	 4eiddN/XNJO5RJ3d9rEatyj6cXPKrKmXI2WKRmV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Ferner <joe.m.ferner@gmail.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 319/372] media: sharp: fix sharp encoding
+	Paul Cercueil <paul@crapouillou.net>,
+	Robert Foss <robert.foss@linaro.org>,
+	Phong LE <ple@baylibre.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.5 470/491] drm: bridge: it66121: ->get_edid callback must not return err pointers
 Date: Fri, 24 Nov 2023 17:51:46 +0000
-Message-ID: <20231124172021.024763297@linuxfoundation.org>
+Message-ID: <20231124172038.750176839@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
+commit 81995ee1620318b4c7bbeb02bcc372da2c078c76 upstream.
 
-The Sharp protocol[1] encoding has incorrect timings for bit space.
+The drm stack does not expect error valued pointers for EDID anywhere.
 
-[1] https://www.sbprojects.net/knowledge/ir/sharp.php
-
-Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
-Cc: stable@vger.kernel.org
-Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
-Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: e66856508746 ("drm: bridge: it66121: Set DDC preamble only once before reading EDID")
+Cc: Paul Cercueil <paul@crapouillou.net>
+Cc: Robert Foss <robert.foss@linaro.org>
+Cc: Phong LE <ple@baylibre.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Robert Foss <rfoss@kernel.org>
+Cc: Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
+Cc: Jonas Karlman <jonas@kwiboo.se>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: <stable@vger.kernel.org> # v6.3+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230914131159.2472513-1-jani.nikula@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/ite-it66121.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/rc/ir-sharp-decoder.c
-+++ b/drivers/media/rc/ir-sharp-decoder.c
-@@ -15,7 +15,9 @@
- #define SHARP_UNIT		40  /* us */
- #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
- #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
--#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
-+#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
-+#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
-+#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
- #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
- #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
+diff --git a/drivers/gpu/drm/bridge/ite-it66121.c b/drivers/gpu/drm/bridge/ite-it66121.c
+index 3c9b42c9d2ee..1cf3fb1f13dc 100644
+--- a/drivers/gpu/drm/bridge/ite-it66121.c
++++ b/drivers/gpu/drm/bridge/ite-it66121.c
+@@ -884,14 +884,14 @@ static struct edid *it66121_bridge_get_edid(struct drm_bridge *bridge,
+ 	mutex_lock(&ctx->lock);
+ 	ret = it66121_preamble_ddc(ctx);
+ 	if (ret) {
+-		edid = ERR_PTR(ret);
++		edid = NULL;
+ 		goto out_unlock;
+ 	}
  
-@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
- 	.header_pulse  = 0,
- 	.header_space  = 0,
- 	.bit_pulse     = SHARP_BIT_PULSE,
--	.bit_space[0]  = SHARP_BIT_0_PERIOD,
--	.bit_space[1]  = SHARP_BIT_1_PERIOD,
-+	.bit_space[0]  = SHARP_BIT_0_SPACE,
-+	.bit_space[1]  = SHARP_BIT_1_SPACE,
- 	.trailer_pulse = SHARP_BIT_PULSE,
- 	.trailer_space = SHARP_ECHO_SPACE,
- 	.msb_first     = 1,
+ 	ret = regmap_write(ctx->regmap, IT66121_DDC_HEADER_REG,
+ 			   IT66121_DDC_HEADER_EDID);
+ 	if (ret) {
+-		edid = ERR_PTR(ret);
++		edid = NULL;
+ 		goto out_unlock;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
