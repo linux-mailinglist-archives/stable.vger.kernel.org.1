@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 819697F7DFB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9126B7F7BDA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11647B2163C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 307F4B20E3E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA0C3A8E5;
-	Fri, 24 Nov 2023 18:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777B139FF8;
+	Fri, 24 Nov 2023 18:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ox2T1yuK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+Butf8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2D5381D6;
-	Fri, 24 Nov 2023 18:28:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC204C433C7;
-	Fri, 24 Nov 2023 18:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C5339FEA;
+	Fri, 24 Nov 2023 18:09:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7C1C433C8;
+	Fri, 24 Nov 2023 18:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850530;
-	bh=qWj+78c81RM/PgsQesplk1Cd9H1UE7dVChmu5LuKANI=;
+	s=korg; t=1700849354;
+	bh=FOocsZtqORf81cYrBN/K7cxWbWdwO1J9/TALWdvxP6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ox2T1yuKWeL5f3sZ0ia0bZcAHLK6sqp4j6q6QYUXpL+H+OIYOgxJKPn5SljmoEZ7+
-	 DFRVEkJt/XcXbEUIw+cFLx0ipmSK2RyHIy0E1ssdjqeRZa1OAwOhdeC/htak9CdjLV
-	 KCzA+gF313fk/opL/BTiQY5rLZTBpSKAQJGUDgpM=
+	b=Y+Butf8gSoPoGV0z29U0FYduSAhD3ByJWKrxQ4eFAcc3v2hwFszm/RYvMnmhw6oh9
+	 iIKPYMSMWLpTKQv813HmCUTRnJcrZlBqsnab+BSShp46j0X4IWrlT37/rQHxfH3Q9u
+	 icuVIl/K7RcKSxx9h53menVTaAcBICY6u2Q3nLpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Wu <trevor.wu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+29c47e9e51895928698c@syzkaller.appspotmail.com,
+	Juntong Deng <juntong.deng@outlook.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 078/491] ASoC: mediatek: mt8188-mt6359: support dynamic pinctrl
+Subject: [PATCH 6.6 148/530] gfs2: Fix slab-use-after-free in gfs2_qd_dealloc
 Date: Fri, 24 Nov 2023 17:45:14 +0000
-Message-ID: <20231124172026.971044088@linuxfoundation.org>
+Message-ID: <20231124172032.599347695@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,82 +54,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Wu <trevor.wu@mediatek.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-[ Upstream commit d601bb78f06b9e3cbb52e6b87b88add9920a11b6 ]
+[ Upstream commit bdcb8aa434c6d36b5c215d02a9ef07551be25a37 ]
 
-To avoid power leakage, it is recommended to replace the default pinctrl
-state with dynamic pinctrl since certain audio pinmux functions can
-remain in a HIGH state even when audio is disabled. Linking pinctrl with
-DAPM using SND_SOC_DAPM_PINCTRL will ensure that audio pins remain in
-GPIO mode by default and only switch to an audio function when necessary.
+In gfs2_put_super(), whether withdrawn or not, the quota should
+be cleaned up by gfs2_quota_cleanup().
 
-Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230825024935.10878-2-trevor.wu@mediatek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Otherwise, struct gfs2_sbd will be freed before gfs2_qd_dealloc (rcu
+callback) has run for all gfs2_quota_data objects, resulting in
+use-after-free.
+
+Also, gfs2_destroy_threads() and gfs2_quota_cleanup() is already called
+by gfs2_make_fs_ro(), so in gfs2_put_super(), after calling
+gfs2_make_fs_ro(), there is no need to call them again.
+
+Reported-by: syzbot+29c47e9e51895928698c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=29c47e9e51895928698c
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-mt6359.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ fs/gfs2/super.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-index ac69c23e0da1c..7048ff52ab86a 100644
---- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-@@ -246,6 +246,11 @@ static const struct snd_soc_dapm_widget mt8188_mt6359_widgets[] = {
- 	SND_SOC_DAPM_MIC("Headset Mic", NULL),
- 	SND_SOC_DAPM_SINK("HDMI"),
- 	SND_SOC_DAPM_SINK("DP"),
-+
-+	/* dynamic pinctrl */
-+	SND_SOC_DAPM_PINCTRL("ETDM_SPK_PIN", "aud_etdm_spk_on", "aud_etdm_spk_off"),
-+	SND_SOC_DAPM_PINCTRL("ETDM_HP_PIN", "aud_etdm_hp_on", "aud_etdm_hp_off"),
-+	SND_SOC_DAPM_PINCTRL("MTKAIF_PIN", "aud_mtkaif_on", "aud_mtkaif_off"),
- };
- 
- static const struct snd_kcontrol_new mt8188_mt6359_controls[] = {
-@@ -267,6 +272,7 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
- 		snd_soc_rtdcom_lookup(rtd, AFE_PCM_NAME);
- 	struct snd_soc_component *cmpnt_codec =
- 		asoc_rtd_to_codec(rtd, 0)->component;
-+	struct snd_soc_dapm_widget *pin_w = NULL, *w;
- 	struct mtk_base_afe *afe;
- 	struct mt8188_afe_private *afe_priv;
- 	struct mtkaif_param *param;
-@@ -306,6 +312,18 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
- 		return 0;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 0dd5641990b90..5f4ebe279aaae 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -602,13 +602,15 @@ static void gfs2_put_super(struct super_block *sb)
  	}
+ 	spin_unlock(&sdp->sd_jindex_spin);
  
-+	for_each_card_widgets(rtd->card, w) {
-+		if (!strcmp(w->name, "MTKAIF_PIN")) {
-+			pin_w = w;
-+			break;
-+		}
-+	}
+-	if (!sb_rdonly(sb)) {
++	if (!sb_rdonly(sb))
+ 		gfs2_make_fs_ro(sdp);
+-	}
+-	if (gfs2_withdrawn(sdp)) {
+-		gfs2_destroy_threads(sdp);
++	else {
++		if (gfs2_withdrawn(sdp))
++			gfs2_destroy_threads(sdp);
 +
-+	if (pin_w)
-+		dapm_pinctrl_event(pin_w, NULL, SND_SOC_DAPM_PRE_PMU);
-+	else
-+		dev_dbg(afe->dev, "%s(), no pinmux widget, please check if default on\n", __func__);
+ 		gfs2_quota_cleanup(sdp);
+ 	}
 +
- 	pm_runtime_get_sync(afe->dev);
- 	mt6359_mtkaif_calibration_enable(cmpnt_codec);
+ 	WARN_ON(gfs2_withdrawing(sdp));
  
-@@ -403,6 +421,9 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
- 	for (i = 0; i < MT8188_MTKAIF_MISO_NUM; i++)
- 		param->mtkaif_phase_cycle[i] = mtkaif_phase_cycle[i];
- 
-+	if (pin_w)
-+		dapm_pinctrl_event(pin_w, NULL, SND_SOC_DAPM_POST_PMD);
-+
- 	dev_dbg(afe->dev, "%s(), end, calibration ok %d\n",
- 		__func__, param->mtkaif_calibration_ok);
- 
+ 	/*  At this point, we're through modifying the disk  */
 -- 
 2.42.0
 
