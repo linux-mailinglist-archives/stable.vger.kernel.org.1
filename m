@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-2295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF037F8392
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2707F8282
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A00E01C25E16
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE3A285631
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4783381CB;
-	Fri, 24 Nov 2023 19:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9DA364B7;
+	Fri, 24 Nov 2023 19:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8RJHCER"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veDMQZeg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753A7339BE;
-	Fri, 24 Nov 2023 19:18:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016D1C433C8;
-	Fri, 24 Nov 2023 19:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9E5364AE;
+	Fri, 24 Nov 2023 19:08:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEAAC433C8;
+	Fri, 24 Nov 2023 19:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853533;
-	bh=u4xfiDXB1B1NNvhUrMK2xIwGlybLwQHlcHS5aZiePcM=;
+	s=korg; t=1700852900;
+	bh=L3yzibVJl2RE6Ifzfd1y0q7kwIU5+ayoiHW8BWOsDMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8RJHCERwH+8O/+Ca1EgXgeTUBuDwlflkc2BVXEqGaIGASQNqY2CaQwU9/iKArdHd
-	 CwYoLQk+K4SFpmt/iQ6vuFQcAVgokh9eZiBD090SekW4YkOue+mXCxC988sOMnFcit
-	 vDslNI5duKeL4p6OULW2dgPKOOqLSvSAR4YrGFUo=
+	b=veDMQZegcfLIcacO7algIKBvvZzzfq1uVPjuc43KTzjd/cSu2prSNnKaolet57Ya7
+	 SeWdLeszXgtAJZ+1Sg0IzM64tXTB7Di6WwIyQcdVXdZ/PcpjhDynQU30WZjCdtKl5z
+	 1Bb/L6b6qZyfp3hC5oj3QHNovDkqtIDE+altvJzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 227/297] i3c: master: svc: fix wrong data return when IBI happen during start frame
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 142/193] parisc/pgtable: Do not drop upper 5 address bits of physical address
 Date: Fri, 24 Nov 2023 17:54:29 +0000
-Message-ID: <20231124172008.140718960@linuxfoundation.org>
+Message-ID: <20231124171952.875527096@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +49,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 5e5e3c92e748a6d859190e123b9193cf4911fcca upstream.
+commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
 
-     ┌─────┐     ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┌─────
-SCL: ┘     └─────┛  └──┛  └──┛  └──┛  └──┛  └──┛  └──┛  └──┛  └──┘
-     ───┐                       ┌─────┐     ┌─────┐     ┌───────────┐
-SDA:    └───────────────────────┘     └─────┘     └─────┘           └─────
-     xxx╱    ╲╱                                        ╲╱    ╲╱    ╲╱    ╲
-   : xxx╲IBI ╱╲               Addr(0x0a)               ╱╲ RW ╱╲NACK╱╲ S  ╱
+When calculating the pfn for the iitlbt/idtlbt instruction, do not
+drop the upper 5 address bits. This doesn't seem to have an effect
+on physical hardware which uses less physical address bits, but in
+qemu the missing bits are visible.
 
-If an In-Band Interrupt (IBI) occurs and IBI work thread is not immediately
-scheduled, when svc_i3c_master_priv_xfers() initiates the I3C transfer and
-attempts to send address 0x7e, the target interprets it as an
-IBI handler and returns the target address 0x0a.
-
-However, svc_i3c_master_priv_xfers() does not handle this case and proceeds
-with other transfers, resulting in incorrect data being returned.
-
-Add IBIWON check in svc_i3c_master_xfer(). In case this situation occurs,
-return a failure to the driver.
-
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Helge Deller <deller@gmx.de>
 Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-3-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ arch/parisc/kernel/entry.S |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -930,6 +930,9 @@ static int svc_i3c_master_xfer(struct sv
- 	u32 reg;
- 	int ret;
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -497,13 +497,13 @@
+ 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
+ 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
+ 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
++	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
  
-+	/* clean SVC_I3C_MINT_IBIWON w1c bits */
-+	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
-+
- 	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
- 	       xfer_type |
- 	       SVC_I3C_MCTRL_IBIRESP_NACK |
-@@ -943,6 +946,23 @@ static int svc_i3c_master_xfer(struct sv
- 	if (ret)
- 		goto emit_stop;
+ 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
+ 	.macro		convert_for_tlb_insert20 pte,tmp
+ #ifdef CONFIG_HUGETLB_PAGE
+ 	copy		\pte,\tmp
+-	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
+-				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
++	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
  
-+	/*
-+	 * According to I3C spec ver 1.1.1, 5.1.2.2.3 Consequence of Controller Starting a Frame
-+	 * with I3C Target Address.
-+	 *
-+	 * The I3C Controller normally should start a Frame, the Address may be arbitrated, and so
-+	 * the Controller shall monitor to see whether an In-Band Interrupt request, a Controller
-+	 * Role Request (i.e., Secondary Controller requests to become the Active Controller), or
-+	 * a Hot-Join Request has been made.
-+	 *
-+	 * If missed IBIWON check, the wrong data will be return. When IBIWON happen, return failure
-+	 * and yield the above events handler.
-+	 */
-+	if (SVC_I3C_MSTATUS_IBIWON(reg)) {
-+		ret = -ENXIO;
-+		goto emit_stop;
-+	}
-+
- 	if (rnw)
- 		ret = svc_i3c_master_read(master, in, xfer_len);
- 	else
+ 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
+ 				(63-58)+PAGE_ADD_SHIFT,\pte
+@@ -511,8 +511,7 @@
+ 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
+ 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
+ #else /* Huge pages disabled */
+-	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
+-				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
++	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
+ 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
+ 				(63-58)+PAGE_ADD_SHIFT,\pte
+ #endif
 
 
 
