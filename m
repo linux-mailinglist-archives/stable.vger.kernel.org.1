@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 083867F8099
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABFD7F7F05
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FE8BB218C8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3721C2142E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14ECE31748;
-	Fri, 24 Nov 2023 18:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB3334189;
+	Fri, 24 Nov 2023 18:37:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jGpi6V6V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSvL2piy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB80528DBB;
-	Fri, 24 Nov 2023 18:51:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B757C433C8;
-	Fri, 24 Nov 2023 18:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2205F22F1D;
+	Fri, 24 Nov 2023 18:37:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C71C433C9;
+	Fri, 24 Nov 2023 18:37:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851865;
-	bh=PsVuzbH8evEjcyOL6DCxPD3GGMLUMhVPOy6q5fbkPCg=;
+	s=korg; t=1700851070;
+	bh=6KHr9VOUGSmNqI/wTpMAo5XbIJbDJoLoskOEg0QVKfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jGpi6V6Vvf5eHA3QRXjE6dppf+BkInogzGQWbu+nxe55WotOkM748GRKM7fnC70/x
-	 RzYDClTJ7kOUG1NP4fkUGuxZcaJQPvmR7s6c+CnrdkeV2NjGMCvPnXDoPwpDNaJXZ+
-	 tsXn0Bq4kJuyyLjkejkLmXuuzzOf0YTJMlb0euYE=
+	b=nSvL2piyjuTpWS3NZqa7JATpozxwQofqojvEgQ6DVorT2s2k5VVzXnB5MMfDaljGf
+	 3Gvs+Dvm+nKBjcpvB33YgBIJvdrfWPEfrms4Km/rGTZ4GtBzs99i2u3LRvmtzTBrLH
+	 Bw67IlQRcvVnWOTIJh/xDRaEzYEiaTAIt+EwJTGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Stanislav Fomichev <sdf@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 126/372] net: set SOCK_RCU_FREE before inserting socket into hashtable
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.5 277/491] wifi: ath12k: fix htt mlo-offset event locking
 Date: Fri, 24 Nov 2023 17:48:33 +0000
-Message-ID: <20231124172014.676738479@linuxfoundation.org>
+Message-ID: <20231124172032.897163560@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,93 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 871019b22d1bcc9fab2d1feba1b9a564acbb6e99 ]
+commit 6afc57ea315e0f660b1f870a681737bb7b71faef upstream.
 
-We've started to see the following kernel traces:
+The ath12k active pdevs are protected by RCU but the htt mlo-offset
+event handling code calling ath12k_mac_get_ar_by_pdev_id() was not
+marked as a read-side critical section.
 
- WARNING: CPU: 83 PID: 0 at net/core/filter.c:6641 sk_lookup+0x1bd/0x1d0
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
- Call Trace:
-  <IRQ>
-  __bpf_skc_lookup+0x10d/0x120
-  bpf_sk_lookup+0x48/0xd0
-  bpf_sk_lookup_tcp+0x19/0x20
-  bpf_prog_<redacted>+0x37c/0x16a3
-  cls_bpf_classify+0x205/0x2e0
-  tcf_classify+0x92/0x160
-  __netif_receive_skb_core+0xe52/0xf10
-  __netif_receive_skb_list_core+0x96/0x2b0
-  napi_complete_done+0x7b5/0xb70
-  <redacted>_poll+0x94/0xb0
-  net_rx_action+0x163/0x1d70
-  __do_softirq+0xdc/0x32e
-  asm_call_irq_on_stack+0x12/0x20
-  </IRQ>
-  do_softirq_own_stack+0x36/0x50
-  do_softirq+0x44/0x70
+Compile tested only.
 
-__inet_hash can race with lockless (rcu) readers on the other cpus:
-
-  __inet_hash
-    __sk_nulls_add_node_rcu
-    <- (bpf triggers here)
-    sock_set_flag(SOCK_RCU_FREE)
-
-Let's move the SOCK_RCU_FREE part up a bit, before we are inserting
-the socket into hashtables. Note, that the race is really harmless;
-the bpf callers are handling this situation (where listener socket
-doesn't have SOCK_RCU_FREE set) correctly, so the only
-annoyance is a WARN_ONCE.
-
-More details from Eric regarding SOCK_RCU_FREE timeline:
-
-Commit 3b24d854cb35 ("tcp/dccp: do not touch listener sk_refcnt under
-synflood") added SOCK_RCU_FREE. At that time, the precise location of
-sock_set_flag(sk, SOCK_RCU_FREE) did not matter, because the thread calling
-__inet_hash() owns a reference on sk. SOCK_RCU_FREE was only tested
-at dismantle time.
-
-Commit 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
-started checking SOCK_RCU_FREE _after_ the lookup to infer whether
-the refcount has been taken care of.
-
-Fixes: 6acc9b432e67 ("bpf: Add helper to retrieve socket in BPF")
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org      # v6.2
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019113650.9060-3-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/inet_hashtables.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 62d9472ac8bca..f2ed2aed08ab3 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -731,12 +731,12 @@ int __inet_hash(struct sock *sk, struct sock *osk)
- 		if (err)
- 			goto unlock;
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1658,11 +1658,12 @@ static void ath12k_htt_mlo_offset_event_
+ 	msg = (struct ath12k_htt_mlo_offset_msg *)skb->data;
+ 	pdev_id = u32_get_bits(__le32_to_cpu(msg->info),
+ 			       HTT_T2H_MLO_OFFSET_INFO_PDEV_ID);
+-	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 
++	rcu_read_lock();
++	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+ 		ath12k_warn(ab, "invalid pdev id %d on htt mlo offset\n", pdev_id);
+-		return;
++		goto exit;
  	}
-+	sock_set_flag(sk, SOCK_RCU_FREE);
- 	if (IS_ENABLED(CONFIG_IPV6) && sk->sk_reuseport &&
- 		sk->sk_family == AF_INET6)
- 		__sk_nulls_add_node_tail_rcu(sk, &ilb2->nulls_head);
- 	else
- 		__sk_nulls_add_node_rcu(sk, &ilb2->nulls_head);
--	sock_set_flag(sk, SOCK_RCU_FREE);
- 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
- unlock:
- 	spin_unlock(&ilb2->lock);
--- 
-2.42.0
-
+ 
+ 	spin_lock_bh(&ar->data_lock);
+@@ -1678,6 +1679,8 @@ static void ath12k_htt_mlo_offset_event_
+ 	pdev->timestamp.mlo_comp_timer = __le32_to_cpu(msg->mlo_comp_timer);
+ 
+ 	spin_unlock_bh(&ar->data_lock);
++exit:
++	rcu_read_unlock();
+ }
+ 
+ void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
 
 
 
