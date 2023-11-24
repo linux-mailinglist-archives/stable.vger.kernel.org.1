@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD0DE7F7A9B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E619E7F8107
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DCFF281520
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:56:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A159728267A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF89339FD0;
-	Fri, 24 Nov 2023 17:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2642D2FC21;
+	Fri, 24 Nov 2023 18:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgE2Qu9L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NWUENwC7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6543381D6;
-	Fri, 24 Nov 2023 17:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B7DC433C7;
-	Fri, 24 Nov 2023 17:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C6428DBB;
+	Fri, 24 Nov 2023 18:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618EEC433C7;
+	Fri, 24 Nov 2023 18:55:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848606;
-	bh=KrvhFtn7PsxhWtbY9OITHjhHwPSKrmaYWcZlh2bmEZk=;
+	s=korg; t=1700852101;
+	bh=MuBHunZhR5hirx/6Z7dBcvlPNxpRCS+zznXgtwwKBb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qgE2Qu9LB/mhs5cPdHbibKn4IOGXSvynBXJyLIy0G/YdYD0DkcPO7WFww1zscrajs
-	 XqX0PichEssIrrKuk84MCCot5Jf99Iri/Ai4qBC/4aF1wYufSGDs0/b6I5IrP39GP4
-	 fEJ+bSJ/cUw/8z7mGXGEga6LWy6VV/oINvkP1yyk=
+	b=NWUENwC7zyu5a7FOT0xHCmFouJed5nXmf1hhC6bkmdAd/IKArQvLiETOCCI2uE7od
+	 scpBx3CWuugZv4jAiULRl40dFLfY+AfIv28F1SacIT1hMi3xmsvwDWcdRVRB+nUP9E
+	 S0JQWvjr7VfvwUBbcqdX4nXH7+amY2VnizoAHBIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/97] net: annotate data-races around sk->sk_dst_pending_confirm
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.1 196/372] wifi: ath11k: fix dfs radar event locking
 Date: Fri, 24 Nov 2023 17:49:43 +0000
-Message-ID: <20231124171934.530249492@linuxfoundation.org>
+Message-ID: <20231124172016.988827780@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
+commit 3b6c14833165f689cc5928574ebafe52bbce5f1e upstream.
 
-This field can be read or written without socket lock being held.
+The ath11k active pdevs are protected by RCU but the DFS radar event
+handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-Add annotations to avoid load-store tearing.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Compile tested only.
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019153115.26401-3-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h    | 6 +++---
- net/core/sock.c       | 2 +-
- net/ipv4/tcp_output.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index c0df14e5a0754..81888513b3b93 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1918,7 +1918,7 @@ static inline void dst_negative_advice(struct sock *sk)
- 		if (ndst != dst) {
- 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
- 			sk_tx_queue_clear(sk);
--			sk->sk_dst_pending_confirm = 0;
-+			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 		}
- 	}
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -7729,6 +7729,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
+ 		   ev->detector_id, ev->segment_id, ev->timestamp, ev->is_chirp,
+ 		   ev->freq_offset, ev->sidx);
+ 
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 
+ 	if (!ar) {
+@@ -7746,6 +7748,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
+ 		ieee80211_radar_detected(ar->hw);
+ 
+ exit:
++	rcu_read_unlock();
++
+ 	kfree(tb);
  }
-@@ -1929,7 +1929,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
- 	struct dst_entry *old_dst;
  
- 	sk_tx_queue_clear(sk);
--	sk->sk_dst_pending_confirm = 0;
-+	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
- 					    lockdep_sock_is_held(sk));
- 	rcu_assign_pointer(sk->sk_dst_cache, dst);
-@@ -1942,7 +1942,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
- 	struct dst_entry *old_dst;
- 
- 	sk_tx_queue_clear(sk);
--	sk->sk_dst_pending_confirm = 0;
-+	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
- 	dst_release(old_dst);
- }
-diff --git a/net/core/sock.c b/net/core/sock.c
-index e1d0c8c715b87..62d169bcfcfa1 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -496,7 +496,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
- 
- 	if (dst && dst->obsolete && dst->ops->check(dst, cookie) == NULL) {
- 		sk_tx_queue_clear(sk);
--		sk->sk_dst_pending_confirm = 0;
-+		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
- 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
- 		dst_release(dst);
- 		return NULL;
-diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
-index 3dd62cf739e32..a0875dc60e08f 100644
---- a/net/ipv4/tcp_output.c
-+++ b/net/ipv4/tcp_output.c
-@@ -1090,7 +1090,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
- 	skb_set_hash_from_sk(skb, sk);
- 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
- 
--	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
-+	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
- 
- 	/* Build TCP header and checksum it. */
- 	th = (struct tcphdr *)skb->data;
--- 
-2.42.0
-
 
 
 
