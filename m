@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A98DB7F7524
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:31:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385B67F7525
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6369B2817EF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:31:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DB928187F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FBC28DDA;
-	Fri, 24 Nov 2023 13:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BF928DD4;
+	Fri, 24 Nov 2023 13:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2wrG75b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Ze7UDI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8189428DD3
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:31:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A3DC43391;
-	Fri, 24 Nov 2023 13:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE6628DD3
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DCFC433C7;
+	Fri, 24 Nov 2023 13:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700832701;
-	bh=cJWYsERy+tWsEwcG68Ver7wCgMzRI/CfFxQutEcWVz0=;
+	s=korg; t=1700832709;
+	bh=mGVeZMQJXjLkiWPdLgVOH3GD4jznbpeKgQT1XMEaRNs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=v2wrG75bIHkTVGXgKHA5LrL+yDhBAZfQuxlyQWg29xutt38BWuCDKDCnyHSw3ZE7N
-	 rnT9mPDB3p4VAGr79gA8vy6G5hpT7WT5I/3UCpR+gvS8UAMXRMyxtmBynFKFghGLX4
-	 ylXW7rkLaTavAfNlcXkjgZUUkoHxWFosYMK1uvsM=
-Subject: FAILED: patch "[PATCH] media: qcom: camss: Fix genpd cleanup" failed to apply to 6.6-stable tree
+	b=2Ze7UDI3e10y9KCXIVvqaeo92x4Qp4EEAoAsl0pEnV7kMNtl6ooS6C86nYKfTJdvT
+	 gL2415pGDiKANma4WAudJLFGkOfe6zR79rrUCYWmQaYUUOBrq6JESfeFfM0N4LoP6j
+	 cNUIX16FnkwOYojHFtGlGJOFT/K+JHtDPYsiAb/g=
+Subject: FAILED: patch "[PATCH] media: qcom: camss: Fix genpd cleanup" failed to apply to 6.5-stable tree
 To: bryan.odonoghue@linaro.org,hverkuil-cisco@xs4all.nl
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:31:38 +0000
-Message-ID: <2023112438-dingo-broken-1a0a@gregkh>
+Date: Fri, 24 Nov 2023 13:31:39 +0000
+Message-ID: <2023112439-worrisome-shadow-3b89@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,25 +45,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
 git cherry-pick -x f69791c39745e64621216fe8919cb73c0065002b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112438-dingo-broken-1a0a@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112439-worrisome-shadow-3b89@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
 f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
 b278080a89f4 ("media: qcom: camss: Fix V4L2 async notifier error path")
 7405116519ad ("media: qcom: camss: Fix pm_domain_on sequence in probe")
+5651bab6890a ("media: qcom: Initialise V4L2 async notifier later")
 
 thanks,
 
