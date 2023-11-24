@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE6CC7F7F40
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 934BC7F80D3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E032F1C2147E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C54251C21617
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2474D364CB;
-	Fri, 24 Nov 2023 18:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017C914F7B;
+	Fri, 24 Nov 2023 18:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGoKoFn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMFmXf3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87B733090;
-	Fri, 24 Nov 2023 18:39:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B1AC433C7;
-	Fri, 24 Nov 2023 18:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22C4339BE;
+	Fri, 24 Nov 2023 18:53:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42769C433C8;
+	Fri, 24 Nov 2023 18:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851196;
-	bh=OldGUBPzhe+YCnPjKMuAx2YwqvJd+TP0lh97Rh7z9Vg=;
+	s=korg; t=1700851989;
+	bh=8weSAZh5bz7SEjptIHA1xYUqlBnyC7i0grRSsn+H6z8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YGoKoFn1dRSKjMfOkG+El6DzfhjvG6xeSC4DZsbA+6IC1PZmkZ6ZAkNKXUWhojq92
-	 l5OoX6v9x8+HwuI9ah1tRSWUdRXu1Hrt+suRN9diMzGMM6vVJ7UheUb7fay+jv9xoD
-	 Yvf1g4Byk01ffjIb1MEnXhFsC6gjJbslbeh/i5G0=
+	b=UMFmXf3D+bZahHzNs4wlnRGrWeWanSlUFQJ9GGFzQsjtx6oH3SqzATRv1tZB8FC7s
+	 xZxvUtDx8k3NKFnZL/IYDRl5PXAWLVly1jJhEjDmoRfJmcVlW2AE/2f8PROU03Tv12
+	 u9bUyKf/nczPxfm4k2tm9qo4bPLhIaBZ7Tmlq6II=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 327/491] netfilter: nf_tables: remove catchall element in GC sync path
+	Tao Su <tao1.su@linux.intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 176/372] KVM: x86: Clear bit12 of ICR after APIC-write VM-exit
 Date: Fri, 24 Nov 2023 17:49:23 +0000
-Message-ID: <20231124172034.390333994@linuxfoundation.org>
+Message-ID: <20231124172016.330891436@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,91 +54,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tao Su <tao1.su@linux.intel.com>
 
-[ Upstream commit 93995bf4af2c5a99e2a87f0cd5ce547d31eb7630 ]
+commit 629d3698f6958ee6f8131ea324af794f973b12ac upstream.
 
-The expired catchall element is not deactivated and removed from GC sync
-path. This path holds mutex so just call nft_setelem_data_deactivate()
-and nft_setelem_catchall_remove() before queueing the GC work.
+When IPI virtualization is enabled, a WARN is triggered if bit12 of ICR
+MSR is set after APIC-write VM-exit. The reason is kvm_apic_send_ipi()
+thinks the APIC_ICR_BUSY bit should be cleared because KVM has no delay,
+but kvm_apic_write_nodecode() doesn't clear the APIC_ICR_BUSY bit.
 
-Fixes: 4a9e12ea7e70 ("netfilter: nft_set_pipapo: call nft_trans_gc_queue_sync() in catchall GC")
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Under the x2APIC section, regarding ICR, the SDM says:
+
+  It remains readable only to aid in debugging; however, software should
+  not assume the value returned by reading the ICR is the last written
+  value.
+
+I.e. the guest is allowed to set bit 12.  However, the SDM also gives KVM
+free reign to do whatever it wants with the bit, so long as KVM's behavior
+doesn't confuse userspace or break KVM's ABI.
+
+Clear bit 12 so that it reads back as '0'. This approach is safer than
+"do nothing" and is consistent with the case where IPI virtualization is
+disabled or not supported, i.e.,
+
+  handle_fastpath_set_x2apic_icr_irqoff() -> kvm_x2apic_icr_write()
+
+Opportunistically replace the TODO with a comment calling out that eating
+the write is likely faster than a conditional branch around the busy bit.
+
+Link: https://lore.kernel.org/all/ZPj6iF0Q7iynn62p@google.com/
+Fixes: 5413bcba7ed5 ("KVM: x86: Add support for vICR APIC-write VM-Exits in x2APIC mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20230914055504.151365-1-tao1.su@linux.intel.com
+[sean: tweak changelog, replace TODO with comment, drop local "val"]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ arch/x86/kvm/lapic.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 398a1bcc6ea61..d676c87411dc1 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6461,6 +6461,12 @@ static int nft_setelem_deactivate(const struct net *net,
- 	return ret;
- }
- 
-+static void nft_setelem_catchall_destroy(struct nft_set_elem_catchall *catchall)
-+{
-+	list_del_rcu(&catchall->list);
-+	kfree_rcu(catchall, rcu);
-+}
-+
- static void nft_setelem_catchall_remove(const struct net *net,
- 					const struct nft_set *set,
- 					const struct nft_set_elem *elem)
-@@ -6469,8 +6475,7 @@ static void nft_setelem_catchall_remove(const struct net *net,
- 
- 	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
- 		if (catchall->elem == elem->priv) {
--			list_del_rcu(&catchall->list);
--			kfree_rcu(catchall, rcu);
-+			nft_setelem_catchall_destroy(catchall);
- 			break;
- 		}
- 	}
-@@ -9636,11 +9641,12 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
- 						  unsigned int gc_seq,
- 						  bool sync)
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2294,22 +2294,22 @@ EXPORT_SYMBOL_GPL(kvm_lapic_set_eoi);
+ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
  {
--	struct nft_set_elem_catchall *catchall;
-+	struct nft_set_elem_catchall *catchall, *next;
- 	const struct nft_set *set = gc->set;
-+	struct nft_elem_priv *elem_priv;
- 	struct nft_set_ext *ext;
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
+-	u64 val;
  
--	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
-+	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
+ 	/*
+-	 * ICR is a single 64-bit register when x2APIC is enabled.  For legacy
+-	 * xAPIC, ICR writes need to go down the common (slightly slower) path
+-	 * to get the upper half from ICR2.
++	 * ICR is a single 64-bit register when x2APIC is enabled, all others
++	 * registers hold 32-bit values.  For legacy xAPIC, ICR writes need to
++	 * go down the common path to get the upper half from ICR2.
++	 *
++	 * Note, using the write helpers may incur an unnecessary write to the
++	 * virtual APIC state, but KVM needs to conditionally modify the value
++	 * in certain cases, e.g. to clear the ICR busy bit.  The cost of extra
++	 * conditional branches is likely a wash relative to the cost of the
++	 * maybe-unecessary write, and both are in the noise anyways.
+ 	 */
+-	if (apic_x2apic_mode(apic) && offset == APIC_ICR) {
+-		val = kvm_lapic_get_reg64(apic, APIC_ICR);
+-		kvm_apic_send_ipi(apic, (u32)val, (u32)(val >> 32));
+-		trace_kvm_apic_write(APIC_ICR, val);
+-	} else {
+-		/* TODO: optimize to just emulate side effect w/o one more write */
+-		val = kvm_lapic_get_reg(apic, offset);
+-		kvm_lapic_reg_write(apic, offset, (u32)val);
+-	}
++	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
++		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
++	else
++		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
+ }
+ EXPORT_SYMBOL_GPL(kvm_apic_write_nodecode);
  
- 		if (!nft_set_elem_expired(ext))
-@@ -9658,7 +9664,17 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
- 		if (!gc)
- 			return NULL;
- 
--		nft_trans_gc_elem_add(gc, catchall->elem);
-+		elem_priv = catchall->elem;
-+		if (sync) {
-+			struct nft_set_elem elem = {
-+				.priv = elem_priv,
-+			};
-+
-+			nft_setelem_data_deactivate(gc->net, gc->set, &elem);
-+			nft_setelem_catchall_destroy(catchall);
-+		}
-+
-+		nft_trans_gc_elem_add(gc, elem_priv);
- 	}
- 
- 	return gc;
--- 
-2.42.0
-
 
 
 
