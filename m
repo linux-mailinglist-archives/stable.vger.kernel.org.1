@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-2306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA2D97F839E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29097F8257
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 647852888A2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6037F1F20FE9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0559435F04;
-	Fri, 24 Nov 2023 19:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310A71A5A4;
+	Fri, 24 Nov 2023 19:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ANhcdKuT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLlhSv9I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FDA364C1;
-	Fri, 24 Nov 2023 19:19:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF97C433C8;
-	Fri, 24 Nov 2023 19:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E312331748;
+	Fri, 24 Nov 2023 19:06:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA5DC433C7;
+	Fri, 24 Nov 2023 19:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853560;
-	bh=25IsDEsmANcYXD3DrRz38QmDUBSTnDcMPDO1zIQ/3bs=;
+	s=korg; t=1700852799;
+	bh=ABWsxyMnkSTR2YFJH7e3vYfe/3udy+21bJYdN6SOeFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ANhcdKuTGkoUM7j+aVapr82xLhRpskYfexz4Ch9biKTfQtXplE1TIy1ZKB3BrHGKd
-	 jQpVk5G5m69BIMjwyECkPZrGivYXPTiTS+gJ/SdoYexArtzz5SjEFjrRqBKGAS/eWS
-	 k2vxx1nMa8peHASvt7C7nEzDzRcJcJDKP8qAxvTE=
+	b=DLlhSv9I712AUz+0xdGVFv1QI/thQ+tuU3OsRQKyOVYxf6o8/s80549uXM+ZmZRx5
+	 RLpsdAMIpBpp+mxPVhH5b9cZXSs5CeNblDTaWltDtj8M6hBDaQ0F3aQP3H4SRd2moT
+	 SBu/UbcFS5Fi1o8N5F335Vip40+PslYEMi79Qtpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 213/297] quota: explicitly forbid quota files from being encrypted
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.10 128/193] PCI: keystone: Dont discard .probe() callback
 Date: Fri, 24 Nov 2023 17:54:15 +0000
-Message-ID: <20231124172007.688529991@linuxfoundation.org>
+Message-ID: <20231124171952.343746119@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,71 +50,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit d3cc1b0be258191d6360c82ea158c2972f8d3991 upstream.
+commit 7994db905c0fd692cf04c527585f08a91b560144 upstream.
 
-Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
-fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
-f2fs with test_dummy_encryption in the mount options:
+The __init annotation makes the ks_pcie_probe() function disappear after
+booting completes. However a device can also be bound later. In that case,
+we try to call ks_pcie_probe(), but the backing memory is likely already
+overwritten.
 
-$ kvm-xfstests -c f2fs/encrypt generic/270
-[...]
-WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
+The right thing to do is do always have the probe callback available.  Note
+that the (wrong) __refdata annotation prevented this issue to be noticed by
+modpost.
 
-The cause of the WARNING is that not all encrypted inodes have been
-evicted before fscrypt_destroy_keyring() is called, which violates an
-assumption.  This happens because the test uses an external quota file,
-which gets automatically encrypted due to test_dummy_encryption.
-
-Encryption of quota files has never really been supported.  On ext4,
-ext4_quota_read() does not decrypt the data, so encrypted quota files
-are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
-the pagecache, so trying to use an encrypted quota file gets farther,
-resulting in the issue described above being possible.  But this was
-never intended to be possible, and there is no use case for it.
-
-Therefore, make the quota support layer explicitly reject using
-IS_ENCRYPTED inodes when quotaon is attempted.
-
+Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
+Link: https://lore.kernel.org/r/20231001170254.2506508-5-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230905003227.326998-1-ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2396,6 +2396,20 @@ static int vfs_setup_quota_inode(struct
- 	if (sb_has_quota_loaded(sb, type))
- 		return -EBUSY;
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1142,7 +1142,7 @@ static const struct of_device_id ks_pcie
+ 	{ },
+ };
  
-+	/*
-+	 * Quota files should never be encrypted.  They should be thought of as
-+	 * filesystem metadata, not user data.  New-style internal quota files
-+	 * cannot be encrypted by users anyway, but old-style external quota
-+	 * files could potentially be incorrectly created in an encrypted
-+	 * directory, hence this explicit check.  Some reasons why encrypted
-+	 * quota files don't work include: (1) some filesystems that support
-+	 * encryption don't handle it in their quota_read and quota_write, and
-+	 * (2) cleaning up encrypted quota files at unmount would need special
-+	 * consideration, as quota files are cleaned up later than user files.
-+	 */
-+	if (IS_ENCRYPTED(inode))
-+		return -EINVAL;
-+
- 	dqopt->files[type] = igrab(inode);
- 	if (!dqopt->files[type])
- 		return -EIO;
+-static int __init ks_pcie_probe(struct platform_device *pdev)
++static int ks_pcie_probe(struct platform_device *pdev)
+ {
+ 	const struct dw_pcie_host_ops *host_ops;
+ 	const struct dw_pcie_ep_ops *ep_ops;
+@@ -1354,7 +1354,7 @@ static int ks_pcie_remove(struct platfor
+ 	return 0;
+ }
+ 
+-static struct platform_driver ks_pcie_driver __refdata = {
++static struct platform_driver ks_pcie_driver = {
+ 	.probe  = ks_pcie_probe,
+ 	.remove = ks_pcie_remove,
+ 	.driver = {
 
 
 
