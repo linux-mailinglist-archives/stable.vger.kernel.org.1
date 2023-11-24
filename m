@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C8CC7F8292
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E8BD7F8444
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 371A51C238B7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09D40284F93
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3911364B7;
-	Fri, 24 Nov 2023 19:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9901E2C1BA;
+	Fri, 24 Nov 2023 19:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkS8+o/T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/lE27eD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9022E84A;
-	Fri, 24 Nov 2023 19:08:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7675C433C7;
-	Fri, 24 Nov 2023 19:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F14364B7;
+	Fri, 24 Nov 2023 19:25:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38D1C433C8;
+	Fri, 24 Nov 2023 19:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852930;
-	bh=HF5D9bmBvZuHwKQtvm+U9EbzTRP+TgLnVJ7dud2XM5s=;
+	s=korg; t=1700853938;
+	bh=AJAmr2oXj78+zsQMGh2jubGWHbFpuCKRhQIxrIzt3hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkS8+o/TFbJJTBGWoivP3lwEneIQqaWTjCPm5VPn9hR4nOv+JPIADlnoR9OhMHb4O
-	 WLDMaRNNfWV1gdj2wYvnb8zBw38WmBmsW9zK3gILbQPOHrvhL0mKg4/xstWoEebnv7
-	 p2+GJsN5Vtp6zmRp477hn3naqQJtuOfXDPI7XFTI=
+	b=g/lE27eD2m7/cEDJv137/lePi3YcOHAfjZeAxv5Jiw0f7vWWw8uVrzwCmG6GmgYLG
+	 CbD3HDxgiGEJiGXYZsrNUYomGKFROLd+8u+wwIX9oTDCHH4qfwvIIb4paCHECVTQBI
+	 fTm8ynuAtGYHWqUDwU2QfAMve7R95rYJYS3Mnh30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 180/193] ext4: correct offset of gdb backup in non meta_bg group to update_backups
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 090/159] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
 Date: Fri, 24 Nov 2023 17:55:07 +0000
-Message-ID: <20231124171954.355473507@linuxfoundation.org>
+Message-ID: <20231124171945.652501989@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +54,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit 31f13421c004a420c0e9d288859c9ea9259ea0cc upstream.
+commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
 
-Commit 0aeaa2559d6d5 ("ext4: fix corruption when online resizing a 1K
-bigalloc fs") found that primary superblock's offset in its group is
-not equal to offset of backup superblock in its group when block size
-is 1K and bigalloc is enabled. As group descriptor blocks are right
-after superblock, we can't pass block number of gdb to update_backups
-for the same reason.
+JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
+however, other process could intercept the EIO information from bdev's
+mapping, which leads journal recovering successful even EIO occurs during
+data written back to fs device.
 
-The root casue of the issue above is that leading 1K padding block is
-count as data block offset for primary block while backup block has no
-padding block offset in its group.
+We found this problem in our product, iscsi + multipath is chosen for block
+device of ext4. Unstable network may trigger kpartx to rescan partitions in
+device mapper layer. Detailed process is shown as following:
 
-Remove padding data block count to fix the issue for gdb backups.
+  mount          kpartx          irq
+jbd2_journal_recover
+ do_one_pass
+  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
+  mark_buffer_dirty // mark bh dirty
+         vfs_read
+	  generic_file_read_iter // dio
+	   filemap_write_and_wait_range
+	    __filemap_fdatawrite_range
+	     do_writepages
+	      block_write_full_folio
+	       submit_bh_wbc
+	            >>  EIO occurs in disk  <<
+	                     end_buffer_async_write
+			      mark_buffer_write_io_error
+			       mapping_set_error
+			        set_bit(AS_EIO, &mapping->flags) // set!
+	    filemap_check_errors
+	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
+ err2 = sync_blockdev
+  filemap_write_and_wait
+   filemap_check_errors
+    test_and_clear_bit(AS_EIO, &mapping->flags) // false
+ err2 = 0
 
-For meta_bg case, update_backups treat blk_off as block number, do no
-conversion in this case.
+Filesystem is mounted successfully even data from journal is failed written
+into disk, and ext4/ocfs2 could become corrupted.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Theodore Ts'o <tytso@mit.edu>
-Link: https://lore.kernel.org/r/20230826174712.4059355-2-shikemeng@huaweicloud.com
+Fix it by comparing the wb_err state in fs block device before recovering
+and after recovering.
+
+A reproducer can be found in the kernel bugzilla referenced below.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/resize.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/jbd2/recovery.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -1543,6 +1543,8 @@ exit_journal:
- 		int gdb_num_end = ((group + flex_gd->count - 1) /
- 				   EXT4_DESC_PER_BLOCK(sb));
- 		int meta_bg = ext4_has_feature_meta_bg(sb);
-+		sector_t padding_blocks = meta_bg ? 0 : sbi->s_sbh->b_blocknr -
-+					 ext4_group_first_block_no(sb, 0);
- 		sector_t old_gdb = 0;
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -247,6 +247,8 @@ int jbd2_journal_recover(journal_t *jour
+ 	journal_superblock_t *	sb;
  
- 		update_backups(sb, ext4_group_first_block_no(sb, 0),
-@@ -1554,8 +1556,8 @@ exit_journal:
- 						     gdb_num);
- 			if (old_gdb == gdb_bh->b_blocknr)
- 				continue;
--			update_backups(sb, gdb_bh->b_blocknr, gdb_bh->b_data,
--				       gdb_bh->b_size, meta_bg);
-+			update_backups(sb, gdb_bh->b_blocknr - padding_blocks,
-+				       gdb_bh->b_data, gdb_bh->b_size, meta_bg);
- 			old_gdb = gdb_bh->b_blocknr;
- 		}
+ 	struct recovery_info	info;
++	errseq_t		wb_err;
++	struct address_space	*mapping;
+ 
+ 	memset(&info, 0, sizeof(info));
+ 	sb = journal->j_superblock;
+@@ -264,6 +266,9 @@ int jbd2_journal_recover(journal_t *jour
+ 		return 0;
  	}
+ 
++	wb_err = 0;
++	mapping = journal->j_fs_dev->bd_inode->i_mapping;
++	errseq_check_and_advance(&mapping->wb_err, &wb_err);
+ 	err = do_one_pass(journal, &info, PASS_SCAN);
+ 	if (!err)
+ 		err = do_one_pass(journal, &info, PASS_REVOKE);
+@@ -284,6 +289,9 @@ int jbd2_journal_recover(journal_t *jour
+ 	err2 = sync_blockdev(journal->j_fs_dev);
+ 	if (!err)
+ 		err = err2;
++	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
++	if (!err)
++		err = err2;
+ 	/* Make sure all replayed data is on permanent storage */
+ 	if (journal->j_flags & JBD2_BARRIER) {
+ 		err2 = blkdev_issue_flush(journal->j_fs_dev, GFP_KERNEL, NULL);
 
 
 
