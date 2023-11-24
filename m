@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D632C7F7CB7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5227F7EC5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D2371F20FBE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A6C1C21409
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66EF3A8CA;
-	Fri, 24 Nov 2023 18:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4C222F1D;
+	Fri, 24 Nov 2023 18:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEZ7Ogzy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKs3l249"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808443A8C2;
-	Fri, 24 Nov 2023 18:17:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03704C433C8;
-	Fri, 24 Nov 2023 18:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02E734197;
+	Fri, 24 Nov 2023 18:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 603D3C433CA;
+	Fri, 24 Nov 2023 18:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849863;
-	bh=vqsecyOIMGRPhH04Fmf/3ITDgDwV6lfUh2QTiBljrw0=;
+	s=korg; t=1700850955;
+	bh=+3ghmOcbwnbC1Wu+PRZpujF8RIs6OYNhj0AhY0hqQa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEZ7OgzydhOlB79XGTni0mGdV2vwp3ioWtNgYzoborjoxCshyzRfV4LBZME75IiCt
-	 G/oRccrGHu1CFHNsH44IqOQpcdND2M/ic0g99Xugrk5EGH1XXw88B/+ViuGLfZCniV
-	 bqvh0nmMLhz7wOk5mxxKtvorrNPzSgpTJ5M1k6xA=
+	b=dKs3l249ODq6D/SpZmHAN2ZKRIVCWBJ1yF7Kv+6f04dNUjo4+oufrLFL3jYpolVh5
+	 uGsEh3fSExKEwKDWfejiKS9+4a4ldvjYVH4R3t8XxTNAY458sr5nnzxm1HCTlsFeHM
+	 t5I7MOAiIV6Wkd2Bh8KIi+gGFgpscW7lr75Szps0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 326/530] PCI: kirin: Dont discard .remove() callback
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.5 256/491] PCI/sysfs: Protect drivers D3cold preference from user space
 Date: Fri, 24 Nov 2023 17:48:12 +0000
-Message-ID: <20231124172037.950927399@linuxfoundation.org>
+Message-ID: <20231124172032.259889459@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +52,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 3064ef2e88c1629c1e67a77d7bc20020b35846f2 upstream.
+commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
 
-With CONFIG_PCIE_KIRIN=y and kirin_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+struct pci_dev contains two flags which govern whether the device may
+suspend to D3cold:
 
-The right thing to do is do always have the remove callback available.
-This fixes the following warning by modpost:
+* no_d3cold provides an opt-out for drivers (e.g. if a device is known
+  to not wake from D3cold)
 
-  drivers/pci/controller/dwc/pcie-kirin: section mismatch in reference: kirin_pcie_driver+0x8 (section: .data) -> kirin_pcie_remove (section: .exit.text)
+* d3cold_allowed provides an opt-out for user space (default is true,
+  user space may set to false)
 
-(with ARCH=x86_64 W=1 allmodconfig).
+Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
+the user space setting overwrites the driver setting.  Essentially user
+space is trusted to know better than the driver whether D3cold is
+working.
 
-Fixes: 000f60db784b ("PCI: kirin: Add support for a PHY layer")
-Link: https://lore.kernel.org/r/20231001170254.2506508-3-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+That feels unsafe and wrong.  Assume that the change was introduced
+inadvertently and do not overwrite no_d3cold when d3cold_allowed is
+modified.  Instead, consider d3cold_allowed in addition to no_d3cold
+when choosing a suspend state for the device.
+
+That way, user space may opt out of D3cold if the driver hasn't, but it
+may no longer force an opt in if the driver has opted out.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org	# v4.8+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-kirin.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/pci-acpi.c  |    2 +-
+ drivers/pci/pci-sysfs.c |    5 +----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-kirin.c
-+++ b/drivers/pci/controller/dwc/pcie-kirin.c
-@@ -741,7 +741,7 @@ err:
- 	return ret;
- }
- 
--static int __exit kirin_pcie_remove(struct platform_device *pdev)
-+static int kirin_pcie_remove(struct platform_device *pdev)
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -911,7 +911,7 @@ pci_power_t acpi_pci_choose_state(struct
  {
- 	struct kirin_pcie *kirin_pcie = platform_get_drvdata(pdev);
+ 	int acpi_state, d_max;
  
-@@ -818,7 +818,7 @@ static int kirin_pcie_probe(struct platf
+-	if (pdev->no_d3cold)
++	if (pdev->no_d3cold || !pdev->d3cold_allowed)
+ 		d_max = ACPI_STATE_D3_HOT;
+ 	else
+ 		d_max = ACPI_STATE_D3_COLD;
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -529,10 +529,7 @@ static ssize_t d3cold_allowed_store(stru
+ 		return -EINVAL;
  
- static struct platform_driver kirin_pcie_driver = {
- 	.probe			= kirin_pcie_probe,
--	.remove	        	= __exit_p(kirin_pcie_remove),
-+	.remove	        	= kirin_pcie_remove,
- 	.driver			= {
- 		.name			= "kirin-pcie",
- 		.of_match_table		= kirin_pcie_match,
+ 	pdev->d3cold_allowed = !!val;
+-	if (pdev->d3cold_allowed)
+-		pci_d3cold_enable(pdev);
+-	else
+-		pci_d3cold_disable(pdev);
++	pci_bridge_d3_update(pdev);
+ 
+ 	pm_runtime_resume(dev);
+ 
 
 
 
