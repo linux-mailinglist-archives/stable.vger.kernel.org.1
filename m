@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4837F844B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 857567F827C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93870B23F07
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2811CB24529
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A73381CC;
-	Fri, 24 Nov 2023 19:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830F52E64F;
+	Fri, 24 Nov 2023 19:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RzlHS6oo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgF0XwPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5EC22069;
-	Fri, 24 Nov 2023 19:25:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CADAC433C7;
-	Fri, 24 Nov 2023 19:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440A233076;
+	Fri, 24 Nov 2023 19:08:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F85EC433C7;
+	Fri, 24 Nov 2023 19:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853950;
-	bh=Mx/iABtjjukvGtIbo2HLz+6o2jV2Dy6MakoLCDI+Nnc=;
+	s=korg; t=1700852884;
+	bh=nzW13D0l7kQzgm05nvf3dwAvT3Oo2t50nI0TS1qgzvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RzlHS6ooaLIj5qC6UFRl8DXiRse1X+DDSYEAL99TS9H41MfhVKj+2wPPH7grByP/2
-	 baZyHkaFiZi8lgyJdzJi0VnchY62ie5ljyeAgzC3vrklRK1lHcErWEVlvlcsTSoH8r
-	 K8lsZNs6DwWGTwLQ9m+4xUYRMk9/mzUtr4YuMKmQ=
+	b=DgF0XwPM3ELMfr5SL495zeZDIK67IOIUemqlA6SLgxAPESsZ6KkNEGIlUSIVSwAQN
+	 mAmY91+BIV6Yx2AZ4rcsuoKfx8au9JrZqA6VlEA80ohOElWaFMkFpKf0V2pIsZbK8Q
+	 sQ8MAPsRm/zNMuaTOiov01bQrS230rMBWc/Gwp4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pu Wen <puwen@hygon.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.4 071/159] x86/cpu/hygon: Fix the CPU topology evaluation for real
+	Johnathan Mantey <johnathanx.mantey@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 161/193] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
 Date: Fri, 24 Nov 2023 17:54:48 +0000
-Message-ID: <20231124171944.914682092@linuxfoundation.org>
+Message-ID: <20231124171953.635018181@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pu Wen <puwen@hygon.cn>
+From: Johnathan Mantey <johnathanx.mantey@intel.com>
 
-commit ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4 upstream.
+commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
 
-Hygon processors with a model ID > 3 have CPUID leaf 0xB correctly
-populated and don't need the fixed package ID shift workaround. The fixup
-is also incorrect when running in a guest.
+This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
 
-Fixes: e0ceeae708ce ("x86/CPU/hygon: Fix phys_proc_id calculation logic for multi-die processors")
-Signed-off-by: Pu Wen <puwen@hygon.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com
-Link: https://lore.kernel.org/r/20230814085112.089607918@linutronix.de
+The cited commit introduced unwanted behavior.
+
+The intent for the commit was to be able to detect carrier loss/gain
+for just the NIC connected to the BMC. The unwanted effect is a
+carrier loss for auxiliary paths also causes the BMC to lose
+carrier. The BMC never regains carrier despite the secondary NIC
+regaining a link.
+
+This change, when merged, needs to be backported to stable kernels.
+5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
+
+Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
+CC: stable@vger.kernel.org
+Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/hygon.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/ncsi/ncsi-aen.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/arch/x86/kernel/cpu/hygon.c
-+++ b/arch/x86/kernel/cpu/hygon.c
-@@ -88,8 +88,12 @@ static void hygon_get_topology(struct cp
- 		if (!err)
- 			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
+ 	if ((had_link == has_link) || chained)
+ 		return 0;
  
--		/* Socket ID is ApicId[6] for these processors. */
--		c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
-+		/*
-+		 * Socket ID is ApicId[6] for the processors with model <= 0x3
-+		 * when running on host.
-+		 */
-+		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR) && c->x86_model <= 0x3)
-+			c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
- 
- 		cacheinfo_hygon_init_llc_id(c, cpu);
- 	} else if (cpu_has(c, X86_FEATURE_NODEID_MSR)) {
+-	if (had_link)
+-		netif_carrier_off(ndp->ndev.dev);
+-	else
+-		netif_carrier_on(ndp->ndev.dev);
+-
+ 	if (!ndp->multi_package && !nc->package->multi_channel) {
+ 		if (had_link) {
+ 			ndp->flags |= NCSI_DEV_RESHUFFLE;
 
 
 
