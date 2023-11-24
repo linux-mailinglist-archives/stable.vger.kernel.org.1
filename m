@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-2011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9764C7F8262
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4248B7F838F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F65F1F20FEF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 737721C25DB7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAADE364B7;
-	Fri, 24 Nov 2023 19:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE19364C1;
+	Fri, 24 Nov 2023 19:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6hgoaBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMZbc8v5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698EE2FC21;
-	Fri, 24 Nov 2023 19:07:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75D9C433C8;
-	Fri, 24 Nov 2023 19:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810EB33CC2;
+	Fri, 24 Nov 2023 19:18:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F805C433C9;
+	Fri, 24 Nov 2023 19:18:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852827;
-	bh=2mtFt+5Xpii1K6QdhwZyIufDOS80wPhXXfRycnFhXEE=;
+	s=korg; t=1700853523;
+	bh=P+zWD0+IK9HK/RjqL8E+HnY0em+dy9299Su7AR7l7Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6hgoaBKXUkkyvFxGwAMI9/UNhMwJnTPq/QLnLF7OQAFjteeCZcmdTYJgsbAZLS/b
-	 NWGl2TJjXU5IynbYSBUpBmN0XVeIOwm2n8NOzZ5SPI6XXmVTW+UTTG7boP8vWOLSpV
-	 DGZWc8XX0dB7KhI64YcJk1lJC9TVU7KtCZp30eqQ=
+	b=MMZbc8v5hD0OazcP6j0Ve5ivpFeb9CBlIab6MFhOVQ0iIOi7dUcSzc22T9Z9EhhqU
+	 bBV1qeYpSfplrp4zP/E/kEUquh6m8Dt+yXTLlq1y5xKMgajsCVPytXKVpm4Rj8oJ35
+	 ZMtB27J4VcGDIi9uUmJRIIzmdWGWJA7nzfmYyMMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -41,12 +41,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Mike Rapoport (IBM)" <rppt@kernel.org>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 138/193] mm/memory_hotplug: use pfn math in place of direct struct page manipulation
+Subject: [PATCH 5.15 223/297] mm/memory_hotplug: use pfn math in place of direct struct page manipulation
 Date: Fri, 24 Nov 2023 17:54:25 +0000
-Message-ID: <20231124171952.726039479@linuxfoundation.org>
+Message-ID: <20231124172008.005622543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -94,9 +94,9 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/memory_hotplug.c
 +++ b/mm/memory_hotplug.c
-@@ -1263,7 +1263,7 @@ static int scan_movable_pages(unsigned l
- 		head = compound_head(page);
- 		if (page_huge_active(head))
+@@ -1677,7 +1677,7 @@ static int scan_movable_pages(unsigned l
+ 		 */
+ 		if (HPageMigratable(head))
  			goto found;
 -		skip = compound_nr(head) - (page - head);
 +		skip = compound_nr(head) - (pfn - page_to_pfn(head));
