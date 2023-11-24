@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-1754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777E37F8137
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C55E7F7FAA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2687B203AF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E9401C214F6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE18A364A5;
-	Fri, 24 Nov 2023 18:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E117364CB;
+	Fri, 24 Nov 2023 18:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEqF0FFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ve48GbvA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDDB2E64F;
-	Fri, 24 Nov 2023 18:56:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE31C433C8;
-	Fri, 24 Nov 2023 18:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46F3381DE;
+	Fri, 24 Nov 2023 18:43:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D27C433C7;
+	Fri, 24 Nov 2023 18:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852192;
-	bh=cyJm76ptlHlGzuRYNK4YvG9BRU5nTh2aE3V8N4/mBFc=;
+	s=korg; t=1700851401;
+	bh=qPFgpIJdtbbBvCFIcN5xlfCkNLi7b8AG0LUsO/Jp8sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PEqF0FFRUJNmSFnQtVRqO5HIArUfcAWIPxJLbfesTvnYcr/FdyRU8yCJhjixGQsB1
-	 7ysLVnB5IxU47QTPklbr+1O+rYSLFMYe9nohSacabLd0GCvfx71++lE0LabyOZNy/z
-	 V6EjgrfaYY3sGJU+Hx5lq94k/RzSAPV4rVV6H5JE=
+	b=Ve48GbvAmt0DkFDD2kuqIL/3lQ7UgF4v9wZY15h0zzxOzQb7eOUKs2V/9rRfZw0/C
+	 71lvk4fLid/+mOnn7OxScV8tizhGUWzyL5H4kW3cd8Pxq3CLu2Reqy+kUGXsSBDexg
+	 M0AnkQFyz/X3cyCfxIuVpU0MEB1ga6PAKbvQAmW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Yeong <joshua.yeong@starfivetech.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 257/372] i3c: master: cdns: Fix reading status register
-Date: Fri, 24 Nov 2023 17:50:44 +0000
-Message-ID: <20231124172019.070195042@linuxfoundation.org>
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	Darren Hart <darren@os.amperecomputing.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-watchdog@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 6.5 409/491] sbsa_gwdt: Calculate timeout with 64-bit math
+Date: Fri, 24 Nov 2023 17:50:45 +0000
+Message-ID: <20231124172036.895936071@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +57,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Yeong <joshua.yeong@starfivetech.com>
+From: Darren Hart <darren@os.amperecomputing.com>
 
-commit 4bd8405257da717cd556f99e5fb68693d12c9766 upstream.
+commit 5d6aa89bba5bd6af2580f872b57f438dab883738 upstream.
 
-IBIR_DEPTH and CMDR_DEPTH should read from status0 instead of status1.
+Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+introduced new timer math for watchdog revision 1 with the 48 bit offset
+register.
 
-Cc: stable@vger.kernel.org
-Fixes: 603f2bee2c54 ("i3c: master: Add driver for Cadence IP")
-Signed-off-by: Joshua Yeong <joshua.yeong@starfivetech.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230913031743.11439-2-joshua.yeong@starfivetech.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+The gwdt->clk and timeout are u32, but the argument being calculated is
+u64. Without a cast, the compiler performs u32 operations, truncating
+intermediate steps, resulting in incorrect values.
+
+A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
+timeout of 600s writes 3647256576 to the one shot watchdog instead of
+300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
+
+Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
+the order of operations explicit with parenthesis.
+
+Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-watchdog@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # 5.14.x
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/watchdog/sbsa_gwdt.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -192,7 +192,7 @@
- #define SLV_STATUS1_HJ_DIS		BIT(18)
- #define SLV_STATUS1_MR_DIS		BIT(17)
- #define SLV_STATUS1_PROT_ERR		BIT(16)
--#define SLV_STATUS1_DA(x)		(((s) & GENMASK(15, 9)) >> 9)
-+#define SLV_STATUS1_DA(s)		(((s) & GENMASK(15, 9)) >> 9)
- #define SLV_STATUS1_HAS_DA		BIT(8)
- #define SLV_STATUS1_DDR_RX_FULL		BIT(7)
- #define SLV_STATUS1_DDR_TX_FULL		BIT(6)
-@@ -1624,13 +1624,13 @@ static int cdns_i3c_master_probe(struct
- 	/* Device ID0 is reserved to describe this master. */
- 	master->maxdevs = CONF_STATUS0_DEVS_NUM(val);
- 	master->free_rr_slots = GENMASK(master->maxdevs, 1);
-+	master->caps.ibirfifodepth = CONF_STATUS0_IBIR_DEPTH(val);
-+	master->caps.cmdrfifodepth = CONF_STATUS0_CMDR_DEPTH(val);
+--- a/drivers/watchdog/sbsa_gwdt.c
++++ b/drivers/watchdog/sbsa_gwdt.c
+@@ -153,14 +153,14 @@ static int sbsa_gwdt_set_timeout(struct
+ 	timeout = clamp_t(unsigned int, timeout, 1, wdd->max_hw_heartbeat_ms / 1000);
  
- 	val = readl(master->regs + CONF_STATUS1);
- 	master->caps.cmdfifodepth = CONF_STATUS1_CMD_DEPTH(val);
- 	master->caps.rxfifodepth = CONF_STATUS1_RX_DEPTH(val);
- 	master->caps.txfifodepth = CONF_STATUS1_TX_DEPTH(val);
--	master->caps.ibirfifodepth = CONF_STATUS0_IBIR_DEPTH(val);
--	master->caps.cmdrfifodepth = CONF_STATUS0_CMDR_DEPTH(val);
+ 	if (action)
+-		sbsa_gwdt_reg_write(gwdt->clk * timeout, gwdt);
++		sbsa_gwdt_reg_write((u64)gwdt->clk * timeout, gwdt);
+ 	else
+ 		/*
+ 		 * In the single stage mode, The first signal (WS0) is ignored,
+ 		 * the timeout is (WOR * 2), so the WOR should be configured
+ 		 * to half value of timeout.
+ 		 */
+-		sbsa_gwdt_reg_write(gwdt->clk / 2 * timeout, gwdt);
++		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
  
- 	spin_lock_init(&master->ibi.lock);
- 	master->ibi.num_slots = CONF_STATUS1_IBI_HW_RES(val);
+ 	return 0;
+ }
 
 
 
