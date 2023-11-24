@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD267F846B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:27:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A57F7F83C7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3EF5B25873
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBD261C26518
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234433306F;
-	Fri, 24 Nov 2023 19:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05009381D2;
+	Fri, 24 Nov 2023 19:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i9Alhetq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHEhuPWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB792EAEA;
-	Fri, 24 Nov 2023 19:26:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38142C433C8;
-	Fri, 24 Nov 2023 19:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9AF339BE;
+	Fri, 24 Nov 2023 19:20:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485F7C433C8;
+	Fri, 24 Nov 2023 19:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700854019;
-	bh=+dtlyo5Fv6YpZ7LszOD2kWWy8Y2R2nYPhWMG/+EH9ww=;
+	s=korg; t=1700853653;
+	bh=aPXeT0BHA9U/fx7kv/42lQfiQId7C1lqT+7wl+ixO9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9AlhetqEiyNMvn9jfgSOseQCsa6XMA6S9uRTiYfeOp27vvgiuNvrx5d86mGX9rBj
-	 ADpLN3joGrlqKTeXUL2gH5jZxmQu/SujUvrwfeBTJY9WGRdbv5wMKQM+hGqrR/gEua
-	 RqJBpQd/8uwLUsWegQN5Mkoyg9BpwTsZ540splqM=
+	b=XHEhuPWdxCK3Ihrm1UaN6NhvWvyeznUnPm3qxbYuWmpzo0O+fBVdYDFMyfrBgmVG5
+	 SC4izDkEWKdxu2Bx438A8XBjHmjW74I3J9+k5nfplEMfqxJWDxT6CYcePSLKlrpj4H
+	 Nu1GutswYCAhA8p1KMfFcbjGu4/vjT/BwaEXxrVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Yeong <joshua.yeong@starfivetech.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.4 099/159] i3c: master: cdns: Fix reading status register
-Date: Fri, 24 Nov 2023 17:55:16 +0000
-Message-ID: <20231124171946.012524250@linuxfoundation.org>
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kai-Heng Feng <kai.heng.geng@canonical.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 275/297] mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of AER
+Date: Fri, 24 Nov 2023 17:55:17 +0000
+Message-ID: <20231124172009.752007983@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Yeong <joshua.yeong@starfivetech.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 4bd8405257da717cd556f99e5fb68693d12c9766 upstream.
+commit 015c9cbcf0ad709079117d27c2094a46e0eadcdb upstream.
 
-IBIR_DEPTH and CMDR_DEPTH should read from status0 instead of status1.
+Due to a flaw in the hardware design, the GL9750 replay timer frequently
+times out when ASPM is enabled. As a result, the warning messages will
+often appear in the system log when the system accesses the GL9750
+PCI config. Therefore, the replay timer timeout must be masked.
 
+Fixes: d7133797e9e1 ("mmc: sdhci-pci-gli: A workaround to allow GL9750 to enter ASPM L1.2")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
 Cc: stable@vger.kernel.org
-Fixes: 603f2bee2c54 ("i3c: master: Add driver for Cadence IP")
-Signed-off-by: Joshua Yeong <joshua.yeong@starfivetech.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230913031743.11439-2-joshua.yeong@starfivetech.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20231107095741.8832-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -189,7 +189,7 @@
- #define SLV_STATUS1_HJ_DIS		BIT(18)
- #define SLV_STATUS1_MR_DIS		BIT(17)
- #define SLV_STATUS1_PROT_ERR		BIT(16)
--#define SLV_STATUS1_DA(x)		(((s) & GENMASK(15, 9)) >> 9)
-+#define SLV_STATUS1_DA(s)		(((s) & GENMASK(15, 9)) >> 9)
- #define SLV_STATUS1_HAS_DA		BIT(8)
- #define SLV_STATUS1_DDR_RX_FULL		BIT(7)
- #define SLV_STATUS1_DDR_TX_FULL		BIT(6)
-@@ -1580,13 +1580,13 @@ static int cdns_i3c_master_probe(struct
- 	/* Device ID0 is reserved to describe this master. */
- 	master->maxdevs = CONF_STATUS0_DEVS_NUM(val);
- 	master->free_rr_slots = GENMASK(master->maxdevs, 1);
-+	master->caps.ibirfifodepth = CONF_STATUS0_IBIR_DEPTH(val);
-+	master->caps.cmdrfifodepth = CONF_STATUS0_CMDR_DEPTH(val);
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -26,6 +26,9 @@
+ #define PCI_GLI_9750_PM_CTRL	0xFC
+ #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
  
- 	val = readl(master->regs + CONF_STATUS1);
- 	master->caps.cmdfifodepth = CONF_STATUS1_CMD_DEPTH(val);
- 	master->caps.rxfifodepth = CONF_STATUS1_RX_DEPTH(val);
- 	master->caps.txfifodepth = CONF_STATUS1_TX_DEPTH(val);
--	master->caps.ibirfifodepth = CONF_STATUS0_IBIR_DEPTH(val);
--	master->caps.cmdrfifodepth = CONF_STATUS0_CMDR_DEPTH(val);
++#define PCI_GLI_9750_CORRERR_MASK				0x214
++#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
++
+ #define SDHCI_GLI_9750_CFG2          0x848
+ #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+ #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
+@@ -446,6 +449,11 @@ static void gl9750_hw_setting(struct sdh
+ 	value &= ~PCI_GLI_9750_PM_STATE;
+ 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
  
- 	spin_lock_init(&master->ibi.lock);
- 	master->ibi.num_slots = CONF_STATUS1_IBI_HW_RES(val);
++	/* mask the replay timer timeout of AER */
++	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
++	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
++	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
++
+ 	gl9750_wt_off(host);
+ }
+ 
 
 
 
