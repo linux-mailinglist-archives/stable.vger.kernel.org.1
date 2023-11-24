@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97ACC7F7C05
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A777C7F7E05
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521DB281BCC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6271D282287
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECAC381D6;
-	Fri, 24 Nov 2023 18:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F0039FF3;
+	Fri, 24 Nov 2023 18:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXDPa/aM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY3beCPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CD939FEF;
-	Fri, 24 Nov 2023 18:10:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9074BC433C7;
-	Fri, 24 Nov 2023 18:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B90381BF;
+	Fri, 24 Nov 2023 18:29:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5169C433C7;
+	Fri, 24 Nov 2023 18:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849458;
-	bh=8nY95ApDnNhGyBxjNszLhYcpsFjfzZQa3oougXNL5PY=;
+	s=korg; t=1700850552;
+	bh=OAFvbPLDac/mwMPPoaloDA5p3t/GlouIJ75y32Uo55w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXDPa/aMuP9qEx+HcZEzfuMFjSYkg2vQRXvlQVazf1soAqkwn0ae02auoQxm1UAGw
-	 i1cSR4Lj5k8c/7HL5DG5x+8R09SlYaPBugEN75augIZmQnxzBCmcIE0a4cLSZoY6kQ
-	 W+zVRZbVNzyrW8UM1lJSebhDwCFXO5dL0VWgSDSE=
+	b=wY3beCPkUTbvk6W6CsvC7qNdtk80NdVB9NeumYfXcshijyJmn+WYp1k3SpkCVt6ei
+	 cheFK6BlY5PVUsrT2/mKBL52Z5nTAnqZGBkjcFG/kbjxZmd9rItdkd0t3XWCpHPxjU
+	 LPhX5SCHY4+YGUg8+zPplFqKsHVFtpG+o8eVJRU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 165/530] mtd: rawnand: meson: check return value of devm_kasprintf()
+Subject: [PATCH 6.5 095/491] PCI: tegra194: Use FIELD_GET()/FIELD_PREP() with Link Width fields
 Date: Fri, 24 Nov 2023 17:45:31 +0000
-Message-ID: <20231124172033.100829887@linuxfoundation.org>
+Message-ID: <20231124172027.435583942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +52,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 5a985960a4dd041c21dbe9956958c1633d2da706 ]
+[ Upstream commit 759574abd78e3b47ec45bbd31a64e8832cf73f97 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful by
-checking the pointer validity.
+Use FIELD_GET() to extract PCIe Negotiated Link Width field instead of
+custom masking and shifting.
 
-Fixes: 1e4d3ba66888 ("mtd: rawnand: meson: fix the clock")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231019065548.318443-1-yiyang13@huawei.com
+Similarly, change custom code that misleadingly used
+PCI_EXP_LNKSTA_NLW_SHIFT to prepare value for PCI_EXP_LNKCAP write
+to use FIELD_PREP() with correct field define (PCI_EXP_LNKCAP_MLW).
+
+Link: https://lore.kernel.org/r/20230919125648.1920-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/meson_nand.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/meson_nand.c b/drivers/mtd/nand/raw/meson_nand.c
-index 25e3c1cb605e7..a506e658d4624 100644
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -1134,6 +1134,9 @@ static int meson_nfc_clk_init(struct meson_nfc *nfc)
- 	init.name = devm_kasprintf(nfc->dev,
- 				   GFP_KERNEL, "%s#div",
- 				   dev_name(nfc->dev));
-+	if (!init.name)
-+		return -ENOMEM;
-+
- 	init.ops = &clk_divider_ops;
- 	nfc_divider_parent_data[0].fw_name = "device";
- 	init.parent_data = nfc_divider_parent_data;
+diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+index ccff8cde5cff6..07cb0818a5138 100644
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -9,6 +9,7 @@
+  * Author: Vidya Sagar <vidyas@nvidia.com>
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/clk.h>
+ #include <linux/debugfs.h>
+ #include <linux/delay.h>
+@@ -347,8 +348,7 @@ static void apply_bad_link_workaround(struct dw_pcie_rp *pp)
+ 	 */
+ 	val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKSTA);
+ 	if (val & PCI_EXP_LNKSTA_LBMS) {
+-		current_link_width = (val & PCI_EXP_LNKSTA_NLW) >>
+-				     PCI_EXP_LNKSTA_NLW_SHIFT;
++		current_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val);
+ 		if (pcie->init_link_width > current_link_width) {
+ 			dev_warn(pci->dev, "PCIe link is bad, width reduced\n");
+ 			val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base +
+@@ -761,8 +761,7 @@ static void tegra_pcie_enable_system_interrupts(struct dw_pcie_rp *pp)
+ 
+ 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
+ 				  PCI_EXP_LNKSTA);
+-	pcie->init_link_width = (val_w & PCI_EXP_LNKSTA_NLW) >>
+-				PCI_EXP_LNKSTA_NLW_SHIFT;
++	pcie->init_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val_w);
+ 
+ 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
+ 				  PCI_EXP_LNKCTL);
+@@ -921,7 +920,7 @@ static int tegra_pcie_dw_host_init(struct dw_pcie_rp *pp)
+ 	/* Configure Max lane width from DT */
+ 	val = dw_pcie_readl_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP);
+ 	val &= ~PCI_EXP_LNKCAP_MLW;
+-	val |= (pcie->num_lanes << PCI_EXP_LNKSTA_NLW_SHIFT);
++	val |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, pcie->num_lanes);
+ 	dw_pcie_writel_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP, val);
+ 
+ 	/* Clear Slot Clock Configuration bit if SRNS configuration */
 -- 
 2.42.0
 
