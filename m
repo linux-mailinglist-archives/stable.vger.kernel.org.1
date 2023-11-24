@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5FC7F7DD2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0FA7F7BBC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0B81C212DF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48C40B20F9B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBE039FE9;
-	Fri, 24 Nov 2023 18:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA2439FE1;
+	Fri, 24 Nov 2023 18:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1VgaU/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6mYlOOd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405CD39FD0;
-	Fri, 24 Nov 2023 18:27:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2A6C433C8;
-	Fri, 24 Nov 2023 18:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C5031740;
+	Fri, 24 Nov 2023 18:08:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B536AC433C7;
+	Fri, 24 Nov 2023 18:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850462;
-	bh=fEFXnsicwys+eKLUHQQWc9Qx+YoFqJC1GAuK8TFn9GI=;
+	s=korg; t=1700849287;
+	bh=ixCLMASmlPWfwYoYfa8wvs7qZvaucwq+e7cOscGcVAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1VgaU/ZKimjHk7h05+9SI5qEZdNIqFVhlIIaE+MIr7ydWBqeoTu6pAO4/v22gU7q
-	 954NTQep+twZs6ynlA+zkk0+jdgCvl/LLcwAExTykDDJau7uI8AqRrBrVEZeOsL0dV
-	 e/C8AakVwcyHy/hW5poXl8kAtXebu2aGMb2QGUuQ=
+	b=G6mYlOOdOWUgS2Z3UtTdAjgpS4TDDjFwT/CrLLxrmbX5vOnl8uywc1rTtjR2fAnH1
+	 nIfgXKdt/cPBcsYQcmJyHd59sSv9zXJF08XUAEnErVFZMJHoQ6lmSsGJylBHges03C
+	 4TQGCe79153jHRI1dUCtzu2+u+n4Ywyqsny/Fn2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 051/491] drm/edid: Fixup h/vsync_end instead of h/vtotal
-Date: Fri, 24 Nov 2023 17:44:47 +0000
-Message-ID: <20231124172026.218284337@linuxfoundation.org>
+Subject: [PATCH 6.6 122/530] phy: qualcomm: phy-qcom-eusb2-repeater: Use regmap_fields
+Date: Fri, 24 Nov 2023 17:44:48 +0000
+Message-ID: <20231124172031.828245697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,96 +51,204 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 2682768bde745b10ae126a322cdcaf532cf88851 ]
+[ Upstream commit 4ba2e52718c0ce4ece6a269bec84319c355c030f ]
 
-There are some weird EDIDs floating around that have the sync
-pulse extending beyond the end of the blanking period.
+Switch to regmap_fields, so that the values written into registers are
+sanitized by their explicit sizes and the different registers are
+structured in an iterable object to make external changes to the init
+sequence simpler.
 
-On the currently problemtic machine (HP Omni 120) EDID reports
-the following mode:
-"1600x900": 60 108000 1600 1780 1860 1800 900 910 913 1000 0x40 0x5
-which is then "corrected" to have htotal=1861 by the current drm_edid.c
-code.
-
-The fixup code was originally added in commit 7064fef56369 ("drm: work
-around EDIDs with bad htotal/vtotal values"). Googling around we end up in
-https://bugs.launchpad.net/ubuntu/hardy/+source/xserver-xorg-video-intel/+bug/297245
-where we find an EDID for a Dell Studio 15, which reports:
-(II) VESA(0): clock: 65.0 MHz   Image Size:  331 x 207 mm
-(II) VESA(0): h_active: 1280  h_sync: 1328  h_sync_end 1360 h_blank_end 1337 h_border: 0
-(II) VESA(0): v_active: 800  v_sync: 803  v_sync_end 809 v_blanking: 810 v_border: 0
-
-Note that if we use the hblank size (as opposed of the hsync_end)
-from the DTD to determine htotal we get exactly 60Hz refresh rate in
-both cases, whereas using hsync_end to determine htotal we get a
-slightly lower refresh rates. This makes me believe the using the
-hblank size is what was intended even in those cases.
-
-Also note that in case of the HP Onmi 120 the VBIOS boots with these:
-  crtc timings: 108000 1600 1780 1860 1800 900 910 913 1000, type: 0x40 flags: 0x5
-ie. it just blindly stuffs the bogus hsync_end and htotal from the DTD
-into the transcoder timing registers, and the display works. I believe
-the (at least more modern) hardware will automagically terminate the hsync
-pulse when the timing generator reaches htotal, which again points that we
-should use the hblank size to determine htotal. Unfortunatley the old bug
-reports for the Dell machines are extremely lacking in useful details so
-we have no idea what kind of timings the VBIOS programmed into the
-hardware :(
-
-Let's just flip this quirk around and reduce the length of the sync
-pulse instead of extending the blanking period. This at least seems
-to be the correct thing to do on more modern hardware. And if any
-issues crop up on older hardware we need to debug them properly.
-
-v2: Add debug message breadcrumbs (Jani)
-
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8895
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230920211934.14920-1-ville.syrjala@linux.intel.com
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-2-7d8c893d93f6@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_edid.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 91 +++++++++++++------
+ 1 file changed, 61 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index 69d855123d3e3..f1ceb7d08519e 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -3499,11 +3499,19 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_connector *connecto
- 	mode->vsync_end = mode->vsync_start + vsync_pulse_width;
- 	mode->vtotal = mode->vdisplay + vblank;
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index 52c275fbb2a1c..7561da01e633d 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -28,14 +28,42 @@
+ #define EUSB2_TUNE_SQUELCH_U		0x54
+ #define EUSB2_TUNE_USB2_PREEM		0x57
  
--	/* Some EDIDs have bogus h/vtotal values */
--	if (mode->hsync_end > mode->htotal)
--		mode->htotal = mode->hsync_end + 1;
--	if (mode->vsync_end > mode->vtotal)
--		mode->vtotal = mode->vsync_end + 1;
-+	/* Some EDIDs have bogus h/vsync_end values */
-+	if (mode->hsync_end > mode->htotal) {
-+		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] reducing hsync_end %d->%d\n",
-+			    connector->base.id, connector->name,
-+			    mode->hsync_end, mode->htotal);
-+		mode->hsync_end = mode->htotal;
-+	}
-+	if (mode->vsync_end > mode->vtotal) {
-+		drm_dbg_kms(dev, "[CONNECTOR:%d:%s] reducing vsync_end %d->%d\n",
-+			    connector->base.id, connector->name,
-+			    mode->vsync_end, mode->vtotal);
-+		mode->vsync_end = mode->vtotal;
-+	}
+-#define QCOM_EUSB2_REPEATER_INIT_CFG(o, v)	\
++#define QCOM_EUSB2_REPEATER_INIT_CFG(r, v)	\
+ 	{					\
+-		.offset = o,			\
++		.reg = r,			\
+ 		.val = v,			\
+ 	}
  
- 	drm_mode_do_interlace_quirk(mode, pt);
++enum reg_fields {
++	F_TUNE_USB2_PREEM,
++	F_TUNE_SQUELCH_U,
++	F_TUNE_IUSB2,
++	F_NUM_TUNE_FIELDS,
++
++	F_FORCE_VAL_5 = F_NUM_TUNE_FIELDS,
++	F_FORCE_EN_5,
++
++	F_EN_CTL1,
++
++	F_RPTR_STATUS,
++	F_NUM_FIELDS,
++};
++
++static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
++	[F_TUNE_USB2_PREEM] = REG_FIELD(EUSB2_TUNE_USB2_PREEM, 0, 2),
++	[F_TUNE_SQUELCH_U] = REG_FIELD(EUSB2_TUNE_SQUELCH_U, 0, 2),
++	[F_TUNE_IUSB2] = REG_FIELD(EUSB2_TUNE_IUSB2, 0, 3),
++
++	[F_FORCE_VAL_5] = REG_FIELD(EUSB2_FORCE_VAL_5, 0, 7),
++	[F_FORCE_EN_5] = REG_FIELD(EUSB2_FORCE_EN_5, 0, 7),
++
++	[F_EN_CTL1] = REG_FIELD(EUSB2_EN_CTL1, 0, 7),
++
++	[F_RPTR_STATUS] = REG_FIELD(EUSB2_RPTR_STATUS, 0, 7),
++};
++
+ struct eusb2_repeater_init_tbl {
+-	unsigned int offset;
++	unsigned int reg;
+ 	unsigned int val;
+ };
  
+@@ -48,11 +76,10 @@ struct eusb2_repeater_cfg {
+ 
+ struct eusb2_repeater {
+ 	struct device *dev;
+-	struct regmap *regmap;
++	struct regmap_field *regs[F_NUM_FIELDS];
+ 	struct phy *phy;
+ 	struct regulator_bulk_data *vregs;
+ 	const struct eusb2_repeater_cfg *cfg;
+-	u16 base;
+ 	enum phy_mode mode;
+ };
+ 
+@@ -61,9 +88,9 @@ static const char * const pm8550b_vreg_l[] = {
+ };
+ 
+ static const struct eusb2_repeater_init_tbl pm8550b_init_tbl[] = {
+-	QCOM_EUSB2_REPEATER_INIT_CFG(EUSB2_TUNE_IUSB2, 0x8),
+-	QCOM_EUSB2_REPEATER_INIT_CFG(EUSB2_TUNE_SQUELCH_U, 0x3),
+-	QCOM_EUSB2_REPEATER_INIT_CFG(EUSB2_TUNE_USB2_PREEM, 0x5),
++	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_IUSB2, 0x8),
++	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_SQUELCH_U, 0x3),
++	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_USB2_PREEM, 0x5),
+ };
+ 
+ static const struct eusb2_repeater_cfg pm8550b_eusb2_cfg = {
+@@ -93,7 +120,6 @@ static int eusb2_repeater_init(struct phy *phy)
+ {
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+ 	const struct eusb2_repeater_init_tbl *init_tbl = rptr->cfg->init_tbl;
+-	int num = rptr->cfg->init_tbl_num;
+ 	u32 val;
+ 	int ret;
+ 	int i;
+@@ -102,17 +128,14 @@ static int eusb2_repeater_init(struct phy *phy)
+ 	if (ret)
+ 		return ret;
+ 
+-	regmap_update_bits(rptr->regmap, rptr->base + EUSB2_EN_CTL1,
+-			   EUSB2_RPTR_EN, EUSB2_RPTR_EN);
++	regmap_field_update_bits(rptr->regs[F_EN_CTL1], EUSB2_RPTR_EN, EUSB2_RPTR_EN);
+ 
+-	for (i = 0; i < num; i++)
+-		regmap_update_bits(rptr->regmap,
+-				   rptr->base + init_tbl[i].offset,
+-				   init_tbl[i].val, init_tbl[i].val);
++	for (i = 0; i < rptr->cfg->init_tbl_num; i++)
++		regmap_field_update_bits(rptr->regs[init_tbl[i].reg],
++					 init_tbl[i].val, init_tbl[i].val);
+ 
+-	ret = regmap_read_poll_timeout(rptr->regmap,
+-				       rptr->base + EUSB2_RPTR_STATUS, val,
+-				       val & RPTR_OK, 10, 5);
++	ret = regmap_field_read_poll_timeout(rptr->regs[F_RPTR_STATUS],
++					     val, val & RPTR_OK, 10, 5);
+ 	if (ret)
+ 		dev_err(rptr->dev, "initialization timed-out\n");
+ 
+@@ -131,10 +154,10 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 		 * per eUSB 1.2 Spec. Below implement software workaround until
+ 		 * PHY and controller is fixing seen observation.
+ 		 */
+-		regmap_update_bits(rptr->regmap, rptr->base + EUSB2_FORCE_EN_5,
+-				   F_CLK_19P2M_EN, F_CLK_19P2M_EN);
+-		regmap_update_bits(rptr->regmap, rptr->base + EUSB2_FORCE_VAL_5,
+-				   V_CLK_19P2M_EN, V_CLK_19P2M_EN);
++		regmap_field_update_bits(rptr->regs[F_FORCE_EN_5],
++					 F_CLK_19P2M_EN, F_CLK_19P2M_EN);
++		regmap_field_update_bits(rptr->regs[F_FORCE_VAL_5],
++					 V_CLK_19P2M_EN, V_CLK_19P2M_EN);
+ 		break;
+ 	case PHY_MODE_USB_DEVICE:
+ 		/*
+@@ -143,10 +166,10 @@ static int eusb2_repeater_set_mode(struct phy *phy,
+ 		 * repeater doesn't clear previous value due to shared
+ 		 * regulators (say host <-> device mode switch).
+ 		 */
+-		regmap_update_bits(rptr->regmap, rptr->base + EUSB2_FORCE_EN_5,
+-				   F_CLK_19P2M_EN, 0);
+-		regmap_update_bits(rptr->regmap, rptr->base + EUSB2_FORCE_VAL_5,
+-				   V_CLK_19P2M_EN, 0);
++		regmap_field_update_bits(rptr->regs[F_FORCE_EN_5],
++					 F_CLK_19P2M_EN, 0);
++		regmap_field_update_bits(rptr->regs[F_FORCE_VAL_5],
++					 V_CLK_19P2M_EN, 0);
+ 		break;
+ 	default:
+ 		return -EINVAL;
+@@ -175,8 +198,9 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
+ 	struct device *dev = &pdev->dev;
+ 	struct phy_provider *phy_provider;
+ 	struct device_node *np = dev->of_node;
++	struct regmap *regmap;
++	int i, ret;
+ 	u32 res;
+-	int ret;
+ 
+ 	rptr = devm_kzalloc(dev, sizeof(*rptr), GFP_KERNEL);
+ 	if (!rptr)
+@@ -189,15 +213,22 @@ static int eusb2_repeater_probe(struct platform_device *pdev)
+ 	if (!rptr->cfg)
+ 		return -EINVAL;
+ 
+-	rptr->regmap = dev_get_regmap(dev->parent, NULL);
+-	if (!rptr->regmap)
++	regmap = dev_get_regmap(dev->parent, NULL);
++	if (!regmap)
+ 		return -ENODEV;
+ 
+ 	ret = of_property_read_u32(np, "reg", &res);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	rptr->base = res;
++	for (i = 0; i < F_NUM_FIELDS; i++)
++		eusb2_repeater_tune_reg_fields[i].reg += res;
++
++	ret = devm_regmap_field_bulk_alloc(dev, regmap, rptr->regs,
++					   eusb2_repeater_tune_reg_fields,
++					   F_NUM_FIELDS);
++	if (ret)
++		return ret;
+ 
+ 	ret = eusb2_repeater_init_vregs(rptr);
+ 	if (ret < 0) {
 -- 
 2.42.0
 
