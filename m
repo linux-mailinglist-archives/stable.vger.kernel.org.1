@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4209B7F7ED4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D657F7CA6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 739B81C2133E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 636C2B20C1E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608F933CFB;
-	Fri, 24 Nov 2023 18:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9907739FFD;
+	Fri, 24 Nov 2023 18:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F3TFRgkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaA1neDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177632FC4E;
-	Fri, 24 Nov 2023 18:36:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A78FC433C7;
-	Fri, 24 Nov 2023 18:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C42539FE3;
+	Fri, 24 Nov 2023 18:17:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C281C433C7;
+	Fri, 24 Nov 2023 18:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850982;
-	bh=xozVkcaEh7iPhAoLiWEGHAGBJgNMAmTGUepq5Kiux5M=;
+	s=korg; t=1700849825;
+	bh=nqKkn1LS4kfevw/E/ycbKhBnu8IH9pG3iOKkyCb7NnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F3TFRgkrsJO0yoWcIJLesPHUm9eDMkScYYmM2qjqHJ86J0eX/wDUx9EaEW1tWIew/
-	 mfeQlo93FTOOxu7qoyqvRb6RGBWOmIf8LGCrDe8D1MtpmfMZWQK3IgF5Cz12BSIBcK
-	 cnLrQQIkYy1hoW1RgW5+Ex7rIrqJRS3gDIaTR8iU=
+	b=XaA1neDOR18/4x/EkhTA0rI+ke3oPl527EQhnOas7zqMlwviO8h5TryEXjzdpE3Ou
+	 gDILmP6bO5vOS/o352h/Dr3dfeiy4zYhmxmembelea04ffb9sRhbwv7CE5gkpw/2tN
+	 NQbWMFnw9FIcn/W/Omogvi5/kw6gzuOCq2mH0Oig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Jakub Acs <acsjakub@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 266/491] mm/damon/core: avoid divide-by-zero during monitoring results update
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Paasch <cpaasch@apple.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	Frederic Weisbecker <frederic@kernel.org>
+Subject: [PATCH 6.6 336/530] rcu: kmemleak: Ignore kmemleak false positives when RCU-freeing objects
 Date: Fri, 24 Nov 2023 17:48:22 +0000
-Message-ID: <20231124172032.560975028@linuxfoundation.org>
+Message-ID: <20231124172038.256882509@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +55,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit d35963bfb05877455228ecec6b194f624489f96a upstream.
+commit 5f98fd034ca6fd1ab8c91a3488968a0e9caaabf6 upstream.
 
-When monitoring attributes are changed, DAMON updates access rate of the
-monitoring results accordingly.  For that, it divides some values by the
-maximum nr_accesses.  However, due to the type of the related variables,
-simple division-based calculation of the divisor can return zero.  As a
-result, divide-by-zero is possible.  Fix it by using
-damon_max_nr_accesses(), which handles the case.
+Since the actual slab freeing is deferred when calling kvfree_rcu(), so
+is the kmemleak_free() callback informing kmemleak of the object
+deletion. From the perspective of the kvfree_rcu() caller, the object is
+freed and it may remove any references to it. Since kmemleak does not
+scan RCU internal data storing the pointer, it will report such objects
+as leaks during the grace period.
 
-Link: https://lkml.kernel.org/r/20231019194924.100347-3-sj@kernel.org
-Fixes: 2f5bef5a590b ("mm/damon/core: update monitoring results for new monitoring attributes")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Jakub Acs <acsjakub@amazon.de>
-Cc: <stable@vger.kernel.org>	[6.3+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tell kmemleak to ignore such objects on the kvfree_call_rcu() path. Note
+that the tiny RCU implementation does not have such issue since the
+objects can be tracked from the rcu_ctrlblk structure.
+
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Christoph Paasch <cpaasch@apple.com>
+Closes: https://lore.kernel.org/all/F903A825-F05F-4B77-A2B5-7356282FBA2C@apple.com/
+Cc: <stable@vger.kernel.org>
+Tested-by: Christoph Paasch <cpaasch@apple.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ kernel/rcu/tree.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -476,20 +476,14 @@ static unsigned int damon_age_for_new_at
- static unsigned int damon_accesses_bp_to_nr_accesses(
- 		unsigned int accesses_bp, struct damon_attrs *attrs)
- {
--	unsigned int max_nr_accesses =
--		attrs->aggr_interval / attrs->sample_interval;
--
--	return accesses_bp * max_nr_accesses / 10000;
-+	return accesses_bp * damon_max_nr_accesses(attrs) / 10000;
- }
+--- a/kernel/rcu/tree.c
++++ b/kernel/rcu/tree.c
+@@ -31,6 +31,7 @@
+ #include <linux/bitops.h>
+ #include <linux/export.h>
+ #include <linux/completion.h>
++#include <linux/kmemleak.h>
+ #include <linux/moduleparam.h>
+ #include <linux/panic.h>
+ #include <linux/panic_notifier.h>
+@@ -3401,6 +3402,14 @@ void kvfree_call_rcu(struct rcu_head *he
+ 		success = true;
+ 	}
  
- /* convert nr_accesses to access ratio in bp (per 10,000) */
- static unsigned int damon_nr_accesses_to_accesses_bp(
- 		unsigned int nr_accesses, struct damon_attrs *attrs)
- {
--	unsigned int max_nr_accesses =
--		attrs->aggr_interval / attrs->sample_interval;
--
--	return nr_accesses * 10000 / max_nr_accesses;
-+	return nr_accesses * 10000 / damon_max_nr_accesses(attrs);
- }
- 
- static unsigned int damon_nr_accesses_for_new_attrs(unsigned int nr_accesses,
++	/*
++	 * The kvfree_rcu() caller considers the pointer freed at this point
++	 * and likely removes any references to it. Since the actual slab
++	 * freeing (and kmemleak_free()) is deferred, tell kmemleak to ignore
++	 * this object (no scanning or false positives reporting).
++	 */
++	kmemleak_ignore(ptr);
++
+ 	// Set timer to drain after KFREE_DRAIN_JIFFIES.
+ 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING)
+ 		schedule_delayed_monitor_work(krcp);
 
 
 
