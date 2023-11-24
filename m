@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B157F835F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA70E7F83EB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D7BB24964
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4CFD289A1D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D5381A2;
-	Fri, 24 Nov 2023 19:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FF6381A2;
+	Fri, 24 Nov 2023 19:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hZa0CKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISyjoSNl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3183F364B7;
-	Fri, 24 Nov 2023 19:16:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FA0C433C8;
-	Fri, 24 Nov 2023 19:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B9F1A5A4;
+	Fri, 24 Nov 2023 19:22:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64EE0C433C8;
+	Fri, 24 Nov 2023 19:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853411;
-	bh=gRt8z8fXPn57vPiz5t50/Mt7ET4xnTV86bbzNwVT5+A=;
+	s=korg; t=1700853735;
+	bh=nF/iP70ucm93iCm4qF8G0c66b+6Wa+5GDmu2Alju3Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hZa0CKjUzqK90Tt9mCqeY1gOgwsWw2+SOhxbiO2BHAfULLoCgw8Y2p8UWbYyuFku
-	 TM0JCVcnQN3liLLtlw3+KZCzgK3t7GcjVZBpgQkAjgGymFrFaET7bCEXXiF+9wSwzP
-	 YTWp0t1aIT76XIDRN7PgedgAZ2hlnXKXh9wrdTpg=
+	b=ISyjoSNlfw5VTH76KclLjyoIbwBIDyAqNsHXYdFbPBY3YkynC3y+qz8QwvCsD+EpT
+	 JIlzED9GtHAnEYOUamLpcShxVTx0IIBQhnnCRBgKY8ooeIpa1zNFU8jqNpW7kpdTl8
+	 lJ+tpBqpluvm6c7HXPsKSPj29WCPOZjFIskCleIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.15 177/297] arm64: Restrict CPU_BIG_ENDIAN to GNU as or LLVM IAS 15.x or newer
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 002/159] perf/core: Bail out early if the request AUX area is out of bound
 Date: Fri, 24 Nov 2023 17:53:39 +0000
-Message-ID: <20231124172006.447886468@linuxfoundation.org>
+Message-ID: <20231124171942.010513784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,94 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 146a15b873353f8ac28dc281c139ff611a3c4848 upstream.
+[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
 
-Prior to LLVM 15.0.0, LLVM's integrated assembler would incorrectly
-byte-swap NOP when compiling for big-endian, and the resulting series of
-bytes happened to match the encoding of FNMADD S21, S30, S0, S0.
+When perf-record with a large AUX area, e.g 4GB, it fails with:
 
-This went unnoticed until commit:
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-  34f66c4c4d5518c1 ("arm64: Use a positive cpucap for FP/SIMD")
+and it reveals a WARNING with __alloc_pages():
 
-Prior to that commit, the kernel would always enable the use of FPSIMD
-early in boot when __cpu_setup() initialized CPACR_EL1, and so usage of
-FNMADD within the kernel was not detected, but could result in the
-corruption of user or kernel FPSIMD state.
+	------------[ cut here ]------------
+	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
+	Call trace:
+	 __alloc_pages+0x1ec/0x248
+	 __kmalloc_large_node+0xc0/0x1f8
+	 __kmalloc_node+0x134/0x1e8
+	 rb_alloc_aux+0xe0/0x298
+	 perf_mmap+0x440/0x660
+	 mmap_region+0x308/0x8a8
+	 do_mmap+0x3c0/0x528
+	 vm_mmap_pgoff+0xf4/0x1b8
+	 ksys_mmap_pgoff+0x18c/0x218
+	 __arm64_sys_mmap+0x38/0x58
+	 invoke_syscall+0x50/0x128
+	 el0_svc_common.constprop.0+0x58/0x188
+	 do_el0_svc+0x34/0x50
+	 el0_svc+0x34/0x108
+	 el0t_64_sync_handler+0xb8/0xc0
+	 el0t_64_sync+0x1a4/0x1a8
 
-After that commit, the instructions happen to trap during boot prior to
-FPSIMD being detected and enabled, e.g.
+'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
+maintains AUX trace pages. The allocated page for this array is physically
+contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
+size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
+WARNING.
 
-| Unhandled 64-bit el1h sync exception on CPU0, ESR 0x000000001fe00000 -- ASIMD
-| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
-| Hardware name: linux,dummy-virt (DT)
-| pstate: 400000c9 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : __pi_strcmp+0x1c/0x150
-| lr : populate_properties+0xe4/0x254
-| sp : ffffd014173d3ad0
-| x29: ffffd014173d3af0 x28: fffffbfffddffcb8 x27: 0000000000000000
-| x26: 0000000000000058 x25: fffffbfffddfe054 x24: 0000000000000008
-| x23: fffffbfffddfe000 x22: fffffbfffddfe000 x21: fffffbfffddfe044
-| x20: ffffd014173d3b70 x19: 0000000000000001 x18: 0000000000000005
-| x17: 0000000000000010 x16: 0000000000000000 x15: 00000000413e7000
-| x14: 0000000000000000 x13: 0000000000001bcc x12: 0000000000000000
-| x11: 00000000d00dfeed x10: ffffd414193f2cd0 x9 : 0000000000000000
-| x8 : 0101010101010101 x7 : ffffffffffffffc0 x6 : 0000000000000000
-| x5 : 0000000000000000 x4 : 0101010101010101 x3 : 000000000000002a
-| x2 : 0000000000000001 x1 : ffffd014171f2988 x0 : fffffbfffddffcb8
-| Kernel panic - not syncing: Unhandled exception
-| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
-| Hardware name: linux,dummy-virt (DT)
-| Call trace:
-|  dump_backtrace+0xec/0x108
-|  show_stack+0x18/0x2c
-|  dump_stack_lvl+0x50/0x68
-|  dump_stack+0x18/0x24
-|  panic+0x13c/0x340
-|  el1t_64_irq_handler+0x0/0x1c
-|  el1_abort+0x0/0x5c
-|  el1h_64_sync+0x64/0x68
-|  __pi_strcmp+0x1c/0x150
-|  unflatten_dt_nodes+0x1e8/0x2d8
-|  __unflatten_device_tree+0x5c/0x15c
-|  unflatten_device_tree+0x38/0x50
-|  setup_arch+0x164/0x1e0
-|  start_kernel+0x64/0x38c
-|  __primary_switched+0xbc/0xc4
+So bail out early with -ENOMEM if the request AUX area is out of bound,
+e.g.:
 
-Restrict CONFIG_CPU_BIG_ENDIAN to a known good assembler, which is
-either GNU as or LLVM's IAS 15.0.0 and newer, which contains the linked
-commit.
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1948
-Link: https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20231025-disable-arm64-be-ias-b4-llvm-15-v1-1-b25263ed8b23@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/events/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1153,6 +1153,8 @@ choice
- config CPU_BIG_ENDIAN
- 	bool "Build big-endian kernel"
- 	depends on !LD_IS_LLD || LLD_VERSION >= 130000
-+	# https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
-+	depends on AS_IS_GNU || AS_VERSION >= 150000
- 	help
- 	  Say Y if you plan on running a kernel with a big-endian userspace.
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index ffb59a4ef4ff3..fb3edb2f8ac93 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -653,6 +653,12 @@ int rb_alloc_aux(struct ring_buffer *rb, struct perf_event *event,
+ 		max_order--;
+ 	}
  
++	/*
++	 * kcalloc_node() is unable to allocate buffer if the size is larger
++	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
++	 */
++	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
++		return -ENOMEM;
+ 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
+ 				     node);
+ 	if (!rb->aux_pages)
+-- 
+2.42.0
+
 
 
 
