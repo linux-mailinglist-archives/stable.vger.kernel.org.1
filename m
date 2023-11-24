@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A5B7F7BFB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 316BA7F7E32
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E4928189C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E09DD282148
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D073A8C2;
-	Fri, 24 Nov 2023 18:10:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF24364C8;
+	Fri, 24 Nov 2023 18:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuUr1NtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5Vrp5VB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEB939FE8;
-	Fri, 24 Nov 2023 18:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFFAC433C7;
-	Fri, 24 Nov 2023 18:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A683A8D5;
+	Fri, 24 Nov 2023 18:30:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50DBC433C7;
+	Fri, 24 Nov 2023 18:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849434;
-	bh=Zan7lo5URcVmlZJJmbpzUe9oTo9bHt91SshWpNUxCVo=;
+	s=korg; t=1700850652;
+	bh=Rqev+0gmwuC4Ukd5Da3UIA4gyaoBN75hRQGHBX/K04M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VuUr1NtXD8rrtUyJPxEV88uOdgyXZgBayTlPsxylFHXxUU+gsIN8BC3WrwlrqMmbD
-	 2ZBScE3/TA/FzQ6QsEZceBmrSjFExBQq2K93iesSMU89MuPRods308ZodxIO7Uy9Y+
-	 tEf0iQU3lzxehPCRRklPqmtIpTnDJomCUeOsOHU0=
+	b=E5Vrp5VBJdEcxTsB2Yd+QS+Q+XNBVjjIWszapHmfa1+Wmufkoj1RHR+8+GnVRYvfz
+	 Xw5xhQo+lonZGY+RjGtWUdv08vIzgEVk+Vt5FYlAnivzEoM3XansaUyNAQzVxpOb0L
+	 CjTIOQMKGR4gwfxsH6JWOFtVfRmLiTAdZDG5coUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Hao Sun <sunhao.th@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Andy Wu <Andy.Wu@sony.com>,
+	Aoyama Wataru <wataru.aoyama@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/530] bpf: handle ldimm64 properly in check_cfg()
-Date: Fri, 24 Nov 2023 17:45:45 +0000
-Message-ID: <20231124172033.525849645@linuxfoundation.org>
+Subject: [PATCH 6.5 110/491] exfat: support handle zero-size directory
+Date: Fri, 24 Nov 2023 17:45:46 +0000
+Message-ID: <20231124172027.859731664@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,155 +55,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 3feb263bb516ee7e1da0acd22b15afbb9a7daa19 ]
+[ Upstream commit dab48b8f2fe7264d51ec9eed0adea0fe3c78830a ]
 
-ldimm64 instructions are 16-byte long, and so have to be handled
-appropriately in check_cfg(), just like the rest of BPF verifier does.
+After repairing a corrupted file system with exfatprogs' fsck.exfat,
+zero-size directories may result. It is also possible to create
+zero-size directories in other exFAT implementation, such as Paragon
+ufsd dirver.
 
-This has implications in three places:
-  - when determining next instruction for non-jump instructions;
-  - when determining next instruction for callback address ldimm64
-    instructions (in visit_func_call_insn());
-  - when checking for unreachable instructions, where second half of
-    ldimm64 is expected to be unreachable;
+As described in the specification, the lower directory size limits
+is 0 bytes.
 
-We take this also as an opportunity to report jump into the middle of
-ldimm64. And adjust few test_verifier tests accordingly.
+Without this commit, sub-directories and files cannot be created
+under a zero-size directory, and it cannot be removed.
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Reported-by: Hao Sun <sunhao.th@gmail.com>
-Fixes: 475fb78fbf48 ("bpf: verifier (add branch/goto checks)")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231110002638.4168352-2-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Andy Wu <Andy.Wu@sony.com>
+Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h                           |  8 ++++--
- kernel/bpf/verifier.c                         | 27 ++++++++++++++-----
- .../testing/selftests/bpf/verifier/ld_imm64.c |  8 +++---
- 3 files changed, 30 insertions(+), 13 deletions(-)
+ fs/exfat/namei.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 76055186d6248..392f581af2cee 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -903,10 +903,14 @@ bpf_ctx_record_field_size(struct bpf_insn_access_aux *aux, u32 size)
- 	aux->ctx_field_size = size;
- }
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index e0ff9d156f6f5..43774693f65f5 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -351,14 +351,20 @@ static int exfat_find_empty_entry(struct inode *inode,
+ 		if (exfat_check_max_dentries(inode))
+ 			return -ENOSPC;
  
-+static bool bpf_is_ldimm64(const struct bpf_insn *insn)
-+{
-+	return insn->code == (BPF_LD | BPF_IMM | BPF_DW);
-+}
+-		/* we trust p_dir->size regardless of FAT type */
+-		if (exfat_find_last_cluster(sb, p_dir, &last_clu))
+-			return -EIO;
+-
+ 		/*
+ 		 * Allocate new cluster to this directory
+ 		 */
+-		exfat_chain_set(&clu, last_clu + 1, 0, p_dir->flags);
++		if (ei->start_clu != EXFAT_EOF_CLUSTER) {
++			/* we trust p_dir->size regardless of FAT type */
++			if (exfat_find_last_cluster(sb, p_dir, &last_clu))
++				return -EIO;
 +
- static inline bool bpf_pseudo_func(const struct bpf_insn *insn)
- {
--	return insn->code == (BPF_LD | BPF_IMM | BPF_DW) &&
--	       insn->src_reg == BPF_PSEUDO_FUNC;
-+	return bpf_is_ldimm64(insn) && insn->src_reg == BPF_PSEUDO_FUNC;
- }
- 
- struct bpf_prog_ops {
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 6542685d6772a..0b3a2534196e0 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14787,15 +14787,16 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
- 				struct bpf_verifier_env *env,
- 				bool visit_callee)
- {
--	int ret;
-+	int ret, insn_sz;
- 
--	ret = push_insn(t, t + 1, FALLTHROUGH, env, false);
-+	insn_sz = bpf_is_ldimm64(&insns[t]) ? 2 : 1;
-+	ret = push_insn(t, t + insn_sz, FALLTHROUGH, env, false);
- 	if (ret)
- 		return ret;
- 
--	mark_prune_point(env, t + 1);
-+	mark_prune_point(env, t + insn_sz);
- 	/* when we exit from subprog, we need to record non-linear history */
--	mark_jmp_point(env, t + 1);
-+	mark_jmp_point(env, t + insn_sz);
- 
- 	if (visit_callee) {
- 		mark_prune_point(env, t);
-@@ -14817,15 +14818,17 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
- static int visit_insn(int t, struct bpf_verifier_env *env)
- {
- 	struct bpf_insn *insns = env->prog->insnsi, *insn = &insns[t];
--	int ret, off;
-+	int ret, off, insn_sz;
- 
- 	if (bpf_pseudo_func(insn))
- 		return visit_func_call_insn(t, insns, env, true);
- 
- 	/* All non-branch instructions have a single fall-through edge. */
- 	if (BPF_CLASS(insn->code) != BPF_JMP &&
--	    BPF_CLASS(insn->code) != BPF_JMP32)
--		return push_insn(t, t + 1, FALLTHROUGH, env, false);
-+	    BPF_CLASS(insn->code) != BPF_JMP32) {
-+		insn_sz = bpf_is_ldimm64(insn) ? 2 : 1;
-+		return push_insn(t, t + insn_sz, FALLTHROUGH, env, false);
-+	}
- 
- 	switch (BPF_OP(insn->code)) {
- 	case BPF_EXIT:
-@@ -14944,11 +14947,21 @@ static int check_cfg(struct bpf_verifier_env *env)
- 	}
- 
- 	for (i = 0; i < insn_cnt; i++) {
-+		struct bpf_insn *insn = &env->prog->insnsi[i];
-+
- 		if (insn_state[i] != EXPLORED) {
- 			verbose(env, "unreachable insn %d\n", i);
- 			ret = -EINVAL;
- 			goto err_free;
- 		}
-+		if (bpf_is_ldimm64(insn)) {
-+			if (insn_state[i + 1] != 0) {
-+				verbose(env, "jump into the middle of ldimm64 insn %d\n", i);
-+				ret = -EINVAL;
-+				goto err_free;
-+			}
-+			i++; /* skip second half of ldimm64 */
++			exfat_chain_set(&clu, last_clu + 1, 0, p_dir->flags);
++		} else {
++			/* This directory is empty */
++			exfat_chain_set(&clu, EXFAT_EOF_CLUSTER, 0,
++					ALLOC_NO_FAT_CHAIN);
 +		}
- 	}
- 	ret = 0; /* cfg looks good */
  
-diff --git a/tools/testing/selftests/bpf/verifier/ld_imm64.c b/tools/testing/selftests/bpf/verifier/ld_imm64.c
-index f9297900cea6d..78f19c255f20b 100644
---- a/tools/testing/selftests/bpf/verifier/ld_imm64.c
-+++ b/tools/testing/selftests/bpf/verifier/ld_imm64.c
-@@ -9,8 +9,8 @@
- 	BPF_MOV64_IMM(BPF_REG_0, 2),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid BPF_LD_IMM insn",
--	.errstr_unpriv = "R1 pointer comparison",
-+	.errstr = "jump into the middle of ldimm64 insn 1",
-+	.errstr_unpriv = "jump into the middle of ldimm64 insn 1",
- 	.result = REJECT,
- },
- {
-@@ -23,8 +23,8 @@
- 	BPF_LD_IMM64(BPF_REG_0, 1),
- 	BPF_EXIT_INSN(),
- 	},
--	.errstr = "invalid BPF_LD_IMM insn",
--	.errstr_unpriv = "R1 pointer comparison",
-+	.errstr = "jump into the middle of ldimm64 insn 1",
-+	.errstr_unpriv = "jump into the middle of ldimm64 insn 1",
- 	.result = REJECT,
- },
- {
+ 		/* allocate a cluster */
+ 		ret = exfat_alloc_cluster(inode, 1, &clu, IS_DIRSYNC(inode));
+@@ -368,6 +374,11 @@ static int exfat_find_empty_entry(struct inode *inode,
+ 		if (exfat_zeroed_cluster(inode, clu.dir))
+ 			return -EIO;
+ 
++		if (ei->start_clu == EXFAT_EOF_CLUSTER) {
++			ei->start_clu = clu.dir;
++			p_dir->dir = clu.dir;
++		}
++
+ 		/* append to the FAT chain */
+ 		if (clu.flags != p_dir->flags) {
+ 			/* no-fat-chain bit is disabled,
+@@ -646,7 +657,7 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
+ 	info->type = exfat_get_entry_type(ep);
+ 	info->attr = le16_to_cpu(ep->dentry.file.attr);
+ 	info->size = le64_to_cpu(ep2->dentry.stream.valid_size);
+-	if ((info->type == TYPE_FILE) && (info->size == 0)) {
++	if (info->size == 0) {
+ 		info->flags = ALLOC_NO_FAT_CHAIN;
+ 		info->start_clu = EXFAT_EOF_CLUSTER;
+ 	} else {
+@@ -890,6 +901,9 @@ static int exfat_check_dir_empty(struct super_block *sb,
+ 
+ 	dentries_per_clu = sbi->dentries_per_clu;
+ 
++	if (p_dir->dir == EXFAT_EOF_CLUSTER)
++		return 0;
++
+ 	exfat_chain_dup(&clu, p_dir);
+ 
+ 	while (clu.dir != EXFAT_EOF_CLUSTER) {
+@@ -1257,7 +1271,8 @@ static int __exfat_rename(struct inode *old_parent_inode,
+ 		}
+ 
+ 		/* Free the clusters if new_inode is a dir(as if exfat_rmdir) */
+-		if (new_entry_type == TYPE_DIR) {
++		if (new_entry_type == TYPE_DIR &&
++		    new_ei->start_clu != EXFAT_EOF_CLUSTER) {
+ 			/* new_ei, new_clu_to_free */
+ 			struct exfat_chain new_clu_to_free;
+ 
 -- 
 2.42.0
 
