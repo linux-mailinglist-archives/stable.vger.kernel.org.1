@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4527F760B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:14:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBDC7F760C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:14:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A00EB21110
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:14:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6D21C20E16
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A852C871;
-	Fri, 24 Nov 2023 14:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E02922C85B;
+	Fri, 24 Nov 2023 14:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUADauwK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASCWKGuV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9916F2C1AE
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95D6C43391;
-	Fri, 24 Nov 2023 14:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C792C1AE
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:14:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3026CC433CA;
+	Fri, 24 Nov 2023 14:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700835252;
-	bh=d01vkQCmn/rkk+RJ9wzQG38ogm0uHpbKNOauwlf7tzQ=;
+	s=korg; t=1700835256;
+	bh=PIgKBJ/AgVw/r6fwwNjoM4GZQwcnVJ/UIB1cl2YQFGY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hUADauwKS7UQ0cKoMmQB0DmCsMgpzHmxvX6rmMVWtSeKorDKUxTmPrrfo9nsfPwS9
-	 +WwBUathH1jb+0FBZM4xqw3fiYX6/dTipG1ZAWKVe6mu7JyY+I56wnNFgOo1mvzqs3
-	 hi3YworNRz7O9JYN0Z3pmZ35Ev6UsHl4t5KjGd2A=
-Subject: FAILED: patch "[PATCH] drm/amd/display: limit the v_startup workaround to ASICs" failed to apply to 6.5-stable tree
-To: hamza.mahfooz@amd.com,alexander.deucher@amd.com,jerry.zuo@amd.com
+	b=ASCWKGuVLTsec9FIeH0BYMvJ5WNFpHB0sBws5h8O4q3d6Vb6ZsATWLaOLfPoTkfn+
+	 yhvvrl3khGotfsG9pfqSttGMNo+mij2/U+H1yjFWWxOJ9u7DnXsGMAYGpHryKM+3TS
+	 TP2ZWwxddzVN0eBvucJV/xBCskvQ4bMjpbyyAAY4=
+Subject: FAILED: patch "[PATCH] drm/amd/display: prevent potential division by zero errors" failed to apply to 6.6-stable tree
+To: hamza.mahfooz@amd.com,alexander.deucher@amd.com,aurabindo.pillai@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:13:58 +0000
-Message-ID: <2023112458-decrease-purging-0c4d@gregkh>
+Date: Fri, 24 Nov 2023 14:14:14 +0000
+Message-ID: <2023112414-reluctant-distance-a85c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 813ba1ff8484e801d2ef155e0e5388b8a7691788
+git cherry-pick -x 084f658ece139645d203fa09c77c7f96cb849bb7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112458-decrease-purging-0c4d@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112414-reluctant-distance-a85c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-813ba1ff8484 ("drm/amd/display: limit the v_startup workaround to ASICs older than DCN3.1")
-63461ea3fb40 ("Revert "drm/amd/display: Remove v_startup workaround for dcn3+"")
+084f658ece13 ("drm/amd/display: prevent potential division by zero errors")
 
 thanks,
 
@@ -70,35 +69,49 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 813ba1ff8484e801d2ef155e0e5388b8a7691788 Mon Sep 17 00:00:00 2001
+From 084f658ece139645d203fa09c77c7f96cb849bb7 Mon Sep 17 00:00:00 2001
 From: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Date: Thu, 31 Aug 2023 15:22:35 -0400
-Subject: [PATCH] drm/amd/display: limit the v_startup workaround to ASICs
- older than DCN3.1
+Date: Tue, 5 Sep 2023 13:27:22 -0400
+Subject: [PATCH] drm/amd/display: prevent potential division by zero errors
 
-Since, calling dcn20_adjust_freesync_v_startup() on DCN3.1+ ASICs
-can cause the display to flicker and underflow to occur, we shouldn't
-call it for them. So, ensure that the DCN version is less than
-DCN_VERSION_3_1 before calling dcn20_adjust_freesync_v_startup().
+There are two places in apply_below_the_range() where it's possible for
+a divide by zero error to occur. So, to fix this make sure the divisor
+is non-zero before attempting the computation in both cases.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2637
+Fixes: a463b263032f ("drm/amd/display: Fix frames_to_insert math")
+Fixes: ded6119e825a ("drm/amd/display: Reinstate LFC optimization")
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-index 1bfdf0271fdf..a68fb45ed487 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -1099,7 +1099,8 @@ void dcn20_calculate_dlg_params(struct dc *dc,
- 		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
- 						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
- 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
--		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
-+		if (dc->ctx->dce_version < DCN_VERSION_3_1 &&
-+		    context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
- 			dcn20_adjust_freesync_v_startup(
- 				&context->res_ctx.pipe_ctx[i].stream->timing,
- 				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+diff --git a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+index dbd60811f95d..ef3a67409021 100644
+--- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
++++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
+@@ -338,7 +338,9 @@ static void apply_below_the_range(struct core_freesync *core_freesync,
+ 		 *  - Delta for CEIL: delta_from_mid_point_in_us_1
+ 		 *  - Delta for FLOOR: delta_from_mid_point_in_us_2
+ 		 */
+-		if ((last_render_time_in_us / mid_point_frames_ceil) < in_out_vrr->min_duration_in_us) {
++		if (mid_point_frames_ceil &&
++		    (last_render_time_in_us / mid_point_frames_ceil) <
++		    in_out_vrr->min_duration_in_us) {
+ 			/* Check for out of range.
+ 			 * If using CEIL produces a value that is out of range,
+ 			 * then we are forced to use FLOOR.
+@@ -385,8 +387,9 @@ static void apply_below_the_range(struct core_freesync *core_freesync,
+ 		/* Either we've calculated the number of frames to insert,
+ 		 * or we need to insert min duration frames
+ 		 */
+-		if (last_render_time_in_us / frames_to_insert <
+-				in_out_vrr->min_duration_in_us){
++		if (frames_to_insert &&
++		    (last_render_time_in_us / frames_to_insert) <
++		    in_out_vrr->min_duration_in_us){
+ 			frames_to_insert -= (frames_to_insert > 1) ?
+ 					1 : 0;
+ 		}
 
 
