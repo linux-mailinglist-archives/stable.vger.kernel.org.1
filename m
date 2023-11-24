@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39287F7E93
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 692787F7C50
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E9AF28235A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B2CD1C21185
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1331439FCC;
-	Fri, 24 Nov 2023 18:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5F9381DE;
+	Fri, 24 Nov 2023 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgE1lr3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFYQerc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85EB133CC2;
-	Fri, 24 Nov 2023 18:34:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B818AC433C7;
-	Fri, 24 Nov 2023 18:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CED39FFC;
+	Fri, 24 Nov 2023 18:14:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D056CC433C8;
+	Fri, 24 Nov 2023 18:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850855;
-	bh=zNuHRhVGcU5xILSyD69z9eK95+Qba7adji8dWEYqWTM=;
+	s=korg; t=1700849642;
+	bh=Nlnr+231Ped/2URce3VuIwX/2VY8IpPUCFryaHYIegA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgE1lr3TSsSNt7PaIkOkAdg9cI5wlERHHSzEuIDNn0tqlXJ1Z9fgRiD2s+tvVM2Re
-	 IhGcNymj0t08RuXfGqBH4qKN6uDzoYXpKM6v83/CuqWXfg3Vdl4lQdyWWssWPJyIHe
-	 Z7Hz2hvNEaMKYb6vUdu+siFX3DdsEYt04LTgARJk=
+	b=jFYQerc12BYWN/iVEspAe7inb+JK0WHz4v6Po9YYkGcec5sabMd2bUJ75MJViKXid
+	 KW1NUQaZikPloNlATOpZNE8sW8RHwHJZWEqw+nzxwnT6juaR0qPOh8fOG/BiW89O5C
+	 vWPRJtYoW5xzFx48qc0xxcJVomMy6A6THXfqMiMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 191/491] net: ethernet: cortina: Fix max RX frame define
-Date: Fri, 24 Nov 2023 17:47:07 +0000
-Message-ID: <20231124172030.222976075@linuxfoundation.org>
+	Luca Boccassi <bluca@debian.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: [PATCH 6.6 262/530] sched: psi: fix unprivileged polling against cgroups
+Date: Fri, 24 Nov 2023 17:47:08 +0000
+Message-ID: <20231124172036.016386054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +54,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-[ Upstream commit 510e35fb931ffc3b100e5d5ae4595cd3beca9f1a ]
+commit 8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69 upstream.
 
-Enumerator 3 is 1548 bytes according to the datasheet.
-Not 1542.
+519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") breaks unprivileged psi polling on cgroups.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-1-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Historically, we had a privilege check for polling in the open() of a
+pressure file in /proc, but were erroneously missing it for the open()
+of cgroup pressure files.
+
+When unprivileged polling was introduced in d82caa273565 ("sched/psi:
+Allow unprivileged polling of N*2s period"), it needed to filter
+privileges depending on the exact polling parameters, and as such
+moved the CAP_SYS_RESOURCE check from the proc open() callback to
+psi_trigger_create(). Both the proc files as well as cgroup files go
+through this during write(). This implicitly added the missing check
+for privileges required for HT polling for cgroups.
+
+When 519fabc7aaba ("psi: remove 500ms min window size limitation for
+triggers") followed right after to remove further restrictions on the
+RT polling window, it incorrectly assumed the cgroup privilege check
+was still missing and added it to the cgroup open(), mirroring what we
+used to do for proc files in the past.
+
+As a result, unprivileged poll requests that would be supported now
+get rejected when opening the cgroup pressure file for writing.
+
+Remove the cgroup open() check. psi_trigger_create() handles it.
+
+Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
+Reported-by: Luca Boccassi <bluca@debian.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Luca Boccassi <bluca@debian.org>
+Acked-by: Suren Baghdasaryan <surenb@google.com>
+Cc: stable@vger.kernel.org # 6.5+
+Link: https://lore.kernel.org/r/20231026164114.2488682-1-hannes@cmpxchg.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 4 ++--
- drivers/net/ethernet/cortina/gemini.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/cgroup/cgroup.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 5715b9ab2712e..9fe8d22a26719 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -432,8 +432,8 @@ static const struct gmac_max_framelen gmac_maxlens[] = {
- 		.val = CONFIG0_MAXLEN_1536,
- 	},
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -3867,14 +3867,6 @@ static __poll_t cgroup_pressure_poll(str
+ 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
+ }
+ 
+-static int cgroup_pressure_open(struct kernfs_open_file *of)
+-{
+-	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
+-		return -EPERM;
+-
+-	return 0;
+-}
+-
+ static void cgroup_pressure_release(struct kernfs_open_file *of)
+ {
+ 	struct cgroup_file_ctx *ctx = of->priv;
+@@ -5275,7 +5267,6 @@ static struct cftype cgroup_psi_files[]
  	{
--		.max_l3_len = 1542,
--		.val = CONFIG0_MAXLEN_1542,
-+		.max_l3_len = 1548,
-+		.val = CONFIG0_MAXLEN_1548,
- 	},
+ 		.name = "io.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_io_pressure_show,
+ 		.write = cgroup_io_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5284,7 +5275,6 @@ static struct cftype cgroup_psi_files[]
  	{
- 		.max_l3_len = 9212,
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 9fdf77d5eb374..99efb11557436 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -787,7 +787,7 @@ union gmac_config0 {
- #define  CONFIG0_MAXLEN_1536	0
- #define  CONFIG0_MAXLEN_1518	1
- #define  CONFIG0_MAXLEN_1522	2
--#define  CONFIG0_MAXLEN_1542	3
-+#define  CONFIG0_MAXLEN_1548	3
- #define  CONFIG0_MAXLEN_9k	4	/* 9212 */
- #define  CONFIG0_MAXLEN_10k	5	/* 10236 */
- #define  CONFIG0_MAXLEN_1518__6	6
--- 
-2.42.0
-
+ 		.name = "memory.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_memory_pressure_show,
+ 		.write = cgroup_memory_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5293,7 +5283,6 @@ static struct cftype cgroup_psi_files[]
+ 	{
+ 		.name = "cpu.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_cpu_pressure_show,
+ 		.write = cgroup_cpu_pressure_write,
+ 		.poll = cgroup_pressure_poll,
+@@ -5303,7 +5292,6 @@ static struct cftype cgroup_psi_files[]
+ 	{
+ 		.name = "irq.pressure",
+ 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
+-		.open = cgroup_pressure_open,
+ 		.seq_show = cgroup_irq_pressure_show,
+ 		.write = cgroup_irq_pressure_write,
+ 		.poll = cgroup_pressure_poll,
 
 
 
