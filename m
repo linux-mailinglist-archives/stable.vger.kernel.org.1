@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692787F7C50
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D3E87F8030
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B2CD1C21185
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB602824F3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5F9381DE;
-	Fri, 24 Nov 2023 18:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C02F34189;
+	Fri, 24 Nov 2023 18:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFYQerc1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDM8QDX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CED39FFC;
-	Fri, 24 Nov 2023 18:14:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D056CC433C8;
-	Fri, 24 Nov 2023 18:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C27533CCA;
+	Fri, 24 Nov 2023 18:47:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9F1C433C8;
+	Fri, 24 Nov 2023 18:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849642;
-	bh=Nlnr+231Ped/2URce3VuIwX/2VY8IpPUCFryaHYIegA=;
+	s=korg; t=1700851650;
+	bh=JrQKXhM2tIwy6juNohMm5CTVxU74Jxmu+IFD+KO+Dh8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFYQerc12BYWN/iVEspAe7inb+JK0WHz4v6Po9YYkGcec5sabMd2bUJ75MJViKXid
-	 KW1NUQaZikPloNlATOpZNE8sW8RHwHJZWEqw+nzxwnT6juaR0qPOh8fOG/BiW89O5C
-	 vWPRJtYoW5xzFx48qc0xxcJVomMy6A6THXfqMiMo=
+	b=XDM8QDX2AQUb5s46qu9sY9nEOnZkBr8uLh9uQ/71Zr6Fg+8GulDrGpvQeYkYeJU0r
+	 NIG6g2neYyQ8X+T+a46VZzgfimLHv+197xjK/qaxJaQsJc9dHGpA/Qv9BtVLu8zgfx
+	 F1ePsfYGuUquGFeIWkLHgtioE0ehRa0LwGHjoDmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Boccassi <bluca@debian.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Suren Baghdasaryan <surenb@google.com>
-Subject: [PATCH 6.6 262/530] sched: psi: fix unprivileged polling against cgroups
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/372] drm: vmwgfx_surface.c: copy user-array safely
 Date: Fri, 24 Nov 2023 17:47:08 +0000
-Message-ID: <20231124172036.016386054@linuxfoundation.org>
+Message-ID: <20231124172011.852083224@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,102 +55,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Weiner <hannes@cmpxchg.org>
+From: Philipp Stanner <pstanner@redhat.com>
 
-commit 8b39d20eceeda6c4eb23df1497f9ed2fffdc8f69 upstream.
+[ Upstream commit 06ab64a0d836ac430c5f94669710a78aa43942cb ]
 
-519fabc7aaba ("psi: remove 500ms min window size limitation for
-triggers") breaks unprivileged psi polling on cgroups.
+Currently, there is no overflow-check with memdup_user().
 
-Historically, we had a privilege check for polling in the open() of a
-pressure file in /proc, but were erroneously missing it for the open()
-of cgroup pressure files.
+Use the new function memdup_array_user() instead of memdup_user() for
+duplicating the user-space array safely.
 
-When unprivileged polling was introduced in d82caa273565 ("sched/psi:
-Allow unprivileged polling of N*2s period"), it needed to filter
-privileges depending on the exact polling parameters, and as such
-moved the CAP_SYS_RESOURCE check from the proc open() callback to
-psi_trigger_create(). Both the proc files as well as cgroup files go
-through this during write(). This implicitly added the missing check
-for privileges required for HT polling for cgroups.
-
-When 519fabc7aaba ("psi: remove 500ms min window size limitation for
-triggers") followed right after to remove further restrictions on the
-RT polling window, it incorrectly assumed the cgroup privilege check
-was still missing and added it to the cgroup open(), mirroring what we
-used to do for proc files in the past.
-
-As a result, unprivileged poll requests that would be supported now
-get rejected when opening the cgroup pressure file for writing.
-
-Remove the cgroup open() check. psi_trigger_create() handles it.
-
-Fixes: 519fabc7aaba ("psi: remove 500ms min window size limitation for triggers")
-Reported-by: Luca Boccassi <bluca@debian.org>
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Luca Boccassi <bluca@debian.org>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Cc: stable@vger.kernel.org # 6.5+
-Link: https://lore.kernel.org/r/20231026164114.2488682-1-hannes@cmpxchg.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-7-pstanner@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_surface.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -3867,14 +3867,6 @@ static __poll_t cgroup_pressure_poll(str
- 	return psi_trigger_poll(&ctx->psi.trigger, of->file, pt);
- }
- 
--static int cgroup_pressure_open(struct kernfs_open_file *of)
--{
--	if (of->file->f_mode & FMODE_WRITE && !capable(CAP_SYS_RESOURCE))
--		return -EPERM;
--
--	return 0;
--}
--
- static void cgroup_pressure_release(struct kernfs_open_file *of)
- {
- 	struct cgroup_file_ctx *ctx = of->priv;
-@@ -5275,7 +5267,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "io.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IO]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_io_pressure_show,
- 		.write = cgroup_io_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5284,7 +5275,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "memory.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_MEM]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_memory_pressure_show,
- 		.write = cgroup_memory_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5293,7 +5283,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "cpu.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_CPU]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_cpu_pressure_show,
- 		.write = cgroup_cpu_pressure_write,
- 		.poll = cgroup_pressure_poll,
-@@ -5303,7 +5292,6 @@ static struct cftype cgroup_psi_files[]
- 	{
- 		.name = "irq.pressure",
- 		.file_offset = offsetof(struct cgroup, psi_files[PSI_IRQ]),
--		.open = cgroup_pressure_open,
- 		.seq_show = cgroup_irq_pressure_show,
- 		.write = cgroup_irq_pressure_write,
- 		.poll = cgroup_pressure_poll,
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+index 591c301e6cf21..1a1a286bc749f 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+@@ -774,9 +774,9 @@ int vmw_surface_define_ioctl(struct drm_device *dev, void *data,
+ 	       sizeof(metadata->mip_levels));
+ 	metadata->num_sizes = num_sizes;
+ 	metadata->sizes =
+-		memdup_user((struct drm_vmw_size __user *)(unsigned long)
++		memdup_array_user((struct drm_vmw_size __user *)(unsigned long)
+ 			    req->size_addr,
+-			    sizeof(*metadata->sizes) * metadata->num_sizes);
++			    metadata->num_sizes, sizeof(*metadata->sizes));
+ 	if (IS_ERR(metadata->sizes)) {
+ 		ret = PTR_ERR(metadata->sizes);
+ 		goto out_no_sizes;
+-- 
+2.42.0
+
 
 
 
