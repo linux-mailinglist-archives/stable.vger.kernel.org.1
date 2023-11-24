@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-1491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8ADC7F7FF6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90F767F8191
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8930CB21A80
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEEA51C218F3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B6033CD1;
-	Fri, 24 Nov 2023 18:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D7B364A5;
+	Fri, 24 Nov 2023 18:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgo+as++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xstE6kbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2101F33CFD;
-	Fri, 24 Nov 2023 18:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B95DC433C8;
-	Fri, 24 Nov 2023 18:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34A933076;
+	Fri, 24 Nov 2023 18:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB075C433C7;
+	Fri, 24 Nov 2023 18:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851533;
-	bh=lwNZagp+eSfvAzcTE0OzNNovMcom3MdWbM+qVXlUEto=;
+	s=korg; t=1700852382;
+	bh=3au6NInuJNzXRVnYPhjFDTXU3LZor+61XBxvaBVVcR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgo+as++kxDdRjwCDLQdGuMN3mRYK2xxpp6KPzqc8+HkuFUep5btEkPUZ2QOqSwIh
-	 9kQNjFaWRajwNsOTlZ/P/1+VQ0+syUDKRI0IJJ8VKFaozcUNYgKxJ6/3PlxdevVkoR
-	 sh+Z9nnNRcAXpACbtKd6s+7i80uJYLOz0zcVYtGM=
+	b=xstE6kbJJprq10XN5AxCojS7nSobO6HcK2WtLkDJ1nrXu0U75av0sbqRviX+RRU3W
+	 ZqJH4HzSDt+WVmnuBfnD74xJCYAKuQza2OWZm7TtuF0qTca5gyl/9wbgr8g33Y9HKC
+	 MmCr0pMpk3Da1xCFXXKRYsGmX0uYbVLRTqqK+jYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hansen Dsouza <hansen.dsouza@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.5 485/491] drm/amd/display: Guard against invalid RPTR/WPTR being set
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Christoph Lameter <cl@linux.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 334/372] mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
 Date: Fri, 24 Nov 2023 17:52:01 +0000
-Message-ID: <20231124172039.209709330@linuxfoundation.org>
+Message-ID: <20231124172021.518691014@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,68 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-commit 1ffa8602e39b89469dc703ebab7a7e44c33da0f7 upstream.
+commit 24948e3b7b12e0031a6edb4f49bbb9fb2ad1e4e9 upstream.
 
-[WHY]
-HW can return invalid values on register read, guard against these being
-set and causing us to access memory out of range and page fault.
+Objcg vectors attached to slab pages to store slab object ownership
+information are allocated using gfp flags for the original slab
+allocation.  Depending on slab page order and the size of slab objects,
+objcg vector can take several pages.
 
-[HOW]
-Guard at sync_inbox1 and guard at pushing commands.
+If the original allocation was done with the __GFP_NOFAIL flag, it
+triggered a warning in the page allocation code.  Indeed, order > 1 pages
+should not been allocated with the __GFP_NOFAIL flag.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by simply dropping the __GFP_NOFAIL flag when allocating the
+objcg vector.  It effectively allows to skip the accounting of a single
+slab object under a heavy memory pressure.
+
+An alternative would be to implement the mechanism to fallback to order-0
+allocations for accounting metadata, which is also not perfect because it
+will increase performance penalty and memory footprint of the kernel
+memory accounting under memory pressure.
+
+Link: https://lkml.kernel.org/r/ZUp8ZFGxwmCx4ZFr@P9FQF9L96D.corp.robot.car
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reported-by: Christoph Lameter <cl@linux.com>
+Closes: https://lkml.kernel.org/r/6b42243e-f197-600a-5d22-56bd728a5ad8@gentwo.org
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ mm/memcontrol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -657,9 +657,16 @@ enum dmub_status dmub_srv_sync_inbox1(st
- 		return DMUB_STATUS_INVALID;
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2854,7 +2854,8 @@ static void commit_charge(struct folio *
+  * Moreover, it should not come from DMA buffer and is not readily
+  * reclaimable. So those GFP bits should be masked off.
+  */
+-#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | __GFP_ACCOUNT)
++#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
++				 __GFP_ACCOUNT | __GFP_NOFAIL)
  
- 	if (dmub->hw_funcs.get_inbox1_rptr && dmub->hw_funcs.get_inbox1_wptr) {
--		dmub->inbox1_rb.rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
--		dmub->inbox1_rb.wrpt = dmub->hw_funcs.get_inbox1_wptr(dmub);
--		dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
-+		uint32_t rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
-+		uint32_t wptr = dmub->hw_funcs.get_inbox1_wptr(dmub);
-+
-+		if (rptr > dmub->inbox1_rb.capacity || wptr > dmub->inbox1_rb.capacity) {
-+			return DMUB_STATUS_HW_FAILURE;
-+		} else {
-+			dmub->inbox1_rb.rptr = rptr;
-+			dmub->inbox1_rb.wrpt = wptr;
-+			dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
-+		}
- 	}
- 
- 	return DMUB_STATUS_OK;
-@@ -693,6 +700,11 @@ enum dmub_status dmub_srv_cmd_queue(stru
- 	if (!dmub->hw_init)
- 		return DMUB_STATUS_INVALID;
- 
-+	if (dmub->inbox1_rb.rptr > dmub->inbox1_rb.capacity ||
-+	    dmub->inbox1_rb.wrpt > dmub->inbox1_rb.capacity) {
-+		return DMUB_STATUS_HW_FAILURE;
-+	}
-+
- 	if (dmub_rb_push_front(&dmub->inbox1_rb, cmd))
- 		return DMUB_STATUS_OK;
- 
+ /*
+  * mod_objcg_mlstate() may be called with irq enabled, so
 
 
 
