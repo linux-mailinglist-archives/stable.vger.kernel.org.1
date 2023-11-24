@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19CD07F7327
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A615E7F7328
 	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C60181F20D49
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7C031C20EDD
 	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0161200B2;
-	Fri, 24 Nov 2023 11:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6543E20303;
+	Fri, 24 Nov 2023 11:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwfZ7vVU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kowe0aQ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00441EB50
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38C0EC433C8;
-	Fri, 24 Nov 2023 11:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21F06200DA
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F46CC433C8;
+	Fri, 24 Nov 2023 11:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700826983;
-	bh=iSS9fPGSWTiwmKcuY1km72CMFPl6SmENBZgYGly5oZ0=;
+	s=korg; t=1700826986;
+	bh=S1TdssYF+nLavZZ8X7mi/SPvpCn8M7i/dTG8iHUkYhw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wwfZ7vVUmM/cHAB5pvSQhqE2OwerTWCZYpk+TgQDc0vETk8rT/HSLxzKLNrjKQRfK
-	 SAhopnxNmda40cWtdP3he7HA/upS/S8WCkFUBPZnzckKiVpjRauEOHPYr4olW3NQ8I
-	 d3MrKyzX5tKSSOe5Pc9k17H9owhT5//X2NGSInOs=
-Subject: FAILED: patch "[PATCH] cifs: account for primary channel in the interface list" failed to apply to 6.6-stable tree
+	b=Kowe0aQ5FlMDsy9LYK0ob7H03z7tWc/Zthnz2DRgw/dZlgjSaztpTeO55ptH5QMT1
+	 DFCwxUnBXkp0CF0o6d5xldOR3DDXCREz8+MjYqfnHwa3O3Qi5rI2Aqy5syH9DsCcWa
+	 UuK1SruN04EiPHU6XjMj0tqachFcql3zt9nPzshc=
+Subject: FAILED: patch "[PATCH] cifs: account for primary channel in the interface list" failed to apply to 6.1-stable tree
 To: sprasad@microsoft.com,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:56:21 +0000
-Message-ID: <2023112421-anguished-egomaniac-cc70@gregkh>
+Date: Fri, 24 Nov 2023 11:56:22 +0000
+Message-ID: <2023112422-designed-linked-773d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x fa1d0508bdd4a68c5e40f85f635712af8c12f180
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112421-anguished-egomaniac-cc70@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112422-designed-linked-773d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
 a6d8fb54a515 ("cifs: distribute channels across interfaces based on speed")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+05844bd661d9 ("cifs: print last update time for interface list")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
 
 thanks,
 
