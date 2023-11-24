@@ -1,111 +1,110 @@
-Return-Path: <stable+bounces-115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF047F7260
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:05:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA46C7F72DA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985BA281DFD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:05:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A7B6B21377
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:35:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D052A1A712;
-	Fri, 24 Nov 2023 11:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988921C693;
+	Fri, 24 Nov 2023 11:35:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nXqb+Bzu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JbRUc9r"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id A5564D6E;
-	Fri, 24 Nov 2023 03:05:02 -0800 (PST)
-Received: from [192.168.1.150] (181-28-144-85.ftth.glasoperator.nl [85.144.28.181])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3571420B74C0;
-	Fri, 24 Nov 2023 03:04:58 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3571420B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1700823902;
-	bh=7jaZ0scpk4NByvTCBB0IHW+wWWfI9aApWVslFKRIx8s=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nXqb+Bzu6O/7N3ZWRXOm99TsvtglFjoQqN8btxWl2cQbPDnKJ9cZzWM7WP7FHqaoT
-	 k88jeDK15/O683dzQsHAukzlISzzRMID+4EIwy7BaWmKrJ+F+3EoTZrXSwEEWi3mjh
-	 Up+Dq/LtF41FV+wluqOVtVWxCr9o5lgV1AbxcJe8=
-Message-ID: <58c82110-45b2-4e23-9a82-90e1f3fa43c2@linux.microsoft.com>
-Date: Fri, 24 Nov 2023 12:04:56 +0100
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D481DDDE
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:35:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AD82C433CA;
+	Fri, 24 Nov 2023 11:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700825756;
+	bh=1RhQkDhO7kpGqwzGbhqRiYQrhT0ZZ0LElCnFr7Fgykc=;
+	h=Subject:To:Cc:From:Date:From;
+	b=0JbRUc9rsxidA6rWzGUz8JT3DTzs4FkYpikl7ksO1Edy9+Rs881Lecpw9b2n0Bw2a
+	 cstQ4vt508UZ8sbqR4H0rbf1hyvrJqaA4zWtm2bnI3dZloEGpu6TbSqPFfH/o5zMbb
+	 F/6zSeXiPT7fJxhN1HwzMIz7c4oVJ7DAl5BDPND0=
+Subject: FAILED: patch "[PATCH] prctl: Disable prctl(PR_SET_MDWE) on parisc" failed to apply to 6.6-stable tree
+To: deller@gmx.de,sam@gentoo.org,stable@vger.kernel.org,torvalds@linux-foundation.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Nov 2023 11:35:55 +0000
+Message-ID: <2023112455-magnify-upturned-8e18@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Michael Kelley <mhkelley58@gmail.com>,
- Nikolay Borisov <nik.borisov@suse.com>, Peter Zijlstra
- <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
- Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
- Dexuan Cui <decui@microsoft.com>, linux-hyperv@vger.kernel.org,
- stefan.bader@canonical.com, tim.gardner@canonical.com,
- roxana.nicolescu@canonical.com, cascardo@canonical.com, kys@microsoft.com,
- haiyangz@microsoft.com, wei.liu@kernel.org, sashal@kernel.org,
- stable@vger.kernel.org
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <20231123135846.pakk44rqbbi7njmb@box.shutemov.name>
- <9f550947-9d13-479c-90c4-2e3f7674afee@linux.microsoft.com>
- <20231124104337.gjfyasjmo5pp666l@box.shutemov.name>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20231124104337.gjfyasjmo5pp666l@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 24/11/2023 11:43, Kirill A. Shutemov wrote:
-> On Fri, Nov 24, 2023 at 11:31:44AM +0100, Jeremi Piotrowski wrote:
->> On 23/11/2023 14:58, Kirill A. Shutemov wrote:
->>> On Wed, Nov 22, 2023 at 06:01:04PM +0100, Jeremi Piotrowski wrote:
->>>> Check for additional CPUID bits to identify TDX guests running with Trust
->>>> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
->>>> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
->>>>
->>>> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is visible
->>>> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
->>>> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
->>>> aware mechanisms for what's left. So currently such guests do not have
->>>> X86_FEATURE_TDX_GUEST set.
->>>>
->>>> We want the kernel to have X86_FEATURE_TDX_GUEST set for all TDX guests so we
->>>> need to check these additional CPUID bits, but we skip further initialization
->>>> in the function as we aren't guaranteed access to TDX module calls.
->>>
->>> I don't follow. The idea of partitioning is that L2 OS can be
->>> unenlightened and have no idea if it runs indide of TD. But this patch
->>> tries to enumerate TDX anyway.
->>>
->>> Why?
->>>
->>
->> That's not the only idea of partitioning. Partitioning provides different privilege
->> levels within the TD, and unenlightened L2 OS can be made to work but are inefficient.
->> In our case Linux always runs enlightened (both with and without TD partitioning), and
->> uses TDX functionality where applicable (TDX vmcalls, PTE encryption bit).
-> 
-> What value L1 adds in this case? If L2 has to be enlightened just run the
-> enlightened OS directly as L1 and ditch half-measures. I think you can
-> gain some performance this way.
-> 
 
-It's primarily about the privilege separation, performance is a reason
-one doesn't want to run unenlightened. The L1 makes the following possible:
-- TPM emulation within the trust domain but isolated from the OS
-- infrastructure interfaces for things like VM live migration
-- support for Virtual Trust Levels[1], Virtual Secure Mode[2]
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-These provide a lot of value to users, it's not at all about half-measures.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-[1]: https://lore.kernel.org/lkml/1681192532-15460-1-git-send-email-ssengar@linux.microsoft.com/
-[2]: https://lore.kernel.org/lkml/20231108111806.92604-1-nsaenz@amazon.com/
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 793838138c157d4c49f4fb744b170747e3dabf58
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112455-magnify-upturned-8e18@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+793838138c15 ("prctl: Disable prctl(PR_SET_MDWE) on parisc")
+24e41bf8a6b4 ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl")
+0da668333fb0 ("mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 793838138c157d4c49f4fb744b170747e3dabf58 Mon Sep 17 00:00:00 2001
+From: Helge Deller <deller@gmx.de>
+Date: Sat, 18 Nov 2023 19:33:35 +0100
+Subject: [PATCH] prctl: Disable prctl(PR_SET_MDWE) on parisc
+
+systemd-254 tries to use prctl(PR_SET_MDWE) for it's MemoryDenyWriteExecute
+functionality, but fails on parisc which still needs executable stacks in
+certain combinations of gcc/glibc/kernel.
+
+Disable prctl(PR_SET_MDWE) by returning -EINVAL for now on parisc, until
+userspace has catched up.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: Sam James <sam@gentoo.org>
+Closes: https://github.com/systemd/systemd/issues/29775
+Tested-by: Sam James <sam@gentoo.org>
+Link: https://lore.kernel.org/all/875y2jro9a.fsf@gentoo.org/
+Cc: <stable@vger.kernel.org> # v6.3+
+
+diff --git a/kernel/sys.c b/kernel/sys.c
+index 420d9cb9cc8e..e219fcfa112d 100644
+--- a/kernel/sys.c
++++ b/kernel/sys.c
+@@ -2394,6 +2394,10 @@ static inline int prctl_set_mdwe(unsigned long bits, unsigned long arg3,
+ 	if (bits & PR_MDWE_NO_INHERIT && !(bits & PR_MDWE_REFUSE_EXEC_GAIN))
+ 		return -EINVAL;
+ 
++	/* PARISC cannot allow mdwe as it needs writable stacks */
++	if (IS_ENABLED(CONFIG_PARISC))
++		return -EINVAL;
++
+ 	current_bits = get_current_mdwe();
+ 	if (current_bits && current_bits != bits)
+ 		return -EPERM; /* Cannot unset the flags */
 
 
