@@ -1,45 +1,49 @@
-Return-Path: <stable+bounces-1292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516927F7EEF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 187A27F80C7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEC78B217B6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49AC11C215E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59393306F;
-	Fri, 24 Nov 2023 18:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306CF33CD1;
+	Fri, 24 Nov 2023 18:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/rotAqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VWd83ehP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A152FC21;
-	Fri, 24 Nov 2023 18:37:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7569C433C7;
-	Fri, 24 Nov 2023 18:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A5B321AD;
+	Fri, 24 Nov 2023 18:52:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44178C433C8;
+	Fri, 24 Nov 2023 18:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851036;
-	bh=E+puQ6hhVztygsXnqHELRDjCymQBfn28vORGtKt+n+I=;
+	s=korg; t=1700851958;
+	bh=y18dteQgWfHatS44nvNeQ2mk+bgIxAjJyqtec83cUIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/rotAqVFhcv9b6QnoKW+/QX0MExFIQ1aytIwR21p059Rh2ScpzUx9bUl1WHgF80f
-	 uCPLPiyTlD6///dqFrWBY0k9dstYDwB7f1xQDtqYkS2C/BsN4BPlsCdIXaVkQ6eQ3K
-	 V4VeELTVHvJJXltM9eX4YRMn8gy3CW6FS4HEgDrg=
+	b=VWd83ehPzlab/mFcgdE1f3GQEAvAwRxLLXj3mZF3cfiPOqKX6+KZDQwrdb/LP5joP
+	 SFaHCFGnDojp9Wk+4BCzy4BXdTHs5XxIkdiTIFu/Rvs8BXuCNCATtsCAaszU1r31Ct
+	 eO/QyZixZ/6t8/WOcoTacUdzPeXVsezSd0vHh9S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 288/491] parisc/agp: Use 64-bit LE values in SBA IOMMU PDIR table
-Date: Fri, 24 Nov 2023 17:48:44 +0000
-Message-ID: <20231124172033.227535524@linuxfoundation.org>
+	syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 138/372] ppp: limit MRU to 64K
+Date: Fri, 24 Nov 2023 17:48:45 +0000
+Message-ID: <20231124172015.085740060@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,89 +55,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 86bb854d134f4429feb35d2e05f55c6e036770d2 upstream.
+[ Upstream commit c0a2a1b0d631fc460d830f52d06211838874d655 ]
 
-The PDIR table of the System Bus Adapter (SBA) I/O MMU uses 64-bit
-little-endian pointers.
+ppp_sync_ioctl allows setting device MRU, but does not sanity check
+this input.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Limit to a sane upper bound of 64KB.
+
+No implementation I could find generates larger than 64KB frames.
+RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
+16-bit length field. Other protocols will be smaller, such as PPPoE
+(9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
+PPTP and L2TP encapsulate in IP.
+
+Syzbot managed to trigger alloc warning in __alloc_pages:
+
+	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
+
+    WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4544
+
+    __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
+    __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
+    netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+    dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+    ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+    ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
+    tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
+    tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
+    receive_buf drivers/tty/tty_buffer.c:444 [inline]
+    flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
+    process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
+
+With call
+
+    ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=0x5e6417a8)
+
+Similar code exists in other drivers that implement ppp_channel_ops
+ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
+this are pppol2tp_ioctl and pppoe_ioctl.
+
+This code goes back to the start of git history.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/agp/parisc-agp.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/char/agp/parisc-agp.c b/drivers/char/agp/parisc-agp.c
-index c6f181702b9a..edbc4d338117 100644
---- a/drivers/char/agp/parisc-agp.c
-+++ b/drivers/char/agp/parisc-agp.c
-@@ -38,7 +38,7 @@ static struct _parisc_agp_info {
- 
- 	int lba_cap_offset;
- 
--	u64 *gatt;
-+	__le64 *gatt;
- 	u64 gatt_entries;
- 
- 	u64 gart_base;
-@@ -104,7 +104,7 @@ parisc_agp_create_gatt_table(struct agp_bridge_data *bridge)
- 	int i;
- 
- 	for (i = 0; i < info->gatt_entries; i++) {
--		info->gatt[i] = (unsigned long)agp_bridge->scratch_page;
-+		info->gatt[i] = cpu_to_le64(agp_bridge->scratch_page);
- 	}
- 
- 	return 0;
-@@ -158,9 +158,9 @@ parisc_agp_insert_memory(struct agp_memory *mem, off_t pg_start, int type)
- 		for (k = 0;
- 		     k < info->io_pages_per_kpage;
- 		     k++, j++, paddr += info->io_page_size) {
--			info->gatt[j] =
-+			info->gatt[j] = cpu_to_le64(
- 				parisc_agp_mask_memory(agp_bridge,
--					paddr, type);
-+					paddr, type));
- 			asm_io_fdc(&info->gatt[j]);
- 		}
- 	}
-@@ -184,7 +184,7 @@ parisc_agp_remove_memory(struct agp_memory *mem, off_t pg_start, int type)
- 	io_pg_start = info->io_pages_per_kpage * pg_start;
- 	io_pg_count = info->io_pages_per_kpage * mem->page_count;
- 	for (i = io_pg_start; i < io_pg_count + io_pg_start; i++) {
--		info->gatt[i] = agp_bridge->scratch_page;
-+		info->gatt[i] = cpu_to_le64(agp_bridge->scratch_page);
- 	}
- 
- 	agp_bridge->driver->tlb_flush(mem);
-@@ -204,7 +204,8 @@ parisc_agp_mask_memory(struct agp_bridge_data *bridge, dma_addr_t addr,
- 	pa |= (ci >> PAGE_SHIFT) & 0xff;/* move CI (8 bits) into lowest byte */
- 	pa |= SBA_PDIR_VALID_BIT;	/* set "valid" bit */
- 
--	return cpu_to_le64(pa);
-+	/* return native (big-endian) PDIR entry */
-+	return pa;
- }
- 
- static void
-@@ -251,7 +252,8 @@ static int __init
- agp_ioc_init(void __iomem *ioc_regs)
- {
- 	struct _parisc_agp_info *info = &parisc_agp_info;
--        u64 iova_base, *io_pdir, io_tlb_ps;
-+        u64 iova_base, io_tlb_ps;
-+	__le64 *io_pdir;
-         int io_tlb_shift;
- 
-         printk(KERN_INFO DRVPFX "IO PDIR shared with sba_iommu\n");
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 1ac231408398a..94ef6f9ca5103 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -462,6 +462,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
+ 	case PPPIOCSMRU:
+ 		if (get_user(val, (int __user *) argp))
+ 			break;
++		if (val > U16_MAX) {
++			err = -EINVAL;
++			break;
++		}
+ 		if (val < PPP_MRU)
+ 			val = PPP_MRU;
+ 		ap->mru = val;
 -- 
-2.43.0
+2.42.0
 
 
 
