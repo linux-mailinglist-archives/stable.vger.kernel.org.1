@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5EB7F8237
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28A0B7F840B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BAECA1C22DA8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD76FB278AB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D03A364BA;
-	Fri, 24 Nov 2023 19:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E58433CC2;
+	Fri, 24 Nov 2023 19:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpvNuGu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0D4O0LgJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DB922F1D;
-	Fri, 24 Nov 2023 19:05:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B75DC433C7;
-	Fri, 24 Nov 2023 19:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BE03306F;
+	Fri, 24 Nov 2023 19:23:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 524E4C433C8;
+	Fri, 24 Nov 2023 19:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852737;
-	bh=VuyIk22BPknj6aQx417HrF9NcXKrVj2ecfhdgRYbG1w=;
+	s=korg; t=1700853810;
+	bh=zmAintn1Y+YMF7nGyfeJTWLyFdjpV7OWANjQHOsVc04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpvNuGu3SpX87dD6ailiQvQnGsq+Nd4u6EoVcLj+4epck4gznVKCZWDI28T27eiXE
-	 Te4ttzRTHPlwJk+lqdOyJGuIgiQZz1dkBk72Vw5hzuDP7nnUGOV5b0rO6I5UVNte0t
-	 VRZb2pLZo+Jt0axOHH0dKNQMyJ6aMZunNhLaMOa8=
+	b=0D4O0LgJEW5CVIbwr9xMfEgIebIJ4PQvj16uilFQExjUQZHP+IcHl+wmeNc3/jHTF
+	 wFBjF13aZCjMtYF5FSrRWwQzuISudI9Q8fG3XI6RCmQT5QMPy0h74Z26IIgCXTETyo
+	 7tks5npN4ZZW9RDsWRZh7XPYJh2ZNN7NV/w5Wj3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 103/193] hvc/xen: fix error path in xen_hvc_init() to always register frontend driver
-Date: Fri, 24 Nov 2023 17:53:50 +0000
-Message-ID: <20231124171951.367911499@linuxfoundation.org>
+	Olli Asikainen <olli.asikainen@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 014/159] platform/x86: thinkpad_acpi: Add battery quirk for Thinkpad X120e
+Date: Fri, 24 Nov 2023 17:53:51 +0000
+Message-ID: <20231124171942.483957433@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Olli Asikainen <olli.asikainen@gmail.com>
 
-commit 2704c9a5593f4a47620c12dad78838ca62b52f48 upstream.
+[ Upstream commit 916646758aea81a143ce89103910f715ed923346 ]
 
-The xen_hvc_init() function should always register the frontend driver,
-even when there's no primary console — as there may be secondary consoles.
-(Qemu can always add secondary consoles, but only the toolstack can add
-the primary because it's special.)
+Thinkpad X120e also needs this battery quirk.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-3-dwmw2@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Olli Asikainen <olli.asikainen@gmail.com>
+Link: https://lore.kernel.org/r/20231024190922.2742-1-olli.asikainen@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_xen.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -588,7 +588,7 @@ static int __init xen_hvc_init(void)
- 		ops = &dom0_hvc_ops;
- 		r = xen_initial_domain_console_init();
- 		if (r < 0)
--			return r;
-+			goto register_fe;
- 		info = vtermno_to_xencons(HVC_COOKIE);
- 	} else {
- 		ops = &domU_hvc_ops;
-@@ -597,7 +597,7 @@ static int __init xen_hvc_init(void)
- 		else
- 			r = xen_pv_console_init();
- 		if (r < 0)
--			return r;
-+			goto register_fe;
- 
- 		info = vtermno_to_xencons(HVC_COOKIE);
- 		info->irq = bind_evtchn_to_irq_lateeoi(info->evtchn);
-@@ -622,6 +622,7 @@ static int __init xen_hvc_init(void)
- 	}
- 
- 	r = 0;
-+ register_fe:
- #ifdef CONFIG_HVC_XEN_FRONTEND
- 	r = xenbus_register_frontend(&xencons_driver);
- #endif
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 5d114088c88fb..f0d6bb567d1dc 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -9699,6 +9699,7 @@ static const struct tpacpi_quirk battery_quirk_table[] __initconst = {
+ 	 * Individual addressing is broken on models that expose the
+ 	 * primary battery as BAT1.
+ 	 */
++	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+ 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+ 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
+ 	TPACPI_Q_LNV3('R', '0', 'B', true), /* Thinkpad 11e gen 3 */
+-- 
+2.42.0
+
 
 
 
