@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-1029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CA07F7DA5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B28157F7B8C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1E7328111F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3CCA1C20FF4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1A43A8CF;
-	Fri, 24 Nov 2023 18:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0504339FF7;
+	Fri, 24 Nov 2023 18:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhmbMFSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VOUSMiQB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D733A8C3;
-	Fri, 24 Nov 2023 18:26:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D24C433C7;
-	Fri, 24 Nov 2023 18:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B387F39FEA;
+	Fri, 24 Nov 2023 18:06:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AA2C433C7;
+	Fri, 24 Nov 2023 18:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850381;
-	bh=4YoEas7GLATox5/M9wnHHBSDvAD6ZIozc5nrb1BHNCk=;
+	s=korg; t=1700849173;
+	bh=od/MtIl6MPnYxuMl3RRtXFNobVvQZMNhR9Mn+xuL1ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhmbMFSIc/YWQkwpVDaCYny/3WqUYzbJ8mfuDla4RTOiW3lfi0peNeICxLmzHJbwY
-	 PLYx8KuGv7Q1Q1ct6CdBsEfCv+Unn6EYn/z0FSZYope00wEzw4HtcTsy5faRDgfXrj
-	 X/92Xj84WJmv5Q56fj7INOXeG8QEmz+ftx0thqtM=
+	b=VOUSMiQBuOsvEmNVs8ATyUzYDx4sjw0QRzDvZe+qNgkUxqUo20zT7mL+aKepoFT8l
+	 qBfnZP/DfeCFgqSWnftVK6f23jGkyYsTa7NVVBgm71XNzc/iFOXL2dVoznUS4eajRY
+	 ckd+OnE4Jt0A0EkVtDfSOVJ2toIGmd8dwNbrAdgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhen Lei <thunder.leizhen@huawei.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Samson Tam <samson.tam@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 006/491] rcu: Dump memory object info if callback function is invalid
+Subject: [PATCH 6.6 076/530] drm/amd/display: fix num_ways overflow error
 Date: Fri, 24 Nov 2023 17:44:02 +0000
-Message-ID: <20231124172024.866274752@linuxfoundation.org>
+Message-ID: <20231124172030.386014519@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,150 +56,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhen Lei <thunder.leizhen@huawei.com>
+From: Samson Tam <samson.tam@amd.com>
 
-[ Upstream commit 2cbc482d325ee58001472c4359b311958c4efdd1 ]
+[ Upstream commit 79f3f1b66753b3a3a269d73676bf50987921f267 ]
 
-When a structure containing an RCU callback rhp is (incorrectly) freed
-and reallocated after rhp is passed to call_rcu(), it is not unusual for
-rhp->func to be set to NULL. This defeats the debugging prints used by
-__call_rcu_common() in kernels built with CONFIG_DEBUG_OBJECTS_RCU_HEAD=y,
-which expect to identify the offending code using the identity of this
-function.
+[Why]
+Helper function calculates num_ways using 32-bit.  But is
+ returned as 8-bit.  If num_ways exceeds 8-bit, then it
+ reports back the incorrect num_ways and erroneously
+ uses MALL when it should not
 
-And in kernels build without CONFIG_DEBUG_OBJECTS_RCU_HEAD=y, things
-are even worse, as can be seen from this splat:
+[How]
+Make returned value 32-bit and convert after it checks
+ against caps.cache_num_ways, which is under 8-bit
 
-Unable to handle kernel NULL pointer dereference at virtual address 0
-... ...
-PC is at 0x0
-LR is at rcu_do_batch+0x1c0/0x3b8
-... ...
- (rcu_do_batch) from (rcu_core+0x1d4/0x284)
- (rcu_core) from (__do_softirq+0x24c/0x344)
- (__do_softirq) from (__irq_exit_rcu+0x64/0x108)
- (__irq_exit_rcu) from (irq_exit+0x8/0x10)
- (irq_exit) from (__handle_domain_irq+0x74/0x9c)
- (__handle_domain_irq) from (gic_handle_irq+0x8c/0x98)
- (gic_handle_irq) from (__irq_svc+0x5c/0x94)
- (__irq_svc) from (arch_cpu_idle+0x20/0x3c)
- (arch_cpu_idle) from (default_idle_call+0x4c/0x78)
- (default_idle_call) from (do_idle+0xf8/0x150)
- (do_idle) from (cpu_startup_entry+0x18/0x20)
- (cpu_startup_entry) from (0xc01530)
-
-This commit therefore adds calls to mem_dump_obj(rhp) to output some
-information, for example:
-
-  slab kmalloc-256 start ffff410c45019900 pointer offset 0 size 256
-
-This provides the rough size of the memory block and the offset of the
-rcu_head structure, which as least provides at least a few clues to help
-locate the problem. If the problem is reproducible, additional slab
-debugging can be enabled, for example, CONFIG_DEBUG_SLAB=y, which can
-provide significantly more information.
-
-Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Samson Tam <samson.tam@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/rcu.h      | 7 +++++++
- kernel/rcu/srcutiny.c | 1 +
- kernel/rcu/srcutree.c | 1 +
- kernel/rcu/tasks.h    | 1 +
- kernel/rcu/tiny.c     | 1 +
- kernel/rcu/tree.c     | 1 +
- 6 files changed, 12 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/rcu/rcu.h b/kernel/rcu/rcu.h
-index 98c1544cf572b..7ae3496b0b58d 100644
---- a/kernel/rcu/rcu.h
-+++ b/kernel/rcu/rcu.h
-@@ -10,6 +10,7 @@
- #ifndef __LINUX_RCU_H
- #define __LINUX_RCU_H
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+index 018376146d977..be59e1c02f8aa 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+@@ -214,7 +214,7 @@ static bool dcn32_check_no_memory_request_for_cab(struct dc *dc)
+ static uint32_t dcn32_calculate_cab_allocation(struct dc *dc, struct dc_state *ctx)
+ {
+ 	int i;
+-	uint8_t num_ways = 0;
++	uint32_t num_ways = 0;
+ 	uint32_t mall_ss_size_bytes = 0;
  
-+#include <linux/slab.h>
- #include <trace/events/rcu.h>
+ 	mall_ss_size_bytes = ctx->bw_ctx.bw.dcn.mall_ss_size_bytes;
+@@ -244,7 +244,8 @@ static uint32_t dcn32_calculate_cab_allocation(struct dc *dc, struct dc_state *c
+ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
+ {
+ 	union dmub_rb_cmd cmd;
+-	uint8_t ways, i;
++	uint8_t i;
++	uint32_t ways;
+ 	int j;
+ 	bool mall_ss_unsupported = false;
+ 	struct dc_plane_state *plane = NULL;
+@@ -304,7 +305,7 @@ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
+ 				cmd.cab.header.type = DMUB_CMD__CAB_FOR_SS;
+ 				cmd.cab.header.sub_type = DMUB_CMD__CAB_DCN_SS_FIT_IN_CAB;
+ 				cmd.cab.header.payload_bytes = sizeof(cmd.cab) - sizeof(cmd.cab.header);
+-				cmd.cab.cab_alloc_ways = ways;
++				cmd.cab.cab_alloc_ways = (uint8_t)ways;
  
- /*
-@@ -248,6 +249,12 @@ static inline void debug_rcu_head_unqueue(struct rcu_head *head)
- }
- #endif	/* #else !CONFIG_DEBUG_OBJECTS_RCU_HEAD */
- 
-+static inline void debug_rcu_head_callback(struct rcu_head *rhp)
-+{
-+	if (unlikely(!rhp->func))
-+		kmem_dump_obj(rhp);
-+}
-+
- extern int rcu_cpu_stall_suppress_at_boot;
- 
- static inline bool rcu_stall_is_suppressed_at_boot(void)
-diff --git a/kernel/rcu/srcutiny.c b/kernel/rcu/srcutiny.c
-index 336af24e0fe35..c38e5933a5d69 100644
---- a/kernel/rcu/srcutiny.c
-+++ b/kernel/rcu/srcutiny.c
-@@ -138,6 +138,7 @@ void srcu_drive_gp(struct work_struct *wp)
- 	while (lh) {
- 		rhp = lh;
- 		lh = lh->next;
-+		debug_rcu_head_callback(rhp);
- 		local_bh_disable();
- 		rhp->func(rhp);
- 		local_bh_enable();
-diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-index 253ed509b6abb..c6481032d42be 100644
---- a/kernel/rcu/srcutree.c
-+++ b/kernel/rcu/srcutree.c
-@@ -1735,6 +1735,7 @@ static void srcu_invoke_callbacks(struct work_struct *work)
- 	rhp = rcu_cblist_dequeue(&ready_cbs);
- 	for (; rhp != NULL; rhp = rcu_cblist_dequeue(&ready_cbs)) {
- 		debug_rcu_head_unqueue(rhp);
-+		debug_rcu_head_callback(rhp);
- 		local_bh_disable();
- 		rhp->func(rhp);
- 		local_bh_enable();
-diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index b770add3f8430..b64d45cdea9c4 100644
---- a/kernel/rcu/tasks.h
-+++ b/kernel/rcu/tasks.h
-@@ -493,6 +493,7 @@ static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu
- 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
- 	len = rcl.len;
- 	for (rhp = rcu_cblist_dequeue(&rcl); rhp; rhp = rcu_cblist_dequeue(&rcl)) {
-+		debug_rcu_head_callback(rhp);
- 		local_bh_disable();
- 		rhp->func(rhp);
- 		local_bh_enable();
-diff --git a/kernel/rcu/tiny.c b/kernel/rcu/tiny.c
-index 42f7589e51e09..fec804b790803 100644
---- a/kernel/rcu/tiny.c
-+++ b/kernel/rcu/tiny.c
-@@ -97,6 +97,7 @@ static inline bool rcu_reclaim_tiny(struct rcu_head *head)
- 
- 	trace_rcu_invoke_callback("", head);
- 	f = head->func;
-+	debug_rcu_head_callback(head);
- 	WRITE_ONCE(head->func, (rcu_callback_t)0L);
- 	f(head);
- 	rcu_lock_release(&rcu_callback_map);
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 1449cb69a0e0e..9b9ebe6205b93 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -2131,6 +2131,7 @@ static void rcu_do_batch(struct rcu_data *rdp)
- 		trace_rcu_invoke_callback(rcu_state.name, rhp);
- 
- 		f = rhp->func;
-+		debug_rcu_head_callback(rhp);
- 		WRITE_ONCE(rhp->func, (rcu_callback_t)0L);
- 		f(rhp);
+ 				dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
  
 -- 
 2.42.0
