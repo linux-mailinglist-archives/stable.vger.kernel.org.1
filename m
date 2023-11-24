@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530797F81AA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9307F7FF1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8714B21DD8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 812841C2146C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E1633CC2;
-	Fri, 24 Nov 2023 19:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDD7381D2;
+	Fri, 24 Nov 2023 18:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCN2YcDU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRcwhV93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0082E22F1D;
-	Fri, 24 Nov 2023 19:00:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D94B8C433C7;
-	Fri, 24 Nov 2023 19:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A732381A2;
+	Fri, 24 Nov 2023 18:45:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5C4C433C8;
+	Fri, 24 Nov 2023 18:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852434;
-	bh=rvHc/HEx8tjchgLAA62jHdAKyD6jPX/IPwSYTwF6z0k=;
+	s=korg; t=1700851528;
+	bh=MN6S4831VzagMbIeuYXjn9fd/OS+uItePcbSUnGm9WE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pCN2YcDUt2ss7etIkPJqUWyQQcB3lhGPteAaKDt/UGzb056XV4OqkUQiktFVvNfdQ
-	 zY4/FEGehHBMFIcKtufreTlHPZ4dNt9Vrs0qvchsjEN3k7CxSVv9+pCQyCrpqIOaaf
-	 VRiFF1HTTpYTipvDzxjr1UCArVxrBk90+yELSHK4=
+	b=lRcwhV93zPp/4xjxOYsNgfmkfy6y54bOFSuWijbx3rV9fWMJbVAGW9tT2CDLCmsNe
+	 nWDSFIWtdEpdJU4O8a2ADl4xK7msUSqhgPA8fCzcM7/dHLQPdrPY1Z6KVjjfAPygCP
+	 QZ4wCqbQBGrDczkhNMG6gM1LXurRbuEWsVkBPUNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcaov@gmail.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 331/372] riscv: kprobes: allow writing to x0
-Date: Fri, 24 Nov 2023 17:51:58 +0000
-Message-ID: <20231124172021.421405834@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 483/491] drm/amdgpu: lower CS errors to debug severity
+Date: Fri, 24 Nov 2023 17:51:59 +0000
+Message-ID: <20231124172039.147593230@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +50,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcaov@gmail.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit 8cb22bec142624d21bc85ff96b7bad10b6220e6a upstream.
+commit 17daf01ab4e3e5a5929747aa05cc15eb2bad5438 upstream.
 
-Instructions can write to x0, so we should simulate these instructions
-normally.
+Otherwise userspace can spam the logs by using incorrect input values.
 
-Currently, the kernel hangs if an instruction who writes to x0 is
-simulated.
-
-Fixes: c22b0bcb1dd0 ("riscv: Add kprobes supported")
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Nam Cao <namcaov@gmail.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20230829182500.61875-1-namcaov@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/probes/simulate-insn.c |    2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/probes/simulate-insn.c
-+++ b/arch/riscv/kernel/probes/simulate-insn.c
-@@ -24,7 +24,7 @@ static inline bool rv_insn_reg_set_val(s
- 				       unsigned long val)
- {
- 	if (index == 0)
--		return false;
-+		return true;
- 	else if (index <= 31)
- 		*((unsigned long *)regs + index) = val;
- 	else
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1438,7 +1438,7 @@ int amdgpu_cs_ioctl(struct drm_device *d
+ 		if (r == -ENOMEM)
+ 			DRM_ERROR("Not enough memory for command submission!\n");
+ 		else if (r != -ERESTARTSYS && r != -EAGAIN)
+-			DRM_ERROR("Failed to process the buffer list %d!\n", r);
++			DRM_DEBUG("Failed to process the buffer list %d!\n", r);
+ 		goto error_fini;
+ 	}
+ 
 
 
 
