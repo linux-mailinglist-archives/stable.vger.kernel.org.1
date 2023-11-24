@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AC667F815C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD577F7FD7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA071282630
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEEBE1C214F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8991F364A7;
-	Fri, 24 Nov 2023 18:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1F133CFD;
+	Fri, 24 Nov 2023 18:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UO1Tbjax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zspZXxPr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4422FC4E;
-	Fri, 24 Nov 2023 18:57:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD452C433C8;
-	Fri, 24 Nov 2023 18:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA06364DE;
+	Fri, 24 Nov 2023 18:44:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B34CC433C7;
+	Fri, 24 Nov 2023 18:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852276;
-	bh=/aa2b/7Zu6FZUHcsSzYUbMGa0b+eyFWYIaiek+VbqFc=;
+	s=korg; t=1700851481;
+	bh=CBuvKdgMtF7IEvbOaRTWoKAYAhIhruE39YDchW6h+4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UO1Tbjaxl91hcjBtBLif/lNSpUQ8nnLfhnsWIBCS+EbN71tpku3RpmiTULPucOZWo
-	 f0sx6GCook1BFqruvMeiAbIlQCHZ1Nnf4Kp++xvXANoBwdt4bgEujlQSAnGJ6ajoc0
-	 r+gJNy8BAmVOjj2qBhhHq773H8cCEVaDA8lC93Uw=
+	b=zspZXxPrZiR5iyStdBQkctYWtqxXcc9y389mKMwNJIF8WJYknfSVIU8KJehq+tnDI
+	 lYu39FmbX1qwmpagwuYbJBzYUSqaNyzQ3KXFi5mH8Ivs0maZmPhOxFRGlz7W/YJyNV
+	 xbx67Hob7uuyUlYV/I2YhkZwE+bUEpL8qn6Jy8mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 290/372] bluetooth: Add device 0bda:887b to device tables
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Christoph Lameter <cl@linux.com>,
+	Shakeel Butt <shakeelb@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 441/491] mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
 Date: Fri, 24 Nov 2023 17:51:17 +0000
-Message-ID: <20231124172020.078486835@linuxfoundation.org>
+Message-ID: <20231124172037.853328730@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,72 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larry Finger <Larry.Finger@lwfinger.net>
+From: Roman Gushchin <roman.gushchin@linux.dev>
 
-[ Upstream commit 730a1d1a93a3e30c3723f87af97a8517334b2203 ]
+commit 24948e3b7b12e0031a6edb4f49bbb9fb2ad1e4e9 upstream.
 
-This device is part of a Realtek RTW8852BE chip.
+Objcg vectors attached to slab pages to store slab object ownership
+information are allocated using gfp flags for the original slab
+allocation.  Depending on slab page order and the size of slab objects,
+objcg vector can take several pages.
 
-The device table entry is as follows:
+If the original allocation was done with the __GFP_NOFAIL flag, it
+triggered a warning in the page allocation code.  Indeed, order > 1 pages
+should not been allocated with the __GFP_NOFAIL flag.
 
-T:  Bus=03 Lev=01 Prnt=01 Port=12 Cnt=02 Dev#=  3 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0bda ProdID=887b Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+Fix this by simply dropping the __GFP_NOFAIL flag when allocating the
+objcg vector.  It effectively allows to skip the accounting of a single
+slab object under a heavy memory pressure.
 
-Signed-off-by: Larry Finger <Larry.Finger@lwfinger.net>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+An alternative would be to implement the mechanism to fallback to order-0
+allocations for accounting metadata, which is also not perfect because it
+will increase performance penalty and memory footprint of the kernel
+memory accounting under memory pressure.
+
+Link: https://lkml.kernel.org/r/ZUp8ZFGxwmCx4ZFr@P9FQF9L96D.corp.robot.car
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+Reported-by: Christoph Lameter <cl@linux.com>
+Closes: https://lkml.kernel.org/r/6b42243e-f197-600a-5d22-56bd728a5ad8@gentwo.org
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/memcontrol.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 0cc58447e4f0b..60a7e4ad2566b 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -535,6 +535,8 @@ static const struct usb_device_id blacklist_table[] = {
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -2868,7 +2868,8 @@ static void commit_charge(struct folio *
+  * Moreover, it should not come from DMA buffer and is not readily
+  * reclaimable. So those GFP bits should be masked off.
+  */
+-#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | __GFP_ACCOUNT)
++#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
++				 __GFP_ACCOUNT | __GFP_NOFAIL)
  
- 	/* Realtek Bluetooth devices */
- 	{ USB_VENDOR_AND_INTERFACE_INFO(0x0bda, 0xe0, 0x01, 0x01),
--- 
-2.42.0
-
+ /*
+  * mod_objcg_mlstate() may be called with irq enabled, so
 
 
 
