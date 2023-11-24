@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C397F815D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5885B7F7D84
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03700282647
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B661C210A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F3B1364A5;
-	Fri, 24 Nov 2023 18:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6965B3A8D0;
+	Fri, 24 Nov 2023 18:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVBKEKsI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yb5wBPGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA4333CD1;
-	Fri, 24 Nov 2023 18:58:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E6EC433C8;
-	Fri, 24 Nov 2023 18:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222F934197;
+	Fri, 24 Nov 2023 18:25:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529CFC433C8;
+	Fri, 24 Nov 2023 18:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852281;
-	bh=6YzCfVWF+a76rR2H0LD+Z6iDWoS4yPY/c7y6/M83xY8=;
+	s=korg; t=1700850316;
+	bh=4IaispNVxf/Hsg6nyONNId4QgOzLdCSSQV+axLqUa2k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZVBKEKsIH/caBZs9xhaeAo0l6QMqBJeyoZ145TCFtNcsncX39zvAS7dD2nRzIGmuw
-	 9+ebGyQxO4y7ULYJdsCmOu58OuNVbHaNLjo+1Ga/PQ4NYf3FS7NDKWjszbULqamBK/
-	 cdCZNTTHkYEDTnRpXx1s+QvnU/Kq6V6jdIb9P/kE=
+	b=Yb5wBPGrbAkztMthsh2tJ07nEnDnInwgXwU5zL54qg1U5Qzqgf+OTT2Scd/X8me7b
+	 A8iNQOmsO4cq/Qad5mL+M7fUDkWUgymnlnpPWw3s3tQ7XDMX6qWkioFfBccI/0fTNq
+	 8tr55Ae16Kiv0zR0ObrGLuTJw46vJDorOZN6kEqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masum Reza <masumrezarock100@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 292/372] Bluetooth: btusb: Add RTW8852BE device 13d3:3570 to device tables
+	Kunwu Chan <chentao@kylinos.cn>,
+	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>
+Subject: [PATCH 6.6 513/530] drm/i915: Fix potential spectre vulnerability
 Date: Fri, 24 Nov 2023 17:51:19 +0000
-Message-ID: <20231124172020.158726985@linuxfoundation.org>
+Message-ID: <20231124172043.784485040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masum Reza <masumrezarock100@gmail.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 02be109d3a405dbc4d53fb4b4473d7a113548088 ]
+commit 1a8e9bad6ef563c28ab0f8619628d5511be55431 upstream.
 
-This device is used in TP-Link TX20E WiFi+Bluetooth adapter.
+Fix smatch warning:
+drivers/gpu/drm/i915/gem/i915_gem_context.c:847 set_proto_ctx_sseu()
+warn: potential spectre issue 'pc->user_engines' [r] (local cap)
 
-Relevant information in /sys/kernel/debug/usb/devices
-about the Bluetooth device is listed as the below.
-
-T:  Bus=01 Lev=01 Prnt=01 Port=08 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3570 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Signed-off-by: Masum Reza <masumrezarock100@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d4433c7600f7 ("drm/i915/gem: Use the proto-context to handle create parameters (v5)")
+Cc: <stable@vger.kernel.org> # v5.15+
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103110922.430122-1-tvrtko.ursulin@linux.intel.com
+(cherry picked from commit 27b086382c22efb7e0a16442f7bdc2e120108ef3)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/i915/gem/i915_gem_context.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 697a55e3b65eb..9c651f56627b2 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -537,6 +537,8 @@ static const struct usb_device_id blacklist_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3570), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
+--- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+@@ -844,6 +844,7 @@ static int set_proto_ctx_sseu(struct drm
+ 		if (idx >= pc->num_user_engines)
+ 			return -EINVAL;
  
--- 
-2.42.0
-
++		idx = array_index_nospec(idx, pc->num_user_engines);
+ 		pe = &pc->user_engines[idx];
+ 
+ 		/* Only render engine supports RPCS configuration. */
 
 
 
