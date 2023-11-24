@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 888047F7E1E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5897F7C1D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92861C212CE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901561C210AD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0172B39FF3;
-	Fri, 24 Nov 2023 18:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6773A8C4;
+	Fri, 24 Nov 2023 18:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oemPyYje"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFQuf1eS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95CE8381DE;
-	Fri, 24 Nov 2023 18:30:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9722C433C7;
-	Fri, 24 Nov 2023 18:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7A039FF3;
+	Fri, 24 Nov 2023 18:11:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25FBAC433C7;
+	Fri, 24 Nov 2023 18:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850607;
-	bh=dc13T/J5tZc+pl4YeWtjDiQBg+DJ3lknrGkICgQHcdw=;
+	s=korg; t=1700849516;
+	bh=iyrZDeXwGJzPhmSnzLrhaUafIf43kEnvQ/wr3sR4PBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oemPyYjer+iEiUbxNofplMCQMaxGk5kKwnlwjQXMalgbekXKa8SZGyCIBAA+A1aWy
-	 re5yOmcAVPvzSQXzuqWb0+I551C4ikoWEt2u9Z4zhs9WZwPSJAS2AMjezwOHqbL4mh
-	 wRHXLnv1mo4G2hqUqL5D7xucxBVaDjsaank+Ct/U=
+	b=wFQuf1eSKmSyagY13K/tKaHfhwEdY6bR8uDECsYWJf3FBvBlIUyozh/8IXGcTctjq
+	 s/wPcoZpiGaFSqlAMEv2fttx9ISCIFPoZqjeJOmFwIfH9LAaBCev6Sg/Q1+QWsSIwT
+	 3V9XHm1Zfur5buhhIUoyxQoQHTwp01KcMM0Es7EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 117/491] phy: qualcomm: phy-qcom-eusb2-repeater: Zero out untouched tuning regs
-Date: Fri, 24 Nov 2023 17:45:53 +0000
-Message-ID: <20231124172028.045247956@linuxfoundation.org>
+Subject: [PATCH 6.6 188/530] net: hns3: fix add VLAN fail issue
+Date: Fri, 24 Nov 2023 17:45:54 +0000
+Message-ID: <20231124172033.791420021@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,149 +52,194 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 99a517a582fc1272d1d3cf3b9e671a14d7db77b8 ]
+[ Upstream commit 472a2ff63efb30234cbf6b2cdaf8117f21b4f8bc ]
 
-The vendor kernel zeroes out all tuning data outside the init sequence
-as part of initialization. Follow suit to avoid UB.
+The hclge_sync_vlan_filter is called in periodic task,
+trying to remove VLAN from vlan_del_fail_bmap. It can
+be concurrence with VLAN adding operation from user.
+So once user failed to delete a VLAN id, and add it
+again soon, it may be removed by the periodic task,
+which may cause the software configuration being
+inconsistent with hardware. So add mutex handling
+to avoid this.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-3-7d8c893d93f6@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+     user                        hns3 driver
+
+                                           periodic task
+                                                │
+  add vlan 10 ───── hns3_vlan_rx_add_vid        │
+       │             (suppose success)          │
+       │                                        │
+  del vlan 10 ─────  hns3_vlan_rx_kill_vid      │
+       │           (suppose fail,add to         │
+       │             vlan_del_fail_bmap)        │
+       │                                        │
+  add vlan 10 ───── hns3_vlan_rx_add_vid        │
+                     (suppose success)          │
+                                       foreach vlan_del_fail_bmp
+                                            del vlan 10
+
+Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 58 ++++++++++++++-----
- 1 file changed, 44 insertions(+), 14 deletions(-)
+ .../hisilicon/hns3/hns3pf/hclge_main.c        | 28 +++++++++++++------
+ .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 11 ++++++--
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-index b20b805414a2a..6777532dd4dc9 100644
---- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-+++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
-@@ -25,9 +25,18 @@
- #define EUSB2_FORCE_VAL_5		0xeD
- #define V_CLK_19P2M_EN			BIT(6)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index c42574e297476..a884e8f7e947b 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10026,8 +10026,6 @@ static void hclge_rm_vport_vlan_table(struct hclge_vport *vport, u16 vlan_id,
+ 	struct hclge_vport_vlan_cfg *vlan, *tmp;
+ 	struct hclge_dev *hdev = vport->back;
  
-+#define EUSB2_TUNE_USB2_CROSSOVER	0x50
- #define EUSB2_TUNE_IUSB2		0x51
-+#define EUSB2_TUNE_RES_FSDIF		0x52
-+#define EUSB2_TUNE_HSDISC		0x53
- #define EUSB2_TUNE_SQUELCH_U		0x54
-+#define EUSB2_TUNE_USB2_SLEW		0x55
-+#define EUSB2_TUNE_USB2_EQU		0x56
- #define EUSB2_TUNE_USB2_PREEM		0x57
-+#define EUSB2_TUNE_USB2_HS_COMP_CUR	0x58
-+#define EUSB2_TUNE_EUSB_SLEW		0x59
-+#define EUSB2_TUNE_EUSB_EQU		0x5A
-+#define EUSB2_TUNE_EUSB_HS_COMP_CUR	0x5B
+-	mutex_lock(&hdev->vport_lock);
+-
+ 	list_for_each_entry_safe(vlan, tmp, &vport->vlan_list, node) {
+ 		if (vlan->vlan_id == vlan_id) {
+ 			if (is_write_tbl && vlan->hd_tbl_status)
+@@ -10042,8 +10040,6 @@ static void hclge_rm_vport_vlan_table(struct hclge_vport *vport, u16 vlan_id,
+ 			break;
+ 		}
+ 	}
+-
+-	mutex_unlock(&hdev->vport_lock);
+ }
  
- #define QCOM_EUSB2_REPEATER_INIT_CFG(r, v)	\
- 	{					\
-@@ -36,9 +45,18 @@
+ void hclge_rm_vport_all_vlan_table(struct hclge_vport *vport, bool is_del_list)
+@@ -10452,11 +10448,16 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
+ 	 * handle mailbox. Just record the vlan id, and remove it after
+ 	 * reset finished.
+ 	 */
++	mutex_lock(&hdev->vport_lock);
+ 	if ((test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state) ||
+ 	     test_bit(HCLGE_STATE_RST_FAIL, &hdev->state)) && is_kill) {
+ 		set_bit(vlan_id, vport->vlan_del_fail_bmap);
++		mutex_unlock(&hdev->vport_lock);
+ 		return -EBUSY;
++	} else if (!is_kill && test_bit(vlan_id, vport->vlan_del_fail_bmap)) {
++		clear_bit(vlan_id, vport->vlan_del_fail_bmap);
+ 	}
++	mutex_unlock(&hdev->vport_lock);
+ 
+ 	/* when port base vlan enabled, we use port base vlan as the vlan
+ 	 * filter entry. In this case, we don't update vlan filter table
+@@ -10471,17 +10472,22 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
  	}
  
- enum reg_fields {
-+	F_TUNE_EUSB_HS_COMP_CUR,
-+	F_TUNE_EUSB_EQU,
-+	F_TUNE_EUSB_SLEW,
-+	F_TUNE_USB2_HS_COMP_CUR,
- 	F_TUNE_USB2_PREEM,
-+	F_TUNE_USB2_EQU,
-+	F_TUNE_USB2_SLEW,
- 	F_TUNE_SQUELCH_U,
-+	F_TUNE_HSDISC,
-+	F_TUNE_RES_FSDIF,
- 	F_TUNE_IUSB2,
-+	F_TUNE_USB2_CROSSOVER,
- 	F_NUM_TUNE_FIELDS,
- 
- 	F_FORCE_VAL_5 = F_NUM_TUNE_FIELDS,
-@@ -51,9 +69,18 @@ enum reg_fields {
- };
- 
- static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
-+	[F_TUNE_EUSB_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_EUSB_HS_COMP_CUR, 0, 1),
-+	[F_TUNE_EUSB_EQU] = REG_FIELD(EUSB2_TUNE_EUSB_EQU, 0, 1),
-+	[F_TUNE_EUSB_SLEW] = REG_FIELD(EUSB2_TUNE_EUSB_SLEW, 0, 1),
-+	[F_TUNE_USB2_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_USB2_HS_COMP_CUR, 0, 1),
- 	[F_TUNE_USB2_PREEM] = REG_FIELD(EUSB2_TUNE_USB2_PREEM, 0, 2),
-+	[F_TUNE_USB2_EQU] = REG_FIELD(EUSB2_TUNE_USB2_EQU, 0, 1),
-+	[F_TUNE_USB2_SLEW] = REG_FIELD(EUSB2_TUNE_USB2_SLEW, 0, 1),
- 	[F_TUNE_SQUELCH_U] = REG_FIELD(EUSB2_TUNE_SQUELCH_U, 0, 2),
-+	[F_TUNE_HSDISC] = REG_FIELD(EUSB2_TUNE_HSDISC, 0, 2),
-+	[F_TUNE_RES_FSDIF] = REG_FIELD(EUSB2_TUNE_RES_FSDIF, 0, 2),
- 	[F_TUNE_IUSB2] = REG_FIELD(EUSB2_TUNE_IUSB2, 0, 3),
-+	[F_TUNE_USB2_CROSSOVER] = REG_FIELD(EUSB2_TUNE_USB2_CROSSOVER, 0, 2),
- 
- 	[F_FORCE_VAL_5] = REG_FIELD(EUSB2_FORCE_VAL_5, 0, 7),
- 	[F_FORCE_EN_5] = REG_FIELD(EUSB2_FORCE_EN_5, 0, 7),
-@@ -63,13 +90,8 @@ static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
- 	[F_RPTR_STATUS] = REG_FIELD(EUSB2_RPTR_STATUS, 0, 7),
- };
- 
--struct eusb2_repeater_init_tbl {
--	unsigned int reg;
--	unsigned int val;
--};
--
- struct eusb2_repeater_cfg {
--	const struct eusb2_repeater_init_tbl *init_tbl;
-+	const u32 *init_tbl;
- 	int init_tbl_num;
- 	const char * const *vreg_list;
- 	int num_vregs;
-@@ -88,10 +110,10 @@ static const char * const pm8550b_vreg_l[] = {
- 	"vdd18", "vdd3",
- };
- 
--static const struct eusb2_repeater_init_tbl pm8550b_init_tbl[] = {
--	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_IUSB2, 0x8),
--	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_SQUELCH_U, 0x3),
--	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_USB2_PREEM, 0x5),
-+static const u32 pm8550b_init_tbl[F_NUM_TUNE_FIELDS] = {
-+	[F_TUNE_IUSB2] = 0x8,
-+	[F_TUNE_SQUELCH_U] = 0x3,
-+	[F_TUNE_USB2_PREEM] = 0x5,
- };
- 
- static const struct eusb2_repeater_cfg pm8550b_eusb2_cfg = {
-@@ -119,8 +141,9 @@ static int eusb2_repeater_init_vregs(struct eusb2_repeater *rptr)
- 
- static int eusb2_repeater_init(struct phy *phy)
- {
-+	struct reg_field *regfields = eusb2_repeater_tune_reg_fields;
- 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
--	const struct eusb2_repeater_init_tbl *init_tbl = rptr->cfg->init_tbl;
-+	const u32 *init_tbl = rptr->cfg->init_tbl;
- 	u32 val;
- 	int ret;
- 	int i;
-@@ -131,9 +154,16 @@ static int eusb2_repeater_init(struct phy *phy)
- 
- 	regmap_field_update_bits(rptr->regs[F_EN_CTL1], EUSB2_RPTR_EN, EUSB2_RPTR_EN);
- 
--	for (i = 0; i < rptr->cfg->init_tbl_num; i++)
--		regmap_field_update_bits(rptr->regs[init_tbl[i].reg],
--					 init_tbl[i].val, init_tbl[i].val);
-+	for (i = 0; i < F_NUM_TUNE_FIELDS; i++) {
-+		if (init_tbl[i]) {
-+			regmap_field_update_bits(rptr->regs[i], init_tbl[i], init_tbl[i]);
-+		} else {
-+			/* Write 0 if there's no value set */
-+			u32 mask = GENMASK(regfields[i].msb, regfields[i].lsb);
-+
-+			regmap_field_update_bits(rptr->regs[i], mask, 0);
+ 	if (!ret) {
+-		if (!is_kill)
++		if (!is_kill) {
+ 			hclge_add_vport_vlan_table(vport, vlan_id,
+ 						   writen_to_tbl);
+-		else if (is_kill && vlan_id != 0)
++		} else if (is_kill && vlan_id != 0) {
++			mutex_lock(&hdev->vport_lock);
+ 			hclge_rm_vport_vlan_table(vport, vlan_id, false);
++			mutex_unlock(&hdev->vport_lock);
 +		}
-+	}
+ 	} else if (is_kill) {
+ 		/* when remove hw vlan filter failed, record the vlan id,
+ 		 * and try to remove it from hw later, to be consistence
+ 		 * with stack
+ 		 */
++		mutex_lock(&hdev->vport_lock);
+ 		set_bit(vlan_id, vport->vlan_del_fail_bmap);
++		mutex_unlock(&hdev->vport_lock);
+ 	}
  
- 	ret = regmap_field_read_poll_timeout(rptr->regs[F_RPTR_STATUS],
- 					     val, val & RPTR_OK, 10, 5);
+ 	hclge_set_vport_vlan_fltr_change(vport);
+@@ -10521,6 +10527,7 @@ static void hclge_sync_vlan_filter(struct hclge_dev *hdev)
+ 	int i, ret, sync_cnt = 0;
+ 	u16 vlan_id;
+ 
++	mutex_lock(&hdev->vport_lock);
+ 	/* start from vport 1 for PF is always alive */
+ 	for (i = 0; i < hdev->num_alloc_vport; i++) {
+ 		struct hclge_vport *vport = &hdev->vport[i];
+@@ -10531,21 +10538,26 @@ static void hclge_sync_vlan_filter(struct hclge_dev *hdev)
+ 			ret = hclge_set_vlan_filter_hw(hdev, htons(ETH_P_8021Q),
+ 						       vport->vport_id, vlan_id,
+ 						       true);
+-			if (ret && ret != -EINVAL)
++			if (ret && ret != -EINVAL) {
++				mutex_unlock(&hdev->vport_lock);
+ 				return;
++			}
+ 
+ 			clear_bit(vlan_id, vport->vlan_del_fail_bmap);
+ 			hclge_rm_vport_vlan_table(vport, vlan_id, false);
+ 			hclge_set_vport_vlan_fltr_change(vport);
+ 
+ 			sync_cnt++;
+-			if (sync_cnt >= HCLGE_MAX_SYNC_COUNT)
++			if (sync_cnt >= HCLGE_MAX_SYNC_COUNT) {
++				mutex_unlock(&hdev->vport_lock);
+ 				return;
++			}
+ 
+ 			vlan_id = find_first_bit(vport->vlan_del_fail_bmap,
+ 						 VLAN_N_VID);
+ 		}
+ 	}
++	mutex_unlock(&hdev->vport_lock);
+ 
+ 	hclge_sync_vlan_fltr_state(hdev);
+ }
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index a4d68fb216fb9..1c62e58ff6d89 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -1206,6 +1206,8 @@ static int hclgevf_set_vlan_filter(struct hnae3_handle *handle,
+ 	     test_bit(HCLGEVF_STATE_RST_FAIL, &hdev->state)) && is_kill) {
+ 		set_bit(vlan_id, hdev->vlan_del_fail_bmap);
+ 		return -EBUSY;
++	} else if (!is_kill && test_bit(vlan_id, hdev->vlan_del_fail_bmap)) {
++		clear_bit(vlan_id, hdev->vlan_del_fail_bmap);
+ 	}
+ 
+ 	hclgevf_build_send_msg(&send_msg, HCLGE_MBX_SET_VLAN,
+@@ -1233,20 +1235,25 @@ static void hclgevf_sync_vlan_filter(struct hclgevf_dev *hdev)
+ 	int ret, sync_cnt = 0;
+ 	u16 vlan_id;
+ 
++	if (bitmap_empty(hdev->vlan_del_fail_bmap, VLAN_N_VID))
++		return;
++
++	rtnl_lock();
+ 	vlan_id = find_first_bit(hdev->vlan_del_fail_bmap, VLAN_N_VID);
+ 	while (vlan_id != VLAN_N_VID) {
+ 		ret = hclgevf_set_vlan_filter(handle, htons(ETH_P_8021Q),
+ 					      vlan_id, true);
+ 		if (ret)
+-			return;
++			break;
+ 
+ 		clear_bit(vlan_id, hdev->vlan_del_fail_bmap);
+ 		sync_cnt++;
+ 		if (sync_cnt >= HCLGEVF_MAX_SYNC_COUNT)
+-			return;
++			break;
+ 
+ 		vlan_id = find_first_bit(hdev->vlan_del_fail_bmap, VLAN_N_VID);
+ 	}
++	rtnl_unlock();
+ }
+ 
+ static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
 -- 
 2.42.0
 
