@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF987F7F3B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CDA7F7D02
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC08282482
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53581C20904
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 139142D787;
-	Fri, 24 Nov 2023 18:39:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3BC39FD9;
+	Fri, 24 Nov 2023 18:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vKVaEW+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHuw6pn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CC933CCA;
-	Fri, 24 Nov 2023 18:39:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538ACC433C7;
-	Fri, 24 Nov 2023 18:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814383A8C3;
+	Fri, 24 Nov 2023 18:20:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E961C433C8;
+	Fri, 24 Nov 2023 18:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851186;
-	bh=lSjgilWe5E14n4gJtcvbdIjQftUJ0mldVDEWyuCYEJU=;
+	s=korg; t=1700850028;
+	bh=fz5rc4nHM63v2I3QF6cD6Fnp+ncNo6RONBookA0UIto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vKVaEW+iByrbcx/AbaNpwkDpWl79On6IVmTc8EtedFHXVE6+9pUklpLRE3aUuoYov
-	 O86Xw+C5DU5GC9STJeZr293YYxpOcVQIvmQW3tIKvB+dtuKaRj0uaXtHk4I5ldCZ0h
-	 PPvcUlN1+YRc+9UoPSpJorsxpyxOMnddPuk0vfU0=
+	b=CHuw6pn48JKXa2VPbOL+BaVwiMdiC9Zb/lWbfLKXDbuaGnXyhCFz6xhTmaeDhNFYX
+	 7CR1a1jnNYUJWFxzGpxlCrZOIQndBjMLVL8Q67YLWb5xzsxffo0Xc399h8hmOaQSVd
+	 H58RVlDSUWWZJi/Iazehg0NFd06Mxv4xXQy9ip1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.5 347/491] s390/mm: add missing arch_set_page_dat() call to vmem_crst_alloc()
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 417/530] smb3: fix creating FIFOs when mounting with "sfu" mount option
 Date: Fri, 24 Nov 2023 17:49:43 +0000
-Message-ID: <20231124172034.992847317@linuxfoundation.org>
+Message-ID: <20231124172040.761997471@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +52,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 09cda0a400519b1541591c506e54c9c48e3101bf upstream.
+commit 72bc63f5e23a38b65ff2a201bdc11401d4223fa9 upstream.
 
-If the cmma no-dat feature is available all pages that are not used for
-dynamic address translation are marked as "no-dat" with the ESSA
-instruction. This information is visible to the hypervisor, so that the
-hypervisor can optimize purging of guest TLB entries. This also means that
-pages which are used for dynamic address translation must not be marked as
-"no-dat", since the hypervisor may then incorrectly not purge guest TLB
-entries.
+Fixes some xfstests including generic/564 and generic/157
 
-Region and segment tables allocated via vmem_crst_alloc() are incorrectly
-marked as "no-dat", as soon as slab_is_available() returns true.
+The "sfu" mount option can be useful for creating special files (character
+and block devices in particular) but could not create FIFOs. It did
+recognize existing empty files with the "system" attribute flag as FIFOs
+but this is too general, so to support creating FIFOs more safely use a new
+tag (but the same length as those for char and block devices ie "IntxLNK"
+and "IntxBLK") "LnxFIFO" to indicate that the file should be treated as a
+FIFO (when mounted with the "sfu").   For some additional context note that
+"sfu" followed the way that "Services for Unix" on Windows handled these
+special files (at least for character and block devices and symlinks),
+which is different than newer Windows which can handle special files
+as reparse points (which isn't an option to many servers).
 
-Such tables are allocated e.g. when kernel page tables are split, memory is
-hotplugged, or a DCSS segment is loaded.
-
-Fix this by adding the missing arch_set_page_dat() call.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/vmem.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/smb/client/cifspdu.h |    2 +-
+ fs/smb/client/inode.c   |    4 ++++
+ fs/smb/client/smb2ops.c |    8 +++++++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/s390/mm/vmem.c
-+++ b/arch/s390/mm/vmem.c
-@@ -13,6 +13,7 @@
- #include <linux/hugetlb.h>
- #include <linux/slab.h>
- #include <linux/sort.h>
-+#include <asm/page-states.h>
- #include <asm/cacheflush.h>
- #include <asm/nospec-branch.h>
- #include <asm/pgalloc.h>
-@@ -46,8 +47,11 @@ void *vmem_crst_alloc(unsigned long val)
- 	unsigned long *table;
+--- a/fs/smb/client/cifspdu.h
++++ b/fs/smb/client/cifspdu.h
+@@ -2570,7 +2570,7 @@ typedef struct {
  
- 	table = vmem_alloc_pages(CRST_ALLOC_ORDER);
--	if (table)
--		crst_table_init(table, val);
-+	if (!table)
-+		return NULL;
-+	crst_table_init(table, val);
-+	if (slab_is_available())
-+		arch_set_page_dat(virt_to_page(table), CRST_ALLOC_ORDER);
- 	return table;
- }
  
+ struct win_dev {
+-	unsigned char type[8]; /* IntxCHR or IntxBLK */
++	unsigned char type[8]; /* IntxCHR or IntxBLK or LnxFIFO*/
+ 	__le64 major;
+ 	__le64 minor;
+ } __attribute__((packed));
+--- a/fs/smb/client/inode.c
++++ b/fs/smb/client/inode.c
+@@ -592,6 +592,10 @@ cifs_sfu_type(struct cifs_fattr *fattr,
+ 			cifs_dbg(FYI, "Symlink\n");
+ 			fattr->cf_mode |= S_IFLNK;
+ 			fattr->cf_dtype = DT_LNK;
++		} else if (memcmp("LnxFIFO", pbuf, 8) == 0) {
++			cifs_dbg(FYI, "FIFO\n");
++			fattr->cf_mode |= S_IFIFO;
++			fattr->cf_dtype = DT_FIFO;
+ 		} else {
+ 			fattr->cf_mode |= S_IFREG; /* file? */
+ 			fattr->cf_dtype = DT_REG;
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -5087,7 +5087,7 @@ smb2_make_node(unsigned int xid, struct
+ 	 * over SMB2/SMB3 and Samba will do this with SMB3.1.1 POSIX Extensions
+ 	 */
+ 
+-	if (!S_ISCHR(mode) && !S_ISBLK(mode))
++	if (!S_ISCHR(mode) && !S_ISBLK(mode) && !S_ISFIFO(mode))
+ 		return rc;
+ 
+ 	cifs_dbg(FYI, "sfu compat create special file\n");
+@@ -5135,6 +5135,12 @@ smb2_make_node(unsigned int xid, struct
+ 		pdev->minor = cpu_to_le64(MINOR(dev));
+ 		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
+ 							&bytes_written, iov, 1);
++	} else if (S_ISFIFO(mode)) {
++		memcpy(pdev->type, "LnxFIFO", 8);
++		pdev->major = 0;
++		pdev->minor = 0;
++		rc = tcon->ses->server->ops->sync_write(xid, &fid, &io_parms,
++							&bytes_written, iov, 1);
+ 	}
+ 	tcon->ses->server->ops->close(xid, tcon, &fid);
+ 	d_drop(dentry);
 
 
 
