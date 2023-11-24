@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA6997F7F3F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 001737F80ED
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A73FB21884
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85EDCB21AEC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7261B2EAEA;
-	Fri, 24 Nov 2023 18:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C518133CFD;
+	Fri, 24 Nov 2023 18:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrO8aqkn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRNlXAbL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3E235F1A;
-	Fri, 24 Nov 2023 18:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAC4C433C7;
-	Fri, 24 Nov 2023 18:39:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459B92C87B;
+	Fri, 24 Nov 2023 18:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92D7C433C7;
+	Fri, 24 Nov 2023 18:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851191;
-	bh=8BN2PM50pZHbPalu4yPq32LX/COpZrsaFqfn93T+f8Q=;
+	s=korg; t=1700852044;
+	bh=wcPoDI1Cafs2ZtXK9nyQ3TMZKVPxs++10zaxUMFq6Bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GrO8aqknY/DBtgg3+Fra2AUf3smMr7/OjKcEjPJ4dDnAn30VZuhRVKWkv6t1qu2WI
-	 vyL2YqJMqc6v2E6WO68scZzPd9V5U9r3uS1zpJO/p2KZELtWZ3B1NBi+QXvTPyGkg6
-	 okYHNL/fVxJd6/vVWL7ZHEkuJGYV/7+Jm9W2AcGU=
+	b=DRNlXAbLwGHADwVM50MST25UeapbGPQAAB78dRJP3WnXG9kqKyCUYOFoUx/+gvMIF
+	 RYHdCrqfFeYnBwEKYZ0tla1z1SYTqfdA+pB7OcEPa3fAQ5qOQ1FRX8X6oKtlo3k25l
+	 XTIPrKCIKIAHjYunG4cO4kUWZlofMTjjbaZW5xhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.5 349/491] s390/cmma: fix detection of DAT pages
+	Carl Huang <quic_cjhuang@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.1 198/372] wifi: ath11k: fix gtk offload status event locking
 Date: Fri, 24 Nov 2023 17:49:45 +0000
-Message-ID: <20231124172035.051512221@linuxfoundation.org>
+Message-ID: <20231124172017.060298214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,67 +54,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 44d93045247661acbd50b1629e62f415f2747577 upstream.
+commit 1dea3c0720a146bd7193969f2847ccfed5be2221 upstream.
 
-If the cmma no-dat feature is available the kernel page tables are walked
-to identify and mark all pages which are used for address translation (all
-region, segment, and page tables). In a subsequent loop all other pages are
-marked as "no-dat" pages with the ESSA instruction.
+The ath11k active pdevs are protected by RCU but the gtk offload status
+event handling code calling ath11k_mac_get_arvif_by_vdev_id() was not
+marked as a read-side critical section.
 
-This information is visible to the hypervisor, so that the hypervisor can
-optimize purging of guest TLB entries. The initial loop however is
-incorrect: only the first three of the four pages which belong to segment
-and region tables will be marked as being used for DAT. The last page is
-incorrectly marked as no-dat.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-This can result in incorrect guest TLB flushes.
+Compile tested only.
 
-Fix this by simply marking all four pages.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
+Cc: stable@vger.kernel.org      # 5.18
+Cc: Carl Huang <quic_cjhuang@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019155342.31631-1-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/page-states.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/arch/s390/mm/page-states.c
-+++ b/arch/s390/mm/page-states.c
-@@ -121,7 +121,7 @@ static void mark_kernel_pud(p4d_t *p4d,
- 			continue;
- 		if (!pud_folded(*pud)) {
- 			page = phys_to_page(pud_val(*pud));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_pmd(pud, addr, next);
-@@ -142,7 +142,7 @@ static void mark_kernel_p4d(pgd_t *pgd,
- 			continue;
- 		if (!p4d_folded(*p4d)) {
- 			page = phys_to_page(p4d_val(*p4d));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_pud(p4d, addr, next);
-@@ -171,7 +171,7 @@ static void mark_kernel_pgd(void)
- 			continue;
- 		if (!pgd_folded(*pgd)) {
- 			page = phys_to_page(pgd_val(*pgd));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_p4d(pgd, addr, next);
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8001,12 +8001,13 @@ static void ath11k_wmi_gtk_offload_statu
+ 		return;
+ 	}
+ 
++	rcu_read_lock();
++
+ 	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
+ 	if (!arvif) {
+ 		ath11k_warn(ab, "failed to get arvif for vdev_id:%d\n",
+ 			    ev->vdev_id);
+-		kfree(tb);
+-		return;
++		goto exit;
+ 	}
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI, "wmi gtk offload event refresh_cnt %d\n",
+@@ -8023,6 +8024,8 @@ static void ath11k_wmi_gtk_offload_statu
+ 
+ 	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
+ 				   (void *)&replay_ctr_be, GFP_ATOMIC);
++exit:
++	rcu_read_unlock();
+ 
+ 	kfree(tb);
+ }
 
 
 
