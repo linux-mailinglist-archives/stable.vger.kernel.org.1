@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4317F7CB6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B97C7F807D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09AFA28200D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2431FB2135A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7490239FDD;
-	Fri, 24 Nov 2023 18:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6567333CD1;
+	Fri, 24 Nov 2023 18:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srow3AV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gG4GMdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB9933CFD;
-	Fri, 24 Nov 2023 18:17:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14DD5C433C7;
-	Fri, 24 Nov 2023 18:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E4D339BE;
+	Fri, 24 Nov 2023 18:50:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46EEC433C9;
+	Fri, 24 Nov 2023 18:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849858;
-	bh=VlqlKH0J476LlKxUcqr95kjNoSyu8flBomBCTcsevMU=;
+	s=korg; t=1700851809;
+	bh=wDqMuF+hV0akrFV7S4p42lY/+l6RpjYT9qU6kYI+jHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srow3AV71+lNzq1aciSsluWMLj8XFHTn3blrAR/GZQfDHsu7+9f/QcPBhLSXUfpXx
-	 I5cv4zN+USIrf939F6EwDSJtshkRdOrJammd/E2znzGF8sF8yojmRwhVDwSJDA7FKJ
-	 FyIPaA06aYQalKRiv8R7sxFXZP+iRv0jb+Gmhq+A=
+	b=0gG4GMdw9BThYucJfXxY7GxVALzibhSzu+BlW78l8D4mmTCL/xGcziQ3/rx8QfIjm
+	 K99PalSQP1NskBxwXTfnNRedJJp5YmsUJ7mZcXrTd1jOX0Momc0tCajJqVs73hyAxT
+	 ufQw8qBxTpak06AEDTq1fX7rHrYMmXDjN8uvfj2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.6 324/530] PCI: qcom-ep: Add dedicated callback for writing to DBI2 registers
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 103/372] media: cobalt: Use FIELD_GET() to extract Link Width
 Date: Fri, 24 Nov 2023 17:48:10 +0000
-Message-ID: <20231124172037.896453284@linuxfoundation.org>
+Message-ID: <20231124172013.935589615@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,79 +55,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit a07d2497ed657eb2efeb967af47e22f573dcd1d6 upstream.
+[ Upstream commit f301fedbeecfdce91cb898d6fa5e62f269801fee ]
 
-The DWC core driver exposes the write_dbi2() callback for writing to the
-DBI2 registers in a vendor-specific way.
+Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
+instead of custom masking and shifting.
 
-On the Qcom EP platforms, the DBI_CS2 bit in the ELBI region needs to be
-asserted before writing to any DBI2 registers and deasserted once done.
-
-So, let's implement the callback for the Qcom PCIe EP driver so that the
-DBI2 writes are correctly handled in the hardware.
-
-Without this callback, the DBI2 register writes like BAR size won't go
-through and as a result, the default BAR size is set for all BARs.
-
-[kwilczynski: commit log, renamed function to match the DWC convention]
-Fixes: f55fee56a631 ("PCI: qcom-ep: Add Qualcomm PCIe Endpoint controller driver")
-Suggested-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/linux-pci/20231025130029.74693-2-manivannan.sadhasivam@linaro.org
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Cc: stable@vger.kernel.org # 5.16+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-qcom-ep.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/media/pci/cobalt/cobalt-driver.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
-@@ -123,6 +123,7 @@
+diff --git a/drivers/media/pci/cobalt/cobalt-driver.c b/drivers/media/pci/cobalt/cobalt-driver.c
+index 74edcc76d12f4..6e1a0614e6d06 100644
+--- a/drivers/media/pci/cobalt/cobalt-driver.c
++++ b/drivers/media/pci/cobalt/cobalt-driver.c
+@@ -8,6 +8,7 @@
+  *  All rights reserved.
+  */
  
- /* ELBI registers */
- #define ELBI_SYS_STTS				0x08
-+#define ELBI_CS2_ENABLE				0xa4
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <media/i2c/adv7604.h>
+ #include <media/i2c/adv7842.h>
+@@ -210,17 +211,17 @@ void cobalt_pcie_status_show(struct cobalt *cobalt)
+ 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &stat);
+ 	cobalt_info("PCIe link capability 0x%08x: %s per lane and %u lanes\n",
+ 			capa, get_link_speed(capa),
+-			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
++			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 	cobalt_info("PCIe link control 0x%04x\n", ctrl);
+ 	cobalt_info("PCIe link status 0x%04x: %s per lane and %u lanes\n",
+ 		    stat, get_link_speed(stat),
+-		    (stat & PCI_EXP_LNKSTA_NLW) >> 4);
++		    FIELD_GET(PCI_EXP_LNKSTA_NLW, stat));
  
- /* DBI registers */
- #define DBI_CON_STATUS				0x44
-@@ -263,6 +264,21 @@ static void qcom_pcie_dw_stop_link(struc
- 	disable_irq(pcie_ep->perst_irq);
+ 	/* Bus */
+ 	pcie_capability_read_dword(pci_bus_dev, PCI_EXP_LNKCAP, &capa);
+ 	cobalt_info("PCIe bus link capability 0x%08x: %s per lane and %u lanes\n",
+ 			capa, get_link_speed(capa),
+-			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
++			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 
+ 	/* Slot */
+ 	pcie_capability_read_dword(pci_dev, PCI_EXP_SLTCAP, &capa);
+@@ -239,7 +240,7 @@ static unsigned pcie_link_get_lanes(struct cobalt *cobalt)
+ 	if (!pci_is_pcie(pci_dev))
+ 		return 0;
+ 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &link);
+-	return (link & PCI_EXP_LNKSTA_NLW) >> 4;
++	return FIELD_GET(PCI_EXP_LNKSTA_NLW, link);
  }
  
-+static void qcom_pcie_dw_write_dbi2(struct dw_pcie *pci, void __iomem *base,
-+				    u32 reg, size_t size, u32 val)
-+{
-+	struct qcom_pcie_ep *pcie_ep = to_pcie_ep(pci);
-+	int ret;
-+
-+	writel(1, pcie_ep->elbi + ELBI_CS2_ENABLE);
-+
-+	ret = dw_pcie_write(pci->dbi_base2 + reg, size, val);
-+	if (ret)
-+		dev_err(pci->dev, "Failed to write DBI2 register (0x%x): %d\n", reg, ret);
-+
-+	writel(0, pcie_ep->elbi + ELBI_CS2_ENABLE);
-+}
-+
- static void qcom_pcie_ep_icc_update(struct qcom_pcie_ep *pcie_ep)
- {
- 	struct dw_pcie *pci = &pcie_ep->pci;
-@@ -519,6 +535,7 @@ static const struct dw_pcie_ops pci_ops
- 	.link_up = qcom_pcie_dw_link_up,
- 	.start_link = qcom_pcie_dw_start_link,
- 	.stop_link = qcom_pcie_dw_stop_link,
-+	.write_dbi2 = qcom_pcie_dw_write_dbi2,
- };
+ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
+@@ -250,7 +251,7 @@ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
+ 	if (!pci_is_pcie(pci_dev))
+ 		return 0;
+ 	pcie_capability_read_dword(pci_dev, PCI_EXP_LNKCAP, &link);
+-	return (link & PCI_EXP_LNKCAP_MLW) >> 4;
++	return FIELD_GET(PCI_EXP_LNKCAP_MLW, link);
+ }
  
- static int qcom_pcie_ep_get_io_resources(struct platform_device *pdev,
+ static void msi_config_show(struct cobalt *cobalt, struct pci_dev *pci_dev)
+-- 
+2.42.0
+
 
 
 
