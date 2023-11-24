@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85EF97F7E4A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 279A27F7C16
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B60F31C2134D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 594201C2112A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDCD03A8F5;
-	Fri, 24 Nov 2023 18:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 815443A8C4;
+	Fri, 24 Nov 2023 18:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hzmu+A5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzK8i1f0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D79B364C8;
-	Fri, 24 Nov 2023 18:31:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B98ECC433C7;
-	Fri, 24 Nov 2023 18:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A099839FF7;
+	Fri, 24 Nov 2023 18:11:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B185C433C7;
+	Fri, 24 Nov 2023 18:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850699;
-	bh=kYujM92RtGt1HxCeuuzu2XGHeaAxrXGMrdPGgbQccks=;
+	s=korg; t=1700849501;
+	bh=6RIhxoOZSxrpegN/b0rlC58wO+QTrUQZ4BWsfwI+epg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hzmu+A5olD0hanJ4QARuMG6WNVc+mfzITqEk8KRttwL8VhOjCFA5OxCIppeqNxueg
-	 m2OdwrwIhSJHrJ1qC5IGeWY2TWNcIgytHKyDNa6O5a1ljHnuzoHWEN3mwBIF2t5bLP
-	 /qltcMYoIDZGbaAawC9Bv1BCC33upHVU5qGFXQSA=
+	b=ZzK8i1f05pOMkNNxKquu/2P3JDutoxOOSVLBBry4pOyi9p86hN87hNUkvH4pjbsCi
+	 1XTg7zLL7ijKiAKH6aM95yp37e1n8toFNg6JmebM9y7ZS7km1VgMJVL3ESiFVto+48
+	 0yko//AcQ3oQxZPPZXHhpQcJ3hUojjBWB45t4AK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bob Peterson <rpeterso@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	k2ci <kernel-bot@kylinos.cn>,
+	Linkui Xiao <xiaolinkui@kylinos.cn>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 136/491] gfs2: ignore negated quota changes
+Subject: [PATCH 6.6 206/530] netfilter: nf_conntrack_bridge: initialize err to 0
 Date: Fri, 24 Nov 2023 17:46:12 +0000
-Message-ID: <20231124172028.584208922@linuxfoundation.org>
+Message-ID: <20231124172034.334442902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,93 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Peterson <rpeterso@redhat.com>
+From: Linkui Xiao <xiaolinkui@kylinos.cn>
 
-[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
+[ Upstream commit a44af08e3d4d7566eeea98d7a29fe06e7b9de944 ]
 
-When lots of quota changes are made, there may be cases in which an
-inode's quota information is increased and then decreased, such as when
-blocks are added to a file, then deleted from it. If the timing is
-right, function do_qc can add pending quota changes to a transaction,
-then later, another call to do_qc can negate those changes, resulting
-in a net gain of 0. The quota_change information is recorded in the qc
-buffer (and qd element of the inode as well). The buffer is added to the
-transaction by the first call to do_qc, but a subsequent call changes
-the value from non-zero back to zero. At that point it's too late to
-remove the buffer_head from the transaction. Later, when the quota sync
-code is called, the zero-change qd element is discovered and flagged as
-an assert warning. If the fs is mounted with errors=panic, the kernel
-will panic.
+K2CI reported a problem:
 
-This is usually seen when files are truncated and the quota changes are
-negated by punch_hole/truncate which uses gfs2_quota_hold and
-gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
-and gfs2_quota_unlock which automatically do quota sync.
+	consume_skb(skb);
+	return err;
+[nf_br_ip_fragment() error]  uninitialized symbol 'err'.
 
-This patch solves the problem by adding a check to qd_check_sync such
-that net-zero quota changes already added to the transaction are no
-longer deemed necessary to be synced, and skipped.
+err is not initialized, because returning 0 is expected, initialize err
+to 0.
 
-In this case references are taken for the qd and the slot from do_qc
-so those need to be put. The normal sequence of events for a normal
-non-zero quota change is as follows:
-
-gfs2_quota_change
-   do_qc
-      qd_hold
-      slot_hold
-
-Later, when the changes are to be synced:
-
-gfs2_quota_sync
-   qd_fish
-      qd_check_sync
-         gets qd ref via lockref_get_not_dead
-   do_sync
-      do_qc(QC_SYNC)
-         qd_put
-	    lockref_put_or_lock
-   qd_unlock
-      qd_put
-         lockref_put_or_lock
-
-In the net-zero change case, we add a check to qd_check_sync so it puts
-the qd and slot references acquired in gfs2_quota_change and skip the
-unneeded sync.
-
-Signed-off-by: Bob Peterson <rpeterso@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
+Reported-by: k2ci <kernel-bot@kylinos.cn>
+Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/quota.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ net/bridge/netfilter/nf_conntrack_bridge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
-index 704192b736050..ccecb79eeaf8e 100644
---- a/fs/gfs2/quota.c
-+++ b/fs/gfs2/quota.c
-@@ -441,6 +441,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
- 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
- 		return 0;
+diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
+index 71056ee847736..0fcf357ea7ad3 100644
+--- a/net/bridge/netfilter/nf_conntrack_bridge.c
++++ b/net/bridge/netfilter/nf_conntrack_bridge.c
+@@ -37,7 +37,7 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
+ 	ktime_t tstamp = skb->tstamp;
+ 	struct ip_frag_state state;
+ 	struct iphdr *iph;
+-	int err;
++	int err = 0;
  
-+	/*
-+	 * If qd_change is 0 it means a pending quota change was negated.
-+	 * We should not sync it, but we still have a qd reference and slot
-+	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
-+	 */
-+	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
-+		slot_put(qd);
-+		qd_put(qd);
-+		return 0;
-+	}
-+
- 	if (!lockref_get_not_dead(&qd->qd_lockref))
- 		return 0;
- 
+ 	/* for offloaded checksums cleanup checksum before fragmentation */
+ 	if (skb->ip_summed == CHECKSUM_PARTIAL &&
 -- 
 2.42.0
 
