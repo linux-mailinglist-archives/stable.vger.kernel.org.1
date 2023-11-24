@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 618447F7D70
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FB37F816C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93A981C212C3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 638CC1C21654
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304C39FE1;
-	Fri, 24 Nov 2023 18:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A134364C1;
+	Fri, 24 Nov 2023 18:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+i4yXRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvSTPBYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93482381BF;
-	Fri, 24 Nov 2023 18:24:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2028FC433C8;
-	Fri, 24 Nov 2023 18:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B97364BA;
+	Fri, 24 Nov 2023 18:58:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902A3C433C7;
+	Fri, 24 Nov 2023 18:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850276;
-	bh=dfyr1MJH1DkenT9x5/nkCFAt4vX8n+amkk5lvROvpo4=;
+	s=korg; t=1700852307;
+	bh=/s+I07zDty6/zSIfuGg2F4KpWSxECUVxeumLW51LO4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+i4yXRkyUpY1wrhbxvlFRfdXFwm978Gq16QolScobWyH08RarQk07cMAHOfrcZNJ
-	 LznzEiw4EzYzx4hLN9//XxQRgn4VVsw1HMB1OGtrJzXZEDoXqRJfN8HnxjHG7mtPaS
-	 NJA4XoB5R3Epy66rtkc7u7eQTKsIdWq8deaiZ9nY=
+	b=jvSTPBYasT1Neq/X6PjzqBE0lkCOLBIjD7KxdyW9XmD0mnSCB/zC47J396dNtZleQ
+	 YWcwru6VUESr0oERsnopr68MIAf7wqpQ+OtEaiygjDLmGqPX4xk2OcdsolZfbnWuE3
+	 HtrY5CDZw3k20NR7anfb/YOSghgWDxG1Ti7Vg3VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 490/530] media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater than 3
+	David Howells <dhowells@redhat.com>,
+	Micah Veilleux <micah.veilleux@iba-group.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 269/372] smb3: fix touch -h of symlink
 Date: Fri, 24 Nov 2023 17:50:56 +0000
-Message-ID: <20231124172043.035016323@linuxfoundation.org>
+Message-ID: <20231124172019.438320262@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Steve French <stfrench@microsoft.com>
 
-commit e655d1ae9703286cef7fda8675cad62f649dc183 upstream.
+commit 475efd9808a3094944a56240b2711349e433fb66 upstream.
 
-VC_MODE = 0 implies a two bit VC address.
-VC_MODE = 1 is required for VCs with a larger address than two bits.
+For example:
+      touch -h -t 02011200 testfile
+where testfile is a symlink would not change the timestamp, but
+      touch -t 02011200 testfile
+does work to change the timestamp of the target
 
-Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
+Suggested-by: David Howells <dhowells@redhat.com>
+Reported-by: Micah Veilleux <micah.veilleux@iba-group.com>
+Closes: https://bugzilla.samba.org/show_bug.cgi?id=14476
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-csid-gen2.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/client/cifsfs.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-@@ -449,6 +449,8 @@ static void __csid_configure_stream(stru
- 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1186,6 +1186,7 @@ const char *cifs_get_link(struct dentry
  
- 	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
-+	if (vc > 3)
-+		val |= 1 << CSI2_RX_CFG1_VC_MODE;
- 	val |= 1 << CSI2_RX_CFG1_MISR_EN;
- 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG1);
- 
+ const struct inode_operations cifs_symlink_inode_ops = {
+ 	.get_link = cifs_get_link,
++	.setattr = cifs_setattr,
+ 	.permission = cifs_permission,
+ 	.listxattr = cifs_listxattr,
+ };
 
 
 
