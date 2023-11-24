@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74ECE7F7F11
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D957F80DA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327142823DE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53F82282567
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C1435F1D;
-	Fri, 24 Nov 2023 18:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6D033CD1;
+	Fri, 24 Nov 2023 18:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3aM3ruN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIf3aPYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7745F33CFB;
-	Fri, 24 Nov 2023 18:38:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEE75C433C7;
-	Fri, 24 Nov 2023 18:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87C92E858;
+	Fri, 24 Nov 2023 18:53:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE06AC433C8;
+	Fri, 24 Nov 2023 18:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851101;
-	bh=eJ1M/YlUUprLnPr18zR5XtEHW9BooRUshddUoXtWJ/I=;
+	s=korg; t=1700852002;
+	bh=JCEyyfxSzesVsP8WLo/8GKPMe0G1FWBR+VJWpqWygJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z3aM3ruNbl3XGjIEcrr4yrAUaQXeKpdwRfbH9Qc5dL4gC9Cx+8PKh/JHCVUhlPE2Y
-	 827NaeOKtMyRGi4hjCK0FW2FTPoN/U28a0M6Wn6+dR4oiNrp8YRfmKC8uOL7snOCDX
-	 aYFAZFmyz+TjnZ1ZccvlgizQz0GpxWnHsbwoaTV0=
+	b=bIf3aPYuI+j5rVDCdM6SVOodTsSJSp5vM8SKm9xBVpvQZ8BpNOfIKHXCFBRU2i/EN
+	 owypNEXKO2S3MwNLxDvaBacq3QJxNtGfZNa1vAVJlvxWFCKpPIze5+IVosRO24E1Wu
+	 08DRUOoP3IeP5XLa9FjFPoY6gIe7z6yzxZIg4UjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.5 314/491] btrfs: dont arbitrarily slow down delalloc if were committing
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 163/372] media: venus: hfi: add checks to perform sanity on queue pointers
 Date: Fri, 24 Nov 2023 17:49:10 +0000
-Message-ID: <20231124172034.009810286@linuxfoundation.org>
+Message-ID: <20231124172015.918640774@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-commit 11aeb97b45ad2e0040cbb2a589bc403152526345 upstream.
+commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
 
-We have a random schedule_timeout() if the current transaction is
-committing, which seems to be a holdover from the original delalloc
-reservation code.
+Read and write pointers are used to track the packet index in the memory
+shared between video driver and firmware. There is a possibility of OOB
+access if the read or write pointer goes beyond the queue memory size.
+Add checks for the read and write pointer to avoid OOB access.
 
-Remove this, we have the proper flushing stuff, we shouldn't be hoping
-for random timing things to make everything work.  This just induces
-latency for no reason.
-
-CC: stable@vger.kernel.org # 5.4+
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delalloc-space.c |    3 ---
- 1 file changed, 3 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/btrfs/delalloc-space.c
-+++ b/fs/btrfs/delalloc-space.c
-@@ -322,9 +322,6 @@ int btrfs_delalloc_reserve_metadata(stru
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -205,6 +205,11 @@ static int venus_write_queue(struct venu
+ 
+ 	new_wr_idx = wr_idx + dwords;
+ 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
++
++	if (wr_ptr < (u32 *)queue->qmem.kva ||
++	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
++		return -EINVAL;
++
+ 	if (new_wr_idx < qsize) {
+ 		memcpy(wr_ptr, packet, dwords << 2);
  	} else {
- 		if (current->journal_info)
- 			flush = BTRFS_RESERVE_FLUSH_LIMIT;
--
--		if (btrfs_transaction_in_commit(fs_info))
--			schedule_timeout(1);
+@@ -272,6 +277,11 @@ static int venus_read_queue(struct venus
  	}
  
- 	num_bytes = ALIGN(num_bytes, fs_info->sectorsize);
+ 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
++
++	if (rd_ptr < (u32 *)queue->qmem.kva ||
++	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
++		return -EINVAL;
++
+ 	dwords = *rd_ptr >> 2;
+ 	if (!dwords)
+ 		return -EINVAL;
 
 
 
