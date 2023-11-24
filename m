@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94057F7AD1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7A47F7D29
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6123A1F20F0E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 388DB28212B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552E739FD0;
-	Fri, 24 Nov 2023 17:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3D039FC2;
+	Fri, 24 Nov 2023 18:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIFf1xnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmH+Hray"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8194139FE1;
-	Fri, 24 Nov 2023 17:58:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9145C433C8;
-	Fri, 24 Nov 2023 17:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C573A8C9;
+	Fri, 24 Nov 2023 18:21:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1006BC433C8;
+	Fri, 24 Nov 2023 18:21:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848733;
-	bh=FjjdDm14ozEdMXMl0ZnQYUWAR2A0lGZX7X4eVi6s+2I=;
+	s=korg; t=1700850115;
+	bh=LOP6YgebK1q5GX1BwywZ2K6e2YLwK81Q7x+8Ea7Zf5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zIFf1xnh7rkIS+Irzo7gSwf7kqe8VZvGok1KEgpgvkOyktjNpwg43lV1OqPneGStT
-	 2a/UeMrcSsAXw06i5jn6gTg34Oz2h+Dxwud+knMItdV2txwDfuZQYtfnLRf9LN4msm
-	 emXnQ6cLP5wtBJGpAC726IIFcWnxoEIM3k+sKljc=
+	b=kmH+HrayY99COuWZrxOvzAcwT8/bytiI/5CIRIiaXDd1ZK5BezMbinx9g62Da9xzQ
+	 n2q5161EMP3lrJoUgjpOG5nlPIZuDVu51sC6PetuLUMBlRMswWYfTxyieoWgapd0Lj
+	 qKG2qHc+icA9WexWpDb4qSyZzMAC2a4wOXlAxuY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 42/97] ptp: annotate data-race around q->head and q->tail
-Date: Fri, 24 Nov 2023 17:50:15 +0000
-Message-ID: <20231124171935.718234728@linuxfoundation.org>
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.6 450/530] f2fs: do not return EFSCORRUPTED, but try to run online repair
+Date: Fri, 24 Nov 2023 17:50:16 +0000
+Message-ID: <20231124172041.793445133@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,103 +51,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 73bde5a3294853947252cd9092a3517c7cb0cd2d ]
+commit 50a472bbc79ff9d5a88be8019a60e936cadf9f13 upstream.
 
-As I was working on a syzbot report, I found that KCSAN would
-probably complain that reading q->head or q->tail without
-barriers could lead to invalid results.
+If we return the error, there's no way to recover the status as of now, since
+fsck does not fix the xattr boundary issue.
 
-Add corresponding READ_ONCE() and WRITE_ONCE() to avoid
-load-store tearing.
-
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20231109174859.3995880-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- drivers/ptp/ptp_clock.c   | 5 +++--
- drivers/ptp/ptp_private.h | 8 ++++++--
- drivers/ptp/ptp_sysfs.c   | 3 ++-
- 4 files changed, 13 insertions(+), 6 deletions(-)
+ fs/f2fs/node.c  |    4 +++-
+ fs/f2fs/xattr.c |   20 +++++++++++++-------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 796eeffdf93b1..8ff2dd5c52e64 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -346,7 +346,8 @@ ssize_t ptp_read(struct posix_clock *pc,
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -2751,7 +2751,9 @@ recover_xnid:
+ 	f2fs_update_inode_page(inode);
  
- 	for (i = 0; i < cnt; i++) {
- 		event[i] = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
+ 	/* 3: update and set xattr node page dirty */
+-	memcpy(F2FS_NODE(xpage), F2FS_NODE(page), VALID_XATTR_BLOCK_SIZE);
++	if (page)
++		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
++				VALID_XATTR_BLOCK_SIZE);
  
- 	spin_unlock_irqrestore(&queue->lock, flags);
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 89632cc9c28fc..1e92bd897aa45 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -68,10 +68,11 @@ static void enqueue_external_timestamp(struct timestamp_event_queue *queue,
- 	dst->t.sec = seconds;
- 	dst->t.nsec = remainder;
+ 	set_page_dirty(xpage);
+ 	f2fs_put_page(xpage, 1);
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -364,10 +364,10 @@ static int lookup_all_xattrs(struct inod
  
-+	/* Both WRITE_ONCE() are paired with READ_ONCE() in queue_cnt() */
- 	if (!queue_free(queue))
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
+ 	*xe = __find_xattr(cur_addr, last_txattr_addr, NULL, index, len, name);
+ 	if (!*xe) {
+-		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
++		f2fs_err(F2FS_I_SB(inode), "lookup inode (%lu) has corrupted xattr",
+ 								inode->i_ino);
+ 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+-		err = -EFSCORRUPTED;
++		err = -ENODATA;
+ 		f2fs_handle_error(F2FS_I_SB(inode),
+ 					ERROR_CORRUPTED_XATTR);
+ 		goto out;
+@@ -584,13 +584,12 @@ ssize_t f2fs_listxattr(struct dentry *de
  
--	queue->tail = (queue->tail + 1) % PTP_MAX_TIMESTAMPS;
-+	WRITE_ONCE(queue->tail, (queue->tail + 1) % PTP_MAX_TIMESTAMPS);
+ 		if ((void *)(entry) + sizeof(__u32) > last_base_addr ||
+ 			(void *)XATTR_NEXT_ENTRY(entry) > last_base_addr) {
+-			f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
++			f2fs_err(F2FS_I_SB(inode), "list inode (%lu) has corrupted xattr",
+ 						inode->i_ino);
+ 			set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+-			error = -EFSCORRUPTED;
+ 			f2fs_handle_error(F2FS_I_SB(inode),
+ 						ERROR_CORRUPTED_XATTR);
+-			goto cleanup;
++			break;
+ 		}
  
- 	spin_unlock_irqrestore(&queue->lock, flags);
- }
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index 05f6b6a9bbd58..1e02b5ae6127b 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -68,9 +68,13 @@ struct ptp_clock {
-  * that a writer might concurrently increment the tail does not
-  * matter, since the queue remains nonempty nonetheless.
-  */
--static inline int queue_cnt(struct timestamp_event_queue *q)
-+static inline int queue_cnt(const struct timestamp_event_queue *q)
- {
--	int cnt = q->tail - q->head;
-+	/*
-+	 * Paired with WRITE_ONCE() in enqueue_external_timestamp(),
-+	 * ptp_read(), extts_fifo_show().
-+	 */
-+	int cnt = READ_ONCE(q->tail) - READ_ONCE(q->head);
- 	return cnt < 0 ? PTP_MAX_TIMESTAMPS + cnt : cnt;
- }
+ 		if (!prefix)
+@@ -650,7 +649,7 @@ static int __f2fs_setxattr(struct inode
  
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index f97a5eefa2e23..b9e2f08960688 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -91,7 +91,8 @@ static ssize_t extts_fifo_show(struct device *dev,
- 	qcnt = queue_cnt(queue);
- 	if (qcnt) {
- 		event = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
- 	spin_unlock_irqrestore(&queue->lock, flags);
- 
--- 
-2.42.0
-
+ 	if (size > MAX_VALUE_LEN(inode))
+ 		return -E2BIG;
+-
++retry:
+ 	error = read_all_xattrs(inode, ipage, &base_addr);
+ 	if (error)
+ 		return error;
+@@ -660,7 +659,14 @@ static int __f2fs_setxattr(struct inode
+ 	/* find entry with wanted name. */
+ 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
+ 	if (!here) {
+-		f2fs_err(F2FS_I_SB(inode), "inode (%lu) has corrupted xattr",
++		if (!F2FS_I(inode)->i_xattr_nid) {
++			f2fs_notice(F2FS_I_SB(inode),
++				"recover xattr in inode (%lu)", inode->i_ino);
++			f2fs_recover_xattr_data(inode, NULL);
++			kfree(base_addr);
++			goto retry;
++		}
++		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
+ 								inode->i_ino);
+ 		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
+ 		error = -EFSCORRUPTED;
 
 
 
