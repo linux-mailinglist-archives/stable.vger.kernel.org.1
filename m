@@ -1,46 +1,61 @@
-Return-Path: <stable+bounces-895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B35C67F7D07
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB197F7F64
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E522F1C211BC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAF0828237B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C86D39FF7;
-	Fri, 24 Nov 2023 18:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC0D28DC3;
+	Fri, 24 Nov 2023 18:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1YimJxL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUbQ5nGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE62381DE;
-	Fri, 24 Nov 2023 18:20:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D3CEC433C8;
-	Fri, 24 Nov 2023 18:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A832C2D626;
+	Fri, 24 Nov 2023 18:41:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4182C433C8;
+	Fri, 24 Nov 2023 18:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850045;
-	bh=htycuGr/04OVQnSLWfIFypMnDoqxx1B98Be/g8x7u5M=;
+	s=korg; t=1700851264;
+	bh=aqMaudOxfcL+aVftteqcVJxCdE3QStICEWx1EnVjECA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1YimJxLh7v70iq4oW570ZoP06pSPh556pUah2mjQ61GJy7Y0rbX8cbjYkS/Zhkcb
-	 gzEPP/WnRAjuKKw4PCDGSJRFvjj4WBOjECEONHVrRXyra6xI6Ds9tVwTCizrSILMrq
-	 CZ9Rmf3c8e475VEnpctniImaqpMSSKIu1L4zZ58A=
+	b=LUbQ5nGd0Vz/dVs+Z8TxmRc23xHSwRQJ4BTbpG36at9he1ZmFU8Fm9Vm3W5MeowEa
+	 QpC4HB0A/kNSOgzucK8GFFe1L0VXeajXrB+b4p3rQ2Bxg5si29PbawYXHBOfLjf6rC
+	 SfYjs30555mw5nZ27uKzh9fCe+01wbuL7mE15hJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 423/530] smb: client: fix potential deadlock when releasing mids
+	Florent Revest <revest@chromium.org>,
+	Alexey Izbyshev <izbyshev@ispras.ru>,
+	David Hildenbrand <david@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Ayush Jain <ayush.jain3@amd.com>,
+	Greg Thelen <gthelen@google.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	KP Singh <kpsingh@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Peter Xu <peterx@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Szabolcs Nagy <Szabolcs.Nagy@arm.com>,
+	Topi Miettinen <toiwoton@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 353/491] mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long
 Date: Fri, 24 Nov 2023 17:49:49 +0000
-Message-ID: <20231124172040.940067092@linuxfoundation.org>
+Message-ID: <20231124172035.170441869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,102 +67,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Florent Revest <revest@chromium.org>
 
-commit e6322fd177c6885a21dd4609dc5e5c973d1a2eb7 upstream.
+commit 0da668333fb07805c2836d5d50e26eda915b24a1 upstream.
 
-All release_mid() callers seem to hold a reference of @mid so there is
-no need to call kref_put(&mid->refcount, __release_mid) under
-@server->mid_lock spinlock.  If they don't, then an use-after-free bug
-would have occurred anyways.
+Defining a prctl flag as an int is a footgun because on a 64 bit machine
+and with a variadic implementation of prctl (like in musl and glibc), when
+used directly as a prctl argument, it can get casted to long with garbage
+upper bits which would result in unexpected behaviors.
 
-By getting rid of such spinlock also fixes a potential deadlock as
-shown below
+This patch changes the constant to an unsigned long to eliminate that
+possibilities.  This does not break UAPI.
 
-CPU 0                                CPU 1
-------------------------------------------------------------------
-cifs_demultiplex_thread()            cifs_debug_data_proc_show()
- release_mid()
-  spin_lock(&server->mid_lock);
-                                     spin_lock(&cifs_tcp_ses_lock)
-				      spin_lock(&server->mid_lock)
-  __release_mid()
-   smb2_find_smb_tcon()
-    spin_lock(&cifs_tcp_ses_lock) *deadlock*
+I think that a stable backport would be "nice to have": to reduce the
+chances that users build binaries that could end up with garbage bits in
+their MDWE prctl arguments.  We are not aware of anyone having yet
+encountered this corner case with MDWE prctls but a backport would reduce
+the likelihood it happens, since this sort of issues has happened with
+other prctls.  But If this is perceived as a backporting burden, I suppose
+we could also live without a stable backport.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lkml.kernel.org/r/20230828150858.393570-5-revest@chromium.org
+Fixes: b507808ebce2 ("mm: implement memory-deny-write-execute as a prctl")
+Signed-off-by: Florent Revest <revest@chromium.org>
+Suggested-by: Alexey Izbyshev <izbyshev@ispras.ru>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Ayush Jain <ayush.jain3@amd.com>
+Cc: Greg Thelen <gthelen@google.com>
+Cc: Joey Gouly <joey.gouly@arm.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Szabolcs Nagy <Szabolcs.Nagy@arm.com>
+Cc: Topi Miettinen <toiwoton@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsproto.h |    7 ++++++-
- fs/smb/client/smb2misc.c  |    2 +-
- fs/smb/client/transport.c |   11 +----------
- 3 files changed, 8 insertions(+), 12 deletions(-)
+ include/uapi/linux/prctl.h       | 2 +-
+ tools/include/uapi/linux/prctl.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsproto.h
-+++ b/fs/smb/client/cifsproto.h
-@@ -81,7 +81,7 @@ extern char *cifs_build_path_to_root(str
- extern char *build_wildcard_path_from_dentry(struct dentry *direntry);
- char *cifs_build_devname(char *nodename, const char *prepath);
- extern void delete_mid(struct mid_q_entry *mid);
--extern void release_mid(struct mid_q_entry *mid);
-+void __release_mid(struct kref *refcount);
- extern void cifs_wake_up_task(struct mid_q_entry *mid);
- extern int cifs_handle_standard(struct TCP_Server_Info *server,
- 				struct mid_q_entry *mid);
-@@ -740,4 +740,9 @@ static inline bool dfs_src_pathname_equa
- 	return true;
- }
+diff --git a/include/uapi/linux/prctl.h b/include/uapi/linux/prctl.h
+index 3c36aeade991..9a85c69782bd 100644
+--- a/include/uapi/linux/prctl.h
++++ b/include/uapi/linux/prctl.h
+@@ -283,7 +283,7 @@ struct prctl_mm_map {
  
-+static inline void release_mid(struct mid_q_entry *mid)
-+{
-+	kref_put(&mid->refcount, __release_mid);
-+}
-+
- #endif			/* _CIFSPROTO_H */
---- a/fs/smb/client/smb2misc.c
-+++ b/fs/smb/client/smb2misc.c
-@@ -787,7 +787,7 @@ __smb2_handle_cancelled_cmd(struct cifs_
- {
- 	struct close_cancelled_open *cancelled;
+ /* Memory deny write / execute */
+ #define PR_SET_MDWE			65
+-# define PR_MDWE_REFUSE_EXEC_GAIN	1
++# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
  
--	cancelled = kzalloc(sizeof(*cancelled), GFP_ATOMIC);
-+	cancelled = kzalloc(sizeof(*cancelled), GFP_KERNEL);
- 	if (!cancelled)
- 		return -ENOMEM;
+ #define PR_GET_MDWE			66
  
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -76,7 +76,7 @@ alloc_mid(const struct smb_hdr *smb_buff
- 	return temp;
- }
+diff --git a/tools/include/uapi/linux/prctl.h b/tools/include/uapi/linux/prctl.h
+index 3c36aeade991..9a85c69782bd 100644
+--- a/tools/include/uapi/linux/prctl.h
++++ b/tools/include/uapi/linux/prctl.h
+@@ -283,7 +283,7 @@ struct prctl_mm_map {
  
--static void __release_mid(struct kref *refcount)
-+void __release_mid(struct kref *refcount)
- {
- 	struct mid_q_entry *midEntry =
- 			container_of(refcount, struct mid_q_entry, refcount);
-@@ -156,15 +156,6 @@ static void __release_mid(struct kref *r
- 	mempool_free(midEntry, cifs_mid_poolp);
- }
+ /* Memory deny write / execute */
+ #define PR_SET_MDWE			65
+-# define PR_MDWE_REFUSE_EXEC_GAIN	1
++# define PR_MDWE_REFUSE_EXEC_GAIN	(1UL << 0)
  
--void release_mid(struct mid_q_entry *mid)
--{
--	struct TCP_Server_Info *server = mid->server;
--
--	spin_lock(&server->mid_lock);
--	kref_put(&mid->refcount, __release_mid);
--	spin_unlock(&server->mid_lock);
--}
--
- void
- delete_mid(struct mid_q_entry *mid)
- {
+ #define PR_GET_MDWE			66
+ 
+-- 
+2.43.0
+
 
 
 
