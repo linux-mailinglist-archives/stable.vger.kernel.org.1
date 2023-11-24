@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9BFC7F7F16
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385377F80E4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6454128247C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A1671C21611
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED13E2F86B;
-	Fri, 24 Nov 2023 18:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0BA33CD1;
+	Fri, 24 Nov 2023 18:53:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzrB0yH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvHXFHtl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F8331759;
-	Fri, 24 Nov 2023 18:38:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2298CC433C8;
-	Fri, 24 Nov 2023 18:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0222E40E;
+	Fri, 24 Nov 2023 18:53:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA666C433C8;
+	Fri, 24 Nov 2023 18:53:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851108;
-	bh=5kq/SvPHC+Jlvxc5pWTaF1HKNo0/RzO7jEphXRC3cPM=;
+	s=korg; t=1700852024;
+	bh=I6yiA7ElWRn8Jwvf+GEcmRzsOb5OyYRQpFK1Kn+DuBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YzrB0yH6wMp13ctG3lZ3fTJIJ2RtQsnEkf2+zrXO0vr+KJXs0wiL/OdBjQXm38khr
-	 jw8A7aH9DLXUcMYIfmtQtVug0xScCU7HVzwzIuca7rVjISu6MupS4qXLcfODDsxUuK
-	 JPulJwDxdQgUVxX53gQuTcx3TjkvAeyrxj6ofyEY=
+	b=FvHXFHtlrIaXpKkRu3/1okmIEHCoyt01oKTVlW92gGDOnG2jCc3QrYe4QGdmTvrOe
+	 rd5HYb9ZYj5pJwb21mxGStGB0yO3TqM07lBbGzvF8Cpc0CY4clZWaxmpJRcTQxp19q
+	 9Mnnez0/FDOhiRgPjvyUgeRmWSnaR2bbMnlH1L+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.5 316/491] arm64: dts: qcom: ipq5332: Fix hwlock index for SMEM
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.1 165/372] powerpc/perf: Fix disabling BHRB and instruction sampling
 Date: Fri, 24 Nov 2023 17:49:12 +0000
-Message-ID: <20231124172034.065279060@linuxfoundation.org>
+Message-ID: <20231124172015.987692734@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +52,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-commit d08afd80158399a081b478a19902364e3dd0f84c upstream.
+commit ea142e590aec55ba40c5affb4d49e68c713c63dc upstream.
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+When the PMU is disabled, MMCRA is not updated to disable BHRB and
+instruction sampling. This can lead to those features remaining enabled,
+which can slow down a real or emulated CPU.
 
-Fix the SMEM hwlock index to 3 for IPQ5332.
-
-Cc: stable@vger.kernel.org
-Fixes: d56dd7f935e1 ("arm64: dts: qcom: ipq5332: add SMEM support")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-2-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 1cade527f6e9 ("powerpc/perf: BHRB control to disable BHRB logic when not used")
+Cc: stable@vger.kernel.org # v5.9+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231018153423.298373-1-npiggin@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq5332.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/perf/core-book3s.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq5332.dtsi b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
-index 991b23027805..d3fef2f80a81 100644
---- a/arch/arm64/boot/dts/qcom/ipq5332.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq5332.dtsi
-@@ -135,7 +135,7 @@ smem@4a800000 {
- 			reg = <0x0 0x4a800000 0x0 0x100000>;
- 			no-map;
+--- a/arch/powerpc/perf/core-book3s.c
++++ b/arch/powerpc/perf/core-book3s.c
+@@ -1371,8 +1371,7 @@ static void power_pmu_disable(struct pmu
+ 		/*
+ 		 * Disable instruction sampling if it was enabled
+ 		 */
+-		if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE)
+-			val &= ~MMCRA_SAMPLE_ENABLE;
++		val &= ~MMCRA_SAMPLE_ENABLE;
  
--			hwlocks = <&tcsr_mutex 0>;
-+			hwlocks = <&tcsr_mutex 3>;
- 		};
- 	};
- 
--- 
-2.43.0
-
+ 		/* Disable BHRB via mmcra (BHRBRD) for p10 */
+ 		if (ppmu->flags & PPMU_ARCH_31)
+@@ -1383,7 +1382,7 @@ static void power_pmu_disable(struct pmu
+ 		 * instruction sampling or BHRB.
+ 		 */
+ 		if (val != mmcra) {
+-			mtspr(SPRN_MMCRA, mmcra);
++			mtspr(SPRN_MMCRA, val);
+ 			mb();
+ 			isync();
+ 		}
 
 
 
