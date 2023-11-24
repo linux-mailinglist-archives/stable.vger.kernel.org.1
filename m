@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CB77F7C00
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96D867F7E38
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CEFD281BA7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8820A1C2131E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E038D39FF7;
-	Fri, 24 Nov 2023 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C244D33CFD;
+	Fri, 24 Nov 2023 18:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbdgbp+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1pkBc44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD0439FC6;
-	Fri, 24 Nov 2023 18:10:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEEEC433C7;
-	Fri, 24 Nov 2023 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840CD381D6;
+	Fri, 24 Nov 2023 18:31:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EB5C433C7;
+	Fri, 24 Nov 2023 18:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849446;
-	bh=2RJUMDGp/35m/6HICiS7PxAqvDjqFNffyeGzCGn6xao=;
+	s=korg; t=1700850664;
+	bh=mjZeQ98wX/l6kTN5D65N3lzbq1Qh3AEL1tObpuFBdKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbdgbp+u2s5wbTQUdXeFcO4EP2yg4u9/ITKOmsaiRaSf1hlR/ZvwkcNBvFIOEbLBq
-	 WjWCt0IfwYSNyEe8srnWmjuW52QduYL6KIDkPC8kk7RR/BzwyrYjqmDXI6wMTMcywf
-	 kTgyGpEN4WcepVjTccUO8bbUs1xzZI6LtFdX8jbA=
+	b=R1pkBc44OJcGrxqaMjTh71CApwDCxTtwh9JGvPxtuFnQnrkCp1Mfe5H1EDhFFoLin
+	 zt+59xx9iZKZDUa5NDWqA6CsbafoXBrbJK5xZodklx3ZAG9rm28Ke7IxVSZaSwx4nd
+	 mORQKED+YF8jzPNmMszQL6fAw1/3uxV8cDHmWJ54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shigeru Yoshida <syoshida@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/530] tty: Fix uninit-value access in ppp_sync_receive()
-Date: Fri, 24 Nov 2023 17:45:50 +0000
-Message-ID: <20231124172033.679243724@linuxfoundation.org>
+Subject: [PATCH 6.5 115/491] dt-bindings: phy: qcom,snps-eusb2-repeater: Add magic tuning overrides
+Date: Fri, 24 Nov 2023 17:45:51 +0000
+Message-ID: <20231124172027.983781771@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,84 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shigeru Yoshida <syoshida@redhat.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 719639853d88071dfdfd8d9971eca9c283ff314c ]
+[ Upstream commit c20b59b2996c89c4f072c3312e6210528a298330 ]
 
-KMSAN reported the following uninit-value access issue:
+The EUSB2 repeater requires some alterations to its init sequence,
+depending on board design.
 
-=====================================================
-BUG: KMSAN: uninit-value in ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
-BUG: KMSAN: uninit-value in ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
- ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
- ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
- tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
- tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
- __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+Add support for making the necessary changes to that sequence to make USB
+functional on SM8550-based Xperia 1 V.
 
-Uninit was created at:
- __alloc_pages+0x75d/0xe80 mm/page_alloc.c:4591
- __alloc_pages_node include/linux/gfp.h:238 [inline]
- alloc_pages_node include/linux/gfp.h:261 [inline]
- __page_frag_cache_refill+0x9a/0x2c0 mm/page_alloc.c:4691
- page_frag_alloc_align+0x91/0x5d0 mm/page_alloc.c:4722
- page_frag_alloc include/linux/gfp.h:322 [inline]
- __netdev_alloc_skb+0x215/0x6d0 net/core/skbuff.c:728
- netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
- dev_alloc_skb include/linux/skbuff.h:3238 [inline]
- ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
- ppp_sync_receive+0x237/0xe70 drivers/net/ppp/ppp_synctty.c:334
- tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
- tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
- __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
+They all have lackluster description due to lack of information.
 
-CPU: 0 PID: 12950 Comm: syz-executor.1 Not tainted 6.6.0-14500-g1c41041124bd #10
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
-=====================================================
-
-ppp_sync_input() checks the first 2 bytes of the data are PPP_ALLSTATIONS
-and PPP_UI. However, if the data length is 1 and the first byte is
-PPP_ALLSTATIONS, an access to an uninitialized value occurs when checking
-PPP_UI. This patch resolves this issue by checking the data length.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-1-7d8c893d93f6@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ppp/ppp_synctty.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../phy/qcom,snps-eusb2-repeater.yaml         | 21 +++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index ebcdffdf4f0e0..ea261a628786b 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -687,7 +687,7 @@ ppp_sync_input(struct syncppp *ap, const u8 *buf, const u8 *flags, int count)
+diff --git a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
+index 083fda530b484..828650d4c4b09 100644
+--- a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
+@@ -27,6 +27,27 @@ properties:
  
- 	/* strip address/control field if present */
- 	p = skb->data;
--	if (p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
-+	if (skb->len >= 2 && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
- 		/* chop off address/control */
- 		if (skb->len < 3)
- 			goto err;
+   vdd3-supply: true
+ 
++  qcom,tune-usb2-disc-thres:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: High-Speed disconnect threshold
++    minimum: 0
++    maximum: 7
++    default: 0
++
++  qcom,tune-usb2-amplitude:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: High-Speed trasmit amplitude
++    minimum: 0
++    maximum: 15
++    default: 8
++
++  qcom,tune-usb2-preem:
++    $ref: /schemas/types.yaml#/definitions/uint8
++    description: High-Speed TX pre-emphasis tuning
++    minimum: 0
++    maximum: 7
++    default: 5
++
+ required:
+   - compatible
+   - reg
 -- 
 2.42.0
 
