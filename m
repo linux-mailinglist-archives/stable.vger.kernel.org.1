@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778937F7C8F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE667F7ED8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23C8C281245
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67F52823C3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F44364A4;
-	Fri, 24 Nov 2023 18:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3414331759;
+	Fri, 24 Nov 2023 18:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSD5DdwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uZd2rx96"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A0639FEA;
-	Fri, 24 Nov 2023 18:16:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C59C433C8;
-	Fri, 24 Nov 2023 18:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7C59381BF;
+	Fri, 24 Nov 2023 18:36:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738B8C433C8;
+	Fri, 24 Nov 2023 18:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849778;
-	bh=5gZmljqoRCUW//pCHI1vY9oQBmb94tXGOPyAb44oDlc=;
+	s=korg; t=1700850992;
+	bh=JgvVK9MMHeM/8yCbsrgzNJi4oxupU0SxZUiw2wXbCZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSD5DdwBYr1xP9iX8/DH0YBHiHR1zCyKoec8G9vXSVrxIMix7pzoh8igRC0cVSqCM
-	 LltTtjNqt4CnSL2f/zcGtzxrMkGBh5mLek3j3GQLNA6fVUVRFGd4GMpWAc4x/jpeLW
-	 xDvc2717IF71YEsTk6QwAvBB37xCvVhDuV8ZtqO4=
+	b=uZd2rx96Xj33IZGj4OFwrvb+iHrAlGVHb2Vh+p31PrHjqam9ssjyX/sw0FKlho2Cs
+	 MHWAFFVac9/REYUbRc1mYxMqphs7mqIFcTSlrUihZ2RqUNW20G7MPk/0jvwDXjnNGm
+	 SxLmSu2f0VvBJ9IW7q4Vb4UkKOiDC9dbiuDMpr+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 316/530] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kai-Heng Feng <kai.heng.geng@canonical.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5 246/491] mmc: sdhci-pci-gli: GL9755: Mask the replay timer timeout of AER
 Date: Fri, 24 Nov 2023 17:48:02 +0000
-Message-ID: <20231124172037.659817306@linuxfoundation.org>
+Message-ID: <20231124172031.947184282@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,81 +52,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
+commit 85dd3af64965c1c0eb7373b340a1b1f7773586b0 upstream.
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+Due to a flaw in the hardware design, the GL9755 replay timer frequently
+times out when ASPM is enabled. As a result, the warning messages will
+often appear in the system log when the system accesses the GL9755
+PCI config. Therefore, the replay timer timeout must be masked.
 
+Fixes: 36ed2fd32b2c ("mmc: sdhci-pci-gli: A workaround to allow GL9755 to enter ASPM L1.2")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
 Cc: stable@vger.kernel.org
-Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20231107095741.8832-3-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -75,7 +75,6 @@ static struct clk_fixed_factor gpll0_out
- 				&gpll0_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -149,6 +149,9 @@
+ #define PCI_GLI_9755_PM_CTRL     0xFC
+ #define   PCI_GLI_9755_PM_STATE    GENMASK(1, 0)
  
-@@ -121,7 +120,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll2_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
++#define PCI_GLI_9755_CORRERR_MASK				0x214
++#define   PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
++
+ #define SDHCI_GLI_9767_GM_BURST_SIZE			0x510
+ #define   SDHCI_GLI_9767_GM_BURST_SIZE_AXI_ALWAYS_SET	  BIT(8)
  
-@@ -154,7 +152,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll4_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
+@@ -756,6 +759,11 @@ static void gl9755_hw_setting(struct sdh
+ 	value &= ~PCI_GLI_9755_PM_STATE;
+ 	pci_write_config_dword(pdev, PCI_GLI_9755_PM_CTRL, value);
  
-@@ -188,7 +185,6 @@ static struct clk_alpha_pll_postdiv gpll
- 				&gpll6_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -201,7 +197,6 @@ static struct clk_fixed_factor gpll6_out
- 				&gpll6_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -266,7 +261,6 @@ static struct clk_alpha_pll_postdiv nss_
- 				&nss_crypto_pll_main.clkr.hw },
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
++	/* mask the replay timer timeout of AER */
++	pci_read_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, &value);
++	value |= PCI_GLI_9755_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
++	pci_write_config_dword(pdev, PCI_GLI_9755_CORRERR_MASK, value);
++
+ 	gl9755_wt_off(pdev);
+ }
  
 
 
