@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFA27F7BF3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4187F7E0F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 681ED28216B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1678928229B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC50C39FFD;
-	Fri, 24 Nov 2023 18:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771C93A8C9;
+	Fri, 24 Nov 2023 18:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs+a5A9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES2wCaPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7167381D5;
-	Fri, 24 Nov 2023 18:10:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CDDC433C7;
-	Fri, 24 Nov 2023 18:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0099739FF8;
+	Fri, 24 Nov 2023 18:29:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7969BC433C8;
+	Fri, 24 Nov 2023 18:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849413;
-	bh=+Xy0onSri89XRqL66NxQCEmEfaUPjvgUkYVTgkjDI40=;
+	s=korg; t=1700850571;
+	bh=wPMc7/t5HI6SQ1YOVyYZQxrNaS9MeywGNZFCrcRh1qQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fs+a5A9XCtagFNDbpcIG6yiU8isuZ/jM6uEvo3zuAlRoQGe+SEDa292owfEPP9w+0
-	 TiaJTU0LvNiu7KZGS0lNXR1dmCFcQZRxhthAaFBEj/BWJ6dteOsXxBS+hKyBpWrZIw
-	 b1549c33ndbVYa58GNpePB6G7YAVlf2sDlWm2doI=
+	b=ES2wCaPwDXE9MV5LXMotZKzftQuTos+Fil8iIm/VO9/Co3lsyRfRU4o4CjtUhdjB7
+	 weA1MPvZUeapjCBOVV6OgVt4nnh1QlTSMKNIhntYck0wpHqzoMKINfElBEq3Sa5eN0
+	 fnKWMlCBsf/jZN1Zb9B6MLC72EK7mJUsUt/moPss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcaov@gmail.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/530] riscv: provide riscv-specific is_trap_insn()
+Subject: [PATCH 6.5 102/491] PCI: Disable ATS for specific Intel IPU E2000 devices
 Date: Fri, 24 Nov 2023 17:45:38 +0000
-Message-ID: <20231124172033.313986348@linuxfoundation.org>
+Message-ID: <20231124172027.623970477@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,64 +53,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcaov@gmail.com>
+From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-[ Upstream commit b701f9e726f0a30a94ea6af596b74c1f07b95b6b ]
+[ Upstream commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd ]
 
-uprobes expects is_trap_insn() to return true for any trap instructions,
-not just the one used for installing uprobe. The current default
-implementation only returns true for 16-bit c.ebreak if C extension is
-enabled. This can confuse uprobes if a 32-bit ebreak generates a trap
-exception from userspace: uprobes asks is_trap_insn() who says there is no
-trap, so uprobes assume a probe was there before but has been removed, and
-return to the trap instruction. This causes an infinite loop of entering
-and exiting trap handler.
+Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
+wrong endianness in ATS invalidation message body. This problem can lead to
+outdated translations being returned as valid and finally cause system
+instability.
 
-Instead of using the default implementation, implement this function
-speficially for riscv with checks for both ebreak and c.ebreak.
+To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
+vulnerable IPU E2000 devices.
 
-Fixes: 74784081aac8 ("riscv: Add uprobes supported")
-Signed-off-by: Nam Cao <namcaov@gmail.com>
-Tested-by: Björn Töpel <bjorn@rivosinc.com>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Link: https://lore.kernel.org/r/20230829083614.117748-1-namcaov@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
+Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/probes/uprobes.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pci/quirks.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
-index 194f166b2cc40..4b3dc8beaf77d 100644
---- a/arch/riscv/kernel/probes/uprobes.c
-+++ b/arch/riscv/kernel/probes/uprobes.c
-@@ -3,6 +3,7 @@
- #include <linux/highmem.h>
- #include <linux/ptrace.h>
- #include <linux/uprobes.h>
-+#include <asm/insn.h>
- 
- #include "decode-insn.h"
- 
-@@ -17,6 +18,11 @@ bool is_swbp_insn(uprobe_opcode_t *insn)
- #endif
- }
- 
-+bool is_trap_insn(uprobe_opcode_t *insn)
-+{
-+	return riscv_insn_is_ebreak(*insn) || riscv_insn_is_c_ebreak(*insn);
-+}
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index b82f94af2fae4..9fa3c9225bb30 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5552,6 +5552,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7347, quirk_amd_harvest_no_ats);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x734f, quirk_amd_harvest_no_ats);
+ /* AMD Raven platform iGPU */
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x15d8, quirk_amd_harvest_no_ats);
 +
- unsigned long uprobe_get_swbp_addr(struct pt_regs *regs)
- {
- 	return instruction_pointer(regs);
++/*
++ * Intel IPU E2000 revisions before C0 implement incorrect endianness
++ * in ATS Invalidate Request message body. Disable ATS for those devices.
++ */
++static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
++{
++	if (pdev->revision < 0x20)
++		quirk_no_ats(pdev);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
+ #endif /* CONFIG_PCI_ATS */
+ 
+ /* Freescale PCIe doesn't support MSI in RC mode */
 -- 
 2.42.0
 
