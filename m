@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AFAD7F7C6F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C4297F7EBA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC1B91C20A6C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2F5DB21112
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021F639FF3;
-	Fri, 24 Nov 2023 18:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC6F28DA1;
+	Fri, 24 Nov 2023 18:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dgFBr+qV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLK9m08s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B296E39FC6;
-	Fri, 24 Nov 2023 18:15:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41882C433C8;
-	Fri, 24 Nov 2023 18:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42EFE33CCA;
+	Fri, 24 Nov 2023 18:35:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF6FC433C8;
+	Fri, 24 Nov 2023 18:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849708;
-	bh=SnwMSaoq3MRAnA4RNc7fXC15/luhYol+4Jho8bBmyZM=;
+	s=korg; t=1700850926;
+	bh=AI0AUamkZbpCXTOtIBPx1nVptdoYLedLsag6Qp2Iql4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dgFBr+qVAkvRRwB0PC0tY8DFs5P/Vf8bBqqDGrUYEoz1T7OqcD/LMQtV3x3H7PkdS
-	 5Hlm8GdL1HLTHXMCDDeUYx0lTq0WxULwYyeZ0JSgLQ+3rhFoz3KITd3E7Q40TurDr3
-	 xDXzOD5CWnnA2gHJl7r9FdVunyFawq88m1lDm0KY=
+	b=nLK9m08s/VEe8zLVGAoh/xlWNH0TrCzOin60MUJ+27vWcoBkCXbiqOvRBsoBxOzSa
+	 euMyEtsuI71/ZiOc5kmCDmxWpOsvaMj9t8RwBqMqiGPeokXqhaVO8cyJhrH/4NFiL+
+	 VXg5m/QOJdyoC6kjxjYjLdiBdXnYereBQHB1v1Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 288/530] ACPI: resource: Do IRQ override on TongFang GMxXGxx
-Date: Fri, 24 Nov 2023 17:47:34 +0000
-Message-ID: <20231124172036.807308316@linuxfoundation.org>
+	Chen Yu <yu.c.chen@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <len.brown@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 219/491] tools/power/turbostat: Enable the C-state Pre-wake printing
+Date: Fri, 24 Nov 2023 17:47:35 +0000
+Message-ID: <20231124172031.129802745@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Chen Yu <yu.c.chen@intel.com>
 
-commit 0da9eccde3270b832c059ad618bf66e510c75d33 upstream.
+[ Upstream commit b61b7d8c4c22c4298a50ae5d0ee88facb85ce665 ]
 
-The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
-for the keyboard to work.
+Currently the C-state Pre-wake will not be printed due to the
+probe has not been invoked. Invoke the probe function accordingly.
 
-Adding an entry for this laptop to the override_table makes the internal
-keyboard functional.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aeb01e6d71ff ("tools/power turbostat: Print the C-state Pre-wake settings")
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Len Brown <len.brown@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/power/x86/turbostat/turbostat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -496,6 +496,18 @@ static const struct dmi_system_id mainge
- 		}
- 	},
- 	{
-+		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
-+		},
-+	},
-+	{
-+		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
-+		},
-+	},
-+	{
- 		.ident = "MAINGEAR Vector Pro 2 17",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index a938699ca2419..ce9860e388bd4 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -5790,6 +5790,7 @@ void process_cpuid()
+ 	rapl_probe(family, model);
+ 	perf_limit_reasons_probe(family, model);
+ 	automatic_cstate_conversion_probe(family, model);
++	prewake_cstate_probe(family, model);
+ 
+ 	check_tcc_offset(model_orig);
+ 
+-- 
+2.42.0
+
 
 
 
