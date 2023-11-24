@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63197F83F0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0277F8231
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6203D289895
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 795D2B235FA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D863B35F1A;
-	Fri, 24 Nov 2023 19:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10BC364A7;
+	Fri, 24 Nov 2023 19:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZY5yXAel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rGfPUtMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B22963A1;
-	Fri, 24 Nov 2023 19:22:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1425EC433C8;
-	Fri, 24 Nov 2023 19:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F66A3173F;
+	Fri, 24 Nov 2023 19:05:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F783C433C8;
+	Fri, 24 Nov 2023 19:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853748;
-	bh=KOS0HRn6LtqoAmn9ZArT3zuRlwp2rx+b2kRpCfikRzU=;
+	s=korg; t=1700852721;
+	bh=IOOiPyRqNrW70f2wfNP9GxYqqWA28FWPPMJOO/xT2HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZY5yXAelkQeHJ8+G37vIbQWQeUBj1GN8d9J17O3LFbCpTD+g2t2qKVpfOfXmJWHVT
-	 Dg0eGAaKbTl6lXEsp0lCrQtUG1A3c3nvGRuVNYOgdpEccZ9WFNSnvyTOSsQuPaT4nh
-	 lO9RqaB5mloMpPjgnRoga2joXnW5TFeWncf5dcrk=
+	b=rGfPUtMHcb8QIff6QrYnVoyqULscdEi3wVtFt1deQ7PJJNB+mQ2O/qJv8Arpyjmxu
+	 n/8SXufvnC81v8mtHhg34owfpO0pb4a4Ycc7qWg7PlqQfuepTzuNVUgCd4sypOKCyf
+	 Rigkm7QNH06ZVfNyKBcQM0EaRN3Ea4yulDmKtXas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/159] wifi: mac80211: dont return unset power in ieee80211_get_tx_power()
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 097/193] KVM: x86: hyper-v: Dont auto-enable stimer on write from user-space
 Date: Fri, 24 Nov 2023 17:53:44 +0000
-Message-ID: <20231124171942.214292051@linuxfoundation.org>
+Message-ID: <20231124171951.145865091@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-[ Upstream commit e160ab85166e77347d0cbe5149045cb25e83937f ]
+commit d6800af51c76b6dae20e6023bbdc9b3da3ab5121 upstream.
 
-We can get a UBSAN warning if ieee80211_get_tx_power() returns the
-INT_MIN value mac80211 internally uses for "unset power level".
+Don't apply the stimer's counter side effects when modifying its
+value from user-space, as this may trigger spurious interrupts.
 
- UBSAN: signed-integer-overflow in net/wireless/nl80211.c:3816:5
- -2147483648 * 100 cannot be represented in type 'int'
- CPU: 0 PID: 20433 Comm: insmod Tainted: G        WC OE
- Call Trace:
-  dump_stack+0x74/0x92
-  ubsan_epilogue+0x9/0x50
-  handle_overflow+0x8d/0xd0
-  __ubsan_handle_mul_overflow+0xe/0x10
-  nl80211_send_iface+0x688/0x6b0 [cfg80211]
-  [...]
-  cfg80211_register_wdev+0x78/0xb0 [cfg80211]
-  cfg80211_netdev_notifier_call+0x200/0x620 [cfg80211]
-  [...]
-  ieee80211_if_add+0x60e/0x8f0 [mac80211]
-  ieee80211_register_hw+0xda5/0x1170 [mac80211]
+For example:
+ - The stimer is configured in auto-enable mode.
+ - The stimer's count is set and the timer enabled.
+ - The stimer expires, an interrupt is injected.
+ - The VM is live migrated.
+ - The stimer config and count are deserialized, auto-enable is ON, the
+   stimer is re-enabled.
+ - The stimer expires right away, and injects an unwarranted interrupt.
 
-In this case, simply return an error instead, to indicate
-that no data is available.
-
-Cc: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://lore.kernel.org/r/20230203023636.4418-1-pkshih@realtek.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kvm/hyperv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 9e3bff5aaf8b8..6428c0d371458 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2581,6 +2581,10 @@ static int ieee80211_get_tx_power(struct wiphy *wiphy,
- 	else
- 		*dbm = sdata->vif.bss_conf.txpower;
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -674,10 +674,12 @@ static int stimer_set_count(struct kvm_v
  
-+	/* INT_MIN indicates no power level was set yet */
-+	if (*dbm == INT_MIN)
-+		return -EINVAL;
-+
- 	return 0;
- }
+ 	stimer_cleanup(stimer);
+ 	stimer->count = count;
+-	if (stimer->count == 0)
+-		stimer->config.enable = 0;
+-	else if (stimer->config.auto_enable)
+-		stimer->config.enable = 1;
++	if (!host) {
++		if (stimer->count == 0)
++			stimer->config.enable = 0;
++		else if (stimer->config.auto_enable)
++			stimer->config.enable = 1;
++	}
  
--- 
-2.42.0
-
+ 	if (stimer->config.enable)
+ 		stimer_mark_pending(stimer, false);
 
 
 
