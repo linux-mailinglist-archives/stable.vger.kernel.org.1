@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08DE57F7D88
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D9AA7F7FBD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39D791C21282
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0AB5B219B3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B84C381BF;
-	Fri, 24 Nov 2023 18:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1A1364A0;
+	Fri, 24 Nov 2023 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rb3epQTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JPv1EeMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A77E381D4;
-	Fri, 24 Nov 2023 18:25:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC2BC433C8;
-	Fri, 24 Nov 2023 18:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5775381D4;
+	Fri, 24 Nov 2023 18:43:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58036C433C7;
+	Fri, 24 Nov 2023 18:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850329;
-	bh=RD0jKt94bLZsgzd91+2LY/UANdEO4uS166WrUpP0S6k=;
+	s=korg; t=1700851436;
+	bh=g5llG46kzxnbkedtdfJzxj5/x8oV9IpX5jsgIskm/7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rb3epQTEC3BD7HzC3ywhKNqQKkCj5PoNhS0iowfDHi1jRH+DXshkM507mIhJJfHvM
-	 vqHnnvLXicrQtpWCACOgspTleq6mpGdVeh9/UpbAAoS/vpvyD7clPTV0rk3Dax6udt
-	 nL3agvxZ+owYn70pH5p0T+Rviz78iFR+rOiFdG8A=
+	b=JPv1EeMhuJd919PZ0WjCCeLkCW7d57ZOH9d4yd50kbYMzfhe58qJMpq/Esnp2Qm7d
+	 i5aRvOJctoynhlD0p8Oph4EUpbf+J7XSaY8dP47HX1kkeMp5WJeqbBA7D0cTsYPQzW
+	 AmeZMWksO3pe04BA0MmlRRggRViAgIisq8flaOe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>
-Subject: [PATCH 6.6 518/530] drm/amdgpu: fix GRBM read timeout when do mes_self_test
+	Victor Shih <victor.shih@genesyslogic.com.tw>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Kai-Heng Feng <kai.heng.geng@canonical.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.5 448/491] mmc: sdhci-pci-gli: GL9750: Mask the replay timer timeout of AER
 Date: Fri, 24 Nov 2023 17:51:24 +0000
-Message-ID: <20231124172043.955737625@linuxfoundation.org>
+Message-ID: <20231124172038.067806004@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Victor Shih <victor.shih@genesyslogic.com.tw>
 
-commit 36e7ff5c13cb15cb7b06c76d42bb76cbf6b7ea75 upstream.
+commit 015c9cbcf0ad709079117d27c2094a46e0eadcdb upstream.
 
-Use a proper MEID to make sure the CP_HQD_* and CP_GFX_HQD_* registers
-can be touched when initialize the compute and gfx mqd in mes_self_test.
-Otherwise, we expect no response from CP and an GRBM eventual timeout.
+Due to a flaw in the hardware design, the GL9750 replay timer frequently
+times out when ASPM is enabled. As a result, the warning messages will
+often appear in the system log when the system accesses the GL9750
+PCI config. Therefore, the replay timer timeout must be masked.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d7133797e9e1 ("mmc: sdhci-pci-gli: A workaround to allow GL9750 to enter ASPM L1.2")
+Signed-off-by: Victor Shih <victor.shih@genesyslogic.com.tw>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Kai-Heng Feng <kai.heng.geng@canonical.com>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231107095741.8832-2-victorshihgli@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/mmc/host/sdhci-pci-gli.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -556,8 +556,20 @@ static void amdgpu_mes_queue_init_mqd(st
- 	mqd_prop.hqd_queue_priority = p->hqd_queue_priority;
- 	mqd_prop.hqd_active = false;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -28,6 +28,9 @@
+ #define PCI_GLI_9750_PM_CTRL	0xFC
+ #define   PCI_GLI_9750_PM_STATE	  GENMASK(1, 0)
  
-+	if (p->queue_type == AMDGPU_RING_TYPE_GFX ||
-+	    p->queue_type == AMDGPU_RING_TYPE_COMPUTE) {
-+		mutex_lock(&adev->srbm_mutex);
-+		amdgpu_gfx_select_me_pipe_q(adev, p->ring->me, p->ring->pipe, 0, 0, 0);
-+	}
++#define PCI_GLI_9750_CORRERR_MASK				0x214
++#define   PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT	  BIT(12)
 +
- 	mqd_mgr->init_mqd(adev, q->mqd_cpu_ptr, &mqd_prop);
+ #define SDHCI_GLI_9750_CFG2          0x848
+ #define   SDHCI_GLI_9750_CFG2_L1DLY    GENMASK(28, 24)
+ #define   GLI_9750_CFG2_L1DLY_VALUE    0x1F
+@@ -564,6 +567,11 @@ static void gl9750_hw_setting(struct sdh
+ 	value &= ~PCI_GLI_9750_PM_STATE;
+ 	pci_write_config_dword(pdev, PCI_GLI_9750_PM_CTRL, value);
  
-+	if (p->queue_type == AMDGPU_RING_TYPE_GFX ||
-+	    p->queue_type == AMDGPU_RING_TYPE_COMPUTE) {
-+		amdgpu_gfx_select_me_pipe_q(adev, 0, 0, 0, 0, 0);
-+		mutex_unlock(&adev->srbm_mutex);
-+	}
++	/* mask the replay timer timeout of AER */
++	pci_read_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, &value);
++	value |= PCI_GLI_9750_CORRERR_MASK_REPLAY_TIMER_TIMEOUT;
++	pci_write_config_dword(pdev, PCI_GLI_9750_CORRERR_MASK, value);
 +
- 	amdgpu_bo_unreserve(q->mqd_obj);
+ 	gl9750_wt_off(host);
  }
  
-@@ -993,9 +1005,13 @@ int amdgpu_mes_add_ring(struct amdgpu_de
- 	switch (queue_type) {
- 	case AMDGPU_RING_TYPE_GFX:
- 		ring->funcs = adev->gfx.gfx_ring[0].funcs;
-+		ring->me = adev->gfx.gfx_ring[0].me;
-+		ring->pipe = adev->gfx.gfx_ring[0].pipe;
- 		break;
- 	case AMDGPU_RING_TYPE_COMPUTE:
- 		ring->funcs = adev->gfx.compute_ring[0].funcs;
-+		ring->me = adev->gfx.compute_ring[0].me;
-+		ring->pipe = adev->gfx.compute_ring[0].pipe;
- 		break;
- 	case AMDGPU_RING_TYPE_SDMA:
- 		ring->funcs = adev->sdma.instance[0].ring.funcs;
 
 
 
