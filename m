@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA8297F8046
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4741E7F7E63
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CA5CB21793
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F50282306
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D303C38DD5;
-	Fri, 24 Nov 2023 18:48:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917652EAFB;
+	Fri, 24 Nov 2023 18:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0CFot3H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uObAUoGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2822FC21;
-	Fri, 24 Nov 2023 18:48:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B99C433C7;
-	Fri, 24 Nov 2023 18:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492B333E9;
+	Fri, 24 Nov 2023 18:32:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E7BBC433C8;
+	Fri, 24 Nov 2023 18:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851695;
-	bh=c7G1Ur/rEwc1Rf+hCig2osoNrQRXCXXYyNP/hK1B5Ug=;
+	s=korg; t=1700850753;
+	bh=QFZvCDmsTpKnAHPAzjhycSxoBEtEQjFxE3YlEBS7Srg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L0CFot3HXYn+4nDHEcMfH81BgOYZxRgW4ullnnzDyWgzpjZuh8/gVhkOd9xJvpG1+
-	 vo0amDWlYBNiprc0Lzoqqx/WK7B6RnkBh6ZXswRFzWwemOkaIVwOCzmayY4BBWLfO9
-	 soptGFok4GyHOCDVhLDHnnVZc62Weh5AUiaIIeY8=
+	b=uObAUoGEBy/3SK6h2xfrtKZl6Ldg3peYeBpKp0Uo0O6TyKF0dVtiXNKkOUJii4G9L
+	 QTaEjqfkK8LR4AG3auhpMPzaQD1nniuVGMZB1iINwo38qhr9GnWVB8F8f2uzxuppKE
+	 +6RXLBtfxAuiEFBaU0qIzRV5jjUDAiwU7kHOhHOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/372] bpf: Ensure proper register state printing for cond jumps
-Date: Fri, 24 Nov 2023 17:46:51 +0000
-Message-ID: <20231124172011.289514567@linuxfoundation.org>
+Subject: [PATCH 6.5 176/491] xen/events: avoid using info_for_irq() in xen_send_IPI_one()
+Date: Fri, 24 Nov 2023 17:46:52 +0000
+Message-ID: <20231124172029.762698456@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,115 +54,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 1a8a315f008a58f54fecb012b928aa6a494435b3 ]
+[ Upstream commit e64e7c74b99ec9e439abca75f522f4b98f220bd1 ]
 
-Verifier emits relevant register state involved in any given instruction
-next to it after `;` to the right, if possible. Or, worst case, on the
-separate line repeating instruction index.
+xen_send_IPI_one() is being used by cpuhp_report_idle_dead() after
+it calls rcu_report_dead(), meaning that any RCU usage by
+xen_send_IPI_one() is a bad idea.
 
-E.g., a nice and simple case would be:
+Unfortunately xen_send_IPI_one() is using notify_remote_via_irq()
+today, which is using irq_get_chip_data() via info_for_irq(). And
+irq_get_chip_data() in turn is using a maple-tree lookup requiring
+RCU.
 
-  2: (d5) if r0 s<= 0x0 goto pc+1       ; R0_w=0
+Avoid this problem by caching the ipi event channels in another
+percpu variable, allowing the use notify_remote_via_evtchn() in
+xen_send_IPI_one().
 
-But if there is some intervening extra output (e.g., precision
-backtracking log) involved, we are supposed to see the state after the
-precision backtrack log:
-
-  4: (75) if r0 s>= 0x0 goto pc+1
-  mark_precise: frame0: last_idx 4 first_idx 0 subseq_idx -1
-  mark_precise: frame0: regs=r0 stack= before 2: (d5) if r0 s<= 0x0 goto pc+1
-  mark_precise: frame0: regs=r0 stack= before 1: (b7) r0 = 0
-  6: R0_w=0
-
-First off, note that in `6: R0_w=0` instruction index corresponds to the
-next instruction, not to the conditional jump instruction itself, which
-is wrong and we'll get to that.
-
-But besides that, the above is a happy case that does work today. Yet,
-if it so happens that precision backtracking had to traverse some of the
-parent states, this `6: R0_w=0` state output would be missing.
-
-This is due to a quirk of print_verifier_state() routine, which performs
-mark_verifier_state_clean(env) at the end. This marks all registers as
-"non-scratched", which means that subsequent logic to print *relevant*
-registers (that is, "scratched ones") fails and doesn't see anything
-relevant to print and skips the output altogether.
-
-print_verifier_state() is used both to print instruction context, but
-also to print an **entire** verifier state indiscriminately, e.g.,
-during precision backtracking (and in a few other situations, like
-during entering or exiting subprogram).  Which means if we have to print
-entire parent state before getting to printing instruction context
-state, instruction context is marked as clean and is omitted.
-
-Long story short, this is definitely not intentional. So we fix this
-behavior in this patch by teaching print_verifier_state() to clear
-scratch state only if it was used to print instruction state, not the
-parent/callback state. This is determined by print_all option, so if
-it's not set, we don't clear scratch state. This fixes missing
-instruction state for these cases.
-
-As for the mismatched instruction index, we fix that by making sure we
-call print_insn_state() early inside check_cond_jmp_op() before we
-adjusted insn_idx based on jump branch taken logic. And with that we get
-desired correct information:
-
-  9: (16) if w4 == 0x1 goto pc+9
-  mark_precise: frame0: last_idx 9 first_idx 9 subseq_idx -1
-  mark_precise: frame0: parent state regs=r4 stack=: R2_w=1944 R4_rw=P1 R10=fp0
-  mark_precise: frame0: last_idx 8 first_idx 0 subseq_idx 9
-  mark_precise: frame0: regs=r4 stack= before 8: (66) if w4 s> 0x3 goto pc+5
-  mark_precise: frame0: regs=r4 stack= before 7: (b7) r4 = 1
-  9: R4=1
-
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: John Fastabend <john.fastabend@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20231011223728.3188086-6-andrii@kernel.org
+Fixes: 721255b9826b ("genirq: Use a maple tree for interrupt descriptor management")
+Reported-by: David Woodhouse <dwmw@amazon.co.uk>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/xen/events/events_base.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index eb3f52be115d6..7fbc6492fe7b4 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -978,7 +978,8 @@ static void print_verifier_state(struct bpf_verifier_env *env,
- 	if (state->in_async_callback_fn)
- 		verbose(env, " async_cb");
- 	verbose(env, "\n");
--	mark_verifier_state_clean(env);
-+	if (!print_all)
-+		mark_verifier_state_clean(env);
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index c803714d0f0d1..5de10d291a1cb 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -164,6 +164,8 @@ static DEFINE_PER_CPU(int [NR_VIRQS], virq_to_irq) = {[0 ... NR_VIRQS-1] = -1};
+ 
+ /* IRQ <-> IPI mapping */
+ static DEFINE_PER_CPU(int [XEN_NR_IPIS], ipi_to_irq) = {[0 ... XEN_NR_IPIS-1] = -1};
++/* Cache for IPI event channels - needed for hot cpu unplug (avoid RCU usage). */
++static DEFINE_PER_CPU(evtchn_port_t [XEN_NR_IPIS], ipi_to_evtchn) = {[0 ... XEN_NR_IPIS-1] = 0};
+ 
+ /* Event channel distribution data */
+ static atomic_t channels_on_cpu[NR_CPUS];
+@@ -366,6 +368,7 @@ static int xen_irq_info_ipi_setup(unsigned cpu,
+ 	info->u.ipi = ipi;
+ 
+ 	per_cpu(ipi_to_irq, cpu)[ipi] = irq;
++	per_cpu(ipi_to_evtchn, cpu)[ipi] = evtchn;
+ 
+ 	return xen_irq_info_common_setup(info, irq, IRQT_IPI, evtchn, 0);
+ }
+@@ -981,6 +984,7 @@ static void __unbind_from_irq(unsigned int irq)
+ 			break;
+ 		case IRQT_IPI:
+ 			per_cpu(ipi_to_irq, cpu)[ipi_from_irq(irq)] = -1;
++			per_cpu(ipi_to_evtchn, cpu)[ipi_from_irq(irq)] = 0;
+ 			break;
+ 		case IRQT_EVTCHN:
+ 			dev = info->u.interdomain;
+@@ -1631,7 +1635,7 @@ EXPORT_SYMBOL_GPL(evtchn_put);
+ 
+ void xen_send_IPI_one(unsigned int cpu, enum ipi_vector vector)
+ {
+-	int irq;
++	evtchn_port_t evtchn;
+ 
+ #ifdef CONFIG_X86
+ 	if (unlikely(vector == XEN_NMI_VECTOR)) {
+@@ -1642,9 +1646,9 @@ void xen_send_IPI_one(unsigned int cpu, enum ipi_vector vector)
+ 		return;
+ 	}
+ #endif
+-	irq = per_cpu(ipi_to_irq, cpu)[vector];
+-	BUG_ON(irq < 0);
+-	notify_remote_via_irq(irq);
++	evtchn = per_cpu(ipi_to_evtchn, cpu)[vector];
++	BUG_ON(evtchn == 0);
++	notify_remote_via_evtchn(evtchn);
  }
  
- static inline u32 vlog_alignment(u32 pos)
-@@ -10476,6 +10477,8 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 		    !sanitize_speculative_path(env, insn, *insn_idx + 1,
- 					       *insn_idx))
- 			return -EFAULT;
-+		if (env->log.level & BPF_LOG_LEVEL)
-+			print_insn_state(env, this_branch->frame[this_branch->curframe]);
- 		*insn_idx += insn->off;
- 		return 0;
- 	} else if (pred == 0) {
-@@ -10488,6 +10491,8 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 					       *insn_idx + insn->off + 1,
- 					       *insn_idx))
- 			return -EFAULT;
-+		if (env->log.level & BPF_LOG_LEVEL)
-+			print_insn_state(env, this_branch->frame[this_branch->curframe]);
- 		return 0;
- 	}
- 
+ struct evtchn_loop_ctrl {
 -- 
 2.42.0
 
