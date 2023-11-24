@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92767F7D46
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8377F7B0E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59253B21452
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4B3E1F20EF1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41E7839FE7;
-	Fri, 24 Nov 2023 18:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C2B39FF7;
+	Fri, 24 Nov 2023 18:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfMCx4I+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+/FHaIo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013BD381D4;
-	Fri, 24 Nov 2023 18:23:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8119BC433CA;
-	Fri, 24 Nov 2023 18:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0BA39FEE;
+	Fri, 24 Nov 2023 18:01:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2BEC433C8;
+	Fri, 24 Nov 2023 18:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850184;
-	bh=EHHG/A8u6NU8J0DBtErEUIgMMLJml6I2/ryklNg0RKE=;
+	s=korg; t=1700848883;
+	bh=dNAO6RDdpfHnKuGG/q6q95qVCE/ASWxU3f4hVYZ3YQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfMCx4I+imuJyzPcZa7Ye5SftyJMGysDp41Zk2Tpd6kOdXyjfdNBYFv5BgzytjHtI
-	 K8qgy4tSX9zKdy+O36Fv2bgYEebcRFIwcmn1rKH7qV/BNSsXzUG+QE2kO/t4Kf0SSN
-	 92VgsWrZqFdI+xIPAkGbN0GHWsIiVjhAgk6whuSo=
+	b=g+/FHaIoe9wDogvoiSsEFFA6JJ6JqTofD8uSTjFUiNW/PE8Xf98yZjrAPrmIMCthv
+	 ZeDr+Zj7xuZonuMUw8cTtiqCxyC8QxISKhCTF91mQOYEU0TMUZg5TtfA+jSiquXh7c
+	 yPE/0dwVhN59xTzVIpogQHgaLRymtaCggmv7DEAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Paasch <cpaasch@apple.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 478/530] mptcp: deal with large GSO size
+	Wenchao Hao <haowenchao2@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 20/57] scsi: libfc: Fix potential NULL pointer dereference in fc_lport_ptp_setup()
 Date: Fri, 24 Nov 2023 17:50:44 +0000
-Message-ID: <20231124172042.625013824@linuxfoundation.org>
+Message-ID: <20231124171931.020267820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,92 +54,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Wenchao Hao <haowenchao2@huawei.com>
 
-commit 9fce92f050f448a0d1ddd9083ef967d9930f1e52 upstream.
+[ Upstream commit 4df105f0ce9f6f30cda4e99f577150d23f0c9c5f ]
 
-After the blamed commit below, the TCP sockets (and the MPTCP subflows)
-can build egress packets larger than 64K. That exceeds the maximum DSS
-data size, the length being misrepresent on the wire and the stream being
-corrupted, as later observed on the receiver:
+fc_lport_ptp_setup() did not check the return value of fc_rport_create()
+which can return NULL and would cause a NULL pointer dereference. Address
+this issue by checking return value of fc_rport_create() and log error
+message on fc_rport_create() failed.
 
-  WARNING: CPU: 0 PID: 9696 at net/mptcp/protocol.c:705 __mptcp_move_skbs_from_subflow+0x2604/0x26e0
-  CPU: 0 PID: 9696 Comm: syz-executor.7 Not tainted 6.6.0-rc5-gcd8bdf563d46 #45
-  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.11.0-2.el7 04/01/2014
-  netlink: 8 bytes leftover after parsing attributes in process `syz-executor.4'.
-  RIP: 0010:__mptcp_move_skbs_from_subflow+0x2604/0x26e0 net/mptcp/protocol.c:705
-  RSP: 0018:ffffc90000006e80 EFLAGS: 00010246
-  RAX: ffffffff83e9f674 RBX: ffff88802f45d870 RCX: ffff888102ad0000
-  netlink: 8 bytes leftover after parsing attributes in process `syz-executor.4'.
-  RDX: 0000000080000303 RSI: 0000000000013908 RDI: 0000000000003908
-  RBP: ffffc90000007110 R08: ffffffff83e9e078 R09: 1ffff1100e548c8a
-  R10: dffffc0000000000 R11: ffffed100e548c8b R12: 0000000000013908
-  R13: dffffc0000000000 R14: 0000000000003908 R15: 000000000031cf29
-  FS:  00007f239c47e700(0000) GS:ffff88811b200000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f239c45cd78 CR3: 000000006a66c006 CR4: 0000000000770ef0
-  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000600
-  PKRU: 55555554
-  Call Trace:
-   <IRQ>
-   mptcp_data_ready+0x263/0xac0 net/mptcp/protocol.c:819
-   subflow_data_ready+0x268/0x6d0 net/mptcp/subflow.c:1409
-   tcp_data_queue+0x21a1/0x7a60 net/ipv4/tcp_input.c:5151
-   tcp_rcv_established+0x950/0x1d90 net/ipv4/tcp_input.c:6098
-   tcp_v6_do_rcv+0x554/0x12f0 net/ipv6/tcp_ipv6.c:1483
-   tcp_v6_rcv+0x2e26/0x3810 net/ipv6/tcp_ipv6.c:1749
-   ip6_protocol_deliver_rcu+0xd6b/0x1ae0 net/ipv6/ip6_input.c:438
-   ip6_input+0x1c5/0x470 net/ipv6/ip6_input.c:483
-   ipv6_rcv+0xef/0x2c0 include/linux/netfilter.h:304
-   __netif_receive_skb+0x1ea/0x6a0 net/core/dev.c:5532
-   process_backlog+0x353/0x660 net/core/dev.c:5974
-   __napi_poll+0xc6/0x5a0 net/core/dev.c:6536
-   net_rx_action+0x6a0/0xfd0 net/core/dev.c:6603
-   __do_softirq+0x184/0x524 kernel/softirq.c:553
-   do_softirq+0xdd/0x130 kernel/softirq.c:454
-
-Address the issue explicitly bounding the maximum GSO size to what MPTCP
-actually allows.
-
-Reported-by: Christoph Paasch <cpaasch@apple.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/450
-Fixes: 7c4e983c4f3c ("net: allow gso_max_size to exceed 65536")
-Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-1-7b9cd6a7b7f4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Wenchao Hao <haowenchao2@huawei.com>
+Link: https://lore.kernel.org/r/20231011130350.819571-1-haowenchao2@huawei.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/protocol.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/libfc/fc_lport.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1231,6 +1231,8 @@ static void mptcp_update_infinite_map(st
- 	mptcp_do_fallback(ssk);
- }
- 
-+#define MPTCP_MAX_GSO_SIZE (GSO_LEGACY_MAX_SIZE - (MAX_TCP_HEADER + 1))
-+
- static int mptcp_sendmsg_frag(struct sock *sk, struct sock *ssk,
- 			      struct mptcp_data_frag *dfrag,
- 			      struct mptcp_sendmsg_info *info)
-@@ -1257,6 +1259,8 @@ static int mptcp_sendmsg_frag(struct soc
- 		return -EAGAIN;
- 
- 	/* compute send limit */
-+	if (unlikely(ssk->sk_gso_max_size > MPTCP_MAX_GSO_SIZE))
-+		ssk->sk_gso_max_size = MPTCP_MAX_GSO_SIZE;
- 	info->mss_now = tcp_send_mss(ssk, &info->size_goal, info->flags);
- 	copy = info->size_goal;
- 
+diff --git a/drivers/scsi/libfc/fc_lport.c b/drivers/scsi/libfc/fc_lport.c
+index 5c0aa2c5fd558..cb22c7afa3cdc 100644
+--- a/drivers/scsi/libfc/fc_lport.c
++++ b/drivers/scsi/libfc/fc_lport.c
+@@ -251,6 +251,12 @@ static void fc_lport_ptp_setup(struct fc_lport *lport,
+ 	}
+ 	mutex_lock(&lport->disc.disc_mutex);
+ 	lport->ptp_rdata = fc_rport_create(lport, remote_fid);
++	if (!lport->ptp_rdata) {
++		printk(KERN_WARNING "libfc: Failed to setup lport 0x%x\n",
++			lport->port_id);
++		mutex_unlock(&lport->disc.disc_mutex);
++		return;
++	}
+ 	kref_get(&lport->ptp_rdata->kref);
+ 	lport->ptp_rdata->ids.port_name = remote_wwpn;
+ 	lport->ptp_rdata->ids.node_name = remote_wwnn;
+-- 
+2.42.0
+
 
 
 
