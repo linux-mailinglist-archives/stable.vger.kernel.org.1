@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-2454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 852897F843E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4427A7F82A9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 412EF28353F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEC4E285D0A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0700733CC2;
-	Fri, 24 Nov 2023 19:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BC235F1A;
+	Fri, 24 Nov 2023 19:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNWHatC+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikOqGsju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C1D2D787;
-	Fri, 24 Nov 2023 19:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 853E0C433C8;
-	Fri, 24 Nov 2023 19:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E3E3173F;
+	Fri, 24 Nov 2023 19:09:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936F2C433C7;
+	Fri, 24 Nov 2023 19:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853923;
-	bh=Wx7qK7pN2JM9cbXjjXW/FJXqBqbbkUU9bP1DdbH7P74=;
+	s=korg; t=1700852979;
+	bh=w7EaFGhvK0ngk2qZumHE1vylde6iqbVs127pOtOBGZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNWHatC+aOBnvsae21EdDqYeMiOkX5A3KQpnw/CPmBpi1Y7D4n3jwjoixPqVgYQet
-	 hb4b2og2Cu5zY1zqO55j2sD8dSjLxPg5UlKiV3GjopcRqfnZ62pDsChPnlL0lYvhVG
-	 VCAI+Qkg3bJ0OKojYVZxRp658l9Z5sOKTkNzEUt0=
+	b=ikOqGsjuEK6SuN/isqWlCXzMhfnArBuRw5noM3iyoLLmkxQnwcq5UtdrA1BThPkuD
+	 eWH14ndDFBeCiO88c0mrysTg41UfVAWW+KObAHyPeJiKEVhx+MYmANGjTr9iRZ01IS
+	 NbZcNO/slxMyYME7fQlXExLrJewvBdclNi863/1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.4 084/159] parisc/power: Add power soft-off when running on qemu
-Date: Fri, 24 Nov 2023 17:55:01 +0000
-Message-ID: <20231124171945.420849740@linuxfoundation.org>
+	Mahmoud Adam <mngyadam@amazon.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 175/193] nfsd: fix file memleak on client_opens_release
+Date: Fri, 24 Nov 2023 17:55:02 +0000
+Message-ID: <20231124171954.179015656@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +54,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Mahmoud Adam <mngyadam@amazon.com>
 
-commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
+commit bc1b5acb40201a0746d68a7d7cfc141899937f4f upstream.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+seq_release should be called to free the allocated seq_file
+
+Cc: stable@vger.kernel.org # v5.3+
+Signed-off-by: Mahmoud Adam <mngyadam@amazon.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 78599c42ae3c ("nfsd4: add file to display list of client's opens")
+Reviewed-by: NeilBrown <neilb@suse.de>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/power.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ fs/nfsd/nfs4state.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -192,6 +192,14 @@ static struct notifier_block parisc_pani
- 	.priority	= INT_MAX,
- };
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -2647,7 +2647,7 @@ static int client_opens_release(struct i
  
-+/* qemu soft power-off function */
-+static int qemu_power_off(struct sys_off_data *data)
-+{
-+	/* this turns the system off via SeaBIOS */
-+	*(int *)data->cb_data = 0;
-+	pdc_soft_power_button(1);
-+	return NOTIFY_DONE;
-+}
+ 	/* XXX: alternatively, we could get/drop in seq start/stop */
+ 	drop_client(clp);
+-	return 0;
++	return seq_release(inode, file);
+ }
  
- static int __init power_init(void)
- {
-@@ -221,7 +229,13 @@ static int __init power_init(void)
- 				soft_power_reg);
- 	}
- 
--	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
-+	power_task = NULL;
-+	if (running_on_qemu && soft_power_reg)
-+		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
-+					qemu_power_off, (void *)soft_power_reg);
-+	else
-+		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
-+					KTHREAD_NAME);
- 	if (IS_ERR(power_task)) {
- 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
- 		pdc_soft_power_button(0);
+ static const struct file_operations client_states_fops = {
 
 
 
