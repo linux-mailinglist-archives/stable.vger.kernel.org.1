@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B6767F7B0C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C605C7F7F8E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D3F61C20A32
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CEABB219CC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B99A39FF4;
-	Fri, 24 Nov 2023 18:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6019E3306F;
+	Fri, 24 Nov 2023 18:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yePQp+6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TarJ7PW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA0439FD9;
-	Fri, 24 Nov 2023 18:01:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78B4C433C7;
-	Fri, 24 Nov 2023 18:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AE533CC2;
+	Fri, 24 Nov 2023 18:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F76C433C7;
+	Fri, 24 Nov 2023 18:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848878;
-	bh=F2TPUnRdA3GTRO/CLyKndOJq1E13i2m1HRjmpdHTD4c=;
+	s=korg; t=1700851351;
+	bh=KJ2SNfudsbRb2SAJZjSEvKpdQrqPqOzn+hdcX+ekF5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yePQp+6EfDvuzED50kIzu3sR2Mc/13hTpcFj4hgsbLjzyTipZoc235Y+tgjh5GLDO
-	 ggtOvkXQWxt0MO3TuxNrT//XsDQ2n86Z0cXkLInh6wiVbSHwKev0GtvPffTFynrwUR
-	 rCLCFFGTBXQhSQN1rNJaRkYCGgTGpRraTfJKErwA=
+	b=TarJ7PW7whzek0RGbOwdEc3WTj6hly8BgmRLU0KG7K5GXV+hhhkluLYOoiiRA/FVc
+	 P9tys/bO+q/BkSWJZCn50cWvhsj5me6eeCOxAiHfQRVHSC70DSrY4M8si+IlWVG/qZ
+	 Nh5Y9BAQegWxBrQtNvske2Hq33R1JriuunGEk8l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 18/57] ALSA: hda: Fix possible null-ptr-deref when assigning a stream
+	Robert Marko <robert.marko@sartura.hr>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 6.5 406/491] Revert "i2c: pxa: move to generic GPIO recovery"
 Date: Fri, 24 Nov 2023 17:50:42 +0000
-Message-ID: <20231124171930.941155325@linuxfoundation.org>
+Message-ID: <20231124172036.806081420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +55,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Robert Marko <robert.marko@sartura.hr>
 
-[ Upstream commit f93dc90c2e8ed664985e366aa6459ac83cdab236 ]
+commit 7b211c7671212cad0b83603c674838c7e824d845 upstream.
 
-While AudioDSP drivers assign streams exclusively of HOST or LINK type,
-nothing blocks a user to attempt to assign a COUPLED stream. As
-supplied substream instance may be a stub, what is the case when
-code-loading, such scenario ends with null-ptr-deref.
+This reverts commit 0b01392c18b9993a584f36ace1d61118772ad0ca.
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://lore.kernel.org/r/20231006102857.749143-2-cezary.rojewski@intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Conversion of PXA to generic I2C recovery, makes the I2C bus completely
+lock up if recovery pinctrl is present in the DT and I2C recovery is
+enabled.
+
+So, until the generic I2C recovery can also work with PXA lets revert
+to have working I2C and I2C recovery again.
+
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Cc: stable@vger.kernel.org # 5.11+
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Acked-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/hda/hdac_stream.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-pxa.c |   76 ++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 68 insertions(+), 8 deletions(-)
 
-diff --git a/sound/hda/hdac_stream.c b/sound/hda/hdac_stream.c
-index e1472c7ab6c17..609dc5133fba9 100644
---- a/sound/hda/hdac_stream.c
-+++ b/sound/hda/hdac_stream.c
-@@ -241,8 +241,10 @@ struct hdac_stream *snd_hdac_stream_assign(struct hdac_bus *bus,
- 	struct hdac_stream *res = NULL;
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -264,6 +264,9 @@ struct pxa_i2c {
+ 	u32			hs_mask;
  
- 	/* make a non-zero unique key for the substream */
--	int key = (substream->pcm->device << 16) | (substream->number << 2) |
--		(substream->stream + 1);
-+	int key = (substream->number << 2) | (substream->stream + 1);
+ 	struct i2c_bus_recovery_info recovery;
++	struct pinctrl		*pinctrl;
++	struct pinctrl_state	*pinctrl_default;
++	struct pinctrl_state	*pinctrl_recovery;
+ };
+ 
+ #define _IBMR(i2c)	((i2c)->reg_ibmr)
+@@ -1300,12 +1303,13 @@ static void i2c_pxa_prepare_recovery(str
+ 	 */
+ 	gpiod_set_value(i2c->recovery.scl_gpiod, ibmr & IBMR_SCLS);
+ 	gpiod_set_value(i2c->recovery.sda_gpiod, ibmr & IBMR_SDAS);
 +
-+	if (substream->pcm)
-+		key |= (substream->pcm->device << 16);
++	WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery));
+ }
  
- 	list_for_each_entry(azx_dev, &bus->stream_list, list) {
- 		if (azx_dev->direction != substream->stream)
--- 
-2.42.0
-
+ static void i2c_pxa_unprepare_recovery(struct i2c_adapter *adap)
+ {
+ 	struct pxa_i2c *i2c = adap->algo_data;
+-	struct i2c_bus_recovery_info *bri = adap->bus_recovery_info;
+ 	u32 isr;
+ 
+ 	/*
+@@ -1319,7 +1323,7 @@ static void i2c_pxa_unprepare_recovery(s
+ 		i2c_pxa_do_reset(i2c);
+ 	}
+ 
+-	WARN_ON(pinctrl_select_state(bri->pinctrl, bri->pins_default));
++	WARN_ON(pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_default));
+ 
+ 	dev_dbg(&i2c->adap.dev, "recovery: IBMR 0x%08x ISR 0x%08x\n",
+ 	        readl(_IBMR(i2c)), readl(_ISR(i2c)));
+@@ -1341,20 +1345,76 @@ static int i2c_pxa_init_recovery(struct
+ 	if (IS_ENABLED(CONFIG_I2C_PXA_SLAVE))
+ 		return 0;
+ 
+-	bri->pinctrl = devm_pinctrl_get(dev);
+-	if (PTR_ERR(bri->pinctrl) == -ENODEV) {
+-		bri->pinctrl = NULL;
++	i2c->pinctrl = devm_pinctrl_get(dev);
++	if (PTR_ERR(i2c->pinctrl) == -ENODEV)
++		i2c->pinctrl = NULL;
++	if (IS_ERR(i2c->pinctrl))
++		return PTR_ERR(i2c->pinctrl);
++
++	if (!i2c->pinctrl)
++		return 0;
++
++	i2c->pinctrl_default = pinctrl_lookup_state(i2c->pinctrl,
++						    PINCTRL_STATE_DEFAULT);
++	i2c->pinctrl_recovery = pinctrl_lookup_state(i2c->pinctrl, "recovery");
++
++	if (IS_ERR(i2c->pinctrl_default) || IS_ERR(i2c->pinctrl_recovery)) {
++		dev_info(dev, "missing pinmux recovery information: %ld %ld\n",
++			 PTR_ERR(i2c->pinctrl_default),
++			 PTR_ERR(i2c->pinctrl_recovery));
++		return 0;
++	}
++
++	/*
++	 * Claiming GPIOs can influence the pinmux state, and may glitch the
++	 * I2C bus. Do this carefully.
++	 */
++	bri->scl_gpiod = devm_gpiod_get(dev, "scl", GPIOD_OUT_HIGH_OPEN_DRAIN);
++	if (bri->scl_gpiod == ERR_PTR(-EPROBE_DEFER))
++		return -EPROBE_DEFER;
++	if (IS_ERR(bri->scl_gpiod)) {
++		dev_info(dev, "missing scl gpio recovery information: %pe\n",
++			 bri->scl_gpiod);
++		return 0;
++	}
++
++	/*
++	 * We have SCL. Pull SCL low and wait a bit so that SDA glitches
++	 * have no effect.
++	 */
++	gpiod_direction_output(bri->scl_gpiod, 0);
++	udelay(10);
++	bri->sda_gpiod = devm_gpiod_get(dev, "sda", GPIOD_OUT_HIGH_OPEN_DRAIN);
++
++	/* Wait a bit in case of a SDA glitch, and then release SCL. */
++	udelay(10);
++	gpiod_direction_output(bri->scl_gpiod, 1);
++
++	if (bri->sda_gpiod == ERR_PTR(-EPROBE_DEFER))
++		return -EPROBE_DEFER;
++
++	if (IS_ERR(bri->sda_gpiod)) {
++		dev_info(dev, "missing sda gpio recovery information: %pe\n",
++			 bri->sda_gpiod);
+ 		return 0;
+ 	}
+-	if (IS_ERR(bri->pinctrl))
+-		return PTR_ERR(bri->pinctrl);
+ 
+ 	bri->prepare_recovery = i2c_pxa_prepare_recovery;
+ 	bri->unprepare_recovery = i2c_pxa_unprepare_recovery;
++	bri->recover_bus = i2c_generic_scl_recovery;
+ 
+ 	i2c->adap.bus_recovery_info = bri;
+ 
+-	return 0;
++	/*
++	 * Claiming GPIOs can change the pinmux state, which confuses the
++	 * pinctrl since pinctrl's idea of the current setting is unaffected
++	 * by the pinmux change caused by claiming the GPIO. Work around that
++	 * by switching pinctrl to the GPIO state here. We do it this way to
++	 * avoid glitching the I2C bus.
++	 */
++	pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_recovery);
++
++	return pinctrl_select_state(i2c->pinctrl, i2c->pinctrl_default);
+ }
+ 
+ static int i2c_pxa_probe(struct platform_device *dev)
 
 
 
