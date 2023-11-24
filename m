@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999227F8375
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DD77F83FB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5081B1F21039
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D71A289DCE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC284364C4;
-	Fri, 24 Nov 2023 19:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25B9364C4;
+	Fri, 24 Nov 2023 19:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7GLgsKO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWIXcsO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC182C1A2;
-	Fri, 24 Nov 2023 19:17:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECD1AC433C8;
-	Fri, 24 Nov 2023 19:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7255B339BE;
+	Fri, 24 Nov 2023 19:22:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F5BC433C7;
+	Fri, 24 Nov 2023 19:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853466;
-	bh=XcFltiS4pW+gSXNI8HIh7/cYixNmj/qc5EYVZfWBUnw=;
+	s=korg; t=1700853773;
+	bh=lwv74hIyNlIUT8IqqkEZSpgi7aBGf8ooLxlDv+UaWDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7GLgsKOYigncl795hiKzLcVcz47MgCH82p7xbd7RZZe2aJOATNDsIe8iKxxv6xYO
-	 69nXZ75MSPNSMdrekPCCYhi3PWlb1SMN+Ss3Q2OlGWBcisgZBYVHP5JPVBiUgQnx3o
-	 TvOhMFLEwkIxGCiIumGoZCNswT4WBaog1Co6bfXE=
+	b=DWIXcsO1P5t1rjDrwq7NFIBah86bg5ieYpC89GT2tQwj3BMa8E9hxQdSOWj/PTmA5
+	 kwaxtAbDNOSV9Kg6uk5JGiDVyvIzNW+HIyV7QgRyoF8fKd+tuTV8JmXMaLTYrQQgir
+	 YqU+Jnz5X8E+Qy/7s7KWGhJwvVEStEjjTG94hDwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 5.15 200/297] wifi: ath11k: fix dfs radar event locking
+	syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 025/159] jfs: fix array-index-out-of-bounds in diAlloc
 Date: Fri, 24 Nov 2023 17:54:02 +0000
-Message-ID: <20231124172007.206285210@linuxfoundation.org>
+Message-ID: <20231124171942.898811743@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-commit 3b6c14833165f689cc5928574ebafe52bbce5f1e upstream.
+[ Upstream commit 05d9ea1ceb62a55af6727a69269a4fd310edf483 ]
 
-The ath11k active pdevs are protected by RCU but the DFS radar event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section.
+Currently there is not check against the agno of the iag while
+allocating new inodes to avoid fragmentation problem. Added the check
+which is required.
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
-
-Compile tested only.
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019153115.26401-3-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=79d792676d8ac050949f
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/jfs/jfs_imap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -6809,6 +6809,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
- 		   ev->detector_id, ev->segment_id, ev->timestamp, ev->is_chirp,
- 		   ev->freq_offset, ev->sidx);
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 67c67604b8c85..14f918a4831d3 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -1322,7 +1322,7 @@ diInitInode(struct inode *ip, int iagno, int ino, int extno, struct iag * iagp)
+ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
+ {
+ 	int rc, ino, iagno, addext, extno, bitno, sword;
+-	int nwords, rem, i, agno;
++	int nwords, rem, i, agno, dn_numag;
+ 	u32 mask, inosmap, extsmap;
+ 	struct inode *ipimap;
+ 	struct metapage *mp;
+@@ -1358,6 +1358,9 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
  
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 	/* get the ag number of this iag */
+ 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
++	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
++	if (agno < 0 || agno > dn_numag)
++		return -EIO;
  
- 	if (!ar) {
-@@ -6826,6 +6828,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
- 		ieee80211_radar_detected(ar->hw);
- 
- exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
- }
- 
+ 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
+ 		/*
+-- 
+2.42.0
+
 
 
 
