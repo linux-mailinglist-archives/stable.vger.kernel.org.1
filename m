@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2F17F81F5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:03:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBE27F81C0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2AA6B22A6A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54AAC1F20FCE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D462A35F04;
-	Fri, 24 Nov 2023 19:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50B4364A7;
+	Fri, 24 Nov 2023 19:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbJs6kXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bdo0vlqL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59111364A6;
-	Fri, 24 Nov 2023 19:02:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8A6C433C8;
-	Fri, 24 Nov 2023 19:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6498833E9;
+	Fri, 24 Nov 2023 19:01:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E702BC433C8;
+	Fri, 24 Nov 2023 19:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852576;
-	bh=LLO7RoW8ns8VQjuxKYpoz7oMT+63/3BWv66GHJ3tFao=;
+	s=korg; t=1700852476;
+	bh=vExmVEul3Fp28VrZt6Tzzxz44NhIezXC/NTmN4z30J0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbJs6kXIV7iOAvEogE6q5Mi/x8tX1XaosY082z5NY7aD3tbQabvfAGk30JCtv8vOT
-	 S5QR4Vb2WPVlXW67ksruyNjEk7TsWMbQupsEUZDV/vpXO/EbN4H3ZSu/5yhbET6tpn
-	 Sst5As+he7itzygNlQgG8quL5RU5Ih66oGRZx0r4=
+	b=Bdo0vlqLwAhqYDfVU9sjTH/oN6Lkqp1iLff7ZItBs5q8iIOeHPB0x1NoN6v0COoBo
+	 yQ+12WlM9nZXw2bLWCYLP+V4Kurtt40AOv8754MYoMStdjTqjtIaksmSswdaeAbHak
+	 vztmOXTGa/E+1PGqVDHfXjy9kgsnEzL0Oq26JZB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com,
-	Juntong Deng <juntong.deng@outlook.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/193] fs/jfs: Add validity check for db_maxag and db_agpref
+	Vicki Pfau <vi@endrift.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 371/372] Input: xpad - add VID for Turtle Beach controllers
 Date: Fri, 24 Nov 2023 17:52:38 +0000
-Message-ID: <20231124171948.441905871@linuxfoundation.org>
+Message-ID: <20231124172022.620916744@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +52,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 64933ab7b04881c6c18b21ff206c12278341c72e ]
+commit 1999a6b12a3b5c8953fc9ec74863ebc75a1b851d upstream.
 
-Both db_maxag and db_agpref are used as the index of the
-db_agfree array, but there is currently no validity check for
-db_maxag and db_agpref, which can lead to errors.
+This adds support for the Turtle Beach REACT-R and Recon Xbox controllers
 
-The following is related bug reported by Syzbot:
-
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:639:20
-index 7936 is out of range for type 'atomic_t[128]'
-
-Add checking that the values of db_maxag and db_agpref are valid
-indexes for the db_agfree array.
-
-Reported-by: syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=38e876a8aa44b7115c76
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Link: https://lore.kernel.org/r/20230225012147.276489-4-vi@endrift.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/input/joystick/xpad.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 06dda2c7a6e24..2ccb52371ceb5 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -195,6 +195,12 @@ int dbMount(struct inode *ipbmap)
- 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
- 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
- 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
-+	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
-+		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
-+		err = -EINVAL;
-+		goto err_release_metapage;
-+	}
-+
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
--- 
-2.42.0
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -474,6 +474,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOXONE_VENDOR(0x0f0d),		/* Hori Controllers */
+ 	XPAD_XBOX360_VENDOR(0x1038),		/* SteelSeries Controllers */
++	XPAD_XBOXONE_VENDOR(0x10f5),		/* Turtle Beach Controllers */
+ 	XPAD_XBOX360_VENDOR(0x11c9),		/* Nacon GC100XF */
+ 	XPAD_XBOX360_VENDOR(0x11ff),		/* PXN V900 */
+ 	XPAD_XBOX360_VENDOR(0x1209),		/* Ardwiino Controllers */
 
 
 
