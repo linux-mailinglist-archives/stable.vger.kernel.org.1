@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-2067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622987F82A4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D87E7F8439
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93E381C23BE5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF861C233F6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF56381CB;
-	Fri, 24 Nov 2023 19:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2188733CC2;
+	Fri, 24 Nov 2023 19:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBl93cxl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbpDlpzq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75E82E84A;
-	Fri, 24 Nov 2023 19:09:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 365D8C433C8;
-	Fri, 24 Nov 2023 19:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0D03307D;
+	Fri, 24 Nov 2023 19:25:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A5A7C433C8;
+	Fri, 24 Nov 2023 19:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852967;
-	bh=UcpPLGcqP224IKBwNsLMvZQBv1WYqtD6vX1V/8AUdJQ=;
+	s=korg; t=1700853912;
+	bh=blWI7U3x/ZW7XsOSI3kERFFg5Cy8vRRY/A5xMqBCy90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBl93cxlR6iM6e1icKWuWHxQIOec9v8Jw5fZ06xBTwQ12du9CjL+oY/apSRESOh61
-	 oSN/Z0x5sa0AeufcWkkiogXaLAkjzzOgYuOJitdfMm+0tEPtK2YhMAt1hfopPt7lTL
-	 N5rZMa4/XJdzyCPxgQtw7XVZbdCYsJNzgeVkv81A=
+	b=zbpDlpzqQ8GUMqoK0I3YG32QKwxZkU/YDIzE0oo//WkTtStQ1Tv7jfujMsm6JRRKC
+	 9nBQYuZf6JHk4/vK2VUlRCGVVNDGiL/VcLKtb2+5F/Del9Z8SJ/xU0fC2psEoHEcVj
+	 Jv5pqpVilbh2ed2sBZfc1y07c2H2xw8Z/UAXvtC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.10 170/193] media: lirc: drop trailing space from scancode transmit
-Date: Fri, 24 Nov 2023 17:54:57 +0000
-Message-ID: <20231124171953.978463358@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.4 081/159] PCI: keystone: Dont discard .remove() callback
+Date: Fri, 24 Nov 2023 17:54:58 +0000
+Message-ID: <20231124171945.310624713@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +50,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit c8a489f820179fb12251e262b50303c29de991ac upstream.
+commit 200bddbb3f5202bbce96444fdc416305de14f547 upstream.
 
-When transmitting, infrared drivers expect an odd number of samples; iow
-without a trailing space. No problems have been observed so far, so
-this is just belt and braces.
+With CONFIG_PCIE_KEYSTONE=y and ks_pcie_remove() marked with __exit, the
+function is discarded from the driver. In this case a bound device can
+still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
+resource leaks or worse.
 
-Fixes: 9b6192589be7 ("media: lirc: implement scancode sending")
+The right thing to do is do always have the remove callback available.
+Note that this driver cannot be compiled as a module, so ks_pcie_remove()
+was always discarded before this change and modpost couldn't warn about
+this issue. Furthermore the __ref annotation also prevents a warning.
+
+Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
+Link: https://lore.kernel.org/r/20231001170254.2506508-4-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -286,7 +286,11 @@ static ssize_t lirc_transmit(struct file
- 		if (ret < 0)
- 			goto out_kfree_raw;
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1407,7 +1407,7 @@ err_link:
+ 	return ret;
+ }
  
--		count = ret;
-+		/* drop trailing space */
-+		if (!(ret % 2))
-+			count = ret - 1;
-+		else
-+			count = ret;
+-static int __exit ks_pcie_remove(struct platform_device *pdev)
++static int ks_pcie_remove(struct platform_device *pdev)
+ {
+ 	struct keystone_pcie *ks_pcie = platform_get_drvdata(pdev);
+ 	struct device_link **link = ks_pcie->link;
+@@ -1425,7 +1425,7 @@ static int __exit ks_pcie_remove(struct
  
- 		txbuf = kmalloc_array(count, sizeof(unsigned int), GFP_KERNEL);
- 		if (!txbuf) {
+ static struct platform_driver ks_pcie_driver __refdata = {
+ 	.probe  = ks_pcie_probe,
+-	.remove = __exit_p(ks_pcie_remove),
++	.remove = ks_pcie_remove,
+ 	.driver = {
+ 		.name	= "keystone-pcie",
+ 		.of_match_table = of_match_ptr(ks_pcie_of_match),
 
 
 
