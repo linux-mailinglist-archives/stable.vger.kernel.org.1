@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-2292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BFC7F8390
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C8D7F828A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D68A2886E1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C52F8285791
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E893364C4;
-	Fri, 24 Nov 2023 19:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3C1364BA;
+	Fri, 24 Nov 2023 19:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYqQUl4L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujLxFc0S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0079B339BE;
-	Fri, 24 Nov 2023 19:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A6DC433D9;
-	Fri, 24 Nov 2023 19:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C64E2C1A2;
+	Fri, 24 Nov 2023 19:08:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96115C433C8;
+	Fri, 24 Nov 2023 19:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853525;
-	bh=7qJw7enL65ka3I1pjNuVAWakb5iLyDqYBD1gMFyBPgU=;
+	s=korg; t=1700852917;
+	bh=ww+tk64U5rqGVD/5a4AGtx724b/bTMo1WkGD78RwbEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYqQUl4LXAbI6+U++LefcElq08Vx01aXjeMfz8z/M7eO1I+C/K5tHMmol5gfcrJz9
-	 Y8GDQ2i/wOlCa0CqMZtUidXF+wEpm1ROuDcZQMZg9S21KGiJu6RtOY+Ub97ZxT3iiB
-	 QYR1kUMupN+BvCH/IX7Rk8d3osO6NkNWdvwbK6c8=
+	b=ujLxFc0SlLgcn2jSKRX3vXfnsYoJIuI0pRgPNZs0XdPqjPDXuXDQfWqiHoFvKUyyd
+	 18MKETkUdkaA7hG3cz2FhGq33ecVMBhXn/UFJH94LdFOS1ux7dSAmosqzHpXGGL/AQ
+	 yPFKRRqhZHDxrcNYGsrRzRjOMPPM39sIryiBXkeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nicolas Pitre <nico@fluxnic.net>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 224/297] mtd: cfi_cmdset_0001: Byte swap OTP info
+Subject: [PATCH 5.10 139/193] mtd: cfi_cmdset_0001: Byte swap OTP info
 Date: Fri, 24 Nov 2023 17:54:26 +0000
-Message-ID: <20231124172008.039019333@linuxfoundation.org>
+Message-ID: <20231124171952.758671798@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -99,7 +99,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/mtd/chips/cfi_cmdset_0001.c
 +++ b/drivers/mtd/chips/cfi_cmdset_0001.c
-@@ -421,9 +421,25 @@ read_pri_intelext(struct map_info *map,
+@@ -420,9 +420,25 @@ read_pri_intelext(struct map_info *map,
  		extra_size = 0;
  
  		/* Protection Register info */
