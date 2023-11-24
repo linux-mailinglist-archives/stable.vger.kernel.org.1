@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179937F81A9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 66B5D7F7FEF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93197B21D8C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3E62B214ED
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12E133CC2;
-	Fri, 24 Nov 2023 19:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DC933CC2;
+	Fri, 24 Nov 2023 18:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjXukKoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXOof2ZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE182FC21;
-	Fri, 24 Nov 2023 19:00:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60C7C433C7;
-	Fri, 24 Nov 2023 19:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1CEE33E9;
+	Fri, 24 Nov 2023 18:45:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3011FC433C7;
+	Fri, 24 Nov 2023 18:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852429;
-	bh=Y0g4CvNKAjnbYOccR6BguXOa8KH7QKW8ZJuGfRyH2L4=;
+	s=korg; t=1700851521;
+	bh=eaiACMf7YlAw3qnGcPTLDxsE4JgDA5uOGuZZiC2oHfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjXukKoS7cbI9otUtD7fbG+S0DN1fzaS951Z5oolBf3JTIY9uWvCQy+TDi3vchaW8
-	 HvS0iukZa3DxuOZLkL0xBH5XMGSVYaSzn8Ydtn2vHJaaSFNdr1yMQH+Y8dHL30S0n0
-	 Sy3q7xemIq/pnlGqAHXHVnrfw6DU8Qa54KLjtA40=
+	b=wXOof2ZK4+YiP4+cMXRZrki+t5jygG3K5Cv2O4S2WijoHd+ds5LZoEUnv/CDScc1U
+	 2A/e4Fu+KfNjY5jvIqmyRn8uJU8zJh9eVxWncA2AyaXhPUDtwUCcXPsKrVqIo6HVqd
+	 brpfSefZraym4Ncca4wO1ichN7R8O1CSEjY6rxB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Shuai <suagrfillet@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 329/372] riscv: mm: Update the comment of CONFIG_PAGE_OFFSET
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 480/491] drm/amdgpu: dont use ATRM for external devices
 Date: Fri, 24 Nov 2023 17:51:56 +0000
-Message-ID: <20231124172021.358194922@linuxfoundation.org>
+Message-ID: <20231124172039.057339109@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +52,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Shuai <suagrfillet@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 559fe94a449cba5b50a7cffea60474b385598c00 upstream.
+commit 432e664e7c98c243fab4c3c95bd463bea3aeed28 upstream.
 
-Since the commit 011f09d12052 set sv57 as default for CONFIG_64BIT,
-the comment of CONFIG_PAGE_OFFSET should be updated too.
+The ATRM ACPI method is for fetching the dGPU vbios rom
+image on laptops and all-in-one systems.  It should not be
+used for external add in cards.  If the dGPU is thunderbolt
+connected, don't try ATRM.
 
-Fixes: 011f09d12052 ("riscv: mm: Set sv57 on defaultly")
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Link: https://lore.kernel.org/r/20230809031023.3575407-1-songshuaishuai@tinylab.org
+v2: pci_is_thunderbolt_attached only works for Intel.  Use
+    pdev->external_facing instead.
+v3: dev_is_removable() seems to be what we want
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/include/asm/page.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/riscv/include/asm/page.h
-+++ b/arch/riscv/include/asm/page.h
-@@ -38,8 +38,8 @@
- #define PAGE_OFFSET		_AC(CONFIG_PAGE_OFFSET, UL)
- #endif
- /*
-- * By default, CONFIG_PAGE_OFFSET value corresponds to SV48 address space so
-- * define the PAGE_OFFSET value for SV39.
-+ * By default, CONFIG_PAGE_OFFSET value corresponds to SV57 address space so
-+ * define the PAGE_OFFSET value for SV48 and SV39.
-  */
- #define PAGE_OFFSET_L4		_AC(0xffffaf8000000000, UL)
- #define PAGE_OFFSET_L3		_AC(0xffffffd800000000, UL)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+@@ -29,6 +29,7 @@
+ #include "amdgpu.h"
+ #include "atom.h"
+ 
++#include <linux/device.h>
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/acpi.h>
+@@ -287,6 +288,10 @@ static bool amdgpu_atrm_get_bios(struct
+ 	if (adev->flags & AMD_IS_APU)
+ 		return false;
+ 
++	/* ATRM is for on-platform devices only */
++	if (dev_is_removable(&adev->pdev->dev))
++		return false;
++
+ 	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_VGA << 8, pdev)) != NULL) {
+ 		dhandle = ACPI_HANDLE(&pdev->dev);
+ 		if (!dhandle)
 
 
 
