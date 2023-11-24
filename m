@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-2300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E387F8398
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5249A7F841F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 535121C25E70
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8CAEB27B3B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402932D787;
-	Fri, 24 Nov 2023 19:19:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B22337170;
+	Fri, 24 Nov 2023 19:24:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFZTfvjS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N06KNiOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F005D35EE6;
-	Fri, 24 Nov 2023 19:19:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBC9C433C8;
-	Fri, 24 Nov 2023 19:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47A82E64F;
+	Fri, 24 Nov 2023 19:24:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA70C433C8;
+	Fri, 24 Nov 2023 19:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853545;
-	bh=+21O0hz1NLbrCW+WaUgl2DzH5VGpLPG90fQEZ45Q78I=;
+	s=korg; t=1700853850;
+	bh=YEqUH99ckea1FFisQn9mxT6XF21+FNduzADmYFSWBZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFZTfvjSDNGpdWA49z7cQfj2jZQucaZB9IsYnbiFQ3+KCXZYB1EPghSEq5+Uk2EJ7
-	 OMeIdM/H0GEPNtWG4viw8+ZxOogsjh3pBgUMrVtalqy/dKYwWQ6BPChZyweBNjOtET
-	 4lK3uNk2A7pC1sLCbAUtpVL0TBg8HyH2UspozzQc=
+	b=N06KNiOYFg2dt1NeWfD/Spgn8YhjpcbOc8Zdk1vUd6KJFRRrp6xvM2sEugIdzPB+b
+	 eUvvYphiMD6wpeGmy9ragQUtt54wVPKMWtDvglQw4j5lXept7JibiUeLixVNwiVFUd
+	 Ak0khbnoLUeZ5n5/nvCIxUHk607obj0unm8W5VeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 231/297] parisc: Prevent booting 64-bit kernels on PA1.x machines
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 056/159] net: ethernet: cortina: Handle large frames
 Date: Fri, 24 Nov 2023 17:54:33 +0000
-Message-ID: <20231124172008.273609629@linuxfoundation.org>
+Message-ID: <20231124171944.258560175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +54,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
+[ Upstream commit d4d0c5b4d279bfe3585fbd806efefd3e51c82afa ]
 
-Bail out early with error message when trying to boot a 64-bit kernel on
-32-bit machines. This fixes the previous commit to include the check for
-true 64-bit kernels as well.
+The Gemini ethernet controller provides hardware checksumming
+for frames up to 1514 bytes including ethernet headers but not
+FCS.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
-Cc:  <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If we start sending bigger frames (after first bumping up the MTU
+on both interfaces sending and receiving the frames), truncated
+packets start to appear on the target such as in this tcpdump
+resulting from ping -s 1474:
+
+23:34:17.241983 14:d6:4d:a8:3c:4f (oui Unknown) > bc:ae:c5:6b:a8:3d (oui Unknown),
+ethertype IPv4 (0x0800), length 1514: truncated-ip - 2 bytes missing!
+(tos 0x0, ttl 64, id 32653, offset 0, flags [DF], proto ICMP (1), length 1502)
+OpenWrt.lan > Fecusia: ICMP echo request, id 1672, seq 50, length 1482
+
+If we bypass the hardware checksumming and provide a software
+fallback, everything starts working fine up to the max TX MTU
+of 2047 bytes, for example ping -s2000 192.168.1.2:
+
+00:44:29.587598 bc:ae:c5:6b:a8:3d (oui Unknown) > 14:d6:4d:a8:3c:4f (oui Unknown),
+ethertype IPv4 (0x0800), length 2042:
+(tos 0x0, ttl 64, id 51828, offset 0, flags [none], proto ICMP (1), length 2028)
+Fecusia > OpenWrt.lan: ICMP echo reply, id 1683, seq 4, length 2008
+
+The bit enabling to bypass hardware checksum (or any of the
+"TSS" bits) are undocumented in the hardware reference manual.
+The entire hardware checksum unit appears undocumented. The
+conclusion that we need to use the "bypass" bit was found by
+trial-and-error.
+
+Since no hardware checksum will happen, we slot in a software
+checksum fallback.
+
+Check for the condition where we need to compute checksum on the
+skb with either hardware or software using == CHECKSUM_PARTIAL instead
+of != CHECKSUM_NONE which is an incomplete check according to
+<linux/skbuff.h>.
+
+On the D-Link DIR-685 router this fixes a bug on the conduit
+interface to the RTL8366RB DSA switch: as the switch needs to add
+space for its tag it increases the MTU on the conduit interface
+to 1504 and that means that when the router sends packages
+of 1500 bytes these get an extra 4 bytes of DSA tag and the
+transfer fails because of the erroneous hardware checksumming,
+affecting such basic functionality as the LuCI web interface.
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-2-6e611528db08@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/head.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cortina/gemini.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -69,9 +69,8 @@ $bss_loop:
- 	stw,ma          %arg2,4(%r1)
- 	stw,ma          %arg3,4(%r1)
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index fbb50a0602832..ce1ada712af69 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1152,6 +1152,7 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
+ 	dma_addr_t mapping;
+ 	unsigned short mtu;
+ 	void *buffer;
++	int ret;
  
--#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
--	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
--	 * and halt kernel if we detect a PA1.x CPU. */
-+#if defined(CONFIG_PA20)
-+	/* check for 64-bit capable CPU as required by current kernel */
- 	ldi		32,%r10
- 	mtctl		%r10,%cr11
- 	.level 2.0
+ 	mtu  = ETH_HLEN;
+ 	mtu += netdev->mtu;
+@@ -1166,9 +1167,30 @@ static int gmac_map_tx_bufs(struct net_device *netdev, struct sk_buff *skb,
+ 		word3 |= mtu;
+ 	}
+ 
+-	if (skb->ip_summed != CHECKSUM_NONE) {
++	if (skb->len >= ETH_FRAME_LEN) {
++		/* Hardware offloaded checksumming isn't working on frames
++		 * bigger than 1514 bytes. A hypothesis about this is that the
++		 * checksum buffer is only 1518 bytes, so when the frames get
++		 * bigger they get truncated, or the last few bytes get
++		 * overwritten by the FCS.
++		 *
++		 * Just use software checksumming and bypass on bigger frames.
++		 */
++		if (skb->ip_summed == CHECKSUM_PARTIAL) {
++			ret = skb_checksum_help(skb);
++			if (ret)
++				return ret;
++		}
++		word1 |= TSS_BYPASS_BIT;
++	} else if (skb->ip_summed == CHECKSUM_PARTIAL) {
+ 		int tcp = 0;
+ 
++		/* We do not switch off the checksumming on non TCP/UDP
++		 * frames: as is shown from tests, the checksumming engine
++		 * is smart enough to see that a frame is not actually TCP
++		 * or UDP and then just pass it through without any changes
++		 * to the frame.
++		 */
+ 		if (skb->protocol == htons(ETH_P_IP)) {
+ 			word1 |= TSS_IP_CHKSUM_BIT;
+ 			tcp = ip_hdr(skb)->protocol == IPPROTO_TCP;
+-- 
+2.42.0
+
 
 
 
