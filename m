@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 425E57F808C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF76D7F7CA7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F33A52812AF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A995B20757
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DEF3307D;
-	Fri, 24 Nov 2023 18:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650003A8CA;
+	Fri, 24 Nov 2023 18:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBnmloSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnVuwV/8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4670928DBB;
-	Fri, 24 Nov 2023 18:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A96C433C8;
-	Fri, 24 Nov 2023 18:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF1339FF3;
+	Fri, 24 Nov 2023 18:17:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD2FC433C8;
+	Fri, 24 Nov 2023 18:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851841;
-	bh=kB20QdPK6DZb6sN+o9iurqV9/hcRov7nCjgImlPEKuI=;
+	s=korg; t=1700849830;
+	bh=klqk3Gqg5wNrpTcJ0kR6+jGHIFi4vM6mA0RIMiPdNQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBnmloSIKZGa6EtXT91MFH1wmgrP5G8qahIVsfzMdFAIrjn8qWMn47gspgiGvSJx0
-	 Ic3jz1xdmHOfXqllGrwUdNE/OcjRzzL2rOkS0GI2Pzy31XZ12NUnQT21q4vJAS7T8u
-	 NiYl9s4rT0CDAkTpT1c3JS785ChobzszBr7NLkgw=
+	b=nnVuwV/8fySwFPLrkfzgEpCaS/zzKdNEKXduRl90BekZx0wftHloG+iDTt4iVQX4+
+	 YLuUB2q24uUA4ovAO5lKRnYHXZdIFsV+PeQZ1IGIUHvkJ68DHO2HtDAUzu6gNU/vsu
+	 rX6vSbc5ppilpOhGOBAGdhi1KZwI62NvAsCAGvXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/372] SUNRPC: ECONNRESET might require a rebind
+	David Arcari <darcari@redhat.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 338/530] thermal: intel: powerclamp: fix mismatch in get function for max_idle
 Date: Fri, 24 Nov 2023 17:48:24 +0000
-Message-ID: <20231124172014.380644932@linuxfoundation.org>
+Message-ID: <20231124172038.318046758@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: David Arcari <darcari@redhat.com>
 
-[ Upstream commit 4b09ca1508a60be30b2e3940264e93d7aeb5c97e ]
+commit fae633cfb729da2771b5433f6b84ae7e8b4aa5f7 upstream.
 
-If connect() is returning ECONNRESET, it usually means that nothing is
-listening on that port. If so, a rebind might be required in order to
-obtain the new port on which the RPC service is listening.
+KASAN reported this
 
-Fixes: fd01b2597941 ("SUNRPC: ECONNREFUSED should cause a rebind.")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+      [ 444.853098] BUG: KASAN: global-out-of-bounds in param_get_int+0x77/0x90
+      [ 444.853111] Read of size 4 at addr ffffffffc16c9220 by task cat/2105
+      ...
+      [ 444.853442] The buggy address belongs to the variable:
+      [ 444.853443] max_idle+0x0/0xffffffffffffcde0 [intel_powerclamp]
+
+There is a mismatch between the param_get_int and the definition of
+max_idle.  Replacing param_get_int with param_get_byte resolves this
+issue.
+
+Fixes: ebf519710218 ("thermal: intel: powerclamp: Add two module parameters")
+Cc: 6.3+ <stable@vger.kernel.org> # 6.3+
+Signed-off-by: David Arcari <darcari@redhat.com>
+Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/clnt.c | 2 +-
+ drivers/thermal/intel/intel_powerclamp.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index 2b803383c7b31..f0bbd6cb4e39b 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -2157,6 +2157,7 @@ call_connect_status(struct rpc_task *task)
- 	task->tk_status = 0;
- 	switch (status) {
- 	case -ECONNREFUSED:
-+	case -ECONNRESET:
- 		/* A positive refusal suggests a rebind is needed. */
- 		if (RPC_IS_SOFTCONN(task))
- 			break;
-@@ -2165,7 +2166,6 @@ call_connect_status(struct rpc_task *task)
- 			goto out_retry;
- 		}
- 		fallthrough;
--	case -ECONNRESET:
- 	case -ECONNABORTED:
- 	case -ENETDOWN:
- 	case -ENETUNREACH:
--- 
-2.42.0
-
+--- a/drivers/thermal/intel/intel_powerclamp.c
++++ b/drivers/thermal/intel/intel_powerclamp.c
+@@ -256,7 +256,7 @@ skip_limit_set:
+ 
+ static const struct kernel_param_ops max_idle_ops = {
+ 	.set = max_idle_set,
+-	.get = param_get_int,
++	.get = param_get_byte,
+ };
+ 
+ module_param_cb(max_idle, &max_idle_ops, &max_idle, 0644);
 
 
 
