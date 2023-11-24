@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB2B7F81B9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A387C7F81E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92B0DB2206B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60DE1C22292
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40462E858;
-	Fri, 24 Nov 2023 19:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277642E858;
+	Fri, 24 Nov 2023 19:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yaku/S5q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZnd4vAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACE22FC21;
-	Fri, 24 Nov 2023 19:01:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E907AC433C8;
-	Fri, 24 Nov 2023 19:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9962E64F;
+	Fri, 24 Nov 2023 19:02:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B595C433C8;
+	Fri, 24 Nov 2023 19:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852461;
-	bh=G5SbTkLj7Oj/YfQ/5Ubo3tE36Kzc+4nNUcDii/XDQU8=;
+	s=korg; t=1700852548;
+	bh=RvSAv++Ljgn3bRl/+pqmU0KvasBJKoBgIUubLh1iwjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yaku/S5q0IxX1GiTmY0yW+k3d0HgoKhWI4w/HSfsK0wjLwZ3014vZ9lPezrQqx9Lk
-	 OsYnOZpgpPqI2riwTrncm7v2uEkxVS2iMW8aiiZ/rq0BjRIfTHYaVPlECKrECnPdQI
-	 g2yR2pt5fdXsKtAG0xJwn4hVqbTbo1s1/glF2UIU=
+	b=aZnd4vAa56nxREA+SInMvm+lpguIXX6J2O2y0tD3W7rMMZzUugSY0A1f2dm6+lKYu
+	 Be+jDQJcpHWY+ue8fWYX8gnqRBnqjH1oyGuwUWsbi00L3ZXopnMLaw3JBIahgqWz/0
+	 etP8eJ7RvU2RvhHssYz95+PZytp2uXJQMvQLb1Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 366/372] drm/amd/display: fix a NULL pointer dereference in amdgpu_dm_i2c_xfer()
-Date: Fri, 24 Nov 2023 17:52:33 +0000
-Message-ID: <20231124172022.473187700@linuxfoundation.org>
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 027/193] ASoC: soc-card: Add storage for PCI SSID
+Date: Fri, 24 Nov 2023 17:52:34 +0000
+Message-ID: <20231124171948.283465716@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +54,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit b71f4ade1b8900d30c661d6c27f87c35214c398c upstream.
+[ Upstream commit 47f56e38a199bd45514b8e0142399cba4feeaf1a ]
 
-When ddc_service_construct() is called, it explicitly checks both the
-link type and whether there is something on the link which will
-dictate whether the pin is marked as hw_supported.
+Add members to struct snd_soc_card to store the PCI subsystem ID (SSID)
+of the soundcard.
 
-If the pin isn't set or the link is not set (such as from
-unloading/reloading amdgpu in an IGT test) then fail the
-amdgpu_dm_i2c_xfer() call.
+The PCI specification provides two registers to store a vendor-specific
+SSID that can be read by drivers to uniquely identify a particular
+"soundcard". This is defined in the PCI specification to distinguish
+products that use the same silicon (and therefore have the same silicon
+ID) so that product-specific differences can be applied.
 
-Cc: stable@vger.kernel.org
-Fixes: 22676bc500c2 ("drm/amd/display: Fix dmub soft hang for PSR 1")
-Link: https://github.com/fwupd/fwupd/issues/6327
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+PCI only defines 0xFFFF as an invalid value. 0x0000 is not defined as
+invalid. So the usual pattern of zero-filling the struct and then
+assuming a zero value unset will not work. A flag is included to
+indicate when the SSID information has been filled in.
+
+Unlike DMI information, which has a free-format entirely up to the vendor,
+the PCI SSID has a strictly defined format and a registry of vendor IDs.
+
+It is usual in Windows drivers that the SSID is used as the sole identifier
+of the specific end-product and the Windows driver contains tables mapping
+that to information about the hardware setup, rather than using ACPI
+properties.
+
+This SSID is important information for ASoC components that need to apply
+hardware-specific configuration on PCI-based systems.
+
+As the SSID is a generic part of the PCI specification and is treated as
+identifying the "soundcard", it is reasonable to include this information
+in struct snd_soc_card, instead of components inventing their own custom
+ways to pass this information around.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230912163207.3498161-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/sound/soc-card.h | 37 +++++++++++++++++++++++++++++++++++++
+ include/sound/soc.h      | 11 +++++++++++
+ 2 files changed, 48 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -7219,6 +7219,9 @@ static int amdgpu_dm_i2c_xfer(struct i2c
- 	int i;
- 	int result = -EIO;
+diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
+index 4f2cc4fb56b7f..9a5429260ece5 100644
+--- a/include/sound/soc-card.h
++++ b/include/sound/soc-card.h
+@@ -40,6 +40,43 @@ int snd_soc_card_add_dai_link(struct snd_soc_card *card,
+ void snd_soc_card_remove_dai_link(struct snd_soc_card *card,
+ 				  struct snd_soc_dai_link *dai_link);
  
-+	if (!ddc_service->ddc_pin || !ddc_service->ddc_pin->hw_info.hw_supported)
-+		return result;
++#ifdef CONFIG_PCI
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++	card->pci_subsystem_vendor = vendor;
++	card->pci_subsystem_device = device;
++	card->pci_subsystem_set = true;
++}
 +
- 	cmd.payloads = kcalloc(num, sizeof(struct i2c_payload), GFP_KERNEL);
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	if (!card->pci_subsystem_set)
++		return -ENOENT;
++
++	*vendor = card->pci_subsystem_vendor;
++	*device = card->pci_subsystem_device;
++
++	return 0;
++}
++#else /* !CONFIG_PCI */
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	return -ENOENT;
++}
++#endif /* CONFIG_PCI */
++
+ /* device driver data */
+ static inline void snd_soc_card_set_drvdata(struct snd_soc_card *card,
+ 					    void *data)
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index 3b038c563ae14..e973044143bc9 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -977,6 +977,17 @@ struct snd_soc_card {
+ #ifdef CONFIG_DMI
+ 	char dmi_longname[80];
+ #endif /* CONFIG_DMI */
++
++#ifdef CONFIG_PCI
++	/*
++	 * PCI does not define 0 as invalid, so pci_subsystem_set indicates
++	 * whether a value has been written to these fields.
++	 */
++	unsigned short pci_subsystem_vendor;
++	unsigned short pci_subsystem_device;
++	bool pci_subsystem_set;
++#endif /* CONFIG_PCI */
++
+ 	char topology_shortname[32];
  
- 	if (!cmd.payloads)
+ 	struct device *dev;
+-- 
+2.42.0
+
 
 
 
