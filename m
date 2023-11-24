@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-1198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF4C7F7E7B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D50157F7C40
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C61AAB212D0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91622281F07
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A76033CDB;
-	Fri, 24 Nov 2023 18:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2430D3A8C5;
+	Fri, 24 Nov 2023 18:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d3FUD23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AcXbdK9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D40139FF7;
-	Fri, 24 Nov 2023 18:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A499EC433C7;
-	Fri, 24 Nov 2023 18:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79013A8C2;
+	Fri, 24 Nov 2023 18:13:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621AFC433C8;
+	Fri, 24 Nov 2023 18:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850802;
-	bh=b/kW9XHR/LbHVxXK60gK3mMiGWEhWQMJXk0dttM42Es=;
+	s=korg; t=1700849603;
+	bh=6tTzz9hWLEVOduoqE9FzmLedFd/n0o6PtP/3EKjbZ2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0d3FUD23JYBvOFYU/2OhTagtAGh/QPJRZJ4IO7Ctu5y0al90Mc1uaaYPn303qHzrv
-	 d8IZUSlgrLoULcHK/kh49xZ3WFKPzZkCLpSHRXvCflLYxH65h/kVSxcqdcExCpnOF0
-	 pePKRTvW83XDmzMJKvPmGqCUhoBW1kQ6KlmdqCFY=
+	b=AcXbdK9RDOISkPrAedjc1YYHa541nv1dSS8Ra3OSkrOAXyzwc/zlrfLmDM7Dg8c8r
+	 ZbQRG9nKU7qVKD2h3mbgE/hQtALBkv39Viu8ID5690i9MbCqsG51ZQqK9ULREGsp6T
+	 ZyM7GjJIF+D9e/JzRkhYrVeee955auTe8Bf7QzqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	KP Singh <kpsingh@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	kernel test robot <lkp@intel.com>,
-	Bill Wendling <morbo@google.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <keescook@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 170/491] gcc-plugins: randstruct: Only warn about true flexible arrays
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 240/530] media: venus: hfi: add checks to perform sanity on queue pointers
 Date: Fri, 24 Nov 2023 17:46:46 +0000
-Message-ID: <20231124172029.578507512@linuxfoundation.org>
+Message-ID: <20231124172035.358639471@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,73 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit 1ee60356c2dca938362528404af95b8ef3e49b6a ]
+commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
 
-The randstruct GCC plugin tried to discover "fake" flexible arrays
-to issue warnings about them in randomized structs. In the future
-LSM overhead reduction series, it would be legal to have a randomized
-struct with a 1-element array, and this should _not_ be treated as a
-flexible array, especially since commit df8fc4e934c1 ("kbuild: Enable
--fstrict-flex-arrays=3"). Disable the 0-sized and 1-element array
-discovery logic in the plugin, but keep the "true" flexible array check.
+Read and write pointers are used to track the packet index in the memory
+shared between video driver and firmware. There is a possibility of OOB
+access if the read or write pointer goes beyond the queue memory size.
+Add checks for the read and write pointer to avoid OOB access.
 
-Cc: KP Singh <kpsingh@kernel.org>
-Cc: linux-hardening@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311021532.iBwuZUZ0-lkp@intel.com/
-Fixes: df8fc4e934c1 ("kbuild: Enable -fstrict-flex-arrays=3")
-Reviewed-by: Bill Wendling <morbo@google.com>
-Acked-by: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20231104204334.work.160-kees@kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gcc-plugins/randomize_layout_plugin.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index 951b74ba1b242..5e5744b65f8a9 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -273,8 +273,6 @@ static bool is_flexible_array(const_tree field)
- {
- 	const_tree fieldtype;
- 	const_tree typesize;
--	const_tree elemtype;
--	const_tree elemsize;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -205,6 +205,11 @@ static int venus_write_queue(struct venu
  
- 	fieldtype = TREE_TYPE(field);
- 	typesize = TYPE_SIZE(fieldtype);
-@@ -282,20 +280,12 @@ static bool is_flexible_array(const_tree field)
- 	if (TREE_CODE(fieldtype) != ARRAY_TYPE)
- 		return false;
+ 	new_wr_idx = wr_idx + dwords;
+ 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
++
++	if (wr_ptr < (u32 *)queue->qmem.kva ||
++	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
++		return -EINVAL;
++
+ 	if (new_wr_idx < qsize) {
+ 		memcpy(wr_ptr, packet, dwords << 2);
+ 	} else {
+@@ -272,6 +277,11 @@ static int venus_read_queue(struct venus
+ 	}
  
--	elemtype = TREE_TYPE(fieldtype);
--	elemsize = TYPE_SIZE(elemtype);
--
- 	/* size of type is represented in bits */
- 
- 	if (typesize == NULL_TREE && TYPE_DOMAIN(fieldtype) != NULL_TREE &&
- 	    TYPE_MAX_VALUE(TYPE_DOMAIN(fieldtype)) == NULL_TREE)
- 		return true;
- 
--	if (typesize != NULL_TREE &&
--	    (TREE_CONSTANT(typesize) && (!tree_to_uhwi(typesize) ||
--	     tree_to_uhwi(typesize) == tree_to_uhwi(elemsize))))
--		return true;
--
- 	return false;
- }
- 
--- 
-2.42.0
-
+ 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
++
++	if (rd_ptr < (u32 *)queue->qmem.kva ||
++	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
++		return -EINVAL;
++
+ 	dwords = *rd_ptr >> 2;
+ 	if (!dwords)
+ 		return -EINVAL;
 
 
 
