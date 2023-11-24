@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DD97F7CA8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F5507F8079
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C0431C211A3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 615971C2151A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EBE39FF3;
-	Fri, 24 Nov 2023 18:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB8133CCA;
+	Fri, 24 Nov 2023 18:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TkkAfX46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHNV+8ny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01339FD9;
-	Fri, 24 Nov 2023 18:17:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEC3C433C8;
-	Fri, 24 Nov 2023 18:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C60828DBB;
+	Fri, 24 Nov 2023 18:50:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A55C433C8;
+	Fri, 24 Nov 2023 18:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849835;
-	bh=q16znvx+ZxbuBjfOIekcl1l6OoGbtzNtytwz42XF3Yk=;
+	s=korg; t=1700851803;
+	bh=kzrJhbmQqHP7jojLQRmk+JG/7yS4oRV4Rm8pqtMc6fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TkkAfX46FJtws/NImj2qEcdEcZ6EqRKUzYQdjKWUGCrQm1eBYJkkiEL7AFMn4Z6ub
-	 RuYtLSGC3LOBuWBsSGR6j9hizmE1IEnLXJTxXrg4Zxl7odKqxdecmeJBiGYxr8lw0H
-	 V0vqx2Z8Ki++yCqd8MKpeMmtCwrqALGmFj5eul4s=
+	b=CHNV+8nygEWRyFf7O0rarhDc897KewBMoZ7agaEit+3ICNT8aSQUb3dO04prBnt9H
+	 SdE8NMyJBIGOeSiy5OdYVDtKbqDrGGVsjr+qVaLsYeGKTtp757K8+aV++zhkFvm4Es
+	 gMcyCFC7SIRnlX8BSlkez7CFrWdyJU/qsk8IRMQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Yadav <n-yadav@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 322/530] mmc: sdhci_am654: fix start loop index for TAP value parsing
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 101/372] gfs2: ignore negated quota changes
 Date: Fri, 24 Nov 2023 17:48:08 +0000
-Message-ID: <20231124172037.842987630@linuxfoundation.org>
+Message-ID: <20231124172013.882057501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +53,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Yadav <n-yadav@ti.com>
+From: Bob Peterson <rpeterso@redhat.com>
 
-commit 71956d0cb56c1e5f9feeb4819db87a076418e930 upstream.
+[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
 
-ti,otap-del-sel-legacy/ti,itap-del-sel-legacy passed from DT
-are currently ignored for all SD/MMC and eMMC modes. Fix this
-by making start loop index to MMC_TIMING_LEGACY.
+When lots of quota changes are made, there may be cases in which an
+inode's quota information is increased and then decreased, such as when
+blocks are added to a file, then deleted from it. If the timing is
+right, function do_qc can add pending quota changes to a transaction,
+then later, another call to do_qc can negate those changes, resulting
+in a net gain of 0. The quota_change information is recorded in the qc
+buffer (and qd element of the inode as well). The buffer is added to the
+transaction by the first call to do_qc, but a subsequent call changes
+the value from non-zero back to zero. At that point it's too late to
+remove the buffer_head from the transaction. Later, when the quota sync
+code is called, the zero-change qd element is discovered and flagged as
+an assert warning. If the fs is mounted with errors=panic, the kernel
+will panic.
 
-Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
-Signed-off-by: Nitin Yadav <n-yadav@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026061458.1116276-1-n-yadav@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is usually seen when files are truncated and the quota changes are
+negated by punch_hole/truncate which uses gfs2_quota_hold and
+gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
+and gfs2_quota_unlock which automatically do quota sync.
+
+This patch solves the problem by adding a check to qd_check_sync such
+that net-zero quota changes already added to the transaction are no
+longer deemed necessary to be synced, and skipped.
+
+In this case references are taken for the qd and the slot from do_qc
+so those need to be put. The normal sequence of events for a normal
+non-zero quota change is as follows:
+
+gfs2_quota_change
+   do_qc
+      qd_hold
+      slot_hold
+
+Later, when the changes are to be synced:
+
+gfs2_quota_sync
+   qd_fish
+      qd_check_sync
+         gets qd ref via lockref_get_not_dead
+   do_sync
+      do_qc(QC_SYNC)
+         qd_put
+	    lockref_put_or_lock
+   qd_unlock
+      qd_put
+         lockref_put_or_lock
+
+In the net-zero change case, we add a check to qd_check_sync so it puts
+the qd and slot references acquired in gfs2_quota_change and skip the
+unneeded sync.
+
+Signed-off-by: Bob Peterson <rpeterso@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_am654.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/quota.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -598,7 +598,7 @@ static int sdhci_am654_get_otap_delay(st
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 1ed17226d9ede..86bc73bd770b4 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -438,6 +438,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
+ 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
  		return 0;
- 	}
  
--	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
-+	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
++	/*
++	 * If qd_change is 0 it means a pending quota change was negated.
++	 * We should not sync it, but we still have a qd reference and slot
++	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
++	 */
++	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
++		slot_put(qd);
++		qd_put(qd);
++		return 0;
++	}
++
+ 	if (!lockref_get_not_dead(&qd->qd_lockref))
+ 		return 0;
  
- 		ret = device_property_read_u32(dev, td[i].otap_binding,
- 					       &sdhci_am654->otap_del_sel[i]);
+-- 
+2.42.0
+
 
 
 
