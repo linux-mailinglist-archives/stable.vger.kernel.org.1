@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4325A7F7EDD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A5747F7CBC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0ED72823C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F0E282025
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C50333090;
-	Fri, 24 Nov 2023 18:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38ECF3A8C5;
+	Fri, 24 Nov 2023 18:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MquCmayh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjR4RmCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4940A2F86B;
-	Fri, 24 Nov 2023 18:36:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765EFC433C7;
-	Fri, 24 Nov 2023 18:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5CD39FF7;
+	Fri, 24 Nov 2023 18:17:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6767C433C7;
+	Fri, 24 Nov 2023 18:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851002;
-	bh=Fg7isAK7nNbZSlcB2fBudRFRKMBShAoNVqDXLsy5PSg=;
+	s=korg; t=1700849873;
+	bh=4KZcLpQMl8j6n1oLVszC1fgTgeeFgZZ7Nb4/Zy9Q6ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MquCmayhZoCTBnsFxXUe82P2yAdeeT7gqIdPKFToeTIyoUNg5xMc7Fx2y1xCwqi7b
-	 64wjGv/f8A50MQHavxvRhqz+c3/6WAAxgq7Uaz1XpNlpvu3RBFHKqzPXPa3dqxrilO
-	 2HjY9XIF8TqZVPKAeRK40f4wK3DJvKlcYWrKK6F0=
+	b=CjR4RmCGRptJf2gVc150cni/H5SX0MmAlrzKnqd6ub0NbyBuIUISJQecFwBnYEcQU
+	 sLjxdx6LCvzHcKoXR9sPitFsPWPwvPG0czKa6Q6j/kjhgWLtiT0BnQeuAjQl1HK/pN
+	 dOZX1X/Mhv1GZHrYndO3yxX8Y7LZ+1/vTKl8g6+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krister Johansen <kjlx@templeofstupid.com>,
-	Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.5 250/491] proc: sysctl: prevent aliased sysctls from getting passed to init
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 320/530] ksmbd: fix slab out of bounds write in smb_inherit_dacl()
 Date: Fri, 24 Nov 2023 17:48:06 +0000
-Message-ID: <20231124172032.076719740@linuxfoundation.org>
+Message-ID: <20231124172037.776865478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,84 +53,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krister Johansen <kjlx@templeofstupid.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 8001f49394e353f035306a45bcf504f06fca6355 upstream.
+commit eebff19acaa35820cb09ce2ccb3d21bee2156ffb upstream.
 
-The code that checks for unknown boot options is unaware of the sysctl
-alias facility, which maps bootparams to sysctl values.  If a user sets
-an old value that has a valid alias, a message about an invalid
-parameter will be printed during boot, and the parameter will get passed
-to init.  Fix by checking for the existence of aliased parameters in the
-unknown boot parameter code.  If an alias exists, don't return an error
-or pass the value to init.
+slab out-of-bounds write is caused by that offsets is bigger than pntsd
+allocation size. This patch add the check to validate 3 offsets using
+allocation size.
 
-Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22271
 Cc: stable@vger.kernel.org
-Fixes: 0a477e1ae21b ("kernel/sysctl: support handling command line aliases")
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/proc/proc_sysctl.c  |    7 +++++++
- include/linux/sysctl.h |    6 ++++++
- init/main.c            |    4 ++++
- 3 files changed, 17 insertions(+)
+ fs/smb/server/smbacl.c |   29 ++++++++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
 
---- a/fs/proc/proc_sysctl.c
-+++ b/fs/proc/proc_sysctl.c
-@@ -1590,6 +1590,13 @@ static const char *sysctl_find_alias(cha
- 	return NULL;
- }
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -1107,6 +1107,7 @@ pass:
+ 		struct smb_acl *pdacl;
+ 		struct smb_sid *powner_sid = NULL, *pgroup_sid = NULL;
+ 		int powner_sid_size = 0, pgroup_sid_size = 0, pntsd_size;
++		int pntsd_alloc_size;
  
-+bool sysctl_is_alias(char *param)
-+{
-+	const char *alias = sysctl_find_alias(param);
+ 		if (parent_pntsd->osidoffset) {
+ 			powner_sid = (struct smb_sid *)((char *)parent_pntsd +
+@@ -1119,9 +1120,10 @@ pass:
+ 			pgroup_sid_size = 1 + 1 + 6 + (pgroup_sid->num_subauth * 4);
+ 		}
+ 
+-		pntsd = kzalloc(sizeof(struct smb_ntsd) + powner_sid_size +
+-				pgroup_sid_size + sizeof(struct smb_acl) +
+-				nt_size, GFP_KERNEL);
++		pntsd_alloc_size = sizeof(struct smb_ntsd) + powner_sid_size +
++			pgroup_sid_size + sizeof(struct smb_acl) + nt_size;
 +
-+	return alias != NULL;
-+}
++		pntsd = kzalloc(pntsd_alloc_size, GFP_KERNEL);
+ 		if (!pntsd) {
+ 			rc = -ENOMEM;
+ 			goto free_aces_base;
+@@ -1136,6 +1138,27 @@ pass:
+ 		pntsd->gsidoffset = parent_pntsd->gsidoffset;
+ 		pntsd->dacloffset = parent_pntsd->dacloffset;
+ 
++		if ((u64)le32_to_cpu(pntsd->osidoffset) + powner_sid_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
 +
- /* Set sysctl value passed on kernel command line. */
- static int process_sysctl_arg(char *param, char *val,
- 			       const char *unused, void *arg)
---- a/include/linux/sysctl.h
-+++ b/include/linux/sysctl.h
-@@ -227,6 +227,7 @@ extern void __register_sysctl_init(const
- extern struct ctl_table_header *register_sysctl_mount_point(const char *path);
- 
- void do_sysctl_args(void);
-+bool sysctl_is_alias(char *param);
- int do_proc_douintvec(struct ctl_table *table, int write,
- 		      void *buffer, size_t *lenp, loff_t *ppos,
- 		      int (*conv)(unsigned long *lvalp,
-@@ -270,6 +271,11 @@ static inline void setup_sysctl_set(stru
- static inline void do_sysctl_args(void)
- {
- }
++		if ((u64)le32_to_cpu(pntsd->gsidoffset) + pgroup_sid_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
 +
-+static inline bool sysctl_is_alias(char *param)
-+{
-+	return false;
-+}
- #endif /* CONFIG_SYSCTL */
- 
- int sysctl_max_threads(struct ctl_table *table, int write, void *buffer,
---- a/init/main.c
-+++ b/init/main.c
-@@ -530,6 +530,10 @@ static int __init unknown_bootoption(cha
- {
- 	size_t len = strlen(param);
- 
-+	/* Handle params aliased to sysctls */
-+	if (sysctl_is_alias(param))
-+		return 0;
++		if ((u64)le32_to_cpu(pntsd->dacloffset) + sizeof(struct smb_acl) + nt_size >
++		    pntsd_alloc_size) {
++			rc = -EINVAL;
++			kfree(pntsd);
++			goto free_aces_base;
++		}
 +
- 	repair_env_string(param, val);
- 
- 	/* Handle obsolete-style parameters */
+ 		if (pntsd->osidoffset) {
+ 			struct smb_sid *owner_sid = (struct smb_sid *)((char *)pntsd +
+ 					le32_to_cpu(pntsd->osidoffset));
 
 
 
