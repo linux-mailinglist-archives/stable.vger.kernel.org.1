@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B96757F7F32
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B3347F7AA0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D30E31C21467
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 036C0B20DA2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E7AB2E40E;
-	Fri, 24 Nov 2023 18:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E619239FD1;
+	Fri, 24 Nov 2023 17:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVZOXCno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nx3G0vZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2BC0381CD;
-	Fri, 24 Nov 2023 18:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EB9C433C8;
-	Fri, 24 Nov 2023 18:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A53DE31740;
+	Fri, 24 Nov 2023 17:56:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D02B5C433C7;
+	Fri, 24 Nov 2023 17:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851166;
-	bh=Q1FQAgZgeAl+mXS8tmEZeAmhYYT2pW1Rket80vD171s=;
+	s=korg; t=1700848617;
+	bh=wU6PtCNuYL93lnWOaiAJ8WtieJQlFVgGapYXoz/nUDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVZOXCnokSyJBjv3WXU4faVNnEeqt1yc9OIrBA+ToDhHFaWQZBMwfZdjIzgBqVPOj
-	 DOdhLE3fJp+jqDKkK/VCizyAm7AyEHL5biWfztmnrv/+NpM9uP+gM2SpmtYv1Ji0OC
-	 ce/DNefM6mbQX3XneExRBv90OCpOGvbUXKFDTAtI=
+	b=Nx3G0vZEPWNFbgNRE05XIX8soARwZOGe/vnprLl040VftNWqjiTVezy2xpdGVC14x
+	 4PP9omIRmxPWZMmyHA3vFc+0qi4wdEtc7Y+bNQfc24RFfAGYd+nxehfcE83qSXBlbF
+	 RyMYjr7uLsyczo6qP45vhRWg1VUJODByAT+mpg+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.5 340/491] i2c: core: Run atomic i2c xfer when !preemptible
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 03/97] clocksource/drivers/timer-imx-gpt: Fix potential memory leak
 Date: Fri, 24 Nov 2023 17:49:36 +0000
-Message-ID: <20231124172034.786250116@linuxfoundation.org>
+Message-ID: <20231124171934.255111171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +54,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
+[ Upstream commit 8051a993ce222a5158bccc6ac22ace9253dd71cb ]
 
-Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
-disabled. However, non-atomic i2c transfers require preemption (e.g. in
-wait_for_completion() while waiting for the DMA).
+Fix coverity Issue CID 250382:  Resource leak (RESOURCE_LEAK).
+Add kfree when error return.
 
-panic() calls preempt_disable_notrace() before calling
-emergency_restart(). Therefore, if an i2c device is used for the
-restart, the xfer should be atomic. This avoids warnings like:
-
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
-
-Use !preemptible() instead, which is basically the same check as
-pre-v5.2.
-
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Acked-by: Wolfram Sang <wsa@kernel.org>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231009083922.1942971-1-ping.bai@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-core.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/timer-imx-gpt.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/i2c/i2c-core.h
-+++ b/drivers/i2c/i2c-core.h
-@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
-  */
- static inline bool i2c_in_atomic_xfer_mode(void)
- {
--	return system_state > SYSTEM_RUNNING && irqs_disabled();
-+	return system_state > SYSTEM_RUNNING && !preemptible();
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index 165fbbb1c9a04..0e67026d782fe 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -473,12 +473,16 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 		return -ENOMEM;
+ 
+ 	imxtm->base = of_iomap(np, 0);
+-	if (!imxtm->base)
+-		return -ENXIO;
++	if (!imxtm->base) {
++		ret = -ENXIO;
++		goto err_kfree;
++	}
+ 
+ 	imxtm->irq = irq_of_parse_and_map(np, 0);
+-	if (imxtm->irq <= 0)
+-		return -EINVAL;
++	if (imxtm->irq <= 0) {
++		ret = -EINVAL;
++		goto err_kfree;
++	}
+ 
+ 	imxtm->clk_ipg = of_clk_get_by_name(np, "ipg");
+ 
+@@ -491,11 +495,15 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 
+ 	ret = _mxc_timer_init(imxtm);
+ 	if (ret)
+-		return ret;
++		goto err_kfree;
+ 
+ 	initialized = 1;
+ 
+ 	return 0;
++
++err_kfree:
++	kfree(imxtm);
++	return ret;
  }
  
- static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
+ static int __init imx1_timer_init_dt(struct device_node *np)
+-- 
+2.42.0
+
 
 
 
