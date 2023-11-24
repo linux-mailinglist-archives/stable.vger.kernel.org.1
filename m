@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22F2B7F7FFF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14427F817C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BEE91C214E8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4CF2826C0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8F93418B;
-	Fri, 24 Nov 2023 18:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE14364AE;
+	Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyXzEk/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQU/f/HM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B60933CC7;
-	Fri, 24 Nov 2023 18:45:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADA93C433C7;
-	Fri, 24 Nov 2023 18:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66B73418B;
+	Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3364FC433C9;
+	Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851551;
-	bh=joX28xGhRiaK4nhZheNgbrTew39SFsfLFYL5SMBsitc=;
+	s=korg; t=1700852342;
+	bh=BgeFNODpiTXRNdeNoYkQ0EiwJ/PI/D+Ds2spgroTX0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyXzEk/UIpCQcak3PuU+996agp7KupGp0wINsdFA9Lej4yUn2pNFvylLF0gmFC0rs
-	 cjVepw5ozulAoKgzHpsT5zysAODauV3FOQyfkIKrKj8iscTRxdbB1H4QML7YOXnjWs
-	 RU4aa7p6/oehT8BG+5h7JNwB3hFIgrZEF3VrbpFM=
+	b=AQU/f/HMutPw8NOUaChMpDtziSsyUlhVU249uv0NJJu+6Vj8fe5Yi/CskLiFusFbk
+	 CbimY41mI2Ycx0JIjtjGlwzVWIWUloEyT7YEkKJWgNaEfvIhd0dgmEoqRnEKxQYBNm
+	 xKahdJ13mCNO6IZ9yrUJxZRz21H7aiGyKnU8pWIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com,
-	Brian Foster <bfoster@redhat.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.5 468/491] ext4: fix racy may inline data check in dio write
+	Su Hui <suhui@nfschina.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.1 317/372] f2fs: avoid format-overflow warning
 Date: Fri, 24 Nov 2023 17:51:44 +0000
-Message-ID: <20231124172038.685896808@linuxfoundation.org>
+Message-ID: <20231124172020.954111718@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,83 +51,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit ce56d21355cd6f6937aca32f1f44ca749d1e4808 upstream.
+commit e0d4e8acb3789c5a8651061fbab62ca24a45c063 upstream.
 
-syzbot reports that the following warning from ext4_iomap_begin()
-triggers as of the commit referenced below:
+With gcc and W=1 option, there's a warning like this:
 
-        if (WARN_ON_ONCE(ext4_has_inline_data(inode)))
-                return -ERANGE;
+fs/f2fs/compress.c: In function ‘f2fs_init_page_array_cache’:
+fs/f2fs/compress.c:1984:47: error: ‘%u’ directive writing between
+1 and 7 bytes into a region of size between 5 and 8
+[-Werror=format-overflow=]
+ 1984 |  sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev),
+		MINOR(dev));
+      |                                               ^~
 
-This occurs during a dio write, which is never expected to encounter
-an inode with inline data. To enforce this behavior,
-ext4_dio_write_iter() checks the current inline state of the inode
-and clears the MAY_INLINE_DATA state flag to either fall back to
-buffered writes, or enforce that any other writers in progress on
-the inode are not allowed to create inline data.
+String "f2fs_page_array_entry-%u:%u" can up to 35. The first "%u" can up
+to 4 and the second "%u" can up to 7, so total size is "24 + 4 + 7 = 35".
+slab_name's size should be 35 rather than 32.
 
-The problem is that the check for existing inline data and the state
-flag can span a lock cycle. For example, if the ilock is originally
-locked shared and subsequently upgraded to exclusive, another writer
-may have reacquired the lock and created inline data before the dio
-write task acquires the lock and proceeds.
-
-The commit referenced below loosens the lock requirements to allow
-some forms of unaligned dio writes to occur under shared lock, but
-AFAICT the inline data check was technically already racy for any
-dio write that would have involved a lock cycle. Regardless, lift
-clearing of the state bit to the same lock critical section that
-checks for preexisting inline data on the inode to close the race.
-
-Cc: stable@kernel.org
-Reported-by: syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com
-Fixes: 310ee0902b8d ("ext4: allow concurrent unaligned dio overwrites")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Link: https://lore.kernel.org/r/20231002185020.531537-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/file.c |   16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ fs/f2fs/compress.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -537,18 +537,20 @@ static ssize_t ext4_dio_write_iter(struc
- 		return ext4_buffered_write_iter(iocb, from);
- 	}
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -1983,7 +1983,7 @@ void f2fs_destroy_compress_inode(struct
+ int f2fs_init_page_array_cache(struct f2fs_sb_info *sbi)
+ {
+ 	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
++	char slab_name[35];
  
-+	/*
-+	 * Prevent inline data from being created since we are going to allocate
-+	 * blocks for DIO. We know the inode does not currently have inline data
-+	 * because ext4_should_use_dio() checked for it, but we have to clear
-+	 * the state flag before the write checks because a lock cycle could
-+	 * introduce races with other writers.
-+	 */
-+	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
-+
- 	ret = ext4_dio_write_checks(iocb, from, &ilock_shared, &extend,
- 				    &unwritten, &dio_flags);
- 	if (ret <= 0)
- 		return ret;
- 
--	/*
--	 * Make sure inline data cannot be created anymore since we are going
--	 * to allocate blocks for DIO. We know the inode does not have any
--	 * inline data now because ext4_dio_supported() checked for that.
--	 */
--	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
--
- 	offset = iocb->ki_pos;
- 	count = ret;
- 
+ 	if (!f2fs_sb_has_compression(sbi))
+ 		return 0;
 
 
 
