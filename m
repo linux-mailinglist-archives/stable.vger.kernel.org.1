@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50A27F7C8A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F058B7F7EE0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31512B21503
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D8B51C21412
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A0239FDD;
-	Fri, 24 Nov 2023 18:16:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73434189;
+	Fri, 24 Nov 2023 18:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flD55XhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hr0Boe58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E9C39FD4;
-	Fri, 24 Nov 2023 18:16:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F72C433C7;
-	Fri, 24 Nov 2023 18:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F277628E32;
+	Fri, 24 Nov 2023 18:36:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C1AC433C7;
+	Fri, 24 Nov 2023 18:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849765;
-	bh=RDdsUnznNwLNc/A5S2KTg/qlNJL49Vd6W+xOa6ENrVw=;
+	s=korg; t=1700851008;
+	bh=xPWWABLVixDqHXyNJmGgE2oP0vkZTwImkR7EwcuIWQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flD55XhC99OadHwDul0khIcQsulxhE8W1olr1gstezMhIwDO6PnZ/Ke9cYnacRYKa
-	 VGr1tuuWB6bV3njbp/ykJHINfwFx+AAdfVOWKyx44x4XS7DhdN+BtBerG/rxXfshUw
-	 dUHjpztthUEFLrNntTV9wnoREWXqYeJFVcP6yxNk=
+	b=Hr0Boe58xu3iNdjtg67KuPqYRN7k31uAUpCWbL62O/pGHR6DFqdV59aGFEuUJ3oGN
+	 b3Bq3jfupkH1w1ncXZbXyVaRi+ADdnZUwuHNwq0bjay7teXilwmCqKzclKRk9rXK3X
+	 15ua0iltPTqngoBIZdexsfboZrAzRz5hKv0eHi+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 312/530] powercap: intel_rapl: Downgrade BIOS locked limits pr_warn() to pr_debug()
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.5 242/491] KVM: x86: hyper-v: Dont auto-enable stimer on write from user-space
 Date: Fri, 24 Nov 2023 17:47:58 +0000
-Message-ID: <20231124172037.534773437@linuxfoundation.org>
+Message-ID: <20231124172031.826516063@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +51,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-commit a60ec4485f1c72dfece365cf95e6de82bdd74300 upstream.
+commit d6800af51c76b6dae20e6023bbdc9b3da3ab5121 upstream.
 
-Before the refactoring the pr_warn() only triggered when
-someone explicitly tried to write to a BIOS locked limit.
-After the refactoring the warning is also triggering during
-system resume. The user can't do anything about this so
-printing scary warnings doesn't make sense
+Don't apply the stimer's counter side effects when modifying its
+value from user-space, as this may trigger spurious interrupts.
 
-Keep the printk but make it pr_debug() instead of pr_warn()
-to make it clear it's not a serious issue.
+For example:
+ - The stimer is configured in auto-enable mode.
+ - The stimer's count is set and the timer enabled.
+ - The stimer expires, an interrupt is injected.
+ - The VM is live migrated.
+ - The stimer config and count are deserialized, auto-enable is ON, the
+   stimer is re-enabled.
+ - The stimer expires right away, and injects an unwarranted interrupt.
 
-Fixes: 9050a9cd5e4c ("powercap: intel_rapl: Cleanup Power Limits support")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: 6.5+ <stable@vger.kernel.org> # 6.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/intel_rapl_common.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/hyperv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -892,7 +892,7 @@ static int rapl_write_pl_data(struct rap
- 		return -EINVAL;
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -727,10 +727,12 @@ static int stimer_set_count(struct kvm_v
  
- 	if (rd->rpl[pl].locked) {
--		pr_warn("%s:%s:%s locked by BIOS\n", rd->rp->name, rd->name, pl_names[pl]);
-+		pr_debug("%s:%s:%s locked by BIOS\n", rd->rp->name, rd->name, pl_names[pl]);
- 		return -EACCES;
- 	}
+ 	stimer_cleanup(stimer);
+ 	stimer->count = count;
+-	if (stimer->count == 0)
+-		stimer->config.enable = 0;
+-	else if (stimer->config.auto_enable)
+-		stimer->config.enable = 1;
++	if (!host) {
++		if (stimer->count == 0)
++			stimer->config.enable = 0;
++		else if (stimer->config.auto_enable)
++			stimer->config.enable = 1;
++	}
  
+ 	if (stimer->config.enable)
+ 		stimer_mark_pending(stimer, false);
 
 
 
