@@ -1,27 +1,41 @@
-Return-Path: <stable+bounces-96-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-98-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCFD7F6C3E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 07:18:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DC47F6C6B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 07:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31EC528134B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 06:18:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49B01281369
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 06:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C14B53B2;
-	Fri, 24 Nov 2023 06:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9306A34;
+	Fri, 24 Nov 2023 06:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70F6B1719;
-	Thu, 23 Nov 2023 22:18:19 -0800 (PST)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1r6PW4-0004wO-KA; Fri, 24 Nov 2023 07:18:16 +0100
-Message-ID: <be371028-efeb-44af-90ea-5c307f27d4c6@leemhuis.info>
-Date: Fri, 24 Nov 2023 07:18:15 +0100
+X-Greylist: delayed 566 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Nov 2023 22:42:25 PST
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 960CEAD;
+	Thu, 23 Nov 2023 22:42:25 -0800 (PST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id CDB6E1F750;
+	Fri, 24 Nov 2023 06:32:55 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6F03C1340B;
+	Fri, 24 Nov 2023 06:32:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dNduD5ZDYGWtMgAAD6G6ig
+	(envelope-from <hare@suse.de>); Fri, 24 Nov 2023 06:32:54 +0000
+Message-ID: <89913549-cced-42c0-bcf3-33cea19353ee@suse.de>
+Date: Fri, 24 Nov 2023 07:32:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -29,324 +43,260 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: bcache: kernel NULL pointer dereference since 6.1.39
-Content-Language: en-US, de-DE
-To: Zheng Wang <zyytlz.wz@163.com>, Coly Li <colyli@suse.de>
-References: <ZV9ZSyDLNDlzutgQ@pharmakeia.incertum.net>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: linux-kernel@vger.kernel.org, =?UTF-8?Q?Stefan_F=C3=B6rster?=
- <cite@incertum.net>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Zheng Wang <zyytlz.wz@163.com>, Jens Axboe <axboe@kernel.dk>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- linux-bcache@vger.kernel.org
-In-Reply-To: <ZV9ZSyDLNDlzutgQ@pharmakeia.incertum.net>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v4] aacraid: reply queue mapping to CPUs based of IRQ
+ affinity
+Content-Language: en-US
+To: John Garry <john.g.garry@oracle.com>,
+ Sagar Biradar <sagar.biradar@microchip.com>,
+ Don Brace <don.brace@microchip.com>, Gilbert Wu <gilbert.wu@microchip.com>,
+ linux-scsi@vger.kernel.org, Martin Petersen <martin.petersen@oracle.com>,
+ James Bottomley <jejb@linux.ibm.com>, Brian King
+ <brking@linux.vnet.ibm.com>, stable@vger.kernel.org,
+ Tom White <tom.white@microchip.com>, regressions@leemhuis.info, hare@suse.com
+References: <20230519230834.27436-1-sagar.biradar@microchip.com>
+ <c830058d-8d03-4da4-bdd4-0e56c567308f@oracle.com>
+From: Hannes Reinecke <hare@suse.de>
+In-Reply-To: <c830058d-8d03-4da4-bdd4-0e56c567308f@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1700806700;f9881f2a;
-X-HE-SMSGID: 1r6PW4-0004wO-KA
+X-Spamd-Bar: ++++++++++
+Authentication-Results: smtp-out2.suse.de;
+	dkim=none;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de (policy=none);
+	spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:97 is neither permitted nor denied by domain of hare@suse.de) smtp.mailfrom=hare@suse.de
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [10.30 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 ARC_NA(0.00)[];
+	 XM_UA_NO_VERSION(0.01)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 BAYES_HAM(-3.00)[100.00%];
+	 MIME_GOOD(-0.10)[text/plain];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	 R_SPF_SOFTFAIL(4.60)[~all];
+	 NEURAL_SPAM_SHORT(3.00)[1.000];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 MX_GOOD(-0.01)[];
+	 NEURAL_SPAM_LONG(3.50)[1.000];
+	 RCPT_COUNT_TWELVE(0.00)[12];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(2.20)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 MID_RHS_MATCH_FROM(0.00)[];
+	 DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
+X-Spam-Score: 10.30
+X-Rspamd-Queue-Id: CDB6E1F750
 
-On 23.11.23 14:53, Stefan Förster wrote:
+On 11/23/23 13:01, John Garry wrote:
+> On 20/05/2023 00:08, Sagar Biradar wrote:
+>> Fix the IO hang that arises because of MSIx vector not
+>> having a mapped online CPU upon receiving completion.
+>>
+>> The SCSI cmds take the blk_mq route, which is setup during the init.
+>> The reserved cmds fetch the vector_no from mq_map after the init
+>> is complete and before the init, they use 0 - as per the norm.
+>>
+>> Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
+>> Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
 > 
-> starting with kernel 6.1.39, we see the following error message with
-> heavy I/O loads. We needed to revert
+> This the patch which seems to be causing the issue in 
+> https://bugzilla.kernel.org/show_bug.cgi?id=217599
+> 
+> I will comment here since I got no response there...
+> 
+>> ---
+>>   drivers/scsi/aacraid/aacraid.h  |  1 +
+>>   drivers/scsi/aacraid/comminit.c |  1 -
+>>   drivers/scsi/aacraid/commsup.c  |  6 +++++-
+>>   drivers/scsi/aacraid/linit.c    | 14 ++++++++++++++
+>>   drivers/scsi/aacraid/src.c      | 25 +++++++++++++++++++++++--
+>>   5 files changed, 43 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/scsi/aacraid/aacraid.h 
+>> b/drivers/scsi/aacraid/aacraid.h
+>> index 5e115e8b2ba4..7c6efde75da6 100644
+>> --- a/drivers/scsi/aacraid/aacraid.h
+>> +++ b/drivers/scsi/aacraid/aacraid.h
+>> @@ -1678,6 +1678,7 @@ struct aac_dev
+>>       u32            handle_pci_error;
+>>       bool            init_reset;
+>>       u8            soft_reset_support;
+>> +    u8            use_map_queue;
+>>   };
+>>   #define aac_adapter_interrupt(dev) \
+>> diff --git a/drivers/scsi/aacraid/comminit.c 
+>> b/drivers/scsi/aacraid/comminit.c
+>> index bd99c5492b7d..a5483e7e283a 100644
+>> --- a/drivers/scsi/aacraid/comminit.c
+>> +++ b/drivers/scsi/aacraid/comminit.c
+>> @@ -657,4 +657,3 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+>>       return dev;
+>>   }
+>> -
+>> diff --git a/drivers/scsi/aacraid/commsup.c 
+>> b/drivers/scsi/aacraid/commsup.c
+>> index deb32c9f4b3e..3f062e4013ab 100644
+>> --- a/drivers/scsi/aacraid/commsup.c
+>> +++ b/drivers/scsi/aacraid/commsup.c
+>> @@ -223,8 +223,12 @@ int aac_fib_setup(struct aac_dev * dev)
+>>   struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd 
+>> *scmd)
+>>   {
+>>       struct fib *fibptr;
+>> +    u32 blk_tag;
+>> +    int i;
+>> -    fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
+>> +    blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
+>> +    i = blk_mq_unique_tag_to_tag(blk_tag);
+>> +    fibptr = &dev->fibs[i];
+>>       /*
+>>        *    Null out fields that depend on being zero at the start of
+>>        *    each I/O
+>> diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
+>> index 5ba5c18b77b4..9caf8c314ce1 100644
+>> --- a/drivers/scsi/aacraid/linit.c
+>> +++ b/drivers/scsi/aacraid/linit.c
+>> @@ -19,6 +19,7 @@
+>>   #include <linux/compat.h>
+>>   #include <linux/blkdev.h>
+>> +#include <linux/blk-mq-pci.h>
+>>   #include <linux/completion.h>
+>>   #include <linux/init.h>
+>>   #include <linux/interrupt.h>
+>> @@ -505,6 +506,15 @@ static int aac_slave_configure(struct scsi_device 
+>> *sdev)
+>>       return 0;
+>>   }
+>> +static void aac_map_queues(struct Scsi_Host *shost)
+>> +{
+>> +    struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
+>> +
+>> +    blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
+>> +                aac->pdev, 0);
+>> +    aac->use_map_queue = true;
+>> +}
+>> +
+>>   /**
+>>    *    aac_change_queue_depth        -    alter queue depths
+>>    *    @sdev:    SCSI device we are considering
+>> @@ -1489,6 +1499,7 @@ static struct scsi_host_template 
+>> aac_driver_template = {
+>>       .bios_param            = aac_biosparm,
+>>       .shost_groups            = aac_host_groups,
+>>       .slave_configure        = aac_slave_configure,
+>> +    .map_queues            = aac_map_queues,
+>>       .change_queue_depth        = aac_change_queue_depth,
+>>       .sdev_groups            = aac_dev_groups,
+>>       .eh_abort_handler        = aac_eh_abort,
+>> @@ -1776,6 +1787,8 @@ static int aac_probe_one(struct pci_dev *pdev, 
+>> const struct pci_device_id *id)
+>>       shost->max_lun = AAC_MAX_LUN;
+>>       pci_set_drvdata(pdev, shost);
+>> +    shost->nr_hw_queues = aac->max_msix;
+>> +    shost->host_tagset = 1;
+>>       error = scsi_add_host(shost, &pdev->dev);
+>>       if (error)
+>> @@ -1908,6 +1921,7 @@ static void aac_remove_one(struct pci_dev *pdev)
+>>       struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
+>>       aac_cancel_rescan_worker(aac);
+>> +    aac->use_map_queue = false;
+>>       scsi_remove_host(shost);
+>>       __aac_shutdown(aac);
+>> diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
+>> index 11ef58204e96..61949f374188 100644
+>> --- a/drivers/scsi/aacraid/src.c
+>> +++ b/drivers/scsi/aacraid/src.c
+>> @@ -493,6 +493,10 @@ static int aac_src_deliver_message(struct fib *fib)
+>>   #endif
+>>       u16 vector_no;
+>> +    struct scsi_cmnd *scmd;
+>> +    u32 blk_tag;
+>> +    struct Scsi_Host *shost = dev->scsi_host_ptr;
+>> +    struct blk_mq_queue_map *qmap;
+>>       atomic_inc(&q->numpending);
+>> @@ -505,8 +509,25 @@ static int aac_src_deliver_message(struct fib *fib)
+>>           if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
+>>               && dev->sa_firmware)
+>>               vector_no = aac_get_vector(dev);
+>> -        else
+>> -            vector_no = fib->vector_no;
+>> +        else {
+>> +            if (!fib->vector_no || !fib->callback_data) {
+>> +                if (shost && dev->use_map_queue) {
+>> +                    qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
+>> +                    vector_no = qmap->mq_map[raw_smp_processor_id()];
+>> +                }
+>> +                /*
+>> +                 *    We hardcode the vector_no for
+>> +                 *    reserved commands as a valid shost is
+>> +                 *    absent during the init
+>> +                 */
+>> +                else
+>> +                    vector_no = 0;
+>> +            } else {
+>> +                scmd = (struct scsi_cmnd *)fib->callback_data;
+>> +                blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
+>> +                vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
+> 
+> 
+> 
+> Hannes' patch in the bugzilla was to revert to using hw queue #0 always 
+> for internal commands, and it didn't help.
+> 
+> Could there be any issue in using hw queue #0 for regular SCSI commands?
+> 
+> AFAICS, that's a significant change. Previously we would use 
+> fib->vector_no to decide the queue, which was in range (1, dev->max_msix).
+> 
+> BTW, is there any code which relies on a command being sent/received on 
+> the HW queue same as fib->vector_no?
+> 
+Yeah, and that's the clincher.
+The vector/MSIx interrupt to use for the completion is encoded in the 
+command (cf drivers/scsi/aacraid/src.c:aac_src_deliver_message()):
 
-Thx for the report. I assume that problem still occurs with the latest
-6.1.y kernel?
+fib->hw_fib_va)->reply_qid = vector_no;
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.39&id=68118c339c6e1e16ae017bef160dbe28a27ae9c8
+_and_ the command index:
 
-FWIW, that is mainline commit 028ddcac477b69 ("bcache: Remove
-unnecessary NULL point check in node allocations") [v6.5-rc1].
+fib->hw_fib_va)->request_id += (vector_no << 16);
 
-Did a quick check and noticed a fix for that change was recently
-mainlined as f72f4312d43883 ("bcache: replace a mistaken IS_ERR() by
-IS_ERR_OR_NULL() in btree_gc_coalesce()") [v6.7-rc2-post]:
-https://lore.kernel.org/all/20231118163852.9692-1-colyli@suse.de/
+so if we miscalculate the vector number here the command completion
+will lookup the wrong command, and we get this issue.
 
-It is expected to soon be interegrated into a 6.1.y kernel.
+But maybe the fix is relatively simple; can you try this:
 
-But maybe it's something else. I CCed the involved people, they might know.
+diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
+index 61949f374188..698a206a2b43 100644
+--- a/drivers/scsi/aacraid/src.c
++++ b/drivers/scsi/aacraid/src.c
+@@ -510,7 +510,7 @@ static int aac_src_deliver_message(struct fib *fib)
+                         && dev->sa_firmware)
+                         vector_no = aac_get_vector(dev);
+                 else {
+-                       if (!fib->vector_no || !fib->callback_data) {
++                       if (!fib->callback_data) {
+                                 if (shost && dev->use_map_queue) {
+                                         qmap = 
+&shost->tag_set.map[HCTX_TYPE_DEFAULT];
+                                         vector_no = 
+qmap->mq_map[raw_smp_processor_id()];
 
-Ciao, Thorsten
+Hmm?
 
-> to make sure the systems don't suddenly get stuck.
-> 
-> 1. Kernel 6.6.2-arch1-1 on Dell Latitude:
-> 
-> [16816.214942] BUG: kernel NULL pointer dereference, address:
-> 0000000000000080
-> [16816.214948] #PF: supervisor read access in kernel mode
-> [16816.214951] #PF: error_code(0x0000) - not-present page
-> [16816.214953] PGD 0 P4D 0 [16816.214956] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [16816.214960] CPU: 7 PID: 83416 Comm: bcache_gc Tainted: P          
-> OE      6.6.2-arch1-1 #1 11215f9ba7ddfb51644674a5b2ced71612c62fe9
-> [16816.214964] Hardware name: Dell Inc. Latitude 5431/06F77M, BIOS
-> 1.17.0 09/21/2023
-> [16816.214965] RIP: 0010:btree_node_free+0xf/0x160 [bcache]
-> [16816.214999] Code: 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90
-> 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 53 48 89 fb 0f 1f 44 00
-> 00 <48> 8b 83 80 00 00 00 48 8d ab 90 00 00 00 48 39 98 60 c3 00 00 75
-> [16816.215001] RSP: 0018:ffffc90021777af8 EFLAGS: 00010207
-> [16816.215004] RAX: 0000000000000001 RBX: 0000000000000000 RCX:
-> ffff888515ce0670
-> [16816.215006] RDX: 0000000000000000 RSI: ffff888515ce0680 RDI:
-> 0000000000000000
-> [16816.215007] RBP: ffffc90021777bf0 R08: ffff88819476d9e0 R09:
-> 00000000013ffde8
-> [16816.215009] R10: 0000000000000000 R11: ffffc9000061b000 R12:
-> ffffc90021777e40
-> [16816.215010] R13: ffffc90021777bf0 R14: ffffc90021777bd8 R15:
-> ffff88819476c000
-> [16816.215011] FS:  0000000000000000(0000) GS:ffff88886fdc0000(0000)
-> knlGS:0000000000000000
-> [16816.215013] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [16816.215015] CR2: 0000000000000080 CR3: 0000000294a20000 CR4:
-> 0000000000f50ee0
-> [16816.215017] PKRU: 55555554
-> [16816.215018] Call Trace:
-> [16816.215021]  <TASK>
-> [16816.215024]  ? __die+0x23/0x70
-> [16816.215030]  ? page_fault_oops+0x171/0x4e0
-> [16816.215035]  ? __pfx_bch_ptr_bad+0x10/0x10 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215059]  ? exc_page_fault+0x7f/0x180
-> [16816.215065]  ? asm_exc_page_fault+0x26/0x30
-> [16816.215070]  ? btree_node_free+0xf/0x160 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215095]  ? btree_node_free+0xa3/0x160 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215118]  btree_gc_coalesce+0x2a7/0x890 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215144]  ? bch_extent_bad+0x81/0x190 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215172]  btree_gc_recurse+0x130/0x390 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215197]  ? btree_gc_mark_node+0x72/0x240 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215221]  bch_btree_gc+0x4b6/0x620 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215246]  ? __pfx_autoremove_wake_function+0x10/0x10
-> [16816.215250]  ? __pfx_bch_gc_thread+0x10/0x10 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215272]  bch_gc_thread+0x139/0x190 [bcache
-> 33eebe64448bb81d5f2a10179a48eb0a5bdb25a6]
-> [16816.215295]  ? __pfx_autoremove_wake_function+0x10/0x10
-> [16816.215298]  kthread+0xe5/0x120
-> [16816.215302]  ? __pfx_kthread+0x10/0x10
-> [16816.215306]  ret_from_fork+0x31/0x50
-> [16816.215309]  ? __pfx_kthread+0x10/0x10
-> [16816.215312]  ret_from_fork_asm+0x1b/0x30
-> [16816.215318]  </TASK>
-> [16816.215319] Modules linked in: bcache tun ccm rfcomm snd_seq_dummy
-> snd_hrtimer snd_seq nvidia(POE) typec_displayport cmac algif_hash
-> algif_skcipher af_alg bnep hid_sensor_custom hid_sensor_hub
-> intel_ishtp_hid snd_hda_codec_hdmi snd_sof_pci_intel_tgl
-> snd_sof_intel_hda_common soundwire_intel snd_sof_intel_hda_mlink
-> soundwire_cadence snd_sof_intel_hda snd_sof_pci snd_sof_xtensa_dsp
-> snd_sof snd_sof_utils intel_uncore_frequency
-> intel_uncore_frequency_common snd_ctl_led snd_soc_hdac_hda r8153_ecm
-> snd_hda_ext_core iwlmvm cdc_ether snd_soc_acpi_intel_match usbnet
-> snd_soc_acpi soundwire_generic_allocation soundwire_bus snd_soc_core
-> x86_pkg_temp_thermal snd_compress snd_hda_codec_realtek intel_powerclamp
-> ac97_bus snd_hda_codec_generic dell_rbtn coretemp btusb
-> snd_pcm_dmaengine snd_usb_audio mac80211 btrtl snd_hda_intel kvm_intel
-> btintel snd_intel_dspcfg snd_intel_sdw_acpi snd_usbmidi_lib btbcm
-> dell_laptop snd_ump btmtk libarc4 snd_hda_codec uvcvideo kvm snd_rawmidi
-> bluetooth snd_hda_core videobuf2_vmalloc hid_multitouch iwlwifi
-> [16816.215367]  dell_wmi snd_hwdep iTCO_wdt snd_seq_device uvc
-> nls_iso8859_1 videobuf2_memops dell_smbios intel_pmc_bxt mei_hdcp
-> mei_pxp spi_nor snd_pcm processor_thermal_device_pci r8152
-> videobuf2_v4l2 dell_wmi_sysman irqbypass intel_rapl_msr dcdbas vfat
-> iTCO_vendor_support fat rapl intel_cstate intel_uncore psmouse pcspkr
-> dell_wmi_ddv firmware_attributes_class ledtrig_audio videobuf2_common
-> ucsi_acpi dell_wmi_descriptor processor_thermal_device mousedev
-> ecdh_generic snd_timer mii joydev mtd wmi_bmof e1000e cfg80211
-> processor_thermal_rfim mei_me intel_lpss_pci i2c_i801 snd
-> processor_thermal_mbox typec_ucsi intel_ish_ipc intel_lpss mei soundcore
-> i2c_smbus processor_thermal_rapl rfkill thunderbolt typec idma64
-> intel_ishtp roles intel_rapl_common igen6_edac i2c_hid_acpi
-> int3403_thermal i2c_hid int340x_thermal_zone intel_hid int3400_thermal
-> acpi_thermal_rel sparse_keymap acpi_tad acpi_pad mac_hid vboxnetflt(OE)
-> vboxnetadp(OE) vboxdrv(OE) v4l2loopback(OE) videodev mc i2c_dev
-> crypto_user fuse loop ip_tables x_tables ext4
-> [16816.215420]  crc32c_generic crc16 mbcache jbd2 dm_crypt cbc
-> encrypted_keys trusted asn1_encoder tee usbhid i915 dm_mod
-> crct10dif_pclmul crc32_pclmul crc32c_intel polyval_clmulni i2c_algo_bit
-> polyval_generic serio_raw rtsx_pci_sdmmc drm_buddy gf128mul atkbd
-> ghash_clmulni_intel ttm mmc_core sha512_ssse3 libps2 vivaldi_fmap
-> intel_gtt aesni_intel nvme crypto_simd drm_display_helper video
-> nvme_core cryptd spi_intel_pci rtsx_pci spi_intel i8042 xhci_pci cec
-> nvme_common xhci_pci_renesas serio wmi
-> [16816.215451] CR2: 0000000000000080
-> [16816.215453] ---[ end trace 0000000000000000 ]---
-> [16816.215455] RIP: 0010:btree_node_free+0xf/0x160 [bcache]
-> [16816.215478] Code: 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90
-> 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 53 48 89 fb 0f 1f 44 00
-> 00 <48> 8b 83 80 00 00 00 48 8d ab 90 00 00 00 48 39 98 60 c3 00 00 75
-> [16816.215480] RSP: 0018:ffffc90021777af8 EFLAGS: 00010207
-> [16816.215481] RAX: 0000000000000001 RBX: 0000000000000000 RCX:
-> ffff888515ce0670
-> [16816.215483] RDX: 0000000000000000 RSI: ffff888515ce0680 RDI:
-> 0000000000000000
-> [16816.215484] RBP: ffffc90021777bf0 R08: ffff88819476d9e0 R09:
-> 00000000013ffde8
-> [16816.215486] R10: 0000000000000000 R11: ffffc9000061b000 R12:
-> ffffc90021777e40
-> [16816.215487] R13: ffffc90021777bf0 R14: ffffc90021777bd8 R15:
-> ffff88819476c000
-> [16816.215488] FS:  0000000000000000(0000) GS:ffff88886fdc0000(0000)
-> knlGS:0000000000000000
-> [16816.215490] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [16816.215492] CR2: 0000000000000080 CR3: 0000000294a20000 CR4:
-> 0000000000f50ee0
-> [16816.215493] PKRU: 55555554
-> [16816.215494] note: bcache_gc[83416] exited with irqs disabled
-> 
-> 2. Kernel 6.1.55 (Debian 6.1.0-13) on HPE Gen11:
-> 
-> [60654.670443] BUG: kernel NULL pointer dereference, address:
-> 0000000000000080
-> [60654.677474] #PF: supervisor read access in kernel mode
-> [60654.682651] #PF: error_code(0x0000) - not-present page
-> [60654.687825] PGD 0 [60654.689852] Oops: 0000 [#1] PREEMPT SMP NOPTI
-> [60654.694240] CPU: 16 PID: 146330 Comm: bcache_gc Tainted: G       
-> W          6.1.0-13-amd64 #1  Debian 6.1.55-1
-> [60654.704399] Hardware name: HPE ProLiant DL380 Gen11/ProLiant DL380
-> Gen11, BIOS 1.48 10/19/2023
-> [60654.713071] RIP: 0010:btree_node_free+0xf/0x160 [bcache]
-> [60654.718437] Code: ff 48 89 d8 5b 5d 41 5c 41 5d c3 cc cc cc cc 66 66
-> 2e 0f 1f 84 00 00 00 00 00 90 0f 1f 44 00 00 55 53 48 89 fb 0f 1f 44 00
-> 00 <48> 8b 83 80 00 00 00 48 39 98 70 c3 00 00 0f 84 34 01 00 00 48 8d
-> [60654.737342] RSP: 0018:ff77daed34cc3b18 EFLAGS: 00010207
-> [60654.742604] RAX: 0000000080000000 RBX: 0000000000000000 RCX:
-> 0000000000000000
-> [60654.749790] RDX: 0000000000000001 RSI: ff2971b8de800690 RDI:
-> 0000000000000000
-> [60654.756975] RBP: ff77daed34cc3c10 R08: ff2971d852dc65e0 R09:
-> ff2971b8de800000
-> [60654.764536] R10: 0000000000000000 R11: ff77daed34a4d000 R12:
-> ff77daed34cc3e60
-> [60654.771987] R13: ff77daed34cc3c10 R14: ff77daed34cc3c00 R15:
-> ff2971d851096400
-> [60654.779410] FS:  0000000000000000(0000) GS:ff2971f7bf400000(0000)
-> knlGS:0000000000000000
-> [60654.787784] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [60654.793794] CR2: 0000000000000080 CR3: 0000000150610002 CR4:
-> 0000000000771ee0
-> [60654.801203] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-> 0000000000000000
-> [60654.808609] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
-> 0000000000000400
-> [60654.816009] PKRU: 55555554
-> [60654.818949] Call Trace:
-> [60654.821623]  <TASK>
-> [60654.823950]  ? __die_body.cold+0x1a/0x1f
-> [60654.828110]  ? page_fault_oops+0xd2/0x2b0
-> [60654.832352]  ? exc_page_fault+0x70/0x170
-> [60654.836505]  ? asm_exc_page_fault+0x22/0x30
-> [60654.840922]  ? btree_node_free+0xf/0x160 [bcache]
-> [60654.845863]  ? up_write+0x32/0x60
-> [60654.849396]  btree_gc_coalesce+0x2aa/0x890 [bcache]
-> [60654.854512]  ? bch_extent_bad+0x70/0x170 [bcache]
-> [60654.859452]  btree_gc_recurse+0x130/0x390 [bcache]
-> [60654.864475]  ? btree_gc_mark_node+0x72/0x230 [bcache]
-> [60654.869758]  bch_btree_gc+0x5da/0x600 [bcache]
-> [60654.874428]  ? cpuusage_read+0x10/0x10
-> [60654.878390]  ? bch_btree_gc+0x600/0x600 [bcache]
-> [60654.883232]  bch_gc_thread+0x135/0x180 [bcache]
-> [60654.887986]  ? cpuusage_read+0x10/0x10
-> [60654.891944]  kthread+0xe6/0x110
-> [60654.895290]  ? kthread_complete_and_exit+0x20/0x20
-> [60654.900296]  ret_from_fork+0x1f/0x30
-> [60654.904079]  </TASK>
-> [60654.906455] Modules linked in: bonding tls cfg80211 rfkill
-> intel_rapl_msr intel_rapl_common intel_uncore_frequency
-> intel_uncore_frequency_common i10nm_edac nfit binfmt_misc libnvdimm
-> x86_pkg_temp_thermal intel_powerclamp ipt_REJECT nf_reject_ipv4 coretemp
-> xt_comment nft_compat nf_tables nfnetlink nls_ascii nls_cp437 kvm_intel
-> vfat ipmi_ssif fat kvm irqbypass ghash_clmulni_intel sha512_ssse3
-> sha512_generic aesni_intel crypto_simd cryptd mgag200 drm_shmem_helper
-> pmt_telemetry pmt_crashlog rapl intel_cstate acpi_ipmi evdev intel_sdsi
-> pmt_class idxd hpwdt mei_me isst_if_mbox_pci isst_if_mmio drm_kms_helper
-> intel_uncore pcspkr isst_if_common mei watchdog hpilo i2c_algo_bit
-> ipmi_si idxd_bus acpi_tad intel_vsec sg acpi_power_meter button
-> ipmi_devintf ipmi_msghandler loop fuse efi_pstore drm configfs efivarfs
-> ip_tables x_tables autofs4 ext4 crc16 mbcache jbd2 btrfs blake2b_generic
-> xor raid6_pq zstd_compress libcrc32c crc32c_generic ses enclosure bcache
-> sd_mod scsi_transport_sas dm_mod nvme
-> [60654.906508]  nvme_core xhci_pci t10_pi megaraid_sas ehci_pci xhci_hcd
-> ehci_hcd crc64_rocksoft crc64 tg3 crc_t10dif scsi_mod usbcore
-> crct10dif_generic crc32_pclmul crc32c_intel crct10dif_pclmul libphy
-> scsi_common usb_common crct10dif_common wmi
-> [60655.017712] CR2: 0000000000000080
-> [60655.021262] ---[ end trace 0000000000000000 ]---
-> [60655.173744] RIP: 0010:btree_node_free+0xf/0x160 [bcache]
-> [60655.179337] Code: ff 48 89 d8 5b 5d 41 5c 41 5d c3 cc cc cc cc 66 66
-> 2e 0f 1f 84 00 00 00 00 00 90 0f 1f 44 00 00 55 53 48 89 fb 0f 1f 44 00
-> 00 <48> 8b 83 80 00 00 00 48 39 98 70 c3 00 00 0f 84 34 01 00 00 48 8d
-> [60655.198649] RSP: 0018:ff77daed34cc3b18 EFLAGS: 00010207
-> [60655.204121] RAX: 0000000080000000 RBX: 0000000000000000 RCX:
-> 0000000000000000
-> [60655.211515] RDX: 0000000000000001 RSI: ff2971b8de800690 RDI:
-> 0000000000000000
-> [60655.218908] RBP: ff77daed34cc3c10 R08: ff2971d852dc65e0 R09:
-> ff2971b8de800000
-> [60655.226302] R10: 0000000000000000 R11: ff77daed34a4d000 R12:
-> ff77daed34cc3e60
-> [60655.233696] R13: ff77daed34cc3c10 R14: ff77daed34cc3c00 R15:
-> ff2971d851096400
-> [60655.241086] FS:  0000000000000000(0000) GS:ff2971f7bf400000(0000)
-> knlGS:0000000000000000
-> [60655.249438] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [60655.255432] CR2: 0000000000000080 CR3: 0000000150610002 CR4:
-> 0000000000771ee0
-> [60655.262825] DR0: 0000000000000000 DR1: 0000000000000000 DR2:
-> 0000000000000000
-> [60655.270218] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7:
-> 0000000000000400
-> [60655.277607] PKRU: 55555554
-> [60655.280543] note: bcache_gc[146330] exited with irqs disabled
-> 
-> Reproducer for us:
-> 
-> dd if=/dev/zero of=loop0 bs=1M count=1024
-> dd if=/dev/zero of=loop1 bs=1M count=10240
-> losetup loop0 loop0
-> losetup loop1 loop1
-> make-bcache -C /dev/loop0 -B /dev/loop1 --writeback
-> mkfs.ext4 /dev/bcache0
-> mount /dev/bcache0 /mnt
-> 
-> Then run fio with:
-> 
-> [global]
-> bs=4k
-> ioengine=libaio
-> iodepth=4
-> size=8g
-> direct=1
-> runtime=60
-> directory=/mnt
-> filename=ssd.test.file
-> 
-> [seq-write]
-> rw=write
-> stonewall
-> 
-> [rand-write]
-> rw=randwrite
-> stonewall
-> 
-> [seq-read]
-> rw=read
-> stonewall
-> 
-> [rand-read]
-> rw=randread
-> stonewall
-> 
-> 
-> Cheers,
-> Stefan
+Cheers,
+
+Hannes
+-- 
+Dr. Hannes Reinecke                Kernel Storage Architect
+hare@suse.de                              +49 911 74053 688
+SUSE Software Solutions GmbH, Maxfeldstr. 5, 90409 Nürnberg
+HRB 36809 (AG Nürnberg), GF: Ivo Totev, Andrew McDonald,
+Werner Knoblich
+
 
