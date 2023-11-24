@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED96B7F822C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B6C7F8344
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD45B209BE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CBB6B23C8A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B55F3173F;
-	Fri, 24 Nov 2023 19:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE7F35F1A;
+	Fri, 24 Nov 2023 19:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVRM6pmR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohqCqRUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CC31748;
-	Fri, 24 Nov 2023 19:05:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E186C433C8;
-	Fri, 24 Nov 2023 19:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6792E858;
+	Fri, 24 Nov 2023 19:15:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E226C433C8;
+	Fri, 24 Nov 2023 19:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852705;
-	bh=+ebP5VOWkZRRjJRl8FfjEXpPEgTXYM85cwuP6G44xKw=;
+	s=korg; t=1700853345;
+	bh=IasHDs7rT0YfMpHilzVC1kyHGsA+jZChD+fZGxY2gcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVRM6pmR/gUWrZREakkD/DV9GxhaU6DoSx2zTAmABvn87sfQOnBu40EsLQQVWqid3
-	 HnSrjzywncZxJtOykluxJI4qvUtMUkN+3b71nLJaTt87FGyFqLzQYLt9PoF1AABMKr
-	 fZgl/e1+vf/twwQQINPgviM77KoLXKRtyBD2e/Ag=
+	b=ohqCqRUX46cmo4+UxxY/xaNvXgORO1CKFbJsK9OJZe0K3zw8110ptabIGa97cZdH2
+	 KrXTD0Rh9HbOs+gOiTYF+JjqnFCYdDh8aE1Hcu+0QlqzV0jva9Mz4sSeCl//TE7jI8
+	 YYlKgSpMUp7odhexNNeEnBaifUgfPtxxk4wvAW1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	felix <fuzhen5@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 066/193] SUNRPC: Fix RPC client cleaned up the freed pipefs dentries
+Subject: [PATCH 5.15 151/297] xfs: avoid a UAF when log intent item recovery fails
 Date: Fri, 24 Nov 2023 17:53:13 +0000
-Message-ID: <20231124171949.878460109@linuxfoundation.org>
+Message-ID: <20231124172005.551121476@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,123 +55,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: felix <fuzhen5@huawei.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit bfca5fb4e97c46503ddfc582335917b0cc228264 ]
+[ Upstream commit 97cf79677ecb50a38517253ae2fd705849a7e51a ]
 
-RPC client pipefs dentries cleanup is in separated rpc_remove_pipedir()
-workqueue,which takes care about pipefs superblock locking.
-In some special scenarios, when kernel frees the pipefs sb of the
-current client and immediately alloctes a new pipefs sb,
-rpc_remove_pipedir function would misjudge the existence of pipefs
-sb which is not the one it used to hold. As a result,
-the rpc_remove_pipedir would clean the released freed pipefs dentries.
+KASAN reported a UAF bug when I was running xfs/235:
 
-To fix this issue, rpc_remove_pipedir should check whether the
-current pipefs sb is consistent with the original pipefs sb.
+ BUG: KASAN: use-after-free in xlog_recover_process_intents+0xa77/0xae0 [xfs]
+ Read of size 8 at addr ffff88804391b360 by task mount/5680
 
-This error can be catched by KASAN:
-=========================================================
-[  250.497700] BUG: KASAN: slab-use-after-free in dget_parent+0x195/0x200
-[  250.498315] Read of size 4 at addr ffff88800a2ab804 by task kworker/0:18/106503
-[  250.500549] Workqueue: events rpc_free_client_work
-[  250.501001] Call Trace:
-[  250.502880]  kasan_report+0xb6/0xf0
-[  250.503209]  ? dget_parent+0x195/0x200
-[  250.503561]  dget_parent+0x195/0x200
-[  250.503897]  ? __pfx_rpc_clntdir_depopulate+0x10/0x10
-[  250.504384]  rpc_rmdir_depopulate+0x1b/0x90
-[  250.504781]  rpc_remove_client_dir+0xf5/0x150
-[  250.505195]  rpc_free_client_work+0xe4/0x230
-[  250.505598]  process_one_work+0x8ee/0x13b0
-...
-[   22.039056] Allocated by task 244:
-[   22.039390]  kasan_save_stack+0x22/0x50
-[   22.039758]  kasan_set_track+0x25/0x30
-[   22.040109]  __kasan_slab_alloc+0x59/0x70
-[   22.040487]  kmem_cache_alloc_lru+0xf0/0x240
-[   22.040889]  __d_alloc+0x31/0x8e0
-[   22.041207]  d_alloc+0x44/0x1f0
-[   22.041514]  __rpc_lookup_create_exclusive+0x11c/0x140
-[   22.041987]  rpc_mkdir_populate.constprop.0+0x5f/0x110
-[   22.042459]  rpc_create_client_dir+0x34/0x150
-[   22.042874]  rpc_setup_pipedir_sb+0x102/0x1c0
-[   22.043284]  rpc_client_register+0x136/0x4e0
-[   22.043689]  rpc_new_client+0x911/0x1020
-[   22.044057]  rpc_create_xprt+0xcb/0x370
-[   22.044417]  rpc_create+0x36b/0x6c0
-...
-[   22.049524] Freed by task 0:
-[   22.049803]  kasan_save_stack+0x22/0x50
-[   22.050165]  kasan_set_track+0x25/0x30
-[   22.050520]  kasan_save_free_info+0x2b/0x50
-[   22.050921]  __kasan_slab_free+0x10e/0x1a0
-[   22.051306]  kmem_cache_free+0xa5/0x390
-[   22.051667]  rcu_core+0x62c/0x1930
-[   22.051995]  __do_softirq+0x165/0x52a
-[   22.052347]
-[   22.052503] Last potentially related work creation:
-[   22.052952]  kasan_save_stack+0x22/0x50
-[   22.053313]  __kasan_record_aux_stack+0x8e/0xa0
-[   22.053739]  __call_rcu_common.constprop.0+0x6b/0x8b0
-[   22.054209]  dentry_free+0xb2/0x140
-[   22.054540]  __dentry_kill+0x3be/0x540
-[   22.054900]  shrink_dentry_list+0x199/0x510
-[   22.055293]  shrink_dcache_parent+0x190/0x240
-[   22.055703]  do_one_tree+0x11/0x40
-[   22.056028]  shrink_dcache_for_umount+0x61/0x140
-[   22.056461]  generic_shutdown_super+0x70/0x590
-[   22.056879]  kill_anon_super+0x3a/0x60
-[   22.057234]  rpc_kill_sb+0x121/0x200
+ CPU: 2 PID: 5680 Comm: mount Not tainted 6.0.0-xfsx #6.0.0 77e7b52a4943a975441e5ac90a5ad7748b7867f6
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x34/0x44
+  print_report.cold+0x2cc/0x682
+  kasan_report+0xa3/0x120
+  xlog_recover_process_intents+0xa77/0xae0 [xfs fb841c7180aad3f8359438576e27867f5795667e]
+  xlog_recover_finish+0x7d/0x970 [xfs fb841c7180aad3f8359438576e27867f5795667e]
+  xfs_log_mount_finish+0x2d7/0x5d0 [xfs fb841c7180aad3f8359438576e27867f5795667e]
+  xfs_mountfs+0x11d4/0x1d10 [xfs fb841c7180aad3f8359438576e27867f5795667e]
+  xfs_fs_fill_super+0x13d5/0x1a80 [xfs fb841c7180aad3f8359438576e27867f5795667e]
+  get_tree_bdev+0x3da/0x6e0
+  vfs_get_tree+0x7d/0x240
+  path_mount+0xdd3/0x17d0
+  __x64_sys_mount+0x1fa/0x270
+  do_syscall_64+0x2b/0x80
+  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+ RIP: 0033:0x7ff5bc069eae
+ Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 52 1f 0f 00 f7 d8 64 89 01 48
+ RSP: 002b:00007ffe433fd448 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+ RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ff5bc069eae
+ RDX: 00005575d7213290 RSI: 00005575d72132d0 RDI: 00005575d72132b0
+ RBP: 00005575d7212fd0 R08: 00005575d7213230 R09: 00005575d7213fe0
+ R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+ R13: 00005575d7213290 R14: 00005575d72132b0 R15: 00005575d7212fd0
+  </TASK>
 
-Fixes: 0157d021d23a ("SUNRPC: handle RPC client pipefs dentries by network namespace aware routines")
-Signed-off-by: felix <fuzhen5@huawei.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+ Allocated by task 5680:
+  kasan_save_stack+0x1e/0x40
+  __kasan_slab_alloc+0x66/0x80
+  kmem_cache_alloc+0x152/0x320
+  xfs_rui_init+0x17a/0x1b0 [xfs]
+  xlog_recover_rui_commit_pass2+0xb9/0x2e0 [xfs]
+  xlog_recover_items_pass2+0xe9/0x220 [xfs]
+  xlog_recover_commit_trans+0x673/0x900 [xfs]
+  xlog_recovery_process_trans+0xbe/0x130 [xfs]
+  xlog_recover_process_data+0x103/0x2a0 [xfs]
+  xlog_do_recovery_pass+0x548/0xc60 [xfs]
+  xlog_do_log_recovery+0x62/0xc0 [xfs]
+  xlog_do_recover+0x73/0x480 [xfs]
+  xlog_recover+0x229/0x460 [xfs]
+  xfs_log_mount+0x284/0x640 [xfs]
+  xfs_mountfs+0xf8b/0x1d10 [xfs]
+  xfs_fs_fill_super+0x13d5/0x1a80 [xfs]
+  get_tree_bdev+0x3da/0x6e0
+  vfs_get_tree+0x7d/0x240
+  path_mount+0xdd3/0x17d0
+  __x64_sys_mount+0x1fa/0x270
+  do_syscall_64+0x2b/0x80
+  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+ Freed by task 5680:
+  kasan_save_stack+0x1e/0x40
+  kasan_set_track+0x21/0x30
+  kasan_set_free_info+0x20/0x30
+  ____kasan_slab_free+0x144/0x1b0
+  slab_free_freelist_hook+0xab/0x180
+  kmem_cache_free+0x1f1/0x410
+  xfs_rud_item_release+0x33/0x80 [xfs]
+  xfs_trans_free_items+0xc3/0x220 [xfs]
+  xfs_trans_cancel+0x1fa/0x590 [xfs]
+  xfs_rui_item_recover+0x913/0xd60 [xfs]
+  xlog_recover_process_intents+0x24e/0xae0 [xfs]
+  xlog_recover_finish+0x7d/0x970 [xfs]
+  xfs_log_mount_finish+0x2d7/0x5d0 [xfs]
+  xfs_mountfs+0x11d4/0x1d10 [xfs]
+  xfs_fs_fill_super+0x13d5/0x1a80 [xfs]
+  get_tree_bdev+0x3da/0x6e0
+  vfs_get_tree+0x7d/0x240
+  path_mount+0xdd3/0x17d0
+  __x64_sys_mount+0x1fa/0x270
+  do_syscall_64+0x2b/0x80
+  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+
+ The buggy address belongs to the object at ffff88804391b300
+  which belongs to the cache xfs_rui_item of size 688
+ The buggy address is located 96 bytes inside of
+  688-byte region [ffff88804391b300, ffff88804391b5b0)
+
+ The buggy address belongs to the physical page:
+ page:ffffea00010e4600 refcount:1 mapcount:0 mapping:0000000000000000 index:0xffff888043919320 pfn:0x43918
+ head:ffffea00010e4600 order:2 compound_mapcount:0 compound_pincount:0
+ flags: 0x4fff80000010200(slab|head|node=1|zone=1|lastcpupid=0xfff)
+ raw: 04fff80000010200 0000000000000000 dead000000000122 ffff88807f0eadc0
+ raw: ffff888043919320 0000000080140010 00000001ffffffff 0000000000000000
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffff88804391b200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffff88804391b280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ >ffff88804391b300: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+                                                        ^
+  ffff88804391b380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+  ffff88804391b400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+ ==================================================================
+
+The test fuzzes an rmap btree block and starts writer threads to induce
+a filesystem shutdown on the corrupt block.  When the filesystem is
+remounted, recovery will try to replay the committed rmap intent item,
+but the corruption problem causes the recovery transaction to fail.
+Cancelling the transaction frees the RUD, which frees the RUI that we
+recovered.
+
+When we return to xlog_recover_process_intents, @lip is now a dangling
+pointer, and we cannot use it to find the iop_recover method for the
+tracepoint.  Hence we must store the item ops before calling
+->iop_recover if we want to give it to the tracepoint so that the trace
+data will tell us exactly which intent item failed.
+
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sunrpc/clnt.h | 1 +
- net/sunrpc/clnt.c           | 5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_log_recover.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sunrpc/clnt.h b/include/linux/sunrpc/clnt.h
-index 02e7a5863d289..41ed614e69209 100644
---- a/include/linux/sunrpc/clnt.h
-+++ b/include/linux/sunrpc/clnt.h
-@@ -79,6 +79,7 @@ struct rpc_clnt {
- 		struct work_struct	cl_work;
- 	};
- 	const struct cred	*cl_cred;
-+	struct super_block *pipefs_sb;
- };
- 
- /*
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index da34b23a66dbd..360a3bcd91fe1 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -109,7 +109,8 @@ static void rpc_clnt_remove_pipedir(struct rpc_clnt *clnt)
- 
- 	pipefs_sb = rpc_get_sb_net(net);
- 	if (pipefs_sb) {
--		__rpc_clnt_remove_pipedir(clnt);
-+		if (pipefs_sb == clnt->pipefs_sb)
-+			__rpc_clnt_remove_pipedir(clnt);
- 		rpc_put_sb_net(net);
+diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
+index 04961ebf16ea2..3d844a250b710 100644
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2560,6 +2560,7 @@ xlog_recover_process_intents(
+ 	for (lip = xfs_trans_ail_cursor_first(ailp, &cur, 0);
+ 	     lip != NULL;
+ 	     lip = xfs_trans_ail_cursor_next(ailp, &cur)) {
++		const struct xfs_item_ops	*ops;
+ 		/*
+ 		 * We're done when we see something other than an intent.
+ 		 * There should be no intents left in the AIL now.
+@@ -2584,13 +2585,17 @@ xlog_recover_process_intents(
+ 		 * deferred ops, you /must/ attach them to the capture list in
+ 		 * the recover routine or else those subsequent intents will be
+ 		 * replayed in the wrong order!
++		 *
++		 * The recovery function can free the log item, so we must not
++		 * access lip after it returns.
+ 		 */
+ 		spin_unlock(&ailp->ail_lock);
+-		error = lip->li_ops->iop_recover(lip, &capture_list);
++		ops = lip->li_ops;
++		error = ops->iop_recover(lip, &capture_list);
+ 		spin_lock(&ailp->ail_lock);
+ 		if (error) {
+ 			trace_xlog_intent_recovery_failed(log->l_mp, error,
+-					lip->li_ops->iop_recover);
++					ops->iop_recover);
+ 			break;
+ 		}
  	}
- }
-@@ -149,6 +150,8 @@ rpc_setup_pipedir(struct super_block *pipefs_sb, struct rpc_clnt *clnt)
- {
- 	struct dentry *dentry;
- 
-+	clnt->pipefs_sb = pipefs_sb;
-+
- 	if (clnt->cl_program->pipe_dir_name != NULL) {
- 		dentry = rpc_setup_pipedir_sb(pipefs_sb, clnt);
- 		if (IS_ERR(dentry))
 -- 
 2.42.0
 
