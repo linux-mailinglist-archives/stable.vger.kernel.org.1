@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052C17F7EFF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381E67F7CAD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 671E8B21723
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7F9B282047
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEBF2E858;
-	Fri, 24 Nov 2023 18:37:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E273A8C5;
+	Fri, 24 Nov 2023 18:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uPSKoVwO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDtbWWM+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A99733CC7;
-	Fri, 24 Nov 2023 18:37:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F1EC433C7;
-	Fri, 24 Nov 2023 18:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2D039FFD;
+	Fri, 24 Nov 2023 18:17:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DABCC433CC;
+	Fri, 24 Nov 2023 18:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851061;
-	bh=HyHi3By6Zv9DmWwe+UWLe2YO4P1l0LWSmHDSVTrXmkw=;
+	s=korg; t=1700849845;
+	bh=2E8eUnWksydqAD2fEVm6vIPBlaqA6PQcPNApcDxRhRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uPSKoVwOLLj2lpdclbujRud3ZEVywYUYTiErrza1MY/t2jyatSQcA/zEXLE/pi2tU
-	 uP7eOS792mZ17cJJLKlww4ixmjICwkStPnM3WbGIYUBwLBpQZZtJd3elp2iC8P/FOV
-	 LR95Zzja0ViMWqo5qal+uVeVmecjIW7ML6OlrQao=
+	b=DDtbWWM+cZAqdF9vCLI17Te60YxelHv2eYVxf+6NDROrNxVbte3rzsGyLSsphm7FG
+	 PC7RPrVVyPlEkW996twOZ/qnIuSzGb2BfrAzCKKhlbWOImcPkeHWfWDeeKgLXwHSiF
+	 8SfHKzzcjKGuwu3bWON+f77CMrizgeD/xsOFBwa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.5 273/491] wifi: ath11k: fix temperature event locking
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 343/530] arm64: dts: qcom: ipq9574: Fix hwlock index for SMEM
 Date: Fri, 24 Nov 2023 17:48:29 +0000
-Message-ID: <20231124172032.777795227@linuxfoundation.org>
+Message-ID: <20231124172038.472628588@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-commit 1a5352a81b4720ba43d9c899974e3bddf7ce0ce8 upstream.
+commit 5fe8508e2bc8eb4208b0434b6c1ca306c1519ade upstream.
 
-The ath11k active pdevs are protected by RCU but the temperature event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section as reported by RCU lockdep:
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-	=============================
-	WARNING: suspicious RCU usage
-	6.6.0-rc6 #7 Not tainted
-	-----------------------------
-	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
+Fix the SMEM hwlock index to 3 for IPQ9574.
 
-	other info that might help us debug this:
-
-	rcu_scheduler_active = 2, debug_locks = 1
-	no locks held by swapper/0/0.
-	...
-	Call trace:
-	...
-	 lockdep_rcu_suspicious+0x16c/0x22c
-	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
-
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-
-Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-Cc: stable@vger.kernel.org      # 5.7
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019153115.26401-2-johan+linaro@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 46384ac7a618 ("arm64: dts: qcom: ipq9574: Add SMEM support")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-5-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq9574.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -8383,15 +8383,19 @@ ath11k_wmi_pdev_temperature_event(struct
- 	ath11k_dbg(ab, ATH11K_DBG_WMI, "event pdev temperature ev temp %d pdev_id %d\n",
- 		   ev->temp, ev->pdev_id);
- 
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
- 	}
- 
- 	ath11k_thermal_event_temperature(ar, ev->temp);
- 
-+exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
- }
- 
+--- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
+@@ -195,7 +195,7 @@
+ 		smem@4aa00000 {
+ 			compatible = "qcom,smem";
+ 			reg = <0x0 0x4aa00000 0x0 0x100000>;
+-			hwlocks = <&tcsr_mutex 0>;
++			hwlocks = <&tcsr_mutex 3>;
+ 			no-map;
+ 		};
+ 	};
 
 
 
