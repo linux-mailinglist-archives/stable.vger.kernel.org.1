@@ -1,138 +1,85 @@
-Return-Path: <stable+bounces-108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7FC17F6EC8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 09:48:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1887F70AD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F8A281BD7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 08:48:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5081C20A99
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 10:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A5F3D90;
-	Fri, 24 Nov 2023 08:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6DAD1773B;
+	Fri, 24 Nov 2023 10:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F6+tHjiH"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jO7vNFx2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D50B810C8;
-	Fri, 24 Nov 2023 00:47:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1700815678; x=1732351678;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ETSthbj996fIvvlpg9K44Y+DLYz4SkudAGG/TzCRFls=;
-  b=F6+tHjiHdN+OJX5EISq0E+nCCi8Cw1ANNC22hka/e2wAYlYL2mJQPbgj
-   EPY6EEmfIbHqZolWHROPgBIFcFnMIldK10/YC/tz25PMC35hKU+xBoYCz
-   m3ZDwwGAAbkJ2rHAQkV7X3WVUnLDNg5cPz3bMe0fpdhyqolF6nKkolNHx
-   7XqkqFfLuKThsPVUzvIn1I1X3YYyijoOWyefByMKc2rdyhv8BW0KXUdi7
-   99pMsLy7f1jEIHMWsfjRq8byzUQvEADE7iPJsQFt7tvVG/1wxRJn4qBpB
-   XX/UvH4bCg6CBlxrpKL7aQWM8DJpzrGHwMq+gj2KypfiIUmA2Q2PiLIul
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="13945409"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
-   d="scan'208";a="13945409"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 00:47:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="833640453"
-X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
-   d="scan'208";a="833640453"
-Received: from mvlasov-mobl1.ger.corp.intel.com (HELO localhost) ([10.251.220.89])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 00:47:53 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: "John W. Linville" <linville@tuxdriver.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	linux-wireless@vger.kernel.org,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 02/10] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
-Date: Fri, 24 Nov 2023 10:47:17 +0200
-Message-Id: <20231124084725.12738-3-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20231124084725.12738-1-ilpo.jarvinen@linux.intel.com>
-References: <20231124084725.12738-1-ilpo.jarvinen@linux.intel.com>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 560891AB;
+	Fri, 24 Nov 2023 02:00:46 -0800 (PST)
+Received: from [192.168.1.150] (181-28-144-85.ftth.glasoperator.nl [85.144.28.181])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9844C20B74C0;
+	Fri, 24 Nov 2023 02:00:41 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9844C20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1700820045;
+	bh=TeRTeq8Ab0NebTdEjigLF0N3D06Mm51J5Eb7h9xqKQI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=jO7vNFx2Waub77EPXbAmhsNTXDyhvYWhqOAPtHY+m3ubeSojbzit0I9PjznVQq7GW
+	 ke26RpAECLS423AmH3ggOuh0kgd5DCthbDjP8LcwyjRFOycoknBLZzrR01KeztWxP4
+	 qCOt6plQL8At7N1nDKogqCrmysq8fAmreYQ/x8G0=
+Message-ID: <281e1f13-811b-4897-b3d9-18d233af25f7@linux.microsoft.com>
+Date: Fri, 24 Nov 2023 11:00:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 3/3] x86/tdx: Provide stub tdx_accept_memory() for
+ non-TDX configs
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Michael Kelley <mhkelley58@gmail.com>,
+ Nikolay Borisov <nik.borisov@suse.com>, Peter Zijlstra
+ <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Tom Lendacky <thomas.lendacky@amd.com>, x86@kernel.org,
+ Dexuan Cui <decui@microsoft.com>, linux-hyperv@vger.kernel.org,
+ stefan.bader@canonical.com, tim.gardner@canonical.com,
+ roxana.nicolescu@canonical.com, cascardo@canonical.com, kys@microsoft.com,
+ haiyangz@microsoft.com, wei.liu@kernel.org, sashal@kernel.org,
+ stable@vger.kernel.org
+References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
+ <20231122170106.270266-3-jpiotrowski@linux.microsoft.com>
+ <20231123141113.l3kwputphhj3hxub@box.shutemov.name>
+Content-Language: en-US
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <20231123141113.l3kwputphhj3hxub@box.shutemov.name>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-The rtlwifi driver comes with custom code to write into PCIe Link
-Control register. RMW access for the Link Control register requires
-locking that is already provided by the standard PCIe capability
-accessors.
+On 23/11/2023 15:11, Kirill A. Shutemov wrote:
+> On Wed, Nov 22, 2023 at 06:01:06PM +0100, Jeremi Piotrowski wrote:
+>> When CONFIG_INTEL_TDX_GUEST is not defined but CONFIG_UNACCEPTED_MEMORY=y is,
+>> the kernel fails to link with an undefined reference to tdx_accept_memory from
+>> arch_accept_memory. Provide a stub for tdx_accept_memory to fix the build for
+>> that configuration.
+>>
+>> CONFIG_UNACCEPTED_MEMORY is also selected by CONFIG_AMD_MEM_ENCRYPT, and there
+>> are stubs for snp_accept_memory for when it is not defined. Previously this did
+>> not result in an error when CONFIG_INTEL_TDX_GUEST was not defined because the
+>> branch that references tdx_accept_memory() was being discarded due to
+>> DISABLE_TDX_GUEST being set.
+> 
+> And who unsets it now?
+> 
 
-Convert the custom RMW code writing into LNKCTL register to standard
-RMW capability accessors. The accesses are changed to cover the full
-LNKCTL register instead of touching just a single byte of the register.
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
----
- drivers/net/wireless/realtek/rtlwifi/pci.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 206eca310cd7..b118df035243 100644
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_device_pci_aspm(
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 
-+	value &= PCI_EXP_LNKCTL_ASPMC;
-+
- 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
--		value |= 0x40;
-+		value |= PCI_EXP_LNKCTL_CCC;
- 
--	pci_write_config_byte(rtlpci->pdev, 0x80, value);
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC | value,
-+					   value);
- 
- 	return false;
- }
- 
--/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
--static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
-+/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
-+static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
- {
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 
--	pci_write_config_byte(rtlpci->pdev, 0x81, value);
-+	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
-+
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_CLKREQ_EN,
-+					   value);
- 
- 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
- 		udelay(100);
-@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct ieee80211_hw *hw)
- 
- 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
- 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
--					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
-+					     RT_RF_OFF_LEVL_CLK_REQ) ?
-+					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
- 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
- 	}
- 	udelay(100);
--- 
-2.30.2
-
+Who unsets what now? DISABLE_TDX_GUEST still works the same as before, but patch 2
+changed the check in arch_accept_memory() to be more specific
+(cc_platform_has(CC_ATTR_TDX_MODULE_CALLS)). The stub should have been there all
+along for CONFIG_AMD_MEM_ENCRPYT=y && CONFIG_INTEL_TDX_GUEST=n configs, but it
+happened to work without it.
 
