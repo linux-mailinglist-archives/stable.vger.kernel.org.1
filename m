@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-1158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D757F7E4C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C59D7F7C29
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F14E72821B4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A30E2B20D37
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CE63BB20;
-	Fri, 24 Nov 2023 18:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB65A3A8C6;
+	Fri, 24 Nov 2023 18:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoKKJIkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYOxorxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CC33A8C3;
-	Fri, 24 Nov 2023 18:31:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F74C433C8;
-	Fri, 24 Nov 2023 18:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600BD364A4;
+	Fri, 24 Nov 2023 18:12:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC14EC433C8;
+	Fri, 24 Nov 2023 18:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850704;
-	bh=Gop8RtRf1euWcsSR598Tm5xljh3I3eBEp+A0OgL63vU=;
+	s=korg; t=1700849546;
+	bh=NYu2Oi/AUBD0WkNokMpRz0d4UZhsrLI/n0yuVstOhLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zoKKJIkQeToKSDFiF1jeoytWEWjci2lFWCfCxbWavFLnQt+BdBwK4szbWBekfw2ts
-	 YbIO1Qe9t9KnWcopcrq0u/fPAdNNNFRSxn6g/tmqwoUjd/kkQdfmBoRSZqST93fY28
-	 u/3s3BEXgOFdsFlogfyQSL3ZISbNKukPk8bPWJ1I=
+	b=KYOxorxzrPHT4VVm5/DJqC3dlBRT7DKpNBUEbSOabnutEX/KBoMShAQtpKOcEJp5L
+	 AKg04QIjnSApkrIVWi5kMaSagqMnDM+KJzpfxzqWq/npHNHUBE4uvTOyPZCxs6PnpB
+	 +2tBvinPX6GpglWjXypRmEhbZ/WEU650QRf4trzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Rob Herring <robh@kernel.org>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 155/491] dt-bindings: serial: fix regex pattern for matching serial node children
+Subject: [PATCH 6.6 225/530] net/mlx5: Increase size of irq name buffer
 Date: Fri, 24 Nov 2023 17:46:31 +0000
-Message-ID: <20231124172029.132824192@linuxfoundation.org>
+Message-ID: <20231124172034.900076127@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +55,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 42851dfd4dbe38e34724a00063a9fad5cfc48dcd ]
+[ Upstream commit 3338bebfc26a1e2cebbba82a1cf12c0159608e73 ]
 
-The regular expression pattern for matching serial node children should
-accept only nodes starting and ending with the set of words: bluetooth,
-gnss, gps or mcu.  Add missing brackets to enforce such matching.
+Without increased buffer size, will trigger -Wformat-truncation with W=1
+for the snprintf operation writing to the buffer.
 
-Fixes: 0c559bc8abfb ("dt-bindings: serial: restrict possible child node names")
-Reported-by: Andreas Kemnade <andreas@kemnade.info>
-Closes: https://lore.kernel.org/all/20231004170021.36b32465@aktux/
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20231005093247.128166-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c: In function 'mlx5_irq_alloc':
+    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:296:7: error: '@pci:' directive output may be truncated writing 5 bytes into a region of size between 1 and 32 [-Werror=format-truncation=]
+      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
+          |       ^~~~~
+    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:295:2: note: 'snprintf' output 6 or more bytes (assuming 37) into a destination of size 32
+      295 |  snprintf(irq->name, MLX5_MAX_IRQ_NAME,
+          |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
+          |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: ada9f5d00797 ("IB/mlx5: Fix eq names to display nicely in /proc/interrupts")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-13-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/serial/serial.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 6 +++---
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h | 3 +++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/serial.yaml b/Documentation/devicetree/bindings/serial/serial.yaml
-index ea277560a5966..5727bd549deca 100644
---- a/Documentation/devicetree/bindings/serial/serial.yaml
-+++ b/Documentation/devicetree/bindings/serial/serial.yaml
-@@ -96,7 +96,7 @@ then:
-     rts-gpios: false
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index 653648216730a..4dcf995cb1a20 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -28,7 +28,7 @@
+ struct mlx5_irq {
+ 	struct atomic_notifier_head nh;
+ 	cpumask_var_t mask;
+-	char name[MLX5_MAX_IRQ_NAME];
++	char name[MLX5_MAX_IRQ_FORMATTED_NAME];
+ 	struct mlx5_irq_pool *pool;
+ 	int refcount;
+ 	struct msi_map map;
+@@ -292,8 +292,8 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
+ 	else
+ 		irq_sf_set_name(pool, name, i);
+ 	ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
+-	snprintf(irq->name, MLX5_MAX_IRQ_NAME,
+-		 "%s@pci:%s", name, pci_name(dev->pdev));
++	snprintf(irq->name, MLX5_MAX_IRQ_FORMATTED_NAME,
++		 MLX5_IRQ_NAME_FORMAT_STR, name, pci_name(dev->pdev));
+ 	err = request_irq(irq->map.virq, irq_int_handler, 0, irq->name,
+ 			  &irq->nh);
+ 	if (err) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
+index d3a77a0ab8488..c4d377f8df308 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
+@@ -7,6 +7,9 @@
+ #include <linux/mlx5/driver.h>
  
- patternProperties:
--  "^bluetooth|gnss|gps|mcu$":
-+  "^(bluetooth|gnss|gps|mcu)$":
-     if:
-       type: object
-     then:
+ #define MLX5_MAX_IRQ_NAME (32)
++#define MLX5_IRQ_NAME_FORMAT_STR ("%s@pci:%s")
++#define MLX5_MAX_IRQ_FORMATTED_NAME \
++	(MLX5_MAX_IRQ_NAME + sizeof(MLX5_IRQ_NAME_FORMAT_STR))
+ /* max irq_index is 2047, so four chars */
+ #define MLX5_MAX_IRQ_IDX_CHARS (4)
+ #define MLX5_EQ_REFS_PER_IRQ (2)
 -- 
 2.42.0
 
