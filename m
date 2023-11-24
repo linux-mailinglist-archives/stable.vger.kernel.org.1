@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36457F7F2E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A27B7F80E0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57011B218C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B104EB21A3C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED062D787;
-	Fri, 24 Nov 2023 18:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CF435F1A;
+	Fri, 24 Nov 2023 18:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCM7hUGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQSDNuZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599602FC21;
-	Fri, 24 Nov 2023 18:39:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BB4C433C8;
-	Fri, 24 Nov 2023 18:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3492E64F;
+	Fri, 24 Nov 2023 18:53:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45C6C433C8;
+	Fri, 24 Nov 2023 18:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851154;
-	bh=bmVD8kZ78jc3yCs8QyUpPRI7kdOSfsHNciC1eOQGs1M=;
+	s=korg; t=1700852012;
+	bh=aEFiETwFnrYsmdbfZIL996AJYK8Ma6W+MeVUPtfOKPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCM7hUGLvR7umJCwUrzCHbhHJ0W+1AuiONMoo7CtcoFMR7aREonc1m0++oxAe87MV
-	 TlS55nE+4DU7FdM1e2MJ1iwuW0BCIrW5cgA8W/efEBaOtf3mmbFuYh2ktaWgvgwhOZ
-	 I1A8o2awqB182nMpnzJwXE1VRqBmYO+lUCLoYME8=
+	b=OQSDNuZYlAolvLMlIk48TM1cr1O21+ecuWjFraqfGl7OwzBl0iNZ7KZgQJp0jmCNr
+	 8MkxgV5Cja8ZUfdtAOsym3W9igd3oCbj8TWUSNgDM+usdhEJkk5p2AsICkv6pPFlKo
+	 sXU80gI1AlCrNdJhYKNlqbm4ok0Uxbvlosg5cIPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Lentin <jm@lentin.co.uk>,
-	Martin Kepplinger <martink@posteo.de>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.5 335/491] hid: lenovo: Resend all settings on reset_resume for compact keyboards
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.1 184/372] hvc/xen: fix event channel handling for secondary consoles
 Date: Fri, 24 Nov 2023 17:49:31 +0000
-Message-ID: <20231124172034.636716040@linuxfoundation.org>
+Message-ID: <20231124172016.596050782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,119 +50,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Lentin <jm@lentin.co.uk>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-commit 2f2bd7cbd1d1548137b351040dc4e037d18cdfdc upstream.
+commit ef5dd8ec88ac11e8e353164407d55b73c988b369 upstream.
 
-The USB Compact Keyboard variant requires a reset_resume function to
-restore keyboard configuration after a suspend in some situations. Move
-configuration normally done on probe to lenovo_features_set_cptkbd(), then
-recycle this for use on reset_resume.
+The xencons_connect_backend() function allocates a local interdomain
+event channel with xenbus_alloc_evtchn(), then calls
+bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
+*remote* domain.
 
-Without, the keyboard and driver would end up in an inconsistent state,
-breaking middle-button scrolling amongst other problems, and twiddling
-sysfs values wouldn't help as the middle-button mode won't be set until
-the driver is reloaded.
+That doesn't work very well:
 
-Tested on a USB and Bluetooth Thinkpad Compact Keyboard.
+(qemu) device_add xen-console,id=con1,chardev=pty0
+[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
+[   44.323995] xenconsole: probe of console-1 failed with error -2
 
-CC: stable@vger.kernel.org
-Fixes: 94eefa271323 ("HID: lenovo: Use native middle-button mode for compact keyboards")
-Signed-off-by: Jamie Lentin <jm@lentin.co.uk>
-Signed-off-by: Martin Kepplinger <martink@posteo.de>
-Link: https://lore.kernel.org/r/20231002150914.22101-1-martink@posteo.de
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
+by just binding that *local* event channel to an irq. The backend will
+do the interdomain binding.
+
+This didn't affect the primary console because the setup for that is
+special — the toolstack allocates the guest event channel and the guest
+discovers it with HVMOP_get_param.
+
+Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-lenovo.c |   50 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 16 deletions(-)
+ drivers/tty/hvc/hvc_xen.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -526,6 +526,19 @@ static void lenovo_features_set_cptkbd(s
- 	int ret;
- 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
- 
-+	/*
-+	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
-+	 * regular keys
-+	 */
-+	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
-+	if (ret)
-+		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
-+
-+	/* Switch middle button to native mode */
-+	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
-+	if (ret)
-+		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
-+
- 	ret = lenovo_send_cmd_cptkbd(hdev, 0x05, cptkbd_data->fn_lock);
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -436,7 +436,7 @@ static int xencons_connect_backend(struc
  	if (ret)
- 		hid_err(hdev, "Fn-lock setting failed: %d\n", ret);
-@@ -1148,22 +1161,6 @@ static int lenovo_probe_cptkbd(struct hi
- 	}
- 	hid_set_drvdata(hdev, cptkbd_data);
- 
--	/*
--	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
--	 * regular keys (Compact only)
--	 */
--	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
--	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
--		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
--		if (ret)
--			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
--	}
--
--	/* Switch middle button to native mode */
--	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
--	if (ret)
--		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
--
- 	/* Set keyboard settings to known state */
- 	cptkbd_data->middlebutton_state = 0;
- 	cptkbd_data->fn_lock = true;
-@@ -1286,6 +1283,24 @@ err:
- 	return ret;
- }
- 
-+#ifdef CONFIG_PM
-+static int lenovo_reset_resume(struct hid_device *hdev)
-+{
-+	switch (hdev->product) {
-+	case USB_DEVICE_ID_LENOVO_CUSBKBD:
-+	case USB_DEVICE_ID_LENOVO_TPIIUSBKBD:
-+		if (hdev->type == HID_TYPE_USBMOUSE)
-+			lenovo_features_set_cptkbd(hdev);
-+
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
- static void lenovo_remove_tpkbd(struct hid_device *hdev)
- {
- 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
-@@ -1402,6 +1417,9 @@ static struct hid_driver lenovo_driver =
- 	.raw_event = lenovo_raw_event,
- 	.event = lenovo_event,
- 	.report_fixup = lenovo_report_fixup,
-+#ifdef CONFIG_PM
-+	.reset_resume = lenovo_reset_resume,
-+#endif
- };
- module_hid_driver(lenovo_driver);
- 
+ 		return ret;
+ 	info->evtchn = evtchn;
+-	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
++	irq = bind_evtchn_to_irq_lateeoi(evtchn);
+ 	if (irq < 0)
+ 		return irq;
+ 	info->irq = irq;
 
 
 
