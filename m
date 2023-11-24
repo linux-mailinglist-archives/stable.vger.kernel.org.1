@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-1682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A27B7F80E0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AE47F7F2D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B104EB21A3C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3BD01C2145D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CF435F1A;
-	Fri, 24 Nov 2023 18:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F7137170;
+	Fri, 24 Nov 2023 18:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OQSDNuZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4pn9vMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3492E64F;
-	Fri, 24 Nov 2023 18:53:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D45C6C433C8;
-	Fri, 24 Nov 2023 18:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA05128DA1;
+	Fri, 24 Nov 2023 18:39:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5740DC433C7;
+	Fri, 24 Nov 2023 18:39:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852012;
-	bh=aEFiETwFnrYsmdbfZIL996AJYK8Ma6W+MeVUPtfOKPU=;
+	s=korg; t=1700851156;
+	bh=FrYkw7ZLUUAeOta6puDJPmR2PX5nS1CQOcvoM+LYG58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OQSDNuZYlAolvLMlIk48TM1cr1O21+ecuWjFraqfGl7OwzBl0iNZ7KZgQJp0jmCNr
-	 8MkxgV5Cja8ZUfdtAOsym3W9igd3oCbj8TWUSNgDM+usdhEJkk5p2AsICkv6pPFlKo
-	 sXU80gI1AlCrNdJhYKNlqbm4ok0Uxbvlosg5cIPw=
+	b=s4pn9vMhxlMGspKRIdOPJyvZnaVIbSMeNu3oHy7rpZzw6vmm0ClHBlxbvhfEZN/y0
+	 Bq8GKb2z3M88zyP8qcsC3JUcKxLzjK+EJEELRqgZKAsVZW8TK+S63nGj3NV9wwI4+9
+	 tsKwPOS8+3KchvKFAgo+bU6Hm2OcX3vhUCqDDnVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.1 184/372] hvc/xen: fix event channel handling for secondary consoles
-Date: Fri, 24 Nov 2023 17:49:31 +0000
-Message-ID: <20231124172016.596050782@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.5 336/491] ASoC: codecs: wsa-macro: fix uninitialized stack variables with name prefix
+Date: Fri, 24 Nov 2023 17:49:32 +0000
+Message-ID: <20231124172034.667603146@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +50,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit ef5dd8ec88ac11e8e353164407d55b73c988b369 upstream.
+commit 72151ad0cba8a07df90130ff62c979520d71f23b upstream.
 
-The xencons_connect_backend() function allocates a local interdomain
-event channel with xenbus_alloc_evtchn(), then calls
-bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
-*remote* domain.
+Driver compares widget name in wsa_macro_spk_boost_event() widget event
+callback, however it does not handle component's name prefix.  This
+leads to using uninitialized stack variables as registers and register
+values.  Handle gracefully such case.
 
-That doesn't work very well:
-
-(qemu) device_add xen-console,id=con1,chardev=pty0
-[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
-[   44.323995] xenconsole: probe of console-1 failed with error -2
-
-Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
-by just binding that *local* event channel to an irq. The backend will
-do the interdomain binding.
-
-This didn't affect the primary console because the setup for that is
-special — the toolstack allocates the guest event channel and the guest
-discovers it with HVMOP_get_param.
-
-Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
+Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231003155422.801160-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/hvc/hvc_xen.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/lpass-wsa-macro.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -436,7 +436,7 @@ static int xencons_connect_backend(struc
- 	if (ret)
- 		return ret;
- 	info->evtchn = evtchn;
--	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
-+	irq = bind_evtchn_to_irq_lateeoi(evtchn);
- 	if (irq < 0)
- 		return irq;
- 	info->irq = irq;
+--- a/sound/soc/codecs/lpass-wsa-macro.c
++++ b/sound/soc/codecs/lpass-wsa-macro.c
+@@ -1685,6 +1685,9 @@ static int wsa_macro_spk_boost_event(str
+ 		boost_path_cfg1 = CDC_WSA_RX1_RX_PATH_CFG1;
+ 		reg = CDC_WSA_RX1_RX_PATH_CTL;
+ 		reg_mix = CDC_WSA_RX1_RX_PATH_MIX_CTL;
++	} else {
++		dev_warn(component->dev, "Incorrect widget name in the driver\n");
++		return -EINVAL;
+ 	}
+ 
+ 	switch (event) {
 
 
 
