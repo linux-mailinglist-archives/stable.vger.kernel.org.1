@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 908997F8428
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 597887F83A1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C213D1C2725D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4C02B266EB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8D9381A2;
-	Fri, 24 Nov 2023 19:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069A9364C4;
+	Fri, 24 Nov 2023 19:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwE6M5K3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpSyOyj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A50339BE;
-	Fri, 24 Nov 2023 19:24:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FE5C433C9;
-	Fri, 24 Nov 2023 19:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC00A3173F;
+	Fri, 24 Nov 2023 19:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47820C433C7;
+	Fri, 24 Nov 2023 19:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853872;
-	bh=T4KP2FqDJFju4xG9c+RUIMvYYmHL5NM4klNbAJgwegA=;
+	s=korg; t=1700853565;
+	bh=wplGDPY0ZIjtiuUWBYPGmsDRXmGQofpCyF1r2mB9SnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CwE6M5K3Nb7ICjXk5q6Bg6q+MO1Y9q19Kh6slAqezrvGoIUNwFpnecsGulr1kD7qv
-	 Dnpy42ZMi1OD0cy/OR2j7iczaxdgYetZmLEiBGCxIqS3MdUPl1NAf5Do1ueiJKlche
-	 7GJl48m3jKwUHqVvKdTUHjgM4JFPyuUI0rRyZsro=
+	b=zpSyOyj3tssPPMUuZIK4gTOtRrnbw8bdlJoCL1hSU3SpwtHgDRMyktv58SYRKW3ud
+	 c9DrpDxlpmaazr4fOEtORCp1VzKGlvdAkJrLN2FZV2TxAqljCLTGwxjfxF5PtNRR2K
+	 /aV+fE2tUgIKy+W6NVzZPrXWu0tspEXfexangIzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 040/159] kgdb: Flush console before entering kgdb on panic
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 215/297] i2c: core: Run atomic i2c xfer when !preemptible
 Date: Fri, 24 Nov 2023 17:54:17 +0000
-Message-ID: <20231124171943.593667673@linuxfoundation.org>
+Message-ID: <20231124172007.745817304@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,64 +55,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-[ Upstream commit dd712d3d45807db9fcae28a522deee85c1f2fde6 ]
+commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
 
-When entering kdb/kgdb on a kernel panic, it was be observed that the
-console isn't flushed before the `kdb` prompt came up. Specifically,
-when using the buddy lockup detector on arm64 and running:
-  echo HARDLOCKUP > /sys/kernel/debug/provoke-crash/DIRECT
+Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
+disabled. However, non-atomic i2c transfers require preemption (e.g. in
+wait_for_completion() while waiting for the DMA).
 
-I could see:
-  [   26.161099] lkdtm: Performing direct entry HARDLOCKUP
-  [   32.499881] watchdog: Watchdog detected hard LOCKUP on cpu 6
-  [   32.552865] Sending NMI from CPU 5 to CPUs 6:
-  [   32.557359] NMI backtrace for cpu 6
-  ... [backtrace for cpu 6] ...
-  [   32.558353] NMI backtrace for cpu 5
-  ... [backtrace for cpu 5] ...
-  [   32.867471] Sending NMI from CPU 5 to CPUs 0-4,7:
-  [   32.872321] NMI backtrace forP cpuANC: Hard LOCKUP
+panic() calls preempt_disable_notrace() before calling
+emergency_restart(). Therefore, if an i2c device is used for the
+restart, the xfer should be atomic. This avoids warnings like:
 
-  Entering kdb (current=..., pid 0) on processor 5 due to Keyboard Entry
-  [5]kdb>
+[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+[   12.676926] Voluntary context switch within RCU read-side critical section!
+...
+[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+...
+[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+[   13.001050]  machine_restart from panic+0x2a8/0x32c
 
-As you can see, backtraces for the other CPUs start printing and get
-interleaved with the kdb PANIC print.
+Use !preemptible() instead, which is basically the same check as
+pre-v5.2.
 
-Let's replicate the commands to flush the console in the kdb panic
-entry point to avoid this.
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20230822131945.1.I5b460ae8f954e4c4f628a373d6e74713c06dd26f@changeid
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+Cc: stable@vger.kernel.org # v5.2+
+Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Acked-by: Wolfram Sang <wsa@kernel.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/debug_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/i2c-core.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
-index f88611fadb195..1ab2e97034868 100644
---- a/kernel/debug/debug_core.c
-+++ b/kernel/debug/debug_core.c
-@@ -945,6 +945,9 @@ void kgdb_panic(const char *msg)
- 	if (panic_timeout)
- 		return;
+--- a/drivers/i2c/i2c-core.h
++++ b/drivers/i2c/i2c-core.h
+@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
+  */
+ static inline bool i2c_in_atomic_xfer_mode(void)
+ {
+-	return system_state > SYSTEM_RUNNING && irqs_disabled();
++	return system_state > SYSTEM_RUNNING && !preemptible();
+ }
  
-+	debug_locks_off();
-+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
-+
- 	if (dbg_kdb_mode)
- 		kdb_printf("PANIC: %s\n", msg);
- 
--- 
-2.42.0
-
+ static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
 
 
 
