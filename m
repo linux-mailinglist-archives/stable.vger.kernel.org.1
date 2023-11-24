@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1997B7F7EA5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4402E7F8089
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF092B2178B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA42FB215A4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B88B2E655;
-	Fri, 24 Nov 2023 18:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193A933CCA;
+	Fri, 24 Nov 2023 18:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1mnPs/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMIRae+Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C041C37170;
-	Fri, 24 Nov 2023 18:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F50AC433C7;
-	Fri, 24 Nov 2023 18:34:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD17931748;
+	Fri, 24 Nov 2023 18:50:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598B3C433C7;
+	Fri, 24 Nov 2023 18:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850887;
-	bh=AQlF/LcFjdnHI/M6+7vnGH+yCK0qMTzsHmgr5R9Gm/A=;
+	s=korg; t=1700851833;
+	bh=9VlqoIBOZbEp29Xc3meXqH1QhsNsy6alLmg+oRRiA1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1mnPs/cKH4PVLkmKDazz5yz8oxPEs9gxtyrzFWWQnE7Aqlwl5z9Z2Ov7KxARssSO
-	 +qvSgVIJfJQUDGdWYRVv5DziI4mqnCIOMRLbtmXB80I5Mahg84+vWKpqTCzu5lhhgO
-	 sLQKL8Zp+JFwGTsCy96BIuw2Vt/I93iHsEsKpTI4=
+	b=JMIRae+YJEiBioJpjPOKsH7zCwz59p8ksHvfkb0wJCFquwCgSFIXTwOMp/H1R1zz+
+	 YbZcsQmQBAW1VPtzVMvLOoSNAJadfLHw3v/pBlqVs4HsqW858kPv73W4hdK1kMsZzA
+	 UTkHTnjoRXWCJpaNc+OBHRI7QBMzJVFZRA3vWUbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.5 229/491] powerpc/perf: Fix disabling BHRB and instruction sampling
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/372] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
 Date: Fri, 24 Nov 2023 17:47:45 +0000
-Message-ID: <20231124172031.441443398@linuxfoundation.org>
+Message-ID: <20231124172013.119657873@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +52,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-commit ea142e590aec55ba40c5affb4d49e68c713c63dc upstream.
+[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
 
-When the PMU is disabled, MMCRA is not updated to disable BHRB and
-instruction sampling. This can lead to those features remaining enabled,
-which can slow down a real or emulated CPU.
+Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
+can be used for testing PCIe EP on R-Car S4-8.
 
-Fixes: 1cade527f6e9 ("powerpc/perf: BHRB control to disable BHRB logic when not used")
-Cc: stable@vger.kernel.org # v5.9+
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231018153423.298373-1-npiggin@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/misc/pci_endpoint_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -1371,8 +1371,7 @@ static void power_pmu_disable(struct pmu
- 		/*
- 		 * Disable instruction sampling if it was enabled
- 		 */
--		if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE)
--			val &= ~MMCRA_SAMPLE_ENABLE;
-+		val &= ~MMCRA_SAMPLE_ENABLE;
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 55dc16d8f6adb..18059a12d4e18 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -81,6 +81,7 @@
+ #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
+ #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
+ #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
++#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
  
- 		/* Disable BHRB via mmcra (BHRBRD) for p10 */
- 		if (ppmu->flags & PPMU_ARCH_31)
-@@ -1383,7 +1382,7 @@ static void power_pmu_disable(struct pmu
- 		 * instruction sampling or BHRB.
- 		 */
- 		if (val != mmcra) {
--			mtspr(SPRN_MMCRA, mmcra);
-+			mtspr(SPRN_MMCRA, val);
- 			mb();
- 			isync();
- 		}
+ static DEFINE_IDA(pci_endpoint_test_ida);
+ 
+@@ -996,6 +997,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
++	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
++	  .driver_data = (kernel_ulong_t)&default_data,
++	},
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
+-- 
+2.42.0
+
 
 
 
