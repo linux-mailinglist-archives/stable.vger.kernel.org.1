@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F8D7F7AD3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79EF77F8149
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 437A01C20BC2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AA0BB21677
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DD839FD0;
-	Fri, 24 Nov 2023 17:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6324933E9;
+	Fri, 24 Nov 2023 18:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sTfhn9LL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkyGcMfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BAA381D6;
-	Fri, 24 Nov 2023 17:59:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57486C433C7;
-	Fri, 24 Nov 2023 17:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208E533CFD;
+	Fri, 24 Nov 2023 18:57:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41E7C433C7;
+	Fri, 24 Nov 2023 18:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848740;
-	bh=7Hse4XpD2N4JlgFTUWLEOmANfkQPF9suGA1lKBd2guU=;
+	s=korg; t=1700852232;
+	bh=lY0JS+bnvlxRwsWj8in65kW4Hu9YEgcmoJoeGxEGggo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTfhn9LLEHGTdn0yKG019OsTmVW/sX/7fhK08E34Zq3OHY2qaw35Fbi2pwMZuH+3X
-	 1QM1Pft/grKkW7rfZbKs/wD7pwqxOxluroBpiDrI4ExJHoGxh2BJpFejQy9oFeNSTw
-	 PNI9wxvfJ+5SuZ++RA5G7W3MAcz+hRyv424hPErM=
+	b=wkyGcMfkfM7e46kEDVo2F2hPU7iF62yVklmbVjXAc0Ua1+F9V2MA/6/rysnSudpqq
+	 NiuQUVp5PeISFj1ZvKY/nK/O7fL70wuHlnVEUHxGGxpVpVFNwVYBGGh4yIh9tFl4D2
+	 vI+CIunVDNwpYB25t8zu/7gEBHuiyxLVSHnsfTsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 62/97] mmc: vub300: fix an error code
+	stable <stable@kernel.org>,
+	Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Subject: [PATCH 6.1 248/372] mcb: fix error handling for different scenarios when parsing
 Date: Fri, 24 Nov 2023 17:50:35 +0000
-Message-ID: <20231124171936.454460285@linuxfoundation.org>
+Message-ID: <20231124172018.798992049@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +51,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
+commit 63ba2d07b4be72b94216d20561f43e1150b25d98 upstream.
 
-This error path should return -EINVAL instead of success.
+chameleon_parse_gdd() may fail for different reasons and end up
+in the err tag. Make sure we at least always free the mcb_device
+allocated with mcb_alloc_dev().
 
-Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+If mcb_device_register() fails, make sure to give up the reference
+in the same place the device was added.
+
+Fixes: 728ac3389296 ("mcb: mcb-parse: fix error handing in chameleon_parse_gdd()")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Link: https://lore.kernel.org/r/20231019141434.57971-2-jorge.sanjuangarcia@duagon.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/vub300.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mcb/mcb-core.c  |    1 +
+ drivers/mcb/mcb-parse.c |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/vub300.c
-+++ b/drivers/mmc/host/vub300.c
-@@ -2321,6 +2321,7 @@ static int vub300_probe(struct usb_inter
- 		vub300->read_only =
- 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
- 	} else {
-+		retval = -EINVAL;
- 		goto error5;
- 	}
- 	usb_set_intfdata(interface, vub300);
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -246,6 +246,7 @@ int mcb_device_register(struct mcb_bus *
+ 	return 0;
+ 
+ out:
++	put_device(&dev->dev);
+ 
+ 	return ret;
+ }
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -106,7 +106,7 @@ static int chameleon_parse_gdd(struct mc
+ 	return 0;
+ 
+ err:
+-	put_device(&mdev->dev);
++	mcb_free_dev(mdev);
+ 
+ 	return ret;
+ }
 
 
 
