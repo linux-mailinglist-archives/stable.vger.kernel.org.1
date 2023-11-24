@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A07D7F83EC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16507F8247
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E2A6B273D4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BE1BB23A58
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB7337170;
-	Fri, 24 Nov 2023 19:22:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA493364B7;
+	Fri, 24 Nov 2023 19:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zrw8gWUt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxdgPcy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639422E853;
-	Fri, 24 Nov 2023 19:22:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD2F4C433C8;
-	Fri, 24 Nov 2023 19:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A5234189;
+	Fri, 24 Nov 2023 19:06:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C999C433C8;
+	Fri, 24 Nov 2023 19:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853733;
-	bh=E2LFyLBrR+Mtc0ZdtrX07ZE6esTgNQdcAccg5w4GYss=;
+	s=korg; t=1700852769;
+	bh=qBM8iPe989n4S22Vy/tJ5427yWtLAsZjhakQg9rvrKs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zrw8gWUt6AWkOAWvT07umzEu9ndhdaPZ+7o+m7qim3ceFgyEAr701z/qE9qPuUes+
-	 WdZIrAL+hkoYXwg6O6gp1BLZ+K05AYMdLKpjszCYQZRHSqyVue+Ig7CTstFuFvfAgc
-	 jnV6m40qYPQCVrnlZpbIu5hPu0kkmWRxYC+G19zs=
+	b=pxdgPcy9MszRmIJ3IDxonx0uULlKangNyVqsmFghTLQUXRav+bUwmjEnmolqDObfT
+	 WGTHoW9CHM7kiGz5jYC+tn43mwGkGXmJwDcY/TaTH6cQCi54yHXyBvYyKjxgIfGpv2
+	 Hqw2Ftd2vG+vxE4FEn6BidL5aWKxEJrSS4nQIlWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 001/159] locking/ww_mutex/test: Fix potential workqueue corruption
+	linux-hardening@vger.kernel.org,
+	Lukas Loidolt <e1634039@student.tuwien.ac.at>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH 5.10 091/193] randstruct: Fix gcc-plugin performance mode to stay in group
 Date: Fri, 24 Nov 2023 17:53:38 +0000
-Message-ID: <20231124171941.971185677@linuxfoundation.org>
+Message-ID: <20231124171950.894665873@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,124 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit bccdd808902f8c677317cec47c306e42b93b849e ]
+commit 381fdb73d1e2a48244de7260550e453d1003bb8e upstream.
 
-In some cases running with the test-ww_mutex code, I was seeing
-odd behavior where sometimes it seemed flush_workqueue was
-returning before all the work threads were finished.
+The performance mode of the gcc-plugin randstruct was shuffling struct
+members outside of the cache-line groups. Limit the range to the
+specified group indexes.
 
-Often this would cause strange crashes as the mutexes would be
-freed while they were being used.
-
-Looking at the code, there is a lifetime problem as the
-controlling thread that spawns the work allocates the
-"struct stress" structures that are passed to the workqueue
-threads. Then when the workqueue threads are finished,
-they free the stress struct that was passed to them.
-
-Unfortunately the workqueue work_struct node is in the stress
-struct. Which means the work_struct is freed before the work
-thread returns and while flush_workqueue is waiting.
-
-It seems like a better idea to have the controlling thread
-both allocate and free the stress structures, so that we can
-be sure we don't corrupt the workqueue by freeing the structure
-prematurely.
-
-So this patch reworks the test to do so, and with this change
-I no longer see the early flush_workqueue returns.
-
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230922043616.19282-3-jstultz@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: linux-hardening@vger.kernel.org
+Cc: stable@vger.kernel.org
+Reported-by: Lukas Loidolt <e1634039@student.tuwien.ac.at>
+Closes: https://lore.kernel.org/all/f3ca77f0-e414-4065-83a5-ae4c4d25545d@student.tuwien.ac.at
+Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/test-ww_mutex.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ scripts/gcc-plugins/randomize_layout_plugin.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 3e82f449b4ff7..da36997d8742c 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -426,7 +426,6 @@ static void stress_inorder_work(struct work_struct *work)
- 	} while (!time_after(jiffies, stress->timeout));
+--- a/scripts/gcc-plugins/randomize_layout_plugin.c
++++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+@@ -209,12 +209,14 @@ static void partition_struct(tree *field
  
- 	kfree(order);
--	kfree(stress);
- }
- 
- struct reorder_lock {
-@@ -491,7 +490,6 @@ static void stress_reorder_work(struct work_struct *work)
- 	list_for_each_entry_safe(ll, ln, &locks, link)
- 		kfree(ll);
- 	kfree(order);
--	kfree(stress);
- }
- 
- static void stress_one_work(struct work_struct *work)
-@@ -512,8 +510,6 @@ static void stress_one_work(struct work_struct *work)
- 			break;
- 		}
- 	} while (!time_after(jiffies, stress->timeout));
--
--	kfree(stress);
- }
- 
- #define STRESS_INORDER BIT(0)
-@@ -524,15 +520,24 @@ static void stress_one_work(struct work_struct *work)
- static int stress(int nlocks, int nthreads, unsigned int flags)
+ static void performance_shuffle(tree *newtree, unsigned long length, ranctx *prng_state)
  {
- 	struct ww_mutex *locks;
--	int n;
-+	struct stress *stress_array;
-+	int n, count;
+-	unsigned long i, x;
++	unsigned long i, x, index;
+ 	struct partition_group size_group[length];
+ 	unsigned long num_groups = 0;
+ 	unsigned long randnum;
  
- 	locks = kmalloc_array(nlocks, sizeof(*locks), GFP_KERNEL);
- 	if (!locks)
- 		return -ENOMEM;
- 
-+	stress_array = kmalloc_array(nthreads, sizeof(*stress_array),
-+				     GFP_KERNEL);
-+	if (!stress_array) {
-+		kfree(locks);
-+		return -ENOMEM;
-+	}
+ 	partition_struct(newtree, length, (struct partition_group *)&size_group, &num_groups);
 +
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_init(&locks[n], &ww_class);
++	/* FIXME: this group shuffle is currently a no-op. */
+ 	for (i = num_groups - 1; i > 0; i--) {
+ 		struct partition_group tmp;
+ 		randnum = ranval(prng_state) % (i + 1);
+@@ -224,11 +226,14 @@ static void performance_shuffle(tree *ne
+ 	}
  
-+	count = 0;
- 	for (n = 0; nthreads; n++) {
- 		struct stress *stress;
- 		void (*fn)(struct work_struct *work);
-@@ -556,9 +561,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 		if (!fn)
- 			continue;
- 
--		stress = kmalloc(sizeof(*stress), GFP_KERNEL);
--		if (!stress)
--			break;
-+		stress = &stress_array[count++];
- 
- 		INIT_WORK(&stress->work, fn);
- 		stress->locks = locks;
-@@ -573,6 +576,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_destroy(&locks[n]);
-+	kfree(stress_array);
- 	kfree(locks);
- 
- 	return 0;
--- 
-2.42.0
-
+ 	for (x = 0; x < num_groups; x++) {
+-		for (i = size_group[x].start + size_group[x].length - 1; i > size_group[x].start; i--) {
++		for (index = size_group[x].length - 1; index > 0; index--) {
+ 			tree tmp;
++
++			i = size_group[x].start + index;
+ 			if (DECL_BIT_FIELD_TYPE(newtree[i]))
+ 				continue;
+-			randnum = ranval(prng_state) % (i + 1);
++			randnum = ranval(prng_state) % (index + 1);
++			randnum += size_group[x].start;
+ 			// we could handle this case differently if desired
+ 			if (DECL_BIT_FIELD_TYPE(newtree[randnum]))
+ 				continue;
 
 
 
