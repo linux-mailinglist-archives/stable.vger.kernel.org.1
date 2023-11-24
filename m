@@ -1,123 +1,102 @@
-Return-Path: <stable+bounces-295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953157F7705
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:57:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FC917F7715
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 16:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B5CE1F20CD1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:57:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41CBB281F2B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A19E2C1B4;
-	Fri, 24 Nov 2023 14:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybIXJ8K+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D61772D7BA;
+	Fri, 24 Nov 2023 15:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829A6647
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B2E7C433C7;
-	Fri, 24 Nov 2023 14:57:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700837831;
-	bh=mdgRQRxjH+EI0Q7sOrXH++et+aHmrr1X2xlTkBWXi9w=;
-	h=Subject:To:Cc:From:Date:From;
-	b=ybIXJ8K+LcmjyozcQAukjuy3sIHxNTzH3dnla43gryacl8YeLNnRD9E9RoNWFSkPe
-	 J04C3gMviWliKjQbwzI89VMJ40EQXM5YBICvIkwhZS6k6zvXPZ4gmu0g6AB4PHxkZ0
-	 SKhC0qBZGovwr7Co18e3mhj2Y5iZwXTDIUycNDkA=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: ungate power gating when system suspend" failed to apply to 6.6-stable tree
-To: perry.yuan@amd.com,alexander.deucher@amd.com,kenneth.feng@amd.com,kevinyang.wang@amd.com,kun.liu2@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 14:57:09 +0000
-Message-ID: <2023112409-fructose-spry-be2c@gregkh>
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E3E6D72;
+	Fri, 24 Nov 2023 07:01:24 -0800 (PST)
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-XMRINFO: Mp0Kj//9VHAxr69bL5MkOOs=
+X-QQ-FEAT: 5q30pvLz2ieQiYrv5Af2uT/XHof+9zwahlTxVP+BvkfSJnSazPUsgzsKXGU5P
+	a77P2TJ3TN4latNmxMv/ljP6WXZdTQ5EaCCcSxInpa0sPcpTkRhSs1z7I68n4BhruvhnPuG
+	iY5JsgqFZZiGJ/4d3Q6qTxwB8YZjyDRHkKzjGiIhZozTMdjdEUMPr1dl8lsWMouXapp+imx
+	3rrOOYWoh7NT9jpQY2QOmd8h/fd+wB/r2cOVqf6J+aZ0WyjdDNXjwF2Z5ue77GIINdeAAgw
+	noL0RMxintuXJp4TJ4VxhOUjBPWtuOpNmrF2Wyx0E0bdOM7izB1P3r0NldrGb0dXtw9Va14
+	DcxKGAhBKCkXlX6BxRjRq085aX6hTn5B950ixacvtCVx0gY8aqAiPhQCcGfB16qYk/ma4u9
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-STYLE: 
+X-QQ-mid: t5gz7a-2t1700837956t5750172
+From: "=?utf-8?B?5YWz5paH5rab?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?c3RhYmxlLWNvbW1pdHM=?=" <stable-commits@vger.kernel.org>
+Cc: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?bWFyY2Vs?=" <marcel@holtmann.org>, "=?utf-8?B?bHVpei5kZW50eg==?=" <luiz.dentz@gmail.com>, "=?utf-8?B?aGlsZGF3dQ==?=" <hildawu@realtek.com>
+Subject: [Re V2]:Patch "Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" has been added to the 5.10-stable tree
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Fri, 24 Nov 2023 14:59:15 +0000
+X-Priority: 3
+Message-ID: <tencent_13CC3606408C86A21D09FB05@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20231124043548.86153-1-sashal@kernel.org>
+	<tencent_27789A681229CCB77BE3E186@qq.com>
+In-Reply-To: <tencent_27789A681229CCB77BE3E186@qq.com>
+X-QQ-ReplyHash: 1213644692
+X-BIZMAIL-ID: 508532518924342186
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Fri, 24 Nov 2023 22:59:18 +0800 (CST)
+Feedback-ID: t:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-2
 
-
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 886b92f63573eab4ba30b06c4514b8f4af114e6a
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112409-fructose-spry-be2c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-886b92f63573 ("drm/amdgpu: ungate power gating when system suspend")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 886b92f63573eab4ba30b06c4514b8f4af114e6a Mon Sep 17 00:00:00 2001
-From: Perry Yuan <perry.yuan@amd.com>
-Date: Thu, 27 Jul 2023 01:45:30 -0400
-Subject: [PATCH] drm/amdgpu: ungate power gating when system suspend
-
-[Why] During suspend, if GFX DPM is enabled and GFXOFF feature is
-enabled the system may get hung. So, it is suggested to disable
-GFXOFF feature during suspend and enable it after resume.
-
-[How] Update the code to disable GFXOFF feature during suspend and enable
-it after resume.
-
-[  311.396526] amdgpu 0000:03:00.0: amdgpu: SMU: I'm not done with your previous command: SMN_C2PMSG_66:0x0000001E SMN_C2PMSG_82:0x00000000
-[  311.396530] amdgpu 0000:03:00.0: amdgpu: Fail to disable dpm features!
-[  311.396531] [drm:amdgpu_device_ip_suspend_phase2 [amdgpu]] *ERROR* suspend of IP block <smu> failed -62
-
-Acked-by: Yang Wang <kevinyang.wang@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Perry Yuan <perry.yuan@amd.com>
-Signed-off-by: Kun Liu <kun.liu2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index dafb8cc1c684..c8a3bf01743f 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -3498,6 +3498,8 @@ static void gfx_v10_0_ring_invalidate_tlbs(struct amdgpu_ring *ring,
- static void gfx_v10_0_update_spm_vmid_internal(struct amdgpu_device *adev,
- 					       unsigned int vmid);
- 
-+static int gfx_v10_0_set_powergating_state(void *handle,
-+					  enum amd_powergating_state state);
- static void gfx10_kiq_set_resources(struct amdgpu_ring *kiq_ring, uint64_t queue_mask)
- {
- 	amdgpu_ring_write(kiq_ring, PACKET3(PACKET3_SET_RESOURCES, 6));
-@@ -7179,6 +7181,13 @@ static int gfx_v10_0_hw_fini(void *handle)
- 	amdgpu_irq_put(adev, &adev->gfx.priv_reg_irq, 0);
- 	amdgpu_irq_put(adev, &adev->gfx.priv_inst_irq, 0);
- 
-+	/* WA added for Vangogh asic fixing the SMU suspend failure
-+	 * It needs to set power gating again during gfxoff control
-+	 * otherwise the gfxoff disallowing will be failed to set.
-+	 */
-+	if (amdgpu_ip_version(adev, GC_HWIP, 0) == IP_VERSION(10, 3, 1))
-+		gfx_v10_0_set_powergating_state(handle, AMD_PG_STATE_UNGATE);
-+
- 	if (!adev->no_hw_access) {
- 		if (amdgpu_async_gfx_ring) {
- 			if (amdgpu_gfx_disable_kgq(adev, 0))
+SGVsbG8gTGV2aW46DQoNCiAgICBBcG9sb2dpemUgZm9yIG15IEhUTUwgZm9ybWF0IHBhc3Qu
+SSBkaXNjb3ZlcmVkIHRoYXQgdGhlIGJhY2twb3J0IHBhdGNoZXMgYWxzbyBoYXZlIGRlcGVu
+ZGVuY3kgaW4gNS4xMCBsdHMgdHJlZToNCg0KWzFdaHR0cHM6Ly9naXQua2VybmVsLm9yZy9w
+dWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvc3RhYmxlL2xpbnV4LmdpdC9jb21taXQvP2g9djUu
+MTAuMjAxJmlkPTc1NzQyZmZjMzYzMDIwM2U5NTg0NGM3MmM3MTQ0ZjUwN2UyYTU1N2QNClsy
+XWh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3N0YWJs
+ZS9saW51eC5naXQvY29tbWl0Lz9oPXY1LjEwLjIwMSZpZD00MGUyZTdmMWJmMDMwMWQxZWQ3
+NDM3YjEwZDllMWM5MmNiNTFiZjgxDQpbM11odHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9z
+Y20vbGludXgva2VybmVsL2dpdC9zdGFibGUvbGludXguZ2l0L2NvbW1pdC8/aD12NS4xMC4y
+MDEmaWQ9OWM0NWJiMzYzZTI2ZTg2ZWJhZjIwZjZkMjAwOWJlZGYxOWZjMGQzOQ0KWzRdaHR0
+cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvc3RhYmxlL2xp
+bnV4LmdpdC9jb21taXQvP2g9djUuMTAuMjAxJmlkPTNhMjkyY2IxODEzMmNiN2FmM2ExNDY2
+MTNmMWM5YTQ3ZWY2Zjg0NjMNCls1XWh0dHBzOi8vZ2l0Lmtlcm5lbC5vcmcvcHViL3NjbS9s
+aW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9saW51eC5naXQvY29tbWl0Lz9oPXY1LjEwLjIwMSZp
+ZD0xYTJhMmUzNDU2OWNmODVjYWQ3NDNlZTgwOTVkMDdjM2NiYTU0NzNiDQoNCiAgICBhbmQg
+dXBkYXRlIHZlcnNpb24gMiBkZXBlbmQgcGF0Y2hlcyBsaW5rOg0KDQpbMV0gUlRMODg1MkFF
+OiBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGludXgva2VybmVsL2dpdC90b3J2
+YWxkcy9saW51eC5naXQvY29tbWl0Lz9pZD0wZDQ4NGRiNjBmYzBjNWY4ODQ4OTM5YTYxMDA0
+YzZmYTAxZmFkNjFhDQpbMl0gUlRMODg1MkJFOiBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1
+Yi9zY20vbGludXgva2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQvY29tbWl0Lz9pZD0x
+OGU4MDU1Yzg4MTQyZDhmNmUyM2ViZGMzOGMxMjZlYzM3ODQ0ZTVkIA0KWzNdIFJUTDg4NTJD
+RTogaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvdG9y
+dmFsZHMvbGludXguZ2l0L2NvbW1pdC8/aWQ9OGIxZDY2YjUwNDM3YjY1ZWYxMDlmMzIyNzBi
+ZDkzNmNhNTQzN2E4Mw0KWzRdIEZXOiBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20v
+bGludXgva2VybmVsL2dpdC90b3J2YWxkcy9saW51eC5naXQvY29tbWl0Lz9pZD1jZjBkOWE3
+MDVkODFhMGY1ODE4NjVjZWZlMDg4MGYyOTU4OWRkMDZmDQoNCi0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0NCg0KICBJ
+IHdvdWxkIGxpa2UgdG8gZXhwcmVzcyBteSBncmF0aXR1ZGUgZm9yIHlvdSBlZmZvcnRzLGFu
+ZCBJIHdhbnQgdG8gcHJvdmlkZSB5b3Ugd2l0aCB0aGUgYmFja3BvcnQgdGlwIHdoZW4ga2Vy
+bmVsIDw9NS4xMCA6DQp0aGUgUlRMODg1MntBLEIsQ30gQlQgY2hpcCBzZXJpZXMgZGVwZW5k
+IHBhdGNoZXMgaW4gdGhhdCBwYXRjaCBbMV0odjUuMTEpIGFuZCBsb2FkIG5ldyBmaXJtd2Fy
+ZSBuZWVkIHRoYXQgcGF0Y2ggWzJdKHY1LjQpLg0KQXBvbG9naXplIGZvciBteSBwb29sIEVu
+Z2xpc2guDQoNCmxpbms6DQpbMV0gaHR0cHM6Ly9naXQua2VybmVsLm9yZy9wdWIvc2NtL2xp
+bnV4L2tlcm5lbC9naXQvdG9ydmFsZHMvbGludXguZ2l0L2NvbW1pdC8/aWQ9MGQ0ODRkYjYw
+ZmMwYzVmODg0ODkzOWE2MTAwNGM2ZmEwMWZhZDYxYQ0KWzJdIGh0dHBzOi8vZ2l0Lmtlcm5l
+bC5vcmcvcHViL3NjbS9saW51eC9rZXJuZWwvZ2l0L3RvcnZhbGRzL2xpbnV4LmdpdC9jb21t
+aXQvP2lkPWNmMGQ5YTcwNWQ4MWEwZjU4MTg2NWNlZmUwODgwZjI5NTg5ZGQwNmY=
 
 
