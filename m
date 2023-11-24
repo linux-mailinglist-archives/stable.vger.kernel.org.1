@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631E77F7AC5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37CAA7F7F6F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94F8D1C20932
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B11A7B217CA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F1E39FD0;
-	Fri, 24 Nov 2023 17:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFD05364C3;
+	Fri, 24 Nov 2023 18:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r29FxDFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctsIlies"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DDED381DF;
-	Fri, 24 Nov 2023 17:58:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA49EC433C8;
-	Fri, 24 Nov 2023 17:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A113A364A4;
+	Fri, 24 Nov 2023 18:41:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304D3C433C8;
+	Fri, 24 Nov 2023 18:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848711;
-	bh=BoOcRgJxO4hitAJjFU5Di/qrTTjHEIvBnstmGDd3HIc=;
+	s=korg; t=1700851286;
+	bh=2WJt5NJGN7Q3m0aOpjeemFoVjNR7xShunb5DpWemYQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r29FxDFv0V19gaCd46tK+VSpPC0+jM0zZs3qRvKOEji3QeygKyEYeiz/Ofq8rUMw+
-	 s2Er2DiFs+5aS/iWv1ACNXr1h0pdZLh30chNgMWM+gJTlXPduXhhP8aIWlXtuHSSG9
-	 4sNxrO6+/sGHGgBGq6GISkWuM02MRjg5m8llWN24=
+	b=ctsIliesmZa1cd91B9oiVePLrxmzF45q00YybcwhTLMMlBToB932IXO/Fa9OVMaMB
+	 OQoI6XwABOTr088gAkywCLp5HUgRtGqCj33SoiYTmeEXWjORnl4ODnn/I8OVnzLQ+v
+	 X5D8GyyD/UQFto9Rmk9hERAxmUYSlh/RKwDKGbyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Steinmetz <anstein99@googlemail.com>,
-	John Johansen <john.johanse@canonical.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 4.19 51/97] audit: dont take task_lock() in audit_exe_compare() code path
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.5 388/491] smb3: allow dumping session and tcon id to improve stats analysis and debugging
 Date: Fri, 24 Nov 2023 17:50:24 +0000
-Message-ID: <20231124171936.058337327@linuxfoundation.org>
+Message-ID: <20231124172036.260545403@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +52,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
+commit de4eceab578ead12a71e5b5588a57e142bbe8ceb upstream.
 
-The get_task_exe_file() function locks the given task with task_lock()
-which when used inside audit_exe_compare() can cause deadlocks on
-systems that generate audit records when the task_lock() is held. We
-resolve this problem with two changes: ignoring those cases where the
-task being audited is not the current task, and changing our approach
-to obtaining the executable file struct to not require task_lock().
+When multiple mounts are to the same share from the same client it was not
+possible to determine which section of /proc/fs/cifs/Stats (and DebugData)
+correspond to that mount.  In some recent examples this turned out to  be
+a significant problem when trying to analyze performance data - since
+there are many cases where unless we know the tree id and session id we
+can't figure out which stats (e.g. number of SMB3.1.1 requests by type,
+the total time they take, which is slowest, how many fail etc.) apply to
+which mount. The only existing loosely related ioctl CIFS_IOC_GET_MNT_INFO
+does not return the information needed to uniquely identify which tcon
+is which mount although it does return various flags and device info.
 
-With the intent of the audit exe filter being to filter on audit events
-generated by processes started by the specified executable, it makes
-sense that we would only want to use the exe filter on audit records
-associated with the currently executing process, e.g. @current.  If
-we are asked to filter records using a non-@current task_struct we can
-safely ignore the exe filter without negatively impacting the admin's
-expectations for the exe filter.
+Add a cifs.ko ioctl CIFS_IOC_GET_TCON_INFO (0x800ccf0c) to return tid,
+session id, tree connect count.
 
-Knowing that we only have to worry about filtering the currently
-executing task in audit_exe_compare() we can do away with the
-task_lock() and call get_mm_exe_file() with @current->mm directly.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
-Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
-Reviewed-by: John Johansen <john.johanse@canonical.com>
-Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/audit_watch.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/smb/client/cifs_ioctl.h |    6 ++++++
+ fs/smb/client/ioctl.c      |   25 +++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -557,11 +557,18 @@ int audit_exe_compare(struct task_struct
- 	unsigned long ino;
- 	dev_t dev;
+--- a/fs/smb/client/cifs_ioctl.h
++++ b/fs/smb/client/cifs_ioctl.h
+@@ -26,6 +26,11 @@ struct smb_mnt_fs_info {
+ 	__u64   cifs_posix_caps;
+ } __packed;
  
--	exe_file = get_task_exe_file(tsk);
-+	/* only do exe filtering if we are recording @current events/records */
-+	if (tsk != current)
-+		return 0;
++struct smb_mnt_tcon_info {
++	__u32	tid;
++	__u64	session_id;
++} __packed;
 +
-+	if (WARN_ON_ONCE(!current->mm))
-+		return 0;
-+	exe_file = get_mm_exe_file(current->mm);
- 	if (!exe_file)
- 		return 0;
- 	ino = file_inode(exe_file)->i_ino;
- 	dev = file_inode(exe_file)->i_sb->s_dev;
- 	fput(exe_file);
-+
- 	return audit_mark_compare(mark, ino, dev);
+ struct smb_snapshot_array {
+ 	__u32	number_of_snapshots;
+ 	__u32	number_of_snapshots_returned;
+@@ -108,6 +113,7 @@ struct smb3_notify_info {
+ #define CIFS_IOC_NOTIFY _IOW(CIFS_IOCTL_MAGIC, 9, struct smb3_notify)
+ #define CIFS_DUMP_FULL_KEY _IOWR(CIFS_IOCTL_MAGIC, 10, struct smb3_full_key_debug_info)
+ #define CIFS_IOC_NOTIFY_INFO _IOWR(CIFS_IOCTL_MAGIC, 11, struct smb3_notify_info)
++#define CIFS_IOC_GET_TCON_INFO _IOR(CIFS_IOCTL_MAGIC, 12, struct smb_mnt_tcon_info)
+ #define CIFS_IOC_SHUTDOWN _IOR('X', 125, __u32)
+ 
+ /*
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -117,6 +117,20 @@ out_drop_write:
+ 	return rc;
  }
+ 
++static long smb_mnt_get_tcon_info(struct cifs_tcon *tcon, void __user *arg)
++{
++	int rc = 0;
++	struct smb_mnt_tcon_info tcon_inf;
++
++	tcon_inf.tid = tcon->tid;
++	tcon_inf.session_id = tcon->ses->Suid;
++
++	if (copy_to_user(arg, &tcon_inf, sizeof(struct smb_mnt_tcon_info)))
++		rc = -EFAULT;
++
++	return rc;
++}
++
+ static long smb_mnt_get_fsinfo(unsigned int xid, struct cifs_tcon *tcon,
+ 				void __user *arg)
+ {
+@@ -414,6 +428,17 @@ long cifs_ioctl(struct file *filep, unsi
+ 			tcon = tlink_tcon(pSMBFile->tlink);
+ 			rc = smb_mnt_get_fsinfo(xid, tcon, (void __user *)arg);
+ 			break;
++		case CIFS_IOC_GET_TCON_INFO:
++			cifs_sb = CIFS_SB(inode->i_sb);
++			tlink = cifs_sb_tlink(cifs_sb);
++			if (IS_ERR(tlink)) {
++				rc = PTR_ERR(tlink);
++				break;
++			}
++			tcon = tlink_tcon(tlink);
++			rc = smb_mnt_get_tcon_info(tcon, (void __user *)arg);
++			cifs_put_tlink(tlink);
++			break;
+ 		case CIFS_ENUMERATE_SNAPSHOTS:
+ 			if (pSMBFile == NULL)
+ 				break;
 
 
 
