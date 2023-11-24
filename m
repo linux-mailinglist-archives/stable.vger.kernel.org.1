@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-2332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CB27F83BA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B7F7F8440
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741201C21E4E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63947B233F1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881C035F1A;
-	Fri, 24 Nov 2023 19:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1DF381A2;
+	Fri, 24 Nov 2023 19:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywSsbAX3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZzXZaCA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480672D787;
-	Fri, 24 Nov 2023 19:20:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8711C433C7;
-	Fri, 24 Nov 2023 19:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DD235F04;
+	Fri, 24 Nov 2023 19:25:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6BCEC433C8;
+	Fri, 24 Nov 2023 19:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853621;
-	bh=lh09MgdLJEj/lY9dAgci2e1Nj3GA1BA1C6ZqzyJb8BU=;
+	s=korg; t=1700853928;
+	bh=oSHzqvOAh9w+vbyQMN9ryjiBhMjXYDjgpykh/9upL9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywSsbAX37xbukulPpqmP6/Rk6WYtHMKSSzLQMj8RAs8m5bGnv93tPBaYsSxsdArMr
-	 /See+SLNkdSk4HJAxQbmZKGJAmq4BPo+brmqJ5aP3RwRjPR3oaCBfnbZmINy8xL29r
-	 2HqvVt1dbhVBi5XMJWBsXgKcrZIHkLXDDpz88m5A=
+	b=HZzXZaCAhjzy3jeWjIHm9QCL9HVSsJSHdy+2r4mEfBZ1z9f3AAIu8caZTuOAPNknf
+	 UqrjYQV8p4RAxSyhf+0KGtIkpPkDYt47SD4XvNR5iFa667HJYl1JfZ0opsG0BK6Yfy
+	 0tr0IcgBuu9thAEtOjbbCwAyY6HclU69PHiRnRUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 261/297] net: phylink: initialize carrier state at creation
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 086/159] mmc: vub300: fix an error code
 Date: Fri, 24 Nov 2023 17:55:03 +0000
-Message-ID: <20231124172009.297343414@linuxfoundation.org>
+Message-ID: <20231124171945.502967061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +52,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Klaus Kudielka <klaus.kudielka@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 02d5fdbf4f2b8c406f7a4c98fa52aa181a11d733 upstream.
+commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
 
-Background: Turris Omnia (Armada 385); eth2 (mvneta) connected to SFP bus;
-SFP module is present, but no fiber connected, so definitely no carrier.
+This error path should return -EINVAL instead of success.
 
-After booting, eth2 is down, but netdev LED trigger surprisingly reports
-link active. Then, after "ip link set eth2 up", the link indicator goes
-away - as I would have expected it from the beginning.
-
-It turns out, that the default carrier state after netdev creation is
-"carrier ok". Some ethernet drivers explicitly call netif_carrier_off
-during probing, others (like mvneta) don't - which explains the current
-behaviour: only when the device is brought up, phylink_start calls
-netif_carrier_off.
-
-Fix this for all drivers using phylink, by calling netif_carrier_off in
-phylink_create.
-
-Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
+Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
 Cc: stable@vger.kernel.org
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phylink.c |    1 +
+ drivers/mmc/host/vub300.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -853,6 +853,7 @@ struct phylink *phylink_create(struct ph
- 	pl->config = config;
- 	if (config->type == PHYLINK_NETDEV) {
- 		pl->netdev = to_net_dev(config->dev);
-+		netif_carrier_off(pl->netdev);
- 	} else if (config->type == PHYLINK_DEV) {
- 		pl->dev = config->dev;
+--- a/drivers/mmc/host/vub300.c
++++ b/drivers/mmc/host/vub300.c
+@@ -2318,6 +2318,7 @@ static int vub300_probe(struct usb_inter
+ 		vub300->read_only =
+ 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
  	} else {
++		retval = -EINVAL;
+ 		goto error5;
+ 	}
+ 	usb_set_intfdata(interface, vub300);
 
 
 
