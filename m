@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620357F824B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162B57F8372
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04E2BB23B7C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 369481C25983
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6D535F04;
-	Fri, 24 Nov 2023 19:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA57364C4;
+	Fri, 24 Nov 2023 19:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4sEVnA7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khqhxdzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95934339BE;
-	Fri, 24 Nov 2023 19:06:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1873DC433C7;
-	Fri, 24 Nov 2023 19:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2052C1A2;
+	Fri, 24 Nov 2023 19:17:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8399C433C7;
+	Fri, 24 Nov 2023 19:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852782;
-	bh=2RCne5sGsxQHx+wge2QhFIDg9ulH4CtPN0aNgxSnfUA=;
+	s=korg; t=1700853461;
+	bh=k0eFp1vAsjTpIX4pG1zrg7XeqslEIeM8W+b7An6zZp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4sEVnA7fQHgIV3DRJbuxcv+p2LyqSSb6ZsHsss5NXJvsH8Y+curBeBXm7RZLEPZa
-	 MD8Mh6sgZU7fqu0XZQ8v7xgnxkqdB5pqxMawa+jKzo6WJXkc5RJWxD+HxTNuuZFLjs
-	 ohjSXo1AwTgWt92CRoGmpvt5mK34iYDaXAuNNeq8=
+	b=khqhxdzcoUpsQTtubFoh427lZtcEilFaZysJovqsNIF5W0WOGbDUqsfdgfh+jXZ+c
+	 Hrb6IywwPh6QIoEsg2auc8XB5HwADoPdrhrae/HMt42cLZS6YJKJhAI0mhP5wnjGwO
+	 mug/2hKcQ9WG00DzQB5XE67w2VWKXTspZkrCf+uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitin Yadav <n-yadav@ti.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 113/193] mmc: sdhci_am654: fix start loop index for TAP value parsing
+	Amir Goldstein <amir73il@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 5.15 198/297] ima: detect changes to the backing overlay file
 Date: Fri, 24 Nov 2023 17:54:00 +0000
-Message-ID: <20231124171951.764196682@linuxfoundation.org>
+Message-ID: <20231124172007.143526693@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +54,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitin Yadav <n-yadav@ti.com>
+From: Mimi Zohar <zohar@linux.ibm.com>
 
-commit 71956d0cb56c1e5f9feeb4819db87a076418e930 upstream.
+commit b836c4d29f2744200b2af41e14bf50758dddc818 upstream.
 
-ti,otap-del-sel-legacy/ti,itap-del-sel-legacy passed from DT
-are currently ignored for all SD/MMC and eMMC modes. Fix this
-by making start loop index to MMC_TIMING_LEGACY.
+Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
+IMA") forced signature re-evaulation on every file access.
 
-Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
-Signed-off-by: Nitin Yadav <n-yadav@ti.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Instead of always re-evaluating the file's integrity, detect a change
+to the backing file, by comparing the cached file metadata with the
+backing file's metadata.  Verifying just the i_version has not changed
+is insufficient.  In addition save and compare the i_ino and s_dev
+as well.
+
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
+Tested-by: Raul E Rangel <rrangel@chromium.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026061458.1116276-1-n-yadav@ti.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci_am654.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/super.c              |    2 +-
+ security/integrity/ima/ima_api.c  |    5 +++++
+ security/integrity/ima/ima_main.c |   16 +++++++++++++++-
+ security/integrity/integrity.h    |    2 ++
+ 4 files changed, 23 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/sdhci_am654.c
-+++ b/drivers/mmc/host/sdhci_am654.c
-@@ -600,7 +600,7 @@ static int sdhci_am654_get_otap_delay(st
- 		return 0;
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -2140,7 +2140,7 @@ static int ovl_fill_super(struct super_b
+ 		ovl_trusted_xattr_handlers;
+ 	sb->s_fs_info = ofs;
+ 	sb->s_flags |= SB_POSIXACL;
+-	sb->s_iflags |= SB_I_SKIP_SYNC | SB_I_IMA_UNVERIFIABLE_SIGNATURE;
++	sb->s_iflags |= SB_I_SKIP_SYNC;
+ 
+ 	err = -ENOMEM;
+ 	root_dentry = ovl_get_root(sb, upperpath.dentry, oe);
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -216,6 +216,7 @@ int ima_collect_measurement(struct integ
+ {
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
++	struct inode *real_inode = d_real_inode(file_dentry(file));
+ 	const char *filename = file->f_path.dentry->d_name.name;
+ 	int result = 0;
+ 	int length;
+@@ -266,6 +267,10 @@ int ima_collect_measurement(struct integ
+ 	iint->ima_hash = tmpbuf;
+ 	memcpy(iint->ima_hash, &hash, length);
+ 	iint->version = i_version;
++	if (real_inode != inode) {
++		iint->real_ino = real_inode->i_ino;
++		iint->real_dev = real_inode->i_sb->s_dev;
++	}
+ 
+ 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
+ 	if (!result)
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -26,6 +26,7 @@
+ #include <linux/ima.h>
+ #include <linux/iversion.h>
+ #include <linux/fs.h>
++#include <linux/iversion.h>
+ 
+ #include "ima.h"
+ 
+@@ -202,7 +203,7 @@ static int process_measurement(struct fi
+ 			       u32 secid, char *buf, loff_t size, int mask,
+ 			       enum ima_hooks func)
+ {
+-	struct inode *inode = file_inode(file);
++	struct inode *backing_inode, *inode = file_inode(file);
+ 	struct integrity_iint_cache *iint = NULL;
+ 	struct ima_template_desc *template_desc = NULL;
+ 	char *pathbuf = NULL;
+@@ -278,6 +279,19 @@ static int process_measurement(struct fi
+ 		iint->measured_pcrs = 0;
  	}
  
--	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
-+	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
- 
- 		ret = device_property_read_u32(dev, td[i].otap_binding,
- 					       &sdhci_am654->otap_del_sel[i]);
++	/* Detect and re-evaluate changes made to the backing file. */
++	backing_inode = d_real_inode(file_dentry(file));
++	if (backing_inode != inode &&
++	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
++		if (!IS_I_VERSION(backing_inode) ||
++		    backing_inode->i_sb->s_dev != iint->real_dev ||
++		    backing_inode->i_ino != iint->real_ino ||
++		    !inode_eq_iversion(backing_inode, iint->version)) {
++			iint->flags &= ~IMA_DONE_MASK;
++			iint->measured_pcrs = 0;
++		}
++	}
++
+ 	/* Determine if already appraised/measured based on bitmask
+ 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
+ 	 *  IMA_AUDIT, IMA_AUDITED)
+--- a/security/integrity/integrity.h
++++ b/security/integrity/integrity.h
+@@ -131,6 +131,8 @@ struct integrity_iint_cache {
+ 	unsigned long flags;
+ 	unsigned long measured_pcrs;
+ 	unsigned long atomic_flags;
++	unsigned long real_ino;
++	dev_t real_dev;
+ 	enum integrity_status ima_file_status:4;
+ 	enum integrity_status ima_mmap_status:4;
+ 	enum integrity_status ima_bprm_status:4;
 
 
 
