@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8204E7F8246
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B157F835F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B266D1C22FC4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D7BB24964
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9569F364A5;
-	Fri, 24 Nov 2023 19:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24D5381A2;
+	Fri, 24 Nov 2023 19:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cp7Tt6BJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hZa0CKj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302443307D;
-	Fri, 24 Nov 2023 19:06:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2558EC433C8;
-	Fri, 24 Nov 2023 19:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3183F364B7;
+	Fri, 24 Nov 2023 19:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FA0C433C8;
+	Fri, 24 Nov 2023 19:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852772;
-	bh=fFNUt2MwLkJLAzr6PjZ4tLUjX380+kEIpxE0dH4huFk=;
+	s=korg; t=1700853411;
+	bh=gRt8z8fXPn57vPiz5t50/Mt7ET4xnTV86bbzNwVT5+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cp7Tt6BJVaR2CPTkETVqcbaTwfhYFbWq0em7EPcmq3fXU4EAskhSqJya76Hg7i2m3
-	 zHS1xizT/o7kV5D61J2zBlIfb5DP8EJrPGgDhFuU3aMAMjeIzM6YWPCWYo9zZYcVjx
-	 acvXfsLqk9MtNc4zweeSxl75np7vzenkO1fybcfw=
+	b=1hZa0CKjUzqK90Tt9mCqeY1gOgwsWw2+SOhxbiO2BHAfULLoCgw8Y2p8UWbYyuFku
+	 TM0JCVcnQN3liLLtlw3+KZCzgK3t7GcjVZBpgQkAjgGymFrFaET7bCEXXiF+9wSwzP
+	 YTWp0t1aIT76XIDRN7PgedgAZ2hlnXKXh9wrdTpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 5.10 092/193] bpf: Fix check_stack_write_fixed_off() to correctly spill imm
+	Nathan Chancellor <nathan@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 5.15 177/297] arm64: Restrict CPU_BIG_ENDIAN to GNU as or LLVM IAS 15.x or newer
 Date: Fri, 24 Nov 2023 17:53:39 +0000
-Message-ID: <20231124171950.934412814@linuxfoundation.org>
+Message-ID: <20231124172006.447886468@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,73 +53,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Sun <sunhao.th@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 811c363645b33e6e22658634329e95f383dfc705 upstream.
+commit 146a15b873353f8ac28dc281c139ff611a3c4848 upstream.
 
-In check_stack_write_fixed_off(), imm value is cast to u32 before being
-spilled to the stack. Therefore, the sign information is lost, and the
-range information is incorrect when load from the stack again.
+Prior to LLVM 15.0.0, LLVM's integrated assembler would incorrectly
+byte-swap NOP when compiling for big-endian, and the resulting series of
+bytes happened to match the encoding of FNMADD S21, S30, S0, S0.
 
-For the following prog:
-0: r2 = r10
-1: *(u64*)(r2 -40) = -44
-2: r0 = *(u64*)(r2 - 40)
-3: if r0 s<= 0xa goto +2
-4: r0 = 1
-5: exit
-6: r0  = 0
-7: exit
+This went unnoticed until commit:
 
-The verifier gives:
-func#0 @0
-0: R1=ctx(off=0,imm=0) R10=fp0
-0: (bf) r2 = r10                      ; R2_w=fp0 R10=fp0
-1: (7a) *(u64 *)(r2 -40) = -44        ; R2_w=fp0 fp-40_w=4294967252
-2: (79) r0 = *(u64 *)(r2 -40)         ; R0_w=4294967252 R2_w=fp0
-fp-40_w=4294967252
-3: (c5) if r0 s< 0xa goto pc+2
-mark_precise: frame0: last_idx 3 first_idx 0 subseq_idx -1
-mark_precise: frame0: regs=r0 stack= before 2: (79) r0 = *(u64 *)(r2 -40)
-3: R0_w=4294967252
-4: (b7) r0 = 1                        ; R0_w=1
-5: (95) exit
-verification time 7971 usec
-stack depth 40
-processed 6 insns (limit 1000000) max_states_per_insn 0 total_states 0
-peak_states 0 mark_read 0
+  34f66c4c4d5518c1 ("arm64: Use a positive cpucap for FP/SIMD")
 
-So remove the incorrect cast, since imm field is declared as s32, and
-__mark_reg_known() takes u64, so imm would be correctly sign extended
-by compiler.
+Prior to that commit, the kernel would always enable the use of FPSIMD
+early in boot when __cpu_setup() initialized CPACR_EL1, and so usage of
+FNMADD within the kernel was not detected, but could result in the
+corruption of user or kernel FPSIMD state.
 
-Fixes: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
+After that commit, the instructions happen to trap during boot prior to
+FPSIMD being detected and enabled, e.g.
+
+| Unhandled 64-bit el1h sync exception on CPU0, ESR 0x000000001fe00000 -- ASIMD
+| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
+| Hardware name: linux,dummy-virt (DT)
+| pstate: 400000c9 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : __pi_strcmp+0x1c/0x150
+| lr : populate_properties+0xe4/0x254
+| sp : ffffd014173d3ad0
+| x29: ffffd014173d3af0 x28: fffffbfffddffcb8 x27: 0000000000000000
+| x26: 0000000000000058 x25: fffffbfffddfe054 x24: 0000000000000008
+| x23: fffffbfffddfe000 x22: fffffbfffddfe000 x21: fffffbfffddfe044
+| x20: ffffd014173d3b70 x19: 0000000000000001 x18: 0000000000000005
+| x17: 0000000000000010 x16: 0000000000000000 x15: 00000000413e7000
+| x14: 0000000000000000 x13: 0000000000001bcc x12: 0000000000000000
+| x11: 00000000d00dfeed x10: ffffd414193f2cd0 x9 : 0000000000000000
+| x8 : 0101010101010101 x7 : ffffffffffffffc0 x6 : 0000000000000000
+| x5 : 0000000000000000 x4 : 0101010101010101 x3 : 000000000000002a
+| x2 : 0000000000000001 x1 : ffffd014171f2988 x0 : fffffbfffddffcb8
+| Kernel panic - not syncing: Unhandled exception
+| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
+| Hardware name: linux,dummy-virt (DT)
+| Call trace:
+|  dump_backtrace+0xec/0x108
+|  show_stack+0x18/0x2c
+|  dump_stack_lvl+0x50/0x68
+|  dump_stack+0x18/0x24
+|  panic+0x13c/0x340
+|  el1t_64_irq_handler+0x0/0x1c
+|  el1_abort+0x0/0x5c
+|  el1h_64_sync+0x64/0x68
+|  __pi_strcmp+0x1c/0x150
+|  unflatten_dt_nodes+0x1e8/0x2d8
+|  __unflatten_device_tree+0x5c/0x15c
+|  unflatten_device_tree+0x38/0x50
+|  setup_arch+0x164/0x1e0
+|  start_kernel+0x64/0x38c
+|  __primary_switched+0xbc/0xc4
+
+Restrict CONFIG_CPU_BIG_ENDIAN to a known good assembler, which is
+either GNU as or LLVM's IAS 15.0.0 and newer, which contains the linked
+commit.
+
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1948
+Link: https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Hao Sun <sunhao.th@gmail.com>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231101-fix-check-stack-write-v3-1-f05c2b1473d5@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20231025-disable-arm64-be-ias-b4-llvm-15-v1-1-b25263ed8b23@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/Kconfig |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2534,7 +2534,7 @@ static int check_stack_write_fixed_off(s
- 		   insn->imm != 0 && env->bpf_capable) {
- 		struct bpf_reg_state fake_reg = {};
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1153,6 +1153,8 @@ choice
+ config CPU_BIG_ENDIAN
+ 	bool "Build big-endian kernel"
+ 	depends on !LD_IS_LLD || LLD_VERSION >= 130000
++	# https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
++	depends on AS_IS_GNU || AS_VERSION >= 150000
+ 	help
+ 	  Say Y if you plan on running a kernel with a big-endian userspace.
  
--		__mark_reg_known(&fake_reg, (u32)insn->imm);
-+		__mark_reg_known(&fake_reg, insn->imm);
- 		fake_reg.type = SCALAR_VALUE;
- 		save_register_state(state, spi, &fake_reg, size);
- 	} else if (reg && is_spillable_regtype(reg->type)) {
 
 
 
