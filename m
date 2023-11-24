@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-1964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 088687F822D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD607F833A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3949E1C21367
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E7D282A76
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB0C31748;
-	Fri, 24 Nov 2023 19:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FB1364C4;
+	Fri, 24 Nov 2023 19:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hl7EL+cx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxVXIMkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3303D28DBB;
-	Fri, 24 Nov 2023 19:05:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A475CC433C8;
-	Fri, 24 Nov 2023 19:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF443307D;
+	Fri, 24 Nov 2023 19:15:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C1AC433C7;
+	Fri, 24 Nov 2023 19:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852711;
-	bh=mPaI1199Dv6AVgvQLXj+DAHJ27u8oTgzzglK3GgWaGk=;
+	s=korg; t=1700853325;
+	bh=I+leSNNWDLI+bXiGBPmZ/plfV555qq92dowCz8tH+ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hl7EL+cxk0caXjL++PSJ4JxcLOteYXw3+83P0Q9a0I38bfHD8Ifb2/RVhb/iqY6hV
-	 3sqO3a0BisTQ3Ch1COR+g3aF4RLu3wwIV7y7lxU0OMTvPDzEduHegJx5AW+jjXfnEb
-	 kwJeE3i2zraIQTgz95eOitUDxbxGevNC+EH7202w=
+	b=wxVXIMkGhi8NOw3Rdjwu2XnWiIav3I64RJUezh8XLYYB5kivQ0FqZGMK+h4u5bswf
+	 1Nx8jXQqWknesWDFLaGdpGI/lgq57g+T4DE2463DLPYCjK9QmsPuWLm0VUVkVgLV1S
+	 K1qCcx5R8yEf67GezIN/SuALVdhcWiPz7+ijknbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <david@fromorbit.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 058/193] wifi: iwlwifi: Use FW rate for non-data frames
-Date: Fri, 24 Nov 2023 17:53:05 +0000
-Message-ID: <20231124171949.580633763@linuxfoundation.org>
+Subject: [PATCH 5.15 144/297] xfs: flush inode gc workqueue before clearing agi bucket
+Date: Fri, 24 Nov 2023 17:53:06 +0000
+Message-ID: <20231124172005.310441523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +57,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 499d02790495958506a64f37ceda7e97345a50a8 ]
+[ Upstream commit 04a98a036cf8b810dda172a9dcfcbd783bf63655 ]
 
-Currently we are setting the rate in the tx cmd for
-mgmt frames (e.g. during connection establishment).
-This was problematic when sending mgmt frames in eSR mode,
-as we don't know what link this frame will be sent on
-(This is decided by the FW), so we don't know what is the
-lowest rate.
-Fix this by not setting the rate in tx cmd and rely
-on FW to choose the right one.
-Set rate only for injected frames with fixed rate,
-or when no sta is given.
-Also set for important frames (EAPOL etc.) the High Priority flag.
+In the procedure of recover AGI unlinked lists, if something bad
+happenes on one of the unlinked inode in the bucket list, we would call
+xlog_recover_clear_agi_bucket() to clear the whole unlinked bucket list,
+not the unlinked inodes after the bad one. If we have already added some
+inodes to the gc workqueue before the bad inode in the list, we could
+get below error when freeing those inodes, and finaly fail to complete
+the log recover procedure.
 
-Fixes: 055b22e770dd ("iwlwifi: mvm: Set Tx rate and flags when there is not station")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230913145231.6c7e59620ee0.I6eaed3ccdd6dd62b9e664facc484081fc5275843@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+ XFS (ram0): Internal error xfs_iunlink_remove at line 2456 of file
+ fs/xfs/xfs_inode.c.  Caller xfs_ifree+0xb0/0x360 [xfs]
+
+The problem is xlog_recover_clear_agi_bucket() clear the bucket list, so
+the gc worker fail to check the agino in xfs_verify_agino(). Fix this by
+flush workqueue before clearing the bucket.
+
+Fixes: ab23a7768739 ("xfs: per-cpu deferred inode inactivation queues")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Dave Chinner <david@fromorbit.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/xfs/xfs_log_recover.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index d310337b16251..99150fec151b8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -532,16 +532,20 @@ iwl_mvm_set_tx_params(struct iwl_mvm *mvm, struct sk_buff *skb,
- 			flags |= IWL_TX_FLAGS_ENCRYPT_DIS;
- 
- 		/*
--		 * For data packets rate info comes from the fw. Only
--		 * set rate/antenna during connection establishment or in case
--		 * no station is given.
-+		 * For data and mgmt packets rate info comes from the fw. Only
-+		 * set rate/antenna for injected frames with fixed rate, or
-+		 * when no sta is given.
- 		 */
--		if (!sta || !ieee80211_is_data(hdr->frame_control) ||
--		    mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+		if (unlikely(!sta ||
-+			     info->control.flags & IEEE80211_TX_CTRL_RATE_INJECT)) {
- 			flags |= IWL_TX_FLAGS_CMD_RATE;
- 			rate_n_flags =
- 				iwl_mvm_get_tx_rate_n_flags(mvm, info, sta,
- 							    hdr->frame_control);
-+		} else if (!ieee80211_is_data(hdr->frame_control) ||
-+			   mvmsta->sta_state < IEEE80211_STA_AUTHORIZED) {
-+			/* These are important frames */
-+			flags |= IWL_TX_FLAGS_HIGH_PRI;
- 		}
- 
- 		if (mvm->trans->trans_cfg->device_family >=
+diff --git a/fs/xfs/xfs_log_recover.c b/fs/xfs/xfs_log_recover.c
+index aeb01d4c0423b..04961ebf16ea2 100644
+--- a/fs/xfs/xfs_log_recover.c
++++ b/fs/xfs/xfs_log_recover.c
+@@ -2739,6 +2739,7 @@ xlog_recover_process_one_iunlink(
+ 	 * Call xlog_recover_clear_agi_bucket() to perform a transaction to
+ 	 * clear the inode pointer in the bucket.
+ 	 */
++	xfs_inodegc_flush(mp);
+ 	xlog_recover_clear_agi_bucket(mp, agno, bucket);
+ 	return NULLAGINO;
+ }
 -- 
 2.42.0
 
