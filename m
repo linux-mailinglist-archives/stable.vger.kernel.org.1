@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B4A7F7EF9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AB17F80CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 322D228243B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EF90B2193A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF212FC36;
-	Fri, 24 Nov 2023 18:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCD71A5A4;
+	Fri, 24 Nov 2023 18:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wx4vaTWT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tOjEbuZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF76321AD;
-	Fri, 24 Nov 2023 18:37:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF419C433C7;
-	Fri, 24 Nov 2023 18:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6EB2EAEA;
+	Fri, 24 Nov 2023 18:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CEF5C433C8;
+	Fri, 24 Nov 2023 18:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851051;
-	bh=NFNBR0OqhPkDskK1jiuFK7OzIkzW70oIX4o1ugXfaIY=;
+	s=korg; t=1700851969;
+	bh=IIaPBeo0L/u1tbHxkRyMS5ljH8fXM9LoAnVlbLtwJiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wx4vaTWTOqVtWhUTJbOYd3iyXAIwxPO2+coJXEPn4LJU2gbsaTPLYvQpdBTgacxdP
-	 Hzzn0rDQNRaQcqU3dGf+BHs1HnaoDasj6m9Q+geYTfaANP+SKUl4UvfnnITH56mULi
-	 kueD+nf31MdMcLyiDOL3LMunigRlCkffxk81/VBc=
+	b=tOjEbuZnYBhSgLtbfEE7pJxIqSarYMAIFxuIjGojFt3HgK1ZmYzxJdPJfz6qxR0ts
+	 xE5Sk0IhZRe7+NDA74AT47zt0TQudIvsbRdAhfeGe6Z6V9+su9TmRJk3nsYMYUX2wM
+	 ocatK6ijyNoLjXT+v1qYcIO5oXu+SsC3L6KxhgOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.5 293/491] clk: socfpga: Fix undefined behavior bug in struct stratix10_clock_data
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 142/372] net: ethernet: cortina: Fix max RX frame define
 Date: Fri, 24 Nov 2023 17:48:49 +0000
-Message-ID: <20231124172033.373945139@linuxfoundation.org>
+Message-ID: <20231124172015.215026541@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,114 +55,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit d761bb01c85b22d5b44abe283eb89019693f6595 upstream.
+[ Upstream commit 510e35fb931ffc3b100e5d5ae4595cd3beca9f1a ]
 
-`struct clk_hw_onecell_data` is a flexible structure, which means that
-it contains flexible-array member at the bottom, in this case array
-`hws`:
+Enumerator 3 is 1548 bytes according to the datasheet.
+Not 1542.
 
-include/linux/clk-provider.h:
-1380 struct clk_hw_onecell_data {
-1381         unsigned int num;
-1382         struct clk_hw *hws[] __counted_by(num);
-1383 };
-
-This could potentially lead to an overwrite of the objects following
-`clk_data` in `struct stratix10_clock_data`, in this case
-`void __iomem *base;` at run-time:
-
-drivers/clk/socfpga/stratix10-clk.h:
-  9 struct stratix10_clock_data {
- 10         struct clk_hw_onecell_data      clk_data;
- 11         void __iomem            *base;
- 12 };
-
-There are currently three different places where memory is allocated for
-`struct stratix10_clock_data`, including the flex-array `hws` in
-`struct clk_hw_onecell_data`:
-
-drivers/clk/socfpga/clk-agilex.c:
-469         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-470                                 num_clks), GFP_KERNEL);
-
-drivers/clk/socfpga/clk-agilex.c:
-509         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-510                                 num_clks), GFP_KERNEL);
-
-drivers/clk/socfpga/clk-s10.c:
-400         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-401                                                  num_clks), GFP_KERNEL);
-
-I'll use just one of them to describe the issue. See below.
-
-Notice that a total of 440 bytes are allocated for flexible-array member
-`hws` at line 469:
-
-include/dt-bindings/clock/agilex-clock.h:
- 70 #define AGILEX_NUM_CLKS	55
-
-drivers/clk/socfpga/clk-agilex.c:
-459         struct stratix10_clock_data *clk_data;
-460         void __iomem *base;
-...
-466
-467         num_clks = AGILEX_NUM_CLKS;
-468
-469         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-470                                 num_clks), GFP_KERNEL);
-
-`struct_size(clk_data, clk_data.hws, num_clks)`	above translates to
-sizeof(struct stratix10_clock_data) + sizeof(struct clk_hw *) * 55 ==
-16 + 8 * 55 == 16 + 440
-		    ^^^
-		     |
-	allocated bytes for flex-array `hws`
-
-474         for (i = 0; i < num_clks; i++)
-475                 clk_data->clk_data.hws[i] = ERR_PTR(-ENOENT);
-476
-477         clk_data->base = base;
-
-and then some data is written into both `hws` and `base` objects.
-
-Fix this by placing the declaration of object `clk_data` at the end of
-`struct stratix10_clock_data`. Also, add a comment to make it clear
-that this object must always be last in the structure.
-
--Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-ready to enable it globally.
-
-Fixes: ba7e258425ac ("clk: socfpga: Convert to s10/agilex/n5x to use clk_hw")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/1da736106d8e0806aeafa6e471a13ced490eae22.1698117815.git.gustavoars@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-1-6e611528db08@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/socfpga/stratix10-clk.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cortina/gemini.c | 4 ++--
+ drivers/net/ethernet/cortina/gemini.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/clk/socfpga/stratix10-clk.h
-+++ b/drivers/clk/socfpga/stratix10-clk.h
-@@ -7,8 +7,10 @@
- #define	__STRATIX10_CLK_H
- 
- struct stratix10_clock_data {
--	struct clk_hw_onecell_data	clk_data;
- 	void __iomem		*base;
-+
-+	/* Must be last */
-+	struct clk_hw_onecell_data	clk_data;
- };
- 
- struct stratix10_pll_clock {
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index fdf10318758b4..15a0a39cc33c1 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -432,8 +432,8 @@ static const struct gmac_max_framelen gmac_maxlens[] = {
+ 		.val = CONFIG0_MAXLEN_1536,
+ 	},
+ 	{
+-		.max_l3_len = 1542,
+-		.val = CONFIG0_MAXLEN_1542,
++		.max_l3_len = 1548,
++		.val = CONFIG0_MAXLEN_1548,
+ 	},
+ 	{
+ 		.max_l3_len = 9212,
+diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
+index 9fdf77d5eb374..99efb11557436 100644
+--- a/drivers/net/ethernet/cortina/gemini.h
++++ b/drivers/net/ethernet/cortina/gemini.h
+@@ -787,7 +787,7 @@ union gmac_config0 {
+ #define  CONFIG0_MAXLEN_1536	0
+ #define  CONFIG0_MAXLEN_1518	1
+ #define  CONFIG0_MAXLEN_1522	2
+-#define  CONFIG0_MAXLEN_1542	3
++#define  CONFIG0_MAXLEN_1548	3
+ #define  CONFIG0_MAXLEN_9k	4	/* 9212 */
+ #define  CONFIG0_MAXLEN_10k	5	/* 10236 */
+ #define  CONFIG0_MAXLEN_1518__6	6
+-- 
+2.42.0
+
 
 
 
