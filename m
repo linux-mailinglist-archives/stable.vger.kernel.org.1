@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94CCE7F8145
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EBC67F7D39
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6A2B1C2165A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19FEEB2116E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13FB933CFD;
-	Fri, 24 Nov 2023 18:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4099C33CFD;
+	Fri, 24 Nov 2023 18:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrWEL5FI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDAXdqfX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC902C1A2;
-	Fri, 24 Nov 2023 18:57:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A77FC433C8;
-	Fri, 24 Nov 2023 18:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A44639FFD;
+	Fri, 24 Nov 2023 18:22:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19735C433C8;
+	Fri, 24 Nov 2023 18:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852224;
-	bh=YsbZQLFG7xs0O8bJem+HfqdgfJONGKH7oYIcCdDne88=;
+	s=korg; t=1700850152;
+	bh=H5hzRci9Q65Evl66gFRqCZD28X7VzTE/PUgtV5/GKrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZrWEL5FI1zpSLJfOje6Yc5O42cG0a1jPGVkbVlAxSKmFU64QqWo7rxNB5dNtqvgoc
-	 EHqfZg2TjQJ/8JFFWwGpOaBnPbDMIHih48A0/27nOXI03A5UAZHIKrXJeroS39MjH6
-	 WjjiHThyN0GbRniWg+8BC86yGhxZ3gMBT6Np6SjQ=
+	b=uDAXdqfXdvvgqpeRjoOXvovWkCoYf98+EqLLfsEiW8alqdXaiEgPCt9Aao41D316o
+	 MmTmWd2qxyeFt63dZaOSOVpic7wcTvrl8+gLfmfqPYlyx6bXiPZs23FI7r7kzrtFrf
+	 R2NAr7TkATwxXF/OPHuJQ3rauXnqUiV5LCEgRs2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 245/372] i2c: core: Run atomic i2c xfer when !preemptible
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 466/530] LoongArch: Mark __percpu functions as always inline
 Date: Fri, 24 Nov 2023 17:50:32 +0000
-Message-ID: <20231124172018.701648607@linuxfoundation.org>
+Message-ID: <20231124172042.258192652@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +53,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
+commit 71945968d8b128c955204baa33ec03bdd91bdc26 upstream.
 
-Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
-disabled. However, non-atomic i2c transfers require preemption (e.g. in
-wait_for_completion() while waiting for the DMA).
+A recent change to the optimization pipeline in LLVM reveals some
+fragility around the inlining of LoongArch's __percpu functions, which
+manifests as a BUILD_BUG() failure:
 
-panic() calls preempt_disable_notrace() before calling
-emergency_restart(). Therefore, if an i2c device is used for the
-restart, the xfer should be atomic. This avoids warnings like:
+  In file included from kernel/sched/build_policy.c:17:
+  In file included from include/linux/sched/cputime.h:5:
+  In file included from include/linux/sched/signal.h:5:
+  In file included from include/linux/rculist.h:11:
+  In file included from include/linux/rcupdate.h:26:
+  In file included from include/linux/irqflags.h:18:
+  arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime_assert_51' declared with 'error' attribute: BUILD_BUG failed
+     97 |                 BUILD_BUG();
+        |                 ^
+  include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
+     59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+        |                     ^
+  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+        |                                     ^
+  include/linux/compiler_types.h:425:2: note: expanded from macro 'compiletime_assert'
+    425 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+        |         ^
+  include/linux/compiler_types.h:413:2: note: expanded from macro '_compiletime_assert'
+    413 |         __compiletime_assert(condition, msg, prefix, suffix)
+        |         ^
+  include/linux/compiler_types.h:406:4: note: expanded from macro '__compiletime_assert'
+    406 |                         prefix ## suffix();                             \
+        |                         ^
+  <scratch space>:86:1: note: expanded from here
+     86 | __compiletime_assert_51
+        | ^
+  1 error generated.
 
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
+If these functions are not inlined (which the compiler is free to do
+even with functions marked with the standard 'inline' keyword), the
+BUILD_BUG() in the default case cannot be eliminated since the compiler
+cannot prove it is never used, resulting in a build failure due to the
+error attribute.
 
-Use !preemptible() instead, which is basically the same check as
-pre-v5.2.
+Mark these functions as __always_inline to guarantee inlining so that
+the BUILD_BUG() only triggers when the default case genuinely cannot be
+eliminated due to an unexpected size.
 
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Acked-by: Wolfram Sang <wsa@kernel.org>
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
+Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
+Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/i2c-core.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/percpu.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/i2c/i2c-core.h
-+++ b/drivers/i2c/i2c-core.h
-@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
-  */
- static inline bool i2c_in_atomic_xfer_mode(void)
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -32,7 +32,7 @@ static inline void set_my_cpu_offset(uns
+ #define __my_cpu_offset __my_cpu_offset
+ 
+ #define PERCPU_OP(op, asm_op, c_op)					\
+-static inline unsigned long __percpu_##op(void *ptr,			\
++static __always_inline unsigned long __percpu_##op(void *ptr,		\
+ 			unsigned long val, int size)			\
+ {									\
+ 	unsigned long ret;						\
+@@ -63,7 +63,7 @@ PERCPU_OP(and, and, &)
+ PERCPU_OP(or, or, |)
+ #undef PERCPU_OP
+ 
+-static inline unsigned long __percpu_read(void *ptr, int size)
++static __always_inline unsigned long __percpu_read(void *ptr, int size)
  {
--	return system_state > SYSTEM_RUNNING && irqs_disabled();
-+	return system_state > SYSTEM_RUNNING && !preemptible();
+ 	unsigned long ret;
+ 
+@@ -100,7 +100,7 @@ static inline unsigned long __percpu_rea
+ 	return ret;
  }
  
- static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
+-static inline void __percpu_write(void *ptr, unsigned long val, int size)
++static __always_inline void __percpu_write(void *ptr, unsigned long val, int size)
+ {
+ 	switch (size) {
+ 	case 1:
+@@ -132,8 +132,8 @@ static inline void __percpu_write(void *
+ 	}
+ }
+ 
+-static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
+-						int size)
++static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
++						   int size)
+ {
+ 	switch (size) {
+ 	case 1:
 
 
 
