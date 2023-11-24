@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F1CF7F7E7A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB9E67F7C5C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A7F5B217FB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98818282217
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEC739FFD;
-	Fri, 24 Nov 2023 18:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4D23A8C6;
+	Fri, 24 Nov 2023 18:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srwpVQPr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiQGL/7F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C97364BA;
-	Fri, 24 Nov 2023 18:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20762C433C8;
-	Fri, 24 Nov 2023 18:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77CF39FEA;
+	Fri, 24 Nov 2023 18:14:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFD5C433C8;
+	Fri, 24 Nov 2023 18:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850799;
-	bh=8CXzczJwK1MSy6No0XQKHJeVwLfW91R+iPwKorDh+84=;
+	s=korg; t=1700849669;
+	bh=zEmEDW8H3VQbHcAbWYFaH9osMTQqF7GGG0lZQhdFlcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=srwpVQPrlJJ/3EOgJZA9wiswbypgmHCc720MSNoQiBnGqtgmfkpqFgFaRrnjLZeGh
-	 I0V5WNzvTSTLFTIXS+x2k/5EeKt1iaGSg9cPJlcnlq9P9k6YicPALFtn+fpZIiJOeV
-	 8pcW6m7fZrWqQqX/WQ92Vmo8xwOBZug8PLcndZXQ=
+	b=fiQGL/7FBu7onhu59gwkFwVifwTnd5xEtVOrXYR9RYjAVlROUoam6R0iG4Z+rxML0
+	 TVsrdHRlBc8yI/5dmP6kwtRtxna0gCXYcU9IdXMa+b24pAtMXCIID9uUwLVdAAwxw0
+	 eZvBNQKzwJD+8h0KtXL0F+AJmW0ZuXXixz6vkj1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 169/491] vhost-vdpa: fix use after free in vhost_vdpa_probe()
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 239/530] drivers: perf: Check find_first_bit() return value
 Date: Fri, 24 Nov 2023 17:46:45 +0000
-Message-ID: <20231124172029.549712209@linuxfoundation.org>
+Message-ID: <20231124172035.327811135@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit e07754e0a1ea2d63fb29574253d1fd7405607343 ]
+commit c6e316ac05532febb0c966fa9b55f5258ed037be upstream.
 
-The put_device() calls vhost_vdpa_release_dev() which calls
-ida_simple_remove() and frees "v".  So this call to
-ida_simple_remove() is a use after free and a double free.
+We must check the return value of find_first_bit() before using the
+return value as an index array since it happens to overflow the array
+and then panic:
 
-Fixes: ebe6a354fa7e ("vhost-vdpa: Call ida_simple_remove() when failed")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-Id: <cf53cb61-0699-4e36-a980-94fd4268ff00@moroto.mountain>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  107.318430] Kernel BUG [#1]
+[  107.319434] CPU: 3 PID: 1238 Comm: kill Tainted: G            E      6.6.0-rc6ubuntu-defconfig #2
+[  107.319465] Hardware name: riscv-virtio,qemu (DT)
+[  107.319551] epc : pmu_sbi_ovf_handler+0x3a4/0x3ae
+[  107.319840]  ra : pmu_sbi_ovf_handler+0x52/0x3ae
+[  107.319868] epc : ffffffff80a0a77c ra : ffffffff80a0a42a sp : ffffaf83fecda350
+[  107.319884]  gp : ffffffff823961a8 tp : ffffaf8083db1dc0 t0 : ffffaf83fecda480
+[  107.319899]  t1 : ffffffff80cafe62 t2 : 000000000000ff00 s0 : ffffaf83fecda520
+[  107.319921]  s1 : ffffaf83fecda380 a0 : 00000018fca29df0 a1 : ffffffffffffffff
+[  107.319936]  a2 : 0000000001073734 a3 : 0000000000000004 a4 : 0000000000000000
+[  107.319951]  a5 : 0000000000000040 a6 : 000000001d1c8774 a7 : 0000000000504d55
+[  107.319965]  s2 : ffffffff82451f10 s3 : ffffffff82724e70 s4 : 000000000000003f
+[  107.319980]  s5 : 0000000000000011 s6 : ffffaf8083db27c0 s7 : 0000000000000000
+[  107.319995]  s8 : 0000000000000001 s9 : 00007fffb45d6558 s10: 00007fffb45d81a0
+[  107.320009]  s11: ffffaf7ffff60000 t3 : 0000000000000004 t4 : 0000000000000000
+[  107.320023]  t5 : ffffaf7f80000000 t6 : ffffaf8000000000
+[  107.320037] status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
+[  107.320081] [<ffffffff80a0a77c>] pmu_sbi_ovf_handler+0x3a4/0x3ae
+[  107.320112] [<ffffffff800b42d0>] handle_percpu_devid_irq+0x9e/0x1a0
+[  107.320131] [<ffffffff800ad92c>] generic_handle_domain_irq+0x28/0x36
+[  107.320148] [<ffffffff8065f9f8>] riscv_intc_irq+0x36/0x4e
+[  107.320166] [<ffffffff80caf4a0>] handle_riscv_irq+0x54/0x86
+[  107.320189] [<ffffffff80cb0036>] do_irq+0x64/0x96
+[  107.320271] Code: 85a6 855e b097 ff7f 80e7 9220 b709 9002 4501 bbd9 (9002) 6097
+[  107.320585] ---[ end trace 0000000000000000 ]---
+[  107.320704] Kernel panic - not syncing: Fatal exception in interrupt
+[  107.320775] SMP: stopping secondary CPUs
+[  107.321219] Kernel Offset: 0x0 from 0xffffffff80000000
+[  107.333051] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Fixes: 4905ec2fb7e6 ("RISC-V: Add sscofpmf extension support")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231109082128.40777-1-alexghiti@rivosinc.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vhost/vdpa.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/perf/riscv_pmu_sbi.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index b43e8680eee8d..48357c403867f 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1498,7 +1498,6 @@ static int vhost_vdpa_probe(struct vdpa_device *vdpa)
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -687,6 +687,11 @@ static irqreturn_t pmu_sbi_ovf_handler(i
  
- err:
- 	put_device(&v->dev);
--	ida_simple_remove(&vhost_vdpa_ida, v->minor);
- 	return r;
- }
- 
--- 
-2.42.0
-
+ 	/* Firmware counter don't support overflow yet */
+ 	fidx = find_first_bit(cpu_hw_evt->used_hw_ctrs, RISCV_MAX_COUNTERS);
++	if (fidx == RISCV_MAX_COUNTERS) {
++		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
++		return IRQ_NONE;
++	}
++
+ 	event = cpu_hw_evt->events[fidx];
+ 	if (!event) {
+ 		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
 
 
 
