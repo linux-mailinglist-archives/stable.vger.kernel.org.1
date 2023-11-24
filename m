@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254317F7B34
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E07C27F7D6E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A911F20F01
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AE132821C5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2882139FF4;
-	Fri, 24 Nov 2023 18:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0851339FF3;
+	Fri, 24 Nov 2023 18:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SyFkKGWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFX+BiSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD14939FD4;
-	Fri, 24 Nov 2023 18:02:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D4CC433C7;
-	Fri, 24 Nov 2023 18:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE77A39FD9;
+	Fri, 24 Nov 2023 18:24:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B5DC433C8;
+	Fri, 24 Nov 2023 18:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848971;
-	bh=9f2o/sfzljGtYE5P1FqPE7BdgIhB6in8XFOm8Kjx+94=;
+	s=korg; t=1700850271;
+	bh=mGfl4Q5Zu5wYw/Vj0HcbvKMRVeaOBlWTFgSANnvO19Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SyFkKGWEaOBFT1cCak7pXHstZHDO1KB2XPBgmYkvC4WcDAg9ptK2SrDPW6cjzcXKF
-	 HypKA1Bxjzws6IwUq0M3oqAnjji95d4JIakEfwsAItOA5RKZf3A5K3y4N87RTDQsVc
-	 uACN+Hl9r32+IXFxnVGvZ9v88RlWYPSAvdepZk4g=
+	b=JFX+BiSgPAbpHmXnLK7Sj8ew6mbr2M9GBu/1SKsh5pG6/NPiTD7FkjWZDbCGdO6na
+	 ysPT+s8ADT2JWw4WZbIpQhjUWXDjketiwWhvjGq4OzZ/yKa6Qv3w1+XtRYSkarJRL5
+	 ywHRgIcgweg+HPVxaXx2FexcQmc8G0IOSEJnvM30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Steinmetz <anstein99@googlemail.com>,
-	John Johansen <john.johanse@canonical.com>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 4.14 30/57] audit: dont take task_lock() in audit_exe_compare() code path
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 488/530] media: qcom: camss: Fix VFE-480 vfe_disable_output()
 Date: Fri, 24 Nov 2023 17:50:54 +0000
-Message-ID: <20231124171931.393361106@linuxfoundation.org>
+Message-ID: <20231124172042.964934082@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +52,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
+commit 7f24d291350426d40b36dfbe6b3090617cdfd37a upstream.
 
-The get_task_exe_file() function locks the given task with task_lock()
-which when used inside audit_exe_compare() can cause deadlocks on
-systems that generate audit records when the task_lock() is held. We
-resolve this problem with two changes: ignoring those cases where the
-task being audited is not the current task, and changing our approach
-to obtaining the executable file struct to not require task_lock().
+vfe-480 is copied from vfe-17x and has the same racy idle timeout bug as in
+17x.
 
-With the intent of the audit exe filter being to filter on audit events
-generated by processes started by the specified executable, it makes
-sense that we would only want to use the exe filter on audit records
-associated with the currently executing process, e.g. @current.  If
-we are asked to filter records using a non-@current task_struct we can
-safely ignore the exe filter without negatively impacting the admin's
-expectations for the exe filter.
+Fix the vfe_disable_output() logic to no longer be racy and to conform
+to the 17x way of quiescing and then resetting the VFE.
 
-Knowing that we only have to worry about filtering the currently
-executing task in audit_exe_compare() we can do away with the
-task_lock() and call get_mm_exe_file() with @current->mm directly.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
-Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
-Reviewed-by: John Johansen <john.johanse@canonical.com>
-Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 4edc8eae715c ("media: camss: Add initial support for VFE hardware version Titan 480")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/audit_watch.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss-vfe-480.c |   22 +++-------------------
+ 1 file changed, 3 insertions(+), 19 deletions(-)
 
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -557,11 +557,18 @@ int audit_exe_compare(struct task_struct
- 	unsigned long ino;
- 	dev_t dev;
+--- a/drivers/media/platform/qcom/camss/camss-vfe-480.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-480.c
+@@ -8,7 +8,6 @@
+  * Copyright (C) 2021 Jonathan Marek
+  */
  
--	exe_file = get_task_exe_file(tsk);
-+	/* only do exe filtering if we are recording @current events/records */
-+	if (tsk != current)
-+		return 0;
-+
-+	if (WARN_ON_ONCE(!current->mm))
-+		return 0;
-+	exe_file = get_mm_exe_file(current->mm);
- 	if (!exe_file)
- 		return 0;
- 	ino = file_inode(exe_file)->i_ino;
- 	dev = file_inode(exe_file)->i_sb->s_dev;
- 	fput(exe_file);
-+
- 	return audit_mark_compare(mark, ino, dev);
+-#include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -328,35 +327,20 @@ static int vfe_enable_output(struct vfe_
+ 	return 0;
  }
+ 
+-static int vfe_disable_output(struct vfe_line *line)
++static void vfe_disable_output(struct vfe_line *line)
+ {
+ 	struct vfe_device *vfe = to_vfe(line);
+ 	struct vfe_output *output = &line->output;
+ 	unsigned long flags;
+ 	unsigned int i;
+-	bool done;
+-	int timeout = 0;
+-
+-	do {
+-		spin_lock_irqsave(&vfe->output_lock, flags);
+-		done = !output->gen2.active_num;
+-		spin_unlock_irqrestore(&vfe->output_lock, flags);
+-		usleep_range(10000, 20000);
+-
+-		if (timeout++ == 100) {
+-			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
+-			vfe_reset(vfe);
+-			output->gen2.active_num = 0;
+-			return 0;
+-		}
+-	} while (!done);
+ 
+ 	spin_lock_irqsave(&vfe->output_lock, flags);
+ 	for (i = 0; i < output->wm_num; i++)
+ 		vfe_wm_stop(vfe, output->wm_idx[i]);
++	output->gen2.active_num = 0;
+ 	spin_unlock_irqrestore(&vfe->output_lock, flags);
+ 
+-	return 0;
++	vfe_reset(vfe);
+ }
+ 
+ /*
 
 
 
