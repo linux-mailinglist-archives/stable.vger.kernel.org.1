@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-2050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02FFC7F828F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8797F8442
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0F2B285853
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB1B1C25AD1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CEB364A7;
-	Fri, 24 Nov 2023 19:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A000428DBB;
+	Fri, 24 Nov 2023 19:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sjx8EbhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HwOWICea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8973433E9;
-	Fri, 24 Nov 2023 19:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6A8C433CA;
-	Fri, 24 Nov 2023 19:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C37C3306F;
+	Fri, 24 Nov 2023 19:25:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD3FBC433C8;
+	Fri, 24 Nov 2023 19:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852925;
-	bh=hha4WMPzne5IlHVXQwfAEW9aeksl/qwIFNuIRbqPbM0=;
+	s=korg; t=1700853933;
+	bh=aKMXMf9GsIKtlEmj5UyoQeAwfIu3+pvzEbfL4uZTNp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sjx8EbhHcp+fy7s0IYxCM/LLsfhcicMBPcKqgJ6WSqOwqFv+U65Fy/es/s4XRnDSF
-	 ouZeFo2UD21nslzzvkknqXfbmBI8YiEU6qc2vs2fNmCLJsRe/2nzjfXImlHBRwJvv4
-	 ZPC0ugWxmeIKgnZvOfF9jZL3tRUgGgG8Vw7vEI8M=
+	b=HwOWICeaUTteu6+v4D6H4xdxj6bLV2SDFlYlK7q6mha3f7xbCX6ng5MMDdHrDdCQM
+	 dJrdic+BeKrCidUZ066OPWvQS73pNTyf9LKLCo3Wi8zg47WwhhRpfqlbsqvwcTrGXK
+	 ZtI4Hl2BsunA7ewigkB3JsIvpC6gN1FUCRu9Oxms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 178/193] Revert "net: r8169: Disable multicast filter for RTL8168H and RTL8107E"
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 088/159] PM: hibernate: Clean up sync_read handling in snapshot_write_next()
 Date: Fri, 24 Nov 2023 17:55:05 +0000
-Message-ID: <20231124171954.283055779@linuxfoundation.org>
+Message-ID: <20231124171945.575533321@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Brian Geffon <bgeffon@google.com>
 
-commit 6a26310273c323380da21eb23fcfd50e31140913 upstream.
+commit d08970df1980476f27936e24d452550f3e9e92e1 upstream.
 
-This reverts commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df.
+In snapshot_write_next(), sync_read is set and unset in three different
+spots unnecessiarly. As a result there is a subtle bug where the first
+page after the meta data has been loaded unconditionally sets sync_read
+to 0. If this first PFN was actually a highmem page, then the returned
+buffer will be the global "buffer," and the page needs to be loaded
+synchronously.
 
-I couldn't reproduce the reported issue. What I did, based on a pcap
-packet log provided by the reporter:
-- Used same chip version (RTL8168h)
-- Set MAC address to the one used on the reporters system
-- Replayed the EAPOL unicast packet that, according to the reporter,
-  was filtered out by the mc filter.
-The packet was properly received.
+That is, I'm not sure we can always assume the following to be safe:
 
-Therefore the root cause of the reported issue seems to be somewhere
-else. Disabling mc filtering completely for the most common chip
-version is a quite big hammer. Therefore revert the change and wait
-for further analysis results from the reporter.
+	handle->buffer = get_buffer(&orig_bm, &ca);
+	handle->sync_read = 0;
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Because get_buffer() can call get_highmem_page_buffer() which can
+return 'buffer'.
+
+The easiest way to address this is just set sync_read before
+snapshot_write_next() returns if handle->buffer == buffer.
+
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
+Cc: All applicable <stable@vger.kernel.org>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ kernel/power/snapshot.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -2581,9 +2581,7 @@ static void rtl_set_rx_mode(struct net_d
- 		rx_mode &= ~AcceptMulticast;
- 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
- 		   dev->flags & IFF_ALLMULTI ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
--		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
-+		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
- 		/* accept all multicasts */
- 	} else if (netdev_mc_empty(dev)) {
- 		rx_mode &= ~AcceptMulticast;
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2592,8 +2592,6 @@ int snapshot_write_next(struct snapshot_
+ 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages)
+ 		return 0;
+ 
+-	handle->sync_read = 1;
+-
+ 	if (!handle->cur) {
+ 		if (!buffer)
+ 			/* This makes the buffer be freed by swsusp_free() */
+@@ -2634,7 +2632,6 @@ int snapshot_write_next(struct snapshot_
+ 			memory_bm_position_reset(&orig_bm);
+ 			restore_pblist = NULL;
+ 			handle->buffer = get_buffer(&orig_bm, &ca);
+-			handle->sync_read = 0;
+ 			if (IS_ERR(handle->buffer))
+ 				return PTR_ERR(handle->buffer);
+ 		}
+@@ -2646,9 +2643,8 @@ int snapshot_write_next(struct snapshot_
+ 		handle->buffer = get_buffer(&orig_bm, &ca);
+ 		if (IS_ERR(handle->buffer))
+ 			return PTR_ERR(handle->buffer);
+-		if (handle->buffer != buffer)
+-			handle->sync_read = 0;
+ 	}
++	handle->sync_read = (handle->buffer == buffer);
+ 	handle->cur++;
+ 	return PAGE_SIZE;
+ }
 
 
 
