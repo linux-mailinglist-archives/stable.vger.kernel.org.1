@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8897F7B00
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6771A7F8150
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 915711C20AB4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98C531C21688
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CF039FF8;
-	Fri, 24 Nov 2023 18:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33A3364A5;
+	Fri, 24 Nov 2023 18:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKLjGzvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nd012cLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52026381D8;
-	Fri, 24 Nov 2023 18:00:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C415C433C8;
-	Fri, 24 Nov 2023 18:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F28133E9;
+	Fri, 24 Nov 2023 18:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E53EC433C8;
+	Fri, 24 Nov 2023 18:57:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848852;
-	bh=PQwhO7kI9WSkBXZXKhqnt6/4HDFuCsQtqbu/Ijza4Lo=;
+	s=korg; t=1700852251;
+	bh=l1FS/1JJuBM8T1002POG4xY2tD1/GkWNZj+RbQhqB5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xKLjGzvYtRAuRwDlKp+5XQrtm22o/PmHR0iIVPcYfwXhtZyun3pqzfPvKmmQ5LR5z
-	 zXcITXmsb2WINutaknHkHl6kqnPKBY996U+cqXTbajXBHnJujFELZVXDywTjFMto5y
-	 m7qTFov0Y84nzUYCPmL+0/Y91bXe+O9ulDHWUwos=
+	b=nd012cLq8TaeTkljhVX7WRfY24G4shh1A7n8+hTHECUZLnKvAqlfH1goiJTAqyq8X
+	 Ye1Iim24KnmwubHcnEtioqNMYhV7K2bRNtbrKTImkhN5CeTgqzh2OZf6p+3lj5Jr8t
+	 HabZRstqRr/Jve3k71Rnkb2JBsIffzvWd0orx/gE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Kunkun Jiang <jiangkunkun@huawei.com>
-Subject: [PATCH 4.19 95/97] scsi: virtio_scsi: limit number of hw queues by nr_cpu_ids
+	Chandradeep Dey <codesigning@chandradeepdey.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 281/372] ALSA: hda/realtek - Enable internal speaker of ASUS K6500ZC
 Date: Fri, 24 Nov 2023 17:51:08 +0000
-Message-ID: <20231124171937.759122979@linuxfoundation.org>
+Message-ID: <20231124172019.815740258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +52,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Chandradeep Dey <codesigning@chandradeepdey.com>
 
-commit 1978f30a87732d4d9072a20abeded9fe17884f1b upstream.
+commit 713f040cd22285fcc506f40a0d259566e6758c3c upstream.
 
-When tag_set->nr_maps is 1, the block layer limits the number of hw queues
-by nr_cpu_ids. No matter how many hw queues are used by virtio-scsi, as it
-has (tag_set->nr_maps == 1), it can use at most nr_cpu_ids hw queues.
+Apply the already existing quirk chain ALC294_FIXUP_ASUS_SPK to enable
+the internal speaker of ASUS K6500ZC.
 
-In addition, specifically for pci scenario, when the 'num_queues' specified
-by qemu is more than maxcpus, virtio-scsi would not be able to allocate
-more than maxcpus vectors in order to have a vector for each queue. As a
-result, it falls back into MSI-X with one vector for config and one shared
-for queues.
-
-Considering above reasons, this patch limits the number of hw queues used
-by virtio-scsi by nr_cpu_ids.
-
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
+Signed-off-by: Chandradeep Dey <codesigning@chandradeepdey.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/NizcVHQ--3-9@chandradeepdey.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/virtio_scsi.c |    1 +
+ sound/pci/hda/patch_realtek.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/virtio_scsi.c
-+++ b/drivers/scsi/virtio_scsi.c
-@@ -853,6 +853,7 @@ static int virtscsi_probe(struct virtio_
- 
- 	/* We need to know how many queues before we allocate. */
- 	num_queues = virtscsi_config_get(vdev, num_queues) ? : 1;
-+	num_queues = min_t(unsigned int, nr_cpu_ids, num_queues);
- 
- 	num_targets = virtscsi_config_get(vdev, max_target) + 1;
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9699,6 +9699,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x10a1, "ASUS UX391UA", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x10c0, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x10d0, "ASUS X540LA/X540LJ", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1043, 0x10d3, "ASUS K6500ZC", ALC294_FIXUP_ASUS_SPK),
+ 	SND_PCI_QUIRK(0x1043, 0x115d, "Asus 1015E", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1043, 0x11c0, "ASUS X556UR", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x125e, "ASUS Q524UQK", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
 
 
 
