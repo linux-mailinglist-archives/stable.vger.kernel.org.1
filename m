@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0488F7F8397
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4FCC7F8285
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B04BB264AB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AAEA1C237CB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F82364C1;
-	Fri, 24 Nov 2023 19:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA18364B7;
+	Fri, 24 Nov 2023 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09RNWtlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5us/UGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F982EB15;
-	Fri, 24 Nov 2023 19:19:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F726C433C8;
-	Fri, 24 Nov 2023 19:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143E22EAEA;
+	Fri, 24 Nov 2023 19:08:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347EFC433C8;
+	Fri, 24 Nov 2023 19:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853543;
-	bh=/Q2id4fhWRIfRa4vMey1DHTn/v98/oKrU09C8W7yGfQ=;
+	s=korg; t=1700852910;
+	bh=eMC02YXB1pTtpymTJUnJcwKRTb2pfsb1stAOTmnC1r0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09RNWtlgZWP3l6QGodvbfunqqx7rL/opEszgkXbMVYlz7/bnL/CPDUfN3F+Q+hOhP
-	 S8QHdI+6Qo4euG45L8HdMu5GZN4bnHwOWKRNX5+X0EN5vMpAwnMPdAOJo2/kr69S+a
-	 0zGNXr5nLJqXL9gGcU7URTzaSJH+5rJiWvA7qLNw=
+	b=N5us/UGn842asnZDAaEKrmYX8rD+zzhkAT6cRgwtBP25be1FfObrKdafiYUhRupEC
+	 zJ6rKz3CXPn0ZePVlumDp6+H9RDsCjJipcczxipwnMB/gzNluUuRGaHWCJEjDb2Y9W
+	 kpLreo/raLfSJBLNGRdkmSylntA5Bo7NUiriMlI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 230/297] i3c: master: svc: fix SDA keep low when polling IBIWON timeout happen
-Date: Fri, 24 Nov 2023 17:54:32 +0000
-Message-ID: <20231124172008.239723988@linuxfoundation.org>
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 146/193] ALSA: hda/realtek - Add Dell ALC295 to pin fall back table
+Date: Fri, 24 Nov 2023 17:54:33 +0000
+Message-ID: <20231124171953.045031997@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +52,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Kailang Yang <kailang@realtek.com>
 
-commit dfd7cd6aafdb1f5ba93828e97e56b38304b23a05 upstream.
+commit 4b21a669ca21ed8f24ef4530b2918be5730114de upstream.
 
-Upon IBIWON timeout, the SDA line will always be kept low if we don't emit
-a stop. Calling svc_i3c_master_emit_stop() there will let the bus return to
-idle state.
+Add ALC295 to pin fall back table.
+Remove 5 pin quirks for Dell ALC295.
+ALC295 was only support MIC2 for external MIC function.
+ALC295 assigned model "ALC269_FIXUP_DELL1_MIC_NO_PRESENCE" for pin
+fall back table.
+It was assigned wrong model. So, let's remove it.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-6-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: fbc571290d9f ("ALSA: hda/realtek - Fixed Headphone Mic can't record on Dell platform")
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/7c1998e873834df98d59bd7e0d08c72e@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/patch_realtek.c |   19 +++----------------
+ 1 file changed, 3 insertions(+), 16 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -366,6 +366,7 @@ static void svc_i3c_master_ibi_work(stru
- 					 SVC_I3C_MSTATUS_IBIWON(val), 0, 1000);
- 	if (ret) {
- 		dev_err(master->dev, "Timeout when polling for IBIWON\n");
-+		svc_i3c_master_emit_stop(master);
- 		goto reenable_ibis;
- 	}
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9881,22 +9881,6 @@ static const struct snd_hda_pin_quirk al
+ 		{0x12, 0x90a60130},
+ 		{0x17, 0x90170110},
+ 		{0x21, 0x03211020}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+-		{0x14, 0x90170110},
+-		{0x21, 0x04211020}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+-		{0x14, 0x90170110},
+-		{0x21, 0x04211030}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
+-		ALC295_STANDARD_PINS,
+-		{0x17, 0x21014020},
+-		{0x18, 0x21a19030}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
+-		ALC295_STANDARD_PINS,
+-		{0x17, 0x21014040},
+-		{0x18, 0x21a19050}),
+-	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
+-		ALC295_STANDARD_PINS),
+ 	SND_HDA_PIN_QUIRK(0x10ec0298, 0x1028, "Dell", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 		ALC298_STANDARD_PINS,
+ 		{0x17, 0x90170110}),
+@@ -9940,6 +9924,9 @@ static const struct snd_hda_pin_quirk al
+ 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1b, 0x40000000}),
++	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
++		{0x19, 0x40000000},
++		{0x1b, 0x40000000}),
+ 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
+ 		{0x19, 0x40000000},
+ 		{0x1a, 0x40000000}),
 
 
 
