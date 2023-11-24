@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A15F7F7EEB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAB97F7CBF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5161F282428
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 090CA1C2118D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41B733E9;
-	Fri, 24 Nov 2023 18:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7513A8C4;
+	Fri, 24 Nov 2023 18:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiCmBAtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4/ce4wP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07602FC4E;
-	Fri, 24 Nov 2023 18:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D173C433C8;
-	Fri, 24 Nov 2023 18:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0957939FDD;
+	Fri, 24 Nov 2023 18:18:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF99C433C7;
+	Fri, 24 Nov 2023 18:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851033;
-	bh=cS7pLic9ctEjMcfYYUxiBSJBr3YJAobo4/nRV6wif+g=;
+	s=korg; t=1700849880;
+	bh=ttCOWSkgy31uIZZQIWu05S3JvIZSYwtlO/ZCSA1pG8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiCmBAtuYKbBc25UHLZdjTLwztUpBJpxLK7GnWrybEXHI+bHG336P5XOJ7f2gho/7
-	 hM/w1SkrDGFzqafB1wV/loFPO341j/RO2/VLunqihXqc65sMVeIVBkC1DELLES2bC8
-	 7iyNOAX4uhQSXTKQXeWWaWjOkASasmCZEXGvRtVM=
+	b=I4/ce4wPHYAsgLLm/0IBj+BpncyQq0GhcgyuHQQoJr6z1hJVfr42Pn6BECPhWtM2Z
+	 blG4Rn1pwZ7GL9A9ey+e+vWsxwZv4CNd22AhL6otUIS1zZZIB+23y8iHX8wPVpVbY1
+	 qFuP7crTvk2Vo18BXBQFf8kxwAUcKGaWf9tsYlT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maria Yu <quic_aiquny@quicinc.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.5 287/491] arm64: module: Fix PLT counting when CONFIG_RANDOMIZE_BASE=n
-Date: Fri, 24 Nov 2023 17:48:43 +0000
-Message-ID: <20231124172033.197098827@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 6.6 358/530] selftests/resctrl: Fix feature checks
+Date: Fri, 24 Nov 2023 17:48:44 +0000
+Message-ID: <20231124172038.904892653@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +52,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maria Yu <quic_aiquny@quicinc.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit d35686444fc80950c731e33a2f6ad4a55822be9b upstream.
+commit 06035f019422ba17e85c11e70d6d8bdbe9fa1afd upstream.
 
-The counting of module PLTs has been broken when CONFIG_RANDOMIZE_BASE=n
-since commit:
+The MBA and CMT tests expect support of other features to be able to
+run.
 
-  3e35d303ab7d22c4 ("arm64: module: rework module VA range selection")
+When platform only supports MBA but not MBM, MBA test will fail with:
+Failed to open total bw file: No such file or directory
 
-Prior to that commit, when CONFIG_RANDOMIZE_BASE=n, the kernel image and
-all modules were placed within a 128M region, and no PLTs were necessary
-for B or BL. Hence count_plts() and partition_branch_plt_relas() skipped
-handling B and BL when CONFIG_RANDOMIZE_BASE=n.
+When platform only supports CMT but not CAT, CMT test will fail with:
+Failed to open bit mask file '/sys/fs/resctrl/info/L3/cbm_mask': No such file or directory
 
-After that commit, modules can be placed anywhere within a 2G window
-regardless of CONFIG_RANDOMIZE_BASE, and hence PLTs may be necessary for
-B and BL even when CONFIG_RANDOMIZE_BASE=n. Unfortunately that commit
-failed to update count_plts() and partition_branch_plt_relas()
-accordingly.
+It leads to the test reporting test fail (even if no test was run at
+all).
 
-Due to this, module_emit_plt_entry() may fail if an insufficient number
-of PLT entries have been reserved, resulting in modules failing to load
-with -ENOEXEC.
+Extend feature checks to cover these two conditions to show these tests
+were skipped rather than failed.
 
-Fix this by counting PLTs regardless of CONFIG_RANDOMIZE_BASE in
-count_plts() and partition_branch_plt_relas().
-
-Fixes: 3e35d303ab7d ("arm64: module: rework module VA range selection")
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-Cc: <stable@vger.kernel.org> # 6.5.x
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Fixes: 3e35d303ab7d ("arm64: module: rework module VA range selection")
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20231024010954.6768-1-quic_aiquny@quicinc.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: ee0415681eb6 ("selftests/resctrl: Use resctrl/info for feature detection")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Cc: <stable@vger.kernel.org> # selftests/resctrl: Refactor feature check to use resource and feature name
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/module-plts.c | 6 ------
- 1 file changed, 6 deletions(-)
+ tools/testing/selftests/resctrl/resctrl_tests.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/module-plts.c b/arch/arm64/kernel/module-plts.c
-index bd69a4e7cd60..79200f21e123 100644
---- a/arch/arm64/kernel/module-plts.c
-+++ b/arch/arm64/kernel/module-plts.c
-@@ -167,9 +167,6 @@ static unsigned int count_plts(Elf64_Sym *syms, Elf64_Rela *rela, int num,
- 		switch (ELF64_R_TYPE(rela[i].r_info)) {
- 		case R_AARCH64_JUMP26:
- 		case R_AARCH64_CALL26:
--			if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE))
--				break;
--
- 			/*
- 			 * We only have to consider branch targets that resolve
- 			 * to symbols that are defined in a different section.
-@@ -269,9 +266,6 @@ static int partition_branch_plt_relas(Elf64_Sym *syms, Elf64_Rela *rela,
- {
- 	int i = 0, j = numrels - 1;
+--- a/tools/testing/selftests/resctrl/resctrl_tests.c
++++ b/tools/testing/selftests/resctrl/resctrl_tests.c
+@@ -111,7 +111,9 @@ static void run_mba_test(char **benchmar
+ 		return;
+ 	}
  
--	if (!IS_ENABLED(CONFIG_RANDOMIZE_BASE))
--		return 0;
--
- 	while (i < j) {
- 		if (branch_rela_needs_plt(syms, &rela[i], dstidx))
- 			i++;
--- 
-2.43.0
-
+-	if (!validate_resctrl_feature_request("MB", NULL) || (get_vendor() != ARCH_INTEL)) {
++	if (!validate_resctrl_feature_request("MB", NULL) ||
++	    !validate_resctrl_feature_request("L3_MON", "mbm_local_bytes") ||
++	    (get_vendor() != ARCH_INTEL)) {
+ 		ksft_test_result_skip("Hardware does not support MBA or MBA is disabled\n");
+ 		goto umount;
+ 	}
+@@ -135,7 +137,8 @@ static void run_cmt_test(char **benchmar
+ 		return;
+ 	}
+ 
+-	if (!validate_resctrl_feature_request("L3_MON", "llc_occupancy")) {
++	if (!validate_resctrl_feature_request("L3_MON", "llc_occupancy") ||
++	    !validate_resctrl_feature_request("L3", NULL)) {
+ 		ksft_test_result_skip("Hardware does not support CMT or CMT is disabled\n");
+ 		goto umount;
+ 	}
 
 
 
