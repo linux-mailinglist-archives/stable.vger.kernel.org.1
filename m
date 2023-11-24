@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-2258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F54D7F836C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3D17F840D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDEFD287FB4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA9F0B278FB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7872F37170;
-	Fri, 24 Nov 2023 19:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F4735EE6;
+	Fri, 24 Nov 2023 19:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8oYLM7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFOPxFdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3947C3173F;
-	Fri, 24 Nov 2023 19:17:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC88FC433C7;
-	Fri, 24 Nov 2023 19:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96AC339BE;
+	Fri, 24 Nov 2023 19:23:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5849EC433C7;
+	Fri, 24 Nov 2023 19:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853444;
-	bh=EHteK8+VnefaDALai5XMHjcMQfAwpNuP0r1+INxT6Ks=;
+	s=korg; t=1700853815;
+	bh=H6WuiBgVb8l5XvV4A5snPgPjnfzd0ptvYnBOtfuGd1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8oYLM7XSNTU8jyFzdmVo6eer3w/8Rqi8NON7y16kkJpDC3zUbH1FgwfoEzeHUWwo
-	 rrsgsueAM52DRCkzts+05puUNpVcTYsW38Cl8whOLtNi3LWGbqbUq9w27eLUC7R8Tm
-	 zC7QY6twvfBbqP2LsIDXn9CpmvHYX5QVEj4hLYmA=
+	b=kFOPxFdjhFQb3DvRECewVC1k3UNX5RPn7RQBvQr9rzCyNjM8HBGW37BaI1IbukkxN
+	 iUrtzIyr1AGa3Rdfavs6S069GllXC3FgV/OVydux+iBl4yLCoYnhsAm0eajYPa2nrH
+	 FetFDkvV08GvT3hUpyl4xQWYUCEYM02PoSQi+svU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Geffon <bgeffon@google.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 191/297] PM: hibernate: Use __get_safe_page() rather than touching the list
+	Felix Held <felix.held@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 016/159] drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
 Date: Fri, 24 Nov 2023 17:53:53 +0000
-Message-ID: <20231124172006.904437651@linuxfoundation.org>
+Message-ID: <20231124171942.550951007@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Geffon <bgeffon@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f0c7183008b41e92fa676406d87f18773724b48b upstream.
+[ Upstream commit 760efbca74a405dc439a013a5efaa9fadc95a8c3 ]
 
-We found at least one situation where the safe pages list was empty and
-get_buffer() would gladly try to use a NULL pointer.
+For pptable structs that use flexible array sizes, use flexible arrays.
 
-Signed-off-by: Brian Geffon <bgeffon@google.com>
-Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Felix Held <felix.held@amd.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2874
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/snapshot.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/include/pptable.h              | 4 ++--
+ drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -2414,8 +2414,9 @@ static void *get_highmem_page_buffer(str
- 		pbe->copy_page = tmp;
- 	} else {
- 		/* Copy of the page will be stored in normal memory */
--		kaddr = safe_pages_list;
--		safe_pages_list = safe_pages_list->next;
-+		kaddr = __get_safe_page(ca->gfp_mask);
-+		if (!kaddr)
-+			return ERR_PTR(-ENOMEM);
- 		pbe->copy_page = virt_to_page(kaddr);
- 	}
- 	pbe->next = highmem_pblist;
-@@ -2595,8 +2596,9 @@ static void *get_buffer(struct memory_bi
- 		return ERR_PTR(-ENOMEM);
- 	}
- 	pbe->orig_address = page_address(page);
--	pbe->address = safe_pages_list;
--	safe_pages_list = safe_pages_list->next;
-+	pbe->address = __get_safe_page(ca->gfp_mask);
-+	if (!pbe->address)
-+		return ERR_PTR(-ENOMEM);
- 	pbe->next = restore_pblist;
- 	restore_pblist = pbe;
- 	return pbe->address;
+diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
+index 0b6a057e0a4c4..5aac8d545bdc6 100644
+--- a/drivers/gpu/drm/amd/include/pptable.h
++++ b/drivers/gpu/drm/amd/include/pptable.h
+@@ -78,7 +78,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
+ typedef struct _ATOM_PPLIB_STATE
+ {
+     UCHAR ucNonClockStateIndex;
+-    UCHAR ucClockStateIndices[1]; // variable-sized
++    UCHAR ucClockStateIndices[]; // variable-sized
+ } ATOM_PPLIB_STATE;
+ 
+ 
+@@ -473,7 +473,7 @@ typedef struct _ATOM_PPLIB_STATE_V2
+       /**
+       * Driver will read the first ucNumDPMLevels in this array
+       */
+-      UCHAR clockInfoIndex[1];
++      UCHAR clockInfoIndex[];
+ } ATOM_PPLIB_STATE_V2;
+ 
+ typedef struct _StateArray{
+diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
+index 1e870f58dd12a..d5a4a08c6d392 100644
+--- a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
++++ b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
+@@ -179,7 +179,7 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
+ typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_MCLK_Dependency_Record entries[1];				/* Dynamically allocate entries. */
++	ATOM_Tonga_MCLK_Dependency_Record entries[];				/* Dynamically allocate entries. */
+ } ATOM_Tonga_MCLK_Dependency_Table;
+ 
+ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
+@@ -194,7 +194,7 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
+ typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
++	ATOM_Tonga_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
+ } ATOM_Tonga_SCLK_Dependency_Table;
+ 
+ typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
+-- 
+2.42.0
+
 
 
 
