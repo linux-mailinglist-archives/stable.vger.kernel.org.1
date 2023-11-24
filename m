@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA4B57F807F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C71597F7EC6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78520B21430
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30435B214E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519CB33CC2;
-	Fri, 24 Nov 2023 18:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF9B2FC21;
+	Fri, 24 Nov 2023 18:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wlQ+qowi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lT4Ub5Xm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E5528DBA;
-	Fri, 24 Nov 2023 18:50:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F0CC433C8;
-	Fri, 24 Nov 2023 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108CA2FC4E;
+	Fri, 24 Nov 2023 18:35:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E6FC433C7;
+	Fri, 24 Nov 2023 18:35:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851811;
-	bh=T2hUEgUPjoxVmY2wOKXEXwaWzRXcyZdammP4+s2V5ao=;
+	s=korg; t=1700850953;
+	bh=uzLdT24Y5Jvuso0PxaW2EvwBele96AzdyitfG6gHIIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wlQ+qowivLw8KTvgOE6lhD2Xsw5/sX09N0+KAuQeV0TwS5RI5MHOjCwlGE8uI5Osb
-	 qVOyvRcMnxeKw3ndLw3TNN3peBlmfpaYul7+eogNcRM9d8GPuheML8vMgsBWh/kb3i
-	 sSvLnNIX7Z5+G3eSwzcM2uLvOCFqxNiwX/4Tw4ls=
+	b=lT4Ub5Xmmj/huTcyBR8lXKJFqsdFs3xkZtliRfDWunULz8ftCqQ1FwbRYZd2nX3G9
+	 CuT9GkMc0mzV+iSGBJlCUVImiQCXzir9STmHvhgoS+EkPUd85nL1lo/T97ocec504I
+	 PqgiBMH2EdsaFIae4M7PI33P7IxTUVFdaltk5TAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/372] media: ccs: Fix driver quirk struct documentation
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.5 255/491] hvc/xen: fix event channel handling for secondary consoles
 Date: Fri, 24 Nov 2023 17:48:11 +0000
-Message-ID: <20231124172013.969399671@linuxfoundation.org>
+Message-ID: <20231124172032.233227352@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +50,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit 441b5c63d71ec9ec5453328f7e83384ecc1dddd9 ]
+commit ef5dd8ec88ac11e8e353164407d55b73c988b369 upstream.
 
-Fix documentation for struct ccs_quirk, a device specific struct for
-managing deviations from the standard. The flags field was drifted away
-from where it should have been.
+The xencons_connect_backend() function allocates a local interdomain
+event channel with xenbus_alloc_evtchn(), then calls
+bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
+*remote* domain.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That doesn't work very well:
+
+(qemu) device_add xen-console,id=con1,chardev=pty0
+[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
+[   44.323995] xenconsole: probe of console-1 failed with error -2
+
+Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
+by just binding that *local* event channel to an irq. The backend will
+do the interdomain binding.
+
+This didn't affect the primary console because the setup for that is
+special — the toolstack allocates the guest event channel and the guest
+discovers it with HVMOP_get_param.
+
+Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs/ccs-quirk.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/hvc/hvc_xen.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ccs/ccs-quirk.h b/drivers/media/i2c/ccs/ccs-quirk.h
-index 5838fcda92fd4..0b1a64958d714 100644
---- a/drivers/media/i2c/ccs/ccs-quirk.h
-+++ b/drivers/media/i2c/ccs/ccs-quirk.h
-@@ -32,12 +32,10 @@ struct ccs_sensor;
-  *		@reg: Pointer to the register to access
-  *		@value: Register value, set by the caller on write, or
-  *			by the quirk on read
-- *
-- * @flags: Quirk flags
-- *
-  *		@return: 0 on success, -ENOIOCTLCMD if no register
-  *			 access may be done by the caller (default read
-  *			 value is zero), else negative error code on error
-+ * @flags: Quirk flags
-  */
- struct ccs_quirk {
- 	int (*limits)(struct ccs_sensor *sensor);
--- 
-2.42.0
-
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -436,7 +436,7 @@ static int xencons_connect_backend(struc
+ 	if (ret)
+ 		return ret;
+ 	info->evtchn = evtchn;
+-	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
++	irq = bind_evtchn_to_irq_lateeoi(evtchn);
+ 	if (irq < 0)
+ 		return irq;
+ 	info->irq = irq;
 
 
 
