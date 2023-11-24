@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5AEE7F810A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA1A7F7A9C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F31581C2153D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79031281441
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A963035F04;
-	Fri, 24 Nov 2023 18:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADD0D39FD4;
+	Fri, 24 Nov 2023 17:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxIlhF+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmZwQU99"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583B72C85B;
-	Fri, 24 Nov 2023 18:55:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82BAC433C7;
-	Fri, 24 Nov 2023 18:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C50631740;
+	Fri, 24 Nov 2023 17:56:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BBC4C433C8;
+	Fri, 24 Nov 2023 17:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852104;
-	bh=yufmXQz/eo0ky4YwN70cgbYWF2LAlh6+sDS+SXjI24k=;
+	s=korg; t=1700848608;
+	bh=763IktGWmzyYvFvAkdhC2yd5s9cGHTE8/an0oag8liI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DxIlhF+YMvMqd5MadMBcqO4CIfw7jIpFSxNAmyrJ0RBTRG0S9aq0qK7m2Hilhd0qL
-	 8ubvI2j+ymBU/+2clWfGjbcqckzKBu8C2y59qgX62p+r9jyV0tbNOHpYlUi0nEtWX/
-	 8+3Ml5AIMLrvTcCxMnp1/aXmXluLO2aXmLCaC6CA=
+	b=ZmZwQU99f9AURXuJU0KFdFEgXmIBAtqh6RNexJA9uU644oiadtUDL3B6X1SC0ONK6
+	 8t8WpncwSzT8Vv45Tsy++dmJVcDg18BIauFRBo+Kb8VKeJY5tRx5QQlzBXh2x7bOZu
+	 6H1FnixX7e6XS1Q2xuKmnUxHOKQgm/4iqdAjHIM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.1 197/372] wifi: ath11k: fix htt pktlog locking
+	ZhengHan Wang <wzhmmmmm@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 11/97] Bluetooth: Fix double free in hci_conn_cleanup
 Date: Fri, 24 Nov 2023 17:49:44 +0000
-Message-ID: <20231124172017.020985740@linuxfoundation.org>
+Message-ID: <20231124171934.566368336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +53,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: ZhengHan Wang <wzhmmmmm@gmail.com>
 
-commit 3f77c7d605b29df277d77e9ee75d96e7ad145d2d upstream.
+[ Upstream commit a85fb91e3d728bdfc80833167e8162cce8bc7004 ]
 
-The ath11k active pdevs are protected by RCU but the htt pktlog handling
-code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section.
+syzbot reports a slab use-after-free in hci_conn_hash_flush [1].
+After releasing an object using hci_conn_del_sysfs in the
+hci_conn_cleanup function, releasing the same object again
+using the hci_dev_put and hci_conn_put functions causes a double free.
+Here's a simplified flow:
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+hci_conn_del_sysfs:
+  hci_dev_put
+    put_device
+      kobject_put
+        kref_put
+          kobject_release
+            kobject_cleanup
+              kfree_const
+                kfree(name)
 
-Compile tested only.
+hci_dev_put:
+  ...
+    kfree(name)
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Cc: stable@vger.kernel.org      # 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019112521.2071-1-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+hci_conn_put:
+  put_device
+    ...
+      kfree(name)
+
+This patch drop the hci_dev_put and hci_conn_put function
+call in hci_conn_cleanup function, because the object is
+freed in hci_conn_del_sysfs function.
+
+This patch also fixes the refcounting in hci_conn_add_sysfs() and
+hci_conn_del_sysfs() to take into account device_add() failures.
+
+This fixes CVE-2023-28464.
+
+Link: https://syzkaller.appspot.com/bug?id=1bb51491ca5df96a5f724899d1dbb87afda61419 [1]
+
+Signed-off-by: ZhengHan Wang <wzhmmmmm@gmail.com>
+Co-developed-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_conn.c  |  6 ++----
+ net/bluetooth/hci_sysfs.c | 23 ++++++++++++-----------
+ 2 files changed, 14 insertions(+), 15 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1621,14 +1621,20 @@ static void ath11k_htt_pktlog(struct ath
- 	u8 pdev_id;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index b876e97b61c92..0e837feaa527e 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -125,13 +125,11 @@ static void hci_conn_cleanup(struct hci_conn *conn)
+ 	if (hdev->notify)
+ 		hdev->notify(hdev, HCI_NOTIFY_CONN_DEL);
  
- 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
-+
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
--		return;
-+		goto out;
- 	}
+-	hci_conn_del_sysfs(conn);
+-
+ 	debugfs_remove_recursive(conn->debugfs);
  
- 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
- 				ar->ab->pktlog_defs_checksum);
-+
-+out:
-+	rcu_read_unlock();
+-	hci_dev_put(hdev);
++	hci_conn_del_sysfs(conn);
+ 
+-	hci_conn_put(conn);
++	hci_dev_put(hdev);
  }
  
- static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
+ static void le_scan_cleanup(struct work_struct *work)
+diff --git a/net/bluetooth/hci_sysfs.c b/net/bluetooth/hci_sysfs.c
+index ccd2c377bf83c..266112c960ee8 100644
+--- a/net/bluetooth/hci_sysfs.c
++++ b/net/bluetooth/hci_sysfs.c
+@@ -33,7 +33,7 @@ void hci_conn_init_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	conn->dev.type = &bt_link;
+ 	conn->dev.class = bt_class;
+@@ -46,27 +46,30 @@ void hci_conn_add_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	BT_DBG("conn %p", conn);
++	bt_dev_dbg(hdev, "conn %p", conn);
+ 
+ 	if (device_is_registered(&conn->dev))
+ 		return;
+ 
+ 	dev_set_name(&conn->dev, "%s:%d", hdev->name, conn->handle);
+ 
+-	if (device_add(&conn->dev) < 0) {
++	if (device_add(&conn->dev) < 0)
+ 		bt_dev_err(hdev, "failed to register connection device");
+-		return;
+-	}
+-
+-	hci_dev_hold(hdev);
+ }
+ 
+ void hci_conn_del_sysfs(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+ 
+-	if (!device_is_registered(&conn->dev))
++	bt_dev_dbg(hdev, "conn %p", conn);
++
++	if (!device_is_registered(&conn->dev)) {
++		/* If device_add() has *not* succeeded, use *only* put_device()
++		 * to drop the reference count.
++		 */
++		put_device(&conn->dev);
+ 		return;
++	}
+ 
+ 	while (1) {
+ 		struct device *dev;
+@@ -78,9 +81,7 @@ void hci_conn_del_sysfs(struct hci_conn *conn)
+ 		put_device(dev);
+ 	}
+ 
+-	device_del(&conn->dev);
+-
+-	hci_dev_put(hdev);
++	device_unregister(&conn->dev);
+ }
+ 
+ static void bt_host_release(struct device *dev)
+-- 
+2.42.0
+
 
 
 
