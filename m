@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DA97F823C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FED67F836D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 382C61F20FE7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E861C258A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7722935F1A;
-	Fri, 24 Nov 2023 19:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D5A381A2;
+	Fri, 24 Nov 2023 19:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqnRay+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uyU7NYLk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3053431748;
-	Fri, 24 Nov 2023 19:05:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D2CC433C7;
-	Fri, 24 Nov 2023 19:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A171C2C87B;
+	Fri, 24 Nov 2023 19:17:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31107C433C7;
+	Fri, 24 Nov 2023 19:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852750;
-	bh=qUlVrxfo1NRPyJt+xwWNnFXvOrFlUMxh689ankyd3As=;
+	s=korg; t=1700853446;
+	bh=J5uOVX1tJpFE8rx03SzNmzO9pVxjFYU68HSEqJMVuQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqnRay+Y/LCgaekC7gnaK2mbKCSbDbq9GerDVuSL+omBswZKATAyTSNEvnNjeWaPu
-	 /kkyy88mTRSOOZZ6SuJaPrcr/DMMlYOOY6eqoEqmOMgv0f61uT9bAL+oUPWT5zIKDU
-	 41o39/rGmMrtceFl8HgUPEcmeiJ1oYV5U4llD4nA=
+	b=uyU7NYLkd7+NIYEQ3B4skuwwRfCXkotR89zpy7k+jRKRcedEr6DG6pzc4fyNrqH6P
+	 O/DQ8WTtDsFCjewn09x5nEofQJbJkDYwL2U9SOr7ge2lMXeOFxVCSj6XAHngsyodte
+	 9nXjEFgFeON7GvhHQVUF+bCCPb1itkX8gHIJ+PKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.10 107/193] arm64: Restrict CPU_BIG_ENDIAN to GNU as or LLVM IAS 15.x or newer
+	Brian Geffon <bgeffon@google.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.15 192/297] PM: hibernate: Clean up sync_read handling in snapshot_write_next()
 Date: Fri, 24 Nov 2023 17:53:54 +0000
-Message-ID: <20231124171951.524169564@linuxfoundation.org>
+Message-ID: <20231124172006.943190468@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,94 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Brian Geffon <bgeffon@google.com>
 
-commit 146a15b873353f8ac28dc281c139ff611a3c4848 upstream.
+commit d08970df1980476f27936e24d452550f3e9e92e1 upstream.
 
-Prior to LLVM 15.0.0, LLVM's integrated assembler would incorrectly
-byte-swap NOP when compiling for big-endian, and the resulting series of
-bytes happened to match the encoding of FNMADD S21, S30, S0, S0.
+In snapshot_write_next(), sync_read is set and unset in three different
+spots unnecessiarly. As a result there is a subtle bug where the first
+page after the meta data has been loaded unconditionally sets sync_read
+to 0. If this first PFN was actually a highmem page, then the returned
+buffer will be the global "buffer," and the page needs to be loaded
+synchronously.
 
-This went unnoticed until commit:
+That is, I'm not sure we can always assume the following to be safe:
 
-  34f66c4c4d5518c1 ("arm64: Use a positive cpucap for FP/SIMD")
+	handle->buffer = get_buffer(&orig_bm, &ca);
+	handle->sync_read = 0;
 
-Prior to that commit, the kernel would always enable the use of FPSIMD
-early in boot when __cpu_setup() initialized CPACR_EL1, and so usage of
-FNMADD within the kernel was not detected, but could result in the
-corruption of user or kernel FPSIMD state.
+Because get_buffer() can call get_highmem_page_buffer() which can
+return 'buffer'.
 
-After that commit, the instructions happen to trap during boot prior to
-FPSIMD being detected and enabled, e.g.
+The easiest way to address this is just set sync_read before
+snapshot_write_next() returns if handle->buffer == buffer.
 
-| Unhandled 64-bit el1h sync exception on CPU0, ESR 0x000000001fe00000 -- ASIMD
-| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
-| Hardware name: linux,dummy-virt (DT)
-| pstate: 400000c9 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : __pi_strcmp+0x1c/0x150
-| lr : populate_properties+0xe4/0x254
-| sp : ffffd014173d3ad0
-| x29: ffffd014173d3af0 x28: fffffbfffddffcb8 x27: 0000000000000000
-| x26: 0000000000000058 x25: fffffbfffddfe054 x24: 0000000000000008
-| x23: fffffbfffddfe000 x22: fffffbfffddfe000 x21: fffffbfffddfe044
-| x20: ffffd014173d3b70 x19: 0000000000000001 x18: 0000000000000005
-| x17: 0000000000000010 x16: 0000000000000000 x15: 00000000413e7000
-| x14: 0000000000000000 x13: 0000000000001bcc x12: 0000000000000000
-| x11: 00000000d00dfeed x10: ffffd414193f2cd0 x9 : 0000000000000000
-| x8 : 0101010101010101 x7 : ffffffffffffffc0 x6 : 0000000000000000
-| x5 : 0000000000000000 x4 : 0101010101010101 x3 : 000000000000002a
-| x2 : 0000000000000001 x1 : ffffd014171f2988 x0 : fffffbfffddffcb8
-| Kernel panic - not syncing: Unhandled exception
-| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
-| Hardware name: linux,dummy-virt (DT)
-| Call trace:
-|  dump_backtrace+0xec/0x108
-|  show_stack+0x18/0x2c
-|  dump_stack_lvl+0x50/0x68
-|  dump_stack+0x18/0x24
-|  panic+0x13c/0x340
-|  el1t_64_irq_handler+0x0/0x1c
-|  el1_abort+0x0/0x5c
-|  el1h_64_sync+0x64/0x68
-|  __pi_strcmp+0x1c/0x150
-|  unflatten_dt_nodes+0x1e8/0x2d8
-|  __unflatten_device_tree+0x5c/0x15c
-|  unflatten_device_tree+0x38/0x50
-|  setup_arch+0x164/0x1e0
-|  start_kernel+0x64/0x38c
-|  __primary_switched+0xbc/0xc4
-
-Restrict CONFIG_CPU_BIG_ENDIAN to a known good assembler, which is
-either GNU as or LLVM's IAS 15.0.0 and newer, which contains the linked
-commit.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1948
-Link: https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20231025-disable-arm64-be-ias-b4-llvm-15-v1-1-b25263ed8b23@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Brian Geffon <bgeffon@google.com>
+Fixes: 8357376d3df2 ("[PATCH] swsusp: Improve handling of highmem")
+Cc: All applicable <stable@vger.kernel.org>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/power/snapshot.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -986,6 +986,8 @@ choice
- config CPU_BIG_ENDIAN
- 	bool "Build big-endian kernel"
- 	depends on !LD_IS_LLD || LLD_VERSION >= 130000
-+	# https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
-+	depends on AS_IS_GNU || AS_VERSION >= 150000
- 	help
- 	  Say Y if you plan on running a kernel with a big-endian userspace.
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -2629,8 +2629,6 @@ int snapshot_write_next(struct snapshot_
+ 	if (handle->cur > 1 && handle->cur > nr_meta_pages + nr_copy_pages)
+ 		return 0;
  
+-	handle->sync_read = 1;
+-
+ 	if (!handle->cur) {
+ 		if (!buffer)
+ 			/* This makes the buffer be freed by swsusp_free() */
+@@ -2666,7 +2664,6 @@ int snapshot_write_next(struct snapshot_
+ 			memory_bm_position_reset(&orig_bm);
+ 			restore_pblist = NULL;
+ 			handle->buffer = get_buffer(&orig_bm, &ca);
+-			handle->sync_read = 0;
+ 			if (IS_ERR(handle->buffer))
+ 				return PTR_ERR(handle->buffer);
+ 		}
+@@ -2676,9 +2673,8 @@ int snapshot_write_next(struct snapshot_
+ 		handle->buffer = get_buffer(&orig_bm, &ca);
+ 		if (IS_ERR(handle->buffer))
+ 			return PTR_ERR(handle->buffer);
+-		if (handle->buffer != buffer)
+-			handle->sync_read = 0;
+ 	}
++	handle->sync_read = (handle->buffer == buffer);
+ 	handle->cur++;
+ 	return PAGE_SIZE;
+ }
 
 
 
