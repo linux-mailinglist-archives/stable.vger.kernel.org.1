@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35827F7ADA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215667F8117
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 624ABB21002
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFB4C281EAA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1E639FEE;
-	Fri, 24 Nov 2023 17:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639A4364A5;
+	Fri, 24 Nov 2023 18:55:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGGhsYHl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v39pK6V0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650F339FD9;
-	Fri, 24 Nov 2023 17:59:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BCAC433C7;
-	Fri, 24 Nov 2023 17:59:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDF728DBB;
+	Fri, 24 Nov 2023 18:55:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B1BC433C8;
+	Fri, 24 Nov 2023 18:55:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848758;
-	bh=zjqNUfARuzrmw2TQYsQgFNDc6A5ANMm7ViRjJvN1hp0=;
+	s=korg; t=1700852129;
+	bh=06A43bp/l66xYbC8oS8e8J3w4fp21ouVHXr8ApRzRPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGGhsYHlqry+Azu+SkqehEByXBCak87HPWj1smlzG5oH+ATUnNt10xi5z53f8+8Cb
-	 1rRSd1j09c1QuqW21GbsmMVSY0T/K1Yylv5nPDzYjUHmS0TV4Jy0+wcU9Se7XI3QhY
-	 X4RZMKNEOWqU4RFvTCcTS7xfHmLdMr1DKw0Vlnjw=
+	b=v39pK6V0ItX3V0ljfQY0FRGIt7Vd0X2r5NDsm2Nz/vIPyJSItVF8NLy8xS4VLZXyr
+	 Pki1FgQCeHTn38fdgH61DGoFh4RXdC9FDBjB2qJcNoJJAcvoTutwQekwAJEWSxG4du
+	 HVubgzwuYIC7sv5BjeyIafRJE2nrhMmtArHgHwz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 45/97] net: ethernet: cortina: Fix MTU max setting
-Date: Fri, 24 Nov 2023 17:50:18 +0000
-Message-ID: <20231124171935.837595537@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 232/372] mfd: qcom-spmi-pmic: Fix revid implementation
+Date: Fri, 24 Nov 2023 17:50:19 +0000
+Message-ID: <20231124172018.240840798@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,96 +53,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit dc6c0bfbaa947dd7976e30e8c29b10c868b6fa42 ]
+commit 7b439aaa62fee474a0d84d67a25f4984467e7b95 upstream.
 
-The RX max frame size is over 10000 for the Gemini ethernet,
-but the TX max frame size is actually just 2047 (0x7ff after
-checking the datasheet). Reflect this in what we offer to Linux,
-cap the MTU at the TX max frame minus ethernet headers.
+The Qualcomm SPMI PMIC revid implementation is broken in multiple ways.
 
-We delete the code disabling the hardware checksum for large
-MTUs as netdev->mtu can no longer be larger than
-netdev->max_mtu meaning the if()-clause in gmac_fix_features()
-is never true.
+First, it assumes that just because the sibling base device has been
+registered that means that it is also bound to a driver, which may not
+be the case (e.g. due to probe deferral or asynchronous probe). This
+could trigger a NULL-pointer dereference when attempting to access the
+driver data of the unbound device.
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-3-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Second, it accesses driver data of a sibling device directly and without
+any locking, which means that the driver data may be freed while it is
+being accessed (e.g. on driver unbind).
+
+Third, it leaks a struct device reference to the sibling device which is
+looked up using the spmi_device_from_of() every time a function (child)
+device is calling the revid function (e.g. on probe).
+
+Fix this mess by reimplementing the revid lookup so that it is done only
+at probe of the PMIC device; the base device fetches the revid info from
+the hardware, while any secondary SPMI device fetches the information
+from the base device and caches it so that it can be accessed safely
+from its children. If the base device has not been probed yet then probe
+of a secondary device is deferred.
+
+Fixes: e9c11c6e3a0e ("mfd: qcom-spmi-pmic: expose the PMIC revid information to clients")
+Cc: stable@vger.kernel.org      # 6.0
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Caleb Connolly <caleb.connolly@linaro.org>
+Link: https://lore.kernel.org/r/20231003152927.15000-3-johan+linaro@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 17 ++++-------------
- drivers/net/ethernet/cortina/gemini.h |  2 +-
- 2 files changed, 5 insertions(+), 14 deletions(-)
+ drivers/mfd/qcom-spmi-pmic.c |   69 +++++++++++++++++++++++++++++++++----------
+ 1 file changed, 53 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index 3e38c0309bc8e..b7ebe5eb46f5a 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -2019,15 +2019,6 @@ static int gmac_change_mtu(struct net_device *netdev, int new_mtu)
- 	return 0;
- }
- 
--static netdev_features_t gmac_fix_features(struct net_device *netdev,
--					   netdev_features_t features)
--{
--	if (netdev->mtu + ETH_HLEN + VLAN_HLEN > MTU_SIZE_BIT_MASK)
--		features &= ~GMAC_OFFLOAD_FEATURES;
--
--	return features;
--}
--
- static int gmac_set_features(struct net_device *netdev,
- 			     netdev_features_t features)
- {
-@@ -2248,7 +2239,6 @@ static const struct net_device_ops gmac_351x_ops = {
- 	.ndo_set_mac_address	= gmac_set_mac_address,
- 	.ndo_get_stats64	= gmac_get_stats64,
- 	.ndo_change_mtu		= gmac_change_mtu,
--	.ndo_fix_features	= gmac_fix_features,
- 	.ndo_set_features	= gmac_set_features,
+--- a/drivers/mfd/qcom-spmi-pmic.c
++++ b/drivers/mfd/qcom-spmi-pmic.c
+@@ -30,6 +30,8 @@ struct qcom_spmi_dev {
+ 	struct qcom_spmi_pmic pmic;
  };
  
-@@ -2504,11 +2494,12 @@ static int gemini_ethernet_port_probe(struct platform_device *pdev)
++static DEFINE_MUTEX(pmic_spmi_revid_lock);
++
+ #define N_USIDS(n)		((void *)n)
  
- 	netdev->hw_features = GMAC_OFFLOAD_FEATURES;
- 	netdev->features |= GMAC_OFFLOAD_FEATURES | NETIF_F_GRO;
--	/* We can handle jumbo frames up to 10236 bytes so, let's accept
--	 * payloads of 10236 bytes minus VLAN and ethernet header
-+	/* We can receive jumbo frames up to 10236 bytes but only
-+	 * transmit 2047 bytes so, let's accept payloads of 2047
-+	 * bytes minus VLAN and ethernet header
+ static const struct of_device_id pmic_spmi_id_table[] = {
+@@ -76,24 +78,21 @@ static const struct of_device_id pmic_sp
+  *
+  * This only supports PMICs with 1 or 2 USIDs.
+  */
+-static struct spmi_device *qcom_pmic_get_base_usid(struct device *dev)
++static struct spmi_device *qcom_pmic_get_base_usid(struct spmi_device *sdev, struct qcom_spmi_dev *ctx)
+ {
+-	struct spmi_device *sdev;
+-	struct qcom_spmi_dev *ctx;
+ 	struct device_node *spmi_bus;
+ 	struct device_node *child;
+ 	int function_parent_usid, ret;
+ 	u32 pmic_addr;
+ 
+-	sdev = to_spmi_device(dev);
+-	ctx = dev_get_drvdata(&sdev->dev);
+-
+ 	/*
+ 	 * Quick return if the function device is already in the base
+ 	 * USID. This will always be hit for PMICs with only 1 USID.
  	 */
- 	netdev->min_mtu = ETH_MIN_MTU;
--	netdev->max_mtu = 10236 - VLAN_ETH_HLEN;
-+	netdev->max_mtu = MTU_SIZE_BIT_MASK - VLAN_ETH_HLEN;
+-	if (sdev->usid % ctx->num_usids == 0)
++	if (sdev->usid % ctx->num_usids == 0) {
++		get_device(&sdev->dev);
+ 		return sdev;
++	}
  
- 	port->freeq_refill = 0;
- 	netif_napi_add(netdev, &port->napi, gmac_napi_poll,
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 321427aaff4cc..ad913f15e89ba 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -502,7 +502,7 @@ union gmac_txdesc_3 {
- #define SOF_BIT			0x80000000
- #define EOF_BIT			0x40000000
- #define EOFIE_BIT		BIT(29)
--#define MTU_SIZE_BIT_MASK	0x1fff
-+#define MTU_SIZE_BIT_MASK	0x7ff /* Max MTU 2047 bytes */
+ 	function_parent_usid = sdev->usid;
  
- /* GMAC Tx Descriptor */
- struct gmac_txdesc {
--- 
-2.42.0
-
+@@ -118,10 +117,8 @@ static struct spmi_device *qcom_pmic_get
+ 			sdev = spmi_device_from_of(child);
+ 			if (!sdev) {
+ 				/*
+-				 * If the base USID for this PMIC hasn't probed yet
+-				 * but the secondary USID has, then we need to defer
+-				 * the function driver so that it will attempt to
+-				 * probe again when the base USID is ready.
++				 * If the base USID for this PMIC hasn't been
++				 * registered yet then we need to defer.
+ 				 */
+ 				sdev = ERR_PTR(-EPROBE_DEFER);
+ 			}
+@@ -135,6 +132,35 @@ static struct spmi_device *qcom_pmic_get
+ 	return sdev;
+ }
+ 
++static int pmic_spmi_get_base_revid(struct spmi_device *sdev, struct qcom_spmi_dev *ctx)
++{
++	struct qcom_spmi_dev *base_ctx;
++	struct spmi_device *base;
++	int ret = 0;
++
++	base = qcom_pmic_get_base_usid(sdev, ctx);
++	if (IS_ERR(base))
++		return PTR_ERR(base);
++
++	/*
++	 * Copy revid info from base device if it has probed and is still
++	 * bound to its driver.
++	 */
++	mutex_lock(&pmic_spmi_revid_lock);
++	base_ctx = spmi_device_get_drvdata(base);
++	if (!base_ctx) {
++		ret = -EPROBE_DEFER;
++		goto out_unlock;
++	}
++	memcpy(&ctx->pmic, &base_ctx->pmic, sizeof(ctx->pmic));
++out_unlock:
++	mutex_unlock(&pmic_spmi_revid_lock);
++
++	put_device(&base->dev);
++
++	return ret;
++}
++
+ static int pmic_spmi_load_revid(struct regmap *map, struct device *dev,
+ 				 struct qcom_spmi_pmic *pmic)
+ {
+@@ -210,11 +236,7 @@ const struct qcom_spmi_pmic *qcom_pmic_g
+ 	if (!of_match_device(pmic_spmi_id_table, dev->parent))
+ 		return ERR_PTR(-EINVAL);
+ 
+-	sdev = qcom_pmic_get_base_usid(dev->parent);
+-
+-	if (IS_ERR(sdev))
+-		return ERR_CAST(sdev);
+-
++	sdev = to_spmi_device(dev->parent);
+ 	spmi = dev_get_drvdata(&sdev->dev);
+ 
+ 	return &spmi->pmic;
+@@ -249,16 +271,31 @@ static int pmic_spmi_probe(struct spmi_d
+ 		ret = pmic_spmi_load_revid(regmap, &sdev->dev, &ctx->pmic);
+ 		if (ret < 0)
+ 			return ret;
++	} else {
++		ret = pmic_spmi_get_base_revid(sdev, ctx);
++		if (ret)
++			return ret;
+ 	}
++
++	mutex_lock(&pmic_spmi_revid_lock);
+ 	spmi_device_set_drvdata(sdev, ctx);
++	mutex_unlock(&pmic_spmi_revid_lock);
+ 
+ 	return devm_of_platform_populate(&sdev->dev);
+ }
+ 
++static void pmic_spmi_remove(struct spmi_device *sdev)
++{
++	mutex_lock(&pmic_spmi_revid_lock);
++	spmi_device_set_drvdata(sdev, NULL);
++	mutex_unlock(&pmic_spmi_revid_lock);
++}
++
+ MODULE_DEVICE_TABLE(of, pmic_spmi_id_table);
+ 
+ static struct spmi_driver pmic_spmi_driver = {
+ 	.probe = pmic_spmi_probe,
++	.remove = pmic_spmi_remove,
+ 	.driver = {
+ 		.name = "pmic-spmi",
+ 		.of_match_table = pmic_spmi_id_table,
 
 
 
