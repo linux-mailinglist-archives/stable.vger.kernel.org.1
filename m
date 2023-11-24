@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E297A7F7EFA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E26E7F7CC3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6D9D7B2177C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCC7C28207C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A91C364CB;
-	Fri, 24 Nov 2023 18:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A2A3A8C3;
+	Fri, 24 Nov 2023 18:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3r3yTFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKOmHBtZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC08833CFD;
-	Fri, 24 Nov 2023 18:37:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F16C433C8;
-	Fri, 24 Nov 2023 18:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C61E39FF7;
+	Fri, 24 Nov 2023 18:18:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3F5C433C8;
+	Fri, 24 Nov 2023 18:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851048;
-	bh=IzfGj6hDAhojaJbzBpTtdhb4WyYv87oa8ZQGJ/X+dgM=;
+	s=korg; t=1700849890;
+	bh=I1Ii4yeV7KEBw5a2TcdUFlJZZsx2+06J0RNJ15sOWK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r3r3yTFz953lHgsmaq1QEpuiWIhM8QNqHBj0Iumo7VMZUXv4CdFS+a9Ss4m4xev0B
-	 a+497MP+xD2W8avFjA4nZjziwo+/S8lTxNPA0CsLYYDUbqYFV0S8CJhvarEQdLxMnS
-	 D9LqErucUE/yqpobueed3tqvwDjGJKNJU0iX4KbA=
+	b=IKOmHBtZ2VISh25i1b73VsU+yDekIx1QuRaLrA3EuWc+BuocJ/75u5JpunfpShiCB
+	 fIystFSxE//uL/Q/kt0HrwLX1sjWUm6muUuzi8WXpXtp6wtpra5+AT9tCoiPbbzOtP
+	 TpxVxZXxevrQmiI50HAfRJs6QUwFyRMxAurdkzjQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.5 292/491] powercap: intel_rapl: Downgrade BIOS locked limits pr_warn() to pr_debug()
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 362/530] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
 Date: Fri, 24 Nov 2023 17:48:48 +0000
-Message-ID: <20231124172033.347969361@linuxfoundation.org>
+Message-ID: <20231124172039.029742007@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,51 +52,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit a60ec4485f1c72dfece365cf95e6de82bdd74300 upstream.
+commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
 
-Before the refactoring the pr_warn() only triggered when
-someone explicitly tried to write to a BIOS locked limit.
-After the refactoring the warning is also triggering during
-system resume. The user can't do anything about this so
-printing scary warnings doesn't make sense
+JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
+however, other process could intercept the EIO information from bdev's
+mapping, which leads journal recovering successful even EIO occurs during
+data written back to fs device.
 
-Keep the printk but make it pr_debug() instead of pr_warn()
-to make it clear it's not a serious issue.
+We found this problem in our product, iscsi + multipath is chosen for block
+device of ext4. Unstable network may trigger kpartx to rescan partitions in
+device mapper layer. Detailed process is shown as following:
 
-Fixes: 9050a9cd5e4c ("powercap: intel_rapl: Cleanup Power Limits support")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: 6.5+ <stable@vger.kernel.org> # 6.5+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+  mount          kpartx          irq
+jbd2_journal_recover
+ do_one_pass
+  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
+  mark_buffer_dirty // mark bh dirty
+         vfs_read
+	  generic_file_read_iter // dio
+	   filemap_write_and_wait_range
+	    __filemap_fdatawrite_range
+	     do_writepages
+	      block_write_full_folio
+	       submit_bh_wbc
+	            >>  EIO occurs in disk  <<
+	                     end_buffer_async_write
+			      mark_buffer_write_io_error
+			       mapping_set_error
+			        set_bit(AS_EIO, &mapping->flags) // set!
+	    filemap_check_errors
+	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
+ err2 = sync_blockdev
+  filemap_write_and_wait
+   filemap_check_errors
+    test_and_clear_bit(AS_EIO, &mapping->flags) // false
+ err2 = 0
+
+Filesystem is mounted successfully even data from journal is failed written
+into disk, and ext4/ocfs2 could become corrupted.
+
+Fix it by comparing the wb_err state in fs block device before recovering
+and after recovering.
+
+A reproducer can be found in the kernel bugzilla referenced below.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/intel_rapl_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jbd2/recovery.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 40a2cc649c79..2feed036c1cd 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -892,7 +892,7 @@ static int rapl_write_pl_data(struct rapl_domain *rd, int pl,
- 		return -EINVAL;
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -289,6 +289,8 @@ int jbd2_journal_recover(journal_t *jour
+ 	journal_superblock_t *	sb;
  
- 	if (rd->rpl[pl].locked) {
--		pr_warn("%s:%s:%s locked by BIOS\n", rd->rp->name, rd->name, pl_names[pl]);
-+		pr_debug("%s:%s:%s locked by BIOS\n", rd->rp->name, rd->name, pl_names[pl]);
- 		return -EACCES;
+ 	struct recovery_info	info;
++	errseq_t		wb_err;
++	struct address_space	*mapping;
+ 
+ 	memset(&info, 0, sizeof(info));
+ 	sb = journal->j_superblock;
+@@ -306,6 +308,9 @@ int jbd2_journal_recover(journal_t *jour
+ 		return 0;
  	}
  
--- 
-2.43.0
-
++	wb_err = 0;
++	mapping = journal->j_fs_dev->bd_inode->i_mapping;
++	errseq_check_and_advance(&mapping->wb_err, &wb_err);
+ 	err = do_one_pass(journal, &info, PASS_SCAN);
+ 	if (!err)
+ 		err = do_one_pass(journal, &info, PASS_REVOKE);
+@@ -329,6 +334,9 @@ int jbd2_journal_recover(journal_t *jour
+ 	err2 = sync_blockdev(journal->j_fs_dev);
+ 	if (!err)
+ 		err = err2;
++	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
++	if (!err)
++		err = err2;
+ 	/* Make sure all replayed data is on permanent storage */
+ 	if (journal->j_flags & JBD2_BARRIER) {
+ 		err2 = blkdev_issue_flush(journal->j_fs_dev);
 
 
 
