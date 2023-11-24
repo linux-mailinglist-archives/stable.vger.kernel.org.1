@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-2348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3467D7F83CB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA88A7F82A3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66E641C26595
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F2E1C23B53
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920142511F;
-	Fri, 24 Nov 2023 19:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C119364B7;
+	Fri, 24 Nov 2023 19:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hifJL/q9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQb406v0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B00F35EE6;
-	Fri, 24 Nov 2023 19:21:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC821C433C9;
-	Fri, 24 Nov 2023 19:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358AD3173F;
+	Fri, 24 Nov 2023 19:09:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5DCCC433C7;
+	Fri, 24 Nov 2023 19:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853661;
-	bh=/ir7rg4zc6X1SH1X2L3iU8mSwEhal0FmGhbP6bGuOD0=;
+	s=korg; t=1700852965;
+	bh=RjaRb+W5SYuOwF0oZG3ZyIIgiJRxB8ZvZTKXKnEZRZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hifJL/q9VrNeFfhu1c7JAE7zmXrAl7U/Jzi5rMILWRNbhTiLVpMDI/P4VTGy6UmkC
-	 Idzubn/gdqu1iV7HS7R/TsyFH2lK1FI4lWnizkG54FrBPkYLObN3gIo5H4KDyffv6U
-	 +PjVmL8l5B5G60dGLvKk7uhkJjK+vaErkCklZ9xs=
+	b=BQb406v0+2jak0TUqFfLBIkQf/eUyJSAvGzrzpJoRl5v1iJR39RtxMOiz+GjmlUdZ
+	 kKos+e/zJQptmvwrU+MAEsfrf0IHeqwKc4jdnHQZpPVQL/r8ZaVI6VTLivZvkQREhU
+	 RwygjZHXV7SKt/qWEOJsLUgt81zKf7ahoxBViM8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 278/297] media: qcom: camss: Fix VFE-17x vfe_disable_output()
+	"Lee, Cherie-Anne" <cherie.lee@starlabs.sg>,
+	Bing-Jhong Billy Jheng <billy@starlabs.sg>,
+	info@starlabs.sg,
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.10 193/193] netfilter: nf_tables: disable toggling dormant table state more than once
 Date: Fri, 24 Nov 2023 17:55:20 +0000
-Message-ID: <20231124172009.856511773@linuxfoundation.org>
+Message-ID: <20231124171954.906195817@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,96 +55,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 3143ad282fc08bf995ee73e32a9e40c527bf265d upstream.
+commit c9bd26513b3a11b3adb3c2ed8a31a01a87173ff1 upstream.
 
-There are two problems with the current vfe_disable_output() routine.
+nft -f -<<EOF
+add table ip t
+add table ip t { flags dormant; }
+add chain ip t c { type filter hook input priority 0; }
+add table ip t
+EOF
 
-Firstly we rightly use a spinlock to protect output->gen2.active_num
-everywhere except for in the IDLE timeout path of vfe_disable_output().
-Even if that is not racy "in practice" somehow it is by happenstance not
-by design.
+Triggers a splat from nf core on next table delete because we lose
+track of right hook register state:
 
-Secondly we do not get consistent behaviour from this routine. On
-sc8280xp 50% of the time I get "VFE idle timeout - resetting". In this
-case the subsequent capture will succeed. The other 50% of the time, we
-don't hit the idle timeout, never do the VFE reset and subsequent
-captures stall indefinitely.
+WARNING: CPU: 2 PID: 1597 at net/netfilter/core.c:501 __nf_unregister_net_hook
+RIP: 0010:__nf_unregister_net_hook+0x41b/0x570
+ nf_unregister_net_hook+0xb4/0xf0
+ __nf_tables_unregister_hook+0x160/0x1d0
+[..]
 
-Rewrite the vfe_disable_output() routine to
+The above should have table in *active* state, but in fact no
+hooks were registered.
 
-- Quiesce write masters with vfe_wm_stop()
-- Set active_num = 0
+Reject on/off/on games rather than attempting to fix this.
 
-remembering to hold the spinlock when we do so followed by
-
-- Reset the VFE
-
-Testing on sc8280xp and sdm845 shows this to be a valid fix.
-
-Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 179d9ba5559a ("netfilter: nf_tables: fix table flag updates")
+Reported-by: "Lee, Cherie-Anne" <cherie.lee@starlabs.sg>
+Cc: Bing-Jhong Billy Jheng <billy@starlabs.sg>
+Cc: info@starlabs.sg
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe-170.c |   22 +++-------------------
- 1 file changed, 3 insertions(+), 19 deletions(-)
+ net/netfilter/nf_tables_api.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
-@@ -7,7 +7,6 @@
-  * Copyright (C) 2020-2021 Linaro Ltd.
-  */
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1099,6 +1099,10 @@ static int nf_tables_updtable(struct nft
+ 	if (flags == ctx->table->flags)
+ 		return 0;
  
--#include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/iopoll.h>
-@@ -498,35 +497,20 @@ static int vfe_enable_output(struct vfe_
- 	return 0;
- }
- 
--static int vfe_disable_output(struct vfe_line *line)
-+static void vfe_disable_output(struct vfe_line *line)
- {
- 	struct vfe_device *vfe = to_vfe(line);
- 	struct vfe_output *output = &line->output;
- 	unsigned long flags;
- 	unsigned int i;
--	bool done;
--	int timeout = 0;
--
--	do {
--		spin_lock_irqsave(&vfe->output_lock, flags);
--		done = !output->gen2.active_num;
--		spin_unlock_irqrestore(&vfe->output_lock, flags);
--		usleep_range(10000, 20000);
--
--		if (timeout++ == 100) {
--			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
--			vfe_reset(vfe);
--			output->gen2.active_num = 0;
--			return 0;
--		}
--	} while (!done);
- 
- 	spin_lock_irqsave(&vfe->output_lock, flags);
- 	for (i = 0; i < output->wm_num; i++)
- 		vfe_wm_stop(vfe, output->wm_idx[i]);
-+	output->gen2.active_num = 0;
- 	spin_unlock_irqrestore(&vfe->output_lock, flags);
- 
--	return 0;
-+	vfe_reset(vfe);
- }
- 
- /*
++	/* No dormant off/on/off/on games in single transaction */
++	if (ctx->table->flags & __NFT_TABLE_F_UPDATE)
++		return -EINVAL;
++
+ 	trans = nft_trans_alloc(ctx, NFT_MSG_NEWTABLE,
+ 				sizeof(struct nft_trans_table));
+ 	if (trans == NULL)
 
 
 
