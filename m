@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4402E7F8089
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62357F7C96
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA42FB215A4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7A2F1C21196
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193A933CCA;
-	Fri, 24 Nov 2023 18:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8663A8C6;
+	Fri, 24 Nov 2023 18:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMIRae+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i7uZLJqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD17931748;
-	Fri, 24 Nov 2023 18:50:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598B3C433C7;
-	Fri, 24 Nov 2023 18:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93EE381DE;
+	Fri, 24 Nov 2023 18:16:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556F3C433C7;
+	Fri, 24 Nov 2023 18:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851833;
-	bh=9VlqoIBOZbEp29Xc3meXqH1QhsNsy6alLmg+oRRiA1o=;
+	s=korg; t=1700849795;
+	bh=j23WlqFdLHZgjp760fM0FILBbZUpVw+TNA+MU1v9twA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMIRae+YJEiBioJpjPOKsH7zCwz59p8ksHvfkb0wJCFquwCgSFIXTwOMp/H1R1zz+
-	 YbZcsQmQBAW1VPtzVMvLOoSNAJadfLHw3v/pBlqVs4HsqW858kPv73W4hdK1kMsZzA
-	 UTkHTnjoRXWCJpaNc+OBHRI7QBMzJVFZRA3vWUbA=
+	b=i7uZLJqQ21Qe2CbUeQaFJKIGm8mqbGshq+4gDt0gfLVpZaeocg2XoUIhS08iIfCEW
+	 JA91qRxneocpUGHhXAu/latqy9J7DKpr2zwDnLXoDisbBpvHmyNL16rep5xjWa6POO
+	 gNC1az6JrNc84RNaUA6kWBDCe6LuQGGqB+jbH9aw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/372] misc: pci_endpoint_test: Add Device ID for R-Car S4-8 PCIe controller
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stefan Wahren <stefan.wahren@i2se.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 299/530] pmdomain: bcm: bcm2835-power: check if the ASB register is equal to enable
 Date: Fri, 24 Nov 2023 17:47:45 +0000
-Message-ID: <20231124172013.119657873@linuxfoundation.org>
+Message-ID: <20231124172037.135430106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +55,48 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 6c4b39937f4e65688ea294725ae432b2565821ff ]
+commit 2e75396f1df61e1f1d26d0d703fc7292c4ae4371 upstream.
 
-Add Renesas R8A779F0 in pci_device_id table so that pci-epf-test
-can be used for testing PCIe EP on R-Car S4-8.
+The commit c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
+refactored the ASB control by using a general function to handle both
+the enable and disable. But this patch introduced a subtle regression:
+we need to check if !!(readl(base + reg) & ASB_ACK) == enable, not just
+check if (readl(base + reg) & ASB_ACK) == true.
 
-Link: https://lore.kernel.org/linux-pci/20231018085631.1121289-16-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, this is causing an invalid register state in V3D when
+unloading and loading the driver, because `bcm2835_asb_disable()` will
+return -ETIMEDOUT and `bcm2835_asb_power_off()` will fail to disable the
+ASB slave for V3D.
+
+Fixes: c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231024101251.6357-2-mcanal@igalia.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/pmdomain/bcm/bcm2835-power.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index 55dc16d8f6adb..18059a12d4e18 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -81,6 +81,7 @@
- #define PCI_DEVICE_ID_RENESAS_R8A774B1		0x002b
- #define PCI_DEVICE_ID_RENESAS_R8A774C0		0x002d
- #define PCI_DEVICE_ID_RENESAS_R8A774E1		0x0025
-+#define PCI_DEVICE_ID_RENESAS_R8A779F0		0x0031
+--- a/drivers/pmdomain/bcm/bcm2835-power.c
++++ b/drivers/pmdomain/bcm/bcm2835-power.c
+@@ -175,7 +175,7 @@ static int bcm2835_asb_control(struct bc
+ 	}
+ 	writel(PM_PASSWORD | val, base + reg);
  
- static DEFINE_IDA(pci_endpoint_test_ida);
- 
-@@ -996,6 +997,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774B1),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774C0),},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A774E1),},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_RENESAS, PCI_DEVICE_ID_RENESAS_R8A779F0),
-+	  .driver_data = (kernel_ulong_t)&default_data,
-+	},
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
- 	  .driver_data = (kernel_ulong_t)&j721e_data,
- 	},
--- 
-2.42.0
-
+-	while (readl(base + reg) & ASB_ACK) {
++	while (!!(readl(base + reg) & ASB_ACK) == enable) {
+ 		cpu_relax();
+ 		if (ktime_get_ns() - start >= 1000)
+ 			return -ETIMEDOUT;
 
 
 
