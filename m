@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FC97F81CF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6DE7F819A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D3D1B22360
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4627C1C219ED
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4A72EAEA;
-	Fri, 24 Nov 2023 19:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5693B3173F;
+	Fri, 24 Nov 2023 19:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RuZ41aJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iT3zb/kO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C4A28DBB;
-	Fri, 24 Nov 2023 19:01:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1CDC433C8;
-	Fri, 24 Nov 2023 19:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2CF364A5;
+	Fri, 24 Nov 2023 18:59:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1BBC433C7;
+	Fri, 24 Nov 2023 18:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852501;
-	bh=egbzEpN+EOUlUoj5Yo152ihdpT1N0ateXdLxwDAqFAU=;
+	s=korg; t=1700852399;
+	bh=krc4JM8nF1RfDatOTnMxuI6MqvpMOmQiprg2CK/xGPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0RuZ41aJApIqR3a0w2Iq4G+YslZFh9tKCdcROJzYE9UU92FSamTK5fm557b7xFgWH
-	 RBJF9g7rN99j/Of8RX7y1wajfNjP9bC+AzYghtvengbRds/P1GJuV8BXeSPSrIxenf
-	 VCXTnyS52pgngcxXFUkY3niuapZthFtITqsJCLfM=
+	b=iT3zb/kOZRYhvBSfSLwobhxeYLzDSu0ytA3TFAvPIZBdo9opLjYatBvdwf4TgVPDE
+	 ylQHzPLu2lreMI0RMwMrWSGmHrz6fDfyoAh5Pfy8cscbdV3paz9SeiJo0Mxl2qnpdn
+	 n+TTMBxonoyXo2Ar0nuRBELd/86L41AA1TC6LI1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Stultz <jstultz@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 001/193] locking/ww_mutex/test: Fix potential workqueue corruption
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.1 341/372] media: qcom: camss: Fix pm_domain_on sequence in probe
 Date: Fri, 24 Nov 2023 17:52:08 +0000
-Message-ID: <20231124171947.183102133@linuxfoundation.org>
+Message-ID: <20231124172021.743896147@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,124 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Stultz <jstultz@google.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit bccdd808902f8c677317cec47c306e42b93b849e ]
+commit 7405116519ad70b8c7340359bfac8db8279e7ce4 upstream.
 
-In some cases running with the test-ww_mutex code, I was seeing
-odd behavior where sometimes it seemed flush_workqueue was
-returning before all the work threads were finished.
+We need to make sure camss_configure_pd() happens before
+camss_register_entities() as the vfe_get() path relies on the pointer
+provided by camss_configure_pd().
 
-Often this would cause strange crashes as the mutexes would be
-freed while they were being used.
+Fix the ordering sequence in probe to ensure the pointers vfe_get() demands
+are present by the time camss_register_entities() runs.
 
-Looking at the code, there is a lifetime problem as the
-controlling thread that spawns the work allocates the
-"struct stress" structures that are passed to the workqueue
-threads. Then when the workqueue threads are finished,
-they free the stress struct that was passed to them.
+In order to facilitate backporting to stable kernels I've moved the
+configure_pd() call pretty early on the probe() function so that
+irrespective of the existence of the old error handling jump labels this
+patch should still apply to -next circa Aug 2023 to v5.13 inclusive.
 
-Unfortunately the workqueue work_struct node is in the stress
-struct. Which means the work_struct is freed before the work
-thread returns and while flush_workqueue is waiting.
-
-It seems like a better idea to have the controlling thread
-both allocate and free the stress structures, so that we can
-be sure we don't corrupt the workqueue by freeing the structure
-prematurely.
-
-So this patch reworks the test to do so, and with this change
-I no longer see the early flush_workqueue returns.
-
-Signed-off-by: John Stultz <jstultz@google.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20230922043616.19282-3-jstultz@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/test-ww_mutex.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/media/platform/qcom/camss/camss.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/locking/test-ww_mutex.c b/kernel/locking/test-ww_mutex.c
-index 3e82f449b4ff7..da36997d8742c 100644
---- a/kernel/locking/test-ww_mutex.c
-+++ b/kernel/locking/test-ww_mutex.c
-@@ -426,7 +426,6 @@ static void stress_inorder_work(struct work_struct *work)
- 	} while (!time_after(jiffies, stress->timeout));
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1624,6 +1624,12 @@ static int camss_probe(struct platform_d
+ 	if (ret < 0)
+ 		goto err_cleanup;
  
- 	kfree(order);
--	kfree(stress);
- }
- 
- struct reorder_lock {
-@@ -491,7 +490,6 @@ static void stress_reorder_work(struct work_struct *work)
- 	list_for_each_entry_safe(ll, ln, &locks, link)
- 		kfree(ll);
- 	kfree(order);
--	kfree(stress);
- }
- 
- static void stress_one_work(struct work_struct *work)
-@@ -512,8 +510,6 @@ static void stress_one_work(struct work_struct *work)
- 			break;
- 		}
- 	} while (!time_after(jiffies, stress->timeout));
--
--	kfree(stress);
- }
- 
- #define STRESS_INORDER BIT(0)
-@@ -524,15 +520,24 @@ static void stress_one_work(struct work_struct *work)
- static int stress(int nlocks, int nthreads, unsigned int flags)
- {
- 	struct ww_mutex *locks;
--	int n;
-+	struct stress *stress_array;
-+	int n, count;
- 
- 	locks = kmalloc_array(nlocks, sizeof(*locks), GFP_KERNEL);
- 	if (!locks)
- 		return -ENOMEM;
- 
-+	stress_array = kmalloc_array(nthreads, sizeof(*stress_array),
-+				     GFP_KERNEL);
-+	if (!stress_array) {
-+		kfree(locks);
-+		return -ENOMEM;
++	ret = camss_configure_pd(camss);
++	if (ret < 0) {
++		dev_err(dev, "Failed to configure power domains: %d\n", ret);
++		goto err_cleanup;
 +	}
 +
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_init(&locks[n], &ww_class);
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1676,12 +1682,6 @@ static int camss_probe(struct platform_d
+ 		}
+ 	}
  
-+	count = 0;
- 	for (n = 0; nthreads; n++) {
- 		struct stress *stress;
- 		void (*fn)(struct work_struct *work);
-@@ -556,9 +561,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 		if (!fn)
- 			continue;
- 
--		stress = kmalloc(sizeof(*stress), GFP_KERNEL);
--		if (!stress)
--			break;
-+		stress = &stress_array[count++];
- 
- 		INIT_WORK(&stress->work, fn);
- 		stress->locks = locks;
-@@ -573,6 +576,7 @@ static int stress(int nlocks, int nthreads, unsigned int flags)
- 
- 	for (n = 0; n < nlocks; n++)
- 		ww_mutex_destroy(&locks[n]);
-+	kfree(stress_array);
- 	kfree(locks);
+-	ret = camss_configure_pd(camss);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	pm_runtime_enable(dev);
  
  	return 0;
--- 
-2.42.0
-
 
 
 
