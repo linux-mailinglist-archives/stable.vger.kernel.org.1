@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4854B7F8374
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788497F825B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0459928819E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D801EB23E8E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29563381D4;
-	Fri, 24 Nov 2023 19:17:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4B32C1A2;
+	Fri, 24 Nov 2023 19:06:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qwkMKM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iFknQN8q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51502C1A2;
-	Fri, 24 Nov 2023 19:17:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D7BC433C9;
-	Fri, 24 Nov 2023 19:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305893307D;
+	Fri, 24 Nov 2023 19:06:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857F0C433C7;
+	Fri, 24 Nov 2023 19:06:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853463;
-	bh=AIvr32vQnv3Kqd0ZLyCSqni5vi/AIGnvZAquxB6yEgA=;
+	s=korg; t=1700852809;
+	bh=bhSYyZZxywwVW9XkQLMuU0yyuYzlRvyohUyrcjtivgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qwkMKM0auEXaQ6HVi0ZegCxKX28kIUOGqCdKu0AMltipKMyVZ6FT17+MkDDg6pp4
-	 IU2lEMvggwJUd3AW+yKPmTHr86q2HhwDbb1iJb7GJHbj7tSnWUIrtkLRjqQQWCZiJq
-	 YxtDOH3h3ocWE+zM7dxd+4s4JA9a4nCuVyJC6uqI=
+	b=iFknQN8qoTcsMhDIXjR7wGCB6bJn931Czriou8YTYiNu7asd0SfxjsyS4e/DJLqZX
+	 0YY55KPwQoIX7j/84OUPeqLlEYPq/LI49XbG3DLOXturdudVmMzH6F8C6Oc9ux56yo
+	 9rjnTDs1An7LBWsc90/a0uYtom8odHR1X+razFtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 5.15 199/297] wifi: ath11k: fix temperature event locking
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.10 114/193] PCI/ASPM: Fix L1 substate handling in aspm_attr_store_common()
 Date: Fri, 24 Nov 2023 17:54:01 +0000
-Message-ID: <20231124172007.171970462@linuxfoundation.org>
+Message-ID: <20231124171951.796414667@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +52,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 1a5352a81b4720ba43d9c899974e3bddf7ce0ce8 upstream.
+commit 8e37372ad0bea4c9b4712d9943f6ae96cff9491f upstream.
 
-The ath11k active pdevs are protected by RCU but the temperature event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section as reported by RCU lockdep:
+aspm_attr_store_common(), which handles sysfs control of ASPM, has the same
+problem as fb097dcd5a28 ("PCI/ASPM: Disable only ASPM_STATE_L1 when driver
+disables L1"): disabling L1 adds only ASPM_L1 (but not any of the L1.x
+substates) to the "aspm_disable" mask.
 
-	=============================
-	WARNING: suspicious RCU usage
-	6.6.0-rc6 #7 Not tainted
-	-----------------------------
-	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
+Enabling one substate, e.g., L1.1, via sysfs removes ASPM_L1 from the
+disable mask.  Since disabling L1 via sysfs doesn't add any of the
+substates to the disable mask, enabling L1.1 actually enables *all* the
+substates.
 
-	other info that might help us debug this:
+In this scenario:
 
-	rcu_scheduler_active = 2, debug_locks = 1
-	no locks held by swapper/0/0.
-	...
-	Call trace:
-	...
-	 lockdep_rcu_suspicious+0x16c/0x22c
-	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
+  - Write 0 to "l1_aspm" to disable L1
+  - Write 1 to "l1_1_aspm" to enable L1.1
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+the intention is to disable L1 and all L1.x substates, then enable just
+L1.1, but in fact, *all* L1.x substates are enabled.
 
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
+Fix this by explicitly disabling all the L1.x substates when disabling L1.
 
-Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-Cc: stable@vger.kernel.org      # 5.7
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019153115.26401-2-johan+linaro@kernel.org
+Fixes: 72ea91afbfb0 ("PCI/ASPM: Add sysfs attributes for controlling ASPM link states")
+Link: https://lore.kernel.org/r/6ba7dd79-9cfe-4ed0-a002-d99cb842f361@gmail.com
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/pci/pcie/aspm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -6855,15 +6855,19 @@ ath11k_wmi_pdev_temperature_event(struct
- 	ath11k_dbg(ab, ATH11K_DBG_WMI,
- 		   "pdev temperature ev temp %d pdev_id %d\n", ev->temp, ev->pdev_id);
- 
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1250,6 +1250,8 @@ static ssize_t aspm_attr_store_common(st
+ 			link->aspm_disable &= ~ASPM_STATE_L1;
+ 	} else {
+ 		link->aspm_disable |= state;
++		if (state & ASPM_STATE_L1)
++			link->aspm_disable |= ASPM_STATE_L1SS;
  	}
  
- 	ath11k_thermal_event_temperature(ar, ev->temp);
- 
-+exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
- }
- 
+ 	pcie_config_aspm_link(link, policy_to_aspm_state(link));
 
 
 
