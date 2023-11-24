@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782767F7AB0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E93A7F7F57
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34F2328156E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45891282257
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BDE39FC3;
-	Fri, 24 Nov 2023 17:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA77D2C85B;
+	Fri, 24 Nov 2023 18:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6aTIqRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uEsDnL2n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75640381DE;
-	Fri, 24 Nov 2023 17:57:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047C2C433C8;
-	Fri, 24 Nov 2023 17:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57A312EAEA;
+	Fri, 24 Nov 2023 18:40:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CE2C433C7;
+	Fri, 24 Nov 2023 18:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848658;
-	bh=dI355BmJQBiOzG7a9FxV+RhnJLdGbS4XRXuhBlOjDkw=;
+	s=korg; t=1700851236;
+	bh=tC1EdQdjXrhadpNLqdCcSSMi22Rigb8ZtDPxaDpZN0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6aTIqRWVruk1V+pks8rOafQgxGxELK8M5JNUWTDX5PFucepzO/KhVonibmKw/AhA
-	 j4SmSpok8wJiVnG7bYNcpgKBAcepgTF2RQBzdOYqi7uLeNDHGHmU4j0Ekx8zobI5+h
-	 O1SViisK28mI9izYIf+wOMdQOZEHqA0CocEx0TFg=
+	b=uEsDnL2n2d+wcRxyFC0FjuCqAAg8q6QFPS47TVF9QxLuCmj/aViEymAQUCOkTAvZU
+	 Z1uIKC+2z0ASqLNMvt+OPD1XjDd24ozOMaujnq0uDkIbQ48uGsG6Ay+6ePiSyX3s8H
+	 6RwJvY5Xvj6HOUYXbVD6XIFuQOuKOxZE2Kxfuayo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Lin <axel.lin@ingics.com>,
-	Boris Brezillon <boris.brezillon@free-electrons.com>,
-	Wolfram Sang <wsa@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 30/97] i2c: sun6i-p2wi: Prevent potential division by zero
-Date: Fri, 24 Nov 2023 17:50:03 +0000
-Message-ID: <20231124171935.278568512@linuxfoundation.org>
+Subject: [PATCH 6.5 368/491] PCI: qcom-ep: Add dedicated callback for writing to DBI2 registers
+Date: Fri, 24 Nov 2023 17:50:04 +0000
+Message-ID: <20231124172035.635188845@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +52,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Axel Lin <axel.lin@ingics.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 5ac61d26b8baff5b2e5a9f3dc1ef63297e4b53e7 ]
+[ Upstream commit a07d2497ed657eb2efeb967af47e22f573dcd1d6 ]
 
-Make sure we don't OOPS in case clock-frequency is set to 0 in a DT. The
-variable set here is later used as a divisor.
+The DWC core driver exposes the write_dbi2() callback for writing to the
+DBI2 registers in a vendor-specific way.
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
-Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+On the Qcom EP platforms, the DBI_CS2 bit in the ELBI region needs to be
+asserted before writing to any DBI2 registers and deasserted once done.
+
+So, let's implement the callback for the Qcom PCIe EP driver so that the
+DBI2 writes are correctly handled in the hardware.
+
+Without this callback, the DBI2 register writes like BAR size won't go
+through and as a result, the default BAR size is set for all BARs.
+
+[kwilczynski: commit log, renamed function to match the DWC convention]
+Fixes: f55fee56a631 ("PCI: qcom-ep: Add Qualcomm PCIe Endpoint controller driver")
+Suggested-by: Serge Semin <fancer.lancer@gmail.com>
+Link: https://lore.kernel.org/linux-pci/20231025130029.74693-2-manivannan.sadhasivam@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Cc: stable@vger.kernel.org # 5.16+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-sun6i-p2wi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pci/controller/dwc/pcie-qcom-ep.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-sun6i-p2wi.c b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-index 7c07ce116e384..540c33f4e3500 100644
---- a/drivers/i2c/busses/i2c-sun6i-p2wi.c
-+++ b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-@@ -202,6 +202,11 @@ static int p2wi_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/pci/controller/dwc/pcie-qcom-ep.c b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+index 267e1247d548f..4a9741428619f 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom-ep.c
++++ b/drivers/pci/controller/dwc/pcie-qcom-ep.c
+@@ -121,6 +121,7 @@
  
-+	if (clk_freq == 0) {
-+		dev_err(dev, "clock-frequency is set to 0 in DT\n");
-+		return -EINVAL;
-+	}
+ /* ELBI registers */
+ #define ELBI_SYS_STTS				0x08
++#define ELBI_CS2_ENABLE				0xa4
+ 
+ /* DBI registers */
+ #define DBI_CON_STATUS				0x44
+@@ -253,6 +254,21 @@ static void qcom_pcie_dw_stop_link(struct dw_pcie *pci)
+ 	disable_irq(pcie_ep->perst_irq);
+ }
+ 
++static void qcom_pcie_dw_write_dbi2(struct dw_pcie *pci, void __iomem *base,
++				    u32 reg, size_t size, u32 val)
++{
++	struct qcom_pcie_ep *pcie_ep = to_pcie_ep(pci);
++	int ret;
 +
- 	if (of_get_child_count(np) > 1) {
- 		dev_err(dev, "P2WI only supports one slave device\n");
- 		return -EINVAL;
++	writel(1, pcie_ep->elbi + ELBI_CS2_ENABLE);
++
++	ret = dw_pcie_write(pci->dbi_base2 + reg, size, val);
++	if (ret)
++		dev_err(pci->dev, "Failed to write DBI2 register (0x%x): %d\n", reg, ret);
++
++	writel(0, pcie_ep->elbi + ELBI_CS2_ENABLE);
++}
++
+ static int qcom_pcie_enable_resources(struct qcom_pcie_ep *pcie_ep)
+ {
+ 	int ret;
+@@ -451,6 +467,7 @@ static const struct dw_pcie_ops pci_ops = {
+ 	.link_up = qcom_pcie_dw_link_up,
+ 	.start_link = qcom_pcie_dw_start_link,
+ 	.stop_link = qcom_pcie_dw_stop_link,
++	.write_dbi2 = qcom_pcie_dw_write_dbi2,
+ };
+ 
+ static int qcom_pcie_ep_get_io_resources(struct platform_device *pdev,
 -- 
 2.42.0
 
