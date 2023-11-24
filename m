@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B74C7F7F30
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24887F7A9E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DD041C21465
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DF21281439
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9195F2D787;
-	Fri, 24 Nov 2023 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238A4381DF;
+	Fri, 24 Nov 2023 17:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="glMpVx9S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc65jkbX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D96F381CD;
-	Fri, 24 Nov 2023 18:39:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC603C433C8;
-	Fri, 24 Nov 2023 18:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9A7381D6;
+	Fri, 24 Nov 2023 17:56:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C1DC433C8;
+	Fri, 24 Nov 2023 17:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851164;
-	bh=O9nZly/9N8+zkQJsSAsDg7O8cBePMLKAifih4g46vns=;
+	s=korg; t=1700848614;
+	bh=IKN1TftxjQxL0xHAw/rfxI86tFXgEGJ2ZooGZcmAy8s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=glMpVx9SDsass5hykjHlURiNKU4oU10ExolsgW8gg8pCh1GPiLBYa20VLQNbRuCQ5
-	 1hkDgsfdOKWNMlOx/nGdiu9sv+FVL8XECRZlEgkRlS4w+YFoPiUdInBEUNPeQANkSP
-	 IvYfz9ab+NviYHa6u6y6WNqR5i3Z9oJqOY0j9yk8=
+	b=vc65jkbX48MZSfLIPERaQRnTuV5/PvbIurjTKYCivvfpRa0oS2uqt02dDTPGcOoG+
+	 02I13D63eRzH/naULJpKKOAKodTtx8+zuIMsYzXRk6+76Cvb21/EbjJoxWz6rA4Ce9
+	 iu+2DOOTprPFgPqdqMFaCbTXvR8+7gE05q60Q4x4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.5 339/491] kernel/reboot: emergency_restart: Set correct system_state
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 02/97] perf/core: Bail out early if the request AUX area is out of bound
 Date: Fri, 24 Nov 2023 17:49:35 +0000
-Message-ID: <20231124172034.759357566@linuxfoundation.org>
+Message-ID: <20231124171934.215695134@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 60466c067927abbcaff299845abd4b7069963139 upstream.
+[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
 
-As the emergency restart does not call kernel_restart_prepare(), the
-system_state stays in SYSTEM_RUNNING.
+When perf-record with a large AUX area, e.g 4GB, it fails with:
 
-Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
-active, and therefore might lead to avoidable warnings in the restart
-handlers, e.g.:
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
 
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
+and it reveals a WARNING with __alloc_pages():
 
-Avoid these by setting the correct system_state.
+	------------[ cut here ]------------
+	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
+	Call trace:
+	 __alloc_pages+0x1ec/0x248
+	 __kmalloc_large_node+0xc0/0x1f8
+	 __kmalloc_node+0x134/0x1e8
+	 rb_alloc_aux+0xe0/0x298
+	 perf_mmap+0x440/0x660
+	 mmap_region+0x308/0x8a8
+	 do_mmap+0x3c0/0x528
+	 vm_mmap_pgoff+0xf4/0x1b8
+	 ksys_mmap_pgoff+0x18c/0x218
+	 __arm64_sys_mmap+0x38/0x58
+	 invoke_syscall+0x50/0x128
+	 el0_svc_common.constprop.0+0x58/0x188
+	 do_el0_svc+0x34/0x50
+	 el0_svc+0x34/0x108
+	 el0t_64_sync_handler+0xb8/0xc0
+	 el0t_64_sync+0x1a4/0x1a8
 
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-1-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
+maintains AUX trace pages. The allocated page for this array is physically
+contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
+size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
+WARNING.
+
+So bail out early with -ENOMEM if the request AUX area is out of bound,
+e.g.:
+
+    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
+    failed to mmap with 12 (Cannot allocate memory)
+
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/reboot.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/events/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -74,6 +74,7 @@ void __weak (*pm_power_off)(void);
- void emergency_restart(void)
- {
- 	kmsg_dump(KMSG_DUMP_EMERG);
-+	system_state = SYSTEM_RESTART;
- 	machine_emergency_restart();
- }
- EXPORT_SYMBOL_GPL(emergency_restart);
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 12f351b253bbb..2f6f77658eba2 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -639,6 +639,12 @@ int rb_alloc_aux(struct ring_buffer *rb, struct perf_event *event,
+ 		}
+ 	}
+ 
++	/*
++	 * kcalloc_node() is unable to allocate buffer if the size is larger
++	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
++	 */
++	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
++		return -ENOMEM;
+ 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
+ 				     node);
+ 	if (!rb->aux_pages)
+-- 
+2.42.0
+
 
 
 
