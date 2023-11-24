@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669F77F7ED3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 949B47F80A6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2320A2823D7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ECFB282239
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FF93306F;
-	Fri, 24 Nov 2023 18:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FB333CD1;
+	Fri, 24 Nov 2023 18:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A55l06gD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFZWWOtV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C2331759;
-	Fri, 24 Nov 2023 18:36:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ED6AC433C7;
-	Fri, 24 Nov 2023 18:36:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5174A2E64F;
+	Fri, 24 Nov 2023 18:51:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A66C433C8;
+	Fri, 24 Nov 2023 18:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850980;
-	bh=SKjSXncmoPJd8CKGNbSF1qApUz614JkRc8r6G2Ocm90=;
+	s=korg; t=1700851896;
+	bh=VIktLqAZF96gJuvy+bEc2YTWs7qRlJ3HnKDhAg+VR20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A55l06gDRiUwgrILkewtWZTGm7LWk0PycyzfVrndJOI70D5gHEG0s5af1DH2G1k3H
-	 me1iivEvqnjdHY+KcetWvrFMy4Kd/U6JtPPP3vBgBAmYqnj1+/EKQod+7Jt5mNRBNz
-	 V3ryyscSyaiG94aoqhoOL5Ugl6pIvfwCqnoF3To4=
+	b=SFZWWOtV0CDhUb8C1Jr+hVq9OoFgoGASikXEAyOWG74m/079SjJ4XrjtnQfKpzhAi
+	 XsGX2016B7PCtwwKjEPgz+C0oG0m2eKq3slkj8quhsNSud2vtrYnOuLeEFNe9PQaY3
+	 Ln8w+yKfG4gfep0bETvYsMsCzF4unS1jhIhxXKQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Jakub Acs <acsjakub@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 265/491] mm/damon: implement a function for max nr_accesses safe calculation
+	Yi Yang <yiyang13@huawei.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 114/372] mtd: rawnand: tegra: add missing check for platform_get_irq()
 Date: Fri, 24 Nov 2023 17:48:21 +0000
-Message-ID: <20231124172032.525458608@linuxfoundation.org>
+Message-ID: <20231124172014.289489363@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,77 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Yi Yang <yiyang13@huawei.com>
 
-commit 35f5d94187a6a3a8df2cba54beccca1c2379edb8 upstream.
+[ Upstream commit 0a1166c27d4e53186e6bf9147ea6db9cd1d65847 ]
 
-Patch series "avoid divide-by-zero due to max_nr_accesses overflow".
+Add the missing check for platform_get_irq() and return error code
+if it fails.
 
-The maximum nr_accesses of given DAMON context can be calculated by
-dividing the aggregation interval by the sampling interval.  Some logics
-in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
-shouldn't be zero.  Such case is avoided since DAMON avoids setting the
-agregation interval as samller than the sampling interval.  However, since
-nr_accesses is unsigned int while the intervals are unsigned long, the
-maximum nr_accesses could be zero while casting.
-
-Avoid the divide-by-zero by implementing a function that handles the
-corner case (first patch), and replaces the vulnerable direct max
-nr_accesses calculations (remaining patches).
-
-Note that the patches for the replacements are divided for broken commits,
-to make backporting on required tres easier.  Especially, the last patch
-is for a patch that not yet merged into the mainline but in mm tree.
-
-
-This patch (of 4):
-
-The maximum nr_accesses of given DAMON context can be calculated by
-dividing the aggregation interval by the sampling interval.  Some logics
-in DAMON uses the maximum nr_accesses as a divisor.  Hence, the value
-shouldn't be zero.  Such case is avoided since DAMON avoids setting the
-agregation interval as samller than the sampling interval.  However, since
-nr_accesses is unsigned int while the intervals are unsigned long, the
-maximum nr_accesses could be zero while casting.  Implement a function
-that handles the corner case.
-
-Note that this commit is not fixing the real issue since this is only
-introducing the safe function that will replaces the problematic
-divisions.  The replacements will be made by followup commits, to make
-backporting on stable series easier.
-
-Link: https://lkml.kernel.org/r/20231019194924.100347-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20231019194924.100347-2-sj@kernel.org
-Fixes: 198f0f4c58b9 ("mm/damon/vaddr,paddr: support pageout prioritization")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Jakub Acs <acsjakub@amazon.de>
-Cc: <stable@vger.kernel.org>	[5.16+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d7d9f8ec77fe ("mtd: rawnand: add NVIDIA Tegra NAND Flash controller driver")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230821084046.217025-1-yiyang13@huawei.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/damon.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mtd/nand/raw/tegra_nand.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -626,6 +626,13 @@ static inline bool damon_target_has_pid(
- 	return ctx->ops.id == DAMON_OPS_VADDR || ctx->ops.id == DAMON_OPS_FVADDR;
- }
+diff --git a/drivers/mtd/nand/raw/tegra_nand.c b/drivers/mtd/nand/raw/tegra_nand.c
+index a9b9031ce6167..d33030b68ac44 100644
+--- a/drivers/mtd/nand/raw/tegra_nand.c
++++ b/drivers/mtd/nand/raw/tegra_nand.c
+@@ -1197,6 +1197,10 @@ static int tegra_nand_probe(struct platform_device *pdev)
+ 	init_completion(&ctrl->dma_complete);
  
-+static inline unsigned int damon_max_nr_accesses(const struct damon_attrs *attrs)
-+{
-+	/* {aggr,sample}_interval are unsigned long, hence could overflow */
-+	return min(attrs->aggr_interval / attrs->sample_interval,
-+			(unsigned long)UINT_MAX);
-+}
-+
- 
- int damon_start(struct damon_ctx **ctxs, int nr_ctxs, bool exclusive);
- int damon_stop(struct damon_ctx **ctxs, int nr_ctxs);
+ 	ctrl->irq = platform_get_irq(pdev, 0);
++	if (ctrl->irq < 0) {
++		err = ctrl->irq;
++		goto err_put_pm;
++	}
+ 	err = devm_request_irq(&pdev->dev, ctrl->irq, tegra_nand_irq, 0,
+ 			       dev_name(&pdev->dev), ctrl);
+ 	if (err) {
+-- 
+2.42.0
+
 
 
 
