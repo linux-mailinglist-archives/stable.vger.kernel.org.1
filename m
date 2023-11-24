@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-1048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917B67F7DC0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1413C7F7BB5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45F6F282042
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4325E1C21006
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458183A8C3;
-	Fri, 24 Nov 2023 18:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FDEA39FED;
+	Fri, 24 Nov 2023 18:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEuoHw/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj/Z4KtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE703A8C9;
-	Fri, 24 Nov 2023 18:27:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8B7C433C7;
-	Fri, 24 Nov 2023 18:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0369031740;
+	Fri, 24 Nov 2023 18:07:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F254C433C7;
+	Fri, 24 Nov 2023 18:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850429;
-	bh=TBIk+4EBw0evYimN+8bCA+PziPVnW/FBiKlHKMBsWQk=;
+	s=korg; t=1700849271;
+	bh=3EM9jCme6VSUvIGOs0zzth3PqqEu+JH16zMBLva9DU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sEuoHw/wqHM0gy3/MZRQCfm/hUsoVf/nKrXF6rf2sXkOlbAhrQlmknFhwW4dgpgoH
-	 3xLAtwAD5mM+MUOWPk8NYcuYwW0K+mCa+xf7FwIxEg4DRBQBtao5MeK5qneMaWQl4y
-	 fnFv8lesQuzQ2PF1t1wsXPfs/hiNwS0GwYildeOA=
+	b=Fj/Z4KtHHcZ1zES+JcT9YbMxC9tYFZlKkc7bFJdeCoeDRLV9yMtJRoRJy97gHx3O6
+	 LbjMofdxG/gtgoeccirbiIr+FDJqT3k/xekvOGgIKT0xkDVlmkehHX3f/PqXExPq5j
+	 UsKuCi8/9Sn8i9ffkj9IqwdcunAoJ5+40f8j40aQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sui Jingfeng <suijingfeng@loongson.cn>,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Andy Wu <Andy.Wu@sony.com>,
+	Aoyama Wataru <wataru.aoyama@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 045/491] drm/gma500: Fix call trace when psb_gem_mm_init() fails
-Date: Fri, 24 Nov 2023 17:44:41 +0000
-Message-ID: <20231124172026.046758798@linuxfoundation.org>
+Subject: [PATCH 6.6 116/530] exfat: support handle zero-size directory
+Date: Fri, 24 Nov 2023 17:44:42 +0000
+Message-ID: <20231124172031.645580131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,140 +55,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit da596080b2b400c50fe9f8f237bcaf09fed06af8 ]
+[ Upstream commit dab48b8f2fe7264d51ec9eed0adea0fe3c78830a ]
 
-Because the gma_irq_install() is call after psb_gem_mm_init() function,
-when psb_gem_mm_init() fails, the interrupt line haven't been allocated.
-Yet the gma_irq_uninstall() is called in the psb_driver_unload() function
-without checking if checking the irq is registered or not.
+After repairing a corrupted file system with exfatprogs' fsck.exfat,
+zero-size directories may result. It is also possible to create
+zero-size directories in other exFAT implementation, such as Paragon
+ufsd dirver.
 
-The calltrace is appended as following:
+As described in the specification, the lower directory size limits
+is 0 bytes.
 
-[   20.539253] ioremap memtype_reserve failed -16
-[   20.543895] gma500 0000:00:02.0: Failure to map stolen base.
-[   20.565049] ------------[ cut here ]------------
-[   20.565066] Trying to free already-free IRQ 16
-[   20.565087] WARNING: CPU: 1 PID: 381 at kernel/irq/manage.c:1893 free_irq+0x209/0x370
-[   20.565316] CPU: 1 PID: 381 Comm: systemd-udevd Tainted: G         C         6.5.0-rc1+ #368
-[   20.565329] Hardware name: To Be Filled By O.E.M. To Be Filled By O.E.M./IMB-140D Plus, BIOS P1.10 11/18/2013
-[   20.565338] RIP: 0010:free_irq+0x209/0x370
-[   20.565357] Code: 41 5d 41 5e 41 5f 5d 31 d2 89 d1 89 d6 89 d7 41 89 d1 c3 cc cc cc cc 8b 75 d0 48 c7 c7 e0 77 12 9f 4c 89 4d c8 e8 57 fe f4 ff <0f> 0b 48 8b 75 c8 4c 89 f7 e8 29 f3 f1 00 49 8b 47 40 48 8b 40 78
-[   20.565369] RSP: 0018:ffffae3b40733808 EFLAGS: 00010046
-[   20.565382] RAX: 0000000000000000 RBX: ffff9f8082bfe000 RCX: 0000000000000000
-[   20.565390] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-[   20.565397] RBP: ffffae3b40733840 R08: 0000000000000000 R09: 0000000000000000
-[   20.565405] R10: 0000000000000000 R11: 0000000000000000 R12: ffff9f80871c3100
-[   20.565413] R13: ffff9f80835d3360 R14: ffff9f80835d32a4 R15: ffff9f80835d3200
-[   20.565424] FS:  00007f13d36458c0(0000) GS:ffff9f8138880000(0000) knlGS:0000000000000000
-[   20.565434] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   20.565441] CR2: 00007f0d046f3f20 CR3: 0000000006c8c000 CR4: 00000000000006e0
-[   20.565450] Call Trace:
-[   20.565458]  <TASK>
-[   20.565470]  ? show_regs+0x72/0x90
-[   20.565488]  ? free_irq+0x209/0x370
-[   20.565504]  ? __warn+0x8d/0x160
-[   20.565520]  ? free_irq+0x209/0x370
-[   20.565536]  ? report_bug+0x1bb/0x1d0
-[   20.565555]  ? handle_bug+0x46/0x90
-[   20.565572]  ? exc_invalid_op+0x19/0x80
-[   20.565587]  ? asm_exc_invalid_op+0x1b/0x20
-[   20.565607]  ? free_irq+0x209/0x370
-[   20.565625]  ? free_irq+0x209/0x370
-[   20.565644]  gma_irq_uninstall+0x15b/0x1e0 [gma500_gfx]
-[   20.565728]  psb_driver_unload+0x27/0x190 [gma500_gfx]
-[   20.565800]  psb_pci_probe+0x5d2/0x790 [gma500_gfx]
-[   20.565873]  local_pci_probe+0x48/0xb0
-[   20.565892]  pci_device_probe+0xc8/0x280
-[   20.565912]  really_probe+0x1d2/0x440
-[   20.565929]  __driver_probe_device+0x8a/0x190
-[   20.565944]  driver_probe_device+0x23/0xd0
-[   20.565957]  __driver_attach+0x10f/0x220
-[   20.565971]  ? __pfx___driver_attach+0x10/0x10
-[   20.565984]  bus_for_each_dev+0x7a/0xe0
-[   20.566002]  driver_attach+0x1e/0x30
-[   20.566014]  bus_add_driver+0x127/0x240
-[   20.566029]  driver_register+0x64/0x140
-[   20.566043]  ? __pfx_psb_init+0x10/0x10 [gma500_gfx]
-[   20.566111]  __pci_register_driver+0x68/0x80
-[   20.566128]  psb_init+0x2c/0xff0 [gma500_gfx]
-[   20.566194]  do_one_initcall+0x46/0x330
-[   20.566214]  ? kmalloc_trace+0x2a/0xb0
-[   20.566233]  do_init_module+0x6a/0x270
-[   20.566250]  load_module+0x207f/0x23a0
-[   20.566278]  init_module_from_file+0x9c/0xf0
-[   20.566293]  ? init_module_from_file+0x9c/0xf0
-[   20.566315]  idempotent_init_module+0x184/0x240
-[   20.566335]  __x64_sys_finit_module+0x64/0xd0
-[   20.566352]  do_syscall_64+0x59/0x90
-[   20.566366]  ? ksys_mmap_pgoff+0x123/0x270
-[   20.566378]  ? __secure_computing+0x9b/0x110
-[   20.566392]  ? exit_to_user_mode_prepare+0x39/0x190
-[   20.566406]  ? syscall_exit_to_user_mode+0x2a/0x50
-[   20.566420]  ? do_syscall_64+0x69/0x90
-[   20.566433]  ? do_syscall_64+0x69/0x90
-[   20.566445]  ? do_syscall_64+0x69/0x90
-[   20.566458]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-[   20.566472] RIP: 0033:0x7f13d351ea3d
-[   20.566485] Code: 5b 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d c3 a3 0f 00 f7 d8 64 89 01 48
-[   20.566496] RSP: 002b:00007ffe566c1fd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-[   20.566510] RAX: ffffffffffffffda RBX: 000055e66806eec0 RCX: 00007f13d351ea3d
-[   20.566519] RDX: 0000000000000000 RSI: 00007f13d36d9441 RDI: 0000000000000010
-[   20.566527] RBP: 0000000000020000 R08: 0000000000000000 R09: 0000000000000002
-[   20.566535] R10: 0000000000000010 R11: 0000000000000246 R12: 00007f13d36d9441
-[   20.566543] R13: 000055e6681108c0 R14: 000055e66805ba70 R15: 000055e66819a9c0
-[   20.566559]  </TASK>
-[   20.566566] ---[ end trace 0000000000000000 ]---
+Without this commit, sub-directories and files cannot be created
+under a zero-size directory, and it cannot be removed.
 
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230727185855.713318-1-suijingfeng@loongson.cn
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reviewed-by: Andy Wu <Andy.Wu@sony.com>
+Reviewed-by: Aoyama Wataru <wataru.aoyama@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/gma500/psb_drv.h | 1 +
- drivers/gpu/drm/gma500/psb_irq.c | 5 +++++
- 2 files changed, 6 insertions(+)
+ fs/exfat/namei.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/gma500/psb_drv.h b/drivers/gpu/drm/gma500/psb_drv.h
-index f7f709df99b49..70d9adafa2333 100644
---- a/drivers/gpu/drm/gma500/psb_drv.h
-+++ b/drivers/gpu/drm/gma500/psb_drv.h
-@@ -424,6 +424,7 @@ struct drm_psb_private {
- 	uint32_t pipestat[PSB_NUM_PIPE];
+diff --git a/fs/exfat/namei.c b/fs/exfat/namei.c
+index 1b9f587f6cca5..95c51b025b917 100644
+--- a/fs/exfat/namei.c
++++ b/fs/exfat/namei.c
+@@ -351,14 +351,20 @@ static int exfat_find_empty_entry(struct inode *inode,
+ 		if (exfat_check_max_dentries(inode))
+ 			return -ENOSPC;
  
- 	spinlock_t irqmask_lock;
-+	bool irq_enabled;
- 
- 	/* Power */
- 	bool pm_initialized;
-diff --git a/drivers/gpu/drm/gma500/psb_irq.c b/drivers/gpu/drm/gma500/psb_irq.c
-index 343c51250207d..7bbb79b0497d8 100644
---- a/drivers/gpu/drm/gma500/psb_irq.c
-+++ b/drivers/gpu/drm/gma500/psb_irq.c
-@@ -327,6 +327,8 @@ int gma_irq_install(struct drm_device *dev)
- 
- 	gma_irq_postinstall(dev);
- 
-+	dev_priv->irq_enabled = true;
+-		/* we trust p_dir->size regardless of FAT type */
+-		if (exfat_find_last_cluster(sb, p_dir, &last_clu))
+-			return -EIO;
+-
+ 		/*
+ 		 * Allocate new cluster to this directory
+ 		 */
+-		exfat_chain_set(&clu, last_clu + 1, 0, p_dir->flags);
++		if (ei->start_clu != EXFAT_EOF_CLUSTER) {
++			/* we trust p_dir->size regardless of FAT type */
++			if (exfat_find_last_cluster(sb, p_dir, &last_clu))
++				return -EIO;
 +
- 	return 0;
- }
++			exfat_chain_set(&clu, last_clu + 1, 0, p_dir->flags);
++		} else {
++			/* This directory is empty */
++			exfat_chain_set(&clu, EXFAT_EOF_CLUSTER, 0,
++					ALLOC_NO_FAT_CHAIN);
++		}
  
-@@ -337,6 +339,9 @@ void gma_irq_uninstall(struct drm_device *dev)
- 	unsigned long irqflags;
- 	unsigned int i;
+ 		/* allocate a cluster */
+ 		ret = exfat_alloc_cluster(inode, 1, &clu, IS_DIRSYNC(inode));
+@@ -368,6 +374,11 @@ static int exfat_find_empty_entry(struct inode *inode,
+ 		if (exfat_zeroed_cluster(inode, clu.dir))
+ 			return -EIO;
  
-+	if (!dev_priv->irq_enabled)
-+		return;
++		if (ei->start_clu == EXFAT_EOF_CLUSTER) {
++			ei->start_clu = clu.dir;
++			p_dir->dir = clu.dir;
++		}
 +
- 	spin_lock_irqsave(&dev_priv->irqmask_lock, irqflags);
+ 		/* append to the FAT chain */
+ 		if (clu.flags != p_dir->flags) {
+ 			/* no-fat-chain bit is disabled,
+@@ -645,7 +656,7 @@ static int exfat_find(struct inode *dir, struct qstr *qname,
+ 	info->type = exfat_get_entry_type(ep);
+ 	info->attr = le16_to_cpu(ep->dentry.file.attr);
+ 	info->size = le64_to_cpu(ep2->dentry.stream.valid_size);
+-	if ((info->type == TYPE_FILE) && (info->size == 0)) {
++	if (info->size == 0) {
+ 		info->flags = ALLOC_NO_FAT_CHAIN;
+ 		info->start_clu = EXFAT_EOF_CLUSTER;
+ 	} else {
+@@ -888,6 +899,9 @@ static int exfat_check_dir_empty(struct super_block *sb,
  
- 	if (dev_priv->ops->hotplug_enable)
+ 	dentries_per_clu = sbi->dentries_per_clu;
+ 
++	if (p_dir->dir == EXFAT_EOF_CLUSTER)
++		return 0;
++
+ 	exfat_chain_dup(&clu, p_dir);
+ 
+ 	while (clu.dir != EXFAT_EOF_CLUSTER) {
+@@ -1255,7 +1269,8 @@ static int __exfat_rename(struct inode *old_parent_inode,
+ 		}
+ 
+ 		/* Free the clusters if new_inode is a dir(as if exfat_rmdir) */
+-		if (new_entry_type == TYPE_DIR) {
++		if (new_entry_type == TYPE_DIR &&
++		    new_ei->start_clu != EXFAT_EOF_CLUSTER) {
+ 			/* new_ei, new_clu_to_free */
+ 			struct exfat_chain new_clu_to_free;
+ 
 -- 
 2.42.0
 
