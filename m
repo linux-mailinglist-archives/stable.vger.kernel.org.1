@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-1450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7E67F7FB9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F6D7F8161
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC918282440
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB2DAB21662
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5ED364A0;
-	Fri, 24 Nov 2023 18:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8BA2D787;
+	Fri, 24 Nov 2023 18:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVx/gUa2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ba7KUfPc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362C8381C9;
-	Fri, 24 Nov 2023 18:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C3BC433C7;
-	Fri, 24 Nov 2023 18:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C16F321AD;
+	Fri, 24 Nov 2023 18:58:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A42C433C7;
+	Fri, 24 Nov 2023 18:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851429;
-	bh=wnRIqUMCB1pWAzVVNoJnSxYfUlbTUed1Uq9YIw+xDIA=;
+	s=korg; t=1700852286;
+	bh=49p6T9CFoFneqA2jfMiAhgA8lemb9k1z5R/kgM1uzrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVx/gUa2LEBVvQurxyWo8bXxyQfxphnmO+Im+urVH85/VRghjkOUba4XypeTEq/ux
-	 4s1wYSPXwrMLL7rstBPwBiRXJOuLZRDePDQff/dMeQEaG9RSmHurc2NTI/bTHs24Jz
-	 XyalFLoxat0wJ7QuY/3HSJ5mKEDi+HeUUC6EqNFc=
+	b=Ba7KUfPc9DPdZRZ+rVHMTZ/tWqrkp2qLsfKJmDqwhZz1uj2WkZfWCuR/+W54Qd4jJ
+	 Tx7EZesW5jbTkG0cdo6on6rUWvq7psQuBG1dHzwrjDdmgAe3CnUbg3xYA0DoTKiQ9C
+	 XaBKJDOVMRMy43oSqJi9tcZLti1QIRZltr0ffzuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.5 445/491] selftests: mptcp: fix fastclose with csum failure
+	Charlene Liu <charlene.liu@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Muhammad Ahmed <ahmed.ahmed@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 294/372] drm/amd/display: enable dsc_clk even if dsc_pg disabled
 Date: Fri, 24 Nov 2023 17:51:21 +0000
-Message-ID: <20231124172037.980715640@linuxfoundation.org>
+Message-ID: <20231124172020.226942795@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +57,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Muhammad Ahmed <ahmed.ahmed@amd.com>
 
-commit 7cefbe5e1dacc7236caa77e9d072423f21422fe2 upstream.
+[ Upstream commit 40255df370e94d44f0f0a924400d68db0ee31bec ]
 
-Running the mp_join selftest manually with the following command line:
+[why]
+need to enable dsc_clk regardless dsc_pg
 
-  ./mptcp_join.sh -z -C
-
-leads to some failures:
-
-  002 fastclose server test
-  # ...
-  rtx                                 [fail] got 1 MP_RST[s] TX expected 0
-  # ...
-  rstrx                               [fail] got 1 MP_RST[s] RX expected 0
-
-The problem is really in the wrong expectations for the RST checks
-implied by the csum validation. Note that the same check is repeated
-explicitly in the same test-case, with the correct expectation and
-pass successfully.
-
-Address the issue explicitly setting the correct expectation for
-the failing checks.
-
-Reported-by: Xiumei Mu <xmu@redhat.com>
-Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-5-7b9cd6a7b7f4@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Muhammad Ahmed <ahmed.ahmed@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c           | 8 ++++----
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 3 +++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3207,7 +3207,7 @@ fastclose_tests()
- 	if reset_check_counter "fastclose server test" "MPTcpExtMPFastcloseRx"; then
- 		test_linkfail=1024 addr_nr_ns2=fastclose_server \
- 			run_tests $ns1 $ns2 10.0.1.1
--		chk_join_nr 0 0 0
-+		chk_join_nr 0 0 0 0 0 0 1
- 		chk_fclose_nr 1 1 invert
- 		chk_rst_nr 1 1
- 	fi
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 9d321f4f486e2..7a309547c2b3f 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1806,7 +1806,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
+ 	if (dc->hwss.subvp_pipe_control_lock)
+ 		dc->hwss.subvp_pipe_control_lock(dc, context, true, true, NULL, subvp_prev_use);
+ 
+-	if (dc->debug.enable_double_buffered_dsc_pg_support)
++	if (dc->hwss.update_dsc_pg)
+ 		dc->hwss.update_dsc_pg(dc, context, false);
+ 
+ 	disable_dangling_plane(dc, context);
+@@ -1905,7 +1905,7 @@ static enum dc_status dc_commit_state_no_check(struct dc *dc, struct dc_state *c
+ 		dc->hwss.optimize_bandwidth(dc, context);
+ 	}
+ 
+-	if (dc->debug.enable_double_buffered_dsc_pg_support)
++	if (dc->hwss.update_dsc_pg)
+ 		dc->hwss.update_dsc_pg(dc, context, true);
+ 
+ 	if (dc->ctx->dce_version >= DCE_VERSION_MAX)
+@@ -2193,7 +2193,7 @@ void dc_post_update_surfaces_to_stream(struct dc *dc)
+ 
+ 		dc->hwss.optimize_bandwidth(dc, context);
+ 
+-		if (dc->debug.enable_double_buffered_dsc_pg_support)
++		if (dc->hwss.update_dsc_pg)
+ 			dc->hwss.update_dsc_pg(dc, context, true);
+ 	}
+ 
+@@ -3453,7 +3453,7 @@ static void commit_planes_for_stream(struct dc *dc,
+ 		if (get_seamless_boot_stream_count(context) == 0)
+ 			dc->hwss.prepare_bandwidth(dc, context);
+ 
+-		if (dc->debug.enable_double_buffered_dsc_pg_support)
++		if (dc->hwss.update_dsc_pg)
+ 			dc->hwss.update_dsc_pg(dc, context, false);
+ 
+ 		context_clock_trace(dc, context);
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+index d477dcc9149fa..50b3547977281 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+@@ -79,6 +79,9 @@ void dcn32_dsc_pg_control(
+ 	if (hws->ctx->dc->debug.disable_dsc_power_gate)
+ 		return;
+ 
++	if (!hws->ctx->dc->debug.enable_double_buffered_dsc_pg_support)
++		return;
++
+ 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
+ 	if (org_ip_request_cntl == 0)
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
+-- 
+2.42.0
+
 
 
 
