@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-2173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 163AD7F8315
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:13:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC15D7F82F9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:12:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47D611C24B97
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDF8D1C2477A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C62381D4;
-	Fri, 24 Nov 2023 19:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B73637170;
+	Fri, 24 Nov 2023 19:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGTGoX+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfBW3qTr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8FA35EE6;
-	Fri, 24 Nov 2023 19:13:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6F3C433C8;
-	Fri, 24 Nov 2023 19:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F4A35EE6;
+	Fri, 24 Nov 2023 19:12:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669A9C433C7;
+	Fri, 24 Nov 2023 19:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853229;
-	bh=M45B7eriLNTv0XeoFN0a9UK4Pg76UoJcZrH2aFgn7EM=;
+	s=korg; t=1700853164;
+	bh=GVYbVBeW7d/tuuXGfye7P2JV+0g+qF0ASr5Pan2IJa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGTGoX+ahab81fAZth8BnHjcmLw9aJdRmHuSo9wiO3Rab8ZdGry3MRYj72M6IZByM
-	 Ie6MgrwMYCQ27UyRwL3+aDCNvx/V/Gna/MYVx4z2dns1cw1Td6FIqqQupUqVdTmRAQ
-	 HZmCR0NnwHlFDhli6QP05idQq8RAVpChcZ/aVuok=
+	b=VfBW3qTrAQ2yxSsK64t3KoCMn+9X4YvaIs6+joiOJPqUOE5Kmu4OhGS8lI8f/JZTb
+	 MUQACJVRlWrDkNO8jGiTKTVUzYsti+CEC+9l3fLsF/ffLRetFUA3Ywc9f5RPcw5cdt
+	 mU4z5HskjOmbZEamRkPCBqKao3lus7HamtxKp0+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 071/297] gfs2: fix an oops in gfs2_permission
-Date: Fri, 24 Nov 2023 17:51:53 +0000
-Message-ID: <20231124172002.731519662@linuxfoundation.org>
+Subject: [PATCH 5.15 072/297] media: cobalt: Use FIELD_GET() to extract Link Width
+Date: Fri, 24 Nov 2023 17:51:54 +0000
+Message-ID: <20231124172002.768172168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -51,71 +52,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 0abd1557e21c617bd13fc18f7725fc6363c05913 ]
+[ Upstream commit f301fedbeecfdce91cb898d6fa5e62f269801fee ]
 
-In RCU mode, we might race with gfs2_evict_inode(), which zeroes
-->i_gl.  Freeing of the object it points to is RCU-delayed, so
-if we manage to fetch the pointer before it's been replaced with
-NULL, we are fine.  Check if we'd fetched NULL and treat that
-as "bail out and tell the caller to get out of RCU mode".
+Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
+instead of custom masking and shifting.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/inode.c | 11 +++++++++--
- fs/gfs2/super.c |  2 +-
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/media/pci/cobalt/cobalt-driver.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 97ee17843b4d0..682418d9c8e72 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1850,14 +1850,21 @@ int gfs2_permission(struct user_namespace *mnt_userns, struct inode *inode,
- {
- 	struct gfs2_inode *ip;
- 	struct gfs2_holder i_gh;
-+	struct gfs2_glock *gl;
- 	int error;
+diff --git a/drivers/media/pci/cobalt/cobalt-driver.c b/drivers/media/pci/cobalt/cobalt-driver.c
+index 16af58f2f93cc..f9cee061517bd 100644
+--- a/drivers/media/pci/cobalt/cobalt-driver.c
++++ b/drivers/media/pci/cobalt/cobalt-driver.c
+@@ -8,6 +8,7 @@
+  *  All rights reserved.
+  */
  
- 	gfs2_holder_mark_uninitialized(&i_gh);
- 	ip = GFS2_I(inode);
--	if (gfs2_glock_is_locked_by_me(ip->i_gl) == NULL) {
-+	gl = rcu_dereference(ip->i_gl);
-+	if (unlikely(!gl)) {
-+		/* inode is getting torn down, must be RCU mode */
-+		WARN_ON_ONCE(!(mask & MAY_NOT_BLOCK));
-+		return -ECHILD;
-+        }
-+	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
- 		if (mask & MAY_NOT_BLOCK)
- 			return -ECHILD;
--		error = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
-+		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
- 		if (error)
- 			return error;
- 	}
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 51b44da4a0d64..268651ac9fc84 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1436,7 +1436,7 @@ static void gfs2_evict_inode(struct inode *inode)
- 		wait_on_bit_io(&ip->i_flags, GIF_GLOP_PENDING, TASK_UNINTERRUPTIBLE);
- 		gfs2_glock_add_to_lru(ip->i_gl);
- 		gfs2_glock_put_eventually(ip->i_gl);
--		ip->i_gl = NULL;
-+		rcu_assign_pointer(ip->i_gl, NULL);
- 	}
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <media/i2c/adv7604.h>
+ #include <media/i2c/adv7842.h>
+@@ -210,17 +211,17 @@ void cobalt_pcie_status_show(struct cobalt *cobalt)
+ 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &stat);
+ 	cobalt_info("PCIe link capability 0x%08x: %s per lane and %u lanes\n",
+ 			capa, get_link_speed(capa),
+-			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
++			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 	cobalt_info("PCIe link control 0x%04x\n", ctrl);
+ 	cobalt_info("PCIe link status 0x%04x: %s per lane and %u lanes\n",
+ 		    stat, get_link_speed(stat),
+-		    (stat & PCI_EXP_LNKSTA_NLW) >> 4);
++		    FIELD_GET(PCI_EXP_LNKSTA_NLW, stat));
+ 
+ 	/* Bus */
+ 	pcie_capability_read_dword(pci_bus_dev, PCI_EXP_LNKCAP, &capa);
+ 	cobalt_info("PCIe bus link capability 0x%08x: %s per lane and %u lanes\n",
+ 			capa, get_link_speed(capa),
+-			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
++			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 
+ 	/* Slot */
+ 	pcie_capability_read_dword(pci_dev, PCI_EXP_SLTCAP, &capa);
+@@ -239,7 +240,7 @@ static unsigned pcie_link_get_lanes(struct cobalt *cobalt)
+ 	if (!pci_is_pcie(pci_dev))
+ 		return 0;
+ 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &link);
+-	return (link & PCI_EXP_LNKSTA_NLW) >> 4;
++	return FIELD_GET(PCI_EXP_LNKSTA_NLW, link);
  }
  
+ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
+@@ -250,7 +251,7 @@ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
+ 	if (!pci_is_pcie(pci_dev))
+ 		return 0;
+ 	pcie_capability_read_dword(pci_dev, PCI_EXP_LNKCAP, &link);
+-	return (link & PCI_EXP_LNKCAP_MLW) >> 4;
++	return FIELD_GET(PCI_EXP_LNKCAP_MLW, link);
+ }
+ 
+ static void msi_config_show(struct cobalt *cobalt, struct pci_dev *pci_dev)
 -- 
 2.42.0
 
