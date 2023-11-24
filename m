@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394E37F7F51
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFBE57F7D30
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA1B8282151
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F21561C211FC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CAB2E84A;
-	Fri, 24 Nov 2023 18:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F963A8D6;
+	Fri, 24 Nov 2023 18:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inskGUUE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqixylSy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CAE7364CB;
-	Fri, 24 Nov 2023 18:40:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E994C433C8;
-	Fri, 24 Nov 2023 18:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9824639FE8;
+	Fri, 24 Nov 2023 18:22:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245C6C433C8;
+	Fri, 24 Nov 2023 18:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851221;
-	bh=yuxmeaBVL36MChSEsJcwJbETWP5o+CloVJOEZGsPilk=;
+	s=korg; t=1700850132;
+	bh=ekQV2aQ+4YMt+lDIBftUkghxjczFjqNHEQv5e+mdqL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inskGUUEuKIL/s22livG1AdLamRcQEbHDe9dqQJ15ipzlx1sSS+SWuIDvz7g9Sbh5
-	 hWnZz1lZ/V5+H/LzkwUThij/MNRvImd7apIq2KE8CSMMcN6cVTF1vtmoa+/JUR6lQF
-	 cnHKGsrSHEuyaaVcgNigj428OouXutnKi1YqwvFc=
+	b=PqixylSyXpThaTO3VhV07gq1PyGXwvjpYkOQeau8HTFYRwOwrEflmxeJl8cFYGE2x
+	 tMDb5T+QrgNfTvtdDgOvBTb2tt/YnXy/wLNDQm8NRN0q5R6Crcbr1AiSqJLTQG/SJV
+	 CEGxVDZzeP8BBt8x8OSiOLrrFTT2uM9/ViYHqPBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.5 362/491] i3c: master: svc: fix random hot join failure since timeout error
+	Shinhyung Kang <s47.kang@samsung.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 432/530] ALSA: info: Fix potential deadlock at disconnection
 Date: Fri, 24 Nov 2023 17:49:58 +0000
-Message-ID: <20231124172035.454514232@linuxfoundation.org>
+Message-ID: <20231124172041.227167492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +51,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 9aaeef113c55248ecf3ab941c2e4460aaa8b8b9a upstream.
+commit c7a60651953359f98dbf24b43e1bf561e1573ed4 upstream.
 
-master side report:
-  silvaco-i3c-master 44330000.i3c-master: Error condition: MSTATUS 0x020090c7, MERRWARN 0x00100000
+As reported recently, ALSA core info helper may cause a deadlock at
+the forced device disconnection during the procfs operation.
 
-BIT 20: TIMEOUT error
-  The module has stalled too long in a frame. This happens when:
-  - The TX FIFO or RX FIFO is not handled and the bus is stuck in the
-middle of a message,
-  - No STOP was issued and between messages,
-  - IBI manual is used and no decision was made.
-  The maximum stall period is 100 μs.
+The proc_remove() (that is called from the snd_card_disconnect()
+helper) has a synchronization of the pending procfs accesses via
+wait_for_completion().  Meanwhile, ALSA procfs helper takes the global
+mutex_lock(&info_mutex) at both the proc_open callback and
+snd_card_info_disconnect() helper.  Since the proc_open can't finish
+due to the mutex lock, wait_for_completion() never returns, either,
+hence it deadlocks.
 
-This can be considered as being just a warning as the system IRQ latency
-can easily be greater than 100us.
+	TASK#1				TASK#2
+	proc_reg_open()
+	  takes use_pde()
+	snd_info_text_entry_open()
+					snd_card_disconnect()
+					snd_info_card_disconnect()
+					  takes mutex_lock(&info_mutex)
+					proc_remove()
+					wait_for_completion(unused_pde)
+					  ... waiting task#1 closes
+	mutex_lock(&info_mutex)
+		=> DEADLOCK
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-7-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This patch is a workaround for avoiding the deadlock scenario above.
+
+The basic strategy is to move proc_remove() call outside the mutex
+lock.  proc_remove() can work gracefully without extra locking, and it
+can delete the tree recursively alone.  So, we call proc_remove() at
+snd_info_card_disconnection() at first, then delete the rest resources
+recursively within the info_mutex lock.
+
+After the change, the function snd_info_disconnect() doesn't do
+disconnection by itself any longer, but it merely clears the procfs
+pointer.  So rename the function to snd_info_clear_entries() for
+avoiding confusion.
+
+The similar change is applied to snd_info_free_entry(), too.  Since
+the proc_remove() is called only conditionally with the non-NULL
+entry->p, it's skipped after the snd_info_clear_entries() call.
+
+Reported-by: Shinhyung Kang <s47.kang@samsung.com>
+Closes: https://lore.kernel.org/r/664457955.21699345385931.JavaMail.epsvc@epcpadp4
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231109141954.4283-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/core/info.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -93,6 +93,7 @@
- #define SVC_I3C_MINTMASKED   0x098
- #define SVC_I3C_MERRWARN     0x09C
- #define   SVC_I3C_MERRWARN_NACK BIT(2)
-+#define   SVC_I3C_MERRWARN_TIMEOUT BIT(20)
- #define SVC_I3C_MDMACTRL     0x0A0
- #define SVC_I3C_MDATACTRL    0x0AC
- #define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
-@@ -227,6 +228,14 @@ static bool svc_i3c_master_error(struct
- 	if (SVC_I3C_MSTATUS_ERRWARN(mstatus)) {
- 		merrwarn = readl(master->regs + SVC_I3C_MERRWARN);
- 		writel(merrwarn, master->regs + SVC_I3C_MERRWARN);
+--- a/sound/core/info.c
++++ b/sound/core/info.c
+@@ -56,7 +56,7 @@ struct snd_info_private_data {
+ };
+ 
+ static int snd_info_version_init(void);
+-static void snd_info_disconnect(struct snd_info_entry *entry);
++static void snd_info_clear_entries(struct snd_info_entry *entry);
+ 
+ /*
+ 
+@@ -569,11 +569,16 @@ void snd_info_card_disconnect(struct snd
+ {
+ 	if (!card)
+ 		return;
+-	mutex_lock(&info_mutex);
 +
-+		/* Ignore timeout error */
-+		if (merrwarn & SVC_I3C_MERRWARN_TIMEOUT) {
-+			dev_dbg(master->dev, "Warning condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
-+				mstatus, merrwarn);
-+			return false;
-+		}
+ 	proc_remove(card->proc_root_link);
+-	card->proc_root_link = NULL;
+ 	if (card->proc_root)
+-		snd_info_disconnect(card->proc_root);
++		proc_remove(card->proc_root->p);
 +
- 		dev_err(master->dev,
- 			"Error condition: MSTATUS 0x%08x, MERRWARN 0x%08x\n",
- 			mstatus, merrwarn);
++	mutex_lock(&info_mutex);
++	if (card->proc_root)
++		snd_info_clear_entries(card->proc_root);
++	card->proc_root_link = NULL;
++	card->proc_root = NULL;
+ 	mutex_unlock(&info_mutex);
+ }
+ 
+@@ -745,15 +750,14 @@ struct snd_info_entry *snd_info_create_c
+ }
+ EXPORT_SYMBOL(snd_info_create_card_entry);
+ 
+-static void snd_info_disconnect(struct snd_info_entry *entry)
++static void snd_info_clear_entries(struct snd_info_entry *entry)
+ {
+ 	struct snd_info_entry *p;
+ 
+ 	if (!entry->p)
+ 		return;
+ 	list_for_each_entry(p, &entry->children, list)
+-		snd_info_disconnect(p);
+-	proc_remove(entry->p);
++		snd_info_clear_entries(p);
+ 	entry->p = NULL;
+ }
+ 
+@@ -770,8 +774,9 @@ void snd_info_free_entry(struct snd_info
+ 	if (!entry)
+ 		return;
+ 	if (entry->p) {
++		proc_remove(entry->p);
+ 		mutex_lock(&info_mutex);
+-		snd_info_disconnect(entry);
++		snd_info_clear_entries(entry);
+ 		mutex_unlock(&info_mutex);
+ 	}
+ 
 
 
 
