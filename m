@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA2D47F7ACE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2217F813B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA5B71C20AB0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC83A28244A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7AD39FE1;
-	Fri, 24 Nov 2023 17:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FCA3418B;
+	Fri, 24 Nov 2023 18:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYDxY5tz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwTeT6QA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D28CD381D8;
-	Fri, 24 Nov 2023 17:58:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C9AC433C7;
-	Fri, 24 Nov 2023 17:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257E32E64F;
+	Fri, 24 Nov 2023 18:56:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8202C433C8;
+	Fri, 24 Nov 2023 18:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848728;
-	bh=OXydAH++5OobtdWzhsL0ClS5Lbw6VkZz+DzsQMwnUwk=;
+	s=korg; t=1700852205;
+	bh=uvdawoahPb+RwBxFEYRTfJ68Fca0L9ZwDUNQzh5DNgU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYDxY5tzNWUkKVfYgBkjLT9GAp7YXN6Ue4FlFEIUWsCfmTCNbV79l1VxWTzgk1Vmy
-	 /TS2GPz3ht3oNOj55Mq34HSSEsQzes2ySA7aNSPgbP+6M6ZhPdYn1O2exq9c5z2D8l
-	 1LsuREqrhR3lejn/uG4blT3feytSOAmmFtJdIsLY=
+	b=RwTeT6QAw3j9rokXtj7Di5sXSgtyHHZ+RyB906L1VwVNrxREhtqoGIB1UQaXLz1kd
+	 Svoj2POERwqYlqb23X2HlE1zbuIK/QEIf5isLcOGKgvlrJTqCC8l5sBO/aPPsWDgSX
+	 uqtlzDXzQSdBrSSUlvIW3JSeOr5OdykRs6rNqMzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 4.19 58/97] PCI: keystone: Dont discard .probe() callback
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Nishanth Menon <nm@ti.com>,
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.1 244/372] kernel/reboot: emergency_restart: Set correct system_state
 Date: Fri, 24 Nov 2023 17:50:31 +0000
-Message-ID: <20231124171936.314663676@linuxfoundation.org>
+Message-ID: <20231124172018.669064539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +52,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-commit 7994db905c0fd692cf04c527585f08a91b560144 upstream.
+commit 60466c067927abbcaff299845abd4b7069963139 upstream.
 
-The __init annotation makes the ks_pcie_probe() function disappear after
-booting completes. However a device can also be bound later. In that case,
-we try to call ks_pcie_probe(), but the backing memory is likely already
-overwritten.
+As the emergency restart does not call kernel_restart_prepare(), the
+system_state stays in SYSTEM_RUNNING.
 
-The right thing to do is do always have the probe callback available.  Note
-that the (wrong) __refdata annotation prevented this issue to be noticed by
-modpost.
+Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
+active, and therefore might lead to avoidable warnings in the restart
+handlers, e.g.:
 
-Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-Link: https://lore.kernel.org/r/20231001170254.2506508-5-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
+[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+[   12.676926] Voluntary context switch within RCU read-side critical section!
+...
+[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+...
+[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+[   13.001050]  machine_restart from panic+0x2a8/0x32c
+
+Avoid these by setting the correct system_state.
+
+Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+Cc: stable@vger.kernel.org # v5.2+
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-1-18699d5dcd76@skidata.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/reboot.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -385,7 +385,7 @@ static int ks_pcie_remove(struct platfor
- 	return 0;
- }
- 
--static int __init ks_pcie_probe(struct platform_device *pdev)
-+static int ks_pcie_probe(struct platform_device *pdev)
+--- a/kernel/reboot.c
++++ b/kernel/reboot.c
+@@ -74,6 +74,7 @@ void __weak (*pm_power_off)(void);
+ void emergency_restart(void)
  {
- 	struct device *dev = &pdev->dev;
- 	struct dw_pcie *pci;
-@@ -452,7 +452,7 @@ fail_clk:
- 	return ret;
+ 	kmsg_dump(KMSG_DUMP_EMERG);
++	system_state = SYSTEM_RESTART;
+ 	machine_emergency_restart();
  }
- 
--static struct platform_driver ks_pcie_driver __refdata = {
-+static struct platform_driver ks_pcie_driver = {
- 	.probe  = ks_pcie_probe,
- 	.remove = ks_pcie_remove,
- 	.driver = {
+ EXPORT_SYMBOL_GPL(emergency_restart);
 
 
 
