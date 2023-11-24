@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-2010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40857F8261
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D986C7F838E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57021C23318
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16D4B1C25D91
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2299A33E9;
-	Fri, 24 Nov 2023 19:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDF6364C4;
+	Fri, 24 Nov 2023 19:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Os3/wBLR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZC9Q52I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C9B2FC21;
-	Fri, 24 Nov 2023 19:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62419C433C8;
-	Fri, 24 Nov 2023 19:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA8A339BE;
+	Fri, 24 Nov 2023 19:18:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93647C433C7;
+	Fri, 24 Nov 2023 19:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852824;
-	bh=wWoGeUfHLdeTqsY7LyTRKXCg6IOqkcp6J2WRE41vZgA=;
+	s=korg; t=1700853520;
+	bh=tRuOBqxXAax/47gngJuEJzrmVe0tjX2+eAz81Hp8lE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Os3/wBLRn7nXcGJEnHGytBOkSGvCa2FLl039ynMML1wIHJvIJFq/EH1PVj+DkgpJr
-	 j2ysfMI1e76V0dSg4O7VnbVPcSdYjUVu5KM4x2I3FbhYm1HI7g3Jr62uHn5fP745N6
-	 AjYQE9xLUwqy0q1uYzDe/1VT/7YNHkAl5UCxyr2Y=
+	b=sZC9Q52Itw1G7HCs2iXpzoAtKTvVxUwm2I/LNN5em/8L0V2G8+vEGCsBER72VmYCX
+	 eZxV3m4OaeXzT6KOvkRcd0LqgnJZPlPvCYrqvYRQM34Yws28tgh7DJ81QoOqIGDdxd
+	 lfprzlKHWXW+vMelqA7ZDuetzWJox5HHTQxQpKBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -41,12 +41,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Mike Rapoport (IBM)" <rppt@kernel.org>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 137/193] mm/cma: use nth_page() in place of direct struct page manipulation
+Subject: [PATCH 5.15 222/297] mm/cma: use nth_page() in place of direct struct page manipulation
 Date: Fri, 24 Nov 2023 17:54:24 +0000
-Message-ID: <20231124171952.695220143@linuxfoundation.org>
+Message-ID: <20231124172007.976479283@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,7 +58,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -107,7 +107,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/cma.c
 +++ b/mm/cma.c
-@@ -482,7 +482,7 @@ struct page *cma_alloc(struct cma *cma,
+@@ -503,7 +503,7 @@ struct page *cma_alloc(struct cma *cma,
  	 */
  	if (page) {
  		for (i = 0; i < count; i++)
