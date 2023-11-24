@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74FB07F7E7C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E22487F7C32
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A60531C21322
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A8C9B20EFE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EED39FEE;
-	Fri, 24 Nov 2023 18:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A310539FD9;
+	Fri, 24 Nov 2023 18:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SwpbkXIZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkS0zZSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 971732E40E;
-	Fri, 24 Nov 2023 18:33:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F185C433C8;
-	Fri, 24 Nov 2023 18:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F9E381D6;
+	Fri, 24 Nov 2023 18:12:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE4C433C7;
+	Fri, 24 Nov 2023 18:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850805;
-	bh=2y9xvEBAoygEbPu2e5jCF2JemC+HE9tlInjxa3s1K9g=;
+	s=korg; t=1700849566;
+	bh=GxeRd5+j7q8f0byxzqLMf1Q3ZFwuCWyBmp18NUxP6XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwpbkXIZ3qCUgZ6Al1SFAGZnYyspJ9S8JgT23dz9uRlKxE6FbvwdI49sVz5C4xZBe
-	 mByJASmhrP1UTOI0QsoUnIETBDcb0GK0dGqneySbJaUB/NObLxz9BE5eD6v3msrj4f
-	 cCODRQpMMlKismu5oC6aL88uR6ixwmDJo6CPzKBk=
+	b=GkS0zZSVIjewHEUE8rvsZ8D8mep2miq68AXHgPuTe8A1pX7dEKCLCWil1ZNPl0OZe
+	 xr3uxhDIw/7Z8uhOE0kpIIC9WCyqSTVV7oyf8MoUSnjc1pzyH5yJsNW5U1wsPDvol3
+	 gLBjDCJsPzP7lRxof+7gmuUc5w+100yledhwHQv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Chen Yu <yu.c.chen@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	Len Brown <len.brown@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 161/491] SUNRPC: Add an IS_ERR() check back to where it was
-Date: Fri, 24 Nov 2023 17:46:37 +0000
-Message-ID: <20231124172029.315136352@linuxfoundation.org>
+Subject: [PATCH 6.6 232/530] tools/power/turbostat: Enable the C-state Pre-wake printing
+Date: Fri, 24 Nov 2023 17:46:38 +0000
+Message-ID: <20231124172035.109141642@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +54,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Chen Yu <yu.c.chen@intel.com>
 
-[ Upstream commit 4f3ed837186fc0d2722ba8d2457a594322e9c2ef ]
+[ Upstream commit b61b7d8c4c22c4298a50ae5d0ee88facb85ce665 ]
 
-This IS_ERR() check was deleted during in a cleanup because, at the time,
-the rpcb_call_async() function could not return an error pointer.  That
-changed in commit 25cf32ad5dba ("SUNRPC: Handle allocation failure in
-rpc_new_task()") and now it can return an error pointer.  Put the check
-back.
+Currently the C-state Pre-wake will not be printed due to the
+probe has not been invoked. Invoke the probe function accordingly.
 
-A related revert was done in commit 13bd90141804 ("Revert "SUNRPC:
-Remove unreachable error condition"").
-
-Fixes: 037e910b52b0 ("SUNRPC: Remove unreachable error condition in rpcb_getport_async()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: aeb01e6d71ff ("tools/power turbostat: Print the C-state Pre-wake settings")
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Reviewed-by: Len Brown <len.brown@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/rpcb_clnt.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/power/x86/turbostat/turbostat.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
-index 5988a5c5ff3f0..102c3818bc54d 100644
---- a/net/sunrpc/rpcb_clnt.c
-+++ b/net/sunrpc/rpcb_clnt.c
-@@ -769,6 +769,10 @@ void rpcb_getport_async(struct rpc_task *task)
+diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
+index 4e19bd2fa8b9f..785de89077de0 100644
+--- a/tools/power/x86/turbostat/turbostat.c
++++ b/tools/power/x86/turbostat/turbostat.c
+@@ -5790,6 +5790,7 @@ void process_cpuid()
+ 	rapl_probe(family, model);
+ 	perf_limit_reasons_probe(family, model);
+ 	automatic_cstate_conversion_probe(family, model);
++	prewake_cstate_probe(family, model);
  
- 	child = rpcb_call_async(rpcb_clnt, map, proc);
- 	rpc_release_client(rpcb_clnt);
-+	if (IS_ERR(child)) {
-+		/* rpcb_map_release() has freed the arguments */
-+		return;
-+	}
+ 	check_tcc_offset(model_orig);
  
- 	xprt->stat.bind_count++;
- 	rpc_put_task(child);
 -- 
 2.42.0
 
