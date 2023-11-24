@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CC67F7D8A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B73277F7FBE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3C811C21211
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 474EAB21A45
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E212F381D6;
-	Fri, 24 Nov 2023 18:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B5238DE8;
+	Fri, 24 Nov 2023 18:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ne2bjRT0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOTKKY0E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F93239FF7;
-	Fri, 24 Nov 2023 18:25:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF47C433CC;
-	Fri, 24 Nov 2023 18:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA28381A2;
+	Fri, 24 Nov 2023 18:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFB1C433C8;
+	Fri, 24 Nov 2023 18:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850331;
-	bh=pUaPCavaSmCILjp3noQ3h3ryiJswEhcfb+/MtXFq0kk=;
+	s=korg; t=1700851439;
+	bh=Mpb8x35Q61RSXbIsIvLNjPstBldXYQuUIh2mJZv5y6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ne2bjRT0hJS7Tvu70uKYQC6kSK1MNKxm0GTXqCPiOjcwHU/5DBDMl4LcY48twB7HA
-	 rVbKd9XtwVtjsRFvKljZh+/F1NhzwgHHgpBN6HoO5CPrUzzkPzJwWq2GmCzxaBtUCD
-	 YXptoag0kB7z9mbHoat/yrxhf1i1S8RjwJPYa+zk=
+	b=xOTKKY0EA+JTjAnI/Gn2xZqghcxeMt0io8e+lN58TCOZOAevEwN0R1I7ACP0E0HvM
+	 JWNiPGZ8ininOVXAY4j45qyjW/UV7xDRGshiiNSR0D3TnouKzu27YGI7oxRG2u3H1g
+	 8WcM4sBeM3H0Q1IU8VyZrK5rrfvSnBbBmrZQxj+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 519/530] drm/amdgpu: add a retry for IP discovery init
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 449/491] media: qcom: camss: Fix pm_domain_on sequence in probe
 Date: Fri, 24 Nov 2023 17:51:25 +0000
-Message-ID: <20231124172043.981983621@linuxfoundation.org>
+Message-ID: <20231124172038.099560931@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,82 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit 3938eb956e383ef88b8fc7d556492336ebee52df upstream.
+commit 7405116519ad70b8c7340359bfac8db8279e7ce4 upstream.
 
-AMD dGPUs have integrated FW that runs as soon as the
-device gets power and initializes the board (determines
-the amount of memory, provides configuration details to
-the driver, etc.).  For direct PCIe attached cards this
-happens as soon as power is applied and normally completes
-well before the OS has even started loading.  However, with
-hotpluggable ports like USB4, the driver needs to wait for
-this to complete before initializing the device.
+We need to make sure camss_configure_pd() happens before
+camss_register_entities() as the vfe_get() path relies on the pointer
+provided by camss_configure_pd().
 
-This normally takes 60-100ms, but could take longer on
-some older boards periodically due to memory training.
+Fix the ordering sequence in probe to ensure the pointers vfe_get() demands
+are present by the time camss_register_entities() runs.
 
-Retry for up to a second.  In the non-hotplug case, there
-should be no change in behavior and this should complete
-on the first try.
+In order to facilitate backporting to stable kernels I've moved the
+configure_pd() call pretty early on the probe() function so that
+irrespective of the existence of the old error handling jump labels this
+patch should still apply to -next circa Aug 2023 to v5.13 inclusive.
 
-v2: adjust test criteria
-v3: adjust checks for the masks, only enable on removable devices
-v4: skip bif_fb_en check
-
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
 Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/camss/camss.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -93,6 +93,7 @@
- MODULE_FIRMWARE(FIRMWARE_IP_DISCOVERY);
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1627,6 +1627,12 @@ static int camss_probe(struct platform_d
+ 	if (ret < 0)
+ 		goto err_cleanup;
  
- #define mmRCC_CONFIG_MEMSIZE	0xde3
-+#define mmMP0_SMN_C2PMSG_33	0x16061
- #define mmMM_INDEX		0x0
- #define mmMM_INDEX_HI		0x6
- #define mmMM_DATA		0x1
-@@ -231,8 +232,26 @@ static int amdgpu_discovery_read_binary_
- static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
- 						 uint8_t *binary)
- {
--	uint64_t vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
--	int ret = 0;
-+	uint64_t vram_size;
-+	u32 msg;
-+	int i, ret = 0;
-+
-+	/* It can take up to a second for IFWI init to complete on some dGPUs,
-+	 * but generally it should be in the 60-100ms range.  Normally this starts
-+	 * as soon as the device gets power so by the time the OS loads this has long
-+	 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
-+	 * wait for this to complete.  Once the C2PMSG is updated, we can
-+	 * continue.
-+	 */
-+	if (dev_is_removable(&adev->pdev->dev)) {
-+		for (i = 0; i < 1000; i++) {
-+			msg = RREG32(mmMP0_SMN_C2PMSG_33);
-+			if (msg & 0x80000000)
-+				break;
-+			msleep(1);
-+		}
++	ret = camss_configure_pd(camss);
++	if (ret < 0) {
++		dev_err(dev, "Failed to configure power domains: %d\n", ret);
++		goto err_cleanup;
 +	}
-+	vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
++
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1679,12 +1685,6 @@ static int camss_probe(struct platform_d
+ 		}
+ 	}
  
- 	if (vram_size) {
- 		uint64_t pos = vram_size - DISCOVERY_TMR_OFFSET;
+-	ret = camss_configure_pd(camss);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
 
 
 
