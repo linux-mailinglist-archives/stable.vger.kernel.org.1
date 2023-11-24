@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E649A7F7CB5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4957F807B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8524BB20ADD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE58F1C203DD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A564D33CCA;
-	Fri, 24 Nov 2023 18:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10312FC4E;
+	Fri, 24 Nov 2023 18:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M0V7GDMX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJJNMoUI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB6239FE9;
-	Fri, 24 Nov 2023 18:17:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84301C433C9;
-	Fri, 24 Nov 2023 18:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC402FC21;
+	Fri, 24 Nov 2023 18:50:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB14C433C7;
+	Fri, 24 Nov 2023 18:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849855;
-	bh=CvEcDi0kd+/qi2B3AwawhMF/TBZDiTtWaDUgENVhHQg=;
+	s=korg; t=1700851806;
+	bh=rXWkkLBR/azLHbrhpQms99SkXCFMB81Zd5lOa1PJ8ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M0V7GDMXggBfns3t+pFNcYBAKiSpF9eqfk/8AesKhdvHxvGWxmzXZC2JxZb0YA+hL
-	 uFXKKvTxZpWVv7IoCFNEIwO9GPggevrNZT65klibcQotfTWB/QpwNHjxTNdu4Q5b8e
-	 mkgqmsIfWtBiBn4l0iN82Bbl7lwOK6AY3Rlt/oU4=
+	b=KJJNMoUIZGgaspi5fICcrs/j4UlqU5D7p6A49dMHgMF2S//TKQY04h4ALRD7XvMkd
+	 j/69+md9UNYTTdWqXGU/lvp3OmyFU2vSGYi41ONidwwRWP+G+seb4kjO8niHASXGqw
+	 dO2fd/Ay3Yj9c+jL8EOUD4WsD8+vxW+uFRZvJK5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bean Huo <beanhuo@micron.com>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 323/530] mmc: Add quirk MMC_QUIRK_BROKEN_CACHE_FLUSH for Micron eMMC Q2J54A
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 102/372] gfs2: fix an oops in gfs2_permission
 Date: Fri, 24 Nov 2023 17:48:09 +0000
-Message-ID: <20231124172037.867189578@linuxfoundation.org>
+Message-ID: <20231124172013.909173290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,109 +53,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bean Huo <beanhuo@micron.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit ed9009ad300c0f15a3ecfe9613547b1962bde02c upstream.
+[ Upstream commit 0abd1557e21c617bd13fc18f7725fc6363c05913 ]
 
-Micron MTFC4GACAJCN eMMC supports cache but requires that flush cache
-operation be allowed only after a write has occurred. Otherwise, the
-cache flush command or subsequent commands will time out.
+In RCU mode, we might race with gfs2_evict_inode(), which zeroes
+->i_gl.  Freeing of the object it points to is RCU-delayed, so
+if we manage to fetch the pointer before it's been replaced with
+NULL, we are fine.  Check if we'd fetched NULL and treat that
+as "bail out and tell the caller to get out of RCU mode".
 
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231030224809.59245-1-beanhuo@iokpp.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c  |    4 +++-
- drivers/mmc/core/card.h   |    4 ++++
- drivers/mmc/core/mmc.c    |    8 ++++++--
- drivers/mmc/core/quirks.h |    7 ++++---
- include/linux/mmc/card.h  |    2 ++
- 5 files changed, 19 insertions(+), 6 deletions(-)
+ fs/gfs2/inode.c | 11 +++++++++--
+ fs/gfs2/super.c |  2 +-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -2381,8 +2381,10 @@ enum mmc_issued mmc_blk_mq_issue_rq(stru
- 			}
- 			ret = mmc_blk_cqe_issue_flush(mq, req);
- 			break;
--		case REQ_OP_READ:
- 		case REQ_OP_WRITE:
-+			card->written_flag = true;
-+			fallthrough;
-+		case REQ_OP_READ:
- 			if (host->cqe_enabled)
- 				ret = mmc_blk_cqe_issue_rw_rq(mq, req);
- 			else
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -280,4 +280,8 @@ static inline int mmc_card_broken_sd_cac
- 	return c->quirks & MMC_QUIRK_BROKEN_SD_CACHE;
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 04a201584fa7c..d126b02893eb0 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -1847,14 +1847,21 @@ int gfs2_permission(struct user_namespace *mnt_userns, struct inode *inode,
+ {
+ 	struct gfs2_inode *ip;
+ 	struct gfs2_holder i_gh;
++	struct gfs2_glock *gl;
+ 	int error;
+ 
+ 	gfs2_holder_mark_uninitialized(&i_gh);
+ 	ip = GFS2_I(inode);
+-	if (gfs2_glock_is_locked_by_me(ip->i_gl) == NULL) {
++	gl = rcu_dereference(ip->i_gl);
++	if (unlikely(!gl)) {
++		/* inode is getting torn down, must be RCU mode */
++		WARN_ON_ONCE(!(mask & MAY_NOT_BLOCK));
++		return -ECHILD;
++        }
++	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
+ 		if (mask & MAY_NOT_BLOCK)
+ 			return -ECHILD;
+-		error = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
++		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 44c564f0bc622..302d1e43d7012 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1435,7 +1435,7 @@ static void gfs2_evict_inode(struct inode *inode)
+ 		wait_on_bit_io(&ip->i_flags, GIF_GLOP_PENDING, TASK_UNINTERRUPTIBLE);
+ 		gfs2_glock_add_to_lru(ip->i_gl);
+ 		gfs2_glock_put_eventually(ip->i_gl);
+-		ip->i_gl = NULL;
++		rcu_assign_pointer(ip->i_gl, NULL);
+ 	}
  }
  
-+static inline int mmc_card_broken_cache_flush(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_BROKEN_CACHE_FLUSH;
-+}
- #endif
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -2081,13 +2081,17 @@ static int _mmc_flush_cache(struct mmc_h
- {
- 	int err = 0;
- 
-+	if (mmc_card_broken_cache_flush(host->card) && !host->card->written_flag)
-+		return 0;
-+
- 	if (_mmc_cache_enabled(host)) {
- 		err = mmc_switch(host->card, EXT_CSD_CMD_SET_NORMAL,
- 				 EXT_CSD_FLUSH_CACHE, 1,
- 				 CACHE_FLUSH_TIMEOUT_MS);
- 		if (err)
--			pr_err("%s: cache flush error %d\n",
--			       mmc_hostname(host), err);
-+			pr_err("%s: cache flush error %d\n", mmc_hostname(host), err);
-+		else
-+			host->card->written_flag = false;
- 	}
- 
- 	return err;
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -110,11 +110,12 @@ static const struct mmc_fixup __maybe_un
- 		  MMC_QUIRK_TRIM_BROKEN),
- 
- 	/*
--	 * Micron MTFC4GACAJCN-1M advertises TRIM but it does not seems to
--	 * support being used to offload WRITE_ZEROES.
-+	 * Micron MTFC4GACAJCN-1M supports TRIM but does not appear to support
-+	 * WRITE_ZEROES offloading. It also supports caching, but the cache can
-+	 * only be flushed after a write has occurred.
- 	 */
- 	MMC_FIXUP("Q2J54A", CID_MANFID_MICRON, 0x014e, add_quirk_mmc,
--		  MMC_QUIRK_TRIM_BROKEN),
-+		  MMC_QUIRK_TRIM_BROKEN | MMC_QUIRK_BROKEN_CACHE_FLUSH),
- 
- 	/*
- 	 * Kingston EMMC04G-M627 advertises TRIM but it does not seems to
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -295,7 +295,9 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_HPI	(1<<13)		/* Disable broken HPI support */
- #define MMC_QUIRK_BROKEN_SD_DISCARD	(1<<14)	/* Disable broken SD discard support */
- #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
-+#define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- 
-+	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
- 
- 	unsigned int		erase_size;	/* erase size in sectors */
+-- 
+2.42.0
+
 
 
 
