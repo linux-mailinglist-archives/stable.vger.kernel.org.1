@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCDE7F837E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588BC7F824C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CA8FB250A6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A81A1C23090
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A0B364C4;
-	Fri, 24 Nov 2023 19:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFEF2C85B;
+	Fri, 24 Nov 2023 19:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLWxw38k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHpsGKIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244EA35F1A;
-	Fri, 24 Nov 2023 19:18:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD46C433CB;
-	Fri, 24 Nov 2023 19:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E72035F1A;
+	Fri, 24 Nov 2023 19:06:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D382C433C8;
+	Fri, 24 Nov 2023 19:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853488;
-	bh=9NGid/NsgUBHbWJWMUt+Fmj9uMY/IhzpIOaKYuHGlXY=;
+	s=korg; t=1700852787;
+	bh=b0kiUeRUFEjYX4YFUN6jOR21Xv/WBu9DCJvhAPMsQT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qLWxw38kqHXO5Z0gFF87a/Aog3981FPLtGE62uNxOQrbFAKVnrtP/FViDZNa8U9+s
-	 ES0glTJS6uXUnqmHu85Erfx+CldjyIz40bR6k1XJefKavD/73ZHeGgR3/sQ3c/dJYC
-	 W4cYnd58075tDhH0ADjWzbBRzu5bzCgjxMMF7QS8=
+	b=JHpsGKItm6oewgmMZ09DTWz35R3FcuUeYc1u0IUKoi/IjBBJ5Fq4LSRmxDEyw+7Wi
+	 OvMm0KcysUKcr1HqlIuF5arGgLe4JTNA8yAVXptaOe4q/9RYUreP43aOK5B5WcNY/n
+	 hx7sRKPn6yIeg1NXLN4AyrXePlr9Q6QCwPaa6F5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 208/297] netfilter: nf_tables: split async and sync catchall in two functions
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 5.10 123/193] wifi: ath11k: fix dfs radar event locking
 Date: Fri, 24 Nov 2023 17:54:10 +0000
-Message-ID: <20231124172007.491599848@linuxfoundation.org>
+Message-ID: <20231124171952.151556054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,127 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 8837ba3e58ea1e3d09ae36db80b1e80853aada95 ]
+commit 3b6c14833165f689cc5928574ebafe52bbce5f1e upstream.
 
-list_for_each_entry_safe() does not work for the async case which runs
-under RCU, therefore, split GC logic for catchall in two functions
-instead, one for each of the sync and async GC variants.
+The ath11k active pdevs are protected by RCU but the DFS radar event
+handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-The catchall sync GC variant never sees a _DEAD bit set on ever, thus,
-this handling is removed in such case, moreover, allocate GC sync batch
-via GFP_KERNEL.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-Fixes: 93995bf4af2c ("netfilter: nf_tables: remove catchall element in GC sync path")
-Reported-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Compile tested only.
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019153115.26401-3-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 61 ++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 29 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index e9d0c6c8e0b12..bf0bd44f2fb3a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -9047,16 +9047,14 @@ void nft_trans_gc_queue_sync_done(struct nft_trans_gc *trans)
- 	call_rcu(&trans->rcu, nft_trans_gc_trans_free);
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -6355,6 +6355,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
+ 		   ev->detector_id, ev->segment_id, ev->timestamp, ev->is_chirp,
+ 		   ev->freq_offset, ev->sidx);
+ 
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
+ 
+ 	if (!ar) {
+@@ -6372,6 +6374,8 @@ ath11k_wmi_pdev_dfs_radar_detected_event
+ 		ieee80211_radar_detected(ar->hw);
+ 
+ exit:
++	rcu_read_unlock();
++
+ 	kfree(tb);
  }
  
--static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
--						  unsigned int gc_seq,
--						  bool sync)
-+struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
-+						 unsigned int gc_seq)
- {
--	struct nft_set_elem_catchall *catchall, *next;
-+	struct nft_set_elem_catchall *catchall;
- 	const struct nft_set *set = gc->set;
--	struct nft_elem_priv *elem_priv;
- 	struct nft_set_ext *ext;
- 
--	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
-+	list_for_each_entry_rcu(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
- 
- 		if (!nft_set_elem_expired(ext))
-@@ -9066,39 +9064,44 @@ static struct nft_trans_gc *nft_trans_gc_catchall(struct nft_trans_gc *gc,
- 
- 		nft_set_elem_dead(ext);
- dead_elem:
--		if (sync)
--			gc = nft_trans_gc_queue_sync(gc, GFP_ATOMIC);
--		else
--			gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
--
-+		gc = nft_trans_gc_queue_async(gc, gc_seq, GFP_ATOMIC);
- 		if (!gc)
- 			return NULL;
- 
--		elem_priv = catchall->elem;
--		if (sync) {
--			struct nft_set_elem elem = {
--				.priv = elem_priv,
--			};
--
--			nft_setelem_data_deactivate(gc->net, gc->set, &elem);
--			nft_setelem_catchall_destroy(catchall);
--		}
--
--		nft_trans_gc_elem_add(gc, elem_priv);
-+		nft_trans_gc_elem_add(gc, catchall->elem);
- 	}
- 
- 	return gc;
- }
- 
--struct nft_trans_gc *nft_trans_gc_catchall_async(struct nft_trans_gc *gc,
--						 unsigned int gc_seq)
--{
--	return nft_trans_gc_catchall(gc, gc_seq, false);
--}
--
- struct nft_trans_gc *nft_trans_gc_catchall_sync(struct nft_trans_gc *gc)
- {
--	return nft_trans_gc_catchall(gc, 0, true);
-+	struct nft_set_elem_catchall *catchall, *next;
-+	const struct nft_set *set = gc->set;
-+	struct nft_set_elem elem;
-+	struct nft_set_ext *ext;
-+
-+	WARN_ON_ONCE(!lockdep_commit_lock_is_held(gc->net));
-+
-+	list_for_each_entry_safe(catchall, next, &set->catchall_list, list) {
-+		ext = nft_set_elem_ext(set, catchall->elem);
-+
-+		if (!nft_set_elem_expired(ext))
-+			continue;
-+
-+		gc = nft_trans_gc_queue_sync(gc, GFP_KERNEL);
-+		if (!gc)
-+			return NULL;
-+
-+		memset(&elem, 0, sizeof(elem));
-+		elem.priv = catchall->elem;
-+
-+		nft_setelem_data_deactivate(gc->net, gc->set, &elem);
-+		nft_setelem_catchall_destroy(catchall);
-+		nft_trans_gc_elem_add(gc, elem.priv);
-+	}
-+
-+	return gc;
- }
- 
- static void nf_tables_module_autoload_cleanup(struct net *net)
--- 
-2.42.0
-
 
 
 
