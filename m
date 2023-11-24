@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C5D7F7CB1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 193CD7F7F01
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17F87B21404
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C792E2823A4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4803A8C5;
-	Fri, 24 Nov 2023 18:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5BEE2E858;
+	Fri, 24 Nov 2023 18:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGyWu+rX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+m2lxZC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158F9381D4;
-	Fri, 24 Nov 2023 18:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C48C433C8;
-	Fri, 24 Nov 2023 18:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C51C2FC21;
+	Fri, 24 Nov 2023 18:37:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A609FC433C8;
+	Fri, 24 Nov 2023 18:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849850;
-	bh=xICKt58d5bBPe+DX/VVNFEwlQJsbP9UtCrQPRqXLpn8=;
+	s=korg; t=1700851066;
+	bh=JvONdaAAWFfnNG0tuAV+5J9+lq1xjd4C/2cHOKF5r/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGyWu+rX8VG2gelES0eW0R8NEyAkmeWwVRMJ/SXqcnxh3PILvf3kqsrTZ0TfCeTIs
-	 9KGQ7G64S5pKyBdgeu27WPb28Jz3q9Sgul/UiCxNvDbyCpQCfga8oLFTIXl0f2K+L/
-	 PO66QvMt1MgIcl/hlx92//dKacQBM1eYKark5f/8=
+	b=l+m2lxZCKabQjNrv7FsyVOCfI4eBJt8LSU4vfLUe4F4Om4nZYs60IUMW+4Ru6bCo1
+	 8zytEc4ngClOrih4KwNIc6Kz+0fN3A+e+qWln9Hre7v0/Jp0HIxYp42PR03tKFlva+
+	 n7OFpli7M1m3wPpZGW6SWvnu0jzQSMjGB6HE/6oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 345/530] leds: trigger: netdev: Move size check in set_device_name
+	Johan Hovold <johan+linaro@kernel.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.5 275/491] wifi: ath11k: fix htt pktlog locking
 Date: Fri, 24 Nov 2023 17:48:31 +0000
-Message-ID: <20231124172038.524080850@linuxfoundation.org>
+Message-ID: <20231124172032.838662171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,67 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 259e33cbb1712a7dd844fc9757661cc47cb0e39b upstream.
+commit 3f77c7d605b29df277d77e9ee75d96e7ad145d2d upstream.
 
-GCC 13.2 complains about array subscript 17 is above array bounds of
-'char[16]' with IFNAMSIZ set to 16.
+The ath11k active pdevs are protected by RCU but the htt pktlog handling
+code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
+read-side critical section.
 
-The warning is correct but this scenario is impossible.
-set_device_name is called by device_name_store (store sysfs entry) and
-netdev_trig_activate.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-device_name_store already check if size is >= of IFNAMSIZ and return
--EINVAL. (making the warning scenario impossible)
+Compile tested only.
 
-netdev_trig_activate works on already defined interface, where the name
-has already been checked and should already follow the condition of
-strlen() < IFNAMSIZ.
-
-Aside from the scenario being impossible, set_device_name can be
-improved to both mute the warning and make the function safer.
-To make it safer, move size check from device_name_store directly to
-set_device_name and prevent any out of bounds scenario.
-
-Cc: stable@vger.kernel.org
-Fixes: 28a6a2ef18ad ("leds: trigger: netdev: refactor code setting device name")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202309192035.GTJEEbem-lkp@intel.com/
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Link: https://lore.kernel.org/r/20231007131042.15032-1-ansuelsmth@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Cc: stable@vger.kernel.org      # 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019112521.2071-1-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/trigger/ledtrig-netdev.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/leds/trigger/ledtrig-netdev.c
-+++ b/drivers/leds/trigger/ledtrig-netdev.c
-@@ -221,6 +221,9 @@ static ssize_t device_name_show(struct d
- static int set_device_name(struct led_netdev_data *trigger_data,
- 			   const char *name, size_t size)
- {
-+	if (size >= IFNAMSIZ)
-+		return -EINVAL;
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1621,14 +1621,20 @@ static void ath11k_htt_pktlog(struct ath
+ 	u8 pdev_id;
+ 
+ 	pdev_id = FIELD_GET(HTT_T2H_PPDU_STATS_INFO_PDEV_ID, data->hdr);
 +
- 	cancel_delayed_work_sync(&trigger_data->work);
++	rcu_read_lock();
++
+ 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
+ 	if (!ar) {
+ 		ath11k_warn(ab, "invalid pdev id %d on htt pktlog\n", pdev_id);
+-		return;
++		goto out;
+ 	}
  
- 	mutex_lock(&trigger_data->lock);
-@@ -263,9 +266,6 @@ static ssize_t device_name_store(struct
- 	struct led_netdev_data *trigger_data = led_trigger_get_drvdata(dev);
- 	int ret;
+ 	trace_ath11k_htt_pktlog(ar, data->payload, hdr->size,
+ 				ar->ab->pktlog_defs_checksum);
++
++out:
++	rcu_read_unlock();
+ }
  
--	if (size >= IFNAMSIZ)
--		return -EINVAL;
--
- 	ret = set_device_name(trigger_data, buf, size);
- 
- 	if (ret < 0)
+ static void ath11k_htt_backpressure_event_handler(struct ath11k_base *ab,
 
 
 
