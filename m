@@ -1,109 +1,89 @@
-Return-Path: <stable+bounces-93-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-94-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443797F69B4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 01:17:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DACB17F6A5E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 03:02:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9DB28157A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 00:17:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 687862818B9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 02:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C25393;
-	Fri, 24 Nov 2023 00:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12D8659;
+	Fri, 24 Nov 2023 02:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JLOKpBfx"
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="DJLsgCEm"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2157F17E;
-	Fri, 24 Nov 2023 00:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9657AC433C7;
-	Fri, 24 Nov 2023 00:17:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700785053;
-	bh=+lidUqppJxg2JG9sU7HTiTcJePswNNaLiOHkaBxgCcs=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=JLOKpBfxq++lt1+6jFL0ZZ0n6/J0b9mqKkmGZ1DiGpZ307jgiRLuxygK3wy11g80E
-	 zrk8+t1tKJmIoTs0t5RLzZwduYN+ugXJ156a2chSnjVdAouYp28hB1QIURsizYLMmv
-	 rO/QGMvd+ycQNodtDXklBcofc1WQao0C1sx7DmoCICLw9z478+70Bs4xTfkAlIZm1s
-	 tZGkd+skNo4+Wzh3aI3ug9XRcqrEUwoVPlSkWTHTFk7dMlpa0S3xM4DCVWkNo2qnm2
-	 0RFKDFerR685WegE8i9RFCrNxQDNO9pwJ981qaa+3jKcf/kY8j9yAkVka4L+ZH1nh1
-	 dqt7fGGX97GRQ==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a04196fc957so194764966b.2;
-        Thu, 23 Nov 2023 16:17:33 -0800 (PST)
-X-Gm-Message-State: AOJu0Yw+i4Y2L3KQSv2Cfts7nYoA76/ibLnCP17q5mIf6gKw5ZWdcW9N
-	ZDG5365+4Hyw4rBWwNVt4HSe4XGErH8/SyZ+Umc=
-X-Google-Smtp-Source: AGHT+IEcaOtWkKQy89/8U8PWKAmo0MrYE3Xc1MvOgz1GYhZvH1iyQh5ugiTKTuiWkWSzXeXnTMhAQi5N0Wk14ZRaC8A=
-X-Received: by 2002:a17:906:3915:b0:9ff:9db9:1da7 with SMTP id
- f21-20020a170906391500b009ff9db91da7mr664666eje.29.1700785051984; Thu, 23 Nov
- 2023 16:17:31 -0800 (PST)
+X-Greylist: delayed 308 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 23 Nov 2023 18:02:09 PST
+Received: from mx.manguebit.com (mx.manguebit.com [IPv6:2a01:4f8:1c1e:a2ae::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83C83D71
+	for <stable@vger.kernel.org>; Thu, 23 Nov 2023 18:02:09 -0800 (PST)
+Message-ID: <cbe899ddc4bfc2835fc015eb0badfc10@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1700791017;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uJngGI/8gYBoIQzzTwa021W9RBZPjtuvacLuZX4Apew=;
+	b=DJLsgCEm/c4JXm5uEyj0srHAHgJAZDEdVRETyAh4Jo6v+7Kq+z9AI0M3HTdM9ai1M1BU22
+	S6eB+DoCntEWp+qo4qwvTQ9rxcF94IuLGxNcL5l/FINxTBy5sZMnLTQvNuKgCOVVeKkR6J
+	WT5YLbUosXekXNsUD59hM/wUKn8FUdApNHACaGdRWKRXiSnqnyW1D80NYl1+vA+uLNmXeu
+	T7JCB6s9so3jshI2cx609ipVLIzkOF/EaoRQdr5wWKaAUTdn+Nr+DrCBa1dhjp1lJM8FnD
+	ffgp1wBkujMnwOYfzHJUBbNeTnOyFdiTVJJnsboFmGKLdDcgtGVMBf5qAp8GAg==
+ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1700791017; a=rsa-sha256;
+	cv=none;
+	b=mnWj9WunUQfr3ilUu8deZfE7/CWUOaJAQS9R+ACE+M837kDiCqmHcscg0Ip5NIIvN+MyIj
+	p3UjUTbvpFQkzyIElaHoHoNB2dshiYAVXyh4ePP1gs5+RKYce36OLv2ioqef7McSaiDZn9
+	LiM3YNUkUcXZJuhseaffx8kw5WoQmb8KpLlCT9DlFEMTjN/kCVsLxOEG63S658i3pBkKhZ
+	Ygk2ZFnyFiQ7Egm5j3L4BmtTcJ4QIORWzzPe+2gqIAEtTdXDFe5xZrxj8PiTHjHFN0293g
+	3D+lL5tZpINsYDfcbW8macbfaLVSxkp9hpINc2qbXPyPgoaj4Tl3JlUgoZzPEQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=pc@manguebit.com smtp.mailfrom=pc@manguebit.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1700791017; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uJngGI/8gYBoIQzzTwa021W9RBZPjtuvacLuZX4Apew=;
+	b=lbIU/dAdA++gTzW7FiNZvWg4qA8alHcVhaIfeknRqkIOGxoR+2uwL17mi39tCsISSDT+D3
+	Wr9zh5gT0eyyctx25GjuqUP/UjH81UXHReRsRdkG+NQUzY0fZ2jDd1S/I65wP7s6gBN69B
+	eHzzrE7vVPCq/jPvoNZDFn0ISf+JN37VE3l6BfJ2EvwkpNV1p9FlWqM8RiUqaaS4wa5fSe
+	U5V8I4KgTOgQFgsstFeHaS9izW4Nc5uIqkxUlTGtg5fvIcpp8OPhs7iPgXP7deoGjLpu9i
+	JUZgLa53NNTkUP2AP5zMt9poX3v6f7KWfzIlyolB2G2b/HLHfwBdPoeFpSy4pQ==
+From: Paulo Alcantara <pc@manguebit.com>
+To: Eduard Bachmakov <e.bachmakov@gmail.com>, stable@vger.kernel.org
+Cc: linux-cifs@vger.kernel.org, Steve French <smfrench@gmail.com>
+Subject: Re: Unexpected additional umh-based DNS lookup in 6.6.0
+In-Reply-To: <CADCRUiN=tz85t5T00H1RbmwSj_35j9vbe92TaKUrESUyNSK9QA@mail.gmail.com>
+References: <CADCRUiNvZuiUZ0VGZZO9HRyPyw6x92kiA7o7Q4tsX5FkZqUkKg@mail.gmail.com>
+ <d2c0c53db617b6d2f9b71e734b165b4b.pc@manguebit.com>
+ <CADCRUiNSk7b7jVQrYoD153UmaBdFzpcA1q3DvfwJcNC6Q=gy0w@mail.gmail.com>
+ <482ee449a063acf441b943346b85e2d0.pc@manguebit.com>
+ <CADCRUiN=tz85t5T00H1RbmwSj_35j9vbe92TaKUrESUyNSK9QA@mail.gmail.com>
+Date: Thu, 23 Nov 2023 22:56:53 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231124000034.27522-1-dsterba@suse.com>
-In-Reply-To: <20231124000034.27522-1-dsterba@suse.com>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Fri, 24 Nov 2023 00:16:55 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H6C=FJL9cX2-uVo1AhnNAmMOGfFMkTEzHekL5OeW0OAXQ@mail.gmail.com>
-Message-ID: <CAL3q7H6C=FJL9cX2-uVo1AhnNAmMOGfFMkTEzHekL5OeW0OAXQ@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: fix 64bit compat send ioctl arguments not
- initializing version member
-To: David Sterba <dsterba@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Nov 24, 2023 at 12:08=E2=80=AFAM David Sterba <dsterba@suse.com> wr=
-ote:
->
-> When the send protocol versioning was added in 5.16 e77fbf990316
-> ("btrfs: send: prepare for v2 protocol"), the 32/64bit compat code was
-> not updated (added by 2351f431f727 ("btrfs: fix send ioctl on 32bit with
-> 64bit kernel")), missing the version struct member. The compat code is
-> probably rarely used, nobody reported any bugs.
->
-> Found by tool https://github.com/jirislaby/clang-struct .
->
-> Fixes: 2351f431f727 ("btrfs: fix send ioctl on 32bit with 64bit kernel")
+Stable team,
 
-So this is not the correct commit, you copy-pasted the wrong one from
-the change log above, it should be:
+Eduard Bachmakov <e.bachmakov@gmail.com> writes:
 
-e77fbf990316 ("btrfs: send: prepare for v2 protocol")
+> I noticed this got pulled into 6.7. Given this is a user-facing
+> regression, can this be proposed for the next 6.6 point release?
+> Sorry, if this is already the case and I missed it.
 
-With that fixed:
+Could you please backport
 
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
+        5e2fd17f434d ("smb: client: fix mount when dns_resolver key is not available")
+
+to v6.6.y?
 
 Thanks.
-
-> CC: stable@vger.kernel.org # 6.1+
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> ---
->  fs/btrfs/ioctl.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-> index dfe257e1845b..4e50b62db2a8 100644
-> --- a/fs/btrfs/ioctl.c
-> +++ b/fs/btrfs/ioctl.c
-> @@ -4356,6 +4356,7 @@ static int _btrfs_ioctl_send(struct inode *inode, v=
-oid __user *argp, bool compat
->                 arg->clone_sources =3D compat_ptr(args32.clone_sources);
->                 arg->parent_root =3D args32.parent_root;
->                 arg->flags =3D args32.flags;
-> +               arg->version =3D args32.version;
->                 memcpy(arg->reserved, args32.reserved,
->                        sizeof(args32.reserved));
->  #else
-> --
-> 2.42.1
->
->
 
