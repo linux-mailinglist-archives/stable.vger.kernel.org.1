@@ -1,47 +1,57 @@
-Return-Path: <stable+bounces-1480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFED7F7FE2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81B8D7F81AD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEF7D1C2141D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B346F1C21C8A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC2D35F04;
-	Fri, 24 Nov 2023 18:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FF333CC2;
+	Fri, 24 Nov 2023 19:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWgMnPyg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7aqIAZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C859B381D2;
-	Fri, 24 Nov 2023 18:45:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55458C433C7;
-	Fri, 24 Nov 2023 18:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBB02E84A;
+	Fri, 24 Nov 2023 19:00:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 180DCC433C7;
+	Fri, 24 Nov 2023 19:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851505;
-	bh=SuKdLNOpOUsraIfYgJDRpf6mFOTYFLuDz034GZcql+o=;
+	s=korg; t=1700852441;
+	bh=IYiTgBZCIQ4urWrEoiZflc24qhP94zYvIAaY9oZy5A8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWgMnPyg+jblZWV+pwOAPZ6JooBXOj5nmPhGPIqkuXpBmgmRO8aVfR8P6M641LHw0
-	 LxNK/PUZluPyLt/Y/wFoM3EGUf8iuslO+XWBhMwTOpJm9W/wIVGJxqF+VfmdPEY6dq
-	 TxcPQtWgp8cX6/VFoL9v47DTfeFVmb5fla6VmFO4=
+	b=k7aqIAZTslou2TcgbuGAT8/w/E7AF7BE13c9D1qM0hh0+HPPxtpMt5kUup0zdbYqH
+	 4wt3QSRcTXmEgNXiMBQ+sUH/ZMG3705pTGbo+g1vC1f3TLcGN1QXHbqo8BzB5ZJ94W
+	 Qr7AZqcy8ikFLt39HnC8OPbBr5/CZBxo0Bj1C3iQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 475/491] drm/amd/pm: Fix error of MACO flag setting code
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Jani Nikula <jani.nikula@intel.com>,
+	Chen-Yu Tsai <wenst@chromium.org>
+Subject: [PATCH 6.1 324/372] drm/mediatek/dp: fix memory leak on ->get_edid callback audio detection
 Date: Fri, 24 Nov 2023 17:51:51 +0000
-Message-ID: <20231124172038.909560494@linuxfoundation.org>
+Message-ID: <20231124172021.182820979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit 7f3e6b840fa8b0889d776639310a5dc672c1e9e1 upstream.
+commit dab12fa8d2bd3868cf2de485ed15a3feef28a13d upstream.
 
-MACO only works if BACO is supported
+The sads returned by drm_edid_to_sad() needs to be freed.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
+Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
+Cc: Guillaume Ranquet <granquet@baylibre.com>
+Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: linux-mediatek@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914155317.2511876-1-jani.nikula@intel.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |    8 ++++----
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    9 +++++----
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -343,12 +343,12 @@ static int smu_v13_0_0_check_powerplay_t
- 	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_HARDWAREDC)
- 		smu->dc_controlled_by_gpio = true;
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -1983,7 +1983,6 @@ static struct edid *mtk_dp_get_edid(stru
+ 	bool enabled = mtk_dp->enabled;
+ 	struct edid *new_edid = NULL;
+ 	struct mtk_dp_audio_cfg *audio_caps = &mtk_dp->info.audio_cur_cfg;
+-	struct cea_sad *sads;
  
--	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_BACO ||
--	    powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
-+	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_BACO) {
- 		smu_baco->platform_support = true;
+ 	if (!enabled) {
+ 		drm_bridge_chain_pre_enable(bridge);
+@@ -2010,7 +2009,11 @@ static struct edid *mtk_dp_get_edid(stru
+ 	}
  
--	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
--		smu_baco->maco_support = true;
-+		if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
-+			smu_baco->maco_support = true;
-+	}
+ 	if (new_edid) {
++		struct cea_sad *sads;
++
+ 		audio_caps->sad_count = drm_edid_to_sad(new_edid, &sads);
++		kfree(sads);
++
+ 		audio_caps->detect_monitor = drm_detect_monitor_audio(new_edid);
+ 	}
  
- 	/*
- 	 * We are in the transition to a new OD mechanism.
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -333,12 +333,13 @@ static int smu_v13_0_7_check_powerplay_t
- 	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_HARDWAREDC)
- 		smu->dc_controlled_by_gpio = true;
- 
--	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_BACO ||
--	    powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_MACO)
-+	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_BACO) {
- 		smu_baco->platform_support = true;
- 
--	if (smu_baco->platform_support && (BoardTable->HsrEnabled || BoardTable->VddqOffEnabled))
--		smu_baco->maco_support = true;
-+		if ((powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_MACO)
-+					&& (BoardTable->HsrEnabled || BoardTable->VddqOffEnabled))
-+			smu_baco->maco_support = true;
-+	}
- 
- #if 0
- 	if (!overdrive_lowerlimits->FeatureCtrlMask ||
 
 
 
