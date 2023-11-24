@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1867F7FB2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD88B7F7B0B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9C2728255A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67EFC28156C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A000364AE;
-	Fri, 24 Nov 2023 18:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06E339FEE;
+	Fri, 24 Nov 2023 18:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSG0cS6g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrNhtL+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05171364A5;
-	Fri, 24 Nov 2023 18:43:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448B6C433C7;
-	Fri, 24 Nov 2023 18:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CC2381D8;
+	Fri, 24 Nov 2023 18:01:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D261C433C8;
+	Fri, 24 Nov 2023 18:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851416;
-	bh=F2TmhOkyB3CEICZexQwiB2WKNrsmS3TLroRiy0ux5ZA=;
+	s=korg; t=1700848875;
+	bh=sxKZfs+0T/gCz4OM4OCAwh8e9KCUq9tzBwBgOB0gmU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSG0cS6g7eFMTnRRquD5GqxEUYXWPHmTPry3b3StaLlKgszKq0y4QnkzQbfZahmti
-	 GJ6YfYn1DjI1TfFz7vJzii/ITgGM42YK5N+bQKsA+01XEdSIr87AHkfEoUBEnT9Cbg
-	 fGS9l0avgvaAfcuesv6qmK5V9eE2W6WW3kCOT4cQ=
+	b=yrNhtL+QgrDiI1AX5by7bcYOqZUfJj7uooHVALM/+2cq9rS9TFSieZ64yZpovGgCF
+	 o1pcRh6XO9quZSzEIOh3S/OgFFFxmVxAMfs5gtlObB39x3i9YHzQohnHXU885Sj6Qd
+	 LnU5w3FcDINE/N+oplYtuEU9uG0zbex09qk7Dw8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johnathan Mantey <johnathanx.mantey@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 405/491] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
+	syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 17/57] jfs: fix array-index-out-of-bounds in diAlloc
 Date: Fri, 24 Nov 2023 17:50:41 +0000
-Message-ID: <20231124172036.776356781@linuxfoundation.org>
+Message-ID: <20231124171930.910272911@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johnathan Mantey <johnathanx.mantey@intel.com>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
+[ Upstream commit 05d9ea1ceb62a55af6727a69269a4fd310edf483 ]
 
-This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
+Currently there is not check against the agno of the iag while
+allocating new inodes to avoid fragmentation problem. Added the check
+which is required.
 
-The cited commit introduced unwanted behavior.
-
-The intent for the commit was to be able to detect carrier loss/gain
-for just the NIC connected to the BMC. The unwanted effect is a
-carrier loss for auxiliary paths also causes the BMC to lose
-carrier. The BMC never regains carrier despite the secondary NIC
-regaining a link.
-
-This change, when merged, needs to be backported to stable kernels.
-5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
-
-Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
-CC: stable@vger.kernel.org
-Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=79d792676d8ac050949f
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-aen.c |    5 -----
- 1 file changed, 5 deletions(-)
+ fs/jfs/jfs_imap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
- 	if ((had_link == has_link) || chained)
- 		return 0;
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 12fc016244581..131dce5316ac9 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -1341,7 +1341,7 @@ diInitInode(struct inode *ip, int iagno, int ino, int extno, struct iag * iagp)
+ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
+ {
+ 	int rc, ino, iagno, addext, extno, bitno, sword;
+-	int nwords, rem, i, agno;
++	int nwords, rem, i, agno, dn_numag;
+ 	u32 mask, inosmap, extsmap;
+ 	struct inode *ipimap;
+ 	struct metapage *mp;
+@@ -1377,6 +1377,9 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
  
--	if (had_link)
--		netif_carrier_off(ndp->ndev.dev);
--	else
--		netif_carrier_on(ndp->ndev.dev);
--
- 	if (!ndp->multi_package && !nc->package->multi_channel) {
- 		if (had_link) {
- 			ndp->flags |= NCSI_DEV_RESHUFFLE;
+ 	/* get the ag number of this iag */
+ 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
++	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
++	if (agno < 0 || agno > dn_numag)
++		return -EIO;
+ 
+ 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
+ 		/*
+-- 
+2.42.0
+
 
 
 
