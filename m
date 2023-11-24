@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 195947F8401
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:23:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC0A7F837A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9E5C289ECC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EADA5288294
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FA1364C4;
-	Fri, 24 Nov 2023 19:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886323173F;
+	Fri, 24 Nov 2023 19:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMLkfqxe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiA+BhXR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A74F33E9;
-	Fri, 24 Nov 2023 19:23:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA23C433CB;
-	Fri, 24 Nov 2023 19:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453D835EE6;
+	Fri, 24 Nov 2023 19:17:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFECC433CA;
+	Fri, 24 Nov 2023 19:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853785;
-	bh=j4sao/GlXl6eygAmoFRO11thY1UFaHj+vIuL3WMpel8=;
+	s=korg; t=1700853478;
+	bh=OaGzjRVdD/ucJVreJaU6FQFPRhLZOSc8gnihJ/M66Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xMLkfqxeT/ex6SjDaJep7HoBXfOPJ7trfj9EEwxuBmH8Vgwh9KUKOzhby8UoWVXAA
-	 M4OO+PdNxMJRchQe/ZY5Y9H6ak7jcGr+4h2HLoBX+O5KzGvi7GmgkkH3//26X/pYx3
-	 C2ARv9QwCWee90MEvD+EYGVm7v6RUbHic6V6vSGc=
+	b=fiA+BhXRgnyO8tPHvJgTtUS4MGClHS65uC7qtmND0T8L637ZoWZdu9i9p5fvsLEko
+	 cAcBWmh1Le5oc7/ZieZkBNhH9ikiNwmHwUAqbGSoClKuWVXVv7unkYPRWiGstxdTQX
+	 DCT6HxpY51GpG3C5wqBlm39HvTcfoLpmfcC1P6gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/159] atm: iphase: Do PCI error checks on own line
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.15 204/297] KEYS: trusted: Rollback init_trusted() consistently
 Date: Fri, 24 Nov 2023 17:54:06 +0000
-Message-ID: <20231124171943.094364026@linuxfoundation.org>
+Message-ID: <20231124172007.349711062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +50,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
+commit 31de287345f41bbfaec36a5c8cbdba035cf76442 upstream.
 
-In get_esi() PCI errors are checked inside line-split "if" conditions (in
-addition to the file not following the coding style). To make the code in
-get_esi() more readable, fix the coding style and use the usual error
-handling pattern with a separate variable.
+Do bind neither static calls nor trusted_key_exit() before a successful
+init, in order to maintain a consistent state. In addition, depart the
+init_trusted() in the case of a real error (i.e. getting back something
+else than -ENODEV).
 
-In addition, initialization of 'error' variable at declaration is not
-needed.
-
-No functional changes intended.
-
-Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Closes: https://lore.kernel.org/linux-integrity/CAHk-=whOPoLaWM8S8GgoOPT7a2+nMH5h3TLKtn=R_3w4R1_Uvg@mail.gmail.com/
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/iphase.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ security/keys/trusted-keys/trusted_core.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
-index 46990352b5d3f..bfc889367d5e3 100644
---- a/drivers/atm/iphase.c
-+++ b/drivers/atm/iphase.c
-@@ -2290,19 +2290,21 @@ static int get_esi(struct atm_dev *dev)
- static int reset_sar(struct atm_dev *dev)  
- {  
- 	IADEV *iadev;  
--	int i, error = 1;  
-+	int i, error;
- 	unsigned int pci[64];  
- 	  
- 	iadev = INPH_IA_DEV(dev);  
--	for(i=0; i<64; i++)  
--	  if ((error = pci_read_config_dword(iadev->pci,  
--				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
--  	      return error;  
-+	for (i = 0; i < 64; i++) {
-+		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
-+		if (error != PCIBIOS_SUCCESSFUL)
-+			return error;
-+	}
- 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
--	for(i=0; i<64; i++)  
--	  if ((error = pci_write_config_dword(iadev->pci,  
--					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
--	    return error;  
-+	for (i = 0; i < 64; i++) {
-+		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
-+		if (error != PCIBIOS_SUCCESSFUL)
-+			return error;
-+	}
- 	udelay(5);  
- 	return 0;  
- }  
--- 
-2.42.0
-
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -354,17 +354,17 @@ static int __init init_trusted(void)
+ 		if (!get_random)
+ 			get_random = kernel_get_random;
+ 
+-		static_call_update(trusted_key_seal,
+-				   trusted_key_sources[i].ops->seal);
+-		static_call_update(trusted_key_unseal,
+-				   trusted_key_sources[i].ops->unseal);
+-		static_call_update(trusted_key_get_random,
+-				   get_random);
+-		trusted_key_exit = trusted_key_sources[i].ops->exit;
+-		migratable = trusted_key_sources[i].ops->migratable;
+-
+ 		ret = trusted_key_sources[i].ops->init();
+-		if (!ret)
++		if (!ret) {
++			static_call_update(trusted_key_seal, trusted_key_sources[i].ops->seal);
++			static_call_update(trusted_key_unseal, trusted_key_sources[i].ops->unseal);
++			static_call_update(trusted_key_get_random, get_random);
++
++			trusted_key_exit = trusted_key_sources[i].ops->exit;
++			migratable = trusted_key_sources[i].ops->migratable;
++		}
++
++		if (!ret || ret != -ENODEV)
+ 			break;
+ 	}
+ 
 
 
 
