@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2217F813B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD0CD7F7D54
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC83A28244A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 683B32820FC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FCA3418B;
-	Fri, 24 Nov 2023 18:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67EE3A8C5;
+	Fri, 24 Nov 2023 18:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwTeT6QA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIsaniB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257E32E64F;
-	Fri, 24 Nov 2023 18:56:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8202C433C8;
-	Fri, 24 Nov 2023 18:56:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51D2364A4;
+	Fri, 24 Nov 2023 18:23:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31ECBC433C8;
+	Fri, 24 Nov 2023 18:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852205;
-	bh=uvdawoahPb+RwBxFEYRTfJ68Fca0L9ZwDUNQzh5DNgU=;
+	s=korg; t=1700850209;
+	bh=cQB7akFx4b/I8Ij4L9ZfJhvmwedLQ3mleMLvLOxbz30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwTeT6QAw3j9rokXtj7Di5sXSgtyHHZ+RyB906L1VwVNrxREhtqoGIB1UQaXLz1kd
-	 Svoj2POERwqYlqb23X2HlE1zbuIK/QEIf5isLcOGKgvlrJTqCC8l5sBO/aPPsWDgSX
-	 uqtlzDXzQSdBrSSUlvIW3JSeOr5OdykRs6rNqMzQ=
+	b=cIsaniB2evAAaPeegXVq96j7CBIbMWu4fZ1P1VQszUb+aZ/Dc30GBCBs5HzSCW351
+	 omQDPr0W5M4Xb/36SDbWMDHm9/NWTU8IjJJSeCZ5X0Mn3OPrmKeMyW7Mrw1MXAq120
+	 kVu8Ya6/paL/TEgMQBD9HApETi4pA6ElqUwu6CnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Nishanth Menon <nm@ti.com>,
-	Benjamin Bara <benjamin.bara@skidata.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.1 244/372] kernel/reboot: emergency_restart: Set correct system_state
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 465/530] NFSD: Update nfsd_cache_append() to use xdr_stream
 Date: Fri, 24 Nov 2023 17:50:31 +0000
-Message-ID: <20231124172018.669064539@linuxfoundation.org>
+Message-ID: <20231124172042.232890291@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +52,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Bara <benjamin.bara@skidata.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 60466c067927abbcaff299845abd4b7069963139 upstream.
+commit 49cecd8628a9855cd993792a0377559ea32d5e7c upstream.
 
-As the emergency restart does not call kernel_restart_prepare(), the
-system_state stays in SYSTEM_RUNNING.
+When inserting a DRC-cached response into the reply buffer, ensure
+that the reply buffer's xdr_stream is updated properly. Otherwise
+the server will send a garbage response.
 
-Since bae1d3a05a8b, this hinders i2c_in_atomic_xfer_mode() from becoming
-active, and therefore might lead to avoidable warnings in the restart
-handlers, e.g.:
-
-[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
-[   12.676926] Voluntary context switch within RCU read-side critical section!
-...
-[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
-[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
-...
-[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
-[   13.001050]  machine_restart from panic+0x2a8/0x32c
-
-Avoid these by setting the correct system_state.
-
-Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
-Cc: stable@vger.kernel.org # v5.2+
-Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Tested-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
-Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-1-18699d5dcd76@skidata.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Cc: stable@vger.kernel.org # v6.3+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/reboot.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfscache.c |   21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -74,6 +74,7 @@ void __weak (*pm_power_off)(void);
- void emergency_restart(void)
- {
- 	kmsg_dump(KMSG_DUMP_EMERG);
-+	system_state = SYSTEM_RESTART;
- 	machine_emergency_restart();
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -640,24 +640,17 @@ void nfsd_cache_update(struct svc_rqst *
+ 	return;
  }
- EXPORT_SYMBOL_GPL(emergency_restart);
+ 
+-/*
+- * Copy cached reply to current reply buffer. Should always fit.
+- * FIXME as reply is in a page, we should just attach the page, and
+- * keep a refcount....
+- */
+ static int
+ nfsd_cache_append(struct svc_rqst *rqstp, struct kvec *data)
+ {
+-	struct kvec	*vec = &rqstp->rq_res.head[0];
++	__be32 *p;
+ 
+-	if (vec->iov_len + data->iov_len > PAGE_SIZE) {
+-		printk(KERN_WARNING "nfsd: cached reply too large (%zd).\n",
+-				data->iov_len);
+-		return 0;
+-	}
+-	memcpy((char*)vec->iov_base + vec->iov_len, data->iov_base, data->iov_len);
+-	vec->iov_len += data->iov_len;
+-	return 1;
++	p = xdr_reserve_space(&rqstp->rq_res_stream, data->iov_len);
++	if (unlikely(!p))
++		return false;
++	memcpy(p, data->iov_base, data->iov_len);
++	xdr_commit_encode(&rqstp->rq_res_stream);
++	return true;
+ }
+ 
+ /*
 
 
 
