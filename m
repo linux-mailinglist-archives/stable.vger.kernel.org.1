@@ -1,95 +1,246 @@
-Return-Path: <stable+bounces-106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF877F6E05
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 09:24:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463087F6EC7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 09:47:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD3E42818CC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 08:24:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 775F61C20E3F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 08:47:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59E0BA29;
-	Fri, 24 Nov 2023 08:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C963D90;
+	Fri, 24 Nov 2023 08:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPGk9fnQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DceveDzI"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740249471;
-	Fri, 24 Nov 2023 08:24:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BA6C433C7;
-	Fri, 24 Nov 2023 08:24:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700814281;
-	bh=pLRUlHYGVhu8BUklUaIDxuuBipDIZz/0vTGfjdNnKY4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=EPGk9fnQWWWRuEpyadDVK4qAcVhv/V38KizImZG/s36KWYsaNDoov9umKYVz9DD9h
-	 YrvwomQIlxnAlkv5Srf5v+SuUrIlyyeMM/bMDiQuI/lLc2rFHFXJ2dwFVU/gNXdBqp
-	 +ElGRS8CX4k5mBYCIs+sfFLbd9RrsFmA4Eq7E/odbkYQ3Bdyr+2u+sFp4OlFTE5GGc
-	 6WD4TdUnwjFRjWX9vT2RtwG+N9e0wQZXZoDB2F+UxmV//f7hMRQq4wr0xv18fI7SuX
-	 ac0O4/9k1ubvOR7EHwi7D2bEcevZ3c2LUDMU76xGFie80pF6BPp9b+ZA1YL9iTP/Xu
-	 clMAQx+ySSAjg==
-Date: Fri, 24 Nov 2023 09:24:35 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-	Christoph Hellwig <hch@lst.de>, Jan Kara <jack@suse.cz>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Howells <dhowells@redhat.com>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org,
-	linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
-	stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH] scsi: target: core: add missing file_{start,end}_write()
-Message-ID: <20231124-zanken-ammoniak-0d5a19006645@brauner>
-References: <20231123092000.2665902-1-amir73il@gmail.com>
- <2f3bf38b-a803-43e5-a9b9-54a88f837125@kernel.dk>
- <CAOQ4uxj6BBSgGKWQn=2ocsL_rd-PbjPAiK2w9rsqnxpNamxr9g@mail.gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7088D6C;
+	Fri, 24 Nov 2023 00:47:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1700815668; x=1732351668;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=jRTP48wXacR8RV7l8Y0RBxSvz30haH43o8p4kxtqFw4=;
+  b=DceveDzI2Fb38x5cOJSZtEuIpLE9ywiWeINSafwttII6uq+PDXSZe39X
+   TIlZxjn/kDrDURn9SjqPIA8yMkF0u8iGr5PSpHpdQQVPL8ZcW4gk/qruc
+   uQ+VAUtnggcVKgIZowbVrcRJ64zRrEyDIo0o89wg5K4l3F8aGKq+si4Ys
+   bvSjryoduNUFgQMOXilwzHQJo45kD7Xgx1bzq4J04nruyANbot+SE0sb0
+   LQxP4LqOCiT+cqO22tKiRJTj/h3G9z1601fSG4W06AgpfgGzkGHwFvuct
+   bSMAmOlYXcW0WHcBA/3K8mVMbSHgvSrDMEhfTtjUGF8OCOtWACl8JPdTZ
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="423525808"
+X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
+   d="scan'208";a="423525808"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 00:47:48 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10902"; a="802137656"
+X-IronPort-AV: E=Sophos;i="6.04,223,1695711600"; 
+   d="scan'208";a="802137656"
+Received: from mvlasov-mobl1.ger.corp.intel.com (HELO localhost) ([10.251.220.89])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2023 00:47:44 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: "John W. Linville" <linville@tuxdriver.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	linux-wireless@vger.kernel.org,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 01/10] wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
+Date: Fri, 24 Nov 2023 10:47:16 +0200
+Message-Id: <20231124084725.12738-2-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20231124084725.12738-1-ilpo.jarvinen@linux.intel.com>
+References: <20231124084725.12738-1-ilpo.jarvinen@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxj6BBSgGKWQn=2ocsL_rd-PbjPAiK2w9rsqnxpNamxr9g@mail.gmail.com>
 
-On Fri, Nov 24, 2023 at 09:54:49AM +0200, Amir Goldstein wrote:
-> On Thu, Nov 23, 2023 at 10:04 PM Jens Axboe <axboe@kernel.dk> wrote:
-> >
-> > On 11/23/23 2:20 AM, Amir Goldstein wrote:
-> > > The callers of vfs_iter_write() are required to hold file_start_write().
-> > > file_start_write() is a no-op for the S_ISBLK() case, but it is really
-> > > needed when the backing file is a regular file.
-> > >
-> > > We are going to move file_{start,end}_write() into vfs_iter_write(), but
-> > > we need to fix this first, so that the fix could be backported to stable
-> > > kernels.
-> >
-> > Reviewed-by: Jens Axboe <axboe@kernel.dk>
-> >
-> 
-> Christian,
-> 
-> Shall we just stash this at the bottom of vfs.rw and fixup
-> "move file_{start,end}_write() into vfs_iter_write()" patch?
+Ever since introduction in the commit 0c8173385e54 ("rtl8192ce: Add new
+driver") the rtlwifi code has, according to comments, attempted to
+disable/enable ASPM of the upstream bridge by writing into its LNKCTL
+register. However, the code has never been correct because it performs
+the writes to the device instead of the upstream bridge.
 
-Ok.
+Worse yet, the offset where the PCIe capabilities reside is derived
+from the offset of the upstream bridge. As a result, the write will use
+an offset on the device that does not relate to the LNKCTL register
+making the ASPM disable/enable code outright dangerous.
 
-> 
-> I see no strong reason to expedite a fix for something rare
-> that has been broken for a long time.
+Because of those problems, there is no indication that the driver needs
+disable/enable ASPM on the upstream bridge. As the Capabilities offset
+is not correctly calculated for the write to target device's LNKCTL
+register, the code is not disabling/enabling device's ASPM either.
+Therefore, just remove the upstream bridge related ASPM disable/enable
+code entirely.
 
-Agreed.
+The upstream bridge related ASPM code was the only user of the struct
+mp_adapter members num4bytes, pcibridge_pciehdr_offset, and
+pcibridge_linkctrlreg so those are removed as well.
 
-> 
-> If Martin decides to expedite it, we can alway rebase vfs.rw
-> once the fix is merged to master.
+Note: This change does not remove the code related to changing the
+device's ASPM on purpose (which is independent of this flawed code
+related to upstream bridge's ASPM).
 
-It's now the first commit on that branch. Let me know if I should drop it.
+Suggested-by: Bjorn Helgaas <bhelgaas@kernel.org>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Fixes: 886e14b65a8f ("rtlwifi: Eliminate raw reads and writes from PCIe portion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+---
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 58 +---------------------
+ drivers/net/wireless/realtek/rtlwifi/pci.h |  5 --
+ 2 files changed, 1 insertion(+), 62 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
+index 9886e719739b..206eca310cd7 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -192,11 +192,8 @@ static void rtl_pci_disable_aspm(struct ieee80211_hw *hw)
+ 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
+-	u8 num4bytes = pcipriv->ndis_adapter.num4bytes;
+ 	/*Retrieve original configuration settings. */
+ 	u8 linkctrl_reg = pcipriv->ndis_adapter.linkctrl_reg;
+-	u16 pcibridge_linkctrlreg = pcipriv->ndis_adapter.
+-				pcibridge_linkctrlreg;
+ 	u16 aspmlevel = 0;
+ 	u8 tmp_u1b = 0;
+ 
+@@ -221,16 +218,8 @@ static void rtl_pci_disable_aspm(struct ieee80211_hw *hw)
+ 	/*Set corresponding value. */
+ 	aspmlevel |= BIT(0) | BIT(1);
+ 	linkctrl_reg &= ~aspmlevel;
+-	pcibridge_linkctrlreg &= ~(BIT(0) | BIT(1));
+ 
+ 	_rtl_pci_platform_switch_device_pci_aspm(hw, linkctrl_reg);
+-	udelay(50);
+-
+-	/*4 Disable Pci Bridge ASPM */
+-	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
+-			      pcibridge_linkctrlreg);
+-
+-	udelay(50);
+ }
+ 
+ /*Enable RTL8192SE ASPM & Enable Pci Bridge ASPM for
+@@ -245,9 +234,7 @@ static void rtl_pci_enable_aspm(struct ieee80211_hw *hw)
+ 	struct rtl_ps_ctl *ppsc = rtl_psc(rtl_priv(hw));
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	u8 pcibridge_vendor = pcipriv->ndis_adapter.pcibridge_vendor;
+-	u8 num4bytes = pcipriv->ndis_adapter.num4bytes;
+ 	u16 aspmlevel;
+-	u8 u_pcibridge_aspmsetting;
+ 	u8 u_device_aspmsetting;
+ 
+ 	if (!ppsc->support_aspm)
+@@ -259,25 +246,6 @@ static void rtl_pci_enable_aspm(struct ieee80211_hw *hw)
+ 		return;
+ 	}
+ 
+-	/*4 Enable Pci Bridge ASPM */
+-
+-	u_pcibridge_aspmsetting =
+-	    pcipriv->ndis_adapter.pcibridge_linkctrlreg |
+-	    rtlpci->const_hostpci_aspm_setting;
+-
+-	if (pcibridge_vendor == PCI_BRIDGE_VENDOR_INTEL)
+-		u_pcibridge_aspmsetting &= ~BIT(0);
+-
+-	pci_write_config_byte(rtlpci->pdev, (num4bytes << 2),
+-			      u_pcibridge_aspmsetting);
+-
+-	rtl_dbg(rtlpriv, COMP_INIT, DBG_LOUD,
+-		"PlatformEnableASPM(): Write reg[%x] = %x\n",
+-		(pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10),
+-		u_pcibridge_aspmsetting);
+-
+-	udelay(50);
+-
+ 	/*Get ASPM level (with/without Clock Req) */
+ 	aspmlevel = rtlpci->const_devicepci_aspm_setting;
+ 	u_device_aspmsetting = pcipriv->ndis_adapter.linkctrl_reg;
+@@ -358,22 +326,6 @@ static bool rtl_pci_check_buddy_priv(struct ieee80211_hw *hw,
+ 	return tpriv != NULL;
+ }
+ 
+-static void rtl_pci_get_linkcontrol_field(struct ieee80211_hw *hw)
+-{
+-	struct rtl_pci_priv *pcipriv = rtl_pcipriv(hw);
+-	struct rtl_pci *rtlpci = rtl_pcidev(pcipriv);
+-	u8 capabilityoffset = pcipriv->ndis_adapter.pcibridge_pciehdr_offset;
+-	u8 linkctrl_reg;
+-	u8 num4bbytes;
+-
+-	num4bbytes = (capabilityoffset + 0x10) / 4;
+-
+-	/*Read  Link Control Register */
+-	pci_read_config_byte(rtlpci->pdev, (num4bbytes << 2), &linkctrl_reg);
+-
+-	pcipriv->ndis_adapter.pcibridge_linkctrlreg = linkctrl_reg;
+-}
+-
+ static void rtl_pci_parse_configuration(struct pci_dev *pdev,
+ 					struct ieee80211_hw *hw)
+ {
+@@ -2028,12 +1980,6 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
+ 		    PCI_SLOT(bridge_pdev->devfn);
+ 		pcipriv->ndis_adapter.pcibridge_funcnum =
+ 		    PCI_FUNC(bridge_pdev->devfn);
+-		pcipriv->ndis_adapter.pcibridge_pciehdr_offset =
+-		    pci_pcie_cap(bridge_pdev);
+-		pcipriv->ndis_adapter.num4bytes =
+-		    (pcipriv->ndis_adapter.pcibridge_pciehdr_offset + 0x10) / 4;
+-
+-		rtl_pci_get_linkcontrol_field(hw);
+ 
+ 		if (pcipriv->ndis_adapter.pcibridge_vendor ==
+ 		    PCI_BRIDGE_VENDOR_AMD) {
+@@ -2050,13 +1996,11 @@ static bool _rtl_pci_find_adapter(struct pci_dev *pdev,
+ 		pdev->vendor, pcipriv->ndis_adapter.linkctrl_reg);
+ 
+ 	rtl_dbg(rtlpriv, COMP_INIT, DBG_DMESG,
+-		"pci_bridge busnumber:devnumber:funcnumber:vendor:pcie_cap:link_ctl_reg:amd %d:%d:%d:%x:%x:%x:%x\n",
++		"pci_bridge busnumber:devnumber:funcnumber:vendor:amd %d:%d:%d:%x:%x\n",
+ 		pcipriv->ndis_adapter.pcibridge_busnum,
+ 		pcipriv->ndis_adapter.pcibridge_devnum,
+ 		pcipriv->ndis_adapter.pcibridge_funcnum,
+ 		pcibridge_vendors[pcipriv->ndis_adapter.pcibridge_vendor],
+-		pcipriv->ndis_adapter.pcibridge_pciehdr_offset,
+-		pcipriv->ndis_adapter.pcibridge_linkctrlreg,
+ 		pcipriv->ndis_adapter.amd_l1_patch);
+ 
+ 	rtl_pci_parse_configuration(pdev, hw);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.h b/drivers/net/wireless/realtek/rtlwifi/pci.h
+index 866861626a0a..d6307197dfea 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.h
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.h
+@@ -236,11 +236,6 @@ struct mp_adapter {
+ 	u16 pcibridge_vendorid;
+ 	u16 pcibridge_deviceid;
+ 
+-	u8 num4bytes;
+-
+-	u8 pcibridge_pciehdr_offset;
+-	u8 pcibridge_linkctrlreg;
+-
+ 	bool amd_l1_patch;
+ };
+ 
+-- 
+2.30.2
+
 
