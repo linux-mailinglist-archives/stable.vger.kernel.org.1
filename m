@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC65E7F7BA8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA667F7DD1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AA62B213CE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D021B2106B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7588239FD4;
-	Fri, 24 Nov 2023 18:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C1C3A8DD;
+	Fri, 24 Nov 2023 18:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOmO0Sn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9TN8ci8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5E439FE1;
-	Fri, 24 Nov 2023 18:07:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89FA2C433C7;
-	Fri, 24 Nov 2023 18:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5353D33CFD;
+	Fri, 24 Nov 2023 18:27:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E9DC433C8;
+	Fri, 24 Nov 2023 18:27:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849236;
-	bh=cFjWWV6KSupBOORchAPj29M5WtAb/oj7BYwuYKlT/UQ=;
+	s=korg; t=1700850457;
+	bh=ZE7QTMpBQoJeG95OJ+siiGsh1jKZmIM2Eu5XJjyl74A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NOmO0Sn/5WhAEJgjN9FE0zEYifc+gKas5enapcxvIS7ioV74gLRxuj2aFeXIHZbPK
-	 Vai71Yax09s6Meug2LqGudRRadq86h0RvuOsyt/Kjow6N7TsrspIOIgi/3bm5YVbrF
-	 b6Efmy8rF+6xeGLpCXRKGkBYfV18ptwmIpyXUKcE=
+	b=b9TN8ci8vYAc2RXF3vzwzKQ8xREKyeS5LhG2gMm2CtrqX+GzJQrNn0PUHJk/tzubQ
+	 A45Y4UynnE5eFPaVFb9ETKrMOSMBlb1k0W46E6GlTHj0sc+y4eHhkWiie7UUsvr93T
+	 07ZwJxS2WyW17AXb2xy0zyOgOZL0WuGBphbEXjfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/530] PCI: tegra194: Use FIELD_GET()/FIELD_PREP() with Link Width fields
-Date: Fri, 24 Nov 2023 17:44:27 +0000
-Message-ID: <20231124172031.191155765@linuxfoundation.org>
+Subject: [PATCH 6.5 032/491] wifi: ath10k: Dont touch the CE interrupt registers after power up
+Date: Fri, 24 Nov 2023 17:44:28 +0000
+Message-ID: <20231124172025.663830801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +51,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 759574abd78e3b47ec45bbd31a64e8832cf73f97 ]
+[ Upstream commit 170c75d43a77dc937c58f07ecf847ba1b42ab74e ]
 
-Use FIELD_GET() to extract PCIe Negotiated Link Width field instead of
-custom masking and shifting.
+As talked about in commit d66d24ac300c ("ath10k: Keep track of which
+interrupts fired, don't poll them"), if we access the copy engine
+register at a bad time then ath10k can go boom. However, it's not
+necessarily easy to know when it's safe to access them.
 
-Similarly, change custom code that misleadingly used
-PCI_EXP_LNKSTA_NLW_SHIFT to prepare value for PCI_EXP_LNKCAP write
-to use FIELD_PREP() with correct field define (PCI_EXP_LNKCAP_MLW).
+The ChromeOS test labs saw a crash that looked like this at
+shutdown/reboot time (on a chromeos-5.15 kernel, but likely the
+problem could also reproduce upstream):
 
-Link: https://lore.kernel.org/r/20230919125648.1920-5-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Internal error: synchronous external abort: 96000010 [#1] PREEMPT SMP
+...
+CPU: 4 PID: 6168 Comm: reboot Not tainted 5.15.111-lockdep-19350-g1d624fe6758f #1 010b9b233ab055c27c6dc88efb0be2f4e9e86f51
+Hardware name: Google Kingoftown (DT)
+...
+pc : ath10k_snoc_read32+0x50/0x74 [ath10k_snoc]
+lr : ath10k_snoc_read32+0x24/0x74 [ath10k_snoc]
+...
+Call trace:
+ath10k_snoc_read32+0x50/0x74 [ath10k_snoc ...]
+ath10k_ce_disable_interrupt+0x190/0x65c [ath10k_core ...]
+ath10k_ce_disable_interrupts+0x8c/0x120 [ath10k_core ...]
+ath10k_snoc_hif_stop+0x78/0x660 [ath10k_snoc ...]
+ath10k_core_stop+0x13c/0x1ec [ath10k_core ...]
+ath10k_halt+0x398/0x5b0 [ath10k_core ...]
+ath10k_stop+0xfc/0x1a8 [ath10k_core ...]
+drv_stop+0x148/0x6b4 [mac80211 ...]
+ieee80211_stop_device+0x70/0x80 [mac80211 ...]
+ieee80211_do_stop+0x10d8/0x15b0 [mac80211 ...]
+ieee80211_stop+0x144/0x1a0 [mac80211 ...]
+__dev_close_many+0x1e8/0x2c0
+dev_close_many+0x198/0x33c
+dev_close+0x140/0x210
+cfg80211_shutdown_all_interfaces+0xc8/0x1e0 [cfg80211 ...]
+ieee80211_remove_interfaces+0x118/0x5c4 [mac80211 ...]
+ieee80211_unregister_hw+0x64/0x1f4 [mac80211 ...]
+ath10k_mac_unregister+0x4c/0xf0 [ath10k_core ...]
+ath10k_core_unregister+0x80/0xb0 [ath10k_core ...]
+ath10k_snoc_free_resources+0xb8/0x1ec [ath10k_snoc ...]
+ath10k_snoc_shutdown+0x98/0xd0 [ath10k_snoc ...]
+platform_shutdown+0x7c/0xa0
+device_shutdown+0x3e0/0x58c
+kernel_restart_prepare+0x68/0xa0
+kernel_restart+0x28/0x7c
+
+Though there's no known way to reproduce the problem, it makes sense
+that it would be the same issue where we're trying to access copy
+engine registers when it's not allowed.
+
+Let's fix this by changing how we "disable" the interrupts. Instead of
+tweaking the copy engine registers we'll just use disable_irq() and
+enable_irq(). Then we'll configure the interrupts once at power up
+time.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.2.2.c10-00754-QCAHLSWMTPL-1
+
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230630151842.1.If764ede23c4e09a43a842771c2ddf99608f25f8e@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath10k/snoc.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index 4bba31502ce1d..248cd9347e8fd 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -9,6 +9,7 @@
-  * Author: Vidya Sagar <vidyas@nvidia.com>
-  */
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 26214c00cd0d7..2c39bad7ebfb9 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -828,12 +828,20 @@ static void ath10k_snoc_hif_get_default_pipe(struct ath10k *ar,
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
-@@ -346,8 +347,7 @@ static void apply_bad_link_workaround(struct dw_pcie_rp *pp)
- 	 */
- 	val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKSTA);
- 	if (val & PCI_EXP_LNKSTA_LBMS) {
--		current_link_width = (val & PCI_EXP_LNKSTA_NLW) >>
--				     PCI_EXP_LNKSTA_NLW_SHIFT;
-+		current_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val);
- 		if (pcie->init_link_width > current_link_width) {
- 			dev_warn(pci->dev, "PCIe link is bad, width reduced\n");
- 			val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base +
-@@ -760,8 +760,7 @@ static void tegra_pcie_enable_system_interrupts(struct dw_pcie_rp *pp)
+ static inline void ath10k_snoc_irq_disable(struct ath10k *ar)
+ {
+-	ath10k_ce_disable_interrupts(ar);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	int id;
++
++	for (id = 0; id < CE_COUNT_MAX; id++)
++		disable_irq(ar_snoc->ce_irqs[id].irq_line);
+ }
  
- 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
- 				  PCI_EXP_LNKSTA);
--	pcie->init_link_width = (val_w & PCI_EXP_LNKSTA_NLW) >>
--				PCI_EXP_LNKSTA_NLW_SHIFT;
-+	pcie->init_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val_w);
+ static inline void ath10k_snoc_irq_enable(struct ath10k *ar)
+ {
+-	ath10k_ce_enable_interrupts(ar);
++	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
++	int id;
++
++	for (id = 0; id < CE_COUNT_MAX; id++)
++		enable_irq(ar_snoc->ce_irqs[id].irq_line);
+ }
  
- 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
- 				  PCI_EXP_LNKCTL);
-@@ -920,7 +919,7 @@ static int tegra_pcie_dw_host_init(struct dw_pcie_rp *pp)
- 	/* Configure Max lane width from DT */
- 	val = dw_pcie_readl_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP);
- 	val &= ~PCI_EXP_LNKCAP_MLW;
--	val |= (pcie->num_lanes << PCI_EXP_LNKSTA_NLW_SHIFT);
-+	val |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, pcie->num_lanes);
- 	dw_pcie_writel_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP, val);
+ static void ath10k_snoc_rx_pipe_cleanup(struct ath10k_snoc_pipe *snoc_pipe)
+@@ -1090,6 +1098,8 @@ static int ath10k_snoc_hif_power_up(struct ath10k *ar,
+ 		goto err_free_rri;
+ 	}
  
- 	/* Clear Slot Clock Configuration bit if SRNS configuration */
++	ath10k_ce_enable_interrupts(ar);
++
+ 	return 0;
+ 
+ err_free_rri:
+@@ -1253,8 +1263,8 @@ static int ath10k_snoc_request_irq(struct ath10k *ar)
+ 
+ 	for (id = 0; id < CE_COUNT_MAX; id++) {
+ 		ret = request_irq(ar_snoc->ce_irqs[id].irq_line,
+-				  ath10k_snoc_per_engine_handler, 0,
+-				  ce_name[id], ar);
++				  ath10k_snoc_per_engine_handler,
++				  IRQF_NO_AUTOEN, ce_name[id], ar);
+ 		if (ret) {
+ 			ath10k_err(ar,
+ 				   "failed to register IRQ handler for CE %d: %d\n",
 -- 
 2.42.0
 
