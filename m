@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13E77F7C26
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDB17F7E48
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81DF281DEA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7E828219F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1907039FC6;
-	Fri, 24 Nov 2023 18:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D433A8C3;
+	Fri, 24 Nov 2023 18:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWUF8HHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCYAtJRI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8958939FF3;
-	Fri, 24 Nov 2023 18:12:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE710C433C8;
-	Fri, 24 Nov 2023 18:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D046333CFD;
+	Fri, 24 Nov 2023 18:31:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED3BC433CA;
+	Fri, 24 Nov 2023 18:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849541;
-	bh=Nx1GgQy9eYy/X+H6YhxY0OFXccPNu0V/tddQWxV1D5o=;
+	s=korg; t=1700850696;
+	bh=pzXruHM4kwKPoNLxiTdkZx6rEx+xKGPe+LvtzgcjumE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWUF8HHpVG1bRPZHc/NN5FDE+7ZdpP67VsxOsamfzM7ff3pEeGk6yqZC1FuLaFxSa
-	 I4mrQyJHEay6iSJ9SHy/rsjpnI9ZvauYSPLjsO2fkgHPI2iHeDABRQDtCz01U7J9n+
-	 4dpAHklzAOiBQtof7qspzWb+f8lMsVeTDikZcQgk=
+	b=mCYAtJRIySdh0vWolCqzTyxDV7M1k6BuhD5kaBZj3HjujPOm8XTSpzKFtBVxKlVii
+	 ZEscGB0A/ry5NomYlaJ/CSOn7mnDALp76rLhHxqU8xJdKBNxbZkPO3eRw99eOk/JQ0
+	 CN4U4qKA4SFdZZMJd/pxFt8lG0uY1uKiWKkTNQXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jinghao Jia <jinghao@linux.ibm.com>,
+	Ruowen Qin <ruowenq2@illinois.edu>,
+	Jinghao Jia <jinghao7@illinois.edu>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/530] net/mlx5e: Track xmit submission to PTP WQ after populating metadata map
+Subject: [PATCH 6.5 153/491] samples/bpf: syscall_tp_user: Rename num_progs into nr_tests
 Date: Fri, 24 Nov 2023 17:46:29 +0000
-Message-ID: <20231124172034.847053675@linuxfoundation.org>
+Message-ID: <20231124172029.072637435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,117 +55,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Jinghao Jia <jinghao@linux.ibm.com>
 
-[ Upstream commit 7e3f3ba97e6cc6fce5bf62df2ca06c8e59040167 ]
+[ Upstream commit 0ee352fe0d28015cab161b04d202fa3231c0ba3b ]
 
-Ensure the skb is available in metadata mapping to skbs before tracking the
-metadata index for detecting undelivered CQEs. If the metadata index is put
-in the tracking list before putting the skb in the map, the metadata index
-might be used for detecting undelivered CQEs before the relevant skb is
-available in the map, which can lead to a null-ptr-deref.
+The variable name num_progs causes confusion because that variable
+really controls the number of rounds the test should be executed.
 
-Log:
-    general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] SMP KASAN
-    KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
-    CPU: 0 PID: 1243 Comm: kworker/0:2 Not tainted 6.6.0-rc4+ #108
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-    Workqueue: events mlx5e_rx_dim_work [mlx5_core]
-    RIP: 0010:mlx5e_ptp_napi_poll+0x9a4/0x2290 [mlx5_core]
-    Code: 8c 24 38 cc ff ff 4c 8d 3c c1 4c 89 f9 48 c1 e9 03 42 80 3c 31 00 0f 85 97 0f 00 00 4d 8b 3f 49 8d 7f 28 48 89 f9 48 c1 e9 03 <42> 80 3c 31 00 0f 85 8b 0f 00 00 49 8b 47 28 48 85 c0 0f 84 05 07
-    RSP: 0018:ffff8884d3c09c88 EFLAGS: 00010206
-    RAX: 0000000000000069 RBX: ffff8881160349d8 RCX: 0000000000000005
-    RDX: ffffed10218f48cf RSI: 0000000000000004 RDI: 0000000000000028
-    RBP: ffff888122707700 R08: 0000000000000001 R09: ffffed109a781383
-    R10: 0000000000000003 R11: 0000000000000003 R12: ffff88810c7a7a40
-    R13: ffff888122707700 R14: dffffc0000000000 R15: 0000000000000000
-    FS:  0000000000000000(0000) GS:ffff8884d3c00000(0000) knlGS:0000000000000000
-    CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-    CR2: 00007f4f878dd6e0 CR3: 000000014d108002 CR4: 0000000000370eb0
-    DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-    DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-    Call Trace:
-    <IRQ>
-    ? die_addr+0x3c/0xa0
-    ? exc_general_protection+0x144/0x210
-    ? asm_exc_general_protection+0x22/0x30
-    ? mlx5e_ptp_napi_poll+0x9a4/0x2290 [mlx5_core]
-    ? mlx5e_ptp_napi_poll+0x8f6/0x2290 [mlx5_core]
-    __napi_poll.constprop.0+0xa4/0x580
-    net_rx_action+0x460/0xb80
-    ? _raw_spin_unlock_irqrestore+0x32/0x60
-    ? __napi_poll.constprop.0+0x580/0x580
-    ? tasklet_action_common.isra.0+0x2ef/0x760
-    __do_softirq+0x26c/0x827
-    irq_exit_rcu+0xc2/0x100
-    common_interrupt+0x7f/0xa0
-    </IRQ>
-    <TASK>
-    asm_common_interrupt+0x22/0x40
-    RIP: 0010:__kmem_cache_alloc_node+0xb/0x330
-    Code: 41 5d 41 5e 41 5f c3 8b 44 24 14 8b 4c 24 10 09 c8 eb d5 e8 b7 43 ca 01 0f 1f 80 00 00 00 00 0f 1f 44 00 00 55 48 89 e5 41 57 <41> 56 41 89 d6 41 55 41 89 f5 41 54 49 89 fc 53 48 83 e4 f0 48 83
-    RSP: 0018:ffff88812c4079c0 EFLAGS: 00000246
-    RAX: 1ffffffff083c7fe RBX: ffff888100042dc0 RCX: 0000000000000218
-    RDX: 00000000ffffffff RSI: 0000000000000dc0 RDI: ffff888100042dc0
-    RBP: ffff88812c4079c8 R08: ffffffffa0289f96 R09: ffffed1025880ea9
-    R10: ffff888138839f80 R11: 0000000000000002 R12: 0000000000000dc0
-    R13: 0000000000000100 R14: 000000000000008c R15: ffff8881271fc450
-    ? cmd_exec+0x796/0x2200 [mlx5_core]
-    kmalloc_trace+0x26/0xc0
-    cmd_exec+0x796/0x2200 [mlx5_core]
-    mlx5_cmd_do+0x22/0xc0 [mlx5_core]
-    mlx5_cmd_exec+0x17/0x30 [mlx5_core]
-    mlx5_core_modify_cq_moderation+0x139/0x1b0 [mlx5_core]
-    ? mlx5_add_cq_to_tasklet+0x280/0x280 [mlx5_core]
-    ? lockdep_set_lock_cmp_fn+0x190/0x190
-    ? process_one_work+0x659/0x1220
-    mlx5e_rx_dim_work+0x9d/0x100 [mlx5_core]
-    process_one_work+0x730/0x1220
-    ? lockdep_hardirqs_on_prepare+0x400/0x400
-    ? max_active_store+0xf0/0xf0
-    ? assign_work+0x168/0x240
-    worker_thread+0x70f/0x12d0
-    ? __kthread_parkme+0xd1/0x1d0
-    ? process_one_work+0x1220/0x1220
-    kthread+0x2d9/0x3b0
-    ? kthread_complete_and_exit+0x20/0x20
-    ret_from_fork+0x2d/0x70
-    ? kthread_complete_and_exit+0x20/0x20
-    ret_from_fork_asm+0x11/0x20
-    </TASK>
-    Modules linked in: xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcsec_gss_krb5 auth_rpcgss oid_registry overlay mlx5_ib ib_uverbs ib_core zram zsmalloc mlx5_core fuse
-    ---[ end trace 0000000000000000 ]---
+Rename num_progs into nr_tests for the sake of clarity.
 
-Fixes: 3178308ad4ca ("net/mlx5e: Make tx_port_ts logic resilient to out-of-order CQEs")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-11-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jinghao Jia <jinghao@linux.ibm.com>
+Signed-off-by: Ruowen Qin <ruowenq2@illinois.edu>
+Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
+Link: https://lore.kernel.org/r/20230917214220.637721-3-jinghao7@illinois.edu
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 9220c3ef6fef ("samples/bpf: syscall_tp_user: Fix array out-of-bound access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ samples/bpf/syscall_tp_user.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index 19f2c25b05a0b..f0b506e562df3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -399,9 +399,9 @@ mlx5e_txwqe_complete(struct mlx5e_txqsq *sq, struct sk_buff *skb,
- 		u8 metadata_index = be32_to_cpu(eseg->flow_table_metadata);
+diff --git a/samples/bpf/syscall_tp_user.c b/samples/bpf/syscall_tp_user.c
+index 7a788bb837fc1..18c94c7e8a40e 100644
+--- a/samples/bpf/syscall_tp_user.c
++++ b/samples/bpf/syscall_tp_user.c
+@@ -17,9 +17,9 @@
  
- 		mlx5e_skb_cb_hwtstamp_init(skb);
--		mlx5e_ptpsq_track_metadata(sq->ptpsq, metadata_index);
- 		mlx5e_ptp_metadata_map_put(&sq->ptpsq->metadata_map, skb,
- 					   metadata_index);
-+		mlx5e_ptpsq_track_metadata(sq->ptpsq, metadata_index);
- 		if (!netif_tx_queue_stopped(sq->txq) &&
- 		    mlx5e_ptpsq_metadata_freelist_empty(sq->ptpsq)) {
- 			netif_tx_stop_queue(sq->txq);
+ static void usage(const char *cmd)
+ {
+-	printf("USAGE: %s [-i num_progs] [-h]\n", cmd);
+-	printf("       -i num_progs      # number of progs of the test\n");
+-	printf("       -h                # help\n");
++	printf("USAGE: %s [-i nr_tests] [-h]\n", cmd);
++	printf("       -i nr_tests      # rounds of test to run\n");
++	printf("       -h               # help\n");
+ }
+ 
+ static void verify_map(int map_id)
+@@ -45,14 +45,14 @@ static void verify_map(int map_id)
+ 	}
+ }
+ 
+-static int test(char *filename, int num_progs)
++static int test(char *filename, int nr_tests)
+ {
+-	int map0_fds[num_progs], map1_fds[num_progs], fd, i, j = 0;
+-	struct bpf_link *links[num_progs * 4];
+-	struct bpf_object *objs[num_progs];
++	int map0_fds[nr_tests], map1_fds[nr_tests], fd, i, j = 0;
++	struct bpf_link *links[nr_tests * 4];
++	struct bpf_object *objs[nr_tests];
+ 	struct bpf_program *prog;
+ 
+-	for (i = 0; i < num_progs; i++) {
++	for (i = 0; i < nr_tests; i++) {
+ 		objs[i] = bpf_object__open_file(filename, NULL);
+ 		if (libbpf_get_error(objs[i])) {
+ 			fprintf(stderr, "opening BPF object file failed\n");
+@@ -101,7 +101,7 @@ static int test(char *filename, int num_progs)
+ 	close(fd);
+ 
+ 	/* verify the map */
+-	for (i = 0; i < num_progs; i++) {
++	for (i = 0; i < nr_tests; i++) {
+ 		verify_map(map0_fds[i]);
+ 		verify_map(map1_fds[i]);
+ 	}
+@@ -117,13 +117,13 @@ static int test(char *filename, int num_progs)
+ 
+ int main(int argc, char **argv)
+ {
+-	int opt, num_progs = 1;
++	int opt, nr_tests = 1;
+ 	char filename[256];
+ 
+ 	while ((opt = getopt(argc, argv, "i:h")) != -1) {
+ 		switch (opt) {
+ 		case 'i':
+-			num_progs = atoi(optarg);
++			nr_tests = atoi(optarg);
+ 			break;
+ 		case 'h':
+ 		default:
+@@ -134,5 +134,5 @@ int main(int argc, char **argv)
+ 
+ 	snprintf(filename, sizeof(filename), "%s_kern.o", argv[0]);
+ 
+-	return test(filename, num_progs);
++	return test(filename, nr_tests);
+ }
 -- 
 2.42.0
 
