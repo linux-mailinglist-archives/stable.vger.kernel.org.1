@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1CDD7F7C56
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4C97F801F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69EC71F20FA4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D6CDB215F0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C90139FDD;
-	Fri, 24 Nov 2023 18:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC92E364DE;
+	Fri, 24 Nov 2023 18:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILBppNkS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBSrahuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5489339FFD;
-	Fri, 24 Nov 2023 18:14:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D119AC433C8;
-	Fri, 24 Nov 2023 18:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F18733CC7;
+	Fri, 24 Nov 2023 18:46:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D26C433C7;
+	Fri, 24 Nov 2023 18:46:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849657;
-	bh=CimODmEVjWVoI67ndJpr7lQefNmR5kBvkMdnoqTUs6w=;
+	s=korg; t=1700851608;
+	bh=cUt+FnMJzwzPjbe8ZReWHDMBuKJ2Rg8o2hZ+Vh3ovXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILBppNkSZruMg7soohKto5qcK/Rz9tM/iJg0JSOELGW7q35YyEEckzQJePu2wUutQ
-	 hVhFp6BaopBnG4gWM1QUkrazuVlsZ2TXWiMVjqGmc9wAovDTnVOViYoypWGNDnDh6B
-	 +pZ/IpY+qwAHQi50b9jQ0aNT4UJ6NubzltHVv67c=
+	b=nBSrahuX6PhEwGuy53mzd1odAQveNVsQE1J53omd6TnqqqkSea9siEE5pYJOKcNmc
+	 nL5htsVkZPCDMeuQe0AhRFzDKi1hByH6iCHDwEj3XHJL9+iuejqNsnZK1Fkkex22qk
+	 OSs7XMZlBHD4R08dcnnB41QQ9b3JN1YzqGCkIMog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Hasemeyer <markhas@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 244/530] spi: Fix null dereference on suspend
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 023/372] vsock: read from sockets error queue
 Date: Fri, 24 Nov 2023 17:46:50 +0000
-Message-ID: <20231124172035.483901186@linuxfoundation.org>
+Message-ID: <20231124172011.250649095@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,151 +54,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Hasemeyer <markhas@chromium.org>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-commit bef4a48f4ef798c4feddf045d49e53c8a97d5e37 upstream.
+[ Upstream commit 49dbe25adac42d3e06f65d1420946bec65896222 ]
 
-A race condition exists where a synchronous (noqueue) transfer can be
-active during a system suspend. This can cause a null pointer
-dereference exception to occur when the system resumes.
+This adds handling of MSG_ERRQUEUE input flag in receive call. This flag
+is used to read socket's error queue instead of data queue. Possible
+scenario of error queue usage is receiving completions for transmission
+with MSG_ZEROCOPY flag. This patch also adds new defines: 'SOL_VSOCK'
+and 'VSOCK_RECVERR'.
 
-Example order of events leading to the exception:
-1. spi_sync() calls __spi_transfer_message_noqueue() which sets
-   ctlr->cur_msg
-2. Spi transfer begins via spi_transfer_one_message()
-3. System is suspended interrupting the transfer context
-4. System is resumed
-6. spi_controller_resume() calls spi_start_queue() which resets cur_msg
-   to NULL
-7. Spi transfer context resumes and spi_finalize_current_message() is
-   called which dereferences cur_msg (which is now NULL)
-
-Wait for synchronous transfers to complete before suspending by
-acquiring the bus mutex and setting/checking a suspend flag.
-
-Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
-Link: https://lore.kernel.org/r/20231107144743.v1.1.I7987f05f61901f567f7661763646cb7d7919b528@changeid
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c       |   56 +++++++++++++++++++++++++++++++++---------------
- include/linux/spi/spi.h |    1 
- 2 files changed, 40 insertions(+), 17 deletions(-)
+ include/linux/socket.h          |  1 +
+ include/uapi/linux/vm_sockets.h | 17 +++++++++++++++++
+ net/vmw_vsock/af_vsock.c        |  6 ++++++
+ 3 files changed, 24 insertions(+)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3323,33 +3323,52 @@ void spi_unregister_controller(struct sp
- }
- EXPORT_SYMBOL_GPL(spi_unregister_controller);
+diff --git a/include/linux/socket.h b/include/linux/socket.h
+index de3701a2a2129..1db29aab8f9c3 100644
+--- a/include/linux/socket.h
++++ b/include/linux/socket.h
+@@ -376,6 +376,7 @@ struct ucred {
+ #define SOL_MPTCP	284
+ #define SOL_MCTP	285
+ #define SOL_SMC		286
++#define SOL_VSOCK	287
  
-+static inline int __spi_check_suspended(const struct spi_controller *ctlr)
-+{
-+	return ctlr->flags & SPI_CONTROLLER_SUSPENDED ? -ESHUTDOWN : 0;
-+}
+ /* IPX options */
+ #define IPX_TYPE	1
+diff --git a/include/uapi/linux/vm_sockets.h b/include/uapi/linux/vm_sockets.h
+index c60ca33eac594..ed07181d4eff9 100644
+--- a/include/uapi/linux/vm_sockets.h
++++ b/include/uapi/linux/vm_sockets.h
+@@ -191,4 +191,21 @@ struct sockaddr_vm {
+ 
+ #define IOCTL_VM_SOCKETS_GET_LOCAL_CID		_IO(7, 0xb9)
+ 
++/* MSG_ZEROCOPY notifications are encoded in the standard error format,
++ * sock_extended_err. See Documentation/networking/msg_zerocopy.rst in
++ * kernel source tree for more details.
++ */
 +
-+static inline void __spi_mark_suspended(struct spi_controller *ctlr)
-+{
-+	mutex_lock(&ctlr->bus_lock_mutex);
-+	ctlr->flags |= SPI_CONTROLLER_SUSPENDED;
-+	mutex_unlock(&ctlr->bus_lock_mutex);
-+}
++/* 'cmsg_level' field value of 'struct cmsghdr' for notification parsing
++ * when MSG_ZEROCOPY flag is used on transmissions.
++ */
 +
-+static inline void __spi_mark_resumed(struct spi_controller *ctlr)
-+{
-+	mutex_lock(&ctlr->bus_lock_mutex);
-+	ctlr->flags &= ~SPI_CONTROLLER_SUSPENDED;
-+	mutex_unlock(&ctlr->bus_lock_mutex);
-+}
++#define SOL_VSOCK	287
 +
- int spi_controller_suspend(struct spi_controller *ctlr)
- {
--	int ret;
-+	int ret = 0;
- 
- 	/* Basically no-ops for non-queued controllers */
--	if (!ctlr->queued)
--		return 0;
--
--	ret = spi_stop_queue(ctlr);
--	if (ret)
--		dev_err(&ctlr->dev, "queue stop failed\n");
-+	if (ctlr->queued) {
-+		ret = spi_stop_queue(ctlr);
-+		if (ret)
-+			dev_err(&ctlr->dev, "queue stop failed\n");
-+	}
- 
-+	__spi_mark_suspended(ctlr);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(spi_controller_suspend);
- 
- int spi_controller_resume(struct spi_controller *ctlr)
- {
--	int ret;
--
--	if (!ctlr->queued)
--		return 0;
-+	int ret = 0;
- 
--	ret = spi_start_queue(ctlr);
--	if (ret)
--		dev_err(&ctlr->dev, "queue restart failed\n");
-+	__spi_mark_resumed(ctlr);
- 
-+	if (ctlr->queued) {
-+		ret = spi_start_queue(ctlr);
-+		if (ret)
-+			dev_err(&ctlr->dev, "queue restart failed\n");
-+	}
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(spi_controller_resume);
-@@ -4153,8 +4172,7 @@ static void __spi_transfer_message_noque
- 	ctlr->cur_msg = msg;
- 	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
- 	if (ret)
--		goto out;
--
-+		dev_err(&ctlr->dev, "noqueue transfer failed\n");
- 	ctlr->cur_msg = NULL;
- 	ctlr->fallback = false;
- 
-@@ -4170,7 +4188,6 @@ static void __spi_transfer_message_noque
- 		spi_idle_runtime_pm(ctlr);
- 	}
- 
--out:
- 	mutex_unlock(&ctlr->io_mutex);
- }
- 
-@@ -4193,6 +4210,11 @@ static int __spi_sync(struct spi_device
- 	int status;
- 	struct spi_controller *ctlr = spi->controller;
- 
-+	if (__spi_check_suspended(ctlr)) {
-+		dev_warn_once(&spi->dev, "Attempted to sync while suspend\n");
-+		return -ESHUTDOWN;
-+	}
++/* 'cmsg_type' field value of 'struct cmsghdr' for notification parsing
++ * when MSG_ZEROCOPY flag is used on transmissions.
++ */
 +
- 	status = __spi_validate(spi, message);
- 	if (status != 0)
- 		return status;
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -566,6 +566,7 @@ struct spi_controller {
- #define SPI_CONTROLLER_MUST_RX		BIT(3)	/* Requires rx */
- #define SPI_CONTROLLER_MUST_TX		BIT(4)	/* Requires tx */
- #define SPI_CONTROLLER_GPIO_SS		BIT(5)	/* GPIO CS must select slave */
-+#define SPI_CONTROLLER_SUSPENDED	BIT(6)	/* Currently suspended */
++#define VSOCK_RECVERR	1
++
+ #endif /* _UAPI_VM_SOCKETS_H */
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 8360c790a8a01..84471745c0829 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -89,6 +89,7 @@
+ #include <linux/types.h>
+ #include <linux/bitops.h>
+ #include <linux/cred.h>
++#include <linux/errqueue.h>
+ #include <linux/init.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+@@ -110,6 +111,7 @@
+ #include <linux/workqueue.h>
+ #include <net/sock.h>
+ #include <net/af_vsock.h>
++#include <uapi/linux/vm_sockets.h>
  
- 	/* Flag indicating if the allocation of this struct is devres-managed */
- 	bool			devm_allocated;
+ static int __vsock_bind(struct sock *sk, struct sockaddr_vm *addr);
+ static void vsock_sk_destruct(struct sock *sk);
+@@ -2096,6 +2098,10 @@ vsock_connectible_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	int err;
+ 
+ 	sk = sock->sk;
++
++	if (unlikely(flags & MSG_ERRQUEUE))
++		return sock_recv_errqueue(sk, msg, len, SOL_VSOCK, VSOCK_RECVERR);
++
+ 	vsk = vsock_sk(sk);
+ 	err = 0;
+ 
+-- 
+2.42.0
+
 
 
 
