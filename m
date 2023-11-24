@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2F567F7ECA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CBC87F809E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F015B1C213F8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE8541C215B7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDD32F86B;
-	Fri, 24 Nov 2023 18:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DA72FC21;
+	Fri, 24 Nov 2023 18:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P515aNdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9DlpiOZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5A91A5A4;
-	Fri, 24 Nov 2023 18:36:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487CDC433C9;
-	Fri, 24 Nov 2023 18:36:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD74428DBB;
+	Fri, 24 Nov 2023 18:51:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39528C433C7;
+	Fri, 24 Nov 2023 18:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850965;
-	bh=WCAXu3pHUwT66qwx+dJpQT9DhkTcC/rEc6FKF74NHg0=;
+	s=korg; t=1700851883;
+	bh=kjOfJPh/5GXZV/8843/PqYtORH7NJpHGMBPqobvSjoo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P515aNddvOIkkTi5bMvBrgdRDLWCUwH0ksOF/XcJ1+DSVAgCyphOQgHu2GdPhDxRr
-	 Uzu5vslh6Un2otWLVOYRzMO3tAPSLsDIeQROFdQYwpP1Q4gzUfozt1Y+6emojiBcDK
-	 Z5iVIGIo/oBL36D0n0Wikmn1bz6EZkhBucBRdIBc=
+	b=q9DlpiOZ0AttoVXh66oIGgwhfIkvkNEbv/H9lZnPNu+13E9alC6bWXfpIssn49syM
+	 q+aSVNOYDUYWHXCAYe3/Qjc50ikvNEcEEOtyjkP3qrWeRm7FFbcGq0I/+b5JlAD173
+	 Ye/IlF0FucnALN/FeoZZPu9cBSHh7oQSisZR2IpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 6.5 260/491] iommufd: Fix missing update of domains_itree after splitting iopt_area
+	Andreas Kemnade <andreas@kemnade.info>,
+	Tony Lindgren <tony@atomide.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 109/372] ASoC: ti: omap-mcbsp: Fix runtime PM underflow warnings
 Date: Fri, 24 Nov 2023 17:48:16 +0000
-Message-ID: <20231124172032.377211476@linuxfoundation.org>
+Message-ID: <20231124172014.131299610@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,47 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Tony Lindgren <tony@atomide.com>
 
-commit e7250ab7ca4998fe026f2149805b03e09dc32498 upstream.
+[ Upstream commit fbb74e56378d8306f214658e3d525a8b3f000c5a ]
 
-In iopt_area_split(), if the original iopt_area has filled a domain and is
-linked to domains_itree, pages_nodes have to be properly
-reinserted. Otherwise the domains_itree becomes corrupted and we will UAF.
+We need to check for an active device as otherwise we get warnings
+for some mcbsp instances for "Runtime PM usage count underflow!".
 
-Fixes: 51fe6141f0f6 ("iommufd: Data structure to provide IOVA to PFN mapping")
-Link: https://lore.kernel.org/r/20231027162941.2864615-2-den@valinux.co.jp
-Cc: stable@vger.kernel.org
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Andreas Kemnade <andreas@kemnade.info>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20231030052340.13415-1-tony@atomide.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/io_pagetable.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/ti/omap-mcbsp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/iommufd/io_pagetable.c
-+++ b/drivers/iommu/iommufd/io_pagetable.c
-@@ -1060,6 +1060,16 @@ static int iopt_area_split(struct iopt_a
- 	if (WARN_ON(rc))
- 		goto err_remove_lhs;
+diff --git a/sound/soc/ti/omap-mcbsp.c b/sound/soc/ti/omap-mcbsp.c
+index 7c539a41a6a34..4b8aac1a36fa2 100644
+--- a/sound/soc/ti/omap-mcbsp.c
++++ b/sound/soc/ti/omap-mcbsp.c
+@@ -74,14 +74,16 @@ static int omap2_mcbsp_set_clks_src(struct omap_mcbsp *mcbsp, u8 fck_src_id)
+ 		return -EINVAL;
+ 	}
  
-+	/*
-+	 * If the original area has filled a domain, domains_itree has to be
-+	 * updated.
-+	 */
-+	if (area->storage_domain) {
-+		interval_tree_remove(&area->pages_node, &pages->domains_itree);
-+		interval_tree_insert(&lhs->pages_node, &pages->domains_itree);
-+		interval_tree_insert(&rhs->pages_node, &pages->domains_itree);
-+	}
-+
- 	lhs->storage_domain = area->storage_domain;
- 	lhs->pages = area->pages;
- 	rhs->storage_domain = area->storage_domain;
+-	pm_runtime_put_sync(mcbsp->dev);
++	if (mcbsp->active)
++		pm_runtime_put_sync(mcbsp->dev);
+ 
+ 	r = clk_set_parent(mcbsp->fclk, fck_src);
+ 	if (r)
+ 		dev_err(mcbsp->dev, "CLKS: could not clk_set_parent() to %s\n",
+ 			src);
+ 
+-	pm_runtime_get_sync(mcbsp->dev);
++	if (mcbsp->active)
++		pm_runtime_get_sync(mcbsp->dev);
+ 
+ 	clk_put(fck_src);
+ 
+-- 
+2.42.0
+
 
 
 
