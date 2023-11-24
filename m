@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DEB7F7B5A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 497267F7B69
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 472851C20D26
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:04:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02FDD281EF2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:04:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39BC039FFD;
-	Fri, 24 Nov 2023 18:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FCA39FD7;
+	Fri, 24 Nov 2023 18:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8WgmlNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHwJ7JaW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F248239FE8;
-	Fri, 24 Nov 2023 18:04:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2CAC433CA;
-	Fri, 24 Nov 2023 18:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5138D381D5;
+	Fri, 24 Nov 2023 18:04:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0933C433C7;
+	Fri, 24 Nov 2023 18:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849059;
-	bh=uF6LFqQLVRvNR7CvlLIApWSl5LsKlYkJq0xeP/eKA8o=;
+	s=korg; t=1700849088;
+	bh=3+41kBJMe0iX+W961H7owUbYeV5kyWynbi5L9P/Wvj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8WgmlNSwgfMeUmQo0DXmg+9GWUSocmvMlsbZ6j2rzQxelYp26KdAK8sLsBnP338z
-	 BwUtWOR+sx7u044ys1cuSAUwrPiT/LRh4fFyxydQQtroIchbgxqxiVUfqwzyljOeLQ
-	 fYWpMSmyT3xQeb8n6zt8RtntUeeS17FmeC5xraPs=
+	b=KHwJ7JaWcGQ/STsxcvxUUvEU7kpFouPfbPOz5RYwbAKpHkAq5CNj4xY6h31ZH8Eiv
+	 7yfxOHBgmWASAqi2cPx0vsk2xNHrUeiUFP9tjYTKXj+tkq4B+9V/FSytmOV7y5nW5u
+	 gtkI+S6aoSquDiNfzm0rFKNGxLB59aUKDh/SRKGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/530] wifi: ath10k: fix clang-specific fortify warning
-Date: Fri, 24 Nov 2023 17:43:10 +0000
-Message-ID: <20231124172028.809970322@linuxfoundation.org>
+Subject: [PATCH 6.6 025/530] wifi: ath12k: fix possible out-of-bound write in ath12k_wmi_ext_hal_reg_caps()
+Date: Fri, 24 Nov 2023 17:43:11 +0000
+Message-ID: <20231124172028.838686095@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -58,60 +58,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
+[ Upstream commit b302dce3d9edea5b93d1902a541684a967f3c63c ]
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+reg_cap.phy_id is extracted from WMI event and could be an unexpected value
+in case some errors happen. As a result out-of-bound write may occur to
+soc->hal_reg_cap. Fix it by validating reg_cap.phy_id before using it.
 
-In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+This is found during code review.
 
-The compiler actually complains on 'ath10k_debug_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy
-the whole 'ath10k_gstrings_stats' array from it's first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
+Compile tested only.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
+Link: https://lore.kernel.org/r/20230830020716.5420-1-quic_bqiang@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index f9518e1c99039..fe89bc61e5317 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1140,7 +1140,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
- 				 u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath10k_gstrings_stats,
-+		memcpy(data, ath10k_gstrings_stats,
- 		       sizeof(ath10k_gstrings_stats));
- }
- 
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index ef0f3cf35cfd1..bddf4571d50c1 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -3876,6 +3876,12 @@ static int ath12k_wmi_ext_hal_reg_caps(struct ath12k_base *soc,
+ 			ath12k_warn(soc, "failed to extract reg cap %d\n", i);
+ 			return ret;
+ 		}
++
++		if (reg_cap.phy_id >= MAX_RADIOS) {
++			ath12k_warn(soc, "unexpected phy id %u\n", reg_cap.phy_id);
++			return -EINVAL;
++		}
++
+ 		soc->hal_reg_cap[reg_cap.phy_id] = reg_cap;
+ 	}
+ 	return 0;
 -- 
 2.42.0
 
