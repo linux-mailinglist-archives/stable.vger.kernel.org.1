@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0622C7F7F66
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EACA57F7ABE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B54A0282445
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2973D1C209B8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5807535F1D;
-	Fri, 24 Nov 2023 18:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73BA839FC3;
+	Fri, 24 Nov 2023 17:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWUJOfgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcJijS+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DD12EAEA;
-	Fri, 24 Nov 2023 18:41:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E478C433C8;
-	Fri, 24 Nov 2023 18:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28456381D8;
+	Fri, 24 Nov 2023 17:58:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFFFC433C8;
+	Fri, 24 Nov 2023 17:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851271;
-	bh=xX3JeXv0vFhnTekxCfB7s0xThLhTgjcumNZaZhhvjtE=;
+	s=korg; t=1700848694;
+	bh=rhI/MkEh2hNq7zhKCauXH7ayZORK1VyAmq9qxI2dksI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWUJOfgSA4vYjsFgLTSKX1TEs0/h2SweFEccP32YO+nVVPJkQ88vlvOS8FgCVherH
-	 TFnyBgR3FYERlqzadV5zYXI+ozT0Rxp/c1EpE1uYPLUDeju5gfTiTaNHUTiuX0SzZ3
-	 kjT9J/5Ko8n1lomRty9oyXdb1ACSRyGhuXMUqZfo=
+	b=tcJijS+TH987ufkfWv25qS/AVqJqL6IGsZxPVSX41CljWgWQVfAu8GL3seUgW9xxy
+	 kEwe4ADJRRwPSYXpjiaJZ+o7yfm/JZ9lbD8cJSkBnU5FUuMrw11AIIOkPbsnMR7Ygn
+	 eRIcA80n+kWJO/HX3xWz3357udeAoGSDPThFCwuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Yeong <joshua.yeong@starfivetech.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.5 356/491] i3c: master: cdns: Fix reading status register
+	syzbot+debee9ab7ae2b34b0307@syzkaller.appspotmail.com,
+	Juntong Deng <juntong.deng@outlook.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 19/97] fs/jfs: Add check for negative db_l2nbperpage
 Date: Fri, 24 Nov 2023 17:49:52 +0000
-Message-ID: <20231124172035.274211248@linuxfoundation.org>
+Message-ID: <20231124171934.839814540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +54,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Yeong <joshua.yeong@starfivetech.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-commit 4bd8405257da717cd556f99e5fb68693d12c9766 upstream.
+[ Upstream commit 525b861a008143048535011f3816d407940f4bfa ]
 
-IBIR_DEPTH and CMDR_DEPTH should read from status0 instead of status1.
+l2nbperpage is log2(number of blks per page), and the minimum legal
+value should be 0, not negative.
 
-Cc: stable@vger.kernel.org
-Fixes: 603f2bee2c54 ("i3c: master: Add driver for Cadence IP")
-Signed-off-by: Joshua Yeong <joshua.yeong@starfivetech.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230913031743.11439-2-joshua.yeong@starfivetech.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In the case of l2nbperpage being negative, an error will occur
+when subsequently used as shift exponent.
+
+Syzbot reported this bug:
+
+UBSAN: shift-out-of-bounds in fs/jfs/jfs_dmap.c:799:12
+shift exponent -16777216 is negative
+
+Reported-by: syzbot+debee9ab7ae2b34b0307@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=debee9ab7ae2b34b0307
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/i3c-master-cdns.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_dmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/i3c/master/i3c-master-cdns.c
-+++ b/drivers/i3c/master/i3c-master-cdns.c
-@@ -192,7 +192,7 @@
- #define SLV_STATUS1_HJ_DIS		BIT(18)
- #define SLV_STATUS1_MR_DIS		BIT(17)
- #define SLV_STATUS1_PROT_ERR		BIT(16)
--#define SLV_STATUS1_DA(x)		(((s) & GENMASK(15, 9)) >> 9)
-+#define SLV_STATUS1_DA(s)		(((s) & GENMASK(15, 9)) >> 9)
- #define SLV_STATUS1_HAS_DA		BIT(8)
- #define SLV_STATUS1_DDR_RX_FULL		BIT(7)
- #define SLV_STATUS1_DDR_TX_FULL		BIT(6)
-@@ -1624,13 +1624,13 @@ static int cdns_i3c_master_probe(struct
- 	/* Device ID0 is reserved to describe this master. */
- 	master->maxdevs = CONF_STATUS0_DEVS_NUM(val);
- 	master->free_rr_slots = GENMASK(master->maxdevs, 1);
-+	master->caps.ibirfifodepth = CONF_STATUS0_IBIR_DEPTH(val);
-+	master->caps.cmdrfifodepth = CONF_STATUS0_CMDR_DEPTH(val);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index b20fffc8b4c13..5e20d7270d5f2 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -193,7 +193,8 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
  
- 	val = readl(master->regs + CONF_STATUS1);
- 	master->caps.cmdfifodepth = CONF_STATUS1_CMD_DEPTH(val);
- 	master->caps.rxfifodepth = CONF_STATUS1_RX_DEPTH(val);
- 	master->caps.txfifodepth = CONF_STATUS1_TX_DEPTH(val);
--	master->caps.ibirfifodepth = CONF_STATUS0_IBIR_DEPTH(val);
--	master->caps.cmdrfifodepth = CONF_STATUS0_CMDR_DEPTH(val);
- 
- 	spin_lock_init(&master->ibi.lock);
- 	master->ibi.num_slots = CONF_STATUS1_IBI_HW_RES(val);
+ 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
+-	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) {
++	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
++		bmp->db_l2nbperpage < 0) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
+-- 
+2.42.0
+
 
 
 
