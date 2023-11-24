@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998D97F7EA9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60E57F7C98
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71A81C213C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91438280E03
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8042EAEA;
-	Fri, 24 Nov 2023 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1366F3A8C5;
+	Fri, 24 Nov 2023 18:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLVhnHhf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIlzSUwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F0321AD;
-	Fri, 24 Nov 2023 18:34:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E22C433C7;
-	Fri, 24 Nov 2023 18:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD3F33063;
+	Fri, 24 Nov 2023 18:16:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58ED2C433C7;
+	Fri, 24 Nov 2023 18:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850892;
-	bh=DBdSeweK/FQwsQgXgH0K8GwZvexHGb5CyTVsBYGPcxo=;
+	s=korg; t=1700849800;
+	bh=40Apyo0cwK4PBUNO2DhPU8jigEvoGGqfSR8EOo6U5hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLVhnHhfFGY4x0kKhlzpMq3NjO5ZlhIrpxmn2lG3Zd/q8s6dZ0ytfdmw5CyD+0nPY
-	 tyi7v1M4+iB21FQr7ILfnUL8L8OIP4opA5mf3rxKaAkctHg+8g6HFaxELlPW5kRETk
-	 kgO6ukWXrmXUxCXS4JaAGq9P61J+JMKFmSqzNjCk=
+	b=XIlzSUwTp4AiwMMNlQvf93/LbyoLSMkzgqf2PaD2ANtF2l5dk+zBpQ/i3/5mhAYVV
+	 B4/13wCygmBXg6V7CMEZME1QCquLeQw9ezIQdMnsOA49V6KxSFcfR4VzkZArbojkQW
+	 Evf3PU1MNdN30zP8Np1JmX+lA6dTtQA3PGR2yI0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>
-Subject: [PATCH 6.5 231/491] bpf: Fix check_stack_write_fixed_off() to correctly spill imm
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.6 301/530] KEYS: trusted: Rollback init_trusted() consistently
 Date: Fri, 24 Nov 2023 17:47:47 +0000
-Message-ID: <20231124172031.497225055@linuxfoundation.org>
+Message-ID: <20231124172037.199303269@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,73 +52,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Sun <sunhao.th@gmail.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-commit 811c363645b33e6e22658634329e95f383dfc705 upstream.
+commit 31de287345f41bbfaec36a5c8cbdba035cf76442 upstream.
 
-In check_stack_write_fixed_off(), imm value is cast to u32 before being
-spilled to the stack. Therefore, the sign information is lost, and the
-range information is incorrect when load from the stack again.
+Do bind neither static calls nor trusted_key_exit() before a successful
+init, in order to maintain a consistent state. In addition, depart the
+init_trusted() in the case of a real error (i.e. getting back something
+else than -ENODEV).
 
-For the following prog:
-0: r2 = r10
-1: *(u64*)(r2 -40) = -44
-2: r0 = *(u64*)(r2 - 40)
-3: if r0 s<= 0xa goto +2
-4: r0 = 1
-5: exit
-6: r0  = 0
-7: exit
-
-The verifier gives:
-func#0 @0
-0: R1=ctx(off=0,imm=0) R10=fp0
-0: (bf) r2 = r10                      ; R2_w=fp0 R10=fp0
-1: (7a) *(u64 *)(r2 -40) = -44        ; R2_w=fp0 fp-40_w=4294967252
-2: (79) r0 = *(u64 *)(r2 -40)         ; R0_w=4294967252 R2_w=fp0
-fp-40_w=4294967252
-3: (c5) if r0 s< 0xa goto pc+2
-mark_precise: frame0: last_idx 3 first_idx 0 subseq_idx -1
-mark_precise: frame0: regs=r0 stack= before 2: (79) r0 = *(u64 *)(r2 -40)
-3: R0_w=4294967252
-4: (b7) r0 = 1                        ; R0_w=1
-5: (95) exit
-verification time 7971 usec
-stack depth 40
-processed 6 insns (limit 1000000) max_states_per_insn 0 total_states 0
-peak_states 0 mark_read 0
-
-So remove the incorrect cast, since imm field is declared as s32, and
-__mark_reg_known() takes u64, so imm would be correctly sign extended
-by compiler.
-
-Fixes: ecdf985d7615 ("bpf: track immediate values written to stack by BPF_ST instruction")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hao Sun <sunhao.th@gmail.com>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20231101-fix-check-stack-write-v3-1-f05c2b1473d5@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+Closes: https://lore.kernel.org/linux-integrity/CAHk-=whOPoLaWM8S8GgoOPT7a2+nMH5h3TLKtn=R_3w4R1_Uvg@mail.gmail.com/
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_core.c |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4368,7 +4368,7 @@ static int check_stack_write_fixed_off(s
- 		   insn->imm != 0 && env->bpf_capable) {
- 		struct bpf_reg_state fake_reg = {};
+--- a/security/keys/trusted-keys/trusted_core.c
++++ b/security/keys/trusted-keys/trusted_core.c
+@@ -358,17 +358,17 @@ static int __init init_trusted(void)
+ 		if (!get_random)
+ 			get_random = kernel_get_random;
  
--		__mark_reg_known(&fake_reg, (u32)insn->imm);
-+		__mark_reg_known(&fake_reg, insn->imm);
- 		fake_reg.type = SCALAR_VALUE;
- 		save_register_state(state, spi, &fake_reg, size);
- 	} else if (reg && is_spillable_regtype(reg->type)) {
+-		static_call_update(trusted_key_seal,
+-				   trusted_key_sources[i].ops->seal);
+-		static_call_update(trusted_key_unseal,
+-				   trusted_key_sources[i].ops->unseal);
+-		static_call_update(trusted_key_get_random,
+-				   get_random);
+-		trusted_key_exit = trusted_key_sources[i].ops->exit;
+-		migratable = trusted_key_sources[i].ops->migratable;
+-
+ 		ret = trusted_key_sources[i].ops->init();
+-		if (!ret)
++		if (!ret) {
++			static_call_update(trusted_key_seal, trusted_key_sources[i].ops->seal);
++			static_call_update(trusted_key_unseal, trusted_key_sources[i].ops->unseal);
++			static_call_update(trusted_key_get_random, get_random);
++
++			trusted_key_exit = trusted_key_sources[i].ops->exit;
++			migratable = trusted_key_sources[i].ops->migratable;
++		}
++
++		if (!ret || ret != -ENODEV)
+ 			break;
+ 	}
+ 
 
 
 
