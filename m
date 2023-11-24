@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277687F7BE3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D92B7F7DFC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8C0E1F20F97
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10692B215E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E123381DF;
-	Fri, 24 Nov 2023 18:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C273A8C3;
+	Fri, 24 Nov 2023 18:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaZy0G5v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cRTmUCwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CEC28DA1;
-	Fri, 24 Nov 2023 18:09:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1E4C433C8;
-	Fri, 24 Nov 2023 18:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D912F86B;
+	Fri, 24 Nov 2023 18:28:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 417FCC433C8;
+	Fri, 24 Nov 2023 18:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849378;
-	bh=XeMBvAfFbS5Ou4jmvO17SDJZpg/QElGEZ+9i5YrjOBg=;
+	s=korg; t=1700850532;
+	bh=RzCJmFh9Uv8Js2Pszx9KcASbVGOp/iltf1YveYdveKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JaZy0G5vwPi1Qz5bIQkc3ZkUEShIwzw1OoCBlFojAHsTgBaYUYt/fsxwoHzllLf3n
-	 lw+K3FDOIpDIX06C97SDr/7WsvZjmJQvXEbl/XSZpDLtjUZgkig4Mra+gFT7T1+s6p
-	 Mp0eUCVKKzJsqd8WHLn0oRKj9NjmcKUVdFO/ujqA=
+	b=cRTmUCwlBDPDUwMyMKDycQFpseuCGxxG910Z+doNna5FGXls21qCSv4xkSDrVFzoz
+	 D3tPyOQC8hJI94QnEsugVVh1+G92XF7Ba1tYpP6qUB+JYgMqTEWH1kv5UO1M9ydK0f
+	 uw92nEOj/55Pjx2WsfeLLuLWoOeNLtFtYIpfzrnM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	syzbot+debee9ab7ae2b34b0307@syzkaller.appspotmail.com,
+	Juntong Deng <juntong.deng@outlook.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/530] mtd: rawnand: tegra: add missing check for platform_get_irq()
+Subject: [PATCH 6.5 087/491] fs/jfs: Add check for negative db_l2nbperpage
 Date: Fri, 24 Nov 2023 17:45:23 +0000
-Message-ID: <20231124172032.865883565@linuxfoundation.org>
+Message-ID: <20231124172027.223906594@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +54,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-[ Upstream commit 0a1166c27d4e53186e6bf9147ea6db9cd1d65847 ]
+[ Upstream commit 525b861a008143048535011f3816d407940f4bfa ]
 
-Add the missing check for platform_get_irq() and return error code
-if it fails.
+l2nbperpage is log2(number of blks per page), and the minimum legal
+value should be 0, not negative.
 
-Fixes: d7d9f8ec77fe ("mtd: rawnand: add NVIDIA Tegra NAND Flash controller driver")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230821084046.217025-1-yiyang13@huawei.com
+In the case of l2nbperpage being negative, an error will occur
+when subsequently used as shift exponent.
+
+Syzbot reported this bug:
+
+UBSAN: shift-out-of-bounds in fs/jfs/jfs_dmap.c:799:12
+shift exponent -16777216 is negative
+
+Reported-by: syzbot+debee9ab7ae2b34b0307@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=debee9ab7ae2b34b0307
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/tegra_nand.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/jfs/jfs_dmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/tegra_nand.c b/drivers/mtd/nand/raw/tegra_nand.c
-index eb0b9d16e8dae..a553e3ac8ff41 100644
---- a/drivers/mtd/nand/raw/tegra_nand.c
-+++ b/drivers/mtd/nand/raw/tegra_nand.c
-@@ -1197,6 +1197,10 @@ static int tegra_nand_probe(struct platform_device *pdev)
- 	init_completion(&ctrl->dma_complete);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 88afd108c2dd2..3a1842348112d 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -180,7 +180,8 @@ int dbMount(struct inode *ipbmap)
+ 	bmp->db_nfree = le64_to_cpu(dbmp_le->dn_nfree);
  
- 	ctrl->irq = platform_get_irq(pdev, 0);
-+	if (ctrl->irq < 0) {
-+		err = ctrl->irq;
-+		goto err_put_pm;
-+	}
- 	err = devm_request_irq(&pdev->dev, ctrl->irq, tegra_nand_irq, 0,
- 			       dev_name(&pdev->dev), ctrl);
- 	if (err) {
+ 	bmp->db_l2nbperpage = le32_to_cpu(dbmp_le->dn_l2nbperpage);
+-	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE) {
++	if (bmp->db_l2nbperpage > L2PSIZE - L2MINBLOCKSIZE ||
++		bmp->db_l2nbperpage < 0) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
 -- 
 2.42.0
 
