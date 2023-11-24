@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-1142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96D867F7E38
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C937F7C24
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8820A1C2131E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61291B20DE8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C244D33CFD;
-	Fri, 24 Nov 2023 18:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A030E39FF3;
+	Fri, 24 Nov 2023 18:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1pkBc44"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZi1HgwN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840CD381D6;
-	Fri, 24 Nov 2023 18:31:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11EB5C433C7;
-	Fri, 24 Nov 2023 18:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5803739FD9;
+	Fri, 24 Nov 2023 18:12:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEAEC433C7;
+	Fri, 24 Nov 2023 18:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850664;
-	bh=mjZeQ98wX/l6kTN5D65N3lzbq1Qh3AEL1tObpuFBdKc=;
+	s=korg; t=1700849533;
+	bh=umujtV0txZCrbd9Cf5KY5GwtRbgvZnX1Oqj2a4OyKZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1pkBc44OJcGrxqaMjTh71CApwDCxTtwh9JGvPxtuFnQnrkCp1Mfe5H1EDhFFoLin
-	 zt+59xx9iZKZDUa5NDWqA6CsbafoXBrbJK5xZodklx3ZAG9rm28Ke7IxVSZaSwx4nd
-	 mORQKED+YF8jzPNmMszQL6fAw1/3uxV8cDHmWJ54=
+	b=wZi1HgwNQglLUMvCrDgWXFgbppf/rtODH9MBG0PrzXEnIjHqiJcYTPRLmsNJ6GUul
+	 9ufWzFNbqQslqn8BqPzftMeS/Ak27PK0tmELAQNi5RONpp+9XboZuzM4gvSQ9YSVXM
+	 cfpRnrWGrgKU4+u2/wsru+gnDjc4GTIrQGQl/wPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 115/491] dt-bindings: phy: qcom,snps-eusb2-repeater: Add magic tuning overrides
+Subject: [PATCH 6.6 185/530] net: ti: icssg-prueth: Add missing icss_iep_put to error path
 Date: Fri, 24 Nov 2023 17:45:51 +0000
-Message-ID: <20231124172027.983781771@linuxfoundation.org>
+Message-ID: <20231124172033.707074563@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,63 +56,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-[ Upstream commit c20b59b2996c89c4f072c3312e6210528a298330 ]
+[ Upstream commit e409d7346648c9acff84c3cc8d291767ee2d5326 ]
 
-The EUSB2 repeater requires some alterations to its init sequence,
-depending on board design.
+Analogously to prueth_remove, just also taking care for NULL'ing the
+iep pointers.
 
-Add support for making the necessary changes to that sequence to make USB
-functional on SM8550-based Xperia 1 V.
-
-They all have lackluster description due to lack of information.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-1-7d8c893d93f6@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 186734c15886 ("net: ti: icssg-prueth: add packet timestamping and ptp support")
+Fixes: 443a2367ba3c ("net: ti: icssg-prueth: am65x SR2.0 add 10M full duplex support")
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: MD Danish Anwar <danishanwar@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../phy/qcom,snps-eusb2-repeater.yaml         | 21 +++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
-index 083fda530b484..828650d4c4b09 100644
---- a/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
-+++ b/Documentation/devicetree/bindings/phy/qcom,snps-eusb2-repeater.yaml
-@@ -27,6 +27,27 @@ properties:
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index 4914d0ef58e9b..71d3001ec1ef8 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -2092,10 +2092,7 @@ static int prueth_probe(struct platform_device *pdev)
+ 	prueth->iep1 = icss_iep_get_idx(np, 1);
+ 	if (IS_ERR(prueth->iep1)) {
+ 		ret = dev_err_probe(dev, PTR_ERR(prueth->iep1), "iep1 get failed\n");
+-		icss_iep_put(prueth->iep0);
+-		prueth->iep0 = NULL;
+-		prueth->iep1 = NULL;
+-		goto free_pool;
++		goto put_iep0;
+ 	}
  
-   vdd3-supply: true
+ 	if (prueth->pdata.quirk_10m_link_issue) {
+@@ -2185,6 +2182,12 @@ static int prueth_probe(struct platform_device *pdev)
+ exit_iep:
+ 	if (prueth->pdata.quirk_10m_link_issue)
+ 		icss_iep_exit_fw(prueth->iep1);
++	icss_iep_put(prueth->iep1);
++
++put_iep0:
++	icss_iep_put(prueth->iep0);
++	prueth->iep0 = NULL;
++	prueth->iep1 = NULL;
  
-+  qcom,tune-usb2-disc-thres:
-+    $ref: /schemas/types.yaml#/definitions/uint8
-+    description: High-Speed disconnect threshold
-+    minimum: 0
-+    maximum: 7
-+    default: 0
-+
-+  qcom,tune-usb2-amplitude:
-+    $ref: /schemas/types.yaml#/definitions/uint8
-+    description: High-Speed trasmit amplitude
-+    minimum: 0
-+    maximum: 15
-+    default: 8
-+
-+  qcom,tune-usb2-preem:
-+    $ref: /schemas/types.yaml#/definitions/uint8
-+    description: High-Speed TX pre-emphasis tuning
-+    minimum: 0
-+    maximum: 7
-+    default: 5
-+
- required:
-   - compatible
-   - reg
+ free_pool:
+ 	gen_pool_free(prueth->sram_pool,
 -- 
 2.42.0
 
