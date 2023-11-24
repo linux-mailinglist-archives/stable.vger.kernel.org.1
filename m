@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C40AD7F816D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CC67F7D8A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DEA928269F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3C811C21211
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83F035F04;
-	Fri, 24 Nov 2023 18:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E212F381D6;
+	Fri, 24 Nov 2023 18:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZX3cjXvG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ne2bjRT0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9492B2C85B;
-	Fri, 24 Nov 2023 18:58:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208A5C433C7;
-	Fri, 24 Nov 2023 18:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F93239FF7;
+	Fri, 24 Nov 2023 18:25:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF47C433CC;
+	Fri, 24 Nov 2023 18:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852310;
-	bh=Nj0o0d/rydMfnLBCClHwSzaqMySpwSv7vPiBPlMSHBE=;
+	s=korg; t=1700850331;
+	bh=pUaPCavaSmCILjp3noQ3h3ryiJswEhcfb+/MtXFq0kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZX3cjXvGp1x/XI0Lksva7hC1WDhUN5CZHieSmfFj6xqL+KlBLj0rU+mVGARwZcRDL
-	 A6ffQA4tcHwXT3tdxUzP7x3N4rNIUmer5py8zWZIemiNOPJI/79qFo9El/eOANPaew
-	 tQ5TOzDnNR8Bqg8mp5AmtlCdEGn/v8QdlqUhdeuw=
+	b=ne2bjRT0hJS7Tvu70uKYQC6kSK1MNKxm0GTXqCPiOjcwHU/5DBDMl4LcY48twB7HA
+	 rVbKd9XtwVtjsRFvKljZh+/F1NhzwgHHgpBN6HoO5CPrUzzkPzJwWq2GmCzxaBtUCD
+	 YXptoag0kB7z9mbHoat/yrxhf1i1S8RjwJPYa+zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Verma <vishal.l.verma@intel.com>,
-	Fan Ni <fan.ni@samsung.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 297/372] cxl/region: Move region-position validation to a helper
-Date: Fri, 24 Nov 2023 17:51:24 +0000
-Message-ID: <20231124172020.328901558@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 519/530] drm/amdgpu: add a retry for IP discovery init
+Date: Fri, 24 Nov 2023 17:51:25 +0000
+Message-ID: <20231124172043.981983621@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,203 +52,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 9995576cef48dcbb0ba3de068292ed14f72fa0eb ]
+commit 3938eb956e383ef88b8fc7d556492336ebee52df upstream.
 
-In preparation for region autodiscovery, that needs all devices
-discovered before their relative position in the region can be
-determined, consolidate all position dependent validation in a helper.
+AMD dGPUs have integrated FW that runs as soon as the
+device gets power and initializes the board (determines
+the amount of memory, provides configuration details to
+the driver, etc.).  For direct PCIe attached cards this
+happens as soon as power is applied and normally completes
+well before the OS has even started loading.  However, with
+hotpluggable ports like USB4, the driver needs to wait for
+this to complete before initializing the device.
 
-Recall that in the on-demand region creation flow the end-user picks the
-position of a given endpoint decoder in a region. In the autodiscovery
-case the position of an endpoint decoder can only be determined after
-all other endpoint decoders that claim to decode the region's address
-range have been enumerated and attached. So, in the autodiscovery case
-endpoint decoders may be attached before their relative position is
-known. Once all decoders arrive, then positions can be determined and
-validated with cxl_region_validate_position() the same as user initiated
-on-demand creation.
+This normally takes 60-100ms, but could take longer on
+some older boards periodically due to memory training.
 
-Reviewed-by: Vishal Verma <vishal.l.verma@intel.com>
-Tested-by: Fan Ni <fan.ni@samsung.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/167601997584.1924368.4615769326126138969.stgit@dwillia2-xfh.jf.intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 0718588c7aaa ("cxl/region: Do not try to cleanup after cxl_region_setup_targets() fails")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Retry for up to a second.  In the non-hotplug case, there
+should be no change in behavior and this should complete
+on the first try.
+
+v2: adjust test criteria
+v3: adjust checks for the masks, only enable on removable devices
+v4: skip bif_fb_en check
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/region.c | 119 ++++++++++++++++++++++++--------------
- 1 file changed, 76 insertions(+), 43 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |   23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index bd1c511bba987..1ee51327e989d 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -1181,35 +1181,13 @@ static int cxl_region_setup_targets(struct cxl_region *cxlr)
- 	return 0;
- }
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -93,6 +93,7 @@
+ MODULE_FIRMWARE(FIRMWARE_IP_DISCOVERY);
  
--static int cxl_region_attach(struct cxl_region *cxlr,
--			     struct cxl_endpoint_decoder *cxled, int pos)
-+static int cxl_region_validate_position(struct cxl_region *cxlr,
-+					struct cxl_endpoint_decoder *cxled,
-+					int pos)
+ #define mmRCC_CONFIG_MEMSIZE	0xde3
++#define mmMP0_SMN_C2PMSG_33	0x16061
+ #define mmMM_INDEX		0x0
+ #define mmMM_INDEX_HI		0x6
+ #define mmMM_DATA		0x1
+@@ -231,8 +232,26 @@ static int amdgpu_discovery_read_binary_
+ static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
+ 						 uint8_t *binary)
  {
--	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
- 	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
--	struct cxl_port *ep_port, *root_port, *iter;
- 	struct cxl_region_params *p = &cxlr->params;
--	struct cxl_dport *dport;
--	int i, rc = -ENXIO;
--
--	if (cxled->mode != cxlr->mode) {
--		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
--			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
--		return -EINVAL;
--	}
--
--	if (cxled->mode == CXL_DECODER_DEAD) {
--		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
--		return -ENODEV;
--	}
--
--	/* all full of members, or interleave config not established? */
--	if (p->state > CXL_CONFIG_INTERLEAVE_ACTIVE) {
--		dev_dbg(&cxlr->dev, "region already active\n");
--		return -EBUSY;
--	} else if (p->state < CXL_CONFIG_INTERLEAVE_ACTIVE) {
--		dev_dbg(&cxlr->dev, "interleave config missing\n");
--		return -ENXIO;
--	}
-+	int i;
- 
- 	if (pos < 0 || pos >= p->interleave_ways) {
- 		dev_dbg(&cxlr->dev, "position %d out of range %d\n", pos,
-@@ -1248,6 +1226,71 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		}
- 	}
- 
-+	return 0;
-+}
+-	uint64_t vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
+-	int ret = 0;
++	uint64_t vram_size;
++	u32 msg;
++	int i, ret = 0;
 +
-+static int cxl_region_attach_position(struct cxl_region *cxlr,
-+				      struct cxl_root_decoder *cxlrd,
-+				      struct cxl_endpoint_decoder *cxled,
-+				      const struct cxl_dport *dport, int pos)
-+{
-+	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+	struct cxl_port *iter;
-+	int rc;
-+
-+	if (cxlrd->calc_hb(cxlrd, pos) != dport) {
-+		dev_dbg(&cxlr->dev, "%s:%s invalid target position for %s\n",
-+			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
-+			dev_name(&cxlrd->cxlsd.cxld.dev));
-+		return -ENXIO;
++	/* It can take up to a second for IFWI init to complete on some dGPUs,
++	 * but generally it should be in the 60-100ms range.  Normally this starts
++	 * as soon as the device gets power so by the time the OS loads this has long
++	 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
++	 * wait for this to complete.  Once the C2PMSG is updated, we can
++	 * continue.
++	 */
++	if (dev_is_removable(&adev->pdev->dev)) {
++		for (i = 0; i < 1000; i++) {
++			msg = RREG32(mmMP0_SMN_C2PMSG_33);
++			if (msg & 0x80000000)
++				break;
++			msleep(1);
++		}
 +	}
-+
-+	for (iter = cxled_to_port(cxled); !is_cxl_root(iter);
-+	     iter = to_cxl_port(iter->dev.parent)) {
-+		rc = cxl_port_attach_region(iter, cxlr, cxled, pos);
-+		if (rc)
-+			goto err;
-+	}
-+
-+	return 0;
-+
-+err:
-+	for (iter = cxled_to_port(cxled); !is_cxl_root(iter);
-+	     iter = to_cxl_port(iter->dev.parent))
-+		cxl_port_detach_region(iter, cxlr, cxled);
-+	return rc;
-+}
-+
-+static int cxl_region_attach(struct cxl_region *cxlr,
-+			     struct cxl_endpoint_decoder *cxled, int pos)
-+{
-+	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
-+	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
-+	struct cxl_region_params *p = &cxlr->params;
-+	struct cxl_port *ep_port, *root_port;
-+	struct cxl_dport *dport;
-+	int rc = -ENXIO;
-+
-+	if (cxled->mode != cxlr->mode) {
-+		dev_dbg(&cxlr->dev, "%s region mode: %d mismatch: %d\n",
-+			dev_name(&cxled->cxld.dev), cxlr->mode, cxled->mode);
-+		return -EINVAL;
-+	}
-+
-+	if (cxled->mode == CXL_DECODER_DEAD) {
-+		dev_dbg(&cxlr->dev, "%s dead\n", dev_name(&cxled->cxld.dev));
-+		return -ENODEV;
-+	}
-+
-+	/* all full of members, or interleave config not established? */
-+	if (p->state > CXL_CONFIG_INTERLEAVE_ACTIVE) {
-+		dev_dbg(&cxlr->dev, "region already active\n");
-+		return -EBUSY;
-+	} else if (p->state < CXL_CONFIG_INTERLEAVE_ACTIVE) {
-+		dev_dbg(&cxlr->dev, "interleave config missing\n");
-+		return -ENXIO;
-+	}
-+
- 	ep_port = cxled_to_port(cxled);
- 	root_port = cxlrd_to_port(cxlrd);
- 	dport = cxl_find_dport_by_dev(root_port, ep_port->host_bridge);
-@@ -1258,13 +1301,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		return -ENXIO;
- 	}
++	vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
  
--	if (cxlrd->calc_hb(cxlrd, pos) != dport) {
--		dev_dbg(&cxlr->dev, "%s:%s invalid target position for %s\n",
--			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
--			dev_name(&cxlrd->cxlsd.cxld.dev));
--		return -ENXIO;
--	}
--
- 	if (cxled->cxld.target_type != cxlr->type) {
- 		dev_dbg(&cxlr->dev, "%s:%s type mismatch: %d vs %d\n",
- 			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
-@@ -1288,12 +1324,13 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 		return -EINVAL;
- 	}
- 
--	for (iter = ep_port; !is_cxl_root(iter);
--	     iter = to_cxl_port(iter->dev.parent)) {
--		rc = cxl_port_attach_region(iter, cxlr, cxled, pos);
--		if (rc)
--			goto err;
--	}
-+	rc = cxl_region_validate_position(cxlr, cxled, pos);
-+	if (rc)
-+		return rc;
-+
-+	rc = cxl_region_attach_position(cxlr, cxlrd, cxled, dport, pos);
-+	if (rc)
-+		return rc;
- 
- 	p->targets[pos] = cxled;
- 	cxled->pos = pos;
-@@ -1319,10 +1356,6 @@ static int cxl_region_attach(struct cxl_region *cxlr,
- 	p->nr_targets--;
- 	cxled->pos = -1;
- 	p->targets[pos] = NULL;
--err:
--	for (iter = ep_port; !is_cxl_root(iter);
--	     iter = to_cxl_port(iter->dev.parent))
--		cxl_port_detach_region(iter, cxlr, cxled);
- 	return rc;
- }
- 
--- 
-2.42.0
-
+ 	if (vram_size) {
+ 		uint64_t pos = vram_size - DISCOVERY_TMR_OFFSET;
 
 
 
