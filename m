@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D99EC7F7C4A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDFC7F7E72
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68E30B20FCC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE89E1C213B8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AF839FE3;
-	Fri, 24 Nov 2023 18:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0734134197;
+	Fri, 24 Nov 2023 18:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKCtep+S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3L5bD2T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668CA2AF00;
-	Fri, 24 Nov 2023 18:13:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E7FC433C8;
-	Fri, 24 Nov 2023 18:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82453A8C6;
+	Fri, 24 Nov 2023 18:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AD3C433C8;
+	Fri, 24 Nov 2023 18:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849627;
-	bh=uka1PpgXIdYJwWBH3bsd7KxB4FRSLwf3A9BP1R/lTZs=;
+	s=korg; t=1700850784;
+	bh=ksfFhcyhzqvEJ69QUyjLf8ji6St9ygaLRIIM9AFY2ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PKCtep+SsKTXz8U1umPTOzltk5ekzQj5RxpFYwcqVNWTaMW64hhsQ03vL6zb56GqU
-	 fw2E/KXmCJaTjDM+jUmh46P8oGA8WJrBxPVaImo6shmiGKlILwq+o6OlZZYEAwPXD5
-	 CdcPG6qQjbl4IZX9dCRZTcLv1uGI4NeKafZUP1u0=
+	b=y3L5bD2TTX87Qf4954zkaxwbGIarEm2DhDp40zq/D3VxJCA0+53C+xlMYQOUZAZeS
+	 ZN1FeCwY9Z2Ga8ejggBy5gQeEf+Z/9zABtgnIqmyzlkwWk5kR2o9xeMwS1tkrjAD6P
+	 NDeOfr20XgBNAlwM/aoY8lgRXKnLq4Sy+Inx4sGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 257/530] KVM: x86: hyper-v: Dont auto-enable stimer on write from user-space
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 187/491] xen/events: fix delayed eoi list handling
 Date: Fri, 24 Nov 2023 17:47:03 +0000
-Message-ID: <20231124172035.875694518@linuxfoundation.org>
+Message-ID: <20231124172030.096972952@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit d6800af51c76b6dae20e6023bbdc9b3da3ab5121 upstream.
+[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
 
-Don't apply the stimer's counter side effects when modifying its
-value from user-space, as this may trigger spurious interrupts.
+When delaying eoi handling of events, the related elements are queued
+into the percpu lateeoi list. In case the list isn't empty, the
+elements should be sorted by the time when eoi handling is to happen.
 
-For example:
- - The stimer is configured in auto-enable mode.
- - The stimer's count is set and the timer enabled.
- - The stimer expires, an interrupt is injected.
- - The VM is live migrated.
- - The stimer config and count are deserialized, auto-enable is ON, the
-   stimer is re-enabled.
- - The stimer expires right away, and injects an unwarranted interrupt.
+Unfortunately a new element will never be queued at the start of the
+list, even if it has a handling time lower than all other list
+elements.
 
-Cc: stable@vger.kernel.org
-Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by handling that case the same way as for an empty list.
+
+Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
+Reported-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/hyperv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/xen/events/events_base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -727,10 +727,12 @@ static int stimer_set_count(struct kvm_v
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 5de10d291a1cb..87482b3428bf6 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -604,7 +604,9 @@ static void lateeoi_list_add(struct irq_info *info)
  
- 	stimer_cleanup(stimer);
- 	stimer->count = count;
--	if (stimer->count == 0)
--		stimer->config.enable = 0;
--	else if (stimer->config.auto_enable)
--		stimer->config.enable = 1;
-+	if (!host) {
-+		if (stimer->count == 0)
-+			stimer->config.enable = 0;
-+		else if (stimer->config.auto_enable)
-+			stimer->config.enable = 1;
-+	}
+ 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
  
- 	if (stimer->config.enable)
- 		stimer_mark_pending(stimer, false);
+-	if (list_empty(&eoi->eoi_list)) {
++	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
++					eoi_list);
++	if (!elem || info->eoi_time < elem->eoi_time) {
+ 		list_add(&info->eoi_list, &eoi->eoi_list);
+ 		mod_delayed_work_on(info->eoi_cpu, system_wq,
+ 				    &eoi->delayed, delay);
+-- 
+2.42.0
+
 
 
 
