@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA6867F7DE3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C200C7F7BBB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B1ABB20F83
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E558C1C21016
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39413A8C3;
-	Fri, 24 Nov 2023 18:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A5139FF3;
+	Fri, 24 Nov 2023 18:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2uEiFKX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHpzfVKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFDF381D4;
-	Fri, 24 Nov 2023 18:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2F2C433C7;
-	Fri, 24 Nov 2023 18:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B094639FD7;
+	Fri, 24 Nov 2023 18:08:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 401AFC433C7;
+	Fri, 24 Nov 2023 18:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850490;
-	bh=B/mtAHzwvr32IBqCIQePECIbKP/uz8c/4BGPiiX7rxU=;
+	s=korg; t=1700849289;
+	bh=jgkWuun0yrUP/C4l/EE6X02UsWhiy2iYuslVRvYwvlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2uEiFKXNVJD+Bq7HfCib4nhg7R6ounA0oNYQFkn65ZD8Qq2bFkCwAt2rrI9MmfVa
-	 h5GpsWEOwT38DoQMqrkLMWERDARqEEhvSNuqEQJnOtLYsVuY11rfnUpQvdCT5GoN6L
-	 oYkKOil6PUAhNja8CzVfdkwOyeHpA/obAM/Mdr1c=
+	b=DHpzfVKfZCauPTvPuE38zZTgasJTWznU+vZ/OwH5fTKfKs1kvM7pr5g875CnhqMBn
+	 2w/399Nsmoc66XSuYQ8sQWBxDlrT0EjL7CPRk7yhxgVDVmcFlADwxnV+Xbdo7o5Ym1
+	 rSCrV4TRsU9xr9NApoWBk9Boq+htCCavwsLTJOWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 052/491] md: dont rely on mddev->pers to be set in mddev_suspend()
-Date: Fri, 24 Nov 2023 17:44:48 +0000
-Message-ID: <20231124172026.245973419@linuxfoundation.org>
+Subject: [PATCH 6.6 123/530] phy: qualcomm: phy-qcom-eusb2-repeater: Zero out untouched tuning regs
+Date: Fri, 24 Nov 2023 17:44:49 +0000
+Message-ID: <20231124172031.853797461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +53,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit b721e7885eb242aa2459ee66bb42ceef1bcf0f0c ]
+[ Upstream commit 99a517a582fc1272d1d3cf3b9e671a14d7db77b8 ]
 
-'active_io' used to be initialized while the array is running, and
-'mddev->pers' is set while the array is running as well. Hence caller
-must hold 'reconfig_mutex' and guarantee 'mddev->pers' is set before
-calling mddev_suspend().
+The vendor kernel zeroes out all tuning data outside the init sequence
+as part of initialization. Follow suit to avoid UB.
 
-Now that 'active_io' is initialized when mddev is allocated, such
-restriction doesn't exist anymore. In the meantime, follow up patches
-will refactor mddev_suspend(), hence add checking for 'mddev->pers' to
-prevent null-ptr-deref.
-
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230825030956.1527023-4-yukuai1@huaweicloud.com
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230830-topic-eusb2_override-v2-3-7d8c893d93f6@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../phy/qualcomm/phy-qcom-eusb2-repeater.c    | 58 ++++++++++++++-----
+ 1 file changed, 44 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 78d51dddf3a00..34b7196d9634c 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -449,7 +449,7 @@ void mddev_suspend(struct mddev *mddev)
- 	set_bit(MD_ALLOW_SB_UPDATE, &mddev->flags);
- 	percpu_ref_kill(&mddev->active_io);
+diff --git a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+index 7561da01e633d..d4fb85c20eb0f 100644
+--- a/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
++++ b/drivers/phy/qualcomm/phy-qcom-eusb2-repeater.c
+@@ -24,9 +24,18 @@
+ #define EUSB2_FORCE_VAL_5		0xeD
+ #define V_CLK_19P2M_EN			BIT(6)
  
--	if (mddev->pers->prepare_suspend)
-+	if (mddev->pers && mddev->pers->prepare_suspend)
- 		mddev->pers->prepare_suspend(mddev);
++#define EUSB2_TUNE_USB2_CROSSOVER	0x50
+ #define EUSB2_TUNE_IUSB2		0x51
++#define EUSB2_TUNE_RES_FSDIF		0x52
++#define EUSB2_TUNE_HSDISC		0x53
+ #define EUSB2_TUNE_SQUELCH_U		0x54
++#define EUSB2_TUNE_USB2_SLEW		0x55
++#define EUSB2_TUNE_USB2_EQU		0x56
+ #define EUSB2_TUNE_USB2_PREEM		0x57
++#define EUSB2_TUNE_USB2_HS_COMP_CUR	0x58
++#define EUSB2_TUNE_EUSB_SLEW		0x59
++#define EUSB2_TUNE_EUSB_EQU		0x5A
++#define EUSB2_TUNE_EUSB_HS_COMP_CUR	0x5B
  
- 	wait_event(mddev->sb_wait, percpu_ref_is_zero(&mddev->active_io));
+ #define QCOM_EUSB2_REPEATER_INIT_CFG(r, v)	\
+ 	{					\
+@@ -35,9 +44,18 @@
+ 	}
+ 
+ enum reg_fields {
++	F_TUNE_EUSB_HS_COMP_CUR,
++	F_TUNE_EUSB_EQU,
++	F_TUNE_EUSB_SLEW,
++	F_TUNE_USB2_HS_COMP_CUR,
+ 	F_TUNE_USB2_PREEM,
++	F_TUNE_USB2_EQU,
++	F_TUNE_USB2_SLEW,
+ 	F_TUNE_SQUELCH_U,
++	F_TUNE_HSDISC,
++	F_TUNE_RES_FSDIF,
+ 	F_TUNE_IUSB2,
++	F_TUNE_USB2_CROSSOVER,
+ 	F_NUM_TUNE_FIELDS,
+ 
+ 	F_FORCE_VAL_5 = F_NUM_TUNE_FIELDS,
+@@ -50,9 +68,18 @@ enum reg_fields {
+ };
+ 
+ static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
++	[F_TUNE_EUSB_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_EUSB_HS_COMP_CUR, 0, 1),
++	[F_TUNE_EUSB_EQU] = REG_FIELD(EUSB2_TUNE_EUSB_EQU, 0, 1),
++	[F_TUNE_EUSB_SLEW] = REG_FIELD(EUSB2_TUNE_EUSB_SLEW, 0, 1),
++	[F_TUNE_USB2_HS_COMP_CUR] = REG_FIELD(EUSB2_TUNE_USB2_HS_COMP_CUR, 0, 1),
+ 	[F_TUNE_USB2_PREEM] = REG_FIELD(EUSB2_TUNE_USB2_PREEM, 0, 2),
++	[F_TUNE_USB2_EQU] = REG_FIELD(EUSB2_TUNE_USB2_EQU, 0, 1),
++	[F_TUNE_USB2_SLEW] = REG_FIELD(EUSB2_TUNE_USB2_SLEW, 0, 1),
+ 	[F_TUNE_SQUELCH_U] = REG_FIELD(EUSB2_TUNE_SQUELCH_U, 0, 2),
++	[F_TUNE_HSDISC] = REG_FIELD(EUSB2_TUNE_HSDISC, 0, 2),
++	[F_TUNE_RES_FSDIF] = REG_FIELD(EUSB2_TUNE_RES_FSDIF, 0, 2),
+ 	[F_TUNE_IUSB2] = REG_FIELD(EUSB2_TUNE_IUSB2, 0, 3),
++	[F_TUNE_USB2_CROSSOVER] = REG_FIELD(EUSB2_TUNE_USB2_CROSSOVER, 0, 2),
+ 
+ 	[F_FORCE_VAL_5] = REG_FIELD(EUSB2_FORCE_VAL_5, 0, 7),
+ 	[F_FORCE_EN_5] = REG_FIELD(EUSB2_FORCE_EN_5, 0, 7),
+@@ -62,13 +89,8 @@ static struct reg_field eusb2_repeater_tune_reg_fields[F_NUM_FIELDS] = {
+ 	[F_RPTR_STATUS] = REG_FIELD(EUSB2_RPTR_STATUS, 0, 7),
+ };
+ 
+-struct eusb2_repeater_init_tbl {
+-	unsigned int reg;
+-	unsigned int val;
+-};
+-
+ struct eusb2_repeater_cfg {
+-	const struct eusb2_repeater_init_tbl *init_tbl;
++	const u32 *init_tbl;
+ 	int init_tbl_num;
+ 	const char * const *vreg_list;
+ 	int num_vregs;
+@@ -87,10 +109,10 @@ static const char * const pm8550b_vreg_l[] = {
+ 	"vdd18", "vdd3",
+ };
+ 
+-static const struct eusb2_repeater_init_tbl pm8550b_init_tbl[] = {
+-	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_IUSB2, 0x8),
+-	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_SQUELCH_U, 0x3),
+-	QCOM_EUSB2_REPEATER_INIT_CFG(F_TUNE_USB2_PREEM, 0x5),
++static const u32 pm8550b_init_tbl[F_NUM_TUNE_FIELDS] = {
++	[F_TUNE_IUSB2] = 0x8,
++	[F_TUNE_SQUELCH_U] = 0x3,
++	[F_TUNE_USB2_PREEM] = 0x5,
+ };
+ 
+ static const struct eusb2_repeater_cfg pm8550b_eusb2_cfg = {
+@@ -118,8 +140,9 @@ static int eusb2_repeater_init_vregs(struct eusb2_repeater *rptr)
+ 
+ static int eusb2_repeater_init(struct phy *phy)
+ {
++	struct reg_field *regfields = eusb2_repeater_tune_reg_fields;
+ 	struct eusb2_repeater *rptr = phy_get_drvdata(phy);
+-	const struct eusb2_repeater_init_tbl *init_tbl = rptr->cfg->init_tbl;
++	const u32 *init_tbl = rptr->cfg->init_tbl;
+ 	u32 val;
+ 	int ret;
+ 	int i;
+@@ -130,9 +153,16 @@ static int eusb2_repeater_init(struct phy *phy)
+ 
+ 	regmap_field_update_bits(rptr->regs[F_EN_CTL1], EUSB2_RPTR_EN, EUSB2_RPTR_EN);
+ 
+-	for (i = 0; i < rptr->cfg->init_tbl_num; i++)
+-		regmap_field_update_bits(rptr->regs[init_tbl[i].reg],
+-					 init_tbl[i].val, init_tbl[i].val);
++	for (i = 0; i < F_NUM_TUNE_FIELDS; i++) {
++		if (init_tbl[i]) {
++			regmap_field_update_bits(rptr->regs[i], init_tbl[i], init_tbl[i]);
++		} else {
++			/* Write 0 if there's no value set */
++			u32 mask = GENMASK(regfields[i].msb, regfields[i].lsb);
++
++			regmap_field_update_bits(rptr->regs[i], mask, 0);
++		}
++	}
+ 
+ 	ret = regmap_field_read_poll_timeout(rptr->regs[F_RPTR_STATUS],
+ 					     val, val & RPTR_OK, 10, 5);
 -- 
 2.42.0
 
