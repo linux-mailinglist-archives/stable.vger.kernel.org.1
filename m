@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421677F7F90
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D0837F7AE2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D91B8B21A54
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E67C1C20926
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAA52EAEA;
-	Fri, 24 Nov 2023 18:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE65139FE3;
+	Fri, 24 Nov 2023 17:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gIWC+t+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziEYg4oO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2E035F04;
-	Fri, 24 Nov 2023 18:42:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1EFC433C7;
-	Fri, 24 Nov 2023 18:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE3C39FD0;
+	Fri, 24 Nov 2023 17:59:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FFEC433C8;
+	Fri, 24 Nov 2023 17:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851354;
-	bh=rfCFxeGSs2UFOZJyiZnm5lHLix8fHlICM4D09YiMw9g=;
+	s=korg; t=1700848780;
+	bh=DzrD9E1yO+CSFd1KYchb2sqmezPkB1CJMnKE9CPaZ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gIWC+t+f+kmS65Oscmf6MgAeIxxntyVTwqcmRXstD+VtUuAq1Hv8lTuLeZz05BSI
-	 MEZirlkxr40YA66fJqqFhCBqpwCyJzhY4+BuHzTEIw71WgfroPJ1uUuu4kyAts7iDC
-	 u3Dc1dpBD79jTNmYfwsWur12Cc5DMIOXntgR9iDw=
+	b=ziEYg4oO0wik9DtaezcSWz680GcUFm5+/DBEQ6HmLbiovnmlrMDtFjuUNBx1jO1zI
+	 8QRN0quyBPVFmRmkZjDTguxbiM+mB8r1KuXK/27Ig+jAuLVImpa2IrozQ8td5ARP8O
+	 OTXuIQQHrmOw+fMfZeTDqYAsgueMvVCHccXUSmb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>
-Subject: [PATCH 6.5 415/491] gfs2: dont withdraw if init_threads() got interrupted
+	Kevin Hilman <khilman@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Colin Ian King <colin.king@canonical.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 78/97] serial: meson: remove redundant initialization of variable id
 Date: Fri, 24 Nov 2023 17:50:51 +0000
-Message-ID: <20231124172037.077557666@linuxfoundation.org>
+Message-ID: <20231124171937.081565084@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,58 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-commit 0cdc6f44e9fdc2d20d720145bf99a39f611f6d61 upstream.
+[ Upstream commit 021212f5335229ed12e3d31f9b7d30bd3bb66f7d ]
 
-In gfs2_fill_super(), when mounting a gfs2 filesystem is interrupted,
-kthread_create() can return -EINTR.  When that happens, we roll back
-what has already been done and abort the mount.
+The variable id being initialized with a value that is never read
+and it is being updated later with a new value. The initialization is
+redundant and can be removed. Since id is just being used in a for-loop
+inside a local scope, move the declaration of id to that scope.
 
-Since commit 62dd0f98a0e5 ("gfs2: Flag a withdraw if init_threads()
-fails), we are calling gfs2_withdraw_delayed() in gfs2_fill_super();
-first via gfs2_make_fs_rw(), then directly.  But gfs2_withdraw_delayed()
-only marks the filesystem as withdrawing and relies on a caller further
-up the stack to do the actual withdraw, which doesn't exist in the
-gfs2_fill_super() case.  Because the filesystem is marked as withdrawing
-/ withdrawn, function gfs2_lm_unmount() doesn't release the dlm
-lockspace, so when we try to mount that filesystem again, we get:
-
-    gfs2: fsid=gohan:gohan0: Trying to join cluster "lock_dlm", "gohan:gohan0"
-    gfs2: fsid=gohan:gohan0: dlm_new_lockspace error -17
-
-Since commit b77b4a4815a9 ("gfs2: Rework freeze / thaw logic"), the
-deadlock this gfs2_withdraw_delayed() call was supposed to work around
-cannot occur anymore because freeze_go_callback() won't take the
-sb->s_umount semaphore unconditionally anymore, so we can get rid of the
-gfs2_withdraw_delayed() in gfs2_fill_super() entirely.
-
-Reported-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: stable@vger.kernel.org # v6.5+
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Addresses-Coverity: ("Unused value")
+Link: https://lore.kernel.org/r/20210426101106.9122-1-colin.king@canonical.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/ops_fstype.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/serial/meson_uart.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1261,10 +1261,8 @@ static int gfs2_fill_super(struct super_
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index 4c3616cc00833..6a74a31231ebf 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -664,12 +664,13 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	struct resource *res_mem, *res_irq;
+ 	struct uart_port *port;
+ 	int ret = 0;
+-	int id = -1;
  
- 	if (!sb_rdonly(sb)) {
- 		error = init_threads(sdp);
--		if (error) {
--			gfs2_withdraw_delayed(sdp);
-+		if (error)
- 			goto fail_per_node;
--		}
- 	}
+ 	if (pdev->dev.of_node)
+ 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
  
- 	error = gfs2_freeze_lock_shared(sdp);
+ 	if (pdev->id < 0) {
++		int id;
++
+ 		for (id = AML_UART_PORT_OFFSET; id < AML_UART_PORT_NUM; id++) {
+ 			if (!meson_ports[id]) {
+ 				pdev->id = id;
+-- 
+2.42.0
+
 
 
 
