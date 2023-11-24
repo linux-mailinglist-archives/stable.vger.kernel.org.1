@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BFF47F7D7E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FFD7F818F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAC1B215F8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 259EEB21C02
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98D2D381BF;
-	Fri, 24 Nov 2023 18:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694CC364AE;
+	Fri, 24 Nov 2023 18:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNjueUv+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F50pDGcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5543E39FE9;
-	Fri, 24 Nov 2023 18:24:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24A9C433C8;
-	Fri, 24 Nov 2023 18:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DD235F04;
+	Fri, 24 Nov 2023 18:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B630C433C7;
+	Fri, 24 Nov 2023 18:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850299;
-	bh=SKL6kn/8unJKR37CoBA+goWHo7aRf9VhtKryCZElJe4=;
+	s=korg; t=1700852374;
+	bh=kPpax8QicMhKp6TH51toOVSBhd5VyLrNsAyGL6sh/eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNjueUv+RtamrR4ArWdU/whonASMmMdGJkJv62bQhMxk8WyXJY5UJ0dfefZ85WzU6
-	 z1WXLKXe4IuBFi7tF+t51V5giyQ6+3YnPT/T6IOboZDRNQ+zP1Kzff9EmLWchZ42KH
-	 pbM0aggt/VmRYVstI0lGUhn8O1QWdkvKz2h6VJdc=
+	b=F50pDGcE/AncFz+LvpFC8qG6yF2Csq1Cg1H50izYGqyWq6qn8oGSPCinhbMRIKc7V
+	 hg4qVuQ0DK03HUGfEuE/W/qgiVK/n9VJDZVf/4u1c1iTBqRQyVB41YcL9BRwT6Yyc0
+	 PO77HoOKNpyDntwJz0/rfQ9y4RmfapHhXq7Y8tjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hansen Dsouza <hansen.dsouza@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 525/530] drm/amd/display: Guard against invalid RPTR/WPTR being set
-Date: Fri, 24 Nov 2023 17:51:31 +0000
-Message-ID: <20231124172044.169998887@linuxfoundation.org>
+	Johnathan Mantey <johnathanx.mantey@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 305/372] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
+Date: Fri, 24 Nov 2023 17:51:32 +0000
+Message-ID: <20231124172020.587630238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,68 +53,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Johnathan Mantey <johnathanx.mantey@intel.com>
 
-commit 1ffa8602e39b89469dc703ebab7a7e44c33da0f7 upstream.
+commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
 
-[WHY]
-HW can return invalid values on register read, guard against these being
-set and causing us to access memory out of range and page fault.
+This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
 
-[HOW]
-Guard at sync_inbox1 and guard at pushing commands.
+The cited commit introduced unwanted behavior.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The intent for the commit was to be able to detect carrier loss/gain
+for just the NIC connected to the BMC. The unwanted effect is a
+carrier loss for auxiliary paths also causes the BMC to lose
+carrier. The BMC never regains carrier despite the secondary NIC
+regaining a link.
+
+This change, when merged, needs to be backported to stable kernels.
+5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
+
+Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
+CC: stable@vger.kernel.org
+Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c |   18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ net/ncsi/ncsi-aen.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -658,9 +658,16 @@ enum dmub_status dmub_srv_sync_inbox1(st
- 		return DMUB_STATUS_INVALID;
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
+ 	if ((had_link == has_link) || chained)
+ 		return 0;
  
- 	if (dmub->hw_funcs.get_inbox1_rptr && dmub->hw_funcs.get_inbox1_wptr) {
--		dmub->inbox1_rb.rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
--		dmub->inbox1_rb.wrpt = dmub->hw_funcs.get_inbox1_wptr(dmub);
--		dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
-+		uint32_t rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
-+		uint32_t wptr = dmub->hw_funcs.get_inbox1_wptr(dmub);
-+
-+		if (rptr > dmub->inbox1_rb.capacity || wptr > dmub->inbox1_rb.capacity) {
-+			return DMUB_STATUS_HW_FAILURE;
-+		} else {
-+			dmub->inbox1_rb.rptr = rptr;
-+			dmub->inbox1_rb.wrpt = wptr;
-+			dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
-+		}
- 	}
- 
- 	return DMUB_STATUS_OK;
-@@ -694,6 +701,11 @@ enum dmub_status dmub_srv_cmd_queue(stru
- 	if (!dmub->hw_init)
- 		return DMUB_STATUS_INVALID;
- 
-+	if (dmub->inbox1_rb.rptr > dmub->inbox1_rb.capacity ||
-+	    dmub->inbox1_rb.wrpt > dmub->inbox1_rb.capacity) {
-+		return DMUB_STATUS_HW_FAILURE;
-+	}
-+
- 	if (dmub_rb_push_front(&dmub->inbox1_rb, cmd))
- 		return DMUB_STATUS_OK;
- 
+-	if (had_link)
+-		netif_carrier_off(ndp->ndev.dev);
+-	else
+-		netif_carrier_on(ndp->ndev.dev);
+-
+ 	if (!ndp->multi_package && !nc->package->multi_channel) {
+ 		if (had_link) {
+ 			ndp->flags |= NCSI_DEV_RESHUFFLE;
 
 
 
