@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35DDB7F7BBD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D538A7F7BC6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67BA21C20FD0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CA261F20F7D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D0A39FF7;
-	Fri, 24 Nov 2023 18:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C05E2AF00;
+	Fri, 24 Nov 2023 18:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LKqMqks4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1JLpMVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA3439FD7;
-	Fri, 24 Nov 2023 18:08:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B51D6C433C7;
-	Fri, 24 Nov 2023 18:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AED539FE3;
+	Fri, 24 Nov 2023 18:08:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3FFC433C7;
+	Fri, 24 Nov 2023 18:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849292;
-	bh=jcNYOc1p/tlL2tK38hNJ6rkjIQtqe0+51Ivgres/Dd4=;
+	s=korg; t=1700849312;
+	bh=g6T5mv8+UZs7gsuWsbavYmKnClSI09QiYoyRPj48KO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LKqMqks4FlslE/9Gwymy7hSwP9eV7sBwbf38wzHcUIvycgIIiGEwsbuDf4Kwuxal8
-	 T1kWW0YDHqg6PSgLJoBXLobhpt7PZ92gXTTTRtJnARCUMSXtSzwRmS1NOMaeb2j1/g
-	 z+/mp/wwiXm4j38Vosd7aTexPgwmnBmgYTsI3KWg=
+	b=U1JLpMVhNcfURUTa631T0UzCNxPhYj2CGcvCyEPG7D+IlEl4UGcivXTvoyRkzU+J5
+	 fKKcK4P281V087QipW/uNoJ2w76UGteC3BoJadTaYWjpS6u/Nyz/yEvi08Pwtly9Mf
+	 B/galllYW2ftoixQE6kTwwEPS43VLgFp2JVU0yc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/530] PCI: Use FIELD_GET() to extract Link Width
-Date: Fri, 24 Nov 2023 17:44:32 +0000
-Message-ID: <20231124172031.350663157@linuxfoundation.org>
+Subject: [PATCH 6.6 107/530] PCI: Extract ATS disabling to a helper function
+Date: Fri, 24 Nov 2023 17:44:33 +0000
+Message-ID: <20231124172031.377260169@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -52,77 +52,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-[ Upstream commit d1f9b39da4a5347150246871325190018cda8cb3 ]
+[ Upstream commit f18b1137d38c091cc8c16365219f0a1d4a30b3d1 ]
 
-Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
-instead of custom masking and shifting.
+Introduce quirk_no_ats() helper function to provide a standard way to
+disable ATS capability in PCI quirks.
 
-Link: https://lore.kernel.org/r/20230919125648.1920-7-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[bhelgaas: drop duplicate include of <linux/bitfield.h>]
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230908143606.685930-2-bartosz.pawlowski@intel.com
+Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-sysfs.c | 5 ++---
- drivers/pci/pci.c       | 5 ++---
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ drivers/pci/quirks.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index d9eede2dbc0e1..5a6241044c3c8 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -12,7 +12,7 @@
-  * Modeled after usb's driverfs.c
-  */
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 7b62797e242b1..8a8f601b5d693 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5509,6 +5509,12 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0420, quirk_no_ext_tags);
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0422, quirk_no_ext_tags);
  
+ #ifdef CONFIG_PCI_ATS
++static void quirk_no_ats(struct pci_dev *pdev)
++{
++	pci_info(pdev, "disabling ATS\n");
++	pdev->ats_cap = 0;
++}
++
+ /*
+  * Some devices require additional driver setup to enable ATS.  Don't use
+  * ATS for those devices as ATS will be enabled before the driver has had a
+@@ -5522,14 +5528,10 @@ static void quirk_amd_harvest_no_ats(struct pci_dev *pdev)
+ 		    (pdev->subsystem_device == 0xce19 ||
+ 		     pdev->subsystem_device == 0xcc10 ||
+ 		     pdev->subsystem_device == 0xcc08))
+-			goto no_ats;
+-		else
+-			return;
++			quirk_no_ats(pdev);
++	} else {
++		quirk_no_ats(pdev);
+ 	}
 -
-+#include <linux/bitfield.h>
- #include <linux/kernel.h>
- #include <linux/sched.h>
- #include <linux/pci.h>
-@@ -230,8 +230,7 @@ static ssize_t current_link_width_show(struct device *dev,
- 	if (err)
- 		return -EINVAL;
- 
--	return sysfs_emit(buf, "%u\n",
--		(linkstat & PCI_EXP_LNKSTA_NLW) >> PCI_EXP_LNKSTA_NLW_SHIFT);
-+	return sysfs_emit(buf, "%u\n", FIELD_GET(PCI_EXP_LNKSTA_NLW, linkstat));
+-no_ats:
+-	pci_info(pdev, "disabling ATS\n");
+-	pdev->ats_cap = 0;
  }
- static DEVICE_ATTR_RO(current_link_width);
  
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 5e51e8bd5c13a..ec43ebfc24a5d 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -6260,8 +6260,7 @@ u32 pcie_bandwidth_available(struct pci_dev *dev, struct pci_dev **limiting_dev,
- 		pcie_capability_read_word(dev, PCI_EXP_LNKSTA, &lnksta);
- 
- 		next_speed = pcie_link_speed[lnksta & PCI_EXP_LNKSTA_CLS];
--		next_width = (lnksta & PCI_EXP_LNKSTA_NLW) >>
--			PCI_EXP_LNKSTA_NLW_SHIFT;
-+		next_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, lnksta);
- 
- 		next_bw = next_width * PCIE_SPEED2MBS_ENC(next_speed);
- 
-@@ -6333,7 +6332,7 @@ enum pcie_link_width pcie_get_width_cap(struct pci_dev *dev)
- 
- 	pcie_capability_read_dword(dev, PCI_EXP_LNKCAP, &lnkcap);
- 	if (lnkcap)
--		return (lnkcap & PCI_EXP_LNKCAP_MLW) >> 4;
-+		return FIELD_GET(PCI_EXP_LNKCAP_MLW, lnkcap);
- 
- 	return PCIE_LNK_WIDTH_UNKNOWN;
- }
+ /* AMD Stoney platform GPU */
 -- 
 2.42.0
 
