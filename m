@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9A17F7C2B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853947F8021
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E28EB20D82
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7A291C214FA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC8839FEA;
-	Fri, 24 Nov 2023 18:12:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3E0364DE;
+	Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYar3Nmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRlAMn1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BE439FE1;
-	Fri, 24 Nov 2023 18:12:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7977FC433C8;
-	Fri, 24 Nov 2023 18:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E2933CC2;
+	Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCECC433C8;
+	Fri, 24 Nov 2023 18:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849548;
-	bh=unuVUaPYwqW6hUgXb/HJybJzNbe4dL7R4fL4HKq7U3Y=;
+	s=korg; t=1700851615;
+	bh=RFH9b+6uWYWxhdVvCCkTMFNNxGJIe6zQp635WZVCy+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bYar3Nmm/XXQ7BCr+L/MnFox5SyFxvodyRw6zMue5iSq+6mQgbo769rsHzuXDl+lO
-	 auUVEmNz0efOm2IhbcAM0aVfxJplKaqHS5B9sSSw5ePQCZWqxNkIQwf7XCLcxQUULK
-	 EkNRym0YXbAp+pWpLHOMFXs8JwEVAt4aQQ5CoTA8=
+	b=WRlAMn1Lzw8d111J0I6cxE3mUThz/AqBHCFEIOk1qFjNt5PUOHyXHlpBCgGDFNCkE
+	 Qx2ebPq9IuNEs4AQrF1qOuZ0nUCIoUG3TJYoab+5wS/Mtrtk4b0l8NbDEw1LKQOVBI
+	 MZaV5kSR4uitDnxPOhBR2/VZaaqavvNsZbOYoiIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Denis Arefev <arefev@swemel.ru>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	David Laight <David.Laight@aculab.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/530] net/mlx5e: Reduce the size of icosq_str
+Subject: [PATCH 6.1 005/372] srcu: Fix srcu_struct node grpmask overflow on 64-bit systems
 Date: Fri, 24 Nov 2023 17:46:32 +0000
-Message-ID: <20231124172034.932776558@linuxfoundation.org>
+Message-ID: <20231124172010.615359939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +57,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit dce94142842e119b982c27c1b62bd20890c7fd21 ]
+[ Upstream commit d8d5b7bf6f2105883bbd91bbd4d5b67e4e3dff71 ]
 
-icosq_str size is unnecessarily too long, and it causes a build warning
--Wformat-truncation with W=1. Looking closely, It doesn't need to be 255B,
-hence this patch reduces the size to 32B which should be more than enough
-to host the string: "ICOSQ: 0x%x, ".
+The value of a bitwise expression 1 << (cpu - sdp->mynode->grplo)
+is subject to overflow due to a failure to cast operands to a larger
+data type before performing the bitwise operation.
 
-While here, add a missing space in the formatted string.
+The maximum result of this subtraction is defined by the RCU_FANOUT_LEAF
+Kconfig option, which on 64-bit systems defaults to 16 (resulting in a
+maximum shift of 15), but which can be set up as high as 64 (resulting
+in a maximum shift of 63).  A value of 31 can result in sign extension,
+resulting in 0xffffffff80000000 instead of the desired 0x80000000.
+A value of 32 or greater triggers undefined behavior per the C standard.
 
-This fixes the following build warning:
+This bug has not been known to cause issues because almost all kernels
+take the default CONFIG_RCU_FANOUT_LEAF=16.  Furthermore, as long as a
+given compiler gives a deterministic non-zero result for 1<<N for N>=32,
+the code correctly invokes all SRCU callbacks, albeit wasting CPU time
+along the way.
 
-$ KCFLAGS='-Wall -Werror'
-$ make O=/tmp/kbuild/linux W=1 -s -j12 drivers/net/ethernet/mellanox/mlx5/core/
+This commit therefore substitutes the correct 1UL for the buggy 1.
 
-drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c: In function 'mlx5e_reporter_rx_timeout':
-drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:718:56:
-error: ', CQ: 0x' directive output may be truncated writing 8 bytes into a region of size between 0 and 255 [-Werror=format-truncation=]
-  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
-      |                                                        ^~~~~~~~
-drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c:717:9: note: 'snprintf' output between 43 and 322 bytes into a destination of size 288
-  717 |         snprintf(err_str, sizeof(err_str),
-      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  718 |                  "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  719 |                  rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
-      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 521f31af004a ("net/mlx5e: Allow RQ outside of channel context")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-14-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: David Laight <David.Laight@aculab.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c | 4 ++--
+ kernel/rcu/srcutree.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-index e8eea9ffd5eb6..03b119a434bc9 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_rx.c
-@@ -702,11 +702,11 @@ static int mlx5e_rx_reporter_dump(struct devlink_health_reporter *reporter,
+diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+index ce60cdf069e3a..94da8e13b71fb 100644
+--- a/kernel/rcu/srcutree.c
++++ b/kernel/rcu/srcutree.c
+@@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *ssp, gfp_t gfp_flags)
+ 				snp->grplo = cpu;
+ 			snp->grphi = cpu;
+ 		}
+-		sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
++		sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
+ 	}
+ 	smp_store_release(&ssp->srcu_size_state, SRCU_SIZE_WAIT_BARRIER);
+ 	return true;
+@@ -722,7 +722,7 @@ static void srcu_schedule_cbs_snp(struct srcu_struct *ssp, struct srcu_node *snp
+ 	int cpu;
  
- void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
- {
--	char icosq_str[MLX5E_REPORTER_PER_Q_MAX_LEN] = {};
- 	char err_str[MLX5E_REPORTER_PER_Q_MAX_LEN];
- 	struct mlx5e_icosq *icosq = rq->icosq;
- 	struct mlx5e_priv *priv = rq->priv;
- 	struct mlx5e_err_ctx err_ctx = {};
-+	char icosq_str[32] = {};
- 
- 	err_ctx.ctx = rq;
- 	err_ctx.recover = mlx5e_rx_reporter_timeout_recover;
-@@ -715,7 +715,7 @@ void mlx5e_reporter_rx_timeout(struct mlx5e_rq *rq)
- 	if (icosq)
- 		snprintf(icosq_str, sizeof(icosq_str), "ICOSQ: 0x%x, ", icosq->sqn);
- 	snprintf(err_str, sizeof(err_str),
--		 "RX timeout on channel: %d, %sRQ: 0x%x, CQ: 0x%x",
-+		 "RX timeout on channel: %d, %s RQ: 0x%x, CQ: 0x%x",
- 		 rq->ix, icosq_str, rq->rqn, rq->cq.mcq.cqn);
- 
- 	mlx5e_health_report(priv, priv->rx_reporter, err_str, &err_ctx);
+ 	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
+-		if (!(mask & (1 << (cpu - snp->grplo))))
++		if (!(mask & (1UL << (cpu - snp->grplo))))
+ 			continue;
+ 		srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
+ 	}
 -- 
 2.42.0
 
