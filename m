@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D127F7CBA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561C57F808A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8FF1F20FB4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1199B2811A5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47133A8C6;
-	Fri, 24 Nov 2023 18:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C7C33CC7;
+	Fri, 24 Nov 2023 18:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnnNrWOO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlfqS/Ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636EA39FE1;
-	Fri, 24 Nov 2023 18:17:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BC0C433C8;
-	Fri, 24 Nov 2023 18:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512B82FC4E;
+	Fri, 24 Nov 2023 18:50:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D034BC433C8;
+	Fri, 24 Nov 2023 18:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849868;
-	bh=kj7+p2F6ZN9Kq5aWA5TEWHQiBR/fjn9NGTq57FXhACQ=;
+	s=korg; t=1700851836;
+	bh=27RnbItsDWyqIsFQjTCJQR/kcMZ6iMNHExsYnwl0fjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnnNrWOOZFW77nXLi1kmSt4SXE0xq3R1h+IV0TWfRDSXPR9G8WaHoF9MV4GNRNl51
-	 0hvVLfiZkB4RSdQI+OGkT3xrQNYvx+lM3Vp2aeFbjxRSifJybXE+kuMxkaaNduEcOJ
-	 TNW3u9FVaQdAS+WDuJFfXhO5QWLqVnNBOtNix7ns=
+	b=BlfqS/JuFzN3+DW3o3nyRFMExFNMGsKU7vHbMK0st4Sy20JULZcukmFpaA4yw9xXo
+	 BzwOAmzbLGGBKGlsN5VqXDLDZYPLYDTifwooraC5d1oW2MQwQkHUE2zxUit4AJIoiA
+	 YMIDGl9EO9Ys1GHchVMKYgoL7naOfldeGRKe/GGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Schroeder <CSchroeder@sonifi.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 328/530] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e card
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 107/372] kgdb: Flush console before entering kgdb on panic
 Date: Fri, 24 Nov 2023 17:48:14 +0000
-Message-ID: <20231124172038.008220761@linuxfoundation.org>
+Message-ID: <20231124172014.067905682@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit c9260693aa0c1e029ed23693cfd4d7814eee6624 upstream.
+[ Upstream commit dd712d3d45807db9fcae28a522deee85c1f2fde6 ]
 
-Commit ac91e6980563 ("PCI: Unify delay handling for reset and resume")
-shortened an unconditional 1 sec delay after a Secondary Bus Reset to 100
-msec for PCIe (per PCIe r6.1 sec 6.6.1).  The 1 sec delay is only required
-for Conventional PCI.
+When entering kdb/kgdb on a kernel panic, it was be observed that the
+console isn't flushed before the `kdb` prompt came up. Specifically,
+when using the buddy lockup detector on arm64 and running:
+  echo HARDLOCKUP > /sys/kernel/debug/provoke-crash/DIRECT
 
-But it turns out that there are PCIe devices which require a longer delay
-than prescribed before first config space access after reset recovery or
-resume from D3cold:
+I could see:
+  [   26.161099] lkdtm: Performing direct entry HARDLOCKUP
+  [   32.499881] watchdog: Watchdog detected hard LOCKUP on cpu 6
+  [   32.552865] Sending NMI from CPU 5 to CPUs 6:
+  [   32.557359] NMI backtrace for cpu 6
+  ... [backtrace for cpu 6] ...
+  [   32.558353] NMI backtrace for cpu 5
+  ... [backtrace for cpu 5] ...
+  [   32.867471] Sending NMI from CPU 5 to CPUs 0-4,7:
+  [   32.872321] NMI backtrace forP cpuANC: Hard LOCKUP
 
-Chad reports that a "VideoPropulsion Torrent QN16e" MPEG QAM Modulator
-"raises a PCI system error (PERR), as reported by the IPMI event log, and
-the hardware itself would suffer a catastrophic event, cycling the server"
-unless the longer delay is observed.
+  Entering kdb (current=..., pid 0) on processor 5 due to Keyboard Entry
+  [5]kdb>
 
-The card is specified to conform to PCIe r1.0 and indeed only supports Gen1
-speed (2.5 GT/s) according to lspci.  PCIe r1.0 sec 7.6 prescribes the same
-100 msec delay as PCIe r6.1 sec 6.6.1:
+As you can see, backtraces for the other CPUs start printing and get
+interleaved with the kdb PANIC print.
 
-  To allow components to perform internal initialization, system software
-  must wait for at least 100 ms from the end of a reset (cold/warm/hot)
-  before it is permitted to issue Configuration Requests
+Let's replicate the commands to flush the console in the kdb panic
+entry point to avoid this.
 
-The behavior of the Torrent QN16e card thus appears to be a quirk.  Treat
-it as such and lengthen the reset delay for this specific device.
-
-Fixes: ac91e6980563 ("PCI: Unify delay handling for reset and resume")
-Link: https://lore.kernel.org/r/47727e792c7f0282dc144e3ec8ce8eb6e713394e.1695304512.git.lukas@wunner.de
-Reported-by: Chad Schroeder <CSchroeder@sonifi.com>
-Closes: https://lore.kernel.org/linux-pci/DM6PR16MB2844903E34CAB910082DF019B1FAA@DM6PR16MB2844.namprd16.prod.outlook.com/
-Tested-by: Chad Schroeder <CSchroeder@sonifi.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v5.4+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20230822131945.1.I5b460ae8f954e4c4f628a373d6e74713c06dd26f@changeid
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ kernel/debug/debug_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6211,3 +6211,15 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_REDHAT, 0x0005, of_pci_make_dev_node);
+diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
+index d5e9ccde3ab8e..3a904d8697c8f 100644
+--- a/kernel/debug/debug_core.c
++++ b/kernel/debug/debug_core.c
+@@ -1006,6 +1006,9 @@ void kgdb_panic(const char *msg)
+ 	if (panic_timeout)
+ 		return;
+ 
++	debug_locks_off();
++	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
 +
-+/*
-+ * Devices known to require a longer delay before first config space access
-+ * after reset recovery or resume from D3cold:
-+ *
-+ * VideoPropulsion (aka Genroco) Torrent QN16e MPEG QAM Modulator
-+ */
-+static void pci_fixup_d3cold_delay_1sec(struct pci_dev *pdev)
-+{
-+	pdev->d3cold_delay = 1000;
-+}
-+DECLARE_PCI_FIXUP_FINAL(0x5555, 0x0004, pci_fixup_d3cold_delay_1sec);
+ 	if (dbg_kdb_mode)
+ 		kdb_printf("PANIC: %s\n", msg);
+ 
+-- 
+2.42.0
+
 
 
 
