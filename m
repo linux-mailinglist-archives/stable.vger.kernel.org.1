@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E15E7F7D2D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD8D7F7F89
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:42:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 912291C211D0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 306A2B20B0E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9953A8C9;
-	Fri, 24 Nov 2023 18:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143C01A5A4;
+	Fri, 24 Nov 2023 18:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKvQw/g1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1nLAk51"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F759364C8;
-	Fri, 24 Nov 2023 18:22:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA77EC433C7;
-	Fri, 24 Nov 2023 18:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713C52F86B;
+	Fri, 24 Nov 2023 18:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83F3C433C7;
+	Fri, 24 Nov 2023 18:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850125;
-	bh=fEHUO6K60p15HGgCJK8Dgj7L6cBGJ1L7ExYPiXFppn4=;
+	s=korg; t=1700851339;
+	bh=y72AlVQ3jAyqtcUEp0WVqRyrec+JVjdbQJxXBd/8VB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKvQw/g1b3HbW/iCPBzBCWVXYqUBETWlZx5luzB60saQrea+AD2cxvNzBGX7RwsLT
-	 izAygE8i15zaTrvwNSVz0Fp4ejX2VAD/ZRoa2YwbYoN//DQDOLunzA0yccnmUrS0Zq
-	 f5AlPR0K/9I7PGuxzcKNM/7Rp75b/uUiWyfk2xaw=
+	b=N1nLAk51RBiPThd4zSxcizWzO2tQHt9KQSqlJkC0CDTlEU2b6DwUdlEYVT2fGeJn8
+	 mb+TicN1cwe9ftOl2BtGO2Nxk8259QfTMFheEsQewqgp6XAzn4jz0vyJpJs3JtRbuW
+	 z3MRyvgLZj0SZv+oQCyPQeQm9gMZ9ZhoOwLxVsok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 454/530] media: lirc: drop trailing space from scancode transmit
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: [PATCH 6.5 384/491] xhci: Enable RPM on controllers that support low-power states
 Date: Fri, 24 Nov 2023 17:50:20 +0000
-Message-ID: <20231124172041.902102805@linuxfoundation.org>
+Message-ID: <20231124172036.138906860@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +54,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-commit c8a489f820179fb12251e262b50303c29de991ac upstream.
+commit a5d6264b638efeca35eff72177fd28d149e0764b upstream.
 
-When transmitting, infrared drivers expect an odd number of samples; iow
-without a trailing space. No problems have been observed so far, so
-this is just belt and braces.
+Use the low-power states of the underlying platform to enable runtime PM.
+If the platform doesn't support runtime D3, then enabling default RPM will
+result in the controller malfunctioning, as in the case of hotplug devices
+not being detected because of a failed interrupt generation.
 
-Fixes: 9b6192589be7 ("media: lirc: implement scancode sending")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-16-mathias.nyman@linux.intel.com
+Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -276,7 +276,11 @@ static ssize_t lirc_transmit(struct file
- 		if (ret < 0)
- 			goto out_kfree_raw;
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index bde43cef8846..95ed9404f6f8 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -695,7 +695,9 @@ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
+ 	pm_runtime_put_noidle(&dev->dev);
  
--		count = ret;
-+		/* drop trailing space */
-+		if (!(ret % 2))
-+			count = ret - 1;
-+		else
-+			count = ret;
+-	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
++	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
++		pm_runtime_forbid(&dev->dev);
++	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
+ 		pm_runtime_allow(&dev->dev);
  
- 		txbuf = kmalloc_array(count, sizeof(unsigned int), GFP_KERNEL);
- 		if (!txbuf) {
+ 	dma_set_max_seg_size(&dev->dev, UINT_MAX);
+-- 
+2.43.0
+
 
 
 
