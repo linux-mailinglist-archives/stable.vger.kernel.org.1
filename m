@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-1211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62ECF7F7E8A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DAD7F7C4E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76CE5B21791
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 675FE1C21185
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B284C2F86B;
-	Fri, 24 Nov 2023 18:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E49A3A8C3;
+	Fri, 24 Nov 2023 18:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkJjGfSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnOd/Ezu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646AF39FD4;
-	Fri, 24 Nov 2023 18:33:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3976C433C7;
-	Fri, 24 Nov 2023 18:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9A63A8C2;
+	Fri, 24 Nov 2023 18:13:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1A9C433C8;
+	Fri, 24 Nov 2023 18:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850835;
-	bh=WeyFhmfep4Jmy5qufLDyXAjtmK+4EhRkBIZoW70slFY=;
+	s=korg; t=1700849637;
+	bh=5jbU0a1EUTW+IFXInKqfW/AQX4Ibfz1pTCWCXOZyUbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkJjGfSVnU3Rtf4NNu480DRMfCIvi//8pXdzT6n0kUhiXzSLE/LMcPitpGGrAH6/i
-	 NGkw1l1T7u7IauKJBgs+mfczEcqsgD1351gSXKSbzBVGiwxE65AteeV9SH0pCaUu5s
-	 +Lev9KOI2KClaXt9jEk//ZJImgHqd9vUH6LA1dnQ=
+	b=FnOd/EzulhkqWzRv8TcAVL6kBTkgUR//w+dp8n9PLtm0jzgB8JEkBztaYVWDZHbio
+	 V/JUTk42u2kZ455e+6Zi1K5oW6NwTPS/ggPRwKs5irfbKMYOfUppiL0x1ZSvWK8pw1
+	 SOUSbE3Nn6I0GudS6MoR68PujPuMqLBrb2143VwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 190/491] bonding: stop the device in bond_setup_by_slave()
+	Sean Christopherson <seanjc@google.com>,
+	Haitao Shan <hshan@google.com>
+Subject: [PATCH 6.6 260/530] KVM: x86: Fix lapic timer interrupt lost after loading a snapshot.
 Date: Fri, 24 Nov 2023 17:47:06 +0000
-Message-ID: <20231124172030.190663720@linuxfoundation.org>
+Message-ID: <20231124172035.960296842@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,138 +52,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Haitao Shan <hshan@google.com>
 
-[ Upstream commit 3cffa2ddc4d3fcf70cde361236f5a614f81a09b2 ]
+commit 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2 upstream.
 
-Commit 9eed321cde22 ("net: lapbether: only support ethernet devices")
-has been able to keep syzbot away from net/lapb, until today.
+When running android emulator (which is based on QEMU 2.12) on
+certain Intel hosts with kernel version 6.3-rc1 or above, guest
+will freeze after loading a snapshot. This is almost 100%
+reproducible. By default, the android emulator will use snapshot
+to speed up the next launching of the same android guest. So
+this breaks the android emulator badly.
 
-In the following splat [1], the issue is that a lapbether device has
-been created on a bonding device without members. Then adding a non
-ARPHRD_ETHER member forced the bonding master to change its type.
+I tested QEMU 8.0.4 from Debian 12 with an Ubuntu 22.04 guest by
+running command "loadvm" after "savevm". The same issue is
+observed. At the same time, none of our AMD platforms is impacted.
+More experiments show that loading the KVM module with
+"enable_apicv=false" can workaround it.
 
-The fix is to make sure we call dev_close() in bond_setup_by_slave()
-so that the potential linked lapbether devices (or any other devices
-having assumptions on the physical device) are removed.
+The issue started to show up after commit 8e6ed96cdd50 ("KVM: x86:
+fire timer when it is migrated and expired, and in oneshot mode").
+However, as is pointed out by Sean Christopherson, it is introduced
+by commit 967235d32032 ("KVM: vmx: clear pending interrupts on
+KVM_SET_LAPIC"). commit 8e6ed96cdd50 ("KVM: x86: fire timer when
+it is migrated and expired, and in oneshot mode") just makes it
+easier to hit the issue.
 
-A similar bug has been addressed in commit 40baec225765
-("bonding: fix panic on non-ARPHRD_ETHER enslave failure")
+Having both commits, the oneshot lapic timer gets fired immediately
+inside the KVM_SET_LAPIC call when loading the snapshot. On Intel
+platforms with APIC virtualization and posted interrupt processing,
+this eventually leads to setting the corresponding PIR bit. However,
+the whole PIR bits get cleared later in the same KVM_SET_LAPIC call
+by apicv_post_state_restore. This leads to timer interrupt lost.
 
-[1]
-skbuff: skb_under_panic: text:ffff800089508810 len:44 put:40 head:ffff0000c78e7c00 data:ffff0000c78e7bea tail:0x16 end:0x140 dev:bond0
-kernel BUG at net/core/skbuff.c:192 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 6007 Comm: syz-executor383 Not tainted 6.6.0-rc3-syzkaller-gbf6547d8715b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : skb_panic net/core/skbuff.c:188 [inline]
-pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
-lr : skb_panic net/core/skbuff.c:188 [inline]
-lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
-sp : ffff800096a06aa0
-x29: ffff800096a06ab0 x28: ffff800096a06ba0 x27: dfff800000000000
-x26: ffff0000ce9b9b50 x25: 0000000000000016 x24: ffff0000c78e7bea
-x23: ffff0000c78e7c00 x22: 000000000000002c x21: 0000000000000140
-x20: 0000000000000028 x19: ffff800089508810 x18: ffff800096a06100
-x17: 0000000000000000 x16: ffff80008a629a3c x15: 0000000000000001
-x14: 1fffe00036837a32 x13: 0000000000000000 x12: 0000000000000000
-x11: 0000000000000201 x10: 0000000000000000 x9 : cb50b496c519aa00
-x8 : cb50b496c519aa00 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff800096a063b8 x4 : ffff80008e280f80 x3 : ffff8000805ad11c
-x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
-Call trace:
-skb_panic net/core/skbuff.c:188 [inline]
-skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
-skb_push+0xf0/0x108 net/core/skbuff.c:2446
-ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1384
-dev_hard_header include/linux/netdevice.h:3136 [inline]
-lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
-lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
-lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
-lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
-__lapb_disconnect_request+0x9c/0x17c net/lapb/lapb_iface.c:326
-lapb_device_event+0x288/0x4e0 net/lapb/lapb_iface.c:492
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1970 [inline]
-call_netdevice_notifiers_extack net/core/dev.c:2008 [inline]
-call_netdevice_notifiers net/core/dev.c:2022 [inline]
-__dev_close_many+0x1b8/0x3c4 net/core/dev.c:1508
-dev_close_many+0x1e0/0x470 net/core/dev.c:1559
-dev_close+0x174/0x250 net/core/dev.c:1585
-lapbeth_device_event+0x2e4/0x958 drivers/net/wan/lapbether.c:466
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1970 [inline]
-call_netdevice_notifiers_extack net/core/dev.c:2008 [inline]
-call_netdevice_notifiers net/core/dev.c:2022 [inline]
-__dev_close_many+0x1b8/0x3c4 net/core/dev.c:1508
-dev_close_many+0x1e0/0x470 net/core/dev.c:1559
-dev_close+0x174/0x250 net/core/dev.c:1585
-bond_enslave+0x2298/0x30cc drivers/net/bonding/bond_main.c:2332
-bond_do_ioctl+0x268/0xc64 drivers/net/bonding/bond_main.c:4539
-dev_ifsioc+0x754/0x9ac
-dev_ioctl+0x4d8/0xd34 net/core/dev_ioctl.c:786
-sock_do_ioctl+0x1d4/0x2d0 net/socket.c:1217
-sock_ioctl+0x4e8/0x834 net/socket.c:1322
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:871 [inline]
-__se_sys_ioctl fs/ioctl.c:857 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:857
-__invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
-invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
-el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
-do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
-el0_svc+0x58/0x16c arch/arm64/kernel/entry-common.c:678
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
-Code: aa1803e6 aa1903e7 a90023f5 94785b8b (d4210000)
+The fix is to move vmx_apicv_post_state_restore to the beginning of
+the KVM_SET_LAPIC call and rename to vmx_apicv_pre_state_restore.
+What vmx_apicv_post_state_restore does is actually clearing any
+former apicv state and this behavior is more suitable to carry out
+in the beginning.
 
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231109180102.4085183-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 967235d32032 ("KVM: vmx: clear pending interrupts on KVM_SET_LAPIC")
+Cc: stable@vger.kernel.org
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Haitao Shan <hshan@google.com>
+Link: https://lore.kernel.org/r/20230913000215.478387-1-hshan@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/include/asm/kvm-x86-ops.h |    1 +
+ arch/x86/include/asm/kvm_host.h    |    1 +
+ arch/x86/kvm/lapic.c               |    4 ++++
+ arch/x86/kvm/vmx/vmx.c             |    4 ++--
+ 4 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a64ebb7f5b712..363b6cb33ae08 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1499,6 +1499,10 @@ static void bond_compute_features(struct bonding *bond)
- static void bond_setup_by_slave(struct net_device *bond_dev,
- 				struct net_device *slave_dev)
- {
-+	bool was_up = !!(bond_dev->flags & IFF_UP);
-+
-+	dev_close(bond_dev);
-+
- 	bond_dev->header_ops	    = slave_dev->header_ops;
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -108,6 +108,7 @@ KVM_X86_OP_OPTIONAL(vcpu_blocking)
+ KVM_X86_OP_OPTIONAL(vcpu_unblocking)
+ KVM_X86_OP_OPTIONAL(pi_update_irte)
+ KVM_X86_OP_OPTIONAL(pi_start_assignment)
++KVM_X86_OP_OPTIONAL(apicv_pre_state_restore)
+ KVM_X86_OP_OPTIONAL(apicv_post_state_restore)
+ KVM_X86_OP_OPTIONAL_RET0(dy_apicv_has_pending_interrupt)
+ KVM_X86_OP_OPTIONAL(set_hv_timer)
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1708,6 +1708,7 @@ struct kvm_x86_ops {
+ 	int (*pi_update_irte)(struct kvm *kvm, unsigned int host_irq,
+ 			      uint32_t guest_irq, bool set);
+ 	void (*pi_start_assignment)(struct kvm *kvm);
++	void (*apicv_pre_state_restore)(struct kvm_vcpu *vcpu);
+ 	void (*apicv_post_state_restore)(struct kvm_vcpu *vcpu);
+ 	bool (*dy_apicv_has_pending_interrupt)(struct kvm_vcpu *vcpu);
  
- 	bond_dev->type		    = slave_dev->type;
-@@ -1513,6 +1517,8 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
- 		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
- 		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
- 	}
-+	if (was_up)
-+		dev_open(bond_dev, NULL);
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2670,6 +2670,8 @@ void kvm_lapic_reset(struct kvm_vcpu *vc
+ 	u64 msr_val;
+ 	int i;
+ 
++	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
++
+ 	if (!init_event) {
+ 		msr_val = APIC_DEFAULT_PHYS_BASE | MSR_IA32_APICBASE_ENABLE;
+ 		if (kvm_vcpu_is_reset_bsp(vcpu))
+@@ -2981,6 +2983,8 @@ int kvm_apic_set_state(struct kvm_vcpu *
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
+ 	int r;
+ 
++	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
++
+ 	kvm_lapic_set_base(vcpu, vcpu->arch.apic_base);
+ 	/* set SPIV separately to get count of SW disabled APICs right */
+ 	apic_set_spiv(apic, *((u32 *)(s->regs + APIC_SPIV)));
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6912,7 +6912,7 @@ static void vmx_load_eoi_exitmap(struct
+ 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
  }
  
- /* On bonding slaves other than the currently active slave, suppress
--- 
-2.42.0
-
+-static void vmx_apicv_post_state_restore(struct kvm_vcpu *vcpu)
++static void vmx_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+@@ -8286,7 +8286,7 @@ static struct kvm_x86_ops vmx_x86_ops __
+ 	.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
+ 	.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,
+ 	.load_eoi_exitmap = vmx_load_eoi_exitmap,
+-	.apicv_post_state_restore = vmx_apicv_post_state_restore,
++	.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
+ 	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
+ 	.hwapic_irr_update = vmx_hwapic_irr_update,
+ 	.hwapic_isr_update = vmx_hwapic_isr_update,
 
 
 
