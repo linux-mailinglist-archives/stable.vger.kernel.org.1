@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7CC7F7AA4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9F387F7F38
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D6CCB2101A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA7D31C21478
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4835839FD9;
-	Fri, 24 Nov 2023 17:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22200364C1;
+	Fri, 24 Nov 2023 18:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yuaIerPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZfPZgxt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF0631740;
-	Fri, 24 Nov 2023 17:57:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3004BC433C7;
-	Fri, 24 Nov 2023 17:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F4C33E9;
+	Fri, 24 Nov 2023 18:39:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3759C433C8;
+	Fri, 24 Nov 2023 18:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848627;
-	bh=OUqQg2/PN9OxBNnpH2KVf5rzMtqSx0usPe6GU2EtdhQ=;
+	s=korg; t=1700851179;
+	bh=hHmbfISyJcAUOjySEvTc+xyDeCgnE7Y4/M2pvNXnx54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yuaIerPkGRNvjfAcPRdezPsR8R1MPgdFQ0u1dQdZuxPGz8vghhzHUUddEd/GxO4QY
-	 QHs2sJ/2IwIUKAKf7uErcYvVPT37M+MOopgyixLqpxD/2Ffzv5RcZ0PfM+esuOmYEr
-	 gCSAowQrpn8GJxn4B598y/GV1+NGWJPE5+GxaYCU=
+	b=JZfPZgxtCzsvR922Ab/wt0i7BHv2oLa0Ew++iniSGQtSzaelne/geqEDsO02KrUb+
+	 q3zVftXhuCG98dzTh5eAhtbFLK8xsWZNhqmldfyt6wOMNly8LZCsSB0y58EX3EbjKC
+	 id6GxZbPhf0etWOD2R22qn3xBpxYBa9QIP90irX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 07/97] wifi: ath9k: fix clang-specific fortify warnings
+	stable <stable@kernel.org>,
+	Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Subject: [PATCH 6.5 344/491] mcb: fix error handling for different scenarios when parsing
 Date: Fri, 24 Nov 2023 17:49:40 +0000
-Message-ID: <20231124171934.408775715@linuxfoundation.org>
+Message-ID: <20231124172034.913875061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,104 +54,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit 95f97fe0ac974467ab4da215985a32b2fdf48af0 ]
+commit 63ba2d07b4be72b94216d20561f43e1150b25d98 upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+chameleon_parse_gdd() may fail for different reasons and end up
+in the err tag. Make sure we at least always free the mcb_device
+allocated with mcb_alloc_dev().
 
-In file included from drivers/net/wireless/ath/ath9k/debug.c:17:
-In file included from ./include/linux/slab.h:16:
-In file included from ./include/linux/gfp.h:7:
-In file included from ./include/linux/mmzone.h:8:
-In file included from ./include/linux/spinlock.h:56:
-In file included from ./include/linux/preempt.h:79:
-In file included from ./arch/x86/include/asm/preempt.h:9:
-In file included from ./include/linux/thread_info.h:60:
-In file included from ./arch/x86/include/asm/thread_info.h:53:
-In file included from ./arch/x86/include/asm/cpufeature.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
+If mcb_device_register() fails, make sure to give up the reference
+in the same place the device was added.
 
-In file included from drivers/net/wireless/ath/ath9k/htc_drv_debug.c:17:
-In file included from drivers/net/wireless/ath/ath9k/htc.h:20:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
-
-The compiler actually complains on 'ath9k_get_et_strings()' and
-'ath9k_htc_get_et_strings()' due to the same reason: fortification logic
-inteprets call to 'memcpy()' as an attempt to copy the whole array from
-it's first member and so issues an overread warning. These warnings may
-be silenced by passing an address of the whole array and not the first
-member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093856.234584-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 728ac3389296 ("mcb: mcb-parse: fix error handing in chameleon_parse_gdd()")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Link: https://lore.kernel.org/r/20231019141434.57971-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/debug.c         | 2 +-
- drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mcb/mcb-core.c  |    1 +
+ drivers/mcb/mcb-parse.c |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
-index 84fe686709496..e0a4e3fa87305 100644
---- a/drivers/net/wireless/ath/ath9k/debug.c
-+++ b/drivers/net/wireless/ath/ath9k/debug.c
-@@ -1297,7 +1297,7 @@ void ath9k_get_et_strings(struct ieee80211_hw *hw,
- 			  u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath9k_gstrings_stats,
-+		memcpy(data, ath9k_gstrings_stats,
- 		       sizeof(ath9k_gstrings_stats));
- }
+--- a/drivers/mcb/mcb-core.c
++++ b/drivers/mcb/mcb-core.c
+@@ -246,6 +246,7 @@ int mcb_device_register(struct mcb_bus *
+ 	return 0;
  
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-index c55aab01fff5d..e79bbcd3279af 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
-@@ -428,7 +428,7 @@ void ath9k_htc_get_et_strings(struct ieee80211_hw *hw,
- 			      u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath9k_htc_gstrings_stats,
-+		memcpy(data, ath9k_htc_gstrings_stats,
- 		       sizeof(ath9k_htc_gstrings_stats));
- }
+ out:
++	put_device(&dev->dev);
  
--- 
-2.42.0
-
+ 	return ret;
+ }
+--- a/drivers/mcb/mcb-parse.c
++++ b/drivers/mcb/mcb-parse.c
+@@ -106,7 +106,7 @@ static int chameleon_parse_gdd(struct mc
+ 	return 0;
+ 
+ err:
+-	put_device(&mdev->dev);
++	mcb_free_dev(mdev);
+ 
+ 	return ret;
+ }
 
 
 
