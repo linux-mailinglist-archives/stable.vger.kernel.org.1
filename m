@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA837F8494
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:28:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323357F83E6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E6FFB28249
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6B05B2712F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A5F39FD6;
-	Fri, 24 Nov 2023 19:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0543E364B7;
+	Fri, 24 Nov 2023 19:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdqzhGAC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfMce5x3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35FB28DBB;
-	Fri, 24 Nov 2023 19:28:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B90C433C7;
-	Fri, 24 Nov 2023 19:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63150339BE;
+	Fri, 24 Nov 2023 19:22:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DA2C433C8;
+	Fri, 24 Nov 2023 19:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700854091;
-	bh=txIXxpMOjO/3p5T1GsStCPQSK0uDJoooPZNFGx54zFU=;
+	s=korg; t=1700853721;
+	bh=8VMDqYZBkbitECupD+LJQVnxdxj9PnEGCBJ6rRglFm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdqzhGACiaQlfIeIuKXuEuJ1bQeWW5JlaEiywAvGdvQpJrKAoRrqneUqUv0oIgB9f
-	 wL438AtzWoQ5NDZczGAcgb0CpT7uGRgqfKcwtuvOWzQxIeU/Frmua2XemopfbG9RUh
-	 tzpysQYz9F9nAoMhhUYzZGO/JMjav96HFw5U4a+8=
+	b=MfMce5x31eTVj22ambTZ0DJpiT3tpELbXtGgAm+HAjOr9CPQ+8aH6sb/2hLBqennh
+	 DE5sY7t/7fRzB/m9GVWW13wVwtBlNA6+F7TlmqofjA5eHyXySPJW3oDFAX7LVFPOqJ
+	 +VaPsOqtCZazmZPR4yqLjO4xhMJgpk5bMEif/zyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 118/159] net: dsa: lan9303: consequently nested-lock physical MDIO
-Date: Fri, 24 Nov 2023 17:55:35 +0000
-Message-ID: <20231124171946.756175218@linuxfoundation.org>
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.15 294/297] powerpc/powernv: Fix fortify source warnings in opal-prd.c
+Date: Fri, 24 Nov 2023 17:55:36 +0000
+Message-ID: <20231124172010.396617829@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,176 +53,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 5a22fbcc10f3f7d94c5d88afbbffa240a3677057 upstream.
+commit feea65a338e52297b68ceb688eaf0ffc50310a83 upstream.
 
-When LAN9303 is MDIO-connected two callchains exist into
-mdio->bus->write():
+As reported by Mahesh & Aneesh, opal_prd_msg_notifier() triggers a
+FORTIFY_SOURCE warning:
 
-1. switch ports 1&2 ("physical" PHYs):
+  memcpy: detected field-spanning write (size 32) of single field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 (size 4)
+  WARNING: CPU: 9 PID: 660 at arch/powerpc/platforms/powernv/opal-prd.c:355 opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+  NIP opal_prd_msg_notifier+0x174/0x188 [opal_prd]
+  LR  opal_prd_msg_notifier+0x170/0x188 [opal_prd]
+  Call Trace:
+    opal_prd_msg_notifier+0x170/0x188 [opal_prd] (unreliable)
+    notifier_call_chain+0xc0/0x1b0
+    atomic_notifier_call_chain+0x2c/0x40
+    opal_message_notify+0xf4/0x2c0
 
-virtual (switch-internal) MDIO bus (lan9303_switch_ops->phy_{read|write})->
-  lan9303_mdio_phy_{read|write} -> mdiobus_{read|write}_nested
+This happens because the copy is targeting item->msg, which is only 4
+bytes in size, even though the enclosing item was allocated with extra
+space following the msg.
 
-2. LAN9303 virtual PHY:
+To fix the warning define struct opal_prd_msg with a union of the header
+and a flex array, and have the memcpy target the flex array.
 
-virtual MDIO bus (lan9303_phy_{read|write}) ->
-  lan9303_virt_phy_reg_{read|write} -> regmap -> lan9303_mdio_{read|write}
-
-If the latter functions just take
-mutex_lock(&sw_dev->device->bus->mdio_lock) it triggers a LOCKDEP
-false-positive splat. It's false-positive because the first
-mdio_lock in the second callchain above belongs to virtual MDIO bus, the
-second mdio_lock belongs to physical MDIO bus.
-
-Consequent annotation in lan9303_mdio_{read|write} as nested lock
-(similar to lan9303_mdio_phy_{read|write}, it's the same physical MDIO bus)
-prevents the following splat:
-
-WARNING: possible circular locking dependency detected
-5.15.71 #1 Not tainted
-------------------------------------------------------
-kworker/u4:3/609 is trying to acquire lock:
-ffff000011531c68 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}, at: regmap_lock_mutex
-but task is already holding lock:
-ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
-which lock already depends on the new lock.
-the existing dependency chain (in reverse order) is:
--> #1 (&bus->mdio_lock){+.+.}-{3:3}:
-       lock_acquire
-       __mutex_lock
-       mutex_lock_nested
-       lan9303_mdio_read
-       _regmap_read
-       regmap_read
-       lan9303_probe
-       lan9303_mdio_probe
-       mdio_probe
-       really_probe
-       __driver_probe_device
-       driver_probe_device
-       __device_attach_driver
-       bus_for_each_drv
-       __device_attach
-       device_initial_probe
-       bus_probe_device
-       deferred_probe_work_func
-       process_one_work
-       worker_thread
-       kthread
-       ret_from_fork
--> #0 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}:
-       __lock_acquire
-       lock_acquire.part.0
-       lock_acquire
-       __mutex_lock
-       mutex_lock_nested
-       regmap_lock_mutex
-       regmap_read
-       lan9303_phy_read
-       dsa_slave_phy_read
-       __mdiobus_read
-       mdiobus_read
-       get_phy_device
-       mdiobus_scan
-       __mdiobus_register
-       dsa_register_switch
-       lan9303_probe
-       lan9303_mdio_probe
-       mdio_probe
-       really_probe
-       __driver_probe_device
-       driver_probe_device
-       __device_attach_driver
-       bus_for_each_drv
-       __device_attach
-       device_initial_probe
-       bus_probe_device
-       deferred_probe_work_func
-       process_one_work
-       worker_thread
-       kthread
-       ret_from_fork
-other info that might help us debug this:
- Possible unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(&bus->mdio_lock);
-                               lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
-                               lock(&bus->mdio_lock);
-  lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
-*** DEADLOCK ***
-5 locks held by kworker/u4:3/609:
- #0: ffff000002842938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work
- #1: ffff80000bacbd60 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work
- #2: ffff000007645178 (&dev->mutex){....}-{3:3}, at: __device_attach
- #3: ffff8000096e6e78 (dsa2_mutex){+.+.}-{3:3}, at: dsa_register_switch
- #4: ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
-stack backtrace:
-CPU: 1 PID: 609 Comm: kworker/u4:3 Not tainted 5.15.71 #1
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
- dump_backtrace
- show_stack
- dump_stack_lvl
- dump_stack
- print_circular_bug
- check_noncircular
- __lock_acquire
- lock_acquire.part.0
- lock_acquire
- __mutex_lock
- mutex_lock_nested
- regmap_lock_mutex
- regmap_read
- lan9303_phy_read
- dsa_slave_phy_read
- __mdiobus_read
- mdiobus_read
- get_phy_device
- mdiobus_scan
- __mdiobus_register
- dsa_register_switch
- lan9303_probe
- lan9303_mdio_probe
-...
-
-Cc: stable@vger.kernel.org
-Fixes: dc7005831523 ("net: dsa: LAN9303: add MDIO managed mode support")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20231027065741.534971-1-alexander.sverdlin@siemens.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
+Reported-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Tested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230821142820.497107-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lan9303_mdio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/platforms/powernv/opal-prd.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/net/dsa/lan9303_mdio.c
-+++ b/drivers/net/dsa/lan9303_mdio.c
-@@ -32,7 +32,7 @@ static int lan9303_mdio_write(void *ctx,
- 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
+--- a/arch/powerpc/platforms/powernv/opal-prd.c
++++ b/arch/powerpc/platforms/powernv/opal-prd.c
+@@ -24,13 +24,20 @@
+ #include <linux/uaccess.h>
  
- 	reg <<= 2; /* reg num to offset */
--	mutex_lock(&sw_dev->device->bus->mdio_lock);
-+	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
- 	lan9303_mdio_real_write(sw_dev->device, reg, val & 0xffff);
- 	lan9303_mdio_real_write(sw_dev->device, reg + 2, (val >> 16) & 0xffff);
- 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
-@@ -50,7 +50,7 @@ static int lan9303_mdio_read(void *ctx,
- 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
  
- 	reg <<= 2; /* reg num to offset */
--	mutex_lock(&sw_dev->device->bus->mdio_lock);
-+	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
- 	*val = lan9303_mdio_real_read(sw_dev->device, reg);
- 	*val |= (lan9303_mdio_real_read(sw_dev->device, reg + 2) << 16);
- 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
++struct opal_prd_msg {
++	union {
++		struct opal_prd_msg_header header;
++		DECLARE_FLEX_ARRAY(u8, data);
++	};
++};
++
+ /*
+  * The msg member must be at the end of the struct, as it's followed by the
+  * message data.
+  */
+ struct opal_prd_msg_queue_item {
+-	struct list_head		list;
+-	struct opal_prd_msg_header	msg;
++	struct list_head	list;
++	struct opal_prd_msg	msg;
+ };
+ 
+ static struct device_node *prd_node;
+@@ -156,7 +163,7 @@ static ssize_t opal_prd_read(struct file
+ 	int rc;
+ 
+ 	/* we need at least a header's worth of data */
+-	if (count < sizeof(item->msg))
++	if (count < sizeof(item->msg.header))
+ 		return -EINVAL;
+ 
+ 	if (*ppos)
+@@ -186,7 +193,7 @@ static ssize_t opal_prd_read(struct file
+ 			return -EINTR;
+ 	}
+ 
+-	size = be16_to_cpu(item->msg.size);
++	size = be16_to_cpu(item->msg.header.size);
+ 	if (size > count) {
+ 		err = -EINVAL;
+ 		goto err_requeue;
+@@ -352,7 +359,7 @@ static int opal_prd_msg_notifier(struct
+ 	if (!item)
+ 		return -ENOMEM;
+ 
+-	memcpy(&item->msg, msg->params, msg_size);
++	memcpy(&item->msg.data, msg->params, msg_size);
+ 
+ 	spin_lock_irqsave(&opal_prd_msg_queue_lock, flags);
+ 	list_add_tail(&item->list, &opal_prd_msg_queue);
 
 
 
