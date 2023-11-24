@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 191DC7F7C21
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E48717F7E24
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C23EE1F20FA0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8775AB21720
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85D43A8C6;
-	Fri, 24 Nov 2023 18:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CDB39FF7;
+	Fri, 24 Nov 2023 18:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RX8Zpuph"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh4O97wt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E2339FDD;
-	Fri, 24 Nov 2023 18:12:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E5AC433C8;
-	Fri, 24 Nov 2023 18:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55FB93A8C3;
+	Fri, 24 Nov 2023 18:30:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A5BC433C7;
+	Fri, 24 Nov 2023 18:30:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849526;
-	bh=xzOvNITvcrWhqheJBRmnpe61h721I7mT4pjllDCCMmE=;
+	s=korg; t=1700850622;
+	bh=V86Mz79jzXKpNUHj1yeyYxQzdtaHnIXJZ2w5VGA3EaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RX8ZpuphYwSkp1YJCePAnOUvDE3W9R00ZkkYtV8/JfS1UyNOZONEXdL33CMlU2b68
-	 XkuAM32rO+lx9ODZoOt3Il0WJaNqFUAz8E4wl4oiGUuYmIxhbsMlEVoGm70zhNN/7l
-	 Ik5YhdGCPumSpZY7cEZFxnP6mQOPt30c/mH+j86w=
+	b=Fh4O97wt/O02WYcjYKjF5EK6n1QCLavuD31HvD5SGepgmSyWukALh1F3wTj2yenbP
+	 bC5QmL2qWq4cPAuuPiM+XlfRdbHcN/Kx1m9+hdQ8646Wyjw7EEmXsipd6fX60vf4Gf
+	 rxKCLI2dMjUXwvxuoZPtD/l5Kjl9ZoGuRwgtBcys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/530] net: hns3: fix variable may not initialized problem in hns3_init_mac_addr()
-Date: Fri, 24 Nov 2023 17:45:58 +0000
-Message-ID: <20231124172033.914457140@linuxfoundation.org>
+Subject: [PATCH 6.5 123/491] usb: host: xhci: Avoid XHCI resume delay if SSUSB device is not present
+Date: Fri, 24 Nov 2023 17:45:59 +0000
+Message-ID: <20231124172028.209889549@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,39 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit dbd2f3b20c6ae425665b6975d766e3653d453e73 ]
+[ Upstream commit 6add6dd345cb754ce18ff992c7264cabf31e59f6 ]
 
-When a VF is calling hns3_init_mac_addr(), get_mac_addr() may
-return fail, then the value of mac_addr_temp is not initialized.
+There is a 120ms delay implemented for allowing the XHCI host controller to
+detect a U3 wakeup pulse.  The intention is to wait for the device to retry
+the wakeup event if the USB3 PORTSC doesn't reflect the RESUME link status
+by the time it is checked.  As per the USB3 specification:
 
-Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  tU3WakeupRetryDelay ("Table 7-12. LTSSM State Transition Timeouts")
+
+This would allow the XHCI resume sequence to determine if the root hub
+needs to be also resumed.  However, in case there is no device connected,
+or if there is only a HSUSB device connected, this delay would still affect
+the overall resume timing.
+
+Since this delay is solely for detecting U3 wake events (USB3 specific)
+then ignore this delay for the disconnected case and the HSUSB connected
+only case.
+
+[skip helper function, rename usb3_connected variable -Mathias ]
+
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-20-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index cf50368441b78..677cfaa5fe08c 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5140,7 +5140,7 @@ static int hns3_init_mac_addr(struct net_device *netdev)
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
- 	char format_mac_addr[HNAE3_FORMAT_MAC_ADDR_LEN];
- 	struct hnae3_handle *h = priv->ae_handle;
--	u8 mac_addr_temp[ETH_ALEN];
-+	u8 mac_addr_temp[ETH_ALEN] = {0};
- 	int ret = 0;
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index fae994f679d45..82aab2f9adbb8 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -968,6 +968,7 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
+ 	int			retval = 0;
+ 	bool			comp_timer_running = false;
+ 	bool			pending_portevent = false;
++	bool			suspended_usb3_devs = false;
+ 	bool			reinit_xhc = false;
  
- 	if (h->ae_algo->ops->get_mac_addr)
+ 	if (!hcd->state)
+@@ -1115,10 +1116,17 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
+ 		/*
+ 		 * Resume roothubs only if there are pending events.
+ 		 * USB 3 devices resend U3 LFPS wake after a 100ms delay if
+-		 * the first wake signalling failed, give it that chance.
++		 * the first wake signalling failed, give it that chance if
++		 * there are suspended USB 3 devices.
+ 		 */
++		if (xhci->usb3_rhub.bus_state.suspended_ports ||
++		    xhci->usb3_rhub.bus_state.bus_suspended)
++			suspended_usb3_devs = true;
++
+ 		pending_portevent = xhci_pending_portevent(xhci);
+-		if (!pending_portevent && msg.event == PM_EVENT_AUTO_RESUME) {
++
++		if (suspended_usb3_devs && !pending_portevent &&
++		    msg.event == PM_EVENT_AUTO_RESUME) {
+ 			msleep(120);
+ 			pending_portevent = xhci_pending_portevent(xhci);
+ 		}
 -- 
 2.42.0
 
