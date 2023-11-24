@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F3E57F7B1D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B51B7F7AEA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510E81C209B3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 225BC1F20E38
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9635A39FF8;
-	Fri, 24 Nov 2023 18:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590A939FE8;
+	Fri, 24 Nov 2023 17:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jnle9EBX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XItPbPZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A53539FE3;
-	Fri, 24 Nov 2023 18:01:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDB1C433C8;
-	Fri, 24 Nov 2023 18:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19DA939FD4;
+	Fri, 24 Nov 2023 17:59:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E32C433C8;
+	Fri, 24 Nov 2023 17:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848918;
-	bh=ZC0f9JhKpDQIa0CzcK7Rbjq0M97u5aSuAGnZczjXNFw=;
+	s=korg; t=1700848798;
+	bh=CtkJ3DtwuiuW7M+bUaHTBxUD8GCrC9lXYRIN+LAylW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jnle9EBXttDN7ZViqfD836Hfbffs9ZQZvnex0DDO8IOsZfgsclbqa0rHFEuNIwzw5
-	 QK3LKdYqJ0jZZzMrta3RPK5I3Zw5YslJ7QeemBt1Mqwi6NrV5RAVIgDv7CVFEm9hWz
-	 Tr00+KuEjRKWaPJHix6QJ4Yrh4L9kcWBhPB9F+ss=
+	b=XItPbPZfHXs67DmhDpmrE9dNkMeiTLSOnmXWJeTMNrqFnHbUxoIS5K+Ck1XHhqa37
+	 BO+qE4C1lhIhW+XYyoYBesM2BDR9Bsew+pB8i/fn61TCjNFnyEAC5lQz+agEYZ/CoJ
+	 Jb+5xWD2DIkVq2JS3ASkFz53iq7Vos5vzvIgNvT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 34/57] parisc/power: Add power soft-off when running on qemu
+	Joe Ferner <joe.m.ferner@gmail.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 4.19 85/97] media: sharp: fix sharp encoding
 Date: Fri, 24 Nov 2023 17:50:58 +0000
-Message-ID: <20231124171931.541939993@linuxfoundation.org>
+Message-ID: <20231124171937.356518894@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Sean Young <sean@mess.org>
 
-commit d0c219472980d15f5cbc5c8aec736848bda3f235 upstream.
+commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org # v6.0+
+The Sharp protocol[1] encoding has incorrect timings for bit space.
+
+[1] https://www.sbprojects.net/knowledge/ir/sharp.php
+
+Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
+Cc: stable@vger.kernel.org
+Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
+Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/power.c |   16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/parisc/power.c
-+++ b/drivers/parisc/power.c
-@@ -193,6 +193,14 @@ static struct notifier_block parisc_pani
- 	.priority	= INT_MAX,
- };
+--- a/drivers/media/rc/ir-sharp-decoder.c
++++ b/drivers/media/rc/ir-sharp-decoder.c
+@@ -23,7 +23,9 @@
+ #define SHARP_UNIT		40000  /* ns */
+ #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
+ #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
+-#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
++#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
++#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
++#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
+ #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
+ #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
-+/* qemu soft power-off function */
-+static int qemu_power_off(struct sys_off_data *data)
-+{
-+	/* this turns the system off via SeaBIOS */
-+	*(int *)data->cb_data = 0;
-+	pdc_soft_power_button(1);
-+	return NOTIFY_DONE;
-+}
- 
- static int __init power_init(void)
- {
-@@ -222,7 +230,13 @@ static int __init power_init(void)
- 				soft_power_reg);
- 	}
- 
--	power_task = kthread_run(kpowerswd, (void*)soft_power_reg, KTHREAD_NAME);
-+	power_task = NULL;
-+	if (running_on_qemu && soft_power_reg)
-+		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF, SYS_OFF_PRIO_DEFAULT,
-+					qemu_power_off, (void *)soft_power_reg);
-+	else
-+		power_task = kthread_run(kpowerswd, (void*)soft_power_reg,
-+					KTHREAD_NAME);
- 	if (IS_ERR(power_task)) {
- 		printk(KERN_ERR DRIVER_NAME ": thread creation failed.  Driver not loaded.\n");
- 		pdc_soft_power_button(0);
+@@ -176,8 +178,8 @@ static const struct ir_raw_timings_pd ir
+ 	.header_pulse  = 0,
+ 	.header_space  = 0,
+ 	.bit_pulse     = SHARP_BIT_PULSE,
+-	.bit_space[0]  = SHARP_BIT_0_PERIOD,
+-	.bit_space[1]  = SHARP_BIT_1_PERIOD,
++	.bit_space[0]  = SHARP_BIT_0_SPACE,
++	.bit_space[1]  = SHARP_BIT_1_SPACE,
+ 	.trailer_pulse = SHARP_BIT_PULSE,
+ 	.trailer_space = SHARP_ECHO_SPACE,
+ 	.msb_first     = 1,
 
 
 
