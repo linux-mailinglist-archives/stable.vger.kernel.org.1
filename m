@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB4377F7B14
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9377C7F7F7A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 954112816BA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C45511C214C3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAA7364A4;
-	Fri, 24 Nov 2023 18:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D80F33CCC;
+	Fri, 24 Nov 2023 18:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jI+HeAd5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5ohiF2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F9339FC6;
-	Fri, 24 Nov 2023 18:01:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E177C433C8;
-	Fri, 24 Nov 2023 18:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71C4364C1;
+	Fri, 24 Nov 2023 18:41:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76659C433C7;
+	Fri, 24 Nov 2023 18:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848900;
-	bh=AOL3rrI9Rx8qqXEvlV219zKRg//cwEc8uhlpr7WL1io=;
+	s=korg; t=1700851308;
+	bh=QbCeaqEHEfUdSRCU4KCzTqEmTV+Ir/dt36bl57sg1vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jI+HeAd5CJpR8/BQoYsKraW/lmkc5Jau95YyqKUqaIUhSSNhiHR7hIy27RBh6kiTz
-	 X9BZn5Fu3Ev+84GedI713+ZM2OCjzjOeHIJdCdzT5vNbjdEj3J+q+pPno4WHT/p7rK
-	 B7TmEfu4BRl9yDFvXFJLKVXqxUd45DCIQicG5Ff8=
+	b=N5ohiF2FytzYDGZufXiORtCjEzlZ4wcdSGdrMrr39z15ONgXrqYmV6TBjz8P2Mgrf
+	 sCpmzVcWQUk8CtL0Vp/9sWrM+LfuU68qeVtCABNJdHwryjgJ3zBCIxhTAGhwXMKhtQ
+	 2p9/kFdjbNTjEjxka913617eCrQpjETSrRkC9eW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Held <felix.held@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 09/57] drm/amd: Fix UBSAN array-index-out-of-bounds for SMU7
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.5 397/491] xfs: recovery should not clear di_flushiter unconditionally
 Date: Fri, 24 Nov 2023 17:50:33 +0000
-Message-ID: <20231124171930.625522675@linuxfoundation.org>
+Message-ID: <20231124172036.535750801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit 760efbca74a405dc439a013a5efaa9fadc95a8c3 ]
+commit 7930d9e103700cde15833638855b750715c12091 upstream.
 
-For pptable structs that use flexible array sizes, use flexible arrays.
+Because on v3 inodes, di_flushiter doesn't exist. It overlaps with
+zero padding in the inode, except when NREXT64=1 configurations are
+in use and the zero padding is no longer padding but holds the 64
+bit extent counter.
 
-Suggested-by: Felix Held <felix.held@amd.com>
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2874
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This manifests obviously on big endian platforms (e.g. s390) because
+the log dinode is in host order and the overlap is the LSBs of the
+extent count field. It is not noticed on little endian machines
+because the overlap is at the MSB end of the extent count field and
+we need to get more than 2^^48 extents in the inode before it
+manifests. i.e. the heat death of the universe will occur before we
+see the problem in little endian machines.
+
+This is a zero-day issue for NREXT64=1 configuraitons on big endian
+machines. Fix it by only clearing di_flushiter on v2 inodes during
+recovery.
+
+Fixes: 9b7d16e34bbe ("xfs: Introduce XFS_DIFLAG2_NREXT64 and associated helpers")
+cc: stable@kernel.org # 5.19+
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/include/pptable.h              | 4 ++--
- drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_inode_item_recover.c |   32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/include/pptable.h b/drivers/gpu/drm/amd/include/pptable.h
-index 0b6a057e0a4c4..5aac8d545bdc6 100644
---- a/drivers/gpu/drm/amd/include/pptable.h
-+++ b/drivers/gpu/drm/amd/include/pptable.h
-@@ -78,7 +78,7 @@ typedef struct _ATOM_PPLIB_THERMALCONTROLLER
- typedef struct _ATOM_PPLIB_STATE
- {
-     UCHAR ucNonClockStateIndex;
--    UCHAR ucClockStateIndices[1]; // variable-sized
-+    UCHAR ucClockStateIndices[]; // variable-sized
- } ATOM_PPLIB_STATE;
+--- a/fs/xfs/xfs_inode_item_recover.c
++++ b/fs/xfs/xfs_inode_item_recover.c
+@@ -369,24 +369,26 @@ xlog_recover_inode_commit_pass2(
+ 	 * superblock flag to determine whether we need to look at di_flushiter
+ 	 * to skip replay when the on disk inode is newer than the log one
+ 	 */
+-	if (!xfs_has_v3inodes(mp) &&
+-	    ldip->di_flushiter < be16_to_cpu(dip->di_flushiter)) {
+-		/*
+-		 * Deal with the wrap case, DI_MAX_FLUSH is less
+-		 * than smaller numbers
+-		 */
+-		if (be16_to_cpu(dip->di_flushiter) == DI_MAX_FLUSH &&
+-		    ldip->di_flushiter < (DI_MAX_FLUSH >> 1)) {
+-			/* do nothing */
+-		} else {
+-			trace_xfs_log_recover_inode_skip(log, in_f);
+-			error = 0;
+-			goto out_release;
++	if (!xfs_has_v3inodes(mp)) {
++		if (ldip->di_flushiter < be16_to_cpu(dip->di_flushiter)) {
++			/*
++			 * Deal with the wrap case, DI_MAX_FLUSH is less
++			 * than smaller numbers
++			 */
++			if (be16_to_cpu(dip->di_flushiter) == DI_MAX_FLUSH &&
++			    ldip->di_flushiter < (DI_MAX_FLUSH >> 1)) {
++				/* do nothing */
++			} else {
++				trace_xfs_log_recover_inode_skip(log, in_f);
++				error = 0;
++				goto out_release;
++			}
+ 		}
++
++		/* Take the opportunity to reset the flush iteration count */
++		ldip->di_flushiter = 0;
+ 	}
  
+-	/* Take the opportunity to reset the flush iteration count */
+-	ldip->di_flushiter = 0;
  
-@@ -473,7 +473,7 @@ typedef struct _ATOM_PPLIB_STATE_V2
-       /**
-       * Driver will read the first ucNumDPMLevels in this array
-       */
--      UCHAR clockInfoIndex[1];
-+      UCHAR clockInfoIndex[];
- } ATOM_PPLIB_STATE_V2;
- 
- typedef struct _StateArray{
-diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
-index 1e870f58dd12a..d5a4a08c6d392 100644
---- a/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
-+++ b/drivers/gpu/drm/amd/powerplay/hwmgr/pptable_v1_0.h
-@@ -179,7 +179,7 @@ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_MCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_MCLK_Dependency_Record entries[1];				/* Dynamically allocate entries. */
-+	ATOM_Tonga_MCLK_Dependency_Record entries[];				/* Dynamically allocate entries. */
- } ATOM_Tonga_MCLK_Dependency_Table;
- 
- typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
-@@ -194,7 +194,7 @@ typedef struct _ATOM_Tonga_SCLK_Dependency_Record {
- typedef struct _ATOM_Tonga_SCLK_Dependency_Table {
- 	UCHAR ucRevId;
- 	UCHAR ucNumEntries; 										/* Number of entries. */
--	ATOM_Tonga_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
-+	ATOM_Tonga_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
- } ATOM_Tonga_SCLK_Dependency_Table;
- 
- typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
--- 
-2.42.0
-
+ 	if (unlikely(S_ISREG(ldip->di_mode))) {
+ 		if ((ldip->di_format != XFS_DINODE_FMT_EXTENTS) &&
 
 
 
