@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C204C7F83E1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A123F7F8443
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61DC8B2710E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D226F1C25B02
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F400381CC;
-	Fri, 24 Nov 2023 19:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C1837170;
+	Fri, 24 Nov 2023 19:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVqHZVRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1910JOLS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488612EAEA;
-	Fri, 24 Nov 2023 19:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95DAC433C8;
-	Fri, 24 Nov 2023 19:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E4F35EE6;
+	Fri, 24 Nov 2023 19:25:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD33C433C8;
+	Fri, 24 Nov 2023 19:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853711;
-	bh=hBT4e+KJf3xo1D6TfPTlhgMHnRMPggVbJdoj82hiU5s=;
+	s=korg; t=1700853935;
+	bh=5Z9aXwaOI5cgt/+7fWJLUQqCGU13CVLXT6Ubn3vDJJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVqHZVRpzrjKPY2eG+eGiKK+Pr49KeHM/Jv9BhmLCJtprPM27+GeFTAL+soIptnNO
-	 INIgGVfyxjiF53SO4MddszoPDCuUpzYNCnikq67RXSkUaXNyQi8FF39suVHr6eIuB4
-	 ElKwKPIjyq+lzbioiHbICAzGYi2QZkTbtmZtjFmE=
+	b=1910JOLSObdfYwLa257P1GzBB8Sv++ZfN9NJlr/RzyBB1aftGWSUsjT15SP/CTkny
+	 E326EV1zZjLCsFT0OTqDFUhe5OKWWuMTt0dLZ6/FaII8gWrQFa+fqxrbCkrIol9NLA
+	 JwqDpFw6PFx98gE0rO5SewTJPt3hK3TtAUPmbLFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15 263/297] f2fs: avoid format-overflow warning
-Date: Fri, 24 Nov 2023 17:55:05 +0000
-Message-ID: <20231124172009.355800008@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 089/159] btrfs: dont arbitrarily slow down delalloc if were committing
+Date: Fri, 24 Nov 2023 17:55:06 +0000
+Message-ID: <20231124171945.618962428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +50,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit e0d4e8acb3789c5a8651061fbab62ca24a45c063 upstream.
+commit 11aeb97b45ad2e0040cbb2a589bc403152526345 upstream.
 
-With gcc and W=1 option, there's a warning like this:
+We have a random schedule_timeout() if the current transaction is
+committing, which seems to be a holdover from the original delalloc
+reservation code.
 
-fs/f2fs/compress.c: In function ‘f2fs_init_page_array_cache’:
-fs/f2fs/compress.c:1984:47: error: ‘%u’ directive writing between
-1 and 7 bytes into a region of size between 5 and 8
-[-Werror=format-overflow=]
- 1984 |  sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev),
-		MINOR(dev));
-      |                                               ^~
+Remove this, we have the proper flushing stuff, we shouldn't be hoping
+for random timing things to make everything work.  This just induces
+latency for no reason.
 
-String "f2fs_page_array_entry-%u:%u" can up to 35. The first "%u" can up
-to 4 and the second "%u" can up to 7, so total size is "24 + 4 + 7 = 35".
-slab_name's size should be 35 rather than 32.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/delalloc-space.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1906,7 +1906,7 @@ void f2fs_destroy_compress_inode(struct
- int f2fs_init_page_array_cache(struct f2fs_sb_info *sbi)
- {
- 	dev_t dev = sbi->sb->s_bdev->bd_dev;
--	char slab_name[32];
-+	char slab_name[35];
+--- a/fs/btrfs/delalloc-space.c
++++ b/fs/btrfs/delalloc-space.c
+@@ -324,9 +324,6 @@ int btrfs_delalloc_reserve_metadata(stru
+ 	} else {
+ 		if (current->journal_info)
+ 			flush = BTRFS_RESERVE_FLUSH_LIMIT;
+-
+-		if (btrfs_transaction_in_commit(fs_info))
+-			schedule_timeout(1);
+ 	}
  
- 	sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev), MINOR(dev));
- 
+ 	if (delalloc_lock)
 
 
 
