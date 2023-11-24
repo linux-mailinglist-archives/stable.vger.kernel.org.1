@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-2283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108857F8386
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 572A97F8239
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C04162884EC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 117C2284842
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625EF364C4;
-	Fri, 24 Nov 2023 19:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CD1339BE;
+	Fri, 24 Nov 2023 19:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4D1kUyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXzkb91h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C033CC2;
-	Fri, 24 Nov 2023 19:18:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E8FC433A9;
-	Fri, 24 Nov 2023 19:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2212C1A2;
+	Fri, 24 Nov 2023 19:05:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0CEC433C8;
+	Fri, 24 Nov 2023 19:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853506;
-	bh=suSpkl/0CfXHTvfr0+7faU4ntognt2c4lvmSIWj4naw=;
+	s=korg; t=1700852745;
+	bh=s37iXUcM/2RXLZSxuTPAUAGDSSh5Ylb+2BZqUpmip/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z4D1kUyufQdR7F2QzYKJsWXArChKsQiBtlZpXZryqr0flfbRCj/1vnIfHRE3mZASI
-	 uEEw7rofKefTYtueCY86822I9tT5cQJ4VuPN2c4Oza1IfOcyMPXNsuaV+/MsmEG0bK
-	 zFm/7/BL3DEAvx2/6VXoskDbkh9ywmFNVWVZIi1A=
+	b=jXzkb91hkfRW2Rcxt9Rc4I/mn8PEwWom3UoHfJkMOevI4Sp5Dvjs2yy7OE1W9a/i/
+	 LVQV0+ORTLiy5oxksVvDK5Ndiqo2bN8D+oF9prezY4HcBMcyvxdGYCjn5zSVmPWjXa
+	 IvJriFwpWVMr2an5cG9sdahfi+C/ChJFQx9rEKEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 190/297] arm64: dts: qcom: ipq6018: Fix hwlock index for SMEM
+	Krister Johansen <kjlx@templeofstupid.com>,
+	Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 5.10 105/193] watchdog: move softlockup_panic back to early_param
 Date: Fri, 24 Nov 2023 17:53:52 +0000
-Message-ID: <20231124172006.871206121@linuxfoundation.org>
+Message-ID: <20231124171951.444128737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+From: Krister Johansen <kjlx@templeofstupid.com>
 
-commit 95d97b111e1e184b0c8656137033ed64f2cf21e4 upstream.
+commit 8b793bcda61f6c3ed4f5b2ded7530ef6749580cb upstream.
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+Setting softlockup_panic from do_sysctl_args() causes it to take effect
+later in boot.  The lockup detector is enabled before SMP is brought
+online, but do_sysctl_args runs afterwards.  If a user wants to set
+softlockup_panic on boot and have it trigger should a softlockup occur
+during onlining of the non-boot processors, they could do this prior to
+commit f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot
+parameters to sysctl aliases").  However, after this commit the value
+of softlockup_panic is set too late to be of help for this type of
+problem.  Restore the prior behavior.
 
-Fix the SMEM hwlock index to 3 for IPQ6018.
-
+Signed-off-by: Krister Johansen <kjlx@templeofstupid.com>
 Cc: stable@vger.kernel.org
-Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230904172516.479866-3-quic_viswanat@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: f117955a2255 ("kernel/watchdog.c: convert {soft/hard}lockup boot parameters to sysctl aliases")
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/proc/proc_sysctl.c |    1 -
+ kernel/watchdog.c     |    7 +++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -175,7 +175,7 @@
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
--		hwlocks = <&tcsr_mutex 0>;
-+		hwlocks = <&tcsr_mutex 3>;
- 	};
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -1767,7 +1767,6 @@ static const struct sysctl_alias sysctl_
+ 	{"hung_task_panic",			"kernel.hung_task_panic" },
+ 	{"numa_zonelist_order",			"vm.numa_zonelist_order" },
+ 	{"softlockup_all_cpu_backtrace",	"kernel.softlockup_all_cpu_backtrace" },
+-	{"softlockup_panic",			"kernel.softlockup_panic" },
+ 	{ }
+ };
  
- 	soc: soc {
+--- a/kernel/watchdog.c
++++ b/kernel/watchdog.c
+@@ -176,6 +176,13 @@ static DEFINE_PER_CPU(unsigned long, hrt
+ static DEFINE_PER_CPU(unsigned long, hrtimer_interrupts_saved);
+ static unsigned long soft_lockup_nmi_warn;
+ 
++static int __init softlockup_panic_setup(char *str)
++{
++	softlockup_panic = simple_strtoul(str, NULL, 0);
++	return 1;
++}
++__setup("softlockup_panic=", softlockup_panic_setup);
++
+ static int __init nowatchdog_setup(char *str)
+ {
+ 	watchdog_user_enabled = 0;
 
 
 
