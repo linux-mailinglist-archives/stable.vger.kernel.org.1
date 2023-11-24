@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1287F7AE9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB767F7D71
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A546528185E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A6541C212B3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B7939FF7;
-	Fri, 24 Nov 2023 17:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDAD39FD9;
+	Fri, 24 Nov 2023 18:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCWNuwXU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuQw0/Sq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A0B381DE;
-	Fri, 24 Nov 2023 17:59:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE15C433C8;
-	Fri, 24 Nov 2023 17:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D313381BF;
+	Fri, 24 Nov 2023 18:24:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BA6C433C8;
+	Fri, 24 Nov 2023 18:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848796;
-	bh=V9WNbTuIVzPmGzwtGSkLNeNRXLCZu8zFluOjlp9Hp24=;
+	s=korg; t=1700850278;
+	bh=L4sPaGst/q/0gus56F/Co1b2zGfl5yHqLmeW9BHUtxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCWNuwXUGefM3Ln1OC5TubpCUlw0z7V1hWsVSqepl1TYsGEmUg12FfYcIN3Qcjhta
-	 cQY0b6wMzgkN611xq0yEPQfT6r0UCEyAUFjhN/5Dijf3fNxrMNH/MntOoE4T/UbIxS
-	 XYyiC/i80Wu9mSEymL3u6o1QBalRh4nAzAsmuAc4=
+	b=PuQw0/SqOaIrSDjh0thCkDa6D99AA/ozpux1fz6p/qPELTSuvWQNSoDaskFzIfU24
+	 dE9NvPMUZSOiRmAa79jXl5+SeiVFPJvdwBJ8crHhKGgTdsniTa52SltfTVfnxeflJt
+	 +Z5EK20vQzuu35gSGSqPxqDL8deZPDVF2Ah1tBVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Young <sean@mess.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 4.19 84/97] media: lirc: drop trailing space from scancode transmit
+Subject: [PATCH 6.6 491/530] media: qcom: camss: Fix invalid clock enable bit disjunction
 Date: Fri, 24 Nov 2023 17:50:57 +0000
-Message-ID: <20231124171937.316480750@linuxfoundation.org>
+Message-ID: <20231124172043.070045525@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +54,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Young <sean@mess.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-commit c8a489f820179fb12251e262b50303c29de991ac upstream.
+commit d8f7e1a60d01739a1d78db2b08603089c6cf7c8e upstream.
 
-When transmitting, infrared drivers expect an odd number of samples; iow
-without a trailing space. No problems have been observed so far, so
-this is just belt and braces.
+define CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE BIT(7)
 
-Fixes: 9b6192589be7 ("media: lirc: implement scancode sending")
+disjunction for gen2 ? BIT(7) : is a nop we are setting the same bit
+either way.
+
+Fixes: 4abb21309fda ("media: camss: csiphy: Move to hardcode CSI Clock Lane number")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/rc/lirc_dev.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/rc/lirc_dev.c
-+++ b/drivers/media/rc/lirc_dev.c
-@@ -302,7 +302,11 @@ static ssize_t ir_lirc_transmit_ir(struc
- 		if (ret < 0)
- 			goto out_kfree_raw;
+--- a/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
++++ b/drivers/media/platform/qcom/camss/camss-csiphy-3ph-1-0.c
+@@ -476,7 +476,7 @@ static void csiphy_lanes_enable(struct c
  
--		count = ret;
-+		/* drop trailing space */
-+		if (!(ret % 2))
-+			count = ret - 1;
-+		else
-+			count = ret;
+ 	settle_cnt = csiphy_settle_cnt_calc(link_freq, csiphy->timer_clk_rate);
  
- 		txbuf = kmalloc_array(count, sizeof(unsigned int), GFP_KERNEL);
- 		if (!txbuf) {
+-	val = is_gen2 ? BIT(7) : CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
++	val = CSIPHY_3PH_CMN_CSI_COMMON_CTRL5_CLK_ENABLE;
+ 	for (i = 0; i < c->num_data; i++)
+ 		val |= BIT(c->data[i].pos * 2);
+ 
 
 
 
