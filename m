@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7D67F83AC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8EB67F8436
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BA741C26241
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8380D28ABCE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CA8381A2;
-	Fri, 24 Nov 2023 19:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5B9364C4;
+	Fri, 24 Nov 2023 19:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzoYp9vE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WBsJQXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F413835EE6;
-	Fri, 24 Nov 2023 19:19:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80932C433C7;
-	Fri, 24 Nov 2023 19:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DAFF321AD;
+	Fri, 24 Nov 2023 19:25:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70F2C433C8;
+	Fri, 24 Nov 2023 19:25:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853595;
-	bh=9mgQXJdppuctGavQ8B6R8mr2vSQeMSnTB7SQQHraNgA=;
+	s=korg; t=1700853905;
+	bh=pOo5jZyc1DBbILoyI79uQ8wpaj0gi5BCAg5tWY0D8q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzoYp9vELurcfypPSkSyvlIKHuSfy4NG9r6aKN/FVsEf4PxXidgH8hLQzPCCVLAmS
-	 wcNG+6YYa4zvxlOiBHObN8aZ2yup4kPWMwoaiOoocFlFVrVYn1xvAWauWG9CNKJe3c
-	 fnCwcB/94KukA1qGJUQZv55zuaNhiW70O7tcQc9U=
+	b=1WBsJQXVDkBwJdCFQmd0ZSz9Q45WXLu/FkugMeWASDGBHyYlfRhSxxbscaMiWT1id
+	 p6aZqQODQi6h9heym8YqYbvdmw6YQIWk7KKZCVRTqoBRTHvfEbpHpFRmlalAKorJus
+	 Tfpw7Ge4HUirEOzxGBTKXDwYYdLwr5z2Hx+hMJt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johnathan Mantey <johnathanx.mantey@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 252/297] Revert ncsi: Propagate carrier gain/loss events to the NCSI controller
-Date: Fri, 24 Nov 2023 17:54:54 +0000
-Message-ID: <20231124172008.990865213@linuxfoundation.org>
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 078/159] ACPI: resource: Do IRQ override on TongFang GMxXGxx
+Date: Fri, 24 Nov 2023 17:54:55 +0000
+Message-ID: <20231124171945.188225044@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johnathan Mantey <johnathanx.mantey@intel.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 9e2e7efbbbff69d8340abb56d375dd79d1f5770f upstream.
+commit 0da9eccde3270b832c059ad618bf66e510c75d33 upstream.
 
-This reverts commit 3780bb29311eccb7a1c9641032a112eed237f7e3.
+The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
+for the keyboard to work.
 
-The cited commit introduced unwanted behavior.
+Adding an entry for this laptop to the override_table makes the internal
+keyboard functional.
 
-The intent for the commit was to be able to detect carrier loss/gain
-for just the NIC connected to the BMC. The unwanted effect is a
-carrier loss for auxiliary paths also causes the BMC to lose
-carrier. The BMC never regains carrier despite the secondary NIC
-regaining a link.
-
-This change, when merged, needs to be backported to stable kernels.
-5.4-stable, 5.10-stable, 5.15-stable, 6.1-stable, 6.5-stable
-
-Fixes: 3780bb29311e ("ncsi: Propagate carrier gain/loss events to the NCSI controller")
-CC: stable@vger.kernel.org
-Signed-off-by: Johnathan Mantey <johnathanx.mantey@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: All applicable <stable@vger.kernel.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-aen.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/acpi/resource.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -89,11 +89,6 @@ static int ncsi_aen_handler_lsc(struct n
- 	if ((had_link == has_link) || chained)
- 		return 0;
- 
--	if (had_link)
--		netif_carrier_off(ndp->ndev.dev);
--	else
--		netif_carrier_on(ndp->ndev.dev);
--
- 	if (!ndp->multi_package && !nc->package->multi_channel) {
- 		if (had_link) {
- 			ndp->flags |= NCSI_DEV_RESHUFFLE;
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -443,6 +443,18 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
++		},
++	},
++	{
++		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
++		},
++	},
++	{
+ 		.ident = "Asus ExpertBook B2502",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
 
 
 
