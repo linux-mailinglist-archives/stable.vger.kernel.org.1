@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-2268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4D77F8376
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D47717F83F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9731C25A18
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11E451C26AF3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3948D37170;
-	Fri, 24 Nov 2023 19:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42528381CC;
+	Fri, 24 Nov 2023 19:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9mCzJBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvSwdKof"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E722C31748;
-	Fri, 24 Nov 2023 19:17:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73200C433C7;
-	Fri, 24 Nov 2023 19:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F342FC36;
+	Fri, 24 Nov 2023 19:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840D5C433C7;
+	Fri, 24 Nov 2023 19:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853468;
-	bh=pM3buYN1fntY/gahh4JT9J1jkYz6zT4Cz1n2XeLr2J0=;
+	s=korg; t=1700853750;
+	bh=1KVt0vNuwMfZrUM+1OCqeyvZXD6rMwbojlvdeHDh/Bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9mCzJBpjqDAKujz+wDOxXUZHYHETETYGWA/EAB86tekhQdODkUibtvQKhfB3utgF
-	 In37znVovTEo3KxpemUEvVPtNU5b5LznvYYw0pmCwbQn6T685DzXMNPU3PqNC6/6n/
-	 SGxUxtU4Ngms5Xie5hmYLPF7KhMj/+FXws7UxjPo=
+	b=qvSwdKofhseWZVaZFdrq+R0N0zawGBx2DQmpnPRfqC0Z3UJMbtWXflWy4dSlQqwG+
+	 93zEsFF/+Qvcxmr61Ph3wF/fXYQftgnOeuP9milOAwp1d5MixpYJMjd2AiT8I8P6mN
+	 8IytVDwRF5+BUT/+MpeF2y8gc1DwWtpErp8wj4/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 183/297] mmc: vub300: fix an error code
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 008/159] wifi: ath9k: fix clang-specific fortify warnings
 Date: Fri, 24 Nov 2023 17:53:45 +0000
-Message-ID: <20231124172006.635460981@linuxfoundation.org>
+Message-ID: <20231124171942.253071232@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +52,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit b44f9da81783fda72632ef9b0d05ea3f3ca447a5 upstream.
+[ Upstream commit 95f97fe0ac974467ab4da215985a32b2fdf48af0 ]
 
-This error path should return -EINVAL instead of success.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-Fixes: 88095e7b473a ("mmc: Add new VUB300 USB-to-SD/SDIO/MMC driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/0769d30c-ad80-421b-bf5d-7d6f5d85604e@moroto.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In file included from drivers/net/wireless/ath/ath9k/debug.c:17:
+In file included from ./include/linux/slab.h:16:
+In file included from ./include/linux/gfp.h:7:
+In file included from ./include/linux/mmzone.h:8:
+In file included from ./include/linux/spinlock.h:56:
+In file included from ./include/linux/preempt.h:79:
+In file included from ./arch/x86/include/asm/preempt.h:9:
+In file included from ./include/linux/thread_info.h:60:
+In file included from ./arch/x86/include/asm/thread_info.h:53:
+In file included from ./arch/x86/include/asm/cpufeature.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+
+In file included from drivers/net/wireless/ath/ath9k/htc_drv_debug.c:17:
+In file included from drivers/net/wireless/ath/ath9k/htc.h:20:
+In file included from ./include/linux/module.h:13:
+In file included from ./include/linux/stat.h:19:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+
+The compiler actually complains on 'ath9k_get_et_strings()' and
+'ath9k_htc_get_et_strings()' due to the same reason: fortification logic
+inteprets call to 'memcpy()' as an attempt to copy the whole array from
+it's first member and so issues an overread warning. These warnings may
+be silenced by passing an address of the whole array and not the first
+member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230829093856.234584-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/vub300.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath9k/debug.c         | 2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/vub300.c
-+++ b/drivers/mmc/host/vub300.c
-@@ -2311,6 +2311,7 @@ static int vub300_probe(struct usb_inter
- 		vub300->read_only =
- 			(0x0010 & vub300->system_port_status.port_flags) ? 1 : 0;
- 	} else {
-+		retval = -EINVAL;
- 		goto error5;
- 	}
- 	usb_set_intfdata(interface, vub300);
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index 859a865c59950..8d98347e0ddff 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1284,7 +1284,7 @@ void ath9k_get_et_strings(struct ieee80211_hw *hw,
+ 			  u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath9k_gstrings_stats,
++		memcpy(data, ath9k_gstrings_stats,
+ 		       sizeof(ath9k_gstrings_stats));
+ }
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+index c55aab01fff5d..e79bbcd3279af 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+@@ -428,7 +428,7 @@ void ath9k_htc_get_et_strings(struct ieee80211_hw *hw,
+ 			      u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath9k_htc_gstrings_stats,
++		memcpy(data, ath9k_htc_gstrings_stats,
+ 		       sizeof(ath9k_htc_gstrings_stats));
+ }
+ 
+-- 
+2.42.0
+
 
 
 
