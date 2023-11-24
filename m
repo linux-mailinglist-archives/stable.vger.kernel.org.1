@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C50D67F7BCC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3441E7F7BB3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1251F20F7A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA396B20FE6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D1839FEA;
-	Fri, 24 Nov 2023 18:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39955364D6;
+	Fri, 24 Nov 2023 18:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNJVwHgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebUVkfnP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D9339FE3;
-	Fri, 24 Nov 2023 18:08:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5684C433C8;
-	Fri, 24 Nov 2023 18:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97FE39FE8;
+	Fri, 24 Nov 2023 18:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741A2C433C8;
+	Fri, 24 Nov 2023 18:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849328;
-	bh=Jck3wZcXVkWCZ1m3JcJmkSq0BGYLgQsb3Fx/P7wU9To=;
+	s=korg; t=1700849266;
+	bh=9RhFDLPGqjz9NKvLMFWBJnua7zLSNdbvwsN5uQXLVN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNJVwHgplAaaldCjXyVCQ/DsOJJ+ZBygIUc8u2+ASgZKVD5l1VlQV3sCl1vf7lfaz
-	 DvNcovRTt5oMKmKkh3JWV+fx0q3NDvijfwKRxubW2VqDD31qSgk3xYHY6Zu7FIpUt7
-	 9+18Y3g9NGWVWk8igLgT4bL2MmFyRtIpdP6tXGzY=
+	b=ebUVkfnPrIlg3IMQEqVswcT6mQDdxDmAoBQpmPQ+xsI24TucnuG5k2ifYd+ja2d5k
+	 N7jlxZnG8FH+TvE52yQuFZD15phl4nt6TSSQzP9z1JkzHQhMqeDyGG1tyl0P6q4oQk
+	 2goaFS6EZgzSKsc9f+Nm2sVG0WVuYiRFE/tUUB68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/530] ASoC: Intel: soc-acpi-cht: Add Lenovo Yoga Tab 3 Pro YT3-X90 quirk
-Date: Fri, 24 Nov 2023 17:44:39 +0000
-Message-ID: <20231124172031.551000297@linuxfoundation.org>
+Subject: [PATCH 6.6 114/530] crypto: hisilicon/qm - prevent soft lockup in receive loop
+Date: Fri, 24 Nov 2023 17:44:40 +0000
+Message-ID: <20231124172031.582106472@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -57,88 +57,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Longfang Liu <liulongfang@huawei.com>
 
-[ Upstream commit 2cb54788393134d8174ee594002baae3ce52c61e ]
+[ Upstream commit 33fc506d2ac514be1072499a263c3bff8c7c95a0 ]
 
-The Lenovo Yoga Tab 3 Pro YT3-X90 x86 tablet, which ships with Android with
-a custom kernel as factory OS, does not list the used WM5102 codec inside
-its DSDT.
+In the scenario where the accelerator business is fully loaded.
+When the workqueue receiving messages and performing callback
+processing, there are a large number of messages that need to be
+received, and there are continuously messages that have been
+processed and need to be received.
+This will cause the receive loop here to be locked for a long time.
+This scenario will cause watchdog timeout problems on OS with kernel
+preemption turned off.
 
-Workaround this with a new snd_soc_acpi_intel_baytrail_machines[] entry
-which matches on the SST id instead of the codec id like nocodec does,
-combined with using a machine_quirk callback which returns NULL on
-other machines to skip the new entry on other machines.
+The error logs:
+watchdog: BUG: soft lockup - CPU#23 stuck for 23s! [kworker/u262:1:1407]
+[ 1461.978428][   C23] Call trace:
+[ 1461.981890][   C23]  complete+0x8c/0xf0
+[ 1461.986031][   C23]  kcryptd_async_done+0x154/0x1f4 [dm_crypt]
+[ 1461.992154][   C23]  sec_skcipher_callback+0x7c/0xf4 [hisi_sec2]
+[ 1461.998446][   C23]  sec_req_cb+0x104/0x1f4 [hisi_sec2]
+[ 1462.003950][   C23]  qm_poll_req_cb+0xcc/0x150 [hisi_qm]
+[ 1462.009531][   C23]  qm_work_process+0x60/0xc0 [hisi_qm]
+[ 1462.015101][   C23]  process_one_work+0x1c4/0x470
+[ 1462.020052][   C23]  worker_thread+0x150/0x3c4
+[ 1462.024735][   C23]  kthread+0x108/0x13c
+[ 1462.028889][   C23]  ret_from_fork+0x10/0x18
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231021211534.114991-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Therefore, it is necessary to add an actively scheduled operation in the
+while loop to prevent this problem.
+After adding it, no matter whether the OS turns on or off the kernel
+preemption function. Neither will cause watchdog timeout issues.
+
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../intel/common/soc-acpi-intel-cht-match.c   | 43 +++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ drivers/crypto/hisilicon/qm.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-index cdcbf04b8832f..5e2ec60e2954b 100644
---- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-@@ -75,6 +75,39 @@ static struct snd_soc_acpi_mach *cht_ess8316_quirk(void *arg)
- 	return arg;
- }
+diff --git a/drivers/crypto/hisilicon/qm.c b/drivers/crypto/hisilicon/qm.c
+index 1638c0a7df310..193b0b3a77cda 100644
+--- a/drivers/crypto/hisilicon/qm.c
++++ b/drivers/crypto/hisilicon/qm.c
+@@ -847,6 +847,8 @@ static void qm_poll_req_cb(struct hisi_qp *qp)
+ 		qm_db(qm, qp->qp_id, QM_DOORBELL_CMD_CQ,
+ 		      qp->qp_status.cq_head, 0);
+ 		atomic_dec(&qp->qp_status.used);
++
++		cond_resched();
+ 	}
  
-+/*
-+ * The Lenovo Yoga Tab 3 Pro YT3-X90, with Android factory OS has a buggy DSDT
-+ * with the coded not being listed at all.
-+ */
-+static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
-+	{
-+		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
-+			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
-+		},
-+	},
-+	{ }
-+};
-+
-+static struct snd_soc_acpi_mach cht_lenovo_yoga_tab3_x90_mach = {
-+	.id = "10WM5102",
-+	.drv_name = "bytcr_wm5102",
-+	.fw_filename = "intel/fw_sst_22a8.bin",
-+	.board = "bytcr_wm5102",
-+	.sof_tplg_filename = "sof-cht-wm5102.tplg",
-+};
-+
-+static struct snd_soc_acpi_mach *lenovo_yt3_x90_quirk(void *arg)
-+{
-+	if (dmi_check_system(lenovo_yoga_tab3_x90))
-+		return &cht_lenovo_yoga_tab3_x90_mach;
-+
-+	/* Skip wildcard match snd_soc_acpi_intel_cherrytrail_machines[] entry */
-+	return NULL;
-+}
-+
- static const struct snd_soc_acpi_codecs rt5640_comp_ids = {
- 	.num_codecs = 2,
- 	.codecs = { "10EC5640", "10EC3276" },
-@@ -175,6 +208,16 @@ struct snd_soc_acpi_mach  snd_soc_acpi_intel_cherrytrail_machines[] = {
- 		.drv_name = "sof_pcm512x",
- 		.sof_tplg_filename = "sof-cht-src-50khz-pcm512x.tplg",
- 	},
-+	/*
-+	 * Special case for the Lenovo Yoga Tab 3 Pro YT3-X90 where the DSDT
-+	 * misses the codec. Match on the SST id instead, lenovo_yt3_x90_quirk()
-+	 * will return a YT3 specific mach or NULL when called on other hw,
-+	 * skipping this entry.
-+	 */
-+	{
-+		.id = "808622A8",
-+		.machine_quirk = lenovo_yt3_x90_quirk,
-+	},
- 
- #if IS_ENABLED(CONFIG_SND_SOC_INTEL_BYT_CHT_NOCODEC_MACH)
- 	/*
+ 	/* set c_flag */
 -- 
 2.42.0
 
