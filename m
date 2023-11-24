@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DD77F83FB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E11F7F8263
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D71A289DCE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C509EB23F7D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25B9364C4;
-	Fri, 24 Nov 2023 19:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232EE33E9;
+	Fri, 24 Nov 2023 19:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWIXcsO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVwyx9qN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7255B339BE;
-	Fri, 24 Nov 2023 19:22:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F5BC433C7;
-	Fri, 24 Nov 2023 19:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50BA2E84A;
+	Fri, 24 Nov 2023 19:07:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B27C433C8;
+	Fri, 24 Nov 2023 19:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853773;
-	bh=lwv74hIyNlIUT8IqqkEZSpgi7aBGf8ooLxlDv+UaWDI=;
+	s=korg; t=1700852829;
+	bh=iaLDceU8vodkIsCar/t/Lm9/BAVPyI3I3scM19y9Pc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWIXcsO1P5t1rjDrwq7NFIBah86bg5ieYpC89GT2tQwj3BMa8E9hxQdSOWj/PTmA5
-	 kwaxtAbDNOSV9Kg6uk5JGiDVyvIzNW+HIyV7QgRyoF8fKd+tuTV8JmXMaLTYrQQgir
-	 YqU+Jnz5X8E+Qy/7s7KWGhJwvVEStEjjTG94hDwQ=
+	b=HVwyx9qNbDDqgqgYMQ6O6WI8Mm5jKVNmp3BcfybItvQxcsytxrwmK4xBT8EXCZ08H
+	 GjWiq+ciWouE/pIeFg3Bcma7d1saai9s+GX+UqNH6ZsAPxxlTO8sxUMXjZahVm4WfZ
+	 zC+IilbQMdsvoZXNjf6PPgorjmf1VhThWgXjmWjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com,
-	Manas Ghandat <ghandatmanas@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/159] jfs: fix array-index-out-of-bounds in diAlloc
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.10 115/193] arm64: dts: qcom: ipq6018: Fix hwlock index for SMEM
 Date: Fri, 24 Nov 2023 17:54:02 +0000
-Message-ID: <20231124171942.898811743@linuxfoundation.org>
+Message-ID: <20231124171951.835887028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manas Ghandat <ghandatmanas@gmail.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-[ Upstream commit 05d9ea1ceb62a55af6727a69269a4fd310edf483 ]
+commit 95d97b111e1e184b0c8656137033ed64f2cf21e4 upstream.
 
-Currently there is not check against the agno of the iag while
-allocating new inodes to avoid fragmentation problem. Added the check
-which is required.
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-Reported-by: syzbot+79d792676d8ac050949f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=79d792676d8ac050949f
-Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the SMEM hwlock index to 3 for IPQ6018.
+
+Cc: stable@vger.kernel.org
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-3-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_imap.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 67c67604b8c85..14f918a4831d3 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -1322,7 +1322,7 @@ diInitInode(struct inode *ip, int iagno, int ino, int extno, struct iag * iagp)
- int diAlloc(struct inode *pip, bool dir, struct inode *ip)
- {
- 	int rc, ino, iagno, addext, extno, bitno, sword;
--	int nwords, rem, i, agno;
-+	int nwords, rem, i, agno, dn_numag;
- 	u32 mask, inosmap, extsmap;
- 	struct inode *ipimap;
- 	struct metapage *mp;
-@@ -1358,6 +1358,9 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -175,7 +175,7 @@
+ 	smem {
+ 		compatible = "qcom,smem";
+ 		memory-region = <&smem_region>;
+-		hwlocks = <&tcsr_mutex 0>;
++		hwlocks = <&tcsr_mutex 3>;
+ 	};
  
- 	/* get the ag number of this iag */
- 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
-+	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
-+	if (agno < 0 || agno > dn_numag)
-+		return -EIO;
- 
- 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
- 		/*
--- 
-2.42.0
-
+ 	soc: soc {
 
 
 
