@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448337F7B89
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1945D7F7DA0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0034C281FEF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A7761C20E3F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8276B39FF3;
-	Fri, 24 Nov 2023 18:06:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C03B3A8CF;
+	Fri, 24 Nov 2023 18:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBtRI8EY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rvftNur8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B5739FC3;
-	Fri, 24 Nov 2023 18:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43E5C433C8;
-	Fri, 24 Nov 2023 18:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 310E239FE8;
+	Fri, 24 Nov 2023 18:26:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD0EC433C8;
+	Fri, 24 Nov 2023 18:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849166;
-	bh=Qw0AW/ROEvhlIfssdOW9tbcJpd5911RszzWXuzBvViY=;
+	s=korg; t=1700850374;
+	bh=A+4NvOtaGFn3ibzWCy8rZhwAkAWQaEfC1sfNmMe04Js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBtRI8EYPPnfdi/jrW8anzaCAXR2Uu6ESIloPWu8pUVRRmycJlPvSyrqMqWNlqcXm
-	 dcjpW7NVL061IDIRvbSTpWRHN5VnYb78QA3YgVp8lwPXafh05FwvhJAhfrapsDhwC6
-	 ZDBzycnSt1edOwZbE6wa20iAeJ86yeKukwobDmlI=
+	b=rvftNur8qBJwpP8ymin473SdrKGSvindsjex2iiRv3qUeO3Yxjib01FASQNkR8ifk
+	 v2enEPppsXE9ELKl5kmTbjwMTB4A0hQu81HsMYn2zvvONM7tUnJl8cx3VC47O8aTwu
+	 bJ7VEGwueUvJnpZpgxYaymFLs3Z+SJOHMvzSJ7Nw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/530] drm/amdkfd: Fix shift out-of-bounds issue
+Subject: [PATCH 6.5 003/491] lib/generic-radix-tree.c: Dont overflow in peek()
 Date: Fri, 24 Nov 2023 17:43:59 +0000
-Message-ID: <20231124172030.285659342@linuxfoundation.org>
+Message-ID: <20231124172024.768888830@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +52,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Kent Overstreet <kent.overstreet@gmail.com>
 
-[ Upstream commit 282c1d793076c2edac6c3db51b7e8ed2b41d60a5 ]
+[ Upstream commit 9492261ff2460252cf2d8de89cdf854c7e2b28a0 ]
 
-[  567.613292] shift exponent 255 is too large for 64-bit type 'long unsigned int'
-[  567.614498] CPU: 5 PID: 238 Comm: kworker/5:1 Tainted: G           OE      6.2.0-34-generic #34~22.04.1-Ubuntu
-[  567.614502] Hardware name: AMD Splinter/Splinter-RPL, BIOS WS43927N_871 09/25/2023
-[  567.614504] Workqueue: events send_exception_work_handler [amdgpu]
-[  567.614748] Call Trace:
-[  567.614750]  <TASK>
-[  567.614753]  dump_stack_lvl+0x48/0x70
-[  567.614761]  dump_stack+0x10/0x20
-[  567.614763]  __ubsan_handle_shift_out_of_bounds+0x156/0x310
-[  567.614769]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.614773]  ? update_sd_lb_stats.constprop.0+0xf2/0x3c0
-[  567.614780]  svm_range_split_by_granularity.cold+0x2b/0x34 [amdgpu]
-[  567.615047]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.615052]  svm_migrate_to_ram+0x185/0x4d0 [amdgpu]
-[  567.615286]  do_swap_page+0x7b6/0xa30
-[  567.615291]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.615294]  ? __free_pages+0x119/0x130
-[  567.615299]  handle_pte_fault+0x227/0x280
-[  567.615303]  __handle_mm_fault+0x3c0/0x720
-[  567.615311]  handle_mm_fault+0x119/0x330
-[  567.615314]  ? lock_mm_and_find_vma+0x44/0x250
-[  567.615318]  do_user_addr_fault+0x1a9/0x640
-[  567.615323]  exc_page_fault+0x81/0x1b0
-[  567.615328]  asm_exc_page_fault+0x27/0x30
-[  567.615332] RIP: 0010:__get_user_8+0x1c/0x30
+When we started spreading new inode numbers throughout most of the 64
+bit inode space, that triggered some corner case bugs, in particular
+some integer overflows related to the radix tree code. Oops.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Suggested-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/generic-radix-tree.h |  7 +++++++
+ lib/generic-radix-tree.c           | 17 ++++++++++++++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 2591bdfcc2289..63ce30ea68915 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -767,7 +767,7 @@ svm_range_apply_attrs(struct kfd_process *p, struct svm_range *prange,
- 			prange->flags &= ~attrs[i].value;
- 			break;
- 		case KFD_IOCTL_SVM_ATTR_GRANULARITY:
--			prange->granularity = attrs[i].value;
-+			prange->granularity = min_t(uint32_t, attrs[i].value, 0x3F);
- 			break;
- 		default:
- 			WARN_ONCE(1, "svm_range_check_attrs wasn't called?");
+diff --git a/include/linux/generic-radix-tree.h b/include/linux/generic-radix-tree.h
+index 107613f7d7920..f6cd0f909d9fb 100644
+--- a/include/linux/generic-radix-tree.h
++++ b/include/linux/generic-radix-tree.h
+@@ -38,6 +38,7 @@
+ 
+ #include <asm/page.h>
+ #include <linux/bug.h>
++#include <linux/limits.h>
+ #include <linux/log2.h>
+ #include <linux/math.h>
+ #include <linux/types.h>
+@@ -184,6 +185,12 @@ void *__genradix_iter_peek(struct genradix_iter *, struct __genradix *, size_t);
+ static inline void __genradix_iter_advance(struct genradix_iter *iter,
+ 					   size_t obj_size)
+ {
++	if (iter->offset + obj_size < iter->offset) {
++		iter->offset	= SIZE_MAX;
++		iter->pos	= SIZE_MAX;
++		return;
++	}
++
+ 	iter->offset += obj_size;
+ 
+ 	if (!is_power_of_2(obj_size) &&
+diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
+index f25eb111c0516..7dfa88282b006 100644
+--- a/lib/generic-radix-tree.c
++++ b/lib/generic-radix-tree.c
+@@ -166,6 +166,10 @@ void *__genradix_iter_peek(struct genradix_iter *iter,
+ 	struct genradix_root *r;
+ 	struct genradix_node *n;
+ 	unsigned level, i;
++
++	if (iter->offset == SIZE_MAX)
++		return NULL;
++
+ restart:
+ 	r = READ_ONCE(radix->root);
+ 	if (!r)
+@@ -184,10 +188,17 @@ void *__genradix_iter_peek(struct genradix_iter *iter,
+ 			(GENRADIX_ARY - 1);
+ 
+ 		while (!n->children[i]) {
++			size_t objs_per_ptr = genradix_depth_size(level);
++
++			if (iter->offset + objs_per_ptr < iter->offset) {
++				iter->offset	= SIZE_MAX;
++				iter->pos	= SIZE_MAX;
++				return NULL;
++			}
++
+ 			i++;
+-			iter->offset = round_down(iter->offset +
+-					   genradix_depth_size(level),
+-					   genradix_depth_size(level));
++			iter->offset = round_down(iter->offset + objs_per_ptr,
++						  objs_per_ptr);
+ 			iter->pos = (iter->offset >> PAGE_SHIFT) *
+ 				objs_per_page;
+ 			if (i == GENRADIX_ARY)
 -- 
 2.42.0
 
