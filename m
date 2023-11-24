@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C88A67F8056
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9AF7F7C9A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6BCF2B216E5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7ECB1C2113B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C0B32FC21;
-	Fri, 24 Nov 2023 18:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286DF39FDD;
+	Fri, 24 Nov 2023 18:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhXzIAmV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+9ma6YU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C786E2E858;
-	Fri, 24 Nov 2023 18:48:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF46C433C8;
-	Fri, 24 Nov 2023 18:48:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCDA381D6;
+	Fri, 24 Nov 2023 18:16:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8BDC433CA;
+	Fri, 24 Nov 2023 18:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851730;
-	bh=LtiejT2HJ9ZF4CWqnrhNaIeuobdPajhkuvWuh0srecU=;
+	s=korg; t=1700849805;
+	bh=LgKG+YRYMrXfL8SdVJvV4woMhvetdpeIEIDSRUFBP3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LhXzIAmVtDn6Sf1SDy92L1vr6+p5sS4bGe2SW9KZlEDaCyAwq9urYVkLOP8Rd0kbY
-	 +qkMGv3DK1k8rtbjNZXu3AA9dePQ+XHJFWwNZXQEvCrf0Pvj8u1MR7F1AHPmv4205T
-	 DlZjpNovQreOXgUDjXOFjA2i8eOuLoIt3BTFB+LE=
+	b=I+9ma6YUjMDz6D6fu69Y6lTNIn28s9QXnchPHQXyLL8bkq7m9JnOCIXpAMnMnl7HB
+	 Dw7u+11OB0t/LXKgNBOl2LixEgtTj9Ptnc4cyz0E8vPWJKAuke+yqLFWwUwCJz/qH5
+	 c2M/qysc5QfbjOd++EWi2cn53KwwYIQu1CNPmxzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/372] atm: iphase: Do PCI error checks on own line
+	Carl Huang <quic_cjhuang@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.6 293/530] wifi: ath11k: fix gtk offload status event locking
 Date: Fri, 24 Nov 2023 17:47:39 +0000
-Message-ID: <20231124172012.900199869@linuxfoundation.org>
+Message-ID: <20231124172036.955135495@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +52,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit c28742447ca9879b52fbaf022ad844f0ffcd749c ]
+commit 1dea3c0720a146bd7193969f2847ccfed5be2221 upstream.
 
-In get_esi() PCI errors are checked inside line-split "if" conditions (in
-addition to the file not following the coding style). To make the code in
-get_esi() more readable, fix the coding style and use the usual error
-handling pattern with a separate variable.
+The ath11k active pdevs are protected by RCU but the gtk offload status
+event handling code calling ath11k_mac_get_arvif_by_vdev_id() was not
+marked as a read-side critical section.
 
-In addition, initialization of 'error' variable at declaration is not
-needed.
+Mark the code in question as an RCU read-side critical section to avoid
+any potential use-after-free issues.
 
-No functional changes intended.
+Compile tested only.
 
-Link: https://lore.kernel.org/r/20230911125354.25501-4-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a16d9b50cfba ("ath11k: support GTK rekey offload")
+Cc: stable@vger.kernel.org      # 5.18
+Cc: Carl Huang <quic_cjhuang@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231019155342.31631-1-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/iphase.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath11k/wmi.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/atm/iphase.c b/drivers/atm/iphase.c
-index 3241486869530..9bba8f280a4d4 100644
---- a/drivers/atm/iphase.c
-+++ b/drivers/atm/iphase.c
-@@ -2291,19 +2291,21 @@ static int get_esi(struct atm_dev *dev)
- static int reset_sar(struct atm_dev *dev)  
- {  
- 	IADEV *iadev;  
--	int i, error = 1;  
-+	int i, error;
- 	unsigned int pci[64];  
- 	  
- 	iadev = INPH_IA_DEV(dev);  
--	for(i=0; i<64; i++)  
--	  if ((error = pci_read_config_dword(iadev->pci,  
--				i*4, &pci[i])) != PCIBIOS_SUCCESSFUL)  
--  	      return error;  
-+	for (i = 0; i < 64; i++) {
-+		error = pci_read_config_dword(iadev->pci, i * 4, &pci[i]);
-+		if (error != PCIBIOS_SUCCESSFUL)
-+			return error;
-+	}
- 	writel(0, iadev->reg+IPHASE5575_EXT_RESET);  
--	for(i=0; i<64; i++)  
--	  if ((error = pci_write_config_dword(iadev->pci,  
--					i*4, pci[i])) != PCIBIOS_SUCCESSFUL)  
--	    return error;  
-+	for (i = 0; i < 64; i++) {
-+		error = pci_write_config_dword(iadev->pci, i * 4, pci[i]);
-+		if (error != PCIBIOS_SUCCESSFUL)
-+			return error;
-+	}
- 	udelay(5);  
- 	return 0;  
- }  
--- 
-2.42.0
-
+--- a/drivers/net/wireless/ath/ath11k/wmi.c
++++ b/drivers/net/wireless/ath/ath11k/wmi.c
+@@ -8619,12 +8619,13 @@ static void ath11k_wmi_gtk_offload_statu
+ 		return;
+ 	}
+ 
++	rcu_read_lock();
++
+ 	arvif = ath11k_mac_get_arvif_by_vdev_id(ab, ev->vdev_id);
+ 	if (!arvif) {
+ 		ath11k_warn(ab, "failed to get arvif for vdev_id:%d\n",
+ 			    ev->vdev_id);
+-		kfree(tb);
+-		return;
++		goto exit;
+ 	}
+ 
+ 	ath11k_dbg(ab, ATH11K_DBG_WMI, "event gtk offload refresh_cnt %d\n",
+@@ -8641,6 +8642,8 @@ static void ath11k_wmi_gtk_offload_statu
+ 
+ 	ieee80211_gtk_rekey_notify(arvif->vif, arvif->bssid,
+ 				   (void *)&replay_ctr_be, GFP_ATOMIC);
++exit:
++	rcu_read_unlock();
+ 
+ 	kfree(tb);
+ }
 
 
 
