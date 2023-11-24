@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD0B7F7F7E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3736F7F7B05
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94A6F281E60
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72D1B209CC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2914D1A5A4;
-	Fri, 24 Nov 2023 18:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF55D39FE1;
+	Fri, 24 Nov 2023 18:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sRz0TZYJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKfgSEAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D61634189;
-	Fri, 24 Nov 2023 18:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 219E0C433C8;
-	Fri, 24 Nov 2023 18:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20F839FD9;
+	Fri, 24 Nov 2023 18:01:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC70C433C7;
+	Fri, 24 Nov 2023 18:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851316;
-	bh=z/Gve+IlERR4WcoK6XC40eBqJHhu+XmzcI3SABwoxVE=;
+	s=korg; t=1700848860;
+	bh=C6CfkuKX+mjrR66d0MT3vqUxVh94gVtCY9/34RwQ4yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sRz0TZYJ/Zh4+KbF4gBQaaFMSnkUmgXZh23pck+hsnn2WWUxlbtaFc3KvFoRVJEqA
-	 NgvKNfP1qN173MdliE9uxUrRpEmxuVTZvLdlmEkQxL/dasgQiPecsJhHb3dRmFA0HY
-	 GJUXUyZL6guiOQcHog465JL7N0MX+YOCwRXBuviI=
+	b=MKfgSEAHkJGwCLTK5lWJ55UlSIvfwJ4H2psMY+pHuvaYj3Lmq/Pc72T0c3trr54T8
+	 cxztP20i/sz2NTVkS3d1L5l1xf//mCs0+TTlUo+BbAOMEXs1wUcr4aAPwpKWu1h6lX
+	 Ji2g4hVLUdDDi+xDiHgxP3SdXCSTYf1boi/1dJ8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinhyung Kang <s47.kang@samsung.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.5 399/491] ALSA: info: Fix potential deadlock at disconnection
+	zhujun2 <zhujun2@cmss.chinamobile.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 11/57] selftests/efivarfs: create-read: fix a resource leak
 Date: Fri, 24 Nov 2023 17:50:35 +0000
-Message-ID: <20231124172036.594016147@linuxfoundation.org>
+Message-ID: <20231124171930.707356793@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,126 +53,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: zhujun2 <zhujun2@cmss.chinamobile.com>
 
-commit c7a60651953359f98dbf24b43e1bf561e1573ed4 upstream.
+[ Upstream commit 3f6f8a8c5e11a9b384a36df4f40f0c9a653b6975 ]
 
-As reported recently, ALSA core info helper may cause a deadlock at
-the forced device disconnection during the procfs operation.
+The opened file should be closed in main(), otherwise resource
+leak will occur that this problem was discovered by code reading
 
-The proc_remove() (that is called from the snd_card_disconnect()
-helper) has a synchronization of the pending procfs accesses via
-wait_for_completion().  Meanwhile, ALSA procfs helper takes the global
-mutex_lock(&info_mutex) at both the proc_open callback and
-snd_card_info_disconnect() helper.  Since the proc_open can't finish
-due to the mutex lock, wait_for_completion() never returns, either,
-hence it deadlocks.
-
-	TASK#1				TASK#2
-	proc_reg_open()
-	  takes use_pde()
-	snd_info_text_entry_open()
-					snd_card_disconnect()
-					snd_info_card_disconnect()
-					  takes mutex_lock(&info_mutex)
-					proc_remove()
-					wait_for_completion(unused_pde)
-					  ... waiting task#1 closes
-	mutex_lock(&info_mutex)
-		=> DEADLOCK
-
-This patch is a workaround for avoiding the deadlock scenario above.
-
-The basic strategy is to move proc_remove() call outside the mutex
-lock.  proc_remove() can work gracefully without extra locking, and it
-can delete the tree recursively alone.  So, we call proc_remove() at
-snd_info_card_disconnection() at first, then delete the rest resources
-recursively within the info_mutex lock.
-
-After the change, the function snd_info_disconnect() doesn't do
-disconnection by itself any longer, but it merely clears the procfs
-pointer.  So rename the function to snd_info_clear_entries() for
-avoiding confusion.
-
-The similar change is applied to snd_info_free_entry(), too.  Since
-the proc_remove() is called only conditionally with the non-NULL
-entry->p, it's skipped after the snd_info_clear_entries() call.
-
-Reported-by: Shinhyung Kang <s47.kang@samsung.com>
-Closes: https://lore.kernel.org/r/664457955.21699345385931.JavaMail.epsvc@epcpadp4
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231109141954.4283-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: zhujun2 <zhujun2@cmss.chinamobile.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/info.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ tools/testing/selftests/efivarfs/create-read.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -56,7 +56,7 @@ struct snd_info_private_data {
- };
- 
- static int snd_info_version_init(void);
--static void snd_info_disconnect(struct snd_info_entry *entry);
-+static void snd_info_clear_entries(struct snd_info_entry *entry);
- 
- /*
- 
-@@ -569,11 +569,16 @@ void snd_info_card_disconnect(struct snd
- {
- 	if (!card)
- 		return;
--	mutex_lock(&info_mutex);
-+
- 	proc_remove(card->proc_root_link);
--	card->proc_root_link = NULL;
- 	if (card->proc_root)
--		snd_info_disconnect(card->proc_root);
-+		proc_remove(card->proc_root->p);
-+
-+	mutex_lock(&info_mutex);
-+	if (card->proc_root)
-+		snd_info_clear_entries(card->proc_root);
-+	card->proc_root_link = NULL;
-+	card->proc_root = NULL;
- 	mutex_unlock(&info_mutex);
- }
- 
-@@ -745,15 +750,14 @@ struct snd_info_entry *snd_info_create_c
- }
- EXPORT_SYMBOL(snd_info_create_card_entry);
- 
--static void snd_info_disconnect(struct snd_info_entry *entry)
-+static void snd_info_clear_entries(struct snd_info_entry *entry)
- {
- 	struct snd_info_entry *p;
- 
- 	if (!entry->p)
- 		return;
- 	list_for_each_entry(p, &entry->children, list)
--		snd_info_disconnect(p);
--	proc_remove(entry->p);
-+		snd_info_clear_entries(p);
- 	entry->p = NULL;
- }
- 
-@@ -770,8 +774,9 @@ void snd_info_free_entry(struct snd_info
- 	if (!entry)
- 		return;
- 	if (entry->p) {
-+		proc_remove(entry->p);
- 		mutex_lock(&info_mutex);
--		snd_info_disconnect(entry);
-+		snd_info_clear_entries(entry);
- 		mutex_unlock(&info_mutex);
+diff --git a/tools/testing/selftests/efivarfs/create-read.c b/tools/testing/selftests/efivarfs/create-read.c
+index 9674a19396a32..7bc7af4eb2c17 100644
+--- a/tools/testing/selftests/efivarfs/create-read.c
++++ b/tools/testing/selftests/efivarfs/create-read.c
+@@ -32,8 +32,10 @@ int main(int argc, char **argv)
+ 	rc = read(fd, buf, sizeof(buf));
+ 	if (rc != 0) {
+ 		fprintf(stderr, "Reading a new var should return EOF\n");
++		close(fd);
+ 		return EXIT_FAILURE;
  	}
  
++	close(fd);
+ 	return EXIT_SUCCESS;
+ }
+-- 
+2.42.0
+
 
 
 
