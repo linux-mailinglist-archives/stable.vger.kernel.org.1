@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323357F83E6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9717F846F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6B05B2712F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A460F1F21833
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0543E364B7;
-	Fri, 24 Nov 2023 19:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE9E3418E;
+	Fri, 24 Nov 2023 19:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MfMce5x3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNl83AoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63150339BE;
-	Fri, 24 Nov 2023 19:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6DA2C433C8;
-	Fri, 24 Nov 2023 19:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4446A2FC36;
+	Fri, 24 Nov 2023 19:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C486AC433C7;
+	Fri, 24 Nov 2023 19:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853721;
-	bh=8VMDqYZBkbitECupD+LJQVnxdxj9PnEGCBJ6rRglFm4=;
+	s=korg; t=1700854027;
+	bh=HwCajsfChxgJgESMfIljf5rsMHxFYtDW/sowVOVhlHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MfMce5x31eTVj22ambTZ0DJpiT3tpELbXtGgAm+HAjOr9CPQ+8aH6sb/2hLBqennh
-	 DE5sY7t/7fRzB/m9GVWW13wVwtBlNA6+F7TlmqofjA5eHyXySPJW3oDFAX7LVFPOqJ
-	 +VaPsOqtCZazmZPR4yqLjO4xhMJgpk5bMEif/zyI=
+	b=YNl83AoPwd3USjhiG1EbiV0oQLrq6FaHjKrvQvNrw51vzMg1r3GyEPft816/s9Ytx
+	 iRDoGstbJc5af6K4NkH+0FnyDhf0y5sPWBULdv0b+7tf04uZIg9vlQfd444jNV1+3E
+	 k7hsuhmNqYbveZ8uh50h0iSLsFX2FZJEvw0VQU7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.15 294/297] powerpc/powernv: Fix fortify source warnings in opal-prd.c
+	Jean Delvare <jdelvare@suse.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jean Delvare <jdelvare@suse.de>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.4 119/159] i2c: i801: fix potential race in i801_block_transaction_byte_by_byte
 Date: Fri, 24 Nov 2023 17:55:36 +0000
-Message-ID: <20231124172010.396617829@linuxfoundation.org>
+Message-ID: <20231124171946.794205689@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,97 +55,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit feea65a338e52297b68ceb688eaf0ffc50310a83 upstream.
+commit f78ca48a8ba9cdec96e8839351e49eec3233b177 upstream.
 
-As reported by Mahesh & Aneesh, opal_prd_msg_notifier() triggers a
-FORTIFY_SOURCE warning:
+Currently we set SMBHSTCNT_LAST_BYTE only after the host has started
+receiving the last byte. If we get e.g. preempted before setting
+SMBHSTCNT_LAST_BYTE, the host may be finished with receiving the byte
+before SMBHSTCNT_LAST_BYTE is set.
+Therefore change the code to set SMBHSTCNT_LAST_BYTE before writing
+SMBHSTSTS_BYTE_DONE for the byte before the last byte. Now the code
+is also consistent with what we do in i801_isr_byte_done().
 
-  memcpy: detected field-spanning write (size 32) of single field "&item->msg" at arch/powerpc/platforms/powernv/opal-prd.c:355 (size 4)
-  WARNING: CPU: 9 PID: 660 at arch/powerpc/platforms/powernv/opal-prd.c:355 opal_prd_msg_notifier+0x174/0x188 [opal_prd]
-  NIP opal_prd_msg_notifier+0x174/0x188 [opal_prd]
-  LR  opal_prd_msg_notifier+0x170/0x188 [opal_prd]
-  Call Trace:
-    opal_prd_msg_notifier+0x170/0x188 [opal_prd] (unreliable)
-    notifier_call_chain+0xc0/0x1b0
-    atomic_notifier_call_chain+0x2c/0x40
-    opal_message_notify+0xf4/0x2c0
-
-This happens because the copy is targeting item->msg, which is only 4
-bytes in size, even though the enclosing item was allocated with extra
-space following the msg.
-
-To fix the warning define struct opal_prd_msg with a union of the header
-and a flex array, and have the memcpy target the flex array.
-
-Reported-by: "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>
-Reported-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Tested-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230821142820.497107-1-mpe@ellerman.id.au
+Reported-by: Jean Delvare <jdelvare@suse.com>
+Closes: https://lore.kernel.org/linux-i2c/20230828152747.09444625@endymion.delvare/
+Cc: stable@vger.kernel.org
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Jean Delvare <jdelvare@suse.de>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/powernv/opal-prd.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-i801.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/arch/powerpc/platforms/powernv/opal-prd.c
-+++ b/arch/powerpc/platforms/powernv/opal-prd.c
-@@ -24,13 +24,20 @@
- #include <linux/uaccess.h>
- 
- 
-+struct opal_prd_msg {
-+	union {
-+		struct opal_prd_msg_header header;
-+		DECLARE_FLEX_ARRAY(u8, data);
-+	};
-+};
-+
- /*
-  * The msg member must be at the end of the struct, as it's followed by the
-  * message data.
-  */
- struct opal_prd_msg_queue_item {
--	struct list_head		list;
--	struct opal_prd_msg_header	msg;
-+	struct list_head	list;
-+	struct opal_prd_msg	msg;
- };
- 
- static struct device_node *prd_node;
-@@ -156,7 +163,7 @@ static ssize_t opal_prd_read(struct file
- 	int rc;
- 
- 	/* we need at least a header's worth of data */
--	if (count < sizeof(item->msg))
-+	if (count < sizeof(item->msg.header))
- 		return -EINVAL;
- 
- 	if (*ppos)
-@@ -186,7 +193,7 @@ static ssize_t opal_prd_read(struct file
- 			return -EINTR;
+--- a/drivers/i2c/busses/i2c-i801.c
++++ b/drivers/i2c/busses/i2c-i801.c
+@@ -723,15 +723,11 @@ static int i801_block_transaction_byte_b
+ 		return i801_check_post(priv, status);
  	}
  
--	size = be16_to_cpu(item->msg.size);
-+	size = be16_to_cpu(item->msg.header.size);
- 	if (size > count) {
- 		err = -EINVAL;
- 		goto err_requeue;
-@@ -352,7 +359,7 @@ static int opal_prd_msg_notifier(struct
- 	if (!item)
- 		return -ENOMEM;
+-	for (i = 1; i <= len; i++) {
+-		if (i == len && read_write == I2C_SMBUS_READ)
+-			smbcmd |= SMBHSTCNT_LAST_BYTE;
+-		outb_p(smbcmd, SMBHSTCNT(priv));
+-
+-		if (i == 1)
+-			outb_p(inb(SMBHSTCNT(priv)) | SMBHSTCNT_START,
+-			       SMBHSTCNT(priv));
++	if (len == 1 && read_write == I2C_SMBUS_READ)
++		smbcmd |= SMBHSTCNT_LAST_BYTE;
++	outb_p(smbcmd | SMBHSTCNT_START, SMBHSTCNT(priv));
  
--	memcpy(&item->msg, msg->params, msg_size);
-+	memcpy(&item->msg.data, msg->params, msg_size);
++	for (i = 1; i <= len; i++) {
+ 		status = i801_wait_byte_done(priv);
+ 		if (status)
+ 			goto exit;
+@@ -754,9 +750,12 @@ static int i801_block_transaction_byte_b
+ 			data->block[0] = len;
+ 		}
  
- 	spin_lock_irqsave(&opal_prd_msg_queue_lock, flags);
- 	list_add_tail(&item->list, &opal_prd_msg_queue);
+-		/* Retrieve/store value in SMBBLKDAT */
+-		if (read_write == I2C_SMBUS_READ)
++		if (read_write == I2C_SMBUS_READ) {
+ 			data->block[i] = inb_p(SMBBLKDAT(priv));
++			if (i == len - 1)
++				outb_p(smbcmd | SMBHSTCNT_LAST_BYTE, SMBHSTCNT(priv));
++		}
++
+ 		if (read_write == I2C_SMBUS_WRITE && i+1 <= len)
+ 			outb_p(data->block[i+1], SMBBLKDAT(priv));
+ 
 
 
 
