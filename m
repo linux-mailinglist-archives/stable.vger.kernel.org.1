@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFC2B7F7C38
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D17F8017
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 620E9B21018
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0E6CB216FE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE66B39FF3;
-	Fri, 24 Nov 2023 18:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BFC381D4;
+	Fri, 24 Nov 2023 18:46:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q8tPzybz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDztM53e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B069381D7;
-	Fri, 24 Nov 2023 18:13:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE8E8C433C9;
-	Fri, 24 Nov 2023 18:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777BC364DE;
+	Fri, 24 Nov 2023 18:46:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDDEAC433C7;
+	Fri, 24 Nov 2023 18:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849581;
-	bh=VNcp6vkfpW+xjSUAWKBB92SgJya1djm4KPpvmRyxf6g=;
+	s=korg; t=1700851593;
+	bh=2R0Jwpol12mHX/z4sCwMRw9SGHXNyJLzWb56txfQjhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q8tPzybz1jnjEp/6u2+GeuCheeZussr48UiMDk3gEMlvzoYIvHNkXEgEGrUz0g8sn
-	 oOl1UOV4KxWCfwvQSkcGCwM4wgZAjXz8/tLBlxfC9SK3kxqgzR3ElxQR9GmGmSptuy
-	 L9Kzq3ZkMpqDNU4VQBlePMirgixiKI3uE/WQNFgE=
+	b=mDztM53esfwC+BkMFcxWys27AoSydK+VuarSJ2DyuKVdDFPr44fWPu6V2bvA6fbw0
+	 fVXyltCmXL4jqiIbCVzUDN5G42h41ctKUvS5npaEea4kqg0f4geeuZpNSUGADdkjjD
+	 n4qOM6n0DqH3gijIAvaJ4+1Dt6btRTD0kUA/CMag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilkka Koskinen <ilkka@os.amperecomputing.com>,
-	Will Deacon <will@kernel.org>,
-	Besar Wicaksono <bwicaksono@nvidia.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 238/530] perf: arm_cspmu: Reject events meant for other PMUs
-Date: Fri, 24 Nov 2023 17:46:44 +0000
-Message-ID: <20231124172035.292895979@linuxfoundation.org>
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 018/372] wifi: ath9k: fix clang-specific fortify warnings
+Date: Fri, 24 Nov 2023 17:46:45 +0000
+Message-ID: <20231124172011.078083207@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +52,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilkka Koskinen <ilkka@os.amperecomputing.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit 15c7ef7341a2e54cfa12ac502c65d6fd2cce2b62 upstream.
+[ Upstream commit 95f97fe0ac974467ab4da215985a32b2fdf48af0 ]
 
-Coresight PMU driver didn't reject events meant for other PMUs.
-This caused some of the Core PMU events disappearing from
-the output of "perf list". In addition, trying to run e.g.
+When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
+noticed the following (somewhat confusing due to absence of an actual
+source code location):
 
-     $ perf stat -e r2 sleep 1
+In file included from drivers/net/wireless/ath/ath9k/debug.c:17:
+In file included from ./include/linux/slab.h:16:
+In file included from ./include/linux/gfp.h:7:
+In file included from ./include/linux/mmzone.h:8:
+In file included from ./include/linux/spinlock.h:56:
+In file included from ./include/linux/preempt.h:79:
+In file included from ./arch/x86/include/asm/preempt.h:9:
+In file included from ./include/linux/thread_info.h:60:
+In file included from ./arch/x86/include/asm/thread_info.h:53:
+In file included from ./arch/x86/include/asm/cpufeature.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
 
-made Coresight PMU driver to handle the event instead of letting
-Core PMU driver to deal with it.
+In file included from drivers/net/wireless/ath/ath9k/htc_drv_debug.c:17:
+In file included from drivers/net/wireless/ath/ath9k/htc.h:20:
+In file included from ./include/linux/module.h:13:
+In file included from ./include/linux/stat.h:19:
+In file included from ./include/linux/time.h:60:
+In file included from ./include/linux/time32.h:13:
+In file included from ./include/linux/timex.h:67:
+In file included from ./arch/x86/include/asm/timex.h:5:
+In file included from ./arch/x86/include/asm/processor.h:23:
+In file included from ./arch/x86/include/asm/msr.h:11:
+In file included from ./arch/x86/include/asm/cpumask.h:5:
+In file included from ./include/linux/cpumask.h:12:
+In file included from ./include/linux/bitmap.h:11:
+In file included from ./include/linux/string.h:254:
+./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
+declared with 'warning' attribute: detected read beyond size of field (2nd
+parameter); maybe use struct_group()? [-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
 
-Cc: stable@vger.kernel.org
-Fixes: e37dfd65731d ("perf: arm_cspmu: Add support for ARM CoreSight PMU driver")
-Signed-off-by: Ilkka Koskinen <ilkka@os.amperecomputing.com>
-Acked-by: Will Deacon <will@kernel.org>
-Reviewed-by: Besar Wicaksono <bwicaksono@nvidia.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20231103001654.35565-1-ilkka@os.amperecomputing.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The compiler actually complains on 'ath9k_get_et_strings()' and
+'ath9k_htc_get_et_strings()' due to the same reason: fortification logic
+inteprets call to 'memcpy()' as an attempt to copy the whole array from
+it's first member and so issues an overread warning. These warnings may
+be silenced by passing an address of the whole array and not the first
+member to 'memcpy()'.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230829093856.234584-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/arm_cspmu/arm_cspmu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath9k/debug.c         | 2 +-
+ drivers/net/wireless/ath/ath9k/htc_drv_debug.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/perf/arm_cspmu/arm_cspmu.c
-+++ b/drivers/perf/arm_cspmu/arm_cspmu.c
-@@ -635,6 +635,9 @@ static int arm_cspmu_event_init(struct p
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index fb7a2952d0ce8..d9bac1c343490 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1333,7 +1333,7 @@ void ath9k_get_et_strings(struct ieee80211_hw *hw,
+ 			  u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath9k_gstrings_stats,
++		memcpy(data, ath9k_gstrings_stats,
+ 		       sizeof(ath9k_gstrings_stats));
+ }
  
- 	cspmu = to_arm_cspmu(event->pmu);
+diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+index c55aab01fff5d..e79bbcd3279af 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
++++ b/drivers/net/wireless/ath/ath9k/htc_drv_debug.c
+@@ -428,7 +428,7 @@ void ath9k_htc_get_et_strings(struct ieee80211_hw *hw,
+ 			      u32 sset, u8 *data)
+ {
+ 	if (sset == ETH_SS_STATS)
+-		memcpy(data, *ath9k_htc_gstrings_stats,
++		memcpy(data, ath9k_htc_gstrings_stats,
+ 		       sizeof(ath9k_htc_gstrings_stats));
+ }
  
-+	if (event->attr.type != event->pmu->type)
-+		return -ENOENT;
-+
- 	/*
- 	 * Following other "uncore" PMUs, we do not support sampling mode or
- 	 * attach to a task (per-process mode).
+-- 
+2.42.0
+
 
 
 
