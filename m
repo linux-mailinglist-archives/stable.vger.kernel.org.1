@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 513547F7BC3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F1C7F7DD3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09EE4282168
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:08:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 067F41C21301
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6B439FF7;
-	Fri, 24 Nov 2023 18:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2086A39FE9;
+	Fri, 24 Nov 2023 18:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cu5izesY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzG4Avbc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1F639FE1;
-	Fri, 24 Nov 2023 18:08:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB75C433C8;
-	Fri, 24 Nov 2023 18:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C10539FC3;
+	Fri, 24 Nov 2023 18:27:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F85DC433C7;
+	Fri, 24 Nov 2023 18:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849307;
-	bh=WTIrEO4YUa4sD3+1VU9wTi5psdfEFEmYEv4xmB6bx1w=;
+	s=korg; t=1700850464;
+	bh=ORuUXg+fHzpu68r4Tdg021MnwX3TQS4M3wdx3jfgyPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cu5izesYVgMjVPve2ynSy/S+QymvNr3YbikSuqAKwHLHy2MjHFoPiUZysZA6O6mpJ
-	 j2pJ/QZ9fHxrFIQ/NSq6lbROjaGRJxVhqVhn1uiv/MLoRJVQj8j129wZG6Z/QkAIDN
-	 Bt/4d0xw8nZubifNY1ltlfripizfDvEX9boo7jIA=
+	b=PzG4AvbcyNzMvp0eJvbu3dQV08FOdCd0N5kE3PfI28olCALNR/+IJBWVsui5bEgcb
+	 OoKbMi254TKIX5dgf+lRxb40Gdo42L3gTe4jorKo2ca5ZQt5cfmrY3gX1a0Jcam9XB
+	 cfcdJkNEH9ThEa4zmLap0wd/5+eVqWUdYXGftcj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/530] usb: host: xhci: Avoid XHCI resume delay if SSUSB device is not present
-Date: Fri, 24 Nov 2023 17:44:55 +0000
-Message-ID: <20231124172032.024461181@linuxfoundation.org>
+Subject: [PATCH 6.5 060/491] drm_lease.c: copy user-array safely
+Date: Fri, 24 Nov 2023 17:44:56 +0000
+Message-ID: <20231124172026.457920745@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +55,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit 6add6dd345cb754ce18ff992c7264cabf31e59f6 ]
+[ Upstream commit f37d63e219c39199a59b8b8a211412ff27192830 ]
 
-There is a 120ms delay implemented for allowing the XHCI host controller to
-detect a U3 wakeup pulse.  The intention is to wait for the device to retry
-the wakeup event if the USB3 PORTSC doesn't reflect the RESUME link status
-by the time it is checked.  As per the USB3 specification:
+Currently, there is no overflow-check with memdup_user().
 
-  tU3WakeupRetryDelay ("Table 7-12. LTSSM State Transition Timeouts")
+Use the new function memdup_array_user() instead of memdup_user() for
+duplicating the user-space array safely.
 
-This would allow the XHCI resume sequence to determine if the root hub
-needs to be also resumed.  However, in case there is no device connected,
-or if there is only a HSUSB device connected, this delay would still affect
-the overall resume timing.
-
-Since this delay is solely for detecting U3 wake events (USB3 specific)
-then ignore this delay for the disconnected case and the HSUSB connected
-only case.
-
-[skip helper function, rename usb3_connected variable -Mathias ]
-
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-20-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-6-pstanner@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_lease.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index e1b1b64a07232..132b76fa7ca60 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -968,6 +968,7 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
- 	int			retval = 0;
- 	bool			comp_timer_running = false;
- 	bool			pending_portevent = false;
-+	bool			suspended_usb3_devs = false;
- 	bool			reinit_xhc = false;
- 
- 	if (!hcd->state)
-@@ -1115,10 +1116,17 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
- 		/*
- 		 * Resume roothubs only if there are pending events.
- 		 * USB 3 devices resend U3 LFPS wake after a 100ms delay if
--		 * the first wake signalling failed, give it that chance.
-+		 * the first wake signalling failed, give it that chance if
-+		 * there are suspended USB 3 devices.
- 		 */
-+		if (xhci->usb3_rhub.bus_state.suspended_ports ||
-+		    xhci->usb3_rhub.bus_state.bus_suspended)
-+			suspended_usb3_devs = true;
-+
- 		pending_portevent = xhci_pending_portevent(xhci);
--		if (!pending_portevent && msg.event == PM_EVENT_AUTO_RESUME) {
-+
-+		if (suspended_usb3_devs && !pending_portevent &&
-+		    msg.event == PM_EVENT_AUTO_RESUME) {
- 			msleep(120);
- 			pending_portevent = xhci_pending_portevent(xhci);
- 		}
+diff --git a/drivers/gpu/drm/drm_lease.c b/drivers/gpu/drm/drm_lease.c
+index 150fe15550680..94375c6a54256 100644
+--- a/drivers/gpu/drm/drm_lease.c
++++ b/drivers/gpu/drm/drm_lease.c
+@@ -510,8 +510,8 @@ int drm_mode_create_lease_ioctl(struct drm_device *dev,
+ 	/* Handle leased objects, if any */
+ 	idr_init(&leases);
+ 	if (object_count != 0) {
+-		object_ids = memdup_user(u64_to_user_ptr(cl->object_ids),
+-					 array_size(object_count, sizeof(__u32)));
++		object_ids = memdup_array_user(u64_to_user_ptr(cl->object_ids),
++					       object_count, sizeof(__u32));
+ 		if (IS_ERR(object_ids)) {
+ 			ret = PTR_ERR(object_ids);
+ 			idr_destroy(&leases);
 -- 
 2.42.0
 
