@@ -1,123 +1,108 @@
-Return-Path: <stable+bounces-294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E74B57F7659
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:30:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01B927F761E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 15:17:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA991C21041
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:30:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F40CB21374
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD042D632;
-	Fri, 24 Nov 2023 14:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF8928E25;
+	Fri, 24 Nov 2023 14:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mEvmPHPx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="lBOeo5PN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVQSGotC"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50E9B19A1;
-	Fri, 24 Nov 2023 06:30:08 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 22A9E21DBE;
-	Fri, 24 Nov 2023 14:24:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1700835840;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dbxwk/y2VtCgNbHXNguUY9mwi4qlNBLd4z/wJfJpewQ=;
-	b=mEvmPHPx6O44285u0z8s07WLRfmvtQsXh93GzJv4I+Do7bc3RnOrlRpNdxiZgzN+KNF0ne
-	bWusNp/1gtlZ++KHD6Rh5DL55/Y7tHAMguP0HiQblCBaJH2cfZRBFPZffhTmrOxkrK9KLt
-	bFu7EpvaIDQp3QUBKNlep406R0HQ2HQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1700835840;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Dbxwk/y2VtCgNbHXNguUY9mwi4qlNBLd4z/wJfJpewQ=;
-	b=lBOeo5PN6a6CgiaqNeliUMglZIE5qyaSTAlA4InsztM09l/hf9+B9oxiy9VsBereUAQ2IC
-	mQho/MwbgxdGCJAQ==
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id F1885139E8;
-	Fri, 24 Nov 2023 14:23:59 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id lNfoOf+xYGV5IgAAn2gu4w
-	(envelope-from <dsterba@suse.cz>); Fri, 24 Nov 2023 14:23:59 +0000
-Date: Fri, 24 Nov 2023 15:16:49 +0100
-From: David Sterba <dsterba@suse.cz>
-To: Filipe Manana <fdmanana@kernel.org>
-Cc: David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: fix 64bit compat send ioctl arguments not
- initializing version member
-Message-ID: <20231124141648.GA18929@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20231124000034.27522-1-dsterba@suse.com>
- <CAL3q7H6C=FJL9cX2-uVo1AhnNAmMOGfFMkTEzHekL5OeW0OAXQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F9418041
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 14:17:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0175C433CB;
+	Fri, 24 Nov 2023 14:17:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700835423;
+	bh=0wANVrDzB5CX09c4BUyPwYO2AVRxCRXAAQVg60lCYPQ=;
+	h=Subject:To:Cc:From:Date:From;
+	b=JVQSGotCOg14VhIGQtKMlzHW2od7KOm1Cn3kTZ6mKl9UazQ84FjpZUYkDW5UfdMAZ
+	 u/0prpeTXgd9lT1CbeW5tPJVwkrD61XIbuL6abtniAvZG/GPpmOmT6A9FS5UOn/Ufo
+	 EEEu+P2zifxsd/5FUv4zuO/u7dt7fqqiIW9T4Trk=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Don't set dpms_off for seamless boot" failed to apply to 6.6-stable tree
+To: daniel.miess@amd.com,alexander.deucher@amd.com,charlene.liu@amd.com,chiahsuan.chung@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Nov 2023 14:17:00 +0000
+Message-ID: <2023112400-quaking-happy-54f2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL3q7H6C=FJL9cX2-uVo1AhnNAmMOGfFMkTEzHekL5OeW0OAXQ@mail.gmail.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spam-Score: -1.70
-X-Spam-Level: 
-X-Spamd-Result: default: False [-1.70 / 50.00];
-	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 REPLYTO_ADDR_EQ_FROM(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 NEURAL_HAM_SHORT(-0.20)[-1.000];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 BAYES_HAM(-0.70)[83.38%];
-	 ARC_NA(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[4];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 NEURAL_HAM_LONG(-1.00)[-1.000];
-	 MIME_GOOD(-0.10)[text/plain];
-	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 RCVD_TLS_ALL(0.00)[]
 
-On Fri, Nov 24, 2023 at 12:16:55AM +0000, Filipe Manana wrote:
-> On Fri, Nov 24, 2023 at 12:08 AM David Sterba <dsterba@suse.com> wrote:
-> >
-> > When the send protocol versioning was added in 5.16 e77fbf990316
-> > ("btrfs: send: prepare for v2 protocol"), the 32/64bit compat code was
-> > not updated (added by 2351f431f727 ("btrfs: fix send ioctl on 32bit with
-> > 64bit kernel")), missing the version struct member. The compat code is
-> > probably rarely used, nobody reported any bugs.
-> >
-> > Found by tool https://github.com/jirislaby/clang-struct .
-> >
-> > Fixes: 2351f431f727 ("btrfs: fix send ioctl on 32bit with 64bit kernel")
-> 
-> So this is not the correct commit, you copy-pasted the wrong one from
-> the change log above, it should be:
-> 
-> e77fbf990316 ("btrfs: send: prepare for v2 protocol")
 
-Of course, fixed, thanks.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x ef013f6fcd8affaae4a5bf4b51cb6244c8a2ed3f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112400-quaking-happy-54f2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+ef013f6fcd8a ("drm/amd/display: Don't set dpms_off for seamless boot")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ef013f6fcd8affaae4a5bf4b51cb6244c8a2ed3f Mon Sep 17 00:00:00 2001
+From: Daniel Miess <daniel.miess@amd.com>
+Date: Fri, 29 Sep 2023 13:04:33 -0400
+Subject: [PATCH] drm/amd/display: Don't set dpms_off for seamless boot
+
+[Why]
+eDPs fail to light up with seamless boot enabled
+
+[How]
+When seamless boot is enabled don't configure dpms_off
+in disable_vbios_mode_if_required.
+
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index f9aac215ef1f..00d6fce5b766 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1232,6 +1232,9 @@ static void disable_vbios_mode_if_required(
+ 		if (stream == NULL)
+ 			continue;
+ 
++		if (stream->apply_seamless_boot_optimization)
++			continue;
++
+ 		// only looking for first odm pipe
+ 		if (pipe->prev_odm_pipe)
+ 			continue;
+
 
