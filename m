@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-2240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8287F8359
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E0317F823A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E888B1F2101B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4E27B237E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40863364C4;
-	Fri, 24 Nov 2023 19:16:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102643307D;
+	Fri, 24 Nov 2023 19:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wgdgwn5K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQWDDYns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8518364B7;
-	Fri, 24 Nov 2023 19:16:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E089C433C7;
-	Fri, 24 Nov 2023 19:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EE631748;
+	Fri, 24 Nov 2023 19:05:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E238C433C7;
+	Fri, 24 Nov 2023 19:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853399;
-	bh=6T+XFp/QK6q560aREMmq8Lp2nfaEi1P43iLT/Ot0MNo=;
+	s=korg; t=1700852742;
+	bh=UlFlNGFg1iRF5ZhlN2ND7cpwCP1rDMraUJn9hZLo92w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wgdgwn5KJIiVDv5LsBEf+XqG4ycVhAfNUd1Qe88+Yq886lsWIAMfM1AiPK1B2kHC/
-	 Ap+PpqTCVggXpY4Fb637fOmKQITQj75rQBDD2wcfAhPK1BwwDbph2c87AMNwStXNeU
-	 q+RQ0sKs0Qq3UUJWGPrsuPbKxlDn5B4XQSMlLDTM=
+	b=rQWDDYnsc0d2oK4f5v3g66/83LmpYyfcCLtoTMSKkCz882pUPzpsY3Wc5FCaIeKXj
+	 e3es/1DmV9GfcPBmMc0Pd0rRnjT725JgYZh57oAe80FxkR7n5lgfNDVH6H6hmp2yXa
+	 0cXPSZlYXJegj+BYls0UnIThPBz8uS5eo9iCKjvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.15 172/297] hvc/xen: fix error path in xen_hvc_init() to always register frontend driver
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Ekaterina Esina <eesina@astralinux.ru>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 087/193] cifs: spnego: add ; in HOST_KEY_LEN
 Date: Fri, 24 Nov 2023 17:53:34 +0000
-Message-ID: <20231124172006.274696859@linuxfoundation.org>
+Message-ID: <20231124171950.722845214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,59 +53,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-commit 2704c9a5593f4a47620c12dad78838ca62b52f48 upstream.
+[ Upstream commit ff31ba19d732efb9aca3633935d71085e68d5076 ]
 
-The xen_hvc_init() function should always register the frontend driver,
-even when there's no primary console — as there may be secondary consoles.
-(Qemu can always add secondary consoles, but only the toolstack can add
-the primary because it's special.)
+"host=" should start with ';' (as in cifs_get_spnego_key)
+So its length should be 6.
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231020161529.355083-3-dwmw2@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Fixes: 7c9c3760b3a5 ("[CIFS] add constants for string lengths of keynames in SPNEGO upcall string")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Co-developed-by: Ekaterina Esina <eesina@astralinux.ru>
+Signed-off-by: Ekaterina Esina <eesina@astralinux.ru>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/hvc/hvc_xen.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/cifs/cifs_spnego.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/hvc/hvc_xen.c
-+++ b/drivers/tty/hvc/hvc_xen.c
-@@ -603,7 +603,7 @@ static int __init xen_hvc_init(void)
- 		ops = &dom0_hvc_ops;
- 		r = xen_initial_domain_console_init();
- 		if (r < 0)
--			return r;
-+			goto register_fe;
- 		info = vtermno_to_xencons(HVC_COOKIE);
- 	} else {
- 		ops = &domU_hvc_ops;
-@@ -612,7 +612,7 @@ static int __init xen_hvc_init(void)
- 		else
- 			r = xen_pv_console_init();
- 		if (r < 0)
--			return r;
-+			goto register_fe;
+diff --git a/fs/cifs/cifs_spnego.c b/fs/cifs/cifs_spnego.c
+index 7b9b876b513bd..4f9d08ac9dde5 100644
+--- a/fs/cifs/cifs_spnego.c
++++ b/fs/cifs/cifs_spnego.c
+@@ -76,8 +76,8 @@ struct key_type cifs_spnego_key_type = {
+  * strlen(";sec=ntlmsspi") */
+ #define MAX_MECH_STR_LEN	13
  
- 		info = vtermno_to_xencons(HVC_COOKIE);
- 		info->irq = bind_evtchn_to_irq_lateeoi(info->evtchn);
-@@ -637,6 +637,7 @@ static int __init xen_hvc_init(void)
- 	}
+-/* strlen of "host=" */
+-#define HOST_KEY_LEN		5
++/* strlen of ";host=" */
++#define HOST_KEY_LEN		6
  
- 	r = 0;
-+ register_fe:
- #ifdef CONFIG_HVC_XEN_FRONTEND
- 	r = xenbus_register_frontend(&xencons_driver);
- #endif
+ /* strlen of ";ip4=" or ";ip6=" */
+ #define IP_KEY_LEN		5
+-- 
+2.42.0
+
 
 
 
