@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-1200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157297F7E7D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CD67F802F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB0FAB216DA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07EB0B2155A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29BC2E40E;
-	Fri, 24 Nov 2023 18:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65581381D4;
+	Fri, 24 Nov 2023 18:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaSji5iR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxi0qAkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743CB364BA;
-	Fri, 24 Nov 2023 18:33:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ED7EC433C8;
-	Fri, 24 Nov 2023 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D65135F04;
+	Fri, 24 Nov 2023 18:47:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CCDDC433C7;
+	Fri, 24 Nov 2023 18:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850808;
-	bh=3DnbFNRZiVQMSRBbkKYvh9t/MbTh2hD8uVjCreWvDuE=;
+	s=korg; t=1700851645;
+	bh=xnKQ1NShDVIPvTVhLLFNmL/wf/37wtany5tgccI2wHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZaSji5iRyzeWmEQxX4tJl2Uijf023J1q9mBMI6m0oL+vVeceCuhKISD2UPg5RrEKz
-	 Hyh7+VOlzqm3dhOHFJrGGUpsKMoRzg/npl3/7+3+Osl2DkfeBR7oNJYkqujfR965Og
-	 P4T0fc1WcvmBCKLsE9TKePPtoNEt8BjibbRzVOSE=
+	b=lxi0qAkfhYj5pMgSiHg2GjzXg5y4Gt6OJnvmHNMW7JoIoHpO2cadwWxF884aBggS5
+	 i2rdoh2ASr9mAKQOeFOjNlRtSijHDvrnWQaZzjZCi5JkrPzHzDscs78LHMrM9TDuXl
+	 n5tRt16YLZLCLb0AmWJ7473ugLx3W2fd51phx5ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 189/491] ptp: annotate data-race around q->head and q->tail
-Date: Fri, 24 Nov 2023 17:47:05 +0000
-Message-ID: <20231124172030.157436146@linuxfoundation.org>
+Subject: [PATCH 6.1 039/372] kernel: watch_queue: copy user-array safely
+Date: Fri, 24 Nov 2023 17:47:06 +0000
+Message-ID: <20231124172011.792511939@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,99 +55,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit 73bde5a3294853947252cd9092a3517c7cb0cd2d ]
+[ Upstream commit ca0776571d3163bd03b3e8c9e3da936abfaecbf6 ]
 
-As I was working on a syzbot report, I found that KCSAN would
-probably complain that reading q->head or q->tail without
-barriers could lead to invalid results.
+Currently, there is no overflow-check with memdup_user().
 
-Add corresponding READ_ONCE() and WRITE_ONCE() to avoid
-load-store tearing.
+Use the new function memdup_array_user() instead of memdup_user() for
+duplicating the user-space array safely.
 
-Fixes: d94ba80ebbea ("ptp: Added a brand new class driver for ptp clocks.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Richard Cochran <richardcochran@gmail.com>
-Link: https://lore.kernel.org/r/20231109174859.3995880-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-5-pstanner@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ptp/ptp_chardev.c | 3 ++-
- drivers/ptp/ptp_clock.c   | 5 +++--
- drivers/ptp/ptp_private.h | 8 ++++++--
- drivers/ptp/ptp_sysfs.c   | 3 ++-
- 4 files changed, 13 insertions(+), 6 deletions(-)
+ kernel/watch_queue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ptp/ptp_chardev.c b/drivers/ptp/ptp_chardev.c
-index 362bf756e6b78..5a3a4cc0bec82 100644
---- a/drivers/ptp/ptp_chardev.c
-+++ b/drivers/ptp/ptp_chardev.c
-@@ -490,7 +490,8 @@ ssize_t ptp_read(struct posix_clock *pc,
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index 28ed71d277bd7..442bb92212f2a 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -332,7 +332,7 @@ long watch_queue_set_filter(struct pipe_inode_info *pipe,
+ 	    filter.__reserved != 0)
+ 		return -EINVAL;
  
- 	for (i = 0; i < cnt; i++) {
- 		event[i] = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
- 
- 	spin_unlock_irqrestore(&queue->lock, flags);
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index 80f74e38c2da4..9a50bfb56453c 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -56,10 +56,11 @@ static void enqueue_external_timestamp(struct timestamp_event_queue *queue,
- 	dst->t.sec = seconds;
- 	dst->t.nsec = remainder;
- 
-+	/* Both WRITE_ONCE() are paired with READ_ONCE() in queue_cnt() */
- 	if (!queue_free(queue))
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 
--	queue->tail = (queue->tail + 1) % PTP_MAX_TIMESTAMPS;
-+	WRITE_ONCE(queue->tail, (queue->tail + 1) % PTP_MAX_TIMESTAMPS);
- 
- 	spin_unlock_irqrestore(&queue->lock, flags);
- }
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index 75f58fc468a71..b8d4f61f14be4 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -76,9 +76,13 @@ struct ptp_vclock {
-  * that a writer might concurrently increment the tail does not
-  * matter, since the queue remains nonempty nonetheless.
-  */
--static inline int queue_cnt(struct timestamp_event_queue *q)
-+static inline int queue_cnt(const struct timestamp_event_queue *q)
- {
--	int cnt = q->tail - q->head;
-+	/*
-+	 * Paired with WRITE_ONCE() in enqueue_external_timestamp(),
-+	 * ptp_read(), extts_fifo_show().
-+	 */
-+	int cnt = READ_ONCE(q->tail) - READ_ONCE(q->head);
- 	return cnt < 0 ? PTP_MAX_TIMESTAMPS + cnt : cnt;
- }
- 
-diff --git a/drivers/ptp/ptp_sysfs.c b/drivers/ptp/ptp_sysfs.c
-index 6e4d5456a8851..34ea5c16123a1 100644
---- a/drivers/ptp/ptp_sysfs.c
-+++ b/drivers/ptp/ptp_sysfs.c
-@@ -90,7 +90,8 @@ static ssize_t extts_fifo_show(struct device *dev,
- 	qcnt = queue_cnt(queue);
- 	if (qcnt) {
- 		event = queue->buf[queue->head];
--		queue->head = (queue->head + 1) % PTP_MAX_TIMESTAMPS;
-+		/* Paired with READ_ONCE() in queue_cnt() */
-+		WRITE_ONCE(queue->head, (queue->head + 1) % PTP_MAX_TIMESTAMPS);
- 	}
- 	spin_unlock_irqrestore(&queue->lock, flags);
+-	tf = memdup_user(_filter->filters, filter.nr_filters * sizeof(*tf));
++	tf = memdup_array_user(_filter->filters, filter.nr_filters, sizeof(*tf));
+ 	if (IS_ERR(tf))
+ 		return PTR_ERR(tf);
  
 -- 
 2.42.0
