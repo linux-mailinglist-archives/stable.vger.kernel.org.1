@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 900E67F7C19
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D44E37F7E55
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2C6281E61
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EC6D282263
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D229831740;
-	Fri, 24 Nov 2023 18:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD243A8F4;
+	Fri, 24 Nov 2023 18:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqcRlt6z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbTgSBZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8232939FC2;
-	Fri, 24 Nov 2023 18:11:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097BCC433C8;
-	Fri, 24 Nov 2023 18:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E4F381DE;
+	Fri, 24 Nov 2023 18:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA264C433C7;
+	Fri, 24 Nov 2023 18:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849506;
-	bh=NFnreIiakvkJvlTPmh0eNCU/cO8ZJyv5XEitglfJ+MM=;
+	s=korg; t=1700850721;
+	bh=vWMUhm7IJkNrBM40mMpRa4eeKdNugRS8JaM7oaxnGbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqcRlt6zlaWEsEMQVBQIhwoNOj+8E+h10oh5lzBWTQ+ftA49XaX3XL6VfknOMsURJ
-	 V5PN4zmc7P0nAnP6ssx9LX1QSVxeyRidno8516wy6f+5nAZEgveKJCxsXIENJMeOR8
-	 Ot5RxTzku2jl2D1JIy0rwNph/4XSohZBN6aiZ4hE=
+	b=JbTgSBZwUI1RGWfq0CJ+fxI5BRaEW8wIxYFfSaNRkIu+PQ3f72dM0lDGDEGWTDlTw
+	 sASIgD6zJAq2CZMeLG/YwkIsN+KkW/LpuzJzNFghbJi7XFaSlP9w47NsXnKRfPNeoS
+	 9lWQrsSoDXFGc4h2/gg4nMr8/YEuqTZuYssEgrco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 208/530] netfilter: nf_tables: bogus ENOENT when destroying element which does not exist
+Subject: [PATCH 6.5 138/491] media: cobalt: Use FIELD_GET() to extract Link Width
 Date: Fri, 24 Nov 2023 17:46:14 +0000
-Message-ID: <20231124172034.394432837@linuxfoundation.org>
+Message-ID: <20231124172028.640365106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +52,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit a7d5a955bfa854ac6b0c53aaf933394b4e6139e4 ]
+[ Upstream commit f301fedbeecfdce91cb898d6fa5e62f269801fee ]
 
-destroy element command bogusly reports ENOENT in case a set element
-does not exist. ENOENT errors are skipped, however, err is still set
-and propagated to userspace.
+Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
+instead of custom masking and shifting.
 
- # nft destroy element ip raw BLACKLIST { 1.2.3.4 }
- Error: Could not process rule: No such file or directory
- destroy element ip raw BLACKLIST { 1.2.3.4 }
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Fixes: f80a612dd77c ("netfilter: nf_tables: add support to destroy operation")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/pci/cobalt/cobalt-driver.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3bf428a188ccf..3807c6c1181fd 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7205,10 +7205,11 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
+diff --git a/drivers/media/pci/cobalt/cobalt-driver.c b/drivers/media/pci/cobalt/cobalt-driver.c
+index 74edcc76d12f4..6e1a0614e6d06 100644
+--- a/drivers/media/pci/cobalt/cobalt-driver.c
++++ b/drivers/media/pci/cobalt/cobalt-driver.c
+@@ -8,6 +8,7 @@
+  *  All rights reserved.
+  */
  
- 		if (err < 0) {
- 			NL_SET_BAD_ATTR(extack, attr);
--			break;
-+			return err;
- 		}
- 	}
--	return err;
-+
-+	return 0;
++#include <linux/bitfield.h>
+ #include <linux/delay.h>
+ #include <media/i2c/adv7604.h>
+ #include <media/i2c/adv7842.h>
+@@ -210,17 +211,17 @@ void cobalt_pcie_status_show(struct cobalt *cobalt)
+ 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &stat);
+ 	cobalt_info("PCIe link capability 0x%08x: %s per lane and %u lanes\n",
+ 			capa, get_link_speed(capa),
+-			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
++			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 	cobalt_info("PCIe link control 0x%04x\n", ctrl);
+ 	cobalt_info("PCIe link status 0x%04x: %s per lane and %u lanes\n",
+ 		    stat, get_link_speed(stat),
+-		    (stat & PCI_EXP_LNKSTA_NLW) >> 4);
++		    FIELD_GET(PCI_EXP_LNKSTA_NLW, stat));
+ 
+ 	/* Bus */
+ 	pcie_capability_read_dword(pci_bus_dev, PCI_EXP_LNKCAP, &capa);
+ 	cobalt_info("PCIe bus link capability 0x%08x: %s per lane and %u lanes\n",
+ 			capa, get_link_speed(capa),
+-			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
++			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 
+ 	/* Slot */
+ 	pcie_capability_read_dword(pci_dev, PCI_EXP_SLTCAP, &capa);
+@@ -239,7 +240,7 @@ static unsigned pcie_link_get_lanes(struct cobalt *cobalt)
+ 	if (!pci_is_pcie(pci_dev))
+ 		return 0;
+ 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &link);
+-	return (link & PCI_EXP_LNKSTA_NLW) >> 4;
++	return FIELD_GET(PCI_EXP_LNKSTA_NLW, link);
  }
  
- /*
+ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
+@@ -250,7 +251,7 @@ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
+ 	if (!pci_is_pcie(pci_dev))
+ 		return 0;
+ 	pcie_capability_read_dword(pci_dev, PCI_EXP_LNKCAP, &link);
+-	return (link & PCI_EXP_LNKCAP_MLW) >> 4;
++	return FIELD_GET(PCI_EXP_LNKCAP_MLW, link);
+ }
+ 
+ static void msi_config_show(struct cobalt *cobalt, struct pci_dev *pci_dev)
 -- 
 2.42.0
 
