@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 969FD7F7BD9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4407F7E08
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 519B82821C3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C3CC1C21354
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E799D381DE;
-	Fri, 24 Nov 2023 18:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727663A8E0;
+	Fri, 24 Nov 2023 18:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bI5DJ03g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhyUnV07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A567F39FE1;
-	Fri, 24 Nov 2023 18:09:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C8BC433C7;
-	Fri, 24 Nov 2023 18:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8063A8E4;
+	Fri, 24 Nov 2023 18:29:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF86C433C8;
+	Fri, 24 Nov 2023 18:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849356;
-	bh=5mkEg4Hh2PMmK+PlPXIoU+JIhMvViqBZP3o3D/6Mwdw=;
+	s=korg; t=1700850557;
+	bh=aHgpu0rJxnHgPANnzxX4r7qUyUYyNchwoFINhCkceEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bI5DJ03gyM4SwGLOmavoe4HYd/3JYxWJYQGEYHVdfof9T1bOkIPdNJw63vU3+daJs
-	 mf1AxIMu/+DyrAKquVcNRB5SmHigBHb8SlXT55h1+qWPS4upGtUNI5yHS+ahCQKBns
-	 1lBpNe9bF4qQDCU9mKhh208Ww6yLACny0WY6panQ=
+	b=IhyUnV07vdk5agR5owH/pVxAkx35OT6SFAwcfqpXJq+ylJW7n1luvK93vzKN+v60F
+	 pAlFWXvmaxi56Ui0qGduq7CNA5RzAXdTAIWWX46wcMCit43I34iG8s7IOenav0RPmh
+	 tXU4fUfoO7+MsCaCvABLU0Lq5mAZFO0GbIpA7Trk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/530] kgdb: Flush console before entering kgdb on panic
+Subject: [PATCH 6.5 079/491] ASoC: soc-card: Add storage for PCI SSID
 Date: Fri, 24 Nov 2023 17:45:15 +0000
-Message-ID: <20231124172032.631960254@linuxfoundation.org>
+Message-ID: <20231124172027.000315133@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,61 +54,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit dd712d3d45807db9fcae28a522deee85c1f2fde6 ]
+[ Upstream commit 47f56e38a199bd45514b8e0142399cba4feeaf1a ]
 
-When entering kdb/kgdb on a kernel panic, it was be observed that the
-console isn't flushed before the `kdb` prompt came up. Specifically,
-when using the buddy lockup detector on arm64 and running:
-  echo HARDLOCKUP > /sys/kernel/debug/provoke-crash/DIRECT
+Add members to struct snd_soc_card to store the PCI subsystem ID (SSID)
+of the soundcard.
 
-I could see:
-  [   26.161099] lkdtm: Performing direct entry HARDLOCKUP
-  [   32.499881] watchdog: Watchdog detected hard LOCKUP on cpu 6
-  [   32.552865] Sending NMI from CPU 5 to CPUs 6:
-  [   32.557359] NMI backtrace for cpu 6
-  ... [backtrace for cpu 6] ...
-  [   32.558353] NMI backtrace for cpu 5
-  ... [backtrace for cpu 5] ...
-  [   32.867471] Sending NMI from CPU 5 to CPUs 0-4,7:
-  [   32.872321] NMI backtrace forP cpuANC: Hard LOCKUP
+The PCI specification provides two registers to store a vendor-specific
+SSID that can be read by drivers to uniquely identify a particular
+"soundcard". This is defined in the PCI specification to distinguish
+products that use the same silicon (and therefore have the same silicon
+ID) so that product-specific differences can be applied.
 
-  Entering kdb (current=..., pid 0) on processor 5 due to Keyboard Entry
-  [5]kdb>
+PCI only defines 0xFFFF as an invalid value. 0x0000 is not defined as
+invalid. So the usual pattern of zero-filling the struct and then
+assuming a zero value unset will not work. A flag is included to
+indicate when the SSID information has been filled in.
 
-As you can see, backtraces for the other CPUs start printing and get
-interleaved with the kdb PANIC print.
+Unlike DMI information, which has a free-format entirely up to the vendor,
+the PCI SSID has a strictly defined format and a registry of vendor IDs.
 
-Let's replicate the commands to flush the console in the kdb panic
-entry point to avoid this.
+It is usual in Windows drivers that the SSID is used as the sole identifier
+of the specific end-product and the Windows driver contains tables mapping
+that to information about the hardware setup, rather than using ACPI
+properties.
 
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20230822131945.1.I5b460ae8f954e4c4f628a373d6e74713c06dd26f@changeid
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
+This SSID is important information for ASoC components that need to apply
+hardware-specific configuration on PCI-based systems.
+
+As the SSID is a generic part of the PCI specification and is treated as
+identifying the "soundcard", it is reasonable to include this information
+in struct snd_soc_card, instead of components inventing their own custom
+ways to pass this information around.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20230912163207.3498161-2-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/debug_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/sound/soc-card.h | 37 +++++++++++++++++++++++++++++++++++++
+ include/sound/soc.h      | 11 +++++++++++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
-index 621037a0aa870..ce1bb2301c061 100644
---- a/kernel/debug/debug_core.c
-+++ b/kernel/debug/debug_core.c
-@@ -1006,6 +1006,9 @@ void kgdb_panic(const char *msg)
- 	if (panic_timeout)
- 		return;
+diff --git a/include/sound/soc-card.h b/include/sound/soc-card.h
+index fc94dfb0021fd..e8ff2e089cd00 100644
+--- a/include/sound/soc-card.h
++++ b/include/sound/soc-card.h
+@@ -59,6 +59,43 @@ int snd_soc_card_add_dai_link(struct snd_soc_card *card,
+ void snd_soc_card_remove_dai_link(struct snd_soc_card *card,
+ 				  struct snd_soc_dai_link *dai_link);
  
-+	debug_locks_off();
-+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
++#ifdef CONFIG_PCI
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++	card->pci_subsystem_vendor = vendor;
++	card->pci_subsystem_device = device;
++	card->pci_subsystem_set = true;
++}
 +
- 	if (dbg_kdb_mode)
- 		kdb_printf("PANIC: %s\n", msg);
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	if (!card->pci_subsystem_set)
++		return -ENOENT;
++
++	*vendor = card->pci_subsystem_vendor;
++	*device = card->pci_subsystem_device;
++
++	return 0;
++}
++#else /* !CONFIG_PCI */
++static inline void snd_soc_card_set_pci_ssid(struct snd_soc_card *card,
++					     unsigned short vendor,
++					     unsigned short device)
++{
++}
++
++static inline int snd_soc_card_get_pci_ssid(struct snd_soc_card *card,
++					    unsigned short *vendor,
++					    unsigned short *device)
++{
++	return -ENOENT;
++}
++#endif /* CONFIG_PCI */
++
+ /* device driver data */
+ static inline void snd_soc_card_set_drvdata(struct snd_soc_card *card,
+ 					    void *data)
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index cf34810882347..0c54b343d3e5d 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -931,6 +931,17 @@ struct snd_soc_card {
+ #ifdef CONFIG_DMI
+ 	char dmi_longname[80];
+ #endif /* CONFIG_DMI */
++
++#ifdef CONFIG_PCI
++	/*
++	 * PCI does not define 0 as invalid, so pci_subsystem_set indicates
++	 * whether a value has been written to these fields.
++	 */
++	unsigned short pci_subsystem_vendor;
++	unsigned short pci_subsystem_device;
++	bool pci_subsystem_set;
++#endif /* CONFIG_PCI */
++
+ 	char topology_shortname[32];
  
+ 	struct device *dev;
 -- 
 2.42.0
 
