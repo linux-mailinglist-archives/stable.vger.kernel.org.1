@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-2325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187A57F83B1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F397F8427
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6E86288D9F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DAF228A7F5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B31A364B7;
-	Fri, 24 Nov 2023 19:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A7A1A5A4;
+	Fri, 24 Nov 2023 19:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hw/dSwPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXSr1y5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BD735F04;
-	Fri, 24 Nov 2023 19:20:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71512C433C8;
-	Fri, 24 Nov 2023 19:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B327031748;
+	Fri, 24 Nov 2023 19:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EF5C433C8;
+	Fri, 24 Nov 2023 19:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853605;
-	bh=3Nn/E9FIP5RFfxf/NdYQ8PAMAM6T6K4gAImhzoiIpBM=;
+	s=korg; t=1700853870;
+	bh=4RPMb0zQAwtATBLdpowhXs60qfOn51X4D+oTl89reJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hw/dSwPLj36oPHvIJCMzAtU7Wk/75wFt8Z3wRBmmbb+UuwEvsa44uM9qzBgRebi1B
-	 OqPRbaE8Mgm5vZGcGm6exli1wuYdkgPZL+S0q0QS+l1sxfeeMp8+Rgs+k0PnqgzW8l
-	 k7Lbr7bRdi/Sp/euLV1+QcMYRiqF/GMpmHkJeieA=
+	b=aXSr1y5NXr4G6MqosJxR0XdJMETrr//YEzhBh6FXVrvPv2y1ppGNvrXVaRku8uRZ2
+	 UjnIXfc/h6BcDPy6GNM9MACVN+f4YC/snsSv3adBTBfXzFkkNMMioZCSukIUt6kF4b
+	 WzkxteF9TH/zSUuHw6I7d4W3gBhcKv+pEfn00ly0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 238/297] serial: meson: Use platform_get_irq() to get the interrupt
+Subject: [PATCH 5.4 063/159] net/mlx5e: Check return value of snprintf writing to fw_version buffer for representors
 Date: Fri, 24 Nov 2023 17:54:40 +0000
-Message-ID: <20231124172008.513938591@linuxfoundation.org>
+Message-ID: <20231124171944.560921705@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,71 +55,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 5b68061983471470d4109bac776145245f06bc09 ]
+[ Upstream commit 1b2bd0c0264febcd8d47209079a6671c38e6558b ]
 
-platform_get_resource(pdev, IORESOURCE_IRQ, ..) relies on static
-allocation of IRQ resources in DT core code, this causes an issue
-when using hierarchical interrupt domains using "interrupts" property
-in the node as this bypasses the hierarchical setup and messes up the
-irq chaining.
+Treat the operation as an error case when the return value is equivalent to
+the size of the name buffer. Failed to write null terminator to the name
+buffer, making the string malformed and should not be used. Provide a
+string with only the firmware version when forming the string with the
+board id fails. This logic for representors is identical to normal flow
+with ethtool.
 
-In preparation for removal of static setup of IRQ resource from DT core
-code use platform_get_irq().
+Without check, will trigger -Wformat-truncation with W=1.
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20211224142917.6966-5-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c: In function 'mlx5e_rep_get_drvinfo':
+    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c:78:31: warning: '%.16s' directive output may be truncated writing up to 16 bytes into a region of size between 13 and 22 [-Wformat-truncation=]
+      78 |                  "%d.%d.%04d (%.16s)",
+         |                               ^~~~~
+    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c:77:9: note: 'snprintf' output between 12 and 37 bytes into a destination of size 32
+      77 |         snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      78 |                  "%d.%d.%04d (%.16s)",
+         |                  ~~~~~~~~~~~~~~~~~~~~~
+      79 |                  fw_rev_maj(mdev), fw_rev_min(mdev),
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      80 |                  fw_rev_sub(mdev), mdev->board_id);
+         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes: cf83c8fdcd47 ("net/mlx5e: Add missing ethtool driver info for representors")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-16-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index 62e6c1af13445..b6e8db0ddf065 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -726,10 +726,11 @@ static int meson_uart_probe_clocks(struct platform_device *pdev,
- 
- static int meson_uart_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index e150d9fbd2ce1..ed37cc7c9ae00 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -71,13 +71,17 @@ static void mlx5e_rep_get_drvinfo(struct net_device *dev,
  {
--	struct resource *res_mem, *res_irq;
-+	struct resource *res_mem;
- 	struct uart_port *port;
- 	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
- 	int ret = 0;
-+	int irq;
+ 	struct mlx5e_priv *priv = netdev_priv(dev);
+ 	struct mlx5_core_dev *mdev = priv->mdev;
++	int count;
  
- 	if (pdev->dev.of_node)
- 		pdev->id = of_alias_get_id(pdev->dev.of_node, "serial");
-@@ -752,9 +753,9 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	if (!res_mem)
- 		return -ENODEV;
+ 	strlcpy(drvinfo->driver, mlx5e_rep_driver_name,
+ 		sizeof(drvinfo->driver));
+-	snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+-		 "%d.%d.%04d (%.16s)",
+-		 fw_rev_maj(mdev), fw_rev_min(mdev),
+-		 fw_rev_sub(mdev), mdev->board_id);
++	count = snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
++			 "%d.%d.%04d (%.16s)", fw_rev_maj(mdev),
++			 fw_rev_min(mdev), fw_rev_sub(mdev), mdev->board_id);
++	if (count == sizeof(drvinfo->fw_version))
++		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
++			 "%d.%d.%04d", fw_rev_maj(mdev),
++			 fw_rev_min(mdev), fw_rev_sub(mdev));
+ }
  
--	res_irq = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
--	if (!res_irq)
--		return -ENODEV;
-+	irq = platform_get_irq(pdev, 0);
-+	if (irq < 0)
-+		return irq;
- 
- 	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
- 
-@@ -779,7 +780,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	port->iotype = UPIO_MEM;
- 	port->mapbase = res_mem->start;
- 	port->mapsize = resource_size(res_mem);
--	port->irq = res_irq->start;
-+	port->irq = irq;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
+ static void mlx5e_uplink_rep_get_drvinfo(struct net_device *dev,
 -- 
 2.42.0
 
