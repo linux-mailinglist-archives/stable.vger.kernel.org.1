@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC637F7D97
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B667F7B98
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66A4B281878
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D634328205F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F8439FE9;
-	Fri, 24 Nov 2023 18:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A47B39FED;
+	Fri, 24 Nov 2023 18:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHvjNIhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq5c73m/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD63381BF;
-	Fri, 24 Nov 2023 18:25:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2F5C433C8;
-	Fri, 24 Nov 2023 18:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189DB381D5;
+	Fri, 24 Nov 2023 18:06:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA80C433C7;
+	Fri, 24 Nov 2023 18:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850356;
-	bh=vK5oxJNNI+b9wUu0KPiH1iwmXrm0459Ba/2YXmgqr3Y=;
+	s=korg; t=1700849198;
+	bh=LbgXnMrPyMhsXeyHyF4BKnrrF8neQxRIqgMbwhYGxVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHvjNIhc+gPgFz+MpkONLZoo6iRf9+NmyNkfRc7hc5KKV+v0V2i1CezpxGrRKpaLG
-	 +/lsFFtFB+tKWAvVNjsIpVDhJ2qBnEtFNBCvH5Mhijyd4x1SEYAT6Zg6TfPp0Q3tFP
-	 DCIu5MbXTFNggXS70U4NC+G4RK8d3xFtkiBT9g1Q=
+	b=Jq5c73m/L+PVaA5Dsy4tW41pYi2CCpSIabrM+r9U6D2QmuQW0mvk2DthNt59deV9I
+	 tNh7CJBhAwXVt7iVcgKONs9PqAyJLorbsaOIMUKe7c/z9wHCJiXp1BTN4+QpNXksRY
+	 VXCmXya7zBiPyw19djMldFRJ+R+HcFGDgADp/xFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshitha Prem <quic_hprem@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Lu Jialin <lujialin4@huawei.com>,
+	Guo Zihua <guozihua@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 017/491] wifi: ath12k: Ignore fragments from uninitialized peer in dp
+Subject: [PATCH 6.6 087/530] crypto: pcrypt - Fix hungtask for PADATA_RESET
 Date: Fri, 24 Nov 2023 17:44:13 +0000
-Message-ID: <20231124172025.203838424@linuxfoundation.org>
+Message-ID: <20231124172030.728997492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,114 +54,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshitha Prem <quic_hprem@quicinc.com>
+From: Lu Jialin <lujialin4@huawei.com>
 
-[ Upstream commit bbc86757ca62423c3b6bd8f7176da1ff43450769 ]
+[ Upstream commit 8f4f68e788c3a7a696546291258bfa5fdb215523 ]
 
-When max virtual ap interfaces are configured in all the bands with
-ACS and hostapd restart is done every 60s, a crash is observed at
-random times.
+We found a hungtask bug in test_aead_vec_cfg as follows:
 
-In the above scenario, a fragmented packet is received for self peer,
-for which rx_tid and rx_frags are not initialized in datapath.
-While handling this fragment, crash is observed as the rx_frag list
-is uninitialized and when we walk in ath12k_dp_rx_h_sort_frags,
-skb null leads to exception.
-
-To address this, before processing received fragments we check
-dp_setup_done flag is set to ensure that peer has completed its
-dp peer setup for fragment queue, else ignore processing the
-fragments.
-
+INFO: task cryptomgr_test:391009 blocked for more than 120 seconds.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
 Call trace:
-    PC points to "ath12k_dp_process_rx_err+0x4e8/0xfcc [ath12k]"
-    LR points to "ath12k_dp_process_rx_err+0x480/0xfcc [ath12k]".
-    The Backtrace obtained is as follows:
-    ath12k_dp_process_rx_err+0x4e8/0xfcc [ath12k]
-    ath12k_dp_service_srng+0x78/0x260 [ath12k]
-    ath12k_pci_write32+0x990/0xb0c [ath12k]
-    __napi_poll+0x30/0xa4
-    net_rx_action+0x118/0x270
-    __do_softirq+0x10c/0x244
-    irq_exit+0x64/0xb4
-    __handle_domain_irq+0x88/0xac
-    gic_handle_irq+0x74/0xbc
-    el1_irq+0xf0/0x1c0
-    arch_cpu_idle+0x10/0x18
-    do_idle+0x104/0x248
-    cpu_startup_entry+0x20/0x64
-    rest_init+0xd0/0xdc
-    arch_call_rest_init+0xc/0x14
+ __switch_to+0x98/0xe0
+ __schedule+0x6c4/0xf40
+ schedule+0xd8/0x1b4
+ schedule_timeout+0x474/0x560
+ wait_for_common+0x368/0x4e0
+ wait_for_completion+0x20/0x30
+ wait_for_completion+0x20/0x30
+ test_aead_vec_cfg+0xab4/0xd50
+ test_aead+0x144/0x1f0
+ alg_test_aead+0xd8/0x1e0
+ alg_test+0x634/0x890
+ cryptomgr_test+0x40/0x70
+ kthread+0x1e0/0x220
+ ret_from_fork+0x10/0x18
+ Kernel panic - not syncing: hung_task: blocked tasks
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+For padata_do_parallel, when the return err is 0 or -EBUSY, it will call
+wait_for_completion(&wait->completion) in test_aead_vec_cfg. In normal
+case, aead_request_complete() will be called in pcrypt_aead_serial and the
+return err is 0 for padata_do_parallel. But, when pinst->flags is
+PADATA_RESET, the return err is -EBUSY for padata_do_parallel, and it
+won't call aead_request_complete(). Therefore, test_aead_vec_cfg will
+hung at wait_for_completion(&wait->completion), which will cause
+hungtask.
 
-Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230821130343.29495-2-quic_hprem@quicinc.com
+The problem comes as following:
+(padata_do_parallel)                 |
+    rcu_read_lock_bh();              |
+    err = -EINVAL;                   |   (padata_replace)
+                                     |     pinst->flags |= PADATA_RESET;
+    err = -EBUSY                     |
+    if (pinst->flags & PADATA_RESET) |
+        rcu_read_unlock_bh()         |
+        return err
+
+In order to resolve the problem, we replace the return err -EBUSY with
+-EAGAIN, which means parallel_data is changing, and the caller should call
+it again.
+
+v3:
+remove retry and just change the return err.
+v2:
+introduce padata_try_do_parallel() in pcrypt_aead_encrypt and
+pcrypt_aead_decrypt to solve the hungtask.
+
+Signed-off-by: Lu Jialin <lujialin4@huawei.com>
+Signed-off-by: Guo Zihua <guozihua@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c    | 1 +
- drivers/net/wireless/ath/ath12k/dp_rx.c | 9 +++++++++
- drivers/net/wireless/ath/ath12k/peer.h  | 3 +++
- 3 files changed, 13 insertions(+)
+ crypto/pcrypt.c | 4 ++++
+ kernel/padata.c | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index f933896f2a68d..6893466f61f04 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -38,6 +38,7 @@ void ath12k_dp_peer_cleanup(struct ath12k *ar, int vdev_id, const u8 *addr)
+diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
+index 8c1d0ca412137..d0d954fe9d54f 100644
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -117,6 +117,8 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
++	if (err == -EBUSY)
++		return -EAGAIN;
  
- 	ath12k_dp_rx_peer_tid_cleanup(ar, peer);
- 	crypto_free_shash(peer->tfm_mmic);
-+	peer->dp_setup_done = false;
- 	spin_unlock_bh(&ab->base_lock);
+ 	return err;
  }
+@@ -164,6 +166,8 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
++	if (err == -EBUSY)
++		return -EAGAIN;
  
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index fcb91b8ef00e3..73edcb1908b91 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2747,6 +2747,7 @@ int ath12k_dp_rx_peer_frag_setup(struct ath12k *ar, const u8 *peer_mac, int vdev
+ 	return err;
+ }
+diff --git a/kernel/padata.c b/kernel/padata.c
+index ff349e1084c1d..179fb1518070c 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -202,7 +202,7 @@ int padata_do_parallel(struct padata_shell *ps,
+ 		*cb_cpu = cpu;
  	}
  
- 	peer->tfm_mmic = tfm;
-+	peer->dp_setup_done = true;
- 	spin_unlock_bh(&ab->base_lock);
+-	err =  -EBUSY;
++	err = -EBUSY;
+ 	if ((pinst->flags & PADATA_RESET))
+ 		goto out;
  
- 	return 0;
-@@ -3213,6 +3214,14 @@ static int ath12k_dp_rx_frag_h_mpdu(struct ath12k *ar,
- 		ret = -ENOENT;
- 		goto out_unlock;
- 	}
-+
-+	if (!peer->dp_setup_done) {
-+		ath12k_warn(ab, "The peer %pM [%d] has uninitialized datapath\n",
-+			    peer->addr, peer_id);
-+		ret = -ENOENT;
-+		goto out_unlock;
-+	}
-+
- 	rx_tid = &peer->rx_tid[tid];
- 
- 	if ((!skb_queue_empty(&rx_tid->rx_frags) && seqno != rx_tid->cur_sn) ||
-diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireless/ath/ath12k/peer.h
-index b296dc0e2f671..c6edb24cbedd8 100644
---- a/drivers/net/wireless/ath/ath12k/peer.h
-+++ b/drivers/net/wireless/ath/ath12k/peer.h
-@@ -44,6 +44,9 @@ struct ath12k_peer {
- 	struct ppdu_user_delayba ppdu_stats_delayba;
- 	bool delayba_flag;
- 	bool is_authorized;
-+
-+	/* protected by ab->data_lock */
-+	bool dp_setup_done;
- };
- 
- void ath12k_peer_unmap_event(struct ath12k_base *ab, u16 peer_id);
 -- 
 2.42.0
 
