@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A037E7F7F6B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D107F80FB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C059282542
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48347B21AAB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91B433CC7;
-	Fri, 24 Nov 2023 18:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5FC2E84A;
+	Fri, 24 Nov 2023 18:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZKrYVIf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wAVGtTJd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BE92E655;
-	Fri, 24 Nov 2023 18:41:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B4EC433C7;
-	Fri, 24 Nov 2023 18:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FC335F04;
+	Fri, 24 Nov 2023 18:54:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D755C433C7;
+	Fri, 24 Nov 2023 18:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851279;
-	bh=EVHlYn4GFpLf1bUVHIvWGY59y4c45j0mRLW/T1ruus4=;
+	s=korg; t=1700852074;
+	bh=8RKcNt9kYUxLGm5yUt/uFTpN+0vpDPIq4ZAlvxMD2kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZKrYVIfq7rg9J+x5drbnq3JaqMutxxn6XifpZc6U16BgA+wrttkgn1vbxBa3xhpo
-	 gMUGdkmz9uWMiTHDApTpiOcuBknbKQVqnuFvcuh/ktgzv1vO03N09M0wa+3BWD0FXU
-	 bXni5jUe8xkb4BXoel1CpS202MCcQQ4DYnM1dRYY=
+	b=wAVGtTJdiB+5gPGl2yGEZOGvbhaD46Kmwxf+CN1tecOa8MPlHloYgRHaU/V1I2rk9
+	 w3EnkosFUQvld76goePEiBJcXomd6wtiFwgufChWNa9hWMgHEaWkCI7CCIjGoiX+0L
+	 EGr/fLV1LRZ47/vVo9b6ZK9LxQLSoq+GdjQ0RTKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.5 359/491] i3c: master: svc: fix ibi may not return mandatory data byte
-Date: Fri, 24 Nov 2023 17:49:55 +0000
-Message-ID: <20231124172035.361279361@linuxfoundation.org>
+	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 209/372] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
+Date: Fri, 24 Nov 2023 17:49:56 +0000
+Message-ID: <20231124172017.433501644@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +50,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-commit c85e209b799f12d18a90ae6353b997b1bb1274a5 upstream.
+commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
 
-MSTATUS[RXPEND] is only updated after the data transfer cycle started. This
-creates an issue when the I3C clock is slow, and the CPU is running fast
-enough that MSTATUS[RXPEND] may not be updated when the code reaches
-checking point. As a result, mandatory data can be missed.
+GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
+on the request from dependent clocks. Doing so will result in the
+unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
+clocks.
 
-Add a wait for MSTATUS[COMPLETE] to ensure that all mandatory data is
-already in FIFO. It also works without mandatory data.
-
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-4-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: stable@vger.kernel.org
+Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/clk/qcom/gcc-ipq8074.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -333,6 +333,7 @@ static int svc_i3c_master_handle_ibi(str
- 	struct i3c_ibi_slot *slot;
- 	unsigned int count;
- 	u32 mdatactrl;
-+	int ret, val;
- 	u8 *buf;
+--- a/drivers/clk/qcom/gcc-ipq8074.c
++++ b/drivers/clk/qcom/gcc-ipq8074.c
+@@ -419,7 +419,6 @@ static struct clk_fixed_factor gpll0_out
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
- 	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
-@@ -342,6 +343,13 @@ static int svc_i3c_master_handle_ibi(str
- 	slot->len = 0;
- 	buf = slot->data;
+@@ -466,7 +465,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
  
-+	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
-+						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
-+	if (ret) {
-+		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
-+		return ret;
-+	}
-+
- 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+@@ -499,7 +497,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -533,7 +530,6 @@ static struct clk_alpha_pll_postdiv gpll
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -547,7 +543,6 @@ static struct clk_fixed_factor gpll6_out
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_fixed_factor_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
+@@ -612,7 +607,6 @@ static struct clk_alpha_pll_postdiv nss_
+ 		},
+ 		.num_parents = 1,
+ 		.ops = &clk_alpha_pll_postdiv_ro_ops,
+-		.flags = CLK_SET_RATE_PARENT,
+ 	},
+ };
+ 
 
 
 
