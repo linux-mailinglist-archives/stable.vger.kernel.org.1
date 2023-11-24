@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 964437F803E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6D577F7C78
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3910DB20F36
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E067280A7E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82CEC364DE;
-	Fri, 24 Nov 2023 18:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE7E23A8E0;
+	Fri, 24 Nov 2023 18:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4vFmsMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpAz8MXy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB4333CFD;
-	Fri, 24 Nov 2023 18:47:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7230C433C7;
-	Fri, 24 Nov 2023 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1D83A8DC;
+	Fri, 24 Nov 2023 18:15:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78498C433C9;
+	Fri, 24 Nov 2023 18:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851673;
-	bh=OkKWOhOlfGtkPUHeNUG0v2epUdYgXkVIR99STgMn6m0=;
+	s=korg; t=1700849725;
+	bh=I5VGw38+z4AxB8TnOosDRJYxBmuLZ/oG7NsfdYXFnOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4vFmsMvkAh0BUUOi5IB/PqsGjiqKU5Ao5oh+7eUpVxdZIvRhsa4sfEPkObe5xqx2
-	 zfKDCvsKk1e+LtYi9UavuigQUytacDE8Y2hoDrfb3hzj3GrqbeRsX+1149xF14b5al
-	 SjP4TeKWN4Pgu8t4GA6CFLvd+5oX/B0y3hYBOVmc=
+	b=mpAz8MXyGJzMxtfKcrixxU+WxHpHPW3M8+fYXUET8I2jzDCKt/fDz+Cup6bRfHW2i
+	 Tv0P4gJfZ9KOPtos8bLgPMcLSK6Wl8AEPu5AFgPjmUVn71Ix7zqkTZsKnGrZBz02tU
+	 ivwCBg2lBOc7WLfQTXRyBDjNMxYWEp8ZZJfeNp30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make_ruc2021@163.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/372] drm/amdgpu/vkms: fix a possible null pointer dereference
-Date: Fri, 24 Nov 2023 17:47:16 +0000
-Message-ID: <20231124172012.116323352@linuxfoundation.org>
+	David Woodhouse <dwmw@amazon.co.uk>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 271/530] hvc/xen: fix event channel handling for secondary consoles
+Date: Fri, 24 Nov 2023 17:47:17 +0000
+Message-ID: <20231124172036.290800174@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make_ruc2021@163.com>
+From: David Woodhouse <dwmw@amazon.co.uk>
 
-[ Upstream commit cd90511557fdfb394bb4ac4c3b539b007383914c ]
+commit ef5dd8ec88ac11e8e353164407d55b73c988b369 upstream.
 
-In amdgpu_vkms_conn_get_modes(), the return value of drm_cvt_mode()
-is assigned to mode, which will lead to a NULL pointer dereference
-on failure of drm_cvt_mode(). Add a check to avoid null pointer
-dereference.
+The xencons_connect_backend() function allocates a local interdomain
+event channel with xenbus_alloc_evtchn(), then calls
+bind_interdomain_evtchn_to_irq_lateeoi() to bind to that port# on the
+*remote* domain.
 
-Signed-off-by: Ma Ke <make_ruc2021@163.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That doesn't work very well:
+
+(qemu) device_add xen-console,id=con1,chardev=pty0
+[   44.323872] xenconsole console-1: 2 xenbus_dev_probe on device/console/1
+[   44.323995] xenconsole: probe of console-1 failed with error -2
+
+Fix it to use bind_evtchn_to_irq_lateeoi(), which does the right thing
+by just binding that *local* event channel to an irq. The backend will
+do the interdomain binding.
+
+This didn't affect the primary console because the setup for that is
+special — the toolstack allocates the guest event channel and the guest
+discovers it with HVMOP_get_param.
+
+Fixes: fe415186b43d ("xen/console: harden hvc_xen against event channel storms")
+Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231020161529.355083-2-dwmw2@infradead.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/tty/hvc/hvc_xen.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-index d60c4a2eeb0c5..06980b8527ff8 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vkms.c
-@@ -239,6 +239,8 @@ static int amdgpu_vkms_conn_get_modes(struct drm_connector *connector)
- 
- 	for (i = 0; i < ARRAY_SIZE(common_modes); i++) {
- 		mode = drm_cvt_mode(dev, common_modes[i].w, common_modes[i].h, 60, false, false, false);
-+		if (!mode)
-+			continue;
- 		drm_mode_probed_add(connector, mode);
- 	}
- 
--- 
-2.42.0
-
+--- a/drivers/tty/hvc/hvc_xen.c
++++ b/drivers/tty/hvc/hvc_xen.c
+@@ -436,7 +436,7 @@ static int xencons_connect_backend(struc
+ 	if (ret)
+ 		return ret;
+ 	info->evtchn = evtchn;
+-	irq = bind_interdomain_evtchn_to_irq_lateeoi(dev, evtchn);
++	irq = bind_evtchn_to_irq_lateeoi(evtchn);
+ 	if (irq < 0)
+ 		return irq;
+ 	info->irq = irq;
 
 
 
