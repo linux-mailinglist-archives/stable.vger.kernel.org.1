@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-2246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23ADC7F835E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C28477F83ED
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B1C287D7F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E1332899BF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2398437170;
-	Fri, 24 Nov 2023 19:16:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1287B364B7;
+	Fri, 24 Nov 2023 19:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IW26LOJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OMGTRkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DB63173F;
-	Fri, 24 Nov 2023 19:16:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07585C433C8;
-	Fri, 24 Nov 2023 19:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB7F339BE;
+	Fri, 24 Nov 2023 19:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE4CC433C8;
+	Fri, 24 Nov 2023 19:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853414;
-	bh=0CQ0iCpBMh1K6IvoQhyJph/k8THM6yewDMGEdUkk/eo=;
+	s=korg; t=1700853738;
+	bh=T2b8LTwZW121ynB+3EyZbvd/8mX8XtIgyycZl0SM24g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IW26LOJlxkf9iYKVVcQ/aVf9s0kGBR1dyUB8rNQnoBYX4L/mvjO8UVdzVnJ43U/0E
-	 Z2EGxHnyzXGDclm/9DWVp5EycMLDvYbbiBrT766YYE1QgtydoHz7NIfIsUr5YUz+Qv
-	 VYUfqkC/EXWwHUmuyS1/YvM1eFatJbPm+18SagQw=
+	b=0OMGTRkd9lLXg0fTBm2vmVfjFDlAXO5UqmET7IQfFpdSGi8B46lHR7aPMX7I3+0m/
+	 2/I45E3yLki17cJF4kPoF8RT8aBeRKppNSL/Sb7ZJRo8qcp+16gt3Vir9motuK8szG
+	 03HhXDedk9rjCraK6egL/W8iTo3wrsK7plCCSxAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 178/297] parisc/pdc: Add width field to struct pdc_model
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 003/159] clocksource/drivers/timer-imx-gpt: Fix potential memory leak
 Date: Fri, 24 Nov 2023 17:53:40 +0000
-Message-ID: <20231124172006.476246187@linuxfoundation.org>
+Message-ID: <20231124171942.053982202@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,33 +54,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Jacky Bai <ping.bai@nxp.com>
 
-commit 6240553b52c475d9fc9674de0521b77e692f3764 upstream.
+[ Upstream commit 8051a993ce222a5158bccc6ac22ace9253dd71cb ]
 
-PDC2.0 specifies the additional PSW-bit field.
+Fix coverity Issue CID 250382:  Resource leak (RESOURCE_LEAK).
+Add kfree when error return.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231009083922.1942971-1-ping.bai@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/uapi/asm/pdc.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clocksource/timer-imx-gpt.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/arch/parisc/include/uapi/asm/pdc.h
-+++ b/arch/parisc/include/uapi/asm/pdc.h
-@@ -465,6 +465,7 @@ struct pdc_model {		/* for PDC_MODEL */
- 	unsigned long arch_rev;
- 	unsigned long pot_key;
- 	unsigned long curr_key;
-+	unsigned long width;	/* default of PSW_W bit (1=enabled) */
- };
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index 706c0d0ff56cc..268c09417fa21 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -460,12 +460,16 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 		return -ENOMEM;
  
- struct pdc_cache_cf {		/* for PDC_CACHE  (I/D-caches) */
+ 	imxtm->base = of_iomap(np, 0);
+-	if (!imxtm->base)
+-		return -ENXIO;
++	if (!imxtm->base) {
++		ret = -ENXIO;
++		goto err_kfree;
++	}
+ 
+ 	imxtm->irq = irq_of_parse_and_map(np, 0);
+-	if (imxtm->irq <= 0)
+-		return -EINVAL;
++	if (imxtm->irq <= 0) {
++		ret = -EINVAL;
++		goto err_kfree;
++	}
+ 
+ 	imxtm->clk_ipg = of_clk_get_by_name(np, "ipg");
+ 
+@@ -478,11 +482,15 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 
+ 	ret = _mxc_timer_init(imxtm);
+ 	if (ret)
+-		return ret;
++		goto err_kfree;
+ 
+ 	initialized = 1;
+ 
+ 	return 0;
++
++err_kfree:
++	kfree(imxtm);
++	return ret;
+ }
+ 
+ static int __init imx1_timer_init_dt(struct device_node *np)
+-- 
+2.42.0
+
 
 
 
