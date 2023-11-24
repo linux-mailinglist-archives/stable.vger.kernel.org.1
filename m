@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A87D7F7E9B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7107F8038
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9A3528233A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D611E1C21555
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499DA2FC4E;
-	Fri, 24 Nov 2023 18:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F0A381D2;
+	Fri, 24 Nov 2023 18:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KL+WBReO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HAqx5v2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECB628DC3;
-	Fri, 24 Nov 2023 18:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C66FC433C9;
-	Fri, 24 Nov 2023 18:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FCB364BE;
+	Fri, 24 Nov 2023 18:47:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53CF6C433C8;
+	Fri, 24 Nov 2023 18:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850869;
-	bh=AWP4BSjS+9UIH2C2LBZIYPc3kUFB5W1xwCmEBbeDVyI=;
+	s=korg; t=1700851665;
+	bh=UTwiv+SQHWp9BzG7i20+Rhme4BY2WAxHrCNyMNeq/XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KL+WBReO8+AKT4XhsNP89xjPMeX1BJvvdM2YdlnZQa+ol600rqrGduiP144bpcF/a
-	 k/9U6e2SWxC2n4MlzdyPJ4LD/uk9DN6rXQRK31qgEUWA8Om1KdlNYmvwbFNS+iODMl
-	 vJa8SKzupsvhsDEqe0ZJDtgGSO95kB8pa1IZAx4c=
+	b=HAqx5v2WvBSICJ2a87r4oqF3vtlOq85vgo8+rdQakMSIKLgn6FF3Z/62dyRkOs6Rk
+	 8HJYGUUeuTQ0idYzhXN80xnnQfsxV3QQhounJLKrDpT5kXf09+fbXGLUUG5GBg6E0m
+	 kjzErR16lL1blXSu7Yu0A8HaSw5xL4RnTK7FRDXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Ma Ke <make_ruc2021@163.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 197/491] netfilter: nf_tables: bogus ENOENT when destroying element which does not exist
+Subject: [PATCH 6.1 046/372] drm/panel: fix a possible null pointer dereference
 Date: Fri, 24 Nov 2023 17:47:13 +0000
-Message-ID: <20231124172030.420475264@linuxfoundation.org>
+Message-ID: <20231124172012.014602387@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Ma Ke <make_ruc2021@163.com>
 
-[ Upstream commit a7d5a955bfa854ac6b0c53aaf933394b4e6139e4 ]
+[ Upstream commit 924e5814d1f84e6fa5cb19c6eceb69f066225229 ]
 
-destroy element command bogusly reports ENOENT in case a set element
-does not exist. ENOENT errors are skipped, however, err is still set
-and propagated to userspace.
+In versatile_panel_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a NULL pointer dereference
+on failure of drm_mode_duplicate(). Add a check to avoid npd.
 
- # nft destroy element ip raw BLACKLIST { 1.2.3.4 }
- Error: Could not process rule: No such file or directory
- destroy element ip raw BLACKLIST { 1.2.3.4 }
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Fixes: f80a612dd77c ("netfilter: nf_tables: add support to destroy operation")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Ma Ke <make_ruc2021@163.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231007033105.3997998-1-make_ruc2021@163.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231007033105.3997998-1-make_ruc2021@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-arm-versatile.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8776266ba1532..398a1bcc6ea61 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7202,10 +7202,11 @@ static int nf_tables_delsetelem(struct sk_buff *skb,
+diff --git a/drivers/gpu/drm/panel/panel-arm-versatile.c b/drivers/gpu/drm/panel/panel-arm-versatile.c
+index abb0788843c60..503ecea72c5ea 100644
+--- a/drivers/gpu/drm/panel/panel-arm-versatile.c
++++ b/drivers/gpu/drm/panel/panel-arm-versatile.c
+@@ -267,6 +267,8 @@ static int versatile_panel_get_modes(struct drm_panel *panel,
+ 	connector->display_info.bus_flags = vpanel->panel_type->bus_flags;
  
- 		if (err < 0) {
- 			NL_SET_BAD_ATTR(extack, attr);
--			break;
-+			return err;
- 		}
- 	}
--	return err;
-+
-+	return 0;
- }
+ 	mode = drm_mode_duplicate(connector->dev, &vpanel->panel_type->mode);
++	if (!mode)
++		return -ENOMEM;
+ 	drm_mode_set_name(mode);
+ 	mode->type = DRM_MODE_TYPE_DRIVER | DRM_MODE_TYPE_PREFERRED;
  
- /*
 -- 
 2.42.0
 
