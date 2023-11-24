@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F55D7F7EEA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452787F80B6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEDB82823FE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 768351C215CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7054628DA1;
-	Fri, 24 Nov 2023 18:37:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1A8364A0;
+	Fri, 24 Nov 2023 18:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmTYuV3N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J0H2ZRKd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D74433CDB;
-	Fri, 24 Nov 2023 18:37:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0107C433C8;
-	Fri, 24 Nov 2023 18:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A5328DBB;
+	Fri, 24 Nov 2023 18:52:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20EF8C433C7;
+	Fri, 24 Nov 2023 18:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851031;
-	bh=a+21QDjewlBfA51YjBV1q72J22NgztXlEAJhLlSYN3M=;
+	s=korg; t=1700851931;
+	bh=738ZT1MZI0PdIFhgEfCO5iGF3CkF0QOPgtPRQVl6lqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmTYuV3N6jusbNpB4qBgpUDjqiB+TLLN28j0Q4CPDcN2xYwr5PSPoXiPG5Bpb44bd
-	 +Cm0czS++C7CftPK4xVIny83BdwiDpQcNe+8y/XEnw4hCAJbz0A/5OB87KNWtYfSGr
-	 y/7uAPTEUFkDuwPD6kNzIUr4BVOee99kDaqRTSDg=
+	b=J0H2ZRKddWDu8jL+h53MFn0QHrEzWEG8Rlghv1rKonAmKV5B8tp4aSx7J+rqukNvs
+	 hUu2/jl4kGQMkh6ShbPjx3BgtwRumZx9ubPzjPsSu0NPleBuVNyrrI8qRS7OYO1Z36
+	 t+Au572RY37ypx2f2QdTp52u1+QEKsvyjUnMT5is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.5 286/491] arm64: Restrict CPU_BIG_ENDIAN to GNU as or LLVM IAS 15.x or newer
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 135/372] net: hns3: fix VF wrong speed and duplex issue
 Date: Fri, 24 Nov 2023 17:48:42 +0000
-Message-ID: <20231124172033.165872811@linuxfoundation.org>
+Message-ID: <20231124172014.987174298@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,94 +53,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jijie Shao <shaojijie@huawei.com>
 
-commit 146a15b873353f8ac28dc281c139ff611a3c4848 upstream.
+[ Upstream commit dff655e82faffc287d4a72a59f66fa120bf904e4 ]
 
-Prior to LLVM 15.0.0, LLVM's integrated assembler would incorrectly
-byte-swap NOP when compiling for big-endian, and the resulting series of
-bytes happened to match the encoding of FNMADD S21, S30, S0, S0.
+If PF is down, firmware will returns 10 Mbit/s rate and half-duplex mode
+when PF queries the port information from firmware.
 
-This went unnoticed until commit:
+After imp reset command is executed, PF status changes to down,
+and PF will query link status and updates port information
+from firmware in a periodic scheduled task.
 
-  34f66c4c4d5518c1 ("arm64: Use a positive cpucap for FP/SIMD")
+However, there is a low probability that port information is updated
+when PF is down, and then PF link status changes to up.
+In this case, PF synchronizes incorrect rate and duplex mode to VF.
 
-Prior to that commit, the kernel would always enable the use of FPSIMD
-early in boot when __cpu_setup() initialized CPACR_EL1, and so usage of
-FNMADD within the kernel was not detected, but could result in the
-corruption of user or kernel FPSIMD state.
+This patch fixes it by updating port information before
+PF synchronizes the rate and duplex to the VF
+when PF changes to up.
 
-After that commit, the instructions happen to trap during boot prior to
-FPSIMD being detected and enabled, e.g.
-
-| Unhandled 64-bit el1h sync exception on CPU0, ESR 0x000000001fe00000 -- ASIMD
-| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
-| Hardware name: linux,dummy-virt (DT)
-| pstate: 400000c9 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : __pi_strcmp+0x1c/0x150
-| lr : populate_properties+0xe4/0x254
-| sp : ffffd014173d3ad0
-| x29: ffffd014173d3af0 x28: fffffbfffddffcb8 x27: 0000000000000000
-| x26: 0000000000000058 x25: fffffbfffddfe054 x24: 0000000000000008
-| x23: fffffbfffddfe000 x22: fffffbfffddfe000 x21: fffffbfffddfe044
-| x20: ffffd014173d3b70 x19: 0000000000000001 x18: 0000000000000005
-| x17: 0000000000000010 x16: 0000000000000000 x15: 00000000413e7000
-| x14: 0000000000000000 x13: 0000000000001bcc x12: 0000000000000000
-| x11: 00000000d00dfeed x10: ffffd414193f2cd0 x9 : 0000000000000000
-| x8 : 0101010101010101 x7 : ffffffffffffffc0 x6 : 0000000000000000
-| x5 : 0000000000000000 x4 : 0101010101010101 x3 : 000000000000002a
-| x2 : 0000000000000001 x1 : ffffd014171f2988 x0 : fffffbfffddffcb8
-| Kernel panic - not syncing: Unhandled exception
-| CPU: 0 PID: 0 Comm: swapper Not tainted 6.6.0-rc3-00013-g34f66c4c4d55 #1
-| Hardware name: linux,dummy-virt (DT)
-| Call trace:
-|  dump_backtrace+0xec/0x108
-|  show_stack+0x18/0x2c
-|  dump_stack_lvl+0x50/0x68
-|  dump_stack+0x18/0x24
-|  panic+0x13c/0x340
-|  el1t_64_irq_handler+0x0/0x1c
-|  el1_abort+0x0/0x5c
-|  el1h_64_sync+0x64/0x68
-|  __pi_strcmp+0x1c/0x150
-|  unflatten_dt_nodes+0x1e8/0x2d8
-|  __unflatten_device_tree+0x5c/0x15c
-|  unflatten_device_tree+0x38/0x50
-|  setup_arch+0x164/0x1e0
-|  start_kernel+0x64/0x38c
-|  __primary_switched+0xbc/0xc4
-
-Restrict CONFIG_CPU_BIG_ENDIAN to a known good assembler, which is
-either GNU as or LLVM's IAS 15.0.0 and newer, which contains the linked
-commit.
-
-Closes: https://github.com/ClangBuiltLinux/linux/issues/1948
-Link: https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20231025-disable-arm64-be-ias-b4-llvm-15-v1-1-b25263ed8b23@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 18b6e31f8bf4 ("net: hns3: PF add support for pushing link status to VFs")
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Kconfig |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -1369,6 +1369,8 @@ choice
- config CPU_BIG_ENDIAN
- 	bool "Build big-endian kernel"
- 	depends on !LD_IS_LLD || LLD_VERSION >= 130000
-+	# https://github.com/llvm/llvm-project/commit/1379b150991f70a5782e9a143c2ba5308da1161c
-+	depends on AS_IS_GNU || AS_VERSION >= 150000
- 	help
- 	  Say Y if you plan on running a kernel with a big-endian userspace.
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index da5fbe627fa0b..48b0cb5ec5d29 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -74,6 +74,7 @@ static void hclge_sync_fd_table(struct hclge_dev *hdev);
+ static void hclge_update_fec_stats(struct hclge_dev *hdev);
+ static int hclge_mac_link_status_wait(struct hclge_dev *hdev, int link_ret,
+ 				      int wait_cnt);
++static int hclge_update_port_info(struct hclge_dev *hdev);
  
+ static struct hnae3_ae_algo ae_algo;
+ 
+@@ -3141,6 +3142,9 @@ static void hclge_update_link_status(struct hclge_dev *hdev)
+ 
+ 	if (state != hdev->hw.mac.link) {
+ 		hdev->hw.mac.link = state;
++		if (state == HCLGE_LINK_STATUS_UP)
++			hclge_update_port_info(hdev);
++
+ 		client->ops->link_status_change(handle, state);
+ 		hclge_config_mac_tnl_int(hdev, state);
+ 		if (rclient && rclient->ops->link_status_change)
+-- 
+2.42.0
+
 
 
 
