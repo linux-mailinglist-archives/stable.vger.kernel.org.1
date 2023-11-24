@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBAD7F827E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F43A7F83A9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76B292853D2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013C91F212A4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA4533E9;
-	Fri, 24 Nov 2023 19:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC8335F1A;
+	Fri, 24 Nov 2023 19:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbJQeibO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFbff8UN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D348B31748;
-	Fri, 24 Nov 2023 19:08:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6063CC433C7;
-	Fri, 24 Nov 2023 19:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1818233CCA;
+	Fri, 24 Nov 2023 19:19:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1A8C433C8;
+	Fri, 24 Nov 2023 19:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852890;
-	bh=Y7mMWtj1/zpDuvNcX+njHxQdVmgAOdlL6xCHmNzpaI8=;
+	s=korg; t=1700853585;
+	bh=MOYFS0H1DQySzGWM62eUddA3LEU8KBe7Ha48UfDz80U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbJQeibOg9jj9fS/xR5tAx2yBccRJu0nigQrm+sDMWNXb/My8zx/+TIwQBHdr16ZK
-	 SJYw4UrY06XIcvc6LjpPEpQl0WnsLHa0dJw6frKL1xg8n16/ZD9BhbiNWrDjD8ud+N
-	 XbZs1T44SJB1ArFoxsuyBxtbEtfXcWvZBw1ElpXU=
+	b=aFbff8UNLUOUuyebv+g/a7pQMW5j03xrcKZ7IhfcVlqjBzDpnMsmuHqW23HWhDc/f
+	 DSQgfsSj+l613KltbnVjz96A9iEIQe2yRffH6JV7NK8bb6gdlZBXlWwNdbu+/nRi0S
+	 sHLCF5Muv2IlrXmsxJ5Laui8rnw9vZuJ8iS18XdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 163/193] lsm: fix default return value for inode_getsecctx
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 248/297] arm64: dts: qcom: ipq6018: switch TCSR mutex to MMIO
 Date: Fri, 24 Nov 2023 17:54:50 +0000
-Message-ID: <20231124171953.711454612@linuxfoundation.org>
+Message-ID: <20231124172008.867005087@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit b36995b8609a5a8fe5cf259a1ee768fcaed919f8 upstream.
+[ Upstream commit f5e303aefc06b7508d7a490f9a2d80e4dc134c70 ]
 
--EOPNOTSUPP is the return value that implements a "no-op" hook, not 0.
+The TCSR mutex bindings allow device to be described only with address
+space (so it uses MMIO, not syscon regmap).  This seems reasonable as
+TCSR mutex is actually a dedicated IO address space and it also fixes DT
+schema checks:
 
-Without this fix having only the BPF LSM enabled (with no programs
-attached) can cause uninitialized variable reads in
-nfsd4_encode_fattr(), because the BPF hook returns 0 without touching
-the 'ctxlen' variable and the corresponding 'contextlen' variable in
-nfsd4_encode_fattr() remains uninitialized, yet being treated as valid
-based on the 0 return value.
+  qcom/ipq6018-cp01-c1.dtb: hwlock: 'reg' is a required property
+  qcom/ipq6018-cp01-c1.dtb: hwlock: 'syscon' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Cc: stable@vger.kernel.org
-Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
-Reported-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20220909092035.223915-12-krzysztof.kozlowski@linaro.org
+Stable-dep-of: 72fc3d58b87b ("arm64: dts: qcom: ipq6018: Fix tcsr_mutex register size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/lsm_hook_defs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -255,7 +255,7 @@ LSM_HOOK(void, LSM_RET_VOID, release_sec
- LSM_HOOK(void, LSM_RET_VOID, inode_invalidate_secctx, struct inode *inode)
- LSM_HOOK(int, 0, inode_notifysecctx, struct inode *inode, void *ctx, u32 ctxlen)
- LSM_HOOK(int, 0, inode_setsecctx, struct dentry *dentry, void *ctx, u32 ctxlen)
--LSM_HOOK(int, 0, inode_getsecctx, struct inode *inode, void **ctx,
-+LSM_HOOK(int, -EOPNOTSUPP, inode_getsecctx, struct inode *inode, void **ctx,
- 	 u32 *ctxlen)
+diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+index 13651a5ac5a69..43339557d7e5a 100644
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -129,12 +129,6 @@
+ 		};
+ 	};
  
- #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
+-	tcsr_mutex: hwlock {
+-		compatible = "qcom,tcsr-mutex";
+-		syscon = <&tcsr_mutex_regs 0 0x80>;
+-		#hwlock-cells = <1>;
+-	};
+-
+ 	pmuv8: pmu {
+ 		compatible = "arm,cortex-a53-pmu";
+ 		interrupts = <GIC_PPI 7 (GIC_CPU_MASK_SIMPLE(4) |
+@@ -253,9 +247,10 @@
+ 			#reset-cells = <1>;
+ 		};
+ 
+-		tcsr_mutex_regs: syscon@1905000 {
+-			compatible = "syscon";
+-			reg = <0x0 0x01905000 0x0 0x8000>;
++		tcsr_mutex: hwlock@1905000 {
++			compatible = "qcom,ipq6018-tcsr-mutex", "qcom,tcsr-mutex";
++			reg = <0x0 0x01905000 0x0 0x1000>;
++			#hwlock-cells = <1>;
+ 		};
+ 
+ 		tcsr: syscon@1937000 {
+-- 
+2.42.0
+
 
 
 
