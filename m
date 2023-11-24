@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A1E7F80FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A037E7F7F6B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5FAA282648
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C059282542
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DC733CFD;
-	Fri, 24 Nov 2023 18:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91B433CC7;
+	Fri, 24 Nov 2023 18:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cs5rnPxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZKrYVIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF87364A5;
-	Fri, 24 Nov 2023 18:54:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9803C433C8;
-	Fri, 24 Nov 2023 18:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BE92E655;
+	Fri, 24 Nov 2023 18:41:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5B4EC433C7;
+	Fri, 24 Nov 2023 18:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852072;
-	bh=x3PWbFwlPr75Z8LWmeEa2s+xWvIYBcpgLJ/bci8YAvs=;
+	s=korg; t=1700851279;
+	bh=EVHlYn4GFpLf1bUVHIvWGY59y4c45j0mRLW/T1ruus4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cs5rnPxPFpSCVqOl/VhHpH/gl46Bf+R6G56D/qoaanEuiuFsZg/5HS9ilD8xyf83/
-	 s66lXVVWtQzIdXYOCtS3rMgRqPQn79mVDqsUcAxOzoyJCKy4cTZXMaNJYFNB5vU9A4
-	 0NcxOckc/Rw/BcLbl8qyYrybLt3Gv8YIJXVWqOa4=
+	b=LZKrYVIfq7rg9J+x5drbnq3JaqMutxxn6XifpZc6U16BgA+wrttkgn1vbxBa3xhpo
+	 gMUGdkmz9uWMiTHDApTpiOcuBknbKQVqnuFvcuh/ktgzv1vO03N09M0wa+3BWD0FXU
+	 bXni5jUe8xkb4BXoel1CpS202MCcQQ4DYnM1dRYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.1 208/372] clk: socfpga: Fix undefined behavior bug in struct stratix10_clock_data
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.5 359/491] i3c: master: svc: fix ibi may not return mandatory data byte
 Date: Fri, 24 Nov 2023 17:49:55 +0000
-Message-ID: <20231124172017.398843344@linuxfoundation.org>
+Message-ID: <20231124172035.361279361@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,114 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit d761bb01c85b22d5b44abe283eb89019693f6595 upstream.
+commit c85e209b799f12d18a90ae6353b997b1bb1274a5 upstream.
 
-`struct clk_hw_onecell_data` is a flexible structure, which means that
-it contains flexible-array member at the bottom, in this case array
-`hws`:
+MSTATUS[RXPEND] is only updated after the data transfer cycle started. This
+creates an issue when the I3C clock is slow, and the CPU is running fast
+enough that MSTATUS[RXPEND] may not be updated when the code reaches
+checking point. As a result, mandatory data can be missed.
 
-include/linux/clk-provider.h:
-1380 struct clk_hw_onecell_data {
-1381         unsigned int num;
-1382         struct clk_hw *hws[] __counted_by(num);
-1383 };
+Add a wait for MSTATUS[COMPLETE] to ensure that all mandatory data is
+already in FIFO. It also works without mandatory data.
 
-This could potentially lead to an overwrite of the objects following
-`clk_data` in `struct stratix10_clock_data`, in this case
-`void __iomem *base;` at run-time:
-
-drivers/clk/socfpga/stratix10-clk.h:
-  9 struct stratix10_clock_data {
- 10         struct clk_hw_onecell_data      clk_data;
- 11         void __iomem            *base;
- 12 };
-
-There are currently three different places where memory is allocated for
-`struct stratix10_clock_data`, including the flex-array `hws` in
-`struct clk_hw_onecell_data`:
-
-drivers/clk/socfpga/clk-agilex.c:
-469         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-470                                 num_clks), GFP_KERNEL);
-
-drivers/clk/socfpga/clk-agilex.c:
-509         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-510                                 num_clks), GFP_KERNEL);
-
-drivers/clk/socfpga/clk-s10.c:
-400         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-401                                                  num_clks), GFP_KERNEL);
-
-I'll use just one of them to describe the issue. See below.
-
-Notice that a total of 440 bytes are allocated for flexible-array member
-`hws` at line 469:
-
-include/dt-bindings/clock/agilex-clock.h:
- 70 #define AGILEX_NUM_CLKS	55
-
-drivers/clk/socfpga/clk-agilex.c:
-459         struct stratix10_clock_data *clk_data;
-460         void __iomem *base;
-...
-466
-467         num_clks = AGILEX_NUM_CLKS;
-468
-469         clk_data = devm_kzalloc(dev, struct_size(clk_data, clk_data.hws,
-470                                 num_clks), GFP_KERNEL);
-
-`struct_size(clk_data, clk_data.hws, num_clks)`	above translates to
-sizeof(struct stratix10_clock_data) + sizeof(struct clk_hw *) * 55 ==
-16 + 8 * 55 == 16 + 440
-		    ^^^
-		     |
-	allocated bytes for flex-array `hws`
-
-474         for (i = 0; i < num_clks; i++)
-475                 clk_data->clk_data.hws[i] = ERR_PTR(-ENOENT);
-476
-477         clk_data->base = base;
-
-and then some data is written into both `hws` and `base` objects.
-
-Fix this by placing the declaration of object `clk_data` at the end of
-`struct stratix10_clock_data`. Also, add a comment to make it clear
-that this object must always be last in the structure.
-
--Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
-ready to enable it globally.
-
-Fixes: ba7e258425ac ("clk: socfpga: Convert to s10/agilex/n5x to use clk_hw")
-Cc: stable@vger.kernel.org
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/1da736106d8e0806aeafa6e471a13ced490eae22.1698117815.git.gustavoars@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231023161658.3890811-4-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/socfpga/stratix10-clk.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/clk/socfpga/stratix10-clk.h
-+++ b/drivers/clk/socfpga/stratix10-clk.h
-@@ -7,8 +7,10 @@
- #define	__STRATIX10_CLK_H
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -333,6 +333,7 @@ static int svc_i3c_master_handle_ibi(str
+ 	struct i3c_ibi_slot *slot;
+ 	unsigned int count;
+ 	u32 mdatactrl;
++	int ret, val;
+ 	u8 *buf;
  
- struct stratix10_clock_data {
--	struct clk_hw_onecell_data	clk_data;
- 	void __iomem		*base;
+ 	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
+@@ -342,6 +343,13 @@ static int svc_i3c_master_handle_ibi(str
+ 	slot->len = 0;
+ 	buf = slot->data;
+ 
++	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
++						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
++	if (ret) {
++		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
++		return ret;
++	}
 +
-+	/* Must be last */
-+	struct clk_hw_onecell_data	clk_data;
- };
- 
- struct stratix10_pll_clock {
+ 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
+ 	       slot->len < SVC_I3C_FIFO_SIZE) {
+ 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
 
 
 
