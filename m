@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D217E7F7C2D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93A587F7E52
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AE45B20FCC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3576FB20B54
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6368939FF7;
-	Fri, 24 Nov 2023 18:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C943A8EA;
+	Fri, 24 Nov 2023 18:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWSJiED8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jc/b8ZK/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2B239FE1;
-	Fri, 24 Nov 2023 18:12:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E84D2C433C8;
-	Fri, 24 Nov 2023 18:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46163A8C3;
+	Fri, 24 Nov 2023 18:31:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AABC433C8;
+	Fri, 24 Nov 2023 18:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849556;
-	bh=K9xm/Z2vcMAhsaqwcnfagHvC+4p0E/W2G5B1IHpYAH4=;
+	s=korg; t=1700850713;
+	bh=Jzd8qNyED4G6yGaKbclyz2O9Ftn8oNPoEx4L68D2k5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWSJiED8DCSzlbhHhr39uDddgKJMTLGmekW5xHfHplU3JCpdzrc++WLwC8Ndt0xVM
-	 iChnp3mzCU507WuammUNpaDJ99YsxxKRZuOB8Lke5hjN6AgD1IlzSqGMyr7iUU0m/W
-	 XCqh+HPtCR4x8Wgd2fko4S0PKlu0+qymAoyDFGtg=
+	b=jc/b8ZK/mKuX7REMpHQ1Mv3h7f95kRHgdx6GckjxYddDZ4vkIt/OL+MhIfv3Lve6u
+	 k8FYJPkmrAj2WaWLJqNNNFwSWxU4KbIpKVLHHhk4KkheoE6x1Vz/LEjhV8apWMaJU1
+	 3tTRy4Nt53XATOXg9te489Bsr1P6NUo2sj1XfOi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/530] net: sched: do not offload flows with a helper in act_ct
+Subject: [PATCH 6.5 159/491] drm/i915/mtl: avoid stringop-overflow warning
 Date: Fri, 24 Nov 2023 17:46:35 +0000
-Message-ID: <20231124172035.021875559@linuxfoundation.org>
+Message-ID: <20231124172029.256143983@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,92 +53,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 7cd5af0e937a197295f3aa3721031f0fbae49cff ]
+[ Upstream commit 390001d648ffa027b750b7dceb5d43f4c1d1a39e ]
 
-There is no hardware supporting ct helper offload. However, prior to this
-patch, a flower filter with a helper in the ct action can be successfully
-set into the HW, for example (eth1 is a bnxt NIC):
+The newly added memset() causes a warning for some reason I could not
+figure out:
 
-  # tc qdisc add dev eth1 ingress_block 22 ingress
-  # tc filter add block 22 proto ip flower skip_sw ip_proto tcp \
-    dst_port 21 ct_state -trk action ct helper ipv4-tcp-ftp
-  # tc filter show dev eth1 ingress
+In file included from arch/x86/include/asm/string.h:3,
+                 from drivers/gpu/drm/i915/gt/intel_rc6.c:6:
+In function 'rc6_res_reg_init',
+    inlined from 'intel_rc6_init' at drivers/gpu/drm/i915/gt/intel_rc6.c:610:2:
+arch/x86/include/asm/string_32.h:195:29: error: '__builtin_memset' writing 16 bytes into a region of size 0 overflows the destination [-Werror=stringop-overflow=]
+  195 | #define memset(s, c, count) __builtin_memset(s, c, count)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/i915/gt/intel_rc6.c:584:9: note: in expansion of macro 'memset'
+  584 |         memset(rc6->res_reg, INVALID_MMIO_REG.reg, sizeof(rc6->res_reg));
+      |         ^~~~~~
+In function 'intel_rc6_init':
 
-    filter block 22 protocol ip pref 49152 flower chain 0 handle 0x1
-      eth_type ipv4
-      ip_proto tcp
-      dst_port 21
-      ct_state -trk
-      skip_sw
-      in_hw in_hw_count 1   <----
-        action order 1: ct zone 0 helper ipv4-tcp-ftp pipe
-         index 2 ref 1 bind 1
-        used_hw_stats delayed
+Change it to an normal initializer and an added memcpy() that does not have
+this problem.
 
-This might cause the flower filter not to work as expected in the HW.
-
-This patch avoids this problem by simply returning -EOPNOTSUPP in
-tcf_ct_offload_act_setup() to not allow to offload flows with a helper
-in act_ct.
-
-Fixes: a21b06e73191 ("net: sched: add helper support in act_ct")
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/f8685ec7702c4a448a1371a8b34b43217b583b9d.1699898008.git.lucien.xin@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 4bb9ca7ee074 ("drm/i915/mtl: C6 residency and C state type for MTL SAMedia")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231016201012.1022812-1-arnd@kernel.org
+(cherry picked from commit 0520b30b219053cd789909bca45b3c486ef3ee09)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_ct.h | 9 +++++++++
- net/sched/act_ct.c         | 3 +++
- 2 files changed, 12 insertions(+)
+ drivers/gpu/drm/i915/gt/intel_rc6.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/tc_act/tc_ct.h b/include/net/tc_act/tc_ct.h
-index b24ea2d9400ba..1dc2f827d0bcf 100644
---- a/include/net/tc_act/tc_ct.h
-+++ b/include/net/tc_act/tc_ct.h
-@@ -57,6 +57,11 @@ static inline struct nf_flowtable *tcf_ct_ft(const struct tc_action *a)
- 	return to_ct_params(a)->nf_ft;
- }
+diff --git a/drivers/gpu/drm/i915/gt/intel_rc6.c b/drivers/gpu/drm/i915/gt/intel_rc6.c
+index 58bb1c55294c9..ccdc1afbf11b5 100644
+--- a/drivers/gpu/drm/i915/gt/intel_rc6.c
++++ b/drivers/gpu/drm/i915/gt/intel_rc6.c
+@@ -584,19 +584,23 @@ static void __intel_rc6_disable(struct intel_rc6 *rc6)
  
-+static inline struct nf_conntrack_helper *tcf_ct_helper(const struct tc_action *a)
-+{
-+	return to_ct_params(a)->helper;
-+}
-+
- #else
- static inline uint16_t tcf_ct_zone(const struct tc_action *a) { return 0; }
- static inline int tcf_ct_action(const struct tc_action *a) { return 0; }
-@@ -64,6 +69,10 @@ static inline struct nf_flowtable *tcf_ct_ft(const struct tc_action *a)
+ static void rc6_res_reg_init(struct intel_rc6 *rc6)
  {
- 	return NULL;
- }
-+static inline struct nf_conntrack_helper *tcf_ct_helper(const struct tc_action *a)
-+{
-+	return NULL;
-+}
- #endif /* CONFIG_NF_CONNTRACK */
+-	memset(rc6->res_reg, INVALID_MMIO_REG.reg, sizeof(rc6->res_reg));
++	i915_reg_t res_reg[INTEL_RC6_RES_MAX] = {
++		[0 ... INTEL_RC6_RES_MAX - 1] = INVALID_MMIO_REG,
++	};
  
- #if IS_ENABLED(CONFIG_NET_ACT_CT)
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 3922d825ef2d8..6dcc4585576e8 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1535,6 +1535,9 @@ static int tcf_ct_offload_act_setup(struct tc_action *act, void *entry_data,
- 	if (bind) {
- 		struct flow_action_entry *entry = entry_data;
- 
-+		if (tcf_ct_helper(act))
-+			return -EOPNOTSUPP;
+ 	switch (rc6_to_gt(rc6)->type) {
+ 	case GT_MEDIA:
+-		rc6->res_reg[INTEL_RC6_RES_RC6] = MTL_MEDIA_MC6;
++		res_reg[INTEL_RC6_RES_RC6] = MTL_MEDIA_MC6;
+ 		break;
+ 	default:
+-		rc6->res_reg[INTEL_RC6_RES_RC6_LOCKED] = GEN6_GT_GFX_RC6_LOCKED;
+-		rc6->res_reg[INTEL_RC6_RES_RC6] = GEN6_GT_GFX_RC6;
+-		rc6->res_reg[INTEL_RC6_RES_RC6p] = GEN6_GT_GFX_RC6p;
+-		rc6->res_reg[INTEL_RC6_RES_RC6pp] = GEN6_GT_GFX_RC6pp;
++		res_reg[INTEL_RC6_RES_RC6_LOCKED] = GEN6_GT_GFX_RC6_LOCKED;
++		res_reg[INTEL_RC6_RES_RC6] = GEN6_GT_GFX_RC6;
++		res_reg[INTEL_RC6_RES_RC6p] = GEN6_GT_GFX_RC6p;
++		res_reg[INTEL_RC6_RES_RC6pp] = GEN6_GT_GFX_RC6pp;
+ 		break;
+ 	}
 +
- 		entry->id = FLOW_ACTION_CT;
- 		entry->ct.action = tcf_ct_action(act);
- 		entry->ct.zone = tcf_ct_zone(act);
++	memcpy(rc6->res_reg, res_reg, sizeof(res_reg));
+ }
+ 
+ void intel_rc6_init(struct intel_rc6 *rc6)
 -- 
 2.42.0
 
