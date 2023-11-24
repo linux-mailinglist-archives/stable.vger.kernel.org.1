@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 877797F7C28
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCA57F8019
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A6FDB21112
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F3C91C214FB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7151F39FE1;
-	Fri, 24 Nov 2023 18:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8650F35F04;
+	Fri, 24 Nov 2023 18:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSxoT9gL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZINLJiSv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2673839FE3;
-	Fri, 24 Nov 2023 18:12:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C8CC433C7;
-	Fri, 24 Nov 2023 18:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A3433CCA;
+	Fri, 24 Nov 2023 18:46:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EBBC433C7;
+	Fri, 24 Nov 2023 18:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849538;
-	bh=MiL/NaEoZYRnn8bb93qemDZ4NcWm2Gi9jcGmrDkGuqE=;
+	s=korg; t=1700851598;
+	bh=oDgtQWijoQJedI2dGKqS1wvXJPHXq2AtBBU0yjXitKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSxoT9gLUjK332yiF2PnOu9CcoAr89PyE+FVNqFUiEdJCB7OnaNVf00zhPLcksbD5
-	 QPIZAat2IH4QnaI10f87m3dXu+JPzroBo/8eaIAJaIQ8T4RdWAWrDpdj4Y7ijgN217
-	 gXBh3VvJPbw1XD5cdafXqe0Y8Lpzcrt8+tEkDihQ=
+	b=ZINLJiSvBbE4fi0TUIC1GVvrl6A3ffzPVdE45oDGIKw+P46iYJmZDBQNQbb2t/Hqw
+	 omwZvQycIsjyFHSUbB9oWLC9Fo9v2+pLICtivnJpNdt0duYK36WoB+oB52SD8ki7qk
+	 EPlHHnagW7kQNhTWmNO13p/yySeOcO1pboLHLxeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kent Overstreet <kent.overstreet@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 222/530] net/mlx5e: Avoid referencing skb after free-ing in drop path of mlx5e_sq_xmit_wqe
-Date: Fri, 24 Nov 2023 17:46:28 +0000
-Message-ID: <20231124172034.813613378@linuxfoundation.org>
+Subject: [PATCH 6.1 002/372] lib/generic-radix-tree.c: Dont overflow in peek()
+Date: Fri, 24 Nov 2023 17:46:29 +0000
+Message-ID: <20231124172010.514046367@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,45 +52,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Kent Overstreet <kent.overstreet@gmail.com>
 
-[ Upstream commit 64f14d16eef1f939000f2617b50c7c996b5117d4 ]
+[ Upstream commit 9492261ff2460252cf2d8de89cdf854c7e2b28a0 ]
 
-When SQ is a port timestamping SQ for PTP, do not access tx flags of skb
-after free-ing the skb. Free the skb only after all references that depend
-on it have been handled in the dropped WQE path.
+When we started spreading new inode numbers throughout most of the 64
+bit inode space, that triggered some corner case bugs, in particular
+some integer overflows related to the radix tree code. Oops.
 
-Fixes: 3178308ad4ca ("net/mlx5e: Make tx_port_ts logic resilient to out-of-order CQEs")
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-10-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kent Overstreet <kent.overstreet@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/generic-radix-tree.h |  7 +++++++
+ lib/generic-radix-tree.c           | 17 ++++++++++++++---
+ 2 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-index d41435c22ce56..19f2c25b05a0b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tx.c
-@@ -494,10 +494,10 @@ mlx5e_sq_xmit_wqe(struct mlx5e_txqsq *sq, struct sk_buff *skb,
+diff --git a/include/linux/generic-radix-tree.h b/include/linux/generic-radix-tree.h
+index 107613f7d7920..f6cd0f909d9fb 100644
+--- a/include/linux/generic-radix-tree.h
++++ b/include/linux/generic-radix-tree.h
+@@ -38,6 +38,7 @@
  
- err_drop:
- 	stats->dropped++;
--	dev_kfree_skb_any(skb);
- 	if (unlikely(sq->ptpsq && (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)))
- 		mlx5e_ptp_metadata_fifo_push(&sq->ptpsq->metadata_freelist,
- 					     be32_to_cpu(eseg->flow_table_metadata));
-+	dev_kfree_skb_any(skb);
- 	mlx5e_tx_flush(sq);
- }
+ #include <asm/page.h>
+ #include <linux/bug.h>
++#include <linux/limits.h>
+ #include <linux/log2.h>
+ #include <linux/math.h>
+ #include <linux/types.h>
+@@ -184,6 +185,12 @@ void *__genradix_iter_peek(struct genradix_iter *, struct __genradix *, size_t);
+ static inline void __genradix_iter_advance(struct genradix_iter *iter,
+ 					   size_t obj_size)
+ {
++	if (iter->offset + obj_size < iter->offset) {
++		iter->offset	= SIZE_MAX;
++		iter->pos	= SIZE_MAX;
++		return;
++	}
++
+ 	iter->offset += obj_size;
  
+ 	if (!is_power_of_2(obj_size) &&
+diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
+index f25eb111c0516..7dfa88282b006 100644
+--- a/lib/generic-radix-tree.c
++++ b/lib/generic-radix-tree.c
+@@ -166,6 +166,10 @@ void *__genradix_iter_peek(struct genradix_iter *iter,
+ 	struct genradix_root *r;
+ 	struct genradix_node *n;
+ 	unsigned level, i;
++
++	if (iter->offset == SIZE_MAX)
++		return NULL;
++
+ restart:
+ 	r = READ_ONCE(radix->root);
+ 	if (!r)
+@@ -184,10 +188,17 @@ void *__genradix_iter_peek(struct genradix_iter *iter,
+ 			(GENRADIX_ARY - 1);
+ 
+ 		while (!n->children[i]) {
++			size_t objs_per_ptr = genradix_depth_size(level);
++
++			if (iter->offset + objs_per_ptr < iter->offset) {
++				iter->offset	= SIZE_MAX;
++				iter->pos	= SIZE_MAX;
++				return NULL;
++			}
++
+ 			i++;
+-			iter->offset = round_down(iter->offset +
+-					   genradix_depth_size(level),
+-					   genradix_depth_size(level));
++			iter->offset = round_down(iter->offset + objs_per_ptr,
++						  objs_per_ptr);
+ 			iter->pos = (iter->offset >> PAGE_SHIFT) *
+ 				objs_per_page;
+ 			if (i == GENRADIX_ARY)
 -- 
 2.42.0
 
