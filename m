@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-2008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6C147F825E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4FC7F838D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:18:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFB681C232B0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38EFF288628
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DCB22EAEA;
-	Fri, 24 Nov 2023 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5373381D4;
+	Fri, 24 Nov 2023 19:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bw6VoRB1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tuXxuaDH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB1C28DBB;
-	Fri, 24 Nov 2023 19:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B13AC433C7;
-	Fri, 24 Nov 2023 19:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838433173F;
+	Fri, 24 Nov 2023 19:18:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F76FC433C8;
+	Fri, 24 Nov 2023 19:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852819;
-	bh=a55gHHltdFymA54WwZQchQQgsM5sw26zcDDJDBzoITI=;
+	s=korg; t=1700853518;
+	bh=gaNq3fuSbftEQ2u7MNCWDsca/eWPJN98sJTCZBWztxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bw6VoRB1JJoK4Doe/mstA94FIBDZBGlADcnQawtWcuYu49uvcgxuf7S4axmpTp2zE
-	 6oZfUiFnvNfb2LXDmbEOnsfKnAhV8KeFkZOCfCskohwFnTQ0xUDOZT/wm4MKqwDKor
-	 iI0yuc37NU/uKaNhIODTO62S4vnA7ygT28F8hppw=
+	b=tuXxuaDHzEigNNkDxVIN7FudNvSkasdrPQnDa6A59zsHKZVlbloYgPxhutVGQglbh
+	 8tXBndQIwWtxZ8gmuw4yoUEM7t+CgYZstKHpjhamkD0Ao0YmXcyB0x336lpcgcmivZ
+	 PX3bH6l79yJnDO8pb0HDmzIg2UsbALjp8WFEnpXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.10 135/193] s390/cmma: fix initial kernel address space page table walk
-Date: Fri, 24 Nov 2023 17:54:22 +0000
-Message-ID: <20231124171952.629656342@linuxfoundation.org>
+Subject: [PATCH 5.15 221/297] s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
+Date: Fri, 24 Nov 2023 17:54:23 +0000
+Message-ID: <20231124172007.942847361@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,13 +53,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 16ba44826a04834d3eeeda4b731c2ea3481062b7 upstream.
+commit 84bb41d5df48868055d159d9247b80927f1f70f9 upstream.
 
 If the cmma no-dat feature is available the kernel page tables are walked
 to identify and mark all pages which are used for address translation (all
@@ -68,60 +67,36 @@ region, segment, and page tables). In a subsequent loop all other pages are
 marked as "no-dat" pages with the ESSA instruction.
 
 This information is visible to the hypervisor, so that the hypervisor can
-optimize purging of guest TLB entries. The initial loop however does not
-cover the complete kernel address space. This can result in pages being
-marked as not being used for dynamic address translation, even though they
-are. In turn guest TLB entries incorrectly may not be purged.
+optimize purging of guest TLB entries. All pages used for swapper_pg_dir
+and invalid_pg_dir are incorrectly marked as no-dat, which in turn can
+result in incorrect guest TLB flushes.
 
-Fix this by adjusting the end address of the kernel address range being
-walked.
+Fix this by marking those pages correctly as being used for DAT.
 
 Cc: <stable@vger.kernel.org>
 Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/page-states.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/s390/mm/page-states.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
 --- a/arch/s390/mm/page-states.c
 +++ b/arch/s390/mm/page-states.c
-@@ -161,15 +161,22 @@ static void mark_kernel_p4d(pgd_t *pgd,
+@@ -198,6 +198,12 @@ void __init cmma_init_nodat(void)
+ 		return;
+ 	/* Mark pages used in kernel page tables */
+ 	mark_kernel_pgd();
++	page = virt_to_page(&swapper_pg_dir);
++	for (i = 0; i < 4; i++)
++		set_bit(PG_arch_1, &page[i].flags);
++	page = virt_to_page(&invalid_pg_dir);
++	for (i = 0; i < 4; i++)
++		set_bit(PG_arch_1, &page[i].flags);
  
- static void mark_kernel_pgd(void)
- {
--	unsigned long addr, next;
-+	unsigned long addr, next, max_addr;
- 	struct page *page;
- 	pgd_t *pgd;
- 	int i;
- 
- 	addr = 0;
-+	/*
-+	 * Figure out maximum virtual address accessible with the
-+	 * kernel ASCE. This is required to keep the page table walker
-+	 * from accessing non-existent entries.
-+	 */
-+	max_addr = (S390_lowcore.kernel_asce.val & _ASCE_TYPE_MASK) >> 2;
-+	max_addr = 1UL << (max_addr * 11 + 31);
- 	pgd = pgd_offset_k(addr);
- 	do {
--		next = pgd_addr_end(addr, MODULES_END);
-+		next = pgd_addr_end(addr, max_addr);
- 		if (pgd_none(*pgd))
- 			continue;
- 		if (!pgd_folded(*pgd)) {
-@@ -178,7 +185,7 @@ static void mark_kernel_pgd(void)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_p4d(pgd, addr, next);
--	} while (pgd++, addr = next, addr != MODULES_END);
-+	} while (pgd++, addr = next, addr != max_addr);
- }
- 
- void __init cmma_init_nodat(void)
+ 	/* Set all kernel pages not used for page tables to stable/no-dat */
+ 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, NULL) {
 
 
 
