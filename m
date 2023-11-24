@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E34157F81C6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:01:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6E07F81D8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 118151C21F5C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2699F28355E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F015B28DBB;
-	Fri, 24 Nov 2023 19:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95EB3418B;
+	Fri, 24 Nov 2023 19:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lDYTVXOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZO/BcGrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1493339BE;
-	Fri, 24 Nov 2023 19:01:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28258C433C8;
-	Fri, 24 Nov 2023 19:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAC12EAEA;
+	Fri, 24 Nov 2023 19:02:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D2EC433C7;
+	Fri, 24 Nov 2023 19:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852488;
-	bh=zpITfgGxbREzePjv9mNdB6vjpO9PznH3WfLaRZsJ5Nc=;
+	s=korg; t=1700852521;
+	bh=OkZ73YN+T/cEh65TrD4V46aVDnbefVnOXviCks6nfDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lDYTVXObf+gUPkgxt5wk+nTUwWZSVlgXsNTPh5Cji60Sk8zvdc5Ynv6VgTbz6ITCm
-	 7IXB81NZAzozdcN/pH8OIRPkqj5ZiIp3UV6BZ0HdOCEvIMySWGkRWGtej0FJDloBJ+
-	 zQoPZ/JR1By775v2oolVJtZDjY5bDWAWpIcyo6WQ=
+	b=ZO/BcGrCTuo+n0tBPlN5dSQiueYnyTkVgn9mYVz4P78Kn3PX/w1sp1ysdxM5OCs/2
+	 q6coDl8COX8s92lqLdTmNPLglvogqh1iphXsfShAaZG0epIsb6mxY04XIs0lUJGgnT
+	 AI6Tok215ONfHJX61K46y3U2dtTm6YazeSRE8K4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 356/372] ext4: properly sync file size update after O_SYNC direct IO
-Date: Fri, 24 Nov 2023 17:52:23 +0000
-Message-ID: <20231124172022.188064559@linuxfoundation.org>
+	"baozhu.liu" <lucas.liu@siengine.com>,
+	"menghui.huang" <menghui.huang@siengine.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 017/193] drm/komeda: drop all currently held locks if deadlock happens
+Date: Fri, 24 Nov 2023 17:52:24 +0000
+Message-ID: <20231124171947.858798333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,246 +54,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: baozhu.liu <lucas.liu@siengine.com>
 
-commit 91562895f8030cb9a0470b1db49de79346a69f91 upstream.
+[ Upstream commit 19ecbe8325a2a7ffda5ff4790955b84eaccba49f ]
 
-Gao Xiang has reported that on ext4 O_SYNC direct IO does not properly
-sync file size update and thus if we crash at unfortunate moment, the
-file can have smaller size although O_SYNC IO has reported successful
-completion. The problem happens because update of on-disk inode size is
-handled in ext4_dio_write_iter() *after* iomap_dio_rw() (and thus
-dio_complete() in particular) has returned and generic_file_sync() gets
-called by dio_complete(). Fix the problem by handling on-disk inode size
-update directly in our ->end_io completion handler.
+If komeda_pipeline_unbound_components() returns -EDEADLK,
+it means that a deadlock happened in the locking context.
+Currently, komeda is not dealing with the deadlock properly,producing the
+following output when CONFIG_DEBUG_WW_MUTEX_SLOWPATH is enabled:
 
-References: https://lore.kernel.org/all/02d18236-26ef-09b0-90ad-030c4fe3ee20@linux.alibaba.com
-Reported-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-CC: stable@vger.kernel.org
-Fixes: 378f32bab371 ("ext4: introduce direct I/O write using iomap infrastructure")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Tested-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reviewed-by: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20231013121350.26872-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ ------------[ cut here ]------------
+[   26.103984] WARNING: CPU: 2 PID: 345 at drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c:1248
+	       komeda_release_unclaimed_resources+0x13c/0x170
+[   26.117453] Modules linked in:
+[   26.120511] CPU: 2 PID: 345 Comm: composer@2.1-se Kdump: loaded Tainted: G   W  5.10.110-SE-SDK1.8-dirty #16
+[   26.131374] Hardware name: Siengine Se1000 Evaluation board (DT)
+[   26.137379] pstate: 20400009 (nzCv daif +PAN -UAO -TCO BTYPE=--)
+[   26.143385] pc : komeda_release_unclaimed_resources+0x13c/0x170
+[   26.149301] lr : komeda_release_unclaimed_resources+0xbc/0x170
+[   26.155130] sp : ffff800017b8b8d0
+[   26.158442] pmr_save: 000000e0
+[   26.161493] x29: ffff800017b8b8d0 x28: ffff000cf2f96200
+[   26.166805] x27: ffff000c8f5a8800 x26: 0000000000000000
+[   26.172116] x25: 0000000000000038 x24: ffff8000116a0140
+[   26.177428] x23: 0000000000000038 x22: ffff000cf2f96200
+[   26.182739] x21: ffff000cfc300300 x20: ffff000c8ab77080
+[   26.188051] x19: 0000000000000003 x18: 0000000000000000
+[   26.193362] x17: 0000000000000000 x16: 0000000000000000
+[   26.198672] x15: b400e638f738ba38 x14: 0000000000000000
+[   26.203983] x13: 0000000106400a00 x12: 0000000000000000
+[   26.209294] x11: 0000000000000000 x10: 0000000000000000
+[   26.214604] x9 : ffff800012f80000 x8 : ffff000ca3308000
+[   26.219915] x7 : 0000000ff3000000 x6 : ffff80001084034c
+[   26.225226] x5 : ffff800017b8bc40 x4 : 000000000000000f
+[   26.230536] x3 : ffff000ca3308000 x2 : 0000000000000000
+[   26.235847] x1 : 0000000000000000 x0 : ffffffffffffffdd
+[   26.241158] Call trace:
+[   26.243604] komeda_release_unclaimed_resources+0x13c/0x170
+[   26.249175] komeda_crtc_atomic_check+0x68/0xf0
+[   26.253706] drm_atomic_helper_check_planes+0x138/0x1f4
+[   26.258929] komeda_kms_check+0x284/0x36c
+[   26.262939] drm_atomic_check_only+0x40c/0x714
+[   26.267381] drm_atomic_nonblocking_commit+0x1c/0x60
+[   26.272344] drm_mode_atomic_ioctl+0xa3c/0xb8c
+[   26.276787] drm_ioctl_kernel+0xc4/0x120
+[   26.280708] drm_ioctl+0x268/0x534
+[   26.284109] __arm64_sys_ioctl+0xa8/0xf0
+[   26.288030] el0_svc_common.constprop.0+0x80/0x240
+[   26.292817] do_el0_svc+0x24/0x90
+[   26.296132] el0_svc+0x20/0x30
+[   26.299185] el0_sync_handler+0xe8/0xf0
+[   26.303018] el0_sync+0x1a4/0x1c0
+[   26.306330] irq event stamp: 0
+[   26.309384] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+[   26.315650] hardirqs last disabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
+[   26.323825] softirqs last  enabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
+[   26.331997] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[   26.338261] ---[ end trace 20ae984fa860184a ]---
+[   26.343021] ------------[ cut here ]------------
+[   26.347646] WARNING: CPU: 3 PID: 345 at drivers/gpu/drm/drm_modeset_lock.c:228 drm_modeset_drop_locks+0x84/0x90
+[   26.357727] Modules linked in:
+[   26.360783] CPU: 3 PID: 345 Comm: composer@2.1-se Kdump: loaded Tainted: G   W  5.10.110-SE-SDK1.8-dirty #16
+[   26.371645] Hardware name: Siengine Se1000 Evaluation board (DT)
+[   26.377647] pstate: 20400009 (nzCv daif +PAN -UAO -TCO BTYPE=--)
+[   26.383649] pc : drm_modeset_drop_locks+0x84/0x90
+[   26.388351] lr : drm_mode_atomic_ioctl+0x860/0xb8c
+[   26.393137] sp : ffff800017b8bb10
+[   26.396447] pmr_save: 000000e0
+[   26.399497] x29: ffff800017b8bb10 x28: 0000000000000001
+[   26.404807] x27: 0000000000000038 x26: 0000000000000002
+[   26.410115] x25: ffff000cecbefa00 x24: ffff000cf2f96200
+[   26.415423] x23: 0000000000000001 x22: 0000000000000018
+[   26.420731] x21: 0000000000000001 x20: ffff800017b8bc10
+[   26.426039] x19: 0000000000000000 x18: 0000000000000000
+[   26.431347] x17: 0000000002e8bf2c x16: 0000000002e94c6b
+[   26.436655] x15: 0000000002ea48b9 x14: ffff8000121f0300
+[   26.441963] x13: 0000000002ee2ca8 x12: ffff80001129cae0
+[   26.447272] x11: ffff800012435000 x10: ffff000ed46b5e88
+[   26.452580] x9 : ffff000c9935e600 x8 : 0000000000000000
+[   26.457888] x7 : 000000008020001e x6 : 000000008020001f
+[   26.463196] x5 : ffff80001085fbe0 x4 : fffffe0033a59f20
+[   26.468504] x3 : 000000008020001e x2 : 0000000000000000
+[   26.473813] x1 : 0000000000000000 x0 : ffff000c8f596090
+[   26.479122] Call trace:
+[   26.481566] drm_modeset_drop_locks+0x84/0x90
+[   26.485918] drm_mode_atomic_ioctl+0x860/0xb8c
+[   26.490359] drm_ioctl_kernel+0xc4/0x120
+[   26.494278] drm_ioctl+0x268/0x534
+[   26.497677] __arm64_sys_ioctl+0xa8/0xf0
+[   26.501598] el0_svc_common.constprop.0+0x80/0x240
+[   26.506384] do_el0_svc+0x24/0x90
+[   26.509697] el0_svc+0x20/0x30
+[   26.512748] el0_sync_handler+0xe8/0xf0
+[   26.516580] el0_sync+0x1a4/0x1c0
+[   26.519891] irq event stamp: 0
+[   26.522943] hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+[   26.529207] hardirqs last disabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
+[   26.537379] softirqs last  enabled at (0): [<ffff800010056d34>] copy_process+0x5d0/0x183c
+[   26.545550] softirqs last disabled at (0): [<0000000000000000>] 0x0
+[   26.551812] ---[ end trace 20ae984fa860184b ]---
+
+According to the call trace information,it can be located to be
+WARN_ON(IS_ERR(c_st)) in the komeda_pipeline_unbound_components function;
+Then follow the function.
+komeda_pipeline_unbound_components
+-> komeda_component_get_state_and_set_user
+  -> komeda_pipeline_get_state_and_set_crtc
+    -> komeda_pipeline_get_state
+      ->drm_atomic_get_private_obj_state
+        -> drm_atomic_get_private_obj_state
+          -> drm_modeset_lock
+
+komeda_pipeline_unbound_components
+-> komeda_component_get_state_and_set_user
+  -> komeda_component_get_state
+    -> drm_atomic_get_private_obj_state
+     -> drm_modeset_lock
+
+ret = drm_modeset_lock(&obj->lock, state->acquire_ctx); if (ret)
+	return ERR_PTR(ret);
+Here it return -EDEADLK.
+
+deal with the deadlock as suggested by [1], using the
+function drm_modeset_backoff().
+[1] https://docs.kernel.org/gpu/drm-kms.html?highlight=kms#kms-locking
+
+Therefore, handling this problem can be solved
+by adding return -EDEADLK back to the drm_modeset_backoff processing flow
+in the drm_mode_atomic_ioctl function.
+
+Signed-off-by: baozhu.liu <lucas.liu@siengine.com>
+Signed-off-by: menghui.huang <menghui.huang@siengine.com>
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804013117.6870-1-menghui.huang@siengine.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/file.c |  153 ++++++++++++++++++++++++---------------------------------
- 1 file changed, 65 insertions(+), 88 deletions(-)
+ .../gpu/drm/arm/display/komeda/komeda_pipeline_state.c   | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -296,80 +296,38 @@ out:
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+index c3cdf283ecefa..1e922703e26b2 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_pipeline_state.c
+@@ -1223,7 +1223,7 @@ int komeda_build_display_data_flow(struct komeda_crtc *kcrtc,
+ 	return 0;
  }
  
- static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
--					   ssize_t written, size_t count)
-+					   ssize_t count)
+-static void
++static int
+ komeda_pipeline_unbound_components(struct komeda_pipeline *pipe,
+ 				   struct komeda_pipeline_state *new)
  {
- 	handle_t *handle;
--	bool truncate = false;
--	u8 blkbits = inode->i_blkbits;
--	ext4_lblk_t written_blk, end_blk;
--	int ret;
--
--	/*
--	 * Note that EXT4_I(inode)->i_disksize can get extended up to
--	 * inode->i_size while the I/O was running due to writeback of delalloc
--	 * blocks. But, the code in ext4_iomap_alloc() is careful to use
--	 * zeroed/unwritten extents if this is possible; thus we won't leave
--	 * uninitialized blocks in a file even if we didn't succeed in writing
--	 * as much as we intended.
--	 */
--	WARN_ON_ONCE(i_size_read(inode) < EXT4_I(inode)->i_disksize);
--	if (offset + count <= EXT4_I(inode)->i_disksize) {
--		/*
--		 * We need to ensure that the inode is removed from the orphan
--		 * list if it has been added prematurely, due to writeback of
--		 * delalloc blocks.
--		 */
--		if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
--			handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
--
--			if (IS_ERR(handle)) {
--				ext4_orphan_del(NULL, inode);
--				return PTR_ERR(handle);
--			}
--
--			ext4_orphan_del(handle, inode);
--			ext4_journal_stop(handle);
--		}
--
--		return written;
--	}
--
--	if (written < 0)
--		goto truncate;
- 
-+	lockdep_assert_held_write(&inode->i_rwsem);
- 	handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
--	if (IS_ERR(handle)) {
--		written = PTR_ERR(handle);
--		goto truncate;
--	}
-+	if (IS_ERR(handle))
-+		return PTR_ERR(handle);
- 
--	if (ext4_update_inode_size(inode, offset + written)) {
--		ret = ext4_mark_inode_dirty(handle, inode);
-+	if (ext4_update_inode_size(inode, offset + count)) {
-+		int ret = ext4_mark_inode_dirty(handle, inode);
- 		if (unlikely(ret)) {
--			written = ret;
- 			ext4_journal_stop(handle);
--			goto truncate;
-+			return ret;
- 		}
+@@ -1243,8 +1243,12 @@ komeda_pipeline_unbound_components(struct komeda_pipeline *pipe,
+ 		c = komeda_pipeline_get_component(pipe, id);
+ 		c_st = komeda_component_get_state_and_set_user(c,
+ 				drm_st, NULL, new->crtc);
++		if (PTR_ERR(c_st) == -EDEADLK)
++			return -EDEADLK;
+ 		WARN_ON(IS_ERR(c_st));
  	}
- 
--	/*
--	 * We may need to truncate allocated but not written blocks beyond EOF.
--	 */
--	written_blk = ALIGN(offset + written, 1 << blkbits);
--	end_blk = ALIGN(offset + count, 1 << blkbits);
--	if (written_blk < end_blk && ext4_can_truncate(inode))
--		truncate = true;
--
--	/*
--	 * Remove the inode from the orphan list if it has been extended and
--	 * everything went OK.
--	 */
--	if (!truncate && inode->i_nlink)
-+	if (inode->i_nlink)
- 		ext4_orphan_del(handle, inode);
- 	ext4_journal_stop(handle);
- 
--	if (truncate) {
--truncate:
-+	return count;
-+}
 +
-+/*
-+ * Clean up the inode after DIO or DAX extending write has completed and the
-+ * inode size has been updated using ext4_handle_inode_extension().
-+ */
-+static void ext4_inode_extension_cleanup(struct inode *inode, ssize_t count)
-+{
-+	lockdep_assert_held_write(&inode->i_rwsem);
-+	if (count < 0) {
- 		ext4_truncate_failed_write(inode);
- 		/*
- 		 * If the truncate operation failed early, then the inode may
-@@ -378,9 +336,28 @@ truncate:
- 		 */
- 		if (inode->i_nlink)
- 			ext4_orphan_del(NULL, inode);
-+		return;
- 	}
-+	/*
-+	 * If i_disksize got extended due to writeback of delalloc blocks while
-+	 * the DIO was running we could fail to cleanup the orphan list in
-+	 * ext4_handle_inode_extension(). Do it now.
-+	 */
-+	if (!list_empty(&EXT4_I(inode)->i_orphan) && inode->i_nlink) {
-+		handle_t *handle = ext4_journal_start(inode, EXT4_HT_INODE, 2);
- 
--	return written;
-+		if (IS_ERR(handle)) {
-+			/*
-+			 * The write has successfully completed. Not much to
-+			 * do with the error here so just cleanup the orphan
-+			 * list and hope for the best.
-+			 */
-+			ext4_orphan_del(NULL, inode);
-+			return;
-+		}
-+		ext4_orphan_del(handle, inode);
-+		ext4_journal_stop(handle);
-+	}
++	return 0;
  }
  
- static int ext4_dio_write_end_io(struct kiocb *iocb, ssize_t size,
-@@ -389,31 +366,22 @@ static int ext4_dio_write_end_io(struct
- 	loff_t pos = iocb->ki_pos;
- 	struct inode *inode = file_inode(iocb->ki_filp);
+ /* release unclaimed pipeline resource */
+@@ -1266,9 +1270,8 @@ int komeda_release_unclaimed_resources(struct komeda_pipeline *pipe,
+ 	if (WARN_ON(IS_ERR_OR_NULL(st)))
+ 		return -EINVAL;
  
-+	if (!error && size && flags & IOMAP_DIO_UNWRITTEN)
-+		error = ext4_convert_unwritten_extents(NULL, inode, pos, size);
- 	if (error)
- 		return error;
--
--	if (size && flags & IOMAP_DIO_UNWRITTEN) {
--		error = ext4_convert_unwritten_extents(NULL, inode, pos, size);
--		if (error < 0)
--			return error;
--	}
- 	/*
--	 * If we are extending the file, we have to update i_size here before
--	 * page cache gets invalidated in iomap_dio_rw(). Otherwise racing
--	 * buffered reads could zero out too much from page cache pages. Update
--	 * of on-disk size will happen later in ext4_dio_write_iter() where
--	 * we have enough information to also perform orphan list handling etc.
--	 * Note that we perform all extending writes synchronously under
--	 * i_rwsem held exclusively so i_size update is safe here in that case.
--	 * If the write was not extending, we cannot see pos > i_size here
--	 * because operations reducing i_size like truncate wait for all
--	 * outstanding DIO before updating i_size.
-+	 * Note that EXT4_I(inode)->i_disksize can get extended up to
-+	 * inode->i_size while the I/O was running due to writeback of delalloc
-+	 * blocks. But the code in ext4_iomap_alloc() is careful to use
-+	 * zeroed/unwritten extents if this is possible; thus we won't leave
-+	 * uninitialized blocks in a file even if we didn't succeed in writing
-+	 * as much as we intended.
- 	 */
--	pos += size;
--	if (pos > i_size_read(inode))
--		i_size_write(inode, pos);
--
+-	komeda_pipeline_unbound_components(pipe, st);
++	return komeda_pipeline_unbound_components(pipe, st);
+ 
 -	return 0;
-+	WARN_ON_ONCE(i_size_read(inode) < READ_ONCE(EXT4_I(inode)->i_disksize));
-+	if (pos + size <= READ_ONCE(EXT4_I(inode)->i_disksize))
-+		return size;
-+	return ext4_handle_inode_extension(inode, pos, size);
  }
  
- static const struct iomap_dio_ops ext4_dio_write_ops = {
-@@ -589,9 +557,16 @@ static ssize_t ext4_dio_write_iter(struc
- 			   NULL, 0);
- 	if (ret == -ENOTBLK)
- 		ret = 0;
--
--	if (extend)
--		ret = ext4_handle_inode_extension(inode, offset, ret, count);
-+	if (extend) {
-+		/*
-+		 * We always perform extending DIO write synchronously so by
-+		 * now the IO is completed and ext4_handle_inode_extension()
-+		 * was called. Cleanup the inode in case of error or race with
-+		 * writeback of delalloc blocks.
-+		 */
-+		WARN_ON_ONCE(ret == -EIOCBQUEUED);
-+		ext4_inode_extension_cleanup(inode, ret);
-+	}
- 
- out:
- 	if (ilock_shared)
-@@ -672,8 +647,10 @@ ext4_dax_write_iter(struct kiocb *iocb,
- 
- 	ret = dax_iomap_rw(iocb, from, &ext4_iomap_ops);
- 
--	if (extend)
--		ret = ext4_handle_inode_extension(inode, offset, ret, count);
-+	if (extend) {
-+		ret = ext4_handle_inode_extension(inode, offset, ret);
-+		ext4_inode_extension_cleanup(inode, ret);
-+	}
- out:
- 	inode_unlock(inode);
- 	if (ret > 0)
+ /* Since standalong disabled components must be disabled separately and in the
+-- 
+2.42.0
+
 
 
 
