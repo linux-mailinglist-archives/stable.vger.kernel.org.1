@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEB47F8088
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC0B17F7EB3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:35:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551A91F20F3F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28B171C213E2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A3333CC7;
-	Fri, 24 Nov 2023 18:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC4B35F1A;
+	Fri, 24 Nov 2023 18:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHnBwL83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xG7Zut30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7BA2E40E;
-	Fri, 24 Nov 2023 18:50:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10BBC433C9;
-	Fri, 24 Nov 2023 18:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4862E853;
+	Fri, 24 Nov 2023 18:35:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD88C433C7;
+	Fri, 24 Nov 2023 18:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851831;
-	bh=isDHBcE92cLAfezNygcr2wHeC6aXh85rxKHtOu9cgg8=;
+	s=korg; t=1700850913;
+	bh=85svPIgeVSkbFJjTp1ddFPmtGjiwFgkyRSW+r9jXKI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHnBwL832X5O9M4N/1c/zCHRZa8MMLzZgO25hwSLrgDs22xOvVTit758jEQKAEJ6u
-	 vOqcST4wTWEo/zWhUg7aPiRjinvS8BfVmdEqsRQeDtWmBq4orbCyjWa8NjJxSCRDx1
-	 c81eUUVhPKa4xpzsnS1+V/etok83ZZdPJ4Pl9ZK4=
+	b=xG7Zut30F9toJRD8aK7k4kxuSWf6c0geN98+8Zw1KvuzvJSb/T2KXoBDl8RkEHbFy
+	 NQ/TJOFfoLhlJZLpjuO+pHi/EUFUemlsSPGrmdxKsKQLmArLVt9aenpmEDOoNFSouL
+	 74NDGAKXgMJQDNNP9p/2NSxLW4QxO8HlFmLTE4zM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/372] tty: vcc: Add check for kstrdup() in vcc_probe()
+	Dimitri John Ledkov <dimitri.ledkov@canonical.com>,
+	Julian Andres Klode <julian.klode@canonical.com>,
+	Roxana Nicolescu <roxana.nicolescu@canonical.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.5 238/491] crypto: x86/sha - load modules based on CPU features
 Date: Fri, 24 Nov 2023 17:47:54 +0000
-Message-ID: <20231124172013.430616277@linuxfoundation.org>
+Message-ID: <20231124172031.706749761@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,81 +54,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Roxana Nicolescu <roxana.nicolescu@canonical.com>
 
-[ Upstream commit d81ffb87aaa75f842cd7aa57091810353755b3e6 ]
+commit 1c43c0f1f84aa59dfc98ce66f0a67b2922aa7f9d upstream.
 
-Add check for the return value of kstrdup() and return the error, if it
-fails in order to avoid NULL pointer dereference.
+x86 optimized crypto modules are built as modules rather than build-in and
+they are not loaded when the crypto API is initialized, resulting in the
+generic builtin module (sha1-generic) being used instead.
 
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230904035220.48164-1-yiyang13@huawei.com
+It was discovered when creating a sha1/sha256 checksum of a 2Gb file by
+using kcapi-tools because it would take significantly longer than creating
+a sha512 checksum of the same file. trace-cmd showed that for sha1/256 the
+generic module was used, whereas for sha512 the optimized module was used
+instead.
+
+Add module aliases() for these x86 optimized crypto modules based on CPU
+feature bits so udev gets a chance to load them later in the boot
+process. This resulted in ~3x decrease in the real-time execution of
+kcapi-dsg.
+
+Fix is inspired from commit
+aa031b8f702e ("crypto: x86/sha512 - load based on CPU features")
+where a similar fix was done for sha512.
+
+Cc: stable@vger.kernel.org # 5.15+
+Suggested-by: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Suggested-by: Julian Andres Klode <julian.klode@canonical.com>
+Signed-off-by: Roxana Nicolescu <roxana.nicolescu@canonical.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vcc.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ arch/x86/crypto/sha1_ssse3_glue.c   |   12 ++++++++++++
+ arch/x86/crypto/sha256_ssse3_glue.c |   12 ++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
-index 34ba6e54789a7..b8b832c75b856 100644
---- a/drivers/tty/vcc.c
-+++ b/drivers/tty/vcc.c
-@@ -579,18 +579,22 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 		return -ENOMEM;
+--- a/arch/x86/crypto/sha1_ssse3_glue.c
++++ b/arch/x86/crypto/sha1_ssse3_glue.c
+@@ -24,8 +24,17 @@
+ #include <linux/types.h>
+ #include <crypto/sha1.h>
+ #include <crypto/sha1_base.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/simd.h>
  
- 	name = kstrdup(dev_name(&vdev->dev), GFP_KERNEL);
-+	if (!name) {
-+		rv = -ENOMEM;
-+		goto free_port;
-+	}
- 
- 	rv = vio_driver_init(&port->vio, vdev, VDEV_CONSOLE_CON, vcc_versions,
- 			     ARRAY_SIZE(vcc_versions), NULL, name);
- 	if (rv)
--		goto free_port;
-+		goto free_name;
- 
- 	port->vio.debug = vcc_dbg_vio;
- 	vcc_ldc_cfg.debug = vcc_dbg_ldc;
- 
- 	rv = vio_ldc_alloc(&port->vio, &vcc_ldc_cfg, port);
- 	if (rv)
--		goto free_port;
-+		goto free_name;
- 
- 	spin_lock_init(&port->lock);
- 
-@@ -624,6 +628,11 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 		goto unreg_tty;
- 	}
- 	port->domain = kstrdup(domain, GFP_KERNEL);
-+	if (!port->domain) {
-+		rv = -ENOMEM;
-+		goto unreg_tty;
-+	}
++static const struct x86_cpu_id module_cpu_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
 +
+ static int sha1_update(struct shash_desc *desc, const u8 *data,
+ 			     unsigned int len, sha1_block_fn *sha1_xform)
+ {
+@@ -301,6 +310,9 @@ static inline void unregister_sha1_ni(vo
  
- 	mdesc_release(hp);
+ static int __init sha1_ssse3_mod_init(void)
+ {
++	if (!x86_match_cpu(module_cpu_ids))
++		return -ENODEV;
++
+ 	if (register_sha1_ssse3())
+ 		goto fail;
  
-@@ -653,8 +662,9 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 	vcc_table_remove(port->index);
- free_ldc:
- 	vio_ldc_free(&port->vio);
--free_port:
-+free_name:
- 	kfree(name);
-+free_port:
- 	kfree(port);
+--- a/arch/x86/crypto/sha256_ssse3_glue.c
++++ b/arch/x86/crypto/sha256_ssse3_glue.c
+@@ -38,11 +38,20 @@
+ #include <crypto/sha2.h>
+ #include <crypto/sha256_base.h>
+ #include <linux/string.h>
++#include <asm/cpu_device_id.h>
+ #include <asm/simd.h>
  
- 	return rv;
--- 
-2.42.0
-
+ asmlinkage void sha256_transform_ssse3(struct sha256_state *state,
+ 				       const u8 *data, int blocks);
+ 
++static const struct x86_cpu_id module_cpu_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_AVX2, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_AVX, NULL),
++	X86_MATCH_FEATURE(X86_FEATURE_SSSE3, NULL),
++	{}
++};
++MODULE_DEVICE_TABLE(x86cpu, module_cpu_ids);
++
+ static int _sha256_update(struct shash_desc *desc, const u8 *data,
+ 			  unsigned int len, sha256_block_fn *sha256_xform)
+ {
+@@ -366,6 +375,9 @@ static inline void unregister_sha256_ni(
+ 
+ static int __init sha256_ssse3_mod_init(void)
+ {
++	if (!x86_match_cpu(module_cpu_ids))
++		return -ENODEV;
++
+ 	if (register_sha256_ssse3())
+ 		goto fail;
+ 
 
 
 
