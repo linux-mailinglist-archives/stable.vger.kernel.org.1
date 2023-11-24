@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E48A7F7C81
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 248C27F8058
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15B80B2156E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBDFFB20A60
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BF839FEA;
-	Fri, 24 Nov 2023 18:15:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B096A381D4;
+	Fri, 24 Nov 2023 18:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KaUaD9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKPt5swm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB4439FD9;
-	Fri, 24 Nov 2023 18:15:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EEFC433C8;
-	Fri, 24 Nov 2023 18:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F4D286B5;
+	Fri, 24 Nov 2023 18:48:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9817FC433C7;
+	Fri, 24 Nov 2023 18:48:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849740;
-	bh=czAu3I/GMmX+iAEf+pUbq0HRubM0vLrKG7m4cXsmogQ=;
+	s=korg; t=1700851732;
+	bh=g4n7fMe/4cQ1KKsJSY3XCMbHJE7hhGW72bJWCSyYLNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KaUaD9iYd8OzjjhjShE5y2RzojGhrhnXq6k7wgymLSfcumBymyxZnAAmo+ySa+fa
-	 +Mf4saoRH/XTD2blyPrJqbHvHwPCe2w4ILDnYYI5W4DVOGHw8bnSrYsMuoa46jkf3W
-	 TOFlmpjvgx6qjOwYPF2u7D7boRrtadi7VT2m33Ac=
+	b=DKPt5swmt7pbjG73sxs/f5s+7D7MUSwOoiAL8oFapNyle1noGloTqeUl6cGs5zqH/
+	 y0B4LIZOCSkP3bpIn3mD+6u39g0v0cCTV3RxiiuTTKB6IeGiNNQsHpxFpJeFM4bQJy
+	 94UnjPEiIVkIhZ6+RlqYnPjwu1U5WDm4IDfYf7r8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.6 294/530] wifi: ath12k: fix htt mlo-offset event locking
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 073/372] PCI: Do error check on own line to split long "if" conditions
 Date: Fri, 24 Nov 2023 17:47:40 +0000
-Message-ID: <20231124172036.982296511@linuxfoundation.org>
+Message-ID: <20231124172012.936378891@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,62 +51,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 6afc57ea315e0f660b1f870a681737bb7b71faef upstream.
+[ Upstream commit d15f18053e5cc5576af9e7eef0b2a91169b6326d ]
 
-The ath12k active pdevs are protected by RCU but the htt mlo-offset
-event handling code calling ath12k_mac_get_ar_by_pdev_id() was not
-marked as a read-side critical section.
+Placing PCI error code check inside "if" condition usually results in need
+to split lines. Combined with additional conditions the "if" condition
+becomes messy.
 
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
+Convert to the usual error handling pattern with an additional variable to
+improve code readability. In addition, reverse the logic in
+pci_find_vsec_capability() to get rid of &&.
 
-Compile tested only.
+No functional changes intended.
 
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Cc: stable@vger.kernel.org      # v6.2
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019113650.9060-3-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20230911125354.25501-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+[bhelgaas: PCI_POSSIBLE_ERROR()]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_rx.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/pci/pci.c    | 9 ++++++---
+ drivers/pci/probe.c  | 6 +++---
+ drivers/pci/quirks.c | 6 +++---
+ 3 files changed, 12 insertions(+), 9 deletions(-)
 
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -1658,11 +1658,12 @@ static void ath12k_htt_mlo_offset_event_
- 	msg = (struct ath12k_htt_mlo_offset_msg *)skb->data;
- 	pdev_id = u32_get_bits(__le32_to_cpu(msg->info),
- 			       HTT_T2H_MLO_OFFSET_INFO_PDEV_ID);
--	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 835e9ea14b3a1..59b5c017d6c38 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -717,15 +717,18 @@ u16 pci_find_vsec_capability(struct pci_dev *dev, u16 vendor, int cap)
+ {
+ 	u16 vsec = 0;
+ 	u32 header;
++	int ret;
  
-+	rcu_read_lock();
-+	ar = ath12k_mac_get_ar_by_pdev_id(ab, pdev_id);
- 	if (!ar) {
- 		ath12k_warn(ab, "invalid pdev id %d on htt mlo offset\n", pdev_id);
--		return;
-+		goto exit;
+ 	if (vendor != dev->vendor)
+ 		return 0;
+ 
+ 	while ((vsec = pci_find_next_ext_capability(dev, vsec,
+ 						     PCI_EXT_CAP_ID_VNDR))) {
+-		if (pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER,
+-					  &header) == PCIBIOS_SUCCESSFUL &&
+-		    PCI_VNDR_HEADER_ID(header) == cap)
++		ret = pci_read_config_dword(dev, vsec + PCI_VNDR_HEADER, &header);
++		if (ret != PCIBIOS_SUCCESSFUL)
++			continue;
++
++		if (PCI_VNDR_HEADER_ID(header) == cap)
+ 			return vsec;
  	}
  
- 	spin_lock_bh(&ar->data_lock);
-@@ -1678,6 +1679,8 @@ static void ath12k_htt_mlo_offset_event_
- 	pdev->timestamp.mlo_comp_timer = __le32_to_cpu(msg->mlo_comp_timer);
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 0945f50fe94ff..e19b79821dd6d 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -1643,15 +1643,15 @@ static void pci_set_removable(struct pci_dev *dev)
+ static bool pci_ext_cfg_is_aliased(struct pci_dev *dev)
+ {
+ #ifdef CONFIG_PCI_QUIRKS
+-	int pos;
++	int pos, ret;
+ 	u32 header, tmp;
  
- 	spin_unlock_bh(&ar->data_lock);
-+exit:
-+	rcu_read_unlock();
- }
+ 	pci_read_config_dword(dev, PCI_VENDOR_ID, &header);
  
- void ath12k_dp_htt_htc_t2h_msg_handler(struct ath12k_base *ab,
+ 	for (pos = PCI_CFG_SPACE_SIZE;
+ 	     pos < PCI_CFG_SPACE_EXP_SIZE; pos += PCI_CFG_SPACE_SIZE) {
+-		if (pci_read_config_dword(dev, pos, &tmp) != PCIBIOS_SUCCESSFUL
+-		    || header != tmp)
++		ret = pci_read_config_dword(dev, pos, &tmp);
++		if ((ret != PCIBIOS_SUCCESSFUL) || (header != tmp))
+ 			return false;
+ 	}
+ 
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 30e7c627f21a7..42f89ad32c26c 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5288,7 +5288,7 @@ int pci_dev_specific_disable_acs_redir(struct pci_dev *dev)
+  */
+ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
+ {
+-	int pos, i = 0;
++	int pos, i = 0, ret;
+ 	u8 next_cap;
+ 	u16 reg16, *cap;
+ 	struct pci_cap_saved_state *state;
+@@ -5334,8 +5334,8 @@ static void quirk_intel_qat_vf_cap(struct pci_dev *pdev)
+ 		pdev->pcie_mpss = reg16 & PCI_EXP_DEVCAP_PAYLOAD;
+ 
+ 		pdev->cfg_size = PCI_CFG_SPACE_EXP_SIZE;
+-		if (pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status) !=
+-		    PCIBIOS_SUCCESSFUL || (status == 0xffffffff))
++		ret = pci_read_config_dword(pdev, PCI_CFG_SPACE_SIZE, &status);
++		if ((ret != PCIBIOS_SUCCESSFUL) || (PCI_POSSIBLE_ERROR(status)))
+ 			pdev->cfg_size = PCI_CFG_SPACE_SIZE;
+ 
+ 		if (pci_find_saved_cap(pdev, PCI_CAP_ID_EXP))
+-- 
+2.42.0
+
 
 
 
