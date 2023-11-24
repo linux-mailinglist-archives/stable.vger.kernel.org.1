@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A14427F817C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA0D7F7FDC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4CF2826C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268DF282594
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE14364AE;
-	Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568AB2E858;
+	Fri, 24 Nov 2023 18:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQU/f/HM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+wNBf0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66B73418B;
-	Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3364FC433C9;
-	Fri, 24 Nov 2023 18:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FBBB321AD;
+	Fri, 24 Nov 2023 18:44:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2196C433C8;
+	Fri, 24 Nov 2023 18:44:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852342;
-	bh=BgeFNODpiTXRNdeNoYkQ0EiwJ/PI/D+Ds2spgroTX0g=;
+	s=korg; t=1700851489;
+	bh=FNCXCdB1DEG2hFqSzg+rgDZajIPu1XsTkVVad55bU1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQU/f/HMutPw8NOUaChMpDtziSsyUlhVU249uv0NJJu+6Vj8fe5Yi/CskLiFusFbk
-	 CbimY41mI2Ycx0JIjtjGlwzVWIWUloEyT7YEkKJWgNaEfvIhd0dgmEoqRnEKxQYBNm
-	 xKahdJ13mCNO6IZ9yrUJxZRz21H7aiGyKnU8pWIc=
+	b=w+wNBf0fvA1Fq8WeCd1X8zN0QLKjEiytq+mYrdi2LSSeazACLyAkkzXp+/a5t8AzI
+	 XGJdGv19vH15I1eZEY+Yv8SS2GH6dCbJvNin2o9I0LBWg4hmxgX6+5xkezQ2F7zztP
+	 NgPcHH3eMvEXnWZhpiIEJLOMkPv/p4hgJlCoGMo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 317/372] f2fs: avoid format-overflow warning
-Date: Fri, 24 Nov 2023 17:51:44 +0000
-Message-ID: <20231124172020.954111718@linuxfoundation.org>
+	Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 469/491] drm/amd/pm: Handle non-terminated overdrive commands.
+Date: Fri, 24 Nov 2023 17:51:45 +0000
+Message-ID: <20231124172038.717638046@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +50,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
 
-commit e0d4e8acb3789c5a8651061fbab62ca24a45c063 upstream.
+commit 08e9ebc75b5bcfec9d226f9e16bab2ab7b25a39a upstream.
 
-With gcc and W=1 option, there's a warning like this:
+The incoming strings might not be terminated by a newline
+or a 0.
 
-fs/f2fs/compress.c: In function ‘f2fs_init_page_array_cache’:
-fs/f2fs/compress.c:1984:47: error: ‘%u’ directive writing between
-1 and 7 bytes into a region of size between 5 and 8
-[-Werror=format-overflow=]
- 1984 |  sprintf(slab_name, "f2fs_page_array_entry-%u:%u", MAJOR(dev),
-		MINOR(dev));
-      |                                               ^~
-
-String "f2fs_page_array_entry-%u:%u" can up to 35. The first "%u" can up
-to 4 and the second "%u" can up to 7, so total size is "24 + 4 + 7 = 35".
-slab_name's size should be 35 rather than 32.
+(found while testing a program that just wrote the string
+ itself, causing a crash)
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: e3933f26b657 ("drm/amd/pp: Add edit/commit/show OD clock/voltage support in sysfs")
+Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -1983,7 +1983,7 @@ void f2fs_destroy_compress_inode(struct
- int f2fs_init_page_array_cache(struct f2fs_sb_info *sbi)
- {
- 	dev_t dev = sbi->sb->s_bdev->bd_dev;
--	char slab_name[32];
-+	char slab_name[35];
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -734,7 +734,7 @@ static ssize_t amdgpu_set_pp_od_clk_volt
+ 	if (adev->in_suspend && !adev->in_runpm)
+ 		return -EPERM;
  
- 	if (!f2fs_sb_has_compression(sbi))
- 		return 0;
+-	if (count > 127)
++	if (count > 127 || count == 0)
+ 		return -EINVAL;
+ 
+ 	if (*buf == 's')
+@@ -754,7 +754,8 @@ static ssize_t amdgpu_set_pp_od_clk_volt
+ 	else
+ 		return -EINVAL;
+ 
+-	memcpy(buf_cpy, buf, count+1);
++	memcpy(buf_cpy, buf, count);
++	buf_cpy[count] = 0;
+ 
+ 	tmp_str = buf_cpy;
+ 
+@@ -771,6 +772,9 @@ static ssize_t amdgpu_set_pp_od_clk_volt
+ 			return -EINVAL;
+ 		parameter_size++;
+ 
++		if (!tmp_str)
++			break;
++
+ 		while (isspace(*tmp_str))
+ 			tmp_str++;
+ 	}
 
 
 
