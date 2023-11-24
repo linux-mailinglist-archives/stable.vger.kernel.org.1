@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B829E7F7C4D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DAA37F802D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA8ED1C21121
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF5951C21523
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2616939FDD;
-	Fri, 24 Nov 2023 18:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3269381CB;
+	Fri, 24 Nov 2023 18:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5pajbD9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9kiv+gh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D438239FF3;
-	Fri, 24 Nov 2023 18:13:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6283DC433C8;
-	Fri, 24 Nov 2023 18:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303133CC2;
+	Fri, 24 Nov 2023 18:47:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F137C433C7;
+	Fri, 24 Nov 2023 18:47:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849634;
-	bh=m2c5i5hCfHCsWIAR7yjPmIJ9tXlYabP4E1ysmEakl9g=;
+	s=korg; t=1700851643;
+	bh=AOBJxr/rbfwu8eCM4ObqmlLMogvRNyY9nhP/8hn/A2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5pajbD9wbsy0rvS6MSx+EnnVaopLUXOhtfCNrTpR6McRQFSZMBM2pZz9n8KoZqkP
-	 +gvGDSb0TM63lyFXaGBmpt9Eaidkc5QrCghcvzEkluXdNKBo3yz2Qgbvhvmt+4S6RK
-	 ZcfqT6CdxfOUYpLJWL/HsRa08TCMLDZ++VwzR8Hg=
+	b=s9kiv+ghxDGYcdd84+lEg74BjKmIe2WWqsb4eklLL1dijpSeRhyZ9EajHZKS7WkZX
+	 LqBgGXFrWlsbQiR4BLObGhKufGUT1vrvr99W8Mh3PPpkD7e5XoXr4U8uGjmvNbhTNR
+	 fpbESXoxQjiXARvFQHh2mJ3+CqvPm66ofWDNZ+dE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Su <tao1.su@linux.intel.com>,
-	Yi Lai <yi1.lai@intel.com>,
-	Chao Gao <chao.gao@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 259/530] KVM: x86: Clear bit12 of ICR after APIC-write VM-exit
+	David Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Baoquan He <bhe@redhat.com>,
+	Kees Cook <keescook@chromium.org>,
+	Zack Rusin <zackr@vmware.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 038/372] kernel: kexec: copy user-array safely
 Date: Fri, 24 Nov 2023 17:47:05 +0000
-Message-ID: <20231124172035.929133759@linuxfoundation.org>
+Message-ID: <20231124172011.757422414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,90 +56,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tao Su <tao1.su@linux.intel.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-commit 629d3698f6958ee6f8131ea324af794f973b12ac upstream.
+[ Upstream commit 569c8d82f95eb5993c84fb61a649a9c4ddd208b3 ]
 
-When IPI virtualization is enabled, a WARN is triggered if bit12 of ICR
-MSR is set after APIC-write VM-exit. The reason is kvm_apic_send_ipi()
-thinks the APIC_ICR_BUSY bit should be cleared because KVM has no delay,
-but kvm_apic_write_nodecode() doesn't clear the APIC_ICR_BUSY bit.
+Currently, there is no overflow-check with memdup_user().
 
-Under the x2APIC section, regarding ICR, the SDM says:
+Use the new function memdup_array_user() instead of memdup_user() for
+duplicating the user-space array safely.
 
-  It remains readable only to aid in debugging; however, software should
-  not assume the value returned by reading the ICR is the last written
-  value.
-
-I.e. the guest is allowed to set bit 12.  However, the SDM also gives KVM
-free reign to do whatever it wants with the bit, so long as KVM's behavior
-doesn't confuse userspace or break KVM's ABI.
-
-Clear bit 12 so that it reads back as '0'. This approach is safer than
-"do nothing" and is consistent with the case where IPI virtualization is
-disabled or not supported, i.e.,
-
-  handle_fastpath_set_x2apic_icr_irqoff() -> kvm_x2apic_icr_write()
-
-Opportunistically replace the TODO with a comment calling out that eating
-the write is likely faster than a conditional branch around the busy bit.
-
-Link: https://lore.kernel.org/all/ZPj6iF0Q7iynn62p@google.com/
-Fixes: 5413bcba7ed5 ("KVM: x86: Add support for vICR APIC-write VM-Exits in x2APIC mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Tao Su <tao1.su@linux.intel.com>
-Tested-by: Yi Lai <yi1.lai@intel.com>
-Reviewed-by: Chao Gao <chao.gao@intel.com>
-Link: https://lore.kernel.org/r/20230914055504.151365-1-tao1.su@linux.intel.com
-[sean: tweak changelog, replace TODO with comment, drop local "val"]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Acked-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Zack Rusin <zackr@vmware.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920123612.16914-4-pstanner@redhat.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ kernel/kexec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2444,22 +2444,22 @@ EXPORT_SYMBOL_GPL(kvm_lapic_set_eoi);
- void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
- {
- 	struct kvm_lapic *apic = vcpu->arch.apic;
--	u64 val;
+diff --git a/kernel/kexec.c b/kernel/kexec.c
+index cb8e6e6f983c7..5ff1dcc4acb78 100644
+--- a/kernel/kexec.c
++++ b/kernel/kexec.c
+@@ -240,7 +240,7 @@ SYSCALL_DEFINE4(kexec_load, unsigned long, entry, unsigned long, nr_segments,
+ 		((flags & KEXEC_ARCH_MASK) != KEXEC_ARCH_DEFAULT))
+ 		return -EINVAL;
  
- 	/*
--	 * ICR is a single 64-bit register when x2APIC is enabled.  For legacy
--	 * xAPIC, ICR writes need to go down the common (slightly slower) path
--	 * to get the upper half from ICR2.
-+	 * ICR is a single 64-bit register when x2APIC is enabled, all others
-+	 * registers hold 32-bit values.  For legacy xAPIC, ICR writes need to
-+	 * go down the common path to get the upper half from ICR2.
-+	 *
-+	 * Note, using the write helpers may incur an unnecessary write to the
-+	 * virtual APIC state, but KVM needs to conditionally modify the value
-+	 * in certain cases, e.g. to clear the ICR busy bit.  The cost of extra
-+	 * conditional branches is likely a wash relative to the cost of the
-+	 * maybe-unecessary write, and both are in the noise anyways.
- 	 */
--	if (apic_x2apic_mode(apic) && offset == APIC_ICR) {
--		val = kvm_lapic_get_reg64(apic, APIC_ICR);
--		kvm_apic_send_ipi(apic, (u32)val, (u32)(val >> 32));
--		trace_kvm_apic_write(APIC_ICR, val);
--	} else {
--		/* TODO: optimize to just emulate side effect w/o one more write */
--		val = kvm_lapic_get_reg(apic, offset);
--		kvm_lapic_reg_write(apic, offset, (u32)val);
--	}
-+	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
-+		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
-+	else
-+		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
- }
- EXPORT_SYMBOL_GPL(kvm_apic_write_nodecode);
+-	ksegments = memdup_user(segments, nr_segments * sizeof(ksegments[0]));
++	ksegments = memdup_array_user(segments, nr_segments, sizeof(ksegments[0]));
+ 	if (IS_ERR(ksegments))
+ 		return PTR_ERR(ksegments);
  
+-- 
+2.42.0
+
 
 
 
