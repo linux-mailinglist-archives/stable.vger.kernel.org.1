@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 371727F7F60
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB5097F7AB9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 695381C213F8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD85E1C2095B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7657C28DC3;
-	Fri, 24 Nov 2023 18:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2948E39FC6;
+	Fri, 24 Nov 2023 17:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dfx4d0oV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qY46h5Hg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1208833CFB;
-	Fri, 24 Nov 2023 18:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84D00C433C7;
-	Fri, 24 Nov 2023 18:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BA7381D8;
+	Fri, 24 Nov 2023 17:58:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C47C433C7;
+	Fri, 24 Nov 2023 17:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851256;
-	bh=xOzFa5DV11m4JbM6euWUvptTL1fOXZ5HZwAtmdE2/Tg=;
+	s=korg; t=1700848681;
+	bh=KK18nwc/vwQLO7bPkWB7uAIDfDlv6irfUuQe3RXJ1r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dfx4d0oVPckUP6IE6WvyO37FQY+Y4Vo05RgvYM2KOWm9N7FUXYIVHCIM9zdv7noxf
-	 dA0Rudxk/9xXY9yTNM+ZDvGzv4oKBpVUjMiZXocPMgjaQrqpA/XHcchuCBqrM7WTdh
-	 JwDovLtk27/cDlPtDUPFCyKzow5+tBObIqMsp8NI=
+	b=qY46h5HgYXSFXk7K0JEkV58Whov0xNg2B4xyt75lFNvuUO+0FJX9Xy0vpRKQh8wBT
+	 62bWvJ2Q2suOdiz7RWjgbEy01WuKWvZhe1tt9mdXjHwx/uhSbYQpRZ0CNa6iu1u3HP
+	 VGvok7WVacDBG1nhahS5Rf5YmO65L+fFBqgcbGzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 375/491] torture: Make torture_hrtimeout_*() use TASK_IDLE
+Subject: [PATCH 4.19 38/97] tty: Fix uninit-value access in ppp_sync_receive()
 Date: Fri, 24 Nov 2023 17:50:11 +0000
-Message-ID: <20231124172035.862782124@linuxfoundation.org>
+Message-ID: <20231124171935.579365454@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +54,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 872948c665f50a1446e8a34b1ed57bb0b3a9ca4a ]
+[ Upstream commit 719639853d88071dfdfd8d9971eca9c283ff314c ]
 
-Given that it is expected that more code will use torture_hrtimeout_*(),
-including for longer timeouts, make it use TASK_IDLE instead of
-TASK_UNINTERRUPTIBLE.
+KMSAN reported the following uninit-value access issue:
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Stable-dep-of: cca42bd8eb1b ("rcutorture: Fix stuttering races and other issues")
+=====================================================
+BUG: KMSAN: uninit-value in ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
+BUG: KMSAN: uninit-value in ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
+ ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
+ tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
+ __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+Uninit was created at:
+ __alloc_pages+0x75d/0xe80 mm/page_alloc.c:4591
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ __page_frag_cache_refill+0x9a/0x2c0 mm/page_alloc.c:4691
+ page_frag_alloc_align+0x91/0x5d0 mm/page_alloc.c:4722
+ page_frag_alloc include/linux/gfp.h:322 [inline]
+ __netdev_alloc_skb+0x215/0x6d0 net/core/skbuff.c:728
+ netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+ dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+ ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+ ppp_sync_receive+0x237/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
+ tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
+ __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+CPU: 0 PID: 12950 Comm: syz-executor.1 Not tainted 6.6.0-14500-g1c41041124bd #10
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
+=====================================================
+
+ppp_sync_input() checks the first 2 bytes of the data are PPP_ALLSTATIONS
+and PPP_UI. However, if the data length is 1 and the first byte is
+PPP_ALLSTATIONS, an access to an uninitialized value occurs when checking
+PPP_UI. This patch resolves this issue by checking the data length.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/torture.c | 2 +-
+ drivers/net/ppp/ppp_synctty.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/torture.c b/kernel/torture.c
-index e06b03e987c9f..4a2e0512f9197 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -90,7 +90,7 @@ int torture_hrtimeout_ns(ktime_t baset_ns, u32 fuzzt_ns, struct torture_random_s
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 047f6c68a4419..e0de8b32df46a 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -702,7 +702,7 @@ ppp_sync_input(struct syncppp *ap, const unsigned char *buf,
  
- 	if (trsp)
- 		hto += (torture_random(trsp) >> 3) % fuzzt_ns;
--	set_current_state(TASK_UNINTERRUPTIBLE);
-+	set_current_state(TASK_IDLE);
- 	return schedule_hrtimeout(&hto, HRTIMER_MODE_REL);
- }
- EXPORT_SYMBOL_GPL(torture_hrtimeout_ns);
+ 	/* strip address/control field if present */
+ 	p = skb->data;
+-	if (p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
++	if (skb->len >= 2 && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
+ 		/* chop off address/control */
+ 		if (skb->len < 3)
+ 			goto err;
 -- 
 2.42.0
 
