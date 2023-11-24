@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2A447F7D33
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46F87F7AAD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95447B21432
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B1F1C209F8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16BF34197;
-	Fri, 24 Nov 2023 18:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2491F39FC6;
+	Fri, 24 Nov 2023 17:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaciRygz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZm5aTTx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62AC33CFD;
-	Fri, 24 Nov 2023 18:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F362C433C8;
-	Fri, 24 Nov 2023 18:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173039FD0;
+	Fri, 24 Nov 2023 17:57:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E5D2C433C7;
+	Fri, 24 Nov 2023 17:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850137;
-	bh=AcX/6OJRfWAhtJ0m9hoqSkv1j67DsCC4zRF/kBh2NQU=;
+	s=korg; t=1700848650;
+	bh=pjWvv3BkieQgmnn7MQQzp6lfYd6iZkaDpXX9+T2RSr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaciRygzg9BD7jHH96jlyiQH80aZBKjenVBMJw0YGNzN+cd4HdiThxKv4tzmft5cC
-	 wWL85AcTHJiaS5kVIhtcKNpt1w8CPL4wK/puyICMIWKQowYJoOi27GsV17t0T26QSA
-	 2nSbzX2DV98bBPWGbVfR0KwVl1yAd14VSf0lgv+w=
+	b=LZm5aTTxcUX127HWTrMTn17bCma9TEM0JLix6wPjpFJU6cc3ATPjPrl/cI0dYZqaD
+	 3wk+3wUlriIN19S6ppSTXS6jOxxiM7P5a1t8abY8apq7NLQ7qRMCcN9CZl/WujJm9S
+	 A54dseRvpB7drrKekaLTVq1QKmPfWaNTSBGpMBsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 434/530] ALSA: hda/realtek - Add Dell ALC295 to pin fall back table
+	Robert Ayrapetyan <robert.ayrapetyan@gmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 27/97] HID: Add quirk for Dell Pro Wireless Keyboard and Mouse KM5221W
 Date: Fri, 24 Nov 2023 17:50:00 +0000
-Message-ID: <20231124172041.291231660@linuxfoundation.org>
+Message-ID: <20231124171935.150232067@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,66 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Jiri Kosina <jkosina@suse.cz>
 
-commit 4b21a669ca21ed8f24ef4530b2918be5730114de upstream.
+[ Upstream commit 62cc9c3cb3ec1bf31cc116146185ed97b450836a ]
 
-Add ALC295 to pin fall back table.
-Remove 5 pin quirks for Dell ALC295.
-ALC295 was only support MIC2 for external MIC function.
-ALC295 assigned model "ALC269_FIXUP_DELL1_MIC_NO_PRESENCE" for pin
-fall back table.
-It was assigned wrong model. So, let's remove it.
+This device needs ALWAYS_POLL quirk, otherwise it keeps reconnecting
+indefinitely.
 
-Fixes: fbc571290d9f ("ALSA: hda/realtek - Fixed Headphone Mic can't record on Dell platform")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/7c1998e873834df98d59bd7e0d08c72e@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Robert Ayrapetyan <robert.ayrapetyan@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |   19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10735,22 +10735,6 @@ static const struct snd_hda_pin_quirk al
- 		{0x12, 0x90a60130},
- 		{0x17, 0x90170110},
- 		{0x21, 0x03211020}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
--		{0x14, 0x90170110},
--		{0x21, 0x04211020}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
--		{0x14, 0x90170110},
--		{0x21, 0x04211030}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
--		ALC295_STANDARD_PINS,
--		{0x17, 0x21014020},
--		{0x18, 0x21a19030}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
--		ALC295_STANDARD_PINS,
--		{0x17, 0x21014040},
--		{0x18, 0x21a19050}),
--	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL1_MIC_NO_PRESENCE,
--		ALC295_STANDARD_PINS),
- 	SND_HDA_PIN_QUIRK(0x10ec0298, 0x1028, "Dell", ALC298_FIXUP_DELL1_MIC_NO_PRESENCE,
- 		ALC298_STANDARD_PINS,
- 		{0x17, 0x90170110}),
-@@ -10794,6 +10778,9 @@ static const struct snd_hda_pin_quirk al
- 	SND_HDA_PIN_QUIRK(0x10ec0289, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1b, 0x40000000}),
-+	SND_HDA_PIN_QUIRK(0x10ec0295, 0x1028, "Dell", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE,
-+		{0x19, 0x40000000},
-+		{0x1b, 0x40000000}),
- 	SND_HDA_PIN_QUIRK(0x10ec0256, 0x1028, "Dell", ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
- 		{0x19, 0x40000000},
- 		{0x1a, 0x40000000}),
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index a9d6f8acf70b5..93faf083e550b 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -343,6 +343,7 @@
+ 
+ #define USB_VENDOR_ID_DELL				0x413c
+ #define USB_DEVICE_ID_DELL_PIXART_USB_OPTICAL_MOUSE	0x301a
++#define USB_DEVICE_ID_DELL_PRO_WIRELESS_KM5221W		0x4503
+ 
+ #define USB_VENDOR_ID_DELORME		0x1163
+ #define USB_DEVICE_ID_DELORME_EARTHMATE	0x0100
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index a2ab338166e61..0b85f95810b30 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -68,6 +68,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CORSAIR, USB_DEVICE_ID_CORSAIR_STRAFE), HID_QUIRK_NO_INIT_REPORTS | HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_CREATIVELABS, USB_DEVICE_ID_CREATIVE_SB_OMNI_SURROUND_51), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DELL, USB_DEVICE_ID_DELL_PIXART_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_DELL, USB_DEVICE_ID_DELL_PRO_WIRELESS_KM5221W), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DMI, USB_DEVICE_ID_DMI_ENC), HID_QUIRK_NOGET },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRACAL_RAPHNET, USB_DEVICE_ID_RAPHNET_2NES2SNES), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRACAL_RAPHNET, USB_DEVICE_ID_RAPHNET_4NES4SNES), HID_QUIRK_MULTI_INPUT },
+-- 
+2.42.0
+
 
 
 
