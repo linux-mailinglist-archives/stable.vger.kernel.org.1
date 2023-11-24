@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-1378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB457F7F5E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E3E77F7D1D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C104B216C9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:40:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5896A2820D1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFE535F1D;
-	Fri, 24 Nov 2023 18:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2843A8CA;
+	Fri, 24 Nov 2023 18:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBsrrFcP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpTYWCQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8E92D787;
-	Fri, 24 Nov 2023 18:40:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06468C433C8;
-	Fri, 24 Nov 2023 18:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8394934197;
+	Fri, 24 Nov 2023 18:21:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CF0C433C7;
+	Fri, 24 Nov 2023 18:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851249;
-	bh=Uw5splx3SHbpEsU0GEyu1CzrWm9qr3I2WKBEaWH1eEw=;
+	s=korg; t=1700850092;
+	bh=xi/B/K1H8OvKVsxH1/1c5JnIHvryKND5dQUNfJeOLY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBsrrFcP9bU2ncXV68DmxduZgs141umC3Fx1y/bh05odiMFN6Fokv6MMQtkOTkUPy
-	 rj4WUSTxVedjBzpAR6OloAL1cXMIEHbCkuwZzk7plWhGkqzOLDr9SDmbee9MnlePzf
-	 YrP70fCXCXeJGg48mSERolW7g69sjrOVxffizZZw=
+	b=NpTYWCQc4kFWOXmHMtKEgLlY5wKgKU/cEBbyuCxBj9/K/0UdB7z+8FyartXTlRDSI
+	 BJFcK41qX6KcyJ5WbXvJ8fh5fCCfWZaRedPNzPuYe1X9Y4PkDX0fslGDsm2e0rVhZI
+	 pJYLVn9ppfaQFzUK/+uIJsKd1ET/4YXlw6doSFes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Schroeder <CSchroeder@sonifi.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 372/491] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e card
+	Vanshidhar Konda <vanshikonda@os.amperecomputing.com>,
+	Darren Hart <darren@os.amperecomputing.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	linux-watchdog@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH 6.6 442/530] sbsa_gwdt: Calculate timeout with 64-bit math
 Date: Fri, 24 Nov 2023 17:50:08 +0000
-Message-ID: <20231124172035.759581154@linuxfoundation.org>
+Message-ID: <20231124172041.551376645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,70 +57,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Darren Hart <darren@os.amperecomputing.com>
 
-[ Upstream commit c9260693aa0c1e029ed23693cfd4d7814eee6624 ]
+commit 5d6aa89bba5bd6af2580f872b57f438dab883738 upstream.
 
-Commit ac91e6980563 ("PCI: Unify delay handling for reset and resume")
-shortened an unconditional 1 sec delay after a Secondary Bus Reset to 100
-msec for PCIe (per PCIe r6.1 sec 6.6.1).  The 1 sec delay is only required
-for Conventional PCI.
+Commit abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+introduced new timer math for watchdog revision 1 with the 48 bit offset
+register.
 
-But it turns out that there are PCIe devices which require a longer delay
-than prescribed before first config space access after reset recovery or
-resume from D3cold:
+The gwdt->clk and timeout are u32, but the argument being calculated is
+u64. Without a cast, the compiler performs u32 operations, truncating
+intermediate steps, resulting in incorrect values.
 
-Chad reports that a "VideoPropulsion Torrent QN16e" MPEG QAM Modulator
-"raises a PCI system error (PERR), as reported by the IPMI event log, and
-the hardware itself would suffer a catastrophic event, cycling the server"
-unless the longer delay is observed.
+A watchdog revision 1 implementation with a gwdt->clk of 1GHz and a
+timeout of 600s writes 3647256576 to the one shot watchdog instead of
+300000000000, resulting in the watchdog firing in 3.6s instead of 600s.
 
-The card is specified to conform to PCIe r1.0 and indeed only supports Gen1
-speed (2.5 GT/s) according to lspci.  PCIe r1.0 sec 7.6 prescribes the same
-100 msec delay as PCIe r6.1 sec 6.6.1:
+Force u64 math by casting the first argument (gwdt->clk) as a u64. Make
+the order of operations explicit with parenthesis.
 
-  To allow components to perform internal initialization, system software
-  must wait for at least 100 ms from the end of a reset (cold/warm/hot)
-  before it is permitted to issue Configuration Requests
-
-The behavior of the Torrent QN16e card thus appears to be a quirk.  Treat
-it as such and lengthen the reset delay for this specific device.
-
-Fixes: ac91e6980563 ("PCI: Unify delay handling for reset and resume")
-Link: https://lore.kernel.org/r/47727e792c7f0282dc144e3ec8ce8eb6e713394e.1695304512.git.lukas@wunner.de
-Reported-by: Chad Schroeder <CSchroeder@sonifi.com>
-Closes: https://lore.kernel.org/linux-pci/DM6PR16MB2844903E34CAB910082DF019B1FAA@DM6PR16MB2844.namprd16.prod.outlook.com/
-Tested-by: Chad Schroeder <CSchroeder@sonifi.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org # v5.4+
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: abd3ac7902fb ("watchdog: sbsa: Support architecture version 1")
+Reported-by: Vanshidhar Konda <vanshikonda@os.amperecomputing.com>
+Signed-off-by: Darren Hart <darren@os.amperecomputing.com>
+Cc: Wim Van Sebroeck <wim@linux-watchdog.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Cc: linux-watchdog@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: <stable@vger.kernel.org> # 5.14.x
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/7d1713c5ffab19b0f3de796d82df19e8b1f340de.1695286124.git.darren@os.amperecomputing.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/watchdog/sbsa_gwdt.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -6172,3 +6172,15 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
-  */
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5020, of_pci_make_dev_node);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_XILINX, 0x5021, of_pci_make_dev_node);
-+
-+/*
-+ * Devices known to require a longer delay before first config space access
-+ * after reset recovery or resume from D3cold:
-+ *
-+ * VideoPropulsion (aka Genroco) Torrent QN16e MPEG QAM Modulator
-+ */
-+static void pci_fixup_d3cold_delay_1sec(struct pci_dev *pdev)
-+{
-+	pdev->d3cold_delay = 1000;
-+}
-+DECLARE_PCI_FIXUP_FINAL(0x5555, 0x0004, pci_fixup_d3cold_delay_1sec);
+--- a/drivers/watchdog/sbsa_gwdt.c
++++ b/drivers/watchdog/sbsa_gwdt.c
+@@ -152,14 +152,14 @@ static int sbsa_gwdt_set_timeout(struct
+ 	timeout = clamp_t(unsigned int, timeout, 1, wdd->max_hw_heartbeat_ms / 1000);
+ 
+ 	if (action)
+-		sbsa_gwdt_reg_write(gwdt->clk * timeout, gwdt);
++		sbsa_gwdt_reg_write((u64)gwdt->clk * timeout, gwdt);
+ 	else
+ 		/*
+ 		 * In the single stage mode, The first signal (WS0) is ignored,
+ 		 * the timeout is (WOR * 2), so the WOR should be configured
+ 		 * to half value of timeout.
+ 		 */
+-		sbsa_gwdt_reg_write(gwdt->clk / 2 * timeout, gwdt);
++		sbsa_gwdt_reg_write(((u64)gwdt->clk / 2) * timeout, gwdt);
+ 
+ 	return 0;
+ }
 
 
 
