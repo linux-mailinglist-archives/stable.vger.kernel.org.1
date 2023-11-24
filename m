@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447457F7FED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B53AE7F81A7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D958EB217A5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E76E81C21BA9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182332D787;
-	Fri, 24 Nov 2023 18:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B47333076;
+	Fri, 24 Nov 2023 19:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkQv95MU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SRKfIZ0C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F7A321AD;
-	Fri, 24 Nov 2023 18:45:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA007C433C7;
-	Fri, 24 Nov 2023 18:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D833E3173F;
+	Fri, 24 Nov 2023 19:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63130C433C7;
+	Fri, 24 Nov 2023 19:00:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851519;
-	bh=+KZFqlhw6zA/WRphMHHczzEFiO8Ewi90+zoklaCR11o=;
+	s=korg; t=1700852426;
+	bh=qp533nJPpC0jWEyAg3QhyuedendPRVLC1GA9yLOdzR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dkQv95MU+Yn+rOvZVR+wLTiV1kgpcw700nnCNQ/PVa/2XZX3v7L0Vzd+Idi4sKMq6
-	 gESoSErDOvAkoJkUbyKD9jX0taN+RBHVDlpdHdMuHW7UNZYSYcU2ExqocVx3DzxT40
-	 NEnCv3ChEbJ5c54CYuch9ToizrGBqNfrC4SXmeAY=
+	b=SRKfIZ0CcMv6vtRo6hMEJy7M9xsWB+EOqBGsXas8futv17iPdU0U8Id7G7F142ovx
+	 qru2lgPLf41A1roYtx1XZvLcEfzplDOSE12xaT/XIjf2nK2Tot+RKWhdv4+8cnNnDX
+	 rMlznlAVYfRBC3kKJY8ifAveEwmYH/LNyMM5djnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 479/491] drm/amdgpu: add a retry for IP discovery init
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 328/372] LoongArch: Mark __percpu functions as always inline
 Date: Fri, 24 Nov 2023 17:51:55 +0000
-Message-ID: <20231124172039.033360992@linuxfoundation.org>
+Message-ID: <20231124172021.322354927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,82 +53,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 3938eb956e383ef88b8fc7d556492336ebee52df upstream.
+commit 71945968d8b128c955204baa33ec03bdd91bdc26 upstream.
 
-AMD dGPUs have integrated FW that runs as soon as the
-device gets power and initializes the board (determines
-the amount of memory, provides configuration details to
-the driver, etc.).  For direct PCIe attached cards this
-happens as soon as power is applied and normally completes
-well before the OS has even started loading.  However, with
-hotpluggable ports like USB4, the driver needs to wait for
-this to complete before initializing the device.
+A recent change to the optimization pipeline in LLVM reveals some
+fragility around the inlining of LoongArch's __percpu functions, which
+manifests as a BUILD_BUG() failure:
 
-This normally takes 60-100ms, but could take longer on
-some older boards periodically due to memory training.
+  In file included from kernel/sched/build_policy.c:17:
+  In file included from include/linux/sched/cputime.h:5:
+  In file included from include/linux/sched/signal.h:5:
+  In file included from include/linux/rculist.h:11:
+  In file included from include/linux/rcupdate.h:26:
+  In file included from include/linux/irqflags.h:18:
+  arch/loongarch/include/asm/percpu.h:97:3: error: call to '__compiletime_assert_51' declared with 'error' attribute: BUILD_BUG failed
+     97 |                 BUILD_BUG();
+        |                 ^
+  include/linux/build_bug.h:59:21: note: expanded from macro 'BUILD_BUG'
+     59 | #define BUILD_BUG() BUILD_BUG_ON_MSG(1, "BUILD_BUG failed")
+        |                     ^
+  include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+     39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+        |                                     ^
+  include/linux/compiler_types.h:425:2: note: expanded from macro 'compiletime_assert'
+    425 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+        |         ^
+  include/linux/compiler_types.h:413:2: note: expanded from macro '_compiletime_assert'
+    413 |         __compiletime_assert(condition, msg, prefix, suffix)
+        |         ^
+  include/linux/compiler_types.h:406:4: note: expanded from macro '__compiletime_assert'
+    406 |                         prefix ## suffix();                             \
+        |                         ^
+  <scratch space>:86:1: note: expanded from here
+     86 | __compiletime_assert_51
+        | ^
+  1 error generated.
 
-Retry for up to a second.  In the non-hotplug case, there
-should be no change in behavior and this should complete
-on the first try.
+If these functions are not inlined (which the compiler is free to do
+even with functions marked with the standard 'inline' keyword), the
+BUILD_BUG() in the default case cannot be eliminated since the compiler
+cannot prove it is never used, resulting in a build failure due to the
+error attribute.
 
-v2: adjust test criteria
-v3: adjust checks for the masks, only enable on removable devices
-v4: skip bif_fb_en check
+Mark these functions as __always_inline to guarantee inlining so that
+the BUILD_BUG() only triggers when the default case genuinely cannot be
+eliminated due to an unexpected size.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Cc:  <stable@vger.kernel.org>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/1955
+Fixes: 46859ac8af52 ("LoongArch: Add multi-processor (SMP) support")
+Link: https://github.com/llvm/llvm-project/commit/1a2e77cf9e11dbf56b5720c607313a566eebb16e
+Suggested-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ arch/loongarch/include/asm/percpu.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
-@@ -92,6 +92,7 @@
- MODULE_FIRMWARE(FIRMWARE_IP_DISCOVERY);
+--- a/arch/loongarch/include/asm/percpu.h
++++ b/arch/loongarch/include/asm/percpu.h
+@@ -28,7 +28,7 @@ static inline void set_my_cpu_offset(uns
+ #define __my_cpu_offset __my_cpu_offset
  
- #define mmRCC_CONFIG_MEMSIZE	0xde3
-+#define mmMP0_SMN_C2PMSG_33	0x16061
- #define mmMM_INDEX		0x0
- #define mmMM_INDEX_HI		0x6
- #define mmMM_DATA		0x1
-@@ -230,8 +231,26 @@ static int amdgpu_discovery_read_binary_
- static int amdgpu_discovery_read_binary_from_mem(struct amdgpu_device *adev,
- 						 uint8_t *binary)
+ #define PERCPU_OP(op, asm_op, c_op)					\
+-static inline unsigned long __percpu_##op(void *ptr,			\
++static __always_inline unsigned long __percpu_##op(void *ptr,		\
+ 			unsigned long val, int size)			\
+ {									\
+ 	unsigned long ret;						\
+@@ -59,7 +59,7 @@ PERCPU_OP(and, and, &)
+ PERCPU_OP(or, or, |)
+ #undef PERCPU_OP
+ 
+-static inline unsigned long __percpu_read(void *ptr, int size)
++static __always_inline unsigned long __percpu_read(void *ptr, int size)
  {
--	uint64_t vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
--	int ret = 0;
-+	uint64_t vram_size;
-+	u32 msg;
-+	int i, ret = 0;
-+
-+	/* It can take up to a second for IFWI init to complete on some dGPUs,
-+	 * but generally it should be in the 60-100ms range.  Normally this starts
-+	 * as soon as the device gets power so by the time the OS loads this has long
-+	 * completed.  However, when a card is hotplugged via e.g., USB4, we need to
-+	 * wait for this to complete.  Once the C2PMSG is updated, we can
-+	 * continue.
-+	 */
-+	if (dev_is_removable(&adev->pdev->dev)) {
-+		for (i = 0; i < 1000; i++) {
-+			msg = RREG32(mmMP0_SMN_C2PMSG_33);
-+			if (msg & 0x80000000)
-+				break;
-+			msleep(1);
-+		}
-+	}
-+	vram_size = (uint64_t)RREG32(mmRCC_CONFIG_MEMSIZE) << 20;
+ 	unsigned long ret;
  
- 	if (vram_size) {
- 		uint64_t pos = vram_size - DISCOVERY_TMR_OFFSET;
+@@ -96,7 +96,7 @@ static inline unsigned long __percpu_rea
+ 	return ret;
+ }
+ 
+-static inline void __percpu_write(void *ptr, unsigned long val, int size)
++static __always_inline void __percpu_write(void *ptr, unsigned long val, int size)
+ {
+ 	switch (size) {
+ 	case 1:
+@@ -128,8 +128,8 @@ static inline void __percpu_write(void *
+ 	}
+ }
+ 
+-static inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
+-						int size)
++static __always_inline unsigned long __percpu_xchg(void *ptr, unsigned long val,
++						   int size)
+ {
+ 	switch (size) {
+ 	case 1:
 
 
 
