@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 280987F7E9C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B829E7F7C4D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98868B21446
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA8ED1C21121
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F442EAEA;
-	Fri, 24 Nov 2023 18:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2616939FDD;
+	Fri, 24 Nov 2023 18:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmCEsfKa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5pajbD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BFB33E9;
-	Fri, 24 Nov 2023 18:34:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128DFC433C7;
-	Fri, 24 Nov 2023 18:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D438239FF3;
+	Fri, 24 Nov 2023 18:13:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6283DC433C8;
+	Fri, 24 Nov 2023 18:13:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850872;
-	bh=sTz8r0AkCXm+zoqIET7fFyuT4DbF835OawaGOfs/HEY=;
+	s=korg; t=1700849634;
+	bh=m2c5i5hCfHCsWIAR7yjPmIJ9tXlYabP4E1ysmEakl9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmCEsfKa8tdpitYMLlbu9dvMGOOLWoaz5y6jbGjKr3kGrFq4/EatoWb3KVhpocQcE
-	 uE0GaTAdGvwO81nnhPMMA18IOfwqdH5krqVrqgZ/AHvIhhCfWOXwtKUC/lIxSq4oqD
-	 yriNqXH5Z7uawUEtZl6alY66sYcz69Zf6sT/KfPg=
+	b=v5pajbD9wbsy0rvS6MSx+EnnVaopLUXOhtfCNrTpR6McRQFSZMBM2pZz9n8KoZqkP
+	 +gvGDSb0TM63lyFXaGBmpt9Eaidkc5QrCghcvzEkluXdNKBo3yz2Qgbvhvmt+4S6RK
+	 ZcfqT6CdxfOUYpLJWL/HsRa08TCMLDZ++VwzR8Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 188/491] blk-mq: make sure active queue usage is held for bio_integrity_prep()
-Date: Fri, 24 Nov 2023 17:47:04 +0000
-Message-ID: <20231124172030.125729760@linuxfoundation.org>
+	Tao Su <tao1.su@linux.intel.com>,
+	Yi Lai <yi1.lai@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 259/530] KVM: x86: Clear bit12 of ICR after APIC-write VM-exit
+Date: Fri, 24 Nov 2023 17:47:05 +0000
+Message-ID: <20231124172035.929133759@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,174 +54,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@infradead.org>
+From: Tao Su <tao1.su@linux.intel.com>
 
-[ Upstream commit b0077e269f6c152e807fdac90b58caf012cdbaab ]
+commit 629d3698f6958ee6f8131ea324af794f973b12ac upstream.
 
-blk_integrity_unregister() can come if queue usage counter isn't held
-for one bio with integrity prepared, so this request may be completed with
-calling profile->complete_fn, then kernel panic.
+When IPI virtualization is enabled, a WARN is triggered if bit12 of ICR
+MSR is set after APIC-write VM-exit. The reason is kvm_apic_send_ipi()
+thinks the APIC_ICR_BUSY bit should be cleared because KVM has no delay,
+but kvm_apic_write_nodecode() doesn't clear the APIC_ICR_BUSY bit.
 
-Another constraint is that bio_integrity_prep() needs to be called
-before bio merge.
+Under the x2APIC section, regarding ICR, the SDM says:
 
-Fix the issue by:
+  It remains readable only to aid in debugging; however, software should
+  not assume the value returned by reading the ICR is the last written
+  value.
 
-- call bio_integrity_prep() with one queue usage counter grabbed reliably
+I.e. the guest is allowed to set bit 12.  However, the SDM also gives KVM
+free reign to do whatever it wants with the bit, so long as KVM's behavior
+doesn't confuse userspace or break KVM's ABI.
 
-- call bio_integrity_prep() before bio merge
+Clear bit 12 so that it reads back as '0'. This approach is safer than
+"do nothing" and is consistent with the case where IPI virtualization is
+disabled or not supported, i.e.,
 
-Fixes: 900e080752025f00 ("block: move queue enter logic into blk_mq_submit_bio()")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Link: https://lore.kernel.org/r/20231113035231.2708053-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  handle_fastpath_set_x2apic_icr_irqoff() -> kvm_x2apic_icr_write()
+
+Opportunistically replace the TODO with a comment calling out that eating
+the write is likely faster than a conditional branch around the busy bit.
+
+Link: https://lore.kernel.org/all/ZPj6iF0Q7iynn62p@google.com/
+Fixes: 5413bcba7ed5 ("KVM: x86: Add support for vICR APIC-write VM-Exits in x2APIC mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tao Su <tao1.su@linux.intel.com>
+Tested-by: Yi Lai <yi1.lai@intel.com>
+Reviewed-by: Chao Gao <chao.gao@intel.com>
+Link: https://lore.kernel.org/r/20230914055504.151365-1-tao1.su@linux.intel.com
+[sean: tweak changelog, replace TODO with comment, drop local "val"]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c | 75 +++++++++++++++++++++++++-------------------------
- 1 file changed, 38 insertions(+), 37 deletions(-)
+ arch/x86/kvm/lapic.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index c21bc81a790ff..5fb31b9a16403 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2874,11 +2874,8 @@ static struct request *blk_mq_get_new_requests(struct request_queue *q,
- 	};
- 	struct request *rq;
- 
--	if (unlikely(bio_queue_enter(bio)))
--		return NULL;
--
- 	if (blk_mq_attempt_bio_merge(q, bio, nsegs))
--		goto queue_exit;
-+		return NULL;
- 
- 	rq_qos_throttle(q, bio);
- 
-@@ -2894,35 +2891,23 @@ static struct request *blk_mq_get_new_requests(struct request_queue *q,
- 	rq_qos_cleanup(q, bio);
- 	if (bio->bi_opf & REQ_NOWAIT)
- 		bio_wouldblock_error(bio);
--queue_exit:
--	blk_queue_exit(q);
- 	return NULL;
- }
- 
--static inline struct request *blk_mq_get_cached_request(struct request_queue *q,
--		struct blk_plug *plug, struct bio **bio, unsigned int nsegs)
-+/* return true if this @rq can be used for @bio */
-+static bool blk_mq_can_use_cached_rq(struct request *rq, struct blk_plug *plug,
-+		struct bio *bio)
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2444,22 +2444,22 @@ EXPORT_SYMBOL_GPL(kvm_lapic_set_eoi);
+ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
  {
--	struct request *rq;
--	enum hctx_type type, hctx_type;
-+	enum hctx_type type = blk_mq_get_hctx_type(bio->bi_opf);
-+	enum hctx_type hctx_type = rq->mq_hctx->type;
- 
--	if (!plug)
--		return NULL;
--	rq = rq_list_peek(&plug->cached_rq);
--	if (!rq || rq->q != q)
--		return NULL;
-+	WARN_ON_ONCE(rq_list_peek(&plug->cached_rq) != rq);
- 
--	if (blk_mq_attempt_bio_merge(q, *bio, nsegs)) {
--		*bio = NULL;
--		return NULL;
--	}
--
--	type = blk_mq_get_hctx_type((*bio)->bi_opf);
--	hctx_type = rq->mq_hctx->type;
- 	if (type != hctx_type &&
- 	    !(type == HCTX_TYPE_READ && hctx_type == HCTX_TYPE_DEFAULT))
--		return NULL;
--	if (op_is_flush(rq->cmd_flags) != op_is_flush((*bio)->bi_opf))
--		return NULL;
-+		return false;
-+	if (op_is_flush(rq->cmd_flags) != op_is_flush(bio->bi_opf))
-+		return false;
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
+-	u64 val;
  
  	/*
- 	 * If any qos ->throttle() end up blocking, we will have flushed the
-@@ -2930,12 +2915,12 @@ static inline struct request *blk_mq_get_cached_request(struct request_queue *q,
- 	 * before we throttle.
+-	 * ICR is a single 64-bit register when x2APIC is enabled.  For legacy
+-	 * xAPIC, ICR writes need to go down the common (slightly slower) path
+-	 * to get the upper half from ICR2.
++	 * ICR is a single 64-bit register when x2APIC is enabled, all others
++	 * registers hold 32-bit values.  For legacy xAPIC, ICR writes need to
++	 * go down the common path to get the upper half from ICR2.
++	 *
++	 * Note, using the write helpers may incur an unnecessary write to the
++	 * virtual APIC state, but KVM needs to conditionally modify the value
++	 * in certain cases, e.g. to clear the ICR busy bit.  The cost of extra
++	 * conditional branches is likely a wash relative to the cost of the
++	 * maybe-unecessary write, and both are in the noise anyways.
  	 */
- 	plug->cached_rq = rq_list_next(rq);
--	rq_qos_throttle(q, *bio);
-+	rq_qos_throttle(rq->q, bio);
- 
- 	blk_mq_rq_time_init(rq, 0);
--	rq->cmd_flags = (*bio)->bi_opf;
-+	rq->cmd_flags = bio->bi_opf;
- 	INIT_LIST_HEAD(&rq->queuelist);
--	return rq;
-+	return true;
+-	if (apic_x2apic_mode(apic) && offset == APIC_ICR) {
+-		val = kvm_lapic_get_reg64(apic, APIC_ICR);
+-		kvm_apic_send_ipi(apic, (u32)val, (u32)(val >> 32));
+-		trace_kvm_apic_write(APIC_ICR, val);
+-	} else {
+-		/* TODO: optimize to just emulate side effect w/o one more write */
+-		val = kvm_lapic_get_reg(apic, offset);
+-		kvm_lapic_reg_write(apic, offset, (u32)val);
+-	}
++	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
++		kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR));
++	else
++		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
  }
+ EXPORT_SYMBOL_GPL(kvm_apic_write_nodecode);
  
- static void bio_set_ioprio(struct bio *bio)
-@@ -2965,7 +2950,7 @@ void blk_mq_submit_bio(struct bio *bio)
- 	struct blk_plug *plug = blk_mq_plug(bio);
- 	const int is_sync = op_is_sync(bio->bi_opf);
- 	struct blk_mq_hw_ctx *hctx;
--	struct request *rq;
-+	struct request *rq = NULL;
- 	unsigned int nr_segs = 1;
- 	blk_status_t ret;
- 
-@@ -2976,20 +2961,36 @@ void blk_mq_submit_bio(struct bio *bio)
- 			return;
- 	}
- 
--	if (!bio_integrity_prep(bio))
--		return;
--
- 	bio_set_ioprio(bio);
- 
--	rq = blk_mq_get_cached_request(q, plug, &bio, nr_segs);
--	if (!rq) {
--		if (!bio)
-+	if (plug) {
-+		rq = rq_list_peek(&plug->cached_rq);
-+		if (rq && rq->q != q)
-+			rq = NULL;
-+	}
-+	if (rq) {
-+		if (!bio_integrity_prep(bio))
- 			return;
--		rq = blk_mq_get_new_requests(q, plug, bio, nr_segs);
--		if (unlikely(!rq))
-+		if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
- 			return;
-+		if (blk_mq_can_use_cached_rq(rq, plug, bio))
-+			goto done;
-+		percpu_ref_get(&q->q_usage_counter);
-+	} else {
-+		if (unlikely(bio_queue_enter(bio)))
-+			return;
-+		if (!bio_integrity_prep(bio))
-+			goto fail;
-+	}
-+
-+	rq = blk_mq_get_new_requests(q, plug, bio, nr_segs);
-+	if (unlikely(!rq)) {
-+fail:
-+		blk_queue_exit(q);
-+		return;
- 	}
- 
-+done:
- 	trace_block_getrq(bio);
- 
- 	rq_qos_track(q, rq, bio);
--- 
-2.42.0
-
 
 
 
