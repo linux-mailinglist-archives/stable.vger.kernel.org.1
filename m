@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-1293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17EB7F7EF5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCD67F7EFD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91387B21631
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AC4728245A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400712E655;
-	Fri, 24 Nov 2023 18:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2469364DE;
+	Fri, 24 Nov 2023 18:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klexnqQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjBULlvo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0AB6381D6;
-	Fri, 24 Nov 2023 18:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397FAC433C7;
-	Fri, 24 Nov 2023 18:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1712D626;
+	Fri, 24 Nov 2023 18:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CCD8C433C8;
+	Fri, 24 Nov 2023 18:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851038;
-	bh=xkFChtFnZEk4BQ7sQaQJBv/A9VsU8IL3+mYaaYkZ1/w=;
+	s=korg; t=1700851058;
+	bh=zPONxCNOBs0bIcIPnoV2V/vkicGt04PgfG6TVbln+iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klexnqQB2+HYYA1X/HhMqmxct806UiqfZqsk3LuuCOJZfKaxLhhnahRRU028aLZou
-	 6f3uNFSyB0IKRvvPgXXpKKOHqPlpLQ7UQDeprR9VrA94VsQOzmnuCNf/9a1ZkA2JSi
-	 J0ig23RFBaMFCHGJsT2im71jajOzOYkA4lZAH27Y=
+	b=NjBULlvox7k0rL/9IjDfSHM+1q1CGJv+mkxh5YDv0eSeLXxH9Bq8tIvroRAiG5XmL
+	 waImPgRW8I9LIdlF4VxjGU2u8Trxb3GcqkIjSLAG31VyxSj0KBksGC5eRb8ijAxnhT
+	 v5+BizBwRzfsXZwu3lN44MIxME2l1JdJMjTBfUw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.5 271/491] ACPI: resource: Do IRQ override on TongFang GMxXGxx
-Date: Fri, 24 Nov 2023 17:48:27 +0000
-Message-ID: <20231124172032.718204670@linuxfoundation.org>
+	Hector Martin <marcan@marcan.st>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.5 272/491] regmap: Ensure range selector registers are updated after cache sync
+Date: Fri, 24 Nov 2023 17:48:28 +0000
+Message-ID: <20231124172032.746931587@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
 References: <20231124172024.664207345@linuxfoundation.org>
@@ -57,46 +56,91 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 0da9eccde3270b832c059ad618bf66e510c75d33 upstream.
+commit 0ec7731655de196bc1e4af99e495b38778109d22 upstream.
 
-The TongFang GMxXGxx/TUXEDO Stellaris/Pollaris Gen5 needs IRQ overriding
-for the keyboard to work.
+When we sync the register cache we do so with the cache bypassed in order
+to avoid overhead from writing the synced values back into the cache. If
+the regmap has ranges and the selector register for those ranges is in a
+register which is cached this has the unfortunate side effect of meaning
+that the physical and cached copies of the selector register can be out of
+sync after a cache sync. The cache will have whatever the selector was when
+the sync started and the hardware will have the selector for the register
+that was synced last.
 
-Adding an entry for this laptop to the override_table makes the internal
-keyboard functional.
+Fix this by rewriting all cached selector registers after every sync,
+ensuring that the hardware and cache have the same content. This will
+result in extra writes that wouldn't otherwise be needed but is simple
+so hopefully robust. We don't read from the hardware since not all
+devices have physical read support.
 
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: All applicable <stable@vger.kernel.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Given that nobody noticed this until now it is likely that we are rarely if
+ever hitting this case.
+
+Reported-by: Hector Martin <marcan@marcan.st>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231026-regmap-fix-selector-sync-v1-1-633ded82770d@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/base/regmap/regcache.c |   30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -496,6 +496,18 @@ static const struct dmi_system_id mainge
- 		}
- 	},
- 	{
-+		/* TongFang GMxXGxx/TUXEDO Polaris 15 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
-+		},
-+	},
-+	{
-+		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
-+		},
-+	},
-+	{
- 		.ident = "MAINGEAR Vector Pro 2 17",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Micro Electronics Inc"),
+--- a/drivers/base/regmap/regcache.c
++++ b/drivers/base/regmap/regcache.c
+@@ -334,6 +334,11 @@ static int regcache_default_sync(struct
+ 	return 0;
+ }
+ 
++static int rbtree_all(const void *key, const struct rb_node *node)
++{
++	return 0;
++}
++
+ /**
+  * regcache_sync - Sync the register cache with the hardware.
+  *
+@@ -351,6 +356,7 @@ int regcache_sync(struct regmap *map)
+ 	unsigned int i;
+ 	const char *name;
+ 	bool bypass;
++	struct rb_node *node;
+ 
+ 	if (WARN_ON(map->cache_type == REGCACHE_NONE))
+ 		return -EINVAL;
+@@ -392,6 +398,30 @@ out:
+ 	/* Restore the bypass state */
+ 	map->cache_bypass = bypass;
+ 	map->no_sync_defaults = false;
++
++	/*
++	 * If we did any paging with cache bypassed and a cached
++	 * paging register then the register and cache state might
++	 * have gone out of sync, force writes of all the paging
++	 * registers.
++	 */
++	rb_for_each(node, 0, &map->range_tree, rbtree_all) {
++		struct regmap_range_node *this =
++			rb_entry(node, struct regmap_range_node, node);
++
++		/* If there's nothing in the cache there's nothing to sync */
++		ret = regcache_read(map, this->selector_reg, &i);
++		if (ret != 0)
++			continue;
++
++		ret = _regmap_write(map, this->selector_reg, i);
++		if (ret != 0) {
++			dev_err(map->dev, "Failed to write %x = %x: %d\n",
++				this->selector_reg, i, ret);
++			break;
++		}
++	}
++
+ 	map->unlock(map->lock_arg);
+ 
+ 	regmap_async_complete(map);
 
 
 
