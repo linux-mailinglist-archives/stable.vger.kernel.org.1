@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-2233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392647F8353
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:16:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E267F8222
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA29B2432C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF64A1C22B05
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2D5364BA;
-	Fri, 24 Nov 2023 19:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CE9364A7;
+	Fri, 24 Nov 2023 19:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdpnASbf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELc/Qw9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C3D364B7;
-	Fri, 24 Nov 2023 19:16:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3552CC433C8;
-	Fri, 24 Nov 2023 19:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8D533CFD;
+	Fri, 24 Nov 2023 19:04:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BC15C433C7;
+	Fri, 24 Nov 2023 19:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853382;
-	bh=0dfYCkx8ZKSfqR3CX5IrXBRl81XhWVYDB9wUcwVk8HY=;
+	s=korg; t=1700852685;
+	bh=xv94Dc1oknTzI7INhSYiwf3aUFDWJZda8HaQos2zDH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdpnASbfX0YZfC1fVjZOQiP8TAg7D3PDOCDPptUiGfTFtIuztikR+csJWyQAGU77O
-	 pWBJ9KM9XntqioKxrUHI3cf8Vhetx1V1cdWYc6iDvOyFGsFT1pu+sRcxoNRU4kisyE
-	 scfjlmpBlvjYDC/pc4tkUtXth8+tpeJeyRrTpxWc=
+	b=ELc/Qw9YSDk9Z7RNpsab3ZrLDWTxGEqPOL82nyVT8VUYoxYkkEt8yvwGK8r+/mSYG
+	 kKTGwezjyLKBWgdBvoOxoSCSfXfq2EAe8kQpL2P4TQR1nFtuhM+hssrTV29DbMmZzE
+	 slo3iF6Om7l79sYwWfZyaVvfgZA1WX30xwZBchAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Saenz Julienne <nsaenz@amazon.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.15 166/297] KVM: x86: hyper-v: Dont auto-enable stimer on write from user-space
-Date: Fri, 24 Nov 2023 17:53:28 +0000
-Message-ID: <20231124172006.060005908@linuxfoundation.org>
+	Cruz Zhao <cruzzhao@linux.alibaba.com>,
+	Tianchen Ding <dtcccc@linux.alibaba.com>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 082/193] net/mlx5e: fix double free of encap_header
+Date: Fri, 24 Nov 2023 17:53:29 +0000
+Message-ID: <20231124171950.514675598@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +57,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Saenz Julienne <nsaenz@amazon.com>
+From: Dust Li <dust.li@linux.alibaba.com>
 
-commit d6800af51c76b6dae20e6023bbdc9b3da3ab5121 upstream.
+[ Upstream commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1 ]
 
-Don't apply the stimer's counter side effects when modifying its
-value from user-space, as this may trigger spurious interrupts.
+When mlx5_packet_reformat_alloc() fails, the encap_header allocated in
+mlx5e_tc_tun_create_header_ipv4{6} will be released within it. However,
+e->encap_header is already set to the previously freed encap_header
+before mlx5_packet_reformat_alloc(). As a result, the later
+mlx5e_encap_put() will free e->encap_header again, causing a double free
+issue.
 
-For example:
- - The stimer is configured in auto-enable mode.
- - The stimer's count is set and the timer enabled.
- - The stimer expires, an interrupt is injected.
- - The VM is live migrated.
- - The stimer config and count are deserialized, auto-enable is ON, the
-   stimer is re-enabled.
- - The stimer expires right away, and injects an unwarranted interrupt.
+mlx5e_encap_put()
+    --> mlx5e_encap_dealloc()
+        --> kfree(e->encap_header)
 
-Cc: stable@vger.kernel.org
-Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
-Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This happens when cmd: MLX5_CMD_OP_ALLOC_PACKET_REFORMAT_CONTEXT fail.
+
+This patch fix it by not setting e->encap_header until
+mlx5_packet_reformat_alloc() success.
+
+Fixes: d589e785baf5e ("net/mlx5e: Allow concurrent creation of encap entries")
+Reported-by: Cruz Zhao <cruzzhao@linux.alibaba.com>
+Reported-by: Tianchen Ding <dtcccc@linux.alibaba.com>
+Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/hyperv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kvm/hyperv.c
-+++ b/arch/x86/kvm/hyperv.c
-@@ -701,10 +701,12 @@ static int stimer_set_count(struct kvm_v
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+index 90930e54b6f28..05bcd69994eca 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+@@ -267,9 +267,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto destroy_neigh_entry;
  
- 	stimer_cleanup(stimer);
- 	stimer->count = count;
--	if (stimer->count == 0)
--		stimer->config.enable = 0;
--	else if (stimer->config.auto_enable)
--		stimer->config.enable = 1;
-+	if (!host) {
-+		if (stimer->count == 0)
-+			stimer->config.enable = 0;
-+		else if (stimer->config.auto_enable)
-+			stimer->config.enable = 1;
-+	}
+-	e->encap_size = ipv4_encap_size;
+-	e->encap_header = encap_header;
+-
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+@@ -286,6 +283,8 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
+ 		goto destroy_neigh_entry;
+ 	}
  
- 	if (stimer->config.enable)
- 		stimer_mark_pending(stimer, false);
++	e->encap_size = ipv4_encap_size;
++	e->encap_header = encap_header;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
+ 	mlx5e_route_lookup_ipv4_put(route_dev, n);
+@@ -431,9 +430,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto destroy_neigh_entry;
+ 
+-	e->encap_size = ipv6_encap_size;
+-	e->encap_header = encap_header;
+-
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+@@ -451,6 +447,8 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
+ 		goto destroy_neigh_entry;
+ 	}
+ 
++	e->encap_size = ipv6_encap_size;
++	e->encap_header = encap_header;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
+ 	mlx5e_route_lookup_ipv6_put(route_dev, n);
+-- 
+2.42.0
+
 
 
 
