@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-1311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B117F7F0B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E1857F80BD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CD101C21437
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2142810CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D8C3306F;
-	Fri, 24 Nov 2023 18:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D17633CD1;
+	Fri, 24 Nov 2023 18:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcFZS/Sd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykCyt+QV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D7A33075;
-	Fri, 24 Nov 2023 18:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B3F2C433C8;
-	Fri, 24 Nov 2023 18:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA7428DBA;
+	Fri, 24 Nov 2023 18:52:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB62C433C9;
+	Fri, 24 Nov 2023 18:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851083;
-	bh=2QeM6Y1d87cX9X33Q/pmlyDqdXKdRrs8/Bx5ZIrQKqw=;
+	s=korg; t=1700851941;
+	bh=VQ0iiccIZuqDOaZx8N7TrgdcLPLJjZbWQXDWy9mixe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcFZS/SdTgraOYxnN3L9iQgRdMPGlR2xujiJ/MNEhrhwynqBMc0QlekZYimBiqg3i
-	 YAVHdOpHmkQfbF3V/s2w1WI+sujEvhQxB62A/Yvh4EUGlGIBSHYQllcGqdfFMXj3DQ
-	 uQ9+IXKti0fzrAxxgloa403rO2enpsSl3iyWCdzs=
+	b=ykCyt+QVRHQRJFG/KTqxjkgdaJe1toHVgobUBGtFAYixA2/Eydmlwt3o3fsZsnTbB
+	 vvmKy06DIirDs9EaCdhTwbJ0V++pNlxBHgsLeZvzDRvzyW0/zLTE51XURubkKjhxn1
+	 sUV5OXNGPRhh3GA4o4NBcS7zcxEGldG5WsvU2oAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Talpey <tom@talpey.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.5 307/491] svcrdma: Drop connection after an RDMA Read error
+	Gal Pressman <gal@nvidia.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 156/372] macvlan: Dont propagate promisc change to lower dev in passthru
 Date: Fri, 24 Nov 2023 17:49:03 +0000
-Message-ID: <20231124172033.799231580@linuxfoundation.org>
+Message-ID: <20231124172015.681817589@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +55,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-commit 197115ebf358cb440c73e868b2a0a5ef728decc6 upstream.
+[ Upstream commit 7e1caeace0418381f36b3aa8403dfd82fc57fc53 ]
 
-When an RPC Call message cannot be pulled from the client, that
-is a message loss, by definition. Close the connection to trigger
-the client to resend.
+Macvlan device in passthru mode sets its lower device promiscuous mode
+according to its MACVLAN_FLAG_NOPROMISC flag instead of synchronizing it to
+its own promiscuity setting. However, macvlan_change_rx_flags() function
+doesn't check the mode before propagating such changes to the lower device
+which can cause net_device->promiscuity counter overflow as illustrated by
+reproduction example [0] and resulting dmesg log [1]. Fix the issue by
+first verifying the mode in macvlan_change_rx_flags() function before
+propagating promiscuous mode change to the lower device.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[0]:
+ip link add macvlan1 link enp8s0f0 type macvlan mode passthru
+ip link set macvlan1 promisc on
+ip l set dev macvlan1 up
+ip link set macvlan1 promisc off
+ip l set dev macvlan1 down
+ip l set dev macvlan1 up
+
+[1]:
+[ 5156.281724] macvlan1: entered promiscuous mode
+[ 5156.285467] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
+[ 5156.287639] macvlan1: left promiscuous mode
+[ 5156.288339] mlx5_core 0000:08:00.0 enp8s0f0: left promiscuous mode
+[ 5156.290907] mlx5_core 0000:08:00.0 enp8s0f0: entered promiscuous mode
+[ 5156.317197] mlx5_core 0000:08:00.0 enp8s0f0: promiscuity touches roof, set promiscuity failed. promiscuity feature of device might be broken.
+
+Fixes: efdbd2b30caa ("macvlan: Propagate promiscuity setting to lower devices.")
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231114175915.1649154-1-vladbu@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_recvfrom.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/macvlan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_recvfrom.c
-@@ -852,7 +852,8 @@ out_readfail:
- 	if (ret == -EINVAL)
- 		svc_rdma_send_error(rdma_xprt, ctxt, ret);
- 	svc_rdma_recv_ctxt_put(rdma_xprt, ctxt);
--	return ret;
-+	svc_xprt_deferred_close(xprt);
-+	return -ENOTCONN;
+diff --git a/drivers/net/macvlan.c b/drivers/net/macvlan.c
+index b8cc55b2d721c..012830d12fde6 100644
+--- a/drivers/net/macvlan.c
++++ b/drivers/net/macvlan.c
+@@ -771,7 +771,7 @@ static void macvlan_change_rx_flags(struct net_device *dev, int change)
+ 	if (dev->flags & IFF_UP) {
+ 		if (change & IFF_ALLMULTI)
+ 			dev_set_allmulti(lowerdev, dev->flags & IFF_ALLMULTI ? 1 : -1);
+-		if (change & IFF_PROMISC)
++		if (!macvlan_passthru(vlan->port) && change & IFF_PROMISC)
+ 			dev_set_promiscuity(lowerdev,
+ 					    dev->flags & IFF_PROMISC ? 1 : -1);
  
- out_backchannel:
- 	svc_rdma_handle_bc_reply(rqstp, ctxt);
+-- 
+2.42.0
+
 
 
 
