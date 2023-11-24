@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 720D57F73F8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:41:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6FF7F73F9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAE64B21234
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:41:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64FCCB21461
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4C815AEB;
-	Fri, 24 Nov 2023 12:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2AC14F7B;
+	Fri, 24 Nov 2023 12:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V91EDKPO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="daNeSPhq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CF628380
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:41:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13024C433C7;
-	Fri, 24 Nov 2023 12:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D0B1EB42
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 12:41:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A24C433C8;
+	Fri, 24 Nov 2023 12:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700829711;
-	bh=bALfqK9af1MHje9yC/nHp2CyYbUyq29g/KX4rIB0kQY=;
+	s=korg; t=1700829713;
+	bh=yi+0zhiwjXYr6+uBXMN/Iv2CCRDGLFOMoJqLsm6ZCGY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=V91EDKPO2AX1IIZlcwnTCN51AeB8clo8RimXf0NSqx0coWfWLfbZBgEtOmr6avNGQ
-	 JUrIXhcv9jBGDNxeT5wMx+B88xvxKf4/RtycfrXXgNDtXbEwdNPyLRz9s2G6ERMBSC
-	 V+ORDsokBBgIC3uLJaZjL1+3J+t/wbtpAzMMrPJA=
-Subject: FAILED: patch "[PATCH] MIPS: KVM: Fix a build warning about variable set but not" failed to apply to 6.5-stable tree
+	b=daNeSPhqnYXSdFmTWBgtglX7OY4YPZup7IDDJtjV6u4tA/0JBCYaxOU6G2HOcWDCj
+	 RrATl16iMAcYUGIl0kbwvElmyFf/FE5GvhtHBaXQ/K/HhjJXVdlpasO9tWq7VvJYld
+	 u7qQIQS5psHXMSxr7UU2Q575X/LQv6yMSn50Yp/g=
+Subject: FAILED: patch "[PATCH] MIPS: KVM: Fix a build warning about variable set but not" failed to apply to 6.1-stable tree
 To: chenhuacai@kernel.org,chenhuacai@loongson.cn,lkp@intel.com,philmd@linaro.org,tsbogend@alpha.franken.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 12:41:29 +0000
-Message-ID: <2023112429-closable-pardon-b0c4@gregkh>
+Date: Fri, 24 Nov 2023 12:41:30 +0000
+Message-ID: <2023112430-deskbound-corsage-3c17@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 83767a67e7b6a0291cde5681ec7e3708f3f8f877
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112429-closable-pardon-b0c4@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112430-deskbound-corsage-3c17@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
