@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 373AC7F7BED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:10:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 92D697F7DFD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68F8E1C210E8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:10:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C56741C2131B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78F7381D5;
-	Fri, 24 Nov 2023 18:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DDB39FDD;
+	Fri, 24 Nov 2023 18:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSYjCXQA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X108MkfB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BCF39FF7;
-	Fri, 24 Nov 2023 18:10:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0103BC433C8;
-	Fri, 24 Nov 2023 18:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE6439FF8;
+	Fri, 24 Nov 2023 18:28:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D96BC433C8;
+	Fri, 24 Nov 2023 18:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849401;
-	bh=cinJjO1jmu5xG2tbNxufV3sYEBPPNrDHFQB3IIrfkDQ=;
+	s=korg; t=1700850537;
+	bh=7loHs7BxNSMDwxqYmJcSG7rI3ftap5p4HXFBCrx03n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eSYjCXQAQhXCXmB9g3ICM2lkRLPMOfxGJMUhF43R1q8bzF3y73fdLJIkxH9HDHaEL
-	 nZDxBHItEdlBwiXjXMafK+CYhW16yFNCRVkEucqHSpel7avIXIH/ZUDjjTo2rJmSr1
-	 SClL/QtjDmlP55A2EiKylGCq/gXhhSZkNxHfXJE0=
+	b=X108MkfByIvmwmJht/J6YUq+sFdKV/ZflBEI86baWdgWz7NepGqr+2fLv4vWGjsPN
+	 RLVJfVe5M0eKSbF+Za1NnIMaAVr8kuFi9qgCmOI3l0zACCzsYyxTkECpyjg9HZGrbt
+	 LfzE0apO/j4FI4ia7Igwazga0N//NznNXVVpbZWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Thain <fthain@linux-m68k.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	syzbot+aea1ad91e854d0a83e04@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/530] sched/core: Optimize in_task() and in_interrupt() a bit
+Subject: [PATCH 6.5 089/491] jfs: fix array-index-out-of-bounds in dbFindLeaf
 Date: Fri, 24 Nov 2023 17:45:25 +0000
-Message-ID: <20231124172032.924925978@linuxfoundation.org>
+Message-ID: <20231124172027.275734029@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,102 +54,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit 87c3a5893e865739ce78aa7192d36011022e0af7 ]
+[ Upstream commit 22cad8bc1d36547cdae0eef316c47d917ce3147c ]
 
-Except on x86, preempt_count is always accessed with READ_ONCE().
-Repeated invocations in macros like irq_count() produce repeated loads.
-These redundant instructions appear in various fast paths. In the one
-shown below, for example, irq_count() is evaluated during kernel entry
-if !tick_nohz_full_cpu(smp_processor_id()).
+Currently while searching for dmtree_t for sufficient free blocks there
+is an array out of bounds while getting element in tp->dm_stree. To add
+the required check for out of bound we first need to determine the type
+of dmtree. Thus added an extra parameter to dbFindLeaf so that the type
+of tree can be determined and the required check can be applied.
 
-0001ed0a <irq_enter_rcu>:
-   1ed0a:       4e56 0000       linkw %fp,#0
-   1ed0e:       200f            movel %sp,%d0
-   1ed10:       0280 ffff e000  andil #-8192,%d0
-   1ed16:       2040            moveal %d0,%a0
-   1ed18:       2028 0008       movel %a0@(8),%d0
-   1ed1c:       0680 0001 0000  addil #65536,%d0
-   1ed22:       2140 0008       movel %d0,%a0@(8)
-   1ed26:       082a 0001 000f  btst #1,%a2@(15)
-   1ed2c:       670c            beqs 1ed3a <irq_enter_rcu+0x30>
-   1ed2e:       2028 0008       movel %a0@(8),%d0
-   1ed32:       2028 0008       movel %a0@(8),%d0
-   1ed36:       2028 0008       movel %a0@(8),%d0
-   1ed3a:       4e5e            unlk %fp
-   1ed3c:       4e75            rts
-
-This patch doesn't prevent the pointless btst and beqs instructions
-above, but it does eliminate 2 of the 3 pointless move instructions
-here and elsewhere.
-
-On x86, preempt_count is per-cpu data and the problem does not arise
-presumably because the compiler is free to optimize more effectively.
-
-This patch was tested on m68k and x86. I was expecting no changes
-to object code for x86 and mostly that's what I saw. However, there
-were a few places where code generation was perturbed for some reason.
-
-The performance issue addressed here is minor on uniprocessor m68k. I
-got a 0.01% improvement from this patch for a simple "find /sys -false"
-benchmark. For architectures and workloads susceptible to cache line bounce
-the improvement is expected to be larger. The only SMP architecture I have
-is x86, and as x86 unaffected I have not done any further measurements.
-
-Fixes: 15115830c887 ("preempt: Cleanup the macro maze a bit")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/0a403120a682a525e6db2d81d1a3ffcc137c3742.1694756831.git.fthain@linux-m68k.org
+Reported-by: syzbot+aea1ad91e854d0a83e04@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=aea1ad91e854d0a83e04
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/preempt.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dmap.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/include/linux/preempt.h b/include/linux/preempt.h
-index 1424670df161d..9aa6358a1a16b 100644
---- a/include/linux/preempt.h
-+++ b/include/linux/preempt.h
-@@ -99,14 +99,21 @@ static __always_inline unsigned char interrupt_context_level(void)
- 	return level;
- }
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 4d59373f9e6c9..11c77757ead9e 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -87,7 +87,7 @@ static int dbAllocCtl(struct bmap * bmp, s64 nblocks, int l2nb, s64 blkno,
+ static int dbExtend(struct inode *ip, s64 blkno, s64 nblocks, s64 addnblocks);
+ static int dbFindBits(u32 word, int l2nb);
+ static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno);
+-static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx);
++static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl);
+ static int dbFreeBits(struct bmap * bmp, struct dmap * dp, s64 blkno,
+ 		      int nblocks);
+ static int dbFreeDmap(struct bmap * bmp, struct dmap * dp, s64 blkno,
+@@ -1717,7 +1717,7 @@ static int dbFindCtl(struct bmap * bmp, int l2nb, int level, s64 * blkno)
+ 		 * dbFindLeaf() returns the index of the leaf at which
+ 		 * free space was found.
+ 		 */
+-		rc = dbFindLeaf((dmtree_t *) dcp, l2nb, &leafidx);
++		rc = dbFindLeaf((dmtree_t *) dcp, l2nb, &leafidx, true);
  
-+/*
-+ * These macro definitions avoid redundant invocations of preempt_count()
-+ * because such invocations would result in redundant loads given that
-+ * preempt_count() is commonly implemented with READ_ONCE().
-+ */
+ 		/* release the buffer.
+ 		 */
+@@ -1964,7 +1964,7 @@ dbAllocDmapLev(struct bmap * bmp,
+ 	 * free space.  if sufficient free space is found, dbFindLeaf()
+ 	 * returns the index of the leaf at which free space was found.
+ 	 */
+-	if (dbFindLeaf((dmtree_t *) & dp->tree, l2nb, &leafidx))
++	if (dbFindLeaf((dmtree_t *) &dp->tree, l2nb, &leafidx, false))
+ 		return -ENOSPC;
+ 
+ 	if (leafidx < 0)
+@@ -2928,14 +2928,18 @@ static void dbAdjTree(dmtree_t * tp, int leafno, int newval)
+  *	leafidx	- return pointer to be set to the index of the leaf
+  *		  describing at least l2nb free blocks if sufficient
+  *		  free blocks are found.
++ *	is_ctl	- determines if the tree is of type ctl
+  *
+  * RETURN VALUES:
+  *	0	- success
+  *	-ENOSPC	- insufficient free blocks.
+  */
+-static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx)
++static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
+ {
+ 	int ti, n = 0, k, x = 0;
++	int max_size;
 +
- #define nmi_count()	(preempt_count() & NMI_MASK)
- #define hardirq_count()	(preempt_count() & HARDIRQ_MASK)
- #ifdef CONFIG_PREEMPT_RT
- # define softirq_count()	(current->softirq_disable_cnt & SOFTIRQ_MASK)
-+# define irq_count()		((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | softirq_count())
- #else
- # define softirq_count()	(preempt_count() & SOFTIRQ_MASK)
-+# define irq_count()		(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_MASK))
- #endif
--#define irq_count()	(nmi_count() | hardirq_count() | softirq_count())
++	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
  
- /*
-  * Macros to retrieve the current execution context:
-@@ -119,7 +126,11 @@ static __always_inline unsigned char interrupt_context_level(void)
- #define in_nmi()		(nmi_count())
- #define in_hardirq()		(hardirq_count())
- #define in_serving_softirq()	(softirq_count() & SOFTIRQ_OFFSET)
--#define in_task()		(!(in_nmi() | in_hardirq() | in_serving_softirq()))
-+#ifdef CONFIG_PREEMPT_RT
-+# define in_task()		(!((preempt_count() & (NMI_MASK | HARDIRQ_MASK)) | in_serving_softirq()))
-+#else
-+# define in_task()		(!(preempt_count() & (NMI_MASK | HARDIRQ_MASK | SOFTIRQ_OFFSET)))
-+#endif
- 
- /*
-  * The following macros are deprecated and should not be used in new code:
+ 	/* first check the root of the tree to see if there is
+ 	 * sufficient free space.
+@@ -2956,6 +2960,8 @@ static int dbFindLeaf(dmtree_t * tp, int l2nb, int *leafidx)
+ 			/* sufficient free space found.  move to the next
+ 			 * level (or quit if this is the last level).
+ 			 */
++			if (x + n > max_size)
++				return -ENOSPC;
+ 			if (l2nb <= tp->dmt_stree[x + n])
+ 				break;
+ 		}
 -- 
 2.42.0
 
