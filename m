@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A674F7F8185
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E887F7FC1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11827B21BB8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EB2CB218E8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532FE35F04;
-	Fri, 24 Nov 2023 18:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 900A333CD1;
+	Fri, 24 Nov 2023 18:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVtNLK/n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zDlC35h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71332E858;
-	Fri, 24 Nov 2023 18:59:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D0BC433C8;
-	Fri, 24 Nov 2023 18:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427E034189;
+	Fri, 24 Nov 2023 18:44:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C689FC433C7;
+	Fri, 24 Nov 2023 18:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852359;
-	bh=RbxTz4hzJM6NH4fOmJDXPfrdFMEaXA+L0rzL55OYmTU=;
+	s=korg; t=1700851444;
+	bh=uXIe8wui04kiIsdTvvCclW3uQd/CrhuxiIaTpGNKqak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVtNLK/nXxpEKeUjyCOUu4ca+gOg7yGZlJgMZkq17MA0pJBLRpI5fKNnR6rNflpF0
-	 V+q9RsyKA86D6LWEjnBlNZ5xH6b0ym45FUjVDgFRIbMJXBbcKfxgYZWUtp7KIe4Bmd
-	 SnJ9jPqLKmToHI5Z/pR/s0SXIt5e+wzCeTKALMjU=
+	b=1zDlC35hN1LfLT9UTsLUxy2N5Zj4NmIu0iDbMgkDSXiUf7e4mvMhqzwzM18tRlZNu
+	 e0c9I33l39y1ybYWfAwn1E3mU3v5cFXXV451I8SVAVYTQdzCTiv+rLV1HtLhT64ck2
+	 HAoUpC4h6GY6tnRNWLiL6Fm7/2OC+9eddBxQzMNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 299/372] i3c: master: svc: add NACK check after start byte sent
-Date: Fri, 24 Nov 2023 17:51:26 +0000
-Message-ID: <20231124172020.396636919@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 451/491] media: qcom: camss: Fix VFE-17x vfe_disable_output()
+Date: Fri, 24 Nov 2023 17:51:27 +0000
+Message-ID: <20231124172038.161811393@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +52,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 49b472ebc61de3d4aa7cc57539246bb39f6c5128 ]
+commit 3143ad282fc08bf995ee73e32a9e40c527bf265d upstream.
 
-Add NACK check after start byte is sent.
-It is possible to detect early that a device is not on the bus
-and avoid invalid transmissions thereafter.
+There are two problems with the current vfe_disable_output() routine.
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230517033030.3068085-3-xiaoning.wang@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Stable-dep-of: 9aaeef113c55 ("i3c: master: svc: fix random hot join failure since timeout error")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Firstly we rightly use a spinlock to protect output->gen2.active_num
+everywhere except for in the IDLE timeout path of vfe_disable_output().
+Even if that is not racy "in practice" somehow it is by happenstance not
+by design.
+
+Secondly we do not get consistent behaviour from this routine. On
+sc8280xp 50% of the time I get "VFE idle timeout - resetting". In this
+case the subsequent capture will succeed. The other 50% of the time, we
+don't hit the idle timeout, never do the VFE reset and subsequent
+captures stall indefinitely.
+
+Rewrite the vfe_disable_output() routine to
+
+- Quiesce write masters with vfe_wm_stop()
+- Set active_num = 0
+
+remembering to hold the spinlock when we do so followed by
+
+- Reset the VFE
+
+Testing on sc8280xp and sdm845 shows this to be a valid fix.
+
+Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/platform/qcom/camss/camss-vfe-170.c |   22 +++-------------------
+ 1 file changed, 3 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 0454f16ac9aae..0263f30bae82e 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -92,6 +92,7 @@
- #define SVC_I3C_MINTCLR      0x094
- #define SVC_I3C_MINTMASKED   0x098
- #define SVC_I3C_MERRWARN     0x09C
-+#define   SVC_I3C_MERRWARN_NACK BIT(2)
- #define SVC_I3C_MDMACTRL     0x0A0
- #define SVC_I3C_MDATACTRL    0x0AC
- #define   SVC_I3C_MDATACTRL_FLUSHTB BIT(0)
-@@ -1028,6 +1029,11 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 	if (ret)
- 		goto emit_stop;
+--- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
+@@ -7,7 +7,6 @@
+  * Copyright (C) 2020-2021 Linaro Ltd.
+  */
  
-+	if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
-+		ret = -ENXIO;
-+		goto emit_stop;
-+	}
-+
- 	if (rnw)
- 		ret = svc_i3c_master_read(master, in, xfer_len);
- 	else
--- 
-2.42.0
-
+-#include <linux/delay.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/iopoll.h>
+@@ -494,35 +493,20 @@ static int vfe_enable_output(struct vfe_
+ 	return 0;
+ }
+ 
+-static int vfe_disable_output(struct vfe_line *line)
++static void vfe_disable_output(struct vfe_line *line)
+ {
+ 	struct vfe_device *vfe = to_vfe(line);
+ 	struct vfe_output *output = &line->output;
+ 	unsigned long flags;
+ 	unsigned int i;
+-	bool done;
+-	int timeout = 0;
+-
+-	do {
+-		spin_lock_irqsave(&vfe->output_lock, flags);
+-		done = !output->gen2.active_num;
+-		spin_unlock_irqrestore(&vfe->output_lock, flags);
+-		usleep_range(10000, 20000);
+-
+-		if (timeout++ == 100) {
+-			dev_err(vfe->camss->dev, "VFE idle timeout - resetting\n");
+-			vfe_reset(vfe);
+-			output->gen2.active_num = 0;
+-			return 0;
+-		}
+-	} while (!done);
+ 
+ 	spin_lock_irqsave(&vfe->output_lock, flags);
+ 	for (i = 0; i < output->wm_num; i++)
+ 		vfe_wm_stop(vfe, output->wm_idx[i]);
++	output->gen2.active_num = 0;
+ 	spin_unlock_irqrestore(&vfe->output_lock, flags);
+ 
+-	return 0;
++	vfe_reset(vfe);
+ }
+ 
+ /*
 
 
 
