@@ -1,57 +1,48 @@
-Return-Path: <stable+bounces-955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6507A7F7D4A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 659617F7B02
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3ED28215A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06DFEB20DAD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B324B364C8;
-	Fri, 24 Nov 2023 18:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B35E39FF2;
+	Fri, 24 Nov 2023 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RTBIhCbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvKrWtOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAF2381D6;
-	Fri, 24 Nov 2023 18:23:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E07C433C8;
-	Fri, 24 Nov 2023 18:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B339FDD;
+	Fri, 24 Nov 2023 18:00:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D223C433C7;
+	Fri, 24 Nov 2023 18:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850197;
-	bh=K4JhJN6LNeMUdrkBh6f5NskHpSSmKibSaOBUvOmqrek=;
+	s=korg; t=1700848857;
+	bh=cXQyM5dBFnfpKrls6Uc9XrJWzZGgFxc1EEmPwMBQj1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RTBIhCbQ9byI8qFM59bU4bPcmjj4liriCnbATnLnGyM/kI43i6fAqHmPtJFl8saA/
-	 wbaSodFnBCRO4s58INY+aJyrcNRic3p+iYAB7sUMkQPTlAiYHwpOShTu1GN2HAp+xP
-	 uE/bKdPZ4uSkxrGYjO9zC3XubkEdxtvlJCXJ73Dk=
+	b=yvKrWtOKLjMcq3gv7aIdIrqFKzwqjVliTFAOGSa9jpl1UONL2HTmCuduY8Z00D1YL
+	 Uf/dlNkO8qBiWVDj0TrxLfKYJJFiRtSr7wFK+7P4v06RceV4OaUMPVWSm3/gF4fXLq
+	 UVuH4j+a7iEq5bTqqkdPbbXN357riYOH6BnHMyQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	Chen-Yu Tsai <wenst@chromium.org>
-Subject: [PATCH 6.6 460/530] drm/mediatek/dp: fix memory leak on ->get_edid callback audio detection
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 02/57] clocksource/drivers/timer-imx-gpt: Fix potential memory leak
 Date: Fri, 24 Nov 2023 17:50:26 +0000
-Message-ID: <20231124172042.082336579@linuxfoundation.org>
+Message-ID: <20231124171930.365963582@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +54,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-commit dab12fa8d2bd3868cf2de485ed15a3feef28a13d upstream.
+[ Upstream commit 8051a993ce222a5158bccc6ac22ace9253dd71cb ]
 
-The sads returned by drm_edid_to_sad() needs to be freed.
+Fix coverity Issue CID 250382:  Resource leak (RESOURCE_LEAK).
+Add kfree when error return.
 
-Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
-Cc: Guillaume Ranquet <granquet@baylibre.com>
-Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914155317.2511876-1-jani.nikula@intel.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231009083922.1942971-1-ping.bai@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clocksource/timer-imx-gpt.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2034,7 +2034,6 @@ static struct edid *mtk_dp_get_edid(stru
- 	bool enabled = mtk_dp->enabled;
- 	struct edid *new_edid = NULL;
- 	struct mtk_dp_audio_cfg *audio_caps = &mtk_dp->info.audio_cur_cfg;
--	struct cea_sad *sads;
+diff --git a/drivers/clocksource/timer-imx-gpt.c b/drivers/clocksource/timer-imx-gpt.c
+index 6ec6d79b237ce..fcc12f72e907f 100644
+--- a/drivers/clocksource/timer-imx-gpt.c
++++ b/drivers/clocksource/timer-imx-gpt.c
+@@ -489,12 +489,16 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 		return -ENOMEM;
  
- 	if (!enabled) {
- 		drm_atomic_bridge_chain_pre_enable(bridge, connector->state->state);
-@@ -2053,7 +2052,11 @@ static struct edid *mtk_dp_get_edid(stru
- 	}
+ 	imxtm->base = of_iomap(np, 0);
+-	if (!imxtm->base)
+-		return -ENXIO;
++	if (!imxtm->base) {
++		ret = -ENXIO;
++		goto err_kfree;
++	}
  
- 	if (new_edid) {
-+		struct cea_sad *sads;
+ 	imxtm->irq = irq_of_parse_and_map(np, 0);
+-	if (imxtm->irq <= 0)
+-		return -EINVAL;
++	if (imxtm->irq <= 0) {
++		ret = -EINVAL;
++		goto err_kfree;
++	}
+ 
+ 	imxtm->clk_ipg = of_clk_get_by_name(np, "ipg");
+ 
+@@ -507,11 +511,15 @@ static int __init mxc_timer_init_dt(struct device_node *np,  enum imx_gpt_type t
+ 
+ 	ret = _mxc_timer_init(imxtm);
+ 	if (ret)
+-		return ret;
++		goto err_kfree;
+ 
+ 	initialized = 1;
+ 
+ 	return 0;
 +
- 		audio_caps->sad_count = drm_edid_to_sad(new_edid, &sads);
-+		kfree(sads);
-+
- 		audio_caps->detect_monitor = drm_detect_monitor_audio(new_edid);
- 	}
++err_kfree:
++	kfree(imxtm);
++	return ret;
+ }
  
+ static int __init imx1_timer_init_dt(struct device_node *np)
+-- 
+2.42.0
+
 
 
 
