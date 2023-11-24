@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96ABB7F8169
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2EA7F7FA3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5200A282648
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 756A928255F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5EA3364A5;
-	Fri, 24 Nov 2023 18:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08001364A5;
+	Fri, 24 Nov 2023 18:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cv1sKG1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wEEglVpk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC482D787;
-	Fri, 24 Nov 2023 18:58:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C96DC433C8;
-	Fri, 24 Nov 2023 18:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB37364BE;
+	Fri, 24 Nov 2023 18:43:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3649DC433C8;
+	Fri, 24 Nov 2023 18:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852305;
-	bh=Ub+g1KgMGmZ3NvGf7F2T2kCscKdgc3V3qFQZSR79d5A=;
+	s=korg; t=1700851391;
+	bh=ggIZ13FlIdZlmLiYg+LyWweB2Q7BdHqF0twkzsHYf3w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cv1sKG1YmoX4/nF/nX1104uk7ya6mPRjPDIzfNYBUcFQz6u6gRuRR1MIXgBmf87BU
-	 Ov+3QiR5i8GhQ8X475CMtTjcJziQlQEqjBatF9BHOn82mlEAFNjFo3rMsjM86iWeNn
-	 pDi5tyz9wa0QbUlOpJPkaskl/cFENd1kJDHYYD0k=
+	b=wEEglVpk2Zo9zBa5AMPPI5Un5gxxM46VAb842CTVl/HqEno5YWTRzxZbd/0b0VUb+
+	 buYvBWOHiQWvgnCX8s8IKszw/DZg5B9+8lKh+BpIFQ0mNguiBcjWnrSXKrOWnAXjsJ
+	 kT79GZSp6e+AlnmvH0KVgfMOw5/o3SdKx7PpP7+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shinhyung Kang <s47.kang@samsung.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 278/372] ALSA: info: Fix potential deadlock at disconnection
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.5 429/491] dm-bufio: fix no-sleep mode
 Date: Fri, 24 Nov 2023 17:51:05 +0000
-Message-ID: <20231124172019.723628933@linuxfoundation.org>
+Message-ID: <20231124172037.503561656@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,126 +52,250 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit c7a60651953359f98dbf24b43e1bf561e1573ed4 upstream.
+commit 2a695062a5a42aead8c539a344168d4806b3fda2 upstream.
 
-As reported recently, ALSA core info helper may cause a deadlock at
-the forced device disconnection during the procfs operation.
+dm-bufio has a no-sleep mode. When activated (with the
+DM_BUFIO_CLIENT_NO_SLEEP flag), the bufio client is read-only and we
+could call dm_bufio_get from tasklets. This is used by dm-verity.
 
-The proc_remove() (that is called from the snd_card_disconnect()
-helper) has a synchronization of the pending procfs accesses via
-wait_for_completion().  Meanwhile, ALSA procfs helper takes the global
-mutex_lock(&info_mutex) at both the proc_open callback and
-snd_card_info_disconnect() helper.  Since the proc_open can't finish
-due to the mutex lock, wait_for_completion() never returns, either,
-hence it deadlocks.
+Unfortunately, commit 450e8dee51aa ("dm bufio: improve concurrent IO
+performance") broke this and the kernel would warn that cache_get()
+was calling down_read() from no-sleeping context. The bug can be
+reproduced by using "veritysetup open" with the "--use-tasklets"
+flag.
 
-	TASK#1				TASK#2
-	proc_reg_open()
-	  takes use_pde()
-	snd_info_text_entry_open()
-					snd_card_disconnect()
-					snd_info_card_disconnect()
-					  takes mutex_lock(&info_mutex)
-					proc_remove()
-					wait_for_completion(unused_pde)
-					  ... waiting task#1 closes
-	mutex_lock(&info_mutex)
-		=> DEADLOCK
+This commit fixes dm-bufio, so that the tasklet mode works again, by
+expanding use of the 'no_sleep_enabled' static_key to conditionally
+use either a rw_semaphore or rwlock_t (which are colocated in the
+buffer_tree structure using a union).
 
-This patch is a workaround for avoiding the deadlock scenario above.
-
-The basic strategy is to move proc_remove() call outside the mutex
-lock.  proc_remove() can work gracefully without extra locking, and it
-can delete the tree recursively alone.  So, we call proc_remove() at
-snd_info_card_disconnection() at first, then delete the rest resources
-recursively within the info_mutex lock.
-
-After the change, the function snd_info_disconnect() doesn't do
-disconnection by itself any longer, but it merely clears the procfs
-pointer.  So rename the function to snd_info_clear_entries() for
-avoiding confusion.
-
-The similar change is applied to snd_info_free_entry(), too.  Since
-the proc_remove() is called only conditionally with the non-NULL
-entry->p, it's skipped after the snd_info_clear_entries() call.
-
-Reported-by: Shinhyung Kang <s47.kang@samsung.com>
-Closes: https://lore.kernel.org/r/664457955.21699345385931.JavaMail.epsvc@epcpadp4
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231109141954.4283-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org	# v6.4
+Fixes: 450e8dee51aa ("dm bufio: improve concurrent IO performance")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/info.c |   21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
+ drivers/md/dm-bufio.c | 87 ++++++++++++++++++++++++++++++-------------
+ 1 file changed, 62 insertions(+), 25 deletions(-)
 
---- a/sound/core/info.c
-+++ b/sound/core/info.c
-@@ -56,7 +56,7 @@ struct snd_info_private_data {
- };
+diff --git a/drivers/md/dm-bufio.c b/drivers/md/dm-bufio.c
+index 62eb27639c9b..f03d7dba270c 100644
+--- a/drivers/md/dm-bufio.c
++++ b/drivers/md/dm-bufio.c
+@@ -254,7 +254,7 @@ enum evict_result {
  
- static int snd_info_version_init(void);
--static void snd_info_disconnect(struct snd_info_entry *entry);
-+static void snd_info_clear_entries(struct snd_info_entry *entry);
+ typedef enum evict_result (*le_predicate)(struct lru_entry *le, void *context);
  
- /*
- 
-@@ -569,11 +569,16 @@ void snd_info_card_disconnect(struct snd
+-static struct lru_entry *lru_evict(struct lru *lru, le_predicate pred, void *context)
++static struct lru_entry *lru_evict(struct lru *lru, le_predicate pred, void *context, bool no_sleep)
  {
- 	if (!card)
- 		return;
--	mutex_lock(&info_mutex);
-+
- 	proc_remove(card->proc_root_link);
--	card->proc_root_link = NULL;
- 	if (card->proc_root)
--		snd_info_disconnect(card->proc_root);
-+		proc_remove(card->proc_root->p);
-+
-+	mutex_lock(&info_mutex);
-+	if (card->proc_root)
-+		snd_info_clear_entries(card->proc_root);
-+	card->proc_root_link = NULL;
-+	card->proc_root = NULL;
- 	mutex_unlock(&info_mutex);
- }
+ 	unsigned long tested = 0;
+ 	struct list_head *h = lru->cursor;
+@@ -295,7 +295,8 @@ static struct lru_entry *lru_evict(struct lru *lru, le_predicate pred, void *con
  
-@@ -745,15 +750,14 @@ struct snd_info_entry *snd_info_create_c
- }
- EXPORT_SYMBOL(snd_info_create_card_entry);
+ 		h = h->next;
  
--static void snd_info_disconnect(struct snd_info_entry *entry)
-+static void snd_info_clear_entries(struct snd_info_entry *entry)
- {
- 	struct snd_info_entry *p;
- 
- 	if (!entry->p)
- 		return;
- 	list_for_each_entry(p, &entry->children, list)
--		snd_info_disconnect(p);
--	proc_remove(entry->p);
-+		snd_info_clear_entries(p);
- 	entry->p = NULL;
- }
- 
-@@ -770,8 +774,9 @@ void snd_info_free_entry(struct snd_info
- 	if (!entry)
- 		return;
- 	if (entry->p) {
-+		proc_remove(entry->p);
- 		mutex_lock(&info_mutex);
--		snd_info_disconnect(entry);
-+		snd_info_clear_entries(entry);
- 		mutex_unlock(&info_mutex);
+-		cond_resched();
++		if (!no_sleep)
++			cond_resched();
  	}
  
+ 	return NULL;
+@@ -382,7 +383,10 @@ struct dm_buffer {
+  */
+ 
+ struct buffer_tree {
+-	struct rw_semaphore lock;
++	union {
++		struct rw_semaphore lock;
++		rwlock_t spinlock;
++	} u;
+ 	struct rb_root root;
+ } ____cacheline_aligned_in_smp;
+ 
+@@ -393,9 +397,12 @@ struct dm_buffer_cache {
+ 	 * on the locks.
+ 	 */
+ 	unsigned int num_locks;
++	bool no_sleep;
+ 	struct buffer_tree trees[];
+ };
+ 
++static DEFINE_STATIC_KEY_FALSE(no_sleep_enabled);
++
+ static inline unsigned int cache_index(sector_t block, unsigned int num_locks)
+ {
+ 	return dm_hash_locks_index(block, num_locks);
+@@ -403,22 +410,34 @@ static inline unsigned int cache_index(sector_t block, unsigned int num_locks)
+ 
+ static inline void cache_read_lock(struct dm_buffer_cache *bc, sector_t block)
+ {
+-	down_read(&bc->trees[cache_index(block, bc->num_locks)].lock);
++	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
++		read_lock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
++	else
++		down_read(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
+ }
+ 
+ static inline void cache_read_unlock(struct dm_buffer_cache *bc, sector_t block)
+ {
+-	up_read(&bc->trees[cache_index(block, bc->num_locks)].lock);
++	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
++		read_unlock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
++	else
++		up_read(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
+ }
+ 
+ static inline void cache_write_lock(struct dm_buffer_cache *bc, sector_t block)
+ {
+-	down_write(&bc->trees[cache_index(block, bc->num_locks)].lock);
++	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
++		write_lock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
++	else
++		down_write(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
+ }
+ 
+ static inline void cache_write_unlock(struct dm_buffer_cache *bc, sector_t block)
+ {
+-	up_write(&bc->trees[cache_index(block, bc->num_locks)].lock);
++	if (static_branch_unlikely(&no_sleep_enabled) && bc->no_sleep)
++		write_unlock_bh(&bc->trees[cache_index(block, bc->num_locks)].u.spinlock);
++	else
++		up_write(&bc->trees[cache_index(block, bc->num_locks)].u.lock);
+ }
+ 
+ /*
+@@ -442,18 +461,32 @@ static void lh_init(struct lock_history *lh, struct dm_buffer_cache *cache, bool
+ 
+ static void __lh_lock(struct lock_history *lh, unsigned int index)
+ {
+-	if (lh->write)
+-		down_write(&lh->cache->trees[index].lock);
+-	else
+-		down_read(&lh->cache->trees[index].lock);
++	if (lh->write) {
++		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
++			write_lock_bh(&lh->cache->trees[index].u.spinlock);
++		else
++			down_write(&lh->cache->trees[index].u.lock);
++	} else {
++		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
++			read_lock_bh(&lh->cache->trees[index].u.spinlock);
++		else
++			down_read(&lh->cache->trees[index].u.lock);
++	}
+ }
+ 
+ static void __lh_unlock(struct lock_history *lh, unsigned int index)
+ {
+-	if (lh->write)
+-		up_write(&lh->cache->trees[index].lock);
+-	else
+-		up_read(&lh->cache->trees[index].lock);
++	if (lh->write) {
++		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
++			write_unlock_bh(&lh->cache->trees[index].u.spinlock);
++		else
++			up_write(&lh->cache->trees[index].u.lock);
++	} else {
++		if (static_branch_unlikely(&no_sleep_enabled) && lh->cache->no_sleep)
++			read_unlock_bh(&lh->cache->trees[index].u.spinlock);
++		else
++			up_read(&lh->cache->trees[index].u.lock);
++	}
+ }
+ 
+ /*
+@@ -502,14 +535,18 @@ static struct dm_buffer *list_to_buffer(struct list_head *l)
+ 	return le_to_buffer(le);
+ }
+ 
+-static void cache_init(struct dm_buffer_cache *bc, unsigned int num_locks)
++static void cache_init(struct dm_buffer_cache *bc, unsigned int num_locks, bool no_sleep)
+ {
+ 	unsigned int i;
+ 
+ 	bc->num_locks = num_locks;
++	bc->no_sleep = no_sleep;
+ 
+ 	for (i = 0; i < bc->num_locks; i++) {
+-		init_rwsem(&bc->trees[i].lock);
++		if (no_sleep)
++			rwlock_init(&bc->trees[i].u.spinlock);
++		else
++			init_rwsem(&bc->trees[i].u.lock);
+ 		bc->trees[i].root = RB_ROOT;
+ 	}
+ 
+@@ -648,7 +685,7 @@ static struct dm_buffer *__cache_evict(struct dm_buffer_cache *bc, int list_mode
+ 	struct lru_entry *le;
+ 	struct dm_buffer *b;
+ 
+-	le = lru_evict(&bc->lru[list_mode], __evict_pred, &w);
++	le = lru_evict(&bc->lru[list_mode], __evict_pred, &w, bc->no_sleep);
+ 	if (!le)
+ 		return NULL;
+ 
+@@ -702,7 +739,7 @@ static void __cache_mark_many(struct dm_buffer_cache *bc, int old_mode, int new_
+ 	struct evict_wrapper w = {.lh = lh, .pred = pred, .context = context};
+ 
+ 	while (true) {
+-		le = lru_evict(&bc->lru[old_mode], __evict_pred, &w);
++		le = lru_evict(&bc->lru[old_mode], __evict_pred, &w, bc->no_sleep);
+ 		if (!le)
+ 			break;
+ 
+@@ -915,10 +952,11 @@ static void cache_remove_range(struct dm_buffer_cache *bc,
+ {
+ 	unsigned int i;
+ 
++	BUG_ON(bc->no_sleep);
+ 	for (i = 0; i < bc->num_locks; i++) {
+-		down_write(&bc->trees[i].lock);
++		down_write(&bc->trees[i].u.lock);
+ 		__remove_range(bc, &bc->trees[i].root, begin, end, pred, release);
+-		up_write(&bc->trees[i].lock);
++		up_write(&bc->trees[i].u.lock);
+ 	}
+ }
+ 
+@@ -979,8 +1017,6 @@ struct dm_bufio_client {
+ 	struct dm_buffer_cache cache; /* must be last member */
+ };
+ 
+-static DEFINE_STATIC_KEY_FALSE(no_sleep_enabled);
+-
+ /*----------------------------------------------------------------*/
+ 
+ #define dm_bufio_in_request()	(!!current->bio_list)
+@@ -1871,7 +1907,8 @@ static void *new_read(struct dm_bufio_client *c, sector_t block,
+ 	if (need_submit)
+ 		submit_io(b, REQ_OP_READ, read_endio);
+ 
+-	wait_on_bit_io(&b->state, B_READING, TASK_UNINTERRUPTIBLE);
++	if (nf != NF_GET)	/* we already tested this condition above */
++		wait_on_bit_io(&b->state, B_READING, TASK_UNINTERRUPTIBLE);
+ 
+ 	if (b->read_error) {
+ 		int error = blk_status_to_errno(b->read_error);
+@@ -2421,7 +2458,7 @@ struct dm_bufio_client *dm_bufio_client_create(struct block_device *bdev, unsign
+ 		r = -ENOMEM;
+ 		goto bad_client;
+ 	}
+-	cache_init(&c->cache, num_locks);
++	cache_init(&c->cache, num_locks, (flags & DM_BUFIO_CLIENT_NO_SLEEP) != 0);
+ 
+ 	c->bdev = bdev;
+ 	c->block_size = block_size;
+-- 
+2.43.0
+
 
 
 
