@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D517F7AFE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A48627F7D65
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 560DAB21016
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37732B215A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02B639FEF;
-	Fri, 24 Nov 2023 18:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9418C39FF7;
+	Fri, 24 Nov 2023 18:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntaY1P+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1+1tzms"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5864C39FE1;
-	Fri, 24 Nov 2023 18:00:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8581DC433C8;
-	Fri, 24 Nov 2023 18:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F8239FF3;
+	Fri, 24 Nov 2023 18:24:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4077C433C8;
+	Fri, 24 Nov 2023 18:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848847;
-	bh=YfbHxDn6MjLgbLYFcIgDcKM/gTDABIKgf/bND8AzeRw=;
+	s=korg; t=1700850249;
+	bh=HIb5LQctx4fbD/V/0inLJ20DT+IvJxboigpBynd7uDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntaY1P+Z/EKDmhVthaTIz4YpxHCWVgacZNSyuYVRfmObrqasVAkDU25Xi4xGQSJAK
-	 oqiKV8+oqT9QtjTvUd30LzxGbAt7TllLKIX1dUsRR5Jjyp+frKylumWCeiF3WyGZzT
-	 sFedpL60Y/ii+KLlCJhmtjcgN3V4raSBzgp9H+vM=
+	b=b1+1tzmsnK38EdtxjZ2XCzMtHxMwO9L2DUT2qpZ0Xe9sDVcnh8GZUhgYSCIsnD0xd
+	 Ys3se2YtiXNjOIOI0Mnv670gpJ2bfI9IaK6OhRrn/7zOgyiaTcKGKNb8ncKyLWYYpU
+	 pVaoFMXByWQPJJEJcua5rYtwr0WeURd600rstEOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Qian Cai <cai@redhat.com>,
-	Brian Foster <bfoster@redhat.com>,
-	Gao Xiang <hsiangkao@redhat.com>,
-	"Darrick J. Wong" <darrick.wong@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Shida Zhang <zhangshida@kylinos.cn>
-Subject: [PATCH 4.19 96/97] iomap: Set all uptodate bits for an Uptodate page
-Date: Fri, 24 Nov 2023 17:51:09 +0000
-Message-ID: <20231124171937.789554098@linuxfoundation.org>
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 504/530] ext4: add missed brelse in update_backups
+Date: Fri, 24 Nov 2023 17:51:10 +0000
+Message-ID: <20231124172043.504253366@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,56 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit 4595a298d5563cf76c1d852970f162051fd1a7a6 upstream.
+commit 9adac8b01f4be28acd5838aade42b8daa4f0b642 upstream.
 
-For filesystems with block size < page size, we need to set all the
-per-block uptodate bits if the page was already uptodate at the time
-we create the per-block metadata.  This can happen if the page is
-invalidated (eg by a write to drop_caches) but ultimately not removed
-from the page cache.
+add missed brelse in update_backups
 
-This is a data corruption issue as page writeback skips blocks which
-are marked !uptodate.
-
-Fixes: 9dc55f1389f9 ("iomap: add support for sub-pagesize buffered I/O without buffer heads")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Qian Cai <cai@redhat.com>
-Cc: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Gao Xiang <hsiangkao@redhat.com>
-Reviewed-by: Darrick J. Wong <darrick.wong@oracle.com>
-Signed-off-by: Darrick J. Wong <darrick.wong@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20230826174712.4059355-3-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/ext4/resize.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/iomap.c
-+++ b/fs/iomap.c
-@@ -109,6 +109,7 @@ static struct iomap_page *
- iomap_page_create(struct inode *inode, struct page *page)
- {
- 	struct iomap_page *iop = to_iomap_page(page);
-+	unsigned int nr_blocks = PAGE_SIZE / i_blocksize(inode);
- 
- 	if (iop || i_blocksize(inode) == PAGE_SIZE)
- 		return iop;
-@@ -118,6 +119,8 @@ iomap_page_create(struct inode *inode, s
- 	atomic_set(&iop->write_count, 0);
- 	spin_lock_init(&iop->uptodate_lock);
- 	bitmap_zero(iop->uptodate, PAGE_SIZE / SECTOR_SIZE);
-+	if (PageUptodate(page))
-+		bitmap_fill(iop->uptodate, nr_blocks);
- 
- 	/*
- 	 * migrate_page_move_mapping() assumes that pages with private data have
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1186,8 +1186,10 @@ static void update_backups(struct super_
+ 			   ext4_group_first_block_no(sb, group));
+ 		BUFFER_TRACE(bh, "get_write_access");
+ 		if ((err = ext4_journal_get_write_access(handle, sb, bh,
+-							 EXT4_JTR_NONE)))
++							 EXT4_JTR_NONE))) {
++			brelse(bh);
+ 			break;
++		}
+ 		lock_buffer(bh);
+ 		memcpy(bh->b_data, data, size);
+ 		if (rest)
 
 
 
