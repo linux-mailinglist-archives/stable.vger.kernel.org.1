@@ -1,274 +1,119 @@
-Return-Path: <stable+bounces-2538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D33427F84C5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:38:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9C27F84C7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:38:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E3228BBE2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6583A28BC40
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CBC2511F;
-	Fri, 24 Nov 2023 19:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1584F2C1BA;
+	Fri, 24 Nov 2023 19:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="nevHd0Cq"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ZdHCEggD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x52d.google.com (mail-pg1-x52d.google.com [IPv6:2607:f8b0:4864:20::52d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ED8710FB
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:37:01 -0800 (PST)
-Received: by mail-pg1-x52d.google.com with SMTP id 41be03b00d2f7-5c206572eedso1687590a12.0
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:37:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700854620; x=1701459420; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=E3wEkhNS/n89m06l1iEyr/KX1sTI/lAknctCop78LeQ=;
-        b=nevHd0CqWnWzVzZr/2oCOBnrCCy5F1a4k6dM69g5Bx/XWr4FsCbc2GcjYsGr+nR56J
-         VqXCSM5EsSQ8jIeb0wf/UV5MjLzNr/4UDSKP4ZRXRvb4MmF3Cay2XXulnQFsWk6vCgug
-         zD/RQbDwyOgApbPRgm10itN0rIbVlYr+4eGveefAbcV162k0GWT8TiydPEz2Wi9S8Z2N
-         spPtfgOCwYALGV5pNJbuVrlAuTVVlXFIHpo4fxxrSCnCwgYwk3rDWGYHoddOT5P/+eLs
-         jmeANllQIqBohnctK74DZFW8iadnRmc1DE99wMELMaeZvPnlu4mnkLuzv8OlNBDWFzOu
-         1POw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700854620; x=1701459420;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E3wEkhNS/n89m06l1iEyr/KX1sTI/lAknctCop78LeQ=;
-        b=G23oLCs7fq60LyBcdj80rzGYfJfiZhdWydACh9JCwzwy6tueQ4Xouju7rqBqRELgg8
-         3De/Uk+vpfSMATz9ytLXu/v2KVc5UDa/G7STSLpYN2QCfDpD9FnvIVyJUhH4Q6gbV0Gg
-         SOCste+EMf7xAwVpWW6eXBji+y8d7MCwNkKE2x7gudF2chhLLi4fldXdJbYlXALKE/tP
-         DlmdLTJaAxtcyZ+Ly+CvloIDhe7KOYkLctmeIFxamdl43rMoISumsfpx5HyrePILuWHR
-         laFFbL/gPPg/c7vtccIgTPxAh7EIRtd5g/3U2Vzu0yxHYRdMPynatddFipRtoMigb88N
-         Pjbw==
-X-Gm-Message-State: AOJu0Yw5L9/M/f2Iat8Z+JdN1NDC7st68sfahI34AGwQsv2sIRT7pPEj
-	l23hnAZon6YTIGdSityGBt2FwRyO4ASl53TiHvI=
-X-Google-Smtp-Source: AGHT+IFWngN/eo2MyJNioACFVxq6FiJFgCBL/sbQUvo/nphX6axlGgutIOfSLGqFsKHfso/eARLtkA==
-X-Received: by 2002:a17:90a:1a10:b0:285:93ee:a591 with SMTP id 16-20020a17090a1a1000b0028593eea591mr2870221pjk.43.1700854620032;
-        Fri, 24 Nov 2023 11:37:00 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id gb2-20020a17090b060200b0028012be0764sm3538815pjb.20.2023.11.24.11.36.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 11:36:59 -0800 (PST)
-Message-ID: <6560fb5b.170a0220.b533a.999a@mx.google.com>
-Date: Fri, 24 Nov 2023 11:36:59 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE78C33E9
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 19:38:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427D7C433C7;
+	Fri, 24 Nov 2023 19:38:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1700854687;
+	bh=DP5NUUdB7xET5l6lwH7jM7TLniHfbNE/zFe/XD/9GvE=;
+	h=Date:To:From:Subject:From;
+	b=ZdHCEggDoNB33fYCkL3ws255VeIUGnjuT6dE/pw93s3n+XrUB/dAjK/lg2NJ3Q8WG
+	 FdhKQfBTXgLwao4fDlgGPShHdt1csKT0qBkkN7McHMD7by7FgOqbY72RYSaK7K0YHs
+	 BOZcl1y8BsnyCPcBZHnKBGSb4jPU3yW07sVOI38I=
+Date: Fri, 24 Nov 2023 11:38:06 -0800
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,gaoxu2@hihonor.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [nacked] mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch removed from -mm tree
+Message-Id: <20231124193807.427D7C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.14.330-58-geb547332c3008
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.330-58-geb547332c3008)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.330-58-geb547332c3008)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.330-58-geb547332c3008/
-
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.330-58-geb547332c3008
-Git Commit: eb547332c3008f8bad1659611445552f1adebfa3
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
 
-Warnings summary:
+The quilt patch titled
+     Subject: mm,oom_reaper: avoid run queue_oom_reaper if task is not oom
+has been removed from the -mm tree.  Its filename was
+     mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom.patch
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+This patch was dropped because it was nacked
 
-Section mismatches summary:
+------------------------------------------------------
+From: gaoxu <gaoxu2@hihonor.com>
+Subject: mm,oom_reaper: avoid run queue_oom_reaper if task is not oom
+Date: Wed, 22 Nov 2023 12:46:44 +0000
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
+queue_oom_reaper() tests and sets tsk->signal->oom_mm->flags.  However, it
+is necessary to check if 'tsk' is an OOM victim before executing
+'queue_oom_reaper' because the variable may be NULL.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+We encountered such an issue, and the log is as follows:
+[3701:11_see]Out of memory: Killed process 3154 (system_server)
+total-vm:23662044kB, anon-rss:0kB, file-rss:0kB, shmem-rss:0kB,
+UID:1000 pgtables:4056kB oom_score_adj:-900
+[3701:11_see][RB/E]rb_sreason_str_set: sreason_str set null_pointer
+[3701:11_see][RB/E]rb_sreason_str_set: sreason_str set unknown_addr
+[3701:11_see]Unable to handle kernel NULL pointer dereference at virtual
+address 0000000000000328
+[3701:11_see]user pgtable: 4k pages, 39-bit VAs, pgdp=3D00000000821de000
+[3701:11_see][0000000000000328] pgd=3D0000000000000000,
+p4d=3D0000000000000000,pud=3D0000000000000000
+[3701:11_see]tracing off
+[3701:11_see]Internal error: Oops: 96000005 [#1] PREEMPT SMP
+[3701:11_see]Call trace:
+[3701:11_see] queue_oom_reaper+0x30/0x170
+[3701:11_see] __oom_kill_process+0x590/0x860
+[3701:11_see] oom_kill_process+0x140/0x274
+[3701:11_see] out_of_memory+0x2f4/0x54c
+[3701:11_see] __alloc_pages_slowpath+0x5d8/0xaac
+[3701:11_see] __alloc_pages+0x774/0x800
+[3701:11_see] wp_page_copy+0xc4/0x116c
+[3701:11_see] do_wp_page+0x4bc/0x6fc
+[3701:11_see] handle_pte_fault+0x98/0x2a8
+[3701:11_see] __handle_mm_fault+0x368/0x700
+[3701:11_see] do_handle_mm_fault+0x160/0x2cc
+[3701:11_see] do_page_fault+0x3e0/0x818
+[3701:11_see] do_mem_abort+0x68/0x17c
+[3701:11_see] el0_da+0x3c/0xa0
+[3701:11_see] el0t_64_sync_handler+0xc4/0xec
+[3701:11_see] el0t_64_sync+0x1b4/0x1b8
+[3701:11_see]tracing off
 
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Link: https://lkml.kernel.org/r/400d13bddb524ef6af37cb2220808c75@hihonor.com
+Signed-off-by: Gao Xu <gaoxu2@hihonor.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-For more info write to <info@kernelci.org>
+
+ mm/oom_kill.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/oom_kill.c~mmoom_reaper-avoid-run-queue_oom_reaper-if-task-is-not-oom
++++ a/mm/oom_kill.c
+@@ -984,7 +984,7 @@ static void __oom_kill_process(struct ta
+ 	}
+ 	rcu_read_unlock();
+ 
+-	if (can_oom_reap)
++	if (can_oom_reap && tsk_is_oom_victim(victim))
+ 		queue_oom_reaper(victim);
+ 
+ 	mmdrop(mm);
+_
+
+Patches currently in -mm which might be from gaoxu2@hihonor.com are
+
+
 
