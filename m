@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 979ED7F7AE1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECA07F7D6B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 531FE281A91
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 176BFB2155C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F1639FED;
-	Fri, 24 Nov 2023 17:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637653A8D0;
+	Fri, 24 Nov 2023 18:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSKo6uxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsAz1+8k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0381B39FDA;
-	Fri, 24 Nov 2023 17:59:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F7AC433C7;
-	Fri, 24 Nov 2023 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2554139FC3;
+	Fri, 24 Nov 2023 18:24:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8396C433C8;
+	Fri, 24 Nov 2023 18:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848777;
-	bh=3Iwe5WT4s4K+LGjZlTwOm8hFwFPRgZnSnyDBsNMKZpI=;
+	s=korg; t=1700850264;
+	bh=2mI1/mLRsfWcvFpBSjxxyiIkGMjXPgmR3ydhE8agFFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSKo6uxBX2gPBUyMsZx1ctsXaPzNqdh3jlUo/d4fwfcpitr3V/qSJNn0g9QPiWx06
-	 qdVzBqFy/Vt7I3+7fvguRGDiUYWYFHXwkVgryPFD7PGxFK9+dUl836tTgKOBn6P47x
-	 uu/k29xZlU6rgm8LoGddimj6nwBUHhQnr6BUoXXA=
+	b=zsAz1+8kzKSaGLtHYc31Eb0Nfnk00RVqJVMEJXCYZziBkr0vx/BFKxJhXTad4pIjq
+	 RNzWeEOKFYcjFyvZvkzHnYX5gqOm6NeXeNHLGVQUsJvMDI/9VUULUXAFlQJNy54/Cc
+	 NPxySxsvUalUI6TcWFFyXAcH/x+wnX3ijNLQzuyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hilman <khilman@baylibre.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org,
-	Dmitry Safonov <dima@arista.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 77/97] tty/serial: Migrate meson_uart to use has_sysrq
-Date: Fri, 24 Nov 2023 17:50:50 +0000
-Message-ID: <20231124171937.037530116@linuxfoundation.org>
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 485/530] media: qcom: camss: Fix pm_domain_on sequence in probe
+Date: Fri, 24 Nov 2023 17:50:51 +0000
+Message-ID: <20231124172042.854543749@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,61 +53,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Safonov <dima@arista.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit dca3ac8d3bc9436eb5fd35b80cdcad762fbfa518 ]
+commit 7405116519ad70b8c7340359bfac8db8279e7ce4 upstream.
 
-The SUPPORT_SYSRQ ifdeffery is not nice as:
-- May create misunderstanding about sizeof(struct uart_port) between
-  different objects
-- Prevents moving functions from serial_core.h
-- Reduces readability (well, it's ifdeffery - it's hard to follow)
+We need to make sure camss_configure_pd() happens before
+camss_register_entities() as the vfe_get() path relies on the pointer
+provided by camss_configure_pd().
 
-In order to remove SUPPORT_SYSRQ, has_sysrq variable has been added.
-Initialise it in driver's probe and remove ifdeffery.
+Fix the ordering sequence in probe to ensure the pointers vfe_get() demands
+are present by the time camss_register_entities() runs.
 
-Cc: Kevin Hilman <khilman@baylibre.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-amlogic@lists.infradead.org
-Signed-off-by: Dmitry Safonov <dima@arista.com>
-Link: https://lore.kernel.org/r/20191213000657.931618-22-dima@arista.com
+In order to facilitate backporting to stable kernels I've moved the
+configure_pd() call pretty early on the probe() function so that
+irrespective of the existence of the old error handling jump labels this
+patch should still apply to -next circa Aug 2023 to v5.13 inclusive.
+
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/meson_uart.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/media/platform/qcom/camss/camss.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
-index 849ce8c1ef392..4c3616cc00833 100644
---- a/drivers/tty/serial/meson_uart.c
-+++ b/drivers/tty/serial/meson_uart.c
-@@ -5,10 +5,6 @@
-  * Copyright (C) 2014 Carlo Caione <carlo@caione.org>
-  */
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1619,6 +1619,12 @@ static int camss_probe(struct platform_d
+ 	if (ret < 0)
+ 		goto err_cleanup;
  
--#if defined(CONFIG_SERIAL_MESON_CONSOLE) && defined(CONFIG_MAGIC_SYSRQ)
--#define SUPPORT_SYSRQ
--#endif
++	ret = camss_configure_pd(camss);
++	if (ret < 0) {
++		dev_err(dev, "Failed to configure power domains: %d\n", ret);
++		goto err_cleanup;
++	}
++
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1678,12 +1684,6 @@ static int camss_probe(struct platform_d
+ 		}
+ 	}
+ 
+-	ret = camss_configure_pd(camss);
+-	if (ret < 0) {
+-		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		return ret;
+-	}
 -
- #include <linux/clk.h>
- #include <linux/console.h>
- #include <linux/delay.h>
-@@ -716,6 +712,7 @@ static int meson_uart_probe(struct platform_device *pdev)
- 	port->mapsize = resource_size(res_mem);
- 	port->irq = res_irq->start;
- 	port->flags = UPF_BOOT_AUTOCONF | UPF_LOW_LATENCY;
-+	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
- 	port->dev = &pdev->dev;
- 	port->line = pdev->id;
- 	port->type = PORT_MESON;
--- 
-2.42.0
-
+ 	pm_runtime_enable(dev);
+ 
+ 	return 0;
 
 
 
