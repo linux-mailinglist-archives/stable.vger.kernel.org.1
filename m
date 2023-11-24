@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EC47F7CD5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B1D7F7F25
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 088E31C211DC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0635DB217DC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4944339FE3;
-	Fri, 24 Nov 2023 18:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFAD364C1;
+	Fri, 24 Nov 2023 18:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q19CX6uH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7vrAWa9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB3A39FC3;
-	Fri, 24 Nov 2023 18:18:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C074C433C7;
-	Fri, 24 Nov 2023 18:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F229D28DC3;
+	Fri, 24 Nov 2023 18:38:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED23C433C9;
+	Fri, 24 Nov 2023 18:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849920;
-	bh=v0SWq/eqiQigrDjrqV/CxQ/uefUk1fVD6DMLAobgQu4=;
+	s=korg; t=1700851135;
+	bh=zxiD666jtsuuj9B1CkVVTvp3NGqFTzgnBU7UjBZBCRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q19CX6uHu8Q8g+vCoOrEH7oELqPi63p3CsvIo82Wa3Jn7XP80DCX+p/fpnjz3O2I4
-	 PXFHvDRBTa8gQbulEVNEsbWvUTYd0qrQyhhv0az2NqRVXIbN9M0QGoR2UNIRcJXpHu
-	 nAuo+0KLHGLNYUvrPuA8KaV1GPey0wKSd5g5k8k8=
+	b=m7vrAWa9+4aNRQTlqv84KeBEgiINfp5LJOVG8HjtAIPT7L49TOPeu4gZi6RmBGDGk
+	 uhjPidXxbbMpGGu6thzHW4jJy3pxIg3CfEcwUYyE8O/HsTxkgPmCzE+NMJsUxt7kYb
+	 FzG7fFTvY1B/TjfCQGzcPzcVltxESVja+6hAiRbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.vnet.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 373/530] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.5 303/491] PCI/ASPM: Fix L1 substate handling in aspm_attr_store_common()
 Date: Fri, 24 Nov 2023 17:48:59 +0000
-Message-ID: <20231124172039.363757082@linuxfoundation.org>
+Message-ID: <20231124172033.681442194@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,73 +52,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e upstream.
+commit 8e37372ad0bea4c9b4712d9943f6ae96cff9491f upstream.
 
-When a device is initialized, the driver invokes dma_supported() twice -
-first for streaming mappings followed by coherent mappings. For an
-SR-IOV device, default window is deleted and DDW created. With vPMEM
-enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
-device.  There are no direct mappings.
+aspm_attr_store_common(), which handles sysfs control of ASPM, has the same
+problem as fb097dcd5a28 ("PCI/ASPM: Disable only ASPM_STATE_L1 when driver
+disables L1"): disabling L1 adds only ASPM_L1 (but not any of the L1.x
+substates) to the "aspm_disable" mask.
 
-First time when dma_supported() is called with 64 bit mask, DDW is created
-and marked as dynamic window. The second time dma_supported() is called,
-enable_ddw() finds existing window for the device and incorrectly returns
-it as "direct mapping".
+Enabling one substate, e.g., L1.1, via sysfs removes ASPM_L1 from the
+disable mask.  Since disabling L1 via sysfs doesn't add any of the
+substates to the disable mask, enabling L1.1 actually enables *all* the
+substates.
 
-This only happens when size of DDW is big enough to map max LPAR memory.
+In this scenario:
 
-This results in streaming TCEs to not get dynamically mapped, since code
-incorrently assumes these are already pre-mapped. The adapter initially
-comes up but goes down due to EEH.
+  - Write 0 to "l1_aspm" to disable L1
+  - Write 1 to "l1_1_aspm" to enable L1.1
 
-Fixes: 381ceda88c4c ("powerpc/pseries/iommu: Make use of DDW for indirect mapping")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231003030802.47914-1-gbatra@linux.vnet.ibm.com
+the intention is to disable L1 and all L1.x substates, then enable just
+L1.1, but in fact, *all* L1.x substates are enabled.
+
+Fix this by explicitly disabling all the L1.x substates when disabling L1.
+
+Fixes: 72ea91afbfb0 ("PCI/ASPM: Add sysfs attributes for controlling ASPM link states")
+Link: https://lore.kernel.org/r/6ba7dd79-9cfe-4ed0-a002-d99cb842f361@gmail.com
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/pcie/aspm.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -914,7 +914,8 @@ static int remove_ddw(struct device_node
- 	return 0;
- }
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1248,6 +1248,8 @@ static ssize_t aspm_attr_store_common(st
+ 			link->aspm_disable &= ~ASPM_STATE_L1;
+ 	} else {
+ 		link->aspm_disable |= state;
++		if (state & ASPM_STATE_L1)
++			link->aspm_disable |= ASPM_STATE_L1SS;
+ 	}
  
--static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
-+			      bool *direct_mapping)
- {
- 	struct dma_win *window;
- 	const struct dynamic_dma_window_prop *dma64;
-@@ -927,6 +928,7 @@ static bool find_existing_ddw(struct dev
- 			dma64 = window->prop;
- 			*dma_addr = be64_to_cpu(dma64->dma_base);
- 			*window_shift = be32_to_cpu(dma64->window_shift);
-+			*direct_mapping = window->direct;
- 			found = true;
- 			break;
- 		}
-@@ -1270,10 +1272,8 @@ static bool enable_ddw(struct pci_dev *d
- 
- 	mutex_lock(&dma_win_init_mutex);
- 
--	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
--		direct_mapping = (len >= max_ram_len);
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping))
- 		goto out_unlock;
--	}
- 
- 	/*
- 	 * If we already went through this for a previous function of
+ 	pcie_config_aspm_link(link, policy_to_aspm_state(link));
 
 
 
