@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-1400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692307F7F77
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9B07F7B15
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF94DB21A61
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0C281C20492
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 347D8364C1;
-	Fri, 24 Nov 2023 18:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FD339FF3;
+	Fri, 24 Nov 2023 18:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LomJCZGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/FxW/Td"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE5F2F86B;
-	Fri, 24 Nov 2023 18:41:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8B6C433C8;
-	Fri, 24 Nov 2023 18:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C8D381D8;
+	Fri, 24 Nov 2023 18:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73E6C433C7;
+	Fri, 24 Nov 2023 18:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851303;
-	bh=PlwiX7GhT9g0GtVD/W+Qa1HAiW9YCB52pPVmdgU13jg=;
+	s=korg; t=1700848898;
+	bh=TSk75/coV09aZ2mI2VNtt7r/FASKlNWf3m7U3iiLg3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LomJCZGUt8wsRzw/uEAgNLxHVW4/NTB5trxEOEWnmr0jMRgndYfsddtcbRYL6nnwZ
-	 d5sCwkPnMC2EhFkE/Fr/wxuB+gDUCS2xFG1h/WQgDqSzj8ThD8i8eCxH+d3nbnL2JB
-	 CwmQijHIEEuiVBMoDALx9H/slAp71nLale2XlluM=
+	b=S/FxW/Td/zcvbvMYWKWdIjNLW3DH7XgKRrwX56o2xxw58c5xFW3JMYtc21rs3MGmI
+	 XPXdL1bFBCogjUwnIBeNv2koxMqOKWd4R5vIani8C2RC5EP1J0dwoiAybvRCF1qRPR
+	 4cYP/r4vddaRGJ5eJRF3LCoF72lV3cx2VXvn6a/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 395/491] cifs: do not reset chan_max if multichannel is not supported at mount
-Date: Fri, 24 Nov 2023 17:50:31 +0000
-Message-ID: <20231124172036.475604529@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 08/57] net: annotate data-races around sk->sk_dst_pending_confirm
+Date: Fri, 24 Nov 2023 17:50:32 +0000
+Message-ID: <20231124171930.588787682@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 6e5e64c9477d58e73cb1a0e83eacad1f8df247cf upstream.
+[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
 
-If the mount command has specified multichannel as a mount option,
-but multichannel is found to be unsupported by the server at the time
-of mount, we set chan_max to 1. Which means that the user needs to
-remount the share if the server starts supporting multichannel.
+This field can be read or written without socket lock being held.
 
-This change removes this reset. What it means is that if the user
-specified multichannel or max_channels during mount, and at this
-time, multichannel is not supported, but the server starts supporting
-it at a later point, the client will be capable of scaling out the
-number of channels.
+Add annotations to avoid load-store tearing.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    1 -
- 1 file changed, 1 deletion(-)
+ include/net/sock.h    | 6 +++---
+ net/core/sock.c       | 2 +-
+ net/ipv4/tcp_output.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -186,7 +186,6 @@ int cifs_try_adding_channels(struct cifs
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 7b42ddca4decb..f974b548e1199 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1804,7 +1804,7 @@ static inline void dst_negative_advice(struct sock *sk)
+ 		if (ndst != dst) {
+ 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
+ 			sk_tx_queue_clear(sk);
+-			sk->sk_dst_pending_confirm = 0;
++			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		}
  	}
+ }
+@@ -1815,7 +1815,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
  
- 	if (!(server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL)) {
--		ses->chan_max = 1;
- 		spin_unlock(&ses->chan_lock);
- 		cifs_server_dbg(VFS, "no multichannel support\n");
- 		return 0;
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
+ 					    lockdep_sock_is_held(sk));
+ 	rcu_assign_pointer(sk->sk_dst_cache, dst);
+@@ -1828,7 +1828,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
+ 
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
+ 	dst_release(old_dst);
+ }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 5b9f51a27dc0d..e8b5742d91492 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -534,7 +534,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
+ 
+ 	if (dst && dst->obsolete && dst->ops->check(dst, cookie) == NULL) {
+ 		sk_tx_queue_clear(sk);
+-		sk->sk_dst_pending_confirm = 0;
++		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
+ 		dst_release(dst);
+ 		return NULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 8b2d49120ce23..67636017f275a 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1059,7 +1059,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 	skb_set_hash_from_sk(skb, sk);
+ 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
+ 
+-	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
++	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
+ 
+ 	/* Build TCP header and checksum it. */
+ 	th = (struct tcphdr *)skb->data;
+-- 
+2.42.0
+
 
 
 
