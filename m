@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1E17F8260
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B0A7F842F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51F48B23FA1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 302451C27356
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B42A364C8;
-	Fri, 24 Nov 2023 19:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0AF35F1A;
+	Fri, 24 Nov 2023 19:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xEMo7tuD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OylRdCr+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D73233CFD;
-	Fri, 24 Nov 2023 19:07:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E362CC433C7;
-	Fri, 24 Nov 2023 19:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBE93306F;
+	Fri, 24 Nov 2023 19:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E90FC433C7;
+	Fri, 24 Nov 2023 19:24:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852822;
-	bh=U6EABv7AzrjtzvBHug9X4LSLCVomeUVFZfoFBMaQXYY=;
+	s=korg; t=1700853887;
+	bh=vrtNZdD8aw3d0oHKibPgniMa4uOqsYU2ei0BC6Ao9O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xEMo7tuD2t58xtTGCfxkpfh4H8TXo2mNnNhTCs31lCzkg5LlWKItfSbuxmKgOAssX
-	 yDFRpnomgj3JEBAUSOw/3P0m4ACywqzhlOw2uWxeyMayMalDstP0Xgayqs7WRFIW3F
-	 U7iOklxK9vgxpZY0N2BtbWWKCr/I8CzS1CjB9FHU=
+	b=OylRdCr+A2DBye6JIhHpu2q11kQT/y1ZQnFV6oRxHd0DLWFjY1fORoKizATWKDyzS
+	 cbXCM/DJx9jgP1ssNZuiuJk63lIkCeqEkUF4wX/vzTIt8AP06lNQPozzSskSZXCTae
+	 pw3LQSrXSDG8x0UjhLX0GzXC8G+bkvVweojnrDX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 5.10 136/193] s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
+	Olga Kornievskaia <kolga@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 046/159] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
 Date: Fri, 24 Nov 2023 17:54:23 +0000
-Message-ID: <20231124171952.664081399@linuxfoundation.org>
+Message-ID: <20231124171943.860825066@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-commit 84bb41d5df48868055d159d9247b80927f1f70f9 upstream.
+[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
 
-If the cmma no-dat feature is available the kernel page tables are walked
-to identify and mark all pages which are used for address translation (all
-region, segment, and page tables). In a subsequent loop all other pages are
-marked as "no-dat" pages with the ESSA instruction.
+If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
+successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
+list of state protected operations, then we need to make sure to
+choose the DS's rpc_client structure instead of the MDS's one.
 
-This information is visible to the hypervisor, so that the hypervisor can
-optimize purging of guest TLB entries. All pages used for swapper_pg_dir
-and invalid_pg_dir are incorrectly marked as no-dat, which in turn can
-result in incorrect guest TLB flushes.
-
-Fix this by marking those pages correctly as being used for DAT.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/page-states.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfs/nfs4proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/s390/mm/page-states.c
-+++ b/arch/s390/mm/page-states.c
-@@ -198,6 +198,12 @@ void __init cmma_init_nodat(void)
- 		return;
- 	/* Mark pages used in kernel page tables */
- 	mark_kernel_pgd();
-+	page = virt_to_page(&swapper_pg_dir);
-+	for (i = 0; i < 4; i++)
-+		set_bit(PG_arch_1, &page[i].flags);
-+	page = virt_to_page(&invalid_pg_dir);
-+	for (i = 0; i < 4; i++)
-+		set_bit(PG_arch_1, &page[i].flags);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index c41d149626047..b7529656b4307 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5369,7 +5369,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
  
- 	/* Set all kernel pages not used for page tables to stable/no-dat */
- 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, NULL) {
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
+ 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
+-	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
++	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
+ }
+ 
+ static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
+@@ -5410,7 +5410,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
+ 	data->res.server = server;
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
+ 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
+-	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
++	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
++			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
+ }
+ 
+ static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
+-- 
+2.42.0
+
 
 
 
