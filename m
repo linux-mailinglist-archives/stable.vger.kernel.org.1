@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BCB37F7D74
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3E17F7B3D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DA571C212B7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BE09B20FD6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9B73A8D0;
-	Fri, 24 Nov 2023 18:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC1C39FF7;
+	Fri, 24 Nov 2023 18:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DeCRujvV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMWzZs1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F4C39FF7;
-	Fri, 24 Nov 2023 18:24:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D51C433C7;
-	Fri, 24 Nov 2023 18:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6E339FEA;
+	Fri, 24 Nov 2023 18:03:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD20EC433C8;
+	Fri, 24 Nov 2023 18:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850283;
-	bh=usc3e2nZc31IKxrKa1fZklIKwRAC2a1Pzj2Xzf7dUdE=;
+	s=korg; t=1700848989;
+	bh=65LepJUokzXjhiAXcLUqYEOkoA3FuE/dGLztkOpdCfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DeCRujvVZJ7HOsMfc3P+I++o1wk8Rdrr3wPpuW79myPeWdlnjO8cSUMZ3BqDPYDvL
-	 SeLPta0jwbp+7t0w3BkMgzDGW6y/6D9dbn5S9xuH0aeQDOVbcSTKWkdZJnu90BWxUc
-	 7d8/T/oFcPlO6BGIv8KLRo5y1CbEpE+OGqPfMxMY=
+	b=TMWzZs1MOoz9QzKwTNzLPJL7eUg8ZASqGnd5CtYUng69UP/sxsA5sCfiJWD+GwyRh
+	 iHs2cD1ZwsHlA4cgmcAnogz1Pv9U+5hyLrp60P1N5AQnYz0Jay5zSTm1luD/gC3jvx
+	 fQ+HXlL9qQY5ctoQeyO2WXRUbkJSfm6LjfFELwFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Mika Kahola <mika.kahola@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.6 511/530] drm/i915/mtl: Support HBR3 rate with C10 phy and eDP in MTL
-Date: Fri, 24 Nov 2023 17:51:17 +0000
-Message-ID: <20231124172043.719551794@linuxfoundation.org>
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 4.14 54/57] ext4: correct return value of ext4_convert_meta_bg
+Date: Fri, 24 Nov 2023 17:51:18 +0000
+Message-ID: <20231124171932.337609315@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +53,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-commit ce4941c2d6459664761c9854701015d8e99414fb upstream.
+commit 48f1551592c54f7d8e2befc72a99ff4e47f7dca0 upstream.
 
-eDP specification supports HBR3 link rate since v1.4a. Moreover,
-C10 phy can support HBR3 link rate for both DP and eDP. Therefore,
-do not clamp the supported rates for eDP at 6.75Gbps.
+Avoid to ignore error in "err".
 
-Cc: <stable@vger.kernel.org>
-
-BSpec: 70073 74224
-
-Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Mika Kahola <mika.kahola@intel.com>
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231018113622.2761997-1-chaitanya.kumar.borah@intel.com
-(cherry picked from commit a3431650f30a94b179d419ef87c21213655c28cd)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Link: https://lore.kernel.org/r/20230826174712.4059355-4-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/resize.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -430,7 +430,7 @@ static int mtl_max_source_rate(struct in
- 	enum phy phy = intel_port_to_phy(i915, dig_port->base.port);
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -1912,9 +1912,7 @@ static int ext4_convert_meta_bg(struct s
  
- 	if (intel_is_c10phy(i915, phy))
--		return intel_dp_is_edp(intel_dp) ? 675000 : 810000;
-+		return 810000;
+ errout:
+ 	ret = ext4_journal_stop(handle);
+-	if (!err)
+-		err = ret;
+-	return ret;
++	return err ? err : ret;
  
- 	return 2000000;
- }
+ invalid_resize_inode:
+ 	ext4_error(sb, "corrupted/inconsistent resize inode");
 
 
 
