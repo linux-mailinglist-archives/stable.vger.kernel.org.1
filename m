@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8377F7E68
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5027F8042
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E15B61C21389
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49C6E2824F2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 275F13A8E4;
-	Fri, 24 Nov 2023 18:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D864D37170;
+	Fri, 24 Nov 2023 18:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTy5DhyO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+JG7XqO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D292FC4E;
-	Fri, 24 Nov 2023 18:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DC09C433C7;
-	Fri, 24 Nov 2023 18:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92C7431748;
+	Fri, 24 Nov 2023 18:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC59C433C7;
+	Fri, 24 Nov 2023 18:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850768;
-	bh=QgP5+tLrOczJdto5+CIodlHsUrZVaiXfpAGLxYfdZKQ=;
+	s=korg; t=1700851685;
+	bh=kU0TwBpFz5SEjDJ0avkl6IRMqZoiKzih2h8wbO922ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTy5DhyOO7MWRMAqnNQgZi/OBsBDzt3NAwiX401irD0SVsxBmV5NUhmGHZGTl9eDe
-	 i9Yq0DY6ZhQ0c8l4r/dOwFYnFEiIMCa2Nk24RJ4V53yRIU4eSzCTZkr8EWnqnkyvzu
-	 nHew9SR7hwjDjQ4FCwC4PEwl74gHxcVL0LGdJpuE=
+	b=z+JG7XqOMhpUno3zoFCeYUMA1kMBtoAn4Wh0oLVT9eXoD/RIkd173YVubEDkfYGzS
+	 3FNj9eHdfKDVX6ghpi5mS6B5+qomM1mImawyl34Oja4OvFOG3sQrmn/qpQpmkaooqg
+	 4PfhmLigc1WP1P579QXfOtZo668O0AZAFw0KqLFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Olli Asikainen <olli.asikainen@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 181/491] net: hns3: fix variable may not initialized problem in hns3_init_mac_addr()
+Subject: [PATCH 6.1 030/372] platform/x86: thinkpad_acpi: Add battery quirk for Thinkpad X120e
 Date: Fri, 24 Nov 2023 17:46:57 +0000
-Message-ID: <20231124172029.915844634@linuxfoundation.org>
+Message-ID: <20231124172011.491815537@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +51,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Olli Asikainen <olli.asikainen@gmail.com>
 
-[ Upstream commit dbd2f3b20c6ae425665b6975d766e3653d453e73 ]
+[ Upstream commit 916646758aea81a143ce89103910f715ed923346 ]
 
-When a VF is calling hns3_init_mac_addr(), get_mac_addr() may
-return fail, then the value of mac_addr_temp is not initialized.
+Thinkpad X120e also needs this battery quirk.
 
-Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Olli Asikainen <olli.asikainen@gmail.com>
+Link: https://lore.kernel.org/r/20231024190922.2742-1-olli.asikainen@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/thinkpad_acpi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 71a2ec03f2b38..f644210afb70a 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5139,7 +5139,7 @@ static int hns3_init_mac_addr(struct net_device *netdev)
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
- 	char format_mac_addr[HNAE3_FORMAT_MAC_ADDR_LEN];
- 	struct hnae3_handle *h = priv->ae_handle;
--	u8 mac_addr_temp[ETH_ALEN];
-+	u8 mac_addr_temp[ETH_ALEN] = {0};
- 	int ret = 0;
- 
- 	if (h->ae_algo->ops->get_mac_addr)
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index 3bb60687f2e42..05a55bc31c796 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -10019,6 +10019,7 @@ static const struct tpacpi_quirk battery_quirk_table[] __initconst = {
+ 	 * Individual addressing is broken on models that expose the
+ 	 * primary battery as BAT1.
+ 	 */
++	TPACPI_Q_LNV('8', 'F', true),       /* Thinkpad X120e */
+ 	TPACPI_Q_LNV('J', '7', true),       /* B5400 */
+ 	TPACPI_Q_LNV('J', 'I', true),       /* Thinkpad 11e */
+ 	TPACPI_Q_LNV3('R', '0', 'B', true), /* Thinkpad 11e gen 3 */
 -- 
 2.42.0
 
