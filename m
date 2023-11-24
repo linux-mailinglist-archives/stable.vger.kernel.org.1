@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22C2A7F7CCA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:18:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C709F7F809A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2593B21149
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8146328123B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A945F3A8D7;
-	Fri, 24 Nov 2023 18:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F96933CD1;
+	Fri, 24 Nov 2023 18:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/cza0Ot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maokTFqb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE76364A4;
-	Fri, 24 Nov 2023 18:18:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC16DC433C8;
-	Fri, 24 Nov 2023 18:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5902FC21;
+	Fri, 24 Nov 2023 18:51:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B09C433C7;
+	Fri, 24 Nov 2023 18:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849903;
-	bh=98ydLc5uzPhsHbaamUelUwY3r+OVqhuZCyBc3gck0aY=;
+	s=korg; t=1700851870;
+	bh=4sQw8B2CGPhEiRCqP4eTUU3bGmYSNXlwJcVodC/xo1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/cza0Ot8NVsnfZE7KjcjVHvE5oLzJ9U94eTOZy4YGrDXDRXAMGNiMKbxYaKPCQrh
-	 /Ud5lkUbT+PuXzNaD+BLFoXd3RFdfRohs33myTeSFp2jECur1zywyreZX1Kg7wkwiX
-	 ejlrSSRqIC1/sSdHpXJifPckVYHGbFfb6cx6mAIE=
+	b=maokTFqbJ9iKnREmoURG/GrKRm9A6f0SJ3WvXUZdW5DldMTyXe8eJqYtWaUF1+0Oz
+	 JH4oWDDyEdLitzB+R9A/dyDCdi0lPUZxHsbI4QOd3UidbOZdYav7tmdpI1fHF6g/mp
+	 v7YDusXgTcAAPPYbBClwz/IVVrnUo2mTzKT35BEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.6 349/530] ima: detect changes to the backing overlay file
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/372] tty: Fix uninit-value access in ppp_sync_receive()
 Date: Fri, 24 Nov 2023 17:48:35 +0000
-Message-ID: <20231124172038.639607333@linuxfoundation.org>
+Message-ID: <20231124172014.752632697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,118 +54,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-commit b836c4d29f2744200b2af41e14bf50758dddc818 upstream.
+[ Upstream commit 719639853d88071dfdfd8d9971eca9c283ff314c ]
 
-Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
-IMA") forced signature re-evaulation on every file access.
+KMSAN reported the following uninit-value access issue:
 
-Instead of always re-evaluating the file's integrity, detect a change
-to the backing file, by comparing the cached file metadata with the
-backing file's metadata.  Verifying just the i_version has not changed
-is insufficient.  In addition save and compare the i_ino and s_dev
-as well.
+=====================================================
+BUG: KMSAN: uninit-value in ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
+BUG: KMSAN: uninit-value in ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ ppp_sync_input drivers/net/ppp/ppp_synctty.c:690 [inline]
+ ppp_sync_receive+0xdc9/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
+ tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
+ __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
-Tested-by: Raul E Rangel <rrangel@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Uninit was created at:
+ __alloc_pages+0x75d/0xe80 mm/page_alloc.c:4591
+ __alloc_pages_node include/linux/gfp.h:238 [inline]
+ alloc_pages_node include/linux/gfp.h:261 [inline]
+ __page_frag_cache_refill+0x9a/0x2c0 mm/page_alloc.c:4691
+ page_frag_alloc_align+0x91/0x5d0 mm/page_alloc.c:4722
+ page_frag_alloc include/linux/gfp.h:322 [inline]
+ __netdev_alloc_skb+0x215/0x6d0 net/core/skbuff.c:728
+ netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
+ dev_alloc_skb include/linux/skbuff.h:3238 [inline]
+ ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
+ ppp_sync_receive+0x237/0xe70 drivers/net/ppp/ppp_synctty.c:334
+ tiocsti+0x328/0x450 drivers/tty/tty_io.c:2295
+ tty_ioctl+0x808/0x1920 drivers/tty/tty_io.c:2694
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x211/0x400 fs/ioctl.c:857
+ __x64_sys_ioctl+0x97/0xe0 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+
+CPU: 0 PID: 12950 Comm: syz-executor.1 Not tainted 6.6.0-14500-g1c41041124bd #10
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-1.fc38 04/01/2014
+=====================================================
+
+ppp_sync_input() checks the first 2 bytes of the data are PPP_ALLSTATIONS
+and PPP_UI. However, if the data length is 1 and the first byte is
+PPP_ALLSTATIONS, an access to an uninitialized value occurs when checking
+PPP_UI. This patch resolves this issue by checking the data length.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/super.c              |    2 +-
- security/integrity/ima/ima_api.c  |    5 +++++
- security/integrity/ima/ima_main.c |   16 +++++++++++++++-
- security/integrity/integrity.h    |    2 ++
- 4 files changed, 23 insertions(+), 2 deletions(-)
+ drivers/net/ppp/ppp_synctty.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -1489,7 +1489,7 @@ int ovl_fill_super(struct super_block *s
- 		ovl_trusted_xattr_handlers;
- 	sb->s_fs_info = ofs;
- 	sb->s_flags |= SB_POSIXACL;
--	sb->s_iflags |= SB_I_SKIP_SYNC | SB_I_IMA_UNVERIFIABLE_SIGNATURE;
-+	sb->s_iflags |= SB_I_SKIP_SYNC;
+diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
+index 18283b7b94bcd..1ac231408398a 100644
+--- a/drivers/net/ppp/ppp_synctty.c
++++ b/drivers/net/ppp/ppp_synctty.c
+@@ -697,7 +697,7 @@ ppp_sync_input(struct syncppp *ap, const unsigned char *buf,
  
- 	err = -ENOMEM;
- 	root_dentry = ovl_get_root(sb, ctx->upper.dentry, oe);
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -243,6 +243,7 @@ int ima_collect_measurement(struct integ
- {
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
-+	struct inode *real_inode = d_real_inode(file_dentry(file));
- 	const char *filename = file->f_path.dentry->d_name.name;
- 	struct ima_max_digest_data hash;
- 	struct kstat stat;
-@@ -302,6 +303,10 @@ int ima_collect_measurement(struct integ
- 	iint->ima_hash = tmpbuf;
- 	memcpy(iint->ima_hash, &hash, length);
- 	iint->version = i_version;
-+	if (real_inode != inode) {
-+		iint->real_ino = real_inode->i_ino;
-+		iint->real_dev = real_inode->i_sb->s_dev;
-+	}
- 
- 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
- 	if (!result)
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -25,6 +25,7 @@
- #include <linux/xattr.h>
- #include <linux/ima.h>
- #include <linux/fs.h>
-+#include <linux/iversion.h>
- 
- #include "ima.h"
- 
-@@ -207,7 +208,7 @@ static int process_measurement(struct fi
- 			       u32 secid, char *buf, loff_t size, int mask,
- 			       enum ima_hooks func)
- {
--	struct inode *inode = file_inode(file);
-+	struct inode *backing_inode, *inode = file_inode(file);
- 	struct integrity_iint_cache *iint = NULL;
- 	struct ima_template_desc *template_desc = NULL;
- 	char *pathbuf = NULL;
-@@ -284,6 +285,19 @@ static int process_measurement(struct fi
- 		iint->measured_pcrs = 0;
- 	}
- 
-+	/* Detect and re-evaluate changes made to the backing file. */
-+	backing_inode = d_real_inode(file_dentry(file));
-+	if (backing_inode != inode &&
-+	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
-+		if (!IS_I_VERSION(backing_inode) ||
-+		    backing_inode->i_sb->s_dev != iint->real_dev ||
-+		    backing_inode->i_ino != iint->real_ino ||
-+		    !inode_eq_iversion(backing_inode, iint->version)) {
-+			iint->flags &= ~IMA_DONE_MASK;
-+			iint->measured_pcrs = 0;
-+		}
-+	}
-+
- 	/* Determine if already appraised/measured based on bitmask
- 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
- 	 *  IMA_AUDIT, IMA_AUDITED)
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -164,6 +164,8 @@ struct integrity_iint_cache {
- 	unsigned long flags;
- 	unsigned long measured_pcrs;
- 	unsigned long atomic_flags;
-+	unsigned long real_ino;
-+	dev_t real_dev;
- 	enum integrity_status ima_file_status:4;
- 	enum integrity_status ima_mmap_status:4;
- 	enum integrity_status ima_bprm_status:4;
+ 	/* strip address/control field if present */
+ 	p = skb->data;
+-	if (p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
++	if (skb->len >= 2 && p[0] == PPP_ALLSTATIONS && p[1] == PPP_UI) {
+ 		/* chop off address/control */
+ 		if (skb->len < 3)
+ 			goto err;
+-- 
+2.42.0
+
 
 
 
