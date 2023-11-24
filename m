@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A777C7F7E05
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031A47F7C07
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6271D282287
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0683281D4E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F0039FF3;
-	Fri, 24 Nov 2023 18:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F753A8C3;
+	Fri, 24 Nov 2023 18:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wY3beCPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ED8huTWx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B90381BF;
-	Fri, 24 Nov 2023 18:29:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5169C433C7;
-	Fri, 24 Nov 2023 18:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D243A8C2;
+	Fri, 24 Nov 2023 18:11:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFA4C433C7;
+	Fri, 24 Nov 2023 18:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850552;
-	bh=OAFvbPLDac/mwMPPoaloDA5p3t/GlouIJ75y32Uo55w=;
+	s=korg; t=1700849461;
+	bh=ynJO5bnLuwS4t8X6H2+zBtPns0TX91E1UWe35fuDYdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wY3beCPkUTbvk6W6CsvC7qNdtk80NdVB9NeumYfXcshijyJmn+WYp1k3SpkCVt6ei
-	 cheFK6BlY5PVUsrT2/mKBL52Z5nTAnqZGBkjcFG/kbjxZmd9rItdkd0t3XWCpHPxjU
-	 LPhX5SCHY4+YGUg8+zPplFqKsHVFtpG+o8eVJRU4=
+	b=ED8huTWxF4c116BV54G4bqt4HGkH4G966axRYgV0/yptRTNxOkhVZH1W5Mbj16JI6
+	 92in2RHMJG4RBKxBCvpPBqVPJWYxEFgPgCrzUua5bYZHPXSdhpvvVgxTaulZFPEXpx
+	 HlyIHjuYf0RThg4TTq7Wbxl7QAdBn6o8TEcaot+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 095/491] PCI: tegra194: Use FIELD_GET()/FIELD_PREP() with Link Width fields
-Date: Fri, 24 Nov 2023 17:45:31 +0000
-Message-ID: <20231124172027.435583942@linuxfoundation.org>
+Subject: [PATCH 6.6 166/530] drm/i915/mtl: avoid stringop-overflow warning
+Date: Fri, 24 Nov 2023 17:45:32 +0000
+Message-ID: <20231124172033.130625897@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,74 +51,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 759574abd78e3b47ec45bbd31a64e8832cf73f97 ]
+[ Upstream commit 390001d648ffa027b750b7dceb5d43f4c1d1a39e ]
 
-Use FIELD_GET() to extract PCIe Negotiated Link Width field instead of
-custom masking and shifting.
+The newly added memset() causes a warning for some reason I could not
+figure out:
 
-Similarly, change custom code that misleadingly used
-PCI_EXP_LNKSTA_NLW_SHIFT to prepare value for PCI_EXP_LNKCAP write
-to use FIELD_PREP() with correct field define (PCI_EXP_LNKCAP_MLW).
+In file included from arch/x86/include/asm/string.h:3,
+                 from drivers/gpu/drm/i915/gt/intel_rc6.c:6:
+In function 'rc6_res_reg_init',
+    inlined from 'intel_rc6_init' at drivers/gpu/drm/i915/gt/intel_rc6.c:610:2:
+arch/x86/include/asm/string_32.h:195:29: error: '__builtin_memset' writing 16 bytes into a region of size 0 overflows the destination [-Werror=stringop-overflow=]
+  195 | #define memset(s, c, count) __builtin_memset(s, c, count)
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+drivers/gpu/drm/i915/gt/intel_rc6.c:584:9: note: in expansion of macro 'memset'
+  584 |         memset(rc6->res_reg, INVALID_MMIO_REG.reg, sizeof(rc6->res_reg));
+      |         ^~~~~~
+In function 'intel_rc6_init':
 
-Link: https://lore.kernel.org/r/20230919125648.1920-5-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Change it to an normal initializer and an added memcpy() that does not have
+this problem.
+
+Fixes: 4bb9ca7ee074 ("drm/i915/mtl: C6 residency and C state type for MTL SAMedia")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231016201012.1022812-1-arnd@kernel.org
+(cherry picked from commit 0520b30b219053cd789909bca45b3c486ef3ee09)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-tegra194.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_rc6.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index ccff8cde5cff6..07cb0818a5138 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -9,6 +9,7 @@
-  * Author: Vidya Sagar <vidyas@nvidia.com>
-  */
+diff --git a/drivers/gpu/drm/i915/gt/intel_rc6.c b/drivers/gpu/drm/i915/gt/intel_rc6.c
+index 58bb1c55294c9..ccdc1afbf11b5 100644
+--- a/drivers/gpu/drm/i915/gt/intel_rc6.c
++++ b/drivers/gpu/drm/i915/gt/intel_rc6.c
+@@ -584,19 +584,23 @@ static void __intel_rc6_disable(struct intel_rc6 *rc6)
  
-+#include <linux/bitfield.h>
- #include <linux/clk.h>
- #include <linux/debugfs.h>
- #include <linux/delay.h>
-@@ -347,8 +348,7 @@ static void apply_bad_link_workaround(struct dw_pcie_rp *pp)
- 	 */
- 	val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKSTA);
- 	if (val & PCI_EXP_LNKSTA_LBMS) {
--		current_link_width = (val & PCI_EXP_LNKSTA_NLW) >>
--				     PCI_EXP_LNKSTA_NLW_SHIFT;
-+		current_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val);
- 		if (pcie->init_link_width > current_link_width) {
- 			dev_warn(pci->dev, "PCIe link is bad, width reduced\n");
- 			val = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base +
-@@ -761,8 +761,7 @@ static void tegra_pcie_enable_system_interrupts(struct dw_pcie_rp *pp)
+ static void rc6_res_reg_init(struct intel_rc6 *rc6)
+ {
+-	memset(rc6->res_reg, INVALID_MMIO_REG.reg, sizeof(rc6->res_reg));
++	i915_reg_t res_reg[INTEL_RC6_RES_MAX] = {
++		[0 ... INTEL_RC6_RES_MAX - 1] = INVALID_MMIO_REG,
++	};
  
- 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
- 				  PCI_EXP_LNKSTA);
--	pcie->init_link_width = (val_w & PCI_EXP_LNKSTA_NLW) >>
--				PCI_EXP_LNKSTA_NLW_SHIFT;
-+	pcie->init_link_width = FIELD_GET(PCI_EXP_LNKSTA_NLW, val_w);
+ 	switch (rc6_to_gt(rc6)->type) {
+ 	case GT_MEDIA:
+-		rc6->res_reg[INTEL_RC6_RES_RC6] = MTL_MEDIA_MC6;
++		res_reg[INTEL_RC6_RES_RC6] = MTL_MEDIA_MC6;
+ 		break;
+ 	default:
+-		rc6->res_reg[INTEL_RC6_RES_RC6_LOCKED] = GEN6_GT_GFX_RC6_LOCKED;
+-		rc6->res_reg[INTEL_RC6_RES_RC6] = GEN6_GT_GFX_RC6;
+-		rc6->res_reg[INTEL_RC6_RES_RC6p] = GEN6_GT_GFX_RC6p;
+-		rc6->res_reg[INTEL_RC6_RES_RC6pp] = GEN6_GT_GFX_RC6pp;
++		res_reg[INTEL_RC6_RES_RC6_LOCKED] = GEN6_GT_GFX_RC6_LOCKED;
++		res_reg[INTEL_RC6_RES_RC6] = GEN6_GT_GFX_RC6;
++		res_reg[INTEL_RC6_RES_RC6p] = GEN6_GT_GFX_RC6p;
++		res_reg[INTEL_RC6_RES_RC6pp] = GEN6_GT_GFX_RC6pp;
+ 		break;
+ 	}
++
++	memcpy(rc6->res_reg, res_reg, sizeof(res_reg));
+ }
  
- 	val_w = dw_pcie_readw_dbi(&pcie->pci, pcie->pcie_cap_base +
- 				  PCI_EXP_LNKCTL);
-@@ -921,7 +920,7 @@ static int tegra_pcie_dw_host_init(struct dw_pcie_rp *pp)
- 	/* Configure Max lane width from DT */
- 	val = dw_pcie_readl_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP);
- 	val &= ~PCI_EXP_LNKCAP_MLW;
--	val |= (pcie->num_lanes << PCI_EXP_LNKSTA_NLW_SHIFT);
-+	val |= FIELD_PREP(PCI_EXP_LNKCAP_MLW, pcie->num_lanes);
- 	dw_pcie_writel_dbi(pci, pcie->pcie_cap_base + PCI_EXP_LNKCAP, val);
- 
- 	/* Clear Slot Clock Configuration bit if SRNS configuration */
+ void intel_rc6_init(struct intel_rc6 *rc6)
 -- 
 2.42.0
 
