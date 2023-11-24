@@ -1,97 +1,116 @@
-Return-Path: <stable+bounces-2540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE6D7F84C9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:38:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16E9D7F84CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BDAB1C274C7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397B81C260E1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E55F2D787;
-	Fri, 24 Nov 2023 19:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E142E84B;
+	Fri, 24 Nov 2023 19:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="T1SM1sus"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hAzrCabc"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1546F98;
-	Fri, 24 Nov 2023 11:38:17 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 75138FF809;
-	Fri, 24 Nov 2023 19:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1700854696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gK80R0M7dvN1cmSQk+8Hk9wbTsrIf4Z+IhzQHo3PHu8=;
-	b=T1SM1suskaIuCwd4kbvQdQEiCDN0oAjSleDEKrXTCILUIxzphNI0zhgJybSIQIrmryz7u6
-	/YnbjIthrPPA0P0XS/XbSETl0b5bvcraz1J7zgh3OpmKFVws61sAhJyKQC4od1wZ0zKV4a
-	gJ7aRuJowhbUd693yO0AMyFGYvQcUqN6wEoB1METfs1byt7wZAvYW//nGnGXluRlC1OZpm
-	YyNG4yJzmcLh6SCr5qTpsO7AhTckcVJLxpx4hV/2kjm4/ZB9eSf909vqMpK03xTx1xJe64
-	CbpNxyvWlVIqiP/MSqUVwtp8E/CiUzuOmMynCt+i9twpmHLtcvtBLN1n8FDGHg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: <linux-kernel@vger.kernel.org>,
-	Michael Walle <michael@walle.cc>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH] nvmem: Do not expect fixed layouts to grab a layout driver
-Date: Fri, 24 Nov 2023 20:38:14 +0100
-Message-Id: <20231124193814.360552-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A911C2
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:39:56 -0800 (PST)
+Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-45d9ceeb8b8so630351137.1
+        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:39:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700854795; x=1701459595; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=IFaoM2nPbmC77v3546G+DOzaGeOySECW/jienI0R7po=;
+        b=hAzrCabcbfi1UkpCvkuH7hXVt7tjgF/PcHDFTV+d2CMEFykgm9ACSN+M6L+YMDYgJl
+         MacB1tzlDNiE4bO9k6e6FNsCifZeJ3kfSQGXLP7MCQ/lnmjmlEdquCWwbIGWVZVIjzH6
+         9DYjGncwAgPgiBhQjH4j/29C1o9iKs85hFeS6MgOH8LAn07kgC0Vb8JT12LoXsqAbifF
+         Uc8m13VqrRQTdwB40QRl9Yl3EXJSPFwha4DuaOyyqoMY/GYUtZHlsN8tlLR1BVZb81iJ
+         aAriv++MkCEZBsBMeljbKP7vBes6bGEvcN5YGsV+46zTxVsU9vCHE+DQ2j4H9DTsMP05
+         WrKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700854795; x=1701459595;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IFaoM2nPbmC77v3546G+DOzaGeOySECW/jienI0R7po=;
+        b=l31cfwSIhidsdVG6WinRbev4sEzhFwmiuJLrAG17q8fL0OnZ2XQ153K1TEYQ4Vu+uY
+         krG+FxH55/pCPp1ihK9Y5hBdUd5wjy8tCvuagSTA9x1R5CTWZUF/dmIW6VwCDI7599Lh
+         d9KYEUTftnXfbG4YYEVVoipz1bYIbMOpg/3wWyEX592tiHv59brE1t9Dw5R7SoXxoZfu
+         C6sOjiVQpvD2QThw+ivT4S6t65nl8ZacZZJrYcTVHn8Y9FIT2K/v0OMChMA7Smol2LFe
+         /Lp0sAGE3gcWmuG4Tb31gAQCjb8NC04B271HHDq7jNDH6Ff0Zly0n/C4mFH+B4ztUh/H
+         Z39w==
+X-Gm-Message-State: AOJu0YybYyX/knMFFwa67OefaJ2uj+GsybIu94HlfCClMDeszf+prtEV
+	l/tJyHho2zpqRq+zP/gOjYgxh1WBQjZFZK07EJsT8Q==
+X-Google-Smtp-Source: AGHT+IGE2G3fpION1Xr2Bdv7ckqaMoBQrZm3R4iwiuD1S/Gq234WQt/q1WgcB8s0vAQggepOJ+sFLXYnm7wW+HS0NTg=
+X-Received: by 2002:a67:af01:0:b0:462:ac9d:fffb with SMTP id
+ v1-20020a67af01000000b00462ac9dfffbmr4041899vsl.13.1700854795287; Fri, 24 Nov
+ 2023 11:39:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Sat, 25 Nov 2023 01:09:43 +0530
+Message-ID: <CA+G9fYuVgqVc57YAwfA8MK6_Q86wD=RznCYKHDf_tD3foM9Y5w@mail.gmail.com>
+Subject: Re: [PATCH 5.4 000/159] 5.4.262-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	=?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>, dima@arista.com, 
+	linux-amlogic@lists.infradead.org, 
+	Linux ARM <linux-arm-kernel@lists.infradead.org>, Kevin Hilman <khilman@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Two series lived in parallel for some time, which led to this situation:
-- The nvmem-layout container is used for dynamic layouts
-- We now expect fixed layouts to also use the nvmem-layout container but
-this does not require any additional driver, the support is built-in the
-nvmem core.
+On Sat, 25 Nov 2023 at 00:52, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.4.262 release.
+> There are 159 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.262-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Ensure we don't refuse to probe for wrong reasons.
 
-Fixes: 27f699e578b1 ("nvmem: core: add support for fixed cells *layout*")
-Cc: stable@vger.kernel.org
-Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
+As Daniel replied on 4.19 build failures,
+Following build warning / errors occurred on arm and arm64 on the
+stable-rc linux.5.4.y and linux-4.19.y.
 
-Please note this is a temporary fix as this piece of code is going to
-disappear when the NVMEM layouts 'as devices' series gets in.
+tty/serial: Migrate meson_uart to use has_sysrq
+[ Upstream commit dca3ac8d3bc9436eb5fd35b80cdcad762fbfa518 ]
 
- drivers/nvmem/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+drivers/tty/serial/meson_uart.c: In function 'meson_uart_probe':
+drivers/tty/serial/meson_uart.c:728:13: error: 'struct uart_port' has
+no member named 'has_sysrq'
+  728 |         port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_MESON_CONSOLE);
+      |             ^~
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index bf42b7e826db..608b352a7d91 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -796,6 +796,12 @@ static struct nvmem_layout *nvmem_layout_get(struct nvmem_device *nvmem)
- 	if (!layout_np)
- 		return NULL;
- 
-+	/* Fixed layouts don't have a matching driver */
-+	if (of_device_is_compatible(layout_np, "fixed-layout")) {
-+		of_node_put(layout_np);
-+		return NULL;
-+	}
-+
- 	/*
- 	 * In case the nvmem device was built-in while the layout was built as a
- 	 * module, we shall manually request the layout driver loading otherwise
--- 
-2.34.1
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+--
+Linaro LKFT
+https://lkft.linaro.org
 
