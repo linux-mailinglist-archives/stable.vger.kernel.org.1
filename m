@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-1590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287037F8070
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2868C7F7C8D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D83302825A8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D67281ECD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332C6339BE;
-	Fri, 24 Nov 2023 18:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7559E39FF7;
+	Fri, 24 Nov 2023 18:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKlRnqG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fatcLgkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8372733075;
-	Fri, 24 Nov 2023 18:49:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D80C433C8;
-	Fri, 24 Nov 2023 18:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398AE39FC3;
+	Fri, 24 Nov 2023 18:16:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B92ACC433C7;
+	Fri, 24 Nov 2023 18:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851780;
-	bh=QX3Lw/tcR95vxyXXrOWGDn+m1+Y/OenjYF1pKjrfGw8=;
+	s=korg; t=1700849773;
+	bh=F81TUhiXx8Fy8/WKzxeSReiaqzrOIYVQmd3DYr4Ax14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKlRnqG7ScKBHnd4d6aCHutyPt9q9oP0u13taSZklBnQzEnNDIArdL+9ikAmE+hDC
-	 aTi+g/j6OQ+P4egbfHgGtoEmlKhEYsEVhCKJb3wbZI5b/NKc0tfxwGTuFEdeauo4Yb
-	 k4+LcPMdOad/tTxEURCrYR+aPfWhTLjvlqMegiOY=
+	b=fatcLgkXm2zicQZpWPOdqLIMP7XqjSU1Mzg/5P3gweuoKZbh8Ih1heNMXmeZ1d4ni
+	 OCKrcnzR07P9hV3a+sM42pFRfY3zRiR99BI3qndWU0h4Pu7K20RAED/MsOi3qYwmca
+	 Y/ivKC5zGR8I9QxogmKorBttGSYPducfuZQp836s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/372] 9p: v9fs_listxattr: fix %s null argument warning
+	Kees Cook <keescook@chromium.org>,
+	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.6 314/530] clk: visconti: Fix undefined behavior bug in struct visconti_pll_provider
 Date: Fri, 24 Nov 2023 17:48:00 +0000
-Message-ID: <20231124172013.633984154@linuxfoundation.org>
+Message-ID: <20231124172037.596425233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,82 +52,116 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dominique Martinet <asmadeus@codewreck.org>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 9b5c6281838fc84683dd99b47302d81fce399918 ]
+commit 5ad1e217a2b23aa046b241183bd9452d259d70d0 upstream.
 
-W=1 warns about null argument to kprintf:
-In file included from fs/9p/xattr.c:12:
-In function ‘v9fs_xattr_get’,
-    inlined from ‘v9fs_listxattr’ at fs/9p/xattr.c:142:9:
-include/net/9p/9p.h:55:2: error: ‘%s’ directive argument is null
-[-Werror=format-overflow=]
-   55 |  _p9_debug(level, __func__, fmt, ##__VA_ARGS__)
-      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`struct clk_hw_onecell_data` is a flexible structure, which means that
+it contains flexible-array member at the bottom, in this case array
+`hws`:
 
-Use an empty string instead of :
- - this is ok 9p-wise because p9pdu_vwritef serializes a null string
-and an empty string the same way (one '0' word for length)
- - since this degrades the print statements, add new single quotes for
-xattr's name delimter (Old: "file = (null)", new: "file = ''")
+include/linux/clk-provider.h:
+1380 struct clk_hw_onecell_data {
+1381         unsigned int num;
+1382         struct clk_hw *hws[] __counted_by(num);
+1383 };
 
-Link: https://lore.kernel.org/r/20231008060138.517057-1-suhui@nfschina.com
-Suggested-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Acked-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Message-ID: <20231025103445.1248103-2-asmadeus@codewreck.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This could potentially lead to an overwrite of the objects following
+`clk_data` in `struct visconti_pll_provider`, in this case
+`struct device_node *node;`, at run-time:
+
+drivers/clk/visconti/pll.h:
+ 16 struct visconti_pll_provider {
+ 17         void __iomem *reg_base;
+ 18         struct clk_hw_onecell_data clk_data;
+ 19         struct device_node *node;
+ 20 };
+
+Notice that a total of 56 bytes are allocated for flexible-array `hws`
+at line 328. See below:
+
+include/dt-bindings/clock/toshiba,tmpv770x.h:
+ 14 #define TMPV770X_NR_PLL		7
+
+drivers/clk/visconti/pll-tmpv770x.c:
+ 69 ctx = visconti_init_pll(np, reg_base, TMPV770X_NR_PLL);
+
+drivers/clk/visconti/pll.c:
+321 struct visconti_pll_provider * __init visconti_init_pll(struct device_node *np,
+322                                                         void __iomem *base,
+323                                                         unsigned long nr_plls)
+324 {
+325         struct visconti_pll_provider *ctx;
+...
+328         ctx = kzalloc(struct_size(ctx, clk_data.hws, nr_plls), GFP_KERNEL);
+
+`struct_size(ctx, clk_data.hws, nr_plls)` above translates to
+sizeof(struct visconti_pll_provider) + sizeof(struct clk_hw *) * 7 ==
+24 + 8 * 7 == 24 + 56
+		  ^^^^
+		   |
+	allocated bytes for flex array `hws`
+
+$ pahole -C visconti_pll_provider drivers/clk/visconti/pll.o
+struct visconti_pll_provider {
+	void *                     reg_base;             /*     0     8 */
+	struct clk_hw_onecell_data clk_data;             /*     8     8 */
+	struct device_node *       node;                 /*    16     8 */
+
+	/* size: 24, cachelines: 1, members: 3 */
+	/* last cacheline: 24 bytes */
+};
+
+And then, after the allocation, some data is written into all members
+of `struct visconti_pll_provider`:
+
+332         for (i = 0; i < nr_plls; ++i)
+333                 ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
+334
+335         ctx->node = np;
+336         ctx->reg_base = base;
+337         ctx->clk_data.num = nr_plls;
+
+Fix all these by placing the declaration of object `clk_data` at the
+end of `struct visconti_pll_provider`. Also, add a comment to make it
+clear that this object must always be last in the structure, and
+prevent this bug from being introduced again in the future.
+
+-Wflex-array-member-not-at-end is coming in GCC-14, and we are getting
+ready to enable it globally.
+
+Fixes: b4cbe606dc36 ("clk: visconti: Add support common clock driver and reset driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/57a831d94ee2b3889b11525d4ad500356f89576f.1697492890.git.gustavoars@kernel.org
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/9p/xattr.c   | 5 +++--
- net/9p/client.c | 2 +-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/clk/visconti/pll.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/9p/xattr.c b/fs/9p/xattr.c
-index 2807bb63f7802..3b9aa61de8c2d 100644
---- a/fs/9p/xattr.c
-+++ b/fs/9p/xattr.c
-@@ -65,7 +65,7 @@ ssize_t v9fs_xattr_get(struct dentry *dentry, const char *name,
- 	struct p9_fid *fid;
- 	int ret;
+--- a/drivers/clk/visconti/pll.h
++++ b/drivers/clk/visconti/pll.h
+@@ -15,8 +15,10 @@
  
--	p9_debug(P9_DEBUG_VFS, "name = %s value_len = %zu\n",
-+	p9_debug(P9_DEBUG_VFS, "name = '%s' value_len = %zu\n",
- 		 name, buffer_size);
- 	fid = v9fs_fid_lookup(dentry);
- 	if (IS_ERR(fid))
-@@ -136,7 +136,8 @@ int v9fs_fid_xattr_set(struct p9_fid *fid, const char *name,
+ struct visconti_pll_provider {
+ 	void __iomem *reg_base;
+-	struct clk_hw_onecell_data clk_data;
+ 	struct device_node *node;
++
++	/* Must be last */
++	struct clk_hw_onecell_data clk_data;
+ };
  
- ssize_t v9fs_listxattr(struct dentry *dentry, char *buffer, size_t buffer_size)
- {
--	return v9fs_xattr_get(dentry, NULL, buffer, buffer_size);
-+	/* Txattrwalk with an empty string lists xattrs instead */
-+	return v9fs_xattr_get(dentry, "", buffer, buffer_size);
- }
- 
- static int v9fs_xattr_handler_get(const struct xattr_handler *handler,
-diff --git a/net/9p/client.c b/net/9p/client.c
-index a96e127ca4883..84b93b04d0f06 100644
---- a/net/9p/client.c
-+++ b/net/9p/client.c
-@@ -1987,7 +1987,7 @@ struct p9_fid *p9_client_xattrwalk(struct p9_fid *file_fid,
- 		goto error;
- 	}
- 	p9_debug(P9_DEBUG_9P,
--		 ">>> TXATTRWALK file_fid %d, attr_fid %d name %s\n",
-+		 ">>> TXATTRWALK file_fid %d, attr_fid %d name '%s'\n",
- 		 file_fid->fid, attr_fid->fid, attr_name);
- 
- 	req = p9_client_rpc(clnt, P9_TXATTRWALK, "dds",
--- 
-2.42.0
-
+ #define VISCONTI_PLL_RATE(_rate, _dacen, _dsmen, \
 
 
 
