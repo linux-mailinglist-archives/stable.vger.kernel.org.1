@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25C37F758A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:50:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B207F7595
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:51:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CD17B21416
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:50:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 784ED1C20912
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:51:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1143728E36;
-	Fri, 24 Nov 2023 13:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0B328E26;
+	Fri, 24 Nov 2023 13:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inr7tFD7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPV7a3yT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C343424A06
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:49:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD91C433C8;
-	Fri, 24 Nov 2023 13:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12DD28E17
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:51:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7B5C433C7;
+	Fri, 24 Nov 2023 13:51:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700833799;
-	bh=4wU+UhnIezZT9oWcObivQ/IejmAEsUxsSn1/gCEq/pM=;
+	s=korg; t=1700833877;
+	bh=BaVJVS83gdJhgT3rKnmJkJGDJjPMc3I8uy/TBjKSbN4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=inr7tFD7afH6qtTMODK6Z/68oPK6YKhUFlfBE46Ygd14Ery4yIwiJok1AXu+DsHb+
-	 fmMymv85lhkKef9Ph60SG5/9hHdwEFWdAUhqUIt/ILXloZriwXxy0L+DpSdx5rqcKu
-	 aK8ma80+sdK4twbvZC1VkhBcAUFN4ucAS1OJiI+0=
-Subject: FAILED: patch "[PATCH] ext4: fix racy may inline data check in dio write" failed to apply to 5.15-stable tree
-To: bfoster@redhat.com,tytso@mit.edu
+	b=pPV7a3yT/8Gtlz2cBO2WX/mmdUsQaVtKGGa+9OhCNhAJpRsWF8YnX4/+SHi0NYMnr
+	 DUDkUfLk45/5Xn8tAy1UJyxeYX4XM/iUM1sfmcCTiEa51cAT9++2bVuu0u/pogHANZ
+	 759DgIPeNqi8FxJz6cJncoLzbyWEA3fZRmwYygLk=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Adjust the MST resume flow" failed to apply to 6.6-stable tree
+To: wayne.lin@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,stylon.wang@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 13:49:48 +0000
-Message-ID: <2023112448-opposing-boxy-53a0@gregkh>
+Date: Fri, 24 Nov 2023 13:51:15 +0000
+Message-ID: <2023112415-commute-pacific-3c87@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,30 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x ce56d21355cd6f6937aca32f1f44ca749d1e4808
+git cherry-pick -x 73c57a0aa7f672110d3f28c0ac03ec778a21d9d4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112448-opposing-boxy-53a0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112415-commute-pacific-3c87@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-ce56d21355cd ("ext4: fix racy may inline data check in dio write")
-310ee0902b8d ("ext4: allow concurrent unaligned dio overwrites")
-240930fb7e6b ("ext4: dio take shared inode lock when overwriting preallocated blocks")
-4bb26f2885ac ("ext4: avoid crash when inline data creation follows DIO write")
-786f847f43a5 ("iomap: add per-iomap_iter private data")
-36e8c62273aa ("btrfs: add a btrfs_dio_rw wrapper")
-42e4c3bdcae7 ("gfs2: Variable rename")
-3d198e42ce25 ("Merge tag 'gfs2-v5.17-rc4-fixes' of git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2")
+73c57a0aa7f6 ("drm/amd/display: Adjust the MST resume flow")
 
 thanks,
 
@@ -76,75 +69,177 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ce56d21355cd6f6937aca32f1f44ca749d1e4808 Mon Sep 17 00:00:00 2001
-From: Brian Foster <bfoster@redhat.com>
-Date: Mon, 2 Oct 2023 14:50:20 -0400
-Subject: [PATCH] ext4: fix racy may inline data check in dio write
+From 73c57a0aa7f672110d3f28c0ac03ec778a21d9d4 Mon Sep 17 00:00:00 2001
+From: Wayne Lin <wayne.lin@amd.com>
+Date: Tue, 22 Aug 2023 16:03:17 +0800
+Subject: [PATCH] drm/amd/display: Adjust the MST resume flow
 
-syzbot reports that the following warning from ext4_iomap_begin()
-triggers as of the commit referenced below:
+[Why]
+In drm_dp_mst_topology_mgr_resume() today, it will resume the
+mst branch to be ready handling mst mode and also consecutively do
+the mst topology probing. Which will cause the dirver have chance
+to fire hotplug event before restoring the old state. Then Userspace
+will react to the hotplug event based on a wrong state.
 
-        if (WARN_ON_ONCE(ext4_has_inline_data(inode)))
-                return -ERANGE;
+[How]
+Adjust the mst resume flow as:
+1. set dpcd to resume mst branch status
+2. restore source old state
+3. Do mst resume topology probing
 
-This occurs during a dio write, which is never expected to encounter
-an inode with inline data. To enforce this behavior,
-ext4_dio_write_iter() checks the current inline state of the inode
-and clears the MAY_INLINE_DATA state flag to either fall back to
-buffered writes, or enforce that any other writers in progress on
-the inode are not allowed to create inline data.
+For drm_dp_mst_topology_mgr_resume(), it's better to adjust it to
+pull out topology probing work into a 2nd part procedure of the mst
+resume. Will have a follow up patch in drm.
 
-The problem is that the check for existing inline data and the state
-flag can span a lock cycle. For example, if the ilock is originally
-locked shared and subsequently upgraded to exclusive, another writer
-may have reacquired the lock and created inline data before the dio
-write task acquires the lock and proceeds.
+Reviewed-by: Chao-kai Wang <stylon.wang@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Acked-by: Stylon Wang <stylon.wang@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-The commit referenced below loosens the lock requirements to allow
-some forms of unaligned dio writes to occur under shared lock, but
-AFAICT the inline data check was technically already racy for any
-dio write that would have involved a lock cycle. Regardless, lift
-clearing of the state bit to the same lock critical section that
-checks for preexisting inline data on the inode to close the race.
-
-Cc: stable@kernel.org
-Reported-by: syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com
-Fixes: 310ee0902b8d ("ext4: allow concurrent unaligned dio overwrites")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Link: https://lore.kernel.org/r/20231002185020.531537-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-
-diff --git a/fs/ext4/file.c b/fs/ext4/file.c
-index 6830ea3a6c59..747c0378122d 100644
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -569,18 +569,20 @@ static ssize_t ext4_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 		return ext4_buffered_write_iter(iocb, from);
- 	}
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 0e1ce71350d7..8e98dda1e084 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2355,14 +2355,62 @@ static int dm_late_init(void *handle)
+ 	return detect_mst_link_for_all_connectors(adev_to_drm(adev));
+ }
  
-+	/*
-+	 * Prevent inline data from being created since we are going to allocate
-+	 * blocks for DIO. We know the inode does not currently have inline data
-+	 * because ext4_should_use_dio() checked for it, but we have to clear
-+	 * the state flag before the write checks because a lock cycle could
-+	 * introduce races with other writers.
-+	 */
-+	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
++static void resume_mst_branch_status(struct drm_dp_mst_topology_mgr *mgr)
++{
++	int ret;
++	u8 guid[16];
++	u64 tmp64;
 +
- 	ret = ext4_dio_write_checks(iocb, from, &ilock_shared, &extend,
- 				    &unwritten, &dio_flags);
- 	if (ret <= 0)
- 		return ret;
++	mutex_lock(&mgr->lock);
++	if (!mgr->mst_primary)
++		goto out_fail;
++
++	if (drm_dp_read_dpcd_caps(mgr->aux, mgr->dpcd) < 0) {
++		drm_dbg_kms(mgr->dev, "dpcd read failed - undocked during suspend?\n");
++		goto out_fail;
++	}
++
++	ret = drm_dp_dpcd_writeb(mgr->aux, DP_MSTM_CTRL,
++				 DP_MST_EN |
++				 DP_UP_REQ_EN |
++				 DP_UPSTREAM_IS_SRC);
++	if (ret < 0) {
++		drm_dbg_kms(mgr->dev, "mst write failed - undocked during suspend?\n");
++		goto out_fail;
++	}
++
++	/* Some hubs forget their guids after they resume */
++	ret = drm_dp_dpcd_read(mgr->aux, DP_GUID, guid, 16);
++	if (ret != 16) {
++		drm_dbg_kms(mgr->dev, "dpcd read failed - undocked during suspend?\n");
++		goto out_fail;
++	}
++
++	if (memchr_inv(guid, 0, 16) == NULL) {
++		tmp64 = get_jiffies_64();
++		memcpy(&guid[0], &tmp64, sizeof(u64));
++		memcpy(&guid[8], &tmp64, sizeof(u64));
++
++		ret = drm_dp_dpcd_write(mgr->aux, DP_GUID, guid, 16);
++
++		if (ret != 16) {
++			drm_dbg_kms(mgr->dev, "check mstb guid failed - undocked during suspend?\n");
++			goto out_fail;
++		}
++	}
++
++	memcpy(mgr->mst_primary->guid, guid, 16);
++
++out_fail:
++	mutex_unlock(&mgr->lock);
++}
++
+ static void s3_handle_mst(struct drm_device *dev, bool suspend)
+ {
+ 	struct amdgpu_dm_connector *aconnector;
+ 	struct drm_connector *connector;
+ 	struct drm_connector_list_iter iter;
+ 	struct drm_dp_mst_topology_mgr *mgr;
+-	int ret;
+-	bool need_hotplug = false;
  
--	/*
--	 * Make sure inline data cannot be created anymore since we are going
--	 * to allocate blocks for DIO. We know the inode does not have any
--	 * inline data now because ext4_dio_supported() checked for that.
--	 */
--	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
+ 	drm_connector_list_iter_begin(dev, &iter);
+ 	drm_for_each_connector_iter(connector, &iter) {
+@@ -2384,18 +2432,15 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
+ 			if (!dp_is_lttpr_present(aconnector->dc_link))
+ 				try_to_configure_aux_timeout(aconnector->dc_link->ddc, LINK_AUX_DEFAULT_TIMEOUT_PERIOD);
+ 
+-			ret = drm_dp_mst_topology_mgr_resume(mgr, true);
+-			if (ret < 0) {
+-				dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
+-					aconnector->dc_link);
+-				need_hotplug = true;
+-			}
++			/* TODO: move resume_mst_branch_status() into drm mst resume again
++			 * once topology probing work is pulled out from mst resume into mst
++			 * resume 2nd step. mst resume 2nd step should be called after old
++			 * state getting restored (i.e. drm_atomic_helper_resume()).
++			 */
++			resume_mst_branch_status(mgr);
+ 		}
+ 	}
+ 	drm_connector_list_iter_end(&iter);
 -
- 	offset = iocb->ki_pos;
- 	count = ret;
+-	if (need_hotplug)
+-		drm_kms_helper_hotplug_event(dev);
+ }
  
+ static int amdgpu_dm_smu_write_watermarks_table(struct amdgpu_device *adev)
+@@ -2789,7 +2834,8 @@ static int dm_resume(void *handle)
+ 	struct dm_atomic_state *dm_state = to_dm_atomic_state(dm->atomic_obj.state);
+ 	enum dc_connection_type new_connection_type = dc_connection_none;
+ 	struct dc_state *dc_state;
+-	int i, r, j;
++	int i, r, j, ret;
++	bool need_hotplug = false;
+ 
+ 	if (dm->dc->caps.ips_support) {
+ 		dc_dmub_srv_exit_low_power_state(dm->dc);
+@@ -2891,7 +2937,7 @@ static int dm_resume(void *handle)
+ 			continue;
+ 
+ 		/*
+-		 * this is the case when traversing through already created
++		 * this is the case when traversing through already created end sink
+ 		 * MST connectors, should be skipped
+ 		 */
+ 		if (aconnector && aconnector->mst_root)
+@@ -2951,6 +2997,27 @@ static int dm_resume(void *handle)
+ 
+ 	dm->cached_state = NULL;
+ 
++	/* Do mst topology probing after resuming cached state*/
++	drm_connector_list_iter_begin(ddev, &iter);
++	drm_for_each_connector_iter(connector, &iter) {
++		aconnector = to_amdgpu_dm_connector(connector);
++		if (aconnector->dc_link->type != dc_connection_mst_branch ||
++		    aconnector->mst_root)
++			continue;
++
++		ret = drm_dp_mst_topology_mgr_resume(&aconnector->mst_mgr, true);
++
++		if (ret < 0) {
++			dm_helpers_dp_mst_stop_top_mgr(aconnector->dc_link->ctx,
++					aconnector->dc_link);
++			need_hotplug = true;
++		}
++	}
++	drm_connector_list_iter_end(&iter);
++
++	if (need_hotplug)
++		drm_kms_helper_hotplug_event(ddev);
++
+ 	amdgpu_dm_irq_resume_late(adev);
+ 
+ 	amdgpu_dm_smu_write_watermarks_table(adev);
 
 
