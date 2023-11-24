@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A61B57F7B40
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:03:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FCB7F7D67
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C6AB281301
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B111C212A1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EB539FEE;
-	Fri, 24 Nov 2023 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881AC39FC3;
+	Fri, 24 Nov 2023 18:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pE2LF3ck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqBM0Icn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8495939FC6;
-	Fri, 24 Nov 2023 18:03:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5024C433C7;
-	Fri, 24 Nov 2023 18:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E103A8C9;
+	Fri, 24 Nov 2023 18:24:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82A7C433C8;
+	Fri, 24 Nov 2023 18:24:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848999;
-	bh=0PnJtsPhJwg2agI6SRcvHHt0IgFTv/usVE6tXtIMSak=;
+	s=korg; t=1700850254;
+	bh=vBzNS6K7WKWgQEbXgg5UV/pUP4niivt72DXiYxj/wig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pE2LF3ckN/M8vjO60vL4Hd1G+RCG/JT+dW3IsX7urhl2uSR1g61KBuDxYgJSzPCT0
-	 cCf/5vgqLNXwFiYD4N6MTMMYiYdMnJwVWIoZfnO0gZxY62GVdMCUOtyWvUrmCS3dRB
-	 0Gf3QqJpGKe88rvjFlIN5hXipx3r+cWyfCBu2cwY=
+	b=CqBM0IcnjThIzIvu26FET3QS0AVCt7xXdCziDdI9DcDrI3FYUeBVQTlYyhM00LV6l
+	 vb/3viVnbTvUSFlRaLYM319WjDHkQXY+q7wEP/zCdfDPwSCxi6wWYwL+rIJpbaQfJB
+	 63xh5nFlQA/oYDoQYDuPYMj0PBuylgbsQO/pH88o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 4.14 48/57] net: dsa: lan9303: consequently nested-lock physical MDIO
+	stable@kernel.org,
+	syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com,
+	Brian Foster <bfoster@redhat.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 506/530] ext4: fix racy may inline data check in dio write
 Date: Fri, 24 Nov 2023 17:51:12 +0000
-Message-ID: <20231124171932.094178810@linuxfoundation.org>
+Message-ID: <20231124172043.561807103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,176 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Brian Foster <bfoster@redhat.com>
 
-commit 5a22fbcc10f3f7d94c5d88afbbffa240a3677057 upstream.
+commit ce56d21355cd6f6937aca32f1f44ca749d1e4808 upstream.
 
-When LAN9303 is MDIO-connected two callchains exist into
-mdio->bus->write():
+syzbot reports that the following warning from ext4_iomap_begin()
+triggers as of the commit referenced below:
 
-1. switch ports 1&2 ("physical" PHYs):
+        if (WARN_ON_ONCE(ext4_has_inline_data(inode)))
+                return -ERANGE;
 
-virtual (switch-internal) MDIO bus (lan9303_switch_ops->phy_{read|write})->
-  lan9303_mdio_phy_{read|write} -> mdiobus_{read|write}_nested
+This occurs during a dio write, which is never expected to encounter
+an inode with inline data. To enforce this behavior,
+ext4_dio_write_iter() checks the current inline state of the inode
+and clears the MAY_INLINE_DATA state flag to either fall back to
+buffered writes, or enforce that any other writers in progress on
+the inode are not allowed to create inline data.
 
-2. LAN9303 virtual PHY:
+The problem is that the check for existing inline data and the state
+flag can span a lock cycle. For example, if the ilock is originally
+locked shared and subsequently upgraded to exclusive, another writer
+may have reacquired the lock and created inline data before the dio
+write task acquires the lock and proceeds.
 
-virtual MDIO bus (lan9303_phy_{read|write}) ->
-  lan9303_virt_phy_reg_{read|write} -> regmap -> lan9303_mdio_{read|write}
+The commit referenced below loosens the lock requirements to allow
+some forms of unaligned dio writes to occur under shared lock, but
+AFAICT the inline data check was technically already racy for any
+dio write that would have involved a lock cycle. Regardless, lift
+clearing of the state bit to the same lock critical section that
+checks for preexisting inline data on the inode to close the race.
 
-If the latter functions just take
-mutex_lock(&sw_dev->device->bus->mdio_lock) it triggers a LOCKDEP
-false-positive splat. It's false-positive because the first
-mdio_lock in the second callchain above belongs to virtual MDIO bus, the
-second mdio_lock belongs to physical MDIO bus.
-
-Consequent annotation in lan9303_mdio_{read|write} as nested lock
-(similar to lan9303_mdio_phy_{read|write}, it's the same physical MDIO bus)
-prevents the following splat:
-
-WARNING: possible circular locking dependency detected
-5.15.71 #1 Not tainted
-------------------------------------------------------
-kworker/u4:3/609 is trying to acquire lock:
-ffff000011531c68 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}, at: regmap_lock_mutex
-but task is already holding lock:
-ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
-which lock already depends on the new lock.
-the existing dependency chain (in reverse order) is:
--> #1 (&bus->mdio_lock){+.+.}-{3:3}:
-       lock_acquire
-       __mutex_lock
-       mutex_lock_nested
-       lan9303_mdio_read
-       _regmap_read
-       regmap_read
-       lan9303_probe
-       lan9303_mdio_probe
-       mdio_probe
-       really_probe
-       __driver_probe_device
-       driver_probe_device
-       __device_attach_driver
-       bus_for_each_drv
-       __device_attach
-       device_initial_probe
-       bus_probe_device
-       deferred_probe_work_func
-       process_one_work
-       worker_thread
-       kthread
-       ret_from_fork
--> #0 (lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock){+.+.}-{3:3}:
-       __lock_acquire
-       lock_acquire.part.0
-       lock_acquire
-       __mutex_lock
-       mutex_lock_nested
-       regmap_lock_mutex
-       regmap_read
-       lan9303_phy_read
-       dsa_slave_phy_read
-       __mdiobus_read
-       mdiobus_read
-       get_phy_device
-       mdiobus_scan
-       __mdiobus_register
-       dsa_register_switch
-       lan9303_probe
-       lan9303_mdio_probe
-       mdio_probe
-       really_probe
-       __driver_probe_device
-       driver_probe_device
-       __device_attach_driver
-       bus_for_each_drv
-       __device_attach
-       device_initial_probe
-       bus_probe_device
-       deferred_probe_work_func
-       process_one_work
-       worker_thread
-       kthread
-       ret_from_fork
-other info that might help us debug this:
- Possible unsafe locking scenario:
-       CPU0                    CPU1
-       ----                    ----
-  lock(&bus->mdio_lock);
-                               lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
-                               lock(&bus->mdio_lock);
-  lock(lan9303_mdio:131:(&lan9303_mdio_regmap_config)->lock);
-*** DEADLOCK ***
-5 locks held by kworker/u4:3/609:
- #0: ffff000002842938 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work
- #1: ffff80000bacbd60 (deferred_probe_work){+.+.}-{0:0}, at: process_one_work
- #2: ffff000007645178 (&dev->mutex){....}-{3:3}, at: __device_attach
- #3: ffff8000096e6e78 (dsa2_mutex){+.+.}-{3:3}, at: dsa_register_switch
- #4: ffff0000114c44d8 (&bus->mdio_lock){+.+.}-{3:3}, at: mdiobus_read
-stack backtrace:
-CPU: 1 PID: 609 Comm: kworker/u4:3 Not tainted 5.15.71 #1
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
- dump_backtrace
- show_stack
- dump_stack_lvl
- dump_stack
- print_circular_bug
- check_noncircular
- __lock_acquire
- lock_acquire.part.0
- lock_acquire
- __mutex_lock
- mutex_lock_nested
- regmap_lock_mutex
- regmap_read
- lan9303_phy_read
- dsa_slave_phy_read
- __mdiobus_read
- mdiobus_read
- get_phy_device
- mdiobus_scan
- __mdiobus_register
- dsa_register_switch
- lan9303_probe
- lan9303_mdio_probe
-...
-
-Cc: stable@vger.kernel.org
-Fixes: dc7005831523 ("net: dsa: LAN9303: add MDIO managed mode support")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20231027065741.534971-1-alexander.sverdlin@siemens.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: stable@kernel.org
+Reported-by: syzbot+307da6ca5cb0d01d581a@syzkaller.appspotmail.com
+Fixes: 310ee0902b8d ("ext4: allow concurrent unaligned dio overwrites")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Link: https://lore.kernel.org/r/20231002185020.531537-1-bfoster@redhat.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/lan9303_mdio.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/file.c |   16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
---- a/drivers/net/dsa/lan9303_mdio.c
-+++ b/drivers/net/dsa/lan9303_mdio.c
-@@ -41,7 +41,7 @@ static int lan9303_mdio_write(void *ctx,
- 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -537,18 +537,20 @@ static ssize_t ext4_dio_write_iter(struc
+ 		return ext4_buffered_write_iter(iocb, from);
+ 	}
  
- 	reg <<= 2; /* reg num to offset */
--	mutex_lock(&sw_dev->device->bus->mdio_lock);
-+	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
- 	lan9303_mdio_real_write(sw_dev->device, reg, val & 0xffff);
- 	lan9303_mdio_real_write(sw_dev->device, reg + 2, (val >> 16) & 0xffff);
- 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
-@@ -59,7 +59,7 @@ static int lan9303_mdio_read(void *ctx,
- 	struct lan9303_mdio *sw_dev = (struct lan9303_mdio *)ctx;
++	/*
++	 * Prevent inline data from being created since we are going to allocate
++	 * blocks for DIO. We know the inode does not currently have inline data
++	 * because ext4_should_use_dio() checked for it, but we have to clear
++	 * the state flag before the write checks because a lock cycle could
++	 * introduce races with other writers.
++	 */
++	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
++
+ 	ret = ext4_dio_write_checks(iocb, from, &ilock_shared, &extend,
+ 				    &unwritten, &dio_flags);
+ 	if (ret <= 0)
+ 		return ret;
  
- 	reg <<= 2; /* reg num to offset */
--	mutex_lock(&sw_dev->device->bus->mdio_lock);
-+	mutex_lock_nested(&sw_dev->device->bus->mdio_lock, MDIO_MUTEX_NESTED);
- 	*val = lan9303_mdio_real_read(sw_dev->device, reg);
- 	*val |= (lan9303_mdio_real_read(sw_dev->device, reg + 2) << 16);
- 	mutex_unlock(&sw_dev->device->bus->mdio_lock);
+-	/*
+-	 * Make sure inline data cannot be created anymore since we are going
+-	 * to allocate blocks for DIO. We know the inode does not have any
+-	 * inline data now because ext4_dio_supported() checked for that.
+-	 */
+-	ext4_clear_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA);
+-
+ 	offset = iocb->ki_pos;
+ 	count = ret;
+ 
 
 
 
