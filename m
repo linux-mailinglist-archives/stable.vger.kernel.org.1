@@ -1,198 +1,131 @@
-Return-Path: <stable+bounces-178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597E57F7493
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:09:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4947F74EE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 14:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5480F1C20DCE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA271281333
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 13:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BAD6250F9;
-	Fri, 24 Nov 2023 13:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B2723761;
+	Fri, 24 Nov 2023 13:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NXDnu/Qn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZJSSofy"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7A5AD110
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 05:09:49 -0800 (PST)
-Received: from pwmachine.numericable.fr (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 136A220B74C0;
-	Fri, 24 Nov 2023 05:09:47 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 136A220B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1700831389;
-	bh=5X2JwOpByllef/VP7Y9O1DLhg1fhQ0DWV2XAPv8pjpo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXDnu/QnRvh/GPnwTn7w1PYQNA+doLhLs+sx2vjGj0d/DsILqqcZsxdNL4qDuqzES
-	 0WmjXmW6JB/9Ss9vuGH/Kn7cK91dS7sdBz1HvODO4SQMrQElZLxLrUMXeX+fSsSF9x
-	 79SauC+xQL7Vt1xSgTTWyVN9/OXxVpmmWiVA/e/4=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: stable@vger.kernel.org
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	Francis Laniel <flaniel@linux.microsoft.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH 5.10.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Fri, 24 Nov 2023 14:09:35 +0100
-Message-Id: <20231124130935.168451-1-flaniel@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023102135-shuffle-blank-783e@gregkh>
-References: <2023102135-shuffle-blank-783e@gregkh>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B7628DBF
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 13:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F0DC433C8;
+	Fri, 24 Nov 2023 13:27:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1700832443;
+	bh=/hjxFPBrhlIFfgkmuSPa4aW7XntEdMpelaZQyFI8au8=;
+	h=Subject:To:Cc:From:Date:From;
+	b=cZJSSofyrEQPhR+8/8c9c419qi8gTQzB6dXJo6RYJ6jr4qLBBesND0P22AT177bpZ
+	 oFSlfMN1nS9rmIXG9HZ8GhMNOXZPonKnPvFZ/tu1p3Kfaz9jeC8igfJ3+hdizJbbNY
+	 6GIEsAUl9016NN5pZOfZgP3oKCgxhxktrTWd8XNY=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: fix fastclose with csum failure" failed to apply to 6.1-stable tree
+To: pabeni@redhat.com,kuba@kernel.org,matttbe@kernel.org,xmu@redhat.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 24 Nov 2023 13:27:21 +0000
+Message-ID: <2023112420-stillness-tanned-cbca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-When a kprobe is attached to a function that's name is not unique (is
-static and shares the name with other functions in the kernel), the
-kprobe is attached to the first function it finds. This is a bug as the
-function that it is attaching to is not necessarily the one that the
-user wants to attach to.
 
-Instead of blindly picking a function to attach to what is ambiguous,
-error with EADDRNOTAVAIL to let the user know that this function is not
-unique, and that the user must use another unique function with an
-address offset to get to the function they want to attach to.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
+To reproduce the conflict and resubmit, you may use the following commands:
 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 7cefbe5e1dacc7236caa77e9d072423f21422fe2
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112420-stillness-tanned-cbca@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+7cefbe5e1dac ("selftests: mptcp: fix fastclose with csum failure")
+595ef566a2ef ("selftests: mptcp: drop addr_nr_ns1/2 parameters")
+0c93af1f8907 ("selftests: mptcp: drop test_linkfail parameter")
+be7e9786c915 ("selftests: mptcp: set FAILING_LINKS in run_tests")
+4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
+ae947bb2c253 ("selftests: mptcp: join: skip Fastclose tests if not supported")
+d4c81bbb8600 ("selftests: mptcp: join: support local endpoint being tracked or not")
+4a0b866a3f7d ("selftests: mptcp: join: skip test if iptables/tc cmds fail")
+0c4cd3f86a40 ("selftests: mptcp: join: use 'iptables-legacy' if available")
+6c160b636c91 ("selftests: mptcp: update userspace pm subflow tests")
+48d73f609dcc ("selftests: mptcp: update userspace pm addr tests")
+8697a258ae24 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 7cefbe5e1dacc7236caa77e9d072423f21422fe2 Mon Sep 17 00:00:00 2001
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Tue, 14 Nov 2023 00:16:17 +0100
+Subject: [PATCH] selftests: mptcp: fix fastclose with csum failure
+
+Running the mp_join selftest manually with the following command line:
+
+  ./mptcp_join.sh -z -C
+
+leads to some failures:
+
+  002 fastclose server test
+  # ...
+  rtx                                 [fail] got 1 MP_RST[s] TX expected 0
+  # ...
+  rstrx                               [fail] got 1 MP_RST[s] RX expected 0
+
+The problem is really in the wrong expectations for the RST checks
+implied by the csum validation. Note that the same check is repeated
+explicitly in the same test-case, with the correct expectation and
+pass successfully.
+
+Address the issue explicitly setting the correct expectation for
+the failing checks.
+
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Fixes: 6bf41020b72b ("selftests: mptcp: update and extend fastclose test-cases")
 Cc: stable@vger.kernel.org
-Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-(cherry picked from commit b022f0c7e404887a7c5229788fc99eff9f9a80d5)
----
- kernel/trace/trace_kprobe.c | 74 +++++++++++++++++++++++++++++++++++++
- kernel/trace/trace_probe.h  |  1 +
- 2 files changed, 75 insertions(+)
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
+Signed-off-by: Matthieu Baerts <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20231114-upstream-net-20231113-mptcp-misc-fixes-6-7-rc2-v1-5-7b9cd6a7b7f4@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 718357289899..2f7cdbecdddd 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -715,6 +715,36 @@ static inline void sanitize_event_name(char *name)
- 			*name = '_';
- }
- 
-+struct count_symbols_struct {
-+	const char *func_name;
-+	unsigned int count;
-+};
-+
-+static int count_symbols(void *data, const char *name, struct module *unused0,
-+			 unsigned long unused1)
-+{
-+	struct count_symbols_struct *args = data;
-+
-+	if (strcmp(args->func_name, name))
-+		return 0;
-+
-+	args->count++;
-+
-+	return 0;
-+}
-+
-+static unsigned int number_of_same_symbols(char *func_name)
-+{
-+	struct count_symbols_struct args = {
-+		.func_name = func_name,
-+		.count = 0,
-+	};
-+
-+	kallsyms_on_each_symbol(count_symbols, &args);
-+
-+	return args.count;
-+}
-+
- static int trace_kprobe_create(int argc, const char *argv[])
- {
- 	/*
-@@ -842,6 +872,31 @@ static int trace_kprobe_create(int argc, const char *argv[])
- 		}
- 	}
- 
-+	if (symbol && !strchr(symbol, ':')) {
-+		unsigned int count;
-+
-+		count = number_of_same_symbols(symbol);
-+		if (count > 1) {
-+			/*
-+			 * Users should use ADDR to remove the ambiguity of
-+			 * using KSYM only.
-+			 */
-+			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
-+			ret = -EADDRNOTAVAIL;
-+
-+			goto error;
-+		} else if (count == 0) {
-+			/*
-+			 * We can return ENOENT earlier than when register the
-+			 * kprobe.
-+			 */
-+			trace_probe_log_err(0, BAD_PROBE_ADDR);
-+			ret = -ENOENT;
-+
-+			goto error;
-+		}
-+	}
-+
- 	trace_probe_log_set_index(0);
- 	if (event) {
- 		ret = traceprobe_parse_event_name(&event, &group, buf,
-@@ -1805,6 +1860,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
- }
- 
- #ifdef CONFIG_PERF_EVENTS
-+
- /* create a trace_kprobe, but don't add it to global lists */
- struct trace_event_call *
- create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
-@@ -1814,6 +1870,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
- 	int ret;
- 	char *event;
- 
-+	if (func) {
-+		unsigned int count;
-+
-+		count = number_of_same_symbols(func);
-+		if (count > 1)
-+			/*
-+			 * Users should use addr to remove the ambiguity of
-+			 * using func only.
-+			 */
-+			return ERR_PTR(-EADDRNOTAVAIL);
-+		else if (count == 0)
-+			/*
-+			 * We can return ENOENT earlier than when register the
-+			 * kprobe.
-+			 */
-+			return ERR_PTR(-ENOENT);
-+	}
-+
- 	/*
- 	 * local trace_kprobes are not added to dyn_event, so they are never
- 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
-diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index d4a69b83902e..22c05ca97758 100644
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -390,6 +390,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
- 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
- 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
- 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
-+	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
- 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
- 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
- 	C(NO_GROUP_NAME,	"Group name is not specified"),		\
--- 
-2.34.1
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 75a2438efdf3..3c94f2f194d6 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3240,7 +3240,7 @@ fastclose_tests()
+ 	if reset_check_counter "fastclose server test" "MPTcpExtMPFastcloseRx"; then
+ 		test_linkfail=1024 fastclose=server \
+ 			run_tests $ns1 $ns2 10.0.1.1
+-		chk_join_nr 0 0 0
++		chk_join_nr 0 0 0 0 0 0 1
+ 		chk_fclose_nr 1 1 invert
+ 		chk_rst_nr 1 1
+ 	fi
 
 
