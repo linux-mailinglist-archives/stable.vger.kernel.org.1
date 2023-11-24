@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6027F8138
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF3727F7AFA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D11C1C2163E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E7581C2086B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7451133CD1;
-	Fri, 24 Nov 2023 18:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD739FE1;
+	Fri, 24 Nov 2023 18:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rg2SArnl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gw3bVNvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344F2321AD;
-	Fri, 24 Nov 2023 18:56:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5ACFC433C8;
-	Fri, 24 Nov 2023 18:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1DB39FEA;
+	Fri, 24 Nov 2023 18:00:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758DBC433C8;
+	Fri, 24 Nov 2023 18:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852200;
-	bh=8OqGQl9eTafoqRnhkitWuLzcHomRgwkFOPTHa/Vemvg=;
+	s=korg; t=1700848837;
+	bh=8806wVcU5xCDfyLD7MPK8gpS+FCaTx5izJRhBQDSQxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rg2SArnlaX+I6rFh+7YmmjOFDrMvA4S+agzWDqm+X3Mi2FACw7Rl11/AXBC4MrsZW
-	 ZRhoCNzOBbw3LNGHQ7Cl54CdY1ULe6joQll5C8CqdMt6VcfCnM91ZiwF7Zo9NmUOam
-	 y+cjaHEmC3+NNaNgF/FWsy/+AKqMU+J0Su8m3K3g=
+	b=Gw3bVNvvLvXl08rpsYihZ30DWIUJPdwdwVOgIK+sobIgYlvnq5fbOb7yqeO3e5tmN
+	 Vogs//rzw5rUbl4B7SpJWFVdlYlObRdLCFlkXS9axgfjyT/HHSRP3YxSEnuHlZ2CVk
+	 +oXHXoWFRWOYm2QQwan1ZBcH0uN0zFQjfFJ5ui5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.1 260/372] i3c: master: svc: fix ibi may not return mandatory data byte
+	Shinhyung Kang <s47.kang@samsung.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 74/97] ALSA: info: Fix potential deadlock at disconnection
 Date: Fri, 24 Nov 2023 17:50:47 +0000
-Message-ID: <20231124172019.155198570@linuxfoundation.org>
+Message-ID: <20231124171936.918658557@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit c85e209b799f12d18a90ae6353b997b1bb1274a5 upstream.
+commit c7a60651953359f98dbf24b43e1bf561e1573ed4 upstream.
 
-MSTATUS[RXPEND] is only updated after the data transfer cycle started. This
-creates an issue when the I3C clock is slow, and the CPU is running fast
-enough that MSTATUS[RXPEND] may not be updated when the code reaches
-checking point. As a result, mandatory data can be missed.
+As reported recently, ALSA core info helper may cause a deadlock at
+the forced device disconnection during the procfs operation.
 
-Add a wait for MSTATUS[COMPLETE] to ensure that all mandatory data is
-already in FIFO. It also works without mandatory data.
+The proc_remove() (that is called from the snd_card_disconnect()
+helper) has a synchronization of the pending procfs accesses via
+wait_for_completion().  Meanwhile, ALSA procfs helper takes the global
+mutex_lock(&info_mutex) at both the proc_open callback and
+snd_card_info_disconnect() helper.  Since the proc_open can't finish
+due to the mutex lock, wait_for_completion() never returns, either,
+hence it deadlocks.
 
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-4-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+	TASK#1				TASK#2
+	proc_reg_open()
+	  takes use_pde()
+	snd_info_text_entry_open()
+					snd_card_disconnect()
+					snd_info_card_disconnect()
+					  takes mutex_lock(&info_mutex)
+					proc_remove()
+					wait_for_completion(unused_pde)
+					  ... waiting task#1 closes
+	mutex_lock(&info_mutex)
+		=> DEADLOCK
+
+This patch is a workaround for avoiding the deadlock scenario above.
+
+The basic strategy is to move proc_remove() call outside the mutex
+lock.  proc_remove() can work gracefully without extra locking, and it
+can delete the tree recursively alone.  So, we call proc_remove() at
+snd_info_card_disconnection() at first, then delete the rest resources
+recursively within the info_mutex lock.
+
+After the change, the function snd_info_disconnect() doesn't do
+disconnection by itself any longer, but it merely clears the procfs
+pointer.  So rename the function to snd_info_clear_entries() for
+avoiding confusion.
+
+The similar change is applied to snd_info_free_entry(), too.  Since
+the proc_remove() is called only conditionally with the non-NULL
+entry->p, it's skipped after the snd_info_clear_entries() call.
+
+Reported-by: Shinhyung Kang <s47.kang@samsung.com>
+Closes: https://lore.kernel.org/r/664457955.21699345385931.JavaMail.epsvc@epcpadp4
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231109141954.4283-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/core/info.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -325,6 +325,7 @@ static int svc_i3c_master_handle_ibi(str
- 	struct i3c_ibi_slot *slot;
- 	unsigned int count;
- 	u32 mdatactrl;
-+	int ret, val;
- 	u8 *buf;
+--- a/sound/core/info.c
++++ b/sound/core/info.c
+@@ -72,7 +72,7 @@ struct snd_info_private_data {
+ };
  
- 	slot = i3c_generic_ibi_get_free_slot(data->ibi_pool);
-@@ -334,6 +335,13 @@ static int svc_i3c_master_handle_ibi(str
- 	slot->len = 0;
- 	buf = slot->data;
+ static int snd_info_version_init(void);
+-static void snd_info_disconnect(struct snd_info_entry *entry);
++static void snd_info_clear_entries(struct snd_info_entry *entry);
  
-+	ret = readl_relaxed_poll_timeout(master->regs + SVC_I3C_MSTATUS, val,
-+						SVC_I3C_MSTATUS_COMPLETE(val), 0, 1000);
-+	if (ret) {
-+		dev_err(master->dev, "Timeout when polling for COMPLETE\n");
-+		return ret;
-+	}
+ /*
+ 
+@@ -598,11 +598,16 @@ void snd_info_card_disconnect(struct snd
+ {
+ 	if (!card)
+ 		return;
+-	mutex_lock(&info_mutex);
 +
- 	while (SVC_I3C_MSTATUS_RXPEND(readl(master->regs + SVC_I3C_MSTATUS))  &&
- 	       slot->len < SVC_I3C_FIFO_SIZE) {
- 		mdatactrl = readl(master->regs + SVC_I3C_MDATACTRL);
+ 	proc_remove(card->proc_root_link);
+-	card->proc_root_link = NULL;
+ 	if (card->proc_root)
+-		snd_info_disconnect(card->proc_root);
++		proc_remove(card->proc_root->p);
++
++	mutex_lock(&info_mutex);
++	if (card->proc_root)
++		snd_info_clear_entries(card->proc_root);
++	card->proc_root_link = NULL;
++	card->proc_root = NULL;
+ 	mutex_unlock(&info_mutex);
+ }
+ 
+@@ -776,15 +781,14 @@ struct snd_info_entry *snd_info_create_c
+ }
+ EXPORT_SYMBOL(snd_info_create_card_entry);
+ 
+-static void snd_info_disconnect(struct snd_info_entry *entry)
++static void snd_info_clear_entries(struct snd_info_entry *entry)
+ {
+ 	struct snd_info_entry *p;
+ 
+ 	if (!entry->p)
+ 		return;
+ 	list_for_each_entry(p, &entry->children, list)
+-		snd_info_disconnect(p);
+-	proc_remove(entry->p);
++		snd_info_clear_entries(p);
+ 	entry->p = NULL;
+ }
+ 
+@@ -801,8 +805,9 @@ void snd_info_free_entry(struct snd_info
+ 	if (!entry)
+ 		return;
+ 	if (entry->p) {
++		proc_remove(entry->p);
+ 		mutex_lock(&info_mutex);
+-		snd_info_disconnect(entry);
++		snd_info_clear_entries(entry);
+ 		mutex_unlock(&info_mutex);
+ 	}
+ 
 
 
 
