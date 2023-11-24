@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79E307F7B08
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:01:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BB77F7AD7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35054280F5A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:01:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B681C20C59
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2E8381D8;
-	Fri, 24 Nov 2023 18:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6907F39FEA;
+	Fri, 24 Nov 2023 17:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbzlau8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhqqiVgL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899CC39FDA;
-	Fri, 24 Nov 2023 18:01:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18884C433C8;
-	Fri, 24 Nov 2023 18:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2730739FE7;
+	Fri, 24 Nov 2023 17:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A79AC433C7;
+	Fri, 24 Nov 2023 17:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848870;
-	bh=BbIl4uNIg1xDsD2eDQ0hZ4xU5c5c8y8FRAD1n2kBvtA=;
+	s=korg; t=1700848750;
+	bh=xSYtaafWu1nN7zqonkHuEnT7hsbaTuB39iFxzBLS9xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jbzlau8dg9wBB/riJ26f+ztUYK9HeF/HWLDP5vxOnuTMPAps0JS7IhFXX2S9RLd3y
-	 iWZ6BREgRmSeaEKCKUWer6TM1DiiY6vNtA1pMAopykq7cy4Ho7V3Q9Ko6eiEedY4GG
-	 VLWmD1G9RFfaDzgeLHYHg4OwfJB7EF/3Jir4E65I=
+	b=WhqqiVgL6eIAgZPVVGy5liaMx2kwTIv6K0/So8s/N0xrym+3Fvbj5RJTH3l+RNSRY
+	 bQMNASuyewRv+kIgPpcEU+7AlsPY99ABR3o5X1R0baOUU3s4XAthBzWfnWO/DvJcH0
+	 CRsXsz5Q/wPpXRLiekB4+C/nLXs5YMDe8es+nG7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com,
-	Juntong Deng <juntong.deng@outlook.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 15/57] fs/jfs: Add validity check for db_maxag and db_agpref
+	Eric Biggers <ebiggers@google.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 4.19 66/97] quota: explicitly forbid quota files from being encrypted
 Date: Fri, 24 Nov 2023 17:50:39 +0000
-Message-ID: <20231124171930.846872367@linuxfoundation.org>
+Message-ID: <20231124171936.602246182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +52,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 64933ab7b04881c6c18b21ff206c12278341c72e ]
+commit d3cc1b0be258191d6360c82ea158c2972f8d3991 upstream.
 
-Both db_maxag and db_agpref are used as the index of the
-db_agfree array, but there is currently no validity check for
-db_maxag and db_agpref, which can lead to errors.
+Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
+fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
+f2fs with test_dummy_encryption in the mount options:
 
-The following is related bug reported by Syzbot:
+$ kvm-xfstests -c f2fs/encrypt generic/270
+[...]
+WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
 
-UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:639:20
-index 7936 is out of range for type 'atomic_t[128]'
+The cause of the WARNING is that not all encrypted inodes have been
+evicted before fscrypt_destroy_keyring() is called, which violates an
+assumption.  This happens because the test uses an external quota file,
+which gets automatically encrypted due to test_dummy_encryption.
 
-Add checking that the values of db_maxag and db_agpref are valid
-indexes for the db_agfree array.
+Encryption of quota files has never really been supported.  On ext4,
+ext4_quota_read() does not decrypt the data, so encrypted quota files
+are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
+the pagecache, so trying to use an encrypted quota file gets farther,
+resulting in the issue described above being possible.  But this was
+never intended to be possible, and there is no use case for it.
 
-Reported-by: syzbot+38e876a8aa44b7115c76@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=38e876a8aa44b7115c76
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, make the quota support layer explicitly reject using
+IS_ENCRYPTED inodes when quotaon is attempted.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230905003227.326998-1-ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dmap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/quota/dquot.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 070638718be32..713f11dee52aa 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -208,6 +208,12 @@ int dbMount(struct inode *ipbmap)
- 	bmp->db_maxlevel = le32_to_cpu(dbmp_le->dn_maxlevel);
- 	bmp->db_maxag = le32_to_cpu(dbmp_le->dn_maxag);
- 	bmp->db_agpref = le32_to_cpu(dbmp_le->dn_agpref);
-+	if (bmp->db_maxag >= MAXAG || bmp->db_maxag < 0 ||
-+		bmp->db_agpref >= MAXAG || bmp->db_agpref < 0) {
-+		err = -EINVAL;
-+		goto err_release_metapage;
-+	}
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2385,6 +2385,20 @@ static int vfs_setup_quota_inode(struct
+ 	if (sb_has_quota_loaded(sb, type))
+ 		return -EBUSY;
+ 
++	/*
++	 * Quota files should never be encrypted.  They should be thought of as
++	 * filesystem metadata, not user data.  New-style internal quota files
++	 * cannot be encrypted by users anyway, but old-style external quota
++	 * files could potentially be incorrectly created in an encrypted
++	 * directory, hence this explicit check.  Some reasons why encrypted
++	 * quota files don't work include: (1) some filesystems that support
++	 * encryption don't handle it in their quota_read and quota_write, and
++	 * (2) cleaning up encrypted quota files at unmount would need special
++	 * consideration, as quota files are cleaned up later than user files.
++	 */
++	if (IS_ENCRYPTED(inode))
++		return -EINVAL;
 +
- 	bmp->db_aglevel = le32_to_cpu(dbmp_le->dn_aglevel);
- 	bmp->db_agheight = le32_to_cpu(dbmp_le->dn_agheight);
- 	bmp->db_agwidth = le32_to_cpu(dbmp_le->dn_agwidth);
--- 
-2.42.0
-
+ 	dqopt->files[type] = igrab(inode);
+ 	if (!dqopt->files[type])
+ 		return -EIO;
 
 
 
