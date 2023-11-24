@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B7957F8109
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA9097F7AA5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9844BB21B46
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B8E281624
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65D835F1A;
-	Fri, 24 Nov 2023 18:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF30381DE;
+	Fri, 24 Nov 2023 17:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAxT3BYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpk6rjcp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7353928DBA;
-	Fri, 24 Nov 2023 18:54:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0155CC433C7;
-	Fri, 24 Nov 2023 18:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A739939FD0;
+	Fri, 24 Nov 2023 17:57:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E44C433C7;
+	Fri, 24 Nov 2023 17:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852099;
-	bh=zpZTvrsUBXIJYinTBpsjIAmxr2NLlH0Msqqn6TXw2K4=;
+	s=korg; t=1700848632;
+	bh=ksfeRZ0nMeRBrEtF3uSGx8EtUEB+bELo7abjesGo/MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAxT3BYA/YJOacS7CpzNVbvJX66bvdNswfWuJ7gQZVtwkO7ZX+jRCMNNp9hHeyMNb
-	 KXFMynikDqtezHjk+ByMei3bLIDRvK5WMu3eFm2iaTSe1apYzECe/CJ/FkSnNxa4mM
-	 zOtFBE5CKM3AmrBWPL+bHFewZIx9FzX1BItOuZHM=
+	b=Vpk6rjcpmaxYn/6inp/2vmVn+gvqMBr8CW+Jiqvu2Lu7ZjvzwyNSdQVAPgdIGzdzL
+	 8B/ZEyBrtMq6/JUDa0NA787H6MGlkFf5i7p5o/eIwhZZY+I+aJ4VjSslTLusTshGQ0
+	 fMrbyc24BqjYRvhRS63YPnTJwxM7OLlORg6mZnzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.1 195/372] wifi: ath11k: fix temperature event locking
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 09/97] net: annotate data-races around sk->sk_tx_queue_mapping
 Date: Fri, 24 Nov 2023 17:49:42 +0000
-Message-ID: <20231124172016.949880571@linuxfoundation.org>
+Message-ID: <20231124171934.484871420@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,76 +53,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 1a5352a81b4720ba43d9c899974e3bddf7ce0ce8 upstream.
+[ Upstream commit 0bb4d124d34044179b42a769a0c76f389ae973b6 ]
 
-The ath11k active pdevs are protected by RCU but the temperature event
-handling code calling ath11k_mac_get_ar_by_pdev_id() was not marked as a
-read-side critical section as reported by RCU lockdep:
+This field can be read or written without socket lock being held.
 
-	=============================
-	WARNING: suspicious RCU usage
-	6.6.0-rc6 #7 Not tainted
-	-----------------------------
-	drivers/net/wireless/ath/ath11k/mac.c:638 suspicious rcu_dereference_check() usage!
+Add annotations to avoid load-store tearing.
 
-	other info that might help us debug this:
-
-	rcu_scheduler_active = 2, debug_locks = 1
-	no locks held by swapper/0/0.
-	...
-	Call trace:
-	...
-	 lockdep_rcu_suspicious+0x16c/0x22c
-	 ath11k_mac_get_ar_by_pdev_id+0x194/0x1b0 [ath11k]
-	 ath11k_wmi_tlv_op_rx+0xa84/0x2c1c [ath11k]
-	 ath11k_htc_rx_completion_handler+0x388/0x510 [ath11k]
-
-Mark the code in question as an RCU read-side critical section to avoid
-any potential use-after-free issues.
-
-Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.23
-
-Fixes: a41d10348b01 ("ath11k: add thermal sensor device support")
-Cc: stable@vger.kernel.org      # 5.7
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20231019153115.26401-2-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/wmi.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/net/sock.h | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7775,15 +7775,19 @@ ath11k_wmi_pdev_temperature_event(struct
- 	ath11k_dbg(ab, ATH11K_DBG_WMI,
- 		   "pdev temperature ev temp %d pdev_id %d\n", ev->temp, ev->pdev_id);
- 
-+	rcu_read_lock();
-+
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, ev->pdev_id);
- 	if (!ar) {
- 		ath11k_warn(ab, "invalid pdev id in pdev temperature ev %d", ev->pdev_id);
--		kfree(tb);
--		return;
-+		goto exit;
- 	}
- 
- 	ath11k_thermal_event_temperature(ar, ev->temp);
- 
-+exit:
-+	rcu_read_unlock();
-+
- 	kfree(tb);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 373e34b46a3c9..c0df14e5a0754 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1759,21 +1759,33 @@ static inline void sk_tx_queue_set(struct sock *sk, int tx_queue)
+ 	/* sk_tx_queue_mapping accept only upto a 16-bit value */
+ 	if (WARN_ON_ONCE((unsigned short)tx_queue >= USHRT_MAX))
+ 		return;
+-	sk->sk_tx_queue_mapping = tx_queue;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, tx_queue);
  }
  
+ #define NO_QUEUE_MAPPING	USHRT_MAX
+ 
+ static inline void sk_tx_queue_clear(struct sock *sk)
+ {
+-	sk->sk_tx_queue_mapping = NO_QUEUE_MAPPING;
++	/* Paired with READ_ONCE() in sk_tx_queue_get() and
++	 * other WRITE_ONCE() because socket lock might be not held.
++	 */
++	WRITE_ONCE(sk->sk_tx_queue_mapping, NO_QUEUE_MAPPING);
+ }
+ 
+ static inline int sk_tx_queue_get(const struct sock *sk)
+ {
+-	if (sk && sk->sk_tx_queue_mapping != NO_QUEUE_MAPPING)
+-		return sk->sk_tx_queue_mapping;
++	if (sk) {
++		/* Paired with WRITE_ONCE() in sk_tx_queue_clear()
++		 * and sk_tx_queue_set().
++		 */
++		int val = READ_ONCE(sk->sk_tx_queue_mapping);
+ 
++		if (val != NO_QUEUE_MAPPING)
++			return val;
++	}
+ 	return -1;
+ }
+ 
+-- 
+2.42.0
+
 
 
 
