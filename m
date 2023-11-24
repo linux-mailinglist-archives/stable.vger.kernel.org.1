@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18257F8187
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7774A7F7FC6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E447B1C217ED
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16829B21A2A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08192364A7;
-	Fri, 24 Nov 2023 18:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572ED381CD;
+	Fri, 24 Nov 2023 18:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zS8EIkvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="smFcLIpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4BE321AD;
-	Fri, 24 Nov 2023 18:59:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4075C433C7;
-	Fri, 24 Nov 2023 18:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E04033CC7;
+	Fri, 24 Nov 2023 18:44:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4234DC433C7;
+	Fri, 24 Nov 2023 18:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852367;
-	bh=7exE/3vzJFEMEKV1qaPk67CkjtwgotQ5CiBcQIgAPbY=;
+	s=korg; t=1700851451;
+	bh=7HkfxB/dWMDRuAU4XNKA5tL/+0RLax+9MCnE45guPsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zS8EIkvYLW7NfA3UmzQeWaaVFjYwV5txAeRD6vTjxDntsHkuOsbhxVMf6YNwIXQiA
-	 0FiacHxCUuUQuN+QT/Nwl21v7gPEEcB8Ckkbqz5a4ClAS5fkXfqok+yZY5DBnJPqs/
-	 M7wBsEcsd4D0l6dtuFjBMViuPvDdMHcvqYKECLw4=
+	b=smFcLIpMbBev4J/zc/9YBLOutb2tZJ81Oi4R4iTX4rCO5M0WyC6sb2g3/smH0MCgj
+	 30SqB4/gmBP07N27iJHYh5iuDUp0d3mpyb7zZrDE/UrdRdh2iezE6O/Ay6Y5FWBu4g
+	 z77o9e49C9JazzhsGp8ACvMN7d/Hh+OJSLTSTsp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Richter <rrichter@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 302/372] cxl/mem: Move devm_cxl_add_endpoint() from cxl_core to cxl_mem
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 453/491] media: qcom: camss: Fix missing vfe_lite clocks check
 Date: Fri, 24 Nov 2023 17:51:29 +0000
-Message-ID: <20231124172020.502942054@linuxfoundation.org>
+Message-ID: <20231124172038.227740690@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,198 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 7592d935b7ae71e2b4ff93830743c39a9d13d113 ]
+commit b6e1bdca463a932c1ac02caa7d3e14bf39288e0c upstream.
 
-tl;dr: Clean up an unnecessary export and enable cxl_test.
+check_clock doesn't account for vfe_lite which means that vfe_lite will
+never get validated by this routine. Add the clock name to the expected set
+to remediate.
 
-An RCD (Restricted CXL Device), in contrast to a typical CXL device in
-a VH topology, obtains its component registers from the bottom half of
-the associated CXL host bridge RCRB (Root Complex Register Block). In
-turn this means that cxl_rcrb_to_component() needs to be called from
-devm_cxl_add_endpoint().
-
-Presently devm_cxl_add_endpoint() is part of the CXL core, but the only
-user is the CXL mem module. Move it from cxl_core to cxl_mem to not only
-get rid of an unnecessary export, but to also enable its call out to
-cxl_rcrb_to_component(), in a subsequent patch, to be mocked by
-cxl_test. Recall that cxl_test can only mock exported symbols, and since
-cxl_rcrb_to_component() is itself inside the core, all callers must be
-outside of cxl_core to allow cxl_test to mock it.
-
-Reviewed-by: Robert Richter <rrichter@amd.com>
-Link: https://lore.kernel.org/r/166993045072.1882361.13944923741276843683.stgit@dwillia2-xfh.jf.intel.com
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 98a04c7aced2 ("cxl/region: Fix x1 root-decoder granularity calculations")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7319cdf189bb ("media: camss: Add support for VFE hardware version Titan 170")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/core.h |  8 --------
- drivers/cxl/core/port.c | 39 ---------------------------------------
- drivers/cxl/cxl.h       |  2 --
- drivers/cxl/cxlmem.h    |  9 +++++++++
- drivers/cxl/mem.c       | 38 ++++++++++++++++++++++++++++++++++++++
- 5 files changed, 47 insertions(+), 49 deletions(-)
+ drivers/media/platform/qcom/camss/camss-vfe.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/core/core.h b/drivers/cxl/core/core.h
-index 1d8f87be283fb..8c04672dca563 100644
---- a/drivers/cxl/core/core.h
-+++ b/drivers/cxl/core/core.h
-@@ -58,14 +58,6 @@ extern struct rw_semaphore cxl_dpa_rwsem;
+--- a/drivers/media/platform/qcom/camss/camss-vfe.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe.c
+@@ -535,7 +535,8 @@ static int vfe_check_clock_rates(struct
+ 		struct camss_clock *clock = &vfe->clock[i];
  
- bool is_switch_decoder(struct device *dev);
- struct cxl_switch_decoder *to_cxl_switch_decoder(struct device *dev);
--static inline struct cxl_ep *cxl_ep_load(struct cxl_port *port,
--					 struct cxl_memdev *cxlmd)
--{
--	if (!port)
--		return NULL;
--
--	return xa_load(&port->endpoints, (unsigned long)&cxlmd->dev);
--}
+ 		if (!strcmp(clock->name, "vfe0") ||
+-		    !strcmp(clock->name, "vfe1")) {
++		    !strcmp(clock->name, "vfe1") ||
++		    !strcmp(clock->name, "vfe_lite")) {
+ 			u64 min_rate = 0;
+ 			unsigned long rate;
  
- int cxl_memdev_init(void);
- void cxl_memdev_exit(void);
-diff --git a/drivers/cxl/core/port.c b/drivers/cxl/core/port.c
-index 93560d749aed8..585c2b43c7c7f 100644
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -1151,45 +1151,6 @@ static void reap_dports(struct cxl_port *port)
- 	}
- }
- 
--int devm_cxl_add_endpoint(struct cxl_memdev *cxlmd,
--			  struct cxl_dport *parent_dport)
--{
--	struct cxl_port *parent_port = parent_dport->port;
--	struct cxl_dev_state *cxlds = cxlmd->cxlds;
--	struct cxl_port *endpoint, *iter, *down;
--	int rc;
--
--	/*
--	 * Now that the path to the root is established record all the
--	 * intervening ports in the chain.
--	 */
--	for (iter = parent_port, down = NULL; !is_cxl_root(iter);
--	     down = iter, iter = to_cxl_port(iter->dev.parent)) {
--		struct cxl_ep *ep;
--
--		ep = cxl_ep_load(iter, cxlmd);
--		ep->next = down;
--	}
--
--	endpoint = devm_cxl_add_port(&parent_port->dev, &cxlmd->dev,
--				     cxlds->component_reg_phys, parent_dport);
--	if (IS_ERR(endpoint))
--		return PTR_ERR(endpoint);
--
--	rc = cxl_endpoint_autoremove(cxlmd, endpoint);
--	if (rc)
--		return rc;
--
--	if (!endpoint->dev.driver) {
--		dev_err(&cxlmd->dev, "%s failed probe\n",
--			dev_name(&endpoint->dev));
--		return -ENXIO;
--	}
--
--	return 0;
--}
--EXPORT_SYMBOL_NS_GPL(devm_cxl_add_endpoint, CXL);
--
- static void cxl_detach_ep(void *data)
- {
- 	struct cxl_memdev *cxlmd = data;
-diff --git a/drivers/cxl/cxl.h b/drivers/cxl/cxl.h
-index ac75554b5d763..8787ef1e64047 100644
---- a/drivers/cxl/cxl.h
-+++ b/drivers/cxl/cxl.h
-@@ -562,8 +562,6 @@ struct pci_bus *cxl_port_to_pci_bus(struct cxl_port *port);
- struct cxl_port *devm_cxl_add_port(struct device *host, struct device *uport,
- 				   resource_size_t component_reg_phys,
- 				   struct cxl_dport *parent_dport);
--int devm_cxl_add_endpoint(struct cxl_memdev *cxlmd,
--			  struct cxl_dport *parent_dport);
- struct cxl_port *find_cxl_root(struct device *dev);
- int devm_cxl_enumerate_ports(struct cxl_memdev *cxlmd);
- int cxl_bus_rescan(void);
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index 88e3a8e54b6a4..7e50b4e93ee53 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -76,6 +76,15 @@ static inline bool is_cxl_endpoint(struct cxl_port *port)
- 
- struct cxl_memdev *devm_cxl_add_memdev(struct cxl_dev_state *cxlds);
- 
-+static inline struct cxl_ep *cxl_ep_load(struct cxl_port *port,
-+					 struct cxl_memdev *cxlmd)
-+{
-+	if (!port)
-+		return NULL;
-+
-+	return xa_load(&port->endpoints, (unsigned long)&cxlmd->dev);
-+}
-+
- /**
-  * struct cxl_mbox_cmd - A command to be submitted to hardware.
-  * @opcode: (input) The command set and command submitted to hardware.
-diff --git a/drivers/cxl/mem.c b/drivers/cxl/mem.c
-index 64ccf053d32c3..80263d12a8541 100644
---- a/drivers/cxl/mem.c
-+++ b/drivers/cxl/mem.c
-@@ -45,6 +45,44 @@ static int cxl_mem_dpa_show(struct seq_file *file, void *data)
- 	return 0;
- }
- 
-+static int devm_cxl_add_endpoint(struct cxl_memdev *cxlmd,
-+				 struct cxl_dport *parent_dport)
-+{
-+	struct cxl_port *parent_port = parent_dport->port;
-+	struct cxl_dev_state *cxlds = cxlmd->cxlds;
-+	struct cxl_port *endpoint, *iter, *down;
-+	int rc;
-+
-+	/*
-+	 * Now that the path to the root is established record all the
-+	 * intervening ports in the chain.
-+	 */
-+	for (iter = parent_port, down = NULL; !is_cxl_root(iter);
-+	     down = iter, iter = to_cxl_port(iter->dev.parent)) {
-+		struct cxl_ep *ep;
-+
-+		ep = cxl_ep_load(iter, cxlmd);
-+		ep->next = down;
-+	}
-+
-+	endpoint = devm_cxl_add_port(&parent_port->dev, &cxlmd->dev,
-+				     cxlds->component_reg_phys, parent_dport);
-+	if (IS_ERR(endpoint))
-+		return PTR_ERR(endpoint);
-+
-+	rc = cxl_endpoint_autoremove(cxlmd, endpoint);
-+	if (rc)
-+		return rc;
-+
-+	if (!endpoint->dev.driver) {
-+		dev_err(&cxlmd->dev, "%s failed probe\n",
-+			dev_name(&endpoint->dev));
-+		return -ENXIO;
-+	}
-+
-+	return 0;
-+}
-+
- static int cxl_mem_probe(struct device *dev)
- {
- 	struct cxl_memdev *cxlmd = to_cxl_memdev(dev);
--- 
-2.42.0
-
 
 
 
