@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B297F806C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5867F7C88
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B850B217A7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27F11F20FB7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1A233CC7;
-	Fri, 24 Nov 2023 18:49:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7E12AF00;
+	Fri, 24 Nov 2023 18:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSf6DRLE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSQWG1cU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768612C87B;
-	Fri, 24 Nov 2023 18:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA48C433C8;
-	Fri, 24 Nov 2023 18:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D6F33CFD;
+	Fri, 24 Nov 2023 18:16:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6795C433C8;
+	Fri, 24 Nov 2023 18:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851773;
-	bh=st4QvdiDEJ2u4L8Pc8S6x0JKS8QP2/xcxUlm6V2vqCE=;
+	s=korg; t=1700849763;
+	bh=NclvZZpwvAsw+47Jr6QGR1skV9Ox1dXkEHgCHhOnb6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSf6DRLE0er7ObuaUweSKuYksCE9U0MI4V8nNvaBksCnzW84EOJg/y7G3DEuV1dGC
-	 NihA3ctEzSkYEV4PBG/WmmrCmay+J//25oR27VezZ4GWry/iY+0New2GNHpQFCAZSe
-	 4hjy6+My0cOaXn7kvAFAkdvmu+rL589sBH8NfF1g=
+	b=WSQWG1cUtRCC5N6U4elbqlHlpG8d+aR5CbeXE2rhIS+Zd7uO8P3L4V/pp0W0QnBcD
+	 ImnBnoXZr4I5+OmOxK4LwQffmfB2FED+/iROzZRFfukBRsyeBEWGUt2sKlb6jDexID
+	 qlWkHQrCoVoMUY7Qfn/1aYEyW3RKFt8+aRGeE15k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/372] f2fs: fix error handling of __get_node_page
+	Christian Marangi <ansuelsmth@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 311/530] cpufreq: stats: Fix buffer overflow detection in trans_stats()
 Date: Fri, 24 Nov 2023 17:47:57 +0000
-Message-ID: <20231124172013.536353329@linuxfoundation.org>
+Message-ID: <20231124172037.502387737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit 9b4c8dd99fe48721410741651d426015e03a4b7a ]
+commit ea167a7fc2426f7685c3735e104921c1a20a6d3f upstream.
 
-Use f2fs_handle_error to record inconsistent node block error
-and return -EFSCORRUPTED instead of -EINVAL.
+Commit 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential
+buffer overflow") switched from snprintf to the more secure scnprintf
+but never updated the exit condition for PAGE_SIZE.
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As the commit say and as scnprintf document, what scnprintf returns what
+is actually written not counting the '\0' end char. This results in the
+case of len exceeding the size, len set to PAGE_SIZE - 1, as it can be
+written at max PAGE_SIZE - 1 (as '\0' is not counted)
+
+Because of len is never set to PAGE_SIZE, the function never break early,
+never prints the warning and never return -EFBIG.
+
+Fix this by changing the condition to PAGE_SIZE - 1 to correctly trigger
+the error.
+
+Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
+Fixes: 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential buffer overflow")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+[ rjw: Subject and changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/node.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq_stats.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index a010b4bc36d2c..b73d44df9423b 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -1455,7 +1455,8 @@ static struct page *__get_node_page(struct f2fs_sb_info *sbi, pgoff_t nid,
- 			  ofs_of_node(page), cpver_of_node(page),
- 			  next_blkaddr_of_node(page));
- 	set_sbi_flag(sbi, SBI_NEED_FSCK);
--	err = -EINVAL;
-+	f2fs_handle_error(sbi, ERROR_INCONSISTENT_FOOTER);
-+	err = -EFSCORRUPTED;
- out_err:
- 	ClearPageUptodate(page);
- out_put_err:
--- 
-2.42.0
-
+--- a/drivers/cpufreq/cpufreq_stats.c
++++ b/drivers/cpufreq/cpufreq_stats.c
+@@ -131,23 +131,23 @@ static ssize_t show_trans_table(struct c
+ 	len += sysfs_emit_at(buf, len, "   From  :    To\n");
+ 	len += sysfs_emit_at(buf, len, "         : ");
+ 	for (i = 0; i < stats->state_num; i++) {
+-		if (len >= PAGE_SIZE)
++		if (len >= PAGE_SIZE - 1)
+ 			break;
+ 		len += sysfs_emit_at(buf, len, "%9u ", stats->freq_table[i]);
+ 	}
+-	if (len >= PAGE_SIZE)
+-		return PAGE_SIZE;
++	if (len >= PAGE_SIZE - 1)
++		return PAGE_SIZE - 1;
+ 
+ 	len += sysfs_emit_at(buf, len, "\n");
+ 
+ 	for (i = 0; i < stats->state_num; i++) {
+-		if (len >= PAGE_SIZE)
++		if (len >= PAGE_SIZE - 1)
+ 			break;
+ 
+ 		len += sysfs_emit_at(buf, len, "%9u: ", stats->freq_table[i]);
+ 
+ 		for (j = 0; j < stats->state_num; j++) {
+-			if (len >= PAGE_SIZE)
++			if (len >= PAGE_SIZE - 1)
+ 				break;
+ 
+ 			if (pending)
+@@ -157,12 +157,12 @@ static ssize_t show_trans_table(struct c
+ 
+ 			len += sysfs_emit_at(buf, len, "%9u ", count);
+ 		}
+-		if (len >= PAGE_SIZE)
++		if (len >= PAGE_SIZE - 1)
+ 			break;
+ 		len += sysfs_emit_at(buf, len, "\n");
+ 	}
+ 
+-	if (len >= PAGE_SIZE) {
++	if (len >= PAGE_SIZE - 1) {
+ 		pr_warn_once("cpufreq transition table exceeds PAGE_SIZE. Disabling\n");
+ 		return -EFBIG;
+ 	}
 
 
 
