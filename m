@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 564607F7FDB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:44:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8897F7B00
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10A7628258D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:44:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 915711C20AB4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0592C85B;
-	Fri, 24 Nov 2023 18:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CF039FF8;
+	Fri, 24 Nov 2023 18:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ulMSFbhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xKLjGzvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CB42D787;
-	Fri, 24 Nov 2023 18:44:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE5DC433C8;
-	Fri, 24 Nov 2023 18:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52026381D8;
+	Fri, 24 Nov 2023 18:00:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C415C433C8;
+	Fri, 24 Nov 2023 18:00:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851484;
-	bh=LeuySh723+ahPH15xaU1SoDDSzVfZNLUZF9VCrnmRgY=;
+	s=korg; t=1700848852;
+	bh=PQwhO7kI9WSkBXZXKhqnt6/4HDFuCsQtqbu/Ijza4Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ulMSFbhdgjWW23z9sR1I9OU+wc8jPKws0WoLqjlJBN/jnGO/69DXgtT+2F17yJ9jR
-	 i6PRoS8+vbIHuH7WGyw3Jnkw636dS10p+MB4+IkjlRkXMFC8Cnain+Cb7aXTg8xCti
-	 dkM5Ri6sQLFJP92p1wEkn8JwtoSX6KUprmdNNdQc=
+	b=xKLjGzvYtRAuRwDlKp+5XQrtm22o/PmHR0iIVPcYfwXhtZyun3pqzfPvKmmQ5LR5z
+	 zXcITXmsb2WINutaknHkHl6kqnPKBY996U+cqXTbajXBHnJujFELZVXDywTjFMto5y
+	 m7qTFov0Y84nzUYCPmL+0/Y91bXe+O9ulDHWUwos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.5 432/491] NFSD: Update nfsd_cache_append() to use xdr_stream
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Kunkun Jiang <jiangkunkun@huawei.com>
+Subject: [PATCH 4.19 95/97] scsi: virtio_scsi: limit number of hw queues by nr_cpu_ids
 Date: Fri, 24 Nov 2023 17:51:08 +0000
-Message-ID: <20231124172037.595160560@linuxfoundation.org>
+Message-ID: <20231124171937.759122979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,61 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-commit 49cecd8628a9855cd993792a0377559ea32d5e7c upstream.
+commit 1978f30a87732d4d9072a20abeded9fe17884f1b upstream.
 
-When inserting a DRC-cached response into the reply buffer, ensure
-that the reply buffer's xdr_stream is updated properly. Otherwise
-the server will send a garbage response.
+When tag_set->nr_maps is 1, the block layer limits the number of hw queues
+by nr_cpu_ids. No matter how many hw queues are used by virtio-scsi, as it
+has (tag_set->nr_maps == 1), it can use at most nr_cpu_ids hw queues.
 
-Cc: stable@vger.kernel.org # v6.3+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+In addition, specifically for pci scenario, when the 'num_queues' specified
+by qemu is more than maxcpus, virtio-scsi would not be able to allocate
+more than maxcpus vectors in order to have a vector for each queue. As a
+result, it falls back into MSI-X with one vector for config and one shared
+for queues.
+
+Considering above reasons, this patch limits the number of hw queues used
+by virtio-scsi by nr_cpu_ids.
+
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Kunkun Jiang <jiangkunkun@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfscache.c |   21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ drivers/scsi/virtio_scsi.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -582,24 +582,17 @@ void nfsd_cache_update(struct svc_rqst *
- 	return;
- }
+--- a/drivers/scsi/virtio_scsi.c
++++ b/drivers/scsi/virtio_scsi.c
+@@ -853,6 +853,7 @@ static int virtscsi_probe(struct virtio_
  
--/*
-- * Copy cached reply to current reply buffer. Should always fit.
-- * FIXME as reply is in a page, we should just attach the page, and
-- * keep a refcount....
-- */
- static int
- nfsd_cache_append(struct svc_rqst *rqstp, struct kvec *data)
- {
--	struct kvec	*vec = &rqstp->rq_res.head[0];
-+	__be32 *p;
+ 	/* We need to know how many queues before we allocate. */
+ 	num_queues = virtscsi_config_get(vdev, num_queues) ? : 1;
++	num_queues = min_t(unsigned int, nr_cpu_ids, num_queues);
  
--	if (vec->iov_len + data->iov_len > PAGE_SIZE) {
--		printk(KERN_WARNING "nfsd: cached reply too large (%zd).\n",
--				data->iov_len);
--		return 0;
--	}
--	memcpy((char*)vec->iov_base + vec->iov_len, data->iov_base, data->iov_len);
--	vec->iov_len += data->iov_len;
--	return 1;
-+	p = xdr_reserve_space(&rqstp->rq_res_stream, data->iov_len);
-+	if (unlikely(!p))
-+		return false;
-+	memcpy(p, data->iov_base, data->iov_len);
-+	xdr_commit_encode(&rqstp->rq_res_stream);
-+	return true;
- }
+ 	num_targets = virtscsi_config_get(vdev, max_target) + 1;
  
- /*
 
 
 
