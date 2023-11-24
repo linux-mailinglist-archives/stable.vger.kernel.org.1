@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287D17F7CF9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E4A7F7CDE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBD73B20DC9
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1CDE4B2148E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75BE3A8C3;
-	Fri, 24 Nov 2023 18:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7752E3A8C6;
+	Fri, 24 Nov 2023 18:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAbOGM6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXeeNfQ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF1039FF3;
-	Fri, 24 Nov 2023 18:20:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AFD9C433C8;
-	Fri, 24 Nov 2023 18:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A8939FF7;
+	Fri, 24 Nov 2023 18:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B78D6C433C8;
+	Fri, 24 Nov 2023 18:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850008;
-	bh=9+cdHLFVFVLGtebQB9U9enHBSoA8TA7cfsDSUPe1sZM=;
+	s=korg; t=1700849943;
+	bh=rTNvR+Sys52exE+Fvb7Ob2gYDty7133CT2fI9PFrhSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAbOGM6tBxLEeWNJLS8tW0no22BMYQ/e3ETZqvAKDZtvpQMjot5PEcYDOvnz3d2Iw
-	 RcJysTJmFmplTtpkRmD1ZgtMd4y+z9WuidCKc+FqEJ+ezmz2rN3Ov/YwDFqjky7BDM
-	 koW2s21FiZx6HoXvbMrQC129Iu7vvC2pyZ0QYIUw=
+	b=qXeeNfQ/YhYi4+jWlmGN9Ew2dJ68W0al1fF3s25VrKzf+nTWQXYZA4KuMcrwpWGpA
+	 DEIhzKEqgVJYYqKIHdr7Wfln7pWhTXQWt6D+ExjIp3+M25ya7IZPUCYfWM6PnbnDs1
+	 7pL2jsF/BIcwrT90CVO5Ilvhh4nq0KU/fcBAh69U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Amelie Delaunay <amelie.delaunay@foss.st.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 374/530] dmaengine: stm32-mdma: correct desc prep when channel running
-Date: Fri, 24 Nov 2023 17:49:00 +0000
-Message-ID: <20231124172039.392833575@linuxfoundation.org>
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.6 375/530] s390/mm: add missing arch_set_page_dat() call to vmem_crst_alloc()
+Date: Fri, 24 Nov 2023 17:49:01 +0000
+Message-ID: <20231124172039.425328585@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -57,49 +57,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alain Volmat <alain.volmat@foss.st.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
+commit 09cda0a400519b1541591c506e54c9c48e3101bf upstream.
 
-In case of the prep descriptor while the channel is already running, the
-CCR register value stored into the channel could already have its EN bit
-set.  This would lead to a bad transfer since, at start transfer time,
-enabling the channel while other registers aren't yet properly set.
-To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
-into the mdma channel structure.
+If the cmma no-dat feature is available all pages that are not used for
+dynamic address translation are marked as "no-dat" with the ESSA
+instruction. This information is visible to the hypervisor, so that the
+hypervisor can optimize purging of guest TLB entries. This also means that
+pages which are used for dynamic address translation must not be marked as
+"no-dat", since the hypervisor may then incorrectly not purge guest TLB
+entries.
 
-Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
-Cc: stable@vger.kernel.org
-Tested-by: Alain Volmat <alain.volmat@foss.st.com>
-Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Region and segment tables allocated via vmem_crst_alloc() are incorrectly
+marked as "no-dat", as soon as slab_is_available() returns true.
+
+Such tables are allocated e.g. when kernel page tables are split, memory is
+hotplugged, or a DCSS segment is loaded.
+
+Fix this by adding the missing arch_set_page_dat() call.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/stm32-mdma.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/mm/vmem.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/dma/stm32-mdma.c
-+++ b/drivers/dma/stm32-mdma.c
-@@ -489,7 +489,7 @@ static int stm32_mdma_set_xfer_param(str
- 	src_maxburst = chan->dma_config.src_maxburst;
- 	dst_maxburst = chan->dma_config.dst_maxburst;
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -12,6 +12,7 @@
+ #include <linux/hugetlb.h>
+ #include <linux/slab.h>
+ #include <linux/sort.h>
++#include <asm/page-states.h>
+ #include <asm/cacheflush.h>
+ #include <asm/nospec-branch.h>
+ #include <asm/pgalloc.h>
+@@ -45,8 +46,11 @@ void *vmem_crst_alloc(unsigned long val)
+ 	unsigned long *table;
  
--	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-+	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
- 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
- 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	table = vmem_alloc_pages(CRST_ALLOC_ORDER);
+-	if (table)
+-		crst_table_init(table, val);
++	if (!table)
++		return NULL;
++	crst_table_init(table, val);
++	if (slab_is_available())
++		arch_set_page_dat(virt_to_page(table), CRST_ALLOC_ORDER);
+ 	return table;
+ }
  
-@@ -965,7 +965,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
- 	if (!desc)
- 		return NULL;
- 
--	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
-+	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
- 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
- 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
- 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
 
 
 
