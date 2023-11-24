@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-2031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32267F8276
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:07:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3AB7F841A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CB561C23629
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87A228A4FE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D85364B7;
-	Fri, 24 Nov 2023 19:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261E137170;
+	Fri, 24 Nov 2023 19:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOzGyZFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oM79V16g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D103733076;
-	Fri, 24 Nov 2023 19:07:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0F5C433C8;
-	Fri, 24 Nov 2023 19:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597933CCA;
+	Fri, 24 Nov 2023 19:24:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6190DC433C8;
+	Fri, 24 Nov 2023 19:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852877;
-	bh=Cy4MEtaRKJ+YIB0rM/iSTEWQeK7OAQpVTTyq5czDZmc=;
+	s=korg; t=1700853840;
+	bh=mKWLAZwTs4F5xQDV2O2ZMrhnCQyTyun9tuxbmn2CQ5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOzGyZFNqXRxuIPhbt1ExK3Fg6PUfutZnSBBpeQyhUuqzWfI0OwQnUKWvTuUGxOVK
-	 Ow9OgyJzA9cM6tlumkIRrPn47qhzWU/VbzXwPQgziedrrxlUpRHuz1nDKPhzlojcmB
-	 3p1Rw230cQMowjGimsnoXfNVSE506VPiOITv2io8=
+	b=oM79V16gsEqaF8RzhZ0xaBa2tGvB1nnHrBw0QTRmdvEX44MYYFrliPeBdClhai9zw
+	 5oPK/D6iPIO1fiAuvJWSqJ87Z2v1UytbiFGAL1EgIqzBkNEwduZ2/+5skjT36ilE1H
+	 o5PMngjmxkQQDCkxr6Fkfll25ZAqIx5j3UqwYHCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 141/193] parisc: Prevent booting 64-bit kernels on PA1.x machines
-Date: Fri, 24 Nov 2023 17:54:28 +0000
-Message-ID: <20231124171952.834008743@linuxfoundation.org>
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 052/159] xen/events: fix delayed eoi list handling
+Date: Fri, 24 Nov 2023 17:54:29 +0000
+Message-ID: <20231124171944.102938543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Juergen Gross <jgross@suse.com>
 
-commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
+[ Upstream commit 47d970204054f859f35a2237baa75c2d84fcf436 ]
 
-Bail out early with error message when trying to boot a 64-bit kernel on
-32-bit machines. This fixes the previous commit to include the check for
-true 64-bit kernels as well.
+When delaying eoi handling of events, the related elements are queued
+into the percpu lateeoi list. In case the list isn't empty, the
+elements should be sorted by the time when eoi handling is to happen.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
-Cc:  <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Unfortunately a new element will never be queued at the start of the
+list, even if it has a handling time lower than all other list
+elements.
+
+Fix that by handling that case the same way as for an empty list.
+
+Fixes: e99502f76271 ("xen/events: defer eoi in case of excessive number of events")
+Reported-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/head.S |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/xen/events/events_base.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -69,9 +69,8 @@ $bss_loop:
- 	stw,ma          %arg2,4(%r1)
- 	stw,ma          %arg3,4(%r1)
+diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
+index 230e77f9637cd..91806dc1236de 100644
+--- a/drivers/xen/events/events_base.c
++++ b/drivers/xen/events/events_base.c
+@@ -491,7 +491,9 @@ static void lateeoi_list_add(struct irq_info *info)
  
--#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
--	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
--	 * and halt kernel if we detect a PA1.x CPU. */
-+#if defined(CONFIG_PA20)
-+	/* check for 64-bit capable CPU as required by current kernel */
- 	ldi		32,%r10
- 	mtctl		%r10,%cr11
- 	.level 2.0
+ 	spin_lock_irqsave(&eoi->eoi_list_lock, flags);
+ 
+-	if (list_empty(&eoi->eoi_list)) {
++	elem = list_first_entry_or_null(&eoi->eoi_list, struct irq_info,
++					eoi_list);
++	if (!elem || info->eoi_time < elem->eoi_time) {
+ 		list_add(&info->eoi_list, &eoi->eoi_list);
+ 		mod_delayed_work_on(info->eoi_cpu, system_wq,
+ 				    &eoi->delayed, delay);
+-- 
+2.42.0
+
 
 
 
