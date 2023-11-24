@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97D957F80DA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05F797F7CE0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53F82282567
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E042B21452
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6D033CD1;
-	Fri, 24 Nov 2023 18:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08E3B3A8D0;
+	Fri, 24 Nov 2023 18:19:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bIf3aPYu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEeac1Ta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87C92E858;
-	Fri, 24 Nov 2023 18:53:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE06AC433C8;
-	Fri, 24 Nov 2023 18:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95813A8CA;
+	Fri, 24 Nov 2023 18:19:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46578C433C8;
+	Fri, 24 Nov 2023 18:19:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852002;
-	bh=JCEyyfxSzesVsP8WLo/8GKPMe0G1FWBR+VJWpqWygJI=;
+	s=korg; t=1700849945;
+	bh=lf9HVbNkPUiQYEHpl7Wzcg8c7XsK60Au7UrFlfX2DFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIf3aPYuI+j5rVDCdM6SVOodTsSJSp5vM8SKm9xBVpvQZ8BpNOfIKHXCFBRU2i/EN
-	 owypNEXKO2S3MwNLxDvaBacq3QJxNtGfZNa1vAVJlvxWFCKpPIze5+IVosRO24E1Wu
-	 08DRUOoP3IeP5XLa9FjFPoY6gIe7z6yzxZIg4UjM=
+	b=LEeac1TapiXUYRrNiXt8SnPMqNVaE84n+nSAxSJuLHAJggz5XZmuXyoWwexgKHYsB
+	 nCGOg8vXDJs6yy/nGe+0HaU8fL3dAdYWdiiIR8Bjmichdgv+IYcO43QdQx+JPEkr+l
+	 GTEg/S6dNompQvOgUo0F+r/oomWWtlZoDcD2SL0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.1 163/372] media: venus: hfi: add checks to perform sanity on queue pointers
+	Nicolas Pitre <nico@fluxnic.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 384/530] mtd: cfi_cmdset_0001: Byte swap OTP info
 Date: Fri, 24 Nov 2023 17:49:10 +0000
-Message-ID: <20231124172015.918640774@linuxfoundation.org>
+Message-ID: <20231124172039.701323603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +53,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
+commit 565fe150624ee77dc63a735cc1b3bff5101f38a3 upstream.
 
-Read and write pointers are used to track the packet index in the memory
-shared between video driver and firmware. There is a possibility of OOB
-access if the read or write pointer goes beyond the queue memory size.
-Add checks for the read and write pointer to avoid OOB access.
+Currently the offset into the device when looking for OTP
+bits can go outside of the address of the MTD NOR devices,
+and if that memory isn't readable, bad things happen
+on the IXP4xx (added prints that illustrate the problem before
+the crash):
+
+cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
+ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
+cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
+ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
+8<--- cut here ---
+Unable to handle kernel paging request at virtual address db000000
+[db000000] *pgd=00000000
+(...)
+
+This happens in this case because the IXP4xx is big endian and
+the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
+properly byteswapped. Compare to how the code in read_pri_intelext()
+byteswaps the fields in struct cfi_pri_intelext.
+
+Adding a small byte swapping loop for the OTP in read_pri_intelext()
+and the crash goes away.
+
+The problem went unnoticed for many years until I enabled
+CONFIG_MTD_OTP on the IXP4xx as well, triggering the bug.
 
 Cc: stable@vger.kernel.org
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231020-mtd-otp-byteswap-v4-1-0d132c06aa9d@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/mtd/chips/cfi_cmdset_0001.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -205,6 +205,11 @@ static int venus_write_queue(struct venu
+--- a/drivers/mtd/chips/cfi_cmdset_0001.c
++++ b/drivers/mtd/chips/cfi_cmdset_0001.c
+@@ -422,9 +422,25 @@ read_pri_intelext(struct map_info *map,
+ 		extra_size = 0;
  
- 	new_wr_idx = wr_idx + dwords;
- 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
+ 		/* Protection Register info */
+-		if (extp->NumProtectionFields)
++		if (extp->NumProtectionFields) {
++			struct cfi_intelext_otpinfo *otp =
++				(struct cfi_intelext_otpinfo *)&extp->extra[0];
 +
-+	if (wr_ptr < (u32 *)queue->qmem.kva ||
-+	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
-+		return -EINVAL;
+ 			extra_size += (extp->NumProtectionFields - 1) *
+-				      sizeof(struct cfi_intelext_otpinfo);
++				sizeof(struct cfi_intelext_otpinfo);
 +
- 	if (new_wr_idx < qsize) {
- 		memcpy(wr_ptr, packet, dwords << 2);
- 	} else {
-@@ -272,6 +277,11 @@ static int venus_read_queue(struct venus
++			if (extp_size >= sizeof(*extp) + extra_size) {
++				int i;
++
++				/* Do some byteswapping if necessary */
++				for (i = 0; i < extp->NumProtectionFields - 1; i++) {
++					otp->ProtRegAddr = le32_to_cpu(otp->ProtRegAddr);
++					otp->FactGroups = le16_to_cpu(otp->FactGroups);
++					otp->UserGroups = le16_to_cpu(otp->UserGroups);
++					otp++;
++				}
++			}
++		}
  	}
  
- 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
-+
-+	if (rd_ptr < (u32 *)queue->qmem.kva ||
-+	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
-+		return -EINVAL;
-+
- 	dwords = *rd_ptr >> 2;
- 	if (!dwords)
- 		return -EINVAL;
+ 	if (extp->MinorVersion >= '1') {
 
 
 
