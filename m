@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-2218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02997F8342
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED96B7F822C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77FCA1F21039
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD45B209BE
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD958364AE;
-	Fri, 24 Nov 2023 19:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B55F3173F;
+	Fri, 24 Nov 2023 19:05:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFo8ZWc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVRM6pmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC2C33CC2;
-	Fri, 24 Nov 2023 19:15:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43E6C433C9;
-	Fri, 24 Nov 2023 19:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906CC31748;
+	Fri, 24 Nov 2023 19:05:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E186C433C8;
+	Fri, 24 Nov 2023 19:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853343;
-	bh=rYh5XjtaZ0UqcnJ5Ad2ab5kUqn3WjeOo6MBWiZVamU4=;
+	s=korg; t=1700852705;
+	bh=+ebP5VOWkZRRjJRl8FfjEXpPEgTXYM85cwuP6G44xKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFo8ZWc3l9nwgzX7MPJSxMsb2Idpkz5Xvs0E4ixtST2UYBFwlZbGl/Wm0Ehy/aOMa
-	 57/SMBPESpMAdHo7JBqDFCJTeCQKtNl/bagnXgIz0U4wXEjG9fiOqUYjRnnoGJdjpq
-	 fyYy8xE/UkFBQegqxaYvUVATPSzkOM4UrTyDE+E8=
+	b=hVRM6pmR/gUWrZREakkD/DV9GxhaU6DoSx2zTAmABvn87sfQOnBu40EsLQQVWqid3
+	 HnSrjzywncZxJtOykluxJI4qvUtMUkN+3b71nLJaTt87FGyFqLzQYLt9PoF1AABMKr
+	 fZgl/e1+vf/twwQQINPgviM77KoLXKRtyBD2e/Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hexiaole <hexiaole@kylinos.cn>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	felix <fuzhen5@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/297] xfs: fix inode reservation space for removing transaction
-Date: Fri, 24 Nov 2023 17:53:12 +0000
-Message-ID: <20231124172005.512215069@linuxfoundation.org>
+Subject: [PATCH 5.10 066/193] SUNRPC: Fix RPC client cleaned up the freed pipefs dentries
+Date: Fri, 24 Nov 2023 17:53:13 +0000
+Message-ID: <20231124171949.878460109@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +53,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: hexiaole <hexiaole@kylinos.cn>
+From: felix <fuzhen5@huawei.com>
 
-[ Upstream commit 031d166f968efba6e4f091ff75d0bb5206bb3918 ]
+[ Upstream commit bfca5fb4e97c46503ddfc582335917b0cc228264 ]
 
-In 'fs/xfs/libxfs/xfs_trans_resv.c', the comment for transaction of removing a
-directory entry writes:
+RPC client pipefs dentries cleanup is in separated rpc_remove_pipedir()
+workqueue,which takes care about pipefs superblock locking.
+In some special scenarios, when kernel frees the pipefs sb of the
+current client and immediately alloctes a new pipefs sb,
+rpc_remove_pipedir function would misjudge the existence of pipefs
+sb which is not the one it used to hold. As a result,
+the rpc_remove_pipedir would clean the released freed pipefs dentries.
 
-/* fs/xfs/libxfs/xfs_trans_resv.c begin */
-/*
- * For removing a directory entry we can modify:
- *    the parent directory inode: inode size
- *    the removed inode: inode size
+To fix this issue, rpc_remove_pipedir should check whether the
+current pipefs sb is consistent with the original pipefs sb.
+
+This error can be catched by KASAN:
+=========================================================
+[  250.497700] BUG: KASAN: slab-use-after-free in dget_parent+0x195/0x200
+[  250.498315] Read of size 4 at addr ffff88800a2ab804 by task kworker/0:18/106503
+[  250.500549] Workqueue: events rpc_free_client_work
+[  250.501001] Call Trace:
+[  250.502880]  kasan_report+0xb6/0xf0
+[  250.503209]  ? dget_parent+0x195/0x200
+[  250.503561]  dget_parent+0x195/0x200
+[  250.503897]  ? __pfx_rpc_clntdir_depopulate+0x10/0x10
+[  250.504384]  rpc_rmdir_depopulate+0x1b/0x90
+[  250.504781]  rpc_remove_client_dir+0xf5/0x150
+[  250.505195]  rpc_free_client_work+0xe4/0x230
+[  250.505598]  process_one_work+0x8ee/0x13b0
 ...
-xfs_calc_remove_reservation(
-        struct xfs_mount        *mp)
-{
-        return XFS_DQUOT_LOGRES(mp) +
-                xfs_calc_iunlink_add_reservation(mp) +
-                max((xfs_calc_inode_res(mp, 1) +
+[   22.039056] Allocated by task 244:
+[   22.039390]  kasan_save_stack+0x22/0x50
+[   22.039758]  kasan_set_track+0x25/0x30
+[   22.040109]  __kasan_slab_alloc+0x59/0x70
+[   22.040487]  kmem_cache_alloc_lru+0xf0/0x240
+[   22.040889]  __d_alloc+0x31/0x8e0
+[   22.041207]  d_alloc+0x44/0x1f0
+[   22.041514]  __rpc_lookup_create_exclusive+0x11c/0x140
+[   22.041987]  rpc_mkdir_populate.constprop.0+0x5f/0x110
+[   22.042459]  rpc_create_client_dir+0x34/0x150
+[   22.042874]  rpc_setup_pipedir_sb+0x102/0x1c0
+[   22.043284]  rpc_client_register+0x136/0x4e0
+[   22.043689]  rpc_new_client+0x911/0x1020
+[   22.044057]  rpc_create_xprt+0xcb/0x370
+[   22.044417]  rpc_create+0x36b/0x6c0
 ...
-/* fs/xfs/libxfs/xfs_trans_resv.c end */
+[   22.049524] Freed by task 0:
+[   22.049803]  kasan_save_stack+0x22/0x50
+[   22.050165]  kasan_set_track+0x25/0x30
+[   22.050520]  kasan_save_free_info+0x2b/0x50
+[   22.050921]  __kasan_slab_free+0x10e/0x1a0
+[   22.051306]  kmem_cache_free+0xa5/0x390
+[   22.051667]  rcu_core+0x62c/0x1930
+[   22.051995]  __do_softirq+0x165/0x52a
+[   22.052347]
+[   22.052503] Last potentially related work creation:
+[   22.052952]  kasan_save_stack+0x22/0x50
+[   22.053313]  __kasan_record_aux_stack+0x8e/0xa0
+[   22.053739]  __call_rcu_common.constprop.0+0x6b/0x8b0
+[   22.054209]  dentry_free+0xb2/0x140
+[   22.054540]  __dentry_kill+0x3be/0x540
+[   22.054900]  shrink_dentry_list+0x199/0x510
+[   22.055293]  shrink_dcache_parent+0x190/0x240
+[   22.055703]  do_one_tree+0x11/0x40
+[   22.056028]  shrink_dcache_for_umount+0x61/0x140
+[   22.056461]  generic_shutdown_super+0x70/0x590
+[   22.056879]  kill_anon_super+0x3a/0x60
+[   22.057234]  rpc_kill_sb+0x121/0x200
 
-There has 2 inode size of space to be reserverd, but the actual code
-for inode reservation space writes.
-
-There only count for 1 inode size to be reserved in
-'xfs_calc_inode_res(mp, 1)', rather than 2.
-
-Signed-off-by: hexiaole <hexiaole@kylinos.cn>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-[djwong: remove redundant code citations]
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: 0157d021d23a ("SUNRPC: handle RPC client pipefs dentries by network namespace aware routines")
+Signed-off-by: felix <fuzhen5@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_trans_resv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/sunrpc/clnt.h | 1 +
+ net/sunrpc/clnt.c           | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/libxfs/xfs_trans_resv.c b/fs/xfs/libxfs/xfs_trans_resv.c
-index 5e300daa25593..2db9d9d123444 100644
---- a/fs/xfs/libxfs/xfs_trans_resv.c
-+++ b/fs/xfs/libxfs/xfs_trans_resv.c
-@@ -423,7 +423,7 @@ xfs_calc_remove_reservation(
+diff --git a/include/linux/sunrpc/clnt.h b/include/linux/sunrpc/clnt.h
+index 02e7a5863d289..41ed614e69209 100644
+--- a/include/linux/sunrpc/clnt.h
++++ b/include/linux/sunrpc/clnt.h
+@@ -79,6 +79,7 @@ struct rpc_clnt {
+ 		struct work_struct	cl_work;
+ 	};
+ 	const struct cred	*cl_cred;
++	struct super_block *pipefs_sb;
+ };
+ 
+ /*
+diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
+index da34b23a66dbd..360a3bcd91fe1 100644
+--- a/net/sunrpc/clnt.c
++++ b/net/sunrpc/clnt.c
+@@ -109,7 +109,8 @@ static void rpc_clnt_remove_pipedir(struct rpc_clnt *clnt)
+ 
+ 	pipefs_sb = rpc_get_sb_net(net);
+ 	if (pipefs_sb) {
+-		__rpc_clnt_remove_pipedir(clnt);
++		if (pipefs_sb == clnt->pipefs_sb)
++			__rpc_clnt_remove_pipedir(clnt);
+ 		rpc_put_sb_net(net);
+ 	}
+ }
+@@ -149,6 +150,8 @@ rpc_setup_pipedir(struct super_block *pipefs_sb, struct rpc_clnt *clnt)
  {
- 	return XFS_DQUOT_LOGRES(mp) +
- 		xfs_calc_iunlink_add_reservation(mp) +
--		max((xfs_calc_inode_res(mp, 1) +
-+		max((xfs_calc_inode_res(mp, 2) +
- 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
- 				      XFS_FSB_TO_B(mp, 1))),
- 		    (xfs_calc_buf_res(4, mp->m_sb.sb_sectsize) +
+ 	struct dentry *dentry;
+ 
++	clnt->pipefs_sb = pipefs_sb;
++
+ 	if (clnt->cl_program->pipe_dir_name != NULL) {
+ 		dentry = rpc_setup_pipedir_sb(pipefs_sb, clnt);
+ 		if (IS_ERR(dentry))
 -- 
 2.42.0
 
