@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8059D7F7DA2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB367F7B8D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BB30282031
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:26:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 091D5281FDD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E4C3A8C9;
-	Fri, 24 Nov 2023 18:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E1DF39FE3;
+	Fri, 24 Nov 2023 18:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBSOm3Tm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vXpFuxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E60F39FE1;
-	Fri, 24 Nov 2023 18:26:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F90C433C7;
-	Fri, 24 Nov 2023 18:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4757339FC3;
+	Fri, 24 Nov 2023 18:06:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8577C433C8;
+	Fri, 24 Nov 2023 18:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850379;
-	bh=bPF/iHXgb+f8zIFkwhtWdSjn5MWNszOpX74Ja0B5PQA=;
+	s=korg; t=1700849171;
+	bh=SuQN66Fft7EH9CaFXOpf7Q0szjFVNTEzy88bsYUUk4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBSOm3Tm1QHSi16+84POxUTEI0B7d3T3m+6m735Tc9D8COJIBhVjNIai3B9QT6no+
-	 nleGv4igbSa5LtvE3Y7aNik2ooU9or8ktIlZFXTQ7SReeOGxj4Z77UrZuLjd2S1B3s
-	 skd39FwZaiEQNdggQKtu76UxjfqTBHD4bkAqOHBo=
+	b=2vXpFuxqLHVmWSpyyTbzu3BUV9mIv5E3P5n+CwDgiIWcf9iKXTnaH94SXDd9rxiA+
+	 IbDnu/qb+YeO6lMhUUVT6fzDoiIYM8KwPfR1mgWk7GGZzIPspu5O94alBdI9Jcs8o+
+	 zOas0btVpcRYVPvYHfbgVqIoK+DdPAXhhj+MYpC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 005/491] perf/core: Bail out early if the request AUX area is out of bound
+Subject: [PATCH 6.6 075/530] drm/amd: Disable PP_PCIE_DPM_MASK when dynamic speed switching not supported
 Date: Fri, 24 Nov 2023 17:44:01 +0000
-Message-ID: <20231124172024.832811187@linuxfoundation.org>
+Message-ID: <20231124172030.348817679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,78 +53,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuai Xue <xueshuai@linux.alibaba.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 54aee5f15b83437f23b2b2469bcf21bdd9823916 ]
+[ Upstream commit fbf1035b033a51eee48d5f42e781b02fff272ca0 ]
 
-When perf-record with a large AUX area, e.g 4GB, it fails with:
+Rather than individual ASICs checking for the quirk, set the quirk at the
+driver level.
 
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
-
-and it reveals a WARNING with __alloc_pages():
-
-	------------[ cut here ]------------
-	WARNING: CPU: 44 PID: 17573 at mm/page_alloc.c:5568 __alloc_pages+0x1ec/0x248
-	Call trace:
-	 __alloc_pages+0x1ec/0x248
-	 __kmalloc_large_node+0xc0/0x1f8
-	 __kmalloc_node+0x134/0x1e8
-	 rb_alloc_aux+0xe0/0x298
-	 perf_mmap+0x440/0x660
-	 mmap_region+0x308/0x8a8
-	 do_mmap+0x3c0/0x528
-	 vm_mmap_pgoff+0xf4/0x1b8
-	 ksys_mmap_pgoff+0x18c/0x218
-	 __arm64_sys_mmap+0x38/0x58
-	 invoke_syscall+0x50/0x128
-	 el0_svc_common.constprop.0+0x58/0x188
-	 do_el0_svc+0x34/0x50
-	 el0_svc+0x34/0x108
-	 el0t_64_sync_handler+0xb8/0xc0
-	 el0t_64_sync+0x1a4/0x1a8
-
-'rb->aux_pages' allocated by kcalloc() is a pointer array which is used to
-maintains AUX trace pages. The allocated page for this array is physically
-contiguous (and virtually contiguous) with an order of 0..MAX_ORDER. If the
-size of pointer array crosses the limitation set by MAX_ORDER, it reveals a
-WARNING.
-
-So bail out early with -ENOMEM if the request AUX area is out of bound,
-e.g.:
-
-    #perf record -C 0 -m ,4G -e arm_spe_0// -- sleep 1
-    failed to mmap with 12 (Cannot allocate memory)
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c              | 2 ++
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c     | 4 +---
+ drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c | 2 +-
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c          | 2 +-
+ 4 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
-index a0433f37b0243..4a260ceed9c73 100644
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -699,6 +699,12 @@ int rb_alloc_aux(struct perf_buffer *rb, struct perf_event *event,
- 		watermark = 0;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 69f72bca229c9..b9fd755419fb4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -2103,6 +2103,8 @@ static int amdgpu_device_ip_early_init(struct amdgpu_device *adev)
+ 		adev->pm.pp_feature &= ~PP_GFXOFF_MASK;
+ 	if (amdgpu_sriov_vf(adev) && adev->asic_type == CHIP_SIENNA_CICHLID)
+ 		adev->pm.pp_feature &= ~PP_OVERDRIVE_MASK;
++	if (!amdgpu_device_pcie_dynamic_switching_supported())
++		adev->pm.pp_feature &= ~PP_PCIE_DPM_MASK;
  
-+	/*
-+	 * kcalloc_node() is unable to allocate buffer if the size is larger
-+	 * than: PAGE_SIZE << MAX_ORDER; directly bail out in this case.
-+	 */
-+	if (get_order((unsigned long)nr_pages * sizeof(void *)) > MAX_ORDER)
-+		return -ENOMEM;
- 	rb->aux_pages = kcalloc_node(nr_pages, sizeof(void *), GFP_KERNEL,
- 				     node);
- 	if (!rb->aux_pages)
+ 	total = true;
+ 	for (i = 0; i < adev->num_ip_blocks; i++) {
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+index 5a2371484a58c..11372fcc59c8f 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
+@@ -1823,9 +1823,7 @@ static void smu7_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 
+ 	data->mclk_dpm_key_disabled = hwmgr->feature_mask & PP_MCLK_DPM_MASK ? false : true;
+ 	data->sclk_dpm_key_disabled = hwmgr->feature_mask & PP_SCLK_DPM_MASK ? false : true;
+-	data->pcie_dpm_key_disabled =
+-		!amdgpu_device_pcie_dynamic_switching_supported() ||
+-		!(hwmgr->feature_mask & PP_PCIE_DPM_MASK);
++	data->pcie_dpm_key_disabled = !(hwmgr->feature_mask & PP_PCIE_DPM_MASK);
+ 	/* need to set voltage control types before EVV patching */
+ 	data->voltage_control = SMU7_VOLTAGE_CONTROL_NONE;
+ 	data->vddci_control = SMU7_VOLTAGE_CONTROL_NONE;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+index 0cc5d9769d382..a7f4f82d23b4b 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu11/sienna_cichlid_ppt.c
+@@ -2108,7 +2108,7 @@ static int sienna_cichlid_update_pcie_parameters(struct smu_context *smu,
+ 	min_lane_width = min_lane_width > max_lane_width ?
+ 			 max_lane_width : min_lane_width;
+ 
+-	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
++	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
+ 		pcie_table->pcie_gen[0] = max_gen_speed;
+ 		pcie_table->pcie_lane[0] = max_lane_width;
+ 	} else {
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+index a280c1ed007f6..4aeb84572e5b8 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0.c
+@@ -2430,7 +2430,7 @@ int smu_v13_0_update_pcie_parameters(struct smu_context *smu,
+ 	uint32_t smu_pcie_arg;
+ 	int ret, i;
+ 
+-	if (!amdgpu_device_pcie_dynamic_switching_supported()) {
++	if (!(smu->adev->pm.pp_feature & PP_PCIE_DPM_MASK)) {
+ 		if (pcie_table->pcie_gen[num_of_levels - 1] < pcie_gen_cap)
+ 			pcie_gen_cap = pcie_table->pcie_gen[num_of_levels - 1];
+ 
 -- 
 2.42.0
 
