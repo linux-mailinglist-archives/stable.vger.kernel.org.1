@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CCE7F8118
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D530D7F7D2E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1773B1C214F4
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 903622820E7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9D135F1A;
-	Fri, 24 Nov 2023 18:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A11E39FF8;
+	Fri, 24 Nov 2023 18:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BoptarSv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwOR6Ra8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18AD828DBB;
-	Fri, 24 Nov 2023 18:55:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993DDC433C8;
-	Fri, 24 Nov 2023 18:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFE1364C8;
+	Fri, 24 Nov 2023 18:22:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC6CC433C7;
+	Fri, 24 Nov 2023 18:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852134;
-	bh=fwmNgd+nitHqWyU4tJW1SM9r5GXQnq2m6kdxHqqyH/o=;
+	s=korg; t=1700850127;
+	bh=aeEgqOuvBfNr4qf5fJgBHrBgfynP+WzsHIAjqPt8II4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BoptarSvMe+IK7SBKhiIT3x9dDRsPxTfoTnKEhuVnbTw3urMx1iuUWB0tzKNI57Yz
-	 yHRm6CUe/qq88qKtf9BN+GDLB9aKBf8+YMX1cD1dYSiGdpMtkKwoHp6Jazq4lPHcqX
-	 sR7oKUrlhTqa/POognu9aMQNF6NBZ1uBv++8lI8k=
+	b=XwOR6Ra8upKEAW+ZuXL/dWAG1C3YcojqJ295TqPoWoZCXBeyh3/RTczzMlboKolRv
+	 hE6ytFg+a8UjnY7XSnDfoGRfrtAJLr3nqhKqELWOUitR9xKBWEecFcowenu/PhLKez
+	 y7colJk9WjFWu55saDp07sZQAnHQWe5djLZXm6Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.1 234/372] ima: detect changes to the backing overlay file
+	Joe Ferner <joe.m.ferner@gmail.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 455/530] media: sharp: fix sharp encoding
 Date: Fri, 24 Nov 2023 17:50:21 +0000
-Message-ID: <20231124172018.320729333@linuxfoundation.org>
+Message-ID: <20231124172041.931640596@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,118 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+From: Sean Young <sean@mess.org>
 
-commit b836c4d29f2744200b2af41e14bf50758dddc818 upstream.
+commit 4f7efc71891462ab7606da7039f480d7c1584a13 upstream.
 
-Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
-IMA") forced signature re-evaulation on every file access.
+The Sharp protocol[1] encoding has incorrect timings for bit space.
 
-Instead of always re-evaluating the file's integrity, detect a change
-to the backing file, by comparing the cached file metadata with the
-backing file's metadata.  Verifying just the i_version has not changed
-is insufficient.  In addition save and compare the i_ino and s_dev
-as well.
+[1] https://www.sbprojects.net/knowledge/ir/sharp.php
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
-Tested-by: Raul E Rangel <rrangel@chromium.org>
+Fixes: d35afc5fe097 ("[media] rc: ir-sharp-decoder: Add encode capability")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Reported-by: Joe Ferner <joe.m.ferner@gmail.com>
+Closes: https://sourceforge.net/p/lirc/mailman/message/38604507/
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/overlayfs/super.c              |    2 +-
- security/integrity/ima/ima_api.c  |    5 +++++
- security/integrity/ima/ima_main.c |   16 +++++++++++++++-
- security/integrity/integrity.h    |    2 ++
- 4 files changed, 23 insertions(+), 2 deletions(-)
+ drivers/media/rc/ir-sharp-decoder.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -2155,7 +2155,7 @@ static int ovl_fill_super(struct super_b
- 		ovl_trusted_xattr_handlers;
- 	sb->s_fs_info = ofs;
- 	sb->s_flags |= SB_POSIXACL;
--	sb->s_iflags |= SB_I_SKIP_SYNC | SB_I_IMA_UNVERIFIABLE_SIGNATURE;
-+	sb->s_iflags |= SB_I_SKIP_SYNC;
+--- a/drivers/media/rc/ir-sharp-decoder.c
++++ b/drivers/media/rc/ir-sharp-decoder.c
+@@ -15,7 +15,9 @@
+ #define SHARP_UNIT		40  /* us */
+ #define SHARP_BIT_PULSE		(8    * SHARP_UNIT) /* 320us */
+ #define SHARP_BIT_0_PERIOD	(25   * SHARP_UNIT) /* 1ms (680us space) */
+-#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680ms space) */
++#define SHARP_BIT_1_PERIOD	(50   * SHARP_UNIT) /* 2ms (1680us space) */
++#define SHARP_BIT_0_SPACE	(17   * SHARP_UNIT) /* 680us space */
++#define SHARP_BIT_1_SPACE	(42   * SHARP_UNIT) /* 1680us space */
+ #define SHARP_ECHO_SPACE	(1000 * SHARP_UNIT) /* 40 ms */
+ #define SHARP_TRAILER_SPACE	(125  * SHARP_UNIT) /* 5 ms (even longer) */
  
- 	err = -ENOMEM;
- 	root_dentry = ovl_get_root(sb, upperpath.dentry, oe);
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -243,6 +243,7 @@ int ima_collect_measurement(struct integ
- {
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
-+	struct inode *real_inode = d_real_inode(file_dentry(file));
- 	const char *filename = file->f_path.dentry->d_name.name;
- 	struct ima_max_digest_data hash;
- 	int result = 0;
-@@ -305,6 +306,10 @@ int ima_collect_measurement(struct integ
- 	iint->ima_hash = tmpbuf;
- 	memcpy(iint->ima_hash, &hash, length);
- 	iint->version = i_version;
-+	if (real_inode != inode) {
-+		iint->real_ino = real_inode->i_ino;
-+		iint->real_dev = real_inode->i_sb->s_dev;
-+	}
- 
- 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
- 	if (!result)
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -26,6 +26,7 @@
- #include <linux/ima.h>
- #include <linux/iversion.h>
- #include <linux/fs.h>
-+#include <linux/iversion.h>
- 
- #include "ima.h"
- 
-@@ -202,7 +203,7 @@ static int process_measurement(struct fi
- 			       u32 secid, char *buf, loff_t size, int mask,
- 			       enum ima_hooks func)
- {
--	struct inode *inode = file_inode(file);
-+	struct inode *backing_inode, *inode = file_inode(file);
- 	struct integrity_iint_cache *iint = NULL;
- 	struct ima_template_desc *template_desc = NULL;
- 	char *pathbuf = NULL;
-@@ -278,6 +279,19 @@ static int process_measurement(struct fi
- 		iint->measured_pcrs = 0;
- 	}
- 
-+	/* Detect and re-evaluate changes made to the backing file. */
-+	backing_inode = d_real_inode(file_dentry(file));
-+	if (backing_inode != inode &&
-+	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
-+		if (!IS_I_VERSION(backing_inode) ||
-+		    backing_inode->i_sb->s_dev != iint->real_dev ||
-+		    backing_inode->i_ino != iint->real_ino ||
-+		    !inode_eq_iversion(backing_inode, iint->version)) {
-+			iint->flags &= ~IMA_DONE_MASK;
-+			iint->measured_pcrs = 0;
-+		}
-+	}
-+
- 	/* Determine if already appraised/measured based on bitmask
- 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
- 	 *  IMA_AUDIT, IMA_AUDITED)
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -164,6 +164,8 @@ struct integrity_iint_cache {
- 	unsigned long flags;
- 	unsigned long measured_pcrs;
- 	unsigned long atomic_flags;
-+	unsigned long real_ino;
-+	dev_t real_dev;
- 	enum integrity_status ima_file_status:4;
- 	enum integrity_status ima_mmap_status:4;
- 	enum integrity_status ima_bprm_status:4;
+@@ -168,8 +170,8 @@ static const struct ir_raw_timings_pd ir
+ 	.header_pulse  = 0,
+ 	.header_space  = 0,
+ 	.bit_pulse     = SHARP_BIT_PULSE,
+-	.bit_space[0]  = SHARP_BIT_0_PERIOD,
+-	.bit_space[1]  = SHARP_BIT_1_PERIOD,
++	.bit_space[0]  = SHARP_BIT_0_SPACE,
++	.bit_space[1]  = SHARP_BIT_1_SPACE,
+ 	.trailer_pulse = SHARP_BIT_PULSE,
+ 	.trailer_space = SHARP_ECHO_SPACE,
+ 	.msb_first     = 1,
 
 
 
