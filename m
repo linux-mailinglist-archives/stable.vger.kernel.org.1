@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28217F7C9B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 464EB7F7EAB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65D55B20A2B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 761281C213E6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14003A8C6;
-	Fri, 24 Nov 2023 18:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDD633CCA;
+	Fri, 24 Nov 2023 18:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzeKgZtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWITAvmy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60114381D6;
-	Fri, 24 Nov 2023 18:16:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF82BC433C8;
-	Fri, 24 Nov 2023 18:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C7333E9;
+	Fri, 24 Nov 2023 18:34:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B56F5C433C8;
+	Fri, 24 Nov 2023 18:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849803;
-	bh=vj2gIzuBVjnmVYjQXn75XDcK9hLp6V7LXgKCZlzPwaw=;
+	s=korg; t=1700850895;
+	bh=SBiUtxQxINnMOxPHtqjOduiYISwjWiwwm8HxFHTwCGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzeKgZtEQbKlQj2qTHQcqeY7hmTx++uunYtoe/m4lLZhWqP6cR6vc9CRNhSB1KEL/
-	 6G9Cb3FkmUpaVYMj6rrI4jQa+0hN/3xqNXFjdw7I0nRGKliAdgfRSmdRbsH3MC8JbR
-	 wMt/C94roQmhsswaKdYJ81KQe5raKEMdANSCCN54=
+	b=MWITAvmyRkPtxtMpzJspz5mtf0zfiB6SiZcoGBlvxjLhyjlQIxJhraXCnmL1NcX+Q
+	 TJSQJdLDPKJvyqXhMkyOQXWgs96mpj7OohInMv8W45DNzhuWUqyk4CJbPM2j8wLY1E
+	 Is+7wmTLBI6KiLI7O8nzSV4FU5JSqC0mU6Q2C5a0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 302/530] PCI: keystone: Dont discard .remove() callback
+	Mohamed Mahmoud <mmahmoud@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Tao Lyu <tao.lyu@epfl.ch>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.5 232/491] bpf: Fix precision tracking for BPF_ALU | BPF_TO_BE | BPF_END
 Date: Fri, 24 Nov 2023 17:47:48 +0000
-Message-ID: <20231124172037.233995437@linuxfoundation.org>
+Message-ID: <20231124172031.530076714@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +57,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-commit 200bddbb3f5202bbce96444fdc416305de14f547 upstream.
+commit 291d044fd51f8484066300ee42afecf8c8db7b3a upstream.
 
-With CONFIG_PCIE_KEYSTONE=y and ks_pcie_remove() marked with __exit, the
-function is discarded from the driver. In this case a bound device can
-still get unbound, e.g via sysfs. Then no cleanup code is run resulting in
-resource leaks or worse.
+BPF_END and BPF_NEG has a different specification for the source bit in
+the opcode compared to other ALU/ALU64 instructions, and is either
+reserved or use to specify the byte swap endianness. In both cases the
+source bit does not encode source operand location, and src_reg is a
+reserved field.
 
-The right thing to do is do always have the remove callback available.
-Note that this driver cannot be compiled as a module, so ks_pcie_remove()
-was always discarded before this change and modpost couldn't warn about
-this issue. Furthermore the __ref annotation also prevents a warning.
+backtrack_insn() currently does not differentiate BPF_END and BPF_NEG
+from other ALU/ALU64 instructions, which leads to r0 being incorrectly
+marked as precise when processing BPF_ALU | BPF_TO_BE | BPF_END
+instructions. This commit teaches backtrack_insn() to correctly mark
+precision for such case.
 
-Fixes: 0c4ffcfe1fbc ("PCI: keystone: Add TI Keystone PCIe driver")
-Link: https://lore.kernel.org/r/20231001170254.2506508-4-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+While precise tracking of BPF_NEG and other BPF_END instructions are
+correct and does not need fixing, this commit opt to process all BPF_NEG
+and BPF_END instructions within the same if-clause to better align with
+current convention used in the verifier (e.g. check_alu_op).
+
+Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
 Cc: stable@vger.kernel.org
+Reported-by: Mohamed Mahmoud <mmahmoud@redhat.com>
+Closes: https://lore.kernel.org/r/87jzrrwptf.fsf@toke.dk
+Tested-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Tested-by: Tao Lyu <tao.lyu@epfl.ch>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://lore.kernel.org/r/20231102053913.12004-2-shung-hsi.yu@suse.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1302,7 +1302,7 @@ err_link:
- 	return ret;
- }
- 
--static int __exit ks_pcie_remove(struct platform_device *pdev)
-+static int ks_pcie_remove(struct platform_device *pdev)
- {
- 	struct keystone_pcie *ks_pcie = platform_get_drvdata(pdev);
- 	struct device_link **link = ks_pcie->link;
-@@ -1320,7 +1320,7 @@ static int __exit ks_pcie_remove(struct
- 
- static struct platform_driver ks_pcie_driver __refdata = {
- 	.probe  = ks_pcie_probe,
--	.remove = __exit_p(ks_pcie_remove),
-+	.remove = ks_pcie_remove,
- 	.driver = {
- 		.name	= "keystone-pcie",
- 		.of_match_table = ks_pcie_of_match,
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -3436,7 +3436,12 @@ static int backtrack_insn(struct bpf_ver
+ 	if (class == BPF_ALU || class == BPF_ALU64) {
+ 		if (!bt_is_reg_set(bt, dreg))
+ 			return 0;
+-		if (opcode == BPF_MOV) {
++		if (opcode == BPF_END || opcode == BPF_NEG) {
++			/* sreg is reserved and unused
++			 * dreg still need precision before this insn
++			 */
++			return 0;
++		} else if (opcode == BPF_MOV) {
+ 			if (BPF_SRC(insn->code) == BPF_X) {
+ 				/* dreg = sreg
+ 				 * dreg needs precision after this insn
 
 
 
