@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8097F801A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52C267F7C4C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5FA3B20C02
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D299281F31
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAE0364DE;
-	Fri, 24 Nov 2023 18:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BADC39FF7;
+	Fri, 24 Nov 2023 18:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flwQ6nfe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWGnTeD4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB32C33CCA;
-	Fri, 24 Nov 2023 18:46:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54F68C433C7;
-	Fri, 24 Nov 2023 18:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D23B39FF3;
+	Fri, 24 Nov 2023 18:13:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF668C433C8;
+	Fri, 24 Nov 2023 18:13:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851595;
-	bh=7Dyg30axeMO83oQoR09UWIo0Eq9YMIyNLZp5Hs+Robg=;
+	s=korg; t=1700849632;
+	bh=J4RkkF2Ed0LMzbip4yDJjkbgJGiqqrXDtVx0insOsbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flwQ6nfex73RpQs2ZH1TnYMjAJA/FpE0b1LYgrlyWF3HXoeRmXSFmDv6v3kXtpM/o
-	 y3js3UgFulgwTWQAVWCBYzM/m5hpfZDSr4iiUcKHv50637z4IMZ7E5Yh1jxtQDzi/n
-	 zub1ctVcpSi+eiR5phoGHWS3Xbjto48tka1lMZUs=
+	b=zWGnTeD4cUZWRdpk9KOM5PL21MDYuEz1DjQP6sz3skzbcCcVbhIEJ9trZcd7+136K
+	 8zbsfGqIQMkIXlGZraRITeQMa5kM7ecNSKxky2PZ4reQ98M/NUCj6exzOXsQnHn++L
+	 4JdzRxfmDBO/EMsfbPjWqDa4uudBnnSYDCvbAN3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/372] wifi: ath10k: fix clang-specific fortify warning
-Date: Fri, 24 Nov 2023 17:46:46 +0000
-Message-ID: <20231124172011.112528201@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 6.6 241/530] perf intel-pt: Fix async branch flags
+Date: Fri, 24 Nov 2023 17:46:47 +0000
+Message-ID: <20231124172035.390504225@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit cb4c132ebfeac5962f7258ffc831caa0c4dada1a ]
+commit f2d87895cbc4af80649850dcf5da36de6b2ed3dd upstream.
 
-When compiling with clang 16.0.6 and CONFIG_FORTIFY_SOURCE=y, I've
-noticed the following (somewhat confusing due to absence of an actual
-source code location):
+Ensure PERF_IP_FLAG_ASYNC is set always for asynchronous branches (i.e.
+interrupts etc).
 
-In file included from drivers/net/wireless/ath/ath10k/debug.c:8:
-In file included from ./include/linux/module.h:13:
-In file included from ./include/linux/stat.h:19:
-In file included from ./include/linux/time.h:60:
-In file included from ./include/linux/time32.h:13:
-In file included from ./include/linux/timex.h:67:
-In file included from ./arch/x86/include/asm/timex.h:5:
-In file included from ./arch/x86/include/asm/processor.h:23:
-In file included from ./arch/x86/include/asm/msr.h:11:
-In file included from ./arch/x86/include/asm/cpumask.h:5:
-In file included from ./include/linux/cpumask.h:12:
-In file included from ./include/linux/bitmap.h:11:
-In file included from ./include/linux/string.h:254:
-./include/linux/fortify-string.h:592:4: warning: call to '__read_overflow2_field'
-declared with 'warning' attribute: detected read beyond size of field (2nd
-parameter); maybe use struct_group()? [-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
-
-The compiler actually complains on 'ath10k_debug_get_et_strings()' where
-fortification logic inteprets call to 'memcpy()' as an attempt to copy
-the whole 'ath10k_gstrings_stats' array from it's first member and so
-issues an overread warning. This warning may be silenced by passing
-an address of the whole array and not the first member to 'memcpy()'.
-
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230829093652.234537-1-dmantipov@yandex.ru
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 90e457f7be08 ("perf tools: Add Intel PT support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20230928072953.19369-1-adrian.hunter@intel.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/intel-pt.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/debug.c b/drivers/net/wireless/ath/ath10k/debug.c
-index c861e66ef6bc5..41f387e15dcd0 100644
---- a/drivers/net/wireless/ath/ath10k/debug.c
-+++ b/drivers/net/wireless/ath/ath10k/debug.c
-@@ -1139,7 +1139,7 @@ void ath10k_debug_get_et_strings(struct ieee80211_hw *hw,
- 				 u32 sset, u8 *data)
- {
- 	if (sset == ETH_SS_STATS)
--		memcpy(data, *ath10k_gstrings_stats,
-+		memcpy(data, ath10k_gstrings_stats,
- 		       sizeof(ath10k_gstrings_stats));
- }
- 
--- 
-2.42.0
-
+--- a/tools/perf/util/intel-pt.c
++++ b/tools/perf/util/intel-pt.c
+@@ -1512,9 +1512,11 @@ static void intel_pt_sample_flags(struct
+ 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
+ 		if (!ptq->state->to_ip)
+ 			ptq->flags = PERF_IP_FLAG_BRANCH |
++				     PERF_IP_FLAG_ASYNC |
+ 				     PERF_IP_FLAG_TRACE_END;
+ 		else if (ptq->state->from_nr && !ptq->state->to_nr)
+ 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
++				     PERF_IP_FLAG_ASYNC |
+ 				     PERF_IP_FLAG_VMEXIT;
+ 		else
+ 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
 
 
 
