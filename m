@@ -1,51 +1,47 @@
-Return-Path: <stable+bounces-1113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7E07F7E18
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:29:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1396F7F7BE0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E07731C212FD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34372821DA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33C023A8C3;
-	Fri, 24 Nov 2023 18:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F92C39FED;
+	Fri, 24 Nov 2023 18:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G7tsGZ+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2ajWIAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF6DC364A4;
-	Fri, 24 Nov 2023 18:29:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB9CC433C8;
-	Fri, 24 Nov 2023 18:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C1939FDD;
+	Fri, 24 Nov 2023 18:09:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19221C433C7;
+	Fri, 24 Nov 2023 18:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850591;
-	bh=pDMfyixugRO78sbxdcJo+8qRwK0WCv4HemXCy3lvosA=;
+	s=korg; t=1700849371;
+	bh=gX8PPf3hBljBnJhGamOsgX4bl3CkxT8ej5Rm9KJAguk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G7tsGZ+90+qWZEb+iyr731nfah3fW36qgobSnHWSAqn1MlLctVTUZlvcgZYM5pkPH
-	 LeJdDVWdiQqNPT62Przdlps7OfR8j9TCf1rEOtQ5J0Zp98JnQQFdaqk9ocR50Vnwn/
-	 QsTWHljn+c1cVom/m8FHr9TGfVkOFLkWaAnf1q4I=
+	b=c2ajWIAVJFIqECECdGEHdosG/UQS51rMsprSELdXkKZTJXFzC+vzwVqsJnomE7o6q
+	 MLPVEC6WQhxlrzSeHtf924AuAztehTfsjuLEb36jpnKlU20CHBj47AJnLQ82V25m9a
+	 4JY7bYHad4FlM8wSQDk6bcqMUI4kyMMp7chTzImk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rander Wang <rander.wang@intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alex Spataru <alex_spataru@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 083/491] ASoC: SOF: ipc4: handle EXCEPTION_CAUGHT notification from firmware
-Date: Fri, 24 Nov 2023 17:45:19 +0000
-Message-ID: <20231124172027.112343287@linuxfoundation.org>
+Subject: [PATCH 6.6 154/530] ALSA: hda/realtek: Add quirk for ASUS UX7602ZM
+Date: Fri, 24 Nov 2023 17:45:20 +0000
+Message-ID: <20231124172032.777033534@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,47 +51,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rander Wang <rander.wang@intel.com>
+From: Alex Spataru <alex_spataru@outlook.com>
 
-[ Upstream commit c1c48fd6bbe788458e3685fea74bdb3cb148ff93 ]
+[ Upstream commit 26fd31ef9c02a5e91cdb8eea127b056bd7cf0b3b ]
 
-Driver will receive exception IPC message and process it by
-snd_sof_dsp_panic.
+Enables the SPI-connected CSC35L41 audio amplifier for this
+laptop model.
 
-Signed-off-by: Rander Wang <rander.wang@intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Guennadi Liakhovetski <guennadi.liakhovetski@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20230919092416.4137-10-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+As of BIOS version 303 it's still necessary to
+modify the ACPI table to add the related _DSD properties:
+https://github.com/alex-spataru/asus_zenbook_ux7602zm_sound/
+
+Signed-off-by: Alex Spataru <alex_spataru@outlook.com>
+Link: https://lore.kernel.org/r/DS7PR07MB7621BB5BB14F5473D181624CE3A4A@DS7PR07MB7621.namprd07.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/ipc4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
-index ab6eddd91bb77..1b09496733fb8 100644
---- a/sound/soc/sof/ipc4.c
-+++ b/sound/soc/sof/ipc4.c
-@@ -614,6 +614,9 @@ static void sof_ipc4_rx_msg(struct snd_sof_dev *sdev)
- 	case SOF_IPC4_NOTIFY_LOG_BUFFER_STATUS:
- 		sof_ipc4_mtrace_update_pos(sdev, SOF_IPC4_LOG_CORE_GET(ipc4_msg->primary));
- 		break;
-+	case SOF_IPC4_NOTIFY_EXCEPTION_CAUGHT:
-+		snd_sof_dsp_panic(sdev, 0, true);
-+		break;
- 	default:
- 		dev_dbg(sdev->dev, "Unhandled DSP message: %#x|%#x\n",
- 			ipc4_msg->primary, ipc4_msg->extension);
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3ed2cba5ee8ad..76639738ae31b 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9874,6 +9874,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
+ 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
++	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
+ 	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
 -- 
 2.42.0
 
