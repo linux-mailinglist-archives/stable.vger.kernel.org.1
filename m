@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE99B7F7BAF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 094CB7F7D95
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E016C1C2100B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B78F6281F6E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8F239FEA;
-	Fri, 24 Nov 2023 18:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53E8039FD9;
+	Fri, 24 Nov 2023 18:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tl0oIU/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKd649Az"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE9539FC3;
-	Fri, 24 Nov 2023 18:07:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B63C433C8;
-	Fri, 24 Nov 2023 18:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0326733CFD;
+	Fri, 24 Nov 2023 18:25:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29860C433C7;
+	Fri, 24 Nov 2023 18:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849256;
-	bh=m2AQegaNw/hEOhiRvz2Dogsk64XkbJY0gctwlZQ39oY=;
+	s=korg; t=1700850351;
+	bh=MHs7UpRWgZud9teFvu90j6oYG22jiHXpccbiJE8H3rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tl0oIU/q2dBNFUmXegQzepOu1fQZ5CLwsAwXdPjQH2KSzd7lzQRAwxaeUKJbINMrD
-	 wX6GG4WqDJp7aNzJa8/jHt7OPxty9tk/LEBCCekuQGt8/TFmcCMNRPD8qB0qBhHRGp
-	 LVi+JVDD9wkTlBSUcmPeIeVsPfKiVnP687KH+cLo=
+	b=WKd649AziJlEN4B5BZeocOn+yOKZ4wwfiPZ51HOkx9jkF2hoTptc1CzRjty1GyiXp
+	 YJHSbQBwCA3z8u0SNLDImUBv0Vv/vpga8F/k/M1gjzLH1Fx58DR35rJiDA7QkfjzAs
+	 EqKrNVldYNIT9EoryRYG9/rnoVC3QoHT8qLUD+ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Mario Casquero <mcasquer@redhat.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Rik van Riel <riel@surriel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/530] ASoC: Intel: sof_sdw: Copy PCI SSID to struct snd_soc_card
+Subject: [PATCH 6.5 015/491] x86/mm: Drop the 4 MB restriction on minimal NUMA node memory size
 Date: Fri, 24 Nov 2023 17:44:11 +0000
-Message-ID: <20231124172030.666192813@linuxfoundation.org>
+Message-ID: <20231124172025.145795022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +59,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Mike Rapoport (IBM) <rppt@kernel.org>
 
-[ Upstream commit d8b387544ff4d02eda1d1839a0c601de4b037c33 ]
+[ Upstream commit a1e2b8b36820d8c91275f207e77e91645b7c6836 ]
 
-If the PCI SSID has been set in the struct snd_soc_acpi_mach_params,
-copy this to struct snd_soc_card so that it can be used by other
-ASoC components.
+Qi Zheng reported crashes in a production environment and provided a
+simplified example as a reproducer:
 
-This is important for components that must apply system-specific
-configuration.
+ |  For example, if we use Qemu to start a two NUMA node kernel,
+ |  one of the nodes has 2M memory (less than NODE_MIN_SIZE),
+ |  and the other node has 2G, then we will encounter the
+ |  following panic:
+ |
+ |    BUG: kernel NULL pointer dereference, address: 0000000000000000
+ |    <...>
+ |    RIP: 0010:_raw_spin_lock_irqsave+0x22/0x40
+ |    <...>
+ |    Call Trace:
+ |      <TASK>
+ |      deactivate_slab()
+ |      bootstrap()
+ |      kmem_cache_init()
+ |      start_kernel()
+ |      secondary_startup_64_no_verify()
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20230912163207.3498161-4-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The crashes happen because of inconsistency between the nodemask that
+has nodes with less than 4MB as memoryless, and the actual memory fed
+into the core mm.
+
+The commit:
+
+  9391a3f9c7f1 ("[PATCH] x86_64: Clear more state when ignoring empty node in SRAT parsing")
+
+... that introduced minimal size of a NUMA node does not explain why
+a node size cannot be less than 4MB and what boot failures this
+restriction might fix.
+
+Fixes have been submitted to the core MM code to tighten up the
+memory topologies it accepts and to not crash on weird input:
+
+  mm: page_alloc: skip memoryless nodes entirely
+  mm: memory_hotplug: drop memoryless node from fallback lists
+
+Andrew has accepted them into the -mm tree, but there are no
+stable SHA1's yet.
+
+This patch drops the limitation for minimal node size on x86:
+
+  - which works around the crash without the fixes to the core MM.
+  - makes x86 topologies less weird,
+  - removes an arbitrary and undocumented limitation on NUMA topologies.
+
+[ mingo: Improved changelog clarity. ]
+
+Reported-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Tested-by: Mario Casquero <mcasquer@redhat.com>
+Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Rik van Riel <riel@surriel.com>
+Link: https://lore.kernel.org/r/ZS+2qqjEO5/867br@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/include/asm/numa.h | 7 -------
+ arch/x86/mm/numa.c          | 7 -------
+ 2 files changed, 14 deletions(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 47d22cab5af62..24e966a2ac2be 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1934,6 +1934,12 @@ static int mc_probe(struct platform_device *pdev)
- 	for (i = 0; i < ARRAY_SIZE(codec_info_list); i++)
- 		codec_info_list[i].amp_num = 0;
+diff --git a/arch/x86/include/asm/numa.h b/arch/x86/include/asm/numa.h
+index e3bae2b60a0db..ef2844d691735 100644
+--- a/arch/x86/include/asm/numa.h
++++ b/arch/x86/include/asm/numa.h
+@@ -12,13 +12,6 @@
  
-+	if (mach->mach_params.subsystem_id_set) {
-+		snd_soc_card_set_pci_ssid(card,
-+					  mach->mach_params.subsystem_vendor,
-+					  mach->mach_params.subsystem_device);
-+	}
-+
- 	ret = sof_card_dai_links_create(card);
- 	if (ret < 0)
- 		return ret;
+ #define NR_NODE_MEMBLKS		(MAX_NUMNODES*2)
+ 
+-/*
+- * Too small node sizes may confuse the VM badly. Usually they
+- * result from BIOS bugs. So dont recognize nodes as standalone
+- * NUMA entities that have less than this amount of RAM listed:
+- */
+-#define NODE_MIN_SIZE (4*1024*1024)
+-
+ extern int numa_off;
+ 
+ /*
+diff --git a/arch/x86/mm/numa.c b/arch/x86/mm/numa.c
+index c01c5506fd4ae..aa39d678fe81d 100644
+--- a/arch/x86/mm/numa.c
++++ b/arch/x86/mm/numa.c
+@@ -602,13 +602,6 @@ static int __init numa_register_memblks(struct numa_meminfo *mi)
+ 		if (start >= end)
+ 			continue;
+ 
+-		/*
+-		 * Don't confuse VM with a node that doesn't have the
+-		 * minimum amount of memory:
+-		 */
+-		if (end && (end - start) < NODE_MIN_SIZE)
+-			continue;
+-
+ 		alloc_node_data(nid);
+ 	}
+ 
 -- 
 2.42.0
 
