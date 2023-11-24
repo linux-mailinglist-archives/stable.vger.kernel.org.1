@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC117F81B1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:00:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D2C7F81DD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4959B282DE7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5F0A1C2217E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE52364AE;
-	Fri, 24 Nov 2023 19:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277F32C1A2;
+	Fri, 24 Nov 2023 19:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uf+Blj63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZVcMIcJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE0D2E84A;
-	Fri, 24 Nov 2023 19:00:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C52CC433CA;
-	Fri, 24 Nov 2023 19:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9A82E64F;
+	Fri, 24 Nov 2023 19:02:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68994C433C7;
+	Fri, 24 Nov 2023 19:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852446;
-	bh=ZTxfEQ9/gWYJgZH6FuxYCyOAMVRdWwz2C6PeT0TUCGA=;
+	s=korg; t=1700852528;
+	bh=NboABnYlYccK6Tf5TjwF2LZBE2D6N2loNjevu/QP6LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uf+Blj635F3r1NAyRfRWSbpInkemiNl5k72MQGwNS4uVxrXlqYAyZ9jVfabcq+IAW
-	 nXPI+t4c54e0n311pYT2tOmpyKgVlUPK/+XI/OqjHcUcmstLEgycf7KndHmFtRi/Tj
-	 pnPVyUV9s222D8vzTWeVW81bN3ML9l5EG81nWKIc=
+	b=ZVcMIcJRGUYDp7gOJROJNtxYLK5HVDDQZ+LxCOQvE2SMQ5aHof/e44gTTicxOto6J
+	 CV4Cnoifw70+oieudcIkff+idH+gdggawXRHQAHWmgpZB3uUJzI4hTZd7ahPEMeEs1
+	 SO2oijVK9dFcU01rL8obWrw+Yj9jR+xkPmbkUlTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 360/372] drm/amd/pm: Fix error of MACO flag setting code
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 020/193] drm/amd: Fix UBSAN array-index-out-of-bounds for Polaris and Tonga
 Date: Fri, 24 Nov 2023 17:52:27 +0000
-Message-ID: <20231124172022.297692392@linuxfoundation.org>
+Message-ID: <20231124171947.983440856@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +53,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 7f3e6b840fa8b0889d776639310a5dc672c1e9e1 upstream.
+[ Upstream commit 0f0e59075b5c22f1e871fbd508d6e4f495048356 ]
 
-MACO only works if BACO is supported
+For pptable structs that use flexible array sizes, use flexible arrays.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2036742
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |    8 ++++----
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    9 +++++----
- 2 files changed, 9 insertions(+), 8 deletions(-)
+ .../gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h    | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -324,12 +324,12 @@ static int smu_v13_0_0_check_powerplay_t
- 	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_HARDWAREDC)
- 		smu->dc_controlled_by_gpio = true;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
+index d5a4a08c6d392..0c61e2bc14cde 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pptable_v1_0.h
+@@ -164,7 +164,7 @@ typedef struct _ATOM_Tonga_State {
+ typedef struct _ATOM_Tonga_State_Array {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries;		/* Number of entries. */
+-	ATOM_Tonga_State entries[1];	/* Dynamically allocate entries. */
++	ATOM_Tonga_State entries[];	/* Dynamically allocate entries. */
+ } ATOM_Tonga_State_Array;
  
--	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_BACO ||
--	    powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
-+	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_BACO) {
- 		smu_baco->platform_support = true;
+ typedef struct _ATOM_Tonga_MCLK_Dependency_Record {
+@@ -210,7 +210,7 @@ typedef struct _ATOM_Polaris_SCLK_Dependency_Record {
+ typedef struct _ATOM_Polaris_SCLK_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries;							/* Number of entries. */
+-	ATOM_Polaris_SCLK_Dependency_Record entries[1];				 /* Dynamically allocate entries. */
++	ATOM_Polaris_SCLK_Dependency_Record entries[];				 /* Dynamically allocate entries. */
+ } ATOM_Polaris_SCLK_Dependency_Table;
  
--	if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
--		smu_baco->maco_support = true;
-+		if (powerplay_table->platform_caps & SMU_13_0_0_PP_PLATFORM_CAP_MACO)
-+			smu_baco->maco_support = true;
-+	}
+ typedef struct _ATOM_Tonga_PCIE_Record {
+@@ -222,7 +222,7 @@ typedef struct _ATOM_Tonga_PCIE_Record {
+ typedef struct _ATOM_Tonga_PCIE_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_PCIE_Record entries[1];							/* Dynamically allocate entries. */
++	ATOM_Tonga_PCIE_Record entries[];							/* Dynamically allocate entries. */
+ } ATOM_Tonga_PCIE_Table;
  
- 	table_context->thermal_controller_type =
- 		powerplay_table->thermal_controller_type;
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -326,12 +326,13 @@ static int smu_v13_0_7_check_powerplay_t
- 	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_HARDWAREDC)
- 		smu->dc_controlled_by_gpio = true;
+ typedef struct _ATOM_Polaris10_PCIE_Record {
+@@ -235,7 +235,7 @@ typedef struct _ATOM_Polaris10_PCIE_Record {
+ typedef struct _ATOM_Polaris10_PCIE_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries;                                         /* Number of entries. */
+-	ATOM_Polaris10_PCIE_Record entries[1];                      /* Dynamically allocate entries. */
++	ATOM_Polaris10_PCIE_Record entries[];                      /* Dynamically allocate entries. */
+ } ATOM_Polaris10_PCIE_Table;
  
--	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_BACO ||
--	    powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_MACO)
-+	if (powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_BACO) {
- 		smu_baco->platform_support = true;
  
--	if (smu_baco->platform_support && (BoardTable->HsrEnabled || BoardTable->VddqOffEnabled))
--		smu_baco->maco_support = true;
-+		if ((powerplay_table->platform_caps & SMU_13_0_7_PP_PLATFORM_CAP_MACO)
-+					&& (BoardTable->HsrEnabled || BoardTable->VddqOffEnabled))
-+			smu_baco->maco_support = true;
-+	}
+@@ -252,7 +252,7 @@ typedef struct _ATOM_Tonga_MM_Dependency_Record {
+ typedef struct _ATOM_Tonga_MM_Dependency_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_MM_Dependency_Record entries[1]; 			   /* Dynamically allocate entries. */
++	ATOM_Tonga_MM_Dependency_Record entries[]; 			   /* Dynamically allocate entries. */
+ } ATOM_Tonga_MM_Dependency_Table;
  
- 	table_context->thermal_controller_type =
- 		powerplay_table->thermal_controller_type;
+ typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
+@@ -265,7 +265,7 @@ typedef struct _ATOM_Tonga_Voltage_Lookup_Record {
+ typedef struct _ATOM_Tonga_Voltage_Lookup_Table {
+ 	UCHAR ucRevId;
+ 	UCHAR ucNumEntries; 										/* Number of entries. */
+-	ATOM_Tonga_Voltage_Lookup_Record entries[1];				/* Dynamically allocate entries. */
++	ATOM_Tonga_Voltage_Lookup_Record entries[];				/* Dynamically allocate entries. */
+ } ATOM_Tonga_Voltage_Lookup_Table;
+ 
+ typedef struct _ATOM_Tonga_Fan_Table {
+-- 
+2.42.0
+
 
 
 
