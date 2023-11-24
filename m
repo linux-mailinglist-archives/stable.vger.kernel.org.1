@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9259C7F7AD8
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D547F8111
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D6EF281A2E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85C791C214FA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D6539FE8;
-	Fri, 24 Nov 2023 17:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DD2364A6;
+	Fri, 24 Nov 2023 18:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlznigN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyekIfVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F652AF00;
-	Fri, 24 Nov 2023 17:59:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C220EC433C7;
-	Fri, 24 Nov 2023 17:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862C633075;
+	Fri, 24 Nov 2023 18:55:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FB9C433C9;
+	Fri, 24 Nov 2023 18:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848753;
-	bh=YNizkkoQ1KnFpnPkTKxwJOkZFj0YSE9kKKV1acRcYuo=;
+	s=korg; t=1700852122;
+	bh=WAsrME7wAHph/AQWOJDWJ1hfbeQqyKhxVnaDHP9Oml0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlznigN/Md2TVUDjLMxyuE0j08fqbGXlFNehXRCRCR9niK7waS5EzDQz1II3vo0tI
-	 rawyLXMi5eUK6fwlB4RcmCKI80J5FJUBqC608dcBSgSmRxVGStfDrq/+etNSzr0Egq
-	 VJM/v0BSFK4211sCt8Q4amPpggftXbCR0zZhbA8Y=
+	b=RyekIfVmFeaOfftLwOk/BPzI1IJVSTNgDug/Tx5JyWE+zfcY6OcLmMgl+vOn1tJ3y
+	 Nv6fJXUEtOI7RyM/gh9d5/1/bqv84hPaUcVmN1ht23u8FHuNjSvYMEhTCCmPZlnVTk
+	 F7jq2NCst5IJ0aPIyKMKn3Xx7g425MMridrLe4G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 43/97] net: ethernet: cortina: Fix max RX frame define
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 229/372] ACPI: FPDT: properly handle invalid FPDT subtables
 Date: Fri, 24 Nov 2023 17:50:16 +0000
-Message-ID: <20231124171935.761230146@linuxfoundation.org>
+Message-ID: <20231124172018.128631770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +52,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 510e35fb931ffc3b100e5d5ae4595cd3beca9f1a ]
+commit a83c68a3bf7c418c9a46693c63c638852b0c1f4e upstream.
 
-Enumerator 3 is 1548 bytes according to the datasheet.
-Not 1542.
+Buggy BIOSes may have invalid FPDT subtables, e.g. on my hardware:
 
-Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
-Link: https://lore.kernel.org/r/20231109-gemini-largeframe-fix-v4-1-6e611528db08@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+S3PT subtable:
+
+7F20FE30: 53 33 50 54 24 00 00 00-00 00 00 00 00 00 18 01  *S3PT$...........*
+7F20FE40: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
+7F20FE50: 00 00 00 00
+
+Here the first record has zero length.
+
+FBPT subtable:
+
+7F20FE50:             46 42 50 54-3C 00 00 00 46 42 50 54  *....FBPT<...FBPT*
+7F20FE60: 02 00 30 02 00 00 00 00-00 00 00 00 00 00 00 00  *..0.............*
+7F20FE70: 2A A6 BC 6E 0B 00 00 00-1A 44 41 70 0B 00 00 00  **..n.....DAp....*
+7F20FE80: 00 00 00 00 00 00 00 00-00 00 00 00 00 00 00 00  *................*
+
+And here FBPT table has FBPT signature repeated instead of the first
+record.
+
+Current code will be looping indefinitely due to zero length records, so
+break out of the loop if record length is zero.
+
+While we are here, add proper handling for fpdt_process_subtable()
+failures.
+
+Fixes: d1eb86e59be0 ("ACPI: tables: introduce support for FPDT table")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+[ rjw: Comment edit, added empty code lines ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cortina/gemini.c | 4 ++--
- drivers/net/ethernet/cortina/gemini.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/acpi_fpdt.c |   45 +++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 37 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
-index f8a3d1fecb0a5..db38b087fc5ce 100644
---- a/drivers/net/ethernet/cortina/gemini.c
-+++ b/drivers/net/ethernet/cortina/gemini.c
-@@ -433,8 +433,8 @@ static const struct gmac_max_framelen gmac_maxlens[] = {
- 		.val = CONFIG0_MAXLEN_1536,
- 	},
- 	{
--		.max_l3_len = 1542,
--		.val = CONFIG0_MAXLEN_1542,
-+		.max_l3_len = 1548,
-+		.val = CONFIG0_MAXLEN_1548,
- 	},
- 	{
- 		.max_l3_len = 9212,
-diff --git a/drivers/net/ethernet/cortina/gemini.h b/drivers/net/ethernet/cortina/gemini.h
-index 0b12f89bf89a3..321427aaff4cc 100644
---- a/drivers/net/ethernet/cortina/gemini.h
-+++ b/drivers/net/ethernet/cortina/gemini.h
-@@ -787,7 +787,7 @@ union gmac_config0 {
- #define  CONFIG0_MAXLEN_1536	0
- #define  CONFIG0_MAXLEN_1518	1
- #define  CONFIG0_MAXLEN_1522	2
--#define  CONFIG0_MAXLEN_1542	3
-+#define  CONFIG0_MAXLEN_1548	3
- #define  CONFIG0_MAXLEN_9k	4	/* 9212 */
- #define  CONFIG0_MAXLEN_10k	5	/* 10236 */
- #define  CONFIG0_MAXLEN_1518__6	6
--- 
-2.42.0
-
+--- a/drivers/acpi/acpi_fpdt.c
++++ b/drivers/acpi/acpi_fpdt.c
+@@ -194,12 +194,19 @@ static int fpdt_process_subtable(u64 add
+ 		record_header = (void *)subtable_header + offset;
+ 		offset += record_header->length;
+ 
++		if (!record_header->length) {
++			pr_err(FW_BUG "Zero-length record found in FPTD.\n");
++			result = -EINVAL;
++			goto err;
++		}
++
+ 		switch (record_header->type) {
+ 		case RECORD_S3_RESUME:
+ 			if (subtable_type != SUBTABLE_S3PT) {
+ 				pr_err(FW_BUG "Invalid record %d for subtable %s\n",
+ 				     record_header->type, signature);
+-				return -EINVAL;
++				result = -EINVAL;
++				goto err;
+ 			}
+ 			if (record_resume) {
+ 				pr_err("Duplicate resume performance record found.\n");
+@@ -208,7 +215,7 @@ static int fpdt_process_subtable(u64 add
+ 			record_resume = (struct resume_performance_record *)record_header;
+ 			result = sysfs_create_group(fpdt_kobj, &resume_attr_group);
+ 			if (result)
+-				return result;
++				goto err;
+ 			break;
+ 		case RECORD_S3_SUSPEND:
+ 			if (subtable_type != SUBTABLE_S3PT) {
+@@ -223,13 +230,14 @@ static int fpdt_process_subtable(u64 add
+ 			record_suspend = (struct suspend_performance_record *)record_header;
+ 			result = sysfs_create_group(fpdt_kobj, &suspend_attr_group);
+ 			if (result)
+-				return result;
++				goto err;
+ 			break;
+ 		case RECORD_BOOT:
+ 			if (subtable_type != SUBTABLE_FBPT) {
+ 				pr_err(FW_BUG "Invalid %d for subtable %s\n",
+ 				     record_header->type, signature);
+-				return -EINVAL;
++				result = -EINVAL;
++				goto err;
+ 			}
+ 			if (record_boot) {
+ 				pr_err("Duplicate boot performance record found.\n");
+@@ -238,7 +246,7 @@ static int fpdt_process_subtable(u64 add
+ 			record_boot = (struct boot_performance_record *)record_header;
+ 			result = sysfs_create_group(fpdt_kobj, &boot_attr_group);
+ 			if (result)
+-				return result;
++				goto err;
+ 			break;
+ 
+ 		default:
+@@ -247,6 +255,18 @@ static int fpdt_process_subtable(u64 add
+ 		}
+ 	}
+ 	return 0;
++
++err:
++	if (record_boot)
++		sysfs_remove_group(fpdt_kobj, &boot_attr_group);
++
++	if (record_suspend)
++		sysfs_remove_group(fpdt_kobj, &suspend_attr_group);
++
++	if (record_resume)
++		sysfs_remove_group(fpdt_kobj, &resume_attr_group);
++
++	return result;
+ }
+ 
+ static int __init acpi_init_fpdt(void)
+@@ -255,6 +275,7 @@ static int __init acpi_init_fpdt(void)
+ 	struct acpi_table_header *header;
+ 	struct fpdt_subtable_entry *subtable;
+ 	u32 offset = sizeof(*header);
++	int result;
+ 
+ 	status = acpi_get_table(ACPI_SIG_FPDT, 0, &header);
+ 
+@@ -263,8 +284,8 @@ static int __init acpi_init_fpdt(void)
+ 
+ 	fpdt_kobj = kobject_create_and_add("fpdt", acpi_kobj);
+ 	if (!fpdt_kobj) {
+-		acpi_put_table(header);
+-		return -ENOMEM;
++		result = -ENOMEM;
++		goto err_nomem;
+ 	}
+ 
+ 	while (offset < header->length) {
+@@ -272,8 +293,10 @@ static int __init acpi_init_fpdt(void)
+ 		switch (subtable->type) {
+ 		case SUBTABLE_FBPT:
+ 		case SUBTABLE_S3PT:
+-			fpdt_process_subtable(subtable->address,
++			result = fpdt_process_subtable(subtable->address,
+ 					      subtable->type);
++			if (result)
++				goto err_subtable;
+ 			break;
+ 		default:
+ 			/* Other types are reserved in ACPI 6.4 spec. */
+@@ -282,6 +305,12 @@ static int __init acpi_init_fpdt(void)
+ 		offset += sizeof(*subtable);
+ 	}
+ 	return 0;
++err_subtable:
++	kobject_put(fpdt_kobj);
++
++err_nomem:
++	acpi_put_table(header);
++	return result;
+ }
+ 
+ fs_initcall(acpi_init_fpdt);
 
 
 
