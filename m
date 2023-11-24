@@ -1,58 +1,46 @@
-Return-Path: <stable+bounces-1831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 810B37F8190
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759A57F7FE6
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:45:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33D002826CD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9D72825A1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:45:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91ED635F1A;
-	Fri, 24 Nov 2023 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5486321AD;
+	Fri, 24 Nov 2023 18:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUq4Oypy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="my9v+Nd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0591C2E84A;
-	Fri, 24 Nov 2023 18:59:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57376C433C8;
-	Fri, 24 Nov 2023 18:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CB535F15;
+	Fri, 24 Nov 2023 18:45:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D30C6C433C8;
+	Fri, 24 Nov 2023 18:45:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852379;
-	bh=weAAYLO37DhTk8Y6IZDu25vVE/7zMyHaotCMK8Frhn8=;
+	s=korg; t=1700851508;
+	bh=FhePzjnPPJh8uTVUxMfOShNexoAE8VxaIX2rSyAQAfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUq4OypyDASVzIy/XOspnS8xvKUAfT+5E2sqMkKFIzuLsqxdU75dRXsI7PXYG3uYU
-	 0SjloS4t8vDJFA6qnQ3kT4Hwjg1iSrwzENJTHh14hCSJwQN9z8uF1oAvQ1EaQtXxkE
-	 PNUwlx6Eyd7ZqhS93Fn50TwIaptPLfx2k31lV4Yg=
+	b=my9v+Nd/Ej3ywDG9fruH8p38Zo68lbaVeJ426Ci9eJrV+GUoajV2EWJ3oA33hmNLk
+	 taphdCoYpyjr+80Kzzw6ajdU8yOWmvTN0i7RyNsk+mCuuRvyJjT9Az2k2jJEGnqUu2
+	 h60Dv40aOYthBKjarUHj9C9oxsEwuEcTED64djM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 6.1 325/372] drm/mediatek/dp: fix memory leak on ->get_edid callback error path
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.5 476/491] drm/amdgpu/smu13: drop compute workload workaround
 Date: Fri, 24 Nov 2023 17:51:52 +0000
-Message-ID: <20231124172021.215392068@linuxfoundation.org>
+Message-ID: <20231124172038.943928437@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +52,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit fcaf9761fd5884a64eaac48536f8c27ecfd2e6bc upstream.
+commit 23170863ea0a0965d224342c0eb2ad8303b1f267 upstream.
 
-Setting new_edid to NULL leaks the buffer.
+This was fixed in PMFW before launch and is no longer
+required.
 
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Cc: Markus Schneider-Pargmann <msp@baylibre.com>
-Cc: Guillaume Ranquet <granquet@baylibre.com>
-Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Cc: CK Hu <ck.hu@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914131058.2472260-1-jani.nikula@intel.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |   32 +------------------
+ 1 file changed, 2 insertions(+), 30 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2005,6 +2005,7 @@ static struct edid *mtk_dp_get_edid(stru
- 	 */
- 	if (mtk_dp_parse_capabilities(mtk_dp)) {
- 		drm_err(mtk_dp->drm_dev, "Can't parse capabilities\n");
-+		kfree(new_edid);
- 		new_edid = NULL;
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2162,38 +2162,10 @@ static int smu_v13_0_0_set_power_profile
+ 		}
  	}
  
+-	if (smu->power_profile_mode == PP_SMC_POWER_PROFILE_COMPUTE &&
+-		(((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xC8)) ||
+-		((smu->adev->pdev->device == 0x744C) && (smu->adev->pdev->revision == 0xCC)))) {
+-		ret = smu_cmn_update_table(smu,
+-					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
+-					   WORKLOAD_PPLIB_COMPUTE_BIT,
+-					   (void *)(&activity_monitor_external),
+-					   false);
+-		if (ret) {
+-			dev_err(smu->adev->dev, "[%s] Failed to get activity monitor!", __func__);
+-			return ret;
+-		}
+-
+-		ret = smu_cmn_update_table(smu,
+-					   SMU_TABLE_ACTIVITY_MONITOR_COEFF,
+-					   WORKLOAD_PPLIB_CUSTOM_BIT,
+-					   (void *)(&activity_monitor_external),
+-					   true);
+-		if (ret) {
+-			dev_err(smu->adev->dev, "[%s] Failed to set activity monitor!", __func__);
+-			return ret;
+-		}
+-
+-		workload_type = smu_cmn_to_asic_specific_index(smu,
+-						       CMN2ASIC_MAPPING_WORKLOAD,
+-						       PP_SMC_POWER_PROFILE_CUSTOM);
+-	} else {
+-		/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
+-		workload_type = smu_cmn_to_asic_specific_index(smu,
++	/* conv PP_SMC_POWER_PROFILE* to WORKLOAD_PPLIB_*_BIT */
++	workload_type = smu_cmn_to_asic_specific_index(smu,
+ 						       CMN2ASIC_MAPPING_WORKLOAD,
+ 						       smu->power_profile_mode);
+-	}
+ 
+ 	if (workload_type < 0)
+ 		return -EINVAL;
 
 
 
