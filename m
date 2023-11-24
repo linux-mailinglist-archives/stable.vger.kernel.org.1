@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B6AF7F8154
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E517F7B2D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8B7F282639
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 619701C20B83
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64365339BE;
-	Fri, 24 Nov 2023 18:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97F792AF00;
+	Fri, 24 Nov 2023 18:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCrbI01t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vx6LLZR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B252E64F;
-	Fri, 24 Nov 2023 18:57:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D47C433C8;
-	Fri, 24 Nov 2023 18:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590CA39FF2;
+	Fri, 24 Nov 2023 18:02:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB583C433C7;
+	Fri, 24 Nov 2023 18:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852259;
-	bh=8jn9shcVCu1NVne4ujzuJwhNpKwx2PRXIn0cHzuvbAc=;
+	s=korg; t=1700848953;
+	bh=b3vA1wVwQMel1d0KmcJ4dOLGlKCkC/LRcPUnON2ER58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCrbI01tVjm76ytqGgbIlCe8Jjf2kBSR7zxSnKEwc/7uMp6EpieOLsCOPf2+RY8El
-	 NX+BIz1pPDRKFxe9V1Kqhuaekjqcu9CEkGrYtqk4npSsm1vpeO0MnMDMpV9epZ3Zs0
-	 BzJYpD8UPZIzrzIX3Eo0IOtVyUKVF6dLop9KPKV8=
+	b=Vx6LLZR98hQtt0nEKyK1rTU7k1ALmoxUTGVQtA4PEIwEyBPMBFkUm61dYgoqVkmbh
+	 crxjFTaPcOltFPc7K3soF472lxzKZNrbSsgGRZpVbAG7Idb4+itjuHc99NtZRUW8Pu
+	 Fa8rtHe8gs42S3LSU9/U2eKjPdBQIIkn3Kum+Oys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Stefan Wahren <stefan.wahren@i2se.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 284/372] pmdomain: bcm: bcm2835-power: check if the ASB register is equal to enable
+	Shinhyung Kang <s47.kang@samsung.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.14 47/57] ALSA: info: Fix potential deadlock at disconnection
 Date: Fri, 24 Nov 2023 17:51:11 +0000
-Message-ID: <20231124172019.901080585@linuxfoundation.org>
+Message-ID: <20231124171932.060668415@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +51,128 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2e75396f1df61e1f1d26d0d703fc7292c4ae4371 ]
+commit c7a60651953359f98dbf24b43e1bf561e1573ed4 upstream.
 
-The commit c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
-refactored the ASB control by using a general function to handle both
-the enable and disable. But this patch introduced a subtle regression:
-we need to check if !!(readl(base + reg) & ASB_ACK) == enable, not just
-check if (readl(base + reg) & ASB_ACK) == true.
+As reported recently, ALSA core info helper may cause a deadlock at
+the forced device disconnection during the procfs operation.
 
-Currently, this is causing an invalid register state in V3D when
-unloading and loading the driver, because `bcm2835_asb_disable()` will
-return -ETIMEDOUT and `bcm2835_asb_power_off()` will fail to disable the
-ASB slave for V3D.
+The proc_remove() (that is called from the snd_card_disconnect()
+helper) has a synchronization of the pending procfs accesses via
+wait_for_completion().  Meanwhile, ALSA procfs helper takes the global
+mutex_lock(&info_mutex) at both the proc_open callback and
+snd_card_info_disconnect() helper.  Since the proc_open can't finish
+due to the mutex lock, wait_for_completion() never returns, either,
+hence it deadlocks.
 
-Fixes: c494a447c14e ("soc: bcm: bcm2835-power: Refactor ASB control")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Stefan Wahren <stefan.wahren@i2se.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231024101251.6357-2-mcanal@igalia.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	TASK#1				TASK#2
+	proc_reg_open()
+	  takes use_pde()
+	snd_info_text_entry_open()
+					snd_card_disconnect()
+					snd_info_card_disconnect()
+					  takes mutex_lock(&info_mutex)
+					proc_remove()
+					wait_for_completion(unused_pde)
+					  ... waiting task#1 closes
+	mutex_lock(&info_mutex)
+		=> DEADLOCK
+
+This patch is a workaround for avoiding the deadlock scenario above.
+
+The basic strategy is to move proc_remove() call outside the mutex
+lock.  proc_remove() can work gracefully without extra locking, and it
+can delete the tree recursively alone.  So, we call proc_remove() at
+snd_info_card_disconnection() at first, then delete the rest resources
+recursively within the info_mutex lock.
+
+After the change, the function snd_info_disconnect() doesn't do
+disconnection by itself any longer, but it merely clears the procfs
+pointer.  So rename the function to snd_info_clear_entries() for
+avoiding confusion.
+
+The similar change is applied to snd_info_free_entry(), too.  Since
+the proc_remove() is called only conditionally with the non-NULL
+entry->p, it's skipped after the snd_info_clear_entries() call.
+
+Reported-by: Shinhyung Kang <s47.kang@samsung.com>
+Closes: https://lore.kernel.org/r/664457955.21699345385931.JavaMail.epsvc@epcpadp4
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231109141954.4283-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/bcm/bcm2835-power.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/info.c |   21 +++++++++++++--------
+ 1 file changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/bcm/bcm2835-power.c b/drivers/soc/bcm/bcm2835-power.c
-index 5bcd047768b60..cbcd1298ef5bd 100644
---- a/drivers/soc/bcm/bcm2835-power.c
-+++ b/drivers/soc/bcm/bcm2835-power.c
-@@ -175,7 +175,7 @@ static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, bool enable
- 	}
- 	writel(PM_PASSWORD | val, base + reg);
+--- a/sound/core/info.c
++++ b/sound/core/info.c
+@@ -72,7 +72,7 @@ struct snd_info_private_data {
+ };
  
--	while (readl(base + reg) & ASB_ACK) {
-+	while (!!(readl(base + reg) & ASB_ACK) == enable) {
- 		cpu_relax();
- 		if (ktime_get_ns() - start >= 1000)
- 			return -ETIMEDOUT;
--- 
-2.42.0
-
+ static int snd_info_version_init(void);
+-static void snd_info_disconnect(struct snd_info_entry *entry);
++static void snd_info_clear_entries(struct snd_info_entry *entry);
+ 
+ /*
+ 
+@@ -598,11 +598,16 @@ void snd_info_card_disconnect(struct snd
+ {
+ 	if (!card)
+ 		return;
+-	mutex_lock(&info_mutex);
++
+ 	proc_remove(card->proc_root_link);
+-	card->proc_root_link = NULL;
+ 	if (card->proc_root)
+-		snd_info_disconnect(card->proc_root);
++		proc_remove(card->proc_root->p);
++
++	mutex_lock(&info_mutex);
++	if (card->proc_root)
++		snd_info_clear_entries(card->proc_root);
++	card->proc_root_link = NULL;
++	card->proc_root = NULL;
+ 	mutex_unlock(&info_mutex);
+ }
+ 
+@@ -776,15 +781,14 @@ struct snd_info_entry *snd_info_create_c
+ }
+ EXPORT_SYMBOL(snd_info_create_card_entry);
+ 
+-static void snd_info_disconnect(struct snd_info_entry *entry)
++static void snd_info_clear_entries(struct snd_info_entry *entry)
+ {
+ 	struct snd_info_entry *p;
+ 
+ 	if (!entry->p)
+ 		return;
+ 	list_for_each_entry(p, &entry->children, list)
+-		snd_info_disconnect(p);
+-	proc_remove(entry->p);
++		snd_info_clear_entries(p);
+ 	entry->p = NULL;
+ }
+ 
+@@ -801,8 +805,9 @@ void snd_info_free_entry(struct snd_info
+ 	if (!entry)
+ 		return;
+ 	if (entry->p) {
++		proc_remove(entry->p);
+ 		mutex_lock(&info_mutex);
+-		snd_info_disconnect(entry);
++		snd_info_clear_entries(entry);
+ 		mutex_unlock(&info_mutex);
+ 	}
+ 
 
 
 
