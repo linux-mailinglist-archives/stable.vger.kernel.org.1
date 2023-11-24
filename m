@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-1543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1927F8039
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:47:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E11047F7C7D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD0EB20A03
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:47:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138791C20E14
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C29364DE;
-	Fri, 24 Nov 2023 18:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC2F39FC3;
+	Fri, 24 Nov 2023 18:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOzOireX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGAkZaJj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9293137170;
-	Fri, 24 Nov 2023 18:47:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3DFC433C7;
-	Fri, 24 Nov 2023 18:47:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04B239FD9;
+	Fri, 24 Nov 2023 18:15:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E12C433C8;
+	Fri, 24 Nov 2023 18:15:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851663;
-	bh=QKMPzfNID+Xu02ZDI3vmJwyDJXtoWZTtrsBOggXNrp0=;
+	s=korg; t=1700849738;
+	bh=qtzOy/3r9KmSnhNfaouzQexGZFLHohSSobkrH1K0ZHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOzOireXuX5sq9HL8aSMnAwrBJ3wjnYj2r6khhtm3ED+0BxSq2o7OqS7th7mKOz1/
-	 Vu90LjVtnqOvRyu6WDm7sBZOuBzuZp0mwJrlCacTScsNyJfK7Ht7pHMpkoXMJruNgs
-	 hTBmIIGpJcEbl2jDy0f6h6QJW3uo5ihprFGHINek=
+	b=pGAkZaJjNerp+al0xUd92yORYmMW7GdMlXpwUBVLdNv1sJXv0fP9Xwe8BM9Bep/R5
+	 UVVeoYjil49AmQ7qtLUdPqVe7BYt1s9t9q0YSEabz9EGXSgoDacLZToKlP7KjXrwpD
+	 A8XslhE7/azCtlLBKt1dIEwwMstnUvcztb74WLGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Stanley.Yang" <Stanley.Yang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/372] drm/amdgpu: Fix potential null pointer derefernce
+	jirislaby@kernel.org,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: [PATCH 6.6 266/530] tty/sysrq: replace smp_processor_id() with get_cpu()
 Date: Fri, 24 Nov 2023 17:47:12 +0000
-Message-ID: <20231124172011.979507761@linuxfoundation.org>
+Message-ID: <20231124172036.129529706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +52,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanley.Yang <Stanley.Yang@amd.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit 80285ae1ec8717b597b20de38866c29d84d321a1 ]
+commit dd976a97d15b47656991e185a94ef42a0fa5cfd4 upstream.
 
-The amdgpu_ras_get_context may return NULL if device
-not support ras feature, so add check before using.
+The smp_processor_id() shouldn't be called from preemptible code.
+Instead use get_cpu() and put_cpu() which disables preemption in
+addition to getting the processor id. Enable preemption back after
+calling schedule_work() to make sure that the work gets scheduled on all
+cores other than the current core. We want to avoid a scenario where
+current core's stack trace is printed multiple times and one core's
+stack trace isn't printed because of scheduling of current task.
 
-Signed-off-by: Stanley.Yang <Stanley.Yang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This fixes the following bug:
+
+[  119.143590] sysrq: Show backtrace of all active CPUs
+[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+[  119.144586] caller is debug_smp_processor_id+0x20/0x30
+[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+[  119.145053] Call trace:
+[  119.145093]  dump_backtrace+0x0/0x1a0
+[  119.145122]  show_stack+0x18/0x70
+[  119.145141]  dump_stack+0xc4/0x11c
+[  119.145159]  check_preemption_disabled+0x100/0x110
+[  119.145175]  debug_smp_processor_id+0x20/0x30
+[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+[  119.145211]  __handle_sysrq+0x8c/0x1a0
+[  119.145227]  write_sysrq_trigger+0x94/0x12c
+[  119.145247]  proc_reg_write+0xa8/0xe4
+[  119.145266]  vfs_write+0xec/0x280
+[  119.145282]  ksys_write+0x6c/0x100
+[  119.145298]  __arm64_sys_write+0x20/0x30
+[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+[  119.145332]  do_el0_svc+0x24/0x8c
+[  119.145348]  el0_svc+0x10/0x20
+[  119.145364]  el0_sync_handler+0x134/0x140
+[  119.145381]  el0_sync+0x180/0x1c0
+
+Cc: jirislaby@kernel.org
+Cc: stable@vger.kernel.org
+Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Link: https://lore.kernel.org/r/20231009162021.3607632-1-usama.anjum@collabora.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 ++-
+ drivers/tty/sysrq.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 92fa2faf63e41..dc61cc1659326 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5330,7 +5330,8 @@ int amdgpu_device_gpu_recover(struct amdgpu_device *adev,
- 	 * Flush RAM to disk so that after reboot
- 	 * the user can read log and see why the system rebooted.
- 	 */
--	if (need_emergency_restart && amdgpu_ras_get_context(adev)->reboot) {
-+	if (need_emergency_restart && amdgpu_ras_get_context(adev) &&
-+		amdgpu_ras_get_context(adev)->reboot) {
- 		DRM_WARN("Emergency reboot.");
+--- a/drivers/tty/sysrq.c
++++ b/drivers/tty/sysrq.c
+@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8
+ 		if (in_hardirq())
+ 			regs = get_irq_regs();
  
- 		ksys_sync_helper();
--- 
-2.42.0
-
+-		pr_info("CPU%d:\n", smp_processor_id());
++		pr_info("CPU%d:\n", get_cpu());
+ 		if (regs)
+ 			show_regs(regs);
+ 		else
+ 			show_stack(NULL, NULL, KERN_INFO);
+ 
+ 		schedule_work(&sysrq_showallcpus);
++		put_cpu();
+ 	}
+ }
+ 
 
 
 
