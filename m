@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CC27F7D19
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84ADB7F7AB4
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 592991C2119B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6DC91C20A27
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D90D3A8CF;
-	Fri, 24 Nov 2023 18:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E841D39FE1;
+	Fri, 24 Nov 2023 17:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UORwThIX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2U8v3kHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D7739FF8;
-	Fri, 24 Nov 2023 18:21:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9078BC433C8;
-	Fri, 24 Nov 2023 18:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2232D39FDE;
+	Fri, 24 Nov 2023 17:57:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B22AC433C7;
+	Fri, 24 Nov 2023 17:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850085;
-	bh=ZsXz0gueu+Cu4ykU7DVSC3Ra29RC3hcmdzx0rtdqOg8=;
+	s=korg; t=1700848668;
+	bh=GR/QK1Nx5n+4XlyYZESep2AUYTiSSSdFp1y9VfZP5HM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UORwThIXLjhcfUfdBVNSd7EsD5/A8bqiZvsljCqqQ5/O6NSVDuZ2sjQ/M+5PBquz9
-	 37E4lGzvI3kitbIyRvjOBJLytDSnQlvKMaPcK4nisq2LSbTZseYd2SWUTpskxyQS4b
-	 baMWDqzRTMlkvFu+xdG4UgLOf1W5EtzBfDnebSUU=
+	b=2U8v3kHW101g3qyUgcj4l2jTDbMdP0gO1wF4il5i9ah6I0nE9AiNld3ZDH97tsRKf
+	 AmS3xfz5y3UsIf1kzbDKzpKquQS3D9ZZ0pilO3H+x8mzBjHCOy9k5Km9nTaOgG86xj
+	 EVpPc6l2Vd0qdc1gQ9eAaqC9CZr/UOu3n/qC2Y7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.6 440/530] lsm: fix default return value for vm_enough_memory
+	Bob Peterson <rpeterso@redhat.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 33/97] gfs2: ignore negated quota changes
 Date: Fri, 24 Nov 2023 17:50:06 +0000
-Message-ID: <20231124172041.481934565@linuxfoundation.org>
+Message-ID: <20231124171935.395494071@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,36 +53,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Bob Peterson <rpeterso@redhat.com>
 
-commit 866d648059d5faf53f1cd960b43fe8365ad93ea7 upstream.
+[ Upstream commit 4c6a08125f2249531ec01783a5f4317d7342add5 ]
 
-1 is the return value that implements a "no-op" hook, not 0.
+When lots of quota changes are made, there may be cases in which an
+inode's quota information is increased and then decreased, such as when
+blocks are added to a file, then deleted from it. If the timing is
+right, function do_qc can add pending quota changes to a transaction,
+then later, another call to do_qc can negate those changes, resulting
+in a net gain of 0. The quota_change information is recorded in the qc
+buffer (and qd element of the inode as well). The buffer is added to the
+transaction by the first call to do_qc, but a subsequent call changes
+the value from non-zero back to zero. At that point it's too late to
+remove the buffer_head from the transaction. Later, when the quota sync
+code is called, the zero-change qd element is discovered and flagged as
+an assert warning. If the fs is mounted with errors=panic, the kernel
+will panic.
 
-Cc: stable@vger.kernel.org
-Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is usually seen when files are truncated and the quota changes are
+negated by punch_hole/truncate which uses gfs2_quota_hold and
+gfs2_quota_unhold rather than block allocations that use gfs2_quota_lock
+and gfs2_quota_unlock which automatically do quota sync.
+
+This patch solves the problem by adding a check to qd_check_sync such
+that net-zero quota changes already added to the transaction are no
+longer deemed necessary to be synced, and skipped.
+
+In this case references are taken for the qd and the slot from do_qc
+so those need to be put. The normal sequence of events for a normal
+non-zero quota change is as follows:
+
+gfs2_quota_change
+   do_qc
+      qd_hold
+      slot_hold
+
+Later, when the changes are to be synced:
+
+gfs2_quota_sync
+   qd_fish
+      qd_check_sync
+         gets qd ref via lockref_get_not_dead
+   do_sync
+      do_qc(QC_SYNC)
+         qd_put
+	    lockref_put_or_lock
+   qd_unlock
+      qd_put
+         lockref_put_or_lock
+
+In the net-zero change case, we add a check to qd_check_sync so it puts
+the qd and slot references acquired in gfs2_quota_change and skip the
+unneeded sync.
+
+Signed-off-by: Bob Peterson <rpeterso@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/lsm_hook_defs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/quota.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -48,7 +48,7 @@ LSM_HOOK(int, 0, quota_on, struct dentry
- LSM_HOOK(int, 0, syslog, int type)
- LSM_HOOK(int, 0, settime, const struct timespec64 *ts,
- 	 const struct timezone *tz)
--LSM_HOOK(int, 0, vm_enough_memory, struct mm_struct *mm, long pages)
-+LSM_HOOK(int, 1, vm_enough_memory, struct mm_struct *mm, long pages)
- LSM_HOOK(int, 0, bprm_creds_for_exec, struct linux_binprm *bprm)
- LSM_HOOK(int, 0, bprm_creds_from_file, struct linux_binprm *bprm, struct file *file)
- LSM_HOOK(int, 0, bprm_check_security, struct linux_binprm *bprm)
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index dd0f9bc13164b..9f753595d90ee 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -434,6 +434,17 @@ static int qd_check_sync(struct gfs2_sbd *sdp, struct gfs2_quota_data *qd,
+ 	    (sync_gen && (qd->qd_sync_gen >= *sync_gen)))
+ 		return 0;
+ 
++	/*
++	 * If qd_change is 0 it means a pending quota change was negated.
++	 * We should not sync it, but we still have a qd reference and slot
++	 * reference taken by gfs2_quota_change -> do_qc that need to be put.
++	 */
++	if (!qd->qd_change && test_and_clear_bit(QDF_CHANGE, &qd->qd_flags)) {
++		slot_put(qd);
++		qd_put(qd);
++		return 0;
++	}
++
+ 	if (!lockref_get_not_dead(&qd->qd_lockref))
+ 		return 0;
+ 
+-- 
+2.42.0
+
 
 
 
