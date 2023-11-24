@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-1189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84A77F7E70
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834E57F7C48
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA4E61C2139B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39369281F01
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160E939FE8;
-	Fri, 24 Nov 2023 18:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE02B3A8C4;
+	Fri, 24 Nov 2023 18:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYymoM8k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5XxBMVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C827728DA1;
-	Fri, 24 Nov 2023 18:32:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5489AC433C8;
-	Fri, 24 Nov 2023 18:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743BF381BF;
+	Fri, 24 Nov 2023 18:13:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E58C433C8;
+	Fri, 24 Nov 2023 18:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850779;
-	bh=yNaGIkdgzUuwFcRm99v63Uel2eTwIywDy5Udws/PSXA=;
+	s=korg; t=1700849622;
+	bh=9d6FAsrnKN+prXDF50MlTyd2PTtChY6ZG/DXAo+2w1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYymoM8k7bBRCStPOWTs+qwqn+4aXD1ulUlX3WoUyPVRMd1lqkEgnYwNTZzXOtJTn
-	 i7xVfouMLc/JflTjX6e9g7IQ7sHhTucBs5ldOQ1S3ENOqsW/m7zaymmLrUFqL7fBMP
-	 /yEZsKgEFwUMOjvupYsxnVM8ogKloqiLYfZBe3I4=
+	b=V5XxBMVEDui0pC+r50/T4LArDIaHFI3mJc9eWfE67HHG14aA4I3MOOR3b0lmrEewa
+	 bY6cERloFfL9gs5JcHxA12ANYDDiQrPOA32GDoN4t2e17dji7+DieWKjpN4ONVC5hD
+	 6AS6QQR1EevM1jMSHcWfYtrMAFClN6y8XHUwMSR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Auhagen <sven.auhagen@voleatech.de>,
-	Paulo Da Silva <Paulo.DaSilva@kyberna.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 185/491] net: mvneta: fix calls to page_pool_get_stats
+	Thomas Gleixner <tglx@linutronix.de>,
+	Koichiro Den <den@valinux.co.jp>
+Subject: [PATCH 6.6 255/530] x86/apic/msi: Fix misconfigured non-maskable MSI quirk
 Date: Fri, 24 Nov 2023 17:47:01 +0000
-Message-ID: <20231124172030.040550692@linuxfoundation.org>
+Message-ID: <20231124172035.816436238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,164 +52,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Auhagen <sven.auhagen@voleatech.de>
+From: Koichiro Den <den@valinux.co.jp>
 
-[ Upstream commit ca8add922f9c7f6e2e3c71039da8e0dcc64b87ed ]
+commit b56ebe7c896dc78b5865ec2c4b1dae3c93537517 upstream.
 
-Calling page_pool_get_stats in the mvneta driver without checks
-leads to kernel crashes.
-First the page pool is only available if the bm is not used.
-The page pool is also not allocated when the port is stopped.
-It can also be not allocated in case of errors.
+commit ef8dd01538ea ("genirq/msi: Make interrupt allocation less
+convoluted"), reworked the code so that the x86 specific quirk for affinity
+setting of non-maskable PCI/MSI interrupts is not longer activated if
+necessary.
 
-The current implementation leads to the following crash calling
-ethstats on a port that is down or when calling it at the wrong moment:
+This could be solved by restoring the original logic in the core MSI code,
+but after a deeper analysis it turned out that the quirk flag is not
+required at all.
 
-ble to handle kernel NULL pointer dereference at virtual address 00000070
-[00000070] *pgd=00000000
-Internal error: Oops: 5 [#1] SMP ARM
-Hardware name: Marvell Armada 380/385 (Device Tree)
-PC is at page_pool_get_stats+0x18/0x1cc
-LR is at mvneta_ethtool_get_stats+0xa0/0xe0 [mvneta]
-pc : [<c0b413cc>]    lr : [<bf0a98d8>]    psr: a0000013
-sp : f1439d48  ip : f1439dc0  fp : 0000001d
-r10: 00000100  r9 : c4816b80  r8 : f0d75150
-r7 : bf0b400c  r6 : c238f000  r5 : 00000000  r4 : f1439d68
-r3 : c2091040  r2 : ffffffd8  r1 : f1439d68  r0 : 00000000
-Flags: NzCv  IRQs on  FIQs on  Mode SVC_32  ISA ARM  Segment none
-Control: 10c5387d  Table: 066b004a  DAC: 00000051
-Register r0 information: NULL pointer
-Register r1 information: 2-page vmalloc region starting at 0xf1438000 allocated at kernel_clone+0x9c/0x390
-Register r2 information: non-paged memory
-Register r3 information: slab kmalloc-2k start c2091000 pointer offset 64 size 2048
-Register r4 information: 2-page vmalloc region starting at 0xf1438000 allocated at kernel_clone+0x9c/0x390
-Register r5 information: NULL pointer
-Register r6 information: slab kmalloc-cg-4k start c238f000 pointer offset 0 size 4096
-Register r7 information: 15-page vmalloc region starting at 0xbf0a8000 allocated at load_module+0xa30/0x219c
-Register r8 information: 1-page vmalloc region starting at 0xf0d75000 allocated at ethtool_get_stats+0x138/0x208
-Register r9 information: slab task_struct start c4816b80 pointer offset 0
-Register r10 information: non-paged memory
-Register r11 information: non-paged memory
-Register r12 information: 2-page vmalloc region starting at 0xf1438000 allocated at kernel_clone+0x9c/0x390
-Process snmpd (pid: 733, stack limit = 0x38de3a88)
-Stack: (0xf1439d48 to 0xf143a000)
-9d40:                   000000c0 00000001 c238f000 bf0b400c f0d75150 c4816b80
-9d60: 00000100 bf0a98d8 00000000 00000000 00000000 00000000 00000000 00000000
-9d80: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-9da0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-9dc0: 00000dc0 5335509c 00000035 c238f000 bf0b2214 01067f50 f0d75000 c0b9b9c8
-9de0: 0000001d 00000035 c2212094 5335509c c4816b80 c238f000 c5ad6e00 01067f50
-9e00: c1b0be80 c4816b80 00014813 c0b9d7f0 00000000 00000000 0000001d 0000001d
-9e20: 00000000 00001200 00000000 00000000 c216ed90 c73943b8 00000000 00000000
-9e40: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-9e60: 00000000 c0ad9034 00000000 00000000 00000000 00000000 00000000 00000000
-9e80: 00000000 00000000 00000000 5335509c c1b0be80 f1439ee4 00008946 c1b0be80
-9ea0: 01067f50 f1439ee3 00000000 00000046 b6d77ae0 c0b383f0 00008946 becc83e8
-9ec0: c1b0be80 00000051 0000000b c68ca480 c7172d00 c0ad8ff0 f1439ee3 cf600e40
-9ee0: 01600e40 32687465 00000000 00000000 00000000 01067f50 00000000 00000000
-9f00: 00000000 5335509c 00008946 00008946 00000000 c68ca480 becc83e8 c05e2de0
-9f20: f1439fb0 c03002f0 00000006 5ac3c35a c4816b80 00000006 b6d77ae0 c030caf0
-9f40: c4817350 00000014 f1439e1c 0000000c 00000000 00000051 01000000 00000014
-9f60: 00003fec f1439edc 00000001 c0372abc b6d77ae0 c0372abc cf600e40 5335509c
-9f80: c21e6800 01015c9c 0000000b 00008946 00000036 c03002f0 c4816b80 00000036
-9fa0: b6d77ae0 c03000c0 01015c9c 0000000b 0000000b 00008946 becc83e8 00000000
-9fc0: 01015c9c 0000000b 00008946 00000036 00000035 010678a0 b6d797ec b6d77ae0
-9fe0: b6dbf738 becc838c b6d186d7 b6baa858 40000030 0000000b 00000000 00000000
- page_pool_get_stats from mvneta_ethtool_get_stats+0xa0/0xe0 [mvneta]
- mvneta_ethtool_get_stats [mvneta] from ethtool_get_stats+0x154/0x208
- ethtool_get_stats from dev_ethtool+0xf48/0x2480
- dev_ethtool from dev_ioctl+0x538/0x63c
- dev_ioctl from sock_ioctl+0x49c/0x53c
- sock_ioctl from sys_ioctl+0x134/0xbd8
- sys_ioctl from ret_fast_syscall+0x0/0x1c
-Exception stack(0xf1439fa8 to 0xf1439ff0)
-9fa0:                   01015c9c 0000000b 0000000b 00008946 becc83e8 00000000
-9fc0: 01015c9c 0000000b 00008946 00000036 00000035 010678a0 b6d797ec b6d77ae0
-9fe0: b6dbf738 becc838c b6d186d7 b6baa858
-Code: e28dd004 e1a05000 e2514000 0a00006a (e5902070)
+The quirk is only required when the PCI/MSI device cannot mask the MSI
+interrupts, which in turn also prevents reservation mode from being enabled
+for the affected interrupt.
 
-This commit adds the proper checks before calling page_pool_get_stats.
+This allows ot remove the NOMASK quirk bit completely as msi_set_affinity()
+can instead check whether reservation mode is enabled for the interrupt,
+which gives exactly the same answer.
 
-Fixes: b3fc79225f05 ("net: mvneta: add support for page_pool_get_stats")
-Signed-off-by: Sven Auhagen <sven.auhagen@voleatech.de>
-Reported-by: Paulo Da Silva <Paulo.DaSilva@kyberna.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Even in the momentary non-existing case that the reservation mode would be
+not set for a maskable MSI interrupt this would not cause any harm as it
+just would cause msi_set_affinity() to go needlessly through the
+functionaly equivalent slow path, which works perfectly fine with maskable
+interrupts as well.
+
+Rework msi_set_affinity() to query the reservation mode and remove all
+NOMASK quirk logic from the core code.
+
+[ tglx: Massaged changelog ]
+
+Fixes: ef8dd01538ea ("genirq/msi: Make interrupt allocation less convoluted")
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231026032036.2462428-1-den@valinux.co.jp
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/mvneta.c | 28 +++++++++++++++++++--------
- 1 file changed, 20 insertions(+), 8 deletions(-)
+ arch/x86/kernel/apic/msi.c |    8 +++-----
+ include/linux/irq.h        |   26 ++++----------------------
+ include/linux/msi.h        |    6 ------
+ kernel/irq/debugfs.c       |    1 -
+ kernel/irq/msi.c           |   12 +-----------
+ 5 files changed, 8 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvneta.c b/drivers/net/ethernet/marvell/mvneta.c
-index acf4f6ba73a6f..f4692a8726b1c 100644
---- a/drivers/net/ethernet/marvell/mvneta.c
-+++ b/drivers/net/ethernet/marvell/mvneta.c
-@@ -4790,14 +4790,17 @@ static void mvneta_ethtool_get_strings(struct net_device *netdev, u32 sset,
- 				       u8 *data)
+--- a/arch/x86/kernel/apic/msi.c
++++ b/arch/x86/kernel/apic/msi.c
+@@ -55,14 +55,14 @@ msi_set_affinity(struct irq_data *irqd,
+ 	 * caused by the non-atomic update of the address/data pair.
+ 	 *
+ 	 * Direct update is possible when:
+-	 * - The MSI is maskable (remapped MSI does not use this code path)).
+-	 *   The quirk bit is not set in this case.
++	 * - The MSI is maskable (remapped MSI does not use this code path).
++	 *   The reservation mode bit is set in this case.
+ 	 * - The new vector is the same as the old vector
+ 	 * - The old vector is MANAGED_IRQ_SHUTDOWN_VECTOR (interrupt starts up)
+ 	 * - The interrupt is not yet started up
+ 	 * - The new destination CPU is the same as the old destination CPU
+ 	 */
+-	if (!irqd_msi_nomask_quirk(irqd) ||
++	if (!irqd_can_reserve(irqd) ||
+ 	    cfg->vector == old_cfg.vector ||
+ 	    old_cfg.vector == MANAGED_IRQ_SHUTDOWN_VECTOR ||
+ 	    !irqd_is_started(irqd) ||
+@@ -215,8 +215,6 @@ static bool x86_init_dev_msi_info(struct
+ 		if (WARN_ON_ONCE(domain != real_parent))
+ 			return false;
+ 		info->chip->irq_set_affinity = msi_set_affinity;
+-		/* See msi_set_affinity() for the gory details */
+-		info->flags |= MSI_FLAG_NOMASK_QUIRK;
+ 		break;
+ 	case DOMAIN_BUS_DMAR:
+ 	case DOMAIN_BUS_AMDVI:
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -215,8 +215,6 @@ struct irq_data {
+  * IRQD_SINGLE_TARGET		- IRQ allows only a single affinity target
+  * IRQD_DEFAULT_TRIGGER_SET	- Expected trigger already been set
+  * IRQD_CAN_RESERVE		- Can use reservation mode
+- * IRQD_MSI_NOMASK_QUIRK	- Non-maskable MSI quirk for affinity change
+- *				  required
+  * IRQD_HANDLE_ENFORCE_IRQCTX	- Enforce that handle_irq_*() is only invoked
+  *				  from actual interrupt context.
+  * IRQD_AFFINITY_ON_ACTIVATE	- Affinity is set on activation. Don't call
+@@ -247,11 +245,10 @@ enum {
+ 	IRQD_SINGLE_TARGET		= BIT(24),
+ 	IRQD_DEFAULT_TRIGGER_SET	= BIT(25),
+ 	IRQD_CAN_RESERVE		= BIT(26),
+-	IRQD_MSI_NOMASK_QUIRK		= BIT(27),
+-	IRQD_HANDLE_ENFORCE_IRQCTX	= BIT(28),
+-	IRQD_AFFINITY_ON_ACTIVATE	= BIT(29),
+-	IRQD_IRQ_ENABLED_ON_SUSPEND	= BIT(30),
+-	IRQD_RESEND_WHEN_IN_PROGRESS    = BIT(31),
++	IRQD_HANDLE_ENFORCE_IRQCTX	= BIT(27),
++	IRQD_AFFINITY_ON_ACTIVATE	= BIT(28),
++	IRQD_IRQ_ENABLED_ON_SUSPEND	= BIT(29),
++	IRQD_RESEND_WHEN_IN_PROGRESS    = BIT(30),
+ };
+ 
+ #define __irqd_to_state(d) ACCESS_PRIVATE((d)->common, state_use_accessors)
+@@ -426,21 +423,6 @@ static inline bool irqd_can_reserve(stru
+ 	return __irqd_to_state(d) & IRQD_CAN_RESERVE;
+ }
+ 
+-static inline void irqd_set_msi_nomask_quirk(struct irq_data *d)
+-{
+-	__irqd_to_state(d) |= IRQD_MSI_NOMASK_QUIRK;
+-}
+-
+-static inline void irqd_clr_msi_nomask_quirk(struct irq_data *d)
+-{
+-	__irqd_to_state(d) &= ~IRQD_MSI_NOMASK_QUIRK;
+-}
+-
+-static inline bool irqd_msi_nomask_quirk(struct irq_data *d)
+-{
+-	return __irqd_to_state(d) & IRQD_MSI_NOMASK_QUIRK;
+-}
+-
+ static inline void irqd_set_affinity_on_activate(struct irq_data *d)
  {
- 	if (sset == ETH_SS_STATS) {
-+		struct mvneta_port *pp = netdev_priv(netdev);
- 		int i;
+ 	__irqd_to_state(d) |= IRQD_AFFINITY_ON_ACTIVATE;
+--- a/include/linux/msi.h
++++ b/include/linux/msi.h
+@@ -547,12 +547,6 @@ enum {
+ 	MSI_FLAG_ALLOC_SIMPLE_MSI_DESCS	= (1 << 5),
+ 	/* Free MSI descriptors */
+ 	MSI_FLAG_FREE_MSI_DESCS		= (1 << 6),
+-	/*
+-	 * Quirk to handle MSI implementations which do not provide
+-	 * masking. Currently known to affect x86, but has to be partially
+-	 * handled in the core MSI code.
+-	 */
+-	MSI_FLAG_NOMASK_QUIRK		= (1 << 7),
  
- 		for (i = 0; i < ARRAY_SIZE(mvneta_statistics); i++)
- 			memcpy(data + i * ETH_GSTRING_LEN,
- 			       mvneta_statistics[i].name, ETH_GSTRING_LEN);
+ 	/* Mask for the generic functionality */
+ 	MSI_GENERIC_FLAGS_MASK		= GENMASK(15, 0),
+--- a/kernel/irq/debugfs.c
++++ b/kernel/irq/debugfs.c
+@@ -121,7 +121,6 @@ static const struct irq_bit_descr irqdat
+ 	BIT_MASK_DESCR(IRQD_AFFINITY_ON_ACTIVATE),
+ 	BIT_MASK_DESCR(IRQD_MANAGED_SHUTDOWN),
+ 	BIT_MASK_DESCR(IRQD_CAN_RESERVE),
+-	BIT_MASK_DESCR(IRQD_MSI_NOMASK_QUIRK),
  
--		data += ETH_GSTRING_LEN * ARRAY_SIZE(mvneta_statistics);
--		page_pool_ethtool_stats_get_strings(data);
-+		if (!pp->bm_priv) {
-+			data += ETH_GSTRING_LEN * ARRAY_SIZE(mvneta_statistics);
-+			page_pool_ethtool_stats_get_strings(data);
-+		}
- 	}
- }
+ 	BIT_MASK_DESCR(IRQD_FORWARDED_TO_VCPU),
  
-@@ -4915,8 +4918,10 @@ static void mvneta_ethtool_pp_stats(struct mvneta_port *pp, u64 *data)
- 	struct page_pool_stats stats = {};
- 	int i;
+--- a/kernel/irq/msi.c
++++ b/kernel/irq/msi.c
+@@ -1204,7 +1204,6 @@ static int msi_handle_pci_fail(struct ir
  
--	for (i = 0; i < rxq_number; i++)
--		page_pool_get_stats(pp->rxqs[i].page_pool, &stats);
-+	for (i = 0; i < rxq_number; i++) {
-+		if (pp->rxqs[i].page_pool)
-+			page_pool_get_stats(pp->rxqs[i].page_pool, &stats);
-+	}
+ #define VIRQ_CAN_RESERVE	0x01
+ #define VIRQ_ACTIVATE		0x02
+-#define VIRQ_NOMASK_QUIRK	0x04
  
- 	page_pool_ethtool_stats_get(data, &stats);
- }
-@@ -4932,14 +4937,21 @@ static void mvneta_ethtool_get_stats(struct net_device *dev,
- 	for (i = 0; i < ARRAY_SIZE(mvneta_statistics); i++)
- 		*data++ = pp->ethtool_stats[i];
- 
--	mvneta_ethtool_pp_stats(pp, data);
-+	if (!pp->bm_priv)
-+		mvneta_ethtool_pp_stats(pp, data);
- }
- 
- static int mvneta_ethtool_get_sset_count(struct net_device *dev, int sset)
+ static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflags)
  {
--	if (sset == ETH_SS_STATS)
--		return ARRAY_SIZE(mvneta_statistics) +
--		       page_pool_ethtool_stats_get_count();
-+	if (sset == ETH_SS_STATS) {
-+		int count = ARRAY_SIZE(mvneta_statistics);
-+		struct mvneta_port *pp = netdev_priv(dev);
-+
-+		if (!pp->bm_priv)
-+			count += page_pool_ethtool_stats_get_count();
-+
-+		return count;
-+	}
+@@ -1213,8 +1212,6 @@ static int msi_init_virq(struct irq_doma
  
- 	return -EOPNOTSUPP;
- }
--- 
-2.42.0
-
+ 	if (!(vflags & VIRQ_CAN_RESERVE)) {
+ 		irqd_clr_can_reserve(irqd);
+-		if (vflags & VIRQ_NOMASK_QUIRK)
+-			irqd_set_msi_nomask_quirk(irqd);
+ 
+ 		/*
+ 		 * If the interrupt is managed but no CPU is available to
+@@ -1275,15 +1272,8 @@ static int __msi_domain_alloc_irqs(struc
+ 	 * Interrupt can use a reserved vector and will not occupy
+ 	 * a real device vector until the interrupt is requested.
+ 	 */
+-	if (msi_check_reservation_mode(domain, info, dev)) {
++	if (msi_check_reservation_mode(domain, info, dev))
+ 		vflags |= VIRQ_CAN_RESERVE;
+-		/*
+-		 * MSI affinity setting requires a special quirk (X86) when
+-		 * reservation mode is active.
+-		 */
+-		if (info->flags & MSI_FLAG_NOMASK_QUIRK)
+-			vflags |= VIRQ_NOMASK_QUIRK;
+-	}
+ 
+ 	xa_for_each_range(xa, idx, desc, ctrl->first, ctrl->last) {
+ 		if (!msi_desc_match(desc, MSI_DESC_NOTASSOCIATED))
 
 
 
