@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F1F87F80C0
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F9FB7F7F0D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59ACA28256E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A157282446
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C704E3307D;
-	Fri, 24 Nov 2023 18:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE69233075;
+	Fri, 24 Nov 2023 18:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/TY3kyp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMKGRrUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A50F321AD;
-	Fri, 24 Nov 2023 18:52:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09558C433C8;
-	Fri, 24 Nov 2023 18:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885AF35F04;
+	Fri, 24 Nov 2023 18:38:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193A4C433C7;
+	Fri, 24 Nov 2023 18:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851946;
-	bh=lakJMahJZfDOF41xKyso5N+ixiSMMdqggpVK68YpQDE=;
+	s=korg; t=1700851088;
+	bh=W4Do+OA7L1yUjWdYguPj5ws83DjdZPBSAhu0BQaTxRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/TY3kypX3qJ1laAqTizd8xSYXEk40MEug9Cmyv6q9vQPd/C36SdYHEWhTiKlnatl
-	 nnf85WjZBlZVWSYw9b44atxkxqNyihOGpyu1u42tRWuw6raTtFNOg8fDyBTHNzC4jg
-	 xfQ98pgv3jdj9JpUdy4IgI1WWLJFALJwXS5Tlfl4=
+	b=fMKGRrUUmkCfoKZ9aFR5VP9cJ9i/rrvyvjzyLDxtzZzjxlfNmZdEZLHOgAHWnauMB
+	 CqOHbvU5AQcZ7KmQnSuXIJuLlT6T5mw9f/b0xlaMxoX2Hdnc23JKOyTBSMbTp4oWB8
+	 tb0RxUDYwP/9BtMbWAv2eLpKttzH6MQtNltfD1OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <len.brown@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/372] tools/power/turbostat: Enable the C-state Pre-wake printing
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.5 309/491] arm64: dts: qcom: ipq6018: Fix hwlock index for SMEM
 Date: Fri, 24 Nov 2023 17:49:05 +0000
-Message-ID: <20231124172015.746678986@linuxfoundation.org>
+Message-ID: <20231124172033.850873545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,41 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-[ Upstream commit b61b7d8c4c22c4298a50ae5d0ee88facb85ce665 ]
+commit 95d97b111e1e184b0c8656137033ed64f2cf21e4 upstream.
 
-Currently the C-state Pre-wake will not be printed due to the
-probe has not been invoked. Invoke the probe function accordingly.
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-Fixes: aeb01e6d71ff ("tools/power turbostat: Print the C-state Pre-wake settings")
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Len Brown <len.brown@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the SMEM hwlock index to 3 for IPQ6018.
+
+Cc: stable@vger.kernel.org
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-3-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 4651ecbdc936c..b113900d94879 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -5790,6 +5790,7 @@ void process_cpuid()
- 	rapl_probe(family, model);
- 	perf_limit_reasons_probe(family, model);
- 	automatic_cstate_conversion_probe(family, model);
-+	prewake_cstate_probe(family, model);
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -207,7 +207,7 @@
+ 	smem {
+ 		compatible = "qcom,smem";
+ 		memory-region = <&smem_region>;
+-		hwlocks = <&tcsr_mutex 0>;
++		hwlocks = <&tcsr_mutex 3>;
+ 	};
  
- 	check_tcc_offset(model_orig);
- 
--- 
-2.42.0
-
+ 	soc: soc@0 {
 
 
 
