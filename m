@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7AA17F7BAC
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:07:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3667F7D93
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 904E52820BD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:07:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E16B9B21871
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C319C381D8;
-	Fri, 24 Nov 2023 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B4339FFD;
+	Fri, 24 Nov 2023 18:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ie6JeJ0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g2l708kK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A6B39FDD;
-	Fri, 24 Nov 2023 18:07:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF066C433C7;
-	Fri, 24 Nov 2023 18:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEE139FC2;
+	Fri, 24 Nov 2023 18:25:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE3FBC433C8;
+	Fri, 24 Nov 2023 18:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849249;
-	bh=WWMYo7LcvsYQ/LOz/PX6dV33RzPL87slCDiLgpYFPbE=;
+	s=korg; t=1700850344;
+	bh=fGkOObGqQ0x7wShydTpXsLSn+xGtohHqh9ji+dxd+GM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ie6JeJ0Ip6glaw0AKau41Qjw0oifhB6GwM7K49z8a5BUGj4NzqXc9pWICgDV20fWs
-	 Vt2uyIas13jDo80gCFmFoQ6taLZO+bFS0Z4boHajWbM4W2RROTstXQnaEGcy6i0Qx2
-	 PMSlcxaEe4iWZWImTQZj7hWNFM1VmdaR997tiOpo=
+	b=g2l708kKtoQHRLhU5jQnemVoeZzNtTP/lpeSEX7Zenn2wikLPw9sOmj4GYOMBH4QU
+	 TqYlDvVQNBHWoNWlX0hVcmtIlsfTOEWXnXdUY2ynq8+wT9RTCzdKAq62hSnGW+6e7z
+	 mZRgIANbuC5gVgj9TR/nySdcvG87Y2VijAmxCl5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trevor Wu <trevor.wu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Imran Khan <imran.f.khan@oracle.com>,
+	Leonardo Bras <leobras@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/530] ASoC: mediatek: mt8188-mt6359: support dynamic pinctrl
+Subject: [PATCH 6.5 012/491] smp,csd: Throw an error if a CSD lock is stuck for too long
 Date: Fri, 24 Nov 2023 17:44:08 +0000
-Message-ID: <20231124172030.575399900@linuxfoundation.org>
+Message-ID: <20231124172025.057950805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,82 +60,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trevor Wu <trevor.wu@mediatek.com>
+From: Rik van Riel <riel@surriel.com>
 
-[ Upstream commit d601bb78f06b9e3cbb52e6b87b88add9920a11b6 ]
+[ Upstream commit 94b3f0b5af2c7af69e3d6e0cdd9b0ea535f22186 ]
 
-To avoid power leakage, it is recommended to replace the default pinctrl
-state with dynamic pinctrl since certain audio pinmux functions can
-remain in a HIGH state even when audio is disabled. Linking pinctrl with
-DAPM using SND_SOC_DAPM_PINCTRL will ensure that audio pins remain in
-GPIO mode by default and only switch to an audio function when necessary.
+The CSD lock seems to get stuck in 2 "modes". When it gets stuck
+temporarily, it usually gets released in a few seconds, and sometimes
+up to one or two minutes.
 
-Signed-off-by: Trevor Wu <trevor.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230825024935.10878-2-trevor.wu@mediatek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If the CSD lock stays stuck for more than several minutes, it never
+seems to get unstuck, and gradually more and more things in the system
+end up also getting stuck.
+
+In the latter case, we should just give up, so the system can dump out
+a little more information about what went wrong, and, with panic_on_oops
+and a kdump kernel loaded, dump a whole bunch more information about what
+might have gone wrong.  In addition, there is an smp.panic_on_ipistall
+kernel boot parameter that by default retains the old behavior, but when
+set enables the panic after the CSD lock has been stuck for more than
+the specified number of milliseconds, as in 300,000 for five minutes.
+
+[ paulmck: Apply Imran Khan feedback. ]
+[ paulmck: Apply Leonardo Bras feedback. ]
+
+Link: https://lore.kernel.org/lkml/bc7cc8b0-f587-4451-8bcd-0daae627bcc7@paulmck-laptop/
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Imran Khan <imran.f.khan@oracle.com>
+Reviewed-by: Leonardo Bras <leobras@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Valentin Schneider <vschneid@redhat.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Randy Dunlap <rdunlap@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-mt6359.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |  7 +++++++
+ kernel/smp.c                                    | 13 ++++++++++++-
+ 2 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-mt6359.c b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-index 9017f48b6272b..f7e22abb75846 100644
---- a/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-mt6359.c
-@@ -246,6 +246,11 @@ static const struct snd_soc_dapm_widget mt8188_mt6359_widgets[] = {
- 	SND_SOC_DAPM_MIC("Headset Mic", NULL),
- 	SND_SOC_DAPM_SINK("HDMI"),
- 	SND_SOC_DAPM_SINK("DP"),
-+
-+	/* dynamic pinctrl */
-+	SND_SOC_DAPM_PINCTRL("ETDM_SPK_PIN", "aud_etdm_spk_on", "aud_etdm_spk_off"),
-+	SND_SOC_DAPM_PINCTRL("ETDM_HP_PIN", "aud_etdm_hp_on", "aud_etdm_hp_off"),
-+	SND_SOC_DAPM_PINCTRL("MTKAIF_PIN", "aud_mtkaif_on", "aud_mtkaif_off"),
- };
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 23ebe34ff901e..b951b4c2808f1 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5781,6 +5781,13 @@
+ 			This feature may be more efficiently disabled
+ 			using the csdlock_debug- kernel parameter.
  
- static const struct snd_kcontrol_new mt8188_mt6359_controls[] = {
-@@ -267,6 +272,7 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
- 		snd_soc_rtdcom_lookup(rtd, AFE_PCM_NAME);
- 	struct snd_soc_component *cmpnt_codec =
- 		asoc_rtd_to_codec(rtd, 0)->component;
-+	struct snd_soc_dapm_widget *pin_w = NULL, *w;
- 	struct mtk_base_afe *afe;
- 	struct mt8188_afe_private *afe_priv;
- 	struct mtkaif_param *param;
-@@ -306,6 +312,18 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
- 		return 0;
++	smp.panic_on_ipistall= [KNL]
++			If a csd_lock_timeout extends for more than
++			the specified number of milliseconds, panic the
++			system.  By default, let CSD-lock acquisition
++			take as long as they take.  Specifying 300,000
++			for this value provides a 5-minute timeout.
++
+ 	smsc-ircc2.nopnp	[HW] Don't use PNP to discover SMC devices
+ 	smsc-ircc2.ircc_cfg=	[HW] Device configuration I/O port
+ 	smsc-ircc2.ircc_sir=	[HW] SIR base I/O port
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 385179dae360e..0a9a3262f7822 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -168,6 +168,8 @@ static DEFINE_PER_CPU(void *, cur_csd_info);
+ 
+ static ulong csd_lock_timeout = 5000;  /* CSD lock timeout in milliseconds. */
+ module_param(csd_lock_timeout, ulong, 0444);
++static int panic_on_ipistall;  /* CSD panic timeout in milliseconds, 300000 for five minutes. */
++module_param(panic_on_ipistall, int, 0444);
+ 
+ static atomic_t csd_bug_count = ATOMIC_INIT(0);
+ 
+@@ -228,6 +230,7 @@ static bool csd_lock_wait_toolong(struct __call_single_data *csd, u64 ts0, u64 *
  	}
  
-+	for_each_card_widgets(rtd->card, w) {
-+		if (!strcmp(w->name, "MTKAIF_PIN")) {
-+			pin_w = w;
-+			break;
-+		}
-+	}
-+
-+	if (pin_w)
-+		dapm_pinctrl_event(pin_w, NULL, SND_SOC_DAPM_PRE_PMU);
-+	else
-+		dev_dbg(afe->dev, "%s(), no pinmux widget, please check if default on\n", __func__);
-+
- 	pm_runtime_get_sync(afe->dev);
- 	mt6359_mtkaif_calibration_enable(cmpnt_codec);
- 
-@@ -403,6 +421,9 @@ static int mt8188_mt6359_mtkaif_calibration(struct snd_soc_pcm_runtime *rtd)
- 	for (i = 0; i < MT8188_MTKAIF_MISO_NUM; i++)
- 		param->mtkaif_phase_cycle[i] = mtkaif_phase_cycle[i];
- 
-+	if (pin_w)
-+		dapm_pinctrl_event(pin_w, NULL, SND_SOC_DAPM_POST_PMD);
-+
- 	dev_dbg(afe->dev, "%s(), end, calibration ok %d\n",
- 		__func__, param->mtkaif_calibration_ok);
- 
+ 	ts2 = sched_clock();
++	/* How long since we last checked for a stuck CSD lock.*/
+ 	ts_delta = ts2 - *ts1;
+ 	if (likely(ts_delta <= csd_lock_timeout_ns || csd_lock_timeout_ns == 0))
+ 		return false;
+@@ -241,9 +244,17 @@ static bool csd_lock_wait_toolong(struct __call_single_data *csd, u64 ts0, u64 *
+ 	else
+ 		cpux = cpu;
+ 	cpu_cur_csd = smp_load_acquire(&per_cpu(cur_csd, cpux)); /* Before func and info. */
++	/* How long since this CSD lock was stuck. */
++	ts_delta = ts2 - ts0;
+ 	pr_alert("csd: %s non-responsive CSD lock (#%d) on CPU#%d, waiting %llu ns for CPU#%02d %pS(%ps).\n",
+-		 firsttime ? "Detected" : "Continued", *bug_id, raw_smp_processor_id(), ts2 - ts0,
++		 firsttime ? "Detected" : "Continued", *bug_id, raw_smp_processor_id(), ts_delta,
+ 		 cpu, csd->func, csd->info);
++	/*
++	 * If the CSD lock is still stuck after 5 minutes, it is unlikely
++	 * to become unstuck. Use a signed comparison to avoid triggering
++	 * on underflows when the TSC is out of sync between sockets.
++	 */
++	BUG_ON(panic_on_ipistall > 0 && (s64)ts_delta > ((s64)panic_on_ipistall * NSEC_PER_MSEC));
+ 	if (cpu_cur_csd && csd != cpu_cur_csd) {
+ 		pr_alert("\tcsd: CSD lock (#%d) handling prior %pS(%ps) request.\n",
+ 			 *bug_id, READ_ONCE(per_cpu(cur_csd_func, cpux)),
 -- 
 2.42.0
 
