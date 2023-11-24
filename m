@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5867F7C88
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:16:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2907F806D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27F11F20FB7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:16:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 295C3B2186E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7E12AF00;
-	Fri, 24 Nov 2023 18:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBB42D787;
+	Fri, 24 Nov 2023 18:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSQWG1cU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyAX/TRJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D6F33CFD;
-	Fri, 24 Nov 2023 18:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6795C433C8;
-	Fri, 24 Nov 2023 18:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480B92E858;
+	Fri, 24 Nov 2023 18:49:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C5EC433C7;
+	Fri, 24 Nov 2023 18:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849763;
-	bh=NclvZZpwvAsw+47Jr6QGR1skV9Ox1dXkEHgCHhOnb6o=;
+	s=korg; t=1700851775;
+	bh=FwqQHLuDZR3Xe277FkUDkIQZvI/uiSSpM8GVMV3QMdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSQWG1cUtRCC5N6U4elbqlHlpG8d+aR5CbeXE2rhIS+Zd7uO8P3L4V/pp0W0QnBcD
-	 ImnBnoXZr4I5+OmOxK4LwQffmfB2FED+/iROzZRFfukBRsyeBEWGUt2sKlb6jDexID
-	 qlWkHQrCoVoMUY7Qfn/1aYEyW3RKFt8+aRGeE15k=
+	b=CyAX/TRJuDj7Hc+OcloKOVJU1XNm2okNSxI3W/7lDmPXSukixaTfv6mDl3LlLLXjk
+	 fZIHhtZY7Z24irSORQLJUkTkha6+x0TKI9U8xSeK7JvgxhmX0Awr0l6OYgiCLXYUY/
+	 Q0zHzstY87KBY1GlXaO28Yan7ZDwfVD1bvKp/MOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 311/530] cpufreq: stats: Fix buffer overflow detection in trans_stats()
-Date: Fri, 24 Nov 2023 17:47:57 +0000
-Message-ID: <20231124172037.502387737@linuxfoundation.org>
+	Hardik Gajjar <hgajjar@de.adit-jv.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 091/372] usb: gadget: f_ncm: Always set current gadget in ncm_bind()
+Date: Fri, 24 Nov 2023 17:47:58 +0000
+Message-ID: <20231124172013.567452099@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,85 +52,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Hardik Gajjar <hgajjar@de.adit-jv.com>
 
-commit ea167a7fc2426f7685c3735e104921c1a20a6d3f upstream.
+[ Upstream commit a04224da1f3424b2c607b12a3bd1f0e302fb8231 ]
 
-Commit 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential
-buffer overflow") switched from snprintf to the more secure scnprintf
-but never updated the exit condition for PAGE_SIZE.
+Previously, gadget assignment to the net device occurred exclusively
+during the initial binding attempt.
 
-As the commit say and as scnprintf document, what scnprintf returns what
-is actually written not counting the '\0' end char. This results in the
-case of len exceeding the size, len set to PAGE_SIZE - 1, as it can be
-written at max PAGE_SIZE - 1 (as '\0' is not counted)
+Nevertheless, the gadget pointer could change during bind/unbind
+cycles due to various conditions, including the unloading/loading
+of the UDC device driver or the detachment/reconnection of an
+OTG-capable USB hub device.
 
-Because of len is never set to PAGE_SIZE, the function never break early,
-never prints the warning and never return -EFBIG.
+This patch relocates the gether_set_gadget() function out from
+ncm_opts->bound condition check, ensuring that the correct gadget
+is assigned during each bind request.
 
-Fix this by changing the condition to PAGE_SIZE - 1 to correctly trigger
-the error.
+The provided logs demonstrate the consistency of ncm_opts throughout
+the power cycle, while the gadget may change.
 
-Cc: 5.10+ <stable@vger.kernel.org> # 5.10+
-Fixes: 3c0897c180c6 ("cpufreq: Use scnprintf() for avoiding potential buffer overflow")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+* OTG hub connected during boot up and assignment of gadget and
+  ncm_opts pointer
+
+[    2.366301] usb 2-1.5: New USB device found, idVendor=2996, idProduct=0105
+[    2.366304] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[    2.366306] usb 2-1.5: Product: H2H Bridge
+[    2.366308] usb 2-1.5: Manufacturer: Aptiv
+[    2.366309] usb 2-1.5: SerialNumber: 13FEB2021
+[    2.427989] usb 2-1.5: New USB device found, VID=2996, PID=0105
+[    2.428959] dabridge 2-1.5:1.0: dabridge 2-4 total endpoints=5, 0000000093a8d681
+[    2.429710] dabridge 2-1.5:1.0: P(0105) D(22.06.22) F(17.3.16) H(1.1) high-speed
+[    2.429714] dabridge 2-1.5:1.0: Hub 2-2 P(0151) V(06.87)
+[    2.429956] dabridge 2-1.5:1.0: All downstream ports in host mode
+
+[    2.430093] gadget 000000003c414d59 ------> gadget pointer
+
+* NCM opts and associated gadget pointer during First ncm_bind
+
+[   34.763929] NCM opts 00000000aa304ac9
+[   34.763930] NCM gadget 000000003c414d59
+
+* OTG capable hub disconnecte or assume driver unload.
+
+[   97.203114] usb 2-1: USB disconnect, device number 2
+[   97.203118] usb 2-1.1: USB disconnect, device number 3
+[   97.209217] usb 2-1.5: USB disconnect, device number 4
+[   97.230990] dabr_udc deleted
+
+* Reconnect the OTG hub or load driver assaign new gadget pointer.
+
+[  111.534035] usb 2-1.1: New USB device found, idVendor=2996, idProduct=0120, bcdDevice= 6.87
+[  111.534038] usb 2-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  111.534040] usb 2-1.1: Product: Vendor
+[  111.534041] usb 2-1.1: Manufacturer: Aptiv
+[  111.534042] usb 2-1.1: SerialNumber: Superior
+[  111.535175] usb 2-1.1: New USB device found, VID=2996, PID=0120
+[  111.610995] usb 2-1.5: new high-speed USB device number 8 using xhci-hcd
+[  111.630052] usb 2-1.5: New USB device found, idVendor=2996, idProduct=0105, bcdDevice=21.02
+[  111.630055] usb 2-1.5: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+[  111.630057] usb 2-1.5: Product: H2H Bridge
+[  111.630058] usb 2-1.5: Manufacturer: Aptiv
+[  111.630059] usb 2-1.5: SerialNumber: 13FEB2021
+[  111.687464] usb 2-1.5: New USB device found, VID=2996, PID=0105
+[  111.690375] dabridge 2-1.5:1.0: dabridge 2-8 total endpoints=5, 000000000d87c961
+[  111.691172] dabridge 2-1.5:1.0: P(0105) D(22.06.22) F(17.3.16) H(1.1) high-speed
+[  111.691176] dabridge 2-1.5:1.0: Hub 2-6 P(0151) V(06.87)
+[  111.691646] dabridge 2-1.5:1.0: All downstream ports in host mode
+
+[  111.692298] gadget 00000000dc72f7a9 --------> new gadget ptr on connect
+
+* NCM opts and associated gadget pointer during second ncm_bind
+
+[  113.271786] NCM opts 00000000aa304ac9 -----> same opts ptr used during first bind
+[  113.271788] NCM gadget 00000000dc72f7a9 ----> however new gaget ptr, that will not set
+                                                 in net_device due to ncm_opts->bound = true
+
+Signed-off-by: Hardik Gajjar <hgajjar@de.adit-jv.com>
+Link: https://lore.kernel.org/r/20231020153324.82794-1-hgajjar@de.adit-jv.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq_stats.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/usb/gadget/function/f_ncm.c | 27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
---- a/drivers/cpufreq/cpufreq_stats.c
-+++ b/drivers/cpufreq/cpufreq_stats.c
-@@ -131,23 +131,23 @@ static ssize_t show_trans_table(struct c
- 	len += sysfs_emit_at(buf, len, "   From  :    To\n");
- 	len += sysfs_emit_at(buf, len, "         : ");
- 	for (i = 0; i < stats->state_num; i++) {
--		if (len >= PAGE_SIZE)
-+		if (len >= PAGE_SIZE - 1)
- 			break;
- 		len += sysfs_emit_at(buf, len, "%9u ", stats->freq_table[i]);
- 	}
--	if (len >= PAGE_SIZE)
--		return PAGE_SIZE;
-+	if (len >= PAGE_SIZE - 1)
-+		return PAGE_SIZE - 1;
+diff --git a/drivers/usb/gadget/function/f_ncm.c b/drivers/usb/gadget/function/f_ncm.c
+index faf90a2174194..bbb6ff6b11aa1 100644
+--- a/drivers/usb/gadget/function/f_ncm.c
++++ b/drivers/usb/gadget/function/f_ncm.c
+@@ -1425,7 +1425,7 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 	struct usb_composite_dev *cdev = c->cdev;
+ 	struct f_ncm		*ncm = func_to_ncm(f);
+ 	struct usb_string	*us;
+-	int			status;
++	int			status = 0;
+ 	struct usb_ep		*ep;
+ 	struct f_ncm_opts	*ncm_opts;
  
- 	len += sysfs_emit_at(buf, len, "\n");
- 
- 	for (i = 0; i < stats->state_num; i++) {
--		if (len >= PAGE_SIZE)
-+		if (len >= PAGE_SIZE - 1)
- 			break;
- 
- 		len += sysfs_emit_at(buf, len, "%9u: ", stats->freq_table[i]);
- 
- 		for (j = 0; j < stats->state_num; j++) {
--			if (len >= PAGE_SIZE)
-+			if (len >= PAGE_SIZE - 1)
- 				break;
- 
- 			if (pending)
-@@ -157,12 +157,12 @@ static ssize_t show_trans_table(struct c
- 
- 			len += sysfs_emit_at(buf, len, "%9u ", count);
- 		}
--		if (len >= PAGE_SIZE)
-+		if (len >= PAGE_SIZE - 1)
- 			break;
- 		len += sysfs_emit_at(buf, len, "\n");
+@@ -1443,22 +1443,17 @@ static int ncm_bind(struct usb_configuration *c, struct usb_function *f)
+ 		f->os_desc_table[0].os_desc = &ncm_opts->ncm_os_desc;
  	}
  
--	if (len >= PAGE_SIZE) {
-+	if (len >= PAGE_SIZE - 1) {
- 		pr_warn_once("cpufreq transition table exceeds PAGE_SIZE. Disabling\n");
- 		return -EFBIG;
- 	}
+-	/*
+-	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
+-	 * configurations are bound in sequence with list_for_each_entry,
+-	 * in each configuration its functions are bound in sequence
+-	 * with list_for_each_entry, so we assume no race condition
+-	 * with regard to ncm_opts->bound access
+-	 */
+-	if (!ncm_opts->bound) {
+-		mutex_lock(&ncm_opts->lock);
+-		gether_set_gadget(ncm_opts->net, cdev->gadget);
++	mutex_lock(&ncm_opts->lock);
++	gether_set_gadget(ncm_opts->net, cdev->gadget);
++	if (!ncm_opts->bound)
+ 		status = gether_register_netdev(ncm_opts->net);
+-		mutex_unlock(&ncm_opts->lock);
+-		if (status)
+-			goto fail;
+-		ncm_opts->bound = true;
+-	}
++	mutex_unlock(&ncm_opts->lock);
++
++	if (status)
++		goto fail;
++
++	ncm_opts->bound = true;
++
+ 	us = usb_gstrings_attach(cdev, ncm_strings,
+ 				 ARRAY_SIZE(ncm_string_defs));
+ 	if (IS_ERR(us)) {
+-- 
+2.42.0
+
 
 
 
