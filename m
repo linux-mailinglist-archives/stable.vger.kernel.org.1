@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113EE7F8067
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5633B7F7E82
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD2DD2825CB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03480282335
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A0133CFD;
-	Fri, 24 Nov 2023 18:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DDF39FF3;
+	Fri, 24 Nov 2023 18:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOGRBWzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHZl2WrO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D1B31748;
-	Fri, 24 Nov 2023 18:49:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CD5C433C8;
-	Fri, 24 Nov 2023 18:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AE02EAFB;
+	Fri, 24 Nov 2023 18:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D77C433C8;
+	Fri, 24 Nov 2023 18:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851763;
-	bh=pQ8SJVbfbCGKeBumPR2PDqkOFPnm9ntafABTv3xAdNM=;
+	s=korg; t=1700850820;
+	bh=uYtmQxkh3tEwcbB3lo8MilB7QIWXD4BN94mrYABf/QY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOGRBWzxpFRd6c+B84d+DQwfiuNn5apJRooY6u4hUpYkriafPOuVfBtNIieKhK77J
-	 i8GcJIHAxUF5NI7nE3bkCNGENsqL/HlWJ3KbJPB1P18N5nklqWeTD9KAWB86Js5zWi
-	 sYJJV+8P7Er/Snjgg7YRQIQr7qNC7hmOiexzOBeg=
+	b=mHZl2WrOqXkPCxYDG1jD6A4TAg9KLI6vSsWuy+/e19PwAvPaO67HqSXTZZFXF6Rtw
+	 l/bqTSTODvth1xjxKnIqUhVv3o5Hkk3Zn1Uzps/yvU+CZOk3CCLDzsIj2cwxfVOCEe
+	 FJ5gufQ4ybz3ClrbbzitNJFJhdPn6FGoQcXvI2BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Ziwei Xiao <ziweixiao@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/372] drm/amdkfd: Fix shift out-of-bounds issue
+Subject: [PATCH 6.5 202/491] gve: Fixes for napi_poll when budget is 0
 Date: Fri, 24 Nov 2023 17:47:18 +0000
-Message-ID: <20231124172012.183536781@linuxfoundation.org>
+Message-ID: <20231124172030.574481059@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +53,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Ziwei Xiao <ziweixiao@google.com>
 
-[ Upstream commit 282c1d793076c2edac6c3db51b7e8ed2b41d60a5 ]
+[ Upstream commit 278a370c1766060d2144d6cf0b06c101e1043b6d ]
 
-[  567.613292] shift exponent 255 is too large for 64-bit type 'long unsigned int'
-[  567.614498] CPU: 5 PID: 238 Comm: kworker/5:1 Tainted: G           OE      6.2.0-34-generic #34~22.04.1-Ubuntu
-[  567.614502] Hardware name: AMD Splinter/Splinter-RPL, BIOS WS43927N_871 09/25/2023
-[  567.614504] Workqueue: events send_exception_work_handler [amdgpu]
-[  567.614748] Call Trace:
-[  567.614750]  <TASK>
-[  567.614753]  dump_stack_lvl+0x48/0x70
-[  567.614761]  dump_stack+0x10/0x20
-[  567.614763]  __ubsan_handle_shift_out_of_bounds+0x156/0x310
-[  567.614769]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.614773]  ? update_sd_lb_stats.constprop.0+0xf2/0x3c0
-[  567.614780]  svm_range_split_by_granularity.cold+0x2b/0x34 [amdgpu]
-[  567.615047]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.615052]  svm_migrate_to_ram+0x185/0x4d0 [amdgpu]
-[  567.615286]  do_swap_page+0x7b6/0xa30
-[  567.615291]  ? srso_alias_return_thunk+0x5/0x7f
-[  567.615294]  ? __free_pages+0x119/0x130
-[  567.615299]  handle_pte_fault+0x227/0x280
-[  567.615303]  __handle_mm_fault+0x3c0/0x720
-[  567.615311]  handle_mm_fault+0x119/0x330
-[  567.615314]  ? lock_mm_and_find_vma+0x44/0x250
-[  567.615318]  do_user_addr_fault+0x1a9/0x640
-[  567.615323]  exc_page_fault+0x81/0x1b0
-[  567.615328]  asm_exc_page_fault+0x27/0x30
-[  567.615332] RIP: 0010:__get_user_8+0x1c/0x30
+Netpoll will explicilty pass the polling call with a budget of 0 to
+indicate it's clearing the Tx path only. For the gve_rx_poll and
+gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
+to do all the work. Add check to avoid the rx path and xdp path being
+called when budget is 0. And also avoid napi_complete_done being called
+when budget is 0 for netpoll.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Suggested-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
+Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
+Link: https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 8 +++++++-
+ drivers/net/ethernet/google/gve/gve_rx.c   | 4 ----
+ drivers/net/ethernet/google/gve/gve_tx.c   | 4 ----
+ 3 files changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 6281d370bb448..208812512d8a8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -764,7 +764,7 @@ svm_range_apply_attrs(struct kfd_process *p, struct svm_range *prange,
- 			prange->flags &= ~attrs[i].value;
- 			break;
- 		case KFD_IOCTL_SVM_ATTR_GRANULARITY:
--			prange->granularity = attrs[i].value;
-+			prange->granularity = min_t(uint32_t, attrs[i].value, 0x3F);
- 			break;
- 		default:
- 			WARN_ONCE(1, "svm_range_check_attrs wasn't called?");
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 465a6db5a40a8..79bfa2837a0e6 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -255,10 +255,13 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
+ 	if (block->tx) {
+ 		if (block->tx->q_num < priv->tx_cfg.num_queues)
+ 			reschedule |= gve_tx_poll(block, budget);
+-		else
++		else if (budget)
+ 			reschedule |= gve_xdp_poll(block, budget);
+ 	}
+ 
++	if (!budget)
++		return 0;
++
+ 	if (block->rx) {
+ 		work_done = gve_rx_poll(block, budget);
+ 		reschedule |= work_done == budget;
+@@ -299,6 +302,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
+ 	if (block->tx)
+ 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
+ 
++	if (!budget)
++		return 0;
++
+ 	if (block->rx) {
+ 		work_done = gve_rx_poll_dqo(block, budget);
+ 		reschedule |= work_done == budget;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index e84a066aa1a40..73655347902d2 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -1007,10 +1007,6 @@ int gve_rx_poll(struct gve_notify_block *block, int budget)
+ 
+ 	feat = block->napi.dev->features;
+ 
+-	/* If budget is 0, do all the work */
+-	if (budget == 0)
+-		budget = INT_MAX;
+-
+ 	if (budget > 0)
+ 		work_done = gve_clean_rx_done(rx, budget, feat);
+ 
+diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
+index 6957a865cff37..9f6ffc4a54f0b 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx.c
++++ b/drivers/net/ethernet/google/gve/gve_tx.c
+@@ -925,10 +925,6 @@ bool gve_xdp_poll(struct gve_notify_block *block, int budget)
+ 	bool repoll;
+ 	u32 to_do;
+ 
+-	/* If budget is 0, do all the work */
+-	if (budget == 0)
+-		budget = INT_MAX;
+-
+ 	/* Find out how much work there is to be done */
+ 	nic_done = gve_tx_load_event_counter(priv, tx);
+ 	to_do = min_t(u32, (nic_done - tx->done), budget);
 -- 
 2.42.0
 
