@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-1345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5937F7F34
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF87E7F7A9F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC4DB1C213D5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E18531C20AA9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BD533CC7;
-	Fri, 24 Nov 2023 18:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E474381DF;
+	Fri, 24 Nov 2023 17:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXAygLL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSAbiqK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C0E2E84A;
-	Fri, 24 Nov 2023 18:39:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4285C433C8;
-	Fri, 24 Nov 2023 18:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D220B39FC3;
+	Fri, 24 Nov 2023 17:56:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C603C433C7;
+	Fri, 24 Nov 2023 17:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851169;
-	bh=w+ZNLYN3p9wA5+SEyWy6DzZ1xF9yDDlohJcXHhQrbQ4=;
+	s=korg; t=1700848619;
+	bh=He7YFKxuURfdc3U19vyYhdnt7Rw/E5BvOCZm+0buE6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NXAygLL5va6Lt5z1LrCBX+Rvumg1DaeJ9ZzJjndxDE6Qb3zWCQhiMffpCieOUzKQg
-	 AFJUDeuzqenKt0aqLQE4R4Rsjc4dgbwsV6eB1YOqHQBQIa+t4ePforAOGyaqCVt641
-	 Wt7IG5RG9psN9ZoP916/01vFmtDKqBXbqJXs5qYM=
+	b=iSAbiqK+yEGodRSNIrESHqKmVkM7oodod4fr4k6DU1DsLPrJwPOI9IUy8wvrayrHt
+	 M4ddvTWVcercM8IJYw/Nsqylh+N0uO/2VpwxXhbXXL6e0Ja+sNNXdRfwJtyzz7B5+i
+	 c+hqKnWPrNjVMpN1YhbUQbyoaw5/MicU79fGdFdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Christian Brauner <brauner@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.5 341/491] selftests/clone3: Fix broken test under !CONFIG_TIME_NS
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 04/97] clocksource/drivers/timer-atmel-tcb: Fix initialization on SAM9 hardware
 Date: Fri, 24 Nov 2023 17:49:37 +0000
-Message-ID: <20231124172034.813974142@linuxfoundation.org>
+Message-ID: <20231124171934.287579311@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,73 +54,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-commit fc7f04dc23db50206bee7891516ed4726c3f64cf upstream.
+[ Upstream commit 6d3bc4c02d59996d1d3180d8ed409a9d7d5900e0 ]
 
-When execute the following command to test clone3 under !CONFIG_TIME_NS:
+On SAM9 hardware two cascaded 16 bit timers are used to form a 32 bit
+high resolution timer that is used as scheduler clock when the kernel
+has been configured that way (CONFIG_ATMEL_CLOCKSOURCE_TCB).
 
-  # make headers && cd tools/testing/selftests/clone3 && make && ./clone3
+The driver initially triggers a reset-to-zero of the two timers but this
+reset is only performed on the next rising clock. For the first timer
+this is ok - it will be in the next 60ns (16MHz clock). For the chained
+second timer this will only happen after the first timer overflows, i.e.
+after 2^16 clocks (~4ms with a 16MHz clock). So with other words the
+scheduler clock resets to 0 after the first 2^16 clock cycles.
 
-we can see the following error info:
+It looks like that the scheduler does not like this and behaves wrongly
+over its lifetime, e.g. some tasks are scheduled with a long delay. Why
+that is and if there are additional requirements for this behaviour has
+not been further analysed.
 
-  # [7538] Trying clone3() with flags 0x80 (size 0)
-  # Invalid argument - Failed to create new process
-  # [7538] clone3() with flags says: -22 expected 0
-  not ok 18 [7538] Result (-22) is different than expected (0)
-  ...
-  # Totals: pass:18 fail:1 xfail:0 xpass:0 skip:0 error:0
+There is a simple fix for resetting the second timer as well when the
+first timer is reset and this is to set the ATMEL_TC_ASWTRG_SET bit in
+the Channel Mode register (CMR) of the first timer. This will also rise
+the TIOA line (clock input of the second timer) when a software trigger
+respective SYNC is issued.
 
-This is because if CONFIG_TIME_NS is not set, but the flag
-CLONE_NEWTIME (0x80) is used to clone a time namespace, it
-will return -EINVAL in copy_time_ns().
-
-If kernel does not support CONFIG_TIME_NS, /proc/self/ns/time
-will be not exist, and then we should skip clone3() test with
-CLONE_NEWTIME.
-
-With this patch under !CONFIG_TIME_NS:
-
-  # make headers && cd tools/testing/selftests/clone3 && make && ./clone3
-  ...
-  # Time namespaces are not supported
-  ok 18 # SKIP Skipping clone3() with CLONE_NEWTIME
-  ...
-  # Totals: pass:18 fail:0 xfail:0 xpass:0 skip:1 error:0
-
-Link: https://lkml.kernel.org/r/1689066814-13295-1-git-send-email-yangtiezhu@loongson.cn
-Fixes: 515bddf0ec41 ("selftests/clone3: test clone3 with CLONE_NEWTIME")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231007161803.31342-1-rwahl@gmx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/clone3/clone3.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/clocksource/tcb_clksrc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/clone3/clone3.c
-+++ b/tools/testing/selftests/clone3/clone3.c
-@@ -196,7 +196,12 @@ int main(int argc, char *argv[])
- 			CLONE3_ARGS_NO_TEST);
- 
- 	/* Do a clone3() in a new time namespace */
--	test_clone3(CLONE_NEWTIME, 0, 0, CLONE3_ARGS_NO_TEST);
-+	if (access("/proc/self/ns/time", F_OK) == 0) {
-+		test_clone3(CLONE_NEWTIME, 0, 0, CLONE3_ARGS_NO_TEST);
-+	} else {
-+		ksft_print_msg("Time namespaces are not supported\n");
-+		ksft_test_result_skip("Skipping clone3() with CLONE_NEWTIME\n");
-+	}
- 
- 	/* Do a clone3() with exit signal (SIGCHLD) in flags */
- 	test_clone3(SIGCHLD, 0, -EINVAL, CLONE3_ARGS_NO_TEST);
+diff --git a/drivers/clocksource/tcb_clksrc.c b/drivers/clocksource/tcb_clksrc.c
+index 43f4d5c4d6fa4..998d9115add6b 100644
+--- a/drivers/clocksource/tcb_clksrc.c
++++ b/drivers/clocksource/tcb_clksrc.c
+@@ -294,6 +294,7 @@ static void __init tcb_setup_dual_chan(struct atmel_tc *tc, int mck_divisor_idx)
+ 	writel(mck_divisor_idx			/* likely divide-by-8 */
+ 			| ATMEL_TC_WAVE
+ 			| ATMEL_TC_WAVESEL_UP		/* free-run */
++			| ATMEL_TC_ASWTRG_SET		/* TIOA0 rises at software trigger */
+ 			| ATMEL_TC_ACPA_SET		/* TIOA0 rises at 0 */
+ 			| ATMEL_TC_ACPC_CLEAR,		/* (duty cycle 50%) */
+ 			tcaddr + ATMEL_TC_REG(0, CMR));
+-- 
+2.42.0
+
 
 
 
