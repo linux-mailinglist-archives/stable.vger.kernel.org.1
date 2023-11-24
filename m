@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42EDB7F7C54
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831737F801C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BD41C2111D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:14:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 160BDB216F9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB02539FDD;
-	Fri, 24 Nov 2023 18:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7727B33CC7;
+	Fri, 24 Nov 2023 18:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LN/9dbAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2HS9+Sf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F85A381D5;
-	Fri, 24 Nov 2023 18:14:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15ABC433C8;
-	Fri, 24 Nov 2023 18:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B3A28DBA;
+	Fri, 24 Nov 2023 18:46:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B776EC433C7;
+	Fri, 24 Nov 2023 18:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849652;
-	bh=34N0RO3lxd1+/vpVfA1FfyiEUDk4UyMBDWxKIBaj6Gs=;
+	s=korg; t=1700851603;
+	bh=jwe1hVfPuxJ2WVVe8SkYMfIH+tyrT1omaY9jp9zNDyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LN/9dbADI5B7ExMiL8d6ZeY9cH4X/rg84a0LGFGMS4+8ygfIYAKmdmmM7Oj+oiliY
-	 xbuO5xnsgJtnaE3oVOfvQ5H0m7yy3eYzlRRHl96IFBNaebJaJzwpfWq+rS7xC1hph7
-	 69JPIRZAh8jFKHN+nKjcGr+KoDHwY+BPDEIk8NLY=
+	b=l2HS9+SfgV0qfozYrrifORLdu4t9WRkZ35VSEvTMXLxrS4dgKjh+mYkLe2c7Z9Tfd
+	 QWvdw4YRz81Y+kt+2QrYn8YwyLZv+YKKs1R4fBvimjm3KZOB5k18jtEYWTXSlAh/D6
+	 auSi9sNuDCe7ljDLJ0ZgwzI1V04qGXdzIx2whNTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.6 242/530] powerpc/perf: Fix disabling BHRB and instruction sampling
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 021/372] net: annotate data-races around sk->sk_dst_pending_confirm
 Date: Fri, 24 Nov 2023 17:46:48 +0000
-Message-ID: <20231124172035.423970877@linuxfoundation.org>
+Message-ID: <20231124172011.189146524@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,49 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ea142e590aec55ba40c5affb4d49e68c713c63dc upstream.
+[ Upstream commit eb44ad4e635132754bfbcb18103f1dcb7058aedd ]
 
-When the PMU is disabled, MMCRA is not updated to disable BHRB and
-instruction sampling. This can lead to those features remaining enabled,
-which can slow down a real or emulated CPU.
+This field can be read or written without socket lock being held.
 
-Fixes: 1cade527f6e9 ("powerpc/perf: BHRB control to disable BHRB logic when not used")
-Cc: stable@vger.kernel.org # v5.9+
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231018153423.298373-1-npiggin@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add annotations to avoid load-store tearing.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-book3s.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ include/net/sock.h    | 6 +++---
+ net/core/sock.c       | 2 +-
+ net/ipv4/tcp_output.c | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -1371,8 +1371,7 @@ static void power_pmu_disable(struct pmu
- 		/*
- 		 * Disable instruction sampling if it was enabled
- 		 */
--		if (cpuhw->mmcr.mmcra & MMCRA_SAMPLE_ENABLE)
--			val &= ~MMCRA_SAMPLE_ENABLE;
-+		val &= ~MMCRA_SAMPLE_ENABLE;
- 
- 		/* Disable BHRB via mmcra (BHRBRD) for p10 */
- 		if (ppmu->flags & PPMU_ARCH_31)
-@@ -1383,7 +1382,7 @@ static void power_pmu_disable(struct pmu
- 		 * instruction sampling or BHRB.
- 		 */
- 		if (val != mmcra) {
--			mtspr(SPRN_MMCRA, mmcra);
-+			mtspr(SPRN_MMCRA, val);
- 			mb();
- 			isync();
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 8d98fcd9e89a9..b6027b01c2455 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2207,7 +2207,7 @@ static inline void __dst_negative_advice(struct sock *sk)
+ 		if (ndst != dst) {
+ 			rcu_assign_pointer(sk->sk_dst_cache, ndst);
+ 			sk_tx_queue_clear(sk);
+-			sk->sk_dst_pending_confirm = 0;
++			WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
  		}
+ 	}
+ }
+@@ -2224,7 +2224,7 @@ __sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
+ 
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = rcu_dereference_protected(sk->sk_dst_cache,
+ 					    lockdep_sock_is_held(sk));
+ 	rcu_assign_pointer(sk->sk_dst_cache, dst);
+@@ -2237,7 +2237,7 @@ sk_dst_set(struct sock *sk, struct dst_entry *dst)
+ 	struct dst_entry *old_dst;
+ 
+ 	sk_tx_queue_clear(sk);
+-	sk->sk_dst_pending_confirm = 0;
++	WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 	old_dst = xchg((__force struct dst_entry **)&sk->sk_dst_cache, dst);
+ 	dst_release(old_dst);
+ }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 0ee2e33bbe5f8..4305e55dbfba4 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -596,7 +596,7 @@ struct dst_entry *__sk_dst_check(struct sock *sk, u32 cookie)
+ 	    INDIRECT_CALL_INET(dst->ops->check, ip6_dst_check, ipv4_dst_check,
+ 			       dst, cookie) == NULL) {
+ 		sk_tx_queue_clear(sk);
+-		sk->sk_dst_pending_confirm = 0;
++		WRITE_ONCE(sk->sk_dst_pending_confirm, 0);
+ 		RCU_INIT_POINTER(sk->sk_dst_cache, NULL);
+ 		dst_release(dst);
+ 		return NULL;
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index cc7ed86fb0a57..5b93d1ed1ed19 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -1319,7 +1319,7 @@ static int __tcp_transmit_skb(struct sock *sk, struct sk_buff *skb,
+ 	skb->destructor = skb_is_tcp_pure_ack(skb) ? __sock_wfree : tcp_wfree;
+ 	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
+ 
+-	skb_set_dst_pending_confirm(skb, sk->sk_dst_pending_confirm);
++	skb_set_dst_pending_confirm(skb, READ_ONCE(sk->sk_dst_pending_confirm));
+ 
+ 	/* Build TCP header and checksum it. */
+ 	th = (struct tcphdr *)skb->data;
+-- 
+2.42.0
+
 
 
 
