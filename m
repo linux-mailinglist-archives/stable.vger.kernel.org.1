@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-2423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABA787F841C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:24:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2223E7F8284
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:08:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDACD1C270CD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7683B24641
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C26037170;
-	Fri, 24 Nov 2023 19:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03882364C8;
+	Fri, 24 Nov 2023 19:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkTthCPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nxNASTGP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF6C321AD;
-	Fri, 24 Nov 2023 19:24:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57728C433C8;
-	Fri, 24 Nov 2023 19:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA4F2EAEA;
+	Fri, 24 Nov 2023 19:08:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D66FC433C8;
+	Fri, 24 Nov 2023 19:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853845;
-	bh=iCWYZo5YyOv3EJ5vvzUNm8DRGQB2M44WVkTKv9Lm/Bo=;
+	s=korg; t=1700852905;
+	bh=e59Vo7FSJeFAJUqsn/N3NM74avsH9hLxPzXzvZ5doKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkTthCPsmfDJs07jjSLdEASGJs59tWUoqfqcSRt1idBYKHbalPS8TvDbudbun+185
-	 iBniEsOOz5L4xXk1QbyLNhwm7d8lUsCQcjJPHDW2mbQoprcg4ZZM7tts2gOSu7m8Dr
-	 piy8t2UtrEJQKqZNu/TlxeDWGSCPXKwDFTyD+Y4s=
+	b=nxNASTGPQYhCDRSS4LakHH+DkkReYDJjbqMz5DLKaxMDaxjv9yHdSEkI2MeMNgy5x
+	 gpfxF60QAEkGZ696F7CLw1MzqczVYkbM0Q7YwM1SQKTtqskP3+BSHHD4Wa1jxusOSA
+	 0cgtunZXuLyzfKVg+BxhfVgVWWpI963XEHoUNnrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jay Vosburgh <jay.vosburgh@canonical.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/159] bonding: stop the device in bond_setup_by_slave()
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Oleksandr Natalenko <oleksandr@natalenko.name>
+Subject: [PATCH 5.10 144/193] xhci: Enable RPM on controllers that support low-power states
 Date: Fri, 24 Nov 2023 17:54:31 +0000
-Message-ID: <20231124171944.185349347@linuxfoundation.org>
+Message-ID: <20231124171952.965477072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,138 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
 
-[ Upstream commit 3cffa2ddc4d3fcf70cde361236f5a614f81a09b2 ]
+commit a5d6264b638efeca35eff72177fd28d149e0764b upstream.
 
-Commit 9eed321cde22 ("net: lapbether: only support ethernet devices")
-has been able to keep syzbot away from net/lapb, until today.
+Use the low-power states of the underlying platform to enable runtime PM.
+If the platform doesn't support runtime D3, then enabling default RPM will
+result in the controller malfunctioning, as in the case of hotplug devices
+not being detected because of a failed interrupt generation.
 
-In the following splat [1], the issue is that a lapbether device has
-been created on a bonding device without members. Then adding a non
-ARPHRD_ETHER member forced the bonding master to change its type.
-
-The fix is to make sure we call dev_close() in bond_setup_by_slave()
-so that the potential linked lapbether devices (or any other devices
-having assumptions on the physical device) are removed.
-
-A similar bug has been addressed in commit 40baec225765
-("bonding: fix panic on non-ARPHRD_ETHER enslave failure")
-
-[1]
-skbuff: skb_under_panic: text:ffff800089508810 len:44 put:40 head:ffff0000c78e7c00 data:ffff0000c78e7bea tail:0x16 end:0x140 dev:bond0
-kernel BUG at net/core/skbuff.c:192 !
-Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-Modules linked in:
-CPU: 0 PID: 6007 Comm: syz-executor383 Not tainted 6.6.0-rc3-syzkaller-gbf6547d8715b #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/04/2023
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : skb_panic net/core/skbuff.c:188 [inline]
-pc : skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
-lr : skb_panic net/core/skbuff.c:188 [inline]
-lr : skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
-sp : ffff800096a06aa0
-x29: ffff800096a06ab0 x28: ffff800096a06ba0 x27: dfff800000000000
-x26: ffff0000ce9b9b50 x25: 0000000000000016 x24: ffff0000c78e7bea
-x23: ffff0000c78e7c00 x22: 000000000000002c x21: 0000000000000140
-x20: 0000000000000028 x19: ffff800089508810 x18: ffff800096a06100
-x17: 0000000000000000 x16: ffff80008a629a3c x15: 0000000000000001
-x14: 1fffe00036837a32 x13: 0000000000000000 x12: 0000000000000000
-x11: 0000000000000201 x10: 0000000000000000 x9 : cb50b496c519aa00
-x8 : cb50b496c519aa00 x7 : 0000000000000001 x6 : 0000000000000001
-x5 : ffff800096a063b8 x4 : ffff80008e280f80 x3 : ffff8000805ad11c
-x2 : 0000000000000001 x1 : 0000000100000201 x0 : 0000000000000086
-Call trace:
-skb_panic net/core/skbuff.c:188 [inline]
-skb_under_panic+0x13c/0x140 net/core/skbuff.c:202
-skb_push+0xf0/0x108 net/core/skbuff.c:2446
-ip6gre_header+0xbc/0x738 net/ipv6/ip6_gre.c:1384
-dev_hard_header include/linux/netdevice.h:3136 [inline]
-lapbeth_data_transmit+0x1c4/0x298 drivers/net/wan/lapbether.c:257
-lapb_data_transmit+0x8c/0xb0 net/lapb/lapb_iface.c:447
-lapb_transmit_buffer+0x178/0x204 net/lapb/lapb_out.c:149
-lapb_send_control+0x220/0x320 net/lapb/lapb_subr.c:251
-__lapb_disconnect_request+0x9c/0x17c net/lapb/lapb_iface.c:326
-lapb_device_event+0x288/0x4e0 net/lapb/lapb_iface.c:492
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1970 [inline]
-call_netdevice_notifiers_extack net/core/dev.c:2008 [inline]
-call_netdevice_notifiers net/core/dev.c:2022 [inline]
-__dev_close_many+0x1b8/0x3c4 net/core/dev.c:1508
-dev_close_many+0x1e0/0x470 net/core/dev.c:1559
-dev_close+0x174/0x250 net/core/dev.c:1585
-lapbeth_device_event+0x2e4/0x958 drivers/net/wan/lapbether.c:466
-notifier_call_chain+0x1a4/0x510 kernel/notifier.c:93
-raw_notifier_call_chain+0x3c/0x50 kernel/notifier.c:461
-call_netdevice_notifiers_info net/core/dev.c:1970 [inline]
-call_netdevice_notifiers_extack net/core/dev.c:2008 [inline]
-call_netdevice_notifiers net/core/dev.c:2022 [inline]
-__dev_close_many+0x1b8/0x3c4 net/core/dev.c:1508
-dev_close_many+0x1e0/0x470 net/core/dev.c:1559
-dev_close+0x174/0x250 net/core/dev.c:1585
-bond_enslave+0x2298/0x30cc drivers/net/bonding/bond_main.c:2332
-bond_do_ioctl+0x268/0xc64 drivers/net/bonding/bond_main.c:4539
-dev_ifsioc+0x754/0x9ac
-dev_ioctl+0x4d8/0xd34 net/core/dev_ioctl.c:786
-sock_do_ioctl+0x1d4/0x2d0 net/socket.c:1217
-sock_ioctl+0x4e8/0x834 net/socket.c:1322
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:871 [inline]
-__se_sys_ioctl fs/ioctl.c:857 [inline]
-__arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:857
-__invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
-invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
-el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
-do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
-el0_svc+0x58/0x16c arch/arm64/kernel/entry-common.c:678
-el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:696
-el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:591
-Code: aa1803e6 aa1903e7 a90023f5 94785b8b (d4210000)
-
-Fixes: 872254dd6b1f ("net/bonding: Enable bonding to enslave non ARPHRD_ETHER")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231109180102.4085183-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-16-mathias.nyman@linux.intel.com
+Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/usb/host/xhci-pci.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index afd327e88cf5e..bb1c6743222e5 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1144,6 +1144,10 @@ static void bond_compute_features(struct bonding *bond)
- static void bond_setup_by_slave(struct net_device *bond_dev,
- 				struct net_device *slave_dev)
- {
-+	bool was_up = !!(bond_dev->flags & IFF_UP);
-+
-+	dev_close(bond_dev);
-+
- 	bond_dev->header_ops	    = slave_dev->header_ops;
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -505,7 +505,9 @@ static int xhci_pci_probe(struct pci_dev
+ 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
+ 	pm_runtime_put_noidle(&dev->dev);
  
- 	bond_dev->type		    = slave_dev->type;
-@@ -1158,6 +1162,8 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
- 		bond_dev->flags &= ~(IFF_BROADCAST | IFF_MULTICAST);
- 		bond_dev->flags |= (IFF_POINTOPOINT | IFF_NOARP);
- 	}
-+	if (was_up)
-+		dev_open(bond_dev, NULL);
- }
+-	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
++	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
++		pm_runtime_forbid(&dev->dev);
++	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
+ 		pm_runtime_allow(&dev->dev);
  
- /* On bonding slaves other than the currently active slave, suppress
--- 
-2.42.0
-
+ 	dma_set_max_seg_size(&dev->dev, UINT_MAX);
 
 
 
