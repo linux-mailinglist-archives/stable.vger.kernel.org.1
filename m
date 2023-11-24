@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586D37F8121
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:55:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4A737F7ACA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 898D11C21672
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:55:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77EBB281B17
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D6BA14F7B;
-	Fri, 24 Nov 2023 18:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE3D39FC3;
+	Fri, 24 Nov 2023 17:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njOFZzNb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg6fx3ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4482FC4E;
-	Fri, 24 Nov 2023 18:55:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEE6C433C8;
-	Fri, 24 Nov 2023 18:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCB8381D6;
+	Fri, 24 Nov 2023 17:58:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E81C433C8;
+	Fri, 24 Nov 2023 17:58:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852152;
-	bh=cXsO14c5i0cJiR7eoJbyakqo5X7bZQVA2zsg71kqkqI=;
+	s=korg; t=1700848718;
+	bh=9aSdQCyxRmVcKk6udsuCnppC0YFpS+fLhAQOC5VGrAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njOFZzNb4eFtj6Be2v0CBrAvqPutrx4JcIIsG17aMjk8wNGt6N1LeAyjT1XXOvVPv
-	 7s0TKpYgQA1Xx1LJgpPW5TJhl0fvVVfDn7ny3QzZsBBGuADok8kqJdSnpMk4SU+otz
-	 gVA/oMutvzpLgLx6x6qntnfxOnQSyPJjrVADn8Os=
+	b=Vg6fx3aerOdfkJyEkiM1oetDQ2948py1DhSNAGypFZ/iWOMcZ0ZAEHdNf/l21bxGV
+	 cDdvr0BmwPW6IA2Y+A7Z+wEjq9lFCgVnjYaIey4U9/Va9Vb3+GFV3Gww+THDeJ+H6P
+	 qD4REIhekZoQ9CQktUs/nFbxg3j+dbeJMZ2/25i4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamie Lentin <jm@lentin.co.uk>,
-	Martin Kepplinger <martink@posteo.de>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.1 240/372] hid: lenovo: Resend all settings on reset_resume for compact keyboards
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 4.19 54/97] PCI/sysfs: Protect drivers D3cold preference from user space
 Date: Fri, 24 Nov 2023 17:50:27 +0000
-Message-ID: <20231124172018.523069224@linuxfoundation.org>
+Message-ID: <20231124171936.166602528@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
+References: <20231124171934.122298957@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,116 +54,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Lentin <jm@lentin.co.uk>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 2f2bd7cbd1d1548137b351040dc4e037d18cdfdc upstream.
+commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
 
-The USB Compact Keyboard variant requires a reset_resume function to
-restore keyboard configuration after a suspend in some situations. Move
-configuration normally done on probe to lenovo_features_set_cptkbd(), then
-recycle this for use on reset_resume.
+struct pci_dev contains two flags which govern whether the device may
+suspend to D3cold:
 
-Without, the keyboard and driver would end up in an inconsistent state,
-breaking middle-button scrolling amongst other problems, and twiddling
-sysfs values wouldn't help as the middle-button mode won't be set until
-the driver is reloaded.
+* no_d3cold provides an opt-out for drivers (e.g. if a device is known
+  to not wake from D3cold)
 
-Tested on a USB and Bluetooth Thinkpad Compact Keyboard.
+* d3cold_allowed provides an opt-out for user space (default is true,
+  user space may set to false)
 
-CC: stable@vger.kernel.org
-Fixes: 94eefa271323 ("HID: lenovo: Use native middle-button mode for compact keyboards")
-Signed-off-by: Jamie Lentin <jm@lentin.co.uk>
-Signed-off-by: Martin Kepplinger <martink@posteo.de>
-Link: https://lore.kernel.org/r/20231002150914.22101-1-martink@posteo.de
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
+the user space setting overwrites the driver setting.  Essentially user
+space is trusted to know better than the driver whether D3cold is
+working.
+
+That feels unsafe and wrong.  Assume that the change was introduced
+inadvertently and do not overwrite no_d3cold when d3cold_allowed is
+modified.  Instead, consider d3cold_allowed in addition to no_d3cold
+when choosing a suspend state for the device.
+
+That way, user space may opt out of D3cold if the driver hasn't, but it
+may no longer force an opt in if the driver has opted out.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org	# v4.8+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-lenovo.c |   50 +++++++++++++++++++++++++++++++----------------
- 1 file changed, 34 insertions(+), 16 deletions(-)
+ drivers/pci/pci-acpi.c  |    2 +-
+ drivers/pci/pci-sysfs.c |    5 +----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/hid-lenovo.c
-+++ b/drivers/hid/hid-lenovo.c
-@@ -526,6 +526,19 @@ static void lenovo_features_set_cptkbd(s
- 	int ret;
- 	struct lenovo_drvdata *cptkbd_data = hid_get_drvdata(hdev);
- 
-+	/*
-+	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
-+	 * regular keys
-+	 */
-+	ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
-+	if (ret)
-+		hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
-+
-+	/* Switch middle button to native mode */
-+	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
-+	if (ret)
-+		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
-+
- 	ret = lenovo_send_cmd_cptkbd(hdev, 0x05, cptkbd_data->fn_lock);
- 	if (ret)
- 		hid_err(hdev, "Fn-lock setting failed: %d\n", ret);
-@@ -1148,22 +1161,6 @@ static int lenovo_probe_cptkbd(struct hi
- 	}
- 	hid_set_drvdata(hdev, cptkbd_data);
- 
--	/*
--	 * Tell the keyboard a driver understands it, and turn F7, F9, F11 into
--	 * regular keys (Compact only)
--	 */
--	if (hdev->product == USB_DEVICE_ID_LENOVO_CUSBKBD ||
--	    hdev->product == USB_DEVICE_ID_LENOVO_CBTKBD) {
--		ret = lenovo_send_cmd_cptkbd(hdev, 0x01, 0x03);
--		if (ret)
--			hid_warn(hdev, "Failed to switch F7/9/11 mode: %d\n", ret);
--	}
--
--	/* Switch middle button to native mode */
--	ret = lenovo_send_cmd_cptkbd(hdev, 0x09, 0x01);
--	if (ret)
--		hid_warn(hdev, "Failed to switch middle button: %d\n", ret);
--
- 	/* Set keyboard settings to known state */
- 	cptkbd_data->middlebutton_state = 0;
- 	cptkbd_data->fn_lock = true;
-@@ -1286,6 +1283,24 @@ err:
- 	return ret;
- }
- 
-+#ifdef CONFIG_PM
-+static int lenovo_reset_resume(struct hid_device *hdev)
-+{
-+	switch (hdev->product) {
-+	case USB_DEVICE_ID_LENOVO_CUSBKBD:
-+	case USB_DEVICE_ID_LENOVO_TPIIUSBKBD:
-+		if (hdev->type == HID_TYPE_USBMOUSE)
-+			lenovo_features_set_cptkbd(hdev);
-+
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
- static void lenovo_remove_tpkbd(struct hid_device *hdev)
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -496,7 +496,7 @@ static pci_power_t acpi_pci_choose_state
  {
- 	struct lenovo_drvdata *data_pointer = hid_get_drvdata(hdev);
-@@ -1402,6 +1417,9 @@ static struct hid_driver lenovo_driver =
- 	.raw_event = lenovo_raw_event,
- 	.event = lenovo_event,
- 	.report_fixup = lenovo_report_fixup,
-+#ifdef CONFIG_PM
-+	.reset_resume = lenovo_reset_resume,
-+#endif
- };
- module_hid_driver(lenovo_driver);
+ 	int acpi_state, d_max;
+ 
+-	if (pdev->no_d3cold)
++	if (pdev->no_d3cold || !pdev->d3cold_allowed)
+ 		d_max = ACPI_STATE_D3_HOT;
+ 	else
+ 		d_max = ACPI_STATE_D3_COLD;
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -519,10 +519,7 @@ static ssize_t d3cold_allowed_store(stru
+ 		return -EINVAL;
+ 
+ 	pdev->d3cold_allowed = !!val;
+-	if (pdev->d3cold_allowed)
+-		pci_d3cold_enable(pdev);
+-	else
+-		pci_d3cold_disable(pdev);
++	pci_bridge_d3_update(pdev);
+ 
+ 	pm_runtime_resume(dev);
  
 
 
