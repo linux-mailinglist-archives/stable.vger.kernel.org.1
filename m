@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-1205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5633B7F7E82
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2357F7C7B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03480282335
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A425CB2153B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DDF39FF3;
-	Fri, 24 Nov 2023 18:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB583A8C3;
+	Fri, 24 Nov 2023 18:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHZl2WrO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lz9Br/cK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AE02EAFB;
-	Fri, 24 Nov 2023 18:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D77C433C8;
-	Fri, 24 Nov 2023 18:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB12381D5;
+	Fri, 24 Nov 2023 18:15:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EF4C433C8;
+	Fri, 24 Nov 2023 18:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850820;
-	bh=uYtmQxkh3tEwcbB3lo8MilB7QIWXD4BN94mrYABf/QY=;
+	s=korg; t=1700849728;
+	bh=Uk13xlhWTYRpgUU8KCGDlXVWSCgJ7hPyuk6uIZGLFv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHZl2WrOqXkPCxYDG1jD6A4TAg9KLI6vSsWuy+/e19PwAvPaO67HqSXTZZFXF6Rtw
-	 l/bqTSTODvth1xjxKnIqUhVv3o5Hkk3Zn1Uzps/yvU+CZOk3CCLDzsIj2cwxfVOCEe
-	 FJ5gufQ4ybz3ClrbbzitNJFJhdPn6FGoQcXvI2BM=
+	b=lz9Br/cKyh2wynz4IrjZTyyXiR6IY4CxnzYiIkMAbdrq3rrxHqNWAlmooPTnqUe4J
+	 gG1Tt9ATvJ/TYzQLmssxT5/A6zKOxgyu011lQMMhAFtmtHO+uu5U8wDe3hcg6cgJXb
+	 2IFRqmKypAUs+oZOLDtcLCGoYBquGVH9aA9hgDo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziwei Xiao <ziweixiao@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 202/491] gve: Fixes for napi_poll when budget is 0
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.6 272/530] PCI/sysfs: Protect drivers D3cold preference from user space
 Date: Fri, 24 Nov 2023 17:47:18 +0000
-Message-ID: <20231124172030.574481059@linuxfoundation.org>
+Message-ID: <20231124172036.317271205@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,94 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziwei Xiao <ziweixiao@google.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 278a370c1766060d2144d6cf0b06c101e1043b6d ]
+commit 70b70a4307cccebe91388337b1c85735ce4de6ff upstream.
 
-Netpoll will explicilty pass the polling call with a budget of 0 to
-indicate it's clearing the Tx path only. For the gve_rx_poll and
-gve_xdp_poll, they were mistakenly taking the 0 budget as the indication
-to do all the work. Add check to avoid the rx path and xdp path being
-called when budget is 0. And also avoid napi_complete_done being called
-when budget is 0 for netpoll.
+struct pci_dev contains two flags which govern whether the device may
+suspend to D3cold:
 
-Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
-Signed-off-by: Ziwei Xiao <ziweixiao@google.com>
-Link: https://lore.kernel.org/r/20231114004144.2022268-1-ziweixiao@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* no_d3cold provides an opt-out for drivers (e.g. if a device is known
+  to not wake from D3cold)
+
+* d3cold_allowed provides an opt-out for user space (default is true,
+  user space may set to false)
+
+Since commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend"),
+the user space setting overwrites the driver setting.  Essentially user
+space is trusted to know better than the driver whether D3cold is
+working.
+
+That feels unsafe and wrong.  Assume that the change was introduced
+inadvertently and do not overwrite no_d3cold when d3cold_allowed is
+modified.  Instead, consider d3cold_allowed in addition to no_d3cold
+when choosing a suspend state for the device.
+
+That way, user space may opt out of D3cold if the driver hasn't, but it
+may no longer force an opt in if the driver has opted out.
+
+Fixes: 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
+Link: https://lore.kernel.org/r/b8a7f4af2b73f6b506ad8ddee59d747cbf834606.1695025365.git.lukas@wunner.de
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Cc: stable@vger.kernel.org	# v4.8+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_main.c | 8 +++++++-
- drivers/net/ethernet/google/gve/gve_rx.c   | 4 ----
- drivers/net/ethernet/google/gve/gve_tx.c   | 4 ----
- 3 files changed, 7 insertions(+), 9 deletions(-)
+ drivers/pci/pci-acpi.c  |    2 +-
+ drivers/pci/pci-sysfs.c |    5 +----
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 465a6db5a40a8..79bfa2837a0e6 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -255,10 +255,13 @@ static int gve_napi_poll(struct napi_struct *napi, int budget)
- 	if (block->tx) {
- 		if (block->tx->q_num < priv->tx_cfg.num_queues)
- 			reschedule |= gve_tx_poll(block, budget);
--		else
-+		else if (budget)
- 			reschedule |= gve_xdp_poll(block, budget);
- 	}
+--- a/drivers/pci/pci-acpi.c
++++ b/drivers/pci/pci-acpi.c
+@@ -911,7 +911,7 @@ pci_power_t acpi_pci_choose_state(struct
+ {
+ 	int acpi_state, d_max;
  
-+	if (!budget)
-+		return 0;
-+
- 	if (block->rx) {
- 		work_done = gve_rx_poll(block, budget);
- 		reschedule |= work_done == budget;
-@@ -299,6 +302,9 @@ static int gve_napi_poll_dqo(struct napi_struct *napi, int budget)
- 	if (block->tx)
- 		reschedule |= gve_tx_poll_dqo(block, /*do_clean=*/true);
+-	if (pdev->no_d3cold)
++	if (pdev->no_d3cold || !pdev->d3cold_allowed)
+ 		d_max = ACPI_STATE_D3_HOT;
+ 	else
+ 		d_max = ACPI_STATE_D3_COLD;
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -529,10 +529,7 @@ static ssize_t d3cold_allowed_store(stru
+ 		return -EINVAL;
  
-+	if (!budget)
-+		return 0;
-+
- 	if (block->rx) {
- 		work_done = gve_rx_poll_dqo(block, budget);
- 		reschedule |= work_done == budget;
-diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
-index e84a066aa1a40..73655347902d2 100644
---- a/drivers/net/ethernet/google/gve/gve_rx.c
-+++ b/drivers/net/ethernet/google/gve/gve_rx.c
-@@ -1007,10 +1007,6 @@ int gve_rx_poll(struct gve_notify_block *block, int budget)
+ 	pdev->d3cold_allowed = !!val;
+-	if (pdev->d3cold_allowed)
+-		pci_d3cold_enable(pdev);
+-	else
+-		pci_d3cold_disable(pdev);
++	pci_bridge_d3_update(pdev);
  
- 	feat = block->napi.dev->features;
+ 	pm_runtime_resume(dev);
  
--	/* If budget is 0, do all the work */
--	if (budget == 0)
--		budget = INT_MAX;
--
- 	if (budget > 0)
- 		work_done = gve_clean_rx_done(rx, budget, feat);
- 
-diff --git a/drivers/net/ethernet/google/gve/gve_tx.c b/drivers/net/ethernet/google/gve/gve_tx.c
-index 6957a865cff37..9f6ffc4a54f0b 100644
---- a/drivers/net/ethernet/google/gve/gve_tx.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx.c
-@@ -925,10 +925,6 @@ bool gve_xdp_poll(struct gve_notify_block *block, int budget)
- 	bool repoll;
- 	u32 to_do;
- 
--	/* If budget is 0, do all the work */
--	if (budget == 0)
--		budget = INT_MAX;
--
- 	/* Find out how much work there is to be done */
- 	nic_done = gve_tx_load_event_counter(priv, tx);
- 	to_do = min_t(u32, (nic_done - tx->done), budget);
--- 
-2.42.0
-
 
 
 
