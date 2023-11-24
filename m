@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA9097F7AA5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D3B7F7F3A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B8E281624
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A0401C21442
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDF30381DE;
-	Fri, 24 Nov 2023 17:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD5F37170;
+	Fri, 24 Nov 2023 18:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpk6rjcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkCYHznE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A739939FD0;
-	Fri, 24 Nov 2023 17:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E44C433C7;
-	Fri, 24 Nov 2023 17:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FEC2D626;
+	Fri, 24 Nov 2023 18:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C43C433C8;
+	Fri, 24 Nov 2023 18:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848632;
-	bh=ksfeRZ0nMeRBrEtF3uSGx8EtUEB+bELo7abjesGo/MM=;
+	s=korg; t=1700851184;
+	bh=CcYG9MN9FDu8WnpezJf1m9fdkmZIlFT+KjTFx0EWyxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vpk6rjcpmaxYn/6inp/2vmVn+gvqMBr8CW+Jiqvu2Lu7ZjvzwyNSdQVAPgdIGzdzL
-	 8B/ZEyBrtMq6/JUDa0NA787H6MGlkFf5i7p5o/eIwhZZY+I+aJ4VjSslTLusTshGQ0
-	 fMrbyc24BqjYRvhRS63YPnTJwxM7OLlORg6mZnzk=
+	b=lkCYHznEzGObjPgB0khvSpAsLJjhL7mW3FOVJ8ydeMaj/kjQ79KXt9kOe5laPm/Vt
+	 ltAU4i+tJnBzrpeBM4ZTEo8rEFk++u3i0vwUo/3dOld8DIJe3kymAuRSsRZCElpx47
+	 T48jFf+fJdpdgmN4KaHMCKHYFnEP23orUKPmYFXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 09/97] net: annotate data-races around sk->sk_tx_queue_mapping
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.5 346/491] dmaengine: stm32-mdma: correct desc prep when channel running
 Date: Fri, 24 Nov 2023 17:49:42 +0000
-Message-ID: <20231124171934.484871420@linuxfoundation.org>
+Message-ID: <20231124172034.961769545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit 0bb4d124d34044179b42a769a0c76f389ae973b6 ]
+commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
 
-This field can be read or written without socket lock being held.
+In case of the prep descriptor while the channel is already running, the
+CCR register value stored into the channel could already have its EN bit
+set.  This would lead to a bad transfer since, at start transfer time,
+enabling the channel while other registers aren't yet properly set.
+To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
+into the mdma channel structure.
 
-Add annotations to avoid load-store tearing.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Tested-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ drivers/dma/stm32-mdma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 373e34b46a3c9..c0df14e5a0754 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1759,21 +1759,33 @@ static inline void sk_tx_queue_set(struct sock *sk, int tx_queue)
- 	/* sk_tx_queue_mapping accept only upto a 16-bit value */
- 	if (WARN_ON_ONCE((unsigned short)tx_queue >= USHRT_MAX))
- 		return;
--	sk->sk_tx_queue_mapping = tx_queue;
-+	/* Paired with READ_ONCE() in sk_tx_queue_get() and
-+	 * other WRITE_ONCE() because socket lock might be not held.
-+	 */
-+	WRITE_ONCE(sk->sk_tx_queue_mapping, tx_queue);
- }
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -490,7 +490,7 @@ static int stm32_mdma_set_xfer_param(str
+ 	src_maxburst = chan->dma_config.src_maxburst;
+ 	dst_maxburst = chan->dma_config.dst_maxburst;
  
- #define NO_QUEUE_MAPPING	USHRT_MAX
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
  
- static inline void sk_tx_queue_clear(struct sock *sk)
- {
--	sk->sk_tx_queue_mapping = NO_QUEUE_MAPPING;
-+	/* Paired with READ_ONCE() in sk_tx_queue_get() and
-+	 * other WRITE_ONCE() because socket lock might be not held.
-+	 */
-+	WRITE_ONCE(sk->sk_tx_queue_mapping, NO_QUEUE_MAPPING);
- }
+@@ -966,7 +966,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
+ 	if (!desc)
+ 		return NULL;
  
- static inline int sk_tx_queue_get(const struct sock *sk)
- {
--	if (sk && sk->sk_tx_queue_mapping != NO_QUEUE_MAPPING)
--		return sk->sk_tx_queue_mapping;
-+	if (sk) {
-+		/* Paired with WRITE_ONCE() in sk_tx_queue_clear()
-+		 * and sk_tx_queue_set().
-+		 */
-+		int val = READ_ONCE(sk->sk_tx_queue_mapping);
- 
-+		if (val != NO_QUEUE_MAPPING)
-+			return val;
-+	}
- 	return -1;
- }
- 
--- 
-2.42.0
-
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
 
 
 
