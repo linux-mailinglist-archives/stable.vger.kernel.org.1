@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-2216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1CF7F8341
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E467F8228
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:05:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF6C61C251B2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C36751C21963
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B300D364BA;
-	Fri, 24 Nov 2023 19:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E60BA34189;
+	Fri, 24 Nov 2023 19:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkS1gONk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rIxy+EI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D39133CC2;
-	Fri, 24 Nov 2023 19:15:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3C2C433C8;
-	Fri, 24 Nov 2023 19:15:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98FE42C87B;
+	Fri, 24 Nov 2023 19:04:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251E8C433C8;
+	Fri, 24 Nov 2023 19:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853338;
-	bh=uKcCFESS9yliO8Uy7d2rByD14o4lY7MkqoG7wwfQi4s=;
+	s=korg; t=1700852698;
+	bh=07YXpJkg8k16iMOKvlvi7pnoQQ97vSZhVIi5AaQwzcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkS1gONkV9eIbTPJfwTg2OCcQ4C1gzcTKmC/O2QL2ix7b6ZoRlz5GXjiJXqmXDTM0
-	 dXnoVieyPPMF2IzPL91mEGG4ZHIIukggnELTmGhxPUtO7Ym5TMJJ44NjVMhhfTtDkF
-	 +3zYjeFdsKWYQ3UujAk80RYJmlUHKbgOt31nFq9M=
+	b=rIxy+EI3dXIoYhs7LE3cLU1L0IWxhD1T1mlOY90tWWvdmT5TIOlytdrmt2oDC5SiM
+	 4O2vTPyqxQz1jHTWjX5+6T1//pDeW6WtaypRl9K00frWHjHkif3fkEfbpBzCHNm3nG
+	 AP4iShHUekelue3Cpdg0ZulxircOC8aErpmTt21U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/297] xfs: add missing cmap->br_state = XFS_EXT_NORM update
+Subject: [PATCH 5.10 063/193] gpio: Add helpers to ease the transition towards immutable irq_chip
 Date: Fri, 24 Nov 2023 17:53:10 +0000
-Message-ID: <20231124172005.434532907@linuxfoundation.org>
+Message-ID: <20231124171949.761377900@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
+References: <20231124171947.127438872@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,47 +54,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 1a39ae415c1be1e46f5b3f97d438c7c4adc22b63 ]
+[ Upstream commit 36b78aae4bfee749bbde73be570796bfd0f56bec ]
 
-COW extents are already converted into written real extents after
-xfs_reflink_convert_cow_locked(), therefore cmap->br_state should
-reflect it.
+Add a couple of new helpers to make it slightly simpler to convert
+drivers to immutable irq_chip structures:
 
-Otherwise, there is another necessary unwritten convertion
-triggered in xfs_dio_write_end_io() for direct I/O cases.
+- GPIOCHIP_IRQ_RESOURCE_HELPERS populates the irq_chip structure
+  with the resource management callbacks
 
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+- gpio_irq_chip_set_chip() populates the gpio_irq_chip.chip
+  structure, avoiding the proliferation of ugly casts
+
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Bartosz Golaszewski <brgl@bgdev.pl>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20220419141846.598305-4-maz@kernel.org
+Stable-dep-of: dc3115e6c5d9 ("hid: cp2112: Fix IRQ shutdown stopping polling for all IRQs on chip")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_reflink.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/gpio/driver.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
-index 36832e4bc803c..628ce65d02bb5 100644
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -425,7 +425,10 @@ xfs_reflink_allocate_cow(
- 	if (!convert_now || cmap->br_state == XFS_EXT_NORM)
- 		return 0;
- 	trace_xfs_reflink_convert_cow(ip, cmap);
--	return xfs_reflink_convert_cow_locked(ip, offset_fsb, count_fsb);
-+	error = xfs_reflink_convert_cow_locked(ip, offset_fsb, count_fsb);
-+	if (!error)
-+		cmap->br_state = XFS_EXT_NORM;
-+	return error;
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index 38df53b541d53..897fc150552a2 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -595,6 +595,18 @@ void gpiochip_enable_irq(struct gpio_chip *gc, unsigned int offset);
+ int gpiochip_irq_reqres(struct irq_data *data);
+ void gpiochip_irq_relres(struct irq_data *data);
  
- out_trans_cancel:
- 	xfs_trans_cancel(tp);
++/* Paste this in your irq_chip structure  */
++#define	GPIOCHIP_IRQ_RESOURCE_HELPERS					\
++		.irq_request_resources  = gpiochip_irq_reqres,		\
++		.irq_release_resources  = gpiochip_irq_relres
++
++static inline void gpio_irq_chip_set_chip(struct gpio_irq_chip *girq,
++					  const struct irq_chip *chip)
++{
++	/* Yes, dropping const is ugly, but it isn't like we have a choice */
++	girq->chip = (struct irq_chip *)chip;
++}
++
+ /* Line status inquiry for drivers */
+ bool gpiochip_line_is_open_drain(struct gpio_chip *gc, unsigned int offset);
+ bool gpiochip_line_is_open_source(struct gpio_chip *gc, unsigned int offset);
 -- 
 2.42.0
 
