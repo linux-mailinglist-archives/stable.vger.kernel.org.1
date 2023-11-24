@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-2444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C0E7F8434
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D727B7F83AB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECF0FB27F82
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:24:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 062C21C2621F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3570A381CC;
-	Fri, 24 Nov 2023 19:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475E537170;
+	Fri, 24 Nov 2023 19:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2G1i20fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZjirQ9kz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0EF31748;
-	Fri, 24 Nov 2023 19:24:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD98C433C8;
-	Fri, 24 Nov 2023 19:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067B13173F;
+	Fri, 24 Nov 2023 19:19:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AA5C433C7;
+	Fri, 24 Nov 2023 19:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853897;
-	bh=g/C/MKr0J5HqBwi9nsKPuGabgVr4syzJ4LelwMbWoOw=;
+	s=korg; t=1700853590;
+	bh=ryqwDfMu/NX4dy2JbKL1AdyDfdXc5DaFeODroALTKq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2G1i20flVzHS3EFk7PFDGcFxn7rPzs1lvsaE+eYYKzsu12hsojcPymwCT6Zc0DQCz
-	 Y4ckWPah3m9M7r1ZGp8N83b+rKhRqyQuTp4pHoa/qXdO3sGLRquLInEVBv1+9DFDHW
-	 1AFquxRHjnv3qqyf8qTP58RuTA3XbSd0Wzbk68TQ=
+	b=ZjirQ9kzPStjDI/I0L2j8oE1JKUvJOEl+wMhAPeeHwkPLke4PyyG6tKGWX62nFijm
+	 lhaKSh3fzHxrDG0I3L8k4tlkZi6+V67sd73g8H6YiE3jy43/y0XNvdFOdSKx6kz/fR
+	 JWxJB2S/iSsaz5wIo7LuuAiYlJflUUpN9quFYC48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Savkov <asavkov@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.4 075/159] audit: dont WARN_ON_ONCE(!current->mm) in audit_exe_compare()
+	Alexey Kardashevskiy <aik@ozlabs.ru>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 250/297] powerpc/pseries/ddw: simplify enable_ddw()
 Date: Fri, 24 Nov 2023 17:54:52 +0000
-Message-ID: <20231124171945.078700529@linuxfoundation.org>
+Message-ID: <20231124172008.932733130@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +53,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Moore <paul@paul-moore.com>
+From: Alexey Kardashevskiy <aik@ozlabs.ru>
 
-commit 969d90ec212bae4b45bf9d21d7daa30aa6cf055e upstream.
+[ Upstream commit fb4ee2b30cd09e95524640149e4ee0d7f22c3e7b ]
 
-eBPF can end up calling into the audit code from some odd places, and
-some of these places don't have @current set properly so we end up
-tripping the `WARN_ON_ONCE(!current->mm)` near the top of
-`audit_exe_compare()`.  While the basic `!current->mm` check is good,
-the `WARN_ON_ONCE()` results in some scary console messages so let's
-drop that and just do the regular `!current->mm` check to avoid
-problems.
+This drops rather useless ddw_enabled flag as direct_mapping implies
+it anyway.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 47846d51348d ("audit: don't take task_lock() in audit_exe_compare() code path")
-Reported-by: Artem Savkov <asavkov@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While at this, fix indents in enable_ddw().
+
+This should not cause any behavioral change.
+
+Signed-off-by: Alexey Kardashevskiy <aik@ozlabs.ru>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://lore.kernel.org/r/20211108040320.3857636-3-aik@ozlabs.ru
+Stable-dep-of: 3bf983e4e93c ("powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/audit_watch.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/platforms/pseries/iommu.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/kernel/audit_watch.c
-+++ b/kernel/audit_watch.c
-@@ -546,7 +546,7 @@ int audit_exe_compare(struct task_struct
- 	if (tsk != current)
- 		return 0;
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index ec5d84b4958c5..aa5f8074e9b10 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -1241,7 +1241,6 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	u32 ddw_avail[DDW_APPLICABLE_SIZE];
+ 	struct dma_win *window;
+ 	struct property *win64;
+-	bool ddw_enabled = false;
+ 	struct failed_ddw_pdn *fpdn;
+ 	bool default_win_removed = false, direct_mapping = false;
+ 	bool pmem_present;
+@@ -1256,7 +1255,6 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
  
--	if (WARN_ON_ONCE(!current->mm))
-+	if (!current->mm)
- 		return 0;
- 	exe_file = get_mm_exe_file(current->mm);
- 	if (!exe_file)
+ 	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
+ 		direct_mapping = (len >= max_ram_len);
+-		ddw_enabled = true;
+ 		goto out_unlock;
+ 	}
+ 
+@@ -1411,8 +1409,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+ 				 dn, ret);
+ 
+-		/* Make sure to clean DDW if any TCE was set*/
+-		clean_dma_window(pdn, win64->value);
++			/* Make sure to clean DDW if any TCE was set*/
++			clean_dma_window(pdn, win64->value);
+ 			goto out_del_list;
+ 		}
+ 	} else {
+@@ -1459,7 +1457,6 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	spin_unlock(&dma_win_list_lock);
+ 
+ 	dev->dev.archdata.dma_offset = win_addr;
+-	ddw_enabled = true;
+ 	goto out_unlock;
+ 
+ out_del_list:
+@@ -1495,10 +1492,10 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	 * as RAM, then we failed to create a window to cover persistent
+ 	 * memory and need to set the DMA limit.
+ 	 */
+-	if (pmem_present && ddw_enabled && direct_mapping && len == max_ram_len)
++	if (pmem_present && direct_mapping && len == max_ram_len)
+ 		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset + (1ULL << len);
+ 
+-    return ddw_enabled && direct_mapping;
++	return direct_mapping;
+ }
+ 
+ static void pci_dma_dev_setup_pSeriesLP(struct pci_dev *dev)
+-- 
+2.42.0
+
 
 
 
