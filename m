@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22487F7C32
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:12:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A677F7E5D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A8C9B20EFE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:12:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E6C2822CC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A310539FD9;
-	Fri, 24 Nov 2023 18:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B19828E32;
+	Fri, 24 Nov 2023 18:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkS0zZSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhBwZZ/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F9E381D6;
-	Fri, 24 Nov 2023 18:12:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3AE4C433C7;
-	Fri, 24 Nov 2023 18:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E961D2FC4E;
+	Fri, 24 Nov 2023 18:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68F64C433C7;
+	Fri, 24 Nov 2023 18:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849566;
-	bh=GxeRd5+j7q8f0byxzqLMf1Q3ZFwuCWyBmp18NUxP6XE=;
+	s=korg; t=1700850738;
+	bh=1ul/lyymUZsvFTh4QDdycTvTv2EIinOZ7+mxGWV26Hw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkS0zZSVIjewHEUE8rvsZ8D8mep2miq68AXHgPuTe8A1pX7dEKCLCWil1ZNPl0OZe
-	 xr3uxhDIw/7Z8uhOE0kpIIC9WCyqSTVV7oyf8MoUSnjc1pzyH5yJsNW5U1wsPDvol3
-	 gLBjDCJsPzP7lRxof+7gmuUc5w+100yledhwHQv0=
+	b=MhBwZZ/eYoSAaF3m7I28Mh2JzhmcR+FoxsVMENCXxqBToP+/WniIqFtTRVyq2s8pE
+	 J1v8KTW0a6glHLkllEVVHwsmnUG9vDscuvwZMufP+Xbcmcq3kXP2fdun48n1GZBz9M
+	 Gy07bnFB8WaNMYo3jzZlx9sf7zUaPmdUa+MX1OOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Yu <yu.c.chen@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Len Brown <len.brown@intel.com>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/530] tools/power/turbostat: Enable the C-state Pre-wake printing
+Subject: [PATCH 6.5 162/491] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
 Date: Fri, 24 Nov 2023 17:46:38 +0000
-Message-ID: <20231124172035.109141642@linuxfoundation.org>
+Message-ID: <20231124172029.340589341@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,38 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Yu <yu.c.chen@intel.com>
+From: Olga Kornievskaia <kolga@netapp.com>
 
-[ Upstream commit b61b7d8c4c22c4298a50ae5d0ee88facb85ce665 ]
+[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
 
-Currently the C-state Pre-wake will not be printed due to the
-probe has not been invoked. Invoke the probe function accordingly.
+If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
+successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
+list of state protected operations, then we need to make sure to
+choose the DS's rpc_client structure instead of the MDS's one.
 
-Fixes: aeb01e6d71ff ("tools/power turbostat: Print the C-state Pre-wake settings")
-Signed-off-by: Chen Yu <yu.c.chen@intel.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Reviewed-by: Len Brown <len.brown@intel.com>
+Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
+Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/power/x86/turbostat/turbostat.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/nfs4proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/power/x86/turbostat/turbostat.c b/tools/power/x86/turbostat/turbostat.c
-index 4e19bd2fa8b9f..785de89077de0 100644
---- a/tools/power/x86/turbostat/turbostat.c
-+++ b/tools/power/x86/turbostat/turbostat.c
-@@ -5790,6 +5790,7 @@ void process_cpuid()
- 	rapl_probe(family, model);
- 	perf_limit_reasons_probe(family, model);
- 	automatic_cstate_conversion_probe(family, model);
-+	prewake_cstate_probe(family, model);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index c710fde58be11..8374fa230ba5a 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5622,7 +5622,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
  
- 	check_tcc_offset(model_orig);
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
+ 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
+-	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
++	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
+ }
  
+ static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
+@@ -5663,7 +5663,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
+ 	data->res.server = server;
+ 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
+ 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
+-	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
++	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
++			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
+ }
+ 
+ static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
 -- 
 2.42.0
 
