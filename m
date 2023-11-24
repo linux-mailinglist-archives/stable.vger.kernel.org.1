@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70717F7F2B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22CE17F7D05
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5921BB2187C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA1A9B216F9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D5637170;
-	Fri, 24 Nov 2023 18:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF20E3A8D6;
+	Fri, 24 Nov 2023 18:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDhPA3zi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHdjqQkR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FFE133CCA;
-	Fri, 24 Nov 2023 18:39:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE741C433C7;
-	Fri, 24 Nov 2023 18:39:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9D3381DE;
+	Fri, 24 Nov 2023 18:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0510EC433C7;
+	Fri, 24 Nov 2023 18:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851149;
-	bh=vpshIt/azP7l7vVoODkntcjgKfb1lQt1HKRuZcDJO58=;
+	s=korg; t=1700850038;
+	bh=7Qw+gIWOXnupVX/Vna1YGuAVHIuOjE+QUh/NJHzUrh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDhPA3ziwEp9VrSMLKIJtwKCjpc3jOmoSgT8Sdz/eOaI/RBVjlJ3BY6j6F1vkiNUp
-	 yZL4z5zQdTWCtSm36HFa9X42BG8U6+mEU0yU4Ru4qIBK5bJJLrMOs/i3sw5KZWBytb
-	 79J2Q936XDLMC5VSo/G/PJ5OMBRYBL6feFDpNvEM=
+	b=DHdjqQkRf/bcTyWHWfiKJOV45blUnQ8lOt2yAWEKu1+qazTl9itJq7nTOFusU6SfM
+	 sysjcy/QuXSBYUurBDLgfbMON33AAscfiMg3xw19HaWLmQmvoMaVFdB+PsWWOkA45r
+	 UnQTbtjzo5C+AQU4ssicdoLyXJFqOfKi6EAkh77g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.5 333/491] selftests/resctrl: Move _GNU_SOURCE define into Makefile
+	Masum Reza <masumrezarock100@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 403/530] Bluetooth: btusb: Add RTW8852BE device 13d3:3570 to device tables
 Date: Fri, 24 Nov 2023 17:49:29 +0000
-Message-ID: <20231124172034.577483270@linuxfoundation.org>
+Message-ID: <20231124172040.308679618@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +51,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Masum Reza <masumrezarock100@gmail.com>
 
-commit 3a1e4a91aa454a1c589a9824d54179fdbfccde45 upstream.
+[ Upstream commit 02be109d3a405dbc4d53fb4b4473d7a113548088 ]
 
-_GNU_SOURCE is defined in resctrl.h. Defining _GNU_SOURCE has a large
-impact on what gets defined when including headers either before or
-after it. This can result in compile failures if .c file decides to
-include a standard header file before resctrl.h.
+This device is used in TP-Link TX20E WiFi+Bluetooth adapter.
 
-It is safer to define _GNU_SOURCE in Makefile so it is always defined
-regardless of in which order includes are done.
+Relevant information in /sys/kernel/debug/usb/devices
+about the Bluetooth device is listed as the below.
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
-Reviewed-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+T:  Bus=01 Lev=01 Prnt=01 Port=08 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3570 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+
+Signed-off-by: Masum Reza <masumrezarock100@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: da06ff1f585e ("Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/Makefile  |    2 +-
- tools/testing/selftests/resctrl/resctrl.h |    1 -
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 63ebd5677d267..e3f11ea2a9fcd 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -543,6 +543,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x0bda, 0x887b), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3570), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3571), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
  
--CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
-+CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE
- CFLAGS += $(KHDR_INCLUDES)
- 
- TEST_GEN_PROGS := resctrl_tests
---- a/tools/testing/selftests/resctrl/resctrl.h
-+++ b/tools/testing/selftests/resctrl/resctrl.h
-@@ -1,5 +1,4 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--#define _GNU_SOURCE
- #ifndef RESCTRL_H
- #define RESCTRL_H
- #include <stdio.h>
+-- 
+2.42.0
+
 
 
 
