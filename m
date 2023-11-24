@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-2165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF3E7F830A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:13:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B01197F8331
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 484B3286E28
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1B11B25BF1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D941A2511F;
-	Fri, 24 Nov 2023 19:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440F52E64F;
+	Fri, 24 Nov 2023 19:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/Z+tzfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQgxK8b+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8526937170;
-	Fri, 24 Nov 2023 19:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1048BC433C7;
-	Fri, 24 Nov 2023 19:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89658364BA;
+	Fri, 24 Nov 2023 19:14:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53BBC433C8;
+	Fri, 24 Nov 2023 19:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853209;
-	bh=GfAMth16Z9BnZS7IpwD3DsvxXgJXA05BO2i2ysCw63M=;
+	s=korg; t=1700853297;
+	bh=Sk0kr52vgfiKYgMFhNa5WnzD+ZsImGy/dzyu4ScSQD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/Z+tzfVLMMUp4dLsoWv1DiNDTUkwGilJxwXd1vP8HsQW/aV7GZom347naYTFdBbw
-	 bL+Ktmi2K8OI1IR7wLy+RQxn87il9eVRH9hcpxfEe6tG5EpPQkJ2UL/mrymjT4IPDZ
-	 iwpwuqEbJ6q+5Dt1BQ0xeNjX7XzIww5wEODFWWvY=
+	b=UQgxK8b+5nK1LQju8sg+g+WK5/4/ED8ZAf9blpUGPjKTBk9ryuGt3zQuOCD63WUU7
+	 oHvp5Zg1/Bzuw9KljdsslS5ju7LqoGFxfDx5CqllZjDTTqwQLlMheFnOZt+rhTHsM6
+	 qDnkTzls3aYHmLAOPQaydFCItHagsiD9YXSWpgn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Martin KaFai Lau <kafai@fb.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/297] mptcp: listen diag dump support
-Date: Fri, 24 Nov 2023 17:52:19 +0000
-Message-ID: <20231124172003.653478552@linuxfoundation.org>
+Subject: [PATCH 5.15 098/297] net: inet: Remove count from inet_listen_hashbucket
+Date: Fri, 24 Nov 2023 17:52:20 +0000
+Message-ID: <20231124172003.686126019@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
 References: <20231124172000.087816911@linuxfoundation.org>
@@ -58,151 +58,87 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Martin KaFai Lau <kafai@fb.com>
 
-[ Upstream commit 4fa39b701ce9be7ec2169f7fba4f8dc1a3b92aac ]
+[ Upstream commit 8ea1eebb49a2dfee1dce621a638cc1626e542392 ]
 
-makes 'ss -Ml' show mptcp listen sockets.
+After commit 0ee58dad5b06 ("net: tcp6: prefer listeners bound to an address")
+and commit d9fbc7f6431f ("net: tcp: prefer listeners bound to an address"),
+the count is no longer used.  This patch removes it.
 
-Iterate over the tcp listen sockets and pick those that have mptcp ulp
-info attached.
-
-mptcp_diag_get_info() is modified to prefer msk->first for mptcp sockets
-in listen state.  This reports accurate number for recv and send queue
-(pending / max connection backlog counters).
-
-Sample output:
-ss -Mil
-State        Recv-Q Send-Q Local Address:Port  Peer Address:Port
-LISTEN       0      20     127.0.0.1:12000     0.0.0.0:*
-         subflows_max:2
-
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Martin KaFai Lau <kafai@fb.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: 871019b22d1b ("net: set SOCK_RCU_FREE before inserting socket into hashtable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/mptcp_diag.c | 91 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
+ include/net/inet_hashtables.h | 1 -
+ net/ipv4/inet_hashtables.c    | 6 ------
+ 2 files changed, 7 deletions(-)
 
-diff --git a/net/mptcp/mptcp_diag.c b/net/mptcp/mptcp_diag.c
-index fb98b438b2c90..4d8625d0b179a 100644
---- a/net/mptcp/mptcp_diag.c
-+++ b/net/mptcp/mptcp_diag.c
-@@ -69,8 +69,83 @@ static int mptcp_diag_dump_one(struct netlink_callback *cb,
- struct mptcp_diag_ctx {
- 	long s_slot;
- 	long s_num;
-+	unsigned int l_slot;
-+	unsigned int l_num;
- };
- 
-+static void mptcp_diag_dump_listeners(struct sk_buff *skb, struct netlink_callback *cb,
-+				      const struct inet_diag_req_v2 *r,
-+				      bool net_admin)
-+{
-+	struct inet_diag_dump_data *cb_data = cb->data;
-+	struct mptcp_diag_ctx *diag_ctx = (void *)cb->ctx;
-+	struct nlattr *bc = cb_data->inet_diag_nla_bc;
-+	struct net *net = sock_net(skb->sk);
-+	int i;
-+
-+	for (i = diag_ctx->l_slot; i < INET_LHTABLE_SIZE; i++) {
-+		struct inet_listen_hashbucket *ilb;
-+		struct hlist_nulls_node *node;
-+		struct sock *sk;
-+		int num = 0;
-+
-+		ilb = &tcp_hashinfo.listening_hash[i];
-+
-+		rcu_read_lock();
-+		spin_lock(&ilb->lock);
-+		sk_nulls_for_each(sk, node, &ilb->nulls_head) {
-+			const struct mptcp_subflow_context *ctx = mptcp_subflow_ctx(sk);
-+			struct inet_sock *inet = inet_sk(sk);
-+			int ret;
-+
-+			if (num < diag_ctx->l_num)
-+				goto next_listen;
-+
-+			if (!ctx || strcmp(inet_csk(sk)->icsk_ulp_ops->name, "mptcp"))
-+				goto next_listen;
-+
-+			sk = ctx->conn;
-+			if (!sk || !net_eq(sock_net(sk), net))
-+				goto next_listen;
-+
-+			if (r->sdiag_family != AF_UNSPEC &&
-+			    sk->sk_family != r->sdiag_family)
-+				goto next_listen;
-+
-+			if (r->id.idiag_sport != inet->inet_sport &&
-+			    r->id.idiag_sport)
-+				goto next_listen;
-+
-+			if (!refcount_inc_not_zero(&sk->sk_refcnt))
-+				goto next_listen;
-+
-+			ret = sk_diag_dump(sk, skb, cb, r, bc, net_admin);
-+
-+			sock_put(sk);
-+
-+			if (ret < 0) {
-+				spin_unlock(&ilb->lock);
-+				rcu_read_unlock();
-+				diag_ctx->l_slot = i;
-+				diag_ctx->l_num = num;
-+				return;
-+			}
-+			diag_ctx->l_num = num + 1;
-+			num = 0;
-+next_listen:
-+			++num;
-+		}
-+		spin_unlock(&ilb->lock);
-+		rcu_read_unlock();
-+
-+		cond_resched();
-+		diag_ctx->l_num = 0;
-+	}
-+
-+	diag_ctx->l_num = 0;
-+	diag_ctx->l_slot = i;
-+}
-+
- static void mptcp_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 			    const struct inet_diag_req_v2 *r)
- {
-@@ -114,6 +189,9 @@ static void mptcp_diag_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 		}
- 		cond_resched();
- 	}
-+
-+	if ((r->idiag_states & TCPF_LISTEN) && r->id.idiag_dport == 0)
-+		mptcp_diag_dump_listeners(skb, cb, r, net_admin);
+diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
+index 53c22b64e9724..405670d7661da 100644
+--- a/include/net/inet_hashtables.h
++++ b/include/net/inet_hashtables.h
+@@ -111,7 +111,6 @@ struct inet_bind_hashbucket {
+ #define LISTENING_NULLS_BASE (1U << 29)
+ struct inet_listen_hashbucket {
+ 	spinlock_t		lock;
+-	unsigned int		count;
+ 	union {
+ 		struct hlist_head	head;
+ 		struct hlist_nulls_head	nulls_head;
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 2936676f86eb8..8e0451248fc05 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -209,7 +209,6 @@ static void inet_hash2(struct inet_hashinfo *h, struct sock *sk)
+ 	else
+ 		hlist_add_head_rcu(&inet_csk(sk)->icsk_listen_portaddr_node,
+ 				   &ilb2->head);
+-	ilb2->count++;
+ 	spin_unlock(&ilb2->lock);
  }
  
- static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
-@@ -127,6 +205,19 @@ static void mptcp_diag_get_info(struct sock *sk, struct inet_diag_msg *r,
+@@ -225,7 +224,6 @@ static void inet_unhash2(struct inet_hashinfo *h, struct sock *sk)
  
- 	r->idiag_rqueue = sk_rmem_alloc_get(sk);
- 	r->idiag_wqueue = sk_wmem_alloc_get(sk);
-+
-+	if (inet_sk_state_load(sk) == TCP_LISTEN) {
-+		struct sock *lsk = READ_ONCE(msk->first);
-+
-+		if (lsk) {
-+			/* override with settings from tcp listener,
-+			 * so Send-Q will show accept queue.
-+			 */
-+			r->idiag_rqueue = READ_ONCE(lsk->sk_ack_backlog);
-+			r->idiag_wqueue = READ_ONCE(lsk->sk_max_ack_backlog);
-+		}
-+	}
-+
- 	if (!info)
- 		return;
+ 	spin_lock(&ilb2->lock);
+ 	hlist_del_init_rcu(&inet_csk(sk)->icsk_listen_portaddr_node);
+-	ilb2->count--;
+ 	spin_unlock(&ilb2->lock);
+ }
+ 
+@@ -652,7 +650,6 @@ int __inet_hash(struct sock *sk, struct sock *osk)
+ 	else
+ 		__sk_nulls_add_node_rcu(sk, &ilb->nulls_head);
+ 	inet_hash2(hashinfo, sk);
+-	ilb->count++;
+ 	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, 1);
+ unlock:
+@@ -684,7 +681,6 @@ static void __inet_unhash(struct sock *sk, struct inet_listen_hashbucket *ilb)
+ 		struct inet_hashinfo *hashinfo = sk->sk_prot->h.hashinfo;
+ 
+ 		inet_unhash2(hashinfo, sk);
+-		ilb->count--;
+ 	}
+ 	__sk_nulls_del_node_init_rcu(sk);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
+@@ -867,7 +863,6 @@ void inet_hashinfo_init(struct inet_hashinfo *h)
+ 		spin_lock_init(&h->listening_hash[i].lock);
+ 		INIT_HLIST_NULLS_HEAD(&h->listening_hash[i].nulls_head,
+ 				      i + LISTENING_NULLS_BASE);
+-		h->listening_hash[i].count = 0;
+ 	}
+ 
+ 	h->lhash2 = NULL;
+@@ -881,7 +876,6 @@ static void init_hashinfo_lhash2(struct inet_hashinfo *h)
+ 	for (i = 0; i <= h->lhash2_mask; i++) {
+ 		spin_lock_init(&h->lhash2[i].lock);
+ 		INIT_HLIST_HEAD(&h->lhash2[i].head);
+-		h->lhash2[i].count = 0;
+ 	}
+ }
  
 -- 
 2.42.0
