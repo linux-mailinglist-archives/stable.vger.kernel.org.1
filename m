@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4857F7BD5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0C17F7DE8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3639E2821DE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEC28282271
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D444239FED;
-	Fri, 24 Nov 2023 18:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710883A8C3;
+	Fri, 24 Nov 2023 18:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJfvZrRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFiUrXjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C5239FD7;
-	Fri, 24 Nov 2023 18:09:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EAFC433C9;
-	Fri, 24 Nov 2023 18:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F9039FF7;
+	Fri, 24 Nov 2023 18:28:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93391C433C7;
+	Fri, 24 Nov 2023 18:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849343;
-	bh=L5+AoOaV6RkpPJ8wHft/57qx4hPGv+ooh0R48QuHVy0=;
+	s=korg; t=1700850502;
+	bh=RCwtaUFcEzd3i5QNCxKNMh2uc6Amf2GqYOx7n5n6YIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJfvZrRfDNJcbcJgPgYWrXPy+FM+gTjotDPFIer5KZXa8OvKd2UDFugsgHdcc6S8P
-	 xjr/fPmnDRXb+gpr+XszsMXmRSlj7MdYnhgb/SPg0sOWhIX+8gAfR9ey+UlsOpzY+y
-	 JLjnxK0eB7bu2LPlK1hd+CPaugXXYwlp0rxPSxS8=
+	b=RFiUrXjVGED/TVbhRRKJxEH2xWEdO3hv3z5K0cKhf+z858Tr1Og62faiVTBNs9ZYV
+	 Rx6LB4S64n0U/WCd+1LJ0MYR1kly6pe923VcGd++LqL/V2pWpi+TPkf/YHm6+aWMFe
+	 cs0ny8ddt1efcHTlpW3uxkjOfZjkx0BjSl1u8G3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Samson Tam <samson.tam@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/530] media: cobalt: Use FIELD_GET() to extract Link Width
+Subject: [PATCH 6.5 074/491] drm/amd/display: fix num_ways overflow error
 Date: Fri, 24 Nov 2023 17:45:10 +0000
-Message-ID: <20231124172032.468563802@linuxfoundation.org>
+Message-ID: <20231124172026.864866688@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +54,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Samson Tam <samson.tam@amd.com>
 
-[ Upstream commit f301fedbeecfdce91cb898d6fa5e62f269801fee ]
+[ Upstream commit 79f3f1b66753b3a3a269d73676bf50987921f267 ]
 
-Use FIELD_GET() to extract PCIe Negotiated and Maximum Link Width fields
-instead of custom masking and shifting.
+[Why]
+Helper function calculates num_ways using 32-bit.  But is
+ returned as 8-bit.  If num_ways exceeds 8-bit, then it
+ reports back the incorrect num_ways and erroneously
+ uses MALL when it should not
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[How]
+Make returned value 32-bit and convert after it checks
+ against caps.cache_num_ways, which is under 8-bit
+
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Acked-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Samson Tam <samson.tam@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cobalt/cobalt-driver.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/pci/cobalt/cobalt-driver.c b/drivers/media/pci/cobalt/cobalt-driver.c
-index 74edcc76d12f4..6e1a0614e6d06 100644
---- a/drivers/media/pci/cobalt/cobalt-driver.c
-+++ b/drivers/media/pci/cobalt/cobalt-driver.c
-@@ -8,6 +8,7 @@
-  *  All rights reserved.
-  */
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+index 5b3d0e5b90a3e..ccbcfd6bd6b85 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
+@@ -216,7 +216,7 @@ static bool dcn32_check_no_memory_request_for_cab(struct dc *dc)
+ static uint32_t dcn32_calculate_cab_allocation(struct dc *dc, struct dc_state *ctx)
+ {
+ 	int i;
+-	uint8_t num_ways = 0;
++	uint32_t num_ways = 0;
+ 	uint32_t mall_ss_size_bytes = 0;
  
-+#include <linux/bitfield.h>
- #include <linux/delay.h>
- #include <media/i2c/adv7604.h>
- #include <media/i2c/adv7842.h>
-@@ -210,17 +211,17 @@ void cobalt_pcie_status_show(struct cobalt *cobalt)
- 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &stat);
- 	cobalt_info("PCIe link capability 0x%08x: %s per lane and %u lanes\n",
- 			capa, get_link_speed(capa),
--			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
-+			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
- 	cobalt_info("PCIe link control 0x%04x\n", ctrl);
- 	cobalt_info("PCIe link status 0x%04x: %s per lane and %u lanes\n",
- 		    stat, get_link_speed(stat),
--		    (stat & PCI_EXP_LNKSTA_NLW) >> 4);
-+		    FIELD_GET(PCI_EXP_LNKSTA_NLW, stat));
+ 	mall_ss_size_bytes = ctx->bw_ctx.bw.dcn.mall_ss_size_bytes;
+@@ -246,7 +246,8 @@ static uint32_t dcn32_calculate_cab_allocation(struct dc *dc, struct dc_state *c
+ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
+ {
+ 	union dmub_rb_cmd cmd;
+-	uint8_t ways, i;
++	uint8_t i;
++	uint32_t ways;
+ 	int j;
+ 	bool mall_ss_unsupported = false;
+ 	struct dc_plane_state *plane = NULL;
+@@ -306,7 +307,7 @@ bool dcn32_apply_idle_power_optimizations(struct dc *dc, bool enable)
+ 				cmd.cab.header.type = DMUB_CMD__CAB_FOR_SS;
+ 				cmd.cab.header.sub_type = DMUB_CMD__CAB_DCN_SS_FIT_IN_CAB;
+ 				cmd.cab.header.payload_bytes = sizeof(cmd.cab) - sizeof(cmd.cab.header);
+-				cmd.cab.cab_alloc_ways = ways;
++				cmd.cab.cab_alloc_ways = (uint8_t)ways;
  
- 	/* Bus */
- 	pcie_capability_read_dword(pci_bus_dev, PCI_EXP_LNKCAP, &capa);
- 	cobalt_info("PCIe bus link capability 0x%08x: %s per lane and %u lanes\n",
- 			capa, get_link_speed(capa),
--			(capa & PCI_EXP_LNKCAP_MLW) >> 4);
-+			FIELD_GET(PCI_EXP_LNKCAP_MLW, capa));
+ 				dm_execute_dmub_cmd(dc->ctx, &cmd, DM_DMUB_WAIT_TYPE_NO_WAIT);
  
- 	/* Slot */
- 	pcie_capability_read_dword(pci_dev, PCI_EXP_SLTCAP, &capa);
-@@ -239,7 +240,7 @@ static unsigned pcie_link_get_lanes(struct cobalt *cobalt)
- 	if (!pci_is_pcie(pci_dev))
- 		return 0;
- 	pcie_capability_read_word(pci_dev, PCI_EXP_LNKSTA, &link);
--	return (link & PCI_EXP_LNKSTA_NLW) >> 4;
-+	return FIELD_GET(PCI_EXP_LNKSTA_NLW, link);
- }
- 
- static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
-@@ -250,7 +251,7 @@ static unsigned pcie_bus_link_get_lanes(struct cobalt *cobalt)
- 	if (!pci_is_pcie(pci_dev))
- 		return 0;
- 	pcie_capability_read_dword(pci_dev, PCI_EXP_LNKCAP, &link);
--	return (link & PCI_EXP_LNKCAP_MLW) >> 4;
-+	return FIELD_GET(PCI_EXP_LNKCAP_MLW, link);
- }
- 
- static void msi_config_show(struct cobalt *cobalt, struct pci_dev *pci_dev)
 -- 
 2.42.0
 
