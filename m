@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9396A7F808E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B49B47F7CAC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3532DB21661
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38CBFB212CD
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F9842D787;
-	Fri, 24 Nov 2023 18:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFBA3A8C3;
+	Fri, 24 Nov 2023 18:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yD+AmtgQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Uu5UG9m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAE42E64F;
-	Fri, 24 Nov 2023 18:50:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8E7C433C8;
-	Fri, 24 Nov 2023 18:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F224131740;
+	Fri, 24 Nov 2023 18:17:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B99C433C7;
+	Fri, 24 Nov 2023 18:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851846;
-	bh=DdEoPN+ovIgnLLMx1ifKa8+TowXPEZ08i14P3h2CBj4=;
+	s=korg; t=1700849840;
+	bh=AU2+M5yUgmKpJJ2x6vhdyfZPKlo/HApFiPYQaN+e8Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yD+AmtgQRetoia2tvV0G9QXUf0XC+XSGHpbQoeDbs2D95A1x43IxACKa2L4wQfjkd
-	 T+Yk9XsAzPqx61Otzw8CFGqmRrjQ+VOXr07AZU4vi6Q42/rTKwikcwFAkxTxJsUCky
-	 pSFiqsDW2OZ3KBFtIf73qhK/3/V8kyY6WGcupK+g=
+	b=2Uu5UG9m7FOXMF5fVes4GeJu8e3bA6h5u4qZwI8nObvHOKNq8p8qD/MrKSBe69ibI
+	 rkD78KGEL5B/NBp9MWiC890xt3Nr8DtjV7ClHInF8pWWes7c0Qqd4CwToQiJBb1Xdf
+	 jWitIJpcYU5BYK7LbDdCO4q7A7bcW5NFIiaAJ9aU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/372] mtd: rawnand: meson: check return value of devm_kasprintf()
-Date: Fri, 24 Nov 2023 17:48:26 +0000
-Message-ID: <20231124172014.456121705@linuxfoundation.org>
+	Elliot Berman <quic_eberman@quicinc.com>,
+	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 341/530] firmware: qcom_scm: use 64-bit calling convention only when client is 64-bit
+Date: Fri, 24 Nov 2023 17:48:27 +0000
+Message-ID: <20231124172038.415766566@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
 
-[ Upstream commit 5a985960a4dd041c21dbe9956958c1633d2da706 ]
+commit 3337a6fea25370d3d244ec6bb38c71ee86fcf837 upstream.
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful by
-checking the pointer validity.
+Per the "SMC calling convention specification", the 64-bit calling
+convention can only be used when the client is 64-bit. Whereas the
+32-bit calling convention can be used by either a 32-bit or a 64-bit
+client.
 
-Fixes: 1e4d3ba66888 ("mtd: rawnand: meson: fix the clock")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231019065548.318443-1-yiyang13@huawei.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently during SCM probe, irrespective of the client, 64-bit calling
+convention is made, which is incorrect and may lead to the undefined
+behaviour when the client is 32-bit. Let's fix it.
+
+Cc: stable@vger.kernel.org
+Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
+Reviewed-By: Elliot Berman <quic_eberman@quicinc.com>
+Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+Link: https://lore.kernel.org/r/20230925-scm-v3-1-8790dff6a749@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/meson_nand.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/qcom_scm.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/meson_nand.c b/drivers/mtd/nand/raw/meson_nand.c
-index ac4947f720478..0aeac8ccbd0ee 100644
---- a/drivers/mtd/nand/raw/meson_nand.c
-+++ b/drivers/mtd/nand/raw/meson_nand.c
-@@ -1021,6 +1021,9 @@ static int meson_nfc_clk_init(struct meson_nfc *nfc)
- 	init.name = devm_kasprintf(nfc->dev,
- 				   GFP_KERNEL, "%s#div",
- 				   dev_name(nfc->dev));
-+	if (!init.name)
-+		return -ENOMEM;
-+
- 	init.ops = &clk_divider_ops;
- 	nfc_divider_parent_data[0].fw_name = "device";
- 	init.parent_data = nfc_divider_parent_data;
--- 
-2.42.0
-
+--- a/drivers/firmware/qcom_scm.c
++++ b/drivers/firmware/qcom_scm.c
+@@ -168,6 +168,12 @@ static enum qcom_scm_convention __get_co
+ 		return qcom_scm_convention;
+ 
+ 	/*
++	 * Per the "SMC calling convention specification", the 64-bit calling
++	 * convention can only be used when the client is 64-bit, otherwise
++	 * system will encounter the undefined behaviour.
++	 */
++#if IS_ENABLED(CONFIG_ARM64)
++	/*
+ 	 * Device isn't required as there is only one argument - no device
+ 	 * needed to dma_map_single to secure world
+ 	 */
+@@ -187,6 +193,7 @@ static enum qcom_scm_convention __get_co
+ 		forced = true;
+ 		goto found;
+ 	}
++#endif
+ 
+ 	probed_convention = SMC_CONVENTION_ARM_32;
+ 	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
 
 
 
