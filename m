@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A0F7F7F36
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098B97F80D2
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C0A7282455
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B4241C215AB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38160364DE;
-	Fri, 24 Nov 2023 18:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A067C33CCA;
+	Fri, 24 Nov 2023 18:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJ/9OwY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MU0SxoEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8114633E9;
-	Fri, 24 Nov 2023 18:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D83C433C7;
-	Fri, 24 Nov 2023 18:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22766339BE;
+	Fri, 24 Nov 2023 18:53:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535BAC433C7;
+	Fri, 24 Nov 2023 18:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851174;
-	bh=GnzSjpOj05g0O14IEOg9G4ASmg8wkFDRfPBtgf7H9Ew=;
+	s=korg; t=1700851984;
+	bh=Lf+lBjyyZUKJK+lLRNjayLHA58G+j+mpab8Nrz+CbXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJ/9OwY0qO+CVgCiSEXd1TULyKwWYH1mvEYnmSpseNZdnaATUKW6GNbfM1CLupitB
-	 a8Ckx2PB12JCaHuO49YiuaCDdCLyksdR/93/sBgzS/Idz0SOHEeySQgbZmBOKaKOfO
-	 o3TbeIdZo51SGXiBlxgZ0Uem67NTkgvwTKYMl4uc=
+	b=MU0SxoEgi2FjiTWiqh9PG8T9aW1BZvjYfbmFNmeWuBaiXdGTbAsVy9CVzYdVmgSbH
+	 MxoPwGui0C4HZRHEFReigDatFE4y4nCYLIHmiphwUcOonkl78Hw/G8+tqBSj8AGjKU
+	 31jzpQ2GrnLrjKFH6RyMBXVjWL1awtxIEzTdLafk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Subject: [PATCH 6.5 325/491] ima: annotate iint mutex to avoid lockdep false positive warnings
+	Nicolas Saenz Julienne <nsaenz@amazon.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.1 174/372] KVM: x86: hyper-v: Dont auto-enable stimer on write from user-space
 Date: Fri, 24 Nov 2023 17:49:21 +0000
-Message-ID: <20231124172034.328642280@linuxfoundation.org>
+Message-ID: <20231124172016.272335355@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,117 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Nicolas Saenz Julienne <nsaenz@amazon.com>
 
-commit e044374a8a0a99e46f4e6d6751d3042b6d9cc12e upstream.
+commit d6800af51c76b6dae20e6023bbdc9b3da3ab5121 upstream.
 
-It is not clear that IMA should be nested at all, but as long is it
-measures files both on overlayfs and on underlying fs, we need to
-annotate the iint mutex to avoid lockdep false positives related to
-IMA + overlayfs, same as overlayfs annotates the inode mutex.
+Don't apply the stimer's counter side effects when modifying its
+value from user-space, as this may trigger spurious interrupts.
 
-Reported-and-tested-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+For example:
+ - The stimer is configured in auto-enable mode.
+ - The stimer's count is set and the timer enabled.
+ - The stimer expires, an interrupt is injected.
+ - The VM is live migrated.
+ - The stimer config and count are deserialized, auto-enable is ON, the
+   stimer is re-enabled.
+ - The stimer expires right away, and injects an unwarranted interrupt.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: 1f4b34f825e8 ("kvm/x86: Hyper-V SynIC timers")
+Signed-off-by: Nicolas Saenz Julienne <nsaenz@amazon.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Link: https://lore.kernel.org/r/20231017155101.40677-1-nsaenz@amazon.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/iint.c |   48 +++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ arch/x86/kvm/hyperv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/security/integrity/iint.c
-+++ b/security/integrity/iint.c
-@@ -66,9 +66,32 @@ struct integrity_iint_cache *integrity_i
- 	return iint;
- }
+--- a/arch/x86/kvm/hyperv.c
++++ b/arch/x86/kvm/hyperv.c
+@@ -705,10 +705,12 @@ static int stimer_set_count(struct kvm_v
  
--static void iint_free(struct integrity_iint_cache *iint)
-+#define IMA_MAX_NESTING (FILESYSTEM_MAX_STACK_DEPTH+1)
-+
-+/*
-+ * It is not clear that IMA should be nested at all, but as long is it measures
-+ * files both on overlayfs and on underlying fs, we need to annotate the iint
-+ * mutex to avoid lockdep false positives related to IMA + overlayfs.
-+ * See ovl_lockdep_annotate_inode_mutex_key() for more details.
-+ */
-+static inline void iint_lockdep_annotate(struct integrity_iint_cache *iint,
-+					 struct inode *inode)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	static struct lock_class_key iint_mutex_key[IMA_MAX_NESTING];
-+
-+	int depth = inode->i_sb->s_stack_depth;
-+
-+	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
-+		depth = 0;
-+
-+	lockdep_set_class(&iint->mutex, &iint_mutex_key[depth]);
-+#endif
-+}
-+
-+static void iint_init_always(struct integrity_iint_cache *iint,
-+			     struct inode *inode)
- {
--	kfree(iint->ima_hash);
- 	iint->ima_hash = NULL;
- 	iint->version = 0;
- 	iint->flags = 0UL;
-@@ -80,6 +103,14 @@ static void iint_free(struct integrity_i
- 	iint->ima_creds_status = INTEGRITY_UNKNOWN;
- 	iint->evm_status = INTEGRITY_UNKNOWN;
- 	iint->measured_pcrs = 0;
-+	mutex_init(&iint->mutex);
-+	iint_lockdep_annotate(iint, inode);
-+}
-+
-+static void iint_free(struct integrity_iint_cache *iint)
-+{
-+	kfree(iint->ima_hash);
-+	mutex_destroy(&iint->mutex);
- 	kmem_cache_free(iint_cache, iint);
- }
+ 	stimer_cleanup(stimer);
+ 	stimer->count = count;
+-	if (stimer->count == 0)
+-		stimer->config.enable = 0;
+-	else if (stimer->config.auto_enable)
+-		stimer->config.enable = 1;
++	if (!host) {
++		if (stimer->count == 0)
++			stimer->config.enable = 0;
++		else if (stimer->config.auto_enable)
++			stimer->config.enable = 1;
++	}
  
-@@ -104,6 +135,8 @@ struct integrity_iint_cache *integrity_i
- 	if (!iint)
- 		return NULL;
- 
-+	iint_init_always(iint, inode);
-+
- 	write_lock(&integrity_iint_lock);
- 
- 	p = &integrity_iint_tree.rb_node;
-@@ -153,25 +186,18 @@ void integrity_inode_free(struct inode *
- 	iint_free(iint);
- }
- 
--static void init_once(void *foo)
-+static void iint_init_once(void *foo)
- {
- 	struct integrity_iint_cache *iint = (struct integrity_iint_cache *) foo;
- 
- 	memset(iint, 0, sizeof(*iint));
--	iint->ima_file_status = INTEGRITY_UNKNOWN;
--	iint->ima_mmap_status = INTEGRITY_UNKNOWN;
--	iint->ima_bprm_status = INTEGRITY_UNKNOWN;
--	iint->ima_read_status = INTEGRITY_UNKNOWN;
--	iint->ima_creds_status = INTEGRITY_UNKNOWN;
--	iint->evm_status = INTEGRITY_UNKNOWN;
--	mutex_init(&iint->mutex);
- }
- 
- static int __init integrity_iintcache_init(void)
- {
- 	iint_cache =
- 	    kmem_cache_create("iint_cache", sizeof(struct integrity_iint_cache),
--			      0, SLAB_PANIC, init_once);
-+			      0, SLAB_PANIC, iint_init_once);
- 	return 0;
- }
- DEFINE_LSM(integrity) = {
+ 	if (stimer->config.enable)
+ 		stimer_mark_pending(stimer, false);
 
 
 
