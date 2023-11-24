@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B397F7AF1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 019837F7B23
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47B172819AA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 333B01C20A29
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64EF39FD4;
-	Fri, 24 Nov 2023 18:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E66B39FF4;
+	Fri, 24 Nov 2023 18:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+H7YOUw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WydUyOie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7981439FD7;
-	Fri, 24 Nov 2023 18:00:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 063C9C433C7;
-	Fri, 24 Nov 2023 18:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A1039FEE;
+	Fri, 24 Nov 2023 18:02:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F68AC433C7;
+	Fri, 24 Nov 2023 18:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848814;
-	bh=cP6FX1HK09S4cbdXTKxkoxK3F9XT+k20+WdqZU7b3XA=;
+	s=korg; t=1700848930;
+	bh=ReLJT21NZiEhoKT5DMOsnRGagXcgIzs2XhremriLZUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+H7YOUwaXN/aPPXT+F5t0PcZV7mZdg58zv+suey1NqyBJGhyiT9bDVqpaYXryzuN
-	 ulFrw93beId1BoxnZin/v8DW1V8hC1mz6fZNXyY7W5mZY/U0cQonw5arXOEKkbt9p5
-	 XP0oGb4sl3RI/D3KqPHR65d3TPV8A1UHmYHLg8V0=
+	b=WydUyOie1NdT+C3goKn7FVOXVlabG/lLXms2dEjlUbw5b+F1+Ik2hHuU+N73wmKrL
+	 VUhYpniNPeBh7Oqyo1cXEtAmtSZajonY+5mhdNKq8XPHQ4Zl01XT30Bfx6jzlWJbxJ
+	 AieqoY7b5ddcI2OOiRwpKe4ybSHZaUDridVODQco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 4.19 90/97] ext4: apply umask if ACL support is disabled
+	Herve Codina <herve.codina@bootlin.com>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.14 39/57] genirq/generic_chip: Make irq_remove_generic_chip() irqdomain aware
 Date: Fri, 24 Nov 2023 17:51:03 +0000
-Message-ID: <20231124171937.558977614@linuxfoundation.org>
+Message-ID: <20231124171931.747858188@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
+References: <20231124171930.281665051@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +52,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-commit 484fd6c1de13b336806a967908a927cc0356e312 upstream.
+commit 5e7afb2eb7b2a7c81e9f608cbdf74a07606fd1b5 upstream.
 
-The function ext4_init_acl() calls posix_acl_create() which is
-responsible for applying the umask.  But without
-CONFIG_EXT4_FS_POSIX_ACL, ext4_init_acl() is an empty inline function,
-and nobody applies the umask.
+irq_remove_generic_chip() calculates the Linux interrupt number for removing the
+handler and interrupt chip based on gc::irq_base as a linear function of
+the bit positions of set bits in the @msk argument.
 
-This fixes a bug which causes the umask to be ignored with O_TMPFILE
-on ext4:
+When the generic chip is present in an irq domain, i.e. created with a call
+to irq_alloc_domain_generic_chips(), gc::irq_base contains not the base
+Linux interrupt number.  It contains the base hardware interrupt for this
+chip. It is set to 0 for the first chip in the domain, 0 + N for the next
+chip, where $N is the number of hardware interrupts per chip.
 
- https://github.com/MusicPlayerDaemon/MPD/issues/558
- https://bugs.gentoo.org/show_bug.cgi?id=686142#c3
- https://bugzilla.kernel.org/show_bug.cgi?id=203625
+That means the Linux interrupt number cannot be calculated based on
+gc::irq_base for irqdomain based chips without a domain map lookup, which
+is currently missing.
 
-Reviewed-by: "J. Bruce Fields" <bfields@redhat.com>
+Rework the code to take the irqdomain case into account and calculate the
+Linux interrupt number by a irqdomain lookup of the domain specific
+hardware interrupt number.
+
+[ tglx: Massage changelog. Reshuffle the logic and add a proper comment. ]
+
+Fixes: cfefd21e693d ("genirq: Add chip suspend and resume callbacks")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Link: https://lore.kernel.org/r/20230919081824.1096619-1-max.kellermann@ionos.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Link: https://lore.kernel.org/r/20231024150335.322282-1-herve.codina@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/acl.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/irq/generic-chip.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/fs/ext4/acl.h
-+++ b/fs/ext4/acl.h
-@@ -67,6 +67,11 @@ extern int ext4_init_acl(handle_t *, str
- static inline int
- ext4_init_acl(handle_t *handle, struct inode *inode, struct inode *dir)
+--- a/kernel/irq/generic-chip.c
++++ b/kernel/irq/generic-chip.c
+@@ -533,21 +533,34 @@ EXPORT_SYMBOL_GPL(irq_setup_alt_chip);
+ void irq_remove_generic_chip(struct irq_chip_generic *gc, u32 msk,
+ 			     unsigned int clr, unsigned int set)
  {
-+	/* usually, the umask is applied by posix_acl_create(), but if
-+	   ext4 ACL support is disabled at compile time, we need to do
-+	   it here, because posix_acl_create() will never be called */
-+	inode->i_mode &= ~current_umask();
+-	unsigned int i = gc->irq_base;
++	unsigned int i, virq;
+ 
+ 	raw_spin_lock(&gc_lock);
+ 	list_del(&gc->list);
+ 	raw_spin_unlock(&gc_lock);
+ 
+-	for (; msk; msk >>= 1, i++) {
++	for (i = 0; msk; msk >>= 1, i++) {
+ 		if (!(msk & 0x01))
+ 			continue;
+ 
++		/*
++		 * Interrupt domain based chips store the base hardware
++		 * interrupt number in gc::irq_base. Otherwise gc::irq_base
++		 * contains the base Linux interrupt number.
++		 */
++		if (gc->domain) {
++			virq = irq_find_mapping(gc->domain, gc->irq_base + i);
++			if (!virq)
++				continue;
++		} else {
++			virq = gc->irq_base + i;
++		}
 +
- 	return 0;
+ 		/* Remove handler first. That will mask the irq line */
+-		irq_set_handler(i, NULL);
+-		irq_set_chip(i, &no_irq_chip);
+-		irq_set_chip_data(i, NULL);
+-		irq_modify_status(i, clr, set);
++		irq_set_handler(virq, NULL);
++		irq_set_chip(virq, &no_irq_chip);
++		irq_set_chip_data(virq, NULL);
++		irq_modify_status(virq, clr, set);
+ 	}
  }
- #endif  /* CONFIG_EXT4_FS_POSIX_ACL */
+ EXPORT_SYMBOL_GPL(irq_remove_generic_chip);
 
 
 
