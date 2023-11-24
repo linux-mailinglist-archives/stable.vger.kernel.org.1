@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3677F8053
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:48:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DC47F7C7A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:15:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC3BC282558
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:48:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173B41C20F02
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AF1381CB;
-	Fri, 24 Nov 2023 18:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E96539FF7;
+	Fri, 24 Nov 2023 18:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="etq3jDww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXrILCw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD590339BE;
-	Fri, 24 Nov 2023 18:48:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210F0C433C7;
-	Fri, 24 Nov 2023 18:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABB9381D7;
+	Fri, 24 Nov 2023 18:15:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124A3C433C9;
+	Fri, 24 Nov 2023 18:15:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851725;
-	bh=XM63dHNAUItiwkt5skVt4vCHdz+McxRjTa+j0ZmjSsM=;
+	s=korg; t=1700849733;
+	bh=ye+lY9CiZ6W4INfmDn7uv/26x6JmkCXCwvIxhaefX1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=etq3jDwww0i2eDKFu728A+TWv0AUWdpJ9xy0XREINWRf55fF7DmdDeaTOejbx3Jvb
-	 LHb40WB7tmPvvfFJkoLiCvU6lx31ZmlI6Ts2TpXTF7fLiwXU/fEHQX1orwMFJfL3BJ
-	 jNUAc/w7F5azyLOSWh4ylXn3DwRgwFpC7X4eRL7o=
+	b=FXrILCw8U/usuTddHGmOSdULEdiT+2sgNTCYwbtfkBtEkkzz8dJv6DG8m+FxeFPfg
+	 ZNoEogbPNljpVP85kRazFG5JVejHzQw2DKnCzMY4U20Gzg7ssoHvWGEFUGToI6vCEo
+	 j1sSvdkttJuW5kYACHYqMyDmEf4MHetkVpZBqE8o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/372] arm64: dts: ls208xa: use a pseudo-bus to constrain usb dma size
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 274/530] mm/damon/sysfs: update monitoring target regions for online input commit
 Date: Fri, 24 Nov 2023 17:47:20 +0000
-Message-ID: <20231124172012.247327127@linuxfoundation.org>
+Message-ID: <20231124172036.385371915@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,99 +52,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit b39d5016456871a88f5cd141914a5043591b46f3 ]
+commit 9732336006764e2ee61225387e3c70eae9139035 upstream.
 
-Wrap the usb controllers in an intermediate simple-bus and use it to
-constrain the dma address size of these usb controllers to the 40b
-that they generate toward the interconnect. This is required because
-the SoC uses 48b address sizes and this mismatch would lead to smmu
-context faults [1] because the usb generates 40b addresses while the
-smmu page tables are populated with 48b wide addresses.
+When user input is committed online, DAMON sysfs interface is ignoring the
+user input for the monitoring target regions.  Such request is valid and
+useful for fixed monitoring target regions-based monitoring ops like
+'paddr' or 'fvaddr'.
 
-[1]
-xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 1
-xhci-hcd xhci-hcd.0.auto: hcc params 0x0220f66d hci version 0x100 quirks 0x0000000002000010
-xhci-hcd xhci-hcd.0.auto: irq 108, io mem 0x03100000
-xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
-xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 2
-xhci-hcd xhci-hcd.0.auto: Host supports USB 3.0 SuperSpeed
-arm-smmu 5000000.iommu: Unhandled context fault: fsr=0x402, iova=0xffffffb000, fsynr=0x0, cbfrsynra=0xc01, cb=3
+Update the region boundaries as user specified, too.  Note that the
+monitoring results of the regions that overlap between the latest
+monitoring target regions and the new target regions are preserved.
 
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Treat empty monitoring target regions user request as a request to just
+make no change to the monitoring target regions.  Otherwise, users should
+set the monitoring target regions same to current one for every online
+input commit, and it could be challenging for dynamic monitoring target
+regions update DAMON ops like 'vaddr'.  If the user really need to remove
+all monitoring target regions, they can simply remove the target and then
+create the target again with empty target regions.
+
+Link: https://lkml.kernel.org/r/20231031170131.46972-1-sj@kernel.org
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../arm64/boot/dts/freescale/fsl-ls208xa.dtsi | 46 +++++++++++--------
- 1 file changed, 27 insertions(+), 19 deletions(-)
+ mm/damon/sysfs.c |   47 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-index 348d9e3a91252..b53d74aee12ad 100644
---- a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-+++ b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
-@@ -1186,26 +1186,34 @@
- 			dma-coherent;
- 		};
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1150,34 +1150,47 @@ destroy_targets_out:
+ 	return err;
+ }
  
--		usb0: usb@3100000 {
--			status = "disabled";
--			compatible = "snps,dwc3";
--			reg = <0x0 0x3100000 0x0 0x10000>;
--			interrupts = <0 80 0x4>; /* Level high type */
--			dr_mode = "host";
--			snps,quirk-frame-length-adjustment = <0x20>;
--			snps,dis_rxdet_inp3_quirk;
--			snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
--		};
-+		bus: bus {
-+			#address-cells = <2>;
-+			#size-cells = <2>;
-+			compatible = "simple-bus";
-+			ranges;
-+			dma-ranges = <0x0 0x0 0x0 0x0 0x100 0x00000000>;
+-static int damon_sysfs_update_target(struct damon_target *target,
+-		struct damon_ctx *ctx,
+-		struct damon_sysfs_target *sys_target)
++static int damon_sysfs_update_target_pid(struct damon_target *target, int pid)
+ {
+-	struct pid *pid;
+-	struct damon_region *r, *next;
+-
+-	if (!damon_target_has_pid(ctx))
+-		return 0;
++	struct pid *pid_new;
+ 
+-	pid = find_get_pid(sys_target->pid);
+-	if (!pid)
++	pid_new = find_get_pid(pid);
++	if (!pid_new)
+ 		return -EINVAL;
+ 
+-	/* no change to the target */
+-	if (pid == target->pid) {
+-		put_pid(pid);
++	if (pid_new == target->pid) {
++		put_pid(pid_new);
+ 		return 0;
+ 	}
+ 
+-	/* remove old monitoring results and update the target's pid */
+-	damon_for_each_region_safe(r, next, target)
+-		damon_destroy_region(r, target);
+ 	put_pid(target->pid);
+-	target->pid = pid;
++	target->pid = pid_new;
+ 	return 0;
+ }
+ 
++static int damon_sysfs_update_target(struct damon_target *target,
++		struct damon_ctx *ctx,
++		struct damon_sysfs_target *sys_target)
++{
++	int err;
 +
-+			usb0: usb@3100000 {
-+				compatible = "snps,dwc3";
-+				reg = <0x0 0x3100000 0x0 0x10000>;
-+				interrupts = <0 80 0x4>; /* Level high type */
-+				dr_mode = "host";
-+				snps,quirk-frame-length-adjustment = <0x20>;
-+				snps,dis_rxdet_inp3_quirk;
-+				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
-+				status = "disabled";
-+			};
- 
--		usb1: usb@3110000 {
--			status = "disabled";
--			compatible = "snps,dwc3";
--			reg = <0x0 0x3110000 0x0 0x10000>;
--			interrupts = <0 81 0x4>; /* Level high type */
--			dr_mode = "host";
--			snps,quirk-frame-length-adjustment = <0x20>;
--			snps,dis_rxdet_inp3_quirk;
--			snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
-+			usb1: usb@3110000 {
-+				compatible = "snps,dwc3";
-+				reg = <0x0 0x3110000 0x0 0x10000>;
-+				interrupts = <0 81 0x4>; /* Level high type */
-+				dr_mode = "host";
-+				snps,quirk-frame-length-adjustment = <0x20>;
-+				snps,dis_rxdet_inp3_quirk;
-+				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
-+				status = "disabled";
-+			};
- 		};
- 
- 		ccn@4000000 {
--- 
-2.42.0
-
++	if (damon_target_has_pid(ctx)) {
++		err = damon_sysfs_update_target_pid(target, sys_target->pid);
++		if (err)
++			return err;
++	}
++
++	/*
++	 * Do monitoring target region boundary update only if one or more
++	 * regions are set by the user.  This is for keeping current monitoring
++	 * target results and range easier, especially for dynamic monitoring
++	 * target regions update ops like 'vaddr'.
++	 */
++	if (sys_target->regions->nr)
++		err = damon_sysfs_set_regions(target, sys_target->regions);
++	return err;
++}
++
+ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 		struct damon_sysfs_targets *sysfs_targets)
+ {
 
 
 
