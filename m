@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B077F80BB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 416DA7F7CE8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFBA11F20FC1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72BD21C2113D
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9559733E9;
-	Fri, 24 Nov 2023 18:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D273A8D7;
+	Fri, 24 Nov 2023 18:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqbCYVQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKsNPaTj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FDC14F7B;
-	Fri, 24 Nov 2023 18:52:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A201BC433C7;
-	Fri, 24 Nov 2023 18:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D693A8C6;
+	Fri, 24 Nov 2023 18:19:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2036C433C8;
+	Fri, 24 Nov 2023 18:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851939;
-	bh=ZccyRZyJqgjXQYXK54by4NACiSBbnimXEQDQpgTnHlg=;
+	s=korg; t=1700849970;
+	bh=4JbaNmKtHByQnhM7dPW52IcNtrz7YWvih5ZvXs8Lqcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqbCYVQ1MdZmjcVNDUsY39UYUamyhZBIRhDS7Gwp8iv0uZpQp6QzZBwyCh7laN7j5
-	 Y1t2o5XlvDHNchcFVj1DmK+wDc5ebJWQncsVKQiU83Ac52OH5ccOm39VFjxoDCZwkM
-	 KZ1tzUYr4ZcQc82EeeywrVXryW7+d2Lp6/pP6JwI=
+	b=XKsNPaTjh9eQ54OA+jCgo4IoPq4UEIIgsy29Escwwtf7q1LSHFZemuLIgJ18/o3F0
+	 G4iq9Ld9LvxgjXc4J5wMZ90hfw5aU3hkDc1XJBG8vOdUo1j8rEaKc/ejz+DC9wr/jp
+	 FiZdTcC/JJx044hc0ZtEnigdeNC9Gd80/HMpQA5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/372] net/mlx5e: Check return value of snprintf writing to fw_version buffer for representors
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.6 376/530] s390/mm: add missing arch_set_page_dat() call to gmap allocations
 Date: Fri, 24 Nov 2023 17:49:02 +0000
-Message-ID: <20231124172015.649546197@linuxfoundation.org>
+Message-ID: <20231124172039.457476291@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,78 +53,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1b2bd0c0264febcd8d47209079a6671c38e6558b ]
+commit 1954da4a2b621a3328a63382cae7e5f5e2af502c upstream.
 
-Treat the operation as an error case when the return value is equivalent to
-the size of the name buffer. Failed to write null terminator to the name
-buffer, making the string malformed and should not be used. Provide a
-string with only the firmware version when forming the string with the
-board id fails. This logic for representors is identical to normal flow
-with ethtool.
+If the cmma no-dat feature is available all pages that are not used for
+dynamic address translation are marked as "no-dat" with the ESSA
+instruction. This information is visible to the hypervisor, so that the
+hypervisor can optimize purging of guest TLB entries. This also means that
+pages which are used for dynamic address translation must not be marked as
+"no-dat", since the hypervisor may then incorrectly not purge guest TLB
+entries.
 
-Without check, will trigger -Wformat-truncation with W=1.
+Region, segment, and page tables allocated within the gmap code are
+incorrectly marked as "no-dat", since an explicit call to
+arch_set_page_dat() is missing, which would remove the "no-dat" mark.
 
-    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c: In function 'mlx5e_rep_get_drvinfo':
-    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c:78:31: warning: '%.16s' directive output may be truncated writing up to 16 bytes into a region of size between 13 and 22 [-Wformat-truncation=]
-      78 |                  "%d.%d.%04d (%.16s)",
-         |                               ^~~~~
-    drivers/net/ethernet/mellanox/mlx5/core/en_rep.c:77:9: note: 'snprintf' output between 12 and 37 bytes into a destination of size 32
-      77 |         snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      78 |                  "%d.%d.%04d (%.16s)",
-         |                  ~~~~~~~~~~~~~~~~~~~~~
-      79 |                  fw_rev_maj(mdev), fw_rev_min(mdev),
-         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      80 |                  fw_rev_sub(mdev), mdev->board_id);
-         |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In order to fix this add a new gmap_alloc_crst() function which should
+be used to allocate region and segment tables, and which also calls
+arch_set_page_dat().
 
-Fixes: cf83c8fdcd47 ("net/mlx5e: Add missing ethtool driver info for representors")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-16-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also add the arch_set_page_dat() call to page_table_alloc_pgste().
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/s390/mm/gmap.c    |   24 ++++++++++++++++++------
+ arch/s390/mm/pgalloc.c |    1 +
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index bd895ef341a0b..2653cb96c3105 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -69,13 +69,17 @@ static void mlx5e_rep_get_drvinfo(struct net_device *dev,
- {
- 	struct mlx5e_priv *priv = netdev_priv(dev);
- 	struct mlx5_core_dev *mdev = priv->mdev;
-+	int count;
+--- a/arch/s390/mm/gmap.c
++++ b/arch/s390/mm/gmap.c
+@@ -21,10 +21,22 @@
  
- 	strscpy(drvinfo->driver, mlx5e_rep_driver_name,
- 		sizeof(drvinfo->driver));
--	snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
--		 "%d.%d.%04d (%.16s)",
--		 fw_rev_maj(mdev), fw_rev_min(mdev),
--		 fw_rev_sub(mdev), mdev->board_id);
-+	count = snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-+			 "%d.%d.%04d (%.16s)", fw_rev_maj(mdev),
-+			 fw_rev_min(mdev), fw_rev_sub(mdev), mdev->board_id);
-+	if (count == sizeof(drvinfo->fw_version))
-+		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
-+			 "%d.%d.%04d", fw_rev_maj(mdev),
-+			 fw_rev_min(mdev), fw_rev_sub(mdev));
- }
+ #include <asm/pgalloc.h>
+ #include <asm/gmap.h>
++#include <asm/page.h>
+ #include <asm/tlb.h>
  
- static const struct counter_desc sw_rep_stats_desc[] = {
--- 
-2.42.0
-
+ #define GMAP_SHADOW_FAKE_TABLE 1ULL
+ 
++static struct page *gmap_alloc_crst(void)
++{
++	struct page *page;
++
++	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	if (!page)
++		return NULL;
++	arch_set_page_dat(page, CRST_ALLOC_ORDER);
++	return page;
++}
++
+ /**
+  * gmap_alloc - allocate and initialize a guest address space
+  * @limit: maximum address of the gmap address space
+@@ -67,7 +79,7 @@ static struct gmap *gmap_alloc(unsigned
+ 	spin_lock_init(&gmap->guest_table_lock);
+ 	spin_lock_init(&gmap->shadow_lock);
+ 	refcount_set(&gmap->ref_count, 1);
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	page = gmap_alloc_crst();
+ 	if (!page)
+ 		goto out_free;
+ 	page->index = 0;
+@@ -308,7 +320,7 @@ static int gmap_alloc_table(struct gmap
+ 	unsigned long *new;
+ 
+ 	/* since we dont free the gmap table until gmap_free we can unlock */
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	page = gmap_alloc_crst();
+ 	if (!page)
+ 		return -ENOMEM;
+ 	new = page_to_virt(page);
+@@ -1759,7 +1771,7 @@ int gmap_shadow_r2t(struct gmap *sg, uns
+ 
+ 	BUG_ON(!gmap_is_shadow(sg));
+ 	/* Allocate a shadow region second table */
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	page = gmap_alloc_crst();
+ 	if (!page)
+ 		return -ENOMEM;
+ 	page->index = r2t & _REGION_ENTRY_ORIGIN;
+@@ -1843,7 +1855,7 @@ int gmap_shadow_r3t(struct gmap *sg, uns
+ 
+ 	BUG_ON(!gmap_is_shadow(sg));
+ 	/* Allocate a shadow region second table */
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	page = gmap_alloc_crst();
+ 	if (!page)
+ 		return -ENOMEM;
+ 	page->index = r3t & _REGION_ENTRY_ORIGIN;
+@@ -1927,7 +1939,7 @@ int gmap_shadow_sgt(struct gmap *sg, uns
+ 
+ 	BUG_ON(!gmap_is_shadow(sg) || (sgt & _REGION3_ENTRY_LARGE));
+ 	/* Allocate a shadow segment table */
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	page = gmap_alloc_crst();
+ 	if (!page)
+ 		return -ENOMEM;
+ 	page->index = sgt & _REGION_ENTRY_ORIGIN;
+@@ -2855,7 +2867,7 @@ int s390_replace_asce(struct gmap *gmap)
+ 	if ((gmap->asce & _ASCE_TYPE_MASK) == _ASCE_TYPE_SEGMENT)
+ 		return -EINVAL;
+ 
+-	page = alloc_pages(GFP_KERNEL_ACCOUNT, CRST_ALLOC_ORDER);
++	page = gmap_alloc_crst();
+ 	if (!page)
+ 		return -ENOMEM;
+ 	page->index = 0;
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -146,6 +146,7 @@ struct page *page_table_alloc_pgste(stru
+ 	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+ 	if (ptdesc) {
+ 		table = (u64 *)ptdesc_to_virt(ptdesc);
++		arch_set_page_dat(virt_to_page(table), 0);
+ 		memset64(table, _PAGE_INVALID, PTRS_PER_PTE);
+ 		memset64(table + PTRS_PER_PTE, 0, PTRS_PER_PTE);
+ 	}
 
 
 
