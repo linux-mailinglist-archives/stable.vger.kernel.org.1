@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 412867F7C3C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4342B7F7E42
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:31:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2796281E60
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7406B1C21320
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5D53A8C6;
-	Fri, 24 Nov 2023 18:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE78133E9;
+	Fri, 24 Nov 2023 18:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WR5CFTqJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmPUe21f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C1BA39FFC;
-	Fri, 24 Nov 2023 18:13:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8955C433C8;
-	Fri, 24 Nov 2023 18:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FF228E32;
+	Fri, 24 Nov 2023 18:31:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5237C433C8;
+	Fri, 24 Nov 2023 18:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849591;
-	bh=0HzRr2ve8KlFeJclZP4ChB87zw6vYE71WSbPZ20mWZ4=;
+	s=korg; t=1700850684;
+	bh=cTlRTlLYr1mBmbRliYulTT56K1MMZ2Yaiji0pgGdjpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WR5CFTqJsWTTo+Kv/9+1d4pu6K0J8+YivljPYBuCnhAYFIaVp6v5v9Cgp9dEPlswB
-	 88gZSOYF8Vmr3GYMmiEY2P/vawnQUcbU9uZ6eWhRW8j7t0PxC0CNw8dr/jgLQr0whU
-	 KXV1+15GUSzgc7fsmJEsFHxfrHAFA1cXKWxKpKtk=
+	b=MmPUe21fHEm1+7bDsvGcmvYp2wrRBWqtYCZsmSyHCzdK/voV/AbUaUSMwt4G1SYOW
+	 GI90deuSTs4G0Lpg2Ir3ZTgl8SQXzX8al8BqWzM5sKNXojopxa6oFiZJwG1Yrgj/JI
+	 LGijkqVe/EL31jL6ltDg9sG2PwZxjI3XZKIdaDmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cruz Zhao <cruzzhao@linux.alibaba.com>,
-	Tianchen Ding <dtcccc@linux.alibaba.com>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hawking Zhang <hawking.zhang@amd.com>,
+	Luben Tuikov <luben.tuikov@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian Koenig <christian.koenig@amd.com>,
+	Vitaly Prosyak <vitaly.prosyak@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/530] net/mlx5e: fix double free of encap_header
+Subject: [PATCH 6.5 148/491] drm/amdgpu: fix software pci_unplug on some chips
 Date: Fri, 24 Nov 2023 17:46:24 +0000
-Message-ID: <20231124172034.701296430@linuxfoundation.org>
+Message-ID: <20231124172028.929847738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,84 +56,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dust Li <dust.li@linux.alibaba.com>
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-[ Upstream commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1 ]
+[ Upstream commit 4638e0c29a3f2294d5de0d052a4b8c9f33ccb957 ]
 
-When mlx5_packet_reformat_alloc() fails, the encap_header allocated in
-mlx5e_tc_tun_create_header_ipv4{6} will be released within it. However,
-e->encap_header is already set to the previously freed encap_header
-before mlx5_packet_reformat_alloc(). As a result, the later
-mlx5e_encap_put() will free e->encap_header again, causing a double free
-issue.
+When software 'pci unplug' using IGT is executed we got a sysfs directory
+entry is NULL for differant ras blocks like hdp, umc, etc.
+Before call 'sysfs_remove_file_from_group' and 'sysfs_remove_group'
+check that 'sd' is  not NULL.
 
-mlx5e_encap_put()
-    --> mlx5e_encap_dealloc()
-        --> kfree(e->encap_header)
+[  +0.000001] RIP: 0010:sysfs_remove_group+0x83/0x90
+[  +0.000002] Code: 31 c0 31 d2 31 f6 31 ff e9 9a a8 b4 00 4c 89 e7 e8 f2 a2 ff ff eb c2 49 8b 55 00 48 8b 33 48 c7 c7 80 65 94 82 e8 cd 82 bb ff <0f> 0b eb cc 66 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90
+[  +0.000001] RSP: 0018:ffffc90002067c90 EFLAGS: 00010246
+[  +0.000002] RAX: 0000000000000000 RBX: ffffffff824ea180 RCX: 0000000000000000
+[  +0.000001] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[  +0.000001] RBP: ffffc90002067ca8 R08: 0000000000000000 R09: 0000000000000000
+[  +0.000001] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  +0.000001] R13: ffff88810a395f48 R14: ffff888101aab0d0 R15: 0000000000000000
+[  +0.000001] FS:  00007f5ddaa43a00(0000) GS:ffff88841e800000(0000) knlGS:0000000000000000
+[  +0.000002] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  +0.000001] CR2: 00007f8ffa61ba50 CR3: 0000000106432000 CR4: 0000000000350ef0
+[  +0.000001] Call Trace:
+[  +0.000001]  <TASK>
+[  +0.000001]  ? show_regs+0x72/0x90
+[  +0.000002]  ? sysfs_remove_group+0x83/0x90
+[  +0.000002]  ? __warn+0x8d/0x160
+[  +0.000001]  ? sysfs_remove_group+0x83/0x90
+[  +0.000001]  ? report_bug+0x1bb/0x1d0
+[  +0.000003]  ? handle_bug+0x46/0x90
+[  +0.000001]  ? exc_invalid_op+0x19/0x80
+[  +0.000002]  ? asm_exc_invalid_op+0x1b/0x20
+[  +0.000003]  ? sysfs_remove_group+0x83/0x90
+[  +0.000001]  dpm_sysfs_remove+0x61/0x70
+[  +0.000002]  device_del+0xa3/0x3d0
+[  +0.000002]  ? ktime_get_mono_fast_ns+0x46/0xb0
+[  +0.000002]  device_unregister+0x18/0x70
+[  +0.000001]  i2c_del_adapter+0x26d/0x330
+[  +0.000002]  arcturus_i2c_control_fini+0x25/0x50 [amdgpu]
+[  +0.000236]  smu_sw_fini+0x38/0x260 [amdgpu]
+[  +0.000241]  amdgpu_device_fini_sw+0x116/0x670 [amdgpu]
+[  +0.000186]  ? mutex_lock+0x13/0x50
+[  +0.000003]  amdgpu_driver_release_kms+0x16/0x40 [amdgpu]
+[  +0.000192]  drm_minor_release+0x4f/0x80 [drm]
+[  +0.000025]  drm_release+0xfe/0x150 [drm]
+[  +0.000027]  __fput+0x9f/0x290
+[  +0.000002]  ____fput+0xe/0x20
+[  +0.000002]  task_work_run+0x61/0xa0
+[  +0.000002]  exit_to_user_mode_prepare+0x150/0x170
+[  +0.000002]  syscall_exit_to_user_mode+0x2a/0x50
 
-This happens when cmd: MLX5_CMD_OP_ALLOC_PACKET_REFORMAT_CONTEXT fail.
-
-This patch fix it by not setting e->encap_header until
-mlx5_packet_reformat_alloc() success.
-
-Fixes: d589e785baf5e ("net/mlx5e: Allow concurrent creation of encap entries")
-Reported-by: Cruz Zhao <cruzzhao@linux.alibaba.com>
-Reported-by: Tianchen Ding <dtcccc@linux.alibaba.com>
-Signed-off-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Hawking Zhang <hawking.zhang@amd.com>
+Cc: Luben Tuikov <luben.tuikov@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Reviewed-by: Luben Tuikov <luben.tuikov@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index 00a04fdd756f5..8bca696b6658c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -300,9 +300,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+index 7d5019a884024..2003be3390aab 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.c
+@@ -1380,7 +1380,8 @@ static void amdgpu_ras_sysfs_remove_bad_page_node(struct amdgpu_device *adev)
+ {
+ 	struct amdgpu_ras *con = amdgpu_ras_get_context(adev);
  
--	e->encap_size = ipv4_encap_size;
--	e->encap_header = encap_header;
--
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(attr.n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -322,6 +319,8 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+-	sysfs_remove_file_from_group(&adev->dev->kobj,
++	if (adev->dev->kobj.sd)
++		sysfs_remove_file_from_group(&adev->dev->kobj,
+ 				&con->badpages_attr.attr,
+ 				RAS_FS_NAME);
+ }
+@@ -1397,7 +1398,8 @@ static int amdgpu_ras_sysfs_remove_feature_node(struct amdgpu_device *adev)
+ 		.attrs = attrs,
+ 	};
  
-+	e->encap_size = ipv4_encap_size;
-+	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
- 	mlx5e_route_lookup_ipv4_put(&attr);
-@@ -568,9 +567,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+-	sysfs_remove_group(&adev->dev->kobj, &group);
++	if (adev->dev->kobj.sd)
++		sysfs_remove_group(&adev->dev->kobj, &group);
  
--	e->encap_size = ipv6_encap_size;
--	e->encap_header = encap_header;
--
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(attr.n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -590,6 +586,8 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+ 	return 0;
+ }
+@@ -1444,7 +1446,8 @@ int amdgpu_ras_sysfs_remove(struct amdgpu_device *adev,
+ 	if (!obj || !obj->attr_inuse)
+ 		return -EINVAL;
  
-+	e->encap_size = ipv6_encap_size;
-+	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(attr.out_dev));
- 	mlx5e_route_lookup_ipv6_put(&attr);
+-	sysfs_remove_file_from_group(&adev->dev->kobj,
++	if (adev->dev->kobj.sd)
++		sysfs_remove_file_from_group(&adev->dev->kobj,
+ 				&obj->sysfs_attr.attr,
+ 				RAS_FS_NAME);
+ 	obj->attr_inuse = 0;
 -- 
 2.42.0
 
