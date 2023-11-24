@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604257F7CEF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:19:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDAB7F80D5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:53:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE02B214E6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:19:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD97B282584
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2033A8CF;
-	Fri, 24 Nov 2023 18:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7946B33CCA;
+	Fri, 24 Nov 2023 18:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YK2oSasL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SP4433jZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D813139FD9;
-	Fri, 24 Nov 2023 18:19:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606F2C433C8;
-	Fri, 24 Nov 2023 18:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB0F2FC21;
+	Fri, 24 Nov 2023 18:53:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96C9C433C8;
+	Fri, 24 Nov 2023 18:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849982;
-	bh=2IKiglihdtkb7wuA8k4IopQtSFbDoPazKhSRXuY2WdI=;
+	s=korg; t=1700851992;
+	bh=CLfO12vd1sOrBJS81CIxE34F4kxP88ZXNxxS2N7UWpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YK2oSasLztGO1bHZpYYbH9avIwrRnxf6Cguy+Mj2NrHI69+4N7xG03jrGJ0hmnW5Q
-	 70RwNqoTETRYzNl64izjLYDHVStJzuxxC99ZlIpGEq8WFm+aYTpoFS2yXf+RDqoyQb
-	 k6aIEwgEtn2Y8eN7HUwjZCDk4AMpEkajvKUxPJh0=
+	b=SP4433jZB/NbV3bkNa4/Bj+1c5O8CUGDG+JxFQCV+nlETUYSIdDIMOFAT/NeddyaH
+	 1U5kkDAePy7fUu6rU3Y0L6whYr5gxVWXIN78tl6MwakPTi+NPSnWm0xUGX7nfWa5jx
+	 OekWhWflWyGbWUxZJK8QjN6Te52TenXhE3YV+mzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 398/530] apparmor: Fix kernel-doc warnings in apparmor/policy.c
+	Andreas Steinmetz <anstein99@googlemail.com>,
+	John Johansen <john.johanse@canonical.com>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 177/372] audit: dont take task_lock() in audit_exe_compare() code path
 Date: Fri, 24 Nov 2023 17:49:24 +0000
-Message-ID: <20231124172040.137224917@linuxfoundation.org>
+Message-ID: <20231124172016.362620806@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,95 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Paul Moore <paul@paul-moore.com>
 
-[ Upstream commit 25ff0ff2d6286928dc516c74b879809c691c2dd8 ]
+commit 47846d51348dd62e5231a83be040981b17c955fa upstream.
 
-Fix kernel-doc warnings:
+The get_task_exe_file() function locks the given task with task_lock()
+which when used inside audit_exe_compare() can cause deadlocks on
+systems that generate audit records when the task_lock() is held. We
+resolve this problem with two changes: ignoring those cases where the
+task being audited is not the current task, and changing our approach
+to obtaining the executable file struct to not require task_lock().
 
-security/apparmor/policy.c:294: warning: Function parameter or
-member 'proxy' not described in 'aa_alloc_profile'
-security/apparmor/policy.c:785: warning: Function parameter or
-member 'label' not described in 'aa_policy_view_capable'
-security/apparmor/policy.c:785: warning: Function parameter or
-member 'ns' not described in 'aa_policy_view_capable'
-security/apparmor/policy.c:847: warning: Function parameter or
-member 'ns' not described in 'aa_may_manage_policy'
-security/apparmor/policy.c:964: warning: Function parameter or
-member 'hname' not described in '__lookup_replace'
-security/apparmor/policy.c:964: warning: Function parameter or
-member 'info' not described in '__lookup_replace'
-security/apparmor/policy.c:964: warning: Function parameter or
-member 'noreplace' not described in '__lookup_replace'
-security/apparmor/policy.c:964: warning: Function parameter or
-member 'ns' not described in '__lookup_replace'
-security/apparmor/policy.c:964: warning: Function parameter or
-member 'p' not described in '__lookup_replace'
+With the intent of the audit exe filter being to filter on audit events
+generated by processes started by the specified executable, it makes
+sense that we would only want to use the exe filter on audit records
+associated with the currently executing process, e.g. @current.  If
+we are asked to filter records using a non-@current task_struct we can
+safely ignore the exe filter without negatively impacting the admin's
+expectations for the exe filter.
 
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Stable-dep-of: 157a3537d6bc ("apparmor: Fix regression in mount mediation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Knowing that we only have to worry about filtering the currently
+executing task in audit_exe_compare() we can do away with the
+task_lock() and call get_mm_exe_file() with @current->mm directly.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 5efc244346f9 ("audit: fix exe_file access in audit_exe_compare")
+Reported-by: Andreas Steinmetz <anstein99@googlemail.com>
+Reviewed-by: John Johansen <john.johanse@canonical.com>
+Reviewed-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ kernel/audit_watch.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
-index ec695a6caac7d..b9aaaac84d8a2 100644
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -286,6 +286,7 @@ void aa_free_profile(struct aa_profile *profile)
- /**
-  * aa_alloc_profile - allocate, initialize and return a new profile
-  * @hname: name of the profile  (NOT NULL)
-+ * @proxy: proxy to use OR null if to allocate a new one
-  * @gfp: allocation type
-  *
-  * Returns: refcount profile or NULL on failure
-@@ -775,8 +776,9 @@ static int policy_ns_capable(struct aa_label *label,
+--- a/kernel/audit_watch.c
++++ b/kernel/audit_watch.c
+@@ -527,11 +527,18 @@ int audit_exe_compare(struct task_struct
+ 	unsigned long ino;
+ 	dev_t dev;
  
- /**
-  * aa_policy_view_capable - check if viewing policy in at @ns is allowed
-- * label: label that is trying to view policy in ns
-- * ns: namespace being viewed by @label (may be NULL if @label's ns)
-+ * @label: label that is trying to view policy in ns
-+ * @ns: namespace being viewed by @label (may be NULL if @label's ns)
-+ *
-  * Returns: true if viewing policy is allowed
-  *
-  * If @ns is NULL then the namespace being viewed is assumed to be the
-@@ -840,6 +842,7 @@ bool aa_current_policy_admin_capable(struct aa_ns *ns)
- /**
-  * aa_may_manage_policy - can the current task manage policy
-  * @label: label to check if it can manage policy
-+ * @ns: namespace being managed by @label (may be NULL if @label's ns)
-  * @mask: contains the policy manipulation operation being done
-  *
-  * Returns: 0 if the task is allowed to manipulate policy else error
-@@ -951,11 +954,11 @@ static void __replace_profile(struct aa_profile *old, struct aa_profile *new)
- 
- /**
-  * __lookup_replace - lookup replacement information for a profile
-- * @ns - namespace the lookup occurs in
-- * @hname - name of profile to lookup
-- * @noreplace - true if not replacing an existing profile
-- * @p - Returns: profile to be replaced
-- * @info - Returns: info string on why lookup failed
-+ * @ns: namespace the lookup occurs in
-+ * @hname: name of profile to lookup
-+ * @noreplace: true if not replacing an existing profile
-+ * @p: Returns - profile to be replaced
-+ * @info: Returns - info string on why lookup failed
-  *
-  * Returns: profile to replace (no ref) on success else ptr error
-  */
--- 
-2.42.0
-
+-	exe_file = get_task_exe_file(tsk);
++	/* only do exe filtering if we are recording @current events/records */
++	if (tsk != current)
++		return 0;
++
++	if (WARN_ON_ONCE(!current->mm))
++		return 0;
++	exe_file = get_mm_exe_file(current->mm);
+ 	if (!exe_file)
+ 		return 0;
+ 	ino = file_inode(exe_file)->i_ino;
+ 	dev = file_inode(exe_file)->i_sb->s_dev;
+ 	fput(exe_file);
++
+ 	return audit_mark_compare(mark, ino, dev);
+ }
 
 
 
