@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-2455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD387F843F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:25:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42CB27F83BA
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:20:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4460B2322D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741201C21E4E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5C633E9;
-	Fri, 24 Nov 2023 19:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881C035F1A;
+	Fri, 24 Nov 2023 19:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AVt7F/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywSsbAX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44532EB15;
-	Fri, 24 Nov 2023 19:25:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64804C433C8;
-	Fri, 24 Nov 2023 19:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480672D787;
+	Fri, 24 Nov 2023 19:20:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8711C433C7;
+	Fri, 24 Nov 2023 19:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853925;
-	bh=uci/sXGwJI0xr/H3L6wnHo/dINSYIw4EmuJTB27KLKo=;
+	s=korg; t=1700853621;
+	bh=lh09MgdLJEj/lY9dAgci2e1Nj3GA1BA1C6ZqzyJb8BU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AVt7F/Am+l5e6cWakbwK3qLb4OLDpCZ64AVA6zrfyt2/BwDWeEhJ2zbmfjZB1w+h
-	 EPSJdCYPhSHbQ4TURA4RgYdv9xRA8A+QZPSAdWSpQhVmw5ktjvCJGs8g31Z8M7mZCX
-	 aTkFSsTrcMLwdIQyB3MRuf3A6e8Uf/LvjBUW9i4s=
+	b=ywSsbAX37xbukulPpqmP6/Rk6WYtHMKSSzLQMj8RAs8m5bGnv93tPBaYsSxsdArMr
+	 /See+SLNkdSk4HJAxQbmZKGJAmq4BPo+brmqJ5aP3RwRjPR3oaCBfnbZmINy8xL29r
+	 2HqvVt1dbhVBi5XMJWBsXgKcrZIHkLXDDpz88m5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.4 085/159] clk: qcom: ipq8074: drop the CLK_SET_RATE_PARENT flag from PLL clocks
-Date: Fri, 24 Nov 2023 17:55:02 +0000
-Message-ID: <20231124171945.463370902@linuxfoundation.org>
+	Andrew Lunn <andrew@lunn.ch>,
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 261/297] net: phylink: initialize carrier state at creation
+Date: Fri, 24 Nov 2023 17:55:03 +0000
+Message-ID: <20231124172009.297343414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
-References: <20231124171941.909624388@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,82 +52,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Klaus Kudielka <klaus.kudielka@gmail.com>
 
-commit e641a070137dd959932c7c222e000d9d941167a2 upstream.
+commit 02d5fdbf4f2b8c406f7a4c98fa52aa181a11d733 upstream.
 
-GPLL, NSS crypto PLL clock rates are fixed and shouldn't be scaled based
-on the request from dependent clocks. Doing so will result in the
-unexpected behaviour. So drop the CLK_SET_RATE_PARENT flag from the PLL
-clocks.
+Background: Turris Omnia (Armada 385); eth2 (mvneta) connected to SFP bus;
+SFP module is present, but no fiber connected, so definitely no carrier.
 
+After booting, eth2 is down, but netdev LED trigger surprisingly reports
+link active. Then, after "ip link set eth2 up", the link indicator goes
+away - as I would have expected it from the beginning.
+
+It turns out, that the default carrier state after netdev creation is
+"carrier ok". Some ethernet drivers explicitly call netif_carrier_off
+during probing, others (like mvneta) don't - which explains the current
+behaviour: only when the device is brought up, phylink_start calls
+netif_carrier_off.
+
+Fix this for all drivers using phylink, by calling netif_carrier_off in
+phylink_create.
+
+Fixes: 089381b27abe ("leds: initial support for Turris Omnia LEDs")
 Cc: stable@vger.kernel.org
-Fixes: b8e7e519625f ("clk: qcom: ipq8074: add remaining PLL’s")
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/20230913-gpll_cleanup-v2-1-c8ceb1a37680@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Suggested-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/gcc-ipq8074.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/net/phy/phylink.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clk/qcom/gcc-ipq8074.c
-+++ b/drivers/clk/qcom/gcc-ipq8074.c
-@@ -423,7 +423,6 @@ static struct clk_fixed_factor gpll0_out
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -470,7 +469,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -503,7 +501,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -537,7 +534,6 @@ static struct clk_alpha_pll_postdiv gpll
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -551,7 +547,6 @@ static struct clk_fixed_factor gpll6_out
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_fixed_factor_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
-@@ -616,7 +611,6 @@ static struct clk_alpha_pll_postdiv nss_
- 		},
- 		.num_parents = 1,
- 		.ops = &clk_alpha_pll_postdiv_ro_ops,
--		.flags = CLK_SET_RATE_PARENT,
- 	},
- };
- 
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -853,6 +853,7 @@ struct phylink *phylink_create(struct ph
+ 	pl->config = config;
+ 	if (config->type == PHYLINK_NETDEV) {
+ 		pl->netdev = to_net_dev(config->dev);
++		netif_carrier_off(pl->netdev);
+ 	} else if (config->type == PHYLINK_DEV) {
+ 		pl->dev = config->dev;
+ 	} else {
 
 
 
