@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 659717F809D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:51:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 323837F7EE5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96F001C215D1
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:51:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B992823F1
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B6428DBB;
-	Fri, 24 Nov 2023 18:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B24928DA1;
+	Fri, 24 Nov 2023 18:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I9aUkRrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mX60CgAG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626B02E858;
-	Fri, 24 Nov 2023 18:51:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5887C433C8;
-	Fri, 24 Nov 2023 18:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374FC2E655;
+	Fri, 24 Nov 2023 18:37:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAE16C433C7;
+	Fri, 24 Nov 2023 18:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851878;
-	bh=cUjYiVKR3wfPGrXLlwyXfbN51oVgvuR7ryq1hfzVERk=;
+	s=korg; t=1700851021;
+	bh=1HuW2yGzepkqEHBo2wfbxhqzP+by8xIUt+9FBPzstcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I9aUkRrL5hki93fxSUPRiCR15tbpmqbcGfg2YeLjZADoBVp31MV0ZIP6StnXuWhru
-	 B9JE1s0lQtF34AG0x1vCj4fvo/uy0Gz51oSXUcaOhI89tFQPkgIQt/YusinW5q9oZ8
-	 9y8mSpRfGvM8vJ/hLkAbfD6+ykJNvNHwmJFgkaIU=
+	b=mX60CgAGAp9i2BC8tmswd/1egvLJQlWn8EnmPlz+BH65DNQwa0wmfU0g7dKrK7KM8
+	 ps1r3+kk9wqamp0aKkN4U83+aWAE42T1GlaA3JJLIBlTNzBN4k5YYfMHTZ7LS2OTtJ
+	 MKDEGmnVbCRqfFONWOlP5KNAe4TO/Vo4NaIcmvrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/372] net: hns3: fix incorrect capability bit display for copper port
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Sumit Garg <sumit.garg@linaro.org>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.5 282/491] KEYS: trusted: tee: Refactor register SHM usage
 Date: Fri, 24 Nov 2023 17:48:38 +0000
-Message-ID: <20231124172014.844353297@linuxfoundation.org>
+Message-ID: <20231124172033.050783529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +53,159 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Sumit Garg <sumit.garg@linaro.org>
 
-[ Upstream commit 75b247b57d8b71bcb679e4cb37d0db104848806c ]
+commit c745cd1718b7825d69315fe7127e2e289e617598 upstream.
 
-Currently, the FEC capability bit is default set for device version V2.
-It's incorrect for the copper port. Eventhough it doesn't make the nic
-work abnormal, but the capability information display in debugfs may
-confuse user. So clear it when driver get the port type inforamtion.
+The OP-TEE driver using the old SMC based ABI permits overlapping shared
+buffers, but with the new FF-A based ABI each physical page may only
+be registered once.
 
-Fixes: 433ccce83504 ("net: hns3: use FEC capability queried from firmware")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As the key and blob buffer are allocated adjancently, there is no need
+for redundant register shared memory invocation. Also, it is incompatibile
+with FF-A based ABI limitation. So refactor register shared memory
+implementation to use only single invocation to register both key and blob
+buffers.
+
+[jarkko: Added cc to stable.]
+Cc: stable@vger.kernel.org # v5.16+
+Fixes: 4615e5a34b95 ("optee: add FF-A support")
+Reported-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Sumit Garg <sumit.garg@linaro.org>
+Tested-by: Jens Wiklander <jens.wiklander@linaro.org>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ security/keys/trusted-keys/trusted_tee.c |   64 +++++++++----------------------
+ 1 file changed, 20 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 51998a4d732d3..da5fbe627fa0b 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11654,6 +11654,7 @@ static int hclge_init_ae_dev(struct hnae3_ae_dev *ae_dev)
- 		goto err_msi_irq_uninit;
+--- a/security/keys/trusted-keys/trusted_tee.c
++++ b/security/keys/trusted-keys/trusted_tee.c
+@@ -65,24 +65,16 @@ static int trusted_tee_seal(struct trust
+ 	int ret;
+ 	struct tee_ioctl_invoke_arg inv_arg;
+ 	struct tee_param param[4];
+-	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
++	struct tee_shm *reg_shm = NULL;
  
- 	if (hdev->hw.mac.media_type == HNAE3_MEDIA_TYPE_COPPER) {
-+		clear_bit(HNAE3_DEV_SUPPORT_FEC_B, ae_dev->caps);
- 		if (hnae3_dev_phy_imp_supported(hdev))
- 			ret = hclge_update_tp_port_info(hdev);
- 		else
--- 
-2.42.0
-
+ 	memset(&inv_arg, 0, sizeof(inv_arg));
+ 	memset(&param, 0, sizeof(param));
+ 
+-	reg_shm_in = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
+-						 p->key_len);
+-	if (IS_ERR(reg_shm_in)) {
+-		dev_err(pvt_data.dev, "key shm register failed\n");
+-		return PTR_ERR(reg_shm_in);
+-	}
+-
+-	reg_shm_out = tee_shm_register_kernel_buf(pvt_data.ctx, p->blob,
+-						  sizeof(p->blob));
+-	if (IS_ERR(reg_shm_out)) {
+-		dev_err(pvt_data.dev, "blob shm register failed\n");
+-		ret = PTR_ERR(reg_shm_out);
+-		goto out;
++	reg_shm = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
++					      sizeof(p->key) + sizeof(p->blob));
++	if (IS_ERR(reg_shm)) {
++		dev_err(pvt_data.dev, "shm register failed\n");
++		return PTR_ERR(reg_shm);
+ 	}
+ 
+ 	inv_arg.func = TA_CMD_SEAL;
+@@ -90,13 +82,13 @@ static int trusted_tee_seal(struct trust
+ 	inv_arg.num_params = 4;
+ 
+ 	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
+-	param[0].u.memref.shm = reg_shm_in;
++	param[0].u.memref.shm = reg_shm;
+ 	param[0].u.memref.size = p->key_len;
+ 	param[0].u.memref.shm_offs = 0;
+ 	param[1].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
+-	param[1].u.memref.shm = reg_shm_out;
++	param[1].u.memref.shm = reg_shm;
+ 	param[1].u.memref.size = sizeof(p->blob);
+-	param[1].u.memref.shm_offs = 0;
++	param[1].u.memref.shm_offs = sizeof(p->key);
+ 
+ 	ret = tee_client_invoke_func(pvt_data.ctx, &inv_arg, param);
+ 	if ((ret < 0) || (inv_arg.ret != 0)) {
+@@ -107,11 +99,7 @@ static int trusted_tee_seal(struct trust
+ 		p->blob_len = param[1].u.memref.size;
+ 	}
+ 
+-out:
+-	if (reg_shm_out)
+-		tee_shm_free(reg_shm_out);
+-	if (reg_shm_in)
+-		tee_shm_free(reg_shm_in);
++	tee_shm_free(reg_shm);
+ 
+ 	return ret;
+ }
+@@ -124,24 +112,16 @@ static int trusted_tee_unseal(struct tru
+ 	int ret;
+ 	struct tee_ioctl_invoke_arg inv_arg;
+ 	struct tee_param param[4];
+-	struct tee_shm *reg_shm_in = NULL, *reg_shm_out = NULL;
++	struct tee_shm *reg_shm = NULL;
+ 
+ 	memset(&inv_arg, 0, sizeof(inv_arg));
+ 	memset(&param, 0, sizeof(param));
+ 
+-	reg_shm_in = tee_shm_register_kernel_buf(pvt_data.ctx, p->blob,
+-						 p->blob_len);
+-	if (IS_ERR(reg_shm_in)) {
+-		dev_err(pvt_data.dev, "blob shm register failed\n");
+-		return PTR_ERR(reg_shm_in);
+-	}
+-
+-	reg_shm_out = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
+-						  sizeof(p->key));
+-	if (IS_ERR(reg_shm_out)) {
+-		dev_err(pvt_data.dev, "key shm register failed\n");
+-		ret = PTR_ERR(reg_shm_out);
+-		goto out;
++	reg_shm = tee_shm_register_kernel_buf(pvt_data.ctx, p->key,
++					      sizeof(p->key) + sizeof(p->blob));
++	if (IS_ERR(reg_shm)) {
++		dev_err(pvt_data.dev, "shm register failed\n");
++		return PTR_ERR(reg_shm);
+ 	}
+ 
+ 	inv_arg.func = TA_CMD_UNSEAL;
+@@ -149,11 +129,11 @@ static int trusted_tee_unseal(struct tru
+ 	inv_arg.num_params = 4;
+ 
+ 	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT;
+-	param[0].u.memref.shm = reg_shm_in;
++	param[0].u.memref.shm = reg_shm;
+ 	param[0].u.memref.size = p->blob_len;
+-	param[0].u.memref.shm_offs = 0;
++	param[0].u.memref.shm_offs = sizeof(p->key);
+ 	param[1].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT;
+-	param[1].u.memref.shm = reg_shm_out;
++	param[1].u.memref.shm = reg_shm;
+ 	param[1].u.memref.size = sizeof(p->key);
+ 	param[1].u.memref.shm_offs = 0;
+ 
+@@ -166,11 +146,7 @@ static int trusted_tee_unseal(struct tru
+ 		p->key_len = param[1].u.memref.size;
+ 	}
+ 
+-out:
+-	if (reg_shm_out)
+-		tee_shm_free(reg_shm_out);
+-	if (reg_shm_in)
+-		tee_shm_free(reg_shm_in);
++	tee_shm_free(reg_shm);
+ 
+ 	return ret;
+ }
 
 
 
