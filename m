@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1015A7F7AB6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CDE47F812B
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426071C20A6D
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF929B21116
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8429E39FDE;
-	Fri, 24 Nov 2023 17:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AB43418B;
+	Fri, 24 Nov 2023 18:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4C7J02E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CjAMh6dC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3622839FC6;
-	Fri, 24 Nov 2023 17:57:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504FDC433C8;
-	Fri, 24 Nov 2023 17:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F8363A1;
+	Fri, 24 Nov 2023 18:56:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0E08C433C7;
+	Fri, 24 Nov 2023 18:56:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848676;
-	bh=QAuWEI3ISTTvmzxDQotNPAd7uJb71cAqo1NEjZFcJQ0=;
+	s=korg; t=1700852168;
+	bh=ThFpiaTtcyHsjM0oi/swVButWuixhvgXZh5LME2ATWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4C7J02Ekkdmhnb4L5LUJoYEBWha1N1cedu2PXYkee697ok1o7N8VI5nMKqUqwBPI
-	 fnWOBZ+IkVNrUepHEh7bL6dBydZoVeR164dGse2wWt/NbjjMnwBIFLtlj8ssucJGLW
-	 Pbbecb31iCVgvLv5gYwjELRVQX2O/nh80p9FvMDU=
+	b=CjAMh6dCihyYsESdX67tju3VIzoPhDcu8/rQUJLRJ/3na59FXhoe4EF8oN0h6svdA
+	 vkk0yUT4aCxgOWSQ5SPUmY27dnnnRxOq8f+CJEZ7D2Elmd/XxCnVqM0SDo9njwxZtI
+	 KCsTtMM6ZbF45ZHpMWXyoSN+INS/UlT2jwzW3xGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 36/97] NFSv4.1: fix SP4_MACH_CRED protection for pnfs IO
+	Vignesh Viswanathan <quic_viswanat@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 222/372] arm64: dts: qcom: ipq6018: Fix hwlock index for SMEM
 Date: Fri, 24 Nov 2023 17:50:09 +0000
-Message-ID: <20231124171935.507323041@linuxfoundation.org>
+Message-ID: <20231124172017.886872672@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Vignesh Viswanathan <quic_viswanat@quicinc.com>
 
-[ Upstream commit 5cc7688bae7f0757c39c1d3dfdd827b724061067 ]
+commit 95d97b111e1e184b0c8656137033ed64f2cf21e4 upstream.
 
-If the client is doing pnfs IO and Kerberos is configured and EXCHANGEID
-successfully negotiated SP4_MACH_CRED and WRITE/COMMIT are on the
-list of state protected operations, then we need to make sure to
-choose the DS's rpc_client structure instead of the MDS's one.
+SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
+in SMEM region shared by the Host and FW.
 
-Fixes: fb91fb0ee7b2 ("NFS: Move call to nfs4_state_protect_write() to nfs4_write_setup()")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the SMEM hwlock index to 3 for IPQ6018.
+
+Cc: stable@vger.kernel.org
+Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230904172516.479866-3-quic_viswanat@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/ipq6018.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 3651619468d74..c44efead1a329 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5143,7 +5143,7 @@ static void nfs4_proc_write_setup(struct nfs_pgio_header *hdr,
+--- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
+@@ -169,7 +169,7 @@
+ 	smem {
+ 		compatible = "qcom,smem";
+ 		memory-region = <&smem_region>;
+-		hwlocks = <&tcsr_mutex 0>;
++		hwlocks = <&tcsr_mutex 3>;
+ 	};
  
- 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_WRITE];
- 	nfs4_init_sequence(&hdr->args.seq_args, &hdr->res.seq_res, 0, 0);
--	nfs4_state_protect_write(server->nfs_client, clnt, msg, hdr);
-+	nfs4_state_protect_write(hdr->ds_clp ? hdr->ds_clp : server->nfs_client, clnt, msg, hdr);
- }
- 
- static void nfs4_proc_commit_rpc_prepare(struct rpc_task *task, struct nfs_commit_data *data)
-@@ -5184,7 +5184,8 @@ static void nfs4_proc_commit_setup(struct nfs_commit_data *data, struct rpc_mess
- 	data->res.server = server;
- 	msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_COMMIT];
- 	nfs4_init_sequence(&data->args.seq_args, &data->res.seq_res, 1, 0);
--	nfs4_state_protect(server->nfs_client, NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
-+	nfs4_state_protect(data->ds_clp ? data->ds_clp : server->nfs_client,
-+			NFS_SP4_MACH_CRED_COMMIT, clnt, msg);
- }
- 
- static int _nfs4_proc_commit(struct file *dst, struct nfs_commitargs *args,
--- 
-2.42.0
-
+ 	soc: soc {
 
 
 
