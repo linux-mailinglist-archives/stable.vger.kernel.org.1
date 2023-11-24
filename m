@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-1136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259C77F7E31
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:30:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A6C7F7E5C
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA489B20EFF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:30:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68386B21658
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C18381D6;
-	Fri, 24 Nov 2023 18:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B139333063;
+	Fri, 24 Nov 2023 18:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQMgHT++"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkhVEuew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF0B3A8EA;
-	Fri, 24 Nov 2023 18:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A274C433C7;
-	Fri, 24 Nov 2023 18:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BAB2E655;
+	Fri, 24 Nov 2023 18:32:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A53C433C8;
+	Fri, 24 Nov 2023 18:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850649;
-	bh=qno5ot/KG/1dmz5mRHuoiPMYr644XG4/1gDh1TyEGaw=;
+	s=korg; t=1700850736;
+	bh=AFKR9rIqslQiVa7x7AnOo9bol+JzvAvM3Hjk5kPaF88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQMgHT++5UR+kOn95HMbQFKRIrfCBJ2B7337BCIZQ7Y9R7uRLM55ymowf7rpmld1p
-	 T+YLIo3ZzoHwgbGIPW2dK86kt2Oj7aDPGz0wbAH+fI/8SJzKM/rqe+aH/lwMU6dnSh
-	 /2RUuzysLscq4/S+n0lOD7ABardrx9b82FjMc8cs=
+	b=CkhVEuewi1H14wt4aQJJ9QI0xNPLT0AmIbtyhbigKXylroy9erNkvRvtSVOXubYPP
+	 GefOuMol4PZ6j+9JW4oPeVymgp2apJwWVIyxlfTaBo7dEAbm4EQGnBDjuGwWoQH3j6
+	 f7h9UJ/SdFIwPdLEQDXoicP0fQaXhM7xB1nDXgLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com,
-	Rajeshwar R Shinde <coolrrsh@gmail.com>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 133/491] media: gspca: cpia1: shift-out-of-bounds in set_flicker
-Date: Fri, 24 Nov 2023 17:46:09 +0000
-Message-ID: <20231124172028.493505577@linuxfoundation.org>
+Subject: [PATCH 6.5 134/491] media: vivid: avoid integer overflow
+Date: Fri, 24 Nov 2023 17:46:10 +0000
+Message-ID: <20231124172028.524286044@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
 References: <20231124172024.664207345@linuxfoundation.org>
@@ -58,51 +57,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rajeshwar R Shinde <coolrrsh@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 099be1822d1f095433f4b08af9cc9d6308ec1953 ]
+[ Upstream commit 4567ebf8e8f9546b373e78e3b7d584cc30b62028 ]
 
-Syzkaller reported the following issue:
-UBSAN: shift-out-of-bounds in drivers/media/usb/gspca/cpia1.c:1031:27
-shift exponent 245 is too large for 32-bit type 'int'
+Fixes these compiler warnings:
 
-When the value of the variable "sd->params.exposure.gain" exceeds the
-number of bits in an integer, a shift-out-of-bounds error is reported. It
-is triggered because the variable "currentexp" cannot be left-shifted by
-more than the number of bits in an integer. In order to avoid invalid
-range during left-shift, the conditional expression is added.
+drivers/media/test-drivers/vivid/vivid-rds-gen.c: In function 'vivid_rds_gen_fill':
+drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:56: warning: '.' directive output may be truncated writing 1 byte into a region of size between 0 and 3 [-Wformat-truncation=]
+  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+      |                                                        ^
+drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:52: note: directive argument in the range [0, 9]
+  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+      |                                                    ^~~~~~~~~
+drivers/media/test-drivers/vivid/vivid-rds-gen.c:147:9: note: 'snprintf' output between 9 and 12 bytes into a destination of size 9
+  147 |         snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  148 |                  freq / 16, ((freq & 0xf) * 10) / 16);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Reported-by: syzbot+e27f3dbdab04e43b9f73@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/20230818164522.12806-1-coolrrsh@gmail.com
-Link: https://syzkaller.appspot.com/bug?extid=e27f3dbdab04e43b9f73
-Signed-off-by: Rajeshwar R Shinde <coolrrsh@gmail.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/gspca/cpia1.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/media/test-drivers/vivid/vivid-rds-gen.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/gspca/cpia1.c b/drivers/media/usb/gspca/cpia1.c
-index 46ed95483e222..5f5fa851ca640 100644
---- a/drivers/media/usb/gspca/cpia1.c
-+++ b/drivers/media/usb/gspca/cpia1.c
-@@ -18,6 +18,7 @@
- 
- #include <linux/input.h>
- #include <linux/sched/signal.h>
-+#include <linux/bitops.h>
- 
- #include "gspca.h"
- 
-@@ -1028,6 +1029,8 @@ static int set_flicker(struct gspca_dev *gspca_dev, int on, int apply)
- 			sd->params.exposure.expMode = 2;
- 			sd->exposure_status = EXPOSURE_NORMAL;
- 		}
-+		if (sd->params.exposure.gain >= BITS_PER_TYPE(currentexp))
-+			return -EINVAL;
- 		currentexp = currentexp << sd->params.exposure.gain;
- 		sd->params.exposure.gain = 0;
- 		/* round down current exposure to nearest value */
+diff --git a/drivers/media/test-drivers/vivid/vivid-rds-gen.c b/drivers/media/test-drivers/vivid/vivid-rds-gen.c
+index b5b104ee64c99..c57771119a34b 100644
+--- a/drivers/media/test-drivers/vivid/vivid-rds-gen.c
++++ b/drivers/media/test-drivers/vivid/vivid-rds-gen.c
+@@ -145,7 +145,7 @@ void vivid_rds_gen_fill(struct vivid_rds_gen *rds, unsigned freq,
+ 	rds->ta = alt;
+ 	rds->ms = true;
+ 	snprintf(rds->psname, sizeof(rds->psname), "%6d.%1d",
+-		 freq / 16, ((freq & 0xf) * 10) / 16);
++		 (freq / 16) % 1000000, (((freq & 0xf) * 10) / 16) % 10);
+ 	if (alt)
+ 		strscpy(rds->radiotext,
+ 			" The Radio Data System can switch between different Radio Texts ",
 -- 
 2.42.0
 
