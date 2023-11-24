@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-1941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D7887F8214
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:04:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E75C7F8364
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFD2B1C22911
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90BE31C25701
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F7C3173F;
-	Fri, 24 Nov 2023 19:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D46364AE;
+	Fri, 24 Nov 2023 19:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fB80h/25"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKGctTRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996132C85B;
-	Fri, 24 Nov 2023 19:04:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D5BC433C8;
-	Fri, 24 Nov 2023 19:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D1133CF2;
+	Fri, 24 Nov 2023 19:17:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2322DC433C8;
+	Fri, 24 Nov 2023 19:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852653;
-	bh=uzwuiqls+3nEspeXFFjJhcuQ3OdRT6qNHCjW/Fu1Ixg=;
+	s=korg; t=1700853424;
+	bh=c7FzshMuhHWY/YokJklL1OXjW3MIWXApc6LjSErMRTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fB80h/25SgJGiJ9j1ErBg98tRbMYnWES2O3SafiscjNEr7Yk3d1hyNfD+cPhy5HOp
-	 P4G2biAASrnFhW1ieJy29F3h5RjH4SFwh/7/76zczsiUaY+2C8bCzOhXQcAN/Y0Uup
-	 4sPLWZfCiBLovC7NIBdklj27W6i2Dv3nlwZ8YuaQ=
+	b=BKGctTRUfkG56h2jq54H6pe21GLag0xGMk7nDqfbB5oAUK3Ay/zTLW2Nib3BhKN26
+	 GZPEwRQCVbnjt23+RietNYUE0kXekgUODGy/ydGVAzRxcofRr1kTm4jiXY6htkQUFF
+	 cfclOrWnIov2kTty3TSVrMvwJivAM1EFM2/ZLsgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 070/193] net: hns3: fix variable may not initialized problem in hns3_init_mac_addr()
-Date: Fri, 24 Nov 2023 17:53:17 +0000
-Message-ID: <20231124171950.037959313@linuxfoundation.org>
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.15 156/297] media: venus: hfi: add checks to perform sanity on queue pointers
+Date: Fri, 24 Nov 2023 17:53:18 +0000
+Message-ID: <20231124172005.715791332@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171947.127438872@linuxfoundation.org>
-References: <20231124171947.127438872@linuxfoundation.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+References: <20231124172000.087816911@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Vikash Garodia <quic_vgarodia@quicinc.com>
 
-[ Upstream commit dbd2f3b20c6ae425665b6975d766e3653d453e73 ]
+commit 5e538fce33589da6d7cb2de1445b84d3a8a692f7 upstream.
 
-When a VF is calling hns3_init_mac_addr(), get_mac_addr() may
-return fail, then the value of mac_addr_temp is not initialized.
+Read and write pointers are used to track the packet index in the memory
+shared between video driver and firmware. There is a possibility of OOB
+access if the read or write pointer goes beyond the queue memory size.
+Add checks for the read and write pointer to avoid OOB access.
 
-Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
+Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/hfi_venus.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index ae7cd73c823b7..4df5e91e86ce7 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -3974,7 +3974,7 @@ static int hns3_init_mac_addr(struct net_device *netdev)
- {
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
- 	struct hnae3_handle *h = priv->ae_handle;
--	u8 mac_addr_temp[ETH_ALEN];
-+	u8 mac_addr_temp[ETH_ALEN] = {0};
- 	int ret = 0;
+--- a/drivers/media/platform/qcom/venus/hfi_venus.c
++++ b/drivers/media/platform/qcom/venus/hfi_venus.c
+@@ -205,6 +205,11 @@ static int venus_write_queue(struct venu
  
- 	if (h->ae_algo->ops->get_mac_addr)
--- 
-2.42.0
-
+ 	new_wr_idx = wr_idx + dwords;
+ 	wr_ptr = (u32 *)(queue->qmem.kva + (wr_idx << 2));
++
++	if (wr_ptr < (u32 *)queue->qmem.kva ||
++	    wr_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*wr_ptr)))
++		return -EINVAL;
++
+ 	if (new_wr_idx < qsize) {
+ 		memcpy(wr_ptr, packet, dwords << 2);
+ 	} else {
+@@ -272,6 +277,11 @@ static int venus_read_queue(struct venus
+ 	}
+ 
+ 	rd_ptr = (u32 *)(queue->qmem.kva + (rd_idx << 2));
++
++	if (rd_ptr < (u32 *)queue->qmem.kva ||
++	    rd_ptr > (u32 *)(queue->qmem.kva + queue->qmem.size - sizeof(*rd_ptr)))
++		return -EINVAL;
++
+ 	dwords = *rd_ptr >> 2;
+ 	if (!dwords)
+ 		return -EINVAL;
 
 
 
