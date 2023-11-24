@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497267F7B69
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:04:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 575547F7B71
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:05:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02FDD281EF2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:04:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AC4E1C20DFF
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FCA39FD7;
-	Fri, 24 Nov 2023 18:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50F639FF7;
+	Fri, 24 Nov 2023 18:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHwJ7JaW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+dieYd3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5138D381D5;
-	Fri, 24 Nov 2023 18:04:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0933C433C7;
-	Fri, 24 Nov 2023 18:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6504939FD4;
+	Fri, 24 Nov 2023 18:05:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABB2C433C8;
+	Fri, 24 Nov 2023 18:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849088;
-	bh=3+41kBJMe0iX+W961H7owUbYeV5kyWynbi5L9P/Wvj0=;
+	s=korg; t=1700849108;
+	bh=gO3QZ7CoXNEYUGUjXPMUFsNvOPXNuCBnYU/5/Io1uO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHwJ7JaWcGQ/STsxcvxUUvEU7kpFouPfbPOz5RYwbAKpHkAq5CNj4xY6h31ZH8Eiv
-	 7yfxOHBgmWASAqi2cPx0vsk2xNHrUeiUFP9tjYTKXj+tkq4B+9V/FSytmOV7y5nW5u
-	 gtkI+S6aoSquDiNfzm0rFKNGxLB59aUKDh/SRKGk=
+	b=H+dieYd3GPlnJ1MwWNwNGl6xItVfxjibbbLpZlrvGMvCviFCaukpoBpHTL8rSSljh
+	 j/6hCMqBda8wKxLAG3jrYFjAzs6BLJBQABZLWb0Ae/5nuQO0DmCu0Jkx1xxTQYB0jx
+	 H/0uKr6qjvsPGeQmLdb0WkspzUB1AW61GuYybQLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shiju Jose <shiju.jose@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/530] wifi: ath12k: fix possible out-of-bound write in ath12k_wmi_ext_hal_reg_caps()
-Date: Fri, 24 Nov 2023 17:43:11 +0000
-Message-ID: <20231124172028.838686095@linuxfoundation.org>
+Subject: [PATCH 6.6 026/530] ACPI: APEI: Fix AER info corruption when error status data has multiple sections
+Date: Fri, 24 Nov 2023 17:43:12 +0000
+Message-ID: <20231124172028.869429922@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
 References: <20231124172028.107505484@linuxfoundation.org>
@@ -58,44 +59,134 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Shiju Jose <shiju.jose@huawei.com>
 
-[ Upstream commit b302dce3d9edea5b93d1902a541684a967f3c63c ]
+[ Upstream commit e2abc47a5a1a9f641e7cacdca643fdd40729bf6e ]
 
-reg_cap.phy_id is extracted from WMI event and could be an unexpected value
-in case some errors happen. As a result out-of-bound write may occur to
-soc->hal_reg_cap. Fix it by validating reg_cap.phy_id before using it.
+ghes_handle_aer() passes AER data to the PCI core for logging and
+recovery by calling aer_recover_queue() with a pointer to struct
+aer_capability_regs.
 
-This is found during code review.
+The problem was that aer_recover_queue() queues the pointer directly
+without copying the aer_capability_regs data.  The pointer was to
+the ghes->estatus buffer, which could be reused before
+aer_recover_work_func() reads the data.
 
-Compile tested only.
+To avoid this problem, allocate a new aer_capability_regs structure
+from the ghes_estatus_pool, copy the AER data from the ghes->estatus
+buffer into it, pass a pointer to the new struct to
+aer_recover_queue(), and free it after aer_recover_work_func() has
+processed it.
 
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230830020716.5420-1-quic_bqiang@quicinc.com
+Reported-by: Bjorn Helgaas <helgaas@kernel.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Shiju Jose <shiju.jose@huawei.com>
+[ rjw: Subject edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/acpi/apei/ghes.c | 23 ++++++++++++++++++++++-
+ drivers/pci/pcie/aer.c   | 10 ++++++++++
+ include/acpi/ghes.h      |  4 ++++
+ 3 files changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index ef0f3cf35cfd1..bddf4571d50c1 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -3876,6 +3876,12 @@ static int ath12k_wmi_ext_hal_reg_caps(struct ath12k_base *soc,
- 			ath12k_warn(soc, "failed to extract reg cap %d\n", i);
- 			return ret;
- 		}
+diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+index ef59d6ea16da0..63ad0541db381 100644
+--- a/drivers/acpi/apei/ghes.c
++++ b/drivers/acpi/apei/ghes.c
+@@ -209,6 +209,20 @@ int ghes_estatus_pool_init(unsigned int num_ghes)
+ 	return -ENOMEM;
+ }
+ 
++/**
++ * ghes_estatus_pool_region_free - free previously allocated memory
++ *				   from the ghes_estatus_pool.
++ * @addr: address of memory to free.
++ * @size: size of memory to free.
++ *
++ * Returns none.
++ */
++void ghes_estatus_pool_region_free(unsigned long addr, u32 size)
++{
++	gen_pool_free(ghes_estatus_pool, addr, size);
++}
++EXPORT_SYMBOL_GPL(ghes_estatus_pool_region_free);
 +
-+		if (reg_cap.phy_id >= MAX_RADIOS) {
-+			ath12k_warn(soc, "unexpected phy id %u\n", reg_cap.phy_id);
-+			return -EINVAL;
-+		}
+ static int map_gen_v2(struct ghes *ghes)
+ {
+ 	return apei_map_generic_address(&ghes->generic_v2->read_ack_register);
+@@ -564,6 +578,7 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 	    pcie_err->validation_bits & CPER_PCIE_VALID_AER_INFO) {
+ 		unsigned int devfn;
+ 		int aer_severity;
++		u8 *aer_info;
+ 
+ 		devfn = PCI_DEVFN(pcie_err->device_id.device,
+ 				  pcie_err->device_id.function);
+@@ -577,11 +592,17 @@ static void ghes_handle_aer(struct acpi_hest_generic_data *gdata)
+ 		if (gdata->flags & CPER_SEC_RESET)
+ 			aer_severity = AER_FATAL;
+ 
++		aer_info = (void *)gen_pool_alloc(ghes_estatus_pool,
++						  sizeof(struct aer_capability_regs));
++		if (!aer_info)
++			return;
++		memcpy(aer_info, pcie_err->aer_info, sizeof(struct aer_capability_regs));
 +
- 		soc->hal_reg_cap[reg_cap.phy_id] = reg_cap;
+ 		aer_recover_queue(pcie_err->device_id.segment,
+ 				  pcie_err->device_id.bus,
+ 				  devfn, aer_severity,
+ 				  (struct aer_capability_regs *)
+-				  pcie_err->aer_info);
++				  aer_info);
  	}
- 	return 0;
+ #endif
+ }
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 9c8fd69ae5ad8..40d84cb0c601e 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -29,6 +29,7 @@
+ #include <linux/kfifo.h>
+ #include <linux/slab.h>
+ #include <acpi/apei.h>
++#include <acpi/ghes.h>
+ #include <ras/ras_event.h>
+ 
+ #include "../pci.h"
+@@ -997,6 +998,15 @@ static void aer_recover_work_func(struct work_struct *work)
+ 			continue;
+ 		}
+ 		cper_print_aer(pdev, entry.severity, entry.regs);
++		/*
++		 * Memory for aer_capability_regs(entry.regs) is being allocated from the
++		 * ghes_estatus_pool to protect it from overwriting when multiple sections
++		 * are present in the error status. Thus free the same after processing
++		 * the data.
++		 */
++		ghes_estatus_pool_region_free((unsigned long)entry.regs,
++					      sizeof(struct aer_capability_regs));
++
+ 		if (entry.severity == AER_NONFATAL)
+ 			pcie_do_recovery(pdev, pci_channel_io_normal,
+ 					 aer_root_reset);
+diff --git a/include/acpi/ghes.h b/include/acpi/ghes.h
+index 3c8bba9f1114a..be1dd4c1a9174 100644
+--- a/include/acpi/ghes.h
++++ b/include/acpi/ghes.h
+@@ -73,8 +73,12 @@ int ghes_register_vendor_record_notifier(struct notifier_block *nb);
+ void ghes_unregister_vendor_record_notifier(struct notifier_block *nb);
+ 
+ struct list_head *ghes_get_devices(void);
++
++void ghes_estatus_pool_region_free(unsigned long addr, u32 size);
+ #else
+ static inline struct list_head *ghes_get_devices(void) { return NULL; }
++
++static inline void ghes_estatus_pool_region_free(unsigned long addr, u32 size) { return; }
+ #endif
+ 
+ int ghes_estatus_pool_init(unsigned int num_ghes);
 -- 
 2.42.0
 
