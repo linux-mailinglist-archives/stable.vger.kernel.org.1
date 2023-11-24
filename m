@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-1190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26ED17F7E71
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:33:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA63C7F7C49
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:13:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58B021C213B5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:33:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8630F281E9E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D2A33CDB;
-	Fri, 24 Nov 2023 18:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6D43A8C2;
+	Fri, 24 Nov 2023 18:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sJCGsE+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pad+IHpZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6652D792;
-	Fri, 24 Nov 2023 18:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD520C433C7;
-	Fri, 24 Nov 2023 18:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D0039FD9;
+	Fri, 24 Nov 2023 18:13:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C266C433C8;
+	Fri, 24 Nov 2023 18:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850782;
-	bh=aWaZYvVPRVfr8mxmRda7Sx+5677GxFVzG3RQsBDC9bA=;
+	s=korg; t=1700849624;
+	bh=9RIjqQRzEdxPen2fUCjK0vpCsdxMPupR7Yt4y5ivG2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sJCGsE+9CBjLZupInBR0BbVbWLwSECpB7jcgAkX5LOwYQx26UK/CbSHt7Asb6O/Go
-	 jfb9+cCiA/jWoHETxXlP9IfCfNI/UgUU7Loz/M2VkrKhyxYZw340veyrvWgRP2/Ri5
-	 NLNA2CcbrKuGa4VeZV7cmZgZJONAVOov7V9bPN6I=
+	b=pad+IHpZTYoQ6ElLvQMLSHl8DoQ2vHM4cgJUglA0+RmpedUWZHDcYXtAWAAxGhXe0
+	 aSNPM3DPIc/BLZoSzrsSqSZyv47BPaZG394OEPdaWxVQ0orkZm0sGY3hTCUdHkTWZB
+	 eo9HYezZ+0hzLdzGyl4jx23DpBgiJHcrrx0TFTAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com,
-	Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 186/491] ppp: limit MRU to 64K
+	Pu Wen <puwen@hygon.cn>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 256/530] x86/cpu/hygon: Fix the CPU topology evaluation for real
 Date: Fri, 24 Nov 2023 17:47:02 +0000
-Message-ID: <20231124172030.070290216@linuxfoundation.org>
+Message-ID: <20231124172035.844323431@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,81 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Pu Wen <puwen@hygon.cn>
 
-[ Upstream commit c0a2a1b0d631fc460d830f52d06211838874d655 ]
+commit ee545b94d39a00c93dc98b1dbcbcf731d2eadeb4 upstream.
 
-ppp_sync_ioctl allows setting device MRU, but does not sanity check
-this input.
+Hygon processors with a model ID > 3 have CPUID leaf 0xB correctly
+populated and don't need the fixed package ID shift workaround. The fixup
+is also incorrect when running in a guest.
 
-Limit to a sane upper bound of 64KB.
-
-No implementation I could find generates larger than 64KB frames.
-RFC 2823 mentions an upper bound of PPP over SDL of 64KB based on the
-16-bit length field. Other protocols will be smaller, such as PPPoE
-(9KB jumbo frame) and PPPoA (18190 maximum CPCS-SDU size, RFC 2364).
-PPTP and L2TP encapsulate in IP.
-
-Syzbot managed to trigger alloc warning in __alloc_pages:
-
-	if (WARN_ON_ONCE_GFP(order > MAX_ORDER, gfp))
-
-    WARNING: CPU: 1 PID: 37 at mm/page_alloc.c:4544 __alloc_pages+0x3ab/0x4a0 mm/page_alloc.c:4544
-
-    __alloc_skb+0x12b/0x330 net/core/skbuff.c:651
-    __netdev_alloc_skb+0x72/0x3f0 net/core/skbuff.c:715
-    netdev_alloc_skb include/linux/skbuff.h:3225 [inline]
-    dev_alloc_skb include/linux/skbuff.h:3238 [inline]
-    ppp_sync_input drivers/net/ppp/ppp_synctty.c:669 [inline]
-    ppp_sync_receive+0xff/0x680 drivers/net/ppp/ppp_synctty.c:334
-    tty_ldisc_receive_buf+0x14c/0x180 drivers/tty/tty_buffer.c:390
-    tty_port_default_receive_buf+0x70/0xb0 drivers/tty/tty_port.c:37
-    receive_buf drivers/tty/tty_buffer.c:444 [inline]
-    flush_to_ldisc+0x261/0x780 drivers/tty/tty_buffer.c:494
-    process_one_work+0x884/0x15c0 kernel/workqueue.c:2630
-
-With call
-
-    ioctl$PPPIOCSMRU1(r1, 0x40047452, &(0x7f0000000100)=0x5e6417a8)
-
-Similar code exists in other drivers that implement ppp_channel_ops
-ioctl PPPIOCSMRU. Those might also be in scope. Notably excluded from
-this are pppol2tp_ioctl and pppoe_ioctl.
-
-This code goes back to the start of git history.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+6177e1f90d92583bcc58@syzkaller.appspotmail.com
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e0ceeae708ce ("x86/CPU/hygon: Fix phys_proc_id calculation logic for multi-die processors")
+Signed-off-by: Pu Wen <puwen@hygon.cn>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/tencent_594804A808BD93A4EBF50A994F228E3A7F07@qq.com
+Link: https://lore.kernel.org/r/20230814085112.089607918@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ppp/ppp_synctty.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/hygon.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index 1ac231408398a..94ef6f9ca5103 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -462,6 +462,10 @@ ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
- 	case PPPIOCSMRU:
- 		if (get_user(val, (int __user *) argp))
- 			break;
-+		if (val > U16_MAX) {
-+			err = -EINVAL;
-+			break;
-+		}
- 		if (val < PPP_MRU)
- 			val = PPP_MRU;
- 		ap->mru = val;
--- 
-2.42.0
-
+--- a/arch/x86/kernel/cpu/hygon.c
++++ b/arch/x86/kernel/cpu/hygon.c
+@@ -87,8 +87,12 @@ static void hygon_get_topology(struct cp
+ 		if (!err)
+ 			c->x86_coreid_bits = get_count_order(c->x86_max_cores);
+ 
+-		/* Socket ID is ApicId[6] for these processors. */
+-		c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
++		/*
++		 * Socket ID is ApicId[6] for the processors with model <= 0x3
++		 * when running on host.
++		 */
++		if (!boot_cpu_has(X86_FEATURE_HYPERVISOR) && c->x86_model <= 0x3)
++			c->phys_proc_id = c->apicid >> APICID_SOCKET_ID_BIT;
+ 
+ 		cacheinfo_hygon_init_llc_id(c, cpu);
+ 	} else if (cpu_has(c, X86_FEATURE_NODEID_MSR)) {
 
 
 
