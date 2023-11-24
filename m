@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CD1B7F7ED7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1250C7F8073
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E5B61C213FA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 445101C21560
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36DA2D787;
-	Fri, 24 Nov 2023 18:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF812EAEA;
+	Fri, 24 Nov 2023 18:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rsEgWROD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5pdyl3a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9062C85B;
-	Fri, 24 Nov 2023 18:36:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B90C433C9;
-	Fri, 24 Nov 2023 18:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38AA2FC21;
+	Fri, 24 Nov 2023 18:49:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98951C433C8;
+	Fri, 24 Nov 2023 18:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850990;
-	bh=W8FCnG2FsKWwmeWYp++DI3xm2N8HOIb5fQUf2jzfoAI=;
+	s=korg; t=1700851785;
+	bh=g2UAiVcIdszMMG5tIth+eMD5boWitucA22IPvqD+Av8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rsEgWRODVO4IferCOWl4hU5XPZWXMEKYHwrB/ydtHgwZDX+paLs0XQ9hOp2NZ2/8S
-	 UoY5IHVKpjN3hKJ1IYbdrDnptv/QGgTdWLXJs8620wY6JOoLYGnwMx48XCsPVcYdVJ
-	 VG98vO1PUS1qQZtA9kAaVDqmGxTc4EIVm2M4a3og=
+	b=u5pdyl3a/pMLu/RA/jmNzXcBWBKNmETb0SqF2RDNG1NVwWg3PkX41nq0wtj9s4WKT
+	 CAvF9cFadRa7OnrGIpkBH/2cYmDh+aaykKFZnUkSUkvpWFlMs7g+2eS411NvFJDCTF
+	 dosnEJcwImgFJF7igMNJyEVRGgNcEe64eczwXlTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Haitao Shan <hshan@google.com>
-Subject: [PATCH 6.5 245/491] KVM: x86: Fix lapic timer interrupt lost after loading a snapshot.
-Date: Fri, 24 Nov 2023 17:48:01 +0000
-Message-ID: <20231124172031.920738810@linuxfoundation.org>
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 095/372] i2c: fix memleak in i2c_new_client_device()
+Date: Fri, 24 Nov 2023 17:48:02 +0000
+Message-ID: <20231124172013.700182048@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,122 +54,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haitao Shan <hshan@google.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2 upstream.
+[ Upstream commit 6af79f7fe748fe6a3c5c3a63d7f35981a82c2769 ]
 
-When running android emulator (which is based on QEMU 2.12) on
-certain Intel hosts with kernel version 6.3-rc1 or above, guest
-will freeze after loading a snapshot. This is almost 100%
-reproducible. By default, the android emulator will use snapshot
-to speed up the next launching of the same android guest. So
-this breaks the android emulator badly.
+Yang Yingliang reported a memleak:
+===
 
-I tested QEMU 8.0.4 from Debian 12 with an Ubuntu 22.04 guest by
-running command "loadvm" after "savevm". The same issue is
-observed. At the same time, none of our AMD platforms is impacted.
-More experiments show that loading the KVM module with
-"enable_apicv=false" can workaround it.
+I got memory leak as follows when doing fault injection test:
 
-The issue started to show up after commit 8e6ed96cdd50 ("KVM: x86:
-fire timer when it is migrated and expired, and in oneshot mode").
-However, as is pointed out by Sean Christopherson, it is introduced
-by commit 967235d32032 ("KVM: vmx: clear pending interrupts on
-KVM_SET_LAPIC"). commit 8e6ed96cdd50 ("KVM: x86: fire timer when
-it is migrated and expired, and in oneshot mode") just makes it
-easier to hit the issue.
+unreferenced object 0xffff888014aec078 (size 8):
+  comm "xrun", pid 356, jiffies 4294910619 (age 16.332s)
+  hex dump (first 8 bytes):
+    31 2d 30 30 31 63 00 00                          1-001c..
+  backtrace:
+    [<00000000eb56c0a9>] __kmalloc_track_caller+0x1a6/0x300
+    [<000000000b220ea3>] kvasprintf+0xad/0x140
+    [<00000000b83203e5>] kvasprintf_const+0x62/0x190
+    [<000000002a5eab37>] kobject_set_name_vargs+0x56/0x140
+    [<00000000300ac279>] dev_set_name+0xb0/0xe0
+    [<00000000b66ebd6f>] i2c_new_client_device+0x7e4/0x9a0
 
-Having both commits, the oneshot lapic timer gets fired immediately
-inside the KVM_SET_LAPIC call when loading the snapshot. On Intel
-platforms with APIC virtualization and posted interrupt processing,
-this eventually leads to setting the corresponding PIR bit. However,
-the whole PIR bits get cleared later in the same KVM_SET_LAPIC call
-by apicv_post_state_restore. This leads to timer interrupt lost.
+If device_register() returns error in i2c_new_client_device(),
+the name allocated by i2c_dev_set_name() need be freed. As
+comment of device_register() says, it should use put_device()
+to give up the reference in the error path.
 
-The fix is to move vmx_apicv_post_state_restore to the beginning of
-the KVM_SET_LAPIC call and rename to vmx_apicv_pre_state_restore.
-What vmx_apicv_post_state_restore does is actually clearing any
-former apicv state and this behavior is more suitable to carry out
-in the beginning.
+===
+I think this solution is less intrusive and more robust than he
+originally proposed solutions, though.
 
-Fixes: 967235d32032 ("KVM: vmx: clear pending interrupts on KVM_SET_LAPIC")
-Cc: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Haitao Shan <hshan@google.com>
-Link: https://lore.kernel.org/r/20230913000215.478387-1-hshan@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yang Yingliang <yangyingliang@huawei.com>
+Closes: http://patchwork.ozlabs.org/project/linux-i2c/patch/20221124085448.3620240-1-yangyingliang@huawei.com/
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kvm-x86-ops.h |    1 +
- arch/x86/include/asm/kvm_host.h    |    1 +
- arch/x86/kvm/lapic.c               |    4 ++++
- arch/x86/kvm/vmx/vmx.c             |    4 ++--
- 4 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/i2c/i2c-core-base.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -108,6 +108,7 @@ KVM_X86_OP_OPTIONAL(vcpu_blocking)
- KVM_X86_OP_OPTIONAL(vcpu_unblocking)
- KVM_X86_OP_OPTIONAL(pi_update_irte)
- KVM_X86_OP_OPTIONAL(pi_start_assignment)
-+KVM_X86_OP_OPTIONAL(apicv_pre_state_restore)
- KVM_X86_OP_OPTIONAL(apicv_post_state_restore)
- KVM_X86_OP_OPTIONAL_RET0(dy_apicv_has_pending_interrupt)
- KVM_X86_OP_OPTIONAL(set_hv_timer)
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1690,6 +1690,7 @@ struct kvm_x86_ops {
- 	int (*pi_update_irte)(struct kvm *kvm, unsigned int host_irq,
- 			      uint32_t guest_irq, bool set);
- 	void (*pi_start_assignment)(struct kvm *kvm);
-+	void (*apicv_pre_state_restore)(struct kvm_vcpu *vcpu);
- 	void (*apicv_post_state_restore)(struct kvm_vcpu *vcpu);
- 	bool (*dy_apicv_has_pending_interrupt)(struct kvm_vcpu *vcpu);
- 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2649,6 +2649,8 @@ void kvm_lapic_reset(struct kvm_vcpu *vc
- 	u64 msr_val;
- 	int i;
- 
-+	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
-+
- 	if (!init_event) {
- 		msr_val = APIC_DEFAULT_PHYS_BASE | MSR_IA32_APICBASE_ENABLE;
- 		if (kvm_vcpu_is_reset_bsp(vcpu))
-@@ -2960,6 +2962,8 @@ int kvm_apic_set_state(struct kvm_vcpu *
- 	struct kvm_lapic *apic = vcpu->arch.apic;
- 	int r;
- 
-+	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
-+
- 	kvm_lapic_set_base(vcpu, vcpu->arch.apic_base);
- 	/* set SPIV separately to get count of SW disabled APICs right */
- 	apic_set_spiv(apic, *((u32 *)(s->regs + APIC_SPIV)));
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6909,7 +6909,7 @@ static void vmx_load_eoi_exitmap(struct
- 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
- }
- 
--static void vmx_apicv_post_state_restore(struct kvm_vcpu *vcpu)
-+static void vmx_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
+diff --git a/drivers/i2c/i2c-core-base.c b/drivers/i2c/i2c-core-base.c
+index 7539b0740351d..5e3976ba52650 100644
+--- a/drivers/i2c/i2c-core-base.c
++++ b/drivers/i2c/i2c-core-base.c
+@@ -916,8 +916,9 @@ int i2c_dev_irq_from_resources(const struct resource *resources,
+ struct i2c_client *
+ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *info)
  {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+-	struct i2c_client	*client;
+-	int			status;
++	struct i2c_client *client;
++	bool need_put = false;
++	int status;
  
-@@ -8275,7 +8275,7 @@ static struct kvm_x86_ops vmx_x86_ops __
- 	.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
- 	.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,
- 	.load_eoi_exitmap = vmx_load_eoi_exitmap,
--	.apicv_post_state_restore = vmx_apicv_post_state_restore,
-+	.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
- 	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
+ 	client = kzalloc(sizeof *client, GFP_KERNEL);
+ 	if (!client)
+@@ -955,7 +956,6 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 	client->dev.fwnode = info->fwnode;
+ 
+ 	device_enable_async_suspend(&client->dev);
+-	i2c_dev_set_name(adap, client, info);
+ 
+ 	if (info->swnode) {
+ 		status = device_add_software_node(&client->dev, info->swnode);
+@@ -967,6 +967,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 		}
+ 	}
+ 
++	i2c_dev_set_name(adap, client, info);
+ 	status = device_register(&client->dev);
+ 	if (status)
+ 		goto out_remove_swnode;
+@@ -978,6 +979,7 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 
+ out_remove_swnode:
+ 	device_remove_software_node(&client->dev);
++	need_put = true;
+ out_err_put_of_node:
+ 	of_node_put(info->of_node);
+ out_err:
+@@ -985,7 +987,10 @@ i2c_new_client_device(struct i2c_adapter *adap, struct i2c_board_info const *inf
+ 		"Failed to register i2c client %s at 0x%02x (%d)\n",
+ 		client->name, client->addr, status);
+ out_err_silent:
+-	kfree(client);
++	if (need_put)
++		put_device(&client->dev);
++	else
++		kfree(client);
+ 	return ERR_PTR(status);
+ }
+ EXPORT_SYMBOL_GPL(i2c_new_client_device);
+-- 
+2.42.0
+
 
 
 
