@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC707F7C18
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 782AD7F7E54
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:32:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30D4EB20E6F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:11:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18D46B21612
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F2D3A8C7;
-	Fri, 24 Nov 2023 18:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 474A233E9;
+	Fri, 24 Nov 2023 18:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kC0UBoCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DVoGgJfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1CC239FF7;
-	Fri, 24 Nov 2023 18:11:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E4ADC433C8;
-	Fri, 24 Nov 2023 18:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F003F3A8F4;
+	Fri, 24 Nov 2023 18:31:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBB6C433C8;
+	Fri, 24 Nov 2023 18:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849503;
-	bh=BubLtcD/LREeHU0bdkPPY6UvuBUiWCpoYDi+jmzag5M=;
+	s=korg; t=1700850718;
+	bh=AY9MnlDKRJfDVtJfJ2p3hOZRkiOkA2l4ckK3Jag/CEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kC0UBoCPqn/pxkIdKez+0A9LIxT42eM3OM1G+ZyhEK7ofezAQR5NvKadnX1CU+ZaU
-	 3rsH+G6Ny9SbfjUHK7MyfZb1bAMRVJzECXXvoUo3EV+Cyhg0MfXqqmtQXpdJdoEUOj
-	 fGAs3i3V+ZTRlhYkZp4nzLcPbJc//rkwkILB8hdA=
+	b=DVoGgJfn8HWko8tyGiiFjlx9UX7QX+n9dGk6FZJbwemr4mNu7OuoB/c1FwVVJBW1U
+	 BXxfzjho7yU2D3/ubmMHmln/d2WoPVj6cq6dvhovMxgCQtarWcjdJk5FKeuEjfU4Lz
+	 8KaWblVt8jnCt2PS/76SoBtwOONmk3U9A68uV3CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/530] netfilter: nf_tables: fix pointer math issue in nft_byteorder_eval()
+Subject: [PATCH 6.5 137/491] gfs2: fix an oops in gfs2_permission
 Date: Fri, 24 Nov 2023 17:46:13 +0000
-Message-ID: <20231124172034.362832098@linuxfoundation.org>
+Message-ID: <20231124172028.612844547@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,93 +53,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit c301f0981fdd3fd1ffac6836b423c4d7a8e0eb63 ]
+[ Upstream commit 0abd1557e21c617bd13fc18f7725fc6363c05913 ]
 
-The problem is in nft_byteorder_eval() where we are iterating through a
-loop and writing to dst[0], dst[1], dst[2] and so on...  On each
-iteration we are writing 8 bytes.  But dst[] is an array of u32 so each
-element only has space for 4 bytes.  That means that every iteration
-overwrites part of the previous element.
+In RCU mode, we might race with gfs2_evict_inode(), which zeroes
+->i_gl.  Freeing of the object it points to is RCU-delayed, so
+if we manage to fetch the pointer before it's been replaced with
+NULL, we are fine.  Check if we'd fetched NULL and treat that
+as "bail out and tell the caller to get out of RCU mode".
 
-I spotted this bug while reviewing commit caf3ef7468f7 ("netfilter:
-nf_tables: prevent OOB access in nft_byteorder_eval") which is a related
-issue.  I think that the reason we have not detected this bug in testing
-is that most of time we only write one element.
-
-Fixes: ce1e7989d989 ("netfilter: nft_byteorder: provide 64bit le/be conversion")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h | 4 ++--
- net/netfilter/nft_byteorder.c     | 5 +++--
- net/netfilter/nft_meta.c          | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ fs/gfs2/inode.c | 11 +++++++++--
+ fs/gfs2/super.c |  2 +-
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 7c816359d5a98..75972e211ba12 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -178,9 +178,9 @@ static inline __be32 nft_reg_load_be32(const u32 *sreg)
- 	return *(__force __be32 *)sreg;
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 17c994a0c0d09..117b4b5a03072 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -1862,14 +1862,21 @@ int gfs2_permission(struct mnt_idmap *idmap, struct inode *inode,
+ {
+ 	struct gfs2_inode *ip;
+ 	struct gfs2_holder i_gh;
++	struct gfs2_glock *gl;
+ 	int error;
+ 
+ 	gfs2_holder_mark_uninitialized(&i_gh);
+ 	ip = GFS2_I(inode);
+-	if (gfs2_glock_is_locked_by_me(ip->i_gl) == NULL) {
++	gl = rcu_dereference(ip->i_gl);
++	if (unlikely(!gl)) {
++		/* inode is getting torn down, must be RCU mode */
++		WARN_ON_ONCE(!(mask & MAY_NOT_BLOCK));
++		return -ECHILD;
++        }
++	if (gfs2_glock_is_locked_by_me(gl) == NULL) {
+ 		if (mask & MAY_NOT_BLOCK)
+ 			return -ECHILD;
+-		error = gfs2_glock_nq_init(ip->i_gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
++		error = gfs2_glock_nq_init(gl, LM_ST_SHARED, LM_FLAG_ANY, &i_gh);
+ 		if (error)
+ 			return error;
+ 	}
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 9f4d5d6549ee6..f98ddb9d19a21 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -1558,7 +1558,7 @@ static void gfs2_evict_inode(struct inode *inode)
+ 		wait_on_bit_io(&ip->i_flags, GIF_GLOP_PENDING, TASK_UNINTERRUPTIBLE);
+ 		gfs2_glock_add_to_lru(ip->i_gl);
+ 		gfs2_glock_put_eventually(ip->i_gl);
+-		ip->i_gl = NULL;
++		rcu_assign_pointer(ip->i_gl, NULL);
+ 	}
  }
  
--static inline void nft_reg_store64(u32 *dreg, u64 val)
-+static inline void nft_reg_store64(u64 *dreg, u64 val)
- {
--	put_unaligned(val, (u64 *)dreg);
-+	put_unaligned(val, dreg);
- }
- 
- static inline u64 nft_reg_load64(const u32 *sreg)
-diff --git a/net/netfilter/nft_byteorder.c b/net/netfilter/nft_byteorder.c
-index e596d1a842f70..f6e791a681015 100644
---- a/net/netfilter/nft_byteorder.c
-+++ b/net/netfilter/nft_byteorder.c
-@@ -38,13 +38,14 @@ void nft_byteorder_eval(const struct nft_expr *expr,
- 
- 	switch (priv->size) {
- 	case 8: {
-+		u64 *dst64 = (void *)dst;
- 		u64 src64;
- 
- 		switch (priv->op) {
- 		case NFT_BYTEORDER_NTOH:
- 			for (i = 0; i < priv->len / 8; i++) {
- 				src64 = nft_reg_load64(&src[i]);
--				nft_reg_store64(&dst[i],
-+				nft_reg_store64(&dst64[i],
- 						be64_to_cpu((__force __be64)src64));
- 			}
- 			break;
-@@ -52,7 +53,7 @@ void nft_byteorder_eval(const struct nft_expr *expr,
- 			for (i = 0; i < priv->len / 8; i++) {
- 				src64 = (__force __u64)
- 					cpu_to_be64(nft_reg_load64(&src[i]));
--				nft_reg_store64(&dst[i], src64);
-+				nft_reg_store64(&dst64[i], src64);
- 			}
- 			break;
- 		}
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index f7da7c43333b5..ba0d3683a45d3 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -63,7 +63,7 @@ nft_meta_get_eval_time(enum nft_meta_keys key,
- {
- 	switch (key) {
- 	case NFT_META_TIME_NS:
--		nft_reg_store64(dest, ktime_get_real_ns());
-+		nft_reg_store64((u64 *)dest, ktime_get_real_ns());
- 		break;
- 	case NFT_META_TIME_DAY:
- 		nft_reg_store8(dest, nft_meta_weekday());
 -- 
 2.42.0
 
