@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87897F7D5B
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 70BBF7F8162
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01316B215C2
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBFF9B21B8A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3685F3A8C5;
-	Fri, 24 Nov 2023 18:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B247364A7;
+	Fri, 24 Nov 2023 18:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmuV4UQK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nqo19GY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B117B39FFD;
-	Fri, 24 Nov 2023 18:23:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C259C433C8;
-	Fri, 24 Nov 2023 18:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ACC33CC2;
+	Fri, 24 Nov 2023 18:58:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C489C433C8;
+	Fri, 24 Nov 2023 18:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850219;
-	bh=nkEVIRkug3plGpJSNJ5jb/8M6w0R6ZIekOvNtlOmuJ0=;
+	s=korg; t=1700852290;
+	bh=gPQnpx+V1Og/76iatNSWF7CetMLLymjjipACfTR0+Ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmuV4UQKp/88btAu2g1BrQ4ZX/tvMQknloQK33w0vUN1et/+ecnIwhwLkWCoc7qDq
-	 Uvta6DEm0UTN2WptvXOaFYUQAHmReAgjes/zECH5BHLrrlS+C6OMsabvvftP3P5rmQ
-	 aNUnLCJGCnh+qY5J+IvECalj2RHUZVTFcmtTwEN0=
+	b=Nqo19GY/Qw6mHXy6m19U8mqbNTfJHrCIZfzFc0MpBsAYG67VgD30XEWYupFnYdKVO
+	 Dviwl6XfLwVCigC0eR3xbu5oLfcby52AISU95/c6fXQNN8Umbn+++McyRr+cKtt2ry
+	 rtrLhb+GUq7LYH0mkJTYG0XjVEhacuHNVLTg+9+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 6.6 493/530] Revert "HID: logitech-dj: Add support for a new lightspeed receiver iteration"
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 272/372] smb: client: fix potential deadlock when releasing mids
 Date: Fri, 24 Nov 2023 17:50:59 +0000
-Message-ID: <20231124172043.140796747@linuxfoundation.org>
+Message-ID: <20231124172019.530665691@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,71 +52,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Kosina <jkosina@suse.cz>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 5b4ffb176d7979ac66b349addf3f7de433335e00 upstream.
+commit e6322fd177c6885a21dd4609dc5e5c973d1a2eb7 upstream.
 
-This reverts commit 9d1bd9346241cd6963b58da7ffb7ed303285f684.
+All release_mid() callers seem to hold a reference of @mid so there is
+no need to call kref_put(&mid->refcount, __release_mid) under
+@server->mid_lock spinlock.  If they don't, then an use-after-free bug
+would have occurred anyways.
 
-Multiple people reported misbehaving devices and reverting this commit fixes
-the problem for them. As soon as the original commit author starts reacting
-again, we can try to figure out why he hasn't seen the issues (mismatching
-report descriptors?), but for the time being, fix for 6.7 by reverting.
+By getting rid of such spinlock also fixes a potential deadlock as
+shown below
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218172
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218094
+CPU 0                                CPU 1
+------------------------------------------------------------------
+cifs_demultiplex_thread()            cifs_debug_data_proc_show()
+ release_mid()
+  spin_lock(&server->mid_lock);
+                                     spin_lock(&cifs_tcp_ses_lock)
+				      spin_lock(&server->mid_lock)
+  __release_mid()
+   smb2_find_smb_tcon()
+    spin_lock(&cifs_tcp_ses_lock) *deadlock*
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Cc: stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-ids.h         |    1 -
- drivers/hid/hid-logitech-dj.c |   11 +++--------
- 2 files changed, 3 insertions(+), 9 deletions(-)
+ fs/smb/client/cifsproto.h |    7 ++++++-
+ fs/smb/client/smb2misc.c  |    2 +-
+ fs/smb/client/transport.c |   11 +----------
+ 3 files changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -869,7 +869,6 @@
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_2		0xc534
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1	0xc539
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1	0xc53f
--#define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_2	0xc547
- #define USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_POWERPLAY	0xc53a
- #define USB_DEVICE_ID_SPACETRAVELLER	0xc623
- #define USB_DEVICE_ID_SPACENAVIGATOR	0xc626
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1695,12 +1695,11 @@ static int logi_dj_raw_event(struct hid_
- 		}
- 		/*
- 		 * Mouse-only receivers send unnumbered mouse data. The 27 MHz
--		 * receiver uses 6 byte packets, the nano receiver 8 bytes,
--		 * the lightspeed receiver (Pro X Superlight) 13 bytes.
-+		 * receiver uses 6 byte packets, the nano receiver 8 bytes.
- 		 */
- 		if (djrcv_dev->unnumbered_application == HID_GD_MOUSE &&
--		    size <= 13){
--			u8 mouse_report[14];
-+		    size <= 8) {
-+			u8 mouse_report[9];
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -79,7 +79,7 @@ extern char *cifs_compose_mount_options(
+ 		const char *fullpath, const struct dfs_info3_param *ref,
+ 		char **devname);
+ extern void delete_mid(struct mid_q_entry *mid);
+-extern void release_mid(struct mid_q_entry *mid);
++void __release_mid(struct kref *refcount);
+ extern void cifs_wake_up_task(struct mid_q_entry *mid);
+ extern int cifs_handle_standard(struct TCP_Server_Info *server,
+ 				struct mid_q_entry *mid);
+@@ -694,4 +694,9 @@ struct super_block *cifs_get_tcon_super(
+ void cifs_put_tcon_super(struct super_block *sb);
+ int cifs_wait_for_server_reconnect(struct TCP_Server_Info *server, bool retry);
  
- 			/* Prepend report id */
- 			mouse_report[0] = REPORT_TYPE_MOUSE;
-@@ -1984,10 +1983,6 @@ static const struct hid_device_id logi_d
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH,
- 		USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_1),
- 	 .driver_data = recvr_type_gaming_hidpp},
--	{ /* Logitech lightspeed receiver (0xc547) */
--	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH,
--		USB_DEVICE_ID_LOGITECH_NANO_RECEIVER_LIGHTSPEED_1_2),
--	 .driver_data = recvr_type_gaming_hidpp},
++static inline void release_mid(struct mid_q_entry *mid)
++{
++	kref_put(&mid->refcount, __release_mid);
++}
++
+ #endif			/* _CIFSPROTO_H */
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -787,7 +787,7 @@ __smb2_handle_cancelled_cmd(struct cifs_
+ {
+ 	struct close_cancelled_open *cancelled;
  
- 	{ /* Logitech 27 MHz HID++ 1.0 receiver (0xc513) */
- 	  HID_USB_DEVICE(USB_VENDOR_ID_LOGITECH, USB_DEVICE_ID_MX3000_RECEIVER),
+-	cancelled = kzalloc(sizeof(*cancelled), GFP_ATOMIC);
++	cancelled = kzalloc(sizeof(*cancelled), GFP_KERNEL);
+ 	if (!cancelled)
+ 		return -ENOMEM;
+ 
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -76,7 +76,7 @@ alloc_mid(const struct smb_hdr *smb_buff
+ 	return temp;
+ }
+ 
+-static void __release_mid(struct kref *refcount)
++void __release_mid(struct kref *refcount)
+ {
+ 	struct mid_q_entry *midEntry =
+ 			container_of(refcount, struct mid_q_entry, refcount);
+@@ -156,15 +156,6 @@ static void __release_mid(struct kref *r
+ 	mempool_free(midEntry, cifs_mid_poolp);
+ }
+ 
+-void release_mid(struct mid_q_entry *mid)
+-{
+-	struct TCP_Server_Info *server = mid->server;
+-
+-	spin_lock(&server->mid_lock);
+-	kref_put(&mid->refcount, __release_mid);
+-	spin_unlock(&server->mid_lock);
+-}
+-
+ void
+ delete_mid(struct mid_q_entry *mid)
+ {
 
 
 
