@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-1394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13BB97F7F6E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1DB7F7D49
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33152824EA
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E379BB214CC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648B534189;
-	Fri, 24 Nov 2023 18:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FECA39FE7;
+	Fri, 24 Nov 2023 18:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrvpaH5+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GuSKCKe3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC1633CC7;
-	Fri, 24 Nov 2023 18:41:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10A3C433C8;
-	Fri, 24 Nov 2023 18:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFD534197;
+	Fri, 24 Nov 2023 18:23:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E8EC433C8;
+	Fri, 24 Nov 2023 18:23:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851289;
-	bh=pm6b3LyfdndFWMDSDREORDBdhOuLQGKbKthJCXtc3Z0=;
+	s=korg; t=1700850194;
+	bh=pozgSwTcJud/SywNBFmuIh6Etrn2QODrh3dRe84P+3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrvpaH5+I6mMqHsddWBzC0PRAV2qdn8KXj215TPSpL1z0OPk33GA5m8JIf/RfC5sb
-	 wHCO1FCzEvd6wd4FuAOuhe1LdCQnoV5RYuCie1H+7HickQvwh08ls1l4pNUhTS9HdE
-	 CA8o6mNmnnKPD3cRX4NaPnwRVT8q7ntQCPt4IJ8w=
+	b=GuSKCKe3I24yavA7PPTn77oQIPKt0E+ITuVSgcqFxBkgg4CAc4IIHRjtScVx+UOK3
+	 GN4l7O54YOQE8454p7mpkw4w52aNrDuFoDE/nMQPwbkQnEyCr3XUqVrXF9yQJvRD6T
+	 22jtbu+9LhrueehRtNitFelWHNU+uFWb09pViL6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.5 389/491] smb3: fix caching of ctime on setxattr
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.6 459/530] media: ccs: Correctly initialise try compose rectangle
 Date: Fri, 24 Nov 2023 17:50:25 +0000
-Message-ID: <20231124172036.289386254@linuxfoundation.org>
+Message-ID: <20231124172042.052339153@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 5923d6686a100c2b4cabd4c2ca9d5a12579c7614 upstream.
+commit 724ff68e968b19d786870d333f9952bdd6b119cb upstream.
 
-Fixes xfstest generic/728 which had been failing due to incorrect
-ctime after setxattr and removexattr
+Initialise the try sink compose rectangle size to the sink compose
+rectangle for binner and scaler sub-devices. This was missed due to the
+faulty condition that lead to the compose rectangles to be initialised for
+the pixel array sub-device where it is not relevant.
 
-Update ctime on successful set of xattr
-
+Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/xattr.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/i2c/ccs/ccs-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/xattr.c
-+++ b/fs/smb/client/xattr.c
-@@ -150,10 +150,13 @@ static int cifs_xattr_set(const struct x
- 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_XATTR)
- 			goto out;
+--- a/drivers/media/i2c/ccs/ccs-core.c
++++ b/drivers/media/i2c/ccs/ccs-core.c
+@@ -3097,7 +3097,7 @@ static int ccs_open(struct v4l2_subdev *
+ 		try_fmt->code = sensor->internal_csi_format->code;
+ 		try_fmt->field = V4L2_FIELD_NONE;
  
--		if (pTcon->ses->server->ops->set_EA)
-+		if (pTcon->ses->server->ops->set_EA) {
- 			rc = pTcon->ses->server->ops->set_EA(xid, pTcon,
- 				full_path, name, value, (__u16)size,
- 				cifs_sb->local_nls, cifs_sb);
-+			if (rc == 0)
-+				inode_set_ctime_current(inode);
-+		}
- 		break;
+-		if (ssd != sensor->pixel_array)
++		if (ssd == sensor->pixel_array)
+ 			continue;
  
- 	case XATTR_CIFS_ACL:
+ 		try_comp = v4l2_subdev_get_try_compose(sd, fh->state, i);
 
 
 
