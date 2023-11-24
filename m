@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072857F7AFD
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:00:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC6C7F7AE0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86AD8B21151
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:00:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709641C20969
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACED39FF4;
-	Fri, 24 Nov 2023 18:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FFA39FE3;
+	Fri, 24 Nov 2023 17:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoDIruWP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OqOGsFaw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8645139FE3;
-	Fri, 24 Nov 2023 18:00:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1290AC433C7;
-	Fri, 24 Nov 2023 18:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6157381D8;
+	Fri, 24 Nov 2023 17:59:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F80C433C8;
+	Fri, 24 Nov 2023 17:59:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848845;
-	bh=h81QsO7TMJ9bzKYcKq+vg3muVhiUOTwZVELYLT70GSk=;
+	s=korg; t=1700848775;
+	bh=T+t1B0eJMqPTE3uhWyBrmHgnRfUFxAYxO1SlFELHWig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DoDIruWPgtzL4xu1bYMBRrRAeB8G0daGIXSyYWagtMVozEeAifCepZoy7INuRUkI4
-	 iLC3Cin0CIzvTWEghul9hici7Y4YWW55lOF5MG5dkCTD0MTMUeZx/xhrpePS6DP4Dg
-	 bNdD+Ff7FHMZ009GYR8Ia9pu0BYjH1HQtiMtLp0g=
+	b=OqOGsFawhHv784a5j5LDogsB01ilgNh5gigx0N6rX/YRh+Trfau/lYjgeiU4iPGGO
+	 qNdbObRhku5hIxSDLOI8RE1hoBuj/+/4Vy/BGVMKSLTU3ivyGsd/L8KaX1CgQiYH4D
+	 oyvqranyzdn4TXK87x4ggSWYBekV/5BdLf78JHII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>,
-	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Subject: [PATCH 4.19 67/97] mcb: fix error handling for different scenarios when parsing
-Date: Fri, 24 Nov 2023 17:50:40 +0000
-Message-ID: <20231124171936.638933322@linuxfoundation.org>
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Amelie Delaunay <amelie.delaunay@foss.st.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 4.19 68/97] dmaengine: stm32-mdma: correct desc prep when channel running
+Date: Fri, 24 Nov 2023 17:50:41 +0000
+Message-ID: <20231124171936.675877767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
 References: <20231124171934.122298957@linuxfoundation.org>
@@ -51,56 +51,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-commit 63ba2d07b4be72b94216d20561f43e1150b25d98 upstream.
+commit 03f25d53b145bc2f7ccc82fc04e4482ed734f524 upstream.
 
-chameleon_parse_gdd() may fail for different reasons and end up
-in the err tag. Make sure we at least always free the mcb_device
-allocated with mcb_alloc_dev().
+In case of the prep descriptor while the channel is already running, the
+CCR register value stored into the channel could already have its EN bit
+set.  This would lead to a bad transfer since, at start transfer time,
+enabling the channel while other registers aren't yet properly set.
+To avoid this, ensure to mask the CCR_EN bit when storing the ccr value
+into the mdma channel structure.
 
-If mcb_device_register() fails, make sure to give up the reference
-in the same place the device was added.
-
-Fixes: 728ac3389296 ("mcb: mcb-parse: fix error handing in chameleon_parse_gdd()")
-Cc: stable <stable@kernel.org>
-Reviewed-by: Jose Javier Rodriguez Barbarin <JoseJavier.Rodriguez@duagon.com>
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Link: https://lore.kernel.org/r/20231019141434.57971-2-jorge.sanjuangarcia@duagon.com
+Fixes: a4ffb13c8946 ("dmaengine: Add STM32 MDMA driver")
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
+Signed-off-by: Amelie Delaunay <amelie.delaunay@foss.st.com>
+Cc: stable@vger.kernel.org
+Tested-by: Alain Volmat <alain.volmat@foss.st.com>
+Link: https://lore.kernel.org/r/20231009082450.452877-1-amelie.delaunay@foss.st.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mcb/mcb-core.c  |    1 +
- drivers/mcb/mcb-parse.c |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/dma/stm32-mdma.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/mcb/mcb-core.c
-+++ b/drivers/mcb/mcb-core.c
-@@ -251,6 +251,7 @@ int mcb_device_register(struct mcb_bus *
- 	return 0;
+--- a/drivers/dma/stm32-mdma.c
++++ b/drivers/dma/stm32-mdma.c
+@@ -520,7 +520,7 @@ static int stm32_mdma_set_xfer_param(str
+ 	src_maxburst = chan->dma_config.src_maxburst;
+ 	dst_maxburst = chan->dma_config.dst_maxburst;
  
- out:
-+	put_device(&dev->dev);
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
  
- 	return ret;
- }
---- a/drivers/mcb/mcb-parse.c
-+++ b/drivers/mcb/mcb-parse.c
-@@ -105,7 +105,7 @@ static int chameleon_parse_gdd(struct mc
- 	return 0;
+@@ -948,7 +948,7 @@ stm32_mdma_prep_dma_memcpy(struct dma_ch
+ 	if (!desc)
+ 		return NULL;
  
- err:
--	put_device(&mdev->dev);
-+	mcb_free_dev(mdev);
- 
- 	return ret;
- }
+-	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id));
++	ccr = stm32_mdma_read(dmadev, STM32_MDMA_CCR(chan->id)) & ~STM32_MDMA_CCR_EN;
+ 	ctcr = stm32_mdma_read(dmadev, STM32_MDMA_CTCR(chan->id));
+ 	ctbr = stm32_mdma_read(dmadev, STM32_MDMA_CTBR(chan->id));
+ 	cbndtr = stm32_mdma_read(dmadev, STM32_MDMA_CBNDTR(chan->id));
 
 
 
