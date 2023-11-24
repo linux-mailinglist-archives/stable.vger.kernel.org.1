@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-2351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077457F83CF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B237F8454
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B660828692F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D9FF2881D9
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF2D37170;
-	Fri, 24 Nov 2023 19:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2468537170;
+	Fri, 24 Nov 2023 19:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIsRmNZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIuT9aAA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A483306F;
-	Fri, 24 Nov 2023 19:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB42C433C8;
-	Fri, 24 Nov 2023 19:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5C028DBB;
+	Fri, 24 Nov 2023 19:26:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BF54C433C8;
+	Fri, 24 Nov 2023 19:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853668;
-	bh=S8tNrChh671yrxGLn18UOZDgE0bdtYZvI7pi1fOrUMs=;
+	s=korg; t=1700853977;
+	bh=zw28BlohxHWuk7qoxS1AlRLObfoaY6tkAUImzuk6pNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HIsRmNZR6g+7R9bu8WSFNvcJLXRxy83J2KN5K3wACIw9oPHNU4BckfNnOG0xjUVt4
-	 rlRMkylpwh6h97BayGZcAABcquPfG8ch1K8cj8TLZuuDNO9bWvBnu2u3AsXmlomA3u
-	 1UATutsMSwUHU1258jb0zZe0e5B/9++jyQyjA5Sg=
+	b=qIuT9aAAalE0soXPutJ+94KoCBrOJUwgrEnj08ez+02Ibm0lBGAZoJg5gszlfl+H9
+	 iKYgfjAVsHzzn3hCNjO6c6Nz2w2CkTHS38izdr4Mpswgp4oOuwi5uQk3bnvJaCte0X
+	 1S9CZduXsv4FZF5w+M5i3BMsRjVhevqTYwmOCMOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"J. Bruce Fields" <bfields@redhat.com>,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 281/297] ext4: apply umask if ACL support is disabled
-Date: Fri, 24 Nov 2023 17:55:23 +0000
-Message-ID: <20231124172009.957953724@linuxfoundation.org>
+	Kevin Hilman <khilman@baylibre.com>,
+	Neil Armstrong <narmstrong@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 107/159] tty: serial: meson: retrieve port FIFO size from DT
+Date: Fri, 24 Nov 2023 17:55:24 +0000
+Message-ID: <20231124171946.340888863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Neil Armstrong <narmstrong@baylibre.com>
 
-commit 484fd6c1de13b336806a967908a927cc0356e312 upstream.
+[ Upstream commit 27d44e05d7b85d9d4cfe0a3c0663ea49752ece93 ]
 
-The function ext4_init_acl() calls posix_acl_create() which is
-responsible for applying the umask.  But without
-CONFIG_EXT4_FS_POSIX_ACL, ext4_init_acl() is an empty inline function,
-and nobody applies the umask.
+Now the DT bindings has a property to get the FIFO size for a particular port,
+retrieve it and use to setup the FIFO interrupts threshold.
 
-This fixes a bug which causes the umask to be ignored with O_TMPFILE
-on ext4:
-
- https://github.com/MusicPlayerDaemon/MPD/issues/558
- https://bugs.gentoo.org/show_bug.cgi?id=686142#c3
- https://bugzilla.kernel.org/show_bug.cgi?id=203625
-
-Reviewed-by: "J. Bruce Fields" <bfields@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Link: https://lore.kernel.org/r/20230919081824.1096619-1-max.kellermann@ionos.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Neil Armstrong <narmstrong@baylibre.com>
+Link: https://lore.kernel.org/r/20210518075833.3736038-3-narmstrong@baylibre.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 2a1d728f20ed ("tty: serial: meson: fix hard LOCKUP on crtscts mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/acl.h |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tty/serial/meson_uart.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/acl.h
-+++ b/fs/ext4/acl.h
-@@ -68,6 +68,11 @@ extern int ext4_init_acl(handle_t *, str
- static inline int
- ext4_init_acl(handle_t *handle, struct inode *inode, struct inode *dir)
+diff --git a/drivers/tty/serial/meson_uart.c b/drivers/tty/serial/meson_uart.c
+index 6a74a31231ebf..7563fd215d816 100644
+--- a/drivers/tty/serial/meson_uart.c
++++ b/drivers/tty/serial/meson_uart.c
+@@ -663,6 +663,7 @@ static int meson_uart_probe(struct platform_device *pdev)
  {
-+	/* usually, the umask is applied by posix_acl_create(), but if
-+	   ext4 ACL support is disabled at compile time, we need to do
-+	   it here, because posix_acl_create() will never be called */
-+	inode->i_mode &= ~current_umask();
+ 	struct resource *res_mem, *res_irq;
+ 	struct uart_port *port;
++	u32 fifosize = 64; /* Default is 64, 128 for EE UART_0 */
+ 	int ret = 0;
+ 
+ 	if (pdev->dev.of_node)
+@@ -690,6 +691,8 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	if (!res_irq)
+ 		return -ENODEV;
+ 
++	of_property_read_u32(pdev->dev.of_node, "fifo-size", &fifosize);
 +
- 	return 0;
- }
- #endif  /* CONFIG_EXT4_FS_POSIX_ACL */
+ 	if (meson_ports[pdev->id]) {
+ 		dev_err(&pdev->dev, "port %d already allocated\n", pdev->id);
+ 		return -EBUSY;
+@@ -719,7 +722,7 @@ static int meson_uart_probe(struct platform_device *pdev)
+ 	port->type = PORT_MESON;
+ 	port->x_char = 0;
+ 	port->ops = &meson_uart_ops;
+-	port->fifosize = 64;
++	port->fifosize = fifosize;
+ 
+ 	meson_ports[pdev->id] = port;
+ 	platform_set_drvdata(pdev, port);
+-- 
+2.42.0
+
 
 
 
