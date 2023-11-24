@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A70377F7BD6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:09:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 312107F7DEB
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63054282206
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:09:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFD2828225A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2FF39FF8;
-	Fri, 24 Nov 2023 18:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728F03A8C3;
+	Fri, 24 Nov 2023 18:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7JwkL4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QgcVTGdK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B512B39FC3;
-	Fri, 24 Nov 2023 18:09:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F3AC433C8;
-	Fri, 24 Nov 2023 18:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A9739FD0;
+	Fri, 24 Nov 2023 18:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43B0C433C8;
+	Fri, 24 Nov 2023 18:28:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700849346;
-	bh=w3toZcR/P1j6XIg6iZizGyC40VHJYt/vI/rYf0iK9xA=;
+	s=korg; t=1700850508;
+	bh=8u1BcqW51GaqkDYCCVncQvIJxtYbGzA1QuiW4N+C3w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7JwkL4yuVe4UDduluOTUdPPHQzfFyPBV0l6x21MDUebW11U4namXBhXMb99wv8xN
-	 MAmCJAQXTExa2gojUlQyf9oiHbitlBwyv2k2l0plbglrmvpOCw8PsCPJIBe6/8LNF1
-	 ebHpyrfQwqSzZPBYt526YliddTvZvDtuO1af9bcs=
+	b=QgcVTGdK9z5tdtWPWpAHdnoTsHxfVJKTeafTSithgutCmPcCMdHWErJHwhJvPt/YM
+	 ZmA7RfvM9g4UimEzO05I5p5+YewLt7s6XzYGnX3kMFFTYONz5Rq117NkRRt1Lam3kZ
+	 DqwhiL1Sj+oUnVSmU79RYxlchMk6aXnvxAwD4l5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 145/530] media: ccs: Fix driver quirk struct documentation
-Date: Fri, 24 Nov 2023 17:45:11 +0000
-Message-ID: <20231124172032.497151523@linuxfoundation.org>
+Subject: [PATCH 6.5 076/491] arm64: dts: ls208xa: use a pseudo-bus to constrain usb dma size
+Date: Fri, 24 Nov 2023 17:45:12 +0000
+Message-ID: <20231124172026.916073428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +53,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-[ Upstream commit 441b5c63d71ec9ec5453328f7e83384ecc1dddd9 ]
+[ Upstream commit b39d5016456871a88f5cd141914a5043591b46f3 ]
 
-Fix documentation for struct ccs_quirk, a device specific struct for
-managing deviations from the standard. The flags field was drifted away
-from where it should have been.
+Wrap the usb controllers in an intermediate simple-bus and use it to
+constrain the dma address size of these usb controllers to the 40b
+that they generate toward the interconnect. This is required because
+the SoC uses 48b address sizes and this mismatch would lead to smmu
+context faults [1] because the usb generates 40b addresses while the
+smmu page tables are populated with 48b wide addresses.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[1]
+xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
+xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 1
+xhci-hcd xhci-hcd.0.auto: hcc params 0x0220f66d hci version 0x100 quirks 0x0000000002000010
+xhci-hcd xhci-hcd.0.auto: irq 108, io mem 0x03100000
+xhci-hcd xhci-hcd.0.auto: xHCI Host Controller
+xhci-hcd xhci-hcd.0.auto: new USB bus registered, assigned bus number 2
+xhci-hcd xhci-hcd.0.auto: Host supports USB 3.0 SuperSpeed
+arm-smmu 5000000.iommu: Unhandled context fault: fsr=0x402, iova=0xffffffb000, fsynr=0x0, cbfrsynra=0xc01, cb=3
+
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs/ccs-quirk.h | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ .../arm64/boot/dts/freescale/fsl-ls208xa.dtsi | 46 +++++++++++--------
+ 1 file changed, 27 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/media/i2c/ccs/ccs-quirk.h b/drivers/media/i2c/ccs/ccs-quirk.h
-index 5838fcda92fd4..0b1a64958d714 100644
---- a/drivers/media/i2c/ccs/ccs-quirk.h
-+++ b/drivers/media/i2c/ccs/ccs-quirk.h
-@@ -32,12 +32,10 @@ struct ccs_sensor;
-  *		@reg: Pointer to the register to access
-  *		@value: Register value, set by the caller on write, or
-  *			by the quirk on read
-- *
-- * @flags: Quirk flags
-- *
-  *		@return: 0 on success, -ENOIOCTLCMD if no register
-  *			 access may be done by the caller (default read
-  *			 value is zero), else negative error code on error
-+ * @flags: Quirk flags
-  */
- struct ccs_quirk {
- 	int (*limits)(struct ccs_sensor *sensor);
+diff --git a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
+index d2f5345d05600..717288bbdb8b6 100644
+--- a/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
++++ b/arch/arm64/boot/dts/freescale/fsl-ls208xa.dtsi
+@@ -1186,26 +1186,34 @@
+ 			dma-coherent;
+ 		};
+ 
+-		usb0: usb@3100000 {
+-			status = "disabled";
+-			compatible = "snps,dwc3";
+-			reg = <0x0 0x3100000 0x0 0x10000>;
+-			interrupts = <0 80 0x4>; /* Level high type */
+-			dr_mode = "host";
+-			snps,quirk-frame-length-adjustment = <0x20>;
+-			snps,dis_rxdet_inp3_quirk;
+-			snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
+-		};
++		bus: bus {
++			#address-cells = <2>;
++			#size-cells = <2>;
++			compatible = "simple-bus";
++			ranges;
++			dma-ranges = <0x0 0x0 0x0 0x0 0x100 0x00000000>;
++
++			usb0: usb@3100000 {
++				compatible = "snps,dwc3";
++				reg = <0x0 0x3100000 0x0 0x10000>;
++				interrupts = <0 80 0x4>; /* Level high type */
++				dr_mode = "host";
++				snps,quirk-frame-length-adjustment = <0x20>;
++				snps,dis_rxdet_inp3_quirk;
++				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
++				status = "disabled";
++			};
+ 
+-		usb1: usb@3110000 {
+-			status = "disabled";
+-			compatible = "snps,dwc3";
+-			reg = <0x0 0x3110000 0x0 0x10000>;
+-			interrupts = <0 81 0x4>; /* Level high type */
+-			dr_mode = "host";
+-			snps,quirk-frame-length-adjustment = <0x20>;
+-			snps,dis_rxdet_inp3_quirk;
+-			snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
++			usb1: usb@3110000 {
++				compatible = "snps,dwc3";
++				reg = <0x0 0x3110000 0x0 0x10000>;
++				interrupts = <0 81 0x4>; /* Level high type */
++				dr_mode = "host";
++				snps,quirk-frame-length-adjustment = <0x20>;
++				snps,dis_rxdet_inp3_quirk;
++				snps,incr-burst-type-adjustment = <1>, <4>, <8>, <16>;
++				status = "disabled";
++			};
+ 		};
+ 
+ 		ccn@4000000 {
 -- 
 2.42.0
 
