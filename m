@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C0B7F7B2C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:02:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC7E07F8151
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:57:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9145EB20EF6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:02:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEE2B1C21554
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C271F39FF3;
-	Fri, 24 Nov 2023 18:02:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEFD28DBA;
+	Fri, 24 Nov 2023 18:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1u77Vqsb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LubIEKHf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7563839FE3;
-	Fri, 24 Nov 2023 18:02:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF059C433C9;
-	Fri, 24 Nov 2023 18:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB2C2C85B;
+	Fri, 24 Nov 2023 18:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4CC7C433C9;
+	Fri, 24 Nov 2023 18:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848948;
-	bh=S04acT+ySs+YuvD7DzO+NAUlkg8/qNdwjvYXvMFF/J0=;
+	s=korg; t=1700852254;
+	bh=0/SfRBaEhPCcVPuvLrzn2XOGA3TrXG/nR9FGypmxwVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1u77VqsbiMW6mpXmnCs/gzXPWVsJroYzuR5sGV9a+7GvLJj0wWAmVc7XOWgT6vfy5
-	 WaDaQufjYrlLG+Iwf5BB4t/tnj54MpKo5eMtyvBSxRTVeGFRJfjfD9E74ZYRxgbsPx
-	 lV0EmYxR30gFc78M3zAsV9PCip7a8Imqto0KtDL8=
+	b=LubIEKHfzyhd3rNx3QsPxJIntcAU7gOVAfD7naXOOXC/RtyvThf/m47uA1maTCoKJ
+	 keWkPdvpKXqTYYfxteOM/pCOOrkscirIp16qidNgSBpDtdeWkDrlTdMr58FMSNP5Do
+	 7HqJ1v7waQyGMJMmPhl1UEAXQZx3XTcJHoUdGxOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 4.14 45/57] parisc/pgtable: Do not drop upper 5 address bits of physical address
+	Matus Malych <matus@malych.org>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 282/372] ALSA: hda/realtek: Enable Mute LED on HP 255 G10
 Date: Fri, 24 Nov 2023 17:51:09 +0000
-Message-ID: <20231124171931.988172236@linuxfoundation.org>
+Message-ID: <20231124172019.844596001@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171930.281665051@linuxfoundation.org>
-References: <20231124171930.281665051@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +52,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Matus Malych <matus@malych.org>
 
-commit 166b0110d1ee53290bd11618df6e3991c117495a upstream.
+commit b944aa9d86d5f782bfe5e51336434c960304839c upstream.
 
-When calculating the pfn for the iitlbt/idtlbt instruction, do not
-drop the upper 5 address bits. This doesn't seem to have an effect
-on physical hardware which uses less physical address bits, but in
-qemu the missing bits are visible.
+HP 255 G10 has a mute LED that can be made to work using quirk
+ALC236_FIXUP_HP_MUTE_LED_COEFBIT2.
+Enable already existing quirk - at correct line to keep order
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc:  <stable@vger.kernel.org>
+Signed-off-by: Matus Malych <matus@malych.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231114133524.11340-1-matus@malych.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/entry.S |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -521,13 +521,13 @@
- 	 * to a CPU TLB 4k PFN (4k => 12 bits to shift) */
- 	#define PAGE_ADD_SHIFT		(PAGE_SHIFT-12)
- 	#define PAGE_ADD_HUGE_SHIFT	(REAL_HPAGE_SHIFT-12)
-+	#define PFN_START_BIT	(63-ASM_PFN_PTE_SHIFT+(63-58)-PAGE_ADD_SHIFT)
- 
- 	/* Drop prot bits and convert to page addr for iitlbt and idtlbt */
- 	.macro		convert_for_tlb_insert20 pte,tmp
- #ifdef CONFIG_HUGETLB_PAGE
- 	copy		\pte,\tmp
--	extrd,u		\tmp,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\tmp,PFN_START_BIT,PFN_START_BIT+1,\pte
- 
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
-@@ -535,8 +535,7 @@
- 	depdi		_HUGE_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_HUGE_SHIFT,\pte
- #else /* Huge pages disabled */
--	extrd,u		\pte,(63-ASM_PFN_PTE_SHIFT)+(63-58)+PAGE_ADD_SHIFT,\
--				64-PAGE_SHIFT-PAGE_ADD_SHIFT,\pte
-+	extrd,u		\pte,PFN_START_BIT,PFN_START_BIT+1,\pte
- 	depdi		_PAGE_SIZE_ENCODING_DEFAULT,63,\
- 				(63-58)+PAGE_ADD_SHIFT,\pte
- #endif
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9660,6 +9660,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8abb, "HP ZBook Firefly 14 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ad1, "HP EliteBook 840 14 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ad2, "HP EliteBook 860 16 inch G9 Notebook PC", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8b2f, "HP 255 15.6 inch G10 Notebook PC", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8b42, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b43, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8b44, "HP", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
 
 
 
