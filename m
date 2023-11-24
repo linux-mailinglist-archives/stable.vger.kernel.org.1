@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-1287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071E67F7EE7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:37:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9587F80CC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:52:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5D9D2823FF
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:37:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C3AD1C215F5
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3877C34197;
-	Fri, 24 Nov 2023 18:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D0C33CD1;
+	Fri, 24 Nov 2023 18:52:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b2Dqwa2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EwLDgynB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFEC33075;
-	Fri, 24 Nov 2023 18:37:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B0CC433C8;
-	Fri, 24 Nov 2023 18:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6101E2D787;
+	Fri, 24 Nov 2023 18:52:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABF9C433C7;
+	Fri, 24 Nov 2023 18:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851023;
-	bh=iWKXkF/IeTCYYT68pRGEwOcw2Xj8xvUUccP3gdvhmQE=;
+	s=korg; t=1700851972;
+	bh=NzHtH6pKYzeF2kXtxK+Zf3N5fdOXCZfmA4l9ku7W/Ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b2Dqwa27l6bqmBr+CzZGjCVZaVv7x135P5QdzFK928UCTX+H1YbA04S/2F5fAM8w
-	 usemaUIIn7UuPbkWR9pBx/irtAMsCPCnAryCTpRAc8FAk8tniBGso0HO65tnhRNR0v
-	 UXbQHnrAnfbCmsyZhJYDYzsy3q+m8ZJOjmRh9SZ8=
+	b=EwLDgynBDqoXZZX00RGwzbM9e9b8m5wlprYgEz/mRsine4l28pntzvGKoA1p776Ot
+	 vl+VWf8ess66cRLo21+IBigQRCC52tgSREwz9aDEBYIzVgKdyDrCJo3fov6gtFcmQl
+	 vhUZ9fWu/UrBILpz7EtsDptTEZwbhrRYXTLOxLk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.5 283/491] KEYS: trusted: Rollback init_trusted() consistently
-Date: Fri, 24 Nov 2023 17:48:39 +0000
-Message-ID: <20231124172033.077940304@linuxfoundation.org>
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/372] net: hns3: fix variable may not initialized problem in hns3_init_mac_addr()
+Date: Fri, 24 Nov 2023 17:48:40 +0000
+Message-ID: <20231124172014.921374885@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-commit 31de287345f41bbfaec36a5c8cbdba035cf76442 upstream.
+[ Upstream commit dbd2f3b20c6ae425665b6975d766e3653d453e73 ]
 
-Do bind neither static calls nor trusted_key_exit() before a successful
-init, in order to maintain a consistent state. In addition, depart the
-init_trusted() in the case of a real error (i.e. getting back something
-else than -ENODEV).
+When a VF is calling hns3_init_mac_addr(), get_mac_addr() may
+return fail, then the value of mac_addr_temp is not initialized.
 
-Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-Closes: https://lore.kernel.org/linux-integrity/CAHk-=whOPoLaWM8S8GgoOPT7a2+nMH5h3TLKtn=R_3w4R1_Uvg@mail.gmail.com/
-Cc: stable@vger.kernel.org # v5.13+
-Fixes: 5d0682be3189 ("KEYS: trusted: Add generic trusted keys framework")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 76ad4f0ee747 ("net: hns3: Add support of HNS3 Ethernet Driver for hip08 SoC")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/keys/trusted-keys/trusted_core.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/security/keys/trusted-keys/trusted_core.c
-+++ b/security/keys/trusted-keys/trusted_core.c
-@@ -358,17 +358,17 @@ static int __init init_trusted(void)
- 		if (!get_random)
- 			get_random = kernel_get_random;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 04c9baca1b0f8..5ad22b815b2f0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5139,7 +5139,7 @@ static int hns3_init_mac_addr(struct net_device *netdev)
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 	char format_mac_addr[HNAE3_FORMAT_MAC_ADDR_LEN];
+ 	struct hnae3_handle *h = priv->ae_handle;
+-	u8 mac_addr_temp[ETH_ALEN];
++	u8 mac_addr_temp[ETH_ALEN] = {0};
+ 	int ret = 0;
  
--		static_call_update(trusted_key_seal,
--				   trusted_key_sources[i].ops->seal);
--		static_call_update(trusted_key_unseal,
--				   trusted_key_sources[i].ops->unseal);
--		static_call_update(trusted_key_get_random,
--				   get_random);
--		trusted_key_exit = trusted_key_sources[i].ops->exit;
--		migratable = trusted_key_sources[i].ops->migratable;
--
- 		ret = trusted_key_sources[i].ops->init();
--		if (!ret)
-+		if (!ret) {
-+			static_call_update(trusted_key_seal, trusted_key_sources[i].ops->seal);
-+			static_call_update(trusted_key_unseal, trusted_key_sources[i].ops->unseal);
-+			static_call_update(trusted_key_get_random, get_random);
-+
-+			trusted_key_exit = trusted_key_sources[i].ops->exit;
-+			migratable = trusted_key_sources[i].ops->migratable;
-+		}
-+
-+		if (!ret || ret != -ENODEV)
- 			break;
- 	}
- 
+ 	if (h->ae_algo->ops->get_mac_addr)
+-- 
+2.42.0
+
 
 
 
