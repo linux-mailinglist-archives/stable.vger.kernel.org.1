@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB8D7F7D10
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59DC17F7F2F
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:39:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCD841C20F56
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1579A2823F3
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538D63A8C3;
-	Fri, 24 Nov 2023 18:21:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95627364BA;
+	Fri, 24 Nov 2023 18:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7cFXLq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C6q8i0n8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144F034197;
-	Fri, 24 Nov 2023 18:21:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 929CAC433C8;
-	Fri, 24 Nov 2023 18:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508D12E40E;
+	Fri, 24 Nov 2023 18:39:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1773C433C8;
+	Fri, 24 Nov 2023 18:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700850065;
-	bh=GdQUkidxrA8xNVvD0S9c8OE+HScrJm2+LBZB9KPEeJQ=;
+	s=korg; t=1700851159;
+	bh=RnvbLPXpgSft2FxJMMOVjIV7vNBXhlGzv8xXX09JAo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7cFXLq20ZGhzwQAcW6NlRn3iMVbRYc36Q15/9y2/iaqJ4MLOzzXq3HbfQOJLhIaH
-	 H1aANk5PY2RSyFAIV+zjWICv/xNDo1kQp5Qqrreit4n94Zq6ncu5KG6ZUlr8LqxAvw
-	 VKoKN5hGqQGXxjotr2P7trNTkvhXZju+OO3XX0bs=
+	b=C6q8i0n8WlfpzNUCUfyYFWlWlvkLwv1DYHVqu8GAjl6V9dDIEHpAkDOEz0hU0nuzv
+	 Qwn0PyDjLazrfhD4DrEnL9WcVf0wbc5wumFR5sd5KeGE7KFrIiSI3vZM+F3DVAvtzP
+	 dvD1+Lwre/dTOi6HKKJpmyE460UjsjEh+NBStp3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 407/530] rcutorture: Fix stuttering races and other issues
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.5 337/491] jbd2: fix potential data lost in recovering journal raced with synchronizing fs bdev
 Date: Fri, 24 Nov 2023 17:49:33 +0000
-Message-ID: <20231124172040.447373281@linuxfoundation.org>
+Message-ID: <20231124172034.698888553@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
-References: <20231124172028.107505484@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,132 +54,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit cca42bd8eb1b54a4c9bbf48c79d120e66619a3e4 ]
+commit 61187fce8600e8ef90e601be84f9d0f3222c1206 upstream.
 
-The stuttering code isn't functioning as expected. Ideally, it should
-pause the torture threads for a designated period before resuming. Yet,
-it fails to halt the test for the correct duration. Additionally, a race
-condition exists, potentially causing the stuttering code to pause for
-an extended period if the 'spt' variable is non-zero due to the stutter
-orchestration thread's inadequate CPU time.
+JBD2 makes sure journal data is fallen on fs device by sync_blockdev(),
+however, other process could intercept the EIO information from bdev's
+mapping, which leads journal recovering successful even EIO occurs during
+data written back to fs device.
 
-Moreover, over-stuttering can hinder RCU's progress on TREE07 kernels.
-This happens as the stuttering code may run within a softirq due to RCU
-callbacks. Consequently, ksoftirqd keeps a CPU busy for several seconds,
-thus obstructing RCU's progress. This situation triggers a warning
-message in the logs:
+We found this problem in our product, iscsi + multipath is chosen for block
+device of ext4. Unstable network may trigger kpartx to rescan partitions in
+device mapper layer. Detailed process is shown as following:
 
-[ 2169.481783] rcu_torture_writer: rtort_pipe_count: 9
+  mount          kpartx          irq
+jbd2_journal_recover
+ do_one_pass
+  memcpy(nbh->b_data, obh->b_data) // copy data to fs dev from journal
+  mark_buffer_dirty // mark bh dirty
+         vfs_read
+	  generic_file_read_iter // dio
+	   filemap_write_and_wait_range
+	    __filemap_fdatawrite_range
+	     do_writepages
+	      block_write_full_folio
+	       submit_bh_wbc
+	            >>  EIO occurs in disk  <<
+	                     end_buffer_async_write
+			      mark_buffer_write_io_error
+			       mapping_set_error
+			        set_bit(AS_EIO, &mapping->flags) // set!
+	    filemap_check_errors
+	     test_and_clear_bit(AS_EIO, &mapping->flags) // clear!
+ err2 = sync_blockdev
+  filemap_write_and_wait
+   filemap_check_errors
+    test_and_clear_bit(AS_EIO, &mapping->flags) // false
+ err2 = 0
 
-This warning suggests that an RCU torture object, although invisible to
-RCU readers, couldn't make it past the pipe array and be freed -- a
-strong indication that there weren't enough grace periods during the
-stutter interval.
+Filesystem is mounted successfully even data from journal is failed written
+into disk, and ext4/ocfs2 could become corrupted.
 
-To address these issues, this patch sets the "stutter end" time to an
-absolute point in the future set by the main stutter thread. This is
-then used for waiting in stutter_wait(). While the stutter thread still
-defines this absolute time, the waiters' waiting logic doesn't rely on
-the stutter thread receiving sufficient CPU time to halt the stuttering
-as the halting is now self-controlled.
+Fix it by comparing the wb_err state in fs block device before recovering
+and after recovering.
 
+A reproducer can be found in the kernel bugzilla referenced below.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217888
 Cc: stable@vger.kernel.org
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230919012525.1783108-1-chengzhihao1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/torture.c | 45 ++++++++++++---------------------------------
- 1 file changed, 12 insertions(+), 33 deletions(-)
+ fs/jbd2/recovery.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/torture.c b/kernel/torture.c
-index e851b8e9390b3..c7b475883b9a8 100644
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -721,7 +721,7 @@ static void torture_shutdown_cleanup(void)
-  * suddenly applied to or removed from the system.
-  */
- static struct task_struct *stutter_task;
--static int stutter_pause_test;
-+static ktime_t stutter_till_abs_time;
- static int stutter;
- static int stutter_gap;
+--- a/fs/jbd2/recovery.c
++++ b/fs/jbd2/recovery.c
+@@ -289,6 +289,8 @@ int jbd2_journal_recover(journal_t *jour
+ 	journal_superblock_t *	sb;
  
-@@ -731,30 +731,16 @@ static int stutter_gap;
-  */
- bool stutter_wait(const char *title)
- {
--	unsigned int i = 0;
- 	bool ret = false;
--	int spt;
-+	ktime_t till_ns;
+ 	struct recovery_info	info;
++	errseq_t		wb_err;
++	struct address_space	*mapping;
  
- 	cond_resched_tasks_rcu_qs();
--	spt = READ_ONCE(stutter_pause_test);
--	for (; spt; spt = READ_ONCE(stutter_pause_test)) {
--		if (!ret && !rt_task(current)) {
--			sched_set_normal(current, MAX_NICE);
--			ret = true;
--		}
--		if (spt == 1) {
--			torture_hrtimeout_jiffies(1, NULL);
--		} else if (spt == 2) {
--			while (READ_ONCE(stutter_pause_test)) {
--				if (!(i++ & 0xffff))
--					torture_hrtimeout_us(10, 0, NULL);
--				cond_resched();
--			}
--		} else {
--			torture_hrtimeout_jiffies(round_jiffies_relative(HZ), NULL);
--		}
--		torture_shutdown_absorb(title);
-+	till_ns = READ_ONCE(stutter_till_abs_time);
-+	if (till_ns && ktime_before(ktime_get(), till_ns)) {
-+		torture_hrtimeout_ns(till_ns, 0, HRTIMER_MODE_ABS, NULL);
-+		ret = true;
+ 	memset(&info, 0, sizeof(info));
+ 	sb = journal->j_superblock;
+@@ -306,6 +308,9 @@ int jbd2_journal_recover(journal_t *jour
+ 		return 0;
  	}
-+	torture_shutdown_absorb(title);
- 	return ret;
- }
- EXPORT_SYMBOL_GPL(stutter_wait);
-@@ -765,23 +751,16 @@ EXPORT_SYMBOL_GPL(stutter_wait);
-  */
- static int torture_stutter(void *arg)
- {
--	DEFINE_TORTURE_RANDOM(rand);
--	int wtime;
-+	ktime_t till_ns;
  
- 	VERBOSE_TOROUT_STRING("torture_stutter task started");
- 	do {
- 		if (!torture_must_stop() && stutter > 1) {
--			wtime = stutter;
--			if (stutter > 2) {
--				WRITE_ONCE(stutter_pause_test, 1);
--				wtime = stutter - 3;
--				torture_hrtimeout_jiffies(wtime, &rand);
--				wtime = 2;
--			}
--			WRITE_ONCE(stutter_pause_test, 2);
--			torture_hrtimeout_jiffies(wtime, NULL);
-+			till_ns = ktime_add_ns(ktime_get(),
-+					       jiffies_to_nsecs(stutter));
-+			WRITE_ONCE(stutter_till_abs_time, till_ns);
-+			torture_hrtimeout_jiffies(stutter - 1, NULL);
- 		}
--		WRITE_ONCE(stutter_pause_test, 0);
- 		if (!torture_must_stop())
- 			torture_hrtimeout_jiffies(stutter_gap, NULL);
- 		torture_shutdown_absorb("torture_stutter");
--- 
-2.42.0
-
++	wb_err = 0;
++	mapping = journal->j_fs_dev->bd_inode->i_mapping;
++	errseq_check_and_advance(&mapping->wb_err, &wb_err);
+ 	err = do_one_pass(journal, &info, PASS_SCAN);
+ 	if (!err)
+ 		err = do_one_pass(journal, &info, PASS_REVOKE);
+@@ -329,6 +334,9 @@ int jbd2_journal_recover(journal_t *jour
+ 	err2 = sync_blockdev(journal->j_fs_dev);
+ 	if (!err)
+ 		err = err2;
++	err2 = errseq_check_and_advance(&mapping->wb_err, &wb_err);
++	if (!err)
++		err = err2;
+ 	/* Make sure all replayed data is on permanent storage */
+ 	if (journal->j_flags & JBD2_BARRIER) {
+ 		err2 = blkdev_issue_flush(journal->j_fs_dev);
 
 
 
