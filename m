@@ -1,57 +1,47 @@
-Return-Path: <stable+bounces-1433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263E67F7F9F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:43:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB44D7F7D5E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6F4028252F
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECFA51C212A0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C90733CD1;
-	Fri, 24 Nov 2023 18:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4E839FE1;
+	Fri, 24 Nov 2023 18:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z7Gj9TEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ve/m9bIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203A52E858;
-	Fri, 24 Nov 2023 18:43:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12139C433C7;
-	Fri, 24 Nov 2023 18:43:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB20B39FC2;
+	Fri, 24 Nov 2023 18:23:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F71C433C9;
+	Fri, 24 Nov 2023 18:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851386;
-	bh=XfGLfOIgKNcjrNSjNEBK5FWdw0y2NMMK6HCt/LP+kug=;
+	s=korg; t=1700850231;
+	bh=9HGQzBWWmtuI7dulWCSI8x86xfLjmTVyaPULy5OoyZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z7Gj9TEwZ+cnKCu2EW8FlsAo4J7eQZFc9y8RkjrRzajVFHTXXqtn/PPgSX7AR66hm
-	 pW7Pu/Qda5ONmcBBG37qZm4xVYD3gNZsR87fp9ZwN90Ka9E5cYTBQ7x6Q7zKlnXAzM
-	 +WVVPem9Pn+1dHhcPOkp6Un3f71/5k0XcesPJx8k=
+	b=Ve/m9bIEyXdav8ioDv8LBi2OT6u7E5QwhTSZujQAVJyFjr8O+KjqwYXnv9XknhHBe
+	 vK/hZRAIS085N4LlSRSTip2oK1pfG5RkHsSeevbCSy5lGhaVCirYGugano17tMTTCS
+	 g6n2B4Pv2pEhlHoNKNlOq6U9xGzrfcXWizjsoq4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Bo-Chen Chen <rex-bc.chen@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Jani Nikula <jani.nikula@intel.com>,
-	Chen-Yu Tsai <wenst@chromium.org>
-Subject: [PATCH 6.5 427/491] drm/mediatek/dp: fix memory leak on ->get_edid callback audio detection
-Date: Fri, 24 Nov 2023 17:51:03 +0000
-Message-ID: <20231124172037.441688419@linuxfoundation.org>
+	"J. Bruce Fields" <bfields@redhat.com>,
+	Max Kellermann <max.kellermann@ionos.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 6.6 498/530] ext4: apply umask if ACL support is disabled
+Date: Fri, 24 Nov 2023 17:51:04 +0000
+Message-ID: <20231124172043.308003893@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit dab12fa8d2bd3868cf2de485ed15a3feef28a13d upstream.
+commit 484fd6c1de13b336806a967908a927cc0356e312 upstream.
 
-The sads returned by drm_edid_to_sad() needs to be freed.
+The function ext4_init_acl() calls posix_acl_create() which is
+responsible for applying the umask.  But without
+CONFIG_EXT4_FS_POSIX_ACL, ext4_init_acl() is an empty inline function,
+and nobody applies the umask.
 
-Fixes: e71a8ebbe086 ("drm/mediatek: dp: Audio support for MT8195")
-Cc: Guillaume Ranquet <granquet@baylibre.com>
-Cc: Bo-Chen Chen <rex-bc.chen@mediatek.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc: Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: linux-mediatek@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230914155317.2511876-1-jani.nikula@intel.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+This fixes a bug which causes the umask to be ignored with O_TMPFILE
+on ext4:
+
+ https://github.com/MusicPlayerDaemon/MPD/issues/558
+ https://bugs.gentoo.org/show_bug.cgi?id=686142#c3
+ https://bugzilla.kernel.org/show_bug.cgi?id=203625
+
+Reviewed-by: "J. Bruce Fields" <bfields@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Link: https://lore.kernel.org/r/20230919081824.1096619-1-max.kellermann@ionos.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/ext4/acl.h |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -1983,7 +1983,6 @@ static struct edid *mtk_dp_get_edid(stru
- 	bool enabled = mtk_dp->enabled;
- 	struct edid *new_edid = NULL;
- 	struct mtk_dp_audio_cfg *audio_caps = &mtk_dp->info.audio_cur_cfg;
--	struct cea_sad *sads;
- 
- 	if (!enabled) {
- 		drm_atomic_bridge_chain_pre_enable(bridge, connector->state->state);
-@@ -2010,7 +2009,11 @@ static struct edid *mtk_dp_get_edid(stru
- 	}
- 
- 	if (new_edid) {
-+		struct cea_sad *sads;
+--- a/fs/ext4/acl.h
++++ b/fs/ext4/acl.h
+@@ -68,6 +68,11 @@ extern int ext4_init_acl(handle_t *, str
+ static inline int
+ ext4_init_acl(handle_t *handle, struct inode *inode, struct inode *dir)
+ {
++	/* usually, the umask is applied by posix_acl_create(), but if
++	   ext4 ACL support is disabled at compile time, we need to do
++	   it here, because posix_acl_create() will never be called */
++	inode->i_mode &= ~current_umask();
 +
- 		audio_caps->sad_count = drm_edid_to_sad(new_edid, &sads);
-+		kfree(sads);
-+
- 		audio_caps->detect_monitor = drm_detect_monitor_audio(new_edid);
- 	}
- 
+ 	return 0;
+ }
+ #endif  /* CONFIG_EXT4_FS_POSIX_ACL */
 
 
 
