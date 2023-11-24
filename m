@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-1832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F767F8191
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:59:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 934897F8008
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:46:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEEA51C218F3
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:59:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4FED1C21435
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:46:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D7B364A5;
-	Fri, 24 Nov 2023 18:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E5D37170;
+	Fri, 24 Nov 2023 18:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xstE6kbJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkmNMZUt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34A933076;
-	Fri, 24 Nov 2023 18:59:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB075C433C7;
-	Fri, 24 Nov 2023 18:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05F5364C1;
+	Fri, 24 Nov 2023 18:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07158C433C8;
+	Fri, 24 Nov 2023 18:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852382;
-	bh=3au6NInuJNzXRVnYPhjFDTXU3LZor+61XBxvaBVVcR0=;
+	s=korg; t=1700851568;
+	bh=agN2MhSdkCDy6VZ4ZRF6xgiSPGw+2Pzk4c0Q1sglx8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xstE6kbJJprq10XN5AxCojS7nSobO6HcK2WtLkDJ1nrXu0U75av0sbqRviX+RRU3W
-	 ZqJH4HzSDt+WVmnuBfnD74xJCYAKuQza2OWZm7TtuF0qTca5gyl/9wbgr8g33Y9HKC
-	 MmCr0pMpk3Da1xCFXXKRYsGmX0uYbVLRTqqK+jYI=
+	b=LkmNMZUt7ilHQdAYwJ3aHHFToTP2PPNUFoXHShefa4JUzWY6Qa/PsqLwdBF+IHmjD
+	 8a4Nm2NdxS5An6I5TRcfNt67/fUZ0FnE4/nOIRSmWmo7mK0okGlaNwbHDuBT+RLsh3
+	 cw3XqrV8n/NRSCyHCR0Cx0T28JLDmM1j6VwekMKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Christoph Lameter <cl@linux.com>,
-	Shakeel Butt <shakeelb@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 334/372] mm: kmem: drop __GFP_NOFAIL when allocating objcg vectors
-Date: Fri, 24 Nov 2023 17:52:01 +0000
-Message-ID: <20231124172021.518691014@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Fangzhi Zuo <jerry.zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.5 486/491] drm/amd/display: Fix DSC not Enabled on Direct MST Sink
+Date: Fri, 24 Nov 2023 17:52:02 +0000
+Message-ID: <20231124172039.236447914@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,57 +56,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Gushchin <roman.gushchin@linux.dev>
+From: Fangzhi Zuo <jerry.zuo@amd.com>
 
-commit 24948e3b7b12e0031a6edb4f49bbb9fb2ad1e4e9 upstream.
+commit a58555359a9f870543aaddef277c3396159895ce upstream.
 
-Objcg vectors attached to slab pages to store slab object ownership
-information are allocated using gfp flags for the original slab
-allocation.  Depending on slab page order and the size of slab objects,
-objcg vector can take several pages.
+[WHY & HOW]
+For the scenario when a dsc capable MST sink device is directly
+connected, it needs to use max dsc compression as the link bw constraint.
 
-If the original allocation was done with the __GFP_NOFAIL flag, it
-triggered a warning in the page allocation code.  Indeed, order > 1 pages
-should not been allocated with the __GFP_NOFAIL flag.
-
-Fix this by simply dropping the __GFP_NOFAIL flag when allocating the
-objcg vector.  It effectively allows to skip the accounting of a single
-slab object under a heavy memory pressure.
-
-An alternative would be to implement the mechanism to fallback to order-0
-allocations for accounting metadata, which is also not perfect because it
-will increase performance penalty and memory footprint of the kernel
-memory accounting under memory pressure.
-
-Link: https://lkml.kernel.org/r/ZUp8ZFGxwmCx4ZFr@P9FQF9L96D.corp.robot.car
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
-Reported-by: Christoph Lameter <cl@linux.com>
-Closes: https://lkml.kernel.org/r/6b42243e-f197-600a-5d22-56bd728a5ad8@gentwo.org
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Roman Li <roman.li@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memcontrol.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   29 +++++-------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2854,7 +2854,8 @@ static void commit_charge(struct folio *
-  * Moreover, it should not come from DMA buffer and is not readily
-  * reclaimable. So those GFP bits should be masked off.
-  */
--#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | __GFP_ACCOUNT)
-+#define OBJCGS_CLEAR_MASK	(__GFP_DMA | __GFP_RECLAIMABLE | \
-+				 __GFP_ACCOUNT | __GFP_NOFAIL)
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1591,31 +1591,31 @@ enum dc_status dm_dp_mst_is_port_support
+ 	unsigned int upper_link_bw_in_kbps = 0, down_link_bw_in_kbps = 0;
+ 	unsigned int max_compressed_bw_in_kbps = 0;
+ 	struct dc_dsc_bw_range bw_range = {0};
+-	struct drm_dp_mst_topology_mgr *mst_mgr;
++	uint16_t full_pbn = aconnector->mst_output_port->full_pbn;
  
- /*
-  * mod_objcg_mlstate() may be called with irq enabled, so
+ 	/*
+-	 * check if the mode could be supported if DSC pass-through is supported
+-	 * AND check if there enough bandwidth available to support the mode
+-	 * with DSC enabled.
++	 * Consider the case with the depth of the mst topology tree is equal or less than 2
++	 * A. When dsc bitstream can be transmitted along the entire path
++	 *    1. dsc is possible between source and branch/leaf device (common dsc params is possible), AND
++	 *    2. dsc passthrough supported at MST branch, or
++	 *    3. dsc decoding supported at leaf MST device
++	 *    Use maximum dsc compression as bw constraint
++	 * B. When dsc bitstream cannot be transmitted along the entire path
++	 *    Use native bw as bw constraint
+ 	 */
+ 	if (is_dsc_common_config_possible(stream, &bw_range) &&
+-	    aconnector->mst_output_port->passthrough_aux) {
+-		mst_mgr = aconnector->mst_output_port->mgr;
+-		mutex_lock(&mst_mgr->lock);
+-
++	   (aconnector->mst_output_port->passthrough_aux ||
++	    aconnector->dsc_aux == &aconnector->mst_output_port->aux)) {
+ 		cur_link_settings = stream->link->verified_link_cap;
+ 
+ 		upper_link_bw_in_kbps = dc_link_bandwidth_kbps(aconnector->dc_link,
+-							       &cur_link_settings
+-							       );
+-		down_link_bw_in_kbps = kbps_from_pbn(aconnector->mst_output_port->full_pbn);
++							       &cur_link_settings);
++		down_link_bw_in_kbps = kbps_from_pbn(full_pbn);
+ 
+ 		/* pick the bottleneck */
+ 		end_to_end_bw_in_kbps = min(upper_link_bw_in_kbps,
+ 					    down_link_bw_in_kbps);
+ 
+-		mutex_unlock(&mst_mgr->lock);
+-
+ 		/*
+ 		 * use the maximum dsc compression bandwidth as the required
+ 		 * bandwidth for the mode
+@@ -1630,8 +1630,7 @@ enum dc_status dm_dp_mst_is_port_support
+ 		/* check if mode could be supported within full_pbn */
+ 		bpp = convert_dc_color_depth_into_bpc(stream->timing.display_color_depth) * 3;
+ 		pbn = drm_dp_calc_pbn_mode(stream->timing.pix_clk_100hz / 10, bpp, false);
+-
+-		if (pbn > aconnector->mst_output_port->full_pbn)
++		if (pbn > full_pbn)
+ 			return DC_FAIL_BANDWIDTH_VALIDATE;
+ 	}
+ 
 
 
 
