@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73AD27F7332
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EDD3D7F7334
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 12:56:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13FB5B210F6
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D868B21359
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 11:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569C5200DA;
-	Fri, 24 Nov 2023 11:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2A7200DE;
+	Fri, 24 Nov 2023 11:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oohSfJJl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axrsO/4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12513200B2
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931A9C433C7;
-	Fri, 24 Nov 2023 11:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA77200BF
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 11:56:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1620AC433C8;
+	Fri, 24 Nov 2023 11:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700827009;
-	bh=+8M9S6UZvEKwXaDnHGlLNySgu9Zs7CIBRoG6hpwAZj8=;
+	s=korg; t=1700827012;
+	bh=QF7XeGg/iCdn1i1V1CPffGFUMOa3tLdn0qvZSO40ZF8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=oohSfJJlJ6ea74TwBefqh9M3yNNTmUTEYqI/lC7FK0cdA4BQj/IMBkE8R+RyWhZoP
-	 PSlcmzUFI5M1Sjah2ou6joekXXp74ex7JSo/qg0Ait6F1jRWqXdmF+NOg0dmS7zH2j
-	 EG1mgC/FpniapBs4xf2pXuE0Gi+ro/e6KROvQlaI=
-Subject: FAILED: patch "[PATCH] cifs: fix leak of iface for primary channel" failed to apply to 6.1-stable tree
+	b=axrsO/4Az/K/T8tBvkUyvd6Jblx12zIfRc35sFOTAUG9cTUQ7pGx5vj5Cf/5hGefY
+	 rt98/pLHaKOeXavTppSZxFD2Yu1fvQSeTZmYJ6MMN0uNNXiabSEJUYm5IHONoslNGZ
+	 WvpKjmoIu8JgeF03DpDUhx7mdTuTKU7IqixW66SY=
+Subject: FAILED: patch "[PATCH] cifs: fix leak of iface for primary channel" failed to apply to 5.15-stable tree
 To: sprasad@microsoft.com,pc@manguebit.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 24 Nov 2023 11:56:34 +0000
-Message-ID: <2023112434-hexagon-sector-8318@gregkh>
+Date: Fri, 24 Nov 2023 11:56:35 +0000
+Message-ID: <2023112435-unfazed-idealism-5925@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 29954d5b1e0d67a4cd61c30c2201030c97e94b1e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112434-hexagon-sector-8318@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112435-unfazed-idealism-5925@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
