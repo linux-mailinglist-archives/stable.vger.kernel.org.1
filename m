@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5988F7F7AAE
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:57:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0597F8100
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B4511C20988
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 17:57:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57A71282645
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D384739FC3;
-	Fri, 24 Nov 2023 17:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB8633E9;
+	Fri, 24 Nov 2023 18:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z16DMOoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBpHTUml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973BA381D6;
-	Fri, 24 Nov 2023 17:57:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E059CC433C8;
-	Fri, 24 Nov 2023 17:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ECE2D787;
+	Fri, 24 Nov 2023 18:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8B4C433C8;
+	Fri, 24 Nov 2023 18:54:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700848653;
-	bh=74vYEUsJ8cmkqtOHJ8EwX2VvxoGrP4Z+usdCqyMv5zQ=;
+	s=korg; t=1700852087;
+	bh=/1cxiWP5hlG3eKLOFWff0q5dhvPaYVh76TY07gzUNx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z16DMOoU7WdXQgjP7KBKf0dZp0UZLyujO952NHtisJEsCMP6JlSE/QNNYBmkDF0Hc
-	 QcwY6mS2zK3oXvHKpN4tRA3KKvcT1qRRsIYJbKV2SA6zUKIPEmyIug0++r9SvOLLo/
-	 bDNA4xaKAa8K/C/gSVrpCitgV9VmiMJUs0MwQIj8=
+	b=xBpHTUml/ymX21D9UcmfvTih4yu/KMbF1umYmu4aqk1v2CFWrEOKbiqJCYuD4Nfvn
+	 tG/2u05YCgkKV+kJvYlHQoEAs+VzpYlRljsjpQrq+UErAOkq8opXDgVu4/Ejuyh2ni
+	 Kr8WRhENGDVP3W/egt55hT66XKSDLc1Z97LRuf7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Yang <yiyang13@huawei.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 28/97] tty: vcc: Add check for kstrdup() in vcc_probe()
+	Nitin Yadav <n-yadav@ti.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 214/372] mmc: sdhci_am654: fix start loop index for TAP value parsing
 Date: Fri, 24 Nov 2023 17:50:01 +0000
-Message-ID: <20231124171935.192935239@linuxfoundation.org>
+Message-ID: <20231124172017.609808290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124171934.122298957@linuxfoundation.org>
-References: <20231124171934.122298957@linuxfoundation.org>
+In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
+References: <20231124172010.413667921@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,81 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Nitin Yadav <n-yadav@ti.com>
 
-[ Upstream commit d81ffb87aaa75f842cd7aa57091810353755b3e6 ]
+commit 71956d0cb56c1e5f9feeb4819db87a076418e930 upstream.
 
-Add check for the return value of kstrdup() and return the error, if it
-fails in order to avoid NULL pointer dereference.
+ti,otap-del-sel-legacy/ti,itap-del-sel-legacy passed from DT
+are currently ignored for all SD/MMC and eMMC modes. Fix this
+by making start loop index to MMC_TIMING_LEGACY.
 
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230904035220.48164-1-yiyang13@huawei.com
+Fixes: 8ee5fc0e0b3b ("mmc: sdhci_am654: Update OTAPDLY writes")
+Signed-off-by: Nitin Yadav <n-yadav@ti.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231026061458.1116276-1-n-yadav@ti.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vcc.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci_am654.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/vcc.c b/drivers/tty/vcc.c
-index 10a832a2135e2..31ecba1133159 100644
---- a/drivers/tty/vcc.c
-+++ b/drivers/tty/vcc.c
-@@ -586,18 +586,22 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 		return -ENOMEM;
- 
- 	name = kstrdup(dev_name(&vdev->dev), GFP_KERNEL);
-+	if (!name) {
-+		rv = -ENOMEM;
-+		goto free_port;
-+	}
- 
- 	rv = vio_driver_init(&port->vio, vdev, VDEV_CONSOLE_CON, vcc_versions,
- 			     ARRAY_SIZE(vcc_versions), NULL, name);
- 	if (rv)
--		goto free_port;
-+		goto free_name;
- 
- 	port->vio.debug = vcc_dbg_vio;
- 	vcc_ldc_cfg.debug = vcc_dbg_ldc;
- 
- 	rv = vio_ldc_alloc(&port->vio, &vcc_ldc_cfg, port);
- 	if (rv)
--		goto free_port;
-+		goto free_name;
- 
- 	spin_lock_init(&port->lock);
- 
-@@ -631,6 +635,11 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 		goto unreg_tty;
+--- a/drivers/mmc/host/sdhci_am654.c
++++ b/drivers/mmc/host/sdhci_am654.c
+@@ -597,7 +597,7 @@ static int sdhci_am654_get_otap_delay(st
+ 		return 0;
  	}
- 	port->domain = kstrdup(domain, GFP_KERNEL);
-+	if (!port->domain) {
-+		rv = -ENOMEM;
-+		goto unreg_tty;
-+	}
-+
  
- 	mdesc_release(hp);
+-	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
++	for (i = MMC_TIMING_LEGACY; i <= MMC_TIMING_MMC_HS400; i++) {
  
-@@ -660,8 +669,9 @@ static int vcc_probe(struct vio_dev *vdev, const struct vio_device_id *id)
- 	vcc_table_remove(port->index);
- free_ldc:
- 	vio_ldc_free(&port->vio);
--free_port:
-+free_name:
- 	kfree(name);
-+free_port:
- 	kfree(port);
- 
- 	return rv;
--- 
-2.42.0
-
+ 		ret = device_property_read_u32(dev, td[i].otap_binding,
+ 					       &sdhci_am654->otap_del_sel[i]);
 
 
 
