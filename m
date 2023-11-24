@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-1612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561C57F808A
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:50:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F94D7F7EC8
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1199B2811A5
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:50:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B95821C213F0
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C7C33CC7;
-	Fri, 24 Nov 2023 18:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ECA33CC7;
+	Fri, 24 Nov 2023 18:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BlfqS/Ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eo9zZLKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512B82FC4E;
-	Fri, 24 Nov 2023 18:50:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D034BC433C8;
-	Fri, 24 Nov 2023 18:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E835F04;
+	Fri, 24 Nov 2023 18:36:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B4AC433C8;
+	Fri, 24 Nov 2023 18:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851836;
-	bh=27RnbItsDWyqIsFQjTCJQR/kcMZ6iMNHExsYnwl0fjo=;
+	s=korg; t=1700850960;
+	bh=Gp9sHQxM8e43PLWRSglQdxf9T1xLIXIRryjn1Ql+b38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BlfqS/JuFzN3+DW3o3nyRFMExFNMGsKU7vHbMK0st4Sy20JULZcukmFpaA4yw9xXo
-	 BzwOAmzbLGGBKGlsN5VqXDLDZYPLYDTifwooraC5d1oW2MQwQkHUE2zxUit4AJIoiA
-	 YMIDGl9EO9Ys1GHchVMKYgoL7naOfldeGRKe/GGQ=
+	b=Eo9zZLKAiZOjTlvhgbpasDTZyMoNsxRX3GHVByPjDJ6XbICrrXeHOfeuIw7+wYgTV
+	 07LX3iMkstGi0wxIDRgOhRBB0Qean24TNkSmBCbqGCyR/HbfJLnZesV1fnTIQbzRhm
+	 SwsVWtkuaPvV+X3LZO8kTJRQmEbZPUWOeVb2GsdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/372] kgdb: Flush console before entering kgdb on panic
+	SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.5 258/491] mm/damon/sysfs: update monitoring target regions for online input commit
 Date: Fri, 24 Nov 2023 17:48:14 +0000
-Message-ID: <20231124172014.067905682@linuxfoundation.org>
+Message-ID: <20231124172032.321755561@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
+References: <20231124172024.664207345@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,64 +52,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit dd712d3d45807db9fcae28a522deee85c1f2fde6 ]
+commit 9732336006764e2ee61225387e3c70eae9139035 upstream.
 
-When entering kdb/kgdb on a kernel panic, it was be observed that the
-console isn't flushed before the `kdb` prompt came up. Specifically,
-when using the buddy lockup detector on arm64 and running:
-  echo HARDLOCKUP > /sys/kernel/debug/provoke-crash/DIRECT
+When user input is committed online, DAMON sysfs interface is ignoring the
+user input for the monitoring target regions.  Such request is valid and
+useful for fixed monitoring target regions-based monitoring ops like
+'paddr' or 'fvaddr'.
 
-I could see:
-  [   26.161099] lkdtm: Performing direct entry HARDLOCKUP
-  [   32.499881] watchdog: Watchdog detected hard LOCKUP on cpu 6
-  [   32.552865] Sending NMI from CPU 5 to CPUs 6:
-  [   32.557359] NMI backtrace for cpu 6
-  ... [backtrace for cpu 6] ...
-  [   32.558353] NMI backtrace for cpu 5
-  ... [backtrace for cpu 5] ...
-  [   32.867471] Sending NMI from CPU 5 to CPUs 0-4,7:
-  [   32.872321] NMI backtrace forP cpuANC: Hard LOCKUP
+Update the region boundaries as user specified, too.  Note that the
+monitoring results of the regions that overlap between the latest
+monitoring target regions and the new target regions are preserved.
 
-  Entering kdb (current=..., pid 0) on processor 5 due to Keyboard Entry
-  [5]kdb>
+Treat empty monitoring target regions user request as a request to just
+make no change to the monitoring target regions.  Otherwise, users should
+set the monitoring target regions same to current one for every online
+input commit, and it could be challenging for dynamic monitoring target
+regions update DAMON ops like 'vaddr'.  If the user really need to remove
+all monitoring target regions, they can simply remove the target and then
+create the target again with empty target regions.
 
-As you can see, backtraces for the other CPUs start printing and get
-interleaved with the kdb PANIC print.
-
-Let's replicate the commands to flush the console in the kdb panic
-entry point to avoid this.
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20230822131945.1.I5b460ae8f954e4c4f628a373d6e74713c06dd26f@changeid
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231031170131.46972-1-sj@kernel.org
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: <stable@vger.kernel.org>	[5.19+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/debug/debug_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/sysfs.c |   47 ++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 30 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/debug/debug_core.c b/kernel/debug/debug_core.c
-index d5e9ccde3ab8e..3a904d8697c8f 100644
---- a/kernel/debug/debug_core.c
-+++ b/kernel/debug/debug_core.c
-@@ -1006,6 +1006,9 @@ void kgdb_panic(const char *msg)
- 	if (panic_timeout)
- 		return;
+--- a/mm/damon/sysfs.c
++++ b/mm/damon/sysfs.c
+@@ -1144,34 +1144,47 @@ destroy_targets_out:
+ 	return err;
+ }
  
-+	debug_locks_off();
-+	console_flush_on_panic(CONSOLE_FLUSH_PENDING);
+-static int damon_sysfs_update_target(struct damon_target *target,
+-		struct damon_ctx *ctx,
+-		struct damon_sysfs_target *sys_target)
++static int damon_sysfs_update_target_pid(struct damon_target *target, int pid)
+ {
+-	struct pid *pid;
+-	struct damon_region *r, *next;
+-
+-	if (!damon_target_has_pid(ctx))
+-		return 0;
++	struct pid *pid_new;
+ 
+-	pid = find_get_pid(sys_target->pid);
+-	if (!pid)
++	pid_new = find_get_pid(pid);
++	if (!pid_new)
+ 		return -EINVAL;
+ 
+-	/* no change to the target */
+-	if (pid == target->pid) {
+-		put_pid(pid);
++	if (pid_new == target->pid) {
++		put_pid(pid_new);
+ 		return 0;
+ 	}
+ 
+-	/* remove old monitoring results and update the target's pid */
+-	damon_for_each_region_safe(r, next, target)
+-		damon_destroy_region(r, target);
+ 	put_pid(target->pid);
+-	target->pid = pid;
++	target->pid = pid_new;
+ 	return 0;
+ }
+ 
++static int damon_sysfs_update_target(struct damon_target *target,
++		struct damon_ctx *ctx,
++		struct damon_sysfs_target *sys_target)
++{
++	int err;
 +
- 	if (dbg_kdb_mode)
- 		kdb_printf("PANIC: %s\n", msg);
- 
--- 
-2.42.0
-
++	if (damon_target_has_pid(ctx)) {
++		err = damon_sysfs_update_target_pid(target, sys_target->pid);
++		if (err)
++			return err;
++	}
++
++	/*
++	 * Do monitoring target region boundary update only if one or more
++	 * regions are set by the user.  This is for keeping current monitoring
++	 * target results and range easier, especially for dynamic monitoring
++	 * target regions update ops like 'vaddr'.
++	 */
++	if (sys_target->regions->nr)
++		err = damon_sysfs_set_regions(target, sys_target->regions);
++	return err;
++}
++
+ static int damon_sysfs_set_targets(struct damon_ctx *ctx,
+ 		struct damon_sysfs_targets *sysfs_targets)
+ {
 
 
 
