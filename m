@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-2262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00B527F8370
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:17:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6494A7F83F7
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:22:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B05762880D7
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:17:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06034B2750E
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E144381CB;
-	Fri, 24 Nov 2023 19:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AD93306F;
+	Fri, 24 Nov 2023 19:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stuMmpcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ycoq4Vno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0154863A1;
-	Fri, 24 Nov 2023 19:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8630FC433C7;
-	Fri, 24 Nov 2023 19:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15DAC2C1A2;
+	Fri, 24 Nov 2023 19:22:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99122C433C8;
+	Fri, 24 Nov 2023 19:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853453;
-	bh=ozJky5FNDmY23PA33QfaEOYNUOzvjl/DAHIwe0QjLis=;
+	s=korg; t=1700853760;
+	bh=vJ/PkprCH+8/aCO8UKP64MvzfV1xXLuwG8rQu/zEV5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stuMmpcpUQv47g6Hr3PeF7UlEex4omTr9FfzkFmVkgjwuQyI8UdWCZioSXNe127X7
-	 dPhRjXt0ZfZ5SbWQow196YDbjh4SaQzez2p3zciOXxI9EpyKUhK7biI8Aca0uFi//s
-	 mn6xavh8u1e0D09Ov1+T7q1qJ8a7Y7zy/7glizoA=
+	b=Ycoq4VnogywFPQTl3w3D0DLjqOZJ/GDcMQmMbxwty8SrAJ9vp6pL77joK3qCa6Lvs
+	 8wRjaIQEcme04WK/kHoCXU0KsdREBt2QUvYiZaTZmbfPzi85qH08bRMqiG5w8aPfS1
+	 S4n3WYLDX+mklCZiIS93p264GrKMTDxEBJc5bNlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.15 195/297] firmware: qcom_scm: use 64-bit calling convention only when client is 64-bit
+	Lu Jialin <lujialin4@huawei.com>,
+	Guo Zihua <guozihua@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 020/159] crypto: pcrypt - Fix hungtask for PADATA_RESET
 Date: Fri, 24 Nov 2023 17:53:57 +0000
-Message-ID: <20231124172007.037315275@linuxfoundation.org>
+Message-ID: <20231124171942.701924461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +54,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
+From: Lu Jialin <lujialin4@huawei.com>
 
-commit 3337a6fea25370d3d244ec6bb38c71ee86fcf837 upstream.
+[ Upstream commit 8f4f68e788c3a7a696546291258bfa5fdb215523 ]
 
-Per the "SMC calling convention specification", the 64-bit calling
-convention can only be used when the client is 64-bit. Whereas the
-32-bit calling convention can be used by either a 32-bit or a 64-bit
-client.
+We found a hungtask bug in test_aead_vec_cfg as follows:
 
-Currently during SCM probe, irrespective of the client, 64-bit calling
-convention is made, which is incorrect and may lead to the undefined
-behaviour when the client is 32-bit. Let's fix it.
+INFO: task cryptomgr_test:391009 blocked for more than 120 seconds.
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+Call trace:
+ __switch_to+0x98/0xe0
+ __schedule+0x6c4/0xf40
+ schedule+0xd8/0x1b4
+ schedule_timeout+0x474/0x560
+ wait_for_common+0x368/0x4e0
+ wait_for_completion+0x20/0x30
+ wait_for_completion+0x20/0x30
+ test_aead_vec_cfg+0xab4/0xd50
+ test_aead+0x144/0x1f0
+ alg_test_aead+0xd8/0x1e0
+ alg_test+0x634/0x890
+ cryptomgr_test+0x40/0x70
+ kthread+0x1e0/0x220
+ ret_from_fork+0x10/0x18
+ Kernel panic - not syncing: hung_task: blocked tasks
 
-Cc: stable@vger.kernel.org
-Fixes: 9a434cee773a ("firmware: qcom_scm: Dynamically support SMCCC and legacy conventions")
-Reviewed-By: Elliot Berman <quic_eberman@quicinc.com>
-Signed-off-by: Kathiravan Thirumoorthy <quic_kathirav@quicinc.com>
-Link: https://lore.kernel.org/r/20230925-scm-v3-1-8790dff6a749@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For padata_do_parallel, when the return err is 0 or -EBUSY, it will call
+wait_for_completion(&wait->completion) in test_aead_vec_cfg. In normal
+case, aead_request_complete() will be called in pcrypt_aead_serial and the
+return err is 0 for padata_do_parallel. But, when pinst->flags is
+PADATA_RESET, the return err is -EBUSY for padata_do_parallel, and it
+won't call aead_request_complete(). Therefore, test_aead_vec_cfg will
+hung at wait_for_completion(&wait->completion), which will cause
+hungtask.
+
+The problem comes as following:
+(padata_do_parallel)                 |
+    rcu_read_lock_bh();              |
+    err = -EINVAL;                   |   (padata_replace)
+                                     |     pinst->flags |= PADATA_RESET;
+    err = -EBUSY                     |
+    if (pinst->flags & PADATA_RESET) |
+        rcu_read_unlock_bh()         |
+        return err
+
+In order to resolve the problem, we replace the return err -EBUSY with
+-EAGAIN, which means parallel_data is changing, and the caller should call
+it again.
+
+v3:
+remove retry and just change the return err.
+v2:
+introduce padata_try_do_parallel() in pcrypt_aead_encrypt and
+pcrypt_aead_decrypt to solve the hungtask.
+
+Signed-off-by: Lu Jialin <lujialin4@huawei.com>
+Signed-off-by: Guo Zihua <guozihua@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom_scm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ crypto/pcrypt.c | 4 ++++
+ kernel/padata.c | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/qcom_scm.c
-+++ b/drivers/firmware/qcom_scm.c
-@@ -137,6 +137,12 @@ static enum qcom_scm_convention __get_co
- 		return qcom_scm_convention;
+diff --git a/crypto/pcrypt.c b/crypto/pcrypt.c
+index 276d2fd9e911c..63e64164900e8 100644
+--- a/crypto/pcrypt.c
++++ b/crypto/pcrypt.c
+@@ -118,6 +118,8 @@ static int pcrypt_aead_encrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psenc, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
++	if (err == -EBUSY)
++		return -EAGAIN;
  
- 	/*
-+	 * Per the "SMC calling convention specification", the 64-bit calling
-+	 * convention can only be used when the client is 64-bit, otherwise
-+	 * system will encounter the undefined behaviour.
-+	 */
-+#if IS_ENABLED(CONFIG_ARM64)
-+	/*
- 	 * Device isn't required as there is only one argument - no device
- 	 * needed to dma_map_single to secure world
- 	 */
-@@ -156,6 +162,7 @@ static enum qcom_scm_convention __get_co
- 		forced = true;
- 		goto found;
+ 	return err;
+ }
+@@ -165,6 +167,8 @@ static int pcrypt_aead_decrypt(struct aead_request *req)
+ 	err = padata_do_parallel(ictx->psdec, padata, &ctx->cb_cpu);
+ 	if (!err)
+ 		return -EINPROGRESS;
++	if (err == -EBUSY)
++		return -EAGAIN;
+ 
+ 	return err;
+ }
+diff --git a/kernel/padata.c b/kernel/padata.c
+index 92a4867e8adc7..a544da60014c0 100644
+--- a/kernel/padata.c
++++ b/kernel/padata.c
+@@ -130,7 +130,7 @@ int padata_do_parallel(struct padata_shell *ps,
+ 		*cb_cpu = cpu;
  	}
-+#endif
  
- 	probed_convention = SMC_CONVENTION_ARM_32;
- 	ret = __scm_smc_call(NULL, &desc, probed_convention, &res, true);
+-	err =  -EBUSY;
++	err = -EBUSY;
+ 	if ((pinst->flags & PADATA_RESET))
+ 		goto out;
+ 
+-- 
+2.42.0
+
 
 
 
