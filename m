@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-1389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942A17F7F69
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:41:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372E37F7D37
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92B221C2148E
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:41:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91312B21255
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74DD2D626;
-	Fri, 24 Nov 2023 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC95C3A8C5;
+	Fri, 24 Nov 2023 18:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PnsCSfeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k97vKQeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45BC3364C1;
-	Fri, 24 Nov 2023 18:41:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662D4C433C7;
-	Fri, 24 Nov 2023 18:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794FD364A4;
+	Fri, 24 Nov 2023 18:22:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BD7C433C8;
+	Fri, 24 Nov 2023 18:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700851276;
-	bh=edA7UZgMafqxNwxcSL6rZml4ZAa2f4BY74e/8VcxlcA=;
+	s=korg; t=1700850147;
+	bh=GjEmLTpQjn2vhJdMZD4h221O8o96vR5coAjZB9xxe7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PnsCSfeY/5DVtjTMoWRnhW6OOBTUP0RVRupujBCrIU4x2vPJ4Yik82F7Z9OJpvr0+
-	 or7rMDoA94aOvGnt6Kpkk6lmKjSS6leZRnZrC9QEdgaeMUHPxLflAiEJ3d7B++XF2n
-	 +slCu7+vDleWR3M+uyLAcKJXVaQhXpnzrMWSa1hQ=
+	b=k97vKQebPRSiFMwTlTf2lOr6fhVxBLKpyADptAsSBkJEyf6FnRPRSrwhAi6jxO2J+
+	 CcAjzYCiVzJ48qyFytLpfdZuzqeVS//k4OLfq0ISZC4iOzEKjzErGA0oVqSceWbXs3
+	 oOCeMaCFR7dfCupNmCi7u5z07ZbCKPX09ocKIFJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.5 358/491] i3c: master: svc: fix wrong data return when IBI happen during start frame
+	Shyam Prasad N <sprasad@microsoft.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 428/530] cifs: do not pass cifs_sb when trying to add channels
 Date: Fri, 24 Nov 2023 17:49:54 +0000
-Message-ID: <20231124172035.332119848@linuxfoundation.org>
+Message-ID: <20231124172041.106485916@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172024.664207345@linuxfoundation.org>
-References: <20231124172024.664207345@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +51,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 5e5e3c92e748a6d859190e123b9193cf4911fcca upstream.
+commit 9599d59eb8fc0c0fd9480c4f22901533d08965ee upstream.
 
-     ┌─────┐     ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┏──┐  ┌─────
-SCL: ┘     └─────┛  └──┛  └──┛  └──┛  └──┛  └──┛  └──┛  └──┛  └──┘
-     ───┐                       ┌─────┐     ┌─────┐     ┌───────────┐
-SDA:    └───────────────────────┘     └─────┘     └─────┘           └─────
-     xxx╱    ╲╱                                        ╲╱    ╲╱    ╲╱    ╲
-   : xxx╲IBI ╱╲               Addr(0x0a)               ╱╲ RW ╱╲NACK╱╲ S  ╱
+The only reason why cifs_sb gets passed today to cifs_try_adding_channels
+is to pass the local_nls field for the new channels and binding session.
+However, the ses struct already has local_nls field that is setup during
+the first cifs_setup_session. So there is no need to pass cifs_sb.
 
-If an In-Band Interrupt (IBI) occurs and IBI work thread is not immediately
-scheduled, when svc_i3c_master_priv_xfers() initiates the I3C transfer and
-attempts to send address 0x7e, the target interprets it as an
-IBI handler and returns the target address 0x0a.
+This change removes cifs_sb from the arg list for this and the functions
+that it calls and uses ses->local_nls instead.
 
-However, svc_i3c_master_priv_xfers() does not handle this case and proceeds
-with other transfers, resulting in incorrect data being returned.
-
-Add IBIWON check in svc_i3c_master_xfer(). In case this situation occurs,
-return a failure to the driver.
-
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20231023161658.3890811-3-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ fs/smb/client/cifsproto.h |    2 +-
+ fs/smb/client/connect.c   |    2 +-
+ fs/smb/client/sess.c      |   12 ++++++------
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1011,6 +1011,9 @@ static int svc_i3c_master_xfer(struct sv
- 	u32 reg;
- 	int ret;
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -610,7 +610,7 @@ void cifs_free_hash(struct shash_desc **
  
-+	/* clean SVC_I3C_MINT_IBIWON w1c bits */
-+	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
-+
- 	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
- 	       xfer_type |
- 	       SVC_I3C_MCTRL_IBIRESP_NACK |
-@@ -1028,6 +1031,23 @@ static int svc_i3c_master_xfer(struct sv
- 		ret = -ENXIO;
- 		goto emit_stop;
- 	}
-+
-+	/*
-+	 * According to I3C spec ver 1.1.1, 5.1.2.2.3 Consequence of Controller Starting a Frame
-+	 * with I3C Target Address.
-+	 *
-+	 * The I3C Controller normally should start a Frame, the Address may be arbitrated, and so
-+	 * the Controller shall monitor to see whether an In-Band Interrupt request, a Controller
-+	 * Role Request (i.e., Secondary Controller requests to become the Active Controller), or
-+	 * a Hot-Join Request has been made.
-+	 *
-+	 * If missed IBIWON check, the wrong data will be return. When IBIWON happen, return failure
-+	 * and yield the above events handler.
-+	 */
-+	if (SVC_I3C_MSTATUS_IBIWON(reg)) {
-+		ret = -ENXIO;
-+		goto emit_stop;
-+	}
+ struct cifs_chan *
+ cifs_ses_find_chan(struct cifs_ses *ses, struct TCP_Server_Info *server);
+-int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses);
++int cifs_try_adding_channels(struct cifs_ses *ses);
+ bool is_server_using_iface(struct TCP_Server_Info *server,
+ 			   struct cifs_server_iface *iface);
+ bool is_ses_using_iface(struct cifs_ses *ses, struct cifs_server_iface *iface);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3561,7 +3561,7 @@ int cifs_mount(struct cifs_sb_info *cifs
+ 	ctx->prepath = NULL;
  
- 	if (rnw)
- 		ret = svc_i3c_master_read(master, in, xfer_len);
+ out:
+-	cifs_try_adding_channels(cifs_sb, mnt_ctx.ses);
++	cifs_try_adding_channels(mnt_ctx.ses);
+ 	rc = mount_setup_tlink(cifs_sb, mnt_ctx.ses, mnt_ctx.tcon);
+ 	if (rc)
+ 		goto error;
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -24,7 +24,7 @@
+ #include "fs_context.h"
+ 
+ static int
+-cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
++cifs_ses_add_channel(struct cifs_ses *ses,
+ 		     struct cifs_server_iface *iface);
+ 
+ bool
+@@ -157,7 +157,7 @@ cifs_chan_is_iface_active(struct cifs_se
+ }
+ 
+ /* returns number of channels added */
+-int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
++int cifs_try_adding_channels(struct cifs_ses *ses)
+ {
+ 	struct TCP_Server_Info *server = ses->server;
+ 	int old_chan_count, new_chan_count;
+@@ -230,7 +230,7 @@ int cifs_try_adding_channels(struct cifs
+ 			kref_get(&iface->refcount);
+ 
+ 			spin_unlock(&ses->iface_lock);
+-			rc = cifs_ses_add_channel(cifs_sb, ses, iface);
++			rc = cifs_ses_add_channel(ses, iface);
+ 			spin_lock(&ses->iface_lock);
+ 
+ 			if (rc) {
+@@ -354,7 +354,7 @@ cifs_ses_find_chan(struct cifs_ses *ses,
+ }
+ 
+ static int
+-cifs_ses_add_channel(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses,
++cifs_ses_add_channel(struct cifs_ses *ses,
+ 		     struct cifs_server_iface *iface)
+ {
+ 	struct TCP_Server_Info *chan_server;
+@@ -433,7 +433,7 @@ cifs_ses_add_channel(struct cifs_sb_info
+ 	 * This will be used for encoding/decoding user/domain/pw
+ 	 * during sess setup auth.
+ 	 */
+-	ctx->local_nls = cifs_sb->local_nls;
++	ctx->local_nls = ses->local_nls;
+ 
+ 	/* Use RDMA if possible */
+ 	ctx->rdma = iface->rdma_capable;
+@@ -479,7 +479,7 @@ cifs_ses_add_channel(struct cifs_sb_info
+ 
+ 	rc = cifs_negotiate_protocol(xid, ses, chan->server);
+ 	if (!rc)
+-		rc = cifs_setup_session(xid, ses, chan->server, cifs_sb->local_nls);
++		rc = cifs_setup_session(xid, ses, chan->server, ses->local_nls);
+ 
+ 	mutex_unlock(&ses->session_mutex);
+ 
 
 
 
