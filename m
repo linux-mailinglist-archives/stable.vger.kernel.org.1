@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-2363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0687F83DB
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:21:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8381E7F845A
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 20:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA57E289175
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:21:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53B61C27869
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34B4E321AD;
-	Fri, 24 Nov 2023 19:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F0928DBB;
+	Fri, 24 Nov 2023 19:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/ZTRJUE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LgP5AcNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7082E64F;
-	Fri, 24 Nov 2023 19:21:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CF2C433C7;
-	Fri, 24 Nov 2023 19:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E0E3306F;
+	Fri, 24 Nov 2023 19:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D961C433C8;
+	Fri, 24 Nov 2023 19:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700853698;
-	bh=lNQWSvBK3+GsjSjXxNeUB7I7tgKm2g+fj5rNBklVi7Y=;
+	s=korg; t=1700853987;
+	bh=j+SNEb98YV/4mJ2364vQygyQgzDbYp4htj0pKLZJcZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/ZTRJUEqAPU0svbOM9vUkZ4MsMYq+ZP7369oC0vokMSeHgqQfL/iS8VOqcS7D+B9
-	 y52fe8Dao3GiImBcoWFIOZlK2e1gM7QWezOGaqEgo3GjPd1MqVMrLerJMG7z7Pcnor
-	 ub+ovlD7InPTbAmu0kJEKy7F4L16GaugO5e3XUK4=
+	b=LgP5AcNpmRyETHUg/KPUKm+cQishNT09ZZteAcMTGqF6eZh8KYNto763/9s4DQ3UY
+	 SrMfcW7extZ2NvVtbzZQZHAqVqtk/ov/LQLCu9FRqVngAoK+GM56Eiy6dySlGEjuKZ
+	 ZZQvNxz30z//lOJk5+v052/CB7VqRG31MsxKScRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vikash Garodia <quic_vgarodia@quicinc.com>,
-	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 268/297] media: venus: hfi: add checks to handle capabilities from firmware
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.4 093/159] i2c: core: Run atomic i2c xfer when !preemptible
 Date: Fri, 24 Nov 2023 17:55:10 +0000
-Message-ID: <20231124172009.526964764@linuxfoundation.org>
+Message-ID: <20231124171945.777059854@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-References: <20231124172000.087816911@linuxfoundation.org>
+In-Reply-To: <20231124171941.909624388@linuxfoundation.org>
+References: <20231124171941.909624388@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,74 +55,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vikash Garodia <quic_vgarodia@quicinc.com>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-commit 8d0b89398b7ebc52103e055bf36b60b045f5258f upstream.
+commit aa49c90894d06e18a1ee7c095edbd2f37c232d02 upstream.
 
-The hfi parser, parses the capabilities received from venus firmware and
-copies them to core capabilities. Consider below api, for example,
-fill_caps - In this api, caps in core structure gets updated with the
-number of capabilities received in firmware data payload. If the same api
-is called multiple times, there is a possibility of copying beyond the max
-allocated size in core caps.
-Similar possibilities in fill_raw_fmts and fill_profile_level functions.
+Since bae1d3a05a8b, i2c transfers are non-atomic if preemption is
+disabled. However, non-atomic i2c transfers require preemption (e.g. in
+wait_for_completion() while waiting for the DMA).
 
-Cc: stable@vger.kernel.org
-Fixes: 1a73374a04e5 ("media: venus: hfi_parser: add common capability parser")
-Signed-off-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+panic() calls preempt_disable_notrace() before calling
+emergency_restart(). Therefore, if an i2c device is used for the
+restart, the xfer should be atomic. This avoids warnings like:
+
+[   12.667612] WARNING: CPU: 1 PID: 1 at kernel/rcu/tree_plugin.h:318 rcu_note_context_switch+0x33c/0x6b0
+[   12.676926] Voluntary context switch within RCU read-side critical section!
+...
+[   12.742376]  schedule_timeout from wait_for_completion_timeout+0x90/0x114
+[   12.749179]  wait_for_completion_timeout from tegra_i2c_wait_completion+0x40/0x70
+...
+[   12.994527]  atomic_notifier_call_chain from machine_restart+0x34/0x58
+[   13.001050]  machine_restart from panic+0x2a8/0x32c
+
+Use !preemptible() instead, which is basically the same check as
+pre-v5.2.
+
+Fixes: bae1d3a05a8b ("i2c: core: remove use of in_atomic()")
+Cc: stable@vger.kernel.org # v5.2+
+Suggested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Acked-by: Wolfram Sang <wsa@kernel.org>
+Reviewed-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Tested-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Link: https://lore.kernel.org/r/20230327-tegra-pmic-reboot-v7-2-18699d5dcd76@skidata.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/hfi_parser.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/i2c/i2c-core.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/qcom/venus/hfi_parser.c
-+++ b/drivers/media/platform/qcom/venus/hfi_parser.c
-@@ -89,6 +89,9 @@ static void fill_profile_level(struct hf
+--- a/drivers/i2c/i2c-core.h
++++ b/drivers/i2c/i2c-core.h
+@@ -29,7 +29,7 @@ int i2c_dev_irq_from_resources(const str
+  */
+ static inline bool i2c_in_atomic_xfer_mode(void)
  {
- 	const struct hfi_profile_level *pl = data;
- 
-+	if (cap->num_pl + num >= HFI_MAX_PROFILE_COUNT)
-+		return;
-+
- 	memcpy(&cap->pl[cap->num_pl], pl, num * sizeof(*pl));
- 	cap->num_pl += num;
+-	return system_state > SYSTEM_RUNNING && irqs_disabled();
++	return system_state > SYSTEM_RUNNING && !preemptible();
  }
-@@ -114,6 +117,9 @@ fill_caps(struct hfi_plat_caps *cap, con
- {
- 	const struct hfi_capability *caps = data;
  
-+	if (cap->num_caps + num >= MAX_CAP_ENTRIES)
-+		return;
-+
- 	memcpy(&cap->caps[cap->num_caps], caps, num * sizeof(*caps));
- 	cap->num_caps += num;
- }
-@@ -140,6 +146,9 @@ static void fill_raw_fmts(struct hfi_pla
- {
- 	const struct raw_formats *formats = fmts;
- 
-+	if (cap->num_fmts + num_fmts >= MAX_FMT_ENTRIES)
-+		return;
-+
- 	memcpy(&cap->fmts[cap->num_fmts], formats, num_fmts * sizeof(*formats));
- 	cap->num_fmts += num_fmts;
- }
-@@ -162,6 +171,9 @@ parse_raw_formats(struct venus_core *cor
- 		rawfmts[i].buftype = fmt->buffer_type;
- 		i++;
- 
-+		if (i >= MAX_FMT_ENTRIES)
-+			return;
-+
- 		if (pinfo->num_planes > MAX_PLANES)
- 			break;
- 
+ static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
 
 
 
