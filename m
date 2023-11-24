@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-1805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-1000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4AB7F8170
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:58:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6057C7F7D81
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 19:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B2651C2169C
-	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9267B1C212BC
+	for <lists+stable@lfdr.de>; Fri, 24 Nov 2023 18:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85BC333076;
-	Fri, 24 Nov 2023 18:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB789381BF;
+	Fri, 24 Nov 2023 18:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyLhd2Pt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a108Xy3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396EC2FC21;
-	Fri, 24 Nov 2023 18:58:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AC0C433C8;
-	Fri, 24 Nov 2023 18:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9065939FF3;
+	Fri, 24 Nov 2023 18:25:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B95B9C433C7;
+	Fri, 24 Nov 2023 18:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1700852318;
-	bh=3u4ebeYNZBMkD3r1pWbG+waTPyKgtBv4wPeiaQgVnh4=;
+	s=korg; t=1700850309;
+	bh=nQ2MHL5SML/fxa7hYrqny1kvJaIJwuNwvsp7PKfMt10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kyLhd2Pt3d5aVFok5Y7S/mQaP/zCSFjYoGBf+tIfWlWtlJSw6PND/veMovErwYytR
-	 JjX4y8uMXSmkKI17tNMEUrzI8WUivX/4Cp+uGwXy+MbtJAdoSRQH9wQqEk868hxdW3
-	 fMT+pUYElGZPncitzsxlBuJQAEE4ubURwGIZ+nl4=
+	b=a108Xy3r4cQ/MBRQ1ssW2dSfo6KJ39Foin8Thf6UgTQ7Q+lny7EXAf5bc5x1XbCy8
+	 iQwaxnH/dohqOaKCsEUkSa2tsQ3lPHEYPAOO+O/v7YVp5C4+lKoaPBrLu8uIldBkv2
+	 6gSFL3cBPcOJfdx8ZxWwYBc9X2AwpBnqzwLomBgU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 308/372] lsm: fix default return value for inode_getsecctx
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Anthony Koo <anthony.koo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Paul Hsieh <paul.hsieh@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 529/530] drm/amd/display: Clear dpcd_sink_ext_caps if not set
 Date: Fri, 24 Nov 2023 17:51:35 +0000
-Message-ID: <20231124172020.674700203@linuxfoundation.org>
+Message-ID: <20231124172044.302847831@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231124172010.413667921@linuxfoundation.org>
-References: <20231124172010.413667921@linuxfoundation.org>
+In-Reply-To: <20231124172028.107505484@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Paul Hsieh <paul.hsieh@amd.com>
 
-commit b36995b8609a5a8fe5cf259a1ee768fcaed919f8 upstream.
+commit 923bbfe6c888812db1088d684bd30c24036226d2 upstream.
 
--EOPNOTSUPP is the return value that implements a "no-op" hook, not 0.
+[WHY]
+Some eDP panels' ext caps don't set initial values
+and the value of dpcd_addr (0x317) is random.
+It means that sometimes the eDP can be OLED, miniLED and etc,
+and cause incorrect backlight control interface.
 
-Without this fix having only the BPF LSM enabled (with no programs
-attached) can cause uninitialized variable reads in
-nfsd4_encode_fattr(), because the BPF hook returns 0 without touching
-the 'ctxlen' variable and the corresponding 'contextlen' variable in
-nfsd4_encode_fattr() remains uninitialized, yet being treated as valid
-based on the 0 return value.
+[HOW]
+Add remove_sink_ext_caps to remove sink ext caps (HDR, OLED and etc)
 
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Fixes: 98e828a0650f ("security: Refactor declaration of LSM hooks")
-Reported-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Acked-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Paul Hsieh <paul.hsieh@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/lsm_hook_defs.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dc_types.h            |    1 +
+ drivers/gpu/drm/amd/display/dc/link/link_detection.c |    3 +++
+ 2 files changed, 4 insertions(+)
 
---- a/include/linux/lsm_hook_defs.h
-+++ b/include/linux/lsm_hook_defs.h
-@@ -266,7 +266,7 @@ LSM_HOOK(void, LSM_RET_VOID, release_sec
- LSM_HOOK(void, LSM_RET_VOID, inode_invalidate_secctx, struct inode *inode)
- LSM_HOOK(int, 0, inode_notifysecctx, struct inode *inode, void *ctx, u32 ctxlen)
- LSM_HOOK(int, 0, inode_setsecctx, struct dentry *dentry, void *ctx, u32 ctxlen)
--LSM_HOOK(int, 0, inode_getsecctx, struct inode *inode, void **ctx,
-+LSM_HOOK(int, -EOPNOTSUPP, inode_getsecctx, struct inode *inode, void **ctx,
- 	 u32 *ctxlen)
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -189,6 +189,7 @@ struct dc_panel_patch {
+ 	unsigned int disable_fams;
+ 	unsigned int skip_avmute;
+ 	unsigned int mst_start_top_delay;
++	unsigned int remove_sink_ext_caps;
+ };
  
- #if defined(CONFIG_SECURITY) && defined(CONFIG_WATCH_QUEUE)
+ struct dc_edid_caps {
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -1085,6 +1085,9 @@ static bool detect_link_and_local_sink(s
+ 		if (sink->edid_caps.panel_patch.skip_scdc_overwrite)
+ 			link->ctx->dc->debug.hdmi20_disable = true;
+ 
++		if (sink->edid_caps.panel_patch.remove_sink_ext_caps)
++			link->dpcd_sink_ext_caps.raw = 0;
++
+ 		if (dc_is_hdmi_signal(link->connector_signal))
+ 			read_scdc_caps(link->ddc, link->local_sink);
+ 
 
 
 
