@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-2649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633657F8F9C
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 23:07:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062457F8FA7
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 23:09:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01031281439
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 22:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5084281410
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 22:09:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B962F30FA6;
-	Sat, 25 Nov 2023 22:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3385E30FB5;
+	Sat, 25 Nov 2023 22:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="chnvZJPJ"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="w4gQSDoB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33122111
-	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 14:07:18 -0800 (PST)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1cfbce92362so2205535ad.1
-        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 14:07:18 -0800 (PST)
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9EFC0C5
+	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 14:09:38 -0800 (PST)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-5be30d543c4so2101996a12.2
+        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 14:09:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700950037; x=1701554837; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700950177; x=1701554977; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yRQ6xJS+vKipicA9c0NlB59WXbMrZjJzPDngSEyI3V8=;
-        b=chnvZJPJXyVoU73GJDrhfJQAuvqWyWRarfF7Ihv9o2N3SAmSOehv8Cehvk1UuqxLAh
-         O/8Yq59lnGsnjutBFNA7KTgIVb6Vi9ZY2fOd/3i67wlYerVdDKNngUY2IdTI8hJbvak6
-         96drtRw/HFv+3f1sisj4uxIm5Ky8oroRERJ2l8gFRBrm5KoROg056fTQoSgfOedoR153
-         z6q+A2kWdT9HaML5GCXmrkbKDEO5TVRIa8fdTBsJ18/GbQpHsoTkcmabkhItcA9Brq4m
-         faRpQEV5dxnSHUtyxYxzxDvd+a7JweytjKWPh/jlN4bNkuVTFTaWBAC5YcX7OpDu8snr
-         ULgw==
+        bh=zEt3Lf5uFIUPYZe2j58mKizoGIYZg+Q4WKDaFMyNHKY=;
+        b=w4gQSDoBU0Bt7sBzQbJCp3brMIGaR+e3ccqjd4SKvaNnrPfDTdD67F4dDWu12bxZC1
+         X82DsBoGkVFSDlL1fr+SmXCrHPDv5f/bgvy8HP1Uv2KwXp6DMmGZmnnI2NyJwv+LaB7x
+         16oYuMHCitsqjWaJsE8Q1fVwP6dY01tJ7smw0kQGBFAy19oOAl551UWdiimT+Oevp5ks
+         oTBrQHoco/VNjDNxQ+s6VRF8jtzgRxI48zzH31TsKPsi0XL4BVgetRD5vkUnOx5FsJkn
+         TJ4jX1/G6TlJ1v8ZHFEPUuK8taG9ucRsz5NvKrn1C978C+1JNbDB1SMf3pFQYRgWIG9V
+         CIzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700950037; x=1701554837;
+        d=1e100.net; s=20230601; t=1700950177; x=1701554977;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yRQ6xJS+vKipicA9c0NlB59WXbMrZjJzPDngSEyI3V8=;
-        b=BGZVV8JfPo7Kyg1wYhosmYq0n9MXJOPZIfDVwLPG0f0beZnc0DmlVOH3EuqlwY/32o
-         5HtyOjZ5jVCFdkKo3uN5oEMfae9ym1GbGKKZ2HiVfsCOYdVS/tWmdORuRU6NjtMylLtN
-         qbmenr+duVmVEpBNy/1o/v+xKUJybMj9uD45egueCmTBa0plmzE8fqNURJsdQvZe7UtB
-         8HqkLErr8dG8sNhmC3zSXKVXs4MeHkuYtS2y0rNZkylpBCtcb2ODAySrxs96TdP8m8QC
-         wdcv4J18JFHwetZI3JuQBsXvuTM+IFazpq1Tz4BnKKAEz61y+9sG7hYXrDMhqleTAYaE
-         xwXg==
-X-Gm-Message-State: AOJu0Yyc/QKs+6DVS9n99S+UmR4vdxk/PPG0N2CD+FW8xcO8d0yz/iWM
-	PMzpdauYJWdIAaqAXf3P+B366R+AqPPA5JCUmHg=
-X-Google-Smtp-Source: AGHT+IG2ADjBhcezpUlZBrH99kJATbfwVVUaA8YNT/d8HS8XPmgPh0atzetCHIGRApdp/2JOp32JmA==
-X-Received: by 2002:a17:902:d4c5:b0:1cc:22db:cf3d with SMTP id o5-20020a170902d4c500b001cc22dbcf3dmr15359586plg.15.1700950037159;
-        Sat, 25 Nov 2023 14:07:17 -0800 (PST)
+        bh=zEt3Lf5uFIUPYZe2j58mKizoGIYZg+Q4WKDaFMyNHKY=;
+        b=OK+ewOF8GKFMV9FtnXWyxNh79pNh7sylvlidYMny0isGJKgu8geyp1Altx4QhuhYtj
+         Do4+vzIzEiELn6FFDjPlirFi1DnqXWPn4qQTYnz1Ed0b22f6AUaVvnoPlnWXfZ2oxmhT
+         0G9CjIPPBPFMFJ46orQ5h5/LmamfV/ERl+soTkLP5lcz8G+Qb162KTns2ifQYiSxWbJa
+         1Jo+h+ASjY/qut0E1a7s/0UWHn347t3p76nxze4Xky0BaDOXLw6Fn2CMuJG4Do7wPgXm
+         z3XBCt0hkhNG/J0aTmJEqw0B3lb2qF8eFhQF6Iyau4ooDjXWmadDSPsU2tDIu4XyAIyG
+         i+rA==
+X-Gm-Message-State: AOJu0YxQHwZ/KWnOaE3xDIDL99ziLafliQBU0vsm6Ol6KIriOvOxfV0I
+	M7zZr4yevCn6NmKo1mOp99lYpSwHb3zdWzvojSA=
+X-Google-Smtp-Source: AGHT+IGl4REbzbzpes2uI2EbMTO7Pf0y59CecAp9Zvc4S9miU/bEL4zB8hzhuFlenmVPCNY8QGB8Yg==
+X-Received: by 2002:a05:6a20:3d8b:b0:18c:41cd:c774 with SMTP id s11-20020a056a203d8b00b0018c41cdc774mr2797559pzi.1.1700950177397;
+        Sat, 25 Nov 2023 14:09:37 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id c14-20020a170902d48e00b001cf8c062610sm5332979plg.127.2023.11.25.14.07.16
+        by smtp.gmail.com with ESMTPSA id bn14-20020a056a00324e00b006cbf1b80394sm3582890pfb.202.2023.11.25.14.09.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Nov 2023 14:07:16 -0800 (PST)
-Message-ID: <65627014.170a0220.e1b7.c6b8@mx.google.com>
-Date: Sat, 25 Nov 2023 14:07:16 -0800 (PST)
+        Sat, 25 Nov 2023 14:09:36 -0800 (PST)
+Message-ID: <656270a0.050a0220.d6252.8fb1@mx.google.com>
+Date: Sat, 25 Nov 2023 14:09:36 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,228 +62,243 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: queue/6.1
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.4.y
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v6.1.63-369-g4cad21545d49d
-Subject: stable-rc/queue/6.1 baseline: 146 runs,
- 3 regressions (v6.1.63-369-g4cad21545d49d)
+X-Kernelci-Kernel: v5.4.261-154-gf8f69c8e2f999
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.261-154-gf8f69c8e2f999)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/6.1 baseline: 146 runs, 3 regressions (v6.1.63-369-g4cad215=
-45d49d)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
-el/v6.1.63-369-g4cad21545d49d/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/6.1
-  Describe: v6.1.63-369-g4cad21545d49d
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      4cad21545d49d4e1b3721aa0489c85600627deb9 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/65623e3e600346e0a17e4a6d
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.63-36=
-9-g4cad21545d49d/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulc=
-b.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.63-36=
-9-g4cad21545d49d/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulc=
-b.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65623e3e600346e0a17e4a76
-        failing since 3 days (last pass: v6.1.31-26-gef50524405c2, first fa=
-il: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-11-25T18:40:50.301513  / # #
-
-    2023-11-25T18:40:50.403359  export SHELL=3D/bin/sh
-
-    2023-11-25T18:40:50.403573  #
-
-    2023-11-25T18:40:50.504230  / # export SHELL=3D/bin/sh. /lava-12083652/=
-environment
-
-    2023-11-25T18:40:50.504518  =
-
-
-    2023-11-25T18:40:50.605289  / # . /lava-12083652/environment/lava-12083=
-652/bin/lava-test-runner /lava-12083652/1
-
-    2023-11-25T18:40:50.606427  =
-
-
-    2023-11-25T18:40:50.609984  / # /lava-12083652/bin/lava-test-runner /la=
-va-12083652/1
-
-    2023-11-25T18:40:50.671703  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-25T18:40:50.672199  + cd /lav<8>[   19.107798] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12083652_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/65623e42600346e0a17e4a94
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.63-36=
-9-g4cad21545d49d/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-=
-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.63-36=
-9-g4cad21545d49d/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-=
-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65623e42600346e0a17e4a9d
-        failing since 3 days (last pass: v6.1.22-372-g971903477e72, first f=
-ail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-11-25T18:34:16.197886  <8>[   18.144354] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 445270_1.5.2.4.1>
-    2023-11-25T18:34:16.305104  / # #
-    2023-11-25T18:34:16.406828  export SHELL=3D/bin/sh
-    2023-11-25T18:34:16.407401  #
-    2023-11-25T18:34:16.508440  / # export SHELL=3D/bin/sh. /lava-445270/en=
-vironment
-    2023-11-25T18:34:16.509124  =
-
-    2023-11-25T18:34:16.610134  / # . /lava-445270/environment/lava-445270/=
-bin/lava-test-runner /lava-445270/1
-    2023-11-25T18:34:16.611080  =
-
-    2023-11-25T18:34:16.613287  / # /lava-445270/bin/lava-test-runner /lava=
--445270/1
-    2023-11-25T18:34:16.693354  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/65623e52cdb76b3ea27e4a81
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.63-36=
-9-g4cad21545d49d/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pi=
-ne-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.63-36=
-9-g4cad21545d49d/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pi=
-ne-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65623e52cdb76b3ea27e4a8a
-        failing since 3 days (last pass: v6.1.22-372-g971903477e72, first f=
-ail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-11-25T18:41:04.918853  / # #
-
-    2023-11-25T18:41:05.020725  export SHELL=3D/bin/sh
-
-    2023-11-25T18:41:05.021480  #
-
-    2023-11-25T18:41:05.122778  / # export SHELL=3D/bin/sh. /lava-12083650/=
-environment
-
-    2023-11-25T18:41:05.123473  =
-
-
-    2023-11-25T18:41:05.224728  / # . /lava-12083650/environment/lava-12083=
-650/bin/lava-test-runner /lava-12083650/1
-
-    2023-11-25T18:41:05.225811  =
-
-
-    2023-11-25T18:41:05.269686  / # /lava-12083650/bin/lava-test-runner /la=
-va-12083650/1
-
-    2023-11-25T18:41:05.307949  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-25T18:41:05.308450  + cd /lava-1208365<8>[   18.747654] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12083650_1.5.2.4.5>
- =
-
-    ... (11 line(s) more)  =
-
- =20
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.261-154-gf8f69c8e2f999)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.261-154-gf8f69c8e2f999/
+
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.261-154-gf8f69c8e2f999
+Git Commit: f8f69c8e2f999d91f3fcd4b8b7904216c969e817
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
