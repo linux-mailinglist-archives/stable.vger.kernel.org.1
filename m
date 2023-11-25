@@ -1,107 +1,168 @@
-Return-Path: <stable+bounces-2570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8EA7F87EE
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 03:54:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D65D7F8884
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 06:45:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84CAD281F08
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 02:54:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F211C20BC9
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 05:45:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75E617C3;
-	Sat, 25 Nov 2023 02:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44E34415;
+	Sat, 25 Nov 2023 05:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="X9s4NYDK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b9TCGaXj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003E4170B;
-	Fri, 24 Nov 2023 18:53:58 -0800 (PST)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AP1Ywnt030989;
-	Sat, 25 Nov 2023 02:53:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=corp-2023-11-20;
- bh=kpDASwkgqRFYaSgUvJPeTXsHrkxsWXJjpt4UtH+0Ws0=;
- b=X9s4NYDKLWNCrXdmcZw+dvSYmKYBhPYyvEr9ZYL+zWx6MOenXLT1G5jYHsN3GTgeFhiS
- YRvH0ZYU6SYg2QGg8T/1qtBJCaHmcDUc/xjcoc8Q/HQiiFl2j5VHGQfUQg/QkGQ0BQOH
- 5e90SzfQQloJ0aG7QyNSl2TQu6BMJudOYlpDTJsRlQ43b6Nsb561DVtKLKwj1cuTkJeK
- Z1FUFt2VIjcrUc4XYF/a6KdRPoMuSw0DnAriJ+mvSrg8dcCuCB5mTd8tu0SY0KtjQbaX
- F/KqBfgGt/UemzLM2vwHHZJRf8dDzrgCj1cwIv/lWoL+SE28+fzhpcV6B7xTfIEzuHp0 Lw== 
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uenadv4uq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 25 Nov 2023 02:53:47 +0000
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3AP1XkUv012634;
-	Sat, 25 Nov 2023 02:53:46 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uk7c8sr3s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 25 Nov 2023 02:53:46 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AP2rjMX036557;
-	Sat, 25 Nov 2023 02:53:46 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3uk7c8sr2v-2;
-	Sat, 25 Nov 2023 02:53:46 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: linux-scsi@vger.kernel.org, avri.altman@wdc.com, alim.akhtar@samsung.com,
-        jejb@linux.ibm.com, peter.wang@mediatek.com
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
-        chun-hung.wu@mediatek.com, alice.chao@mediatek.com,
-        cc.chou@mediatek.com, chaotian.jing@mediatek.com,
-        jiajie.hao@mediatek.com, powen.kao@mediatek.com,
-        qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
-        eddie.huang@mediatek.com, naomi.chu@mediatek.com,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2] ufs: core: clear cmd if abort success in mcq mode
-Date: Fri, 24 Nov 2023 21:53:35 -0500
-Message-ID: <170088060606.1367702.18420626448439633309.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.42.1
-In-Reply-To: <20231115131024.15829-1-peter.wang@mediatek.com>
-References: <20231115131024.15829-1-peter.wang@mediatek.com>
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB24319E
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 21:45:13 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3b2e72fe47fso1641672b6e.1
+        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 21:45:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1700891113; x=1701495913; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9YtcVT0tO/faU6pBapwW4pF/eOnwAU4GwA3kQ7ou57Q=;
+        b=b9TCGaXjju1T5l/bw/G0ao5bmLuAGtTCuufBms1tk829AJAsNHhVptN7JqtzMIcVRt
+         Tfiy54ej7G739QaaZVNN0omAPCOxpzrITgtDOefZTq4qyiKyxj2z1tESKclSfLr9xL6I
+         X0QydVCe1OExnE7FZpW3nrUtr7NBLtZSRp/og59g8BdoSm/qViqL7koxg44N50opXEVM
+         kATPsj9bFvkJQBntEeBooe0EFqDI7qs+NZHplhDRKbHl71vvP59he0NJiEs/sTcqJGzI
+         qeNdVtwyh1zfQEciyfOR3V6B3nVl9WMdcW1H3bVXW+Yxx2FbHLUmPJYkbyKnMNA0DQ5Q
+         DymA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700891113; x=1701495913;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9YtcVT0tO/faU6pBapwW4pF/eOnwAU4GwA3kQ7ou57Q=;
+        b=ib5Rp588X5P3AzJAd8BUws6U+Mv00hEe9INsJaYZCw1dYzPIz8R+H+LvyS0jy+h/6m
+         Su5vB9K1bMQTHbZb2XEoPGrzPca9x5hVFpVSWNaq1/eT1K+sKj6ee4mnnXFv9RpMmudy
+         6bfh60LePGcu8wnf8/7/dq5SGMUbnscWo1JvCmKzto4SVDta5sbc4ra7Qaqg0m29vVnC
+         cvGHevx1nKjel0mLJ/TwT5NfC2E4D5EDnbmndMfmtcKPQrlPUBqtzSmkj4nXOs9Gce8c
+         +ThLA0amemdEK/dVN2I1GO9/XPHbrrL8jfoP1uE68bvzlP8E0sB+aFsC5T6fTnVHMcKp
+         lQcw==
+X-Gm-Message-State: AOJu0YzD4EesWyzTAlhmbjx6A3jzSxgVs950gRxwMNhHx9+xqzeKxAh0
+	hjrx+28+Ab3eKL7hPOEfHRUrag==
+X-Google-Smtp-Source: AGHT+IF8hKgzamcS6ks5XPNrfLtxKvTT7kP1+08AKQ7V7ZC2VsynTR7rqVJLUmxGjFzLY3gdcJkZOw==
+X-Received: by 2002:a05:6808:2111:b0:3b8:3826:6dcd with SMTP id r17-20020a056808211100b003b838266dcdmr727299oiw.25.1700891113007;
+        Fri, 24 Nov 2023 21:45:13 -0800 (PST)
+Received: from [192.168.17.16] ([138.84.62.70])
+        by smtp.gmail.com with ESMTPSA id bc10-20020a056808170a00b003b85ad8e75asm163754oib.6.2023.11.24.21.45.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Nov 2023 21:45:12 -0800 (PST)
+Message-ID: <81a11ebe-ea47-4e21-b5eb-536b1a723168@linaro.org>
+Date: Fri, 24 Nov 2023 23:45:09 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/297] 5.15.140-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, jack@suse.cz, chrubis@suse.cz
+References: <20231124172000.087816911@linuxfoundation.org>
+From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-25_01,2023-11-22_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
- malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=752
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311250020
-X-Proofpoint-GUID: -QfUzClTxcd8We44Mtqge1Pg6JSOpzBU
-X-Proofpoint-ORIG-GUID: -QfUzClTxcd8We44Mtqge1Pg6JSOpzBU
 
-On Wed, 15 Nov 2023 21:10:24 +0800, peter.wang@mediatek.com wrote:
+Hello!
 
-> In mcq mode, if cmd is pending in device and abort success, response
-> will not return from device. So we need clear this cmd right now,
-> else command timeout happen and next time use same tag will have
-> warning. WARN_ON(lrbp->cmd).
+On 24/11/23 11:50 a. m., Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.140 release.
+> There are 297 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Below is error log:
-> <3>[ 2277.447611][T21376] ufshcd-mtk 112b0000.ufshci: ufshcd_try_to_abort_task: cmd pending in the device. tag = 7
-> <3>[ 2277.476954][T21376] ufshcd-mtk 112b0000.ufshci: Aborting tag 7 / CDB 0x2a succeeded
-> <6>[ 2307.551263][T30974] ufshcd-mtk 112b0000.ufshci: ufshcd_abort: Device abort task at tag 7
-> <4>[ 2307.623264][  T327] WARNING: CPU: 5 PID: 327 at source/drivers/ufs/core/ufshcd.c:3021 ufshcd_queuecommand+0x66c/0xe34
+> Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
+> Anything received after that time might be too late.
 > 
-> [...]
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.140-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Applied to 6.7/scsi-fixes, thanks!
+We are noticing a regression with ltp-syscalls' preadv03:
 
-[1/1] ufs: core: clear cmd if abort success in mcq mode
-      https://git.kernel.org/mkp/scsi/c/93e6c0e19d5b
+-----8<-----
+   preadv03 preadv03
+   preadv03_64 preadv03_64
+   preadv03.c:102: TINFO: Using block size 512
+   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'b' expectedly
+   preadv03.c:102: TINFO: Using block size 512
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+   preadv03.c:102: TINFO: Using block size 512
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+   preadv03.c:102: TINFO: Using block size 512
+   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'b' expectedly
+   preadv03.c:102: TINFO: Using block size 512
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+   preadv03.c:102: TINFO: Using block size 512
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+----->8-----
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+This is seen in the following environments:
+* dragonboard-845c
+* juno-64k_page_size
+* qemu-arm64
+* qemu-armv7
+* qemu-i386
+* qemu-x86_64
+* x86_64-clang
+
+and on the following RC's:
+* v5.10.202-rc1
+* v5.15.140-rc1
+* v6.1.64-rc1
+
+(Note that the list might not be complete, because some branches failed to execute completely due to build issues reported elsewhere.)
+
+Bisection in linux-5.15.y pointed to:
+
+   commit db85c7fff122c14bc5755e47b51fbfafae660235
+   Author: Jan Kara <jack@suse.cz>
+   Date:   Fri Oct 13 14:13:50 2023 +0200
+
+       ext4: properly sync file size update after O_SYNC direct IO
+       
+       commit 91562895f8030cb9a0470b1db49de79346a69f91 upstream.
+
+
+Reverting that commit made the test pass.
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Greetings!
+
+Daniel Díaz
+daniel.diaz@linaro.org
+
 
