@@ -1,289 +1,107 @@
-Return-Path: <stable+bounces-2569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 491017F87A1
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 02:59:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8EA7F87EE
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 03:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7758281878
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 01:59:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84CAD281F08
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 02:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0547BEDF;
-	Sat, 25 Nov 2023 01:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75E617C3;
+	Sat, 25 Nov 2023 02:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="PyPKYzDM"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="X9s4NYDK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 097A3172E
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 17:59:37 -0800 (PST)
-Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-359d27f6d46so7627475ab.3
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 17:59:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700877576; x=1701482376; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=wQNnVurgnT92UagiXIPW1UTf050bSe/0nuelQWb6ojo=;
-        b=PyPKYzDMKW0p6x7LxNOnthSld0MU3m4OwRVXKXsRW4uRP8d5cM2Kn2lpMhK3m/kUEi
-         WrK3WF+n7ElVNjfP0N9ivNoIkgKT6sOeIyvjD/yhS+kelFHa04sf8/WwtQ/6y+Re+X0m
-         oxEy9eHKH3fLnd61gVkDMO59xd0Pi8LH+gcSwJvgvveeKwq9tDAAgCksLW4Bj2swHwfh
-         t+Lo2Fp6nxWCT8lpGDSljfkP1XJxUp5S5pWdk/t7HqsWgc5gHDCh2bjcIgNK4hQv2QOB
-         yJ2UjkKCbUeeyWE//nQPEQyNyHSiI/OH2rlRDidH8MMgC6UCvqhHTLH6+P8EFpOynv5N
-         WlxA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700877576; x=1701482376;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wQNnVurgnT92UagiXIPW1UTf050bSe/0nuelQWb6ojo=;
-        b=DyJQXkoUD413VIRhLnsKUmmrmzkZzTfcPNUBz4mt3Bu7BseJ5FJPb6NcBYgMGUcVyK
-         WnEm9VuvGwZlFsW45W/R3sgfZhN3eAae6hPscEAOXDdDGj6ctGOsUetO+BDoN5BG+7rU
-         req8zvvd+f/sLtwsAtDQW4y+q3Yvp/lazU4/+vw5XwnN+BQoHje2UKaOylU9kITxPw4e
-         3U/OrHdi7a+0RgxoYChl12SDsixpMCsPBNsuYUHMn3UasxTQ2rIOthexSUIgdDabfYy5
-         rJ8YiYdtR6SGIYqOdULqrvNQKV9gIuGFKEb9L1EibwFN7iIx7XuFPEVC0321Cu//VJOQ
-         U6jw==
-X-Gm-Message-State: AOJu0YzilDv6BZ1u1QvxXp7oQvhRoFVioVzxtAhVZbfC2Sjzfb+O6uWv
-	Bjmn/gk9/W0rh285zR1wVZ2CyrpUrIIEdcpqnkI=
-X-Google-Smtp-Source: AGHT+IHYvbsPBnC1z7UHc57AGMZyK6fKDjqz2hZhDDx6OnlOuXI/QsrQJwh6/vAJW7JRKKVCq0VgvA==
-X-Received: by 2002:a05:6e02:b4a:b0:35b:56:f2af with SMTP id f10-20020a056e020b4a00b0035b0056f2afmr71281ilu.32.1700877575806;
-        Fri, 24 Nov 2023 17:59:35 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id fd39-20020a056a002ea700b006cb7b0c2503sm3524392pfb.95.2023.11.24.17.59.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Nov 2023 17:59:35 -0800 (PST)
-Message-ID: <65615507.050a0220.383d2.93c9@mx.google.com>
-Date: Fri, 24 Nov 2023 17:59:35 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 003E4170B;
+	Fri, 24 Nov 2023 18:53:58 -0800 (PST)
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3AP1Ywnt030989;
+	Sat, 25 Nov 2023 02:53:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : mime-version :
+ content-type : content-transfer-encoding; s=corp-2023-11-20;
+ bh=kpDASwkgqRFYaSgUvJPeTXsHrkxsWXJjpt4UtH+0Ws0=;
+ b=X9s4NYDKLWNCrXdmcZw+dvSYmKYBhPYyvEr9ZYL+zWx6MOenXLT1G5jYHsN3GTgeFhiS
+ YRvH0ZYU6SYg2QGg8T/1qtBJCaHmcDUc/xjcoc8Q/HQiiFl2j5VHGQfUQg/QkGQ0BQOH
+ 5e90SzfQQloJ0aG7QyNSl2TQu6BMJudOYlpDTJsRlQ43b6Nsb561DVtKLKwj1cuTkJeK
+ Z1FUFt2VIjcrUc4XYF/a6KdRPoMuSw0DnAriJ+mvSrg8dcCuCB5mTd8tu0SY0KtjQbaX
+ F/KqBfgGt/UemzLM2vwHHZJRf8dDzrgCj1cwIv/lWoL+SE28+fzhpcV6B7xTfIEzuHp0 Lw== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uenadv4uq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 25 Nov 2023 02:53:47 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3AP1XkUv012634;
+	Sat, 25 Nov 2023 02:53:46 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3uk7c8sr3s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 25 Nov 2023 02:53:46 +0000
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3AP2rjMX036557;
+	Sat, 25 Nov 2023 02:53:46 GMT
+Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 3uk7c8sr2v-2;
+	Sat, 25 Nov 2023 02:53:46 +0000
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+To: linux-scsi@vger.kernel.org, avri.altman@wdc.com, alim.akhtar@samsung.com,
+        jejb@linux.ibm.com, peter.wang@mediatek.com
+Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
+        wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+        chun-hung.wu@mediatek.com, alice.chao@mediatek.com,
+        cc.chou@mediatek.com, chaotian.jing@mediatek.com,
+        jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+        qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
+        eddie.huang@mediatek.com, naomi.chu@mediatek.com,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2] ufs: core: clear cmd if abort success in mcq mode
+Date: Fri, 24 Nov 2023 21:53:35 -0500
+Message-ID: <170088060606.1367702.18420626448439633309.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20231115131024.15829-1-peter.wang@mediatek.com>
+References: <20231115131024.15829-1-peter.wang@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: test
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.15.139-297-g00c97fe3c5f3d
-Subject: stable-rc/queue/5.15 baseline: 142 runs,
- 3 regressions (v5.15.139-297-g00c97fe3c5f3d)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/5.15 baseline: 142 runs, 3 regressions (v5.15.139-297-g00c9=
-7fe3c5f3d)
-
-Regressions Summary
--------------------
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F5.15/ker=
-nel/v5.15.139-297-g00c97fe3c5f3d/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/5.15
-  Describe: v5.15.139-297-g00c97fe3c5f3d
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      00c97fe3c5f3d7a0f46620eafd1cb27022c88961 =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-r8a77960-ulcb      | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/656123ba8afbfd46df7e4a6e
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--297-g00c97fe3c5f3d/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-=
-ulcb.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--297-g00c97fe3c5f3d/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-=
-ulcb.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/656123ba8afbfd46df7e4a77
-        failing since 2 days (last pass: v5.15.114-13-g095e387c3889, first =
-fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-11-24T22:35:17.390446  / # #
-
-    2023-11-24T22:35:17.492549  export SHELL=3D/bin/sh
-
-    2023-11-24T22:35:17.493295  #
-
-    2023-11-24T22:35:17.594702  / # export SHELL=3D/bin/sh. /lava-12079169/=
-environment
-
-    2023-11-24T22:35:17.595417  =
-
-
-    2023-11-24T22:35:17.696790  / # . /lava-12079169/environment/lava-12079=
-169/bin/lava-test-runner /lava-12079169/1
-
-    2023-11-24T22:35:17.697596  =
-
-
-    2023-11-24T22:35:17.714656  / # /lava-12079169/bin/lava-test-runner /la=
-va-12079169/1
-
-    2023-11-24T22:35:17.763953  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-24T22:35:17.764467  + cd /lav<8>[   16.041658] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12079169_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/656123a50618fa06027e4a89
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--297-g00c97fe3c5f3d/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pi=
-ne-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--297-g00c97fe3c5f3d/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pi=
-ne-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/656123a50618fa06027e4a92
-        failing since 2 days (last pass: v5.15.105-206-g4548859116b8, first=
- fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-11-24T22:28:43.351166  / # #
-    2023-11-24T22:28:43.452882  export SHELL=3D/bin/sh
-    2023-11-24T22:28:43.453528  #
-    2023-11-24T22:28:43.554515  / # export SHELL=3D/bin/sh. /lava-445194/en=
-vironment
-    2023-11-24T22:28:43.555120  =
-
-    2023-11-24T22:28:43.656124  / # . /lava-445194/environment/lava-445194/=
-bin/lava-test-runner /lava-445194/1
-    2023-11-24T22:28:43.657135  =
-
-    2023-11-24T22:28:43.661990  / # /lava-445194/bin/lava-test-runner /lava=
--445194/1
-    2023-11-24T22:28:43.730058  + export 'TESTRUN_ID=3D1_bootrr'
-    2023-11-24T22:28:43.730502  + cd /lava-445194/<8>[   16.621842] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 445194_1.5.2.4.5> =
-
-    ... (10 line(s) more)  =
-
- =
-
-
-
-platform           | arch  | lab           | compiler | defconfig | regress=
-ions
--------------------+-------+---------------+----------+-----------+--------=
-----
-sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
-    =
-
-
-  Details:     https://kernelci.org/test/plan/id/656123b876bd367be27e4adb
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--297-g00c97fe3c5f3d/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6=
--pine-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-5.15/v5.15.139=
--297-g00c97fe3c5f3d/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6=
--pine-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/656123b876bd367be27e4ae4
-        failing since 2 days (last pass: v5.15.105-206-g4548859116b8, first=
- fail: v5.15.139-172-gb60494a37c0c)
-
-    2023-11-24T22:35:32.034107  / # #
-
-    2023-11-24T22:35:32.136209  export SHELL=3D/bin/sh
-
-    2023-11-24T22:35:32.136912  #
-
-    2023-11-24T22:35:32.238344  / # export SHELL=3D/bin/sh. /lava-12079154/=
-environment
-
-    2023-11-24T22:35:32.239047  =
-
-
-    2023-11-24T22:35:32.340514  / # . /lava-12079154/environment/lava-12079=
-154/bin/lava-test-runner /lava-12079154/1
-
-    2023-11-24T22:35:32.341626  =
-
-
-    2023-11-24T22:35:32.342903  / # /lava-12079154/bin/lava-test-runner /la=
-va-12079154/1
-
-    2023-11-24T22:35:32.418721  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-11-24T22:35:32.419211  + cd /lava-1207915<8>[   16.818105] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12079154_1.5.2.4.5>
- =
-
-    ... (10 line(s) more)  =
-
- =20
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.987,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-25_01,2023-11-22_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 mlxscore=0
+ malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=752
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311250020
+X-Proofpoint-GUID: -QfUzClTxcd8We44Mtqge1Pg6JSOpzBU
+X-Proofpoint-ORIG-GUID: -QfUzClTxcd8We44Mtqge1Pg6JSOpzBU
+
+On Wed, 15 Nov 2023 21:10:24 +0800, peter.wang@mediatek.com wrote:
+
+> In mcq mode, if cmd is pending in device and abort success, response
+> will not return from device. So we need clear this cmd right now,
+> else command timeout happen and next time use same tag will have
+> warning. WARN_ON(lrbp->cmd).
+> 
+> Below is error log:
+> <3>[ 2277.447611][T21376] ufshcd-mtk 112b0000.ufshci: ufshcd_try_to_abort_task: cmd pending in the device. tag = 7
+> <3>[ 2277.476954][T21376] ufshcd-mtk 112b0000.ufshci: Aborting tag 7 / CDB 0x2a succeeded
+> <6>[ 2307.551263][T30974] ufshcd-mtk 112b0000.ufshci: ufshcd_abort: Device abort task at tag 7
+> <4>[ 2307.623264][  T327] WARNING: CPU: 5 PID: 327 at source/drivers/ufs/core/ufshcd.c:3021 ufshcd_queuecommand+0x66c/0xe34
+> 
+> [...]
+
+Applied to 6.7/scsi-fixes, thanks!
+
+[1/1] ufs: core: clear cmd if abort success in mcq mode
+      https://git.kernel.org/mkp/scsi/c/93e6c0e19d5b
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering
 
