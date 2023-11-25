@@ -1,60 +1,28 @@
-Return-Path: <stable+bounces-2571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D65D7F8884
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 06:45:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41277F88A9
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 07:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56F211C20BC9
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 05:45:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F05428164F
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 06:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A44E34415;
-	Sat, 25 Nov 2023 05:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b9TCGaXj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4203223D0;
+	Sat, 25 Nov 2023 06:45:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB24319E
-	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 21:45:13 -0800 (PST)
-Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3b2e72fe47fso1641672b6e.1
-        for <stable@vger.kernel.org>; Fri, 24 Nov 2023 21:45:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1700891113; x=1701495913; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9YtcVT0tO/faU6pBapwW4pF/eOnwAU4GwA3kQ7ou57Q=;
-        b=b9TCGaXjju1T5l/bw/G0ao5bmLuAGtTCuufBms1tk829AJAsNHhVptN7JqtzMIcVRt
-         Tfiy54ej7G739QaaZVNN0omAPCOxpzrITgtDOefZTq4qyiKyxj2z1tESKclSfLr9xL6I
-         X0QydVCe1OExnE7FZpW3nrUtr7NBLtZSRp/og59g8BdoSm/qViqL7koxg44N50opXEVM
-         kATPsj9bFvkJQBntEeBooe0EFqDI7qs+NZHplhDRKbHl71vvP59he0NJiEs/sTcqJGzI
-         qeNdVtwyh1zfQEciyfOR3V6B3nVl9WMdcW1H3bVXW+Yxx2FbHLUmPJYkbyKnMNA0DQ5Q
-         DymA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700891113; x=1701495913;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9YtcVT0tO/faU6pBapwW4pF/eOnwAU4GwA3kQ7ou57Q=;
-        b=ib5Rp588X5P3AzJAd8BUws6U+Mv00hEe9INsJaYZCw1dYzPIz8R+H+LvyS0jy+h/6m
-         Su5vB9K1bMQTHbZb2XEoPGrzPca9x5hVFpVSWNaq1/eT1K+sKj6ee4mnnXFv9RpMmudy
-         6bfh60LePGcu8wnf8/7/dq5SGMUbnscWo1JvCmKzto4SVDta5sbc4ra7Qaqg0m29vVnC
-         cvGHevx1nKjel0mLJ/TwT5NfC2E4D5EDnbmndMfmtcKPQrlPUBqtzSmkj4nXOs9Gce8c
-         +ThLA0amemdEK/dVN2I1GO9/XPHbrrL8jfoP1uE68bvzlP8E0sB+aFsC5T6fTnVHMcKp
-         lQcw==
-X-Gm-Message-State: AOJu0YzD4EesWyzTAlhmbjx6A3jzSxgVs950gRxwMNhHx9+xqzeKxAh0
-	hjrx+28+Ab3eKL7hPOEfHRUrag==
-X-Google-Smtp-Source: AGHT+IF8hKgzamcS6ks5XPNrfLtxKvTT7kP1+08AKQ7V7ZC2VsynTR7rqVJLUmxGjFzLY3gdcJkZOw==
-X-Received: by 2002:a05:6808:2111:b0:3b8:3826:6dcd with SMTP id r17-20020a056808211100b003b838266dcdmr727299oiw.25.1700891113007;
-        Fri, 24 Nov 2023 21:45:13 -0800 (PST)
-Received: from [192.168.17.16] ([138.84.62.70])
-        by smtp.gmail.com with ESMTPSA id bc10-20020a056808170a00b003b85ad8e75asm163754oib.6.2023.11.24.21.45.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Nov 2023 21:45:12 -0800 (PST)
-Message-ID: <81a11ebe-ea47-4e21-b5eb-536b1a723168@linaro.org>
-Date: Fri, 24 Nov 2023 23:45:09 -0600
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFDC7C1;
+	Fri, 24 Nov 2023 22:44:59 -0800 (PST)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046059;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0Vx3Rwaa_1700894693;
+Received: from 30.240.112.178(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Vx3Rwaa_1700894693)
+          by smtp.aliyun-inc.com;
+          Sat, 25 Nov 2023 14:44:57 +0800
+Message-ID: <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
+Date: Sat, 25 Nov 2023 14:44:52 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,107 +30,145 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 000/297] 5.15.140-rc1 review
+Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task work
+ with proper si_code
 Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, jack@suse.cz, chrubis@suse.cz
-References: <20231124172000.087816911@linuxfoundation.org>
-From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
-In-Reply-To: <20231124172000.087816911@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+To: Borislav Petkov <bp@alien8.de>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, james.morse@arm.com, gregkh@linuxfoundation.org,
+ will@kernel.org, jarkko@kernel.org, linux-acpi@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+ stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+ ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
+ tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
+ xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+ <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hello!
 
-On 24/11/23 11:50 a. m., Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.140 release.
-> There are 297 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+
+On 2023/11/23 23:07, Borislav Petkov wrote:
+
+Hi, Borislav,
+
+Thank you for your reply and advice.
+
+
+> On Sat, Oct 07, 2023 at 03:28:16PM +0800, Shuai Xue wrote:
+>> However, this trick is not always be effective
 > 
-> Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
-> Anything received after that time might be too late.
+> So far so good.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.140-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
+> What's missing here is why "this trick" is not always effective.
+
 > 
-> thanks,
+> Basically to explain what exactly the problem is.
+
+I think the main point is that this trick for AR error is not effective,
+because:
+
+- an AR error consumed by current process is deferred to handle in a
+  dedicated kernel thread, but memory_failure() assumes that it runs in the
+  current context
+- another page fault is not unnecessary, we can send sigbus to current
+  process in the first Synchronous External Abort SEA on arm64 (analogy
+  Machine Check Exception on x86)
+
 > 
-> greg k-h
+>> For example, hwpoison-aware user-space processes use the si_code:
+>> BUS_MCEERR_AO for 'action optional' early notifications, and BUS_MCEERR_AR
+>> for 'action required' synchronous/late notifications. Specifically, when a
+>> signal with SIGBUS_MCEERR_AR is delivered to QEMU, it will inject a vSEA to
+>> Guest kernel. In contrast, a signal with SIGBUS_MCEERR_AO will be ignored
+>> by QEMU.[1]
+>>
+>> Fix it by seting memory failure flags as MF_ACTION_REQUIRED on synchronous events. (PATCH 1)
+> 
+> So you're fixing qemu by "fixing" the kernel?
+> 
+> This doesn't make any sense.
 
-We are noticing a regression with ltp-syscalls' preadv03:
+I just give an example that the user space process *really* relys on the
+si_code of signal to handle hardware errors
 
------8<-----
-   preadv03 preadv03
-   preadv03_64 preadv03_64
-   preadv03.c:102: TINFO: Using block size 512
-   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
-   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
-   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'b' expectedly
-   preadv03.c:102: TINFO: Using block size 512
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
-   preadv03.c:102: TINFO: Using block size 512
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
-   preadv03.c:102: TINFO: Using block size 512
-   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
-   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
-   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'b' expectedly
-   preadv03.c:102: TINFO: Using block size 512
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
-   preadv03.c:102: TINFO: Using block size 512
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
-   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
------>8-----
+> 
+> Make errors which are ACPI_HEST_NOTIFY_SEA type return
+> MF_ACTION_REQUIRED so that it *happens* to fix your use case.
+> 
+> Sounds like a lot of nonsense to me.
+> 
+> What is the issue here you're trying to solve?
 
-This is seen in the following environments:
-* dragonboard-845c
-* juno-64k_page_size
-* qemu-arm64
-* qemu-armv7
-* qemu-i386
-* qemu-x86_64
-* x86_64-clang
+The SIGBUS si_codes defined in include/uapi/asm-generic/siginfo.h says:
 
-and on the following RC's:
-* v5.10.202-rc1
-* v5.15.140-rc1
-* v6.1.64-rc1
+    /* hardware memory error consumed on a machine check: action required */
+    #define BUS_MCEERR_AR	4
+    /* hardware memory error detected in process but not consumed: action optional*/
+    #define BUS_MCEERR_AO	5
 
-(Note that the list might not be complete, because some branches failed to execute completely due to build issues reported elsewhere.)
+When a synchronous error is consumed by Guest, the kernel should send a
+signal with BUS_MCEERR_AR instead of BUS_MCEERR_AO.
 
-Bisection in linux-5.15.y pointed to:
+> 
+>> 2. Handle memory_failure() abnormal fails to avoid a unnecessary reboot
+>>
+>> If process mapping fault page, but memory_failure() abnormal return before
+>> try_to_unmap(), for example, the fault page process mapping is KSM page.
+>> In this case, arm64 cannot use the page fault process to terminate the
+>> synchronous exception loop.[4]
+>>
+>> This loop can potentially exceed the platform firmware threshold or even trigger
+>> a kernel hard lockup, leading to a system reboot. However, kernel has the
+>> capability to recover from this error.
+>>
+>> Fix it by performing a force kill when memory_failure() abnormal fails or when
+>> other abnormal synchronous errors occur.
+> 
+> Just like that?
+> 
+> Without giving the process the opportunity to even save its other data?
 
-   commit db85c7fff122c14bc5755e47b51fbfafae660235
-   Author: Jan Kara <jack@suse.cz>
-   Date:   Fri Oct 13 14:13:50 2023 +0200
+Exactly.
 
-       ext4: properly sync file size update after O_SYNC direct IO
-       
-       commit 91562895f8030cb9a0470b1db49de79346a69f91 upstream.
+> 
+> So this all is still very confusing, patches definitely need splitting
+> and this whole thing needs restraint.
+> 
+> You go and do this: you split *each* issue you're addressing into
+> a separate patch and explain it like this:
+> 
+> ---
+> 1. Prepare the context for the explanation briefly.
+> 
+> 2. Explain the problem at hand.
+> 
+> 3. "It happens because of <...>"
+> 
+> 4. "Fix it by doing X"
+> 
+> 5. "(Potentially do Y)."
+> ---
+> 
+> and each patch explains *exactly* *one* issue, what happens, why it
+> happens and just the fix for it and *why* it is needed.
+> 
+> Otherwise, this is unreviewable.
 
+Thank you for your valuable suggestion, I will split the patches and
+resubmit a new patch set.
 
-Reverting that commit made the test pass.
+> 
+> Thx.
+> 
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Greetings!
-
-Daniel Díaz
-daniel.diaz@linaro.org
-
+Best Regards,
+Shuai
 
