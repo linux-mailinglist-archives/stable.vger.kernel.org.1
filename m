@@ -1,131 +1,274 @@
-Return-Path: <stable+bounces-2618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8011C7F8D68
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 19:57:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A022F7F8D6B
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 19:58:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC080B20F3B
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 18:57:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579BF281444
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 18:58:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 951AC2E634;
-	Sat, 25 Nov 2023 18:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE53C2E412;
+	Sat, 25 Nov 2023 18:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pB48UIkP"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="sFSqREv1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC5D22069;
-	Sat, 25 Nov 2023 18:57:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B06C433C8;
-	Sat, 25 Nov 2023 18:57:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1700938641;
-	bh=1e3lItmGl7QALbHmuTALy1POedUS0sS6dveT2ccnvM0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pB48UIkP8amsaIM3EkGVde1AO2es35LPNdnYuEG8uFeHtNWgUyXgIg/IOdoTBAC5m
-	 SbJQZPxEuT46A31F8TX2XFnnBMqh6CMa+/NdbUPTd4rvk9CghPAPCR188vJdpcvVCX
-	 S1hfX82oN57m7b6mRWJWqvi+mS3w2j3v2nlQIFNRzGUDl6P38V8pFgskdL0XY3IzxD
-	 l6fkY/ygekrC3F+1HFNzjS+UMRxHGxs2K7YdzdrQkNWGN/qnUl4cYAFyCTEbLDPr+3
-	 Mj46DdSzGKSIP2NtYOPq30kW1NX+LTP3kqpkBV1KlP095OMgGiwB8s+0XLzQ6hEL8f
-	 yi98XncO+oJKg==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.6 000/528] 6.6.3-rc2 review
-Date: Sat, 25 Nov 2023 18:57:19 +0000
-Message-Id: <20231125185719.101869-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231125163158.249616313@linuxfoundation.org>
-References: 
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A951F0
+	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 10:57:57 -0800 (PST)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1cfae5ca719so8139005ad.0
+        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 10:57:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1700938676; x=1701543476; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=350qvT3Ei7k+Hv6R1v9t9bh6qjiYSxxhmCPKuxzIBwU=;
+        b=sFSqREv1qnF5dAcNiFdZDUvBnWV+7Q6ul6BqcqmvcGHz779hllcAfXwGm8PWVlXa06
+         qD1fABeqGhFHI4/FlAqIu+G4lHsjbVFfHbJ4AqwvYN0c4uvfrgQqm8l9VHaoaFmvv1fZ
+         NyfIqYxeMNXRPNwwS5XyvzHKuvm83RwJxTb19tdJAOlrh0xO/8h3c8yQydZCqixZV4rY
+         xUsQF7erOjgH9gEJTud580BN5Ff0T8rF9DcxFMYM8q0jyRcrWdO+SjxWg/UOxjONtWWg
+         tYNOfpHyxmvPG775bAOci+0dvCZjowYBtFHKi9BCzQI6kqUylBNKCTQeB1+3q+O+/SPA
+         3JZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1700938676; x=1701543476;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=350qvT3Ei7k+Hv6R1v9t9bh6qjiYSxxhmCPKuxzIBwU=;
+        b=r+XK3z2cy0J7WvG8PxjvVogYHhwqFu3oQI6PA0xiLPKCZtez/idliMfClayuNZh4XB
+         rwD/4yJx62XKak5/idc83K1bw1zfZpPMNEdoS6gwZsS1ZK1T+40vPWSHPh4nhNXCCzqt
+         00y0o4yYiSJxsooVs6f2nAn/wSS2YKTecHHk4Q0lAMsr64B7+NTH9uXoVNrtDiQBOHaO
+         GxL9k/CFPFTPpErnjwh/2GtI5Csu5dbHJR2x/GRJo2RVVgLrJdbXbXS13+u2t0rUVbaw
+         ZWsJGk+YKGpfxwPlHyzbL6YitaFKYDJiPoQeB3UMYh+A+tx27AlCDoiahlxoSrLJoTpP
+         yyIA==
+X-Gm-Message-State: AOJu0YwSzQoug/c2A0NhZJkJWa2VnjQKW/z8445YxU813wvYyDxbYjd5
+	C80hu2EzzL5pC/PQ/dwjvAA5CVTxqls7dd2GaL8=
+X-Google-Smtp-Source: AGHT+IHjEw+Bz75l4MfeoTHYAg3CyYc+mvbEfKtnW08jlLVQx6edDMZWLOxviibJs3zl/Hyofy5Fcw==
+X-Received: by 2002:a17:902:8207:b0:1cf:afe3:cf2f with SMTP id x7-20020a170902820700b001cfafe3cf2fmr3499416pln.14.1700938676399;
+        Sat, 25 Nov 2023 10:57:56 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j15-20020a170902da8f00b001cc8cf4ad16sm3176133plx.246.2023.11.25.10.57.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Nov 2023 10:57:55 -0800 (PST)
+Message-ID: <656243b3.170a0220.edbda.6d92@mx.google.com>
+Date: Sat, 25 Nov 2023 10:57:55 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.14.330-53-g681f42b88bb43
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.330-53-g681f42b88bb43)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hello,
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.330-53-g681f42b88bb43)
 
-On 2023-11-25T16:33:18+00:00 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.330-53-g681f42b88bb43/
 
-> This is the start of the stable review cycle for the 6.6.3 release.
-> There are 528 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon, 27 Nov 2023 16:30:48 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.3-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.330-53-g681f42b88bb43
+Git Commit: 681f42b88bb43df4473bf9cc516cf3c94d9bd741
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+Warnings Detected:
 
-Tested-by: SeongJae Park <sj@kernel.org>
+arc:
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 6ad7ad14f1d6 ("Linux 6.6.3-rc2")
+arm64:
 
-Thanks,
-SJ
+arm:
 
-[...]
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
 ---
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_i386_idle_flag.sh
-ok 13 selftests: damon-tests: build_i386_highpte.sh
-ok 14 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+For more info write to <info@kernelci.org>
 
