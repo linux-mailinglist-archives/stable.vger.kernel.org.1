@@ -1,104 +1,100 @@
-Return-Path: <stable+bounces-2573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EFF27F88C0
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 08:10:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5557F88C6
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 08:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEC382817E4
-	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 07:10:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5277EB211D3
+	for <lists+stable@lfdr.de>; Sat, 25 Nov 2023 07:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA85963A6;
-	Sat, 25 Nov 2023 07:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73FC568B;
+	Sat, 25 Nov 2023 07:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03111D60;
-	Fri, 24 Nov 2023 23:10:40 -0800 (PST)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1r6moG-000216-3U; Sat, 25 Nov 2023 08:10:36 +0100
-Message-ID: <34c5b291-b69e-4592-bc9f-fc1b2ef5c5d7@leemhuis.info>
-Date: Sat, 25 Nov 2023 08:10:35 +0100
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C5119E
+	for <stable@vger.kernel.org>; Fri, 24 Nov 2023 23:16:22 -0800 (PST)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A00D121CD1;
+	Sat, 25 Nov 2023 07:16:21 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6148C1384C;
+	Sat, 25 Nov 2023 07:16:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NSxNFkWfYWUwOAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Sat, 25 Nov 2023 07:16:21 +0000
+Date: Sat, 25 Nov 2023 08:16:20 +0100
+Message-ID: <87leampakb.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	Philippe Perrot <philippe@perrot-net.fr>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 088/530] ALSA: scarlett2: Move USB IDs out from device_info struct
+In-Reply-To: <20231124172030.757235707@linuxfoundation.org>
+References: <20231124172028.107505484@linuxfoundation.org>
+	<20231124172030.757235707@linuxfoundation.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: scsi regression that after months is still not addressed and now
- bothering 6.1.y users, too
-Content-Language: en-US, de-DE
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sagar Biradar <sagar.biradar@microchip.com>,
- James Bottomley <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- Adaptec OEM Raid Solutions <aacraid@microsemi.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
- Hannes Reinecke <hare@suse.de>, scsi <linux-scsi@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, Gilbert Wu <gilbert.wu@microchip.com>,
- John Garry <john.g.garry@oracle.com>
-References: <c6ff53dc-a001-48ee-8559-b69be8e4db81@leemhuis.info>
- <2023112456-disinfect-undoing-b5ef@gregkh>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-In-Reply-To: <2023112456-disinfect-undoing-b5ef@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1700896240;f15d9d50;
-X-HE-SMSGID: 1r6moG-000216-3U
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	 REPLY(-4.00)[]
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: A00D121CD1
 
-On 24.11.23 17:25, Greg KH wrote:
-> On Tue, Nov 21, 2023 at 10:50:57AM +0100, Thorsten Leemhuis wrote:
->> * @SCSI maintainers: could you please look into below please?
->>
->> * @Stable team: you might want to take a look as well and consider a
->> revert in 6.1.y (yes, I know, those are normally avoided, but here it
->> might make sense).
->>
->> Hi everyone!
->>
->> TLDR: I noticed a regression (Adaptec 71605z with aacraid sometimes
->> hangs for a while) that was reported months ago already but is still not
->> fixed. Not only that, it apparently more and more users run into this
->> recently, as the culprit was recently integrated into 6.1.y; I wonder if
->> it would be best to revert it there, unless a fix for mainline comes
->> into reach soon.
->>
->> Details:
->>
->> Quite a few machines with Adaptec controllers seems to hang for a few
->> tens of seconds to a few minutes before things start to work normally
->> again for a while:
->> https://bugzilla.kernel.org/show_bug.cgi?id=217599
->>
->> That problem is apparently caused by 9dc704dcc09eae ("scsi: aacraid:
->> Reply queue mapping to CPUs based on IRQ affinity") [v6.4-rc7]. That
->> commit despite a warning of mine to Sasha recently made it into 6.1.53
->> -- and that way apparently recently reached more users recently, as
->> quite a few joined that ticket.
->[...]
-> I am loath to revert a stable patch that has been there for so long as
-> any upgrade will just cause the same bug to show back up. Why can't we
-> just revert it in Linus's tree now and I'll take that revert in the
-> stable trees as well?
+On Fri, 24 Nov 2023 18:44:14 +0100,
+Greg Kroah-Hartman wrote:
+> 
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Geoffrey D. Bennett <g@b4.vu>
+> 
+> [ Upstream commit d98cc489029dba4d99714c2e8ec4f5ba249f6851 ]
+> 
+> By moving the USB IDs from the device_info struct into
+> scarlett2_devices[], that will allow for devices with different
+> USB IDs to share the same device_info.
+> 
+> Tested-by: Philippe Perrot <philippe@perrot-net.fr>
+> Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+> Link: https://lore.kernel.org/r/8263368e8d49e6fcebc709817bd82ab79b404468.1694705811.git.g@b4.vu
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-FWIW, I know and in general agree with that strategy, that's why I
-normally wouldn't have brought a stable-only revert up for
-consideration. But this issue to me looked somewhat special and urgent
-for two and a half reasons: (1) that backport apparently made a lot more
-people suddenly hit the issue (2) there was also this data corruption
-aspect one of the reporters mentioned (not sure if that is real and/or
-if this might be just a 6.1.y thing). Furthermore for 6.1.y it was
-recently confirmed that reverting the change fixes things, while we iirc
-had no such confirmation for recent mainline kernels at that point. So
-it looked like it would take a while to get this sorted out in mainline.
-But it seems we finally might get closer to that now, so yeah, maybe
-it's not worth a stable revert.
+As already mentioned at
+  http://lore.kernel.org/r/87edgkpiig.wl-tiwai@suse.de
+this patch makes little sense as a stable update.  It's a part of the
+code rewrite series, and no real fix.  Better to drop for avoid
+confusions.
 
-Ciao, Thorsten
+Ditto for 6.5 and older kernels.
+
+
+thanks,
+
+Takashi
 
