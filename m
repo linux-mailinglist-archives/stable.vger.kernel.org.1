@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-2672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79EB27F916A
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 06:31:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54B47F916B
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 06:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D03B0B20E54
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 05:30:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1C661C20AFF
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 05:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4AD211A;
-	Sun, 26 Nov 2023 05:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFAA23CE;
+	Sun, 26 Nov 2023 05:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PWs/LngF"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="h69nt5vE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F69C111
-	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:30:52 -0800 (PST)
-Received: by mail-oo1-xc2e.google.com with SMTP id 006d021491bc7-58d6b0df182so235880eaf.0
-        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:30:52 -0800 (PST)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E075ACE
+	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:30:58 -0800 (PST)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-1cfbce92362so3262475ad.1
+        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:30:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1700976652; x=1701581452; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1700976658; x=1701581458; darn=vger.kernel.org;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fRPgrfcjvIlV2kn03rlOD8FVAiFhpV1l/dbehweoSBM=;
-        b=PWs/LngFU73z4ght17OgKdaxz9WUrJsHyMiPCrekzz4mKnuQ6dGj5hrqXG0gbZ33Zy
-         mFgZT/aMr4Ad8lsXbo5KePxq/87BDzRVuJ8K6s86Dz+jb9qoQrOXWlGl9QUk52riWUwF
-         YoPgV232LR0MGVk7ytCwaF5JtrruQ08EmefOU=
+        bh=I/QYK9J3ypqylgm6kmCC0HCinj9ljO45R59GAAgY89k=;
+        b=h69nt5vEnTcfyXepSmlaaaalqwofIaXc7iU7Sn8VDs540vIVFhaL64CTp7lQg6Mxfd
+         9MAiAZ2rkpUrYZKGQQaPajqKU6c+8PSiv1P46HL+w2w2rg1DIG8IOgnircr6x9CEBAJb
+         XnCmbpFc8FG0dzxN5FbeRJApvbIDgHxjcnNss=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700976652; x=1701581452;
+        d=1e100.net; s=20230601; t=1700976658; x=1701581458;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fRPgrfcjvIlV2kn03rlOD8FVAiFhpV1l/dbehweoSBM=;
-        b=K8CR+2dAVjmF2YbcocFqOlw8bq9fpp+qlmOAlw4mdHBhuHcVkIAiUjv2Iej5F4PySV
-         Tl1mJSSRjRQU7Eba+KARZcXBxZTBKolDYnT2nyROaSXAMoNIlnZiJ/IYbdey3PvMk8rs
-         6CnySX6yPSDeHP9C/YgRLpzmGAFUGrjnE0qSBXzRfSIt2pOB18JQuCmWXRBbBkt6UNL7
-         33xd+e1Szzd59HpYbgdD0f4ymNwjL5KLdt+j+pBc8u943AD5S0u14XQwzK8jup7rDuVX
-         e+WV+FzShensFmO1vCysRZEv2O6DSHltO3vrWwm+2350THli8EQGGlvJyceClWoQrixf
-         ESWw==
-X-Gm-Message-State: AOJu0Yy4PIwurIOv7baKqcdAV66q4B+tYqgXYmcG7ST4KNff/eh4iqgT
-	o7d7kKoRmgGzieoveB/VtjuJ/g==
-X-Google-Smtp-Source: AGHT+IHecPuosQSwZzQvYcFR0SrjTVNgpbEHvbLHmY96arQfsY20sFM9X/RpeIiq6RaGCjXpogehFA==
-X-Received: by 2002:a05:6358:998a:b0:16d:e923:573 with SMTP id j10-20020a056358998a00b0016de9230573mr7692608rwb.15.1700976651816;
-        Sat, 25 Nov 2023 21:30:51 -0800 (PST)
+        bh=I/QYK9J3ypqylgm6kmCC0HCinj9ljO45R59GAAgY89k=;
+        b=TIkYV1vHbtBp9pxXF2Ai8Ze9723aoJB637WeDvoQv166Mf0clZpM79yiVe9fqyXqM9
+         cEAMxK0mSR6bo3drqyJky5hBS4ho11cCyEiWFn59H7Ix7bVqFNA15WtwI+Urhj6HPhyL
+         2Fnd0aXy2YX7bXF/ntsUsZBkZw1V4rBMlvrI+GYWKIhqX8v/MOtAMEZen2TXwy8jxvyE
+         nG5aSsG3sT/bfjBIMrAhxf05xUwIv8WMF1J+WsMaZvYLyZiP8rOyVl7divopdnlmHHlY
+         2gzqATgqWGQ2GAvB7dfGCiQiHmLZLQIo/C+vzHvX5ChTpeEJXAVd+cOQrzsKER1lZJAT
+         hTig==
+X-Gm-Message-State: AOJu0YyCaAkuNToN0o7YiD2nXU6j4iZ6HJH2DODGbgksINzv3sUqZMrY
+	cdPABmBtfEJotq0cIHuJ1OeTiA==
+X-Google-Smtp-Source: AGHT+IGyOiWf22D1TEpY7OaO+LStl+lbNbWTU2Ke0ZqA8WP8TOrE7Jqv0EDrc+LwG6TZ4frBQhIkmQ==
+X-Received: by 2002:a17:902:e812:b0:1cc:5671:8d9 with SMTP id u18-20020a170902e81200b001cc567108d9mr15391431plg.27.1700976658244;
+        Sat, 25 Nov 2023 21:30:58 -0800 (PST)
 Received: from dhcp-10-123-20-35.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id s78-20020a632c51000000b00578b8fab907sm5516166pgs.73.2023.11.25.21.30.49
+        by smtp.gmail.com with ESMTPSA id s78-20020a632c51000000b00578b8fab907sm5516166pgs.73.2023.11.25.21.30.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Nov 2023 21:30:51 -0800 (PST)
+        Sat, 25 Nov 2023 21:30:57 -0800 (PST)
 From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 To: linux-scsi@vger.kernel.org,
 	sathya.prakash@broadcom.com,
@@ -56,9 +56,9 @@ To: linux-scsi@vger.kernel.org,
 	prayas.patel@broadcom.com
 Cc: Chandrakanth patil <chandrakanth.patil@broadcom.com>,
 	stable@vger.kernel.org
-Subject: [PATCH 1/4] mpi3mr: Refresh sdev queue depth after controller reset
-Date: Sun, 26 Nov 2023 11:01:31 +0530
-Message-Id: <20231126053134.10133-2-chandrakanth.patil@broadcom.com>
+Subject: [PATCH 2/4] mpi3mr: Cleanup block devices post controller reset
+Date: Sun, 26 Nov 2023 11:01:32 +0530
+Message-Id: <20231126053134.10133-3-chandrakanth.patil@broadcom.com>
 X-Mailer: git-send-email 2.39.3
 In-Reply-To: <20231126053134.10133-1-chandrakanth.patil@broadcom.com>
 References: <20231126053134.10133-1-chandrakanth.patil@broadcom.com>
@@ -69,47 +69,53 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000001fff91060b077d29"
+	boundary="00000000000082599f060b077d3a"
 
---0000000000001fff91060b077d29
+--00000000000082599f060b077d3a
 Content-Transfer-Encoding: 8bit
 
-After a controller reset, the firmware may modify the device queue depth.
-Therefore, update the device queue depth accordingly.
+After a controller reset, if the firmware changes the state of devices
+to "hide," then remove those devices from the OS.
 
-Cc: <stable@vger.kernel.org> # v5.15+
+Cc: <stable@vger.kernel.org> # v6.6+
 Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
 Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 ---
- drivers/scsi/mpi3mr/mpi3mr_os.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_os.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/scsi/mpi3mr/mpi3mr_os.c b/drivers/scsi/mpi3mr/mpi3mr_os.c
-index 91a22e6e5c3f..561fe0857bc0 100644
+index 561fe0857bc0..872d4b809d08 100644
 --- a/drivers/scsi/mpi3mr/mpi3mr_os.c
 +++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
-@@ -1070,8 +1070,14 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr_ioc *mrioc)
- 	tgtdev = NULL;
- 	list_for_each_entry(tgtdev, &mrioc->tgtdev_list, list) {
- 		if ((tgtdev->dev_handle != MPI3MR_INVALID_DEV_HANDLE) &&
--		    !tgtdev->is_hidden && !tgtdev->host_exposed)
--			mpi3mr_report_tgtdev_to_host(mrioc, tgtdev->perst_id);
-+		    !tgtdev->is_hidden) {
-+			if (!tgtdev->host_exposed)
-+				mpi3mr_report_tgtdev_to_host(mrioc,
-+							     tgtdev->perst_id);
-+			else if (tgtdev->starget)
-+				starget_for_each_device(tgtdev->starget,
-+							(void *)tgtdev, mpi3mr_update_sdev);
-+	}
+@@ -1047,8 +1047,9 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr_ioc *mrioc)
+ 	list_for_each_entry_safe(tgtdev, tgtdev_next, &mrioc->tgtdev_list,
+ 	    list) {
+ 		if ((tgtdev->dev_handle == MPI3MR_INVALID_DEV_HANDLE) &&
+-		    tgtdev->host_exposed && tgtdev->starget &&
+-		    tgtdev->starget->hostdata) {
++		     tgtdev->is_hidden &&
++		     tgtdev->host_exposed && tgtdev->starget &&
++		     tgtdev->starget->hostdata) {
+ 			tgt_priv = tgtdev->starget->hostdata;
+ 			tgt_priv->dev_removed = 1;
+ 			atomic_set(&tgt_priv->block_io, 0);
+@@ -1064,6 +1065,10 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr_ioc *mrioc)
+ 				mpi3mr_remove_tgtdev_from_host(mrioc, tgtdev);
+ 			mpi3mr_tgtdev_del_from_list(mrioc, tgtdev, true);
+ 			mpi3mr_tgtdev_put(tgtdev);
++		} else if (tgtdev->is_hidden & tgtdev->host_exposed) {
++			dprint_reset(mrioc, "hiding target device with perst_id(%d)\n",
++				     tgtdev->perst_id);
++			mpi3mr_remove_tgtdev_from_host(mrioc, tgtdev);
+ 		}
  	}
- }
  
 -- 
 2.39.3
 
 
---0000000000001fff91060b077d29
+--00000000000082599f060b077d3a
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -180,15 +186,15 @@ W2v5XKnfV6+4iODhAb65bwLbcNq6dxzr1Yy/fGnIBfoR2qrX9UBDDxjZRpxJGdt7i0CcvsX7p2ia
 SgP+hUBq9GTgLiFqCGyh/gCm2DTB/TyYel0QsIP29qWC1F5mG+GOoSjagi/2SxnNI6LzK+4xfgvc
 80IlL0UapzuyZFExggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxT
 aWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAy
-MDIwAgxHbRA/WY+OVYGbn+cwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIB9qUcfu
-veYrD4KUvFPpI0Whd2ugeTCxlBs+oK0u4GTpMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
-KoZIhvcNAQkFMQ8XDTIzMTEyNjA1MzA1MlowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASow
+MDIwAgxHbRA/WY+OVYGbn+cwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIC6NIu+5
+qyTFw+gtxlnl0Opi2ii72gM/qMlZMe5UPrLtMBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
+KoZIhvcNAQkFMQ8XDTIzMTEyNjA1MzA1OFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASow
 CwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZI
-hvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQBDuuCTuYK7TdtkvVrNGOE86jy/
-oMoiPLK5ElhDVY7uj8wvAHq0I7g+u+OAN7wkoZ2d8eBbXJ8hEZ9yevUwhuhC5wVOzpcno9a5yo62
-wgxeBIl+4mKjAgGMPVTV6bMxyKK8IwLdm4/iXLVv9MKUs4CTtN0Q01WH4/RixOv1huZYOI2BQ2qG
-90jYf5q2lk7yIlnn0fd+0XZWLDs/Ftt0RK3o470R1dyss1As85t1SvCPCNCB6gzExtTBN38BAbXe
-vYkxuLLgplK494OcFnzXY1tRMGtIUiPlpmy7Ko3gR+P5bJ57tDN2x759ouDaV+e6X3nwl26Gg0U2
-OetlPltQHMqx
---0000000000001fff91060b077d29--
+hvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQAACkyh21OEcptfRYZ7cH7R8l0i
+HAjPgW/u3mCNQMNPoi0LnKnvT8a1EWIZMZWa/JzUXp7JE0fNwxs6ePt7C+qNIY3lgjGDNu8+GuSg
+SxL8Lq5xbNWe/u9aaAzpNyUyP8ywyetbyMGNoNxzYn98eYTBRJtUQnT76MQYCspt9yGc0LbB2nbq
+Io2VJ2LzbAQBpkxyftQ5fk6KY6BWartF7x2wAirgwGynWWRmvRzMyWpcDXxX6qccMtEN/CPMUTaf
+1E0E2gCBuK/vHz0ZbE4ce2Qi6mGQUWWxijD4KSw79lK83ZyCyBAmetcZjbARFwZ8G8R7Pw99FDUm
+vz3s27P/R4lt
+--00000000000082599f060b077d3a--
 
