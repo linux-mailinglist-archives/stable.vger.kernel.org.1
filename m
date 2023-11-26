@@ -1,78 +1,119 @@
-Return-Path: <stable+bounces-2676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655BF7F91D4
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 09:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5674C7F91DB
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 09:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E7B11C20A4F
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 08:24:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9881C20A2D
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 08:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BF10611E;
-	Sun, 26 Nov 2023 08:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB82B20FA;
+	Sun, 26 Nov 2023 08:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="3rkpuWOm"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B223C8
-	for <stable@vger.kernel.org>; Sun, 26 Nov 2023 00:24:37 -0800 (PST)
-Message-ID: <58ef6746-e46e-4a6d-8875-8375f5b9d89c@hardfalcon.net>
-Date: Sun, 26 Nov 2023 09:24:33 +0100
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0C51FF
+	for <stable@vger.kernel.org>; Sun, 26 Nov 2023 00:43:06 -0800 (PST)
+Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
+	by cmsmtp with ESMTPS
+	id 77ltrlaLWgpyE7AjKr3tVL; Sun, 26 Nov 2023 08:43:06 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 7AjJr7GpmhDny7AjJrm8OX; Sun, 26 Nov 2023 08:43:05 +0000
+X-Authority-Analysis: v=2.4 cv=fda+dmcF c=1 sm=1 tr=0 ts=65630519
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=BNY50KLci1gA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=2zxgpyc-tqoJWZ86AioA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=OcCAqEYCF7/UDtZ4/EjgDtUMzPOc306OgNIIspnUHq8=; b=3rkpuWOmHxPzexFDxr1TqyEq6N
+	3XEiDfUGCyiOn+NQYUhOAngpk5/wE3Y9rLLAibOZbIighRBySaVTU3mAdmy29BYXGTunre1MSbjnv
+	tK6DFhDhc9/9RUFH+Uh+kOQzs4tdrvzP0c+8EEY+0bRalLnN4LiJcnR5lNvPyA6+dhnJ7dZaQVEzn
+	QR4GLKKA+hPItoilbiyggW9FpWGLItIP5JQfZeo0o/eW6OSPKo6ANzvPBh1arC+cb+essmYNtf+j8
+	+U3r36bozdQrmecCAIShQ+MO+imSLwGoc0Ke9U0Gca5NVB/YSdjjc2NdBPeBV0iCBsu+4MVOxRwon
+	RVWLkNAg==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:56936 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1r7AjG-000R8h-2f;
+	Sun, 26 Nov 2023 01:43:02 -0700
+Subject: Re: [PATCH 5.15 000/293] 5.15.140-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231125163129.530624368@linuxfoundation.org>
+In-Reply-To: <20231125163129.530624368@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <1309b931-9196-0a8d-941f-c6e1d7567753@w6rz.net>
+Date: Sun, 26 Nov 2023 00:43:00 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH 6.6 205/530] af_unix: fix use-after-free in
- unix_stream_read_actor()
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-To: =?UTF-8?Q?Holger_Hoffst=C3=A4tte?= <holger@applied-asynchrony.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
- Rao Shoaib <rao.shoaib@oracle.com>, Paolo Abeni <pabeni@redhat.com>,
- Sasha Levin <sashal@kernel.org>,
- syzbot+7a2d546fa43e49315ed3@syzkaller.appspotmail.com
-References: <20231124172028.107505484@linuxfoundation.org>
- <20231124172034.306582342@linuxfoundation.org>
- <6db03eba-abd3-41ff-a2af-9fca0ca24c31@hardfalcon.net>
- <2fbf23b8-8046-4f10-abf8-294bbe261c5d@hardfalcon.net>
- <9bc5b07c-5f81-7d06-6837-6ba13109dda6@applied-asynchrony.com>
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <9bc5b07c-5f81-7d06-6837-6ba13109dda6@applied-asynchrony.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1r7AjG-000R8h-2f
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:56936
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfFth/dWs3yB4jL+paecW+6Lqy+r074mECdc8BifAUU5NLWGtn1S1iZfZ/IDftg79VGU9C5HgsNwM0EamFTzuTVui5Ccw2ZN0NVKWTCY9VGtHFAO6FZJp
+ Yo4NHCfgpGC6R0NMY97dObKk2cnmQh9AnHWO3ub0XORzQx2rdllOH+xdcwV85PDmNN3hXsS6Y2GD+Q==
 
-[2023-11-26 01:54] Holger Hoffstätte:
-> On 2023-11-26 00:49, Pascal Ernster wrote:
->> I've now tested with a clean/vanilla kernel 6.6.2 with all the
->> patches from
->> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/queue-6.6?id=2da2670346795f8fe06acbf499606941303b9cbe
->> applied on top, but *excluding* the "af_unix: fix use-after-free in
->> unix_stream_read_actor()" patch, and my VM boots cleanly, without any
->> crashes.
->>
->> When I try to boot a build of the exact same kernel, but *including*
->> the "af_unix: fix use-after-free in unix_stream_read_actor()" patch,
->> the VM crashes during boot (as stated in my previous email), so I'm
->> now 100% certain that this patch is causing the crashes.
->>
-> 
-> Can you try booting the latest 6.7-rc and see what happens? That might give
-> us a further clue. I'm running 6.6.3-rc with this patch, various apps use
-> Unix sockets and there is not problem so far.
+On 11/25/23 8:33 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.140 release.
+> There are 293 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 27 Nov 2023 16:30:48 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.140-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-I can try 6.7-rc, but compiling will take a while.
+Tested-by: Ron Economos <re@w6rz.net>
 
-At least with 6.6.3-rc, The crashes seem occur only with the specific 
-config that I had attached to my first email. I had originally tried 
-with a localmodconfig to speed up compiling when tracking down the 
-crashes, but I couldn't reproduce the crashes with the localmodconfig 
-kernel.
-
-
-Regards
-Pascal
 
