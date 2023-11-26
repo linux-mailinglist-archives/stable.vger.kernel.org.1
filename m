@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-2705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FEA77F94DB
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 19:23:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521DD7F94DF
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 19:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 115DD1C209FC
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 18:23:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98512B20C38
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 18:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D106F10979;
-	Sun, 26 Nov 2023 18:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19479DDC5;
+	Sun, 26 Nov 2023 18:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NNRkQswJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m5rFI7UO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FF70111;
-	Sun, 26 Nov 2023 10:23:27 -0800 (PST)
-Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-6b20a48522fso2624591b3a.1;
-        Sun, 26 Nov 2023 10:23:27 -0800 (PST)
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63A4DE8;
+	Sun, 26 Nov 2023 10:33:19 -0800 (PST)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6cbe716b511so2316834b3a.3;
+        Sun, 26 Nov 2023 10:33:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701023007; x=1701627807; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701023599; x=1701628399; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=x8F6qrmUPSBt/CJhsZZHdLkXZGN0xPhZDe9EzedoL24=;
-        b=NNRkQswJ0gxGNkVpW/T6hj/aL3Gb0qClH7CC8m8uuWMffc+Kw6kaZiP2jZbt0eGWS7
-         rpl90vBORgRpLRY0+kA2hDXrwe3uSm5ZhgHAFE/6l/0dHEKO3qLvlGry8jMH1WAhphwd
-         33R+juyi7b/Ho5vxEDSAW8ZgwDwB1ahf5L0VVhloSCV+h72cdLefZdw37B2WEls2lw4g
-         Yy0hlN3lKX+d1nswzKgfFuzVOLOzQh3WBen1LyR0V6EnBGUO8hcT8n/M+PZy9NUyruyG
-         NwjRJf7wmhnqxw6ZBep9eHoCURV/mWjvr200DR/Qh6mud61br8te4lgQ1GCvjDpCZ/NT
-         L+ig==
+        bh=ZVmDhjOXqhvKgFkEdvXLesWKtT+5+6HRJ1ntux/QoPo=;
+        b=m5rFI7UOXdCb/J8g3yEhJ7kQ6TNy0isN5N0uc6Mb3huKy41uk6v3u6E44/yr2CK5oL
+         sg1wBgW6YFw8JB92QKm84SNsOzZcvoS9HPhNUdK29jIMTNMBipbGL0/3lAc5JRvzfz5v
+         7b6XdGrRpUjsXtTcuPOkoNZ4431+Bb2eP1l8acQfkM6Nz49E7rxHtSnlnNWhino9U8Vx
+         2oew9QDWesSrHXy0HO+VlPw8t8tZlsrI1p1q2yFwPcfX5slbTLRAmxvFubOUM2WWOne0
+         FxpOEffhj4fi8NHhzeoAqidF4PXG+lDn3n4CTsOwlAjdk3U7Gm2S0MCrI0MyPHGhcVTe
+         IMGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701023007; x=1701627807;
+        d=1e100.net; s=20230601; t=1701023599; x=1701628399;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=x8F6qrmUPSBt/CJhsZZHdLkXZGN0xPhZDe9EzedoL24=;
-        b=jrmmNu8oWsL0aiiNPuyGSSE6E1wJVM7ZwMrFWANXbTSC26xt7XLySaXz2FRqlMu74c
-         GtM9KYG+/eWS+ilPrKk3/Ms9MqhTfUIq9P1GaHf1Ce27crf+RU4Fptp11QHyuDdW8JlG
-         FSKQHtKdxq6XhTepDxru9PpHOjFGwb5Jkq/SpSDLqf6/YjCJMXUPDTTUPuxtuH1/7We+
-         F5VSpSmzYN5tDbAIlpW7UXRNGpEkysf4jajjbqct044qVVAqjXL/CrQjmeIWvt/MqOT5
-         00cE+uqBqW5x4YusxejipDVtXZQVe0/dKeMrWVDcFBrdqBdIgDt5X/RJgk/W61+gjfDz
-         ALdg==
-X-Gm-Message-State: AOJu0YwlelZgQwMe51zwR6oGqx+dGzUX+EvdJkCizuypcBUxSSFqA4jQ
-	4PohhYtyXMpp9T9/C4RD3oQ=
-X-Google-Smtp-Source: AGHT+IF1603DpESp/eBHLrrSl4XQCz1I0u6NAb6fww1o8yrFC+u9nGVbsjVEJYmmJsBejKxcjGqixw==
-X-Received: by 2002:a05:6a20:1445:b0:18c:5c04:5564 with SMTP id a5-20020a056a20144500b0018c5c045564mr3310140pzi.60.1701023007344;
-        Sun, 26 Nov 2023 10:23:27 -0800 (PST)
+        bh=ZVmDhjOXqhvKgFkEdvXLesWKtT+5+6HRJ1ntux/QoPo=;
+        b=Lypi59ydxfl9WjYx96od9/fuv2lKFfHVQ4mXG4OtNObirdoogYiVl8Rheqy2t2G1p9
+         GeRd2tlb88cJqJOeFYVpmo1MGZE2szL+UqQN1JcUhH9GaejFy+45y72malO+6CgWxHGk
+         0QFGEX8mqSLkFoWBlEeaNiEczjNkgkSDlgpuzqNsEQ1VrirRcyTL+vXeH/mkIbMoCyuy
+         yL1RZVdTGNBLNCftJSppMuPd4QSPqIWf5d7LGNFH0Ijeza3A3yFvbZvaiHJXaVo0o8jt
+         Wmia69Da1NCpoYLBfkSTT1K/5Mu36RufCeRofb07Q5FZzfnhacz6Sl23KB8fEdzwT2b/
+         G8ow==
+X-Gm-Message-State: AOJu0YwkqPy+sNBRSTNTQBhqAmKQ0HVnhVsSU0ZckZhkroZKpBC0ecEo
+	kmq+/cEo68QdO3Qe6swT5Z8=
+X-Google-Smtp-Source: AGHT+IEdVS1JbMFlp6ZZQNruwQlaMMngzWg7HnKoKlQvgn+RUYQwxgW3PasscTn0Hqru5nfHWniQhA==
+X-Received: by 2002:a05:6a20:d70a:b0:18a:e7cf:7be with SMTP id iz10-20020a056a20d70a00b0018ae7cf07bemr8470281pzb.52.1701023598811;
+        Sun, 26 Nov 2023 10:33:18 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 29-20020a63145d000000b005c259cef481sm6394039pgu.59.2023.11.26.10.23.25
+        by smtp.gmail.com with ESMTPSA id a7-20020a656407000000b005b83bc255fbsm5484576pgv.71.2023.11.26.10.33.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Nov 2023 10:23:26 -0800 (PST)
+        Sun, 26 Nov 2023 10:33:18 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <76363981-1f2a-47c2-b1b1-ae039844e936@roeck-us.net>
-Date: Sun, 26 Nov 2023 10:23:24 -0800
+Message-ID: <09f33739-9bf6-4ff8-895d-92d3567c3cb9@roeck-us.net>
+Date: Sun, 26 Nov 2023 10:33:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,15 +64,16 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
+Subject: Re: [PATCH 4.14 00/53] 4.14.331-rc2 review
 Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
  patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
  jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20231126154335.643804657@linuxfoundation.org>
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, Helge Deller <deller@gmx.de>
+References: <20231125163059.878143365@linuxfoundation.org>
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -117,35 +118,49 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231126154335.643804657@linuxfoundation.org>
+In-Reply-To: <20231125163059.878143365@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11/26/23 07:46, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.202 release.
-> There are 187 patches in this series, all will be posted as a response
+On 11/25/23 08:32, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.14.331 release.
+> There are 53 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
-> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
+> Responses should be made by Mon, 27 Nov 2023 16:30:48 +0000.
 > Anything received after that time might be too late.
 > 
 
-For v5.10.201-188-g2f84e268b78b (5.10.202-rc3):
+Building parisc64:generic-64bit_defconfig ... failed
+--------------
+Error log:
+hppa64-linux-ld: arch/parisc/kernel/head.o: in function `$iodc_panic':
+(.head.text+0x64): undefined reference to `init_stack'
+hppa64-linux-ld: (.head.text+0x68): undefined reference to `init_stack'
+make[1]: *** [Makefile:1049: vmlinux] Error 1
+make: *** [Makefile:153: sub-make] Error 2
 
-s390:defconfig, s390:allmodconfig, s390:debug_defconfig:
+Bisect log:
 
-drivers/s390/crypto/ap_bus.c: In function 'ap_bus_force_rescan':
-drivers/s390/crypto/ap_bus.c:791:28: error: 'ap_scan_bus_count' undeclared
+# bad: [39ca2c4cec46e5ef545815f62be91cba998b8927] Linux 4.14.331-rc2
+# good: [bfa43eeca4797e58975ba8c54057c1f29bf20534] Linux 4.14.330
+git bisect start 'HEAD' 'v4.14.330'
+# good: [5bc5bf29b42fb16faa4407f9c01f05dadb397f2f] media: venus: hfi: add checks to perform sanity on queue pointers
+git bisect good 5bc5bf29b42fb16faa4407f9c01f05dadb397f2f
+# good: [2e1d20a37188fbca246de24800f3fb0e9ab8d233] mcb: fix error handling for different scenarios when parsing
+git bisect good 2e1d20a37188fbca246de24800f3fb0e9ab8d233
+# bad: [6c59b6c8a0be15fa1db3d07ffcad481aa507f8be] media: venus: hfi: fix the check to handle session buffer requirement
+git bisect bad 6c59b6c8a0be15fa1db3d07ffcad481aa507f8be
+# bad: [581615c5d0e31e0033e3458e248c6e3646b5ab13] ALSA: info: Fix potential deadlock at disconnection
+git bisect bad 581615c5d0e31e0033e3458e248c6e3646b5ab13
+# bad: [af3526c44f86f56af5963e8ed6dc77fc1e76ccc5] parisc/pgtable: Do not drop upper 5 address bits of physical address
+git bisect bad af3526c44f86f56af5963e8ed6dc77fc1e76ccc5
+# bad: [6eddd5699c407a706d8e914e0c88934c4e1b6e27] parisc: Prevent booting 64-bit kernels on PA1.x machines
+git bisect bad 6eddd5699c407a706d8e914e0c88934c4e1b6e27
+# first bad commit: [6eddd5699c407a706d8e914e0c88934c4e1b6e27] parisc: Prevent booting 64-bit kernels on PA1.x machines
 
-$ git grep ap_scan_bus_count
-drivers/s390/crypto/ap_bus.c:   if (atomic64_read(&ap_scan_bus_count) <= 0)
-$ git blame drivers/s390/crypto/ap_bus.c |& grep ap_scan_bus_count
-467f51fb3ab6e (Harald Freudenberger 2023-10-23 09:57:10 +0200  791) 	if (atomic64_read(&ap_scan_bus_count) <= 0)
-
-which is:
-
-467f51fb3ab6 s390/ap: fix AP bus crash on early config change callback invocation
+FWIW, the offending patch is tagged "Cc:  <stable@vger.kernel.org> # v6.0+"
 
 Guenter
 
