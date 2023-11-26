@@ -1,201 +1,229 @@
-Return-Path: <stable+bounces-2674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8067F916D
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 06:31:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF457F9177
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 06:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1AC11C20C12
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 05:31:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A11428118B
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 05:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F453FEF;
-	Sun, 26 Nov 2023 05:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C7A3C35;
+	Sun, 26 Nov 2023 05:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Nmb6bId9"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BfwqpLFP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADBCFCE
-	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:31:04 -0800 (PST)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-5c85e8fdd2dso29249547b3.2
-        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:31:04 -0800 (PST)
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D1EDF0
+	for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:41:15 -0800 (PST)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1fa235f8026so603296fac.3
+        for <stable@vger.kernel.org>; Sat, 25 Nov 2023 21:41:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1700976664; x=1701581464; darn=vger.kernel.org;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YcOHM6wIdklBaviamkKPz0pbgDAC9nOjnElWsy4sOsk=;
-        b=Nmb6bId9bju81j/mK7DUg4FNshFBhCzZSRj2QP6BS7H7rhmROQ01ii0U4k+BlgCvjI
-         BBu+2QVmK44OzbxS9j3jBCtpxFRD8DBYl0ldtC4c/z0pZuqO1nRdC8R6jCXq2trcU1Wm
-         OfBCk/4LSdgRvcRND0xcNQ/d81zXZTkAler5M=
+        d=linaro.org; s=google; t=1700977274; x=1701582074; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S36piAfzQvna+N9L6mM9OEWRABXZuCTabjbt1X/ibi8=;
+        b=BfwqpLFPxzwGWqj1N//eBSwnbxBXJoekE+n9UA4NWXMdFpQgiNWr+xTGifjY64fUx4
+         U0KH6N8JQl+IMq1qicueB1xL7nR+P2I1efS6ilh48JeDSNFpldJN7cXu9IbEE0kt7BXb
+         Ws89mu+DiK1Y/dMx8/LL7p3ENt2aykdrUBgjnuQOf38JFmQ+gG8NDEULwPUJ/eh09uJ7
+         nIDyXGzOO6L1KLTjYQn4XIOwbKAoBPvLSl9TkigamClijV8NO+11qCJve2nv8VIiNSvR
+         TnTXdFDxt0AZfJYL4yi7FKKockcZS8r7QF1G0tu1xAF5wr0eexj0Zzg4Jg6S8dbVtEHO
+         xuQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700976664; x=1701581464;
-        h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YcOHM6wIdklBaviamkKPz0pbgDAC9nOjnElWsy4sOsk=;
-        b=jhTqTYtWQPlFEvNaNkZScYLVI2iFuktBkgpPxXbJ1+ia0k8PNWBTUXqYuT+kQMPlf/
-         35+RU4uP73KEfoQxmgdHuHT5L0W0JTK3QUkgH5eESFGQ9ks2JAcUNgP8nbqYNfSmpCjy
-         6nB5Pu+hVneyh/vbXtq7+jmRYXoBe8aZWQz7hbpfBrTtGAEcEJvm6/bO0lXq1+pb4Dvt
-         FUk5xodnsjiKWILT61R3aa6a4yRAZ9NyjFcpGrU9snNfQdP6x7bmYm5vu0iPoIjQTzJ2
-         xO4wZ7VCXe0mGA8I4xJgpSe9jeRaf8faXMx4v4QR2ryxLGUSfUgyLJVUUHzOAUcf4zpb
-         YNkg==
-X-Gm-Message-State: AOJu0YwHzOEx/B1jwayPczOAOeohj5pSoSDxk/K4oYsf7b2BcoFlmKXm
-	Un6B4zxHRzszbL7Cx5IkdYRgPA==
-X-Google-Smtp-Source: AGHT+IE6yl2vfJyeaX1ogQweJkK2DJdS+QjzQvP43bpLT2g4XC8OUI0jQS03nFttip2jU4Ow7fOHsg==
-X-Received: by 2002:a81:9190:0:b0:5a8:e6f4:4b6c with SMTP id i138-20020a819190000000b005a8e6f44b6cmr8512052ywg.25.1700976663763;
-        Sat, 25 Nov 2023 21:31:03 -0800 (PST)
-Received: from dhcp-10-123-20-35.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id s78-20020a632c51000000b00578b8fab907sm5516166pgs.73.2023.11.25.21.31.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Nov 2023 21:31:03 -0800 (PST)
-From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
-To: linux-scsi@vger.kernel.org,
-	sathya.prakash@broadcom.com,
-	sumit.saxena@broadcom.com,
-	ranjan.kumar@broadcom.com,
-	prayas.patel@broadcom.com
-Cc: Chandrakanth patil <chandrakanth.patil@broadcom.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 3/4] mpi3mr: Block PEL Enable Command on Controller Reset and Unrecoverable State
-Date: Sun, 26 Nov 2023 11:01:33 +0530
-Message-Id: <20231126053134.10133-4-chandrakanth.patil@broadcom.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20231126053134.10133-1-chandrakanth.patil@broadcom.com>
-References: <20231126053134.10133-1-chandrakanth.patil@broadcom.com>
+        d=1e100.net; s=20230601; t=1700977274; x=1701582074;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S36piAfzQvna+N9L6mM9OEWRABXZuCTabjbt1X/ibi8=;
+        b=pOWeU6CVcHegFjUYAKxxkQbtzjGDF4pHKNJSyaGibUT2+cdNdOyePdXLD6zAi9+VqN
+         /8GZ90Jex/2/43302rUoUnh/zqNkFRxKTDnFN78+7zBg3CYPjSSmgS4Uet9wXQbmu1Nf
+         /1AlQB14mA5YI2J/JnlscUhFaaFuk3X+Dzgwyi6D8lZNBIteyquRTLGpxxfSJSJLZriQ
+         SmMDc9YO5J8CtLlsVB1eR+Nc0tcdJXBdHY0P9eYcrSonj4KbEpC3rM9U+zrlH5UlVZTK
+         KRe+gVhNRyTwIvaPbzacCvRk5z4xhIINCOHQgx5CwQc5HQBpAhiGTPn9KYqXSyLs1gou
+         x9gg==
+X-Gm-Message-State: AOJu0YwZ+nMeXFr+mdJac3LzexRhxsPo/29oQ5q13ine7d7sw7/XWHyw
+	kOgn+helKjqW8f2VoT8xhHnP0A==
+X-Google-Smtp-Source: AGHT+IEwHyJDJRMTkV7S100rGnvfONxHA5hf52RO0SaB0m0JAbk6ujmtCuS5LfT6Gb03rCZFYCmWdQ==
+X-Received: by 2002:a05:6871:88d:b0:1fa:2ddf:d5c4 with SMTP id r13-20020a056871088d00b001fa2ddfd5c4mr3178526oaq.25.1700977274651;
+        Sat, 25 Nov 2023 21:41:14 -0800 (PST)
+Received: from [192.168.17.16] ([138.84.62.70])
+        by smtp.gmail.com with ESMTPSA id bn18-20020a0568300c9200b006ce2c31dd9bsm1012164otb.20.2023.11.25.21.41.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 25 Nov 2023 21:41:14 -0800 (PST)
+Message-ID: <a853e6f3-f658-4049-9c36-66835d144eac@linaro.org>
+Date: Sat, 25 Nov 2023 23:41:11 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000d67a04060b077dc9"
-
---000000000000d67a04060b077dc9
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/368] 6.1.64-rc3 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, hca@linux.ibm.com,
+ gbatra@linux.vnet.ibm.com
+References: <20231125194359.201910779@linuxfoundation.org>
+From: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>
+In-Reply-To: <20231125194359.201910779@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-If a controller reset is underway or the controller is in an unrecoverable
-state, the PEL enable management command will be returned as EAGAIN or
-EFAULT.
+Hello!
 
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
----
- drivers/scsi/mpi3mr/mpi3mr_app.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+On 25/11/23 1:45 p. m., Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.64 release.
+> There are 368 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 27 Nov 2023 19:43:06 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.64-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_app.c b/drivers/scsi/mpi3mr/mpi3mr_app.c
-index 08645a99ad6b..9dacbb8570c9 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_app.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
-@@ -223,6 +223,22 @@ static long mpi3mr_bsg_pel_enable(struct mpi3mr_ioc *mrioc,
- 		return rval;
- 	}
- 
-+	if (mrioc->unrecoverable) {
-+		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
-+			       __func__);
-+		return -EFAULT;
-+	}
-+
-+	if (mrioc->reset_in_progress) {
-+		dprint_bsg_err(mrioc, "%s: reset in progress\n", __func__);
-+		return -EAGAIN;
-+	}
-+
-+	if (mrioc->stop_bsgs) {
-+		dprint_bsg_err(mrioc, "%s: bsgs are blocked\n", __func__);
-+		return -EAGAIN;
-+	}
-+
- 	sg_copy_to_buffer(job->request_payload.sg_list,
- 			  job->request_payload.sg_cnt,
- 			  &pel_enable, sizeof(pel_enable));
--- 
-2.39.3
+The following configurations are failing for System/390:
+* gcc-8-allmodconfig
+* gcc-8-allnoconfig
+* gcc-8-defconfig (+CONFIG_DEBUG_INFO_BTF=n)
+* gcc-8-tinyconfig
+* gcc-13-allmodconfig
+* gcc-13-allnoconfig
+* gcc-13-defconfig
+* gcc-13-tinyconfig
+* clang-17-allmodconfig
+* clang-17-allnoconfig
+* clang-17-defconfig
+* clang-17-tinyconfig
+* clang-nightly-allmodconfig
+* clang-nightly-allnoconfig
+* clang-nightly-defconfig
+* clang-nightly-tinyconfig
+
+The error looks like this:
+-----8<-----
+   In file included from /builds/linux/arch/s390/include/asm/page.h:208,
+                    from /builds/linux/arch/s390/include/asm/thread_info.h:26,
+                    from /builds/linux/include/linux/thread_info.h:60,
+                    from /builds/linux/arch/s390/include/asm/preempt.h:6,
+                    from /builds/linux/include/linux/preempt.h:78,
+                    from /builds/linux/include/linux/spinlock.h:56,
+                    from /builds/linux/include/linux/mmzone.h:8,
+                    from /builds/linux/include/linux/gfp.h:7,
+                    from /builds/linux/include/linux/mm.h:7,
+                    from /builds/linux/arch/s390/mm/page-states.c:13:
+   /builds/linux/arch/s390/mm/page-states.c: In function 'cmma_init_nodat':
+   /builds/linux/arch/s390/mm/page-states.c:198:30: error: 'invalid_pg_dir' undeclared (first use in this function)
+     198 |         page = virt_to_page(&invalid_pg_dir);
+         |                              ^~~~~~~~~~~~~~
+   /builds/linux/include/asm-generic/memory_model.h:25:45: note: in definition of macro '__pfn_to_page'
+      25 | #define __pfn_to_page(pfn)      (vmemmap + (pfn))
+         |                                             ^~~
+   /builds/linux/arch/s390/include/asm/page.h:198:34: note: in expansion of macro 'phys_to_pfn'
+     198 | #define virt_to_pfn(kaddr)      (phys_to_pfn(__pa(kaddr)))
+         |                                  ^~~~~~~~~~~
+   /builds/linux/arch/s390/include/asm/page.h:198:46: note: in expansion of macro '__pa'
+     198 | #define virt_to_pfn(kaddr)      (phys_to_pfn(__pa(kaddr)))
+         |                                              ^~~~
+   /builds/linux/arch/s390/include/asm/page.h:201:45: note: in expansion of macro 'virt_to_pfn'
+     201 | #define virt_to_page(kaddr)     pfn_to_page(virt_to_pfn(kaddr))
+         |                                             ^~~~~~~~~~~
+   /builds/linux/arch/s390/mm/page-states.c:198:16: note: in expansion of macro 'virt_to_page'
+     198 |         page = virt_to_page(&invalid_pg_dir);
+         |                ^~~~~~~~~~~~
+   /builds/linux/arch/s390/mm/page-states.c:198:30: note: each undeclared identifier is reported only once for each function it appears in
+     198 |         page = virt_to_page(&invalid_pg_dir);
+         |                              ^~~~~~~~~~~~~~
+   /builds/linux/include/asm-generic/memory_model.h:25:45: note: in definition of macro '__pfn_to_page'
+      25 | #define __pfn_to_page(pfn)      (vmemmap + (pfn))
+         |                                             ^~~
+   /builds/linux/arch/s390/include/asm/page.h:198:34: note: in expansion of macro 'phys_to_pfn'
+     198 | #define virt_to_pfn(kaddr)      (phys_to_pfn(__pa(kaddr)))
+         |                                  ^~~~~~~~~~~
+   /builds/linux/arch/s390/include/asm/page.h:198:46: note: in expansion of macro '__pa'
+     198 | #define virt_to_pfn(kaddr)      (phys_to_pfn(__pa(kaddr)))
+         |                                              ^~~~
+   /builds/linux/arch/s390/include/asm/page.h:201:45: note: in expansion of macro 'virt_to_pfn'
+     201 | #define virt_to_page(kaddr)     pfn_to_page(virt_to_pfn(kaddr))
+         |                                             ^~~~~~~~~~~
+   /builds/linux/arch/s390/mm/page-states.c:198:16: note: in expansion of macro 'virt_to_page'
+     198 |         page = virt_to_page(&invalid_pg_dir);
+         |                ^~~~~~~~~~~~
+   make[4]: *** [/builds/linux/scripts/Makefile.build:250: arch/s390/mm/page-states.o] Error 1
+----->8-----
+
+Bisection points to:
+
+   commit 1a5dd59623dc206de30df2d13316a3ce9be6821a
+   Author: Heiko Carstens <hca@linux.ibm.com>
+   Date:   Tue Oct 24 10:15:20 2023 +0200
+
+       s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
+       
+       commit 84bb41d5df48868055d159d9247b80927f1f70f9 upstream.
 
 
---000000000000d67a04060b077dc9
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+Reverting that commit made the build pass.
 
-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
-riBJ/K1AFUjRAjFhGV64l++td7dkmnq/X8ET75ti+w1s4FRpFqkD2m7pg5NxdsZphYIXAgMBAAGj
-QjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSP8Et/qC5FJK5N
-UPpjmove4t0bvDANBgkqhkiG9w0BAQsFAAOCAQEAS0DbwFCq/sgM7/eWVEVJu5YACUGssxOGhigH
-M8pr5nS5ugAtrqQK0/Xx8Q+Kv3NnSoPHRHt44K9ubG8DKY4zOUXDjuS5V2yq/BKW7FPGLeQkbLmU
-Y/vcU2hnVj6DuM81IcPJaP7O2sJTqsyQiunwXUaMld16WCgaLx3ezQA3QY/tRG3XUyiXfvNnBB4V
-14qWtNPeTCekTBtzc3b0F5nCH3oO4y0IrQocLP88q1UOD5F+NuvDV0m+4S4tfGCLw0FREyOdzvcy
-a5QBqJnnLDMfOjsl0oZAzjsshnjJYS8Uuu7bVW/fhO4FCU29KNhyztNiUGUe65KXgzHZs7XKR1g/
-XzCCBV4wggRGoAMCAQICDEdtED9Zj45VgZuf5zANBgkqhkiG9w0BAQsFADBbMQswCQYDVQQGEwJC
-RTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMg
-UGVyc29uYWxTaWduIDIgQ0EgMjAyMDAeFw0yMjA5MTAwOTM0MzhaFw0yNTA5MTAwOTM0MzhaMIGa
-MQswCQYDVQQGEwJJTjESMBAGA1UECBMJS2FybmF0YWthMRIwEAYDVQQHEwlCYW5nYWxvcmUxFjAU
-BgNVBAoTDUJyb2FkY29tIEluYy4xGzAZBgNVBAMTEkNoYW5kcmFrYW50aCBQYXRpbDEuMCwGCSqG
-SIb3DQEJARYfY2hhbmRyYWthbnRoLnBhdGlsQGJyb2FkY29tLmNvbTCCASIwDQYJKoZIhvcNAQEB
-BQADggEPADCCAQoCggEBAOPMhBafUXswA97gXTj1d5WoUBuCuq3xszdg5lAM1AHavwkVYXn9nKUH
-7QgAR6GV/PyPyloLcAeIkTarJRpxB885+xOyR4EAA8zRk9mirwq7GotMjSmRA81Ne5tpqZObHbsv
-ELVogt2xoFkQFwDZznRDVQ1RRWO8gLU/7clg4TWqNxSsRF7PfM2U1sk6If8qHVMdtHLukGibl0Tv
-4SxjDQ1M8uqWXeJcdYM4lQc+PSKyTNqPy/KLt1enu6lmA236FXBhPFSg3+EeZ9Ma7ZMj++uMpnwz
-jLZb2F4wVMfuh/ZTi4ty6G3wQ/OIFcK4EkaKubAqreTT+LEu5XOFi10KHncCAwEAAaOCAeAwggHc
-MA4GA1UdDwEB/wQEAwIFoDCBowYIKwYBBQUHAQEEgZYwgZMwTgYIKwYBBQUHMAKGQmh0dHA6Ly9z
-ZWN1cmUuZ2xvYmFsc2lnbi5jb20vY2FjZXJ0L2dzZ2NjcjNwZXJzb25hbHNpZ24yY2EyMDIwLmNy
-dDBBBggrBgEFBQcwAYY1aHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyM3BlcnNvbmFs
-c2lnbjJjYTIwMjAwTQYDVR0gBEYwRDBCBgorBgEEAaAyASgKMDQwMgYIKwYBBQUHAgEWJmh0dHBz
-Oi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAkGA1UdEwQCMAAwSQYDVR0fBEIwQDA+
-oDygOoY4aHR0cDovL2NybC5nbG9iYWxzaWduLmNvbS9nc2djY3IzcGVyc29uYWxzaWduMmNhMjAy
-MC5jcmwwKgYDVR0RBCMwIYEfY2hhbmRyYWthbnRoLnBhdGlsQGJyb2FkY29tLmNvbTATBgNVHSUE
-DDAKBggrBgEFBQcDBDAfBgNVHSMEGDAWgBSWM9HmWBdbNHWKgVZk1b5I3qGPzzAdBgNVHQ4EFgQU
-tI7aNGRrv6gHqOPkFli9EdvR2xcwDQYJKoZIhvcNAQELBQADggEBAI0Px1+MF4ubFWlBurQFxZRv
-/K8V2fysp6NhKRpdJ43KozsApD438TU9DdNe8wW1MrCV3sRXZhlEkkukkfppzYRuoemmIdd4Rajh
-Dh+uglOx3CYSKKOEWSbVIaDVMBQvVtqfZlGJgLRmLpO2agb8V/eY85IoMoM9hJkTll7OoTo+Lhon
-W2v5XKnfV6+4iODhAb65bwLbcNq6dxzr1Yy/fGnIBfoR2qrX9UBDDxjZRpxJGdt7i0CcvsX7p2ia
-SgP+hUBq9GTgLiFqCGyh/gCm2DTB/TyYel0QsIP29qWC1F5mG+GOoSjagi/2SxnNI6LzK+4xfgvc
-80IlL0UapzuyZFExggJtMIICaQIBATBrMFsxCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxT
-aWduIG52LXNhMTEwLwYDVQQDEyhHbG9iYWxTaWduIEdDQyBSMyBQZXJzb25hbFNpZ24gMiBDQSAy
-MDIwAgxHbRA/WY+OVYGbn+cwDQYJYIZIAWUDBAIBBQCggdQwLwYJKoZIhvcNAQkEMSIEIKj07fkN
-1DaAfgWK8ZIV8D0rDZZJAcyZjICrf2CplVU/MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJ
-KoZIhvcNAQkFMQ8XDTIzMTEyNjA1MzEwNFowaQYJKoZIhvcNAQkPMVwwWjALBglghkgBZQMEASow
-CwYJYIZIAWUDBAEWMAsGCWCGSAFlAwQBAjAKBggqhkiG9w0DBzALBgkqhkiG9w0BAQowCwYJKoZI
-hvcNAQEHMAsGCWCGSAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQC2epo2HhFhCUclkDWLJE/q8imU
-Ag84J+idUPimmf4UI0XGI+gmYo3p0IC45iPTF33la0W4X/Vm3R+JhRMBWmi+YH5IxXoE6E3XC94e
-ygMRk+ZsdcNRzSX9hF3ENLKbvnkQAPIRf+32v7gIpXMv7dr5amtpflTPn59XquQj6crGN8gfH4Xn
-SOOeGN+tjmHGlWZj5fsERySeMOww1v5wUL8aQO5H88kxblr9NMiuyICUvYih/c9q7krVIy+sMf5X
-a72qEIer2+gvngNjm0y2ryNY5CR/jTZSk+6H6EyNfEq24QrqsnR3qP0vAFL0nfoWzWZByo7nh2x8
-jrYjCP3q1VEl
---000000000000d67a04060b077dc9--
+Reproducer:
+   tuxmake --runtime podman --target-arch s390 --toolchain gcc-13 --kconfig tinyconfig
+
+
+Then, there's a PowerPC failure too on the following configurations:
+* gcc-8-allmodconfig
+* gcc-8-defconfig
+* gcc-13-allmodconfig
+* gcc-13-defconfig
+* clang-17-defconfig
+* clang-nightly-defconfig
+
+That looks like this:
+-----8<-----
+   /builds/linux/arch/powerpc/platforms/pseries/iommu.c: In function 'find_existing_ddw':
+   /builds/linux/arch/powerpc/platforms/pseries/iommu.c:926:49: error: 'struct dma_win' has no member named 'direct'
+     926 |                         *direct_mapping = window->direct;
+         |                                                 ^~
+   make[5]: *** [/builds/linux/scripts/Makefile.build:250: arch/powerpc/platforms/pseries/iommu.o] Error 1
+----->8-----
+
+I guess it might be due to this:
+
+   commit fd018dfa8f0b963d65700d518596f9d834844fca
+   Author: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+   Date:   Mon Oct 2 22:08:02 2023 -0500
+
+       powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+       
+       commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e upstream.
+
+
+Reverting that commit does make the build pass again.
+
+Reproducer:
+   tuxmake --runtime podman --target-arch powerpc --toolchain gcc-13 --kconfig defconfig
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Greetings!
+
+Daniel Díaz
+daniel.diaz@linaro.org
+
 
