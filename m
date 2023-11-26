@@ -1,274 +1,128 @@
-Return-Path: <stable+bounces-2711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 053D47F9554
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 21:37:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CBF17F9556
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 21:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 958B6B20A47
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 20:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7D12280D7C
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 20:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F324DDC5;
-	Sun, 26 Nov 2023 20:37:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="V73XDuCt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6326DF4D;
+	Sun, 26 Nov 2023 20:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DBA38102
-	for <stable@vger.kernel.org>; Sun, 26 Nov 2023 12:37:04 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1cf5901b4c8so29370235ad.1
-        for <stable@vger.kernel.org>; Sun, 26 Nov 2023 12:37:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701031024; x=1701635824; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dz+2Y9u+WhJOKTNdy8nX2PfwoYO1qo3FfSR6GX5+jGo=;
-        b=V73XDuCtk+xAjGBD0TL1jW9YKPdXePT9Q83VdxLJrYzzqLgYfpDopMt8pPS0YLIMnH
-         Ih7SQlY98bvvDOu0d75i78BrJwpWn1/CGwm6yw/DupwTis4SYAFZ1VVsmtQkgG1X13wK
-         5lgw/wryYPFDM2Z+YFHqNmN5aQzVsS3MpcSnj7txdbt9SK5rdr9Q/3Atq0RKpA8aIxL2
-         +1IHt5eubqrI3hS6/kQBip3WFVmM5RJB/i1LlhSSURIorUGEYRR+FW0Qah26n50wDPsI
-         D/5x8BhKKN9zTNI3wcTStWWEnL+NPoOD6WCYzP9wJWX33RaWTvTeT3dRawxAvC/9Hfqn
-         8LQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701031024; x=1701635824;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Dz+2Y9u+WhJOKTNdy8nX2PfwoYO1qo3FfSR6GX5+jGo=;
-        b=WydCYcBNa/if/dv+ROx1nMk2KV6gVnC+b+9rGY4B9AKzcJnmk+fwtVSvcl+olKIRy/
-         PwI6iPkNvKcG94i414XIVbOrRiM/ITD7x4pEIWi9EKBBqz1YEtyCldUtPTt59lH7dXsG
-         iOzt2Dg3idKmpjgh2W6XgPfbFcWrMnmrEieiko7ID+Y6MNTkZlqdaz4lclJGFyBVjZv3
-         VjSjjxQMFySbaGWmjQ9XRQ3UEd+FbY+c3a2uAXE0l8+Y6Jf/bI6hSVFaw0J1ZBgxGhPt
-         Buu5Z89okBbkBcDyCTjZMcLGMAv8nJWhFK4RI/Y0GGDFuwjumte393mVNVb15co/H4cl
-         qwOA==
-X-Gm-Message-State: AOJu0YwQ9qP/OOIhmFfth02jRopmbMnoJXbqrolu+CtgOEwiDXXOALnY
-	FGdQm7FxHT6rDGcc2ASIk4ZQ4zKlrXA7JAbMe6Q=
-X-Google-Smtp-Source: AGHT+IGPWRuiOFCkdsRtCLESjXhBs/wHqov3mStJlykmdbmCMVRAt9C/ioNb3pQatcU1KFiEhxSQww==
-X-Received: by 2002:a17:903:11d1:b0:1cc:5db8:7eb1 with SMTP id q17-20020a17090311d100b001cc5db87eb1mr12037761plh.51.1701031023874;
-        Sun, 26 Nov 2023 12:37:03 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id q102-20020a17090a17ef00b002851c9f7a77sm7030666pja.38.2023.11.26.12.37.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 Nov 2023 12:37:03 -0800 (PST)
-Message-ID: <6563ac6f.170a0220.41fac.1288@mx.google.com>
-Date: Sun, 26 Nov 2023 12:37:03 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FF9A4F;
+	Sun, 26 Nov 2023 20:39:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 135D3C433C7;
+	Sun, 26 Nov 2023 20:39:08 +0000 (UTC)
+Date: Sun, 26 Nov 2023 21:39:06 +0100
+From: Helge Deller <deller@gmx.de>
+To: Guenter Roeck <linux@roeck-us.net>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com, Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 4.14 00/53] 4.14.331-rc2 review
+Message-ID: <ZWOs6uwZoCoxYSSs@p100>
+References: <20231125163059.878143365@linuxfoundation.org>
+ <09f33739-9bf6-4ff8-895d-92d3567c3cb9@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/4.14
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.14.330-53-ga8325d7806398
-Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.330-53-ga8325d7806398)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <09f33739-9bf6-4ff8-895d-92d3567c3cb9@roeck-us.net>
 
-stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
-.14.330-53-ga8325d7806398)
+* Guenter Roeck <linux@roeck-us.net>:
+> On 11/25/23 08:32, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 4.14.331 release.
+> > There are 53 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Mon, 27 Nov 2023 16:30:48 +0000.
+> > Anything received after that time might be too late.
+> > 
+> 
+> Building parisc64:generic-64bit_defconfig ... failed
+> --------------
+> Error log:
+> hppa64-linux-ld: arch/parisc/kernel/head.o: in function `$iodc_panic':
+> (.head.text+0x64): undefined reference to `init_stack'
+> hppa64-linux-ld: (.head.text+0x68): undefined reference to `init_stack'
+> make[1]: *** [Makefile:1049: vmlinux] Error 1
+> make: *** [Makefile:153: sub-make] Error 2
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-4/kernel/v4.14.330-53-ga8325d7806398/
+Indeed.
+Thanks for testing, Guenter!
 
-Tree: stable-rc
-Branch: queue/4.14
-Git Describe: v4.14.330-53-ga8325d7806398
-Git Commit: a8325d78063987381ec9b5f22cecc2ed5c991328
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+Greg, could you please replace the patch in queue/4.14 with
+the one below? It simply uses another stack start, which is ok since the
+machine will stop anyway.
 
-Warnings Detected:
+No changes needed for your other stable-queues. I tested 4.19 and
+it's ok as-is.
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+Thanks!
+Helge
 
 
-Warnings summary:
+From 29e10df694b70b4283e2d6f6852afc0ea7823e5b Mon Sep 17 00:00:00 2001
+From: Helge Deller <deller@gmx.de>
+Date: Fri, 10 Nov 2023 16:13:15 +0100
+Subject: [PATCH] parisc: Prevent booting 64-bit kernels on PA1.x machines
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+commit a406b8b424fa01f244c1aab02ba186258448c36b upstream.
 
-Section mismatches summary:
+Bail out early with error message when trying to boot a 64-bit kernel on
+32-bit machines. This fixes the previous commit to include the check for
+true 64-bit kernels as well.
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
+Patch modified for 4.14 to use __bss_stop for stack. This is OK, since
+the machine will halt after printing the warning.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 591d2108f3abc ("parisc: Add runtime check to prevent PA2.0 kernels on PA1.x machines")
+Cc:  <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Detailed per-defconfig build reports:
+diff --git a/arch/parisc/kernel/head.S b/arch/parisc/kernel/head.S
+index 2f570a520586..2f552ff3a75f 100644
+--- a/arch/parisc/kernel/head.S
++++ b/arch/parisc/kernel/head.S
+@@ -69,9 +69,8 @@ $bss_loop:
+ 	stw,ma          %arg2,4(%r1)
+ 	stw,ma          %arg3,4(%r1)
+ 
+-#if !defined(CONFIG_64BIT) && defined(CONFIG_PA20)
+-	/* This 32-bit kernel was compiled for PA2.0 CPUs. Check current CPU
+-	 * and halt kernel if we detect a PA1.x CPU. */
++#if defined(CONFIG_PA20)
++	/* check for 64-bit capable CPU as required by current kernel */
+ 	ldi		32,%r10
+ 	mtctl		%r10,%cr11
+ 	.level 2.0
+@@ -84,7 +83,7 @@ $bss_loop:
+ $iodc_panic:
+ 	copy		%arg0, %r10
+ 	copy		%arg1, %r11
+-	load32		PA(init_stack),%sp
++	load32		PA(__bss_stop),%sp
+ #define MEM_CONS 0x3A0
+ 	ldw		MEM_CONS+32(%r0),%arg0	// HPA
+ 	ldi		ENTRY_IO_COUT,%arg1
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
