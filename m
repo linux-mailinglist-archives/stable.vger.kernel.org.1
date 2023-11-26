@@ -1,131 +1,247 @@
-Return-Path: <stable+bounces-2701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 949717F9486
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 18:18:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5361C7F94A4
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 18:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C10281178
-	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 17:18:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03EFA1F20EC6
+	for <lists+stable@lfdr.de>; Sun, 26 Nov 2023 17:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916D8DDD8;
-	Sun, 26 Nov 2023 17:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA7FE56B;
+	Sun, 26 Nov 2023 17:40:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJ4ABdhB"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="cIwCcb/E"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416EE8C13;
-	Sun, 26 Nov 2023 17:18:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E4AC43397;
-	Sun, 26 Nov 2023 17:17:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701019081;
-	bh=S1rxjj0ESxUQzaZf4mvKvtonM50f7ppBicV8LL1QEoM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJ4ABdhBo2AWdaOhMojW/g2ZYtsaM3uUhOi6JKlQsQ+X28mVz1zqZ1XRU3CKhqKZ+
-	 hcziyev+KzCeIHB48Kt/hRwb7NJRCGjbDhqWqW/azPbuUX0komscHQj3sNe8l0vnD6
-	 1V9o8TuN/vwP0P1NsrsR++qe8OGxOOOS5eVz/vB42sGoEjjGOwBlIeLcT0GjjKAFGl
-	 Yx7Q0mbPbTWXPZKs1/nNwpDh5TsdBXyDaeVLnkPhPnSlOMOkyPDDJOLQg+8pCtVj9v
-	 3rgfqIRAzmibaNerpsi4cPC87bkjQGIijRF5uIidrA1YLM5CZjkexWgMR0j8BhWmGI
-	 lInwAGI71sojg==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.6 000/525] 6.6.3-rc4 review
-Date: Sun, 26 Nov 2023 17:17:58 +0000
-Message-Id: <20231126171758.109371-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231126154418.032283745@linuxfoundation.org>
-References: 
+Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A49CFD
+	for <stable@vger.kernel.org>; Sun, 26 Nov 2023 09:40:54 -0800 (PST)
+Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-6cd8579096eso583557b3a.0
+        for <stable@vger.kernel.org>; Sun, 26 Nov 2023 09:40:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701020453; x=1701625253; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=RMjd4ZopryiqN7x9qDUxEoXo+6tqLEudVfKdmcNLGuc=;
+        b=cIwCcb/EzkGDElX1+JMx78VnbULrbrTvuzSNYvFLWIKkjyJp0ylX9LBTKXDv5Bx8ys
+         NIWoYwpSV9LFF/OAxBvIM+T2Q3Z75EVvKiszdNqzDsVuwqtBAzAcZyYph9HNViTM6cKE
+         Qm5FCEmXR+d1kqQAPfrOYR9JMZfT8KTY0ExA/XWr6pGHXLS/2Ym+EvBRZXcBJmo5vytZ
+         qI9N5K77ApWVUfWf7+fDLJgsrzN9fxcg73QIllMiWJQVc66Sf0SMtTc++wJ8Io83OpJq
+         ASAcUedKisDut88pQnX+aHFhkcKYVNKvQQUaYZEYJuBzU7lxeOAw1hxbBQ5qRATK7IiR
+         lDrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701020453; x=1701625253;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RMjd4ZopryiqN7x9qDUxEoXo+6tqLEudVfKdmcNLGuc=;
+        b=kvs7qXaBw9SYPam/h4W/5dMUSeTIVZR0nli4AZeSBPbm7mXZWKwxOtLIe4eaAQ+Hwp
+         97Y0hHKJlkoJRWAMkHz3YPHbdcZ8msM2MMueH9hw16LcZi/2zoKVyrCbw9jhmVyVsRFF
+         /sp4mrDG1Mp5MUBsBtYRq5J/eAl9kwZaCkINkEkSwbZ93gaLZFGP4cbXyY4HTn8q9uTe
+         p/gUtsLGK3D5Fno1V7mvuoDbxr/VwjO7wmF6gBrAkTWw0I8i7lRIadZWrvtRxVdxDdgk
+         LGi4ch/HCMLFXfJZHRdV6ngyRLMazuFUgAxtVMIviMG1i7yjafOkemZ+gjInX9505uCP
+         S9xg==
+X-Gm-Message-State: AOJu0Yzv2gcj8p4NKVfzmpFC/siENhM3/NQGNpDmFezuhN3Nkj1X60RQ
+	tOqu8ErqTqB8wXU6J4Gzw0QXsg52GVNPVjP8pcY=
+X-Google-Smtp-Source: AGHT+IEWd5g2edL7E1UjfpkLnNPA469h9MeRJg0upFG+1FdCN3Cf3mmU5Km8Lt5cXZqajQSewJXu0g==
+X-Received: by 2002:a05:6a00:4ac2:b0:6b6:5ed4:dd42 with SMTP id ds2-20020a056a004ac200b006b65ed4dd42mr12599723pfb.31.1701020453643;
+        Sun, 26 Nov 2023 09:40:53 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id t18-20020a62ea12000000b006cb94825843sm5871779pfh.180.2023.11.26.09.40.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Nov 2023 09:40:53 -0800 (PST)
+Message-ID: <65638325.620a0220.5b97d.d127@mx.google.com>
+Date: Sun, 26 Nov 2023 09:40:53 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/5.10
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.10.201-187-g1c10a6db4286a
+Subject: stable-rc/queue/5.10 build: 19 builds: 1 failed, 18 passed, 1 error,
+ 5 warnings (v5.10.201-187-g1c10a6db4286a)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hello,
+stable-rc/queue/5.10 build: 19 builds: 1 failed, 18 passed, 1 error, 5 warn=
+ings (v5.10.201-187-g1c10a6db4286a)
 
-On 2023-11-26T15:46:18+00:00 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.201-187-g1c10a6db4286a/
 
-> This is the start of the stable review cycle for the 6.6.3 release.
-> There are 525 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.3-rc4.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+Tree: stable-rc
+Branch: queue/5.10
+Git Describe: v5.10.201-187-g1c10a6db4286a
+Git Commit: 1c10a6db4286ae97118521b3a68a08a7dac41cea
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+Build Failure Detected:
 
-Tested-by: SeongJae Park <sj@kernel.org>
+arm64:
+    defconfig+arm64-chromebook: (gcc-10) FAIL
 
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 0f3bc3a11114 ("Linux 6.6.3-rc4")
+Errors and Warnings Detected:
 
-Thanks,
-SJ
+arc:
 
-[...]
+arm64:
+    defconfig+arm64-chromebook (gcc-10): 1 error
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+Errors summary:
+
+    1    drivers/interconnect/qcom/sc7180.c:158:3: error: =E2=80=98struct q=
+com_icc_bcm=E2=80=99 has no member named =E2=80=98enable_mask=E2=80=99
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 FAIL, 1 error, 0 warni=
+ngs, 0 section mismatches
+
+Errors:
+    drivers/interconnect/qcom/sc7180.c:158:3: error: =E2=80=98struct qcom_i=
+cc_bcm=E2=80=99 has no member named =E2=80=98enable_mask=E2=80=99
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
 
 ---
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_i386_idle_flag.sh
-ok 13 selftests: damon-tests: build_i386_highpte.sh
-ok 14 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+For more info write to <info@kernelci.org>
 
