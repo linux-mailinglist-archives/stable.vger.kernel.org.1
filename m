@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-2728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BED07F9851
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 05:29:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35F8E7F9870
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 05:39:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF924B20A35
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 04:29:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9634280CDB
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 04:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35538525E;
-	Mon, 27 Nov 2023 04:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7511118;
+	Mon, 27 Nov 2023 04:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLAUz9rk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="crMlIkmA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3839111;
-	Sun, 26 Nov 2023 20:29:34 -0800 (PST)
-Received: by mail-qv1-xf2c.google.com with SMTP id 6a1803df08f44-67a16594723so16279906d6.3;
-        Sun, 26 Nov 2023 20:29:34 -0800 (PST)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 959508F;
+	Sun, 26 Nov 2023 20:39:50 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1cf8b35a6dbso25761315ad.0;
+        Sun, 26 Nov 2023 20:39:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701059374; x=1701664174; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701059990; x=1701664790; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=GhKRxXFtistRO23Akx8El+cFaVQa3/hoVNVn7eumuJE=;
-        b=BLAUz9rkY43+7NyM+qzmBVu2PA9acVQgiO22HdLS6AyRiB6qSAAPbv+bVd1CEP9dHc
-         +0nq0eCNdVm9Dbv/nqzz2E2WADLutKNcIiucTP0i8yWBvRpgnKcq2k6xaVoAy2wHEQZB
-         bknWqnr45EScYZEYZRq859KrtUkexcdaHMT2NZJGRusP5QLFzpH3SlIMVbzGsO3HnVFf
-         arySthNnmqBSMP6F/NG5xladieebQ5mHq1FWho+a4PZ9rCPmXA08nmbAKERX5v5OqPFY
-         Zvc9aN3ZYb+niABs7jnHvVWCb7hLAzPpEKLE66QgW2HzpCYfCSxj67fuJpqXu8G3dLE6
-         sfhQ==
+        bh=taNoUgxYeCyNdKGw6Ig2NIpOaNw7tc0dr8FEuXtZE64=;
+        b=crMlIkmA73LbkwxR+8IxXe56dzOGgS4hGYYbVn+H9yJiBmFwOmAEAw6rD/kKiZd3bL
+         w9CtCtWTM8T6hG/fLFj8sPGJdLy2TXMMlQQoz5E1ENqrEj28gvdwFi//QKy7INS1OaZM
+         iDRGttWCq8CgJGkje70KLTzDB5WmSv66XLq5z74PsZHs7NRUogsEu4ZVBXTghXZ3jRje
+         AL/lCzVUsAQbWEHAkuYEw4Fg7pnr4nDJDKulaLHfwDwiwQrobVAHOGV7/JsR/wo+PRoV
+         xnjkPE/K1Q9YFUssrXPSdLMLekPX8rZI664dTWRf2LlfeEHNw1Rd0d4coYfC6F9Na7Ga
+         +rMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701059374; x=1701664174;
+        d=1e100.net; s=20230601; t=1701059990; x=1701664790;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GhKRxXFtistRO23Akx8El+cFaVQa3/hoVNVn7eumuJE=;
-        b=uqmD50vyxV7m77V+7j7/EySJNfu0MVNeuKC2vOxFaJ4eepDEaipBMmQ4g3qx+PdMpF
-         Z4vaVYEuQn9UijHfBBhYk5ahGYEQMY6tFnbw5EzvxohcpL++TMj0/md6YD872qYQuQQp
-         536sAK+GF9pf+kr1o079+XAHpy4hRTg/Cf/W+WklmA2DC5E2GbuIH3bIq729dhM6sVFL
-         +NYm4+6bDo9OIf6z7F03/yNfvADLJFiSEnLsHQILn+6OEvjYLexhgnEb86nJ5ou/hjiP
-         oLLjiwQFpet71IAmA9EJ/MqVh2UGNLbKewX/jMozgk2aPg/Csxbgs3vF1qQdqfMlKTQ5
-         OUsw==
-X-Gm-Message-State: AOJu0YxjEbPr7eyjXDj3rkl7s50kuWi+6cjGtgB/ECYjM9lDAB2ZT4QT
-	95eEXZfWWgnOUPHXPP39yi4=
-X-Google-Smtp-Source: AGHT+IE3ILcHC93S18iWxnigtHp4tgz93SujXZ0pUnuEGRFbdB/FTx0WtIHLM9B9aepTeVxhI2zGlA==
-X-Received: by 2002:a05:622a:15d6:b0:418:1565:ed50 with SMTP id d22-20020a05622a15d600b004181565ed50mr14514868qty.66.1701059373746;
-        Sun, 26 Nov 2023 20:29:33 -0800 (PST)
+        bh=taNoUgxYeCyNdKGw6Ig2NIpOaNw7tc0dr8FEuXtZE64=;
+        b=KUA1nhhR36duLpei0NE9DPzKGl6qU8BGBGotpjB0QnQrBtIAnWzeyLhaco5b8yVOe/
+         Hwv0DqSIXSois2oZMQbjWRmRhyw4Ojw4eIau4eRJdvF4mKfQBE4XvDSOAKucCZUiFG8A
+         +XlljFp0Ngc4djNmnKIkT27wFJjdgBqPFDkxoV703mlNWBzN5CQtwDjRrEP0FttVvT49
+         vYwCBpCnDrT3Y3E00txVoSLe5bwR7hXV7k63Dh5Q3mNTu7EGEjASS3obBaMx/o5CBxZ/
+         jsV8w/O5XdrejDSpMWMbmPLQ2dhQj/ixAPe5LqS3S8xYl68o8QwjSpNsdDzJytyrfwBa
+         B6+A==
+X-Gm-Message-State: AOJu0Yyv234yCY12dKV3x21ONWykIL4vrkXE1EaYgOQC+SwP1okOpL39
+	N8UeASS2l44MZUUU+/ar9XU=
+X-Google-Smtp-Source: AGHT+IGm7III1QkoHhVy1ArfjyC34QF7drHFsleBAUmtc+E6FB9HHoJDHjf4qtj5yBvZIp2dWI96EA==
+X-Received: by 2002:a17:902:dad0:b0:1cf:d8c5:2290 with SMTP id q16-20020a170902dad000b001cfd8c52290mr220357plx.3.1701059989933;
+        Sun, 26 Nov 2023 20:39:49 -0800 (PST)
 Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id dq8-20020a05622a520800b004239f746055sm2286288qtb.73.2023.11.26.20.29.31
+        by smtp.gmail.com with ESMTPSA id e12-20020a170902744c00b001ce5b6e97a9sm7239622plt.54.2023.11.26.20.39.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Nov 2023 20:29:33 -0800 (PST)
-Message-ID: <cd729b5f-8d77-4079-be38-c88fdff2498a@gmail.com>
-Date: Sun, 26 Nov 2023 20:29:30 -0800
+        Sun, 26 Nov 2023 20:39:49 -0800 (PST)
+Message-ID: <9668cc31-1b43-4edc-a29d-26a76550f092@gmail.com>
+Date: Sun, 26 Nov 2023 20:39:48 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.5 000/483] 6.5.13-rc4 review
+Subject: Re: [PATCH 6.6 000/525] 6.6.3-rc4 review
 Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -71,7 +71,7 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
  sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
  conor@kernel.org, allen.lkml@gmail.com
-References: <20231126154413.975493975@linuxfoundation.org>
+References: <20231126154418.032283745@linuxfoundation.org>
 From: Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; keydata=
  xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -106,15 +106,15 @@ Autocrypt: addr=f.fainelli@gmail.com; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
  X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
  HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20231126154413.975493975@linuxfoundation.org>
+In-Reply-To: <20231126154418.032283745@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 11/26/2023 7:47 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.13 release.
-> There are 483 patches in this series, all will be posted as a response
+On 11/26/2023 7:46 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.3 release.
+> There are 525 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -122,9 +122,9 @@ On 11/26/2023 7:47 AM, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.13-rc4.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.3-rc4.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
 > and the diffstat can be found below.
 > 
 > thanks,
