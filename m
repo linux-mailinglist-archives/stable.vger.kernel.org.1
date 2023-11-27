@@ -1,82 +1,145 @@
-Return-Path: <stable+bounces-2780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E0F7FA76A
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 18:01:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 780547FA76F
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 18:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AFA11C20B3C
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:01:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A99991C20AE5
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D79F2364D0;
-	Mon, 27 Nov 2023 17:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB0F288DD;
+	Mon, 27 Nov 2023 17:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FIQ40ljq"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="p4xFqpSu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D1C30C6
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 09:00:30 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6cb749044a2so4420636b3a.0
-        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 09:00:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701104430; x=1701709230; darn=vger.kernel.org;
-        h=content-transfer-encoding:subject:to:from:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8AgEC5hl9xTiJhztF4t3qyhaDyaWPbhPKGmUnOdojk8=;
-        b=FIQ40ljqcC/CTQjsmwrJ/eB+2S89T3IvjSTic1e8OE2RfcY1DCs1up31Rhf/eTOVOy
-         NXsrc57GibNEYEU765N20bMVo2/oi/E+l9F1MrbplpjR+Qzx/cLOglo2oaw6jZVTmx6o
-         iS/yKZdxRh60EIqIa4kFq3n2VJ5Jxsc4gHgK80FFLqHgZwfHGONEtxlwYU6cdEGW1Szp
-         YVsnzCJBZovVKBKWXmByE1/DCnC3mCBGZ9WPfhfZOT9ElHwn/FXI65/2E5r3/EBuo+t+
-         gVynjT8nIJVrLkEl+dKlIJZm/zopenBHdBtCBc/Witsk2zeUYKkJACWGUOeFRy45MggA
-         av5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701104430; x=1701709230;
-        h=content-transfer-encoding:subject:to:from:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8AgEC5hl9xTiJhztF4t3qyhaDyaWPbhPKGmUnOdojk8=;
-        b=KiUY7imZmn8/xWzodQGw9yWbbiJ1YWn3JPnlu1UrIj+PhlbITAcVn29ofKyexVE8No
-         UDVxiaVnfc18Sr0pN01DG/2A0MMXkpjPNS0mDdGGVzKUvGDQmko/8tnN+CBTvXOyS3w8
-         glNwj/pkmWJ9iQRJ6B7+auPBXqXRRtR4MKrlRDU2rNfc3axwPhkgKO985ocUbh0KHMJj
-         cDyo1qF9vxSRyflbDTY8NdI4tW5fKnK9mNNuRb9qohT5zjhYifZhHWJxZ3dJdY4XO11X
-         6OfftiPJvdcWOttS6O7DGY+XvaxJqLToPCHYg9Vf4R8pSYLIZ7GYUlshUgBrY8BXuxMt
-         Li6A==
-X-Gm-Message-State: AOJu0Yz1YZKEcUp81iuRPTH3VDa8HYz1MJor1vQeLJH61k0PGLcuMfQw
-	acIqtVOD+DEiFqb+2mph/CxRMiFclXQ=
-X-Google-Smtp-Source: AGHT+IETHh2i0TPF9neofLBdBVXeH6Pos4YVpkaq1g61Z+NROhs96zI+FJ55VhwLKuaLt2rbx+u4lQ==
-X-Received: by 2002:a05:6a00:23cc:b0:6cd:8a19:c324 with SMTP id g12-20020a056a0023cc00b006cd8a19c324mr6223453pfc.3.1701104429710;
-        Mon, 27 Nov 2023 09:00:29 -0800 (PST)
-Received: from DESKTOP-6F6Q0LF (static-host119-30-85-97.link.net.pk. [119.30.85.97])
-        by smtp.gmail.com with ESMTPSA id x10-20020aa7918a000000b0068c10187dc3sm7356165pfa.168.2023.11.27.09.00.27
-        for <stable@vger.kernel.org>
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Mon, 27 Nov 2023 09:00:29 -0800 (PST)
-Message-ID: <6564cb2d.a70a0220.cbbe4.1a41@mx.google.com>
-Date: Mon, 27 Nov 2023 09:00:29 -0800 (PST)
-X-Google-Original-Date: 27 Nov 2023 12:00:27 -0500
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 008C03AAC
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 09:02:02 -0800 (PST)
+Received: from pwmachine.numericable.fr (85-170-33-133.rev.numericable.fr [85.170.33.133])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9184020B74C0;
+	Mon, 27 Nov 2023 09:02:01 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9184020B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1701104522;
+	bh=Vcfpv3pB5WHRbPw9fy7rNgi/UjYjRb5aeiQHmaysx6I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=p4xFqpSuV/vqdKHBMLTlmWMFvm+RppueUdUDhbDs9smGUCf0oX9OwxqRsnsU3eua3
+	 /KFbjT66v8e1Cke5iD1YJt0C0KW+AsXeC6peKMKKY30gPDKXVnSam4E2FCjrqIyHz1
+	 8JZeEmjbAaFNG3wws0bX+Lfmk1ppNBsYn059x1kM=
+From: Francis Laniel <flaniel@linux.microsoft.com>
+To: stable@vger.kernel.org
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Francis Laniel <flaniel@linux.microsoft.com>
+Subject: [PATCH 4.19.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
+Date: Mon, 27 Nov 2023 18:01:42 +0100
+Message-Id: <20231127170142.393238-1-flaniel@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023102138-riverbed-senator-e356@gregkh>
+References: <2023102138-riverbed-senator-e356@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: callahanbryson63@gmail.com
-To: stable@vger.kernel.org
-Subject: Building Estimates
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Level: *
+Content-Transfer-Encoding: 8bit
 
-Hi,=0D=0A=0D=0AWe provide estimation & quantities takeoff service=
-s. We are providing 98-100 accuracy in our estimates and take-off=
-s. Please tell us if you need any estimating services regarding y=
-our projects.=0D=0A=0D=0ASend over the plans and mention the exac=
-t scope of work and shortly we will get back with a proposal on w=
-hich our charges and turnaround time will be mentioned=0D=0A=0D=0A=
-You may ask for sample estimates and take-offs. Thanks.=0D=0A=0D=0A=
-Kind Regards=0D=0ACallahan Bryson		=0D=0ADreamland Estimation, LL=
-C
+When a kprobe is attached to a function that's name is not unique (is
+static and shares the name with other functions in the kernel), the
+kprobe is attached to the first function it finds. This is a bug as the
+function that it is attaching to is not necessarily the one that the
+user wants to attach to.
+
+Instead of blindly picking a function to attach to what is ambiguous,
+error with EADDRNOTAVAIL to let the user know that this function is not
+unique, and that the user must use another unique function with an
+address offset to get to the function they want to attach to.
+
+Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
+
+Cc: stable@vger.kernel.org
+Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+(cherry picked from commit b022f0c7e404887a7c5229788fc99eff9f9a80d5)
+---
+ kernel/trace/trace_kprobe.c | 48 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 36dfea29d5fa..720110942505 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -715,6 +715,36 @@ static inline void sanitize_event_name(char *name)
+ 			*name = '_';
+ }
+ 
++struct count_symbols_struct {
++	const char *func_name;
++	unsigned int count;
++};
++
++static int count_symbols(void *data, const char *name, struct module *unused0,
++			 unsigned long unused1)
++{
++	struct count_symbols_struct *args = data;
++
++	if (strcmp(args->func_name, name))
++		return 0;
++
++	args->count++;
++
++	return 0;
++}
++
++static unsigned int number_of_same_symbols(char *func_name)
++{
++	struct count_symbols_struct args = {
++		.func_name = func_name,
++		.count = 0,
++	};
++
++	kallsyms_on_each_symbol(count_symbols, &args);
++
++	return args.count;
++}
++
+ static int create_trace_kprobe(int argc, char **argv)
+ {
+ 	/*
+@@ -845,6 +875,24 @@ static int create_trace_kprobe(int argc, char **argv)
+ 	}
+ 	argc -= 2; argv += 2;
+ 
++	if (symbol && !strchr(symbol, ':')) {
++		unsigned int count;
++
++		count = number_of_same_symbols(symbol);
++		if (count > 1)
++			/*
++			 * Users should use ADDR to remove the ambiguity of
++			 * using KSYM only.
++			 */
++			return -EADDRNOTAVAIL;
++		else if (count == 0)
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			return -ENOENT;
++	}
++
+ 	/* setup a probe */
+ 	if (!event) {
+ 		/* Make a new event name */
+-- 
+2.34.1
 
 
