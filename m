@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-2734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC837F9B69
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 09:13:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7BE87F9B79
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 09:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C630B20A54
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 08:13:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 938E2280D82
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 08:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C311111A7;
-	Mon, 27 Nov 2023 08:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hnWwTnG+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F49111AF;
+	Mon, 27 Nov 2023 08:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::224])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8025F138;
-	Mon, 27 Nov 2023 00:13:20 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 904BAE000A;
-	Mon, 27 Nov 2023 08:13:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701072798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8gwtotMkyInHvaujAg6JsxkLZJLTKN68b8bnxHuv0oQ=;
-	b=hnWwTnG+thPOUXHyN88he4IldYTntNd9L6f6v9L3Iks1J0WgsvXr8Ll6h+vfCa/fg9PnbI
-	YExj33cc+qcfW/j0QNAY2xC1uTfrjghTxBAysOdZTzjZQ1GZ4/EcfSBj8Mv278IjTXsFWP
-	bBlKBdsRNRJIU0AKjobDVrHDY2O1z9HiamQI5i4dB8w66D2l8cbslK1WQDVP5g9n2ah4x3
-	11ZIG+ow+UBQjXq5Yrh/fmjHfUUzZIDDl1yUnZkvZCnIWX4fXs04nYMcP+sVHYi2AAVpFR
-	UWJVERwmiCPzTHrpYTUFzr7rOqI8moZgy4ODFLrC17PwQyrrt80EfocAAV+7Dg==
-Date: Mon, 27 Nov 2023 09:13:16 +0100
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-To: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Srinivas Kandagatla
- <srinivas.kandagatla@linaro.org>, <linux-kernel@vger.kernel.org>, Michael
- Walle <michael@walle.cc>, =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?=
- <rafal@milecki.pl>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] nvmem: Do not expect fixed layouts to grab a layout
- driver
-Message-ID: <20231127091316.5b56a224@booty>
-In-Reply-To: <20231124193814.360552-1-miquel.raynal@bootlin.com>
-References: <20231124193814.360552-1-miquel.raynal@bootlin.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+Received: from mxout70.expurgate.net (mxout70.expurgate.net [194.37.255.70])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E80FCBE;
+	Mon, 27 Nov 2023 00:16:49 -0800 (PST)
+Received: from [127.0.0.1] (helo=localhost)
+	by relay.expurgate.net with smtp (Exim 4.92)
+	(envelope-from <prvs=1709d64187=fe@dev.tdt.de>)
+	id 1r7WnM-00GQ7c-2X; Mon, 27 Nov 2023 09:16:44 +0100
+Received: from [195.243.126.94] (helo=securemail.tdt.de)
+	by relay.expurgate.net with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <fe@dev.tdt.de>)
+	id 1r7WnL-00GVdx-8q; Mon, 27 Nov 2023 09:16:43 +0100
+Received: from securemail.tdt.de (localhost [127.0.0.1])
+	by securemail.tdt.de (Postfix) with ESMTP id 71E83240049;
+	Mon, 27 Nov 2023 09:16:42 +0100 (CET)
+Received: from mail.dev.tdt.de (unknown [10.2.4.42])
+	by securemail.tdt.de (Postfix) with ESMTP id D7905240040;
+	Mon, 27 Nov 2023 09:16:41 +0100 (CET)
+Received: from localhost.localdomain (unknown [10.2.3.40])
+	by mail.dev.tdt.de (Postfix) with ESMTPSA id 5A44133D23;
+	Mon, 27 Nov 2023 09:16:41 +0100 (CET)
+From: Florian Eckert <fe@dev.tdt.de>
+To: Eckert.Florian@googlemail.com,
+	pavel@ucw.cz,
+	lee@kernel.org,
+	kabel@kernel.org,
+	gregkh@linuxfoundation.org
+Cc: linux-leds@vger.kernel.org,
+	stable@vger.kernel.org,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [Patch v3 1/1] leds: ledtrig-tty: free allocated ttyname buffer on deactivate
+Date: Mon, 27 Nov 2023 09:16:21 +0100
+Message-ID: <20231127081621.774866-1-fe@dev.tdt.de>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,32 +56,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: luca.ceresoli@bootlin.com
+X-purgate-ID: 151534::1701073003-9BC34DE9-1B3A693A/0/0
+X-purgate: clean
+X-purgate-type: clean
 
-Hi Miqu=C3=A8l,
+The ttyname buffer for the ledtrig_tty_data struct is allocated in the
+sysfs ttyname_store() function. This buffer must be released on trigger
+deactivation. This was missing and is thus a memory leak.
 
-On Fri, 24 Nov 2023 20:38:14 +0100
-Miquel Raynal <miquel.raynal@bootlin.com> wrote:
+While we are at it, the tty handler in the ledtrig_tty_data struct should
+also be returned in case of the trigger deactivation call.
 
-> Two series lived in parallel for some time, which led to this situation:
-> - The nvmem-layout container is used for dynamic layouts
-> - We now expect fixed layouts to also use the nvmem-layout container but
-> this does not require any additional driver, the support is built-in the
-> nvmem core.
->=20
-> Ensure we don't refuse to probe for wrong reasons.
->=20
-> Fixes: 27f699e578b1 ("nvmem: core: add support for fixed cells *layout*")
-> Cc: stable@vger.kernel.org
-> Reported-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: stable@vger.kernel.org
+Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Reviewed-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+---
+v1 -> v2:
+Add Cc: tag
+v2 -> v3:
+Add Reviewed-by and resend witout changes
 
-[fixes probing I2C EEPROMs using fixed-layout]
-Tested-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+ drivers/leds/trigger/ledtrig-tty.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/leds/trigger/ledtrig-tty.c b/drivers/leds/trigger/le=
+dtrig-tty.c
+index 8ae0d2d284af..3e69a7bde928 100644
+--- a/drivers/leds/trigger/ledtrig-tty.c
++++ b/drivers/leds/trigger/ledtrig-tty.c
+@@ -168,6 +168,10 @@ static void ledtrig_tty_deactivate(struct led_classd=
+ev *led_cdev)
+=20
+ 	cancel_delayed_work_sync(&trigger_data->dwork);
+=20
++	kfree(trigger_data->ttyname);
++	tty_kref_put(trigger_data->tty);
++	trigger_data->tty =3D NULL;
++
+ 	kfree(trigger_data);
+ }
+=20
 --=20
-Luca Ceresoli, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.30.2
+
 
