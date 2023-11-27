@@ -1,177 +1,274 @@
-Return-Path: <stable+bounces-2810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2095D7FAAD9
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:03:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 426997FAB12
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A00FBB2100A
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:03:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DCB7B212B4
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:10:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52A745973;
-	Mon, 27 Nov 2023 20:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DE045BF9;
+	Mon, 27 Nov 2023 20:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZcW0nrI2"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Mq7G2PFv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCDE91B4;
-	Mon, 27 Nov 2023 12:03:47 -0800 (PST)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-40b34563987so26852535e9.1;
-        Mon, 27 Nov 2023 12:03:47 -0800 (PST)
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0A14C2
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:10:44 -0800 (PST)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-6cb749044a2so4662250b3a.0
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:10:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701115426; x=1701720226; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZrenRkYX5OlKn+U0eAbEsoDGW+6wabmBKzhiSthE5gY=;
-        b=ZcW0nrI2nh+ZtsMpZWRQmlHRgdb17MNO+O1uiBXONhKAwD1coUB8nzJkxIl2uEuNs7
-         DuKtfyhRtC4XevzU2YzfX6oP9Hh6omookaMHc3jdNrjKQ3aNdYxERVjEMwzc5rbZaPUj
-         Uuqgz575Qga7xEE0Alr/aWTU8mnZp9eT6goqmUO048/3orbx5LeuH+Iw0wzoT3K4mYJM
-         pKCCyRDLy5Ipvn+07rLLiIF4/fWlg4dQlIFxNb0IOnhLUMF4OxI/FLGMLANL6IX70Jqh
-         xxgBuiGCVRHhtCEuqo2M6g6kJmVRTWvLegPW1p/8dE/1XsL9eQDuA4RiQys7jN8auYrj
-         UA9Q==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701115844; x=1701720644; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Up5Z15ufiRP1gYWIOKwLzkwa3c+KJVoKEOWuukNLx8=;
+        b=Mq7G2PFvPE4omhXhW4CO7E665a32VlUaEvmr/YCRx34s3l9u6bK8RSiMwfsPHc14JE
+         1cb6e71O4lJOEi7ofp9aBcKA+b9+bi2KRS5g8rKEcwVZiz4Yq/EArWSN+gT3K2wIEjME
+         24/5eOlqqiYO4SwuGH5IXV6W5xot9fRafEHV/lgZMHRLYUDAfkQIzqeMfG98dEWxXSjk
+         quMfSjuibGVtKaqHLsZJEvWKgI9EZZGJFdOLHgnOpMwMMPBTc/b+/rNnbyM2vrKdJQo3
+         mhFHt+EDyqtHZ9iOkF/s0pTHHO4GdSW6m7TOhXD99fk2hgQg9Gj/Zu9H3o+0wHjTsQBL
+         GKnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701115426; x=1701720226;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZrenRkYX5OlKn+U0eAbEsoDGW+6wabmBKzhiSthE5gY=;
-        b=oS3nIq9SV+yZbZLb2IPWkRJMg1qIp/E6XqxwyMyl4CUSFOoKlz/KFuvEAZuatSs+3g
-         f5u/3HF2jsA9KTSk6/5edFslCdQ56+quIkZPIuD6XufsgqwXPH1NFk0G383O8GdKs9YB
-         RaCPPLun2a4xwTRo5/1c7sAEcFBNs5YXc+jnZvxaVt7xCiYA0j0sBy/XuGrd1uEe5nTD
-         09tAYsVUn9SWt7qVMSNZUEKOcktMIdjTbo8f5oRrTf1lu6P8EJ0Lwf/CfId5Eb2XVu3F
-         Z0q2XvssjMDfTV+jcwoD7rjyHQkLtT2jyd+d3r9tkcNFjY6033dTDW9z7xhc4UDFb+eH
-         v5DQ==
-X-Gm-Message-State: AOJu0YwmFpeB+fPVZTswi/yGkWPjUoaBHDCeXTJTMU9bs1laZo5xwYri
-	NcuvTPZPQPmDZlyyYsx/QW6GzkmauyQ=
-X-Google-Smtp-Source: AGHT+IEJ1puNxDQbBpthZ8s68hP716s8Man2JGUTm2nrlJZdNZh/bCiCUPYEaAFE0kp9VRCwBzjLMg==
-X-Received: by 2002:a05:600c:1c89:b0:3fe:d67d:5040 with SMTP id k9-20020a05600c1c8900b003fed67d5040mr14688007wms.5.1701115425969;
-        Mon, 27 Nov 2023 12:03:45 -0800 (PST)
-Received: from ?IPV6:2a01:c23:b815:5700:a463:59a7:865f:2563? (dynamic-2a01-0c23-b815-5700-a463-59a7-865f-2563.c23.pool.telefonica.de. [2a01:c23:b815:5700:a463:59a7:865f:2563])
-        by smtp.googlemail.com with ESMTPSA id t15-20020a5d6a4f000000b0033169676e83sm12862466wrw.13.2023.11.27.12.03.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Nov 2023 12:03:45 -0800 (PST)
-Message-ID: <a5f89071-f93b-4a30-a0c5-f9dfda68367c@gmail.com>
-Date: Mon, 27 Nov 2023 21:03:45 +0100
+        d=1e100.net; s=20230601; t=1701115844; x=1701720644;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8Up5Z15ufiRP1gYWIOKwLzkwa3c+KJVoKEOWuukNLx8=;
+        b=HQ/aogNKeW7jbioQcVancrA/rbUrl7FGpDbze3pIUTo1xtuGScWDN6KjZuiyfxGhK8
+         T9yJAIeuiGLVieLNUujvAOOLu8RLbHuRKZ3QuYaWTH6BqC2xn0mEyYp5HqLwXslCEuqL
+         zPs19rLcoNjuWqbaPdUYdIwQQMgaHem7pihgOngS7DHe87T5HhlCa27nN6YcNTXFosiJ
+         K2vdOfEg1+uTcillDSaro0P3m7IesCn568f+21z6g2ErEzt64dappnozYT/Sjxq8dj98
+         AAObYe1QYmYAK2NGUjPoEm0h1FP+QdqdX0SWrfpFi6iDPDy1DfXRr+6DDnPWdz+57kzX
+         dVtg==
+X-Gm-Message-State: AOJu0Yxsr161XhTKtQCxpXnBvDFbWUyJm1nZQgWN3ZYHPgXX5FDSfJzw
+	7fMdf7vZPTsw6gLZLfLJ5lWSIrQb6sjLYhakR+8=
+X-Google-Smtp-Source: AGHT+IGxkuvJuoBhLfLN9Jn/cI4XlXR4Q4t1OpxkIHOaahC9jZPPsXak61pPBm03kw+nhyewnaOyRg==
+X-Received: by 2002:a17:90b:17c1:b0:27d:2dde:5979 with SMTP id me1-20020a17090b17c100b0027d2dde5979mr14632263pjb.5.1701115843596;
+        Mon, 27 Nov 2023 12:10:43 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id kb18-20020a17090ae7d200b002804c91633dsm7805999pjb.14.2023.11.27.12.10.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 12:10:42 -0800 (PST)
+Message-ID: <6564f7c2.170a0220.55804.220c@mx.google.com>
+Date: Mon, 27 Nov 2023 12:10:42 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/2] r8169: enable rtl8125b pause slot
-Content-Language: en-US
-To: ChunHao Lin <hau@realtek.com>
-Cc: nic_swsd@realtek.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, grundler@chromium.org, stable@vger.kernel.org
-References: <20231127175736.5738-1-hau@realtek.com>
- <20231127175736.5738-2-hau@realtek.com>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <20231127175736.5738-2-hau@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.14.330-54-g0957336c00be
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.330-54-g0957336c00be)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On 27.11.2023 18:57, ChunHao Lin wrote:
-> When FIFO reach near full state, device will issue pause frame.
-> If pause slot is enabled(set to 1), in this time, device will issue
-> pause frame once. But if pause slot is disabled(set to 0), device
-> will keep sending pause frames until FIFO reach near empty state.
-> 
-> When pause slot is disabled, if there is no one to handle receive
-> packets (ex. unexpected shutdown), device FIFO will reach near full
-> state and keep sending pause frames. That will impact entire local
-> area network.
-> 
-> In this patch default enable pause slot to prevent this kind of
-> situation.
-> 
-Can this change have any side effect? I'm asking because apparently
-the hw engineers had a reason to make the behavior configurable.
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
+v4.14.330-54-g0957336c00be)
 
-> Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ChunHao Lin <hau@realtek.com>
-> ---
->  drivers/net/ethernet/realtek/r8169_main.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index 295366a85c63..473b3245754f 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -196,6 +196,7 @@ enum rtl_registers {
->  					/* No threshold before first PCI xfer */
->  #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
->  #define	RX_EARLY_OFF			(1 << 11)
-> +#define	RX_PAUSE_SLOT_ON		(1 << 11)
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.330-54-g0957336c00be/
 
-Depending on the chip version this bit has different meanings. Therefore it
-would be good to add a comment that RX_PAUSE_SLOT_ON is specific to RTL8125B.
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.330-54-g0957336c00be
+Git Commit: 0957336c00bea3193c550b28144cbadfbbbc411f
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
->  #define	RXCFG_DMA_SHIFT			8
->  					/* Unlimited maximum PCI burst. */
->  #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
-> @@ -2305,9 +2306,13 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
->  	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
->  		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
->  		break;
-> -	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-> +	case RTL_GIGA_MAC_VER_61:
->  		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
->  		break;
-> +	case RTL_GIGA_MAC_VER_63:
-> +		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
-> +			RX_PAUSE_SLOT_ON);
-> +		break;
->  	default:
->  		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
->  		break;
+Warnings Detected:
 
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
