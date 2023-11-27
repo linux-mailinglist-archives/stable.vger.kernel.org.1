@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-2752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E6C7F9FD2
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 13:42:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F5C7FA034
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 14:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF259B20DB3
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 12:42:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04BDF1C20DB0
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 13:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2315312E75;
-	Mon, 27 Nov 2023 12:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE3328DA4;
+	Mon, 27 Nov 2023 13:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1unsdqfo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGeA/H3k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB90CDDC7;
-	Mon, 27 Nov 2023 12:42:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B10A4C433C7;
-	Mon, 27 Nov 2023 12:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756FD16419;
+	Mon, 27 Nov 2023 13:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C4D1C433C8;
+	Mon, 27 Nov 2023 13:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701088958;
-	bh=aaKzm9i45LO58fVj2NpSXP+hjRQ7QKMZXrEwp83qEB4=;
+	s=korg; t=1701090097;
+	bh=lXWg88itlTnqydnqiK3rCRUDWJLDAFTD9g8Pk4yxK6c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1unsdqfov2BkJ1pGOY10t3XNL0cFdCiYdAEURB5PGMJFoLfjIwXgexbkHns54Cvvc
-	 2rOTHTymcJxnZzl3qiEbMsOaievkSvjVWl1UnnG49StDWSXLvEHnLsdX1GZfhG6lYj
-	 mzJPnr7n3DvyaUZGl01TN0pyCRRvjT5fQ8CndaRs=
-Date: Mon, 27 Nov 2023 12:42:35 +0000
+	b=XGeA/H3k7yZ+OkeaJItHDcgTYsncPXxGgWd7VEpu4vLWbqVnhD5qwbrg+VA6CODBX
+	 pryou3AigatAlqrTj7FGcPk18Pkgnts/kZPjWBGONUVJEN8Kh/cp7x2T2SB00t54fo
+	 dMeBAv7SiUEGJQENNwUH4uDmAzDgzsMTOvyxc9C4=
+Date: Mon, 27 Nov 2023 12:47:03 +0000
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+To: Helge Deller <deller@gmx.de>
+Cc: Guenter Roeck <linux@roeck-us.net>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	shuah@kernel.org, patches@kernelci.org,
 	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
 	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
 	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
 	allen.lkml@gmail.com
-Subject: Re: [PATCH 5.15 000/292] 5.15.140-rc3 review
-Message-ID: <2023112722-delicacy-arrange-59bd@gregkh>
-References: <20231126154348.824037389@linuxfoundation.org>
- <3632c7da-24ba-4259-a590-5c46f899d43f@roeck-us.net>
+Subject: Re: [PATCH 4.14 00/53] 4.14.331-rc2 review
+Message-ID: <2023112751-predict-ovary-5afa@gregkh>
+References: <20231125163059.878143365@linuxfoundation.org>
+ <09f33739-9bf6-4ff8-895d-92d3567c3cb9@roeck-us.net>
+ <ZWOs6uwZoCoxYSSs@p100>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,32 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3632c7da-24ba-4259-a590-5c46f899d43f@roeck-us.net>
+In-Reply-To: <ZWOs6uwZoCoxYSSs@p100>
 
-On Sun, Nov 26, 2023 at 08:24:57AM -0800, Guenter Roeck wrote:
-> On 11/26/23 07:46, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.15.140 release.
-> > There are 292 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
+On Sun, Nov 26, 2023 at 09:39:06PM +0100, Helge Deller wrote:
+> * Guenter Roeck <linux@roeck-us.net>:
+> > On 11/25/23 08:32, Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 4.14.331 release.
+> > > There are 53 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Mon, 27 Nov 2023 16:30:48 +0000.
+> > > Anything received after that time might be too late.
+> > > 
 > > 
-> > Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
-> > Anything received after that time might be too late.
-> > 
+> > Building parisc64:generic-64bit_defconfig ... failed
+> > --------------
+> > Error log:
+> > hppa64-linux-ld: arch/parisc/kernel/head.o: in function `$iodc_panic':
+> > (.head.text+0x64): undefined reference to `init_stack'
+> > hppa64-linux-ld: (.head.text+0x68): undefined reference to `init_stack'
+> > make[1]: *** [Makefile:1049: vmlinux] Error 1
+> > make: *** [Makefile:153: sub-make] Error 2
 > 
-> For v5.15.139-293-g0dd3c4f0979f (-rc3), powerpc:defconfig:
+> Indeed.
+> Thanks for testing, Guenter!
 > 
-> arch/powerpc/platforms/pseries/iommu.c: In function 'find_existing_ddw':
-> arch/powerpc/platforms/pseries/iommu.c:908:49: error: 'struct dma_win' has no member named 'direct'
->   908 |                         *direct_mapping = window->direct;
+> Greg, could you please replace the patch in queue/4.14 with
+> the one below? It simply uses another stack start, which is ok since the
+> machine will stop anyway.
 > 
+> No changes needed for your other stable-queues. I tested 4.19 and
+> it's ok as-is.
 > 
-> git blame points to commit 19bed3228b3aa ("powerpc/pseries/iommu: enable_ddw
-> incorrectly returns direct mapping for SR-IOV device").
 
-Ugh, forgot to drop this one from 5.15.y, now done.
-
-thanks,
+Now replaced, thanks.
 
 greg k-h
 
