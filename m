@@ -1,105 +1,313 @@
-Return-Path: <stable+bounces-2763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E33F7FA329
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:41:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A6C47FA411
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08D6EB210E2
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 14:41:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8CBFB210FA
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E841DDE7;
-	Mon, 27 Nov 2023 14:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317113174D;
+	Mon, 27 Nov 2023 15:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="gDp6+dZP"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i9DzzgJS"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 30825E1
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 06:41:35 -0800 (PST)
-Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 1C7F920B74C0;
-	Mon, 27 Nov 2023 06:41:33 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1C7F920B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701096094;
-	bh=qDo7UN+/1b6h0VVSur5hRgS4MIoh0bNHp/01HdpBVJY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDp6+dZPoTXV+4nbrkpgtYX6rUKzbAAVJiwl0nd5oII5GgsD99OG+MOoFXkyhWFkU
-	 gRTs5tSwtlg2BbqBdscOz6YKbjkOLJ7vNCMEtMK1Xs0bLiqo2P6iScrd6pLG7JnfjH
-	 63d0fARG72nDaSDBIs9Zp71EAfRgFF6QXgdSWeT0=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH 4.19.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Mon, 27 Nov 2023 15:41:31 +0100
-Message-ID: <5993767.lOV4Wx5bFT@pwmachine>
-In-Reply-To: <2023112447-prevent-unbalance-4448@gregkh>
-References: <2023102138-riverbed-senator-e356@gregkh> <20231124122413.95544-1-flaniel@linux.microsoft.com> <2023112447-prevent-unbalance-4448@gregkh>
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07D6BB
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 07:07:22 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6d81173a219so1491266a34.3
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 07:07:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701097642; x=1701702442; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=617F3nRFGfW3UqBuyZB3u1rDTGABWEPSTQud8GzjBzk=;
+        b=i9DzzgJSUp2niGRwrO651n74vzXzf86V82602pm/5MocItfgrNilo6nW8W/PfNBjDR
+         oCs42y2lDkG+ehceaONvJeYjPvMmIeCuwaZ9FoPlm7gRtCOFXDhMAC8uSJNnwZog9KF5
+         w8vzVZtfzBfGvkA70WsPKTgwiwHXDgu4niw9W67wQlvkSDWcjG3T8uWPrtkGjJR8B1Pr
+         LQLvgWIK04/8tLgF3n/hYyRSr4rE9itZrtH4zkW3p8TmoiLBMGXemzcSJ2nbN9qU73IT
+         hxkUZSi17Z8i3cGNTxp+XxXa0hyfxZUa9N+prdtaakxuUU8wOYc6on3bsvt3GiPchRAH
+         0r1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701097642; x=1701702442;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=617F3nRFGfW3UqBuyZB3u1rDTGABWEPSTQud8GzjBzk=;
+        b=KaOdWSVVksVgkdqwQ3s4PUid8AYEkE0afvhNAtxuB2VNV73+WdiKJo0wDgxLdwULy0
+         J0937hxN+HVsE+h1B2Uf7gbrNcmhc8rklf3JNs/50zV6wXW6o75Xzr1tNI090jTD9i40
+         BUotZAHWRDOtT51sf77bHLVDZJlAJabFH4Wfehp1yWA5LVm3B8fVgDYq5rt96nVF5L/J
+         Sd2RXfGzrvE1x8PuDH43YIM+F+U68LKRD5ZIiHRhdHIUYw83JZlfXQMKEUFhgL1vTVAl
+         SFlGBBPLON5k3oGsysQvaoad3ED+SsyndAxO6xlvbxctQTthwEVPT7/7/2JENttr76H3
+         Gz4w==
+X-Gm-Message-State: AOJu0Yzc7tJYSZliWZoJccBkviOnBMZ8lQDD4Q3dA8qNS1Ljbao9snXb
+	p8AtCwPaAH4eFsEVo5IRQKG4ura//4qcQa8rWe1f0w==
+X-Google-Smtp-Source: AGHT+IFvZrl7BIb5d3tTlFoJOASc2MpvQcgnwFTo1ywhOZENB3Nr/odyqW/Ttj/Xz/CbqfiMCY08+s467BmGTWxl2z8=
+X-Received: by 2002:a05:6358:9194:b0:16e:292:2af2 with SMTP id
+ j20-20020a056358919400b0016e02922af2mr11695350rwa.21.1701097635756; Mon, 27
+ Nov 2023 07:07:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+References: <20231126154413.975493975@linuxfoundation.org>
+In-Reply-To: <20231126154413.975493975@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 27 Nov 2023 20:37:03 +0530
+Message-ID: <CA+G9fYsUXnx4HWyBOGMi3Ko_jT6Y_ejp5ZhcsU+8+_8NUsd=vA@mail.gmail.com>
+Subject: Re: [PATCH 6.5 000/483] 6.5.13-rc4 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi!
-
-
-Le vendredi 24 novembre 2023, 17:17:04 CET Greg KH a =E9crit :
-> On Fri, Nov 24, 2023 at 01:24:13PM +0100, Francis Laniel wrote:
-> > When a kprobe is attached to a function that's name is not unique (is
-> > static and shares the name with other functions in the kernel), the
-> > kprobe is attached to the first function it finds. This is a bug as the
-> > function that it is attaching to is not necessarily the one that the
-> > user wants to attach to.
-> >=20
-> > Instead of blindly picking a function to attach to what is ambiguous,
-> > error with EADDRNOTAVAIL to let the user know that this function is not
-> > unique, and that the user must use another unique function with an
-> > address offset to get to the function they want to attach to.
-> >=20
-> > Link:
-> > https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microso=
-ft
-> > .com/
-> >=20
-> > Cc: stable@vger.kernel.org
-> > Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-> > Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-> > Link:
-> > https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@ke=
-rn
-> > el.org/ Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > (cherry picked from commit b022f0c7e404887a7c5229788fc99eff9f9a80d5)
-> > ---
-> >=20
-> >  kernel/trace/trace_kprobe.c | 48 +++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 48 insertions(+)
->=20
-> Again, we need a version for 5.4.y as well before we can take this
-> version.
-
-I sent the 5.4.y patch some times ago, you can find it here:=20
-https://lore.kernel.org/stable/20231023113623.36423-2-flaniel@linux.microso=
-ft.com/
-
-With the recent batch I sent, I should have cover all the stable kernels.
-In case I miss one, please indicate it to me so I can fix this problem and=
-=20
-ensure all stable kernels have a corresponding patch.
-=20
+On Sun, 26 Nov 2023 at 21:17, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.5.13 release.
+> There are 483 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.13-rc4.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+>
 > thanks,
->=20
+>
 > greg k-h
 
 
-Best regards.
+Results from Linaro's test farm.
+The following regressions found on all arm64 devices.
+Both the regressions are also seen on stable-rc linux-6.1.y.
+
+1) selftests: seccomp: seccomp_bpf - fails on all arm64 devices.
+2) Perf: PMU_events_subtest_1 / 2  - fails on all qemu-armv7 and TI x15.
+
+Test log:
+--------
+1)
+# selftests: seccomp: seccomp_bpf
+<>
+# #  RUN           global.user_notification_sync ...
+# # seccomp_bpf.c:4294:user_notification_sync:Expected
+
+ioctl(listener, SECCOMP_IOCTL_NOTIF_SET_FLAGS,
+               SECCOMP_USER_NOTIF_FD_SYNC_WAKE_UP, 0) (-1) == 0 (0)
+
+# # user_notification_sync: Test terminated by assertion
+# #          FAIL  global.user_notification_sync
+# not ok 51 global.user_notification_sync
+<>
+# # FAILED: 95 / 96 tests passed.
+# # Totals: pass:95 fail:1 xfail:0 xpass:0 skip:0 error:0
+not ok 1 selftests: seccomp: seccomp_bpf # exit=1
+
+Links:
+ - https://lkft.validation.linaro.org/scheduler/job/7056513#L2725
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-484-gecc37a3a8d33/testrun/21318788/suite/kselftest-seccomp/test/seccomp_seccomp_bpf/details/
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-484-gecc37a3a8d33/testrun/21318263/suite/kselftest-seccomp/test/seccomp_seccomp_bpf/history/
 
 
+2)
+perf
+  - PMU_events_subtest_1
+  - PMU_events_subtest_2
+
+ 10.1: PMU event table sanity                           :
+--- start ---
+test child forked, pid 339
+perf: Segmentation fault
+Obtained 1 stack frames.
+perf(+0xdfcd9) [0x571cd9]
+test child interrupted
+---- end ----
+PMU events subtest 1: FAILED!
+ 10.2: PMU event map aliases                            :
+--- start ---
+test child forked, pid 340
+perf: Segmentation fault
+Obtained 1 stack frames.
+perf(+0xdfcd9) [0x571cd9]
+test child interrupted
+---- end ----
+PMU events subtest 2: FAILED!
+
+Links:
+ - https://lkft.validation.linaro.org/scheduler/job/7059997#L2905
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-486-g1c613200bbe4/testrun/21344368/suite/perf/test/PMU_events_subtest_1/details/
+
+## Build
+* kernel: 6.5.13-rc4
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.5.y
+* git commit: ecc37a3a8d335716260debdf063a278ea74379a4
+* git describe: v6.5.12-484-gecc37a3a8d33
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-484-gecc37a3a8d33
+
+## Test Regressions (compared to v6.5.12)
+
+* bcm2711-rpi-4-b, kselftest-seccomp
+  - seccomp_seccomp_bpf
+
+* juno-r2, kselftest-seccomp
+  - seccomp_seccomp_bpf
+
+* dragonboard-410c, kselftest-seccomp
+  - seccomp_seccomp_bpf
+
+* qemu-armv7, perf
+  - PMU_events_subtest_1
+  - PMU_events_subtest_2
+
+* x15, perf
+  - PMU_events_subtest_1
+  - PMU_events_subtest_2
+
+## Metric Regressions (compared to v6.5.12)
+
+## Test Fixes (compared to v6.5.12)
+
+## Metric Fixes (compared to v6.5.12)
+
+## Test result summary
+total: 150231, pass: 128862, fail: 2428, skip: 18810, xfail: 131
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 146 total, 146 passed, 0 failed
+* arm64: 53 total, 51 passed, 2 failed
+* i386: 42 total, 42 passed, 0 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 25 total, 25 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 47 total, 47 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
