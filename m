@@ -1,97 +1,71 @@
-Return-Path: <stable+bounces-2740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE84B7F9CFA
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 10:58:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CE97F9D39
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 11:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0725F1C20C17
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 09:58:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8446328130A
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 10:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2811798A;
-	Mon, 27 Nov 2023 09:58:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Temh8eAU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4349E182A9;
+	Mon, 27 Nov 2023 10:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::226])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C761AF0;
-	Mon, 27 Nov 2023 01:58:45 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 10150C0013;
-	Mon, 27 Nov 2023 09:58:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701079123;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=B5Sho0rj1OqGHldxHSwjpOtKBXGN/gFmtHdV8vDyx1U=;
-	b=Temh8eAUgqp7H2Zv37zsOf7me+IwQdmT5bUFObWSekbbSdjmUq9loQQKowGKfKsQCJXOZf
-	JbV4XmW1ZKIeswj9n8YmKc7Lsy4+9eyR5D/xYz8XhOgB8KUURzR0mTLxk/7nvnj5NHlxEs
-	4lZ96ouNHrsWHyf1l09vc/Frapby+waR8ESVISMcQmBOC9WZHrRxRfqsvF9xkAfGd1cTQo
-	/t9EuguuxVxaIsOrEOODyJGVNH4Ps2Yna/c978NXHpU7DOvyD3iD0QEuQMI68NqeI2u9/x
-	sujPXjsZOey81Sl/d7ujjyvf4zRe1sVNSP9edOUpIgmJz4v3fGDPm36a/rl05w==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>,
-	<linux-spi@vger.kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org,
-	Ronald Wahl <ronald.wahl@raritan.com>
-Subject: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
-Date: Mon, 27 Nov 2023 10:58:41 +0100
-Message-Id: <20231127095842.389631-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Received: from mail11.truemail.it (mail11.truemail.it [IPv6:2001:4b7e:0:8::81])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61F70188;
+	Mon, 27 Nov 2023 02:13:45 -0800 (PST)
+Received: from francesco-nb.int.toradex.com (31-10-206-125.static.upc.ch [31.10.206.125])
+	by mail11.truemail.it (Postfix) with ESMTPA id C0FDC206D2;
+	Mon, 27 Nov 2023 11:13:39 +0100 (CET)
+Date: Mon, 27 Nov 2023 11:13:34 +0100
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Shawn Guo <shawnguo@kernel.org>
+Cc: Andrejs Cainikovs <andrejs.cainikovs@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	NXP Linux Team <linux-imx@nxp.com>, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Andrejs Cainikovs <andrejs.cainikovs@toradex.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] ARM: dts: imx6q-apalis: add can power-up delay on
+ ixora board
+Message-ID: <ZWRrznJiUyXlzzW1@francesco-nb.int.toradex.com>
+References: <20231020153022.57858-1-andrejs.cainikovs@gmail.com>
+ <20231020153022.57858-3-andrejs.cainikovs@gmail.com>
+ <20231127025218.GR87953@dragon>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231127025218.GR87953@dragon>
 
-The intended move from wait_for_completion_*() to
-wait_for_completion_interruptible_*() was to allow (very) long spi memory
-transfers to be stopped upon user request instead of freezing the
-machine forever as the timeout value could now be significantly bigger.
+On Mon, Nov 27, 2023 at 10:52:18AM +0800, Shawn Guo wrote:
+> On Fri, Oct 20, 2023 at 05:30:22PM +0200, Andrejs Cainikovs wrote:
+> > From: Andrejs Cainikovs <andrejs.cainikovs@toradex.com>
+> > 
+> > Newer variants of Ixora boards require a power-up delay when powering up
+> > the CAN transceiver of up to 1ms.
+> > 
+> > Cc: stable@vger.kernel.org
+> 
+> Why is only the iMX6 change required for stable?
 
-However, depending on the user logic, applications can receive many
-signals for their own "internal" purpose and have nothing to do with the
-requested kernel operations, hence interrupting spi transfers upon any
-signal is probably not a wise choice. Instead, let's switch to
-wait_for_completion_killable_*() to only catch the "important"
-signals. This was likely the intended behavior anyway.
+From what I know currently apalis-imx8 is not yet used in products
+with a mainline kernel therefore the assumption that the backporting
+would add very small value, however maybe is better to just backport
+both to stable.
 
-Fixes: e0205d6203c2 ("spi: atmel: Prevent false timeouts on long transfers")
-Cc: stable@vger.kernel.org
-Reported-by: Ronald Wahl <ronald.wahl@raritan.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
-Hello Ronald, this is only compile tested, please let me know if that
-fixes your use case or if you still suffer from interrupted transfers.
-Thanks!
----
- drivers/spi/spi-atmel.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 6aa8adbe4170..2e8860865af9 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1336,8 +1336,8 @@ static int atmel_spi_one_transfer(struct spi_controller *host,
- 		}
- 
- 		dma_timeout = msecs_to_jiffies(spi_controller_xfer_timeout(host, xfer));
--		ret_timeout = wait_for_completion_interruptible_timeout(&as->xfer_completion,
--									dma_timeout);
-+		ret_timeout = wait_for_completion_killable_timeout(&as->xfer_completion,
-+								   dma_timeout);
- 		if (ret_timeout <= 0) {
- 			dev_err(&spi->dev, "spi transfer %s\n",
- 				!ret_timeout ? "timeout" : "canceled");
--- 
-2.34.1
+Francesco
 
 
