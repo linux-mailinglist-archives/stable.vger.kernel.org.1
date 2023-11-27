@@ -1,155 +1,68 @@
-Return-Path: <stable+bounces-2737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24AA57F9C98
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 10:27:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4807F9CB3
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 10:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56B2D1C20BD5
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 09:27:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC40281218
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 09:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF44E15487;
-	Mon, 27 Nov 2023 09:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C289115AEF;
+	Mon, 27 Nov 2023 09:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si1uXyfY"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 892EC1A5;
-	Mon, 27 Nov 2023 01:27:50 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BC9AE2F4;
-	Mon, 27 Nov 2023 01:28:37 -0800 (PST)
-Received: from e129166.arm.com (unknown [10.57.4.90])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 0A7E63F6C4;
-	Mon, 27 Nov 2023 01:27:48 -0800 (PST)
-From: Lukasz Luba <lukasz.luba@arm.com>
-To: linux-kernel@vger.kernel.org,
-	linux-pm@vger.kernel.org,
-	daniel.lezcano@linaro.org
-Cc: lukasz.luba@arm.com,
-	rafael@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] powercap: DTPM: Fix unneeded conversion to micro-Watts
-Date: Mon, 27 Nov 2023 09:28:19 +0000
-Message-Id: <20231127092819.2019744-1-lukasz.luba@arm.com>
-X-Mailer: git-send-email 2.25.1
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AEF15487;
+	Mon, 27 Nov 2023 09:34:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F70DC433C7;
+	Mon, 27 Nov 2023 09:34:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701077657;
+	bh=rWdOk5F1xy/hz6UlHbgz3bUdswLVZyPhPBL8yovT9pY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=si1uXyfYv3uMujQHrz3CQOSOZPn1oWFYlltWK9eIGXQRJvMVq8/ZFwcUS7Q74w59M
+	 UpFUTeK8t3upgJm5dwu+FN9S2Vtk9PxXdKq8veQnt84Butxd7v1ML7Egp+cso7m0Bf
+	 Ani7Smdw5O8nzejEeJPz1OlNSFsQjylLBWC5+B00=
+Date: Mon, 27 Nov 2023 09:34:15 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Florian Eckert <fe@dev.tdt.de>
+Cc: Eckert.Florian@googlemail.com, pavel@ucw.cz, lee@kernel.org,
+	kabel@kernel.org, linux-leds@vger.kernel.org,
+	stable@vger.kernel.org,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: Re: [Patch v3 1/1] leds: ledtrig-tty: free allocated ttyname buffer
+ on deactivate
+Message-ID: <2023112718-profane-dipped-a9a8@gregkh>
+References: <20231127081621.774866-1-fe@dev.tdt.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231127081621.774866-1-fe@dev.tdt.de>
 
-The Power values coming from the Energy Model are already in uW.
-The PowerCap and DTPM framework operate on uW, thus all places should
-just use the values from EM. Fix the code which left and still does
-the unneeded conversion.
+On Mon, Nov 27, 2023 at 09:16:21AM +0100, Florian Eckert wrote:
+> The ttyname buffer for the ledtrig_tty_data struct is allocated in the
+> sysfs ttyname_store() function. This buffer must be released on trigger
+> deactivation. This was missing and is thus a memory leak.
+> 
+> While we are at it, the tty handler in the ledtrig_tty_data struct should
+> also be returned in case of the trigger deactivation call.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
+> Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+> Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-Fixes: ae6ccaa65038 (PM: EM: convert power field to micro-Watts precision and align drivers)
-Cc: <stable@vger.kernel.org> # v5.19+
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
----
-Hi Daniel,
-
-I have found an issue due to the uW in the EM. My apologies for that.
-I have check those with the Rockpi dev board with your DTPM module there.
-BTW, if you like to check the DTPM_devfreq there, you can apply that
-patch. It should create EM for your GPU there and setup DTPM GPU:
-https://lore.kernel.org/all/20231127081511.1911706-1-lukasz.luba@arm.com/
-
-Regards,
-Lukasz
-
-
- drivers/powercap/dtpm_cpu.c     |  6 +-----
- drivers/powercap/dtpm_devfreq.c | 11 +++--------
- 2 files changed, 4 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index 2ff7717530bf..8a2f18fa3faf 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -24,7 +24,6 @@
- #include <linux/of.h>
- #include <linux/pm_qos.h>
- #include <linux/slab.h>
--#include <linux/units.h>
- 
- struct dtpm_cpu {
- 	struct dtpm dtpm;
-@@ -104,8 +103,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 		if (pd->table[i].frequency < freq)
- 			continue;
- 
--		return scale_pd_power_uw(pd_mask, pd->table[i].power *
--					 MICROWATT_PER_MILLIWATT);
-+		return scale_pd_power_uw(pd_mask, pd->table[i].power);
- 	}
- 
- 	return 0;
-@@ -122,11 +120,9 @@ static int update_pd_power_uw(struct dtpm *dtpm)
- 	nr_cpus = cpumask_weight(&cpus);
- 
- 	dtpm->power_min = em->table[0].power;
--	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
- 	dtpm->power_min *= nr_cpus;
- 
- 	dtpm->power_max = em->table[em->nr_perf_states - 1].power;
--	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
- 	dtpm->power_max *= nr_cpus;
- 
- 	return 0;
-diff --git a/drivers/powercap/dtpm_devfreq.c b/drivers/powercap/dtpm_devfreq.c
-index 91276761a31d..612c3b59dd5b 100644
---- a/drivers/powercap/dtpm_devfreq.c
-+++ b/drivers/powercap/dtpm_devfreq.c
-@@ -39,10 +39,8 @@ static int update_pd_power_uw(struct dtpm *dtpm)
- 	struct em_perf_domain *pd = em_pd_get(dev);
- 
- 	dtpm->power_min = pd->table[0].power;
--	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
- 
- 	dtpm->power_max = pd->table[pd->nr_perf_states - 1].power;
--	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
- 
- 	return 0;
- }
-@@ -54,13 +52,10 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 power_limit)
- 	struct device *dev = devfreq->dev.parent;
- 	struct em_perf_domain *pd = em_pd_get(dev);
- 	unsigned long freq;
--	u64 power;
- 	int i;
- 
- 	for (i = 0; i < pd->nr_perf_states; i++) {
--
--		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
--		if (power > power_limit)
-+		if (pd->table[i].power > power_limit)
- 			break;
- 	}
- 
-@@ -68,7 +63,7 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 power_limit)
- 
- 	dev_pm_qos_update_request(&dtpm_devfreq->qos_req, freq);
- 
--	power_limit = pd->table[i - 1].power * MICROWATT_PER_MILLIWATT;
-+	power_limit = pd->table[i - 1].power;
- 
- 	return power_limit;
- }
-@@ -110,7 +105,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 		if (pd->table[i].frequency < freq)
- 			continue;
- 
--		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
-+		power = pd->table[i].power;
- 		power *= status.busy_time;
- 		power >>= 10;
- 
--- 
-2.25.1
-
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
