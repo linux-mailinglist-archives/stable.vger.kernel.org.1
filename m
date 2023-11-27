@@ -1,116 +1,227 @@
-Return-Path: <stable+bounces-2826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 789E97FAC83
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 22:25:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BE97FACA5
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 22:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16DBAB20FE6
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A015281B68
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D37E046443;
-	Mon, 27 Nov 2023 21:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFE446523;
+	Mon, 27 Nov 2023 21:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="0TBS7moe"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0F031A1;
-	Mon, 27 Nov 2023 13:25:48 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 527621C0050; Mon, 27 Nov 2023 22:25:47 +0100 (CET)
-Date: Mon, 27 Nov 2023 22:25:46 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, maz@kernel.org,
-	andy.shevchenko@gmail.com, brgl@bgdev.pl, wangyouwan@126.com,
-	jani.nikula@intel.com, rf@opensource.cirrus.com,
-	ilpo.jarvinen@linux.intel.com, dan.carpenter@linaro.org
-Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
-Message-ID: <ZWUJWhOkbHlwC2YB@duo.ucw.cz>
-References: <20231126154335.643804657@linuxfoundation.org>
+Received: from mail-pf1-x42b.google.com (mail-pf1-x42b.google.com [IPv6:2607:f8b0:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41233D5A
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 13:39:30 -0800 (PST)
+Received: by mail-pf1-x42b.google.com with SMTP id d2e1a72fcca58-6cda22140f2so182556b3a.1
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 13:39:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701121169; x=1701725969; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4GYH3FtRePzPKFGRsL8gmhRpeqYo/ShQcfXD6JAvAUE=;
+        b=0TBS7moenWeL58PC4VmQUVLjBxPcZEIWnhIEqc1YetBG4rqPN2fGzS8HxhCYR2L2lk
+         W0qnrhBPP7imKZsleluigOxKEaG4Za9j6dEus0447L3NBHZVJS5Y4GQSEcOu3ZadK9DX
+         6bqh7WEng0F9/2V+fI0pJkCUO3QkL0y0RwCaOR7GP43SMZ8A6jZ9vABmEyjLVvq8mGw8
+         Avt9W6I1vSIiP0E+HJ2TLj1yHIQFHNTX0Nzdn4fbXSrFe0I73SaNJM9YOc6zbcs1unbd
+         T0DNUEJqF28w+TKrBd+qOX1C0LHvLxH3DjrpNew2V3dlq8VUEb5LcwNYQLc78HPAN+x/
+         X6PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701121169; x=1701725969;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4GYH3FtRePzPKFGRsL8gmhRpeqYo/ShQcfXD6JAvAUE=;
+        b=qlasX0uhz7g0Yo35AY07MiIVHbUsjNvyaQmrDi2KSHhtnW7q50qmeJelNYAsBbD32J
+         liexCKvUaJVs4Zkqie9BGfP8JhstMScTlp5eQ9xVID3UZPXhON4RkXvmo9f9hfpEymY0
+         OcW91TfKjK3W/rrfQkY08i2i683QUT/MacdOMuqG9SXp01MXMZ3QJiI1dS5TVQC4HTVC
+         uLCEawqoUjQy4rvAEH2+nS+myK5gl2okRi5GYsb6D6turjRmE9PkEREFmbS76b3S3Qsu
+         j11j92LMcDmboy+eZlzp1ZjhSWZaPuT3vswUfPd/jKvGxYVqGx0Aebsl34RTuY9hCxsY
+         nzqw==
+X-Gm-Message-State: AOJu0YydJ0PCKiwCWf4Kcagx06RkDmNrrfxm4ul+6hGeOe0Uta/E4QOr
+	4F/WfrdZolCa89kv4CreLVtdwKDHnj5wNlmtM9Y=
+X-Google-Smtp-Source: AGHT+IFF1+hJY57HoLrjxpstZWKkOYVTdp2ha7875dpTFYbyQ5eADrqUwUhq68gqITH4dOACp/NdEA==
+X-Received: by 2002:a05:6a20:3d16:b0:18b:4630:8c7a with SMTP id y22-20020a056a203d1600b0018b46308c7amr17780440pzi.23.1701121169243;
+        Mon, 27 Nov 2023 13:39:29 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id z7-20020aa785c7000000b0068fe39e6a46sm7585383pfn.112.2023.11.27.13.39.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 13:39:28 -0800 (PST)
+Message-ID: <65650c90.a70a0220.9068b.2a1e@mx.google.com>
+Date: Mon, 27 Nov 2023 13:39:28 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="MlZhcRN/f5z9Ed9v"
-Content-Disposition: inline
-In-Reply-To: <20231126154335.643804657@linuxfoundation.org>
-
-
---MlZhcRN/f5z9Ed9v
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.1.63-367-g5fee4f75be63
+Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.63-367-g5fee4f75be63)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hi!
+stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
+63-367-g5fee4f75be63)
 
-> This is the start of the stable review cycle for the 5.10.202 release.
-> There are 187 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
+/kernel/v6.1.63-367-g5fee4f75be63/
 
-> Marc Zyngier <maz@kernel.org>
->     gpio: Don't fiddle with irqchips marked as immutable
+Tree: stable-rc
+Branch: queue/6.1
+Git Describe: v6.1.63-367-g5fee4f75be63
+Git Commit: 5fee4f75be6323b6e3e3de6b73da6df8602a0c44
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-This is attempt to move people to new API, which will cause warning
-for existing users. "chip_warn(gc, "not an immutable chip, please
-consider fixing it!\n");". It is marked as dependency of another
-patch, but I'm not sure we should be doing this in stable.
+Warnings Detected:
 
-> youwan Wang <wangyouwan@126.com>
->     Bluetooth: btusb: Add date->evt_skb is NULL check
+arc:
 
-Could someone double check this? If we hit the null check, we'll be
-returning success, but it sounds like an error case.
+arm64:
 
-> Jani Nikula <jani.nikula@intel.com>
->     drm/msm/dp: skip validity check for DP CTS EDID checksum
+arm:
 
-This is preparation for future cleanup, do we need it?
+i386:
 
-> Richard Fitzgerald <rf@opensource.cirrus.com>
->     ASoC: soc-card: Add storage for PCI SSID
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-This adds infrastructure for white/blacklisting, but I don't see an
-user of that in 5.10 (or 6.1).
+riscv:
 
-> Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
->     media: cobalt: Use FIELD_GET() to extract Link Width
+x86_64:
 
-Cleanup, but not a bugfix.
 
-> Dan Carpenter <dan.carpenter@linaro.org>
->     SUNRPC: Add an IS_ERR() check back to where it was
+Warnings summary:
 
-According to changelog, this is only needed with commit 25cf32ad5dba
-("SUNRPC: Handle allocation failure in rpc_new_task()") in tree, and
-we don't have that in 5.10.
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
---MlZhcRN/f5z9Ed9v
-Content-Type: application/pgp-signature; name="signature.asc"
+Detailed per-defconfig build reports:
 
------BEGIN PGP SIGNATURE-----
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZWUJWgAKCRAw5/Bqldv6
-8ni0AJsG3BKGQDCyibkUdDgmaa+Dmzg2wQCgoo/JMYlIky7pfMEfwLJp+v8F6Sc=
-=3dfj
------END PGP SIGNATURE-----
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
---MlZhcRN/f5z9Ed9v--
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
