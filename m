@@ -1,59 +1,45 @@
-Return-Path: <stable+bounces-2761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3137FA305
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:37:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE647FA30D
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:38:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED4321F20D3C
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 14:37:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CA961C20E2C
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 14:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85CAB30FBD;
-	Mon, 27 Nov 2023 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61813159B;
+	Mon, 27 Nov 2023 14:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhhLJflG"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nYKqRpoD"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBB51A5
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 06:37:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701095868;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Pn2QY9BkzTsBxRkgzM3InhgNVD/4YvY9FZFSMQPAJn0=;
-	b=bhhLJflGlUpTTjEy3qL8/6PypJJv3yi/5egroWe4nM/oKaYRfFgghTCasO0zzuAVs7sT/I
-	KvpB00oc4XYTkToUZpqB7xiCn+S15wHQStneDg7N1E1WxqI12OG5qVh6oz6b3ggp+u/iSF
-	xnBBvJdXFvPKPdEhwio6elDMKe23rbk=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-286-DO237glwNUe4j5hIC_HhZA-1; Mon, 27 Nov 2023 09:37:44 -0500
-X-MC-Unique: DO237glwNUe4j5hIC_HhZA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 591AF866DCB;
-	Mon, 27 Nov 2023 14:37:44 +0000 (UTC)
-Received: from x1.localdomain.com (unknown [10.39.192.45])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 6639420268D2;
-	Mon, 27 Nov 2023 14:37:43 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: "Rafael J . Wysocki" <rafael@kernel.org>,
-	Michal Wilczynski <michal.wilczynski@intel.com>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	linux-acpi@vger.kernel.org,
-	"6 . 6+" <stable@vger.kernel.org>
-Subject: [PATCH 1/1] ACPI: video: Use acpi_video_device for cooling-dev driver data
-Date: Mon, 27 Nov 2023 15:37:41 +0100
-Message-ID: <20231127143741.5229-2-hdegoede@redhat.com>
-In-Reply-To: <20231127143741.5229-1-hdegoede@redhat.com>
-References: <20231127143741.5229-1-hdegoede@redhat.com>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id D97B3D64
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 06:38:44 -0800 (PST)
+Received: from pwmachine.numericable.fr (85-170-33-133.rev.numericable.fr [85.170.33.133])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4818220B74C0;
+	Mon, 27 Nov 2023 06:38:43 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4818220B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1701095924;
+	bh=5X2JwOpByllef/VP7Y9O1DLhg1fhQ0DWV2XAPv8pjpo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nYKqRpoD1qDioccP6xV49yRqYhCnU57uW1niTT2GyxG4fY5jtn5thooS0nv/RvB3J
+	 z2opu0z8BYPJ77kyQAzjCwBvFViAh9Cawj7n7teJDmRTsEIMRK/La07uGvNvQr5r0Y
+	 Yixkqr3AikGULIzmo9ly+VNIAaSETffkUIQb8pCA=
+From: Francis Laniel <flaniel@linux.microsoft.com>
+To: stable@vger.kernel.org
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Francis Laniel <flaniel@linux.microsoft.com>
+Subject: [PATCH 5.10.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
+Date: Mon, 27 Nov 2023 15:38:19 +0100
+Message-Id: <20231127143819.102766-1-flaniel@linux.microsoft.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023102135-shuffle-blank-783e@gregkh>
+References: <2023102135-shuffle-blank-783e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,111 +47,152 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.4
 
-The acpi_video code was storing the acpi_video_device as driver-data
-in the acpi_device children of the acpi_video_bus acpi_device.
+When a kprobe is attached to a function that's name is not unique (is
+static and shares the name with other functions in the kernel), the
+kprobe is attached to the first function it finds. This is a bug as the
+function that it is attaching to is not necessarily the one that the
+user wants to attach to.
 
-But the acpi_video driver only binds to the bus acpi_device.
-It uses, but does not bind to, the children. Since it is not
-the driver it should not be using the driver_data of the children's
-acpi_device-s.
+Instead of blindly picking a function to attach to what is ambiguous,
+error with EADDRNOTAVAIL to let the user know that this function is not
+unique, and that the user must use another unique function with an
+address offset to get to the function they want to attach to.
 
-Since commit 0d16710146a1 ("ACPI: bus: Set driver_data to NULL every
-time .add() fails") the childen's driver_data ends up getting set
-to NULL after a driver fails to bind to the children leading to a NULL
-pointer deref in video_get_max_state when registering the cooling-dev:
+Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
 
-[    3.148958] BUG: kernel NULL pointer dereference, address: 0000000000000090
-<snip>
-[    3.149015] Hardware name: Sony Corporation VPCSB2X9R/VAIO, BIOS R2087H4 06/15/2012
-[    3.149021] RIP: 0010:video_get_max_state+0x17/0x30 [video]
-<snip>
-[    3.149105] Call Trace:
-[    3.149110]  <TASK>
-[    3.149114]  ? __die+0x23/0x70
-[    3.149126]  ? page_fault_oops+0x171/0x4e0
-[    3.149137]  ? exc_page_fault+0x7f/0x180
-[    3.149147]  ? asm_exc_page_fault+0x26/0x30
-[    3.149158]  ? video_get_max_state+0x17/0x30 [video 9b6f3f0d19d7b4a0e2df17a2d8b43bc19c2ed71f]
-[    3.149176]  ? __pfx_video_get_max_state+0x10/0x10 [video 9b6f3f0d19d7b4a0e2df17a2d8b43bc19c2ed71f]
-[    3.149192]  __thermal_cooling_device_register.part.0+0xf2/0x2f0
-[    3.149205]  acpi_video_bus_register_backlight.part.0.isra.0+0x414/0x570 [video 9b6f3f0d19d7b4a0e2df17a2d8b43bc19c2ed71f]
-[    3.149227]  acpi_video_register_backlight+0x57/0x80 [video 9b6f3f0d19d7b4a0e2df17a2d8b43bc19c2ed71f]
-[    3.149245]  intel_acpi_video_register+0x68/0x90 [i915 1f3a758130b32ef13d301d4f8f78c7d766d57f2a]
-[    3.149669]  intel_display_driver_register+0x28/0x50 [i915 1f3a758130b32ef13d301d4f8f78c7d766d57f2a]
-[    3.150064]  i915_driver_probe+0x790/0xb90 [i915 1f3a758130b32ef13d301d4f8f78c7d766d57f2a]
-[    3.150402]  local_pci_probe+0x45/0xa0
-[    3.150412]  pci_device_probe+0xc1/0x260
-<snip>
-
-Fix this by directly using the acpi_video_device as devdata for
-the cooling-device, which avoids the need to set driver-data on
-the children at all.
-
-Fixes: 0d16710146a1 ("ACPI: bus: Set driver_data to NULL every time .add() fails")
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9718
-Cc: Michal Wilczynski <michal.wilczynski@intel.com>
-Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+(cherry picked from commit b022f0c7e404887a7c5229788fc99eff9f9a80d5)
 ---
- drivers/acpi/acpi_video.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ kernel/trace/trace_kprobe.c | 74 +++++++++++++++++++++++++++++++++++++
+ kernel/trace/trace_probe.h  |  1 +
+ 2 files changed, 75 insertions(+)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 5eded14f8853..7cd91e85c62a 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -253,8 +253,7 @@ static const struct backlight_ops acpi_backlight_ops = {
- static int video_get_max_state(struct thermal_cooling_device *cooling_dev,
- 			       unsigned long *state)
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 718357289899..2f7cdbecdddd 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -715,6 +715,36 @@ static inline void sanitize_event_name(char *name)
+ 			*name = '_';
+ }
+ 
++struct count_symbols_struct {
++	const char *func_name;
++	unsigned int count;
++};
++
++static int count_symbols(void *data, const char *name, struct module *unused0,
++			 unsigned long unused1)
++{
++	struct count_symbols_struct *args = data;
++
++	if (strcmp(args->func_name, name))
++		return 0;
++
++	args->count++;
++
++	return 0;
++}
++
++static unsigned int number_of_same_symbols(char *func_name)
++{
++	struct count_symbols_struct args = {
++		.func_name = func_name,
++		.count = 0,
++	};
++
++	kallsyms_on_each_symbol(count_symbols, &args);
++
++	return args.count;
++}
++
+ static int trace_kprobe_create(int argc, const char *argv[])
  {
--	struct acpi_device *device = cooling_dev->devdata;
--	struct acpi_video_device *video = acpi_driver_data(device);
-+	struct acpi_video_device *video = cooling_dev->devdata;
+ 	/*
+@@ -842,6 +872,31 @@ static int trace_kprobe_create(int argc, const char *argv[])
+ 		}
+ 	}
  
- 	*state = video->brightness->count - ACPI_VIDEO_FIRST_LEVEL - 1;
- 	return 0;
-@@ -263,8 +262,7 @@ static int video_get_max_state(struct thermal_cooling_device *cooling_dev,
- static int video_get_cur_state(struct thermal_cooling_device *cooling_dev,
- 			       unsigned long *state)
- {
--	struct acpi_device *device = cooling_dev->devdata;
--	struct acpi_video_device *video = acpi_driver_data(device);
-+	struct acpi_video_device *video = cooling_dev->devdata;
- 	unsigned long long level;
- 	int offset;
++	if (symbol && !strchr(symbol, ':')) {
++		unsigned int count;
++
++		count = number_of_same_symbols(symbol);
++		if (count > 1) {
++			/*
++			 * Users should use ADDR to remove the ambiguity of
++			 * using KSYM only.
++			 */
++			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
++			ret = -EADDRNOTAVAIL;
++
++			goto error;
++		} else if (count == 0) {
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			trace_probe_log_err(0, BAD_PROBE_ADDR);
++			ret = -ENOENT;
++
++			goto error;
++		}
++	}
++
+ 	trace_probe_log_set_index(0);
+ 	if (event) {
+ 		ret = traceprobe_parse_event_name(&event, &group, buf,
+@@ -1805,6 +1860,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
+ }
  
-@@ -283,8 +281,7 @@ static int video_get_cur_state(struct thermal_cooling_device *cooling_dev,
- static int
- video_set_cur_state(struct thermal_cooling_device *cooling_dev, unsigned long state)
- {
--	struct acpi_device *device = cooling_dev->devdata;
--	struct acpi_video_device *video = acpi_driver_data(device);
-+	struct acpi_video_device *video = cooling_dev->devdata;
- 	int level;
+ #ifdef CONFIG_PERF_EVENTS
++
+ /* create a trace_kprobe, but don't add it to global lists */
+ struct trace_event_call *
+ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+@@ -1814,6 +1870,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+ 	int ret;
+ 	char *event;
  
- 	if (state >= video->brightness->count - ACPI_VIDEO_FIRST_LEVEL)
-@@ -1125,7 +1122,6 @@ static int acpi_video_bus_get_one_device(struct acpi_device *device, void *arg)
- 
- 	strcpy(acpi_device_name(device), ACPI_VIDEO_DEVICE_NAME);
- 	strcpy(acpi_device_class(device), ACPI_VIDEO_CLASS);
--	device->driver_data = data;
- 
- 	data->device_id = device_id;
- 	data->video = video;
-@@ -1747,8 +1743,8 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
- 	device->backlight->props.brightness =
- 			acpi_video_get_brightness(device->backlight);
- 
--	device->cooling_dev = thermal_cooling_device_register("LCD",
--				device->dev, &video_cooling_ops);
-+	device->cooling_dev = thermal_cooling_device_register("LCD", device,
-+							      &video_cooling_ops);
- 	if (IS_ERR(device->cooling_dev)) {
- 		/*
- 		 * Set cooling_dev to NULL so we don't crash trying to free it.
++	if (func) {
++		unsigned int count;
++
++		count = number_of_same_symbols(func);
++		if (count > 1)
++			/*
++			 * Users should use addr to remove the ambiguity of
++			 * using func only.
++			 */
++			return ERR_PTR(-EADDRNOTAVAIL);
++		else if (count == 0)
++			/*
++			 * We can return ENOENT earlier than when register the
++			 * kprobe.
++			 */
++			return ERR_PTR(-ENOENT);
++	}
++
+ 	/*
+ 	 * local trace_kprobes are not added to dyn_event, so they are never
+ 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
+diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
+index d4a69b83902e..22c05ca97758 100644
+--- a/kernel/trace/trace_probe.h
++++ b/kernel/trace/trace_probe.h
+@@ -390,6 +390,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+ 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
+ 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
+ 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
++	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
+ 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
+ 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
+ 	C(NO_GROUP_NAME,	"Group name is not specified"),		\
 -- 
-2.43.0
+2.34.1
 
 
