@@ -1,146 +1,142 @@
-Return-Path: <stable+bounces-2786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95FB7FA82F
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 18:36:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3042B7FA925
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 19:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 068C21C20B49
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:36:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6214A1C20B07
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 18:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A17439FFB;
-	Mon, 27 Nov 2023 17:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A83F135889;
+	Mon, 27 Nov 2023 18:41:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Jmk1zmjM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WrP7Sepx"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id B29671BD
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 09:36:36 -0800 (PST)
-Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 8D10320B74C0;
-	Mon, 27 Nov 2023 09:36:35 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8D10320B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701106596;
-	bh=KZSrPZS4GnBXet7XQH5E8T01IHn4hgHrPfxUSKwdoT4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jmk1zmjMfJg7yz/MlpTpSkkavuIbfWEtWxyMVs41MHKcl/urClGYPn/Iq0d7XewOI
-	 St4g0oUr1+zWAxtACmIXKzEv1DHIE2iQDS5HarYPkAMFBJ545zFLprlxPW3imueAXg
-	 Rju52jpncMRLDkK4P1UzTvSQew71icgK3VPuyGgs=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH 4.19.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Mon, 27 Nov 2023 18:36:32 +0100
-Message-ID: <2305896.ElGaqSPkdT@pwmachine>
-In-Reply-To: <2023112701-comfy-resemble-4e42@gregkh>
-References: <2023102138-riverbed-senator-e356@gregkh> <5993767.lOV4Wx5bFT@pwmachine> <2023112701-comfy-resemble-4e42@gregkh>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CD4119B;
+	Mon, 27 Nov 2023 10:41:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701110502; x=1732646502;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ocdAfY8jzn+hMTXj3yEo5xBI/FMZYl5m4SnwH6zy1iQ=;
+  b=WrP7Sepx1wpxKfH70ZtzRBacTYrA02L6m2GpkDbiicKWyc3gVgaEb2KE
+   r0AuYGEMG8j4mprHXeCcerHlk0p53y5ns1N0x6hPPLwR0DDJR3eOqT6lj
+   +iKBsFVqr9KqctPFYWuiTLnsX0DFKVTk+4JC7e1UuLEkzuxeVosZGSRNx
+   sqVOTVMnNH/x5bqObRAogvXb0QjJBhoyTQLdtaThUgx9NzAQlviu8v3/T
+   NL/orWzXZgMmwpJOFHhU5XfztdfYl0g9nuJ07keJMJOiPWvnXAbyxhGWa
+   vlt4XnEgl0cIPQpJoYhaZZQ7HCXY1asxl0CwmjwYJrGxYagAUZEGNrf4X
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="392517688"
+X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; 
+   d="scan'208";a="392517688"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2023 10:41:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="891820937"
+X-IronPort-AV: E=Sophos;i="6.04,231,1695711600"; 
+   d="scan'208";a="891820937"
+Received: from alanpai-mobl.amr.corp.intel.com (HELO [10.209.65.171]) ([10.209.65.171])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2023 10:41:41 -0800
+Message-ID: <a177e7c1-3a28-464e-888f-315df72d528c@linux.intel.com>
+Date: Mon, 27 Nov 2023 11:44:43 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-
-Hi!
-
-
-Le lundi 27 novembre 2023, 16:44:22 CET Greg KH a =C3=A9crit :
-> On Mon, Nov 27, 2023 at 03:41:31PM +0100, Francis Laniel wrote:
-> > Hi!
-> >=20
-> > Le vendredi 24 novembre 2023, 17:17:04 CET Greg KH a =C3=A9crit :
-> > > On Fri, Nov 24, 2023 at 01:24:13PM +0100, Francis Laniel wrote:
-> > > > When a kprobe is attached to a function that's name is not unique (=
-is
-> > > > static and shares the name with other functions in the kernel), the
-> > > > kprobe is attached to the first function it finds. This is a bug as
-> > > > the
-> > > > function that it is attaching to is not necessarily the one that the
-> > > > user wants to attach to.
-> > > >=20
-> > > > Instead of blindly picking a function to attach to what is ambiguou=
-s,
-> > > > error with EADDRNOTAVAIL to let the user know that this function is
-> > > > not
-> > > > unique, and that the user must use another unique function with an
-> > > > address offset to get to the function they want to attach to.
-> > > >=20
-> > > > Link:
-> > > > https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.mic=
-ros
-> > > > oft
-> > > > .com/
-> > > >=20
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-> > > > Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > > > Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-> > > > Link:
-> > > > https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea74=
-2@k
-> > > > ern
-> > > > el.org/ Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > > > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > > > (cherry picked from commit b022f0c7e404887a7c5229788fc99eff9f9a80d5)
-> > > > ---
-> > > >=20
-> > > >  kernel/trace/trace_kprobe.c | 48
-> > > >  +++++++++++++++++++++++++++++++++++++
-> > > >  1 file changed, 48 insertions(+)
-> > >=20
-> > > Again, we need a version for 5.4.y as well before we can take this
-> > > version.
-> >=20
-> > I sent the 5.4.y patch some times ago, you can find it here:
-> > https://lore.kernel.org/stable/20231023113623.36423-2-flaniel@linux.mic=
-ros
-> > oft.com/
-> >=20
-> > With the recent batch I sent, I should have cover all the stable kernel=
-s.
-> > In case I miss one, please indicate it to me so I can fix this problem =
-and
-> > ensure all stable kernels have a corresponding patch.
->=20
-> I only see the following in my stable mbox right now:
->=20
->    1   C Nov 27 Francis Laniel  (4.4K) =E2=94=AC=E2=94=80>[PATCH 5.10.y] =
-tracing/kprobes:
-> Return EADDRNOTAVAIL when func matches several symbols 2 r C Nov 24 Franc=
-is
-> Laniel  (4.4K) =E2=94=94=E2=94=80>[PATCH 5.10.y] tracing/kprobes: Return =
-EADDRNOTAVAIL when
-> func matches several symbols 3   F Nov 24 To Francis Lani (1.5K)   =E2=94=
-=94=E2=94=80>
->    4 r T Nov 27 Francis Laniel  (1.9K)     =E2=94=94=E2=94=80>
->    5   F Nov 27 To Francis Lani (2.0K)       =E2=94=94=E2=94=80>
->   23 r C Nov 24 Francis Laniel  (2.7K) [PATCH 4.19.y] tracing/kprobes:
-> Return EADDRNOTAVAIL when func matches several symbols 24 r + Nov 27
-> Francis Laniel  (2.0K) =E2=94=94=E2=94=80>
->=20
-> So could you resend them all just to be sure I have all of the latest
-> versions that you wish to have applied?
-
-I normally sent again the patch for version 4.14 to 5.15 (it was already=20
-present in 6.1 and 6.6).
-I tested all of them by building the corresponding kernel with the patch=20
-applied before sending, so they should not break compilation or testing.
-
-Can you please confirm me you received them?
-
-> thanks,
->=20
-> greg "drowning in patches" k-h
-
-*throws a buoy at greg k-h*
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soundwire: stream: fix NULL pointer dereference for
+ multi_link
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Vinod Koul <vkoul@kernel.org>, Bard Liao <yung-chuan.liao@linux.intel.com>,
+ Sanyog Kale <sanyog.r.kale@intel.com>, Shreyas NC <shreyas.nc@intel.com>,
+ alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20231124180136.390621-1-krzysztof.kozlowski@linaro.org>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+In-Reply-To: <20231124180136.390621-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
-Best regards.
+
+On 11/24/23 12:01, Krzysztof Kozlowski wrote:
+> If bus is marked as multi_link, but number of masters in the stream is
+> not higher than bus->hw_sync_min_links (bus->multi_link && m_rt_count >=
+> bus->hw_sync_min_links), bank switching should not happen.  The first
+> part of do_bank_switch() code properly takes these conditions into
+> account, but second part (sdw_ml_sync_bank_switch()) relies purely on
+> bus->multi_link property.  This is not balanced and leads to NULL
+> pointer dereference:
+> 
+>   Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+>   ...
+>   Call trace:
+>    wait_for_completion_timeout+0x124/0x1f0
+>    do_bank_switch+0x370/0x6f8
+>    sdw_prepare_stream+0x2d0/0x438
+>    qcom_snd_sdw_prepare+0xa0/0x118
+>    sm8450_snd_prepare+0x128/0x148
+>    snd_soc_link_prepare+0x5c/0xe8
+>    __soc_pcm_prepare+0x28/0x1ec
+>    dpcm_be_dai_prepare+0x1e0/0x2c0
+>    dpcm_fe_dai_prepare+0x108/0x28c
+>    snd_pcm_do_prepare+0x44/0x68
+>    snd_pcm_action_single+0x54/0xc0
+>    snd_pcm_action_nonatomic+0xe4/0xec
+>    snd_pcm_prepare+0xc4/0x114
+>    snd_pcm_common_ioctl+0x1154/0x1cc0
+>    snd_pcm_ioctl+0x54/0x74
+> 
+> Fixes: ce6e74d008ff ("soundwire: Add support for multi link bank switch")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+
+LGTM, thanks for the patch.
+
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
 
+> ---
+>  drivers/soundwire/stream.c | 7 ++++---
+>  1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+> index 9dc6399f206a..f9c0adc0738d 100644
+> --- a/drivers/soundwire/stream.c
+> +++ b/drivers/soundwire/stream.c
+> @@ -742,14 +742,15 @@ static int sdw_bank_switch(struct sdw_bus *bus, int m_rt_count)
+>   * sdw_ml_sync_bank_switch: Multilink register bank switch
+>   *
+>   * @bus: SDW bus instance
+> + * @multi_link: whether this is a multi-link stream with hardware-based sync
+>   *
+>   * Caller function should free the buffers on error
+>   */
+> -static int sdw_ml_sync_bank_switch(struct sdw_bus *bus)
+> +static int sdw_ml_sync_bank_switch(struct sdw_bus *bus, bool multi_link)
+>  {
+>  	unsigned long time_left;
+>  
+> -	if (!bus->multi_link)
+> +	if (!multi_link)
+>  		return 0;
+>  
+>  	/* Wait for completion of transfer */
+> @@ -847,7 +848,7 @@ static int do_bank_switch(struct sdw_stream_runtime *stream)
+>  			bus->bank_switch_timeout = DEFAULT_BANK_SWITCH_TIMEOUT;
+>  
+>  		/* Check if bank switch was successful */
+> -		ret = sdw_ml_sync_bank_switch(bus);
+> +		ret = sdw_ml_sync_bank_switch(bus, multi_link);
+>  		if (ret < 0) {
+>  			dev_err(bus->dev,
+>  				"multi link bank switch failed: %d\n", ret);
 
