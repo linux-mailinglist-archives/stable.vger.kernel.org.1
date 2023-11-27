@@ -1,164 +1,227 @@
-Return-Path: <stable+bounces-2759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B84E7FA27A
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:21:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5937FA2E5
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:34:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D86F1C20CA9
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 14:21:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 46ED7B2105F
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 14:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D18A3158D;
-	Mon, 27 Nov 2023 14:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 874CE2EB13;
+	Mon, 27 Nov 2023 14:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xczyG6CX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC0527AA1
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 06:20:45 -0800 (PST)
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0519121C51;
-	Mon, 27 Nov 2023 14:20:44 +0000 (UTC)
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id C339913440;
-	Mon, 27 Nov 2023 14:20:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id cllGLrulZGXaPwAAn2gu4w
-	(envelope-from <tzimmermann@suse.de>); Mon, 27 Nov 2023 14:20:43 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	hi@alyssa.is,
-	daniel@ffwll.ch,
-	javierm@redhat.com
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] drm/atomic-helpers: Invoke end_fb_access while owning plane state
-Date: Mon, 27 Nov 2023 15:20:36 +0100
-Message-ID: <20231127142042.17815-1-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.43.0
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B438F1FEB
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 06:33:41 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6d7e8da5e99so2337595a34.2
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 06:33:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701095621; x=1701700421; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9Mkf9QcG9pXv0Qdie0/NQ3M3Nqa2uonDOOeKyBty/vA=;
+        b=xczyG6CXSKr/7rkNK+RW8PuaPK8cCXsivfRuhEZSHi8NNwQJ2hzHYkkxKqmmGrpFam
+         LzmfdJLCKK4NyuFEn+T0FknRkuN8CU4uhK7KNW+66vtYuHKF9DkK6lgeIKx36XGpdC0d
+         oDBgeMNRc9Py9ROh+x3Ch/1+1se+7Oo6wKd9Le8tyhE0+PERnNV/3APer5pk7oDjsDrd
+         E4/IDpOm4kwtyDeeoi0jEbxPXTEtxIrIUTfamefKiXIEE07iETki1dmMq+yLzjFjf05L
+         JN+7dECiyOW0GLAnPCk35c/CyeuPS279mI85EstvRU033Cs5Lq30iZTa6mSPy6tjlDOl
+         /WwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701095621; x=1701700421;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9Mkf9QcG9pXv0Qdie0/NQ3M3Nqa2uonDOOeKyBty/vA=;
+        b=BcYZ6HRayzg/ayn6njPPcnoxnkNOVjer9m9v75ah86RND3GU6JRJdFXdOwSdNO0ZIk
+         SG5HwUxdB52JxQWUCg25V+yddHvzeOcldKHJDZ3R96rd2oE/3m199Xrg6wjC696mJZ1J
+         Z6WijqcchmTOkxZXcHuLv7909/Ws4kW/Jj6TwIjacYl6pldr9zFQocmzc6QsX8Oo3+1T
+         4XMgsVXrb0iTqWkLQE0evWc+y65sH91eO/IXfFC7xU+tcF5QATybO+nTzWgyOJ7pVrQc
+         y16WSH1smxlnl8uyNpSNGi2BIK/PJa9bm/aBdys/PBsnvZ43qX0Fjv3BCswEm4FijTBT
+         BRdQ==
+X-Gm-Message-State: AOJu0YyNqtIBSOv2xLlq2kAFvFYi89sQfjRqVjdl5QotiJ6qRhU2prWP
+	+jgVx63nWS3b3+7V6geEC6T3iYXmgZ5EJRuHeRMbZQ==
+X-Google-Smtp-Source: AGHT+IFL0Daxg/eseyWSM5ZIm84vrvKN7f+QFiyVVolXNZQwTeRn7X5tk1ApVycvVSZVAYVR2565sXctWyEw7Dbd7Mc=
+X-Received: by 2002:a05:6358:2249:b0:16b:f69d:c8e7 with SMTP id
+ i9-20020a056358224900b0016bf69dc8e7mr6752393rwc.0.1701095620791; Mon, 27 Nov
+ 2023 06:33:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Bar: ++++++++
-Authentication-Results: smtp-out1.suse.de;
-	dkim=none;
-	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.de (policy=none);
-	spf=softfail (smtp-out1.suse.de: 2a07:de40:b281:104:10:150:64:98 is neither permitted nor denied by domain of tzimmermann@suse.de) smtp.mailfrom=tzimmermann@suse.de
-X-Rspamd-Server: rspamd2
-X-Spamd-Result: default: False [8.79 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
-	 FROM_HAS_DN(0.00)[];
-	 TO_DN_SOME(0.00)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 R_MISSING_CHARSET(2.50)[];
-	 MIME_GOOD(-0.10)[text/plain];
-	 FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 R_SPF_SOFTFAIL(4.60)[~all:c];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 MX_GOOD(-0.01)[];
-	 RCPT_COUNT_SEVEN(0.00)[9];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[ffwll.ch:email,suse.de:email,alyssa.is:email];
-	 FREEMAIL_TO(0.00)[linux.intel.com,kernel.org,gmail.com,alyssa.is,ffwll.ch,redhat.com];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 R_DKIM_NA(2.20)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-3.00)[100.00%];
-	 DMARC_POLICY_SOFTFAIL(0.10)[suse.de : No valid SPF, No valid DKIM,none]
-X-Spam-Score: 8.79
-X-Rspamd-Queue-Id: 0519121C51
+References: <20231125163059.878143365@linuxfoundation.org>
+In-Reply-To: <20231125163059.878143365@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 27 Nov 2023 20:03:29 +0530
+Message-ID: <CA+G9fYt5W8CX_2B-6piLu5YytSx+ZoSKcOOo-ppO+u9jGzeWmQ@mail.gmail.com>
+Subject: Re: [PATCH 4.14 00/53] 4.14.331-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Invoke drm_plane_helper_funcs.end_fb_access before
-drm_atomic_helper_commit_hw_done(). The latter function hands over
-ownership of the plane state to the following commit, which might
-free it. Releasing resources in end_fb_access then operates on undefined
-state. This bug has been observed with non-blocking commits when they
-are being queued up quickly.
+On Sat, 25 Nov 2023 at 22:02, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 4.14.331 release.
+> There are 53 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 27 Nov 2023 16:30:48 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.331-rc2.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Here is an example stack trace from the bug report. The plane state has
-been free'd already, so the pages for drm_gem_fb_vunmap() are gone.
+Results from Linaro's test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Unable to handle kernel paging request at virtual address 0000000100000049
-[...]
- drm_gem_fb_vunmap+0x18/0x74
- drm_gem_end_shadow_fb_access+0x1c/0x2c
- drm_atomic_helper_cleanup_planes+0x58/0xd8
- drm_atomic_helper_commit_tail+0x90/0xa0
- commit_tail+0x15c/0x188
- commit_work+0x14/0x20
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-For aborted commits, it is still ok to run end_fb_access as part of the
-plane's cleanup. Add a test to drm_atomic_helper_cleanup_planes().
+## Build
+* kernel: 4.14.331-rc2
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.14.y
+* git commit: 39ca2c4cec46e5ef545815f62be91cba998b8927
+* git describe: v4.14.330-54-g39ca2c4cec46
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.14.y/build/v4.14.330-54-g39ca2c4cec46
 
-v2:
-	* fix test in drm_atomic_helper_cleanup_planes()
+## Test Regressions (compared to v4.14.330)
 
-Reported-by: Alyssa Ross <hi@alyssa.is>
-Closes: https://lore.kernel.org/dri-devel/87leazm0ya.fsf@alyssa.is/
-Suggested-by: Daniel Vetter <daniel@ffwll.ch>
-Fixes: 94d879eaf7fb ("drm/atomic-helper: Add {begin,end}_fb_access to plane helpers")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: <stable@vger.kernel.org> # v6.2+
----
- drivers/gpu/drm/drm_atomic_helper.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+## Metric Regressions (compared to v4.14.330)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index c3f677130def0..bedb42ddd1341 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -2784,6 +2784,17 @@ void drm_atomic_helper_commit_planes(struct drm_device *dev,
- 
- 		funcs->atomic_flush(crtc, old_state);
- 	}
-+
-+	/*
-+	 * Signal end of framebuffer access here before hw_done. After hw_done,
-+	 * a later commit might have already released the plane state.
-+	 */
-+	for_each_oldnew_plane_in_state(old_state, plane, old_plane_state, new_plane_state, i) {
-+		const struct drm_plane_helper_funcs *funcs = plane->helper_private;
-+
-+		if (funcs->end_fb_access)
-+			funcs->end_fb_access(plane, new_plane_state);
-+	}
- }
- EXPORT_SYMBOL(drm_atomic_helper_commit_planes);
- 
-@@ -2924,6 +2935,12 @@ void drm_atomic_helper_cleanup_planes(struct drm_device *dev,
- 	for_each_oldnew_plane_in_state(old_state, plane, old_plane_state, new_plane_state, i) {
- 		const struct drm_plane_helper_funcs *funcs = plane->helper_private;
- 
-+		/*
-+		 * Only clean up here if we're aborting the commit.
-+		 */
-+		if (old_plane_state == plane->state)
-+			continue;
-+
- 		if (funcs->end_fb_access)
- 			funcs->end_fb_access(plane, new_plane_state);
- 	}
--- 
-2.43.0
+## Test Fixes (compared to v4.14.330)
 
+## Metric Fixes (compared to v4.14.330)
+
+## Test result summary
+total: 54577, pass: 45662, fail: 1547, skip: 7326, xfail: 42
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 108 total, 103 passed, 5 failed
+* arm64: 35 total, 31 passed, 4 failed
+* i386: 21 total, 18 passed, 3 failed
+* mips: 19 total, 19 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 8 total, 7 passed, 1 failed
+* s390: 6 total, 5 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 23 passed, 4 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
