@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-2782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2664E7FA78F
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 18:09:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC667FA7D0
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 18:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB1FBB20FD0
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:09:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5098EB20D1B
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:16:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE7A36AE9;
-	Mon, 27 Nov 2023 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA14E3716C;
+	Mon, 27 Nov 2023 17:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BaQB2eL8"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="nZ4BPpYf"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id DD0A419D
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 09:09:15 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6A2A4D2
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 09:16:05 -0800 (PST)
 Received: from pwmachine.numericable.fr (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 7905920B74C0;
-	Mon, 27 Nov 2023 09:09:14 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7905920B74C0
+	by linux.microsoft.com (Postfix) with ESMTPSA id F21E220B74C0;
+	Mon, 27 Nov 2023 09:16:03 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com F21E220B74C0
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701104955;
-	bh=j4X4wDZYFoBhg/PgnlfyKVEtf1kSnjs8c5UrWKkdm00=;
+	s=default; t=1701105364;
+	bh=5X2JwOpByllef/VP7Y9O1DLhg1fhQ0DWV2XAPv8pjpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BaQB2eL8F6Z76ERchwu3xGid67Ze8v4grRQal3P5Xz1B97Uql15HtpkYV9gvUx3Sd
-	 Dk9a1BoCJa1SZXdQtDOfuNhfo4/BEacmME3YwvTNO9FhPhTZpq99eEZsYkSMFvmFYR
-	 QRnnPRGx+9HRXHF04LYpfVghhKfGPWHw6dQILvXc=
+	b=nZ4BPpYfxQVzLSxGF6WedNlG8NFwipAZVfZIcItVwQ/+BdbeRm66SCTTHGvO3w9nk
+	 opvYSIdYDa7j0UA3YjgO2L6TM56AXNOjWoHmyGbT0tYyYSMIVivQ3nv7YTOp+ke2Oa
+	 GgGDydaOz4eaS6bm1rUVUpMt4lClN9PaPKkGAoP4=
 From: Francis Laniel <flaniel@linux.microsoft.com>
 To: stable@vger.kernel.org
 Cc: Greg KH <gregkh@linuxfoundation.org>,
 	Masami Hiramatsu <mhiramat@kernel.org>,
 	Francis Laniel <flaniel@linux.microsoft.com>
-Subject: [PATCH 5.4.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Mon, 27 Nov 2023 18:09:01 +0100
-Message-Id: <20231127170901.447692-1-flaniel@linux.microsoft.com>
+Subject: [PATCH 5.10.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
+Date: Mon, 27 Nov 2023 18:15:52 +0100
+Message-Id: <20231127171552.504294-1-flaniel@linux.microsoft.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <2023102137-mobster-sheath-bfb3@gregkh>
-References: <2023102137-mobster-sheath-bfb3@gregkh>
+In-Reply-To: <2023102135-shuffle-blank-783e@gregkh>
+References: <2023102135-shuffle-blank-783e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,10 +75,10 @@ Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
  2 files changed, 75 insertions(+)
 
 diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 0b95277396fc..80a59dbdd631 100644
+index 718357289899..2f7cdbecdddd 100644
 --- a/kernel/trace/trace_kprobe.c
 +++ b/kernel/trace/trace_kprobe.c
-@@ -714,6 +714,36 @@ static inline void sanitize_event_name(char *name)
+@@ -715,6 +715,36 @@ static inline void sanitize_event_name(char *name)
  			*name = '_';
  }
  
@@ -115,7 +115,7 @@ index 0b95277396fc..80a59dbdd631 100644
  static int trace_kprobe_create(int argc, const char *argv[])
  {
  	/*
-@@ -825,6 +855,31 @@ static int trace_kprobe_create(int argc, const char *argv[])
+@@ -842,6 +872,31 @@ static int trace_kprobe_create(int argc, const char *argv[])
  		}
  	}
  
@@ -147,7 +147,7 @@ index 0b95277396fc..80a59dbdd631 100644
  	trace_probe_log_set_index(0);
  	if (event) {
  		ret = traceprobe_parse_event_name(&event, &group, buf,
-@@ -1596,6 +1651,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
+@@ -1805,6 +1860,7 @@ static int unregister_kprobe_event(struct trace_kprobe *tk)
  }
  
  #ifdef CONFIG_PERF_EVENTS
@@ -155,7 +155,7 @@ index 0b95277396fc..80a59dbdd631 100644
  /* create a trace_kprobe, but don't add it to global lists */
  struct trace_event_call *
  create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
-@@ -1605,6 +1661,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
+@@ -1814,6 +1870,24 @@ create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
  	int ret;
  	char *event;
  
@@ -181,17 +181,17 @@ index 0b95277396fc..80a59dbdd631 100644
  	 * local trace_kprobes are not added to dyn_event, so they are never
  	 * searched in find_trace_kprobe(). Therefore, there is no concern of
 diff --git a/kernel/trace/trace_probe.h b/kernel/trace/trace_probe.h
-index dc19d5d185d4..edbb1624061e 100644
+index d4a69b83902e..22c05ca97758 100644
 --- a/kernel/trace/trace_probe.h
 +++ b/kernel/trace/trace_probe.h
-@@ -403,6 +403,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
+@@ -390,6 +390,7 @@ extern int traceprobe_define_arg_fields(struct trace_event_call *event_call,
  	C(BAD_MAXACT,		"Invalid maxactive number"),		\
  	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
  	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
 +	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
  	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
+ 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
  	C(NO_GROUP_NAME,	"Group name is not specified"),		\
- 	C(GROUP_TOO_LONG,	"Group name is too long"),		\
 -- 
 2.34.1
 
