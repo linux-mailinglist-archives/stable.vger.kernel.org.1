@@ -1,313 +1,190 @@
-Return-Path: <stable+bounces-2764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A6C47FA411
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:07:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6DB7FA424
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:10:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8CBFB210FA
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:07:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 330222816ED
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317113174D;
-	Mon, 27 Nov 2023 15:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A15B331A64;
+	Mon, 27 Nov 2023 15:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="i9DzzgJS"
+	dkim=pass (1024-bit key) header.d=grpleg.onmicrosoft.com header.i=@grpleg.onmicrosoft.com header.b="B9hp8hUP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C07D6BB
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 07:07:22 -0800 (PST)
-Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6d81173a219so1491266a34.3
-        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 07:07:22 -0800 (PST)
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2099.outbound.protection.outlook.com [40.107.104.99])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED4BDE4;
+	Mon, 27 Nov 2023 07:10:32 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CXItKOvDbMyu+sqUsC4vac44KRNSUgqO4GiOvECgDTQyDyunUNzernIUN434TVkz84m0wqgvZShXtG1lQ+Uhqa1qD9jURGUQwYlmzK6DnZ/OioeIRl7Y/OzgZ08jwqRsZaQxa3X8TXj2GLfaxbinTz+USDBr/6TNegHf9DH91s+XDiNZ67IPex6PZjnK+/0FXz0zFKzaDTd7F6GC1BoNo1zscahPCficgDsKf76QhmZpcT6OqngKAaG5pvXZ8NHOn4EtgomcpAwwJxhYS++PtsOGZp6j2zFymA5rSMh5Q+zekf7KTAfYWm++6k4wFUIvZUo6K8yj6oFacSgsTXXzKw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mzG39pOOH5gEzp/kfgX3idU4DUk2XJeS7WlfhRA8YEs=;
+ b=MuOw1GKbTxgvytgOOjbbr49xodyJa0l9tNP4//oja5Jj43g914MjWYPCQDHaqe2Op3j1NWHOiqQ3RHs5Ws6BnSCVm57w+eaJ8gmjpuNKD8vFqmtiy30RCjyduTv0uOTNVvqxsBFjWy+t2MXdAdNC5ECcPxiePKQIJlEl2owNDTLr7B4xlCGUQXgDm+sceUUbN9T/aplV3iRF16DRa+nWGOlgLxioyue5zCnATCnAhE4ckb90NgEwHEQ0s1YwrxtfIDqBzgIjIIifpskIPcRuAUy55wLnA8nbPA1i6DYK7cT31Hpffg2E1kkXbrb7+QxSXzkyA4Et/6ImqNBSAxC72Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=raritan.com; dmarc=pass action=none header.from=raritan.com;
+ dkim=pass header.d=raritan.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701097642; x=1701702442; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=617F3nRFGfW3UqBuyZB3u1rDTGABWEPSTQud8GzjBzk=;
-        b=i9DzzgJSUp2niGRwrO651n74vzXzf86V82602pm/5MocItfgrNilo6nW8W/PfNBjDR
-         oCs42y2lDkG+ehceaONvJeYjPvMmIeCuwaZ9FoPlm7gRtCOFXDhMAC8uSJNnwZog9KF5
-         w8vzVZtfzBfGvkA70WsPKTgwiwHXDgu4niw9W67wQlvkSDWcjG3T8uWPrtkGjJR8B1Pr
-         LQLvgWIK04/8tLgF3n/hYyRSr4rE9itZrtH4zkW3p8TmoiLBMGXemzcSJ2nbN9qU73IT
-         hxkUZSi17Z8i3cGNTxp+XxXa0hyfxZUa9N+prdtaakxuUU8wOYc6on3bsvt3GiPchRAH
-         0r1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701097642; x=1701702442;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=617F3nRFGfW3UqBuyZB3u1rDTGABWEPSTQud8GzjBzk=;
-        b=KaOdWSVVksVgkdqwQ3s4PUid8AYEkE0afvhNAtxuB2VNV73+WdiKJo0wDgxLdwULy0
-         J0937hxN+HVsE+h1B2Uf7gbrNcmhc8rklf3JNs/50zV6wXW6o75Xzr1tNI090jTD9i40
-         BUotZAHWRDOtT51sf77bHLVDZJlAJabFH4Wfehp1yWA5LVm3B8fVgDYq5rt96nVF5L/J
-         Sd2RXfGzrvE1x8PuDH43YIM+F+U68LKRD5ZIiHRhdHIUYw83JZlfXQMKEUFhgL1vTVAl
-         SFlGBBPLON5k3oGsysQvaoad3ED+SsyndAxO6xlvbxctQTthwEVPT7/7/2JENttr76H3
-         Gz4w==
-X-Gm-Message-State: AOJu0Yzc7tJYSZliWZoJccBkviOnBMZ8lQDD4Q3dA8qNS1Ljbao9snXb
-	p8AtCwPaAH4eFsEVo5IRQKG4ura//4qcQa8rWe1f0w==
-X-Google-Smtp-Source: AGHT+IFvZrl7BIb5d3tTlFoJOASc2MpvQcgnwFTo1ywhOZENB3Nr/odyqW/Ttj/Xz/CbqfiMCY08+s467BmGTWxl2z8=
-X-Received: by 2002:a05:6358:9194:b0:16e:292:2af2 with SMTP id
- j20-20020a056358919400b0016e02922af2mr11695350rwa.21.1701097635756; Mon, 27
- Nov 2023 07:07:15 -0800 (PST)
+ d=grpleg.onmicrosoft.com; s=selector1-grpleg-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mzG39pOOH5gEzp/kfgX3idU4DUk2XJeS7WlfhRA8YEs=;
+ b=B9hp8hUPbLnJVYxWM/QA/4BfdguWrUvAqE05x6iOyQGM7j1sEwFSyE7iNmHyS/8/g3IhUPDLNlJa+UdGkuwhgxSa2oqMqea037vXrjfhKv3WYnuvB68l3RLy6cOtMqNi5D3QSVeqPgBrwC7HbEYW+p8jvI25LkyKRgu0/2/6JWM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=raritan.com;
+Received: from DB8PR06MB6539.eurprd06.prod.outlook.com (2603:10a6:10:12f::23)
+ by PA4PR06MB7181.eurprd06.prod.outlook.com (2603:10a6:102:f5::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Mon, 27 Nov
+ 2023 15:10:30 +0000
+Received: from DB8PR06MB6539.eurprd06.prod.outlook.com
+ ([fe80::98dd:e9db:b7d8:9001]) by DB8PR06MB6539.eurprd06.prod.outlook.com
+ ([fe80::98dd:e9db:b7d8:9001%3]) with mapi id 15.20.7025.022; Mon, 27 Nov 2023
+ 15:10:30 +0000
+Message-ID: <a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com>
+Date: Mon, 27 Nov 2023 16:10:28 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
+Content-Language: en-US
+To: Miquel Raynal <miquel.raynal@bootlin.com>, Mark Brown
+ <broonie@kernel.org>, linux-spi@vger.kernel.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ Ryan Wanner <ryan.wanner@microchip.com>, stable@vger.kernel.org
+References: <20231127095842.389631-1-miquel.raynal@bootlin.com>
+From: Ronald Wahl <ronald.wahl@raritan.com>
+In-Reply-To: <20231127095842.389631-1-miquel.raynal@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: FR2P281CA0004.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a::14) To DB8PR06MB6539.eurprd06.prod.outlook.com
+ (2603:10a6:10:12f::23)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231126154413.975493975@linuxfoundation.org>
-In-Reply-To: <20231126154413.975493975@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 27 Nov 2023 20:37:03 +0530
-Message-ID: <CA+G9fYsUXnx4HWyBOGMi3Ko_jT6Y_ejp5ZhcsU+8+_8NUsd=vA@mail.gmail.com>
-Subject: Re: [PATCH 6.5 000/483] 6.5.13-rc4 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB8PR06MB6539:EE_|PA4PR06MB7181:EE_
+X-MS-Office365-Filtering-Correlation-Id: efc1262f-1067-4e36-740d-08dbef5afec4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	4e2unA58RvbtLB6nvDJlnPL2rP8uFObxZt2YysnSkEaUMOIbKJHi5flyLA6M9mwNoK2rwc39OL3r/IwZyZTRD2KiTz2KaViUtNpKbeWfZtVVY1PRrm9c9Fmgsfu2Nv8TxRd0PY5Z07N0JjqmvypSt62T5Dq+LEy+ulZkksMDk11sB2n3KcbAqs8alO5k1nX/UfQ/WSaV24LfFkWPRJjQzx2W68THOPZabqN75EbOcjdxKOuZDyaBvrBoY4IKC8VaphpCz4ZZR5vFdFnSe0jeAR6UYJ662Z7R1cN+AYBZfnxMMDXpJS4rvkQ9VdGPLT3Qn7SmCDUZqEcYufUg0lSrixv5ch8uIvL3LkpSoggq1TmIyjh5v/QJx8Y38jPnDFJTwMqggrWwOe/dWCelqnoOOh83MkSL625BjaoRlh2423gPC7394WDrVN+Jp/7aXEw+LIYTwGk5Ce54rvFkP3PZoUNs+QxhV5++np/ufJcRrjWDY27Lc8XVPMbcm346FzBvdramrNbYHX64aVeTvEV9eFyew5sTc6lW3Waw+kYVuRdffFdUck1n1laLH4nokBE7vcPwqRN8n6VRoKJhUUQfTq1KOFvNPU8TPHmwHuHzFu/AqTAWZA9VDeENzmkLbXL8+MPGxHYxLrVKzNzh2XcpsQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR06MB6539.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(136003)(376002)(346002)(39860400002)(396003)(230922051799003)(64100799003)(451199024)(186009)(1800799012)(8936002)(8676002)(4326008)(6512007)(6506007)(53546011)(66556008)(66476007)(110136005)(66946007)(54906003)(316002)(6486002)(478600001)(36756003)(38100700002)(41300700001)(31686004)(86362001)(26005)(44832011)(31696002)(2906002)(2616005)(83380400001)(66574015)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WFpqRzk5Z25LNzJ1SnRDNTh0azVHK0kwcWVZZWgvVlZGc0w2SG1wWkdqb3Np?=
+ =?utf-8?B?NndnREdPNmFGeXhVWjd3NGxIaHZaTUlRSHRNTkoxS3BJRm5uT2JWZDZ2aWV0?=
+ =?utf-8?B?Qy9Obnh3aThQTTRuOUlFVW5FcC9rd3prV2d0VlJVamV6cHh6dlU5TlNOaS93?=
+ =?utf-8?B?NjJkam1nL0hMM3NnalkyNjB4VXZNQ3VsN3Y4aWVnbTBLMmZFZ1h5bHhDaXZr?=
+ =?utf-8?B?MVA3UHVSbDVBbGUyVDZTd2l1SVIxdTdHM1BoZ24rRlhzdjY3MFFUSVpqZEdW?=
+ =?utf-8?B?dk4wZlFQY3VPWW5Hdnd4dzc4MnY4QWFJN1o4WnVmeGtqZHp3N25hSVhoQ0Fa?=
+ =?utf-8?B?a2FFN2JGRWxxT01HSHdybWs0bitwS3EwTG5pSUIvRVhiTEJkVTVSYVhDZW1S?=
+ =?utf-8?B?RVk0SDFLMUZ5TGhwT0VLcG5QMVhDRUZVcXhtVjBMQ0RoMTdUWnZYbWRMZTE3?=
+ =?utf-8?B?MjBQbFUweit5dDA5VHZXSWF0YVBWMlNsVXM4cnlWSHRyang5cVExUVo5YVdO?=
+ =?utf-8?B?cFVvYitKQXFrSU9DSmVYNGs1WUhXOUNPcHRFR0wvRVFaZVc3eTVWUkt5TUJs?=
+ =?utf-8?B?QkhRM0t2WFdZZHhtSEdkUUxSMVZXMzFrQjFQTzVBT2MrdklzbzdNNThYK0Jo?=
+ =?utf-8?B?L0ZseVYzTEdCcTFiQzgyWktKUGZ0bEk2K0NpY2hpSEFmSE1JY1NNNkRlS1lV?=
+ =?utf-8?B?R2t1TEhYVVg5WmlHQmFyZnRvZjFyRmQ5VXVJU1hFaXB4MkxPQ3dZcWxDOUt6?=
+ =?utf-8?B?R0sybmZFYStUT0pIRjVCOFZhVGdJN05tQm5LNUVNMlNLUWpNNUZuWWEvTU16?=
+ =?utf-8?B?VVZQN0pWYkZFLzRIbi9GU3J3bjRpM1JvWjArSnVBUjV0NFlpUVhZalNwMHVi?=
+ =?utf-8?B?NFh1UUpnTTFlN2VmUThFcDVRQWtST3VCbHNzcFlVSlpvUnlNSFY4c0ZYelRO?=
+ =?utf-8?B?ZUVpK2ZaVW84S2lBbnczL3JvbTQySXRUTFoyMkw4R01tNVY4ZkZCcU5oY01N?=
+ =?utf-8?B?SWE0TkF0dldLTmV3OVRWdGJISVBza3dnS2tpbXgxRk44VEdmVUo1anRZa1Yv?=
+ =?utf-8?B?d1JncVRqUERUQ085U2lwLzFWR3lYTThqUmN0M21nVVUwMjZEVGowQXBCTlpZ?=
+ =?utf-8?B?aXlyQzUwa3MrbW4wWUl5YkdJamttQktRNHEwMkJHQWZNYndMY3ZGSC9lMDlh?=
+ =?utf-8?B?dzhqcitNTkc1N1dyTTA4cWhwMHNESXVxTGh2ZzZpNDR3c2owcldlWmZVckZz?=
+ =?utf-8?B?eTRkSWlhejJHbVplcTFoUlVrZThncXNheUF3STl2RFRkT3FhUGlUNDljVTJS?=
+ =?utf-8?B?WjhKRG4zTDRtY200dnlkYXMxbHZacytpOUZjdloyV0d4VUcvbzRjck9mSFFy?=
+ =?utf-8?B?SjQ5eTkxNmhYWU53L3c3S1VFaE9hTUlHa2tVaktKaFJreUlvRXkrMU9NSUtx?=
+ =?utf-8?B?bjFKendhNHRVdyt1djdWOElaMzBIMVJLb0R2cFB6cjBhYkkzZzJRL1FxUklL?=
+ =?utf-8?B?SGRXTVgvUlB6YldxYXgrb0lxTENUc2ZjSmQrSVFYZHJ5Ym9vYnJNRHRkVjV5?=
+ =?utf-8?B?TWR0Uy80elpVK2twSjRXV1Z1U2tRY1BuL0VMU2tIRlJuS21xbnVheXhxczU5?=
+ =?utf-8?B?cHpvL3VqeitYa3JvaUg3S2J4Nm1oV2pSdjRPRDhxMTlnYlVQK01qbDFXM3FN?=
+ =?utf-8?B?MWF0WWMxRnhPc01Yb3FCMTdORzRwajNOMDdiTkFNaFlnQW10c01iaEFTamla?=
+ =?utf-8?B?UE1SNHhieWUyRFRkWDFDRlFKaVphRXF1MVlUL1hEZjhpeVdISFZaS0VpWDV4?=
+ =?utf-8?B?b3NxSDdFMUQ1aUoyaVNveE12dVVLTDRIUUEzMXljZi80SGpXV3djVlROUSsw?=
+ =?utf-8?B?ZllkSUNsYzBMUDJSSmRKeWovSzBmdVVITlc4R1BVQUdUYkdEd0QybVl0d0RH?=
+ =?utf-8?B?anBlZGNiSGl1SXRxMnBUQVFzdmJESmFMMVlyaDlPSy9uNWF6alJvVEo2YmU1?=
+ =?utf-8?B?T3NicitvQkR1SlFFV1VVNlprYVZNUjlCOE81c05OMVpXbGlGbzVPQndrekFp?=
+ =?utf-8?B?cmNYY0lrdStFdEhBTTQ1bXlGeU56cktHKzdDa2xNVk82L3VYQzdaSy8yK013?=
+ =?utf-8?B?eE1Ec0M0cTUyMzVRK09yL01LSndNOHhlbHRxVFMyNXlGMUtMU2g1YUMwaGg0?=
+ =?utf-8?B?SXc9PQ==?=
+X-OriginatorOrg: raritan.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: efc1262f-1067-4e36-740d-08dbef5afec4
+X-MS-Exchange-CrossTenant-AuthSource: DB8PR06MB6539.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2023 15:10:30.4784
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 199686b5-bef4-4960-8786-7a6b1888fee3
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tdzEMEYnq0lKQ+vNvE90BF77v8uf89Ydm249mZI0Iuz7BSNhncg14vQPuFd8il8myQh7qCBafd7/Q9Yn4wIXag==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR06MB7181
 
-On Sun, 26 Nov 2023 at 21:17, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On 27.11.23 10:58, Miquel Raynal wrote:
+> The intended move from wait_for_completion_*() to
+> wait_for_completion_interruptible_*() was to allow (very) long spi memory
+> transfers to be stopped upon user request instead of freezing the
+> machine forever as the timeout value could now be significantly bigger.
 >
-> This is the start of the stable review cycle for the 6.5.13 release.
-> There are 483 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.13-rc4.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> However, depending on the user logic, applications can receive many
+> signals for their own "internal" purpose and have nothing to do with the
+> requested kernel operations, hence interrupting spi transfers upon any
+> signal is probably not a wise choice. Instead, let's switch to
+> wait_for_completion_killable_*() to only catch the "important"
+> signals. This was likely the intended behavior anyway.
+
+Actually this seems to work. But aborting a process that has a SPI
+transfer running causes ugly messages from kernel. This is somehow
+unexpected:
+
+# dd if=3D/dev/urandom of=3D/flashdisk/testfile bs=3D1024 count=3D512
+^C[  380.726760] spi-nor spi0.0: spi transfer canceled
+[  380.731688] spi-nor spi0.0: SPI transfer failed: -512
+[  380.737141] spi_master spi0: failed to transfer one message from queue
+[  380.746495] spi-nor spi0.0: spi transfer canceled
+[  380.751549] spi-nor spi0.0: SPI transfer failed: -512
+[  380.756844] spi_master spi0: failed to transfer one message from queue
+
+JFFS2 also logs an informational message which is less visible but also
+may rise eyebrows:
+[  380.743904] jffs2: Write of 4164 bytes at 0x0016a47c failed. returned -5=
+12, retlen 68
+
+Killing a process is something to expect in certain cases and it should
+not cause such messages which may create some anxiety that something bad
+had happened. So maybe the "kill" case should be silent (e.g. level "debug"=
+)
+but without out hiding real errors. But even when hiding the message in the
+SPI framework it may cause additional messages in upper layers like JFFS2.
+I'm not sure whether all of this is a good idea. This is something others
+have to decide.
+
+- ron
+
+________________________________
+
+Ce message, ainsi que tous les fichiers joints =C3=A0 ce message, peuvent c=
+ontenir des informations sensibles et/ ou confidentielles ne devant pas =C3=
+=AAtre divulgu=C3=A9es. Si vous n'=C3=AAtes pas le destinataire de ce messa=
+ge (ou que vous recevez ce message par erreur), nous vous remercions de le =
+notifier imm=C3=A9diatement =C3=A0 son exp=C3=A9diteur, et de d=C3=A9truire=
+ ce message. Toute copie, divulgation, modification, utilisation ou diffusi=
+on, non autoris=C3=A9e, directe ou indirecte, de tout ou partie de ce messa=
+ge, est strictement interdite.
 
 
-Results from Linaro's test farm.
-The following regressions found on all arm64 devices.
-Both the regressions are also seen on stable-rc linux-6.1.y.
-
-1) selftests: seccomp: seccomp_bpf - fails on all arm64 devices.
-2) Perf: PMU_events_subtest_1 / 2  - fails on all qemu-armv7 and TI x15.
-
-Test log:
---------
-1)
-# selftests: seccomp: seccomp_bpf
-<>
-# #  RUN           global.user_notification_sync ...
-# # seccomp_bpf.c:4294:user_notification_sync:Expected
-
-ioctl(listener, SECCOMP_IOCTL_NOTIF_SET_FLAGS,
-               SECCOMP_USER_NOTIF_FD_SYNC_WAKE_UP, 0) (-1) == 0 (0)
-
-# # user_notification_sync: Test terminated by assertion
-# #          FAIL  global.user_notification_sync
-# not ok 51 global.user_notification_sync
-<>
-# # FAILED: 95 / 96 tests passed.
-# # Totals: pass:95 fail:1 xfail:0 xpass:0 skip:0 error:0
-not ok 1 selftests: seccomp: seccomp_bpf # exit=1
-
-Links:
- - https://lkft.validation.linaro.org/scheduler/job/7056513#L2725
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-484-gecc37a3a8d33/testrun/21318788/suite/kselftest-seccomp/test/seccomp_seccomp_bpf/details/
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-484-gecc37a3a8d33/testrun/21318263/suite/kselftest-seccomp/test/seccomp_seccomp_bpf/history/
-
-
-2)
-perf
-  - PMU_events_subtest_1
-  - PMU_events_subtest_2
-
- 10.1: PMU event table sanity                           :
---- start ---
-test child forked, pid 339
-perf: Segmentation fault
-Obtained 1 stack frames.
-perf(+0xdfcd9) [0x571cd9]
-test child interrupted
----- end ----
-PMU events subtest 1: FAILED!
- 10.2: PMU event map aliases                            :
---- start ---
-test child forked, pid 340
-perf: Segmentation fault
-Obtained 1 stack frames.
-perf(+0xdfcd9) [0x571cd9]
-test child interrupted
----- end ----
-PMU events subtest 2: FAILED!
-
-Links:
- - https://lkft.validation.linaro.org/scheduler/job/7059997#L2905
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-486-g1c613200bbe4/testrun/21344368/suite/perf/test/PMU_events_subtest_1/details/
-
-## Build
-* kernel: 6.5.13-rc4
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.5.y
-* git commit: ecc37a3a8d335716260debdf063a278ea74379a4
-* git describe: v6.5.12-484-gecc37a3a8d33
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.5.y/build/v6.5.12-484-gecc37a3a8d33
-
-## Test Regressions (compared to v6.5.12)
-
-* bcm2711-rpi-4-b, kselftest-seccomp
-  - seccomp_seccomp_bpf
-
-* juno-r2, kselftest-seccomp
-  - seccomp_seccomp_bpf
-
-* dragonboard-410c, kselftest-seccomp
-  - seccomp_seccomp_bpf
-
-* qemu-armv7, perf
-  - PMU_events_subtest_1
-  - PMU_events_subtest_2
-
-* x15, perf
-  - PMU_events_subtest_1
-  - PMU_events_subtest_2
-
-## Metric Regressions (compared to v6.5.12)
-
-## Test Fixes (compared to v6.5.12)
-
-## Metric Fixes (compared to v6.5.12)
-
-## Test result summary
-total: 150231, pass: 128862, fail: 2428, skip: 18810, xfail: 131
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 146 total, 146 passed, 0 failed
-* arm64: 53 total, 51 passed, 2 failed
-* i386: 42 total, 42 passed, 0 failed
-* mips: 26 total, 26 passed, 0 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 36 passed, 0 failed
-* riscv: 25 total, 25 passed, 0 failed
-* s390: 13 total, 13 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 47 total, 47 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+This e-mail, and any document attached hereby, may contain confidential and=
+/or privileged information. If you are not the intended recipient (or have =
+received this e-mail in error) please notify the sender immediately and des=
+troy this e-mail. Any unauthorized, direct or indirect, copying, disclosure=
+, distribution or other use of the material or parts thereof is strictly fo=
+rbidden.
 
