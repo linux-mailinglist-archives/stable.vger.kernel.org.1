@@ -1,122 +1,122 @@
-Return-Path: <stable+bounces-2773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1BE7FA5B1
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:08:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9A217FA5CF
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 17:12:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E9021C20B28
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:08:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F20091C20AD9
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:12:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3847635892;
-	Mon, 27 Nov 2023 16:08:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576A8358B8;
+	Mon, 27 Nov 2023 16:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="f0Weq2uF"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="fS/4jveW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-x1035.google.com (mail-pj1-x1035.google.com [IPv6:2607:f8b0:4864:20::1035])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FD54D53
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 08:08:20 -0800 (PST)
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-285d1101868so875223a91.0
-        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 08:08:20 -0800 (PST)
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A3C5A7
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 08:12:31 -0800 (PST)
+Received: by mail-io1-xd29.google.com with SMTP id ca18e2360f4ac-7b38ff8a517so15966739f.1
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 08:12:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1701101300; x=1701706100; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701101550; x=1701706350; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5qJHcJvgSi9NsuTwsEhpD2ncg0QTQnQplCbXljQilBg=;
-        b=f0Weq2uFhY/kdVrbmL19Vky95iZTlI+r+ngHxXuIUGJolImKFU9KSS7l5Md+aP3gpv
-         rDNsuqig0WEEyi6Efm8riBxvO8PVwYrALEOmS4avcqRcys0+/OHH3yL1vtedmUOsWZlJ
-         6bbATvpfnpmPOpgCJ6cPiFBhQW6mdNhxjVJzc=
+        bh=bvB7rbddcLGLArA7MqLyKH3GIdpZuBsbhH9RHUl0sM8=;
+        b=fS/4jveW7ONuSpqHQD2CZCgNBuOihUISIi92yOFVBkfQWg4XyLhqEUGEOmtLVDiDkg
+         PhRkXqOMAsJHkGqOz9F7S0J7Y9naw24pww2KOSEY3XoMGcmd6CKfoYrP7OmglHxTfLUP
+         kgeE9W4um/AorvcBTB34RZLpEqLSSSiiYJzVcEjymxZHW2zTn1V/cgm1QhaFxjoxXyeG
+         1+h8zUrcgx/3PlFBER3ONH+tu6kBdE8SZDZnV1C8TLQogXmV7rNI2YyePXKOrFHor7HV
+         fcfPVcZpQB0nf8U36QjnyHlZP0ecaDggyGnbSZE6hyCYpBnem7TpK9UrIGPmCyauhtn+
+         ckxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701101300; x=1701706100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1701101550; x=1701706350;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5qJHcJvgSi9NsuTwsEhpD2ncg0QTQnQplCbXljQilBg=;
-        b=rQzEA7FBwc8GY6eywTDUZSDqYJT7Wn0aO6RKiXzJkmMiz0UR562RFkhGhpf7gt/w7O
-         TSgE7GZZjrxAf4zWPTO8MS9Zw8f6a2a6mxIuE0665LR/YYAI54hizrYMp6/HIlu/1biI
-         /rvh8fxh+ud4bNHscQe9k4JAX1yGmFsGWiDUlAQZ9mrJ11n7+55STof9zCzCyAB4WsD9
-         s4We8YwweBNq4i1jfM91yDvY9976Hm1I9QA9c5eITs9dZvqLLNqdm9xQYxYRpBbdH3+r
-         iguYc95rszBxzXloXiDMbziYziQwDGKcsY7iZfL5MzXtjj7XKjeM43FoXMnpzB1hFy3B
-         p1nQ==
-X-Gm-Message-State: AOJu0YzgaoCKk3Gdq7+JRZsTa1ayxnY/59Kl+SM/N5rL2Qau1DxUnrWp
-	Bi4KqGNPT19JtEpFr6TR1F1kBG+C6t8KjQ0DWp7MQg==
-X-Google-Smtp-Source: AGHT+IGlBQfeWyOms7gUrf7fFFg33Nf4rfw2bvUdcqWN587HmwZDfz+vXtO9m1AP+AS1BOAvQdOxEeHpXZs+RJo2Ejc=
-X-Received: by 2002:a17:90b:3907:b0:27c:ed8e:1840 with SMTP id
- ob7-20020a17090b390700b0027ced8e1840mr11052657pjb.10.1701101299771; Mon, 27
- Nov 2023 08:08:19 -0800 (PST)
+        bh=bvB7rbddcLGLArA7MqLyKH3GIdpZuBsbhH9RHUl0sM8=;
+        b=apgdhUfryl3Nf+7CWmVIsmKaaeto3ITWiGjnojahQ2gwhKv3akP7neO4/RECa3ZBUz
+         xVSVI86Nn4dy0qKPnhZKDTDBewisZ2XFcj/PEqUYD6mXw5sOGBIczgqD3z6PHP/vOw5P
+         A7pmkkKWuudxo5+LAxE6ruUlxoipJmK0/PvR3TcJ6MV2p7n5l9dLG73RMm3vMbruJ3RV
+         ILEw0sz/nIb4vWrgYcjftjq67UDSioU6PteT8eMY60T6ahnxoRZhsVSL7ysHjHHqpY7+
+         6iIz4B0XjT5bmcOex2JyQUfSGzIHJNMdJB5faBGPj4FJudeRmnjDh2Swm54GTfx33kog
+         H96w==
+X-Gm-Message-State: AOJu0YxKSR0MX6JFqpcIKd8hbnBKA3PCxqQpWqNP309JN9wcV7pLobaL
+	V2lVjE+nEuBlTrsiwduXOLRi+g==
+X-Google-Smtp-Source: AGHT+IG04eTzzicBywjmAxWaoEJU61uSxMw471TKINu23Lw+T9NqHOZNLbrFo4J4Xa2OGDDQItWp0g==
+X-Received: by 2002:a92:503:0:b0:35c:acbd:3d3e with SMTP id q3-20020a920503000000b0035cacbd3d3emr5168491ile.3.1701101550317;
+        Mon, 27 Nov 2023 08:12:30 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id r15-20020a92c5af000000b0035ca20fc741sm1338589ilt.70.2023.11.27.08.12.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 08:12:29 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: Bcache Linux <linux-bcache@vger.kernel.org>, 
+ Markus Weippert <markus@gekmihesg.de>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, 
+ Zheng Wang <zyytlz.wz@163.com>, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Stefan_F=C3=B6rster?= <cite@incertum.net>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+ Linux kernel regressions list <regressions@lists.linux.dev>, 
+ Coly Li <colyli@suse.de>
+In-Reply-To: <c47d3540ece151a2fb30e1c7b5881cb8922db915.camel@gekmihesg.de>
+References: <ZV9ZSyDLNDlzutgQ@pharmakeia.incertum.net>
+ <be371028-efeb-44af-90ea-5c307f27d4c6@leemhuis.info>
+ <71576a9ff7398bfa4b8c0a1a1a2523383b056168.camel@gekmihesg.de>
+ <989C39B9-A05D-4E4F-A842-A4943A29FFD6@suse.de>
+ <1c2a1f362d667d36d83a5ba43218bad199855b11.camel@gekmihesg.de>
+ <3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de>
+ <c47d3540ece151a2fb30e1c7b5881cb8922db915.camel@gekmihesg.de>
+Subject: Re: [PATCH] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
+Message-Id: <170110154924.44993.12405607589120929041.b4-ty@kernel.dk>
+Date: Mon, 27 Nov 2023 09:12:29 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2023112456-linked-nape-bf19@gregkh> <1aadb9ed-5118-4a6f-a273-495466f4737b@gmx.de>
- <ZWSEsrpogmi7LQa_@arm.com>
-In-Reply-To: <ZWSEsrpogmi7LQa_@arm.com>
-From: Florent Revest <revest@chromium.org>
-Date: Mon, 27 Nov 2023 17:08:08 +0100
-Message-ID: <CABRcYmKCFW-Z1zEegkktuczD2n+FuMmmB46mvt=4+zugkddrOQ@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] prctl: Disable prctl(PR_SET_MDWE) on
- parisc" failed to apply to 6.5-stable tree
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Helge Deller <deller@gmx.de>, gregkh@linuxfoundation.org, sam@gentoo.org, 
-	stable@vger.kernel.org, torvalds@linux-foundation.org, 
-	Kees Cook <keescook@chromium.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-26615
 
-On Mon, Nov 27, 2023 at 12:59=E2=80=AFPM Catalin Marinas
-<catalin.marinas@arm.com> wrote:
->
-> On Fri, Nov 24, 2023 at 04:10:25PM +0100, Helge Deller wrote:
-> > On 11/24/23 12:35, gregkh@linuxfoundation.org wrote:
-> > > The patch below does not apply to the 6.5-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git comm=
-it
-> > > id to <stable@vger.kernel.org>.
-> > >
-> > > To reproduce the conflict and resubmit, you may use the following com=
-mands:
-> > >
-> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linu=
-x.git/ linux-6.5.y
-> > > git checkout FETCH_HEAD
-> > > git cherry-pick -x 793838138c157d4c49f4fb744b170747e3dabf58
-> > > # <resolve conflicts, build, test, etc.>
-> > > git commit -s
-> > > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023112=
-456-linked-nape-bf19@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
-> > >
-> > > Possible dependencies:
-> > >
-> > > 793838138c15 ("prctl: Disable prctl(PR_SET_MDWE) on parisc")
-> > > 24e41bf8a6b4 ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl")
-> > > 0da668333fb0 ("mm: make PR_MDWE_REFUSE_EXEC_GAIN an unsigned long")
-> >
-> > Greg, I think the most clean solution is that you pull in this patch:
-> >
-> > commit 24e41bf8a6b424c76c5902fb999e9eca61bdf83d
-> > Author: Florent Revest <revest@chromium.org>
-> > Date:   Mon Aug 28 17:08:57 2023 +0200
-> >     mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl
-> >
-> > as well into 6.5-stable and 6.6-stable prior to applying my patch.
-> >
-> > Florent, Kees and Catalin, do you see any issues if this patch
-> > ("mm: add a NO_INHERIT flag to the PR_SET_MDWE prctl") is backported
-> > to 6.5 and 6.6 too?
-> > If yes, I'm happy to just send the trivial backport of my patch below..=
-.
->
-> TBH, given that the NO_INHERIT MDWE is a new feature and it took us a
-> few rounds to define its semantics, I'd rather not back-port it unless
-> someone has a strong need for it in 6.5 (not sure the stable rules even
-> allow for this). The parisc patch is simple enough to be backported on
-> its own.
 
-I agree with Catalin :)
+On Fri, 24 Nov 2023 16:14:37 +0100, Markus Weippert wrote:
+> Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+> node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
+> NULL pointer dereference.
+> 
+> BUG: kernel NULL pointer dereference, address: 0000000000000080
+> Call Trace:
+>  ? __die_body.cold+0x1a/0x1f
+>  ? page_fault_oops+0xd2/0x2b0
+>  ? exc_page_fault+0x70/0x170
+>  ? asm_exc_page_fault+0x22/0x30
+>  ? btree_node_free+0xf/0x160 [bcache]
+>  ? up_write+0x32/0x60
+>  btree_gc_coalesce+0x2aa/0x890 [bcache]
+>  ? bch_extent_bad+0x70/0x170 [bcache]
+>  btree_gc_recurse+0x130/0x390 [bcache]
+>  ? btree_gc_mark_node+0x72/0x230 [bcache]
+>  bch_btree_gc+0x5da/0x600 [bcache]
+>  ? cpuusage_read+0x10/0x10
+>  ? bch_btree_gc+0x600/0x600 [bcache]
+>  bch_gc_thread+0x135/0x180 [bcache]
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
+      (no commit info)
+
+Best regards,
+-- 
+Jens Axboe
+
+
+
 
