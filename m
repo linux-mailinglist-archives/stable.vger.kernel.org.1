@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-2723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D25D7F97F7
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 04:40:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A414A7F9808
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 04:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B68D5B20A3D
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 03:40:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21B01C2034D
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 03:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05434431;
-	Mon, 27 Nov 2023 03:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04BCC46A0;
+	Mon, 27 Nov 2023 03:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mgcHGtGF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eIhFRB2w"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43DAC122;
-	Sun, 26 Nov 2023 19:40:13 -0800 (PST)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-7789a4c01easo221297885a.0;
-        Sun, 26 Nov 2023 19:40:13 -0800 (PST)
+Received: from mail-pf1-x42d.google.com (mail-pf1-x42d.google.com [IPv6:2607:f8b0:4864:20::42d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B37B127;
+	Sun, 26 Nov 2023 19:51:28 -0800 (PST)
+Received: by mail-pf1-x42d.google.com with SMTP id d2e1a72fcca58-6b709048f32so3102659b3a.0;
+        Sun, 26 Nov 2023 19:51:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701056412; x=1701661212; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=IF8Unw8mHtKBu+Iht/njoNIgH51BaighHnUaDoN0CcM=;
-        b=mgcHGtGFwI2WQfux/bt8foZ1r7ctiJ9Y/dQySr3xPvJ8ukGmMkHlzA7oGbF0y8wsfc
-         BxGQq2Htn49CJDswIcpkekY+p0HKJJg+NqPr/1vhNvt8lIWznv1cXdGsV+eM36ghxnA+
-         ltzvS7UsWOE3PJXUiXK/x/D3ULqSTJsm85+FFBbJT+2ELPF8WjdO2TpSPS9qQEaDGtHA
-         jHG8L4GU01dAR/txj7WvzQLuqTCyh66qAX7e1VS5OmoU9s81nzWQ2EfNWREpkfaOnSTI
-         qSbX1+KQw+hYc4PEklNcuE3TE6XhQtkh6pMpn6vrt6OMWt+KYV8w/q7fZTJI/7DCM1zw
-         cHGg==
+        d=gmail.com; s=20230601; t=1701057087; x=1701661887; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uo8Ko/vla2T+p4A+YllsV7VNEWXXgEznOOjCsDLXCcE=;
+        b=eIhFRB2wGxXItzvcsC8mVQxdKGQUJ1Eg1kK8xwznrJsuJxNOVDpMseLdKd1J5AssHt
+         s57sn1XjjoPWQni7CAicUWMXTLRdqPGxyHaXZAaw1JinuQxPZDJM4VMpCy2TK2yO/Dj4
+         8vQNKCdzNpDClkX30MSjZ3NAk9KcUUvPg9I0ymZWKYznManC3ukAMj66PStqmKKw+HNq
+         VSmYvGNk0K3/22UxEGwVPkc/3XnJBDID3RVF0YTel1FwwSmz3QqXjQwETaCQak7KTlMC
+         cbZ75H+F2ZYsmOf8TZtT6rwYHxids9IEea/i7rhPMnYaOuvthAY8BuFmp5S+gsq+146o
+         oEKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701056412; x=1701661212;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IF8Unw8mHtKBu+Iht/njoNIgH51BaighHnUaDoN0CcM=;
-        b=B/EnmhMB9UY2mBd7rLJqFGkkysySJGmPsxkTMeS3xlIOTz5dxDm/IPc5kVRdIkCmEV
-         gNTi817xpYUKXfAHeKyBy6SV7whtLiunYIXlW+zjABZ2cphLv9pSOtC5nMgOPTJsrgnp
-         dB6h2Nv4t3IQXEeuIm/udfMze1d6h8aGOYUoqJmZddCdkKemEtCyRvx+n8uleFYGQfhB
-         YpNeb3GQXVmLn1YzNO8hHzvjnkBKpBOuTWsfGa6w2bS6r4cqx4+BCPJ/WsXNXlgeg4To
-         pHL53gB2aOBy6BvStTbqNDk0aOFl4XrTXEBPXkGq7YbnDp1lZ1LCQC4DGNk47IYJPtsP
-         iISw==
-X-Gm-Message-State: AOJu0YwjFStkg1nA1pDjMakY2wHgDCuLZuoe5vQUs/zZC9o5CiTXi9vJ
-	SMZ1hCXbP2adMNBDozQc6rA=
-X-Google-Smtp-Source: AGHT+IHdxUKY4ujG5UmxNcn8t5mi1fjNpWZJVrIAzMCQOOF5nHmMUrvkcjA8wP4l69OmOcS9pRT9Jg==
-X-Received: by 2002:ad4:4c48:0:b0:67a:21a6:2dcf with SMTP id cs8-20020ad44c48000000b0067a21a62dcfmr8019335qvb.1.1701056412302;
-        Sun, 26 Nov 2023 19:40:12 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701057087; x=1701661887;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uo8Ko/vla2T+p4A+YllsV7VNEWXXgEznOOjCsDLXCcE=;
+        b=SSjU2RQ1LgvlSu6pvAdww7itWGGWkpXQmaP64PAZ/bHKKjpZiYTompsgoL+LfwxZzA
+         9wAOgCwYGQGP+l+072ODuSxMbcgdr6s4Nt8hVbwDS6Q6sgLF4uclUHjediTC52m1sbwO
+         TC4TRuNLzNtb/CsCKYj6Vv2I235Smcn0U57ElyVNY6HMg9rz80BfunD798KgAb52foCZ
+         SGsFqobk/tYrX3c+CgRmsMpg34ynaxIcdPd5/4Bj73O0UeyfGVx7qw7LKThc/RpnBrsh
+         AJXEokEH9gvX/t4eY6mO3TpjARUZ+3PnOZ7r2N+/NdIHjX3Z4ZnSsDfNB/QGXlWs5FlS
+         TpcA==
+X-Gm-Message-State: AOJu0Yzp+dJRqHUBTOnMGGBrVSDUOhXOOEIqmc5xjXcOLbfKZF4SZj3L
+	PlAlmI2iDNxzwkz5oh89cn8=
+X-Google-Smtp-Source: AGHT+IHnfD2uQByZbeR+pZ1rrVvtQBezSJAO2p+QRMn/MU6fFpXnfFj8HuZaq1h2VMtpPhfVxOavSg==
+X-Received: by 2002:a05:6a20:158b:b0:18b:985e:8035 with SMTP id h11-20020a056a20158b00b0018b985e8035mr11136085pzj.12.1701057087099;
+        Sun, 26 Nov 2023 19:51:27 -0800 (PST)
 Received: from [192.168.1.3] (ip72-194-116-95.oc.oc.cox.net. [72.194.116.95])
-        by smtp.gmail.com with ESMTPSA id u6-20020a05622a14c600b00423a3f5ea75sm1883260qtx.21.2023.11.26.19.40.09
+        by smtp.gmail.com with ESMTPSA id n6-20020a170902d2c600b001cfcf3dd317sm701206plc.61.2023.11.26.19.51.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Nov 2023 19:40:11 -0800 (PST)
-Message-ID: <d12299ef-a13c-47e1-9456-c4555401ab72@gmail.com>
-Date: Sun, 26 Nov 2023 19:40:08 -0800
+        Sun, 26 Nov 2023 19:51:26 -0800 (PST)
+Message-ID: <a4c5bef2-4d27-4e49-9b12-ae8806f6477c@gmail.com>
+Date: Sun, 26 Nov 2023 19:51:24 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,7 +62,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/152] 5.4.262-rc4 review
+Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
+Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  torvalds@linux-foundation.org, akpm@linux-foundation.org,
@@ -71,8 +71,7 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
  sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
  conor@kernel.org, allen.lkml@gmail.com
-References: <20231126154329.848261327@linuxfoundation.org>
-Content-Language: en-US
+References: <20231126154335.643804657@linuxfoundation.org>
 From: Florian Fainelli <f.fainelli@gmail.com>
 Autocrypt: addr=f.fainelli@gmail.com; keydata=
  xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
@@ -107,15 +106,15 @@ Autocrypt: addr=f.fainelli@gmail.com; keydata=
  y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
  X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
  HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20231126154329.848261327@linuxfoundation.org>
+In-Reply-To: <20231126154335.643804657@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
 On 11/26/2023 7:46 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.262 release.
-> There are 152 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 5.10.202 release.
+> There are 187 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -123,9 +122,9 @@ On 11/26/2023 7:46 AM, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.262-rc4.gz
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.202-rc3.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
 > and the diffstat can be found below.
 > 
 > thanks,
@@ -136,17 +135,6 @@ On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on
 BMIPS_GENERIC:
 
 Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-
-Looks like I was not properly tracking warnings before, got the 
-following to show up for ARM64:
-
-./arch/arm64/include/asm/memory.h:238:22: warning: cast from pointer to 
-integer of different size [-Wpointer-to-int-cast]
-./arch/arm64/include/asm/memory.h:238:22: warning: cast from pointer to 
-integer of different size [-Wpointer-to-int-cast]
-/local/stbopt_p/toolchains_303/stbgcc-12.3-0.2/bin/../lib/gcc/arm-unknown-linux-musleabihf/12.3.0/../../../../arm-unknown-linux-musleabihf/bin/ld.bfd: 
-warning: arch/arm64/kernel/vdso32/sigreturn.o: missing .note.GNU-stack 
-section implies executable stack
 -- 
 Florian
 
