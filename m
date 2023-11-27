@@ -1,103 +1,138 @@
-Return-Path: <stable+bounces-2744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA097F9E69
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 12:22:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A107F9EE3
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 12:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D771C20CE7
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 11:22:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EF93B20FE4
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 11:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6516199A3;
-	Mon, 27 Nov 2023 11:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38001A710;
+	Mon, 27 Nov 2023 11:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="mDvHCvzL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeV3OYey"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id EC38E135
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 03:21:53 -0800 (PST)
-Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AB17C20B74C0;
-	Mon, 27 Nov 2023 03:21:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AB17C20B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701084113;
-	bh=1MNpfvevMpOZ0QF4Jt1hjD7DmpYPzzA1J9VGy9HnMb4=;
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 884A11A70F;
+	Mon, 27 Nov 2023 11:45:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22067C433C8;
+	Mon, 27 Nov 2023 11:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701085558;
+	bh=/SPiK+nM81I2NeYQHSsmaqOtUX9qlKShEsdKW1Xgo54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDvHCvzLe8IALM9ho3PcZKijOIq9owrqz6nIXha2pP0TcekkvjzZRxSQRMRXXv52U
-	 Z5vTuQ+VVlUkDu75jZz1pAOXg3yjLfSzydziPsD+pijIK6S2TSRI0pxPUTNzUH7jqq
-	 1odEjlISrT6iYjcSKGhuTuf5SbOU6rnjo+D3W4JQ=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH 5.10.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Mon, 27 Nov 2023 12:21:50 +0100
-Message-ID: <12330827.O9o76ZdvQC@pwmachine>
-In-Reply-To: <2023112415-salutary-visible-1485@gregkh>
-References: <2023102135-shuffle-blank-783e@gregkh> <20231124130935.168451-1-flaniel@linux.microsoft.com> <2023112415-salutary-visible-1485@gregkh>
+	b=UeV3OYeyFIr9Ll7fbpmmGpyz3uKF6e8h1RE9Ih3UtcFmzDu0xe7stOLB1kFa45cHP
+	 7W8ETpegQt1J09gK3AsGsrDpQkD7B+S6Ay/ql3oI3xwDpgkq4ytSAZ097Hf2mPStFA
+	 O/r00GFVG3GFyOip9cnRuvAVkRI2s8sazdq8BN7xqAE4zcRQ6JGxm7rcG/MmyB+/B3
+	 galFOVHPSFyvL5PB+8HKkS3gc9Knb59lyOum3+FCZRrTu30n97RVYwvMKZvLP9u2YR
+	 QTsrz80hpMJwNYudGnXE1aYUctgC4m7yEFwRhJN3wmx2sfTPMWnsuKTaLy0U+TKwwH
+	 71Bmx6gOs7bNw==
+From: djakov@kernel.org
+To: linux@roeck-us.net,
+	sam@gentoo.org,
+	gregkh@linuxfoundation.org
+Cc: akpm@linux-foundation.org,
+	allen.lkml@gmail.com,
+	conor@kernel.org,
+	f.fainelli@gmail.com,
+	jonathanh@nvidia.com,
+	linux-kernel@vger.kernel.org,
+	lkft-triage@lists.linaro.org,
+	patches@kernelci.org,
+	patches@lists.linux.dev,
+	pavel@denx.de,
+	rwarsow@gmx.de,
+	shuah@kernel.org,
+	srw@sladewatkins.net,
+	stable@vger.kernel.org,
+	sudipm.mukherjee@gmail.com,
+	torvalds@linux-foundation.org,
+	djakov@kernel.org
+Subject: [PATCH 5.10] interconnect: qcom: Add support for mask-based BCMs
+Date: Mon, 27 Nov 2023 13:45:51 +0200
+Message-Id: <20231127114551.1043891-1-djakov@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <05678c48-bac1-4f17-99f8-21b566c17a6e@roeck-us.net>
+References: <05678c48-bac1-4f17-99f8-21b566c17a6e@roeck-us.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: 8bit
 
-Hi!
+From: Georgi Djakov <djakov@kernel.org>
 
+From: Mike Tipton <mdtipton@codeaurora.org>
 
-Le vendredi 24 novembre 2023, 17:16:43 CET Greg KH a =E9crit :
-> On Fri, Nov 24, 2023 at 02:09:35PM +0100, Francis Laniel wrote:
-> > When a kprobe is attached to a function that's name is not unique (is
-> > static and shares the name with other functions in the kernel), the
-> > kprobe is attached to the first function it finds. This is a bug as the
-> > function that it is attaching to is not necessarily the one that the
-> > user wants to attach to.
-> >=20
-> > Instead of blindly picking a function to attach to what is ambiguous,
-> > error with EADDRNOTAVAIL to let the user know that this function is not
-> > unique, and that the user must use another unique function with an
-> > address offset to get to the function they want to attach to.
-> >=20
-> > Link:
-> > https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microso=
-ft
-> > .com/
-> >=20
-> > Cc: stable@vger.kernel.org
-> > Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-> > Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-> > Link:
-> > https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@ke=
-rn
-> > el.org/ Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > (cherry picked from commit b022f0c7e404887a7c5229788fc99eff9f9a80d5)
-> > ---
-> >=20
-> >  kernel/trace/trace_kprobe.c | 74 +++++++++++++++++++++++++++++++++++++
-> >  kernel/trace/trace_probe.h  |  1 +
-> >  2 files changed, 75 insertions(+)
->=20
-> We also need a version for 5.15.y before we can take this, you do not
-> want to upgrade and have a regression.
+[ Upstream commit d8630f050d3fd2079f8617dd6c00c6509109c755 ]
 
-I sent the corresponding 5.15.y patch some times ago here:
-https://lore.kernel.org/stable/20231023122217.302483-2-flaniel@linux.micros=
-oft.com/
+Some BCMs aren't directly associated with the data path (i.e. ACV) and
+therefore don't communicate using BW. Instead, they are simply
+enabled/disabled with a simple bit mask. Add support for these.
 
-If this is easier for you, I can resend it without problems.
+Origin commit retrieved from:
+https://git.codelinaro.org/clo/la/kernel/msm-5.15/-/commit/2d1573e0206998151b342e6b52a4c0f7234d7e36
 
-> thanks,
->=20
-> greg k-h
+Signed-off-by: Mike Tipton <mdtipton@codeaurora.org>
+[narmstrong: removed copyright change from original commit]
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230619-topic-sm8550-upstream-interconnect-mask-vote-v2-1-709474b151cc@linaro.org
+Fixes: fafc114a468e ("interconnect: qcom: Add SM8450 interconnect provider driver")
+Fixes: 2d1f95ab9feb ("interconnect: qcom: Add SC7180 interconnect provider driver")
+Signed-off-by: Georgi Djakov <djakov@kernel.org>
+---
 
+There is a build error reported in the 5.10.201 stable tree (arm64 allmodconfig),
+which is caused by a patch that has a dependency we missed to backport. This is
+the missing patch that we need to get into 5.10.202 to fix the build failure.
+Thanks to Guenter and Sam for reporting that!
 
-Best regards.
+ drivers/interconnect/qcom/bcm-voter.c | 5 +++++
+ drivers/interconnect/qcom/icc-rpmh.h  | 2 ++
+ 2 files changed, 7 insertions(+)
 
-
+diff --git a/drivers/interconnect/qcom/bcm-voter.c b/drivers/interconnect/qcom/bcm-voter.c
+index 3c0809095a31..320e418cf753 100644
+--- a/drivers/interconnect/qcom/bcm-voter.c
++++ b/drivers/interconnect/qcom/bcm-voter.c
+@@ -90,6 +90,11 @@ static void bcm_aggregate(struct qcom_icc_bcm *bcm)
+ 
+ 		temp = agg_peak[bucket] * bcm->vote_scale;
+ 		bcm->vote_y[bucket] = bcm_div(temp, bcm->aux_data.unit);
++
++		if (bcm->enable_mask && (bcm->vote_x[bucket] || bcm->vote_y[bucket])) {
++			bcm->vote_x[bucket] = 0;
++			bcm->vote_y[bucket] = bcm->enable_mask;
++		}
+ 	}
+ 
+ 	if (bcm->keepalive && bcm->vote_x[QCOM_ICC_BUCKET_AMC] == 0 &&
+diff --git a/drivers/interconnect/qcom/icc-rpmh.h b/drivers/interconnect/qcom/icc-rpmh.h
+index e5f61ab989e7..029a350c2884 100644
+--- a/drivers/interconnect/qcom/icc-rpmh.h
++++ b/drivers/interconnect/qcom/icc-rpmh.h
+@@ -81,6 +81,7 @@ struct qcom_icc_node {
+  * @vote_x: aggregated threshold values, represents sum_bw when @type is bw bcm
+  * @vote_y: aggregated threshold values, represents peak_bw when @type is bw bcm
+  * @vote_scale: scaling factor for vote_x and vote_y
++ * @enable_mask: optional mask to send as vote instead of vote_x/vote_y
+  * @dirty: flag used to indicate whether the bcm needs to be committed
+  * @keepalive: flag used to indicate whether a keepalive is required
+  * @aux_data: auxiliary data used when calculating threshold values and
+@@ -97,6 +98,7 @@ struct qcom_icc_bcm {
+ 	u64 vote_x[QCOM_ICC_NUM_BUCKETS];
+ 	u64 vote_y[QCOM_ICC_NUM_BUCKETS];
+ 	u64 vote_scale;
++	u32 enable_mask;
+ 	bool dirty;
+ 	bool keepalive;
+ 	struct bcm_db aux_data;
 
