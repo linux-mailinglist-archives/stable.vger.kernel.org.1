@@ -1,74 +1,104 @@
-Return-Path: <stable+bounces-2817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74737FABB7
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:39:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB037FAC01
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:50:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71845281BDB
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:39:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 391E9280FD7
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:50:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1009C45948;
-	Mon, 27 Nov 2023 20:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8168D3EA82;
+	Mon, 27 Nov 2023 20:50:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kde.org header.i=@kde.org header.b="LwMZNHjP"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.livemail.co.uk (smtp-out-60.livemail.co.uk [213.171.216.60])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73D2D93;
-	Mon, 27 Nov 2023 12:39:11 -0800 (PST)
-Received: from laptop (host-78-146-56-151.as13285.net [78.146.56.151])
-	(Authenticated sender: malcolm@5harts.com)
-	by smtp.livemail.co.uk (Postfix) with ESMTPSA id 2E419C5A30;
-	Mon, 27 Nov 2023 20:39:08 +0000 (GMT)
-References: <875y1nt1bx.fsf@5harts.com>
-User-agent: mu4e 1.8.15; emacs 29.1
-From: Malcolm Hart <malcolm@5harts.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Sven Frotscher <sven.frotscher@gmail.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH] sound: soc: amd: yc: Fix non-functional mic on ASUS E1504FA
-Date: Mon, 27 Nov 2023 20:36:00 +0000
-In-reply-to: <875y1nt1bx.fsf@5harts.com>
-Message-ID: <871qcbszh0.fsf@5harts.com>
+X-Greylist: delayed 488 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Nov 2023 12:50:27 PST
+Received: from letterbox.kde.org (letterbox.kde.org [46.43.1.242])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C57FA19D;
+	Mon, 27 Nov 2023 12:50:27 -0800 (PST)
+Received: from vertex.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net [173.49.113.140])
+	(Authenticated sender: zack)
+	by letterbox.kde.org (Postfix) with ESMTPSA id 5A23D32F798;
+	Mon, 27 Nov 2023 20:42:15 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kde.org; s=users;
+	t=1701117736; bh=wYChciMP/u7b3bVBtF5SUMzfxSiI5SlS5MrqMpbiQK8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LwMZNHjPKu3gQGUs2zBpToliB1ZzYCMuL34W2376Ck6cOVyI7BnjmkZLR8+7sFdJm
+	 p0igcbnr2XaZs9e1C0xn9cljMXxomKf5+gzZwVGu+pNPGxTRfTCv2KAt8R+w211UUJ
+	 kdtXbq8ylXxg8zp7lP3Cp1Byh9Tv0QsKCG3/QbqrhkC9rGvfGYDUT/EP/yTDHVO4FS
+	 hWW6MiNpAMkHLIsnZjdQsmP+dJmUH26o/uR15Vc/Q7uysUC28Yt4N7wR/27GayWwD+
+	 OaibKxWZA/5lrDJrP8/CqkH8Ay85xAw/sIJ3PGDlVMmJSepHXER1DZE98GJwFUqggF
+	 0hjpDJUqqHUVQ==
+From: Zack Rusin <zack@kde.org>
+To: linux-kernel@vger.kernel.org
+Cc: Zack Rusin <zackr@vmware.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Raul Rangel <rrangel@chromium.org>,
+	linux-input@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] input/vmmouse: Fix device name copies
+Date: Mon, 27 Nov 2023 15:42:06 -0500
+Message-Id: <20231127204206.3593559-1-zack@kde.org>
+X-Mailer: git-send-email 2.39.2
+Reply-To: Zack Rusin <zackr@vmware.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Zack Rusin <zackr@vmware.com>
 
+Make sure vmmouse_data::phys can hold serio::phys (which is 32 bytes)
+plus an extra string, extend it to 64.
 
-This patch adds ASUSTeK COMPUTER INC  "E1504FA" to the quirks file acp6x-mach.c
-to enable microphone array on ASUS Vivobook GO 15.
-I have this laptop and can confirm that the patch succeeds in enabling the
-microphone array.
+Fixes gcc13 warnings:
+drivers/input/mouse/vmmouse.c: In function ‘vmmouse_init’:
+drivers/input/mouse/vmmouse.c:455:53: warning: ‘/input1’ directive output may be truncated writing 7 bytes into a region of size between 1 and 32 [-Wformat-truncation=]
+  455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
+      |                                                     ^~~~~~~
+drivers/input/mouse/vmmouse.c:455:9: note: ‘snprintf’ output between 8 and 39 bytes into a destination of size 32
+  455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  456 |                  psmouse->ps2dev.serio->phys);
+      |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Malcolm Hart <malcolm@5harts.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Fixes: 8b8be51b4fd3 ("Input: add vmmouse driver")
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Raul Rangel <rrangel@chromium.org>
+Cc: linux-input@vger.kernel.org
+Cc: <stable@vger.kernel.org> # v4.1+
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/input/mouse/vmmouse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 15a864dcd7bd3a..3babb17a56bb55 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -283,6 +283,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/drivers/input/mouse/vmmouse.c b/drivers/input/mouse/vmmouse.c
+index ea9eff7c8099..7248cada4c8c 100644
+--- a/drivers/input/mouse/vmmouse.c
++++ b/drivers/input/mouse/vmmouse.c
+@@ -72,7 +72,7 @@
+  */
+ struct vmmouse_data {
+ 	struct input_dev *abs_dev;
+-	char phys[32];
++	char phys[64];
+ 	char dev_name[128];
+ };
+ 
+-- 
+2.39.2
 
 
