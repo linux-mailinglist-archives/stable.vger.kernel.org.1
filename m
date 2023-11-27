@@ -1,189 +1,304 @@
-Return-Path: <stable+bounces-2815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945737FAB9B
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:32:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B8C7FABA2
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DD3A281C0F
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:32:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 569B11C20E55
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7507145C0E;
-	Mon, 27 Nov 2023 20:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF323EA87;
+	Mon, 27 Nov 2023 20:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="u7leWGgf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1626D59;
-	Mon, 27 Nov 2023 12:32:02 -0800 (PST)
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-1f9f9e62248so528797fac.0;
-        Mon, 27 Nov 2023 12:32:02 -0800 (PST)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC84D91
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:34:21 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5c21e185df5so3415329a12.1
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:34:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701117261; x=1701722061; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=caj4HKrR15v4iMNHmHAkKcu8buxZUlafcGFQbCGuIfo=;
+        b=u7leWGgfV1Ua0DrivilXE7zk0fGXZ8m0rWarF9zvI8i9Nb9S2V3ZP5JK/qnYW+7PYx
+         gueK/Blx9pzLeXBkyrRHc+bZ8hDJx2Dd7KhEZ+O6mkK1eLSdozr+7PxJ6ZHrCvqQUWtS
+         Mp+hnAzsxjmu/cOk8V9ioHIMhXBrJa/c7C5xX6l4PtMPqm0g0csZhmFsrEq818UniaAE
+         X2k8fMnsFerkTcpBfYNBbr+FW4DiRg8+00ODLjPqjNK6rp7CbgQPQsRH5CAT0TjeX16A
+         ILxOyvJosRrtIt2Z0WONsR3A67aQU4yVfCV/M4tKZXbldCqma0X0UMMEGcd6rGtiTCGG
+         6PJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701117122; x=1701721922;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HdwRWyWKrOa5q+kJX8zg2X2doauF23yJjB05tmOZA/w=;
-        b=SEwc6lyh+cECnHW7txhvgxAQpA7/pUOI2+Ve+ZkJPPGgFgJ3K0eSec6fQbppHX4GHQ
-         cCdNrX+HOGCeHzCAEGtS0YNXMJTiM6j+TVqn0cinJdhKyMsTVht4uyXPtiY300S2eQKC
-         2kTCS7b+n53YDnaeHeIP41Zso6Oz7QfzZ2yDAjGiJzEZ0F/vSdB5S81DIhh7KHSEXwd0
-         eDJML8gesazLAAkkbzicWnKSYzIOHFmTcSZYMS9R2WJ3PUs0hlNX/q2uEO13TfeXE7gG
-         yq9/BalIJw/TTedIMGMCAK4hOxXnIWPAKOcV9nv/yRXHQ70tiq4ktPaOzwMyWQ/+Jpe6
-         FZgQ==
-X-Gm-Message-State: AOJu0YzCGODGSxs7ahjpdmpUfB0PJ0Sf933RWcrp3njYA096bzI6+i/s
-	NbSaLwSHW1FHUjKkB+2bdlGT4IsLp2kcgA//4Y9orcHM
-X-Google-Smtp-Source: AGHT+IFod1sFMJLpgT0eyPYq1PZ1XNGcKxPo1FKiHM6SG/Y23H7XVeB/wtViS1xemYf9phD6cTKaU2ePcBOLKaUL/EA=
-X-Received: by 2002:a05:6870:3c8b:b0:1ea:1510:d8df with SMTP id
- gl11-20020a0568703c8b00b001ea1510d8dfmr18371405oab.4.1701117122107; Mon, 27
- Nov 2023 12:32:02 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701117261; x=1701722061;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=caj4HKrR15v4iMNHmHAkKcu8buxZUlafcGFQbCGuIfo=;
+        b=Tn8qjraMIU2PUMCUw2C2kcLWNQw1wVuHxLoRZbmQMSMIQcudq4rXEDQYBEgg6P4Ucn
+         efXM4TFLro1Mb2SDwVYIAdmg/9BgWmYI3x40KENsCm+20Erq+4ffsBLAaH9ASOm/cuL5
+         wXpaIBr2RrolJpw9YM+6NR6REnk+y/pFNqyIGZXmZAkfeINd9cE/SzqxhCs7vx1JyQmz
+         I2lJ59v2uSnQYfAShv0SDWiTgS76OCRCyB1znclJ+WqoJdeoAJLgCKk3Ir2ycgoiGwXC
+         cst54XodLXqAD3nZ9sLMfAyHjXZS+KPyclAarBH7g6bYspPi9o04jbza6cZLnwX4bsLv
+         fiYg==
+X-Gm-Message-State: AOJu0Yx5nDD2kdvjwreoDboKDRbJlnQN+fEAL8pzM6H9PfDIQ2419G1j
+	iahGSyJc2guCqklKXg+CaDr7KyWDhExXAZbcmUE=
+X-Google-Smtp-Source: AGHT+IE7cbmMSRqDlGLRWZx5eGvnK3F8AxOqx2EoQsA7s8d1J2tCyciIFaQzf0nRZuOxjmvdwz1yQQ==
+X-Received: by 2002:a17:90b:33cd:b0:285:9f64:d0d0 with SMTP id lk13-20020a17090b33cd00b002859f64d0d0mr10476883pjb.4.1701117260886;
+        Mon, 27 Nov 2023 12:34:20 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id cu20-20020a17090afa9400b00282ecb631a9sm7718972pjb.25.2023.11.27.12.34.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Nov 2023 12:34:20 -0800 (PST)
+Message-ID: <6564fd4c.170a0220.a69dc.252f@mx.google.com>
+Date: Mon, 27 Nov 2023 12:34:20 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231127143741.5229-1-hdegoede@redhat.com> <20231127143741.5229-2-hdegoede@redhat.com>
-In-Reply-To: <20231127143741.5229-2-hdegoede@redhat.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Mon, 27 Nov 2023 21:31:51 +0100
-Message-ID: <CAJZ5v0iZkxq=5KBd-Y=V8xbTXbQ6qATr56xsJd29Rgtaj2Gg=g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ACPI: video: Use acpi_video_device for cooling-dev
- driver data
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Michal Wilczynski <michal.wilczynski@intel.com>, 
-	Jani Nikula <jani.nikula@linux.intel.com>, linux-acpi@vger.kernel.org, 
-	"6 . 6+" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.4.261-152-g6e0f766fc073
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.261-152-g6e0f766fc073)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Mon, Nov 27, 2023 at 3:37=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
- wrote:
->
-> The acpi_video code was storing the acpi_video_device as driver-data
-> in the acpi_device children of the acpi_video_bus acpi_device.
->
-> But the acpi_video driver only binds to the bus acpi_device.
-> It uses, but does not bind to, the children. Since it is not
-> the driver it should not be using the driver_data of the children's
-> acpi_device-s.
->
-> Since commit 0d16710146a1 ("ACPI: bus: Set driver_data to NULL every
-> time .add() fails") the childen's driver_data ends up getting set
-> to NULL after a driver fails to bind to the children leading to a NULL
-> pointer deref in video_get_max_state when registering the cooling-dev:
->
-> [    3.148958] BUG: kernel NULL pointer dereference, address: 00000000000=
-00090
-> <snip>
-> [    3.149015] Hardware name: Sony Corporation VPCSB2X9R/VAIO, BIOS R2087=
-H4 06/15/2012
-> [    3.149021] RIP: 0010:video_get_max_state+0x17/0x30 [video]
-> <snip>
-> [    3.149105] Call Trace:
-> [    3.149110]  <TASK>
-> [    3.149114]  ? __die+0x23/0x70
-> [    3.149126]  ? page_fault_oops+0x171/0x4e0
-> [    3.149137]  ? exc_page_fault+0x7f/0x180
-> [    3.149147]  ? asm_exc_page_fault+0x26/0x30
-> [    3.149158]  ? video_get_max_state+0x17/0x30 [video 9b6f3f0d19d7b4a0e2=
-df17a2d8b43bc19c2ed71f]
-> [    3.149176]  ? __pfx_video_get_max_state+0x10/0x10 [video 9b6f3f0d19d7=
-b4a0e2df17a2d8b43bc19c2ed71f]
-> [    3.149192]  __thermal_cooling_device_register.part.0+0xf2/0x2f0
-> [    3.149205]  acpi_video_bus_register_backlight.part.0.isra.0+0x414/0x5=
-70 [video 9b6f3f0d19d7b4a0e2df17a2d8b43bc19c2ed71f]
-> [    3.149227]  acpi_video_register_backlight+0x57/0x80 [video 9b6f3f0d19=
-d7b4a0e2df17a2d8b43bc19c2ed71f]
-> [    3.149245]  intel_acpi_video_register+0x68/0x90 [i915 1f3a758130b32ef=
-13d301d4f8f78c7d766d57f2a]
-> [    3.149669]  intel_display_driver_register+0x28/0x50 [i915 1f3a758130b=
-32ef13d301d4f8f78c7d766d57f2a]
-> [    3.150064]  i915_driver_probe+0x790/0xb90 [i915 1f3a758130b32ef13d301=
-d4f8f78c7d766d57f2a]
-> [    3.150402]  local_pci_probe+0x45/0xa0
-> [    3.150412]  pci_device_probe+0xc1/0x260
-> <snip>
->
-> Fix this by directly using the acpi_video_device as devdata for
-> the cooling-device, which avoids the need to set driver-data on
-> the children at all.
->
-> Fixes: 0d16710146a1 ("ACPI: bus: Set driver_data to NULL every time .add(=
-) fails")
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9718
-> Cc: Michal Wilczynski <michal.wilczynski@intel.com>
-> Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-> ---
->  drivers/acpi/acpi_video.c | 14 +++++---------
->  1 file changed, 5 insertions(+), 9 deletions(-)
->
-> diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-> index 5eded14f8853..7cd91e85c62a 100644
-> --- a/drivers/acpi/acpi_video.c
-> +++ b/drivers/acpi/acpi_video.c
-> @@ -253,8 +253,7 @@ static const struct backlight_ops acpi_backlight_ops =
-=3D {
->  static int video_get_max_state(struct thermal_cooling_device *cooling_de=
-v,
->                                unsigned long *state)
->  {
-> -       struct acpi_device *device =3D cooling_dev->devdata;
-> -       struct acpi_video_device *video =3D acpi_driver_data(device);
-> +       struct acpi_video_device *video =3D cooling_dev->devdata;
->
->         *state =3D video->brightness->count - ACPI_VIDEO_FIRST_LEVEL - 1;
->         return 0;
-> @@ -263,8 +262,7 @@ static int video_get_max_state(struct thermal_cooling=
-_device *cooling_dev,
->  static int video_get_cur_state(struct thermal_cooling_device *cooling_de=
-v,
->                                unsigned long *state)
->  {
-> -       struct acpi_device *device =3D cooling_dev->devdata;
-> -       struct acpi_video_device *video =3D acpi_driver_data(device);
-> +       struct acpi_video_device *video =3D cooling_dev->devdata;
->         unsigned long long level;
->         int offset;
->
-> @@ -283,8 +281,7 @@ static int video_get_cur_state(struct thermal_cooling=
-_device *cooling_dev,
->  static int
->  video_set_cur_state(struct thermal_cooling_device *cooling_dev, unsigned=
- long state)
->  {
-> -       struct acpi_device *device =3D cooling_dev->devdata;
-> -       struct acpi_video_device *video =3D acpi_driver_data(device);
-> +       struct acpi_video_device *video =3D cooling_dev->devdata;
->         int level;
->
->         if (state >=3D video->brightness->count - ACPI_VIDEO_FIRST_LEVEL)
-> @@ -1125,7 +1122,6 @@ static int acpi_video_bus_get_one_device(struct acp=
-i_device *device, void *arg)
->
->         strcpy(acpi_device_name(device), ACPI_VIDEO_DEVICE_NAME);
->         strcpy(acpi_device_class(device), ACPI_VIDEO_CLASS);
-> -       device->driver_data =3D data;
->
->         data->device_id =3D device_id;
->         data->video =3D video;
-> @@ -1747,8 +1743,8 @@ static void acpi_video_dev_register_backlight(struc=
-t acpi_video_device *device)
->         device->backlight->props.brightness =3D
->                         acpi_video_get_brightness(device->backlight);
->
-> -       device->cooling_dev =3D thermal_cooling_device_register("LCD",
-> -                               device->dev, &video_cooling_ops);
-> +       device->cooling_dev =3D thermal_cooling_device_register("LCD", de=
-vice,
-> +                                                             &video_cool=
-ing_ops);
->         if (IS_ERR(device->cooling_dev)) {
->                 /*
->                  * Set cooling_dev to NULL so we don't crash trying to fr=
-ee it.
-> --
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.261-152-g6e0f766fc073)
 
-Applied, thanks!
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.261-152-g6e0f766fc073/
+
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.261-152-g6e0f766fc073
+Git Commit: 6e0f766fc07353ea748fea4b1fe2ea9c0a2f59f2
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
