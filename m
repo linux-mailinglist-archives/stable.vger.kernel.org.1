@@ -1,152 +1,173 @@
-Return-Path: <stable+bounces-2771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A89AB7FA551
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:54:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784CA7FA55F
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 16:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B5BB211A9
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:54:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33CB42817AF
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 15:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76CA347A0;
-	Mon, 27 Nov 2023 15:54:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="KhEEuz8v";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KYCziQKj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B4C347B8;
+	Mon, 27 Nov 2023 15:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 455F48E;
-	Mon, 27 Nov 2023 07:53:59 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id E23C55C028B;
-	Mon, 27 Nov 2023 10:53:56 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Mon, 27 Nov 2023 10:53:56 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1701100436; x=1701186836; bh=RV
-	PtMXqwnKRTq3/SvOKl47wsrx36gr/hOLiwd56gh60=; b=KhEEuz8vhFWoA0MJJu
-	dAS3GZuTJ+ESGv49306E5ktsWGTK9IBiNfnzhcXLCjbZI+UtMqXSvppI+BLaPHU1
-	1rkpoXx7kw+ghKbljjytUC/+LOB2RQPoxi+ivGMQRCeIXDOrOmzRvv7cHjx7iBAq
-	7VHyMK7Vaf1cumhfQ48+pXCXr+tYSLFmI7NOl74DJrI2B8dCo5bLdB6akxiPqFZ7
-	F8dKukpeGLCL4qs5CX9vybeE2ZC1Wngsc1P0t+zplcxcigkT7INrPpAI+7PH9hI8
-	OayP1a+8YKF+EJ6DYEMQ9Gb8IMso9/d0CoefIgMK5l1SwRglSoK35edrtsAD8WL+
-	6a4A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701100436; x=1701186836; bh=RVPtMXqwnKRTq
-	3/SvOKl47wsrx36gr/hOLiwd56gh60=; b=KYCziQKjew1WHTQXoN5Dw1l47XC6K
-	RJA4fVgWLdTLw9Ax0ekWpIDYPvsUKNo6DpwBtJsX1Lj19mR1/FIcNeiNxMZal0Ow
-	5a+HaPJsG15/2RsQ9Z3UXOW9QhrHyJE17Eg677/+yL5kRS8Jxa7AWdQ8Kbbd8gv0
-	dcjz3vdAxuW4T4OVMe/nNpeayz0uKxwHeZ5sheNXkUsfIH6uQO7p4zdxTU7msOFg
-	0yPa3iFnp00ILvfKxavllf8bWRUBjaZPab7U5X9+bTfNXKtjBkhXP9KvUvCX+KEE
-	eIXC/sNx/JJ6r4Wy00gSM6RGVXow4UI5kyltrKidcW15AWv6AaT/m53HA==
-X-ME-Sender: <xms:lLtkZTxds9KCaErDq52aGewAXPSSkarwlHN4mkYj1Vz8pa-ZP8Yuug>
-    <xme:lLtkZbS2aB9N9stzT7b-kr7-FUU2LanNb48JnYej_jqbt8-zYpZMhq0SZ6Pq97lBV
-    d9VNERH_tg85A>
-X-ME-Received: <xmr:lLtkZdXaC_F1R47aPUY33k10NLTJDt4GfxjgQQCh_tq6m6dr3pV_32sNN9AcjmEbOOmRKAJ8yypShaZgcRhHYkboHLm74WK-9xq0N3Obc8I9y0_MFm5Pmzk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeiuddgkeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:lLtkZdj25v_LkDMMFpqpAKM_mmF9bLJc61a0wLtLKrnajN7J_3dVow>
-    <xmx:lLtkZVDugJLsohqrUIybYkDBpdq-V2i1ticf1kaf0LQb-TqqI3Ku8Q>
-    <xmx:lLtkZWL0p8mEvHyuwFYxHMs6tbVtOGFQ0Ri-yuxu4cD4_7m7j1QyEA>
-    <xmx:lLtkZd5b_xdTP4l7dS0pHxJjR1AmT0H0CwJGJDE9GhwX58qPneU7rQ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Nov 2023 10:53:55 -0500 (EST)
-Date: Mon, 27 Nov 2023 15:53:54 +0000
-From: Greg KH <greg@kroah.com>
-To: Malcolm Hart <malcolm@5harts.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sven Frotscher <sven.frotscher@gmail.com>, git@augustwikerfors.se,
-	alsa-devel@alsa-project.org, lgirdwood@gmail.com,
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: ASoC: amd: yc: Fix non-functional mic on ASUS E1504FA
-Message-ID: <2023112720-foam-epileptic-1f30@gregkh>
-References: <b9dd23931ee8709a63d884e4bd012723c9563f39.camel@5harts.com>
- <ZWSckMPyqJl4Ebib@finisterre.sirena.org.uk>
- <87leajgqz1.fsf@5harts.com>
- <08590a87-e10c-4d05-9c4f-39d170a17832@amd.com>
- <87h6l72o8f.fsf@5harts.com>
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AED3092;
+	Mon, 27 Nov 2023 07:56:01 -0800 (PST)
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 3AEA31FD17;
+	Mon, 27 Nov 2023 15:55:58 +0000 (UTC)
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 19DED13440;
+	Mon, 27 Nov 2023 15:55:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id iKRPBg68ZGUQWgAAn2gu4w
+	(envelope-from <jack@suse.cz>); Mon, 27 Nov 2023 15:55:58 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 5DF31A07CB; Mon, 27 Nov 2023 16:55:57 +0100 (CET)
+Date: Mon, 27 Nov 2023 16:55:57 +0100
+From: Jan Kara <jack@suse.cz>
+To: Daniel =?utf-8?B?RMOtYXo=?= <daniel.diaz@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	jack@suse.cz, chrubis@suse.cz
+Subject: Re: [PATCH 5.15 000/297] 5.15.140-rc1 review
+Message-ID: <20231127155557.xv5ljrdxcfcigjfa@quack3>
+References: <20231124172000.087816911@linuxfoundation.org>
+ <81a11ebe-ea47-4e21-b5eb-536b1a723168@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <87h6l72o8f.fsf@5harts.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <81a11ebe-ea47-4e21-b5eb-536b1a723168@linaro.org>
+X-Spamd-Bar: ++++++
+Authentication-Results: smtp-out2.suse.de;
+	dkim=none;
+	dmarc=none;
+	spf=softfail (smtp-out2.suse.de: 2a07:de40:b281:104:10:150:64:98 is neither permitted nor denied by domain of jack@suse.cz) smtp.mailfrom=jack@suse.cz
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [6.89 / 50.00];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:98:from];
+	 TO_DN_SOME(0.00)[];
+	 R_SPF_SOFTFAIL(4.60)[~all];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 MX_GOOD(-0.01)[];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(2.20)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-3.00)[100.00%];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	 TAGGED_RCPT(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DMARC_NA(1.20)[suse.cz];
+	 RCPT_COUNT_TWELVE(0.00)[20];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 FREEMAIL_CC(0.00)[linuxfoundation.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,sladewatkins.net,gmx.de,suse.cz];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Score: 6.89
+X-Rspamd-Queue-Id: 3AEA31FD17
 
-On Mon, Nov 27, 2023 at 03:44:37PM +0000, Malcolm Hart wrote:
+Hello!
+
+On Fri 24-11-23 23:45:09, Daniel Díaz wrote:
+> On 24/11/23 11:50 a. m., Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.15.140 release.
+> > There are 297 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sun, 26 Nov 2023 17:19:17 +0000.
+> > Anything received after that time might be too late.
+> > 
+> > The whole patch series can be found in one patch at:
+> > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.140-rc1.gz
+> > or in the git tree and branch at:
+> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> > and the diffstat can be found below.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
+> We are noticing a regression with ltp-syscalls' preadv03:
+
+Thanks for report!
+
+> -----8<-----
+>   preadv03 preadv03
+>   preadv03_64 preadv03_64
+>   preadv03.c:102: TINFO: Using block size 512
+>   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+>   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+>   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'b' expectedly
+>   preadv03.c:102: TINFO: Using block size 512
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+>   preadv03.c:102: TINFO: Using block size 512
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+>   preadv03.c:102: TINFO: Using block size 512
+>   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+>   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'a' expectedly
+>   preadv03.c:87: TPASS: preadv(O_DIRECT) read 512 bytes successfully with content 'b' expectedly
+>   preadv03.c:102: TINFO: Using block size 512
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+>   preadv03.c:102: TINFO: Using block size 512
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:77: TFAIL: Buffer wrong at 0 have 62 expected 61
+>   preadv03.c:66: TFAIL: preadv(O_DIRECT) read 0 bytes, expected 512
+> ----->8-----
 > 
-> >From da1e023a39987c1bc2d5b27ecf659d61d9a4724c Mon Sep 17 00:00:00 2001
-> From: foolishhart <62256078+foolishhart@users.noreply.github.com>
-> Date: Mon, 27 Nov 2023 11:51:04 +0000
-> Subject: [PATCH] Update acp6x-mach.c
+> This is seen in the following environments:
+> * dragonboard-845c
+> * juno-64k_page_size
+> * qemu-arm64
+> * qemu-armv7
+> * qemu-i386
+> * qemu-x86_64
+> * x86_64-clang
 > 
-> Added 	ASUSTeK COMPUTER INC  "E1504FA" to quirks file to enable microphone array on ASUS Vivobook GO 15.
-> ---
->  sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
+> and on the following RC's:
+> * v5.10.202-rc1
+> * v5.15.140-rc1
+> * v6.1.64-rc1
 
+Hum, even in 6.1? That's odd. Can you please test whether current upstream
+vanilla kernel works for you with this test? Thanks!
 
-Hi,
-
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
-
-You are receiving this message because of the following common error(s)
-as indicated below:
-
-- Your patch was attached, please place it inline so that it can be
-  applied directly from the email message itself.
-
-- Your patch does not have a Signed-off-by: line.  Please read the
-  kernel file, Documentation/process/submitting-patches.rst and resend
-  it after adding that line.  Note, the line needs to be in the body of
-  the email, before the patch, not at the bottom of the patch or in the
-  email signature.
-
-- You did not specify a description of why the patch is needed, or
-  possibly, any description at all, in the email body.  Please read the
-  section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what is needed in
-  order to properly describe the change.
-
-- You did not write a descriptive Subject: for the patch, allowing Greg,
-  and everyone else, to know what this patch is all about.  Please read
-  the section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what a proper
-  Subject: line should look like.
-
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
