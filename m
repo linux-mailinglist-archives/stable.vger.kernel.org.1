@@ -1,219 +1,170 @@
-Return-Path: <stable+bounces-2813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCFB7FAB3D
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:21:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477547FAB86
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 21:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE1451C20DEF
-	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0331E281BBC
+	for <lists+stable@lfdr.de>; Mon, 27 Nov 2023 20:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6805D45C0F;
-	Mon, 27 Nov 2023 20:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2730F45C0E;
+	Mon, 27 Nov 2023 20:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JwZqqm7o"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="OLIfQE55"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ED881BCE
-	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:20:40 -0800 (PST)
-Received: by mail-ot1-x334.google.com with SMTP id 46e09a7af769-6d81173a219so1750388a34.3
-        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:20:40 -0800 (PST)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6031BC7
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:28:32 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1cfd76c5f03so214215ad.0
+        for <stable@vger.kernel.org>; Mon, 27 Nov 2023 12:28:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701116440; x=1701721240; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=t2NzrYRK1cQA6Nbs9R7f/RggIIXUG+CxAVQnblSzuic=;
-        b=JwZqqm7o/pFFfHDwJm52Z76UamhXy6Ax3KpHWh5/SZ1NJF7PfbvSoOV/vOieBY0ZNu
-         9PqXbR2q3tmwPkbon14uzM0Axpucu0184Wz8YN5+XXt9ZLxqOiossIAZLsdwfNILrfQO
-         EQ6yA1N9iCn8hFYnm/U/78zOjwwBzKhR/M7D60LDKECr/1GSnPpoZp5xZs04zGvjvU0y
-         mfsz0xIz9xXqnqleU0ivmR/ooe7D0J40yxSHVzSE+ST2irwMWc2VFCWhmxErXhbMCmsG
-         8jEsqVBdxB3WWptGv8nk2Kt9nTyrE3JIemeP3Zcw6d+qfQ3O9TvDTnIVFeS5kufl5mat
-         e/TA==
+        d=chromium.org; s=google; t=1701116912; x=1701721712; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v5+LvDr2MpWna/CQNtxbOeulzzg8qdiriAAeLwiRcQk=;
+        b=OLIfQE55f9sLqJ7pV9I5G00HvBBOdCoHRbBM5WYN3klE1oRxswvyYwc5zQ8mwwMn5M
+         Vlx6fP5z5Lk0SwNHAMXq8T1JYGTNr4SnfmNyQntd10xM5tBoClkDDazHkM8CZa5FUDHo
+         FFrdCM32s36EUUcTcZiGigYvjKs1A61hL2WI4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701116440; x=1701721240;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t2NzrYRK1cQA6Nbs9R7f/RggIIXUG+CxAVQnblSzuic=;
-        b=e9G/jmen1U2at0qzrS9DwSl9XEkyj9HMBsX4M/MAHtH6oNryTGbFpqSd5udZ1o5u7j
-         yC7xofwQDIs+hMa3NVmDaz5/AFweWxPQgci2L4bfJS5XvU3EBg0QqFZtS742Kn3jJ2Ah
-         SLWjiQJksht5hJWYVMHOzVOFIYdGmUoDkTVY9pxBTnC8kc11EY4lwJhqcwy4eMcK4ZiC
-         6xZeJYBhzdT/vcIuZXUF/tOCmYz+EbcFjGRHqwd4iUP5hMY9ZzGf41wudl9ja+PomxTY
-         c/wZB3rIxp5lIRRayjVqDJ547rBxDqg8iRHUjrjbkIDTr/rNu9/EvpNsIGqJgRfrQmSQ
-         e8oA==
-X-Gm-Message-State: AOJu0YxXch6MWVYM+rbkmYIq4YezhxHBEQXvrYFnMzdQYB/EdZJb8Lvb
-	CmgnA4AT0/eZ82o04gD+chgYcJLAW1o4vA+jBJ533g==
-X-Google-Smtp-Source: AGHT+IGCPBUooJKVCZtpXckqJRhyldpmsmzNHObiJ7d5EWHZTZ3D4Yz+OG5FjDn4UO/qTEspQc7WDWbp+OX9rAfFaBU=
-X-Received: by 2002:a05:6358:71cd:b0:16d:fb2b:d0e3 with SMTP id
- u13-20020a05635871cd00b0016dfb2bd0e3mr15576067rwu.1.1701116439646; Mon, 27
- Nov 2023 12:20:39 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701116912; x=1701721712;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v5+LvDr2MpWna/CQNtxbOeulzzg8qdiriAAeLwiRcQk=;
+        b=r82BHLzBWL9pKiIYpCBbYCPz5CpiFQ1Mi5D8wZ6/X48qMcn5r6KM2p4PKDNLJWqsfT
+         InCUch1IreWm1zx4PG/1GeTxCDgVsesecqnC4d7Hp5L1y6bsDPz1bUP46ShmTqZbBTlY
+         YY7O48igybgTVsvoD49VDKQI29sBA0wBDZYCkzrZlSNymNqFyl75+wV/qQQatZp62QGs
+         RbZV800Os3qBABeXlnoP3XeFOWUHjYgQV0Y6aVPizLqE+qY/GlmM9nS4k9Bv1bDeA/+/
+         jBm+AYT8ADOEEGuws7WC6aOObUy615VLb3IA2rfkRSE2k0HySTNFl807ZL+CeiSH+LoF
+         Awrw==
+X-Gm-Message-State: AOJu0YyXqkN+IiqgMXqAukavfLfCqUDYDKXGzl1U6LVmKu0QmMJgr7a6
+	OiZTKhCz0nHjgh5sWa63LYQd3Y23dUM6ftT7WQ3RDg==
+X-Google-Smtp-Source: AGHT+IGLQQUkLIQlrE1cQRRNrLITzOJTPYT2iEhTFWC1VzJ4c69+VDRcvNaay6jRLYhoDwDQCZ7qG+pSOvFQD3jDafc=
+X-Received: by 2002:a17:902:d2d1:b0:1cf:d21a:ebcc with SMTP id
+ n17-20020a170902d2d100b001cfd21aebccmr265559plc.23.1701116912069; Mon, 27 Nov
+ 2023 12:28:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231126154323.146332656@linuxfoundation.org>
-In-Reply-To: <20231126154323.146332656@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 28 Nov 2023 01:50:28 +0530
-Message-ID: <CA+G9fYtitr-n-H+q28LRBs0tpuS8aksVHNoD1L54M98=FedyZw@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/92] 4.19.300-rc3 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231127175736.5738-1-hau@realtek.com> <20231127175736.5738-2-hau@realtek.com>
+ <a5f89071-f93b-4a30-a0c5-f9dfda68367c@gmail.com>
+In-Reply-To: <a5f89071-f93b-4a30-a0c5-f9dfda68367c@gmail.com>
+From: Grant Grundler <grundler@chromium.org>
+Date: Mon, 27 Nov 2023 12:28:21 -0800
+Message-ID: <CANEJEGtRk85senQ3fVhV9Ek9U+Pf5NER0_gBexHEkMaUz+vDgg@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] r8169: enable rtl8125b pause slot
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: ChunHao Lin <hau@realtek.com>, nic_swsd@realtek.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, grundler@chromium.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 26 Nov 2023 at 21:16, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Mon, Nov 27, 2023 at 12:03=E2=80=AFPM Heiner Kallweit <hkallweit1@gmail.=
+com> wrote:
 >
-> This is the start of the stable review cycle for the 4.19.300 release.
-> There are 92 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On 27.11.2023 18:57, ChunHao Lin wrote:
+> > When FIFO reach near full state, device will issue pause frame.
+> > If pause slot is enabled(set to 1), in this time, device will issue
+> > pause frame once. But if pause slot is disabled(set to 0), device
+> > will keep sending pause frames until FIFO reach near empty state.
+> >
+> > When pause slot is disabled, if there is no one to handle receive
+> > packets (ex. unexpected shutdown), device FIFO will reach near full
+> > state and keep sending pause frames. That will impact entire local
+> > area network.
+
+The comment is correct but should mention that this is true after a
+suspend. In other words, when an idle device goes into a lower power
+state, eventually the NIC will start blasting PAUSE frames on the
+local network.
+
+I was able to reproduce the problem very easily with a recent
+Chromebox (not Chromebook) in developer mode running a test image (and
+v5.10 kernel):
+1) ping -f $CHROMEBOX (from workstation on same local network)
+2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
+3) ping $ROUTER (wait until ping fails from workstation)
+
+Takes about ~20-30 seconds after step 2 for the local network to stop worki=
+ng.
+At that point, tcpdump from the workstation is full of PAUSE frames.
+
+I did not check that WOL still works.
+
+The exact patches I used on chromeos-5.10 kernel branch are publicly
+visible here:
+    https://chromium-review.googlesource.com/c/chromiumos/third_party/kerne=
+l/+/5056381
+
+> > In this patch default enable pause slot to prevent this kind of
+> > situation.
+> >
+> Can this change have any side effect? I'm asking because apparently
+> the hw engineers had a reason to make the behavior configurable.
 >
-> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
-> Anything received after that time might be too late.
+> > Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: ChunHao Lin <hau@realtek.com>
+
+Tested-by: Grant Grundler <grundler@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromiuim.org>
+
+(adding my reviewed-by to indicate I think the code is fine... I
+appreciate Heiner asking for better comments though.)
+
+cheers,
+grant
+
+> > ---
+> >  drivers/net/ethernet/realtek/r8169_main.c | 7 ++++++-
+> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/et=
+hernet/realtek/r8169_main.c
+> > index 295366a85c63..473b3245754f 100644
+> > --- a/drivers/net/ethernet/realtek/r8169_main.c
+> > +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> > @@ -196,6 +196,7 @@ enum rtl_registers {
+> >                                       /* No threshold before first PCI =
+xfer */
+> >  #define      RX_FIFO_THRESH                  (7 << RXCFG_FIFO_SHIFT)
+> >  #define      RX_EARLY_OFF                    (1 << 11)
+> > +#define      RX_PAUSE_SLOT_ON                (1 << 11)
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.300-rc3.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
+> Depending on the chip version this bit has different meanings. Therefore =
+it
+> would be good to add a comment that RX_PAUSE_SLOT_ON is specific to RTL81=
+25B.
 >
-> thanks,
+> >  #define      RXCFG_DMA_SHIFT                 8
+> >                                       /* Unlimited maximum PCI burst. *=
+/
+> >  #define      RX_DMA_BURST                    (7 << RXCFG_DMA_SHIFT)
+> > @@ -2305,9 +2306,13 @@ static void rtl_init_rxcfg(struct rtl8169_privat=
+e *tp)
+> >       case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
+> >               RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA=
+_BURST | RX_EARLY_OFF);
+> >               break;
+> > -     case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
+> > +     case RTL_GIGA_MAC_VER_61:
+> >               RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
+> >               break;
+> > +     case RTL_GIGA_MAC_VER_63:
+> > +             RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
+> > +                     RX_PAUSE_SLOT_ON);
+> > +             break;
+> >       default:
+> >               RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
+> >               break;
 >
-> greg k-h
-
-Results from Linaro's test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 4.19.300-rc3
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-4.19.y
-* git commit: c66845304b4632f778a17e0056b8df432123907f
-* git describe: v4.19.299-93-gc66845304b46
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19.299-93-gc66845304b46
-
-## Test Regressions (compared to v4.19.299)
-
-## Metric Regressions (compared to v4.19.299)
-
-## Test Fixes (compared to v4.19.299)
-
-## Metric Fixes (compared to v4.19.299)
-
-## Test result summary
-total: 51623, pass: 44853, fail: 854, skip: 5883, xfail: 33
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 111 total, 105 passed, 6 failed
-* arm64: 37 total, 32 passed, 5 failed
-* i386: 21 total, 18 passed, 3 failed
-* mips: 20 total, 20 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 24 total, 24 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 26 passed, 5 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-user
-* kselftest-vm
-* kselftest-zram
-* kunit
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
