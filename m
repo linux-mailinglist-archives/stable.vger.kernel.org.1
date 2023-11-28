@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-2986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFE77FC706
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:08:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 343CB7FC708
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8FEA286E23
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:08:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64AE31C2113F
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4293527B;
-	Tue, 28 Nov 2023 21:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA80B4439B;
+	Tue, 28 Nov 2023 21:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbXqbBdg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LbeoIXci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351FE44399
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 21:07:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02BF4C433AD;
-	Tue, 28 Nov 2023 21:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE1644373;
+	Tue, 28 Nov 2023 21:07:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CBBC433CB;
+	Tue, 28 Nov 2023 21:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205660;
-	bh=eIk2dnnN8ECjpLeVjR074CRL1uhZ+7+Nsn/KwElj5rE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbXqbBdgZc1mOSUbzJYtPjc67j8RcO0TNmkIRYDJ3PlSgr8liUcnS5SQVTOW2/YYl
-	 hXf3VWWDPCKwy6BRImjIfDymzbwuArxSJfCzlxfVAR5aAo44HKiWUeTCLMwkv2Ccwi
-	 hr0dwcXfWL9wtbw6+so6HUNoU8vjkgnTe6UaeR4/bcgsYA4vPhOSi2IPVPX5hycwmD
-	 x7FAZ5K1zokXdzCAuu7EDJiwUX/k5lJMkalr+18IShXqfwrJPyHGDLvV4MRszFLLfb
-	 E4bfil1yh141Lbrsi2/yxsRHNImLYU1KlnijkZ9dYs/CyR6ARuJ4W+zyyhjcii9ptJ
-	 oPtgxHio8zlNQ==
+	s=k20201202; t=1701205674;
+	bh=7aLWsiYj+wrTxoJNtgOv5YjBax8wb5yCrnUuIVcTkhA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LbeoIXciVymTFkLOO3rfwenTfwgCvTzcXtKHQi0xLof4+NtqTCAON5VVl8wxpu+Zn
+	 bWw9MN9mcFmpZgMYrVDE/LlX1n7QKg7NWVM1h2h1u3yuRvYmLWH24S7k+477z+s5DN
+	 LYjtxGT0Xlm82G4DbVOnB/Cxg4+fvHlrOSfq3s7qtmpAINzQiFpC1KY5/SHyr2qP3W
+	 223hsNtxZPycu/gGpxU/8n3mc8lzR344LnI1KGty9yJIDigFbePcf3GCB9VxXmKK1B
+	 gCoL4FH9HYpMDH7ZQBJ57y2SFsyHWt51/pDc9ETN737kwhokwizpSYc408Gu0xBoDS
+	 QVA/tvXg//4Ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	SImon Glass <sjg@chromium.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+Cc: Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	will@kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 40/40] arm64: add dependency between vmlinuz.efi and Image
-Date: Tue, 28 Nov 2023 16:05:46 -0500
-Message-ID: <20231128210615.875085-40-sashal@kernel.org>
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 01/25] x86/hyperv: Fix the detection of E820_TYPE_PRAM in a Gen2 VM
+Date: Tue, 28 Nov 2023 16:07:17 -0500
+Message-ID: <20231128210750.875945-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231128210615.875085-1-sashal@kernel.org>
-References: <20231128210615.875085-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,81 +59,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.3
+X-stable-base: Linux 6.1.64
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit c0a8574204054effad6ac83cc75c02576e2985fe ]
+[ Upstream commit 7e8037b099c0bbe8f2109dc452dbcab8d400fc53 ]
 
-A common issue in Makefile is a race in parallel building.
+A Gen2 VM doesn't support legacy PCI/PCIe, so both raw_pci_ops and
+raw_pci_ext_ops are NULL, and pci_subsys_init() -> pcibios_init()
+doesn't call pcibios_resource_survey() -> e820__reserve_resources_late();
+as a result, any emulated persistent memory of E820_TYPE_PRAM (12) via
+the kernel parameter memmap=nn[KMG]!ss is not added into iomem_resource
+and hence can't be detected by register_e820_pmem().
 
-You need to be careful to prevent multiple threads from writing to the
-same file simultaneously.
+Fix this by directly calling e820__reserve_resources_late() in
+hv_pci_init(), which is called from arch_initcall(pci_arch_init).
 
-Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
-generate invalid images") addressed such a bad scenario.
+It's ok to move a Gen2 VM's e820__reserve_resources_late() from
+subsys_initcall(pci_subsys_init) to arch_initcall(pci_arch_init) because
+the code in-between doesn't depend on the E820 resources.
+e820__reserve_resources_late() depends on e820__reserve_resources(),
+which has been called earlier from setup_arch().
 
-A similar symptom occurs with the following command:
+For a Gen-2 VM, the new hv_pci_init() also adds any memory of
+E820_TYPE_PMEM (7) into iomem_resource, and acpi_nfit_register_region() ->
+acpi_nfit_insert_resource() -> region_intersects() returns
+REGION_INTERSECTS, so the memory of E820_TYPE_PMEM won't get added twice.
 
-  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/arm64/boot/Image
-    OBJCOPY arch/arm64/boot/Image
-    AS      arch/arm64/boot/zboot-header.o
-    PAD     arch/arm64/boot/vmlinux.bin
-    GZIP    arch/arm64/boot/vmlinuz
-    OBJCOPY arch/arm64/boot/vmlinuz.o
-    LD      arch/arm64/boot/vmlinuz.efi.elf
-    OBJCOPY arch/arm64/boot/vmlinuz.efi
+Changed the local variable "int gen2vm" to "bool gen2vm".
 
-The log "OBJCOPY arch/arm64/boot/Image" is displayed twice.
-
-It indicates that two threads simultaneously enter arch/arm64/boot/
-and write to arch/arm64/boot/Image.
-
-It occasionally leads to a build failure:
-
-  $ make -j$(nproc) ARCH=arm64 Image vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/arm64/boot/Image
-    PAD     arch/arm64/boot/vmlinux.bin
-  truncate: Invalid number: 'arch/arm64/boot/vmlinux.bin'
-  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
-  arch/arm64/boot/vmlinux.bin] Error 1
-  make[2]: *** Deleting file 'arch/arm64/boot/vmlinux.bin'
-  make[1]: *** [arch/arm64/Makefile:163: vmlinuz.efi] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  make: *** [Makefile:234: __sub-make] Error 2
-
-vmlinuz.efi depends on Image, but such a dependency is not specified
-in arch/arm64/Makefile.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: SImon Glass <sjg@chromium.org>
-Link: https://lore.kernel.org/r/20231119053234.2367621-1-masahiroy@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1699691867-9827-1-git-send-email-ssengar@linux.microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/hyperv/hv_init.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 2d49aea0ff67a..26b8c7630a214 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -158,7 +158,7 @@ endif
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 189ae92de4d06..c18e5c764643b 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -13,6 +13,7 @@
+ #include <linux/io.h>
+ #include <asm/apic.h>
+ #include <asm/desc.h>
++#include <asm/e820/api.h>
+ #include <asm/sev.h>
+ #include <asm/ibt.h>
+ #include <asm/hypervisor.h>
+@@ -267,15 +268,31 @@ static int hv_cpu_die(unsigned int cpu)
  
- all:	$(notdir $(KBUILD_IMAGE))
+ static int __init hv_pci_init(void)
+ {
+-	int gen2vm = efi_enabled(EFI_BOOT);
++	bool gen2vm = efi_enabled(EFI_BOOT);
  
--
-+vmlinuz.efi: Image
- Image vmlinuz.efi: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(boot)/$@
+ 	/*
+-	 * For Generation-2 VM, we exit from pci_arch_init() by returning 0.
+-	 * The purpose is to suppress the harmless warning:
++	 * A Generation-2 VM doesn't support legacy PCI/PCIe, so both
++	 * raw_pci_ops and raw_pci_ext_ops are NULL, and pci_subsys_init() ->
++	 * pcibios_init() doesn't call pcibios_resource_survey() ->
++	 * e820__reserve_resources_late(); as a result, any emulated persistent
++	 * memory of E820_TYPE_PRAM (12) via the kernel parameter
++	 * memmap=nn[KMG]!ss is not added into iomem_resource and hence can't be
++	 * detected by register_e820_pmem(). Fix this by directly calling
++	 * e820__reserve_resources_late() here: e820__reserve_resources_late()
++	 * depends on e820__reserve_resources(), which has been called earlier
++	 * from setup_arch(). Note: e820__reserve_resources_late() also adds
++	 * any memory of E820_TYPE_PMEM (7) into iomem_resource, and
++	 * acpi_nfit_register_region() -> acpi_nfit_insert_resource() ->
++	 * region_intersects() returns REGION_INTERSECTS, so the memory of
++	 * E820_TYPE_PMEM won't get added twice.
++	 *
++	 * We return 0 here so that pci_arch_init() won't print the warning:
+ 	 * "PCI: Fatal: No config space access function found"
+ 	 */
+-	if (gen2vm)
++	if (gen2vm) {
++		e820__reserve_resources_late();
+ 		return 0;
++	}
  
+ 	/* For Generation-1 VM, we'll proceed in pci_arch_init().  */
+ 	return 1;
 -- 
 2.42.0
 
