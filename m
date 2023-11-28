@@ -1,49 +1,44 @@
-Return-Path: <stable+bounces-2879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB4007FB614
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:42:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 962F87FB660
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:54:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85A202826FB
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:42:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FEE82826AA
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFCF49F9E;
-	Tue, 28 Nov 2023 09:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F40E4BAB5;
+	Tue, 28 Nov 2023 09:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZOMah1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wjBmdoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3195A36AFA;
-	Tue, 28 Nov 2023 09:42:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28907C433C7;
-	Tue, 28 Nov 2023 09:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E997C4B5D2;
+	Tue, 28 Nov 2023 09:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C879CC433C7;
+	Tue, 28 Nov 2023 09:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701164549;
-	bh=627q44W1qJcE+w9twZSTRgNexUXO+hbOxcbJHEcVMVc=;
+	s=korg; t=1701165244;
+	bh=n+Ar5X9JSbp0izchwv6/lFQCJOtaNSaVKuhBCyJ0pnA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eZOMah1HP59j0I3EJ8ZFCH2fDTAPAOGCdPr6sF8ib8sxqlRqeuHcVJQyn1Tw4Xbbc
-	 BqkKNdRoQFdcOT+aRMhp8M3/5xcW8l2uYVtaMmqAbxAoDUJa6CJfRDd38EPvVYoNle
-	 SpbUTij04mP60wCpt1JFEyYLasP2PKwpbnVMMc6w=
-Date: Tue, 28 Nov 2023 09:42:27 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jon Hunter <jonathanh@nvidia.com>
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, linux-tegra@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
-Message-ID: <2023112845-mushily-thermos-770e@gregkh>
-References: <20231126154335.643804657@linuxfoundation.org>
- <fc421b26-ed60-48fa-a2f4-0fafcb44e91c@drhqmail201.nvidia.com>
- <6e45696d-fe6b-4570-8ca7-481de78a983f@nvidia.com>
+	b=1wjBmdoLl7hA6XpxnkWmlyKxAiYTdui/gybppPOw7NS+DRXo6/xBDKX/6If3IIf0+
+	 WGL5S78lFOV5BeHSOlVSI37fD5lory5sZTs8rL1trKebejjW+DFd8RzMrYykR/hl2f
+	 hKfMpDdYQyGqZ1Azxcv+rKHq1Jz2Y+OTHbl5XLoE=
+Date: Tue, 28 Nov 2023 09:54:01 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Stefan Berger <stefanb@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, zohar@linux.ibm.com,
+	initramfs@vger.kernel.org, stable@vger.kernel.org,
+	Rob Landley <rob@landley.net>
+Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
+ given
+Message-ID: <2023112826-cesspool-cabbie-06c5@gregkh>
+References: <20231120011248.396012-1-stefanb@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,69 +47,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <6e45696d-fe6b-4570-8ca7-481de78a983f@nvidia.com>
+In-Reply-To: <20231120011248.396012-1-stefanb@linux.ibm.com>
 
-On Mon, Nov 27, 2023 at 11:37:17PM +0000, Jon Hunter wrote:
+On Sun, Nov 19, 2023 at 08:12:48PM -0500, Stefan Berger wrote:
+> Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
 > 
-> On 27/11/2023 23:27, Jon Hunter wrote:
-> > On Sun, 26 Nov 2023 15:46:55 +0000, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 5.10.202 release.
-> > > There are 187 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > > The whole patch series can be found in one patch at:
-> > > 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.202-rc3.gz
-> > > or in the git tree and branch at:
-> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > > and the diffstat can be found below.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > Failures detected for Tegra ...
-> > 
-> > Test results for stable-v5.10:
-> >      10 builds:	10 pass, 0 fail
-> >      26 boots:	26 pass, 0 fail
-> >      68 tests:	67 pass, 1 fail
-> > 
-> > Linux version:	5.10.202-rc3-g80dc4301c91e
-> > Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-> >                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-> >                  tegra20-ventana, tegra210-p2371-2180,
-> >                  tegra210-p3450-0000, tegra30-cardhu-a04
-> > 
-> > Test failures:	tegra194-p2972-0000: boot.py
+>   If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+>   default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+>   line.
 > 
+> This currently does not work when root= is provided since then
+> saved_root_name contains a string and rootfstype= is ignored. Therefore,
+> ramfs is currently always chosen when root= is provided.
 > 
-> After commit the commit "gpio: Don't fiddle with irqchips marked as
-> immutable" added, we observe the following warnings and is causing a test to
-> fail ...
+> The current behavior for rootfs's filesystem is:
 > 
->  WARNING KERN gpio gpiochip0: (max77620-gpio): not an immutable chip, please
-> consider fixing it!
->  WARNING KERN gpio gpiochip1: (tegra194-gpio): not an immutable chip, please
-> consider fixing it!
->  WARNING KERN gpio gpiochip2: (tegra194-gpio-aon): not an immutable chip,
-> please consider fixing it!
+>    root=       | rootfstype= | chosen rootfs filesystem
+>    ------------+-------------+--------------------------
+>    unspecified | unspecified | tmpfs
+>    unspecified | tmpfs       | tmpfs
+>    unspecified | ramfs       | ramfs
+>     provided   | ignored     | ramfs
 > 
-> The following upstream changes fix these ...
+> rootfstype= should be respected regardless whether root= is given,
+> as shown below:
 > 
-> 7d1aa08aff06 gpio: tegra: Convert to immutable irq chip
-> bba00555ede7 gpio: tegra186: Make the irqchip immutable
-> 7f42aa7b008c gpio: max77620: Make the irqchip immutable
+>    root=       | rootfstype= | chosen rootfs filesystem
+>    ------------+-------------+--------------------------
+>    unspecified | unspecified | tmpfs  (as before)
+>    unspecified | tmpfs       | tmpfs  (as before)
+>    unspecified | ramfs       | ramfs  (as before)
+>     provided   | unspecified | ramfs  (compatibility with before)
+>     provided   | tmpfs       | tmpfs  (new)
+>     provided   | ramfs       | ramfs  (new)
 > 
-> There are quite a few other drivers that were updated in a similar way, so
-> the above only fix the ones we observe on Tegra.
+> This table represents the new behavior.
+> 
+> Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root=  specified")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Rob Landley <rob@landley.net>
+> Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+> Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 
-Ick, those patches snuck back in again, and they aren't even needed in
-these branches as I fixed up the real fix that they were dependencies of.
-I'll go drop them from 5.10.y and 5.15.y now, thanks!
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
+Who should take this patch?  Me?  Or someone else?
+
+thanks,
 
 greg k-h
 
