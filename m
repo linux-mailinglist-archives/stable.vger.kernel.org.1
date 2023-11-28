@@ -1,174 +1,241 @@
-Return-Path: <stable+bounces-2877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D5B7FB598
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:24:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0B7B7FB5CF
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:30:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051631C210B1
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:24:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8632B28262F
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F81446DD;
-	Tue, 28 Nov 2023 09:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F1A48CDD;
+	Tue, 28 Nov 2023 09:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VEmjG4Wi"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Du8/im8O"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4F6B1D0
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 01:23:55 -0800 (PST)
-Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 0F30720B74C0;
-	Tue, 28 Nov 2023 01:23:53 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0F30720B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701163434;
-	bh=XHlgjDQfi7sEqRucjGgnmeG94JlW0ZRegtJQnZlsMc0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VEmjG4WiF6D3aSDeCEjvPUZJdF1fmvNpjamql/yFK93hNeo42K2h9tVhHI+V67+7T
-	 hf/NehR51VLC1jD7LYXB/XdIqBXjWJu7rTtKgwzh7RLZMHHKmQk3d9gWUjh/PAOMOP
-	 7F0+9vOf3KwT6iO8rGlyxy/lHTobB5pLJGQmKy84=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH 4.19.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Tue, 28 Nov 2023 10:23:51 +0100
-Message-ID: <2708527.mvXUDI8C0e@pwmachine>
-In-Reply-To: <2023112749-dismay-blemish-3eac@gregkh>
-References: <2023102138-riverbed-senator-e356@gregkh> <2305896.ElGaqSPkdT@pwmachine> <2023112749-dismay-blemish-3eac@gregkh>
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9352DDA
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 01:30:43 -0800 (PST)
+Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-462bf380db8so1788158137.3
+        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 01:30:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701163842; x=1701768642; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RysSL349wtX71+LB9aMToXkLSEollEFV5Ko+eyRvxOc=;
+        b=Du8/im8OsTBF0QLxWEzV/gnUkiuFCeMhlCksHptJ/c3BN5wCjwFliHBMKXDlFJx65P
+         awVVPx1FdCpkuC72KCfQ1jd0tEEqhvYj//QCJJIyVpu4mdTKFN9V/tydKayAaJF1LVI0
+         GgewjTB3DrfE/bHoQoin7hizuHpi1FcUDdsInywV9Zb8CmPOP1omlJsP0HS4ZhJFAkvo
+         IHo0vgLSxxvt+F91FkOVBNNnl2DQe0hbKzP/sRAp7cbV2Iz0nQUto19bEJr8KpjuE27L
+         PsuuOpl8OJrCLbZyRA931Thr4n94ZMKoGDnDrRJDaTd3C3DX3l3f2+0ntK2EZNgC8f9i
+         BeNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701163842; x=1701768642;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RysSL349wtX71+LB9aMToXkLSEollEFV5Ko+eyRvxOc=;
+        b=kEEqV2rJ+93yYOeXOqXFat71Kva5SnWgKt3/fg2961bsrir33iBdBlHmvMLLGPqD8l
+         dwO2cMCPhVuxB5+pWpPVJ6hw1Z42RoysU1N6xElq8CKYmsHeSSZoSX9050K4wrTcYyAs
+         FEKJ42CFiul/RwlvCoTI7VqS9fU4zMQFJaTzYIItkUbV7GQnYHXAtPfHHBqUHJzWGhgH
+         jxpXZIIR6UpcXf/sUENlEYSI3MFdHk8EF2WsjBXLPfrfNl2NfA7Oe/uvQ2WR908x3zNY
+         bP0vsMxgH0nwR/dVGTnHG2Oh7atCv8Cvte6Z+oDsbCihFOFgfRBTayGRHmEiELvNN3We
+         Yd4w==
+X-Gm-Message-State: AOJu0Yyr1KkNMZ4VjKXYnhpWHC/9ZBnY6IUoNl7OpMyVAW42kI7En4yj
+	zb9gOs6OEAMXYC/DCOkGeKXqAMQsj1hMdeYaOBtbKg==
+X-Google-Smtp-Source: AGHT+IHkuIAtRcV8IkdzBUFavg/7wgDk43HoJLjLYNj3a9prWCPjkVLZE61la+uUUIFD1opUnJvdm9gXU5uNADwJ8ss=
+X-Received: by 2002:a05:6102:54ac:b0:45f:3b30:9c9a with SMTP id
+ bk44-20020a05610254ac00b0045f3b309c9amr15983484vsb.27.1701163842635; Tue, 28
+ Nov 2023 01:30:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+References: <20231126154335.643804657@linuxfoundation.org>
+In-Reply-To: <20231126154335.643804657@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 28 Nov 2023 15:00:31 +0530
+Message-ID: <CA+G9fYvmF=PVjePVE7m9-ZGW7EfKCv-9iwe-uwqdNqwVHGmNYA@mail.gmail.com>
+Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	Marc Zyngier <maz@kernel.org>, "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 
-Hi!
-
-
-Le lundi 27 novembre 2023, 18:58:10 CET Greg KH a =C3=A9crit :
-> On Mon, Nov 27, 2023 at 06:36:32PM +0100, Francis Laniel wrote:
-> > Hi!
-> >=20
-> > Le lundi 27 novembre 2023, 16:44:22 CET Greg KH a =C3=A9crit :
-> > > On Mon, Nov 27, 2023 at 03:41:31PM +0100, Francis Laniel wrote:
-> > > > Hi!
-> > > >=20
-> > > > Le vendredi 24 novembre 2023, 17:17:04 CET Greg KH a =C3=A9crit :
-> > > > > On Fri, Nov 24, 2023 at 01:24:13PM +0100, Francis Laniel wrote:
-> > > > > > When a kprobe is attached to a function that's name is not uniq=
-ue
-> > > > > > (is
-> > > > > > static and shares the name with other functions in the kernel),
-> > > > > > the
-> > > > > > kprobe is attached to the first function it finds. This is a bug
-> > > > > > as
-> > > > > > the
-> > > > > > function that it is attaching to is not necessarily the one that
-> > > > > > the
-> > > > > > user wants to attach to.
-> > > > > >=20
-> > > > > > Instead of blindly picking a function to attach to what is
-> > > > > > ambiguous,
-> > > > > > error with EADDRNOTAVAIL to let the user know that this function
-> > > > > > is
-> > > > > > not
-> > > > > > unique, and that the user must use another unique function with=
- an
-> > > > > > address offset to get to the function they want to attach to.
-> > > > > >=20
-> > > > > > Link:
-> > > > > > https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux=
-=2Emi
-> > > > > > cros
-> > > > > > oft
-> > > > > > .com/
-> > > > > >=20
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-> > > > > > Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > > > > > Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-> > > > > > Link:
-> > > > > > https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2e=
-ea7
-> > > > > > 42@k
-> > > > > > ern
-> > > > > > el.org/ Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.or=
-g>
-> > > > > > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> > > > > > (cherry picked from commit
-> > > > > > b022f0c7e404887a7c5229788fc99eff9f9a80d5)
-> > > > > > ---
-> > > > > >=20
-> > > > > >  kernel/trace/trace_kprobe.c | 48
-> > > > > >  +++++++++++++++++++++++++++++++++++++
-> > > > > >  1 file changed, 48 insertions(+)
-> > > > >=20
-> > > > > Again, we need a version for 5.4.y as well before we can take this
-> > > > > version.
-> > > >=20
-> > > > I sent the 5.4.y patch some times ago, you can find it here:
-> > > > https://lore.kernel.org/stable/20231023113623.36423-2-flaniel@linux=
-=2Emi
-> > > > cros
-> > > > oft.com/
-> > > >=20
-> > > > With the recent batch I sent, I should have cover all the stable
-> > > > kernels.
-> > > > In case I miss one, please indicate it to me so I can fix this prob=
-lem
-> > > > and
-> > > > ensure all stable kernels have a corresponding patch.
-> > >=20
-> > > I only see the following in my stable mbox right now:
-> > >    1   C Nov 27 Francis Laniel  (4.4K) =E2=94=AC=E2=94=80>[PATCH 5.10=
-=2Ey] tracing/
-kprobes:
-> > > Return EADDRNOTAVAIL when func matches several symbols 2 r C Nov 24
-> > > Francis
-> > > Laniel  (4.4K) =E2=94=94=E2=94=80>[PATCH 5.10.y] tracing/kprobes: Ret=
-urn EADDRNOTAVAIL
-> > > when
-> > > func matches several symbols 3   F Nov 24 To Francis Lani (1.5K)   =
-=E2=94=94=E2=94=80>
-> > >=20
-> > >    4 r T Nov 27 Francis Laniel  (1.9K)     =E2=94=94=E2=94=80>
-> > >    5   F Nov 27 To Francis Lani (2.0K)       =E2=94=94=E2=94=80>
-> > >  =20
-> > >   23 r C Nov 24 Francis Laniel  (2.7K) [PATCH 4.19.y] tracing/kprobes:
-> > > Return EADDRNOTAVAIL when func matches several symbols 24 r + Nov 27
-> > > Francis Laniel  (2.0K) =E2=94=94=E2=94=80>
-> > >=20
-> > > So could you resend them all just to be sure I have all of the latest
-> > > versions that you wish to have applied?
-> >=20
-> > I normally sent again the patch for version 4.14 to 5.15 (it was already
-> > present in 6.1 and 6.6).
-> > I tested all of them by building the corresponding kernel with the patch
-> > applied before sending, so they should not break compilation or testing.
-> >=20
-> > Can you please confirm me you received them?
->=20
-> Got them now, thanks, I'll dig through them after this latest round of
-> stable kernels gets released.
-
-You are welcome!
-Take your time, this is indeed a bug fix but not a major one (I am doubtful=
-=20
-plenty of people met this).
-If you find anything wrong with one of the patch, send a message and I will=
- for=20
-sure polish it.
-
+On Sun, 26 Nov 2023 at 21:17, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.10.202 release.
+> There are 187 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.202-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+>
 > thanks,
->=20
+>
 > greg k-h
 
+Results from Linaro's test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Best regards.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+NOTE:
+As others reported on gpio warning while booting arm and arm64 noticed.
 
+[    0.466552] gpio gpiochip0: (1000000.pinctrl): not an immutable
+chip, please consider fixing it!
+[    4.741930] gpio gpiochip2: (200f000.spmi:pmic@0:gpios@c000): not
+an immutable chip, please consider fixing it!
+
+Links,
+ - https://lkft.validation.linaro.org/scheduler/job/7060124#L2577
+
+## Build
+* kernel: 5.10.202-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.10.y
+* git commit: 80dc4301c91e15c9c3cf12b393d70e0952bcd9ee
+* git describe: v5.10.201-188-g80dc4301c91e
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.201-188-g80dc4301c91e
+
+## Test Regressions (compared to v5.10.201)
+
+## Metric Regressions (compared to v5.10.201)
+
+## Test Fixes (compared to v5.10.201)
+
+## Metric Fixes (compared to v5.10.201)
+
+## Test result summary
+total: 88957, pass: 67831, fail: 3474, skip: 17604, xfail: 48
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 117 total, 117 passed, 0 failed
+* arm64: 44 total, 44 passed, 0 failed
+* i386: 35 total, 35 passed, 0 failed
+* mips: 24 total, 24 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 25 total, 25 passed, 0 failed
+* riscv: 11 total, 11 passed, 0 failed
+* s390: 12 total, 12 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 38 total, 38 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
