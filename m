@@ -1,48 +1,59 @@
-Return-Path: <stable+bounces-2964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D1A7FC6DC
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:07:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CDFE7FC6DD
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6CBF2865F8
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:07:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ECEB1C2130B
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF2744C8C;
-	Tue, 28 Nov 2023 21:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A55640BF2;
+	Tue, 28 Nov 2023 21:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aiWeM5qQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJwLSoz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B6B42AAA;
-	Tue, 28 Nov 2023 21:06:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF79C433C7;
-	Tue, 28 Nov 2023 21:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084F244367;
+	Tue, 28 Nov 2023 21:07:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA97BC433BA;
+	Tue, 28 Nov 2023 21:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205609;
-	bh=xRoEIjR3KV/1kAEQG2vgN5KGGWtoecQCkzDjciK9N1M=;
+	s=k20201202; t=1701205619;
+	bh=X6PK4oBFo/KwYkDeQ/y95m2BXrZFZdq9RKhHH1b3Ycg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aiWeM5qQns4M7irrxvJIn1lTTAyaAZbs86/QCO2v+Y2kc0l1tLFVIVWUkgdM8aMGc
-	 G+e0PWBmBWe9+YkDzoWc5H7rqR6B4MOcAzwjX1R3tEK50OzFWK3zqgqMR0t/Zg0nFZ
-	 LyxxuQMcXMttXI8os53ZJONFJYEw9ZsoZBrZrDeZuTGWHNKuBhP1gRHCeM17VphznU
-	 Wvig8Qa6KiOloUD4UwiBPPpDeAjkAHCFcAJzON6bbd9wm8EK4HCbjfl+SbWissloLl
-	 GOCN3DDiiD90il4oayJ8OWiQDtd0+92kWrFfOEgD71EjxJI3mTAnvMvG4l/mqTnupW
-	 jZv1T1ItfYiNQ==
+	b=kJwLSoz/hojYq3yJZkbkmwjvC0x/glN70tyFJ6kX2rRpc079OtNFQv3QarLDfNUCP
+	 9Aa/HzK/Z7IYDcUwYoRF32Oom36FA+CNO787BmDSKyZc5+yM5bxG9sYW9IG+CHG+U+
+	 LTolSAAVK5NXcXPslfExwncrjfrN5F9LaZuKbVFjGhoUJbRV0/DMa7uY7jPNbJLcv1
+	 MeiwLRr+C0k+qRH3qjy7cz+YdBVvcn7Q2nX5cB2vesRFT1awQ8zSTwHGw+zpe1hQJy
+	 fxsXY/9YPZ7mQzSP26eg2krpmkzKysr6+veUsLqWunWxmTG+NQnEUPeK9rqMY/8AcW
+	 zK7Kc/pJlMtGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
+Cc: WANG Rui <wangrui@loongson.cn>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>,
 	chenhuacai@kernel.org,
-	loongarch@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 18/40] LoongArch: Add dependency between vmlinuz.efi and vmlinux.efi
-Date: Tue, 28 Nov 2023 16:05:24 -0500
-Message-ID: <20231128210615.875085-18-sashal@kernel.org>
+	ndesaulniers@google.com,
+	tangyouling@loongson.cn,
+	git@xen0n.name,
+	huqi@loongson.cn,
+	xry111@xry111.site,
+	zhoubinbin@loongson.cn,
+	zhangqing@loongson.cn,
+	chenfeiyang@loongson.cn,
+	hejinyang@loongson.cn,
+	loongarch@lists.linux.dev,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 19/40] LoongArch: Record pc instead of offset in la_abs relocation
+Date: Tue, 28 Nov 2023 16:05:25 -0500
+Message-ID: <20231128210615.875085-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231128210615.875085-1-sashal@kernel.org>
 References: <20231128210615.875085-1-sashal@kernel.org>
@@ -52,80 +63,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.3
 Content-Transfer-Encoding: 8bit
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: WANG Rui <wangrui@loongson.cn>
 
-[ Upstream commit d3ec75bc635cb0cb8185b63293d33a3d1b942d22 ]
+[ Upstream commit aa0cbc1b506b090c3a775b547c693ada108cc0d7 ]
 
-A common issue in Makefile is a race in parallel building.
+To clarify, the previous version functioned flawlessly. However, it's
+worth noting that the LLVM's LoongArch backend currently lacks support
+for cross-section label calculations. With this patch, we enable the use
+of clang to compile relocatable kernels.
 
-You need to be careful to prevent multiple threads from writing to the
-same file simultaneously.
-
-Commit 3939f3345050 ("ARM: 8418/1: add boot image dependencies to not
-generate invalid images") addressed such a bad scenario.
-
-A similar symptom occurs with the following command:
-
-  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    PAD     arch/loongarch/boot/vmlinux.bin
-    GZIP    arch/loongarch/boot/vmlinuz
-    OBJCOPY arch/loongarch/boot/vmlinuz.o
-    LD      arch/loongarch/boot/vmlinuz.efi.elf
-    OBJCOPY arch/loongarch/boot/vmlinuz.efi
-
-The log "OBJCOPY arch/loongarch/boot/vmlinux.efi" is displayed twice.
-
-It indicates that two threads simultaneously enter arch/loongarch/boot/
-and write to arch/loongarch/boot/vmlinux.efi.
-
-It occasionally leads to a build failure:
-
-  $ make -j$(nproc) ARCH=loongarch vmlinux.efi vmlinuz.efi
-    [ snip ]
-    SORTTAB vmlinux
-    OBJCOPY arch/loongarch/boot/vmlinux.efi
-    PAD     arch/loongarch/boot/vmlinux.bin
-  truncate: Invalid number: ‘arch/loongarch/boot/vmlinux.bin’
-  make[2]: *** [drivers/firmware/efi/libstub/Makefile.zboot:13:
-  arch/loongarch/boot/vmlinux.bin] Error 1
-  make[2]: *** Deleting file 'arch/loongarch/boot/vmlinux.bin'
-  make[1]: *** [arch/loongarch/Makefile:146: vmlinuz.efi] Error 2
-  make[1]: *** Waiting for unfinished jobs....
-  make: *** [Makefile:234: __sub-make] Error 2
-
-vmlinuz.efi depends on vmlinux.efi, but such a dependency is not
-specified in arch/loongarch/Makefile.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: WANG Rui <wangrui@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/include/asm/asmmacro.h | 3 +--
+ arch/loongarch/include/asm/setup.h    | 2 +-
+ arch/loongarch/kernel/relocate.c      | 2 +-
+ 3 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index fb0fada43197e..96747bfec1a10 100644
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -142,6 +142,8 @@ vdso_install:
+diff --git a/arch/loongarch/include/asm/asmmacro.h b/arch/loongarch/include/asm/asmmacro.h
+index c9544f358c339..655db7d7a4279 100644
+--- a/arch/loongarch/include/asm/asmmacro.h
++++ b/arch/loongarch/include/asm/asmmacro.h
+@@ -609,8 +609,7 @@
+ 	lu32i.d	\reg, 0
+ 	lu52i.d	\reg, \reg, 0
+ 	.pushsection ".la_abs", "aw", %progbits
+-	768:
+-	.dword	768b-766b
++	.dword	766b
+ 	.dword	\sym
+ 	.popsection
+ #endif
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index a0bc159ce8bdc..ee52fb1e99631 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -25,7 +25,7 @@ extern void set_merr_handler(unsigned long offset, void *addr, unsigned long len
+ #ifdef CONFIG_RELOCATABLE
  
- all:	$(notdir $(KBUILD_IMAGE))
+ struct rela_la_abs {
+-	long offset;
++	long pc;
+ 	long symvalue;
+ };
  
-+vmlinuz.efi: vmlinux.efi
-+
- vmlinux.elf vmlinux.efi vmlinuz.efi: vmlinux
- 	$(Q)$(MAKE) $(build)=$(boot) $(bootvars-y) $(boot)/$@
+diff --git a/arch/loongarch/kernel/relocate.c b/arch/loongarch/kernel/relocate.c
+index 6c3eff9af9fb1..288b739ca88dd 100644
+--- a/arch/loongarch/kernel/relocate.c
++++ b/arch/loongarch/kernel/relocate.c
+@@ -52,7 +52,7 @@ static inline void __init relocate_absolute(long random_offset)
+ 	for (p = begin; (void *)p < end; p++) {
+ 		long v = p->symvalue;
+ 		uint32_t lu12iw, ori, lu32id, lu52id;
+-		union loongarch_instruction *insn = (void *)p - p->offset;
++		union loongarch_instruction *insn = (void *)p->pc;
  
+ 		lu12iw = (v >> 12) & 0xfffff;
+ 		ori    = v & 0xfff;
 -- 
 2.42.0
 
