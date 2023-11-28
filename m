@@ -1,151 +1,178 @@
-Return-Path: <stable+bounces-2900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC5B47FBC7C
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 15:15:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E47087FBC8E
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 15:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60B92282D0F
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 14:15:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A030C2822A8
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 14:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FF85ABAC;
-	Tue, 28 Nov 2023 14:15:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="FEfjL9DF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA975ABB0;
+	Tue, 28 Nov 2023 14:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2072.outbound.protection.outlook.com [40.107.223.72])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97B40B5;
-	Tue, 28 Nov 2023 06:15:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=GglWggy5WIyLpM3vFYJEjszT0TtNESrtjQYU9qEAXpIGLN4jg/MtK8keUqNl248pVgQeA7OyNXfQnsuWG/wB9jnUBEY5XscQ4iOuozLeNKty8FbKEq/m9CWcEjS4NUlpau42k8dQaSQkgePhxy2fFSAW9r3AhF2ZDzX3AyEottyH1B/N9j00rFXUO0XxLADSKJim7UwBC69a5zzdRcEsucBCGedWvlKgZiZgKQnOsk8PANIwGzoPMqOZCiiZ3ILhSc77FdvN9/uLcn0BsDNAzYmlzqmtqB7eyq3aUQUhZRMoZhdWzZy+Jf5hd6AJFQcovBOimF1WdQw1o2M5WF5KwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jgavUGB4+L0awiHBGFpIEIPXpijPPaIuu7IZXaJK8lc=;
- b=UQnMC9qtqyhWOWGf6PXcSG9zuIYbrXPCxr3ZWJA/orqq0J0rTrqJk36JyUPHE1aPP7xlDvj5AWDiE8CeRpRKnrvfTkClSTvRMW3cGL6y+AOEwFccvD8jfialQFV7gTowbpx1Zt1bR1hLXpNadpvcPQx5tIOujM9+0dE/RDs+Vwev0I+o1SWga+WLNBaYG2z20hkrvfBHQaPCtQzPwTCft0n8dJHcSmBodW+VLgNi7PHc9u9FyQOgpuOmWx4wd1Qoq+NakKyOgobopg7a+OPRzOf0dP+oolgYo8Swz7iMfF9kCE6OXQdzntT0Hbf/WvNWaHSeKdVCda4nTdo0u2dG8A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jgavUGB4+L0awiHBGFpIEIPXpijPPaIuu7IZXaJK8lc=;
- b=FEfjL9DFebDckKeVHRClWHZ7AyMQHIaTf00ueEWpcdq2Y4VU/eRHOFhJt/a+41xFr8kYmU0pw8UsGmCVF6pvyUjey2zx1nx1hi9lj/C9QqjM4JYT/BFDz3D5cKvqys/V0NB9Y/qs+PUZlWBtC6EX1oz1McnKHjjcOeHGrHzpq38=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SJ2PR12MB7823.namprd12.prod.outlook.com (2603:10b6:a03:4c9::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29; Tue, 28 Nov
- 2023 14:14:59 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::83d7:9c4f:4d9b:1f2a%5]) with mapi id 15.20.7025.022; Tue, 28 Nov 2023
- 14:14:59 +0000
-Message-ID: <28799328-a70c-40ff-ae4a-cf1933c8dbc5@amd.com>
-Date: Tue, 28 Nov 2023 08:14:57 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: usb hotplug broken on v6.5.12
-Content-Language: en-US
-To: Sebastian Ott <sebott@redhat.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Mathias Nyman <mathias.nyman@intel.com>,
- Basavaraj Natikar <Basavaraj.Natikar@amd.com>,
- Sasha Levin <sashal@kernel.org>
-References: <2c978ede-5e2f-b630-e126-4c19bd6278dc@redhat.com>
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <2c978ede-5e2f-b630-e126-4c19bd6278dc@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SA1P222CA0153.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::17) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250CBD53;
+	Tue, 28 Nov 2023 06:17:33 -0800 (PST)
+Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-1fa364b147dso354175fac.1;
+        Tue, 28 Nov 2023 06:17:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701181052; x=1701785852;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IRGoQyo/qsOxZBEdcNrITTBVpKcTeeXC0RVRkpQMWcc=;
+        b=DX+GzVg7G4cnUNM6VX53uBl46XooZGjkdqyEFVM6x9GIohl4sWNz9rDwHDpO++MStb
+         npOwsQcRk+5rYVIL4oFdV6kRkTSNaKKGxJMLJo93k37K5Li4rvEU2r05pXl8jyxkHXmF
+         YZ7oRzO4G1VXaXYrbknZsWtDeAzUlytaeVihNm+EtPXEp1HH9v8kRsl+FNW1rr0F9IXY
+         r37Zz1D+PsGtYaHrvVBy2BW65mMdcS7/+U5Iwj1dr7r5+xoNw1HJ/700pLKiqRZQcY7v
+         VZ5YONfrcUnOZNYBRSROdJDTNNQqFIBTdnhFvzO4GG/pdifP3rDbFqGZx1S552UOtSq8
+         vqZw==
+X-Gm-Message-State: AOJu0YzS77xrEHkXWPGZidDFYIqxyJjSXnW0+vX89+eKe2OmuqpEoo20
+	XJMynQnmpcJUmZMqVvfAIfUlzV5ZX1fJ9s5Op6Smz+Rw
+X-Google-Smtp-Source: AGHT+IHK5jlORTPJ4Yi2JZLbahqxmCAW3UTalor5HpTR9Edfy3RrLMPh0+L9de/6FsZfb1R4r5wSfybebBHvgi/RV+Q=
+X-Received: by 2002:a05:6870:d0a:b0:1f9:5346:2121 with SMTP id
+ mk10-20020a0568700d0a00b001f953462121mr16981047oab.4.1701181052390; Tue, 28
+ Nov 2023 06:17:32 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SJ2PR12MB7823:EE_
-X-MS-Office365-Filtering-Correlation-Id: 297050d6-c635-43fc-3c76-08dbf01c67b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	bhwtMBAA+bDsNIW1qFM8WbsjzVayW9yL9cF5VX7B5EGkoKk1sEhDwLw9uCG59YhMdhojpoxXwov757dl4NaN/yt0ODICGN5wE6QqSJq/i0RS8FFgGQ5Anw7w/aNbs5c2O7bb+sHukDFMckFUS4dTS0uY0aeU3k774Duq/YGPJzaZCpqHE9JmYrqCfcotD8tCj2OQkF0ZnOhDLZW2zcJKE5CU1eUCcl1BS9237ZD+zz4N11Pnm72z8yLmWtTJs0Cb19eUeDJpvWp7i5SKXxtVOhSUeZsCd6IRd3++uZ0s8V1Nqmq9hMGiKBMpi4SxYZKSvYA16BMM5hYyL8xl1WNSSWN2Ib9zOnGlIAMoBM2heJCCm0koW2caZ9jlhTU0hEg05aCZdcEsnxMBRltU7bvOLgZKqu/vGa+1UgiNejQ9wzko0hTy5TDTn+OfoExkmWxOmE38x6K2cVs9UtIuWZP4mf/mqqgsm7arjdIkfbwluhkut2PGAoexTBPjgQigKkhuHa+yP9lp6VxB16pLy65obFzpxunoJ4yUvZ4JMWfXhxGtcAwHo1PH5QtnzkFjsO8lPoTxhbmXwU7X66n1TNNDtmo+hB8uqbFyChfypXUYwfMLtV64t/UFaQ54dA0+cJ2Cm8SRZPdlWhY7QGoZQhEZKA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(346002)(136003)(396003)(366004)(376002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(2616005)(6512007)(26005)(478600001)(6506007)(53546011)(2906002)(4744005)(44832011)(5660300002)(41300700001)(6486002)(966005)(66946007)(66556008)(8936002)(8676002)(4326008)(316002)(66476007)(54906003)(38100700002)(86362001)(31696002)(36756003)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VU1ld1gwazRUcUpMdW1tSnlGQzJYZ1VHOGlneVJkbmZUcjF3Qk54ZWhrcDZh?=
- =?utf-8?B?YkUyMUEydHZuY2R1bDN5UE1STGpUWVhpV1NLcTFFTFFxLzJBQTlxMjY3TWZl?=
- =?utf-8?B?WnNVRlRqcjBaMW1oTzhBRE9EeVhFdlVaVkZobEg1N0xtNkVLMTlTSWFJM2VL?=
- =?utf-8?B?d1BsT1pRNWtnQUNMTE1OdS9uTCtvR0gyWXl2aklnTzVOWjJzeUM1R2JTdjFT?=
- =?utf-8?B?d2xFY09uZWNjbCs5MU9oeWR5VXpYTzhxZGx2RTRzOXEzVnlSK2p2K1NRa2NU?=
- =?utf-8?B?ZHIxMW5uSVlrVk1nOXZyanV1RTJsbHZVcklvL3NyM0RKa3I3YTloNGZycUdq?=
- =?utf-8?B?K1M0K1lnck5EM1UzdGQrQStTeU1sSWx1SzhUc2RsNnpoMk1UYTR3VEFueCtD?=
- =?utf-8?B?REFRcXMyZ2ZKYXZuNmcyZTNGZ1YxZ2dXN2NUOXYyWHBpaUxTZTUxc2plWTQx?=
- =?utf-8?B?UllmZ0tlbEpRalRoUWloNDcwVll0bUdFRjFOYWoxSUQxaHpTM2pGMXhtNGJt?=
- =?utf-8?B?RlJ6bTN3NmJtajlIQlVsOGJSNEdYTnZzMEViT3VobmNRWklCNlhWQVRPWGhK?=
- =?utf-8?B?Snd3WllCYUtjVDZDbHR5WTBVNHVoVTdLOW9tMk1uRnpFaWtPalJxcm5iM2cv?=
- =?utf-8?B?Y0VXakl4MGlsdlhXeFF6bnlRSnZ5aUZrMng2WWxOOE5VUHRxZUhoZ2Q1RUpZ?=
- =?utf-8?B?VDk1ZUVKZDB3bzRMNWwraTVDcmR2L0V4U3lKdTNqYUlYMXdncWY1d3VjRWVQ?=
- =?utf-8?B?UXZkRG5nNDFCbXl1QXlwYzJYMDgrVndQcHlHSlNGdVIzZHcrUEtVL2VoYlQz?=
- =?utf-8?B?MllkRlNoNFZPZlgwVHErc2toRHYzRmN3S1U4b25nd1pjSy9QWm0yaC96NUgy?=
- =?utf-8?B?a0JlTFhCKzh2RnpKVE5JWkZqYjh1cjdZdVRTL2ZQYU1zcEsrRi84UWErZW1X?=
- =?utf-8?B?MG5EZjQxWlorTjVrU2UzWTFmWkkyUFZOQnJYNmhKNnkyNVlRQ0wzaERYTVIv?=
- =?utf-8?B?UGtNMVFod3B0RzljTjdCN0N1anU2QTQ2cEpQWE02cU9UTWxNTDIwa2FmRngw?=
- =?utf-8?B?c0VSZEFPeU95Vmc2ZnBTUGxSWFYzc2dlUnByWXhqaWdraHgwTmdFaGQzYVg0?=
- =?utf-8?B?MWpFeVRZdGJ6a1F6S1A4Uk1CNmltWlZlTkRiSDZEWUhXc2MyU0swTzNxT2Nr?=
- =?utf-8?B?cTVuWnB3MmpDMjZFSExzOE52WkhaMjg3VlJqb3FWc0h2WldzQzZsSS9mb29K?=
- =?utf-8?B?ejJuZEV4WVVhT0ZSYUJuNmRFYmhEcnJBM1ZsMzU4TTErQkRFMjRvMS9uVk9i?=
- =?utf-8?B?c0MvbXJBdnhOWE1zbWptZUpqTFlseWx6OVB4VktrS2tXdis0TnJDOGY1QWR1?=
- =?utf-8?B?SVJRU2F2cjN0VWNtVDJJY3M2bUVuRXRzL29SQ1lKTTNHWnlGeW11a3NvTUtz?=
- =?utf-8?B?dkxhOTFkVk5HTTFDbUdXdGx1d002TEErb3ZrR0Uxcm0rT2xGWTFsV3cwOWpQ?=
- =?utf-8?B?QUw2alFkVTBpUUJYdGoxQ2p2WEhEYjJRb0tlRnhCaW1JS3JVWDNsZjM3S1U3?=
- =?utf-8?B?R1J5Nkp3WlVNZU05L1kzSExGK01COEd2TDZnZkdoeE10NjRVYm9CVGdibWR2?=
- =?utf-8?B?aDlBTWQ3UW54TkdFSWYvbi9NYi9MOWFwa0VVY2QxbmYrVDRFN3VkcXZWcCtx?=
- =?utf-8?B?Uml2NStTbXVvZGNsWFlYbWZwTS9xQkxvUkQwR281Wm54dWk0RytsYXYxK05D?=
- =?utf-8?B?N3hnOU9LOUh0Y21RQk5GTkpWM1JpdkNVaGhZeXZXR05oMlpEL2JmbW56MFo0?=
- =?utf-8?B?T0JoS3p1ekRPVmwvejhBczFkdUJqOE8wNks3b2o4Z1JuK3VPbVNCTXJGK3pj?=
- =?utf-8?B?TEtwdkY1dCtTSFFSK0lrVmcvcGlBWXAxb3dUZm9mZ203R3dzbEdDOVdpUmZK?=
- =?utf-8?B?bnRublRZcGdleFQ5MUczTkxOc3gzbFBvdVNJeFdQaFFZRkNlRVBpSEZGODlV?=
- =?utf-8?B?NU5uWkpUQ0ViYTlWc2YzMWdUOFdON3FzaHhmNFJrNHFFdmxndVNxY3Jqbzd0?=
- =?utf-8?B?dEJBRE1KaHoxUm43YUl1YzFMMzB0eHRSK3JGYTBjM2IrbkdCdlBQZk0yQzJB?=
- =?utf-8?Q?/kXOZkBFf1iwnyDGBMrVd127Q?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 297050d6-c635-43fc-3c76-08dbf01c67b4
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Nov 2023 14:14:59.4681
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1E/0IYXncB0rfvZfUG1BURuJCZq4Nqnups5eUwV01FwH6quETijKft+9z8VkXHfwhhpRmxGXdp2mNfAuPcfkmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7823
+References: <20231127092819.2019744-1-lukasz.luba@arm.com>
+In-Reply-To: <20231127092819.2019744-1-lukasz.luba@arm.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 28 Nov 2023 15:17:21 +0100
+Message-ID: <CAJZ5v0hun3D29w0DMgaSoaGpLNLP4dWN-mYpRHYESdFwP6iRsQ@mail.gmail.com>
+Subject: Re: [PATCH] powercap: DTPM: Fix unneeded conversion to micro-Watts
+To: Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org, 
+	daniel.lezcano@linaro.org, rafael@kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/28/2023 07:12, Sebastian Ott wrote:
-> Hej,
-> 
-> usb hotplug doesn't work for me running stable kernel v6.5.12 on an AMD
-> based Thinkpad t495s. Bisect pointed to 7b8ae3c24ef ("xhci: Loosen RPM as
-> default policy to cover for AMD xHC 1.1") - which is 4baf1218150 upstream.
-> 
-> Reverting that from 6.5.12 fixes the issue for me.
-> Current upstream rc kernel contains this patch but doesn't show the issue.
-> 
+On Mon, Nov 27, 2023 at 10:27=E2=80=AFAM Lukasz Luba <lukasz.luba@arm.com> =
+wrote:
+>
+> The Power values coming from the Energy Model are already in uW.
+> The PowerCap and DTPM framework operate on uW, thus all places should
+> just use the values from EM. Fix the code which left and still does
+> the unneeded conversion.
+>
+> Fixes: ae6ccaa65038 (PM: EM: convert power field to micro-Watts precision=
+ and align drivers)
+> Cc: <stable@vger.kernel.org> # v5.19+
+> Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+> ---
+> Hi Daniel,
+>
+> I have found an issue due to the uW in the EM. My apologies for that.
+
+No need to apologize, you are making the code better.
+
+> I have check those with the Rockpi dev board with your DTPM module there.
+> BTW, if you like to check the DTPM_devfreq there, you can apply that
+> patch. It should create EM for your GPU there and setup DTPM GPU:
+> https://lore.kernel.org/all/20231127081511.1911706-1-lukasz.luba@arm.com/
+>
 > Regards,
-> Sebastian
-> 
+> Lukasz
+>
+>
+>  drivers/powercap/dtpm_cpu.c     |  6 +-----
+>  drivers/powercap/dtpm_devfreq.c | 11 +++--------
+>  2 files changed, 4 insertions(+), 13 deletions(-)
+>
+> diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+> index 2ff7717530bf..8a2f18fa3faf 100644
+> --- a/drivers/powercap/dtpm_cpu.c
+> +++ b/drivers/powercap/dtpm_cpu.c
+> @@ -24,7 +24,6 @@
+>  #include <linux/of.h>
+>  #include <linux/pm_qos.h>
+>  #include <linux/slab.h>
+> -#include <linux/units.h>
+>
+>  struct dtpm_cpu {
+>         struct dtpm dtpm;
+> @@ -104,8 +103,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+>                 if (pd->table[i].frequency < freq)
+>                         continue;
+>
+> -               return scale_pd_power_uw(pd_mask, pd->table[i].power *
+> -                                        MICROWATT_PER_MILLIWATT);
+> +               return scale_pd_power_uw(pd_mask, pd->table[i].power);
+>         }
+>
+>         return 0;
+> @@ -122,11 +120,9 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+>         nr_cpus =3D cpumask_weight(&cpus);
+>
+>         dtpm->power_min =3D em->table[0].power;
+> -       dtpm->power_min *=3D MICROWATT_PER_MILLIWATT;
+>         dtpm->power_min *=3D nr_cpus;
+>
+>         dtpm->power_max =3D em->table[em->nr_perf_states - 1].power;
+> -       dtpm->power_max *=3D MICROWATT_PER_MILLIWATT;
+>         dtpm->power_max *=3D nr_cpus;
+>
+>         return 0;
+> diff --git a/drivers/powercap/dtpm_devfreq.c b/drivers/powercap/dtpm_devf=
+req.c
+> index 91276761a31d..612c3b59dd5b 100644
+> --- a/drivers/powercap/dtpm_devfreq.c
+> +++ b/drivers/powercap/dtpm_devfreq.c
+> @@ -39,10 +39,8 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+>         struct em_perf_domain *pd =3D em_pd_get(dev);
+>
+>         dtpm->power_min =3D pd->table[0].power;
+> -       dtpm->power_min *=3D MICROWATT_PER_MILLIWATT;
+>
+>         dtpm->power_max =3D pd->table[pd->nr_perf_states - 1].power;
+> -       dtpm->power_max *=3D MICROWATT_PER_MILLIWATT;
+>
+>         return 0;
+>  }
+> @@ -54,13 +52,10 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 =
+power_limit)
+>         struct device *dev =3D devfreq->dev.parent;
+>         struct em_perf_domain *pd =3D em_pd_get(dev);
+>         unsigned long freq;
+> -       u64 power;
+>         int i;
+>
+>         for (i =3D 0; i < pd->nr_perf_states; i++) {
+> -
+> -               power =3D pd->table[i].power * MICROWATT_PER_MILLIWATT;
+> -               if (power > power_limit)
+> +               if (pd->table[i].power > power_limit)
+>                         break;
+>         }
+>
+> @@ -68,7 +63,7 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 po=
+wer_limit)
+>
+>         dev_pm_qos_update_request(&dtpm_devfreq->qos_req, freq);
+>
+> -       power_limit =3D pd->table[i - 1].power * MICROWATT_PER_MILLIWATT;
+> +       power_limit =3D pd->table[i - 1].power;
+>
+>         return power_limit;
+>  }
+> @@ -110,7 +105,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+>                 if (pd->table[i].frequency < freq)
+>                         continue;
+>
+> -               power =3D pd->table[i].power * MICROWATT_PER_MILLIWATT;
+> +               power =3D pd->table[i].power;
+>                 power *=3D status.busy_time;
+>                 power >>=3D 10;
+>
+> --
 
-I believe it's the same discussion as 
-https://lore.kernel.org/stable/5993222.lOV4Wx5bFT@natalenko.name/#t
-
-The outcome was that another missing patch is in the stable queue for 
-various kernels and will be part of the next stable release for various 
-kernels.
+Applied as 6.7-rc material, thanks!
 
