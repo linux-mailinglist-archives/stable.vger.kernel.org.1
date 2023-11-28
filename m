@@ -1,48 +1,67 @@
-Return-Path: <stable+bounces-2873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A41777FB4AF
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:45:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE957FB4EA
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 608F62816B7
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 08:45:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6687DB21725
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 08:54:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160F0199B2;
-	Tue, 28 Nov 2023 08:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA222E3E4;
+	Tue, 28 Nov 2023 08:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3tIdr00"
+	dkim=pass (1024-bit key) header.d=heitbaum.com header.i=@heitbaum.com header.b="cenDLV1U"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A4C199AF
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 08:45:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE0AC433C8;
-	Tue, 28 Nov 2023 08:45:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701161152;
-	bh=040d+0nGCease9G+karywhOlIGG+XWg9r1vHEsxDPa4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=I3tIdr00meyMEdFHCTEhlekGmRQyoNN/XFtiA+BSQyZUc4KDPFZuzz7IdQWu+zSEi
-	 DJoFqise9Yx7b/UOKFKLuBX+8fFOsXg/OiNM+MxMFu4NlkaC0aSIV8JI0OSnVZf0eV
-	 lyFHR1qO4EsVYjWuoMZtTbiYGRJwGPhOqghQYrnI=
-Date: Tue, 28 Nov 2023 08:45:49 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Cc: Maximilian Heyne <mheyne@amazon.de>,
-	Norbert Manthey <nmanthey@amazon.de>, stable@vger.kernel.org,
-	Bryan Tan <bryantan@vmware.com>, Vishnu Dasa <vdasa@vmware.com>,
-	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>,
-	Arnd Bergmann <arnd@arndb.de>, Dmitry Torokhov <dtor@vmware.com>,
-	George Zhang <georgezhang@vmware.com>,
-	Andy king <acking@vmware.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] vmci: prevent speculation leaks by sanitizing event
- in event_deliver()
-Message-ID: <2023112833-various-shaded-ce11@gregkh>
-References: <20231128083658.23960-1-hagarhem@amazon.com>
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1729CA7
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 00:54:38 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-6cbe5b6ec62so4140289b3a.1
+        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 00:54:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=heitbaum.com; s=google; t=1701161677; x=1701766477; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3lEAT4IE+5TgDTGRd46y46TF/1k7v9CaLegPFey+I88=;
+        b=cenDLV1U5hQL5ZNdo6tbK71SvJsFMgFfRJ2dwDHo3YuSVSfYQLc5kSEgIk55suVYVu
+         kwp+hHc2RWEoHim+TMBqgWr8KlaFSG0yReJsSXcH836+qXgbFBiBCXshpExrrlGsYGXE
+         Vhi4NGs82Z3KnlXe5ld3Rns9k+VlgzMHkqdkc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701161677; x=1701766477;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3lEAT4IE+5TgDTGRd46y46TF/1k7v9CaLegPFey+I88=;
+        b=sqN1Y4H7lwFsrfdncID/GIEVhaMKBV70zhcvZi8Fnm753sKsZSGl9CBZDnYnFUFtgc
+         nZAc1t8D3Ja2PTDyHmxIkgeodfk2AuVspE+FqN2cEXK8pRjnt/98F3Oars5jN2E+Saf0
+         ZbSqEOHFQlDFX05tneaJ+naTXHX5STWagVm+r2meDZbr/HdciQgP9Kkm2L1nRMWmglRi
+         wCwq7Hz4P+N7YTsKHsOFbXFnyjtssecusIWqWuAYjIJbt0DDdcgGlPHb9KClf9QDFGBq
+         KSXT4cp0CwsOdP/DIkNpONBxsqjBe9Ss9JciBagJVyyuLsfBAK6DHAebalUz41OsVzZi
+         jtmQ==
+X-Gm-Message-State: AOJu0Yx5QqiRgvHqdeHqK8KoSU2yKW7DYT86bfvy9o66jMsUN7+og/5U
+	XvyWuBOek+DvFa7+Z+9Guusuj5zHF2cmVJpcr/GcUawq
+X-Google-Smtp-Source: AGHT+IF/gklNETPClvaFFsJJAdl1ueNFy4xOPR3Sk46cb9O3ud98cElsa/5CMYbsEFz1SuE1IoxsJw==
+X-Received: by 2002:a05:6a00:f8a:b0:690:d620:7801 with SMTP id ct10-20020a056a000f8a00b00690d6207801mr13935663pfb.11.1701161677532;
+        Tue, 28 Nov 2023 00:54:37 -0800 (PST)
+Received: from 179c313f1339 ([122.199.31.3])
+        by smtp.gmail.com with ESMTPSA id p24-20020aa78618000000b006926e3dc2besm8331807pfn.108.2023.11.28.00.54.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Nov 2023 00:54:37 -0800 (PST)
+Date: Tue, 28 Nov 2023 08:54:27 +0000
+From: Rudi Heitbaum <rudi@heitbaum.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/525] 6.6.3-rc4 review
+Message-ID: <ZWWqw7BVP5NfY/k1@179c313f1339>
+References: <20231126154418.032283745@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,80 +70,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231128083658.23960-1-hagarhem@amazon.com>
+In-Reply-To: <20231126154418.032283745@linuxfoundation.org>
 
-On Tue, Nov 28, 2023 at 08:36:58AM +0000, Hagar Gamal Halim Hemdan wrote:
-> Coverity spotted that event_msg is controlled by user-space,
-> event_msg->event_data.event is passed to event_deliver() and used
-> as an index without sanitization.
+On Sun, Nov 26, 2023 at 03:46:18PM +0000, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.3 release.
+> There are 525 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> This change ensures that the event index is sanitized to mitigate any
-> possibility of speculative information leaks.
-> 
-> Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
-> 
-> Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/misc/vmw_vmci/vmci_event.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/vmw_vmci/vmci_event.c b/drivers/misc/vmw_vmci/vmci_event.c
-> index 5d7ac07623c2..9a41ab65378d 100644
-> --- a/drivers/misc/vmw_vmci/vmci_event.c
-> +++ b/drivers/misc/vmw_vmci/vmci_event.c
-> @@ -9,6 +9,7 @@
->  #include <linux/vmw_vmci_api.h>
->  #include <linux/list.h>
->  #include <linux/module.h>
-> +#include <linux/nospec.h>
->  #include <linux/sched.h>
->  #include <linux/slab.h>
->  #include <linux/rculist.h>
-> @@ -86,9 +87,12 @@ static void event_deliver(struct vmci_event_msg *event_msg)
->  {
->  	struct vmci_subscription *cur;
->  	struct list_head *subscriber_list;
-> +	u32 sanitized_event, max_vmci_event;
->  
->  	rcu_read_lock();
-> -	subscriber_list = &subscriber_array[event_msg->event_data.event];
-> +	max_vmci_event = ARRAY_SIZE(subscriber_array);
-> +	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-> +	subscriber_list = &subscriber_array[sanitized_event];
->  	list_for_each_entry_rcu(cur, subscriber_list, node) {
->  		cur->callback(cur->id, &event_msg->event_data,
->  			      cur->callback_data);
-> -- 
-> 2.40.1
-> 
-> 
+> Responses should be made by Tue, 28 Nov 2023 15:43:06 +0000.
+> Anything received after that time might be too late.
 
-Hi,
+Hi Greg,
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+6.6.3-rc4 tested.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+Run tested on:
+- Intel Alder Lake x86_64 (nuc12 i7-1260P)
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+In addition - build tested for:
+- Allwinner A64
+- Allwinner H3
+- Allwinner H5
+- Allwinner H6
+- NXP iMX6
+- NXP iMX8
+- Qualcomm Dragonboard
+- Rockchip RK3288
+- Rockchip RK3328
+- Rockchip RK3399pro
+- Samsung Exynos
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
-
-thanks,
-
-greg k-h's patch email bot
+Tested-by: Rudi Heitbaum <rudi@heitbaum.com>
+--
+Rudi
 
