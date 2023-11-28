@@ -1,136 +1,304 @@
-Return-Path: <stable+bounces-2927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DB607FC333
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 19:31:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEB157FC401
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 20:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CF5AB20D64
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 18:31:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A55A9282C35
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 19:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929093D0B7;
-	Tue, 28 Nov 2023 18:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D965B5AA;
+	Tue, 28 Nov 2023 19:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ozCR4vHh"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ovSMu9Rf"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3EA0A7;
-	Tue, 28 Nov 2023 10:31:13 -0800 (PST)
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASI14AL020413;
-	Tue, 28 Nov 2023 18:31:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=corp-2023-11-20;
- bh=NjBC4omnmk3HySOcdOWQ3UdRadp4lA5GOsgoH6PQbKU=;
- b=ozCR4vHhjI24oNeBp8eIOV370YNg1Wz09/La9BLvWjgMxaLP7na4+NhNyITHr/UqRBAq
- gd60q2k0nKEU8RzxMS2VW5WgjP/qt/xVBy/IpPPoD4tNpVD5nZlkR62h98mF/JdtiRpe
- nWohUX77A8KBuaj3Iq/0Njvcme70cIYW4f/HlGLfvjdTu9Bl2pbMuj1uh0u9mUKwdmTI
- iS8AHstWFpJw1y7/BmONT5V1R1tMJtYPwxLRlxr6qO5jUz0AH7lKmr+voo1un0lGGFx7
- NgMvBQaJJBjYKABzgURTTbfbnwdpGeWLqOXJus+Ss6vcTpVH+EaytwsZM0v503f/iPtG vw== 
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3un1rxjj97-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Nov 2023 18:31:00 +0000
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASHZjNX026444;
-	Tue, 28 Nov 2023 18:30:59 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3uk7c72sam-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Nov 2023 18:30:59 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ASIUuVF010887;
-	Tue, 28 Nov 2023 18:30:59 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 3uk7c72s1g-2;
-	Tue, 28 Nov 2023 18:30:58 +0000
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-To: Borislav Petkov <bp@alien8.de>, Tony Luck <tony.luck@intel.com>,
-        James Morse <james.morse@arm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rric@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
-        error27@gmail.com, harshit.m.mogalapalli@oracle.com,
-        stable@vger.kernel.org
-Subject: [PATCH v2 2/2] EDAC/pci_sysfs: Fix calling kobject_put() with ->state_initialized unset
-Date: Tue, 28 Nov 2023 10:30:36 -0800
-Message-ID: <20231128183037.3395755-2-harshit.m.mogalapalli@oracle.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231128183037.3395755-1-harshit.m.mogalapalli@oracle.com>
-References: <20231128183037.3395755-1-harshit.m.mogalapalli@oracle.com>
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26E75C3
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 11:08:08 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cfbce92362so679455ad.1
+        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 11:08:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701198487; x=1701803287; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YAJLLPCiQOibZ73UQ1BZwFP2tcjwrOgux/JfWH0xxzo=;
+        b=ovSMu9RfVm1rPnz4EDxw7wKVhAIcgrj95V78utLXFFb0KotNpK/28GBQsIaIbLhxw5
+         Jj5t5Dr0gCM0iZQx3KnKo8yFF401YOMrOsZBTAdKqRuXh4XhMw+JxDXVMMgv+MJkf+ZT
+         x/yiEEWouNJhkTTKGNeFguLmkmyjYN4JnJ49tv278ZdCAc6jos48uuaias10jv2SaSQr
+         Nw4zdrxCL1+xPQ0IDyt70tid7dYhX2CMtl97fxrZwE2jiNAoLcQ0QrKUXHvDL/dvMsJG
+         nlPyWkLltJNaUY04g1j8RFFtiWEHba8jSHduKLwVv2jYyaoh4DilP65o1MOqRqyKlp8D
+         N3yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701198487; x=1701803287;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YAJLLPCiQOibZ73UQ1BZwFP2tcjwrOgux/JfWH0xxzo=;
+        b=k624uf9c3IM/HD1t9JQWwtZNJN55OG/+njBMBi80JGnoW7jpnONcvLWWcBfJBgJ7eO
+         11WfsGEAn4aD22OyFOO3cf1mJbGsfFh0lltr+gYhYaI/GhAQ+mAumGd8HHm3B5k4h2fx
+         Y37u911thHPetp8oW2hk+QRuGwbTr0u07ahYuchvYmhs+ytgdvHf1XHuwpl/IOEY94Ej
+         T4KOHnuOyunOtrztnobfOH7XaQ24b8SgEpqeZX5VhE4ykmZ9L1nq2rXnF6k8FPDK9jJb
+         J377YDFYqQpS7fYFe/R3JJCI1Djc9vZfDoIYlwxDkDh82B1WCUUWVm3SS6ll68HU/YPk
+         ENBQ==
+X-Gm-Message-State: AOJu0YzdlSpqgCJ0x8FqbROUeZPQuAlKCrym3lx/d9bLwS8LL13WxG/n
+	pTFpqJ1RevfRylKEKf5cZHWfnB+ksrAHHD9DrFk=
+X-Google-Smtp-Source: AGHT+IHGjZXaBJLAPQ0uPqdgNiazJyNtZFJfS1yMOWr2LeLH7bmgMS1nvmvErYqAbmotVCd8QquHCg==
+X-Received: by 2002:a17:90a:17e3:b0:285:6233:112d with SMTP id q90-20020a17090a17e300b002856233112dmr25791266pja.22.1701198487005;
+        Tue, 28 Nov 2023 11:08:07 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id h5-20020a17090ac38500b0028103a63cb6sm9709979pjt.21.2023.11.28.11.08.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Nov 2023 11:08:06 -0800 (PST)
+Message-ID: <65663a96.170a0220.259b6.7650@mx.google.com>
+Date: Tue, 28 Nov 2023 11:08:06 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-28_21,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 spamscore=0 mlxlogscore=999
- bulkscore=0 adultscore=0 phishscore=0 malwarescore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311280148
-X-Proofpoint-GUID: 922_n4DbdFaS5cywe9AW_8rQ1UJ_eMe4
-X-Proofpoint-ORIG-GUID: 922_n4DbdFaS5cywe9AW_8rQ1UJ_eMe4
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/5.4
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.4.261-152-g2c45e8ddb2cce
+Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.261-152-g2c45e8ddb2cce)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-In edac_pci_main_kobj_setup() when dev_root is NULL,
-kobject_init_and_add() is not called.
+stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
+4.261-152-g2c45e8ddb2cce)
 
-        if (err) { // err = -ENODEV;
-                edac_dbg(1, "Failed to register '.../edac/pci'\n");
-                goto kobject_init_and_add_fail; // call to kobject_put()
-        }
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
+/kernel/v5.4.261-152-g2c45e8ddb2cce/
 
-This will cause a runtime warning in kobject_put() if the above happens.
-Warning:
-"kobject: '%s' (%p): is not initialized, yet kobject_put() is being called."
+Tree: stable-rc
+Branch: queue/5.4
+Git Describe: v5.4.261-152-g2c45e8ddb2cce
+Git Commit: 2c45e8ddb2ccefbcda9073771ba2cc1e6d7c62f6
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Fix the error handling to avoid the above possible situation.
+Warnings Detected:
 
-Cc: <stable@vger.kernel.org>
-Fixes: cb4a0bec0bb9 ("EDAC/sysfs: move to use bus_get_dev_root()")
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
+nings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
-This is based on static analysis and only compile tested.
-v1->v2: Resend as a patchset as they fix two similar bugs with modified
-subject.
----
- drivers/edac/edac_pci_sysfs.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/edac/edac_pci_sysfs.c b/drivers/edac/edac_pci_sysfs.c
-index 287cc51dbc86..185ae9eda8a5 100644
---- a/drivers/edac/edac_pci_sysfs.c
-+++ b/drivers/edac/edac_pci_sysfs.c
-@@ -370,12 +370,14 @@ static int edac_pci_main_kobj_setup(void)
- 
- 	/* Instanstiate the pci object */
- 	dev_root = bus_get_dev_root(edac_subsys);
--	if (dev_root) {
--		err = kobject_init_and_add(edac_pci_top_main_kobj,
--					   &ktype_edac_pci_main_kobj,
--					   &dev_root->kobj, "pci");
--		put_device(dev_root);
--	}
-+	if (!dev_root)
-+		goto kzalloc_fail;
-+
-+	err = kobject_init_and_add(edac_pci_top_main_kobj,
-+				   &ktype_edac_pci_main_kobj,
-+				   &dev_root->kobj, "pci");
-+	put_device(dev_root);
-+
- 	if (err) {
- 		edac_dbg(1, "Failed to register '.../edac/pci'\n");
- 		goto kobject_init_and_add_fail;
--- 
-2.42.0
-
+For more info write to <info@kernelci.org>
 
