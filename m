@@ -1,85 +1,152 @@
-Return-Path: <stable+bounces-2946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E457FC69E
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:01:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FACB7FC6B3
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:06:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7533A283139
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:01:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A1A2281B21
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129924438D;
-	Tue, 28 Nov 2023 21:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2415444389;
+	Tue, 28 Nov 2023 21:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+orgIKu"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE2A9D;
-	Tue, 28 Nov 2023 13:01:51 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id EC1771C0050; Tue, 28 Nov 2023 22:01:49 +0100 (CET)
-Date: Tue, 28 Nov 2023 22:01:49 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, stanley_chang@realtek.com
-Subject: Re: [PATCH 6.1 000/366] 6.1.64-rc4 review
-Message-ID: <ZWZVPaIt3EGsDLj7@duo.ucw.cz>
-References: <20231126154359.953633996@linuxfoundation.org>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EA244366;
+	Tue, 28 Nov 2023 21:06:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B08B5C433C8;
+	Tue, 28 Nov 2023 21:06:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701205580;
+	bh=KvPIR5/RgJS18Y9VyiocKdiV2Sj+qnkbBx9d3kX0Ja4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=n+orgIKubMeVDKBTG693l8yMKXzWfgj7sLwYltDan58tZAz/5HAY752808RVuCvh0
+	 j0lzgHF1XUiHP/VVrxHdNrGzv+ujE2WRq6+xNyl2XeLUnWiP7D+5FkinvvHKCreyub
+	 d4kn6lo2dSIW0tCC+DP0XT6B2hamaKngynLefUdA8zL3xxJ1bcC0KF+FgKiyQIWPkA
+	 Jgh2wRVmyoX2MJQxg8ZEWvVGqTNB4mpLEm7F1vYoB4ljK+Q6VhteLnnWqQetE4H0rR
+	 f9cBGBfoPadHxPdSmew0CDp2MhET9lS5bw4/Mw8Oaf5deoE4gazFIRJmwDSA1ByFM0
+	 rj2x84QvjATXA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/40] x86/hyperv: Fix the detection of E820_TYPE_PRAM in a Gen2 VM
+Date: Tue, 28 Nov 2023 16:05:07 -0500
+Message-ID: <20231128210615.875085-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="RzAbNghvS/rgMX0P"
-Content-Disposition: inline
-In-Reply-To: <20231126154359.953633996@linuxfoundation.org>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.3
+Content-Transfer-Encoding: 8bit
 
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
---RzAbNghvS/rgMX0P
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+[ Upstream commit 7e8037b099c0bbe8f2109dc452dbcab8d400fc53 ]
 
-Hi!
+A Gen2 VM doesn't support legacy PCI/PCIe, so both raw_pci_ops and
+raw_pci_ext_ops are NULL, and pci_subsys_init() -> pcibios_init()
+doesn't call pcibios_resource_survey() -> e820__reserve_resources_late();
+as a result, any emulated persistent memory of E820_TYPE_PRAM (12) via
+the kernel parameter memmap=nn[KMG]!ss is not added into iomem_resource
+and hence can't be detected by register_e820_pmem().
 
-> This is the start of the stable review cycle for the 6.1.64 release.
-> There are 366 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Fix this by directly calling e820__reserve_resources_late() in
+hv_pci_init(), which is called from arch_initcall(pci_arch_init).
 
-> Stanley Chang <stanley_chang@realtek.com>
->     usb: dwc3: core: configure TX/RX threshold for DWC3_IP
+It's ok to move a Gen2 VM's e820__reserve_resources_late() from
+subsys_initcall(pci_subsys_init) to arch_initcall(pci_arch_init) because
+the code in-between doesn't depend on the E820 resources.
+e820__reserve_resources_late() depends on e820__reserve_resources(),
+which has been called earlier from setup_arch().
 
-This adds properties such as "snps,rx-thr-num-pkt",
-"snps,tx-thr-num-pkt". They are not documented anywhere, and they are
-not used in 6.1 tree. DTS checkers may eventually find the
-inconsistencies, and this will cause warnings, so it may be good to
-revert this.
+For a Gen-2 VM, the new hv_pci_init() also adds any memory of
+E820_TYPE_PMEM (7) into iomem_resource, and acpi_nfit_register_region() ->
+acpi_nfit_insert_resource() -> region_intersects() returns
+REGION_INTERSECTS, so the memory of E820_TYPE_PMEM won't get added twice.
 
-Best regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+Changed the local variable "int gen2vm" to "bool gen2vm".
 
---RzAbNghvS/rgMX0P
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1699691867-9827-1-git-send-email-ssengar@linux.microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/hyperv/hv_init.c | 25 +++++++++++++++++++++----
+ 1 file changed, 21 insertions(+), 4 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 21556ad87f4ba..8f3a4d16bb791 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -15,6 +15,7 @@
+ #include <linux/io.h>
+ #include <asm/apic.h>
+ #include <asm/desc.h>
++#include <asm/e820/api.h>
+ #include <asm/sev.h>
+ #include <asm/ibt.h>
+ #include <asm/hypervisor.h>
+@@ -286,15 +287,31 @@ static int hv_cpu_die(unsigned int cpu)
+ 
+ static int __init hv_pci_init(void)
+ {
+-	int gen2vm = efi_enabled(EFI_BOOT);
++	bool gen2vm = efi_enabled(EFI_BOOT);
+ 
+ 	/*
+-	 * For Generation-2 VM, we exit from pci_arch_init() by returning 0.
+-	 * The purpose is to suppress the harmless warning:
++	 * A Generation-2 VM doesn't support legacy PCI/PCIe, so both
++	 * raw_pci_ops and raw_pci_ext_ops are NULL, and pci_subsys_init() ->
++	 * pcibios_init() doesn't call pcibios_resource_survey() ->
++	 * e820__reserve_resources_late(); as a result, any emulated persistent
++	 * memory of E820_TYPE_PRAM (12) via the kernel parameter
++	 * memmap=nn[KMG]!ss is not added into iomem_resource and hence can't be
++	 * detected by register_e820_pmem(). Fix this by directly calling
++	 * e820__reserve_resources_late() here: e820__reserve_resources_late()
++	 * depends on e820__reserve_resources(), which has been called earlier
++	 * from setup_arch(). Note: e820__reserve_resources_late() also adds
++	 * any memory of E820_TYPE_PMEM (7) into iomem_resource, and
++	 * acpi_nfit_register_region() -> acpi_nfit_insert_resource() ->
++	 * region_intersects() returns REGION_INTERSECTS, so the memory of
++	 * E820_TYPE_PMEM won't get added twice.
++	 *
++	 * We return 0 here so that pci_arch_init() won't print the warning:
+ 	 * "PCI: Fatal: No config space access function found"
+ 	 */
+-	if (gen2vm)
++	if (gen2vm) {
++		e820__reserve_resources_late();
+ 		return 0;
++	}
+ 
+ 	/* For Generation-1 VM, we'll proceed in pci_arch_init().  */
+ 	return 1;
+-- 
+2.42.0
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZWZVPQAKCRAw5/Bqldv6
-8o4QAKClYXQc2EPmalB52hJlRmqzIOGuLQCeJxy9LQgQImFvh2NPluUrHvt+20Y=
-=vavJ
------END PGP SIGNATURE-----
-
---RzAbNghvS/rgMX0P--
 
