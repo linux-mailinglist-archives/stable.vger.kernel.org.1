@@ -1,44 +1,78 @@
-Return-Path: <stable+bounces-2930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9B27FC439
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 20:22:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 437817FC437
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 20:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68178B214C0
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 19:22:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CC1E1C20CC5
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 19:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AF446B92;
-	Tue, 28 Nov 2023 19:22:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE7F46B94;
+	Tue, 28 Nov 2023 19:22:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njcWyGBZ"
 X-Original-To: stable@vger.kernel.org
-Received: from ciao.gmane.io (ciao.gmane.io [116.202.254.214])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D673D66
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 11:22:35 -0800 (PST)
-Received: from list by ciao.gmane.io with local (Exim 4.92)
-	(envelope-from <glks-stable4@m.gmane-mx.org>)
-	id 1r83fE-0003fI-N7
-	for stable@vger.kernel.org; Tue, 28 Nov 2023 20:22:32 +0100
-X-Injected-Via-Gmane: http://gmane.org/
-To: stable@vger.kernel.org
-From: =?UTF-8?Q?Fran=C3=A7ois_Valenduc?= <francoisvalenduc@gmail.com>
-Subject: Re: Linux 6.1.64
-Date: Tue, 28 Nov 2023 20:22:22 +0100
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 071F1172E;
+	Tue, 28 Nov 2023 11:22:27 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-3330bd1e9ecso245005f8f.0;
+        Tue, 28 Nov 2023 11:22:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701199345; x=1701804145; darn=vger.kernel.org;
+        h=in-reply-to:from:content-language:references:newsgroups:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GGEd1LKPk1taRXyHn/u5FYCm8ct3CDj6xi+RPFwfC8M=;
+        b=njcWyGBZfSdqZafeIDRc5S04r3inNgqf9a3je7qEaSdmM8ypWVBkQ69RJIdZ129Y+D
+         2yN0JNL7bxw2/1DTqL8qSi7dmjSicwDiQ/7ntvF1h2z0MSdpxTZTHlpYz9fnNkq+Z75H
+         G2zA/vyUgAfLWcWzyQLi9WcyoPexwhirLrSnm0/zSyZrd2HFn440rbVmhF8drMPhDpjN
+         iy8OIvzalQ50ta6Tai69iPNwPIgYy1UeQ2/q89j5cG/Ci8A5NOtnY9Ju0G87uTxDVXPb
+         Lz7uEDPtvY5zeY/OxYzGIF0d9Bbl9HCMyn9ibJ/Cu9nggmQnHKpjb7Z/9If2158yJUvF
+         4lMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701199345; x=1701804145;
+        h=in-reply-to:from:content-language:references:newsgroups:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GGEd1LKPk1taRXyHn/u5FYCm8ct3CDj6xi+RPFwfC8M=;
+        b=s1WGOknVv+0SwEDWQ8jVo0omAwezLBJVGOT68p8T+P1CeORafkRn917lwrOdeMHpfY
+         PEB9Bfj9LqVIKjNVicOsErmVEJ5NtU/XQNqfE3Be7AkAYQZDn6ERuExzHxTtlSLJhU4v
+         VB62/PHCQ91xnxeIlqbCHV5gDhXgLIOcQP/iRx2NT5BJEjxfWAmqiVnu+kviqBnfsyAK
+         bU+7UM22wBQU+p0jsVeI2LBt+GBO3MCx/uD3jaXr18EsDLtw0cfL0hOssloK/bIhZSyN
+         RRnY4AwzjkTdluiujIX5D710bcpJ4M00NxCvqVwIbLiK6zEtV50j3TT7UOSd/pJaZdeD
+         G3kw==
+X-Gm-Message-State: AOJu0YyXSeNPindbATkStaRMAEEQFm5UyisiQX2mlRVUD+5ViQsqK7ac
+	HO26CHuA4gnWot2CanX+mCw=
+X-Google-Smtp-Source: AGHT+IEdIrZ145mJfGyp77hmbM7CGlW7bJsfd+7e9NRJLuUbHv9/zD7o78wE21k16o9i0l6fpZq+uQ==
+X-Received: by 2002:adf:a10f:0:b0:333:db:dc20 with SMTP id o15-20020adfa10f000000b0033300dbdc20mr5277166wro.4.1701199344736;
+        Tue, 28 Nov 2023 11:22:24 -0800 (PST)
+Received: from ?IPV6:2a02:2788:416:318:a650:c5d8:5f59:d6? ([2a02:2788:416:318:a650:c5d8:5f59:d6])
+        by smtp.gmail.com with ESMTPSA id t5-20020a5d49c5000000b00327b5ca093dsm15718571wrs.117.2023.11.28.11.22.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Nov 2023 11:22:24 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------qYcSrBBHm10BmvZ01XJ97mIE"
 Message-ID: <7f07bb2d-bb00-4774-8cc0-d66b7210380c@gmail.com>
-References: <2023112826-glitter-onion-8533@gregkh>
+Date: Tue, 28 Nov 2023 20:22:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: multipart/mixed; boundary="------------qYcSrBBHm10BmvZ01XJ97mIE"
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: Linux 6.1.64
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc: lwn@lwn.net, jslaby@suse.cz
+Newsgroups: gmane.linux.kernel.stable,gmane.linux.kernel
+References: <2023112826-glitter-onion-8533@gregkh>
 Content-Language: fr-FR
+From: =?UTF-8?Q?Fran=C3=A7ois_Valenduc?= <francoisvalenduc@gmail.com>
 In-Reply-To: <2023112826-glitter-onion-8533@gregkh>
-Cc: linux-kernel@vger.kernel.org
 
 This is a multi-part message in MIME format.
 --------------qYcSrBBHm10BmvZ01XJ97mIE
@@ -3586,5 +3620,4 @@ YWdlCgojCiMgUnVzdCBoYWNraW5nCiMKIyBlbmQgb2YgUnVzdCBoYWNraW5nCiMgZW5kIG9m
 IEtlcm5lbCBoYWNraW5nCg==
 
 --------------qYcSrBBHm10BmvZ01XJ97mIE--
-
 
