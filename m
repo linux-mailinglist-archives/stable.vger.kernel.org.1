@@ -1,84 +1,185 @@
-Return-Path: <stable+bounces-3093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A977FC8FE
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 23:01:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1C67FC8F0
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 23:00:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D558A1C20E74
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:01:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 053BA282781
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0399481AD;
-	Tue, 28 Nov 2023 22:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CF2481AC;
+	Tue, 28 Nov 2023 21:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d6JXJw/F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0nloBYl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1986F198
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 14:01:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701208895; x=1732744895;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=5KI3is8YLLHz1vFiO6Rb3+hK1YP9s0d+k3YCz6I9Rm0=;
-  b=d6JXJw/Fcwa6Fj2Vl83OweQOYN6lmXQI2wyreXD3ZpvDSDx3chR6k4ja
-   dJXaR8YEk+bQgem6Bdy/838LwBzMHFujT1w+R+0mnYbdheI0ucFAXfX+0
-   3TpbzAMbZEx8Erq2w7K0t4v3sbguYhqvOwasd97RBlY6B88ml2i0K4eHD
-   1tJ2jdOrLvm6DzEWE3jwlMi2dogkJXrjoWgBAlY4JucF8Taa27SvQ3CFi
-   adTralhvR5ec7NmfxH/N9iJJcgXUxxy9e7UjgiIjxE0l2vs75Lj2RC7Jq
-   Gewf3kuBLCV+iHkx5MP/pRJIeCACXx70MiI+ltlAprDpUvpszanukA+tI
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="373221026"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="373221026"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 14:01:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="718531332"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="718531332"
-Received: from lkp-server01.sh.intel.com (HELO d584ee6ebdcc) ([10.239.97.150])
-  by orsmga003.jf.intel.com with ESMTP; 28 Nov 2023 14:01:33 -0800
-Received: from kbuild by d584ee6ebdcc with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r8694-0008Ae-2U;
-	Tue, 28 Nov 2023 22:01:30 +0000
-Date: Wed, 29 Nov 2023 05:59:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Chuck Lever <cel@kernel.org>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/2] NFSD: Fix "start of NFS reply" pointer passed to
- nfsd_cache_update()
-Message-ID: <ZWZi2y1vDXZF9BBJ@520bc4c78bef>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6274544390;
+	Tue, 28 Nov 2023 21:59:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAD1C433C7;
+	Tue, 28 Nov 2023 21:59:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701208799;
+	bh=H5pH+G0/mC26D2UISmtxczw1Tof4hLeZk9aPvkUQ93I=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=Z0nloBYltk3AiBXK5remPzYzVDx/Zrs8mRzWw4p19M4oMQIfdb4TZHt5V3nvqkEpS
+	 DVCfapD4gQYNae9PoyjT5H2L9hliL72jKdMmmaP9YcW+pzKvvwO/laLexAK40klqMD
+	 83XjryL4EylSBDH8dPKFjROgKT2vxZCVKeU50ljhH5lsMHBPNnM8lH1pLipXv5Bb0Y
+	 aSoIH7gvb690WqtUdjou7HmvJH/T9HSXrrE7ngz8tGFS7gWD+HkKFiJEFPecBFEBnZ
+	 TLNLjXLq1Z0fePgj+Lk4lhhY3FnXdQn1mQrT4wwn34z3+ElLA7eNSNGolPZmwovXNF
+	 Bw0H60Ii82HHQ==
+Subject: [PATCH 4/8] NFSD: Refactor the duplicate reply cache shrinker
+From: Chuck Lever <cel@kernel.org>
+To: stable@vger.kernel.org
+Cc: linux-nfs@vger.kernel.org
+Date: Tue, 28 Nov 2023 16:59:58 -0500
+Message-ID: 
+ <170120879800.1515.15350509894290203882.stgit@klimt.1015granger.net>
+In-Reply-To: 
+ <170120874713.1515.13712791731008720729.stgit@klimt.1015granger.net>
+References: 
+ <170120874713.1515.13712791731008720729.stgit@klimt.1015granger.net>
+User-Agent: StGit/1.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <170120871426.1376.10151990384789497254.stgit@klimt.1015granger.net>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-Hi,
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Thanks for your patch.
+[ Upstream commit c135e1269f34dfdea4bd94c11060c83a3c0b3c12 ]
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Avoid holding the bucket lock while freeing cache entries. This
+change also caps the number of entries that are freed when the
+shrinker calls to reduce the shrinker's impact on the cache's
+effectiveness.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/nfsd/nfscache.c |   82 +++++++++++++++++++++++++---------------------------
+ 1 file changed, 39 insertions(+), 43 deletions(-)
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/2] NFSD: Fix "start of NFS reply" pointer passed to nfsd_cache_update()
-Link: https://lore.kernel.org/stable/170120871426.1376.10151990384789497254.stgit%40klimt.1015granger.net
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+diff --git a/fs/nfsd/nfscache.c b/fs/nfsd/nfscache.c
+index 9dfa2c03b712..8aab82ca798b 100644
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -310,68 +310,64 @@ nfsd_prune_bucket_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
+ 	}
+ }
+ 
+-static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
+-			 unsigned int max)
++/**
++ * nfsd_reply_cache_count - count_objects method for the DRC shrinker
++ * @shrink: our registered shrinker context
++ * @sc: garbage collection parameters
++ *
++ * Returns the total number of entries in the duplicate reply cache. To
++ * keep things simple and quick, this is not the number of expired entries
++ * in the cache (ie, the number that would be removed by a call to
++ * nfsd_reply_cache_scan).
++ */
++static unsigned long
++nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
+ {
+-	struct svc_cacherep *rp, *tmp;
+-	long freed = 0;
++	struct nfsd_net *nn = container_of(shrink,
++				struct nfsd_net, nfsd_reply_cache_shrinker);
+ 
+-	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
+-		/*
+-		 * Don't free entries attached to calls that are still
+-		 * in-progress, but do keep scanning the list.
+-		 */
+-		if (rp->c_state == RC_INPROG)
+-			continue;
+-		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
+-		    time_before(jiffies, rp->c_timestamp + RC_EXPIRE))
+-			break;
+-		nfsd_reply_cache_free_locked(b, rp, nn);
+-		if (max && freed++ > max)
+-			break;
+-	}
+-	return freed;
++	return atomic_read(&nn->num_drc_entries);
+ }
+ 
+-/*
+- * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
+- * Also prune the oldest ones when the total exceeds the max number of entries.
++/**
++ * nfsd_reply_cache_scan - scan_objects method for the DRC shrinker
++ * @shrink: our registered shrinker context
++ * @sc: garbage collection parameters
++ *
++ * Free expired entries on each bucket's LRU list until we've released
++ * nr_to_scan freed objects. Nothing will be released if the cache
++ * has not exceeded it's max_drc_entries limit.
++ *
++ * Returns the number of entries released by this call.
+  */
+-static long
+-prune_cache_entries(struct nfsd_net *nn)
++static unsigned long
++nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
+ {
++	struct nfsd_net *nn = container_of(shrink,
++				struct nfsd_net, nfsd_reply_cache_shrinker);
++	unsigned long freed = 0;
++	LIST_HEAD(dispose);
+ 	unsigned int i;
+-	long freed = 0;
+ 
+ 	for (i = 0; i < nn->drc_hashsize; i++) {
+ 		struct nfsd_drc_bucket *b = &nn->drc_hashtbl[i];
+ 
+ 		if (list_empty(&b->lru_head))
+ 			continue;
++
+ 		spin_lock(&b->cache_lock);
+-		freed += prune_bucket(b, nn, 0);
++		nfsd_prune_bucket_locked(nn, b, 0, &dispose);
+ 		spin_unlock(&b->cache_lock);
+-	}
+-	return freed;
+-}
+ 
+-static unsigned long
+-nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
+-{
+-	struct nfsd_net *nn = container_of(shrink,
+-				struct nfsd_net, nfsd_reply_cache_shrinker);
++		freed += nfsd_cacherep_dispose(&dispose);
++		if (freed > sc->nr_to_scan)
++			break;
++	}
+ 
+-	return atomic_read(&nn->num_drc_entries);
++	trace_nfsd_drc_gc(nn, freed);
++	return freed;
+ }
+ 
+-static unsigned long
+-nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
+-{
+-	struct nfsd_net *nn = container_of(shrink,
+-				struct nfsd_net, nfsd_reply_cache_shrinker);
+-
+-	return prune_cache_entries(nn);
+-}
+ /*
+  * Walk an xdr_buf and get a CRC for at most the first RC_CSUMLEN bytes
+  */
 
 
 
