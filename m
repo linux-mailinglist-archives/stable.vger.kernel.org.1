@@ -1,70 +1,47 @@
-Return-Path: <stable+bounces-2859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D60247FB234
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 07:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECDF27FB2B5
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 08:28:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12AED1C20A66
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 06:57:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A46E1C20AB1
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 07:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB49DDB0;
-	Tue, 28 Nov 2023 06:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A89134C4;
+	Tue, 28 Nov 2023 07:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="HMI2dGkF";
-	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="o6M7FxII"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eqISXMNY"
 X-Original-To: stable@vger.kernel.org
-Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB474E1;
-	Mon, 27 Nov 2023 22:57:07 -0800 (PST)
-Received: by nautica.notk.org (Postfix, from userid 108)
-	id 0C074C021; Tue, 28 Nov 2023 07:57:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1701154626; bh=YtDBcs5dtkWgUo26OHvbwJYV3lr3fRfrqBl2F/PC0/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HMI2dGkFHgLFWjaUMf8uaer8VNpkdTIowJXf3uGh/i2zw4/Z9slr9TuUDp+gwZnh6
-	 XznizYjUTLDH/grrsJDs3utkoRLn/+1iSkKvRS6DI2nAnehJpmamuOFmvJRE/Z73hW
-	 A6szscKoE4i2mxgvt7Qv3y+t1RmhEcdz+/f6vrtHyrFFBBMbT9dEF/mkX+8xPDToWx
-	 KA95zOFf0Yliyx4XG2vq+nh3Fwisks+MXR9AG7KwCt76yOzVGy0qR/PICb+mH81VD3
-	 NdI3SV5RXLCA4jkj9dSIGB4rIHfGSlU0Dwa0aiBzv5ERzRKMnuceBI9VR4SOsOwx1g
-	 GeIFYl+BiUAKQ==
-X-Spam-Level: 
-Received: from gaia (localhost [127.0.0.1])
-	by nautica.notk.org (Postfix) with ESMTPS id CFDF1C009;
-	Tue, 28 Nov 2023 07:56:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
-	t=1701154624; bh=YtDBcs5dtkWgUo26OHvbwJYV3lr3fRfrqBl2F/PC0/w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o6M7FxIIUe/jHiaWMxCnhFBOBhiWkFKS13urGaHJY202myA+AiZfWsA84MzfC3UBU
-	 B0ep5VRlXqTamW/NXFg0I7n8AztHaMrJKkD/j7j3fVCz7OzXI+StfcL4mlG7VpF1Jy
-	 39mYKBfn3hOQDgQWxApyIO864BuEfyGC4Hj6UXOq7Xk+cqhi4C55IJIQar/5zV0yvQ
-	 UmfEteoXpiirASUwimbGRaDQpGvq0yGZW4Pv+n/IcDZj28J3p3gkFd6yrpkU/HvFR2
-	 CCYaSJyWVcUog+sRuXl7R4DsHJHR6GsyI7VIJlnJe2TwLEZjlC3Bw/ht25n3tqaOKI
-	 D3b0xAxQGxinw==
-Received: from localhost (gaia [local])
-	by gaia (OpenSMTPD) with ESMTPA id 7fc12b28;
-	Tue, 28 Nov 2023 06:56:53 +0000 (UTC)
-Date: Tue, 28 Nov 2023 15:56:38 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Pavel Machek <pavel@denx.de>, youwan Wang <wangyouwan@126.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, maz@kernel.org, andy.shevchenko@gmail.com,
-	brgl@bgdev.pl, wangyouwan@126.com, jani.nikula@intel.com,
-	rf@opensource.cirrus.com, ilpo.jarvinen@linux.intel.com,
-	dan.carpenter@linaro.org
-Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
-Message-ID: <ZWWPJtXZ12WuTtd1@codewreck.org>
-References: <20231126154335.643804657@linuxfoundation.org>
- <ZWUJWhOkbHlwC2YB@duo.ucw.cz>
+X-Greylist: delayed 549 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 27 Nov 2023 23:28:32 PST
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 049458E
+	for <stable@vger.kernel.org>; Mon, 27 Nov 2023 23:28:31 -0800 (PST)
+Date: Tue, 28 Nov 2023 15:19:13 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1701155958;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h8uqJSYQwjFCUay41Ix8e7EVNe5lKSgbz8vntysNfGs=;
+	b=eqISXMNY5sRQ6TCaHK/RJ9QeGTChM9TJ+coBuLYWGjnrICGfyKt4T0KDWdxlfrbf1rGxT4
+	0KPunZldfaj/Dsray/xZR30B1ahE5dyIuSDWUM9jNOrUMGT5uTUuagqahAdHKctz39d4vY
+	Ny0CVMfwlwBYGmvRRlxWj0ZtjHCZugA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Cai Huoqing <cai.huoqing@linux.dev>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: airlied@gmail.com, daniel@ffwll.ch, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, dri-devel@lists.freedesktop.org,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Dave Airlie <airlied@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 01/14] arch/powerpc: Remove legacy DRM drivers from
+ default configs
+Message-ID: <ZWWUcRWemEFmJbmS@chq-MS-7D45>
+References: <20231122122449.11588-1-tzimmermann@suse.de>
+ <20231122122449.11588-2-tzimmermann@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,44 +50,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ZWUJWhOkbHlwC2YB@duo.ucw.cz>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231122122449.11588-2-tzimmermann@suse.de>
+X-Migadu-Flow: FLOW_OUT
 
-Pavel Machek wrote on Mon, Nov 27, 2023 at 10:25:46PM +0100:
-> > Marc Zyngier <maz@kernel.org>
-> >     gpio: Don't fiddle with irqchips marked as immutable
->
-> This is attempt to move people to new API, which will cause warning
-> for existing users. "chip_warn(gc, "not an immutable chip, please
-> consider fixing it!\n");". It is marked as dependency of another
-> patch, but I'm not sure we should be doing this in stable.
-
-And this actually did make some tests fail on tegra (other branch on
-this thread), it's probably safer to drop the gpio patches unless we're
-prepared to backport all the "make immutable" patches as well.
-
-(I don't see why it'd be required for dc3115e6c5d9 either but I didn't
-look all that close)
-
-
-> > youwan Wang <wangyouwan@126.com>
-> >     Bluetooth: btusb: Add date->evt_skb is NULL check
+On 22 11月 23 13:09:30, Thomas Zimmermann wrote:
+> DRM drivers for user-space modesetting have been removed. Do not
+> select the respective options in the default configs.
 > 
-> Could someone double check this? If we hit the null check, we'll be
-> returning success, but it sounds like an error case.
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: a276afc19eec ("drm: Remove some obsolete drm pciids(tdfx, mga, i810, savage, r128, sis, via)")
 
-I agree with your analysis; added Youwan and Luiz in recipients.
+Reviewed-by: Cai Huoqing <cai.huoqing@linux.dev>
 
-btusb_mtk_hci_wmt_sync will return 0 if the skb is null here -- should
-this be setting err = -EINVAL or something?
-
-> > Jani Nikula <jani.nikula@intel.com>
-> >     drm/msm/dp: skip validity check for DP CTS EDID checksum
+> Cc: Cai Huoqing <cai.huoqing@linux.dev>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Dave Airlie <airlied@redhat.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.3+
+> ---
+>  arch/powerpc/configs/pmac32_defconfig | 2 --
+>  arch/powerpc/configs/ppc6xx_defconfig | 7 -------
+>  2 files changed, 9 deletions(-)
 > 
-> This is preparation for future cleanup, do we need it?
-
-(For cleanup patches I'd say if it makes future backports easier it
-doesn't hurt to take them)
-
--- 
-Dominique Martinet | Asmadeus
+> diff --git a/arch/powerpc/configs/pmac32_defconfig b/arch/powerpc/configs/pmac32_defconfig
+> index 57ded82c28409..e41e7affd2482 100644
+> --- a/arch/powerpc/configs/pmac32_defconfig
+> +++ b/arch/powerpc/configs/pmac32_defconfig
+> @@ -188,8 +188,6 @@ CONFIG_AGP=m
+>  CONFIG_AGP_UNINORTH=m
+>  CONFIG_DRM=m
+>  CONFIG_DRM_RADEON=m
+> -CONFIG_DRM_LEGACY=y
+> -CONFIG_DRM_R128=m
+>  CONFIG_FB=y
+>  CONFIG_FB_OF=y
+>  CONFIG_FB_CONTROL=y
+> diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
+> index f279703425d45..e680cd086f0e8 100644
+> --- a/arch/powerpc/configs/ppc6xx_defconfig
+> +++ b/arch/powerpc/configs/ppc6xx_defconfig
+> @@ -678,13 +678,6 @@ CONFIG_AGP=y
+>  CONFIG_AGP_UNINORTH=y
+>  CONFIG_DRM=m
+>  CONFIG_DRM_RADEON=m
+> -CONFIG_DRM_LEGACY=y
+> -CONFIG_DRM_TDFX=m
+> -CONFIG_DRM_R128=m
+> -CONFIG_DRM_MGA=m
+> -CONFIG_DRM_SIS=m
+> -CONFIG_DRM_VIA=m
+> -CONFIG_DRM_SAVAGE=m
+>  CONFIG_FB=y
+>  CONFIG_FB_CIRRUS=m
+>  CONFIG_FB_OF=y
+> -- 
+> 2.42.1
+> 
 
