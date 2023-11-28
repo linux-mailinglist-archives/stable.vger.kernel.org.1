@@ -1,109 +1,89 @@
-Return-Path: <stable+bounces-2895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75F307FBAFF
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 14:11:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2304B7FBB02
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 14:12:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6053B214D9
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 13:11:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5337D1C210F6
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 13:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12AE5647E;
-	Tue, 28 Nov 2023 13:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662EA56765;
+	Tue, 28 Nov 2023 13:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z8DeZ0Az"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZxYs+qq6"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F4205D4B;
-	Tue, 28 Nov 2023 05:11:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701177062; x=1732713062;
-  h=date:from:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=W/qpGnBzy7ezU7GIo/j4bVFtt1My8WartS/I7Lj/zZo=;
-  b=Z8DeZ0AzQALy7516Yam2sD9lML/A2n4ZmTmAmk2HQ28y2SCw+vdOQhWI
-   2YcCL0ObLFFXLux0/sS/j6y3gBjpfwB00oiElaM0K/lZZE+2ixPLmloCz
-   FPVEkayESqjZ6/BDtnTKNtWMw4QejMUBpGJCyvc2p7mD4NSbWJ66ZAUj3
-   Dy30WJZmgNYHeEGUHkJumjKIKQKinfGVnZE03buflFLOXdxO3nEqslimd
-   kmWR8ds6YEdZy2/hwrwP5OA/14EHSCCto9LgJWCgpvo+FrbLYHLVGjZo2
-   WiVRPqi62nf7/0My50mFfIS6FIRI/UHLq+KaayaA1vDc+qS6O1k8fSooE
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="383305461"
-X-IronPort-AV: E=Sophos;i="6.04,233,1695711600"; 
-   d="scan'208";a="383305461"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 05:11:01 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10907"; a="772305939"
-X-IronPort-AV: E=Sophos;i="6.04,233,1695711600"; 
-   d="scan'208";a="772305939"
-Received: from haslam-mobl1.ger.corp.intel.com ([10.252.43.79])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 05:10:55 -0800
-Date: Tue, 28 Nov 2023 15:10:53 +0200 (EET)
-From: =?ISO-8859-15?Q?Ilpo_J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Pavel Machek <pavel@denx.de>
-cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
-    patches@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>, 
-    torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-    linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-    lkft-triage@lists.linaro.org, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-    sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
-    conor@kernel.org, allen.lkml@gmail.com, alexander.deucher@amd.com, 
-    mario.limonciello@amd.com, zhujun2@cmss.chinamobile.com, sashal@kernel.org, 
-    skhan@linuxfoundation.org, bhelgaas@google.com
-Subject: Re: [PATCH 4.14 00/53] 4.14.331-rc2 review
-In-Reply-To: <ZWUBaYipygLMkfjz@duo.ucw.cz>
-Message-ID: <f4a7634-3d34-af29-36ca-6f3439b4ce9@linux.intel.com>
-References: <20231125163059.878143365@linuxfoundation.org> <ZWUBaYipygLMkfjz@duo.ucw.cz>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6230BD5D
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 05:12:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701177150;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=qXxb/9aW5dF9T0+/0/0Z8yiaKkAgv6wDXHWvegv7WGI=;
+	b=ZxYs+qq6e6NEpFlgJvJo1Z3AHGiuJ7pFNK0zdUr0NEjbkjwImr9DOq62rLINjITaQaA/YI
+	Kzruf6KVa9dVGPNEpkSJrrlh20Nmze3qV1GsCJWnSsNZGTJobHM87vsdybotM8+TYN27Mn
+	NsWZ61VilcgLtzGTTJiUYHxP6aLv8iw=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-648-D9dHl6JlP2y09cjXCz0Pdg-1; Tue, 28 Nov 2023 08:12:29 -0500
+X-MC-Unique: D9dHl6JlP2y09cjXCz0Pdg-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-679ceb85c6cso79606326d6.0
+        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 05:12:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701177148; x=1701781948;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qXxb/9aW5dF9T0+/0/0Z8yiaKkAgv6wDXHWvegv7WGI=;
+        b=JnVofhQ+mWubIkiBrNGKTc7n4ycGQFKiRkl1sAhJiYXYsncH5DmFMhLN0CUBaQCrN6
+         N66kEMaHk97txMldTMs9PeeaDdDhWHRWFwxdm/RvUnMFwwhWxJOXrwspmqdEudsn0c4G
+         412CChU0+YnFbpBk6TFtWxtoq4z+LNOB8CscVzm5k1YQrdmJ+8+VQFs8LAv4082hJlUo
+         1Jp+GuhzcYxPAsw2YRZ+lidGrFE9IzdKd0Zwqr1gK4Aozjd6nhl5BZnyt4zo8fV0LM/N
+         fwszAnEpjMQwpehKr1S/YOkAiKhWAaoXQWTGsZBAYIRUjj9R12MVbT9cagSbMOi1RGZ1
+         r3wA==
+X-Gm-Message-State: AOJu0Yxnkg1z/Dx+M8QtP4edwDAPhLcf+WgjcP7kcardy3KCCLXzk7eZ
+	+Zc0HM/2peWWBTIsaAAfVHoWPOYlBImnObR7FYm9eFDiWhQoxKQh61PS5096EFBNpEuGWwhHJHj
+	WlfzW2C0HlANQ3iNh
+X-Received: by 2002:a0c:e605:0:b0:67a:1c5d:70c5 with SMTP id z5-20020a0ce605000000b0067a1c5d70c5mr15510086qvm.51.1701177148782;
+        Tue, 28 Nov 2023 05:12:28 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHhwLeA3QAWHZn4/cB/3/RUlVLlqRRrnC6QUTwMYyMqk3FZk2smhrubfPC9mUZkQIXyXo0ykw==
+X-Received: by 2002:a0c:e605:0:b0:67a:1c5d:70c5 with SMTP id z5-20020a0ce605000000b0067a1c5d70c5mr15510075qvm.51.1701177148595;
+        Tue, 28 Nov 2023 05:12:28 -0800 (PST)
+Received: from rh (p200300c93f306f0016d68197cd5f6027.dip0.t-ipconnect.de. [2003:c9:3f30:6f00:16d6:8197:cd5f:6027])
+        by smtp.gmail.com with ESMTPSA id ph25-20020a0562144a5900b0067a18544c41sm4095166qvb.58.2023.11.28.05.12.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Nov 2023 05:12:28 -0800 (PST)
+Date: Tue, 28 Nov 2023 14:12:23 +0100 (CET)
+From: Sebastian Ott <sebott@redhat.com>
+To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
+cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Mathias Nyman <mathias.nyman@intel.com>, 
+    Mario Limonciello <mario.limonciello@amd.com>, 
+    Basavaraj Natikar <Basavaraj.Natikar@amd.com>, 
+    Sasha Levin <sashal@kernel.org>
+Subject: usb hotplug broken on v6.5.12
+Message-ID: <2c978ede-5e2f-b630-e126-4c19bd6278dc@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1757973175-1701176421=:1797"
-Content-ID: <f1416554-45a2-88f4-cbbe-be3bf3f8463f@linux.intel.com>
+Content-Type: text/plain; format=flowed; charset=US-ASCII
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hej,
 
---8323329-1757973175-1701176421=:1797
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: 8BIT
-Content-ID: <e158dfad-df96-d4e1-9415-2ce71679a57@linux.intel.com>
+usb hotplug doesn't work for me running stable kernel v6.5.12 on an AMD
+based Thinkpad t495s. Bisect pointed to 7b8ae3c24ef ("xhci: Loosen RPM as
+default policy to cover for AMD xHC 1.1") - which is 4baf1218150 upstream.
 
-On Mon, 27 Nov 2023, Pavel Machek wrote:
+Reverting that from 6.5.12 fixes the issue for me.
+Current upstream rc kernel contains this patch but doesn't show the issue.
 
-> Hi!
-> 
-> > This is the start of the stable review cycle for the 4.14.331 release.
-> > There are 53 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
+Regards,
+Sebastian
 
-> > Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> >     RDMA/hfi1: Use FIELD_GET() to extract Link Width
-> 
-> This is a good cleanup, but not a bugfix.
-> 
-> > Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> >     atm: iphase: Do PCI error checks on own line
-> 
-> Just a cleanup, not sure why it was picked for stable.
-
-Just an additional bit of information, there have been quite many cleanups 
-from me which have recently gotten the stable notification for some 
-mysterious reason. When I had tens of them in my inbox and for various 
-kernel versions, I immediately stopped caring to stop it from happening.
-
-AFAIK, I've not marked those for stable inclusion so I've no idea what
-got them included.
-
-
--- 
- i.
---8323329-1757973175-1701176421=:1797--
 
