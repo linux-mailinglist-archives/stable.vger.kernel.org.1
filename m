@@ -1,51 +1,57 @@
-Return-Path: <stable+bounces-2988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7157FC70B
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:08:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A1E7FC70E
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:08:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB692870A2
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:08:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CA5C1B2505D
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDB742A8A;
-	Tue, 28 Nov 2023 21:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA01242ABC;
+	Tue, 28 Nov 2023 21:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lqpzc1kW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DW17Ibtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FBD4436E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CB74436E;
+	Tue, 28 Nov 2023 21:08:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92ECBC433C9;
 	Tue, 28 Nov 2023 21:07:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECAF0C433CC;
-	Tue, 28 Nov 2023 21:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205678;
-	bh=VF+FqZDwC1y4zaNtTATkaYq4JV+XiOLwLQAQ5id2JQw=;
+	s=k20201202; t=1701205680;
+	bh=yALPx1clsSjw3MvJ0Uiu/tLK0uzvuU1ZwBeCGgp4gq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lqpzc1kWtSYhAEQr0lIPkZ/dp/fOgsmlLYger++SzFg4jKGmzTS1yHTR7HH6LE/wy
-	 FbcVr77ngO7p7TKKh2ZYGzk0VIjiWngCAh/tbREwR2X6ncf7ignOIupvFRzW1GgIaA
-	 Fm+OxX+bRO7GSBu8wBHl6ZkSn/kaQWSQDKAEBcdqAhwMDJIssyBz9ugYca3O8GTFU+
-	 g5quIxbJsoyZhuRMUMSr29vIsmQ2m4YVClGJ2pWxp8ih54gWXVhyfS7HyNc2/qe4ei
-	 Q+eo3gf8Eyo94Tob2N5JctSPKT+DXtUjpxQVlySUKMnxtejuXzS1djEuAlatoAkmHC
-	 KwFPg7mxZYsGQ==
+	b=DW17IbtxPtEfvv8lb1Zftvafdptlb18d7LMe2R2HothpRI+fNnWDBz3iH2DAbRpcV
+	 sVKu9JIzfUTy2Fml3GcvITQG2O5C4myOmIFNGZwJHiQFfysRyppaQY22T34be2HElE
+	 wSeQ2VA4gNIKJYGoa+FSYbmbSwPkL9A/NyVmiklFK7+JW2WfvTzgRg4AxlegLyE44G
+	 xMPgMcG/sdC3nyU72HdDLm0wVAT9fLK0K9r3eeIKPrOMjJ6Yofe9MrE3/4g903bFoe
+	 1OAmCji1g6xk6iNFYDERKzb3taPzjR5UZ9cuX1Ocr0yGFj4Pm6EGyEzBDg08I4ahdZ
+	 iMCwBBwBTmQEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>,
+Cc: Jean Delvare <jdelvare@suse.de>,
+	Keguang Zhang <keguang.zhang@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
+	alexandre.torgue@foss.st.com,
+	joabreu@synopsys.com,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 02/25] usb: aqc111: check packet for fixup for true limit
-Date: Tue, 28 Nov 2023 16:07:18 -0500
-Message-ID: <20231128210750.875945-2-sashal@kernel.org>
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 03/25] stmmac: dwmac-loongson: Add architecture dependency
+Date: Tue, 28 Nov 2023 16:07:19 -0500
+Message-ID: <20231128210750.875945-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231128210750.875945-1-sashal@kernel.org>
 References: <20231128210750.875945-1-sashal@kernel.org>
@@ -60,56 +66,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.64
 Content-Transfer-Encoding: 8bit
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jean Delvare <jdelvare@suse.de>
 
-[ Upstream commit ccab434e674ca95d483788b1895a70c21b7f016a ]
+[ Upstream commit 7fbd5fc2b35a8f559a6b380dfa9bcd964a758186 ]
 
-If a device sends a packet that is inbetween 0
-and sizeof(u64) the value passed to skb_trim()
-as length will wrap around ending up as some very
-large value.
+Only present the DWMAC_LOONGSON option on architectures where it can
+actually be used.
 
-The driver will then proceed to parse the header
-located at that position, which will either oops or
-process some random value.
+This follows the same logic as the DWMAC_INTEL option.
 
-The fix is to check against sizeof(u64) rather than
-0, which the driver currently does. The issue exists
-since the introduction of the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Cc: Keguang Zhang <keguang.zhang@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index a017e9de2119d..7b8afa589a53c 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1079,17 +1079,17 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 	u16 pkt_count = 0;
- 	u64 desc_hdr = 0;
- 	u16 vlan_tag = 0;
--	u32 skb_len = 0;
-+	u32 skb_len;
- 
- 	if (!skb)
- 		goto err;
- 
--	if (skb->len == 0)
-+	skb_len = skb->len;
-+	if (skb_len < sizeof(desc_hdr))
- 		goto err;
- 
--	skb_len = skb->len;
- 	/* RX Descriptor Header */
--	skb_trim(skb, skb->len - sizeof(desc_hdr));
-+	skb_trim(skb, skb_len - sizeof(desc_hdr));
- 	desc_hdr = le64_to_cpup((u64 *)skb_tail_pointer(skb));
- 
- 	/* Check these packets */
+diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+index 31ff351740342..58091ee2bfe60 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
++++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
+@@ -256,7 +256,7 @@ config DWMAC_INTEL
+ config DWMAC_LOONGSON
+ 	tristate "Loongson PCI DWMAC support"
+ 	default MACH_LOONGSON64
+-	depends on STMMAC_ETH && PCI
++	depends on (MACH_LOONGSON64 || COMPILE_TEST) && STMMAC_ETH && PCI
+ 	depends on COMMON_CLK
+ 	help
+ 	  This selects the LOONGSON PCI bus support for the stmmac driver,
 -- 
 2.42.0
 
