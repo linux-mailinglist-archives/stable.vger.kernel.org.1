@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-3059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFF67FC7AA
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:11:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AF27FC7AC
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:11:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B598286B28
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:11:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C27286BB6
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8745E481D0;
-	Tue, 28 Nov 2023 21:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D984250274;
+	Tue, 28 Nov 2023 21:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DW5aV/Z4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JCVzU0cd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4553C41C9D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9306541C9D;
+	Tue, 28 Nov 2023 21:10:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F32C43397;
 	Tue, 28 Nov 2023 21:10:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4273DC4167E;
-	Tue, 28 Nov 2023 21:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205814;
-	bh=TG0MYlJjpHjjqKsr6XimVqMSa5GuQzTJINmwtUA+OmU=;
+	s=k20201202; t=1701205815;
+	bh=eVFdTyVDWL+kT6If3Mn7vSnBYnyyTRQr/GOap9CwbWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DW5aV/Z4DBxZbgsISg33trF7Cb4BIZptY7x5DkKyGqpomiMYTSvrsiTXdDft46aJT
-	 bgHS0lOJNebpcMcoEbha62sPZvdn6Ik5uwfb+26f+XA7xFBhpTHljdi0EL/js1CwJo
-	 A5Cr2iuajiaSkYKNJRuDY65tzf3HL1Q53iZMy40Ai8fDSYtH/cyQRfD+l6+l+G1P5t
-	 PfZnTw9DYqM/S6dX2UPKUJ6i4VtRcjF93ZpaAO+16UP+IDkS8tAbfV3hr8/FtOPy7V
-	 8FQSRdraNku3COs/PTEbRG/rzR6c4tEyGM0hNQNWBYVlsQpuOFbQfB3flNUeBz+rUr
-	 TxIdfjDq6wSog==
+	b=JCVzU0cdzLXwmQEyh08OOZg7Cq/uO5AE0pZtN7767EbAerknhI9cdudXseuke1rAi
+	 1FGy3C5LqyE4wJHgP+zquneY34W0Z1xgSuFhtqKkY4mNTdpOAshlrFEv4g61fqI+wz
+	 7qfM1kx3/6tGRJYLZgr2qRWluP/JrDTo4rDUAC4r/DafChsm0ZHr697HxPRgrwD00y
+	 82dO5Nt/2rQ+/83wSISdqDmLKcOzzTYPl1U9Ppco83fD+CRJ+b5tq3bDjh+TN/33Lq
+	 +vifAcqCe4bm313WDmniuqYA+6ayOrgvX69liuDuK8d7pJfUrVKZ7ximd9n/PAUafq
+	 fv5KRVZ5QrhtQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aoba K <nexp_0x17@outlook.com>,
-	Jiri Kosina <jkosina@suse.cz>,
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Guo Ren <guoren@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Waiman Long <longman@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	benjamin.tissoires@redhat.com,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 08/10] HID: multitouch: Add quirk for HONOR GLO-GXXX touchpad
-Date: Tue, 28 Nov 2023 16:09:57 -0500
-Message-ID: <20231128211001.877333-8-sashal@kernel.org>
+	linux-arch@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.19 09/10] asm-generic: qspinlock: fix queued_spin_value_unlocked() implementation
+Date: Tue, 28 Nov 2023 16:09:58 -0500
+Message-ID: <20231128211001.877333-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231128211001.877333-1-sashal@kernel.org>
 References: <20231128211001.877333-1-sashal@kernel.org>
@@ -58,44 +58,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.300
 Content-Transfer-Encoding: 8bit
 
-From: Aoba K <nexp_0x17@outlook.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 9ffccb691adb854e7b7f3ee57fbbda12ff70533f ]
+[ Upstream commit 125b0bb95dd6bec81b806b997a4ccb026eeecf8f ]
 
-Honor MagicBook 13 2023 has a touchpad which do not switch to the multitouch
-mode until the input mode feature is written by the host.  The touchpad do
-report the input mode at touchpad(3), while itself working under mouse mode. As
-a workaround, it is possible to call MT_QUIRE_FORCE_GET_FEATURE to force set
-feature in mt_set_input_mode for such device.
+We really don't want to do atomic_read() or anything like that, since we
+already have the value, not the lock.  The whole point of this is that
+we've loaded the lock from memory, and we want to check whether the
+value we loaded was a locked one or not.
 
-The touchpad reports as BLTP7853, which cannot retrive any useful manufacture
-information on the internel by this string at present.  As the serial number of
-the laptop is GLO-G52, while DMI info reports the laptop serial number as
-GLO-GXXX, this workaround should applied to all models which has the GLO-GXXX.
+The main use of this is the lockref code, which loads both the lock and
+the reference count in one atomic operation, and then works on that
+combined value.  With the atomic_read(), the compiler would pointlessly
+spill the value to the stack, in order to then be able to read it back
+"atomically".
 
-Signed-off-by: Aoba K <nexp_0x17@outlook.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+This is the qspinlock version of commit c6f4a9002252 ("asm-generic:
+ticket-lock: Optimize arch_spin_value_unlocked()") which fixed this same
+bug for ticket locks.
+
+Cc: Guo Ren <guoren@kernel.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/all/CAHk-=whNRv0v6kQiV5QO6DJhjH4KEL36vWQ6Re8Csrnh4zbRkQ@mail.gmail.com/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-multitouch.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/asm-generic/qspinlock.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index 6411ee12c7a30..14dc5ec9edc69 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1981,6 +1981,11 @@ static const struct hid_device_id mt_devices[] = {
- 		MT_USB_DEVICE(USB_VENDOR_ID_HANVON_ALT,
- 			USB_DEVICE_ID_HANVON_ALT_MULTITOUCH) },
+diff --git a/include/asm-generic/qspinlock.h b/include/asm-generic/qspinlock.h
+index 9cc457597ddf8..1a688e5b8b0b5 100644
+--- a/include/asm-generic/qspinlock.h
++++ b/include/asm-generic/qspinlock.h
+@@ -47,7 +47,7 @@ static __always_inline int queued_spin_is_locked(struct qspinlock *lock)
+  */
+ static __always_inline int queued_spin_value_unlocked(struct qspinlock lock)
+ {
+-	return !atomic_read(&lock.val);
++	return !lock.val.counter;
+ }
  
-+	/* HONOR GLO-GXXX panel */
-+	{ .driver_data = MT_CLS_VTL,
-+		HID_DEVICE(BUS_I2C, HID_GROUP_MULTITOUCH_WIN_8,
-+			0x347d, 0x7853) },
-+
- 	/* Ilitek dual touch panel */
- 	{  .driver_data = MT_CLS_NSMU,
- 		MT_USB_DEVICE(USB_VENDOR_ID_ILITEK,
+ /**
 -- 
 2.42.0
 
