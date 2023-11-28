@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-3064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BD37FC7B5
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:12:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CA77FC7B8
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:12:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E497286EC8
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:11:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 496BA1C2113C
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7A75CD2D;
-	Tue, 28 Nov 2023 21:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C8641C9D;
+	Tue, 28 Nov 2023 21:10:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g6nTXZRF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gOk1Z69u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE54B57306;
-	Tue, 28 Nov 2023 21:10:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C2CC433CA;
-	Tue, 28 Nov 2023 21:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54BC346B9B;
+	Tue, 28 Nov 2023 21:10:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267D1C433CD;
+	Tue, 28 Nov 2023 21:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205826;
-	bh=Ih5yEDk5Isn9e8/MbZccaziuk6foJKqir2R20DQ02sY=;
+	s=k20201202; t=1701205828;
+	bh=nwb/0EZBI/lKuhUsrKY6KGeiJErfJjoNL+vidfqMG/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6nTXZRFqoqzQg1wUjvT2mmdRIagoOdFP5v02mEqvtVqsgZ10FeKfOzVC1jXCE57M
-	 soMagbLCG0asL/+F9NyWwdaqbdTRFJE3h/G9VAqaxFdqwGLW/Yiqz5uEtLAnWTUbGP
-	 h/drWPXOu681/nX95zzH5HCIKmqnua79NEJ4ZO61M/gBQgceMCJSDLx0wsiVIVCb9m
-	 5LSVOo4TsE2DZoxVCxojkyozQr7mh1zRwYp7pz0q83kcMVJ0XNzYuL8Yjx0T/251ss
-	 B5hYQiGwm3C8lxJRuk8+wzCs1ahY8b+QdV4a6fOv8ibmitILpO8ylN+8IO2egCHhxM
-	 Cyo3YmKKgGcqQ==
+	b=gOk1Z69ucSg+iNkbY71zsoGHAK4rUyjws0ymZKFWZrt0CTR3Cy/8EAv+9wL4M4SB5
+	 NGBWvoEZJ61nq/bFkU4gNo9xbEpbRVi4suL/YaSm24gcJn8tK78PLbYaWmbnNGKJ+7
+	 SH1XkOskZn4PSRmPM8eGaYrlXVZ/B+AsezIfOBTtzjIDwFJNTj1gCppOI+nHCnH/M9
+	 Dv5W3VNuq6iqvcF8q78XJca+N/aAvbaPg2NF9HMugcp/N20uqimSf8ZqXlRrL0/bSV
+	 YXXaGPJN1tC/vKoFYiMYQVZxkHQaOSLJgpFjujNbzGY20AkLvZaCyzMAAbdhsZCIu3
+	 DN/GCtw2REmEA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	kernel test robot <lkp@intel.com>,
-	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Denis Benato <benato.denis96@gmail.com>,
+	"Luke D . Jones" <luke@ljones.dev>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>,
-	hdegoede@redhat.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 3/7] platform/x86: intel_telemetry: Fix kernel doc descriptions
-Date: Tue, 28 Nov 2023 16:10:13 -0500
-Message-ID: <20231128211018.877548-3-sashal@kernel.org>
+	jikos@kernel.org,
+	benjamin.tissoires@redhat.com,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 4.14 4/7] HID: hid-asus: reset the backlight brightness level on resume
+Date: Tue, 28 Nov 2023 16:10:14 -0500
+Message-ID: <20231128211018.877548-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231128211018.877548-1-sashal@kernel.org>
 References: <20231128211018.877548-1-sashal@kernel.org>
@@ -54,58 +54,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.14.331
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Denis Benato <benato.denis96@gmail.com>
 
-[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
+[ Upstream commit 546edbd26cff7ae990e480a59150e801a06f77b1 ]
 
-LKP found issues with a kernel doc in the driver:
+Some devices managed by this driver automatically set brightness to 0
+before entering a suspended state and reset it back to a default
+brightness level after the resume:
+this has the effect of having the kernel report wrong brightness
+status after a sleep, and on some devices (like the Asus RC71L) that
+brightness is the intensity of LEDs directly facing the user.
 
-core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
-core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
+Fix the above issue by setting back brightness to the level it had
+before entering a sleep state.
 
-It looks like it were copy'n'paste typos when these descriptions
-had been introduced. Fix the typos.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
-Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Denis Benato <benato.denis96@gmail.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_telemetry_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-asus.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/platform/x86/intel_telemetry_core.c b/drivers/platform/x86/intel_telemetry_core.c
-index 0d4c3808a6d89..a0595fcd945ea 100644
---- a/drivers/platform/x86/intel_telemetry_core.c
-+++ b/drivers/platform/x86/intel_telemetry_core.c
-@@ -111,7 +111,7 @@ static const struct telemetry_core_ops telm_defpltops = {
- /**
-  * telemetry_update_events() - Update telemetry Configuration
-  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
-- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
-+ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
-  *
-  * This API updates the IOSS & PSS Telemetry configuration. Old config
-  * is overwritten. Call telemetry_reset_events when logging is over
-@@ -185,7 +185,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
- /**
-  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
-  * @pss_evtconfig: Pointer to PSS related configuration.
-- * @pss_evtconfig: Pointer to IOSS related configuration.
-+ * @ioss_evtconfig: Pointer to IOSS related configuration.
-  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
-  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
-  *
+diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
+index 7cdbde2b114b3..52f65d0f44cae 100644
+--- a/drivers/hid/hid-asus.c
++++ b/drivers/hid/hid-asus.c
+@@ -592,6 +592,24 @@ static int asus_start_multitouch(struct hid_device *hdev)
+ 	return 0;
+ }
+ 
++static int __maybe_unused asus_resume(struct hid_device *hdev) {
++	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
++	int ret = 0;
++
++	if (drvdata->kbd_backlight) {
++		const u8 buf[] = { FEATURE_KBD_REPORT_ID, 0xba, 0xc5, 0xc4,
++				drvdata->kbd_backlight->cdev.brightness };
++		ret = asus_kbd_set_report(hdev, buf, sizeof(buf));
++		if (ret < 0) {
++			hid_err(hdev, "Asus failed to set keyboard backlight: %d\n", ret);
++			goto asus_resume_err;
++		}
++	}
++
++asus_resume_err:
++	return ret;
++}
++
+ static int __maybe_unused asus_reset_resume(struct hid_device *hdev)
+ {
+ 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
+@@ -768,6 +786,7 @@ static struct hid_driver asus_driver = {
+ 	.input_configured       = asus_input_configured,
+ #ifdef CONFIG_PM
+ 	.reset_resume           = asus_reset_resume,
++	.resume					= asus_resume,
+ #endif
+ 	.raw_event		= asus_raw_event
+ };
 -- 
 2.42.0
 
