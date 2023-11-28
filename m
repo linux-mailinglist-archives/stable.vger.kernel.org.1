@@ -1,82 +1,47 @@
-Return-Path: <stable+bounces-2867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2949D7FB3A3
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:09:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E96D7FB3A4
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:09:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84CA2822B1
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 08:09:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CC481F20EEB
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 08:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC8E12E45;
-	Tue, 28 Nov 2023 08:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D2D156C2;
+	Tue, 28 Nov 2023 08:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="cntqvFIe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iHi7/Zyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR1X99t5"
 X-Original-To: stable@vger.kernel.org
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D785698;
-	Tue, 28 Nov 2023 00:08:56 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 8153E3200AF6;
-	Tue, 28 Nov 2023 03:08:52 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Tue, 28 Nov 2023 03:08:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1701158931; x=1701245331; bh=YA
-	9oC0qFgkfWKMMXJTxA4XBL16CHD3TNlMQ1vpp0A2s=; b=cntqvFIeEjLq+UdIS9
-	IqknGEWD6ZfM3FBjGUnhNezZVOTXPyVDzmqQldbyIfUIUYS9q29W7utoZYhEOoYy
-	7PyA4LqIvzf5w+vG7+uAfilIZMEhxSxCnQ7ZH8Kv2kkplz2X8AvoWXjXFrvMSXpY
-	10D8OnXqI5InTQOABOxUX+MJu3VSHMxDAyrjvTNL03I+Gs0Ic+kwnufQBPiH0FyY
-	16ww+jgIMdjXaGiZNO1e/tWKyI2nKsTycohcu7TRKw/JPiSUxR6tMfOS43+VP732
-	t0uAeMqcxgwh4goceslqHWzZdXnHvv6BydDEptR+8PhsU88D7lR+8elGoFhbZ7dg
-	1U2w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701158931; x=1701245331; bh=YA9oC0qFgkfWK
-	MMXJTxA4XBL16CHD3TNlMQ1vpp0A2s=; b=iHi7/ZyjIJ94bnASo9mW9P/2Yi7LY
-	9k8f9YyXBemrn+lA7T7S+LMou2p/LZWSYx6bxQkX5jPqg8dO1EpRZtJQt/Zpxum3
-	3olELx2BzE1LTzNq88SvS51Hrj/4YUP12khzGq2vbyBAZdjdQis1KzHk6WTnth2J
-	3PLj3wTdPyKnadFNnc2PeWjt9xXXWlf4nlix2pwIAs8JAgkontTuj0xMNrn9Ip/2
-	F4c4JAV+5QLbqMza7CugH4NUCCmPfKOPG1jXSihh6/SFDyV2Ws4uu8O3wW96EoWF
-	IM2m/IxGWF06z3mjrfkIbNG51sJ+IMP8mffbeB4Hh6wbWGp831k2NdZ0Q==
-X-ME-Sender: <xms:E6BlZUQ60tR7G8Brar3yUbBdIYcwesk-yBSoXCWUx5ECaasE2pLnzA>
-    <xme:E6BlZRwDgnRLq8-e1Gvun8d0oJl86ozQaCNo6Z6SiG4RTBmjLcaJ_zGvBrDIjhGfe
-    KFGEbnVCNtx-g>
-X-ME-Received: <xmr:E6BlZR3TVod4LV0CVKLKiHGcVSTrmfx-sji46G0iOznL-OBcGGGqIgj8_QeMhnsQpQd2UWHEr7r-f4pFYehDVHMtHob5l2MsEkPDEnWtdVdpGCoKoJTbk6M>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeivddguddujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehge
-    dvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhroh
-    grhhdrtghomh
-X-ME-Proxy: <xmx:E6BlZYBdQ6spjtOY9hSIW9jN9rWpCIlJovQy2SDL3d5PvQp5iqapiw>
-    <xmx:E6BlZdiT89-sLEiOlsRdT2c_aHc_II8tUqhDiE1ud_EHRMhnfxtDqA>
-    <xmx:E6BlZUqfkE1LjsypWdeqMaOHBFBMHq3bUWk8BHl7l14mkScDcAAtDw>
-    <xmx:E6BlZeW8hMuyoVUgwLQ4eut0lBKX_YLPVnprxcKOeEfe48spLjbVVA>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Nov 2023 03:08:51 -0500 (EST)
-Date: Tue, 28 Nov 2023 08:08:48 +0000
-From: Greg KH <greg@kroah.com>
-To: Malcolm Hart <malcolm@5harts.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Sven Frotscher <sven.frotscher@gmail.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] sound: soc: amd: yc: Fix non-functional mic on ASUS
- E1504FA
-Message-ID: <2023112834-luckless-deport-2fce@gregkh>
-References: <875y1nt1bx.fsf@5harts.com>
- <871qcbszh0.fsf@5harts.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA95E12E45
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 08:09:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF982C433C8;
+	Tue, 28 Nov 2023 08:09:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701158961;
+	bh=aCLAD8i+LZDiDabsl83Z19nb3QNDgPLNO+3Gk3ZKYVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NR1X99t5ZJL+OPcIsSUg3mNtBIxGiGb8vWxz8NVaiAMiKcQ1ouEjLLM0zU6EBT7mJ
+	 KKqPN9oNToFYL56YNC87ZvmknUITHepsU3U7b4H6iWNXgD7PoWxz+A16jk2TRbfceP
+	 tQa0Rd+QTr01/AmrOViyu39EweTDX5nMnEQ+hzGg=
+Date: Tue, 28 Nov 2023 08:09:18 +0000
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
+Cc: stable@vger.kernel.org, Bryan Tan <bryantan@vmware.com>,
+	Vishnu Dasa <vdasa@vmware.com>,
+	VMware PV-Drivers Reviewers <pv-drivers@vmware.com>,
+	Arnd Bergmann <arnd@arndb.de>, Dmitry Torokhov <dtor@vmware.com>,
+	George Zhang <georgezhang@vmware.com>,
+	Andy king <acking@vmware.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] vmci: prevent speculation leaks by sanitizing event in
+ event_deliver()
+Message-ID: <2023112802-bagginess-wireless-cd95@gregkh>
+References: <20231127194817.57209-1-hagarhem@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,40 +50,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <871qcbszh0.fsf@5harts.com>
+In-Reply-To: <20231127194817.57209-1-hagarhem@amazon.com>
 
-On Mon, Nov 27, 2023 at 08:36:00PM +0000, Malcolm Hart wrote:
+On Mon, Nov 27, 2023 at 07:48:17PM +0000, Hagar Gamal Halim Hemdan wrote:
+> Coverity spotted that event_msg is controlled by user-space,
+> event_msg->event_data.event is passed to event_deliver() and used
+> as an index without sanitization.
 > 
+> This change ensures that the event index is sanitized to mitigate any
+> possibility of speculative information leaks.
 > 
-> This patch adds ASUSTeK COMPUTER INC  "E1504FA" to the quirks file acp6x-mach.c
-> to enable microphone array on ASUS Vivobook GO 15.
-> I have this laptop and can confirm that the patch succeeds in enabling the
-> microphone array.
+> Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
 > 
-> Signed-off-by: Malcolm Hart <malcolm@5harts.com>
+> Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
 > Cc: stable@vger.kernel.org
 > ---
->  sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/misc/vmw_vmci/vmci_event.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-> index 15a864dcd7bd3a..3babb17a56bb55 100644
-> --- a/sound/soc/amd/yc/acp6x-mach.c
-> +++ b/sound/soc/amd/yc/acp6x-mach.c
-> @@ -283,6 +283,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
->  			DMI_MATCH(DMI_PRODUCT_NAME, "M6500RC"),
->  		}
->  	},
-> +	{
-> +		.driver_data = &acp6x_card,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "E1504FA"),
-> +		}
-> +	},
->  	{
->  		.driver_data = &acp6x_card,
->  		.matches = {
+> diff --git a/drivers/misc/vmw_vmci/vmci_event.c b/drivers/misc/vmw_vmci/vmci_event.c
+> index 5d7ac07623c2..9a41ab65378d 100644
+> --- a/drivers/misc/vmw_vmci/vmci_event.c
+> +++ b/drivers/misc/vmw_vmci/vmci_event.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/vmw_vmci_api.h>
+>  #include <linux/list.h>
+>  #include <linux/module.h>
+> +#include <linux/nospec.h>
+>  #include <linux/sched.h>
+>  #include <linux/slab.h>
+>  #include <linux/rculist.h>
+> @@ -86,9 +87,12 @@ static void event_deliver(struct vmci_event_msg *event_msg)
+>  {
+>  	struct vmci_subscription *cur;
+>  	struct list_head *subscriber_list;
+> +	u32 sanitized_event, max_vmci_event;
+>  
+>  	rcu_read_lock();
+> -	subscriber_list = &subscriber_array[event_msg->event_data.event];
+> +	max_vmci_event = ARRAY_SIZE(subscriber_array);
+> +	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
+> +	subscriber_list = &subscriber_array[sanitized_event];
+>  	list_for_each_entry_rcu(cur, subscriber_list, node) {
+>  		cur->callback(cur->id, &event_msg->event_data,
+>  			      cur->callback_data);
+> -- 
+> 2.40.1
 > 
 > 
 
