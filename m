@@ -1,137 +1,274 @@
-Return-Path: <stable+bounces-3071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B9B47FC7D3
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:18:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46BE7FC7D8
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:20:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9E22824B9
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:18:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1664AB2214B
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6A644395;
-	Tue, 28 Nov 2023 21:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE1BB44395;
+	Tue, 28 Nov 2023 21:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naCP1vOi"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="FOSfYHn+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1886B44378
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 21:18:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A538C433C7;
-	Tue, 28 Nov 2023 21:18:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701206319;
-	bh=2xJoqOXzowQov7rGEZ+wIhMYrsWPhUXeNx2JqUp3pIA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=naCP1vOiWrIq2FSW6NNJWkk9c9jWrjCjm8q/MIxC9HcWht+n6mbrvnh8Tx1P7534Z
-	 bGxGnCGC0PgcjoH27gnoAEc6Otg/Fr1JqNK41HianawYpNwSABgi378Cg0ncrDaZLV
-	 tujCg8La1DutgwqrKcJoH8EqGbKIohwJvJtzrhbA=
-Date: Tue, 28 Nov 2023 21:18:37 +0000
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: =?iso-8859-1?Q?Fran=E7ois?= Valenduc <francoisvalenduc@gmail.com>
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-	jslaby@suse.cz
-Subject: Re: Linux 6.1.64
-Message-ID: <2023112822-extending-character-5e45@gregkh>
-References: <2023112826-glitter-onion-8533@gregkh>
- <7f07bb2d-bb00-4774-8cc0-d66b7210380c@gmail.com>
- <2023112843-strep-goliath-875c@gregkh>
- <0d1087e9-a8f2-48ee-bc8d-bc2a5518571a@gmail.com>
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33ED83591
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 13:19:54 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1cf5901b4c8so51164105ad.1
+        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 13:19:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701206393; x=1701811193; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lTcR71ZE+RwOgPeCcnfSa/L7h9zPr1TOVOBYryqKHUg=;
+        b=FOSfYHn+Nvz5Q6w43sdg+hohW5tU8plkVROwk1/hiJHpur6OgDrATS8PMfHl48ODYH
+         aMDUoyldWvr2nh12VZfguE+pIURBsakaxrruAtzwOkDj43m2i7Mzey+/IlZ1hQxt3F8s
+         Fo6EtB/IXrHphcjw2dFmxZzHA4kHzmZK7hi86AD2mKvlp97Ib94nxnht13jtYXi364TF
+         wi3/zeKQZJsb1vvbFayyiDOlAR7VR4buUV+AXUPiBqiLovT03xHr+fi8psB8FjVzUUF0
+         TzWEvnW35FbzVzCSF7sgz/nL41//mrqxJ2qqsp1ak885mLKkRhB0DsSyuqj6o+fYdGGW
+         KzYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701206393; x=1701811193;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lTcR71ZE+RwOgPeCcnfSa/L7h9zPr1TOVOBYryqKHUg=;
+        b=GnZu9tkRmaAnM0xSX7qYVOW27PYCvuStKOVeiZacCVab/I/IVSdrbn9bQQBN46Bwfz
+         7MTKyIxANKnDfThGhRhNq9G9npIs9KP45j/ETrIhtQ/WCD+HsxkX1nnjwGxpxvmyCsdE
+         z9Am7P2llR7KW6hhxg719SmlWskZdd36SCKak74DFJ6SGuQzMSfyxXsSIlQtL6CGgg9D
+         HE0/be3GRzGXxfFMIMh/qnO5lIGhaKIvTvrKDGZ3Rd7yPjMKARC58Lavlk2sDHnDdYaE
+         RCcaAnOVuSZc1GQHvmPM3HXGi8uwfRLX7Fb1gT4Osmize24kogrVbZ/MsOKGv6krkbyP
+         5o7Q==
+X-Gm-Message-State: AOJu0Yw0tzolQ45Blw8HjxWmvDVJ+LkPe/Loj4RW4mSdQsJcQfnPMP4M
+	Zl9rzRv9+eg0rCQLjI1epQzKwTss8gPK7zFvyJ0=
+X-Google-Smtp-Source: AGHT+IEapuOAfTkes9bi/RZeFhyUylSlXHgeHqP6R7VLgblJmjoj7yrcqWIRwWWzTQNpcLjP9NzXAg==
+X-Received: by 2002:a17:903:1cb:b0:1cf:ad5f:20ab with SMTP id e11-20020a17090301cb00b001cfad5f20abmr18100409plh.19.1701206393136;
+        Tue, 28 Nov 2023 13:19:53 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id h1-20020a170902f7c100b001cfad601a4bsm7841313plw.10.2023.11.28.13.19.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Nov 2023 13:19:52 -0800 (PST)
+Message-ID: <65665978.170a0220.28257.425e@mx.google.com>
+Date: Tue, 28 Nov 2023 13:19:52 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0d1087e9-a8f2-48ee-bc8d-bc2a5518571a@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.14.330-53-gac7b9f9f18db1
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.330-53-gac7b9f9f18db1)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Tue, Nov 28, 2023 at 10:11:32PM +0100, François Valenduc wrote:
-> 
-> Le 28/11/23 à 20:35, Greg Kroah-Hartman a écrit :
-> > On Tue, Nov 28, 2023 at 08:22:22PM +0100, François Valenduc wrote:
-> > > Build fails on my baremetal server on scaleway:
-> > > 
-> > > In file included from arch/x86/kvm/vmx/vmx.c:54:
-> > > arch/x86/kvm/vmx/evmcs.h:215:20: note: previous definition of
-> > > ‘evmptr_is_valid’ with type ‘bool(u64)’ {aka ‘_Bool(long long unsigned
-> > > int)’}
-> > >    215 | static inline bool evmptr_is_valid(u64 evmptr)
-> > >        |                    ^~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:55:
-> > > arch/x86/kvm/vmx/hyperv.h:184:6: error: redeclaration of ‘enum
-> > > nested_evmptrld_status’
-> > >    184 | enum nested_evmptrld_status {
-> > >        |      ^~~~~~~~~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:54:
-> > > arch/x86/kvm/vmx/evmcs.h:220:6: note: originally defined here
-> > >    220 | enum nested_evmptrld_status {
-> > >        |      ^~~~~~~~~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:55:
-> > > arch/x86/kvm/vmx/hyperv.h:185:9: error: redeclaration of enumerator
-> > > ‘EVMPTRLD_DISABLED’
-> > >    185 |         EVMPTRLD_DISABLED,
-> > >        |         ^~~~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:54:
-> > > arch/x86/kvm/vmx/evmcs.h:221:9: note: previous definition of
-> > > ‘EVMPTRLD_DISABLED’ with type ‘enum nested_evmptrld_status’
-> > >    221 |         EVMPTRLD_DISABLED,
-> > >        |         ^~~~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:55:
-> > > arch/x86/kvm/vmx/hyperv.h:186:9: error: redeclaration of enumerator
-> > > ‘EVMPTRLD_SUCCEEDED’
-> > >    186 |         EVMPTRLD_SUCCEEDED,
-> > >        |         ^~~~~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:54:
-> > > arch/x86/kvm/vmx/evmcs.h:222:9: note: previous definition of
-> > > ‘EVMPTRLD_SUCCEEDED’ with type ‘enum nested_evmptrld_status’
-> > >    222 |         EVMPTRLD_SUCCEEDED,
-> > >        |         ^~~~~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:55:
-> > > arch/x86/kvm/vmx/hyperv.h:187:9: error: redeclaration of enumerator
-> > > ‘EVMPTRLD_VMFAIL’
-> > >    187 |         EVMPTRLD_VMFAIL,
-> > >        |         ^~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:54:
-> > > arch/x86/kvm/vmx/evmcs.h:223:9: note: previous definition of
-> > > ‘EVMPTRLD_VMFAIL’ with type ‘enum nested_evmptrld_status’
-> > >    223 |         EVMPTRLD_VMFAIL,
-> > >        |         ^~~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:55:
-> > > arch/x86/kvm/vmx/hyperv.h:188:9: error: redeclaration of enumerator
-> > > ‘EVMPTRLD_ERROR’
-> > >    188 |         EVMPTRLD_ERROR,
-> > >        |         ^~~~~~~~~~~~~~
-> > > In file included from arch/x86/kvm/vmx/vmx.c:54:
-> > > arch/x86/kvm/vmx/evmcs.h:224:9: note: previous definition of
-> > > ‘EVMPTRLD_ERROR’ with type ‘enum nested_evmptrld_status’
-> > >    224 |         EVMPTRLD_ERROR,
-> > >        |         ^~~~~~~~~~~~~~
-> > > make[3]: *** [scripts/Makefile.build:250: arch/x86/kvm/vmx/vmx.o] Error 1
-> > > make[2]: *** [scripts/Makefile.build:500: arch/x86/kvm] Error 2
-> > > make[1]: *** [scripts/Makefile.build:500: arch/x86] Error 2
-> > > 
-> > > The configuration file is attached. Kernel 6.1.62 compiled fine.
-> > > Does somebody have an idea about this ?
-> > I just tried your .config file here and it builds just fine for 6.1.64,
-> > what version of gcc are you using that causes failures?  I tried gcc-12
-> > successfully.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> Bisection gave very strange results until I found the tree was corrupted. I
-> recreated it correctly and it works fine.
-> Sorry for the noise.
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.330-53-gac7b9f9f18db1)
 
-No worries, thanks for reporting it, glad it is resolved.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.330-53-gac7b9f9f18db1/
 
-greg k-h
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.330-53-gac7b9f9f18db1
+Git Commit: ac7b9f9f18db14eb40840765fa8cdb8110f83e1d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
