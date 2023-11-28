@@ -1,147 +1,154 @@
-Return-Path: <stable+bounces-2892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7A97FB9F7
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 13:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BFE7FBA55
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 13:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17C331C2130B
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 12:18:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 359A81C2141B
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 12:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC234F8BA;
-	Tue, 28 Nov 2023 12:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D757F405CE;
+	Tue, 28 Nov 2023 12:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GEL8QTyC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RpMy41ql"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96688A3;
-	Tue, 28 Nov 2023 04:18:13 -0800 (PST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASBCugr004876;
-	Tue, 28 Nov 2023 12:18:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=M0R7sT0yHbVLSs9KlT1UhPFGTZrBwQe0mpt3AA0irHU=;
- b=GEL8QTyC3NK1msYD5mFAokLAV9OWesv5g9qO52CKWjWnnXHQZKHvfKArVGl0uuZTi74X
- jTCnzw6wCtlDjWSuEJd7FrJ5njxoMVLuDd3PmxS9FFxdtZ39boRYuwUTk5ab8eX68arS
- njyNCSVeFKLsqxohNspWSVJqfoBBpPbUwNw/ugfKNyqWeGRxdn/qUZaTdjmUHifmQMdh
- wfd0TGgh4uN5vWTLaZfWCzP1SbrC7p6BNo3xTLVKNnVXlPZN4X7lXP7lFLfasdCNWyE2
- /8vFxr29Yt/tx5QygOKniXlbXFo7m1rxRKSWDzoT9Pyoy1NcT9Cn6CaR2pzqZuxg0qDt ww== 
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unf4t9v2t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Nov 2023 12:18:10 +0000
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASAWfDl031072;
-	Tue, 28 Nov 2023 12:18:09 GMT
-Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uku8sys7f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Nov 2023 12:18:09 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ASCI8fe21037600
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Nov 2023 12:18:09 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A951058055;
-	Tue, 28 Nov 2023 12:18:08 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3D04758043;
-	Tue, 28 Nov 2023 12:18:08 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.23.127])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Nov 2023 12:18:08 +0000 (GMT)
-Message-ID: <10660ec7032cf66a772ecd0b7cfdbba88849929a.camel@linux.ibm.com>
-Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
- given
-From: Mimi Zohar <zohar@linux.ibm.com>
-To: Greg KH <gregkh@linuxfoundation.org>,
-        Stefan Berger
- <stefanb@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, initramfs@vger.kernel.org,
-        stable@vger.kernel.org, Rob Landley <rob@landley.net>
-Date: Tue, 28 Nov 2023 07:18:07 -0500
-In-Reply-To: <2023112826-cesspool-cabbie-06c5@gregkh>
-References: <20231120011248.396012-1-stefanb@linux.ibm.com>
-	 <2023112826-cesspool-cabbie-06c5@gregkh>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: zE4Nml1FFyToPOchE1F8OrpMNtyMU7T0
-X-Proofpoint-ORIG-GUID: zE4Nml1FFyToPOchE1F8OrpMNtyMU7T0
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C159D59;
+	Tue, 28 Nov 2023 04:41:08 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1cfafe3d46bso30430235ad.0;
+        Tue, 28 Nov 2023 04:41:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701175268; x=1701780068; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2gvT/eemWfZnbuwVirPp8cMGK9ZIdrawZbRWTeF6Ry4=;
+        b=RpMy41qlarmTU9VnO4CH1odjhd5UYWOqpEg4JOeQTOW6MYL4WhVIRmNtEXetvJMkqb
+         MR6SEoLQz7GhAPNZ2Y3YUcWgv31SD23veMLZnoYxdLUs1UwPzwudhXe5IPhbRYr3n2y/
+         279/kfQnuEUQvXfNNWe/fW8fPq/cRwvdmvIHpVnZzIVBYk2Gmw2XlLctPxP3D0UwPQr2
+         k65P4I/SaWhIxiSE1FifH2zuXMedBiH2rQG+V53IoGYKSoiLLiyJEKJvPVdVb248Xc5H
+         WJ1AVMdzzIuSXClY+oQTfeO9JaC3Foqoa+mcCFwFCyuBZnaKHbKsPxrz1+2H7hzHxK4a
+         2u7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701175268; x=1701780068;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2gvT/eemWfZnbuwVirPp8cMGK9ZIdrawZbRWTeF6Ry4=;
+        b=qSlMVytxCDp7FHvpJMo3PqBgt5APVf19UWD7xjLRprQRCvzvz2yVI3+APiEadLXauH
+         srqc+XJKmkQoqZSgw98itH+xdJ7aopBCrL5WNJrF6gwEyTQpS4b1UfO8lrfDIPV9BehY
+         Ls9i4CbCDzhdcjl6qGFwQYx85BJpF7mug+MtYjnQ4JH2c6cv1TL0q8qEVsyMSWJQRP1i
+         d/P2iN6v786B7fxDXPqO5j0r6NzLFrl82Z5d29gy2/oTNqPN293RACS8aZFJq5reC7OI
+         Fybi4qmZyabX2+T6oQ0qHKSF3gkB/enGxmNnWI0AUpLMyzmDY7nSUY9cakzUoD5SCU95
+         Vw2g==
+X-Gm-Message-State: AOJu0Yx5/V3yMP08jozNMVHFpE3rH0EXyJDJWyir+g4I1i+Yo6F0xEe7
+	ts6a+/WjsSzONmXEchZqcJU=
+X-Google-Smtp-Source: AGHT+IGyPQepTZKf/8QpPbbXEfU73fNPpR57oJdfkl5//aM7PggI11U1u2zrwxI8KxaDY+iBgyUH4g==
+X-Received: by 2002:a17:902:d904:b0:1cf:a2aa:23ae with SMTP id c4-20020a170902d90400b001cfa2aa23aemr13508818plz.35.1701175267509;
+        Tue, 28 Nov 2023 04:41:07 -0800 (PST)
+Received: from [192.168.50.127] (awork111197.netvigator.com. [203.198.94.197])
+        by smtp.gmail.com with ESMTPSA id i7-20020a17090332c700b001cf68d103easm7212151plr.46.2023.11.28.04.41.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Nov 2023 04:41:07 -0800 (PST)
+Message-ID: <74e0f310-fdf7-4a4b-bfcb-4d63c0cdfae4@gmail.com>
+Date: Tue, 28 Nov 2023 20:40:39 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-28_12,2023-11-27_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=963
- malwarescore=0 priorityscore=1501 suspectscore=0 clxscore=1015 mlxscore=0
- phishscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
- definitions=main-2311280098
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] dm verity: don't verity if readahead failed
+To: Wu Bo <bo.wu@vivo.com>, Alasdair Kergon <agk@redhat.com>,
+ Mike Snitzer <snitzer@kernel.org>, Mikulas Patocka <mpatocka@redhat.com>
+Cc: dm-devel@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Eric Biggers <ebiggers@kernel.org>, stable@vger.kernel.org
+References: <cover.1700623691.git.bo.wu@vivo.com>
+ <b23a4fc8baba99010c16059a236d2f72087199a1.1700623691.git.bo.wu@vivo.com>
+Content-Language: en-US
+From: Wu Bo <wubo.oduw@gmail.com>
+In-Reply-To: <b23a4fc8baba99010c16059a236d2f72087199a1.1700623691.git.bo.wu@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2023-11-28 at 09:54 +0000, Greg KH wrote:
-> On Sun, Nov 19, 2023 at 08:12:48PM -0500, Stefan Berger wrote:
-> > Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
-> > 
-> >   If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-> >   default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-> >   line.
-> > 
-> > This currently does not work when root= is provided since then
-> > saved_root_name contains a string and rootfstype= is ignored. Therefore,
-> > ramfs is currently always chosen when root= is provided.
-> > 
-> > The current behavior for rootfs's filesystem is:
-> > 
-> >    root=       | rootfstype= | chosen rootfs filesystem
-> >    ------------+-------------+--------------------------
-> >    unspecified | unspecified | tmpfs
-> >    unspecified | tmpfs       | tmpfs
-> >    unspecified | ramfs       | ramfs
-> >     provided   | ignored     | ramfs
-> > 
-> > rootfstype= should be respected regardless whether root= is given,
-> > as shown below:
-> > 
-> >    root=       | rootfstype= | chosen rootfs filesystem
-> >    ------------+-------------+--------------------------
-> >    unspecified | unspecified | tmpfs  (as before)
-> >    unspecified | tmpfs       | tmpfs  (as before)
-> >    unspecified | ramfs       | ramfs  (as before)
-> >     provided   | unspecified | ramfs  (compatibility with before)
-> >     provided   | tmpfs       | tmpfs  (new)
-> >     provided   | ramfs       | ramfs  (new)
-> > 
-> > This table represents the new behavior.
-> > 
-> > Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root=  specified")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Rob Landley <rob@landley.net>
-> > Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
-> > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-> 
-> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> 
-> Who should take this patch?  Me?  Or someone else?
+ping.
 
-Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
-
-Thanks, Greg.  As there is no initramfs maintainer, I'd appreciate your
-picking it up.
-
--- 
-thanks,
-
-Mimi
-
+On 2023/11/22 11:51, Wu Bo wrote:
+> We found an issue under Android OTA scenario that many BIOs have to do
+> FEC where the data under dm-verity is 100% complete and no corruption.
+>
+> Android OTA has many dm-block layers, from upper to lower:
+> dm-verity
+> dm-snapshot
+> dm-origin & dm-cow
+> dm-linear
+> ufs
+>
+> Dm tables have to change 2 times during Android OTA merging process.
+> When doing table change, the dm-snapshot will be suspended for a while.
+> During this interval, we found there are many readahead IOs are
+> submitted to dm_verity from filesystem. Then the kverity works are busy
+> doing FEC process which cost too much time to finish dm-verity IO. And
+> cause system stuck.
+>
+> We add some debug log and find that each readahead IO need around 10s to
+> finish when this situation occurred. Because here has a IO
+> amplification:
+>
+> dm-snapshot suspend
+> erofs_readahead     // 300+ io is submitted
+> 	dm_submit_bio (dm_verity)
+> 		dm_submit_bio (dm_snapshot)
+> 		bio return EIO
+> 		bio got nothing, it's empty
+> 	verity_end_io
+> 	verity_verify_io
+> 	forloop range(0, io->n_blocks)    // each io->nblocks ~= 20
+> 		verity_fec_decode
+> 		fec_decode_rsb
+> 		fec_read_bufs
+> 		forloop range(0, v->fec->rsn) // v->fec->rsn = 253
+> 			new_read
+> 			submit_bio (dm_snapshot)
+> 		end loop
+> 	end loop
+> dm-snapshot resume
+>
+> Readahead BIO got nothing during dm-snapshot suspended. So all of them
+> will do FEC.
+> Each readahead BIO need to do io->n_blocks ~= 20 times verify.
+> Each block need to do fec, and every block need to do v->fec->rsn = 253
+> times read.
+> So during the suspend interval(~200ms), 300 readahead BIO make
+> 300*20*253 IOs on dm-snapshot.
+>
+> As readahead IO is not required by user space, and to fix this issue,
+> I think it would be better to pass it to upper layer to handle it.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+> Signed-off-by: Wu Bo <bo.wu@vivo.com>
+> ---
+>   drivers/md/dm-verity-target.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/md/dm-verity-target.c b/drivers/md/dm-verity-target.c
+> index beec14b6b044..14e58ae70521 100644
+> --- a/drivers/md/dm-verity-target.c
+> +++ b/drivers/md/dm-verity-target.c
+> @@ -667,7 +667,9 @@ static void verity_end_io(struct bio *bio)
+>   	struct dm_verity_io *io = bio->bi_private;
+>   
+>   	if (bio->bi_status &&
+> -	    (!verity_fec_is_enabled(io->v) || verity_is_system_shutting_down())) {
+> +	    (!verity_fec_is_enabled(io->v) ||
+> +	     verity_is_system_shutting_down() ||
+> +	     (bio->bi_opf & REQ_RAHEAD))) {
+>   		verity_finish_io(io, bio->bi_status);
+>   		return;
+>   	}
 
