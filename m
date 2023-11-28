@@ -1,72 +1,147 @@
-Return-Path: <stable+bounces-2891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B42A7FB9CE
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 13:00:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD7A97FB9F7
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 13:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDA7F1C21234
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 12:00:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17C331C2130B
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 12:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C5C4F8A8;
-	Tue, 28 Nov 2023 12:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dkim=none
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC234F8BA;
+	Tue, 28 Nov 2023 12:18:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GEL8QTyC"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 730B695
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 04:00:12 -0800 (PST)
-Received: from kwepemm000007.china.huawei.com (unknown [172.30.72.55])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Sfgwv4vfxzWhst;
-	Tue, 28 Nov 2023 19:59:27 +0800 (CST)
-Received: from [10.174.185.179] (10.174.185.179) by
- kwepemm000007.china.huawei.com (7.193.23.189) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Tue, 28 Nov 2023 20:00:09 +0800
-Subject: Re: [for-4.19 0/2] backport "KVM: arm64: limit PMU version to PMUv3
- for ARMv8.1"
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <sashal@kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
-	<andrew.murray@arm.com>, <mark.rutland@arm.com>, <suzuki.poulose@arm.com>,
-	<wanghaibin.wang@huawei.com>, <will@kernel.org>
-References: <20231128074633.646-1-yuzenghui@huawei.com>
- <2023112831-preachy-unshaved-790d@gregkh>
-From: Zenghui Yu <yuzenghui@huawei.com>
-Message-ID: <350d1f6f-953b-eac4-4e1b-9e59060c99bc@huawei.com>
-Date: Tue, 28 Nov 2023 20:00:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96688A3;
+	Tue, 28 Nov 2023 04:18:13 -0800 (PST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASBCugr004876;
+	Tue, 28 Nov 2023 12:18:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=pp1;
+ bh=M0R7sT0yHbVLSs9KlT1UhPFGTZrBwQe0mpt3AA0irHU=;
+ b=GEL8QTyC3NK1msYD5mFAokLAV9OWesv5g9qO52CKWjWnnXHQZKHvfKArVGl0uuZTi74X
+ jTCnzw6wCtlDjWSuEJd7FrJ5njxoMVLuDd3PmxS9FFxdtZ39boRYuwUTk5ab8eX68arS
+ njyNCSVeFKLsqxohNspWSVJqfoBBpPbUwNw/ugfKNyqWeGRxdn/qUZaTdjmUHifmQMdh
+ wfd0TGgh4uN5vWTLaZfWCzP1SbrC7p6BNo3xTLVKNnVXlPZN4X7lXP7lFLfasdCNWyE2
+ /8vFxr29Yt/tx5QygOKniXlbXFo7m1rxRKSWDzoT9Pyoy1NcT9Cn6CaR2pzqZuxg0qDt ww== 
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3unf4t9v2t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 12:18:10 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ASAWfDl031072;
+	Tue, 28 Nov 2023 12:18:09 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3uku8sys7f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Nov 2023 12:18:09 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ASCI8fe21037600
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Nov 2023 12:18:09 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A951058055;
+	Tue, 28 Nov 2023 12:18:08 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3D04758043;
+	Tue, 28 Nov 2023 12:18:08 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.61.23.127])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Nov 2023 12:18:08 +0000 (GMT)
+Message-ID: <10660ec7032cf66a772ecd0b7cfdbba88849929a.camel@linux.ibm.com>
+Subject: Re: [PATCH v3] rootfs: Fix support for rootfstype= when root= is
+ given
+From: Mimi Zohar <zohar@linux.ibm.com>
+To: Greg KH <gregkh@linuxfoundation.org>,
+        Stefan Berger
+ <stefanb@linux.ibm.com>
+Cc: linux-kernel@vger.kernel.org, initramfs@vger.kernel.org,
+        stable@vger.kernel.org, Rob Landley <rob@landley.net>
+Date: Tue, 28 Nov 2023 07:18:07 -0500
+In-Reply-To: <2023112826-cesspool-cabbie-06c5@gregkh>
+References: <20231120011248.396012-1-stefanb@linux.ibm.com>
+	 <2023112826-cesspool-cabbie-06c5@gregkh>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-22.el8) 
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zE4Nml1FFyToPOchE1F8OrpMNtyMU7T0
+X-Proofpoint-ORIG-GUID: zE4Nml1FFyToPOchE1F8OrpMNtyMU7T0
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2023112831-preachy-unshaved-790d@gregkh>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemm000007.china.huawei.com (7.193.23.189)
-X-CFilter-Loop: Reflected
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-11-28_12,2023-11-27_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=963
+ malwarescore=0 priorityscore=1501 suspectscore=0 clxscore=1015 mlxscore=0
+ phishscore=0 bulkscore=0 impostorscore=0 lowpriorityscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311060000
+ definitions=main-2311280098
 
-On 2023/11/28 16:12, Greg KH wrote:
-> On Tue, Nov 28, 2023 at 03:46:31PM +0800, Zenghui Yu wrote:
->> We need to backport patch #1 as well because it introduced a helper used
->> by patch #2.
->>
->> Andrew Murray (2):
->>   arm64: cpufeature: Extract capped perfmon fields
->>   KVM: arm64: limit PMU version to PMUv3 for ARMv8.1
+On Tue, 2023-11-28 at 09:54 +0000, Greg KH wrote:
+> On Sun, Nov 19, 2023 at 08:12:48PM -0500, Stefan Berger wrote:
+> > Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+> > 
+> >   If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+> >   default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+> >   line.
+> > 
+> > This currently does not work when root= is provided since then
+> > saved_root_name contains a string and rootfstype= is ignored. Therefore,
+> > ramfs is currently always chosen when root= is provided.
+> > 
+> > The current behavior for rootfs's filesystem is:
+> > 
+> >    root=       | rootfstype= | chosen rootfs filesystem
+> >    ------------+-------------+--------------------------
+> >    unspecified | unspecified | tmpfs
+> >    unspecified | tmpfs       | tmpfs
+> >    unspecified | ramfs       | ramfs
+> >     provided   | ignored     | ramfs
+> > 
+> > rootfstype= should be respected regardless whether root= is given,
+> > as shown below:
+> > 
+> >    root=       | rootfstype= | chosen rootfs filesystem
+> >    ------------+-------------+--------------------------
+> >    unspecified | unspecified | tmpfs  (as before)
+> >    unspecified | tmpfs       | tmpfs  (as before)
+> >    unspecified | ramfs       | ramfs  (as before)
+> >     provided   | unspecified | ramfs  (compatibility with before)
+> >     provided   | tmpfs       | tmpfs  (new)
+> >     provided   | ramfs       | ramfs  (new)
+> > 
+> > This table represents the new behavior.
+> > 
+> > Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root=  specified")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Rob Landley <rob@landley.net>
+> > Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+> > Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
 > 
-> We can not just take these in an old stable tree and not newer ones as
-> that would mean you could upgrade and have a regression.  Please provide
-> backports for all applicable stable trees and we will be glad to take
-> them.
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> Who should take this patch?  Me?  Or someone else?
 
-Thanks for the heads up! "for-5.4" patches sent now.
+Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
 
-Zenghui
+Thanks, Greg.  As there is no initramfs maintainer, I'd appreciate your
+picking it up.
+
+-- 
+thanks,
+
+Mimi
+
 
