@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-3027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4EB7FC763
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:10:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D47DC7FC765
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A40CFB23764
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:10:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11D2B1C211BA
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF8044C9C;
-	Tue, 28 Nov 2023 21:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A46150275;
+	Tue, 28 Nov 2023 21:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nks1pJkb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKYcb2kR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A024344379;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250B3481CF;
+	Tue, 28 Nov 2023 21:09:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED899C433B7;
 	Tue, 28 Nov 2023 21:09:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477F1C43391;
-	Tue, 28 Nov 2023 21:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205757;
-	bh=CvvGqSh2QuvA4so7qeeFRjXTbU+m+VaHesCshzQSquk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=nks1pJkbUkjWzZIrzv9wEuuqNbWCWMfzDXRiVvLToAosKwXuYKtZmJWkOcl/8uDId
-	 coepTcWwOQplgcGQhvj6sXYv42zZDdpYhQjXSPKG6L5V3ltvl2Q1OkKe3GCw9zlvvu
-	 Oe9lO7da+WiW4qPLWNUHKkO7wBFj5IITiDodhxOBrrlW4hTSqG016hxGrbNExAhlvM
-	 pak4GFCZQIF7Y4u4nnCqx32iLB/BKROtvLFK3Tp3827A9CTs2x7LkAyddbL1+I0Oi1
-	 dSN8YJWKr5rjV21Q3u1Z3iAbf3Px663ApWKctjF8mgciZPNNtgFyitqpq+++cPwSLu
-	 zkF99I/tjUCRg==
+	s=k20201202; t=1701205759;
+	bh=DmUowkl2RiDc8HkSPrZftrC5MhFstkZnNZPrtmGiKps=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IKYcb2kRJTfbJ7RdwVrkJxlHx/+qhlVxb1E58uc6PU4KGyaGNU0Bv3GiRbTKkHozA
+	 ZaCuJsU0w5UxM6cJKIaHa2zrYhW3e1qVGY5VlMVX+MPe8sXhpK6Tw0dRjKKlghwSJ7
+	 gzn9kd3jRAK3fvX5o2IEOMxTfYNUynZQ5AumUJ4A/4zw4YYRDnBYlyDfxlESFqYT07
+	 751uEA7sSlOmTPkC7rMmgh/G9UoNmZbjWZ2wSFgsUooKJRfebl08gct1YOw5gSoFdl
+	 0npoVFQ38VZ7dL6c4XL+aXdyKI8rR2FTQ4F2aBCEmbHycV14HjfEjT4v9tqtq54Jzu
+	 kGl5Iaf+N1fNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Ming Lei <ming.lei@redhat.com>,
+	Changhui Zhong <czhong@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 01/13] usb: aqc111: check packet for fixup for true limit
-Date: Tue, 28 Nov 2023 16:08:55 -0500
-Message-ID: <20231128210914.876813-1-sashal@kernel.org>
+	tj@kernel.org,
+	josef@toxicpanda.com,
+	cgroups@vger.kernel.org,
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 02/13] blk-throttle: fix lockdep warning of "cgroup_mutex or RCU read lock required!"
+Date: Tue, 28 Nov 2023 16:08:56 -0500
+Message-ID: <20231128210914.876813-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231128210914.876813-1-sashal@kernel.org>
+References: <20231128210914.876813-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,56 +60,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.202
 Content-Transfer-Encoding: 8bit
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-[ Upstream commit ccab434e674ca95d483788b1895a70c21b7f016a ]
+[ Upstream commit 27b13e209ddca5979847a1b57890e0372c1edcee ]
 
-If a device sends a packet that is inbetween 0
-and sizeof(u64) the value passed to skb_trim()
-as length will wrap around ending up as some very
-large value.
+Inside blkg_for_each_descendant_pre(), both
+css_for_each_descendant_pre() and blkg_lookup() requires RCU read lock,
+and either cgroup_assert_mutex_or_rcu_locked() or rcu_read_lock_held()
+is called.
 
-The driver will then proceed to parse the header
-located at that position, which will either oops or
-process some random value.
+Fix the warning by adding rcu read lock.
 
-The fix is to check against sizeof(u64) rather than
-0, which the driver currently does. The issue exists
-since the introduction of the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: Changhui Zhong <czhong@redhat.com>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20231117023527.3188627-2-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ block/blk-throttle.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index c9c4095181744..4ea02116be182 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1079,17 +1079,17 @@ static int aqc111_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 	u16 pkt_count = 0;
- 	u64 desc_hdr = 0;
- 	u16 vlan_tag = 0;
--	u32 skb_len = 0;
-+	u32 skb_len;
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index c526fdd0a7b90..4bf514a7bd82c 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -1409,6 +1409,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		   tg_bps_limit(tg, READ), tg_bps_limit(tg, WRITE),
+ 		   tg_iops_limit(tg, READ), tg_iops_limit(tg, WRITE));
  
- 	if (!skb)
- 		goto err;
++	rcu_read_lock();
+ 	/*
+ 	 * Update has_rules[] flags for the updated tg's subtree.  A tg is
+ 	 * considered to have rules if either the tg itself or any of its
+@@ -1436,6 +1437,7 @@ static void tg_conf_updated(struct throtl_grp *tg, bool global)
+ 		this_tg->latency_target = max(this_tg->latency_target,
+ 				parent_tg->latency_target);
+ 	}
++	rcu_read_unlock();
  
--	if (skb->len == 0)
-+	skb_len = skb->len;
-+	if (skb_len < sizeof(desc_hdr))
- 		goto err;
- 
--	skb_len = skb->len;
- 	/* RX Descriptor Header */
--	skb_trim(skb, skb->len - sizeof(desc_hdr));
-+	skb_trim(skb, skb_len - sizeof(desc_hdr));
- 	desc_hdr = le64_to_cpup((u64 *)skb_tail_pointer(skb));
- 
- 	/* Check these packets */
+ 	/*
+ 	 * We're already holding queue_lock and know @tg is valid.  Let's
 -- 
 2.42.0
 
