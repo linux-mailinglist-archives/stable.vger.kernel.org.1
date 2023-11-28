@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-2884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844E97FB84F
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 11:44:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07177FB987
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 12:39:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B55F61C213FF
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:44:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CD5DB21BB7
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 11:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A8945BED;
-	Tue, 28 Nov 2023 10:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7E5D511;
+	Tue, 28 Nov 2023 11:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="J/11Q00V"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="N0FEG/6Q"
 X-Original-To: stable@vger.kernel.org
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5885E19AC;
-	Tue, 28 Nov 2023 02:44:06 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84C42D4C;
+	Tue, 28 Nov 2023 03:39:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1701168246; x=1732704246;
+  t=1701171551; x=1732707551;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=N/NUrzO2PErprF82qE85GTu43xecUWk7SuyD+T42OuY=;
-  b=J/11Q00VdmK0ex2atBw/laB9ZhdatHpM09VJzIUq8gU1L/T79+zEn/Jm
-   aTRVDfdLpOJEhr5f9hPeqqGiv4UzvE1yW8OyE4t+XEj5Wvz5RvUK30r/7
-   qw9Mbc8WcAvUwFh5vgXDn8Fx8oCU8S/2AQCkqcsXXF/dYHlwm4IWPZorA
-   nq645dGlUfhxWc6rRISVFP/pYG9WfQskowXM7VnbdQ9mFRV7jkh2ULsu0
-   l5FDyOkv9dQSmXhUuzr09yoOcD578dRqkK0JmP967ma/pSS/s/lIN0s6A
-   2SnABtM6MWphdbTeMCUVUGYTfXTHLC3VeYmT+nTxvs2lGzgX3tYtFlBwT
-   g==;
-X-CSE-ConnectionGUID: JUteezYWQAu/qC0geM9gZw==
-X-CSE-MsgGUID: 6vH2AyD3Tp+taL/nW+9jDA==
+  bh=W6jdQif78H8ac9hdDjtpyYbJHi2T8WFgTDSWP9xkfGE=;
+  b=N0FEG/6QVVCLUY/0E7jWl8Mmsy5Zq3+hdlTfYrMGq7bjs9SlPWZpfpIo
+   ob0VwKeyVLOHUQT2D3Aas1hsi+ubcjvf3TqWa1jaJ3Xm21rnErjMPCF5/
+   Nj7bwmxnqoQ9Qm0YEclvnaMJahkI5GkNVHLe91JioJ8eUOyOaTaMwUxTM
+   c6ArnTUHX4aaGDbyD93D/IeTKnFcHeXWT+arwAZiP6lQSBrjGdhFbYN5l
+   qHjOczhCsoo4xC5FdRcEgUYF17/v3aqeWvYyBTuljPU9GuflO9AP9kPdy
+   a9vKltCL5/VmNIgVMYJwNcxY1w5l3DBeiYlVDMhKGnFlJDGo5aBlYb9SK
+   Q==;
+X-CSE-ConnectionGUID: 6xCExiqRTp2H5+4mrlHd+g==
+X-CSE-MsgGUID: bTq6O5gwQIStnsUQ1jKqPQ==
 X-ThreatScanner-Verdict: Negative
 X-IronPort-AV: E=Sophos;i="6.04,233,1695711600"; 
-   d="asc'?scan'208";a="13171676"
+   d="asc'?scan'208";a="13173510"
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Nov 2023 03:44:05 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 28 Nov 2023 04:39:10 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
  chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Tue, 28 Nov 2023 03:43:41 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
+ 15.1.2507.21; Tue, 28 Nov 2023 04:39:02 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex01.mchp-main.com (10.10.85.143)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Tue, 28 Nov 2023 03:43:38 -0700
-Date: Tue, 28 Nov 2023 10:43:09 +0000
+ Transport; Tue, 28 Nov 2023 04:38:59 -0700
+Date: Tue, 28 Nov 2023 11:38:30 +0000
 From: Conor Dooley <conor.dooley@microchip.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
@@ -58,9 +58,9 @@ CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
 	<jonathanh@nvidia.com>, <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
 	<srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
 	<allen.lkml@gmail.com>
-Subject: Re: [PATCH 6.5 000/483] 6.5.13-rc4 review
-Message-ID: <20231128-lunchbox-zigzagged-2e660e15a34b@wendy>
-References: <20231126154413.975493975@linuxfoundation.org>
+Subject: Re: [PATCH 6.1 000/366] 6.1.64-rc4 review
+Message-ID: <20231128-perceive-impulsive-754e8e2e2bbf@wendy>
+References: <20231126154359.953633996@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,35 +68,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="dU+rk7O5SqGQQLzG"
+	protocol="application/pgp-signature"; boundary="dp00RXnGoC29AqO0"
 Content-Disposition: inline
-In-Reply-To: <20231126154413.975493975@linuxfoundation.org>
+In-Reply-To: <20231126154359.953633996@linuxfoundation.org>
 
---dU+rk7O5SqGQQLzG
+--dp00RXnGoC29AqO0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Nov 26, 2023 at 03:47:04PM +0000, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.13 release.
-> There are 483 patches in this series, all will be posted as a response
+On Sun, Nov 26, 2023 at 03:46:28PM +0000, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.64 release.
+> There are 366 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
+
+I missed testing 6.1.63 so I noticed this only here, but my CI is
+complaining about seeing some
+[    0.000000] Couldn't find cpu id for hartid [0]
+during boot.
+
+It was caused by
+
+commit 3df98bd3196665f2fd37fcc5b2d483a24a314095
+Author: Anup Patel <apatel@ventanamicro.com>
+Date:   Fri Oct 27 21:12:53 2023 +0530
+
+    RISC-V: Don't fail in riscv_of_parent_hartid() for disabled HARTs
+   =20
+    [ Upstream commit c4676f8dc1e12e68d6511f9ed89707fdad4c962c ]
+   =20
+    The riscv_of_processor_hartid() used by riscv_of_parent_hartid() fails
+    for HARTs disabled in the DT. This results in the following warning
+    thrown by the RISC-V INTC driver for the E-core on SiFive boards:
+   =20
+    [    0.000000] riscv-intc: unable to find hart id for /cpus/cpu@0/inter=
+rupt-controller
+   =20
+    The riscv_of_parent_hartid() is only expected to read the hartid
+    from the DT so we directly call of_get_cpu_hwid() instead of calling
+    riscv_of_processor_hartid().
+   =20
+    Fixes: ad635e723e17 ("riscv: cpu: Add 64bit hartid support on RV64")
+    Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+    Reviewed-by: Atish Patra <atishp@rivosinc.com>
+    Link: https://lore.kernel.org/r/20231027154254.355853-2-apatel@ventanam=
+icro.com
+    Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+    Signed-off-by: Sasha Levin <sashal@kernel.org>
+
+and there is already a fix for this in Linus' tree though that you can
+pick:
+52909f176802 ("RISC-V: drop error print from riscv_hartid_to_cpuid()")
+
+That's just one error print that realistically has no impact on the
+operation of the system, and is not introduced by this particular
+version, so
 
 Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
 Cheers,
 Conor.
 
---dU+rk7O5SqGQQLzG
+--dp00RXnGoC29AqO0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWXEPQAKCRB4tDGHoIJi
-0hQRAQC4DLmpg3eOiK+eybGDt8psf+xUpKETkKF40NgUCNWYGwD/ah5I7Ua5uI84
-GXdFM7dgTNNWgZ/Tk7zXh3N8dGBFSgs=
-=wkmM
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWXRNgAKCRB4tDGHoIJi
+0nPGAPwIDqickTmSq2C7/20IyCkzCK1340MjkfKXlO4UZ2J5AQEApcVkMBNRRwpW
+8ogGeZp6DkOY9YpSALMCH/lk89scZw4=
+=rG0R
 -----END PGP SIGNATURE-----
 
---dU+rk7O5SqGQQLzG--
+--dp00RXnGoC29AqO0--
 
