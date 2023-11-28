@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-3033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED447FC76F
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:10:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 722C97FC772
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 22:10:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47A842849CD
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:10:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EB4D282F70
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 21:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6752C46BAE;
-	Tue, 28 Nov 2023 21:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C1B481A7;
+	Tue, 28 Nov 2023 21:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtmVS2+L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p2dObbnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2194344366;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA34B44366;
+	Tue, 28 Nov 2023 21:09:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3B2C4167D;
 	Tue, 28 Nov 2023 21:09:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10461C433A9;
-	Tue, 28 Nov 2023 21:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701205766;
-	bh=yG+aRl8F0wyaIq6UmkST9/60ctGcA7qgvZ6gTxRE+6w=;
+	s=k20201202; t=1701205767;
+	bh=XzYJuS7f8nCvETnkn/V/IWraFGMklCXv8keMgLDhr1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtmVS2+Lj5XEl7+Cnj/v6PmVE9ULbZVuUGYpz3QpkUiOVovs4HZ75xPT2NgKlX1+f
-	 ViMpLMZQ4WOF6O0vjzj9eImhQSWHhjuD0DJ6EODdUDivCa9uOgP0wB+piomn9yctnI
-	 3/awfipOSf4wu38p3xTJxynlQH+ot/C5h6JM2PCDEzw2hKu1ovyrM+OnRXtAD1XKix
-	 u5VkG/Xa6GBUJZf4l9EV4Pwv5oCUz0ldbwCw3yCP1aUP6GYWz5ON7poVhL5DVptOoq
-	 QYdpBUG+nLT/KnZbv/XdbhLK5nYlIdpiv83+arQAlgT9xrSboAoAgNEe4qc4d9V+UX
-	 LyapthwWnFI8Q==
+	b=p2dObbnvY9y62trR71lQXg20odKvk4bKqTWRv4DrkGMijdnNVPMeVY4wba+qd0aoY
+	 nrH2eTIw3/cTHbJinKD5fUq61f7A8S05YweIu8Z62Wwv2eYa1VuY6snNZ/RQC8blAk
+	 fSlMiDnP+uz4w4o5ApdCX1WEe679Ecyz30gn0PF8wRI+UMlA4WZZEI6wTCqNlZ6nFs
+	 9e425AL0pKBnQQIheY8IoUccrzajv9dGNUR81ui/VtoEeKV3Tg5NMYBp09+lUnghDu
+	 8WqMbWbmLcB+9xkGpIt4zv9hagMNOfGYoEI57DY4WsrdmetrpnNb+YZUv+4OzhcOEW
+	 3TTfEGSb4lG6Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	kernel test robot <lkp@intel.com>,
-	Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+Cc: Brett Raye <braye@fastmail.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>,
-	hdegoede@redhat.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 07/13] platform/x86: intel_telemetry: Fix kernel doc descriptions
-Date: Tue, 28 Nov 2023 16:09:01 -0500
-Message-ID: <20231128210914.876813-7-sashal@kernel.org>
+	jikos@kernel.org,
+	benjamin.tissoires@redhat.com,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 08/13] HID: glorious: fix Glorious Model I HID report
+Date: Tue, 28 Nov 2023 16:09:02 -0500
+Message-ID: <20231128210914.876813-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231128210914.876813-1-sashal@kernel.org>
 References: <20231128210914.876813-1-sashal@kernel.org>
@@ -54,58 +53,138 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.202
 Content-Transfer-Encoding: 8bit
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Brett Raye <braye@fastmail.com>
 
-[ Upstream commit a6584711e64d9d12ab79a450ec3628fd35e4f476 ]
+[ Upstream commit a5e913c25b6b2b6ae02acef6d9400645ac03dfdf ]
 
-LKP found issues with a kernel doc in the driver:
+The Glorious Model I mouse has a buggy HID report descriptor for its
+keyboard endpoint (used for programmable buttons). For report ID 2, there
+is a mismatch between Logical Minimum and Usage Minimum in the array that
+reports keycodes.
 
-core.c:116: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_update_events'
-core.c:188: warning: Function parameter or member 'ioss_evtconfig' not described in 'telemetry_get_eventconfig'
+The offending portion of the descriptor: (from hid-decode)
 
-It looks like it were copy'n'paste typos when these descriptions
-had been introduced. Fix the typos.
+0x95, 0x05,                    //  Report Count (5)                   30
+0x75, 0x08,                    //  Report Size (8)                    32
+0x15, 0x00,                    //  Logical Minimum (0)                34
+0x25, 0x65,                    //  Logical Maximum (101)              36
+0x05, 0x07,                    //  Usage Page (Keyboard)              38
+0x19, 0x01,                    //  Usage Minimum (1)                  40
+0x29, 0x65,                    //  Usage Maximum (101)                42
+0x81, 0x00,                    //  Input (Data,Arr,Abs)               44
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310070743.WALmRGSY-lkp@intel.com/
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20231120150756.1661425-1-andriy.shevchenko@linux.intel.com
-Reviewed-by: Rajneesh Bhardwaj <irenic.rajneesh@gmail.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+This bug shifts all programmed keycodes up by 1. Importantly, this causes
+"empty" array indexes of 0x00 to be interpreted as 0x01, ErrorRollOver.
+The presence of ErrorRollOver causes the system to ignore all keypresses
+from the endpoint and breaks the ability to use the programmable buttons.
+
+Setting byte 41 to 0x00 fixes this, and causes keycodes to be interpreted
+correctly.
+
+Also, USB_VENDOR_ID_GLORIOUS is changed to USB_VENDOR_ID_SINOWEALTH,
+and a new ID for Laview Technology is added. Glorious seems to be
+white-labeling controller boards or mice from these vendors. There isn't a
+single canonical vendor ID for Glorious products.
+
+Signed-off-by: Brett Raye <braye@fastmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel_telemetry_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-glorious.c | 16 ++++++++++++++--
+ drivers/hid/hid-ids.h      | 11 +++++++----
+ 2 files changed, 21 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/platform/x86/intel_telemetry_core.c b/drivers/platform/x86/intel_telemetry_core.c
-index fdf55b5d69480..e4be40f73eebf 100644
---- a/drivers/platform/x86/intel_telemetry_core.c
-+++ b/drivers/platform/x86/intel_telemetry_core.c
-@@ -102,7 +102,7 @@ static const struct telemetry_core_ops telm_defpltops = {
- /**
-  * telemetry_update_events() - Update telemetry Configuration
-  * @pss_evtconfig: PSS related config. No change if num_evts = 0.
-- * @pss_evtconfig: IOSS related config. No change if num_evts = 0.
-+ * @ioss_evtconfig: IOSS related config. No change if num_evts = 0.
-  *
-  * This API updates the IOSS & PSS Telemetry configuration. Old config
-  * is overwritten. Call telemetry_reset_events when logging is over
-@@ -176,7 +176,7 @@ EXPORT_SYMBOL_GPL(telemetry_reset_events);
- /**
-  * telemetry_get_eventconfig() - Returns the pss and ioss events enabled
-  * @pss_evtconfig: Pointer to PSS related configuration.
-- * @pss_evtconfig: Pointer to IOSS related configuration.
-+ * @ioss_evtconfig: Pointer to IOSS related configuration.
-  * @pss_len:	   Number of u32 elements allocated for pss_evtconfig array
-  * @ioss_len:	   Number of u32 elements allocated for ioss_evtconfig array
-  *
+diff --git a/drivers/hid/hid-glorious.c b/drivers/hid/hid-glorious.c
+index 558eb08c19ef9..281b3a7187cec 100644
+--- a/drivers/hid/hid-glorious.c
++++ b/drivers/hid/hid-glorious.c
+@@ -21,6 +21,10 @@ MODULE_DESCRIPTION("HID driver for Glorious PC Gaming Race mice");
+  * Glorious Model O and O- specify the const flag in the consumer input
+  * report descriptor, which leads to inputs being ignored. Fix this
+  * by patching the descriptor.
++ *
++ * Glorious Model I incorrectly specifes the Usage Minimum for its
++ * keyboard HID report, causing keycodes to be misinterpreted.
++ * Fix this by setting Usage Minimum to 0 in that report.
+  */
+ static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		unsigned int *rsize)
+@@ -32,6 +36,10 @@ static __u8 *glorious_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		rdesc[85] = rdesc[113] = rdesc[141] = \
+ 			HID_MAIN_ITEM_VARIABLE | HID_MAIN_ITEM_RELATIVE;
+ 	}
++	if (*rsize == 156 && rdesc[41] == 1) {
++		hid_info(hdev, "patching Glorious Model I keyboard report descriptor\n");
++		rdesc[41] = 0;
++	}
+ 	return rdesc;
+ }
+ 
+@@ -44,6 +52,8 @@ static void glorious_update_name(struct hid_device *hdev)
+ 		model = "Model O"; break;
+ 	case USB_DEVICE_ID_GLORIOUS_MODEL_D:
+ 		model = "Model D"; break;
++	case USB_DEVICE_ID_GLORIOUS_MODEL_I:
++		model = "Model I"; break;
+ 	}
+ 
+ 	snprintf(hdev->name, sizeof(hdev->name), "%s %s", "Glorious", model);
+@@ -66,10 +76,12 @@ static int glorious_probe(struct hid_device *hdev,
+ }
+ 
+ static const struct hid_device_id glorious_devices[] = {
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
+ 		USB_DEVICE_ID_GLORIOUS_MODEL_O) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_GLORIOUS,
++	{ HID_USB_DEVICE(USB_VENDOR_ID_SINOWEALTH,
+ 		USB_DEVICE_ID_GLORIOUS_MODEL_D) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_LAVIEW,
++		USB_DEVICE_ID_GLORIOUS_MODEL_I) },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(hid, glorious_devices);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 6712d99ad80da..c668b0c31599d 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -470,10 +470,6 @@
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_010A 0x010a
+ #define USB_DEVICE_ID_GENERAL_TOUCH_WIN8_PIT_E100 0xe100
+ 
+-#define USB_VENDOR_ID_GLORIOUS  0x258a
+-#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
+-#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
+-
+ #define I2C_VENDOR_ID_GOODIX		0x27c6
+ #define I2C_DEVICE_ID_GOODIX_01F0	0x01f0
+ 
+@@ -696,6 +692,9 @@
+ #define USB_VENDOR_ID_LABTEC		0x1020
+ #define USB_DEVICE_ID_LABTEC_WIRELESS_KEYBOARD	0x0006
+ 
++#define USB_VENDOR_ID_LAVIEW		0x22D4
++#define USB_DEVICE_ID_GLORIOUS_MODEL_I	0x1503
++
+ #define USB_VENDOR_ID_LCPOWER		0x1241
+ #define USB_DEVICE_ID_LCPOWER_LC1000	0xf767
+ 
+@@ -1067,6 +1066,10 @@
+ #define USB_VENDOR_ID_SIGMATEL		0x066F
+ #define USB_DEVICE_ID_SIGMATEL_STMP3780	0x3780
+ 
++#define USB_VENDOR_ID_SINOWEALTH  0x258a
++#define USB_DEVICE_ID_GLORIOUS_MODEL_D 0x0033
++#define USB_DEVICE_ID_GLORIOUS_MODEL_O 0x0036
++
+ #define USB_VENDOR_ID_SIS_TOUCH		0x0457
+ #define USB_DEVICE_ID_SIS9200_TOUCH	0x9200
+ #define USB_DEVICE_ID_SIS817_TOUCH	0x0817
 -- 
 2.42.0
 
