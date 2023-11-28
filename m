@@ -1,125 +1,174 @@
-Return-Path: <stable+bounces-2876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-2877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5AA7FB535
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:07:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D5B7FB598
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 10:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B58D1C210AA
-	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:07:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 051631C210B1
+	for <lists+stable@lfdr.de>; Tue, 28 Nov 2023 09:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6A8374D8;
-	Tue, 28 Nov 2023 09:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F81446DD;
+	Tue, 28 Nov 2023 09:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="ipuF873A"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="VEmjG4Wi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 805511B6;
-	Tue, 28 Nov 2023 01:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1701162440; x=1732698440;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Z1TW0Hfw0huACu3MYZumgUWnW7GOEILz6vqy+fXSiuE=;
-  b=ipuF873A6fjc1Cd9SolAyWqs/vKndQA+9pFXn5cwOQy7CCNw72z6lgmd
-   Gj1aiNUs1E3T+DAjCEf2MWbibN7NcJB4sB+iycEAgSvWw3e0JF1BQd0kE
-   VFmAXNldSPq0HGcivVP/Q02k6j09N2lp+aXMznodrmR1azSegqaZs2ozz
-   Q=;
-X-IronPort-AV: E=Sophos;i="6.04,233,1695686400"; 
-   d="scan'208";a="686862827"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-a65ebc6e.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 09:07:14 +0000
-Received: from smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan3.iad.amazon.com [10.32.235.38])
-	by email-inbound-relay-iad-1e-m6i4x-a65ebc6e.us-east-1.amazon.com (Postfix) with ESMTPS id 5414F68209;
-	Tue, 28 Nov 2023 09:07:11 +0000 (UTC)
-Received: from EX19MTAEUA002.ant.amazon.com [10.0.17.79:58411]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.35:2525] with esmtp (Farcaster)
- id 2c7e7e41-2e49-48f3-9887-6580cefdb379; Tue, 28 Nov 2023 09:07:10 +0000 (UTC)
-X-Farcaster-Flow-ID: 2c7e7e41-2e49-48f3-9887-6580cefdb379
-Received: from EX19D008EUA003.ant.amazon.com (10.252.50.155) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.126) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.39; Tue, 28 Nov 2023 09:07:09 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (10.252.135.222) by
- EX19D008EUA003.ant.amazon.com (10.252.50.155) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Tue, 28 Nov 2023 09:07:09 +0000
-Received: from dev-dsk-hagarhem-1b-81bb22e5.eu-west-1.amazon.com
- (172.19.65.226) by mail-relay.amazon.com (10.252.135.200) with Microsoft SMTP
- Server id 15.2.1118.39 via Frontend Transport; Tue, 28 Nov 2023 09:07:09
- +0000
-Received: by dev-dsk-hagarhem-1b-81bb22e5.eu-west-1.amazon.com (Postfix, from userid 23002382)
-	id EB76D5BCC; Tue, 28 Nov 2023 09:07:08 +0000 (UTC)
-From: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-To:
-CC: Maximilian Heyne <mheyne@amazon.de>, Norbert Manthey <nmanthey@amazon.de>,
-	Hagar Gamal Halim Hemdan <hagarhem@amazon.com>, <stable@vger.kernel.org>,
-	Bryan Tan <bryantan@vmware.com>, Vishnu Dasa <vdasa@vmware.com>, "VMware
- PV-Drivers Reviewers" <pv-drivers@vmware.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Dmitry Torokhov
-	<dtor@vmware.com>, George Zhang <georgezhang@vmware.com>, Andy king
-	<acking@vmware.com>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v3] vmci: prevent speculation leaks by sanitizing event in event_deliver()
-Date: Tue, 28 Nov 2023 09:06:46 +0000
-Message-ID: <20231128090647.49863-1-hagarhem@amazon.com>
-X-Mailer: git-send-email 2.40.1
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4F6B1D0
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 01:23:55 -0800 (PST)
+Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0F30720B74C0;
+	Tue, 28 Nov 2023 01:23:53 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0F30720B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1701163434;
+	bh=XHlgjDQfi7sEqRucjGgnmeG94JlW0ZRegtJQnZlsMc0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VEmjG4WiF6D3aSDeCEjvPUZJdF1fmvNpjamql/yFK93hNeo42K2h9tVhHI+V67+7T
+	 hf/NehR51VLC1jD7LYXB/XdIqBXjWJu7rTtKgwzh7RLZMHHKmQk3d9gWUjh/PAOMOP
+	 7F0+9vOf3KwT6iO8rGlyxy/lHTobB5pLJGQmKy84=
+From: Francis Laniel <flaniel@linux.microsoft.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>
+Subject: Re: [PATCH 4.19.y] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
+Date: Tue, 28 Nov 2023 10:23:51 +0100
+Message-ID: <2708527.mvXUDI8C0e@pwmachine>
+In-Reply-To: <2023112749-dismay-blemish-3eac@gregkh>
+References: <2023102138-riverbed-senator-e356@gregkh> <2305896.ElGaqSPkdT@pwmachine> <2023112749-dismay-blemish-3eac@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
 
-Coverity spotted that event_msg is controlled by user-space,
-event_msg->event_data.event is passed to event_deliver() and used
-as an index without sanitization.
+Hi!
 
-This change ensures that the event index is sanitized to mitigate any
-possibility of speculative information leaks.
 
-Fixes: 1d990201f9bb ("VMCI: event handling implementation.")
+Le lundi 27 novembre 2023, 18:58:10 CET Greg KH a =C3=A9crit :
+> On Mon, Nov 27, 2023 at 06:36:32PM +0100, Francis Laniel wrote:
+> > Hi!
+> >=20
+> > Le lundi 27 novembre 2023, 16:44:22 CET Greg KH a =C3=A9crit :
+> > > On Mon, Nov 27, 2023 at 03:41:31PM +0100, Francis Laniel wrote:
+> > > > Hi!
+> > > >=20
+> > > > Le vendredi 24 novembre 2023, 17:17:04 CET Greg KH a =C3=A9crit :
+> > > > > On Fri, Nov 24, 2023 at 01:24:13PM +0100, Francis Laniel wrote:
+> > > > > > When a kprobe is attached to a function that's name is not uniq=
+ue
+> > > > > > (is
+> > > > > > static and shares the name with other functions in the kernel),
+> > > > > > the
+> > > > > > kprobe is attached to the first function it finds. This is a bug
+> > > > > > as
+> > > > > > the
+> > > > > > function that it is attaching to is not necessarily the one that
+> > > > > > the
+> > > > > > user wants to attach to.
+> > > > > >=20
+> > > > > > Instead of blindly picking a function to attach to what is
+> > > > > > ambiguous,
+> > > > > > error with EADDRNOTAVAIL to let the user know that this function
+> > > > > > is
+> > > > > > not
+> > > > > > unique, and that the user must use another unique function with=
+ an
+> > > > > > address offset to get to the function they want to attach to.
+> > > > > >=20
+> > > > > > Link:
+> > > > > > https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux=
+=2Emi
+> > > > > > cros
+> > > > > > oft
+> > > > > > .com/
+> > > > > >=20
+> > > > > > Cc: stable@vger.kernel.org
+> > > > > > Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
+> > > > > > Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > > > > > Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
+> > > > > > Link:
+> > > > > > https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2e=
+ea7
+> > > > > > 42@k
+> > > > > > ern
+> > > > > > el.org/ Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.or=
+g>
+> > > > > > Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> > > > > > (cherry picked from commit
+> > > > > > b022f0c7e404887a7c5229788fc99eff9f9a80d5)
+> > > > > > ---
+> > > > > >=20
+> > > > > >  kernel/trace/trace_kprobe.c | 48
+> > > > > >  +++++++++++++++++++++++++++++++++++++
+> > > > > >  1 file changed, 48 insertions(+)
+> > > > >=20
+> > > > > Again, we need a version for 5.4.y as well before we can take this
+> > > > > version.
+> > > >=20
+> > > > I sent the 5.4.y patch some times ago, you can find it here:
+> > > > https://lore.kernel.org/stable/20231023113623.36423-2-flaniel@linux=
+=2Emi
+> > > > cros
+> > > > oft.com/
+> > > >=20
+> > > > With the recent batch I sent, I should have cover all the stable
+> > > > kernels.
+> > > > In case I miss one, please indicate it to me so I can fix this prob=
+lem
+> > > > and
+> > > > ensure all stable kernels have a corresponding patch.
+> > >=20
+> > > I only see the following in my stable mbox right now:
+> > >    1   C Nov 27 Francis Laniel  (4.4K) =E2=94=AC=E2=94=80>[PATCH 5.10=
+=2Ey] tracing/
+kprobes:
+> > > Return EADDRNOTAVAIL when func matches several symbols 2 r C Nov 24
+> > > Francis
+> > > Laniel  (4.4K) =E2=94=94=E2=94=80>[PATCH 5.10.y] tracing/kprobes: Ret=
+urn EADDRNOTAVAIL
+> > > when
+> > > func matches several symbols 3   F Nov 24 To Francis Lani (1.5K)   =
+=E2=94=94=E2=94=80>
+> > >=20
+> > >    4 r T Nov 27 Francis Laniel  (1.9K)     =E2=94=94=E2=94=80>
+> > >    5   F Nov 27 To Francis Lani (2.0K)       =E2=94=94=E2=94=80>
+> > >  =20
+> > >   23 r C Nov 24 Francis Laniel  (2.7K) [PATCH 4.19.y] tracing/kprobes:
+> > > Return EADDRNOTAVAIL when func matches several symbols 24 r + Nov 27
+> > > Francis Laniel  (2.0K) =E2=94=94=E2=94=80>
+> > >=20
+> > > So could you resend them all just to be sure I have all of the latest
+> > > versions that you wish to have applied?
+> >=20
+> > I normally sent again the patch for version 4.14 to 5.15 (it was already
+> > present in 6.1 and 6.6).
+> > I tested all of them by building the corresponding kernel with the patch
+> > applied before sending, so they should not break compilation or testing.
+> >=20
+> > Can you please confirm me you received them?
+>=20
+> Got them now, thanks, I'll dig through them after this latest round of
+> stable kernels gets released.
 
-Signed-off-by: Hagar Gamal Halim Hemdan <hagarhem@amazon.com>
-Cc: stable@vger.kernel.org
----
-v3: added cc stable tag to the commit message as requested by kernel
-test robot.
+You are welcome!
+Take your time, this is indeed a bug fix but not a major one (I am doubtful=
+=20
+plenty of people met this).
+If you find anything wrong with one of the patch, send a message and I will=
+ for=20
+sure polish it.
 
- drivers/misc/vmw_vmci/vmci_event.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+> thanks,
+>=20
+> greg k-h
 
-diff --git a/drivers/misc/vmw_vmci/vmci_event.c b/drivers/misc/vmw_vmci/vmci_event.c
-index 5d7ac07623c2..9a41ab65378d 100644
---- a/drivers/misc/vmw_vmci/vmci_event.c
-+++ b/drivers/misc/vmw_vmci/vmci_event.c
-@@ -9,6 +9,7 @@
- #include <linux/vmw_vmci_api.h>
- #include <linux/list.h>
- #include <linux/module.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <linux/rculist.h>
-@@ -86,9 +87,12 @@ static void event_deliver(struct vmci_event_msg *event_msg)
- {
- 	struct vmci_subscription *cur;
- 	struct list_head *subscriber_list;
-+	u32 sanitized_event, max_vmci_event;
- 
- 	rcu_read_lock();
--	subscriber_list = &subscriber_array[event_msg->event_data.event];
-+	max_vmci_event = ARRAY_SIZE(subscriber_array);
-+	sanitized_event = array_index_nospec(event_msg->event_data.event, max_vmci_event);
-+	subscriber_list = &subscriber_array[sanitized_event];
- 	list_for_each_entry_rcu(cur, subscriber_list, node) {
- 		cur->callback(cur->id, &event_msg->event_data,
- 			      cur->callback_data);
--- 
-2.40.1
+
+Best regards.
+
 
 
