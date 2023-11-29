@@ -1,187 +1,296 @@
-Return-Path: <stable+bounces-3192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03CD97FE434
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 00:41:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BB637FE437
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 00:42:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3060D1C20C76
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 23:41:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21BA428223B
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 23:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C39147A5E;
-	Wed, 29 Nov 2023 23:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C3547A50;
+	Wed, 29 Nov 2023 23:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="U/zRtwo+"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="wIho+CUP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98D8410C0
-	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 15:41:07 -0800 (PST)
-Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-1cfd76c5f03so65695ad.0
-        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 15:41:07 -0800 (PST)
+Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C9BDD7D
+	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 15:42:25 -0800 (PST)
+Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1cf7a8ab047so3623425ad.1
+        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 15:42:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1701301267; x=1701906067; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vAafIotfNLeEwiBYbu95S1M0tQmMdEiW9EUaH/ugkoU=;
-        b=U/zRtwo+aQZrG+nwhUiUjVwBkM8E6E7anILz6pLZnjg3APyoMCqXtnjs3EjorKRqEG
-         mq+DG/zr2BC83zA+M1FiFfb7nDYv4Y+ae1HlVdYrDp6B+eadXhrrqreb5twL3l4w402f
-         ez4U71mypQC0n4seK/fW9eNEicCBJPlz+iOJk=
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701301344; x=1701906144; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=yyAF2I5M23CwpbiWO71fn1MwJizDciqms+KnsfIkeHo=;
+        b=wIho+CUPqB5s5+yq3siEDpNe5DW77o4XMkTA23qrBBy4/qljclm6OXzPsog4rBjIcg
+         8/RahuMlebI8DeoYk7jAtB5cj07jC1+3mptOFQf1501VuxlbA4aVDXu9XIHgtp/pCmy0
+         s3G0bwyeEQbB+bSuPuzuSARNU210Ww+tFQ1c/EYe0lBL12jR8olJwG1o7NB4qRE8UBiH
+         AwoDe+y97gngjQIEZXib0To+G3U2IclSx19v5v31wgH9RVGcGijNJPCeziqApMfh4c53
+         /hsNw6aFFW/mwk1OotB+La3o+Qy4gGKTDbFm0V/F7deNhq5MdG+bzz86GeL+Yn6GB1QB
+         nPiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701301267; x=1701906067;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vAafIotfNLeEwiBYbu95S1M0tQmMdEiW9EUaH/ugkoU=;
-        b=WuGB5nZF/JPut2S8fRuSZ0j5omIRoHqo0rahCbSyQZ6BzhJqGdbtibLWZrXuzozAEg
-         CF60J5bUqHGeC8URvuFx5CXeSwTHowtpoMGdQ9yfPAUMAXKIAfNzZU4ErddUgqEm6d2o
-         FPEZW5lMDFZ6YgwfKNSbmz2EnZJA4Ei8zjLwiIL/tnChjkNc13SDl77jkT3xGHyZkJXH
-         UHiqh0i6b6N9QKVehM0ChynGq23AmuKso09vvm85i3KzAncVHqNCb8MVTGP+Cf5YJL8m
-         E5qmeBrSbjrHkWwpZ9D18E25OODjMu7Tz2mCuFUYP9Arc0litHMFiIpn3paqRCYr9D53
-         mbZQ==
-X-Gm-Message-State: AOJu0Yw+2PlpoKzffAySy9YivPFApQJdY0oLGJ3CjngKHbuz1SHnCDV0
-	37BPFWjoIkcyQ9oZSr5PcNd2Hv0xzSKd2FwG78jKuQ==
-X-Google-Smtp-Source: AGHT+IE1XSh+nbdNnRVKnLfSK/CPmIMOuq4e8h34HbM9E0oL/vYe5Unt0pVpjf63jESDwVXLVbmvwh3w0v7G4uQZ93o=
-X-Received: by 2002:a17:903:5c5:b0:1cf:c366:9921 with SMTP id
- kf5-20020a17090305c500b001cfc3669921mr32999plb.9.1701301266715; Wed, 29 Nov
- 2023 15:41:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701301344; x=1701906144;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yyAF2I5M23CwpbiWO71fn1MwJizDciqms+KnsfIkeHo=;
+        b=nieqdyCSoeEvIN+6NgQoB/bp7i2iTdVZA3BO1DMGllUpb8/0fOcgAd5TFCdxRol1u2
+         QrFMrLKL/FGCxmhnQBkFmFoCYQt9NQRprwSYMp88LGUuLD9/vbfIFlC0w4Jmb+Ovz716
+         cCQr3ecdtg2IwgpMBfpsyksXjIod3OsNYnfnifCH6bbXx+1MWKSueyMjFxUyxcxeQgH0
+         3CZl8Cmqib/cwLTdWRVqOuLUC4nmuqQCLmwELMH17VE3/OJAmS7dLse0VVq9lOuL5aLw
+         yvTSn96VlhSgijN2Wui/g9Cw6+gf4NIlkxR2+dXjCjiGiXv2/uomTDVQsMkMzxEHt1Kx
+         m/4g==
+X-Gm-Message-State: AOJu0YxeKCrFACaxdGNkCh4+ed/Ob9AKBfQQbaNVP5x15K0SjjdIqtmL
+	5z5o3sXOwU32i7sYjQuDTBzvXdiwC4NlinYraJbXnQ==
+X-Google-Smtp-Source: AGHT+IHEEs4GyrHv5OcLI1FXgohpFso3HoxO38gVHzi4SYbkDbJwP7ckavvGBeKUHhVnHO8fPxuQRQ==
+X-Received: by 2002:a17:902:ec8f:b0:1cf:d9c7:3b13 with SMTP id x15-20020a170902ec8f00b001cfd9c73b13mr10562656plg.12.1701301344607;
+        Wed, 29 Nov 2023 15:42:24 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id l8-20020a170903244800b001cfc3f73920sm7497410pls.227.2023.11.29.15.42.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 15:42:23 -0800 (PST)
+Message-ID: <6567cc5f.170a0220.9a0ad.43db@mx.google.com>
+Date: Wed, 29 Nov 2023 15:42:23 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231129155350.5843-1-hau@realtek.com> <4aeebf95-cf12-4462-80c7-dd1dafddb611@intel.com>
-In-Reply-To: <4aeebf95-cf12-4462-80c7-dd1dafddb611@intel.com>
-From: Grant Grundler <grundler@chromium.org>
-Date: Wed, 29 Nov 2023 15:40:50 -0800
-Message-ID: <CANEJEGs9r0vq9QkGTcLryPnviMPgztJDsFjHqnRH65KbCqeF7g@mail.gmail.com>
-Subject: Re: [PATCH net v2] r8169: fix rtl8125b PAUSE frames blasting when suspended
-To: Jacob Keller <jacob.e.keller@intel.com>
-Cc: ChunHao Lin <hau@realtek.com>, hkallweit1@gmail.com, nic_swsd@realtek.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, grundler@chromium.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/4.19
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v4.19.300-13-g2c5f18dce7e41
+Subject: stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed,
+ 20 warnings (v4.19.300-13-g2c5f18dce7e41)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Wed, Nov 29, 2023 at 3:05=E2=80=AFPM Jacob Keller <jacob.e.keller@intel.=
-com> wrote:
-> On 11/29/2023 7:53 AM, ChunHao Lin wrote:
-> > When FIFO reaches near full state, device will issue pause frame.
-> > If pause slot is enabled(set to 1), in this time, device will issue
-> > pause frame only once. But if pause slot is disabled(set to 0), device
-> > will keep sending pause frames until FIFO reaches near empty state.
-> >
-> > When pause slot is disabled, if there is no one to handle receive
-> > packets, device FIFO will reach near full state and keep sending
-> > pause frames. That will impact entire local area network.
-> >
-> > This issue can be reproduced in Chromebox (not Chromebook) in
-> > developer mode running a test image (and v5.10 kernel):
-> > 1) ping -f $CHROMEBOX (from workstation on same local network)
-> > 2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
-> > 3) ping $ROUTER (wait until ping fails from workstation)
-> >
-> > Takes about ~20-30 seconds after step 2 for the local network to
-> > stop working.
-> >
-> > Fix this issue by enabling pause slot to only send pause frame once
-> > when FIFO reaches near full state.
-> >
->
-> Makes sense. Avoiding the spam is good.  The naming is a bit confusing
-> but I guess that comes from realtek datasheet?
+stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed, 20 warnings (v4=
+.19.300-13-g2c5f18dce7e41)
 
-I don't know. It doesn't matter to me what it's called since I don't
-have access to the data sheet anyway. :/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+9/kernel/v4.19.300-13-g2c5f18dce7e41/
 
-> > Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
-> > Reported-by: Grant Grundler <grundler@chromium.org>
-> > Tested-by: Grant Grundler <grundler@chromium.org>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: ChunHao Lin <hau@realtek.com>
-> > ---
-> > v2:
-> > - update comment and title.
-> > ---
-> >  drivers/net/ethernet/realtek/r8169_main.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/et=
-hernet/realtek/r8169_main.c
-> > index 62cabeeb842a..bb787a52bc75 100644
-> > --- a/drivers/net/ethernet/realtek/r8169_main.c
-> > +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> > @@ -196,6 +196,7 @@ enum rtl_registers {
-> >                                       /* No threshold before first PCI =
-xfer */
-> >  #define      RX_FIFO_THRESH                  (7 << RXCFG_FIFO_SHIFT)
-> >  #define      RX_EARLY_OFF                    (1 << 11)
-> > +#define      RX_PAUSE_SLOT_ON                (1 << 11)       /* 8125b =
-and later */
->
-> This confuses me though: RX_EARLY_OFF is (1 << 11) as well.. Is that
-> from a different set of devices?
+Tree: stable-rc
+Branch: queue/4.19
+Git Describe: v4.19.300-13-g2c5f18dce7e41
+Git Commit: 2c5f18dce7e4163f7994f8b28410fdf5c4897abf
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Yes, for a different HW version of the device.
+Build Failures Detected:
 
-> We're writing to the same register
-> RxConfig here I think in both cases?
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
-Yes. But to different versions of the HW which use this bit
-differently. Ergo the comment about "8125b and later".
+Warnings Detected:
 
-> Can you clarify if these are supposed to be the same bit?
+arc:
 
-Yes, they are the same bit - but different versions of HW use BIT(11)
-differently.
+arm64:
+    defconfig (gcc-10): 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
->
-> >  #define      RXCFG_DMA_SHIFT                 8
-> >                                       /* Unlimited maximum PCI burst. *=
-/
-> >  #define      RX_DMA_BURST                    (7 << RXCFG_DMA_SHIFT)
-> > @@ -2306,9 +2307,13 @@ static void rtl_init_rxcfg(struct rtl8169_privat=
-e *tp)
-> >       case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
-> >               RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA=
-_BURST | RX_EARLY_OFF);
-> >               break;
-> > -     case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-> > +     case RTL_GIGA_MAC_VER_61:
-> >               RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
-> >               break;
->
-> I assume there isn't a VER_62 between these?
+arm:
 
-Correct. My clue is this code near the top of this file:
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
- 149         [RTL_GIGA_MAC_VER_61] =3D {"RTL8125A",            FIRMWARE_812=
-5A_3},
- 150         /* reserve 62 for CFG_METHOD_4 in the vendor driver */
- 151         [RTL_GIGA_MAC_VER_63] =3D {"RTL8125B",            FIRMWARE_812=
-5B_2},
+mips:
 
->
-> > +     case RTL_GIGA_MAC_VER_63:
-> > +             RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
-> > +                     RX_PAUSE_SLOT_ON);
->
-> We add RX_PAUSE_SLOT_ON now for RTL_GIGA_MAC_VER_63 in addition. Makes
-> sense.
+riscv:
 
-Exactly.
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-board (gcc-10): 2 warnings
 
-thanks for reviewing!
 
-cheers,
-grant
+Warnings summary:
 
-> > +             break;
-> >       default:
-> >               RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
-> >               break;
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+
+Section mismatches summary:
+
+    4    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+ings, 0 section mismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
+nings, 0 section mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
