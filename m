@@ -1,208 +1,269 @@
-Return-Path: <stable+bounces-3133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5532C7FD2D1
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 10:34:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6657FD2F3
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 10:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49485B20E95
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 09:33:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8C0BB218D0
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 09:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A7115AE8;
-	Wed, 29 Nov 2023 09:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E4917999;
+	Wed, 29 Nov 2023 09:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jWBvSiGx"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="JWfKbI13"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC28D1707;
-	Wed, 29 Nov 2023 01:33:49 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40b4c2ef584so14326195e9.3;
-        Wed, 29 Nov 2023 01:33:49 -0800 (PST)
+Received: from mail-oi1-x235.google.com (mail-oi1-x235.google.com [IPv6:2607:f8b0:4864:20::235])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DCD31998
+	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 01:38:56 -0800 (PST)
+Received: by mail-oi1-x235.google.com with SMTP id 5614622812f47-3b843b61d8aso3764172b6e.0
+        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 01:38:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701250428; x=1701855228; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GfEWbAa5eVH99NqtMtI/lEIzIzx8gV15mC23gb91+Ss=;
-        b=jWBvSiGxG2mOdmJxOWuE5UVz7wO5fgdJHifyBl40ZcqFdOsLayJxw1QJvFYbHcMcSR
-         DXytcHxMcMt/AlQoKBFwUhUzIdEh3SKtOZMszTSWAKJxBIdf35u9QqGYzsR0rOWFA/aq
-         bIp3AXEkuFtZ4VW4xRrhZUwZ+g7nFzMJZi0CmEM8Cy+T9a6nCuA40dImAawO8g2vkY7l
-         NKRWWoLkqG7eNFQM+37IQhQBDkgkUFb2bBJaYctTQbm5OTtB0sUaSOmCHGpQHSSm87vr
-         3WBDc2uzWxqF0ZTpEtk0Xy0YPBalWq95TypA6kgpA074s8M2CI9fzsBmSJgDhD/RSkhg
-         XQuQ==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701250735; x=1701855535; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ACNqif93OlR3ETTQWNZ4AN1QvC0rL1QAwI7DY9UC0ik=;
+        b=JWfKbI13ZAusd1k+HnWXcAMz3oOHjjQS5JTSsopi2fsBqfZOC18HjwwZeaiN/2Vzjh
+         Y3ymoQiJQ6HmQqP/gJnwbcm3lu6YLAjzKxaGON07o5Jq97KWL0YjATjh/t4rL2d2yW2Z
+         l7pB4XrTZbT4k3EU5NFNgtSc5ZsKFI0rTowpf75d2xvOdiTcaKDypkFWTsl+hDSa/WKM
+         T0R5nVO6E8JUff0N0Pg5Ozx8ePfyOcOU7/Mttu/2rFUIOm6wp9t7/BtzcgT0EszYG4QB
+         Ei7xho8kg6LTCDYrbIBI+Xj+Vg4VwnYyly8Yhw8m2l2eOoaPI5xW2ZEkNMPvqG7zCHei
+         Ypxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701250428; x=1701855228;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1701250735; x=1701855535;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GfEWbAa5eVH99NqtMtI/lEIzIzx8gV15mC23gb91+Ss=;
-        b=IDPWoK/t6hVwS3GPCNyzrFsEc0Dshtpx8ztM+NoxGNFCcbuwb1R8crPhatccdwmTRg
-         Iczrzfu5DR26tX668+AkhCKMj/byDr9jRtNXXyKlC1562qsIu5R0woR4xRmUZ5QPLoEW
-         T+ayV87qegA/XshkP//1MkQpYKvMj1hvx1u40GwfarwcquP2g24x2CCTL/V01wq56h7q
-         XG55pk81cQwXdqZsXO93C2stLMSrFuKC01ewPD+69hA6sF8IVwqhJJw2CjDjYch3jz6K
-         h6wvaSy3PXJFxLuwNO4MsZDq62Vl3w/FjbjlgYUEPK10pZFombfSBykS8cx8NEERoUFs
-         GBSQ==
-X-Gm-Message-State: AOJu0YxC99SSyv2zXSzQtTMMPZ2tV+Ym2M2fK62O/uWAYTgxbYLEneos
-	AP/1h8ZKIXm3kQ+EQ2aVn/HhYgZ/UeDgDVmwgiKLRJUlsUc=
-X-Google-Smtp-Source: AGHT+IG6DBV1nd5pkKa2Z7HbvzqaXy0qXVheqMRHQzkD6hE4cS72nKN61DwkGGNypsksp8lWTsA8LGzomO3xhciSIKk=
-X-Received: by 2002:adf:f985:0:b0:332:c9be:d9bd with SMTP id
- f5-20020adff985000000b00332c9bed9bdmr11901691wrr.45.1701250427844; Wed, 29
- Nov 2023 01:33:47 -0800 (PST)
+        bh=ACNqif93OlR3ETTQWNZ4AN1QvC0rL1QAwI7DY9UC0ik=;
+        b=pjs/IgsaFEPqz9asY2mB8wOgCRKHVi2o/kvlu9If1Dz0L0cl7rh+tBnDrVbhDgZ1xX
+         kzgY/yRkJRuxPIFIB6/SnpuJIucRx6lm1b+2cAk1Qhn6qH+9iHL3dpB0MRM7F70TZxYS
+         5HH8JoB+KXSV5181vf9Jk2frnjvFtyb0EYzvblP3Ux49oW/kpPVnrjNTfy/vCqIynfOM
+         m87ZLTp595RSljEandnK5AvXAbYodVrKhXP2Sj+CV/e+KJ2OlRVZPL9TMWJidx+sE+dT
+         W1wsxyy9m9LNGm+ELDc2Ojs78e2qCH1ZCYNHD9FRXVIw+DlUs0zpaqVERxeYa+HiCXIy
+         ki3Q==
+X-Gm-Message-State: AOJu0YwZrF+ox6el0EFpIMuMJypNB/v+JmBC0Y71xs7yqX1AzgyITea6
+	NxP/g0kBapklr/7fm+PeHX9IGd8T4+9+E7eo//8=
+X-Google-Smtp-Source: AGHT+IH1CNXng8mgc2wd68Ul8sb2iMmeHpeG7JGqCIjURKiuzryMHGk3tI2vURLjsfM36Rmr+dAIWQ==
+X-Received: by 2002:a05:6808:201b:b0:3b6:cd77:552e with SMTP id q27-20020a056808201b00b003b6cd77552emr24291025oiw.10.1701250735486;
+        Wed, 29 Nov 2023 01:38:55 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id y189-20020a62cec6000000b006cdd82337bcsm508007pfg.207.2023.11.29.01.38.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 01:38:54 -0800 (PST)
+Message-ID: <656706ae.620a0220.218c7.0d4b@mx.google.com>
+Date: Wed, 29 Nov 2023 01:38:54 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Zhengyuan Liu <liuzhengyuang521@gmail.com>
-Date: Wed, 29 Nov 2023 17:33:33 +0800
-Message-ID: <CAOOPZo5oFZAs3sMcEgmTEZy3ef4jg630xL3mUBx3bvV6tQcdQg@mail.gmail.com>
-Subject: Question about perf sibling_list race problem
-To: peterz@infradead.org, mingo@redhat.com
-Cc: linux-perf-users@vger.kernel.org, stable@vger.kernel.org, 
-	=?UTF-8?B?6IOh5rW3?= <huhai@kylinos.cn>, =?UTF-8?B?5YiY5LqR?= <liuyun01@kylinos.cn>, 
-	huangjinhui@kylinos.cn, Zhengyuan Liu <liuzhengyuan@kylinos.cn>, acme@kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.10.202
+Subject: stable-rc/linux-5.10.y baseline: 145 runs, 3 regressions (v5.10.202)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hi, all
+stable-rc/linux-5.10.y baseline: 145 runs, 3 regressions (v5.10.202)
 
-We are encountering a perf related soft lockup as shown below:
+Regressions Summary
+-------------------
 
-[25023823.265138] watchdog: BUG: soft lockup - CPU#29 stuck for 45s!
-[YD:3284696]
-[25023823.275772]  net_failover virtio_scsi failover
-[25023823.276750] CPU: 29 PID: 3284696 Comm: YD Kdump: loaded Not
-tainted 4.19.90-23.18.v2101.ky10.aarch64 #1
-[25023823.278257] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06=
-/2015
-[25023823.279475] pstate: 80400005 (Nzcv daif +PAN -UAO)
-[25023823.280516] pc : perf_iterate_sb+0x1b8/0x1f0
-[25023823.281530] lr : perf_iterate_sb+0x18c/0x1f0
-[25023823.282529] sp : ffff801f282efbf0
-[25023823.283446] x29: ffff801f282efbf0 x28: ffff801f207a8b80
-[25023823.284551] x27: 0000000000000000 x26: ffff801f99b355e8
-[25023823.285674] x25: 0000000000000000 x24: ffff8019e2fbd800
-[25023823.286770] x23: ffff0000093f0018 x22: ffff801f282efc40
-[25023823.287864] x21: ffff000008255f60 x20: ffff801ffdf58e80
-[25023823.288964] x19: ffff8019f1c27800 x18: 0000000000000000
-[25023823.290060] x17: 0000000000000000 x16: 0000000000000000
-[25023823.291164] x15: 0400000000000000 x14: 0000000000000000
-[25023823.292266] x13: ffff000008c6e340 x12: 0000000000000002
-[25023823.293381] x11: ffff000008c6e318 x10: 00000019e5feff20
-[25023823.294486] x9 : ffff8019fb49c000 x8 : 0058e6fd335b260e
-[25023823.295597] x7 : 0000000100321ed8 x6 : ffff00003d083780
-[25023823.296715] x5 : 00ffffffffffffff x4 : 0000801ff4ae0000
-[25023823.297860] x3 : ffff801ffdf64cc0 x2 : ffff000009858758
-[25023823.298977] x1 : 0000000000000000 x0 : ffff8019e2fbd800
-[25023823.300090] Call trace:
-[25023823.300962]  perf_iterate_sb+0x1b8/0x1f0
-[25023823.301961]  perf_event_task+0x78/0x80
-[25023823.302946]  perf_event_exit_task+0xa4/0xb0
-[25023823.303978]  do_exit+0x38c/0x5d0
-[25023823.304932]  do_group_exit+0x3c/0xd8
-[25023823.305904]  get_signal+0x12c/0x740
-[25023823.306859]  do_signal+0x158/0x260
-[25023823.307795]  do_notify_resume+0xd8/0x358
-[25023823.308781]  work_pending+0x8/0x10
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+juno-uboot         | arm64 | lab-broonie   | gcc-10   | defconfig | 1      =
+    =
 
-We got a vmcore by enable panic_on_soft_lockup, from the vmcore we
-found the perf_event accessed through
-perf_iterate_sb -> perf_iterate_sb_cpu -> event_filter_match ->
-pmu_filter_match -> for_each_sibling_event
-had been removed:
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
 
-#define for_each_sibling_event(sibling, event)                  \
-        if ((event)->group_leader =3D=3D (event))                   \
-                list_for_each_entry((sibling), &(event)->sibling_list,
-sibling_list)
-
-#define list_for_each_entry(pos, head, member)                          \
-    for (pos =3D __container_of((head)->next, pos, member);               \
-         &pos->member !=3D (head);                                        \
-         pos =3D __container_of(pos->member.next, pos, member))
-
-crash> struct perf_event ffff8019e2fbd800
-struct perf_event {
-  event_entry =3D {
-    next =3D 0xffff8019f1c27800,
-    prev =3D 0xdead000000000200
-  },
-  ...
-  state =3D PERF_EVENT_STATE_DEAD,
-  ...
-}
-
-By the way, we also found another process which is deleting sibling_list:
-
-crash> bt 3284533
-PID: 3284533  TASK: ffff801f901ae880  CPU: 16  COMMAND: "YD"
- #0 [ffff801f8cd977f0] __switch_to at ffff000008088ba4
- #1 [ffff801f8cd97810] __schedule at ffff000008bf10c4
- #2 [ffff801f8cd97890] schedule at ffff000008bf17b0
- #3 [ffff801f8cd978a0] schedule_timeout at ffff000008bf5b10
- #4 [ffff801f8cd97960] wait_for_common at ffff000008bf2530
- #5 [ffff801f8cd979f0] wait_for_completion at ffff000008bf2644
- #6 [ffff801f8cd97a10] __wait_rcu_gp at ffff000008171c00
- #7 [ffff801f8cd97a80] synchronize_sched at ffff000008179da8
- #8 [ffff801f8cd97ad0] perf_trace_event_unreg at ffff000008216d50
- #9 [ffff801f8cd97b00] perf_trace_destroy at ffff000008217148
-#10 [ffff801f8cd97b20] tp_perf_event_destroy at ffff000008256ae0
-#11 [ffff801f8cd97b30] _free_event at ffff00000825f21c
-#12 [ffff801f8cd97b70] put_event at ffff00000825faf0
-#13 [ffff801f8cd97b80] perf_event_release_kernel at ffff00000825fcb8
-#14 [ffff801f8cd97be0] perf_release at ffff00000825fdbc
-#15 [ffff801f8cd97bf0] __fput at ffff00000832f0b8
-#16 [ffff801f8cd97c30] ____fput at ffff00000832f28c
-#17 [ffff801f8cd97c50] task_work_run at ffff00000810f8c8
-#18 [ffff801f8cd97c90] do_exit at ffff0000080ef458
-#19 [ffff801f8cd97cf0] do_group_exit at ffff0000080ef738
-#20 [ffff801f8cd97d20] get_signal at ffff0000080fdde0
-#21 [ffff801f8cd97d90] do_signal at ffff00000808e488
-#22 [ffff801f8cd97e80] do_notify_resume at ffff00000808e7f4
-#23 [ffff801f8cd97ff0] work_pending at ffff000008083f60
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
 
 
-So it's reasonable to suspect that perf_iterate_sb is traversing
-sibling_list while another
-process is deleting it which eventually caused for_each_sibling_event
-to endless loop and thus soft lockup.
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
+nel/v5.10.202/plan/baseline/
 
-The race scenario thus could be this:
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.10.y
+  Describe: v5.10.202
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      479e8b8925415420b31e2aa65f9b0db3dea2adf4 =
 
-CPU 29:                                   CPU 16:
-                                          perf_event_release_kernel
-                                      --> mutex_lock(&ctx->mutex)
-                                         --> perf_remove_from_context
-                                           --> perf_group_detach(event);
-for_each_sibling_event()                              -->
-list_del_init(&event->sibling_list)
 
-As commit f3c0eba287049=EF=BC=88=E2=80=9Cperf: Add a few assertions=E2=80=
-=9D=EF=BC=89said:
-=E2=80=9CNotable for_each_sibling_event() relies on exclusion from
-modification. This would normally be holding either ctx->lock or
-ctx->mutex, however due to how things are constructed disabling IRQs
-is a valid and sufficient substitute for ctx->lock.=E2=80=9D, we think it's
-necessary to hold ctx ->mutex, but currently LTS such as 4.19,5.4,5.10,
-and 6.1 all does not do so:
 
-perf_event_task
---> perf_iterate_sb
-   --> perf_iterate_sb_cpu
-      --> event_filter_match
-          --> pmu_filter_match
-             --> for_each_sibling_event
+Test Regressions
+---------------- =
 
-commit bd27568117664=EF=BC=88=E2=80=9Cperf: Rewrite core context handling=
-=E2=80=9D=EF=BC=89had removed
-the pmu_filter_match operation, so it may be a temporary workaround
-for this issue.
 
-But it's necessary to confirm if there is a race problem between
-sibling_list, and if it is, how
-to fix currently LTS branches.
 
-Thanks in advance.
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+juno-uboot         | arm64 | lab-broonie   | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6566d5255323c9da4a7e4a80
+
+  Results:     50 PASS, 11 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6566d5255323c9da4a7e4abe
+        new failure (last pass: v5.10.201-185-ga30cecbc89f2f)
+
+    2023-11-29T06:07:09.132798  / # #
+    2023-11-29T06:07:09.235608  export SHELL=3D/bin/sh
+    2023-11-29T06:07:09.236367  #
+    2023-11-29T06:07:09.338180  / # export SHELL=3D/bin/sh. /lava-285298/en=
+vironment
+    2023-11-29T06:07:09.338932  =
+
+    2023-11-29T06:07:09.440883  / # . /lava-285298/environment/lava-285298/=
+bin/lava-test-runner /lava-285298/1
+    2023-11-29T06:07:09.442202  =
+
+    2023-11-29T06:07:09.456739  / # /lava-285298/bin/lava-test-runner /lava=
+-285298/1
+    2023-11-29T06:07:09.515533  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-11-29T06:07:09.516066  + cd /lava-285298/1/tests/1_bootrr =
+
+    ... (10 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-clabbe    | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6566d3c89370224a937e4a73
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6566d3c89370224a937e4a7c
+        failing since 49 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-11-29T06:01:34.572097  <8>[   16.942176] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 445725_1.5.2.4.1>
+    2023-11-29T06:01:34.677136  / # #
+    2023-11-29T06:01:34.778749  export SHELL=3D/bin/sh
+    2023-11-29T06:01:34.779333  #
+    2023-11-29T06:01:34.880329  / # export SHELL=3D/bin/sh. /lava-445725/en=
+vironment
+    2023-11-29T06:01:34.880918  =
+
+    2023-11-29T06:01:34.981940  / # . /lava-445725/environment/lava-445725/=
+bin/lava-test-runner /lava-445725/1
+    2023-11-29T06:01:34.982828  =
+
+    2023-11-29T06:01:34.987352  / # /lava-445725/bin/lava-test-runner /lava=
+-445725/1
+    2023-11-29T06:01:35.054480  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab           | compiler | defconfig | regress=
+ions
+-------------------+-------+---------------+----------+-----------+--------=
+----
+sun50i-h6-pine-h64 | arm64 | lab-collabora | gcc-10   | defconfig | 1      =
+    =
+
+
+  Details:     https://kernelci.org/test/plan/id/6566d3e64e65403d3e7e4ab9
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6566d3e64e65403d3e7e4ac2
+        failing since 49 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-11-29T06:08:30.729995  / # #
+
+    2023-11-29T06:08:30.832179  export SHELL=3D/bin/sh
+
+    2023-11-29T06:08:30.832876  #
+
+    2023-11-29T06:08:30.934238  / # export SHELL=3D/bin/sh. /lava-12114934/=
+environment
+
+    2023-11-29T06:08:30.934940  =
+
+
+    2023-11-29T06:08:31.036447  / # . /lava-12114934/environment/lava-12114=
+934/bin/lava-test-runner /lava-12114934/1
+
+    2023-11-29T06:08:31.037637  =
+
+
+    2023-11-29T06:08:31.054034  / # /lava-12114934/bin/lava-test-runner /la=
+va-12114934/1
+
+    2023-11-29T06:08:31.097723  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-11-29T06:08:31.113054  + cd /lava-1211493<8>[   18.254033] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12114934_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
 
