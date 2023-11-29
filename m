@@ -1,124 +1,202 @@
-Return-Path: <stable+bounces-3171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4297FDEA9
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 18:45:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9697FDF2D
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 19:17:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56C48B20FB1
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 17:45:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EE4B282CC9
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 18:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACE348CCA;
-	Wed, 29 Nov 2023 17:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995C35C3E8;
+	Wed, 29 Nov 2023 18:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KeBk4Xyg"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A6ZCQSwY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76F7F9A
+	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 10:16:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701281815;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A7O+nrxq0xNIq93HqJFUw/NnBwip9ukcfOSmmM9yu6Q=;
+	b=A6ZCQSwYeBbFcbVNkpeaoTifR4MHUFDFjZXH4Y8H7FNRVpnHIHCsk9FjJuFPPf/rWouQY3
+	DvV2gddUE27lS+ckbr9LuvGmq/oShou3b6yMGcf6pFjmRJqITAaeqqyFeuPQKEPlo7QQo9
+	nqRZFlWhZNeq5AyyUoSpk7ZkOS8wZHY=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-Lf3EjYeoP8WKdDFc0qXHjQ-1; Wed,
+ 29 Nov 2023 13:16:52 -0500
+X-MC-Unique: Lf3EjYeoP8WKdDFc0qXHjQ-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1893E1B296;
-	Wed, 29 Nov 2023 17:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDB2C433C7;
-	Wed, 29 Nov 2023 17:45:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701279937;
-	bh=KIKFPp9BUhkaU/2v9P9pMinmYm10lPKZw6CRfN0EZXc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KeBk4XygSV3H0Is1ff9twMb+Vvnsb+6+M0b40/ajSzkslItd2N+/xFslXdoPIxyPt
-	 7Hb2LdvV+cUc+utmT8UXA+hFN97KoFCgk5tZvcsbKxbw4f3Ybmd9Fh5857EGaBghHW
-	 G4T/giZZD88DarE3ZLYNYr3IuZB6XQDObaTajLo9qVz9LwZ88Qcl0b3Pf0+YwW787Q
-	 qXz67vU/Bfl9lhgbrgnCE0tpKC3+6jrUns53wktIfF0SYRQVkbusQdzqAYjwJap2jH
-	 2SUnH7BPId3PoDLHiVajSo0tsKYMlNyQoSNIj6zwfkk5bCXQl27axRVNYytWYSlUuZ
-	 tbw2WyRqN6QHg==
-Date: Wed, 29 Nov 2023 12:45:35 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Pavel Machek <pavel@denx.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	LKML <linux-kernel@vger.kernel.org>, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, alexander.deucher@amd.com,
-	mario.limonciello@amd.com, zhujun2@cmss.chinamobile.com,
-	skhan@linuxfoundation.org, bhelgaas@google.com
-Subject: Re: [PATCH 4.14 00/53] 4.14.331-rc2 review
-Message-ID: <ZWd4v-7Qnc2gde5L@sashalap>
-References: <20231125163059.878143365@linuxfoundation.org>
- <ZWUBaYipygLMkfjz@duo.ucw.cz>
- <f4a7634-3d34-af29-36ca-6f3439b4ce9@linux.intel.com>
- <ZWZQCJtD7kmX9iRO@duo.ucw.cz>
- <2023112818-browse-floss-eb6f@gregkh>
- <ZWZSKgxjSRcA/qUK@duo.ucw.cz>
- <2023112844-sesame-overdrawn-5853@gregkh>
- <ZWb9vGuZck1sGBIN@duo.ucw.cz>
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 302F238116E4;
+	Wed, 29 Nov 2023 18:16:52 +0000 (UTC)
+Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 27D4F492BFA;
+	Wed, 29 Nov 2023 18:16:52 +0000 (UTC)
+Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
+	id 0BB4730C1A8C; Wed, 29 Nov 2023 18:16:52 +0000 (UTC)
+Received: from localhost (localhost [127.0.0.1])
+	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 08AD53FB76;
+	Wed, 29 Nov 2023 19:16:52 +0100 (CET)
+Date: Wed, 29 Nov 2023 19:16:52 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Sasha Levin <sashal@kernel.org>
+cc: Christian Loehle <christian.loehle@arm.com>, 
+    stable-commits@vger.kernel.org, stable@vger.kernel.org, 
+    Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
+    dm-devel@lists.linux.dev
+Subject: Re: Patch "dm delay: for short delays, use kthread instead of timers
+ and wq" has been added to the 6.6-stable tree
+In-Reply-To: <ZWd3HCVNTkZYREGo@sashalap>
+Message-ID: <b8d0fdf7-fca4-4a2d-3dd-94b2c97b7fb4@redhat.com>
+References: <20231129025441.892320-1-sashal@kernel.org> <cac7f5be-454c-5ae1-e025-9ad1d84999fc@redhat.com> <bdf739ae-5e45-4192-b682-81f05982c220@arm.com> <30e67bef-4aaf-31d6-483f-2ca6523099c3@redhat.com> <ZWd3HCVNTkZYREGo@sashalap>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZWb9vGuZck1sGBIN@duo.ucw.cz>
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-On Wed, Nov 29, 2023 at 10:00:44AM +0100, Pavel Machek wrote:
->On Tue 2023-11-28 21:10:03, Greg Kroah-Hartman wrote:
->> On Tue, Nov 28, 2023 at 09:48:42PM +0100, Pavel Machek wrote:
->> > Hi!
->> >
->> > > > > > > Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->> > > > > > >     RDMA/hfi1: Use FIELD_GET() to extract Link Width
->> > > > > >
->> > > > > > This is a good cleanup, but not a bugfix.
->> > > > > >
->> > > > > > > Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
->> > > > > > >     atm: iphase: Do PCI error checks on own line
->> > > > > >
->> > > > > > Just a cleanup, not sure why it was picked for stable.
->> > > > >
->> > > > > Just an additional bit of information, there have been quite many cleanups
->> > > > > from me which have recently gotten the stable notification for some
->> > > > > mysterious reason. When I had tens of them in my inbox and for various
->> > > > > kernel versions, I immediately stopped caring to stop it from happening.
->> > > > >
->> > > > > AFAIK, I've not marked those for stable inclusion so I've no idea what
->> > > > > got them included.
->> > > >
->> > > > Fixes tag can do it. Plus, "AUTOSEL" robot does it randomly, with no
->> > > > human oversight :-(.
->> > >
->> > > the autosel bot has lots of oversight.
->> >
->> > Can you describe how that oversight works?
->>
->> There have been many papers and presentations about it, no need for me
->> to say it all here again...
->
->Give a pointer.
->
->And explain why AUTOSEL is full of cleanups, as noticed by Ilpo, me
->and others. AFAICT Sasha does not hand-check patches picked by
->AUTOSEL, simply spams the mailing lists, and hopes that maintainers
->will react. And they won't, because they don't understand the
 
-Awesome feedback, thanks.
 
->implications, and simply ignore the spam. Or they will, and Sasha
->simply ignores the reply.
+On Wed, 29 Nov 2023, Sasha Levin wrote:
 
-Incorrect, I just gotten tired of litigating this with *you*.
+> On Wed, Nov 29, 2023 at 06:28:16PM +0100, Mikulas Patocka wrote:
+> >
+> >
+> >On Wed, 29 Nov 2023, Christian Loehle wrote:
+> >
+> >> Hi Mikulas,
+> >> Agreed and thanks for fixing.
+> >> Has this been selected for stable because of:
+> >> 6fc45b6ed921 ("dm-delay: fix a race between delay_presuspend and
+> >> delay_bio")
+> >> If so, I would volunteer do the backports for that for you at least.
+> >
+> >I wouldn't backport this patch - it is an enhancement, not a bugfix, so it
+> >doesn't qualify for the stable kernel backports.
+> 
+> Right - this watch was selected as a dependency for 6fc45b6ed921
+> ("dm-delay: fix a race between delay_presuspend and delay_bio").
+> 
+> In general, unless it's impractical, we'd rather take a dependency chain
+> rather than deal with a non-trivial backport as those tend to have
+> issues longer term.
+> 
+> -- 
+> Thanks,
+> Sasha
 
-How about this: instead of complaining about work you get for free, try
-doing it yourself and send us a list of patches that should go into the
--stable tree during the next merge window. Deal?
+The patch 70bbeb29fab0 ("dm delay: for short delays, use kthread instead 
+of timers and wq") changes behavior of dm-delay from using timers to 
+polling, so it may cause problems to people running legacy kernels - the 
+polling consumes more CPU time than the timers - so I think it shouldn't 
+go to the stable kernels where users expect that there will be no 
+functional change.
 
--- 
-Thanks,
-Sasha
+Here I'm submitting the patch 6fc45b6ed921 backported for 6.6.3.
+
+Mikulas
+
+
+From: Mikulas Patocka <mpatocka@redhat.com>
+
+dm-delay: fix a race between delay_presuspend and delay_bio
+
+In delay_presuspend, we set the atomic variable may_delay and then stop
+the timer and flush pending bios. The intention here is to prevent the
+delay target from re-arming the timer again.
+
+However, this test is racy. Suppose that one thread goes to delay_bio,
+sees that dc->may_delay is one and proceeds; now, another theread executes
+delay_presuspend, it sets, dc->may_delay to zero, deletes the timer and
+flushes pending bios. Now, the first thread continues and adds the bio to
+delayed->list despite the fact that dc->may_delay is false.
+
+In order to fix this bug, we change may_delay's type from atomic_t to bool
+and we read and write it only while holding the delayed_bios_lock mutex.
+Note that we don't have to grab the mutex in delay_resume because there
+are no bios in flight at this point.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+
+---
+ drivers/md/dm-delay.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+Index: linux-stable/drivers/md/dm-delay.c
+===================================================================
+--- linux-stable.orig/drivers/md/dm-delay.c	2023-11-29 19:03:03.000000000 +0100
++++ linux-stable/drivers/md/dm-delay.c	2023-11-29 19:03:03.000000000 +0100
+@@ -31,7 +31,7 @@ struct delay_c {
+ 	struct workqueue_struct *kdelayd_wq;
+ 	struct work_struct flush_expired_bios;
+ 	struct list_head delayed_bios;
+-	atomic_t may_delay;
++	bool may_delay;
+ 
+ 	struct delay_class read;
+ 	struct delay_class write;
+@@ -192,7 +192,7 @@ static int delay_ctr(struct dm_target *t
+ 	INIT_WORK(&dc->flush_expired_bios, flush_expired_bios);
+ 	INIT_LIST_HEAD(&dc->delayed_bios);
+ 	mutex_init(&dc->timer_lock);
+-	atomic_set(&dc->may_delay, 1);
++	dc->may_delay = true;
+ 	dc->argc = argc;
+ 
+ 	ret = delay_class_ctr(ti, &dc->read, argv);
+@@ -247,7 +247,7 @@ static int delay_bio(struct delay_c *dc,
+ 	struct dm_delay_info *delayed;
+ 	unsigned long expires = 0;
+ 
+-	if (!c->delay || !atomic_read(&dc->may_delay))
++	if (!c->delay)
+ 		return DM_MAPIO_REMAPPED;
+ 
+ 	delayed = dm_per_bio_data(bio, sizeof(struct dm_delay_info));
+@@ -256,6 +256,10 @@ static int delay_bio(struct delay_c *dc,
+ 	delayed->expires = expires = jiffies + msecs_to_jiffies(c->delay);
+ 
+ 	mutex_lock(&delayed_bios_lock);
++	if (unlikely(!dc->may_delay)) {
++		mutex_unlock(&delayed_bios_lock);
++		return DM_MAPIO_REMAPPED;
++	}
+ 	c->ops++;
+ 	list_add_tail(&delayed->list, &dc->delayed_bios);
+ 	mutex_unlock(&delayed_bios_lock);
+@@ -269,7 +273,10 @@ static void delay_presuspend(struct dm_t
+ {
+ 	struct delay_c *dc = ti->private;
+ 
+-	atomic_set(&dc->may_delay, 0);
++	mutex_lock(&delayed_bios_lock);
++	dc->may_delay = false;
++	mutex_unlock(&delayed_bios_lock);
++
+ 	del_timer_sync(&dc->delay_timer);
+ 	flush_bios(flush_delayed_bios(dc, 1));
+ }
+@@ -278,7 +285,7 @@ static void delay_resume(struct dm_targe
+ {
+ 	struct delay_c *dc = ti->private;
+ 
+-	atomic_set(&dc->may_delay, 1);
++	dc->may_delay = true;
+ }
+ 
+ static int delay_map(struct dm_target *ti, struct bio *bio)
+
 
