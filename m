@@ -1,123 +1,233 @@
-Return-Path: <stable+bounces-3120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3171A7FCECF
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 07:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA9A7FCEDF
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 07:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60B841C21057
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 06:05:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C90C1C21060
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 06:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A193CD269;
-	Wed, 29 Nov 2023 06:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC98D514;
+	Wed, 29 Nov 2023 06:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6jGTLFX"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="NLftJdeV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4E542695;
-	Tue, 28 Nov 2023 22:05:20 -0800 (PST)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-77896da2118so369918285a.1;
-        Tue, 28 Nov 2023 22:05:20 -0800 (PST)
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B28A891
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 22:09:51 -0800 (PST)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3b84e328327so3513337b6e.2
+        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 22:09:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701237920; x=1701842720; darn=vger.kernel.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FX4qlget3IBa2/cwRBGrPsNi/y6/7lBLgyUhVLo/vNE=;
-        b=G6jGTLFXWGz3aRoZmV2aE13ElrqOdYKAcmWGv00pjf3E4ZPBqX8Yf1Wvtxe3/UGm+y
-         NG/VOLvApYb4NGbpJUy8Ta3X8HkVHApu0dWVoNA9oM0IkxDfpmsdGIE621rU3WW/WAeN
-         M4VCXwp/HXv0how8Zq2jrrEuk+KZsFlhhhCMoRTBUUrQKgnB4MbdM5mLt0b8KlgU+ZXD
-         s6kLM/jhvs4gPLz7neJsfCpX1OvR2R5VM3cwRIccdkBBV1VizWbHXPcglGJzw1QaBs36
-         vLGatwUghVDyLjAcLtBxF2ODTINCi63yZFTaEuL/AVGDq+wHwKYSXJX2y9VrnRCmv55s
-         V/uw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701238190; x=1701842990; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=djTdJxnDsA+d3dBjVdAMgyJGgaK9CIIIVvU/JK+5bF0=;
+        b=NLftJdeVNpubzpxk0xxRo9xyEQBMmBNdn50e8QbFrcAfUHY866p7958RBCePUZeFIr
+         7nvqOAUxlbDDdmSaWaKihJ5BCBqUIOsvJ6vCzj2BT/hfv34nQqCUtFp2R/6eIjweNiab
+         9kfPB/BsrKcWTppbg6OgWkarnMTfr2SLK5yrui+mQZQaqsT3eNB2oX8S05GnzcbuVRFh
+         uLS73qUSzOmHExqpVvb1p71642RCgLLD0sl1iFOzjcxGxCVmXgWRWnzK2hfy2f1SWfEz
+         sDPhP6P6iIpZMtC0JOI4W7DqX4giBz70F1zogayCwqag3LeVIl5xyqPvSHGupCwC8Mpu
+         Pkbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701237920; x=1701842720;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FX4qlget3IBa2/cwRBGrPsNi/y6/7lBLgyUhVLo/vNE=;
-        b=qxii795uSr6A18aAXg4kGGh9RVhnjDd0wQgZUnpJjK2Un0jKTCmzP1pl7BA1E6+mjP
-         Ikiw0WnjPZWaI82thzqz+CodAAR9TNJlacQlJqb4HWJaDkhV+Soq6R1iqP00oignshwR
-         ZGuOuX/WL5mkFAoySBPYfjYsU3GrDRTl/NSIDj5uWXQVsEJemrUAfPUAxBPRIKU3IHIb
-         2uJRADEMlJ5HlnIdIO2QCOw723p5YpHjKmkJsIrkl1h1CcYVq5xm/Up13E1R5XiR75M3
-         Ho45pYnFBLk3WaljyuuZaQYBPmwAnnBAC1IWP7eLzPQ3T1w+7tEdZYZecKhirtCsLLqW
-         cLSA==
-X-Gm-Message-State: AOJu0Ywiv1adD1hnCUGn5dp74UVJk/5b1V77o2jGgE5jZz4I2/Rulu/P
-	oP/y1suczKmw4NY2JgM75cLT2Gqji6qV
-X-Google-Smtp-Source: AGHT+IFWM+hY9oZWl8KBivLwRzOspoWHPC9BiBlpbBRmd0/dHcJMLcTzSDdQJw/D66UpDUBzL23Klw==
-X-Received: by 2002:a0c:fa89:0:b0:67a:f7f:318d with SMTP id o9-20020a0cfa89000000b0067a0f7f318dmr18441414qvn.49.1701237919604;
-        Tue, 28 Nov 2023 22:05:19 -0800 (PST)
-Received: from n191-129-154.byted.org ([130.44.212.103])
-        by smtp.gmail.com with ESMTPSA id r10-20020a0cf80a000000b0067a0e04076fsm5410676qvn.17.2023.11.28.22.05.18
+        d=1e100.net; s=20230601; t=1701238190; x=1701842990;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=djTdJxnDsA+d3dBjVdAMgyJGgaK9CIIIVvU/JK+5bF0=;
+        b=E9NRqlpAdHh7lfbc3DjZPay3+mhfGgd4roiIsjC3cAPJ73tuNM9ba+OBkmAu5goElk
+         sCpRzoXsFIqtYCX4d1e38zafyA1j+kwt7oyaJMPQFchGSFu3C1LFqI2d0Jv6mR23DLhU
+         KD9xCyMfOTP4W0CUf9DNUBuMlUxSUENO9WOHIFgcNweIdUi0TWm8+VAr3Ezz5Xckfo8z
+         uPTNar/aQZGImDvQgp1++QV2lg0cuIngM6Z0xioTEsGB/pIx4mJIOMsntPtewgp8KUzH
+         ZYnsXzwqe+gAXEom3QGuZ8bdFLkDbui4yOhWwN5QfxpEv6j/tqjVkvppOSuImVkiLVAe
+         ALuA==
+X-Gm-Message-State: AOJu0YzdAOjTNK29WZhzbYcMuTyW4P4Zqo3kZfC3uGf2heY/b/ACSahK
+	vr6fCKOjudzFImyH7obe/q4YugYx09y1Ql+rV9Q=
+X-Google-Smtp-Source: AGHT+IG+QzLMBhme4tOgHY5oMHbR+1/yIW7GOUZRFOdQ6G2A1VgnE/ssKb3kg2iQioLpinDQ4qQYtw==
+X-Received: by 2002:a05:6808:1593:b0:3a4:316c:8eeb with SMTP id t19-20020a056808159300b003a4316c8eebmr21223774oiw.40.1701238190643;
+        Tue, 28 Nov 2023 22:09:50 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id 7-20020aa79247000000b006cbaebfbd43sm10018671pfp.184.2023.11.28.22.09.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Nov 2023 22:05:19 -0800 (PST)
-Date: Wed, 29 Nov 2023 06:05:17 +0000
-From: Peilin Ye <yepeilin.cs@gmail.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable-commits@vger.kernel.org, peilin.ye@bytedance.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@google.com>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	Cong Wang <cong.wang@bytedance.com>, yepeilin.cs@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: Patch "bpf: Fix dev's rx stats for bpf_redirect_peer traffic"
- has been added to the 6.6-stable tree
-Message-ID: <20231129060508.GA17429@n191-129-154.byted.org>
-References: <20231129025247.890789-1-sashal@kernel.org>
+        Tue, 28 Nov 2023 22:09:50 -0800 (PST)
+Message-ID: <6566d5ae.a70a0220.e2fac.8c82@mx.google.com>
+Date: Tue, 28 Nov 2023 22:09:50 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231129025247.890789-1-sashal@kernel.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v5.10.202
+Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.202)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-+Cc: Cong Wang <cong.wang@bytedance.com>
+stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v=
+5.10.202)
 
-Hi all,
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
+y/kernel/v5.10.202/
 
-On Tue, Nov 28, 2023 at 09:52:46PM -0500, Sasha Levin wrote:
-> 
-> This is a note to let you know that I've just added the patch titled
-> 
->     bpf: Fix dev's rx stats for bpf_redirect_peer traffic
-> 
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      bpf-fix-dev-s-rx-stats-for-bpf_redirect_peer-traffic.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+Tree: stable-rc
+Branch: linux-5.10.y
+Git Describe: v5.10.202
+Git Commit: 479e8b8925415420b31e2aa65f9b0db3dea2adf4
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Seems like only patch 1, 2 and 5 in this [1] series are selected?  We
-also need patch 4, upstream commit 6f2684bf2b44 ("veth: Use tstats
-per-CPU traffic counters").  Otherwise the fix won't work, and the code
-will be wrong [2] .
+Warnings Detected:
 
-We should've included a "Depends on patch..." note for stable in the
-commit message.
+arc:
 
-Thanks,
-Peilin Ye
+arm64:
 
-[1] https://lore.kernel.org/all/170050562585.4532.1588179408610417971.git-patchwork-notify@kernel.org/
-[2] veth still uses @lstats, but patch 5 makes skb_do_redirect() update
-    it as @tstats.
+arm:
 
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
