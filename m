@@ -1,274 +1,144 @@
-Return-Path: <stable+bounces-3122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AA27FCEEF
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 07:17:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C917FCF62
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 07:52:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF997282F04
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 06:17:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A922B21361
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 06:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59102DDB2;
-	Wed, 29 Nov 2023 06:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3D26FAB;
+	Wed, 29 Nov 2023 06:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="JtK+QzUB"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="InL70sed"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC40171D
-	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 22:16:58 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6cc2027f7a2so3438352b3a.2
-        for <stable@vger.kernel.org>; Tue, 28 Nov 2023 22:16:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701238618; x=1701843418; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xe58XtW7JpQl9+uPuOOc5S7wH8lQMrzoOe2bYDenOzc=;
-        b=JtK+QzUBHpCfrjNAsvmdicWzUo7m2+XUspr+cV1OhMn+EO3rHtNL5tgv5uF021b8tT
-         G/VbF3C9ohZsC1UsewuH3fMI1Zc++E+9Or3qnT8wAQpzoXR7bV/0H5CSj/65JlZjd/1x
-         8RWnizQsrymJaSps56kLXeCrDjui4+l+iJW6zER/jNMUyqUhRTWuOBXCDg/fQuU6bXGy
-         zCa8jt4+gKZmWpDnxLjSpfVH4bk/2QiPN0bwyPj3A8mOaRgLm8Shs+MEKbiYls1+v1O5
-         I1PfXQaYBBChLehkzNYmXYwwbb0Mvf76y6FDdy+lrSnlmcH7gC/ds4A23Oke6qweeSEl
-         bjSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701238618; x=1701843418;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xe58XtW7JpQl9+uPuOOc5S7wH8lQMrzoOe2bYDenOzc=;
-        b=ZBt3kzDKJYM4d7qSw7mxsIM5S5giBuEZjs9uWtGIwAUOF2fONAzPItPUaE+D1kjDmN
-         dYibXLm4r6Un4ZDGZwKqBrnqc6d2tBvZbmnzTcisdSzYCdISoOFDWI78y0K2SFk4YwFc
-         QzOtrAkYOlz9KAYFN3rn4frmtXxvU61p7Qwv8JxyxtGMSVzZFyr7UM+rNmhfHAz70vui
-         AUbea2XkpbNhkX47uYWLZQweWZGzYYZOSSPgUdTU9Rm6I1Pn8O+dyJYMX1dLMIf8OzdP
-         3KbSByonzPfi1mJQEpyoR4slWjlIkT/J/l4tU5yO/wj6a2ho5YTT3ZgwplWMlo+khfo1
-         CzyQ==
-X-Gm-Message-State: AOJu0YyQKwbpkgInKRtXVPh8+gu8c/fGkaChiUY1m4EGqVJAoIizyfZM
-	VBL7NmPOURNP0p4WH4Q9CYe3amTeIXbS3BmcreQ=
-X-Google-Smtp-Source: AGHT+IGJXYblRFY30XmIBut3sWv3/I/MvosHePaHPwI7TOu/0Zbum92wdFIen+7jfuGhn9P5hgTNhA==
-X-Received: by 2002:a05:6a00:14c6:b0:6c4:dc5b:5b2b with SMTP id w6-20020a056a0014c600b006c4dc5b5b2bmr19487471pfu.20.1701238617886;
-        Tue, 28 Nov 2023 22:16:57 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id a28-20020aa78e9c000000b006b5922221f4sm9889893pfr.8.2023.11.28.22.16.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Nov 2023 22:16:57 -0800 (PST)
-Message-ID: <6566d759.a70a0220.b182f.8d10@mx.google.com>
-Date: Tue, 28 Nov 2023 22:16:57 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8422170B;
+	Tue, 28 Nov 2023 22:51:52 -0800 (PST)
+X-UUID: c3528a808e8311eea33bb35ae8d461a2-20231129
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=HSLnY3xqrwn+hgoTLGJH8USVe7mquDMPoI+jvrGs6a0=;
+	b=InL70seds0n1y0DxEG1DBI/ltO8Nik7kro64Uc801Fy2mA5HsuAMVudxqWG+hwDSBVzRHgqgjmIKbVczTk/55G95Y4F6elc6ZcyW6Yg6mHClY8f8DDEI1BjVadRqcirKThfh9r7jkFkfvwgczW6t630GUdMPuWPIYz2EqFvvxVw=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.34,REQID:6157e008-04a0-4a28-a9f5-9b7cf8221041,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:abefa75,CLOUDID:03659b60-c89d-4129-91cb-8ebfae4653fc,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
+	NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: c3528a808e8311eea33bb35ae8d461a2-20231129
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+	(envelope-from <kuan-ying.lee@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1385489251; Wed, 29 Nov 2023 14:51:46 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 29 Nov 2023 14:51:45 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 29 Nov 2023 14:51:45 +0800
+From: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
+To: Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Andrew Morton
+	<akpm@linux-foundation.org>, Oleg Nesterov <oleg@redhat.com>
+CC: <casper.li@mediatek.com>, <chinwen.chang@mediatek.com>,
+	<qun-wei.lin@mediatek.com>, <linux-mm@kvack.org>, Kuan-Ying Lee
+	<Kuan-Ying.Lee@mediatek.com>, <stable@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-mediatek@lists.infradead.org>
+Subject: [PATCH v2 1/3] scripts/gdb/tasks: Fix lx-ps command error
+Date: Wed, 29 Nov 2023 14:51:38 +0800
+Message-ID: <20231129065142.13375-2-Kuan-Ying.Lee@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20231129065142.13375-1-Kuan-Ying.Lee@mediatek.com>
+References: <20231129065142.13375-1-Kuan-Ying.Lee@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.14.331
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.331)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--5.095600-8.000000
+X-TMASE-MatchedRID: TCPSmmY0AVNXKLar1IWcqhIRh9wkXSlFBdebOqawiLujC1E/zCEIr8Rk
+	oeJ3OFRc3k+CPiKHMcLBSaBGgOy3GNEdmUPXI8FxWd1vvclMcXUUqWKocoJo6WrVm7PW4m4ILPJ
+	tWpbJjY1VzwOWOJEzlnATsg8MODVIHxPMjOKY7A8LbigRnpKlKSPzRlrdFGDwgNwDygWeOSz4rz
+	9LHo1WfqmfSlSAB+6ZRR6TlvCxdzkqKAHuRowG7g==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--5.095600-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 1549B13AAC282B14084AFFAD7663CDDD84A55DADBFBB687B81633AF352EAF3E42000:8
+X-MTK: N
 
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.331)
+Since commit 8e1f385104ac ("kill task_struct->thread_group") remove
+the thread_group, we will encounter below issue.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.331/
+(gdb) lx-ps
+      TASK          PID    COMM
+0xffff800086503340   0   swapper/0
+Python Exception <class 'gdb.error'>: There is no member named thread_group.
+Error occurred in Python: There is no member named thread_group.
 
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.331
-Git Commit: c41bab81ed7ca1f3f64fff5050b33b955547b5c8
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+We use signal->thread_head to iterate all threads instead.
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Fixes: 8e1f385104ac ("kill task_struct->thread_group")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
 ---
-For more info write to <info@kernelci.org>
+ scripts/gdb/linux/tasks.py | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
+
+diff --git a/scripts/gdb/linux/tasks.py b/scripts/gdb/linux/tasks.py
+index 17ec19e9b5bf..aa5ab6251f76 100644
+--- a/scripts/gdb/linux/tasks.py
++++ b/scripts/gdb/linux/tasks.py
+@@ -13,7 +13,7 @@
+ 
+ import gdb
+ 
+-from linux import utils
++from linux import utils, lists
+ 
+ 
+ task_type = utils.CachedType("struct task_struct")
+@@ -22,19 +22,15 @@ task_type = utils.CachedType("struct task_struct")
+ def task_lists():
+     task_ptr_type = task_type.get_type().pointer()
+     init_task = gdb.parse_and_eval("init_task").address
+-    t = g = init_task
++    t = init_task
+ 
+     while True:
+-        while True:
+-            yield t
++        thread_head = t['signal']['thread_head']
++        for thread in lists.list_for_each_entry(thread_head, task_ptr_type, 'thread_node'):
++            yield thread
+ 
+-            t = utils.container_of(t['thread_group']['next'],
+-                                   task_ptr_type, "thread_group")
+-            if t == g:
+-                break
+-
+-        t = g = utils.container_of(g['tasks']['next'],
+-                                   task_ptr_type, "tasks")
++        t = utils.container_of(t['tasks']['next'],
++                               task_ptr_type, "tasks")
+         if t == init_task:
+             return
+ 
+-- 
+2.18.0
+
 
