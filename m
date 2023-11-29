@@ -1,239 +1,89 @@
-Return-Path: <stable+bounces-3150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F417FD807
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 14:26:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803357FD814
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 14:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F7A5B21825
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 13:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8664282965
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 13:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6BD20310;
-	Wed, 29 Nov 2023 13:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C9020327;
+	Wed, 29 Nov 2023 13:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Qy/Vx8Ab"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="d2GCaSf0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x62f.google.com (mail-pl1-x62f.google.com [IPv6:2607:f8b0:4864:20::62f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A781BC6
-	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 05:26:07 -0800 (PST)
-Received: by mail-pl1-x62f.google.com with SMTP id d9443c01a7336-1d00689f5c8so13274745ad.3
-        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 05:26:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701264367; x=1701869167; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=AFTpdM0aIEuFLWbE3uf4cpdphBBWm+9dqFKXaJl0L24=;
-        b=Qy/Vx8AbXZJ4w1PjCQREI7RwJw55ogrHzGOAlU/6Iq+n3hQi78B7WlUOcBI0qx0fz2
-         gFjPj5GpnZ1TA55Ec78Rzp4VWnQPgap+zvFfN0mPKw0DinBrw5tuYQXC/CZQWOBwfEVs
-         GCDdSTHuRwHg2wHHUGIM1lE5FYhcOXGIVUrA0yOLDKy72BRrXA+AW21vsL0dSFPS1wpR
-         erZqdTImoWFVzIKusPCXszs1C6i0yGnslsRyk2d95N3fQ1+luMv5GiDLJUVL9OawNKPz
-         uPaoA6aXG61kS2tl7oy/4Du1jjHhmhglSJvWcEmeiRMPw00hwUWqH8a2vFxTvvy7R01w
-         LjEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701264367; x=1701869167;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AFTpdM0aIEuFLWbE3uf4cpdphBBWm+9dqFKXaJl0L24=;
-        b=stCDjb6fM/+GNOJqim9t7KHXPlZQerPkV99F2Od8qDaJ1gm1EbZGhCx30sCbKjFddE
-         KVWKcOmBZShef4CVGiCkFfryf96Om776B8Uhu1OkHYXlGyGZ0BxQ0lKYCTJK3lcFkfMV
-         q8Jet5l104LOmz3Y0CGK8l/6lRwjy9P+cIPuITTnbgTLFZ1cv9YSiuhINevPOwS2pFSM
-         72p+CQuNpkq3xFYKpxN3tjzT/01r+FnSChhJCQDLvCcYS/q4czs1jim6XoAocd6cPIzq
-         5+BmtsbBd1myJ9EeDRcChwGQ392PopoHDa6SzxUErUG2BReNVUj79s1Xsml80SQ6Ezki
-         SZCA==
-X-Gm-Message-State: AOJu0YxTT1slTde8NLIjRUUIcEPkVHL7LUcdCXFJcEq6ewxh1olxvY1s
-	FlfkeaAms+EcrzxPussnOVL43edV5uMcx2Yko8k=
-X-Google-Smtp-Source: AGHT+IF3KCFNRqwPyteWQ/Ex7zUCI7n1lTBoUcpGVKO8KtVvxME0RiAARiokSvteLwxinHKvHUmvJQ==
-X-Received: by 2002:a17:903:110e:b0:1cf:9e88:100d with SMTP id n14-20020a170903110e00b001cf9e88100dmr21817038plh.59.1701264366681;
-        Wed, 29 Nov 2023 05:26:06 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id jc11-20020a17090325cb00b001ce664c05b0sm12228010plb.33.2023.11.29.05.26.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Nov 2023 05:26:06 -0800 (PST)
-Message-ID: <65673bee.170a0220.773aa.e0b8@mx.google.com>
-Date: Wed, 29 Nov 2023 05:26:06 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D770710C4;
+	Wed, 29 Nov 2023 05:28:33 -0800 (PST)
+Received: from IcarusMOD.eternityproject.eu (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madras.collabora.co.uk (Postfix) with ESMTPSA id A6DBB66072FC;
+	Wed, 29 Nov 2023 13:28:31 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1701264512;
+	bh=zpfPELY7wglGVGim2aiQUgNevSQhwaMs8bxwBu3nImA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=d2GCaSf0HHb/WcEFbaGeF+PowDdvtzLDIjiEJXD602hcWNS9wavx0yKtppPCwz75A
+	 sUKvF73EcfszuB34bUPOkeE+GhPYMhw5YolQpquersEUkYbMSMUfLGskKE+4uYGVxH
+	 D6gkXwYLwuqtC/jTAyfkjhJ+vtk7ubF+JZ++06Vu6lGR5VvoLrE3AmtjLMvC4eAOkT
+	 En9SaoStVVbNP1m6YHFsMwD5p6kpzDW/YiN+hQFHMVJswZ9T0CBfkO2SiWflvKFP8W
+	 MVnSo6Zz3lnD02EqXOOq/V8bQR9t1wk3ATCh/eaSG4m6xfLrlepvNQqx6R86+w8tUU
+	 33TfhEGhez0Ww==
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: linux-mediatek@lists.infradead.org,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Frank Wunderlich <linux@fw-web.de>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	krzysztof.kozlowski+dt@linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	matthias.bgg@gmail.com,
+	kernel@collabora.com,
+	Frank Wunderlich <frank-w@public-files.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Eric Woudstra <ericwouds@gmail.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] arm64: dts: mt7986: fix emmc hs400 mode without uboot initialization
+Date: Wed, 29 Nov 2023 14:27:38 +0100
+Message-ID: <170126437823.153055.14524036820842918746.b4-ty@collabora.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231025170832.78727-2-linux@fw-web.de>
+References: <20231025170832.78727-1-linux@fw-web.de> <20231025170832.78727-2-linux@fw-web.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.15.140-41-g94f03c6721bf7
-Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.140-41-g94f03c6721bf7)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
-15.140-41-g94f03c6721bf7)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-5/kernel/v5.15.140-41-g94f03c6721bf7/
-
-Tree: stable-rc
-Branch: queue/5.15
-Git Describe: v5.15.140-41-g94f03c6721bf7
-Git Commit: 94f03c6721bf7294bf22eba13b52a5987cc49c15
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-board (gcc-10): 1 warning
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-Warnings summary:
+On Wed, 25 Oct 2023 19:08:28 +0200, Frank Wunderlich wrote:
+> Eric reports errors on emmc with hs400 mode when booting linux on bpi-r3
+> without uboot [1]. Booting with uboot does not show this because clocks
+> seem to be initialized by uboot.
+> 
+> Fix this by adding assigned-clocks and assigned-clock-parents like it's
+> done in uboot [2].
+> 
+> [...]
 
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+Applied, thanks!
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+[1/5] arm64: dts: mt7986: fix emmc hs400 mode without uboot initialization
+      (no commit info)
 
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 war=
-ning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
+Best regards,
+-- 
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
