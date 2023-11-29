@@ -1,144 +1,127 @@
-Return-Path: <stable+bounces-3123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C917FCF62
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 07:52:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6287FD05D
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 09:08:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A922B21361
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 06:52:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EBF8B1C20991
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 08:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3D26FAB;
-	Wed, 29 Nov 2023 06:51:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E72111BE;
+	Wed, 29 Nov 2023 08:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="InL70sed"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="aR08WhkI"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8422170B;
-	Tue, 28 Nov 2023 22:51:52 -0800 (PST)
-X-UUID: c3528a808e8311eea33bb35ae8d461a2-20231129
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=HSLnY3xqrwn+hgoTLGJH8USVe7mquDMPoI+jvrGs6a0=;
-	b=InL70seds0n1y0DxEG1DBI/ltO8Nik7kro64Uc801Fy2mA5HsuAMVudxqWG+hwDSBVzRHgqgjmIKbVczTk/55G95Y4F6elc6ZcyW6Yg6mHClY8f8DDEI1BjVadRqcirKThfh9r7jkFkfvwgczW6t630GUdMPuWPIYz2EqFvvxVw=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.34,REQID:6157e008-04a0-4a28-a9f5-9b7cf8221041,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:abefa75,CLOUDID:03659b60-c89d-4129-91cb-8ebfae4653fc,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-	NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: c3528a808e8311eea33bb35ae8d461a2-20231129
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
-	(envelope-from <kuan-ying.lee@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1385489251; Wed, 29 Nov 2023 14:51:46 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 29 Nov 2023 14:51:45 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 29 Nov 2023 14:51:45 +0800
-From: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
-To: Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Oleg Nesterov <oleg@redhat.com>
-CC: <casper.li@mediatek.com>, <chinwen.chang@mediatek.com>,
-	<qun-wei.lin@mediatek.com>, <linux-mm@kvack.org>, Kuan-Ying Lee
-	<Kuan-Ying.Lee@mediatek.com>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>
-Subject: [PATCH v2 1/3] scripts/gdb/tasks: Fix lx-ps command error
-Date: Wed, 29 Nov 2023 14:51:38 +0800
-Message-ID: <20231129065142.13375-2-Kuan-Ying.Lee@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20231129065142.13375-1-Kuan-Ying.Lee@mediatek.com>
-References: <20231129065142.13375-1-Kuan-Ying.Lee@mediatek.com>
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BFE0172E
+	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 00:08:50 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1cfcc9b3b5cso27951105ad.0
+        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 00:08:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701245329; x=1701850129; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=vBCVhuvWVrBXNzixJxCQvf1fZSd2316sazKsHirsvNg=;
+        b=aR08WhkIHxi7wRc5r4LRjUpV7BHKLZJ4g1lVBFkhxron+q//ZlvYDq8LYtA0EY1J5Z
+         EBaYMEZwLSI0jIKsrNyPxafm/ltpok1Dz9vlexn9dyqQ07jHqSdMWGDEZINA9Dpxm9mT
+         PTQEFwRLaGYJQw6neOiQ52mqs7LRIRnGYAZ1+jnIvsvyFzZH1lHh6BjxpjJ9gvaJW27y
+         BVs1WnxABJMxSXRdarsWx//ChFJ7gPB+IkyDXKqDWH5vaj+bRALpob79rIBg23ZnXNZo
+         QRKK2VqgCybbPVzSoMO2OI/R/RF2fKivzC2a8ae7lctfOSRcHRdYTcRBJSogzHOCRAhy
+         X54Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701245329; x=1701850129;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vBCVhuvWVrBXNzixJxCQvf1fZSd2316sazKsHirsvNg=;
+        b=BqkNi6YaTgMf+KcV0D5WdTIx9PZVeV5YcavSYt/1JY18Ojcnzha0VLVSyDdDz6Fm9T
+         NJK7EWD2yDG/Ep+6z6Auc+5UKI6ZupyhMpqfGdfEVCrov3JutKtq2dntry/iNIs3k/GU
+         YfLjK4BDmrU8uzpyYFKmAsbMeSXPgTOi0+LL0aUmcnB5CYj9c0iug+l7M1CRuntx62Pb
+         1a+N4agpEMojU1ZPMeOFyphEATC4nXyZk7+w4K6r9yt8RntNvOgaoasuzvpSvfaUPkjz
+         fEhg6ZEb3bCQ+eB3tEJzKaLyZrLGWdlXj0+tU8Gwx/NHO2CB6bCirl/ihGN3oDSkqB+l
+         OSgw==
+X-Gm-Message-State: AOJu0YzxbRn3Dly2RPC2tR1sbhNFmHuySxRk4qFSo32QG7UlErljWgsd
+	j/TBa37Q9h2ZwEFEOkdYZtKVBEYYSW2/N1NpMu0=
+X-Google-Smtp-Source: AGHT+IGDsqIJ5WbW+0tjJzM+zfIEi5F/WXVdlYP2pKKh1RLr4rF1z/kmNgMrmLoSd3ORl9H9aiWbQQ==
+X-Received: by 2002:a17:902:680d:b0:1cf:f3a0:3c6f with SMTP id h13-20020a170902680d00b001cff3a03c6fmr5146304plk.26.1701245329152;
+        Wed, 29 Nov 2023 00:08:49 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id l8-20020a170902f68800b001cfb971edf2sm7489145plg.13.2023.11.29.00.08.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 00:08:48 -0800 (PST)
+Message-ID: <6566f190.170a0220.9a312.1b34@mx.google.com>
+Date: Wed, 29 Nov 2023 00:08:48 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--5.095600-8.000000
-X-TMASE-MatchedRID: TCPSmmY0AVNXKLar1IWcqhIRh9wkXSlFBdebOqawiLujC1E/zCEIr8Rk
-	oeJ3OFRc3k+CPiKHMcLBSaBGgOy3GNEdmUPXI8FxWd1vvclMcXUUqWKocoJo6WrVm7PW4m4ILPJ
-	tWpbJjY1VzwOWOJEzlnATsg8MODVIHxPMjOKY7A8LbigRnpKlKSPzRlrdFGDwgNwDygWeOSz4rz
-	9LHo1WfqmfSlSAB+6ZRR6TlvCxdzkqKAHuRowG7g==
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--5.095600-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 1549B13AAC282B14084AFFAD7663CDDD84A55DADBFBB687B81633AF352EAF3E42000:8
-X-MTK: N
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: test
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.1.64
+Subject: stable-rc/linux-6.1.y baseline: 149 runs, 1 regressions (v6.1.64)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Since commit 8e1f385104ac ("kill task_struct->thread_group") remove
-the thread_group, we will encounter below issue.
+stable-rc/linux-6.1.y baseline: 149 runs, 1 regressions (v6.1.64)
 
-(gdb) lx-ps
-      TASK          PID    COMM
-0xffff800086503340   0   swapper/0
-Python Exception <class 'gdb.error'>: There is no member named thread_group.
-Error occurred in Python: There is no member named thread_group.
+Regressions Summary
+-------------------
 
-We use signal->thread_head to iterate all threads instead.
+platform      | arch  | lab           | compiler | defconfig | regressions
+--------------+-------+---------------+----------+-----------+------------
+r8a77960-ulcb | arm64 | lab-collabora | gcc-10   | defconfig | 1          =
 
-Fixes: 8e1f385104ac ("kill task_struct->thread_group")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
----
- scripts/gdb/linux/tasks.py | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/scripts/gdb/linux/tasks.py b/scripts/gdb/linux/tasks.py
-index 17ec19e9b5bf..aa5ab6251f76 100644
---- a/scripts/gdb/linux/tasks.py
-+++ b/scripts/gdb/linux/tasks.py
-@@ -13,7 +13,7 @@
- 
- import gdb
- 
--from linux import utils
-+from linux import utils, lists
- 
- 
- task_type = utils.CachedType("struct task_struct")
-@@ -22,19 +22,15 @@ task_type = utils.CachedType("struct task_struct")
- def task_lists():
-     task_ptr_type = task_type.get_type().pointer()
-     init_task = gdb.parse_and_eval("init_task").address
--    t = g = init_task
-+    t = init_task
- 
-     while True:
--        while True:
--            yield t
-+        thread_head = t['signal']['thread_head']
-+        for thread in lists.list_for_each_entry(thread_head, task_ptr_type, 'thread_node'):
-+            yield thread
- 
--            t = utils.container_of(t['thread_group']['next'],
--                                   task_ptr_type, "thread_group")
--            if t == g:
--                break
--
--        t = g = utils.container_of(g['tasks']['next'],
--                                   task_ptr_type, "tasks")
-+        t = utils.container_of(t['tasks']['next'],
-+                               task_ptr_type, "tasks")
-         if t == init_task:
-             return
- 
--- 
-2.18.0
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-6.1.y/kern=
+el/v6.1.64/plan/baseline/
 
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-6.1.y
+  Describe: v6.1.64
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      6ac30d748bb080752d4078d482534b68d62f685f =
+
+
+
+Test Regressions
+---------------- =
+
+
+
+platform      | arch  | lab           | compiler | defconfig | regressions
+--------------+-------+---------------+----------+-----------+------------
+r8a77960-ulcb | arm64 | lab-collabora | gcc-10   | defconfig | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6566c121972542290a7e4ad2
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.64/=
+arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-6.1.y/v6.1.64/=
+arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6566c121972542290a7e4=
+ad3
+        new failure (last pass: v6.1.63-368-g60c4064a8298e) =
+
+ =20
 
