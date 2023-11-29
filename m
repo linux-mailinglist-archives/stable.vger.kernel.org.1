@@ -1,131 +1,124 @@
-Return-Path: <stable+bounces-3157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74157FDA79
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 15:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E46D7FDACE
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 16:08:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 638E928325F
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 14:54:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 194BB282F15
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 15:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A437358AB;
-	Wed, 29 Nov 2023 14:54:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="W0h44zok"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF0C374C8;
+	Wed, 29 Nov 2023 15:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06BFEDD;
-	Wed, 29 Nov 2023 06:54:13 -0800 (PST)
-Received: from pps.filterd (m0353726.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3ATEqbdj016394;
-	Wed, 29 Nov 2023 14:54:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
- : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding; s=pp1;
- bh=nrvFh2fd1vzzeix+pUFKXs76rwQENYotxEwliyOjHjs=;
- b=W0h44zok4PUOY/xdj3QBN8uCKt3+Pxubg5vAGEl2Pd3GBP1n2UaGNxAquZSSBoY0qgQv
- uI2+gEkLQhUwzDqP6S76sLulWB+6aHKrhYGZtoSfw6JmNM64zaZDW4Sh2D5sOmXcPtUW
- /W0IBiuGVR1bLUNce8FDN2FvMxmfhO+mVwHPWOPy4WRTs32Tt1FpCXbiCfFG9Db/8zXp
- rjMSjRtwA5FMGe0i8EihWwNOnnVQ+9pIiLwWczllq0G1RMsFFExHSdiww77rpR/0A5ww
- U1cXkXmZ+HGLhlKHezD8Vo91wo/xmVcMCPj+8CCKBlEXxONeyXh6QDdurJl9HoTvT3uq Ig== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up7ekr30h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 14:54:11 +0000
-Received: from m0353726.ppops.net (m0353726.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3ATErSgf020936;
-	Wed, 29 Nov 2023 14:54:10 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3up7ekr2yr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 14:54:10 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3ATEDjWZ004747;
-	Wed, 29 Nov 2023 14:54:09 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3ukwy1ya5m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Nov 2023 14:54:09 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3ATEs8vw18547410
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Nov 2023 14:54:09 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B35285805B;
-	Wed, 29 Nov 2023 14:54:08 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 25C4658058;
-	Wed, 29 Nov 2023 14:54:07 +0000 (GMT)
-Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.149.198])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 29 Nov 2023 14:54:07 +0000 (GMT)
-From: Tony Krowiak <akrowiak@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: jjherne@linux.ibm.com, pasic@linux.ibm.com, alex.williamson@redhat.com,
-        borntraeger@linux.ibm.com, kwankhede@nvidia.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, david@redhat.com,
-        Anthony Krowiak <akrowiak@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>, stable@vger.kernel.org
-Subject: [PATCH v4 1/3] s390/vfio-ap: unpin pages on gisc registration failure
-Date: Wed, 29 Nov 2023 09:53:59 -0500
-Message-ID: <20231129145404.263764-2-akrowiak@linux.ibm.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231129145404.263764-1-akrowiak@linux.ibm.com>
-References: <20231129145404.263764-1-akrowiak@linux.ibm.com>
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49499C9;
+	Wed, 29 Nov 2023 07:08:38 -0800 (PST)
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 3ATF8C2y82823373, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/2.95/5.92) with ESMTPS id 3ATF8C2y82823373
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Nov 2023 23:08:12 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.17; Wed, 29 Nov 2023 23:08:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.34; Wed, 29 Nov 2023 23:08:11 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7]) by
+ RTEXMBS04.realtek.com.tw ([fe80::40c2:6c24:2df4:e6c7%5]) with mapi id
+ 15.01.2375.007; Wed, 29 Nov 2023 23:08:11 +0800
+From: Hau <hau@realtek.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+CC: nic_swsd <nic_swsd@realtek.com>,
+        "davem@davemloft.net"
+	<davem@davemloft.net>,
+        "edumazet@google.com" <edumazet@google.com>,
+        "kuba@kernel.org" <kuba@kernel.org>,
+        "pabeni@redhat.com" <pabeni@redhat.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "grundler@chromium.org" <grundler@chromium.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH net 1/2] r8169: enable rtl8125b pause slot
+Thread-Topic: [PATCH net 1/2] r8169: enable rtl8125b pause slot
+Thread-Index: AQHaIVs7nAWaTecO6Uq8YPeM6D0ejbCOENSAgANXsHA=
+Date: Wed, 29 Nov 2023 15:08:11 +0000
+Message-ID: <0a8be0185fe64398b85098cc7259c1c9@realtek.com>
+References: <20231127175736.5738-1-hau@realtek.com>
+ <20231127175736.5738-2-hau@realtek.com>
+ <a5f89071-f93b-4a30-a0c5-f9dfda68367c@gmail.com>
+In-Reply-To: <a5f89071-f93b-4a30-a0c5-f9dfda68367c@gmail.com>
+Accept-Language: zh-TW, en-US
+Content-Language: en-US
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: LXohugi0gGmcJIUTLIeUKt2Bnf8iFKtC
-X-Proofpoint-ORIG-GUID: 7IyvGerT-WH3X_U5MnTHXr5RtDrmZJCk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-11-29_12,2023-11-29_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 phishscore=0 spamscore=0 malwarescore=0 clxscore=1011
- priorityscore=1501 adultscore=0 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2311060000 definitions=main-2311290113
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Anthony Krowiak <akrowiak@linux.ibm.com>
-
-In the vfio_ap_irq_enable function, after the page containing the
-notification indicator byte (NIB) is pinned, the function attempts
-to register the guest ISC. If registration fails, the function sets the
-status response code and returns without unpinning the page containing
-the NIB. In order to avoid a memory leak, the NIB should be unpinned before
-returning from the vfio_ap_irq_enable function.
-
-Co-developed-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Anthony Krowiak <akrowiak@linux.ibm.com>
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Fixes: 783f0a3ccd79 ("s390/vfio-ap: add s390dbf logging to the vfio_ap_irq_enable function")
-Cc: <stable@vger.kernel.org>
----
- drivers/s390/crypto/vfio_ap_ops.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
-index 4db538a55192..9cb28978c186 100644
---- a/drivers/s390/crypto/vfio_ap_ops.c
-+++ b/drivers/s390/crypto/vfio_ap_ops.c
-@@ -457,6 +457,7 @@ static struct ap_queue_status vfio_ap_irq_enable(struct vfio_ap_queue *q,
- 		VFIO_AP_DBF_WARN("%s: gisc registration failed: nisc=%d, isc=%d, apqn=%#04x\n",
- 				 __func__, nisc, isc, q->apqn);
- 
-+		vfio_unpin_pages(&q->matrix_mdev->vdev, nib, 1);
- 		status.response_code = AP_RESPONSE_INVALID_GISA;
- 		return status;
- 	}
--- 
-2.41.0
-
+PiA+IFdoZW4gRklGTyByZWFjaCBuZWFyIGZ1bGwgc3RhdGUsIGRldmljZSB3aWxsIGlzc3VlIHBh
+dXNlIGZyYW1lLg0KPiA+IElmIHBhdXNlIHNsb3QgaXMgZW5hYmxlZChzZXQgdG8gMSksIGluIHRo
+aXMgdGltZSwgZGV2aWNlIHdpbGwgaXNzdWUNCj4gPiBwYXVzZSBmcmFtZSBvbmNlLiBCdXQgaWYg
+cGF1c2Ugc2xvdCBpcyBkaXNhYmxlZChzZXQgdG8gMCksIGRldmljZSB3aWxsDQo+ID4ga2VlcCBz
+ZW5kaW5nIHBhdXNlIGZyYW1lcyB1bnRpbCBGSUZPIHJlYWNoIG5lYXIgZW1wdHkgc3RhdGUuDQo+
+ID4NCj4gPiBXaGVuIHBhdXNlIHNsb3QgaXMgZGlzYWJsZWQsIGlmIHRoZXJlIGlzIG5vIG9uZSB0
+byBoYW5kbGUgcmVjZWl2ZQ0KPiA+IHBhY2tldHMgKGV4LiB1bmV4cGVjdGVkIHNodXRkb3duKSwg
+ZGV2aWNlIEZJRk8gd2lsbCByZWFjaCBuZWFyIGZ1bGwNCj4gPiBzdGF0ZSBhbmQga2VlcCBzZW5k
+aW5nIHBhdXNlIGZyYW1lcy4gVGhhdCB3aWxsIGltcGFjdCBlbnRpcmUgbG9jYWwNCj4gPiBhcmVh
+IG5ldHdvcmsuDQo+ID4NCj4gPiBJbiB0aGlzIHBhdGNoIGRlZmF1bHQgZW5hYmxlIHBhdXNlIHNs
+b3QgdG8gcHJldmVudCB0aGlzIGtpbmQgb2YNCj4gPiBzaXR1YXRpb24uDQo+ID4NCj4gQ2FuIHRo
+aXMgY2hhbmdlIGhhdmUgYW55IHNpZGUgZWZmZWN0PyBJJ20gYXNraW5nIGJlY2F1c2UgYXBwYXJl
+bnRseSB0aGUgaHcNCj4gZW5naW5lZXJzIGhhZCBhIHJlYXNvbiB0byBtYWtlIHRoZSBiZWhhdmlv
+ciBjb25maWd1cmFibGUuDQoNCkl0IHNob3VsZCBub3QgaGF2ZSBhbnkgc2lkZSBlZmZlY3QuIFRo
+aXMgc2V0dGluZyBpcyBhbHNvIHVzZWQgaW4gUmVhbHRlayBkcml2ZXIuDQoNCj4gPiBGaXhlczog
+ZjFiY2U0YWQyZjFjICgicjgxNjk6IGFkZCBzdXBwb3J0IGZvciBSVEw4MTI1IikNCj4gPiBDYzog
+c3RhYmxlQHZnZXIua2VybmVsLm9yZw0KPiA+IFNpZ25lZC1vZmYtYnk6IENodW5IYW8gTGluIDxo
+YXVAcmVhbHRlay5jb20+DQo+ID4gLS0tDQo+ID4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L3JlYWx0
+ZWsvcjgxNjlfbWFpbi5jIHwgNyArKysrKystDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2Vy
+dGlvbnMoKyksIDEgZGVsZXRpb24oLSkNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25l
+dC9ldGhlcm5ldC9yZWFsdGVrL3I4MTY5X21haW4uYw0KPiA+IGIvZHJpdmVycy9uZXQvZXRoZXJu
+ZXQvcmVhbHRlay9yODE2OV9tYWluLmMNCj4gPiBpbmRleCAyOTUzNjZhODVjNjMuLjQ3M2IzMjQ1
+NzU0ZiAxMDA2NDQNCj4gPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9yZWFsdGVrL3I4MTY5
+X21haW4uYw0KPiA+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3JlYWx0ZWsvcjgxNjlfbWFp
+bi5jDQo+ID4gQEAgLTE5Niw2ICsxOTYsNyBAQCBlbnVtIHJ0bF9yZWdpc3RlcnMgew0KPiA+ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLyogTm8gdGhyZXNob2xkIGJlZm9y
+ZSBmaXJzdCBQQ0kgeGZlciAqLw0KPiA+ICAjZGVmaW5lICAgICAgUlhfRklGT19USFJFU0ggICAg
+ICAgICAgICAgICAgICAoNyA8PCBSWENGR19GSUZPX1NISUZUKQ0KPiA+ICAjZGVmaW5lICAgICAg
+UlhfRUFSTFlfT0ZGICAgICAgICAgICAgICAgICAgICAoMSA8PCAxMSkNCj4gPiArI2RlZmluZSAg
+ICAgIFJYX1BBVVNFX1NMT1RfT04gICAgICAgICAgICAgICAgKDEgPDwgMTEpDQo+IA0KPiBEZXBl
+bmRpbmcgb24gdGhlIGNoaXAgdmVyc2lvbiB0aGlzIGJpdCBoYXMgZGlmZmVyZW50IG1lYW5pbmdz
+LiBUaGVyZWZvcmUgaXQNCj4gd291bGQgYmUgZ29vZCB0byBhZGQgYSBjb21tZW50IHRoYXQgUlhf
+UEFVU0VfU0xPVF9PTiBpcyBzcGVjaWZpYyB0bw0KPiBSVEw4MTI1Qi4NCg0KSSB3aWxsIGRvIHRo
+YXQgYW5kIHN1Ym1pdCBhZ2Fpbi4NCg0KPiA+ICAjZGVmaW5lICAgICAgUlhDRkdfRE1BX1NISUZU
+ICAgICAgICAgICAgICAgICA4DQo+ID4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAvKiBVbmxpbWl0ZWQgbWF4aW11bSBQQ0kgYnVyc3QuICovDQo+ID4gICNkZWZpbmUgICAg
+ICBSWF9ETUFfQlVSU1QgICAgICAgICAgICAgICAgICAgICg3IDw8IFJYQ0ZHX0RNQV9TSElGVCkN
+Cj4gPiBAQCAtMjMwNSw5ICsyMzA2LDEzIEBAIHN0YXRpYyB2b2lkIHJ0bF9pbml0X3J4Y2ZnKHN0
+cnVjdCBydGw4MTY5X3ByaXZhdGUNCj4gKnRwKQ0KPiA+ICAgICAgIGNhc2UgUlRMX0dJR0FfTUFD
+X1ZFUl80MCAuLi4gUlRMX0dJR0FfTUFDX1ZFUl81MzoNCj4gPiAgICAgICAgICAgICAgIFJUTF9X
+MzIodHAsIFJ4Q29uZmlnLCBSWDEyOF9JTlRfRU4gfCBSWF9NVUxUSV9FTiB8DQo+IFJYX0RNQV9C
+VVJTVCB8IFJYX0VBUkxZX09GRik7DQo+ID4gICAgICAgICAgICAgICBicmVhazsNCj4gPiAtICAg
+ICBjYXNlIFJUTF9HSUdBX01BQ19WRVJfNjEgLi4uIFJUTF9HSUdBX01BQ19WRVJfNjM6DQo+ID4g
+KyAgICAgY2FzZSBSVExfR0lHQV9NQUNfVkVSXzYxOg0KPiA+ICAgICAgICAgICAgICAgUlRMX1cz
+Mih0cCwgUnhDb25maWcsIFJYX0ZFVENIX0RGTFRfODEyNSB8IFJYX0RNQV9CVVJTVCk7DQo+ID4g
+ICAgICAgICAgICAgICBicmVhazsNCj4gPiArICAgICBjYXNlIFJUTF9HSUdBX01BQ19WRVJfNjM6
+DQo+ID4gKyAgICAgICAgICAgICBSVExfVzMyKHRwLCBSeENvbmZpZywgUlhfRkVUQ0hfREZMVF84
+MTI1IHwgUlhfRE1BX0JVUlNUIHwNCj4gPiArICAgICAgICAgICAgICAgICAgICAgUlhfUEFVU0Vf
+U0xPVF9PTik7DQo+ID4gKyAgICAgICAgICAgICBicmVhazsNCj4gPiAgICAgICBkZWZhdWx0Og0K
+PiA+ICAgICAgICAgICAgICAgUlRMX1czMih0cCwgUnhDb25maWcsIFJYMTI4X0lOVF9FTiB8IFJY
+X0RNQV9CVVJTVCk7DQo+ID4gICAgICAgICAgICAgICBicmVhazsNCg0K
 
