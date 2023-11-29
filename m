@@ -1,191 +1,227 @@
-Return-Path: <stable+bounces-3153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D98537FD89C
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 14:49:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A15057FD8BA
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 14:55:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A554B2183E
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 13:49:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57CB1282C3D
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 13:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A8F21118;
-	Wed, 29 Nov 2023 13:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5933A1E530;
+	Wed, 29 Nov 2023 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="ile7QmuU";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="nXDxsk1Z"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ZtaO1ZYX"
 X-Original-To: stable@vger.kernel.org
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D47E3DD
-	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 05:49:45 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id D9EAF3200B89;
-	Wed, 29 Nov 2023 08:49:44 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 29 Nov 2023 08:49:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1701265784; x=1701352184; bh=AY
-	qR2FYNis+6ueG4BiHliUkj1RWJ5ay7P8i59rrCpAg=; b=ile7QmuUZmWrI3cizj
-	d1ghvvS1eN9S7laIFLS2dxvGN7XzQm2kxREyuAVjR4KVronGybkMW6RWh9DhFMw5
-	Dov3BaQ9TLMyGT7RsTmAoJDJ8LJklLldBx5tH1wekA+sS7KhhsMOSNKHXZNlwCmW
-	NLV8ItJvAemgGNMa4L2EUGuhKY0xjMJuMj3bXPwCidTRGNVIc3vzCI0y8aaYXeaw
-	duuwBV5E5WcV2+f995w2EjG3IF5OfHebxX58NNqzTUEezHc8IPwjB8JGz4wcJ0fW
-	NuThq8IScaDIK6eBdf9SJMZS/A3DAtS8mhksQouEubA3orjmJ1jsx1PpW0MG+IHj
-	ZqyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701265784; x=1701352184; bh=AYqR2FYNis+6u
-	eG4BiHliUkj1RWJ5ay7P8i59rrCpAg=; b=nXDxsk1ZZUBEWtNL9NEaiDLOzuMva
-	RcQlwA5K/nEJatpZ4xF/pk3VUNsI2BeMVp9b6mbZ8HRVMyKiMP6Nit6npe+5s2rI
-	UlLhoW/LnkYxDSVckOUlI0bNga7RjcsCLg1R+vI2uAW+y+AnAYLiCiQhNuzZzDho
-	eWogFDuXbBkI4FACd30OnGlrlIEGzx/cwDS5bwLgSrf9h3xWtoJT8JvCWvDRTGTP
-	LXQn0sw2T3RUQYUGMaJBW/JvkWBgOXslsKso9Qjyu7lXqkbCFUfFemgdXxgsTGXd
-	bH2fj2CAmu2IoEU6gwyCscOQzfN6GAArVVUX7dSC0xQInIfyQ26EtrX4w==
-X-ME-Sender: <xms:eEFnZSrMVTJXUdy6oB07k5M_A0xcealI40sVL8jqNFzScoJovEtXug>
-    <xme:eEFnZQrGo245rWPHAnkiOZEpzMjygQtETrBGOd_KZ-4CHXSENm8KJkOX8hWJWJUGz
-    Gboj6wuBRp2Qxc1bw>
-X-ME-Received: <xmr:eEFnZXOmQHSA2eVzLjnBGZJjBIAEp1qa3EJlexy5VvU7BMo77VLxpb11WvR9HC-r_m56oy8T2QZZf2xnlmCd7B05_ACI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeihedgheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhephffvvefujghffffkgggtsehgtderredttdejnecuhfhrohhmpeetlhihshhs
-    rgcutfhoshhsuceohhhisegrlhihshhsrgdrihhsqeenucggtffrrghtthgvrhhnpedtke
-    dvfedvvdetheehueeifeelieeggeefgedtvefgvdfhvdethedvkedtheevvdenucffohhm
-    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhephhhisegrlhihshhsrgdrihhs
-X-ME-Proxy: <xmx:eEFnZR6d-QXR5jcV9TFoLBmWP-t5jtgeP9ecX984nyv5ykaMBiAkqw>
-    <xmx:eEFnZR6eXObcDA3Ki7qM0_XY6SGAkkjqZhUbB-Hfb5OyT17OMXEyWg>
-    <xmx:eEFnZRjjDJRclFSDX054GDvolDsnMhcim84TO4YXWPpT4QAIqWLnRA>
-    <xmx:eEFnZbmT1bYU1QkL6WGAdpfPEMn9E1eqzXT-NRdNz6G45S4NOkASZw>
-Feedback-ID: i12284293:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Nov 2023 08:49:43 -0500 (EST)
-Received: by mbp.qyliss.net (Postfix, from userid 1000)
-	id 73FC56216; Wed, 29 Nov 2023 14:49:42 +0100 (CET)
-From: Alyssa Ross <hi@alyssa.is>
-To: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org, javierm@redhat.com, mripard@kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/atomic-helpers: Invoke end_fb_access while
- owning plane state
-In-Reply-To: <1093023d-1e9a-422f-bb5d-e716c0789f70@suse.de>
-References: <20231127142042.17815-1-tzimmermann@suse.de>
- <874jh740zb.fsf@alyssa.is> <1093023d-1e9a-422f-bb5d-e716c0789f70@suse.de>
-Date: Wed, 29 Nov 2023 14:49:36 +0100
-Message-ID: <87r0k8vfdb.fsf@alyssa.is>
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6836CA
+	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 05:55:09 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1cf89e31773so46825915ad.0
+        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 05:55:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701266109; x=1701870909; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=6b99EluuJoxlVvKcoqy4oq3Dom/9o/dbQA9xufPV54w=;
+        b=ZtaO1ZYXgfU3uaMcqdddT5494y/FOBnzqqu+FcjNhr+l9kuBmfdTo9q5h9yhBNRQwh
+         SIXhIv9mccgPLkZdcts720E61qNIkoWK9d06Vp4bqKLrjt6HR+dg+cA46h71zRjGQSwF
+         nYbKwKOXetmx29LFkT9YUfjY5h4A4LmDi00mCmWAgJ2HtCvuFiyfpY94UdmoFlyCi+f3
+         S7kfPDz688Y6uYaPYurzSheTC2C3pPsLGi0a3FXdFCAwoSSyrppNlHCRkdeKVj8s6Ms9
+         UMEfu0FfKoVc5RqWqzRhvY0VtRuC6tQSFVB/Jrvj+t1W0wzSbTpkqueb67jpChMvhtKT
+         aZeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701266109; x=1701870909;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6b99EluuJoxlVvKcoqy4oq3Dom/9o/dbQA9xufPV54w=;
+        b=Z5T7kGr9xi5G36fKZzlZYiE6U2+VnwDUXrYFPHW3kJvWDmgW3p0Z1BwxYPBXtSp+dy
+         iYJYtvtfldZNbL1zSFmnLyLvQMOnfGgAe8TYRM7SjPrUMgWqyjFgxLEsl+fxC3y6300P
+         f/fgP8rhNRnx/g7EkkCvsxElUWefrAHOXt+8JGpPGXCnKDecIH8/Ph2c+0TWXR9w78Dt
+         BlfGqlaLxzXreyOxdyuVuyL7MwYLhRdPr5dvkgOUppqy7mGfrnYRobiB53GS9JGONbUW
+         h2BokP4hCsTswGY0YVAGvWe06WBUJ/wDTmqUZcVesYoyKYYfKE3fahn/oQ9YZ2pdVNf7
+         j0IA==
+X-Gm-Message-State: AOJu0Yy9Qv9WwTVaHRRAU89tNHtyRgSMpC2xmoIq9I3sSsHKGm0SRXpu
+	V1SFktFYWMqyOjaWHGrlqPRL57gnsZGfQHy8geY=
+X-Google-Smtp-Source: AGHT+IEqkbBuTkVx9ltY26Tep8ibfhlsfADsSMBm5baCBjZkILHJoPXHfMOVZB06j8rXVDuWadqcgw==
+X-Received: by 2002:a17:902:bc49:b0:1cf:c618:d770 with SMTP id t9-20020a170902bc4900b001cfc618d770mr10213977plz.14.1701266108829;
+        Wed, 29 Nov 2023 05:55:08 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id f9-20020a170902ce8900b001cfcf3b6de7sm5820492plg.52.2023.11.29.05.55.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Nov 2023 05:55:08 -0800 (PST)
+Message-ID: <656742bc.170a0220.61a1c.fb7f@mx.google.com>
+Date: Wed, 29 Nov 2023 05:55:08 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="=-=-=";
-	micalg=pgp-sha256; protocol="application/pgp-signature"
-
---=-=-=
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Report-Type: build
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Kernel: v6.1.64-54-g93cdac04ac8ae
+Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.64-54-g93cdac04ac8ae)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
+stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
+64-54-g93cdac04ac8ae)
 
-> Hi
->
-> Am 27.11.23 um 17:25 schrieb Alyssa Ross:
->> Thomas Zimmermann <tzimmermann@suse.de> writes:
->>=20
->>> Invoke drm_plane_helper_funcs.end_fb_access before
->>> drm_atomic_helper_commit_hw_done(). The latter function hands over
->>> ownership of the plane state to the following commit, which might
->>> free it. Releasing resources in end_fb_access then operates on undefined
->>> state. This bug has been observed with non-blocking commits when they
->>> are being queued up quickly.
->>>
->>> Here is an example stack trace from the bug report. The plane state has
->>> been free'd already, so the pages for drm_gem_fb_vunmap() are gone.
->>>
->>> Unable to handle kernel paging request at virtual address 0000000100000=
-049
->>> [...]
->>>   drm_gem_fb_vunmap+0x18/0x74
->>>   drm_gem_end_shadow_fb_access+0x1c/0x2c
->>>   drm_atomic_helper_cleanup_planes+0x58/0xd8
->>>   drm_atomic_helper_commit_tail+0x90/0xa0
->>>   commit_tail+0x15c/0x188
->>>   commit_work+0x14/0x20
->>>
->>> For aborted commits, it is still ok to run end_fb_access as part of the
->>> plane's cleanup. Add a test to drm_atomic_helper_cleanup_planes().
->>>
->>> v2:
->>> 	* fix test in drm_atomic_helper_cleanup_planes()
->>>
->>> Reported-by: Alyssa Ross <hi@alyssa.is>
->>> Closes: https://lore.kernel.org/dri-devel/87leazm0ya.fsf@alyssa.is/
->>> Suggested-by: Daniel Vetter <daniel@ffwll.ch>
->>> Fixes: 94d879eaf7fb ("drm/atomic-helper: Add {begin,end}_fb_access to p=
-lane helpers")
->>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>> Cc: <stable@vger.kernel.org> # v6.2+
->>> ---
->>>   drivers/gpu/drm/drm_atomic_helper.c | 17 +++++++++++++++++
->>>   1 file changed, 17 insertions(+)
->>=20
->> Got this basically immediately. :(
->
-> I've never seen such problems on other systems. Is there anything=20
-> different about the Mac systems? How do you trigger these errors?
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
+/kernel/v6.1.64-54-g93cdac04ac8ae/
 
-My understanding is that all sorts of things are different, but I don't
-know too much about the details.  There's of course a chance that there
-could be some other change in the Asahi Linux kernel that causes this
-problem to surface =E2=80=94 as I said, I reviewed the diff with mainline a=
-nd
-didn't see anything that looked relevant, but I could well have missed
-something.  I don't think I can test mainline directly, as it doesn't
-yet support enough of the hardware =E2=80=94 for slightly older Apple Silic=
-on
-Mac models, I think enough is upstream that this would be possible, but
-I don't have access to any.
+Tree: stable-rc
+Branch: queue/6.1
+Git Describe: v6.1.64-54-g93cdac04ac8ae
+Git Commit: 93cdac04ac8ae72c8ab1b1187b3d1b2b4ac4dc32
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-I started off encountering these errors every few days.  I noticed them
-because they would sometimes result in my system either starting to
-freeze for 10 seconds at a time, or until I switched VT.  They seem to
-correlate with the system being under high CPU load.  I was also able to
-substantially increase the frequency with which they occurred by adding
-logging to the kernel =E2=80=94 even just drm.debug=3D0x10 makes a big diff=
-erence,
-and when I also added a few dump_backtrace() calls when I was trying to
-understand the code and diagnose the problem, I would relatively
-consistently encounter an Oops within a few minutes of load.
+Warnings Detected:
 
-BTW: v3 is looking good so far.  I've only been testing it since this
-morning, though, so I'll keep trying it out for a bit longer before I
-declare the problem to have been solved and send a Tested-by.
+arc:
 
---=-=-=
-Content-Type: application/pgp-signature; name="signature.asc"
+arm64:
 
------BEGIN PGP SIGNATURE-----
+arm:
 
-iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmVnQXAACgkQ+dvtSFmy
-ccBLew/9EYgQ+cjqBKHE8We3AvbqEotI3p2kF/38oLy9MCQ7jw3tCgtVZy7KEvd/
-jAgvU7tk0iaP9Ob9RiybckA5vxpHU+xWQqnx1vSzNp29g1jhkYiX0uBZI0ZpH5pi
-+g2R1b2i4kleqNRtfxZcUVY0zaajWzVp+Fw3qHjtygN61mRRabti/l5HVgeOmROk
-qTJ9XfKwQsocnkMq1pPq1NOhlJFgblZohXwnCdgacFo+vt0bBL31aTe+ydYXY3HY
-0tdoOVV8md1ejlm5ObSzL0oiN8On4Mm3NbmiEKBCqCA1mZ8JFwSbqAVo8PnlF9h0
-L3jexx/DND92hmLet6XvxlbRMZFPu5Rn9UGIMnv31b6A4n/Le3mTmD7Z33ozE8wr
-0Ioft2cVC3qZVSPR7K2d5Anfp5v+TqNtEuKwj2DgFIdOJlBeKGjBchy+QGFbaSV8
-/XYgpfNXUaowBGzIxN+veJgSO2GmT8xLP3+OkXCyOZ9mewEi8Yfy3UOTxp72yjcs
-fO0QBR6Vor+mOpmdGWwPEP89cS9qJlwfcha6BBgCEoHL/LIhruC1ITFqDfZ3oZmN
-XxhmAsXctPqdBL/MjMLWn4GQXEtBvly/movEpe7H91Y4iyrQELkdVag52Akj1rQA
-ljqZ2t3ueswHvgCKT9UjzHU+8zBp2KdHIIHp12Ptl58MJG+CqU4=
-=CtLf
------END PGP SIGNATURE-----
---=-=-=--
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
