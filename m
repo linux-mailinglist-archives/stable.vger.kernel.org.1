@@ -1,121 +1,103 @@
-Return-Path: <stable+bounces-3184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34A4E7FE315
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 23:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1247FE335
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 23:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF599B20FC3
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 22:24:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51F3FB2104F
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 22:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9465E3B1A4;
-	Wed, 29 Nov 2023 22:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B529C2B9D9;
+	Wed, 29 Nov 2023 22:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pPYaSL0s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JueQZ4Rw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553C74CB58
-	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 22:24:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49B0C433C9;
-	Wed, 29 Nov 2023 22:24:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1701296686;
-	bh=6l0LFh+tT1gTERFfDeTg2oTmx1lgFX0zvl2oIwSj5Ow=;
-	h=Date:To:From:Subject:From;
-	b=pPYaSL0s0V+MTMKdZ0QMT0l1On6svHWqE9lmRn2s15I9kTK6YDz397U+7XIzZLqaD
-	 sJ3x2ZELkJf3YvIn+pRKYar7ZJc+tb1Jq+yVGBKbXM3FkuKLTIstxfiMnDUg2hk8Qb
-	 /5X70TmNtqj1++DK3uLW52aADaAa6wNX5uyf2ir0=
-Date: Wed, 29 Nov 2023 14:24:46 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,bhe@redhat.com,agordeev@linux.ibm.com,ignat@cloudflare.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231129222446.C49B0C433C9@smtp.kernel.org>
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9BA9B2;
+	Wed, 29 Nov 2023 14:33:24 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-285699ebabcso296348a91.0;
+        Wed, 29 Nov 2023 14:33:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701297204; x=1701902004; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=I514WpKhed4nrQIz3BqBn8ospI7mOLbqMpjJBTq6ymk=;
+        b=JueQZ4RwW7FulVIowO98Gq4yGgK5415D+vMjvL0vvuuEx79ASrdpWUSpBYU4bTZG8H
+         VRVeMjWz3Xmx2QJuI4Z5fRdxEZpNNu4zZmjb0oRrYrgv45kXlg0i77oJCOZqxy5P65I2
+         Db/vpSxRZS+0kUd+vfGkDvozmOap4Jvbkbf7C+Y0AXgrrWHXuSKtw60pBrdBbkQilJTs
+         T4gM1kPvZE5cFyO/3OakZRmkQYwEcQuULBzq6t9zKwyCVWMXSjhqj2+OsBPBPfed6RWX
+         Dh8CfSMc2m3aSH2Thab4udFyVjGmYvtr04FRGm6mNCjxSdju9g6zqhH1v5XBuJy4vQ1h
+         +i9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701297204; x=1701902004;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=I514WpKhed4nrQIz3BqBn8ospI7mOLbqMpjJBTq6ymk=;
+        b=oAVO0W0CT0EHI2p0WM3SpTyRWzGwi5uTRCmPW9llLpM8/VzZa8n4z0cdfIM64OL1Xr
+         RFLiMAn1u1tMwbawSSh5gqEFZ12m1HKz7l7RK6HYAVNuZ8J/igBV4XRVqW0hNTZcZst8
+         fpXOHGsM8bOsiewtDrSO+zE+X6N3r3bL/hUq5IDKCjJWaM4UyrcpiOdAQaw7MW2xcDK3
+         3weuxZnXmLpeqk5WAYBP5hLedoPFMljmcmeRyrmSUl0K2S2bPcHatC8EOBMMbxmO3uer
+         RgZFU3G8RFus91ACeaDC56DTenoGeGcueUpOtMnznDlva24751n0LTWRv7LqMcWB2Qq1
+         cXHg==
+X-Gm-Message-State: AOJu0Yx84f6k70WzAja+RkfsBd2xfji57K5H8CVV0T8hd/8jaqLPmFRN
+	FCof4KnSMDfol5qtpnbLFq0=
+X-Google-Smtp-Source: AGHT+IE3ZS6fBgIZrU2HaJY5dQVHSaIR5sQW0MA6Oe5+Gz0QY2Tn9XeHc+eVzspjQkI0SKLmVHLiFw==
+X-Received: by 2002:a17:90a:ca08:b0:283:967c:4e6 with SMTP id x8-20020a17090aca0800b00283967c04e6mr33689697pjt.12.1701297204224;
+        Wed, 29 Nov 2023 14:33:24 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id g4-20020a17090ace8400b00277560ecd5dsm1879096pju.46.2023.11.29.14.33.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Nov 2023 14:33:23 -0800 (PST)
+Message-ID: <cf0da74e-4440-4ad9-975a-53b77f3121c5@gmail.com>
+Date: Wed, 29 Nov 2023 14:33:21 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] scripts/gdb/tasks: Fix lx-ps command error
+Content-Language: en-US
+To: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Kieran Bingham <kbingham@kernel.org>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Oleg Nesterov <oleg@redhat.com>
+Cc: casper.li@mediatek.com, chinwen.chang@mediatek.com,
+ qun-wei.lin@mediatek.com, linux-mm@kvack.org, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org
+References: <20231129065142.13375-1-Kuan-Ying.Lee@mediatek.com>
+ <20231129065142.13375-2-Kuan-Ying.Lee@mediatek.com>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231129065142.13375-2-Kuan-Ying.Lee@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 11/28/23 22:51, Kuan-Ying Lee wrote:
+> Since commit 8e1f385104ac ("kill task_struct->thread_group") remove
+> the thread_group, we will encounter below issue.
+> 
+> (gdb) lx-ps
+>        TASK          PID    COMM
+> 0xffff800086503340   0   swapper/0
+> Python Exception <class 'gdb.error'>: There is no member named thread_group.
+> Error occurred in Python: There is no member named thread_group.
+> 
+> We use signal->thread_head to iterate all threads instead.
+> 
+> Fixes: 8e1f385104ac ("kill task_struct->thread_group")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
 
-The patch titled
-     Subject: kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch
-
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ignat Korchagin <ignat@cloudflare.com>
-Subject: kexec: drop dependency on ARCH_SUPPORTS_KEXEC from CRASH_DUMP
-Date: Wed, 29 Nov 2023 22:04:09 +0000
-
-In commit f8ff23429c62 ("kernel/Kconfig.kexec: drop select of KEXEC for
-CRASH_DUMP") we tried to fix a config regression, where CONFIG_CRASH_DUMP
-required CONFIG_KEXEC.
-
-However, it was not enough at least for arm64 platforms.  While further
-testing the patch with our arm64 config I noticed that CONFIG_CRASH_DUMP
-is unavailable in menuconfig.  This is because CONFIG_CRASH_DUMP still
-depends on the new CONFIG_ARCH_SUPPORTS_KEXEC introduced in commit
-91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec") and on
-arm64 CONFIG_ARCH_SUPPORTS_KEXEC requires CONFIG_PM_SLEEP_SMP=y, which in
-turn requires either CONFIG_SUSPEND=y or CONFIG_HIBERNATION=y neither of
-which are set in our config.
-
-Given that we already established that CONFIG_KEXEC (which is a switch for
-kexec system call itself) is not required for CONFIG_CRASH_DUMP drop
-CONFIG_ARCH_SUPPORTS_KEXEC dependency as well.  The arm64 kernel builds
-just fine with CONFIG_CRASH_DUMP=y and with both CONFIG_KEXEC=n and
-CONFIG_KEXEC_FILE=n after f8ff23429c62 ("kernel/Kconfig.kexec: drop select
-of KEXEC for CRASH_DUMP") and this patch are applied given that the
-necessary shared bits are included via CONFIG_KEXEC_CORE dependency.
-
-Link: https://lkml.kernel.org/r/20231129220409.55006-1-ignat@cloudflare.com
-Fixes: 91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec")
-Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
-Cc: <stable@vger.kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Baoquan He <bhe@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/Kconfig.kexec |    1 -
- 1 file changed, 1 deletion(-)
-
---- a/kernel/Kconfig.kexec~kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump
-+++ a/kernel/Kconfig.kexec
-@@ -94,7 +94,6 @@ config KEXEC_JUMP
- config CRASH_DUMP
- 	bool "kernel crash dumps"
- 	depends on ARCH_SUPPORTS_CRASH_DUMP
--	depends on ARCH_SUPPORTS_KEXEC
- 	select CRASH_CORE
- 	select KEXEC_CORE
- 	help
-_
-
-Patches currently in -mm which might be from ignat@cloudflare.com are
-
-kexec-drop-dependency-on-arch_supports_kexec-from-crash_dump.patch
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
