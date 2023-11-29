@@ -1,92 +1,104 @@
-Return-Path: <stable+bounces-3146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8773F7FD568
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 12:21:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A02E27FD5DA
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 12:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B86C91C20FD2
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 11:21:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A79728307E
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 11:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B1B1C696;
-	Wed, 29 Nov 2023 11:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A8A1C6BA;
+	Wed, 29 Nov 2023 11:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lGmAOoue"
+	dkim=pass (2048-bit key) header.d=cirrus.com header.i=@cirrus.com header.b="iwWXiJUb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C054D1BC2;
-	Wed, 29 Nov 2023 03:21:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701256883; x=1732792883;
-  h=from:to:cc:in-reply-to:references:subject:message-id:
-   date:mime-version:content-transfer-encoding;
-  bh=lrKRCLYE+lxEMvFvk2ubvXOvoDtEvu3r73T63mCHrvc=;
-  b=lGmAOoue0tpniAQk7/ooEtRazqCL0wczrlypwFFZ7wZlUnBVsdjPS2Nj
-   zwtvsDZRdoIgCs1nzh4WP0yq3YISnnSkep7jT3QmyWa/bw+Nu/popaIKe
-   Q9qcdyKEcw/DBztsvUli1LJZyHfbSke2G+snQhmjn90k+Uwa3PaEDiHl3
-   vc/lj/ybgvcAG4j4DC/NB47l91wG/Tkq/gIazezgK9LN3hxI68j8kIosm
-   wuiIwXwcbi+S74fdDJFuf+vfKZWynOUlHHOPnl/wuDCfpUbixLVhOGZcP
-   x3ioOk/XLQ7seoPuR44wPi1YSQxxg4BbDg55a0cip2xORdw4rQLc676r0
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="479343912"
-X-IronPort-AV: E=Sophos;i="6.04,235,1695711600"; 
-   d="scan'208";a="479343912"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 03:21:23 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="762281083"
-X-IronPort-AV: E=Sophos;i="6.04,235,1695711600"; 
-   d="scan'208";a="762281083"
-Received: from mpermino-mobl1.ger.corp.intel.com (HELO localhost) ([10.249.33.123])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Nov 2023 03:21:21 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Maximilian Luz <luzmaximilian@gmail.com>, 
- Hans de Goede <hdegoede@redhat.com>, Mark Gross <markgross@kernel.org>, 
- Francesco Dolcini <francesco@dolcini.it>
-Cc: Francesco Dolcini <francesco.dolcini@toradex.com>, 
- platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20231128194935.11350-1-francesco@dolcini.it>
-References: <20231128194935.11350-1-francesco@dolcini.it>
-Subject: Re: [PATCH v1] platform/surface: aggregator: fix recv_buf() return
- value
-Message-Id: <170125687555.3606.16848036060218431083.b4-ty@linux.intel.com>
-Date: Wed, 29 Nov 2023 13:21:15 +0200
+Received: from mx0b-001ae601.pphosted.com (mx0b-001ae601.pphosted.com [67.231.152.168])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FA8B197;
+	Wed, 29 Nov 2023 03:36:22 -0800 (PST)
+Received: from pps.filterd (m0077474.ppops.net [127.0.0.1])
+	by mx0b-001ae601.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3AT7gDos028524;
+	Wed, 29 Nov 2023 05:35:41 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	PODMain02222019; bh=tLUNRvgWk+ud0QmQYCqTsJBqX8EpNbh6RL1514LHx/Q=; b=
+	iwWXiJUbHFGoDmeNuzHytyvQz5iNsIfbyRRMWDqHb9VQgBIZaWmYZxCmlJbF0nwy
+	lFkorC5jcZkUJA4c8qEFMUrhMvU2v1YtP9gucYHapmhfmgxNjnb8JeWsT/GCHx/S
+	qMe9TbrPIdtHdIE/sTVmZbwwxao1ii8ZJG5XmgtjJcEBjCFNEgqaKY50KIx//LPu
+	r3qXx7h+vh6u8YgxaKEjOyhuDpHmUelzpfcO58YMnh1/eAhXY/vDiSssK+hvSIC8
+	bpU0VxDbKvrbxTlHxFmTbkNo0dGk2yQxRA+AFusiZHYG97pyNYUSkg8n34oPM+7b
+	SxpsFGavyStWUxKOYf8eDQ==
+Received: from ediex02.ad.cirrus.com ([84.19.233.68])
+	by mx0b-001ae601.pphosted.com (PPS) with ESMTPS id 3unvprrcgj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Nov 2023 05:35:40 -0600 (CST)
+Received: from ediex02.ad.cirrus.com (198.61.84.81) by ediex02.ad.cirrus.com
+ (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.39; Wed, 29 Nov
+ 2023 11:35:39 +0000
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by
+ anon-ediex02.ad.cirrus.com (198.61.84.81) with Microsoft SMTP Server id
+ 15.2.1118.39 via Frontend Transport; Wed, 29 Nov 2023 11:35:39 +0000
+Received: from [198.90.251.82] (edi-sw-dsktp-006.ad.cirrus.com [198.90.251.82])
+	by ediswmail.ad.cirrus.com (Postfix) with ESMTP id A316015A5;
+	Wed, 29 Nov 2023 11:35:38 +0000 (UTC)
+Message-ID: <20908914-2827-4402-bd93-12cd385d0c13@opensource.cirrus.com>
+Date: Wed, 29 Nov 2023 11:35:38 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 000/187] 5.10.202-rc3 review
+Content-Language: en-US
+To: Pavel Machek <pavel@denx.de>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <jonathanh@nvidia.com>,
+        <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
+        <srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
+        <allen.lkml@gmail.com>, <maz@kernel.org>, <andy.shevchenko@gmail.com>,
+        <brgl@bgdev.pl>, <wangyouwan@126.com>, <jani.nikula@intel.com>,
+        <ilpo.jarvinen@linux.intel.com>, <dan.carpenter@linaro.org>,
+        Pierre-Louis
+ Bossart <pierre-louis.bossart@linux.intel.com>,
+        Mark Brown
+	<broonie@kernel.org>
+References: <20231126154335.643804657@linuxfoundation.org>
+ <ZWUJWhOkbHlwC2YB@duo.ucw.cz>
+ <eb4fb7bc-93db-4868-8807-f97f5da59b23@opensource.cirrus.com>
+ <ZWZQUs+j7RufSr42@duo.ucw.cz>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
+In-Reply-To: <ZWZQUs+j7RufSr42@duo.ucw.cz>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+X-Proofpoint-ORIG-GUID: DoZ7WtW1RprGFVM5pcdvrSpwOU1NnCED
+X-Proofpoint-GUID: DoZ7WtW1RprGFVM5pcdvrSpwOU1NnCED
+X-Proofpoint-Spam-Reason: safe
 
-On Tue, 28 Nov 2023 20:49:35 +0100, Francesco Dolcini wrote:
-
-> Serdev recv_buf() callback is supposed to return the amount of bytes
-> consumed, therefore an int in between 0 and count.
+On 28/11/2023 20:40, Pavel Machek wrote:
+> On Tue 2023-11-28 10:42:51, Richard Fitzgerald wrote:
+>> On 27/11/2023 21:25, Pavel Machek wrote:
+>>>
+>>>> Richard Fitzgerald <rf@opensource.cirrus.com>
+>>>>       ASoC: soc-card: Add storage for PCI SSID
+>>>
+>>
+>> The driver that depends on this only went into the kernel at v6.4.
 > 
-> Do not return negative number in case of issue, when
-> ssam_controller_receive_buf() returns ESHUTDOWN just returns 0, e.g. no
-> bytes consumed, this keep the exact same behavior as it was before.
+> Thanks. So it would be good to drop this from 5.10 and 6.1.
 > 
-> [...]
-
-
-Thank you for your contribution, it has been applied to my local
-review-ilpo branch. Note it will show up in the public
-platform-drivers-x86/review-ilpo branch only once I've pushed my
-local branch there, which might take a while.
-
-The list of commits applied:
-[1/1] platform/surface: aggregator: fix recv_buf() return value
-      commit: c8820c92caf0770bec976b01fa9e82bb993c5865
-
---
- i.
-
+> Best regards,
+> 								Pavel
+I don't have any need for this to go into 5.10 and 6.1.
+But I've added Mark Brown (for ASoC) and Pierre-Louis Bossart (Intel,
+there were some patches to Intel drivers in the set this patch was
+cherry-picked from) so they can comment if they disagree.
 
