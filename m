@@ -1,140 +1,90 @@
-Return-Path: <stable+bounces-3107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C881F7FCB79
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 01:37:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AD897FCB85
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 01:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8272C28326F
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 00:37:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BDD21C21009
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 00:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C926627;
-	Wed, 29 Nov 2023 00:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A41C881D;
+	Wed, 29 Nov 2023 00:38:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0vX5mPQ"
+	dkim=pass (2048-bit key) header.d=owenh.net header.i=@owenh.net header.b="WnY1Ruo4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4C671998
+	for <stable@vger.kernel.org>; Tue, 28 Nov 2023 16:38:10 -0800 (PST)
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A971867;
-	Wed, 29 Nov 2023 00:37:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F100C433C9;
-	Wed, 29 Nov 2023 00:37:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701218222;
-	bh=4QzmELDeyNIPo50f4wQdlM5oa5HP9wUnEBo9dfh91cI=;
-	h=From:Date:Subject:To:Cc:From;
-	b=J0vX5mPQdyMCcxFjfCEt2YBQwhaw7LxtF10YxzxI6yBpIqAipLNSw8NEZxkA4y7yH
-	 uKM+2Zk3WIu5YxWREz/iNaAMnBm6qTl05spv0i3rubV16GJrkDZlKwevPKTGS3zr8Z
-	 +7cUJ5nQTrWbiAALrEFFaLP8G1oLGxqpmxIHhXuDwU10ks7ehLEKK0PLbNwcytFf4p
-	 EThNTJy9JlOX9KfVo9F5gDIQQ2WYwpAZRmUaSSo2EW3B8Y+WhJ1t+ipsnnxguXiIiV
-	 hf3nTsATMeOFmbBxicaOvlJRQpfGTiVIJ8tEdVNq3GXElpg04Bmg0tAeTI/sDhmVnI
-	 i9yGMJoRiZx+A==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 28 Nov 2023 17:37:00 -0700
-Subject: [PATCH 5.10] PCI: keystone: Drop __init from
- ks_pcie_add_pcie_{ep,port}()
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Sg0mG3rxFz9sWP;
+	Wed, 29 Nov 2023 01:38:06 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=owenh.net; s=MBO0001;
+	t=1701218286;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HDQWK+L4QLJnAgN2GgVFGTEwc8e2Mtybcb9ST9HqB+8=;
+	b=WnY1Ruo4L5LiWWP1gUvFZ0Ed0EvP7ttGZp4KMHb+r6kf232wgjRhDWjeBViDhPLSFS638k
+	8e0waub8mZfgTf/6dJ8+REQuYXbEuwkn7LgpX9IbmUkD2a+NcMkcsGvEveBdRcvLH0PPRa
+	QaQA82l1TpaampBfToUXdEYL53D8QqbSLFP/UB6DhQwIe5NgwLw7DScRnwAsGmub1UCYAO
+	BxJFUikjRgiV9/7KeQWSvrdde5QTt0aVvv5sGCV3jDh3zvTI6zhwAWBXZ68Y5QkbLrmgAf
+	n3U8we9aiWiqCQ6R+nkBF3vs/2H9pe6sNvWGf3qx5I3tdbAUvhEFGl1EY7j3Rg==
+Message-ID: <c1dd675d-cb3e-4c4c-8dc4-dd561ef4950b@owenh.net>
+Date: Tue, 28 Nov 2023 18:37:58 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [REGRESSION]: nouveau: Asynchronous wait on fence
+From: "Owen T. Heisler" <writer@owenh.net>
+To: Linux regressions mailing list <regressions@lists.linux.dev>,
+ stable@vger.kernel.org
+Cc: nouveau@lists.freedesktop.org, Karol Herbst <kherbst@redhat.com>,
+ Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>,
+ Danilo Krummrich <dakr@redhat.com>, dri-devel@lists.freedesktop.org
+References: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
+ <5ecf0eac-a089-4da9-b76e-b45272c98393@leemhuis.info>
+ <6b7a71b4-c8a2-46f4-a995-0c63e7745ca3@owenh.net>
+ <c72ca99e-8657-4ed8-9999-5702ebeb5b8c@leemhuis.info>
+ <9bce5d00-8db6-4c8b-9817-06502492b44a@owenh.net>
+Content-Language: en-US
+In-Reply-To: <9bce5d00-8db6-4c8b-9817-06502492b44a@owenh.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20231128-5-10-fix-pci-keystone-modpost-warning-v1-1-43240045c516@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAKuHZmUC/x2NywrCMBAAf6Xs2ZVspBr8FfEQk21dxE3IFh+U/
- rvB4xxmZgXjJmxwHlZo/BKToh1oN0C6R50ZJXcG7/yByAcckRxO8sGaBB/8taUo47PkWmzBd2w
- qOmMMHMLxlpObTtBbtXF3/p8LjHtycN22HwA7Hb19AAAA
-To: gregkh@linuxfoundation.org, sashal@kernel.org
-Cc: u.kleine-koenig@pengutronix.de, bhelgaas@google.com, 
- llvm@lists.linux.dev, stable@vger.kernel.org, 
- Naresh Kamboju <naresh.kamboju@linaro.org>, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.13-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3259; i=nathan@kernel.org;
- h=from:subject:message-id; bh=4QzmELDeyNIPo50f4wQdlM5oa5HP9wUnEBo9dfh91cI=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDKlp7Ws3+ExXMjv4/YVl49af+4X8W6bx/Zz9y0aRP1rbN
- aBffUVuRykLgxgXg6yYIkv1Y9XjhoZzzjLeODUJZg4rE8gQBi5OAZgIRzLDf0/H2xc2vpqdLJsx
- yamWn/3fT8vHdW1r3Z1mvS8+Y8MZKsrwV95XOOGlgoF59tQF6/zvGFtxmK2TNYzzb+P9+Nyr6f4
- VPgA=
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-Rspamd-Queue-Id: 4Sg0mG3rxFz9sWP
 
-This commit has no upstream equivalent.
+On 11/21/23 14:23, Owen T. Heisler wrote:
+> On 11/21/23 09:16, Linux regression tracking (Thorsten Leemhuis) wrote:
+>> On 15.11.23 07:19, Owen T. Heisler wrote:
+>>> On 10/31/23 04:18, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>>> On 28.10.23 04:46, Owen T. Heisler wrote:
+>>>>> #regzbot introduced: d386a4b54607cf6f76e23815c2c9a3abc1d66882
+>>>>> #regzbot link: https://gitlab.freedesktop.org/drm/nouveau/-/issues/180
+>>>>>
+>>>>> 3. Suddenly the secondary Nvidia-connected display turns off and X 
+>>>>> stops responding to keyboard/mouse input.
 
-After commit db5ebaeb8fda ("PCI: keystone: Don't discard .probe()
-callback") in 5.10, there are two modpost warnings when building with
-clang:
+> I am currently testing v6.6 with the culprit commit reverted.
 
-  WARNING: modpost: vmlinux.o(.text+0x5aa6dc): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_port()
-  The function ks_pcie_probe() references
-  the function __init ks_pcie_add_pcie_port().
-  This is often because ks_pcie_probe lacks a __init
-  annotation or the annotation of ks_pcie_add_pcie_port is wrong.
+- v6.6: fails
+- v6.6 with the culprit commit reverted: works
 
-  WARNING: modpost: vmlinux.o(.text+0x5aa6f4): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_ep()
-  The function ks_pcie_probe() references
-  the function __init ks_pcie_add_pcie_ep().
-  This is often because ks_pcie_probe lacks a __init
-  annotation or the annotation of ks_pcie_add_pcie_ep is wrong.
+See <https://gitlab.freedesktop.org/drm/nouveau/-/issues/180> for full 
+details including a decoded kernel log.
 
-ks_pcie_add_pcie_ep() was removed in upstream commit a0fd361db8e5 ("PCI:
-dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common
-code") and ks_pcie_add_pcie_port() was removed in upstream
-commit 60f5b73fa0f2 ("PCI: dwc: Remove unnecessary wrappers around
-dw_pcie_host_init()"), both of which happened before upstream
-commit 7994db905c0f ("PCI: keystone: Don't discard .probe() callback").
+Thanks,
+Owen
 
-As neither of these removal changes are really suitable for stable, just
-remove __init from these functions in stable, as it is no longer a
-correct annotation after dropping __init from ks_pcie_probe().
-
-Fixes: db5ebaeb8fda ("PCI: keystone: Don't discard .probe() callback")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
----
-This is not an issue in mainline but I still cc'd the author and
-committer of 7994db905c0f in case they would like to check my analysis.
----
- drivers/pci/controller/dwc/pci-keystone.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 5b722287aac9..afaea201a5af 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -865,8 +865,8 @@ static irqreturn_t ks_pcie_err_irq_handler(int irq, void *priv)
- 	return ks_pcie_handle_error_irq(ks_pcie);
- }
- 
--static int __init ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
--					struct platform_device *pdev)
-+static int ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
-+				 struct platform_device *pdev)
- {
- 	struct dw_pcie *pci = ks_pcie->pci;
- 	struct pcie_port *pp = &pci->pp;
-@@ -978,8 +978,8 @@ static const struct dw_pcie_ep_ops ks_pcie_am654_ep_ops = {
- 	.get_features = &ks_pcie_am654_get_features,
- };
- 
--static int __init ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
--				      struct platform_device *pdev)
-+static int ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
-+			       struct platform_device *pdev)
- {
- 	int ret;
- 	struct dw_pcie_ep *ep;
-
----
-base-commit: 479e8b8925415420b31e2aa65f9b0db3dea2adf4
-change-id: 20231128-5-10-fix-pci-keystone-modpost-warning-a8e886bdc0f7
-
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
-
+--
+Owen T. Heisler
+<https://owenh.net>
 
