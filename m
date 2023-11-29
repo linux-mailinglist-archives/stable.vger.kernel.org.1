@@ -1,183 +1,284 @@
-Return-Path: <stable+bounces-3129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5642C7FD0C4
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 09:29:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 564257FD15B
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 09:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E4C928281F
-	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 08:29:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A22B1C20F21
+	for <lists+stable@lfdr.de>; Wed, 29 Nov 2023 08:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF94211CBD;
-	Wed, 29 Nov 2023 08:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F461125C8;
+	Wed, 29 Nov 2023 08:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lineo.co.jp header.i=@lineo.co.jp header.b="BwlwBNr4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Rfxa37kB"
 X-Original-To: stable@vger.kernel.org
-Received: from JPN01-TYC-obe.outbound.protection.outlook.com (mail-tycjpn01on2111.outbound.protection.outlook.com [40.107.114.111])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2E519B2
-	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 00:29:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W9xa03WE97EGRyy/NOHjQ8FTMhtskoexjRSRYxMTUAqdht6AOBQSOIGYesnUSnKtWXWGWLo/CE8JEW7uvHqwaTbbPBundeMlMBBZeh7Hhbh/EjusJEa2/r6X4wi1XezYXbfGM7oHMSpAySGcIZSilY8rvvOFykjXPp7Ef5V90csrN8DDCiTxtoMASerHeDgoDjdTkoTWMx4ibYLR4d0An9inXIuS3Az4aQiYflKTI4cEO6R3VC5AbNVujdea3y4oMjOv1FA+NqsSL7WQ8eDSRDSw5Z2EH3D3pwQk8aZz72zaLPVTGs+tdp0I2pRMhjFAIx0IDoilEzSFLEwZJc8H9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Ko/Y2Y3NWCyGXd9WQ10Uw7R+JNVp7Xo5kL6lTbfIqE=;
- b=R9s10hE86Ss7LEE640DYn5tUG+x/25O8f2YryUGDjfp2VPQPPcS5b6iUl0Ff0Z8r1m+qTfgjeAnXFSP1qe43UCVgMETRm8oxZJqC3HGk0WZjtOMz0a8sW20V0jpow9KbKohc9gkkbgyaEgy6SJQ1GGxEcAG34bnvMZopf42W+BLIWxMRmZcqLi2BPpeqN669TjixhTURHxz0HVX/+EMwwS5YdYGZATxf7MD6IERFVG+3tLZ5qq4mfbBkTEQ09hQwCuSxV3a5EvE23d71WYukQW7RChCijFXcevJtsr1Gl7F/nYgK2NYzKWU52c9wXIVNPf9T5lVUVlYlEvXXCdj/hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=lineo.co.jp; dmarc=pass action=none header.from=lineo.co.jp;
- dkim=pass header.d=lineo.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lineo.co.jp;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2Ko/Y2Y3NWCyGXd9WQ10Uw7R+JNVp7Xo5kL6lTbfIqE=;
- b=BwlwBNr4G1nVU+YC+oDayuPKjuKK180PGyUqYMWffZSOCF6+GVB12ETdgxGKENPtGMcIydqsxgBthsfXzlgKQxiiz3mMiofiL3c4WiOf08EN7ITUShg8FBsgaWcrFBdGnp33tAhr5fzk9EnJ5HxkMetvswi8Y1X6RX+x1KquzTvSX5S5VzQok3VAq0gEZ6aq9tpVlzvQSr9zxpqH9GyJXfqtEO5h5KXzSU+YMdC2ke18DOqAp9KGDChvlfGeNpkB8Gz3WFBTpHqwD1bGWTIb6A1iiJgoI0pi/XWIOa+bcEHxQEItICnODo6I3EjasmN9bJD4LuLX2KlCaPsor9v/kQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=lineo.co.jp;
-Received: from OS3PR01MB8115.jpnprd01.prod.outlook.com (2603:1096:604:171::9)
- by TY3PR01MB11722.jpnprd01.prod.outlook.com (2603:1096:400:3dc::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27; Wed, 29 Nov
- 2023 08:29:14 +0000
-Received: from OS3PR01MB8115.jpnprd01.prod.outlook.com
- ([fe80::9538:79a:d7:b2a8]) by OS3PR01MB8115.jpnprd01.prod.outlook.com
- ([fe80::9538:79a:d7:b2a8%3]) with mapi id 15.20.7025.022; Wed, 29 Nov 2023
- 08:29:14 +0000
-Message-ID: <1dfa7e7f-233b-43da-b0ea-0ad3b1f69a37@lineo.co.jp>
-Date: Wed, 29 Nov 2023 17:29:13 +0900
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Yuta Hayama <hayama@lineo.co.jp>
-Subject: [PATCH 4.14] mtd: rawnand: brcmnand: Fix ecc chunk calculation for
- erased page bitfips
-To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>
-Cc: Claire Lin <claire.lin@broadcom.com>, Ray Jui <ray.jui@broadcom.com>,
- Kamal Dasu <kdasu.kdev@gmail.com>, Miquel Raynal
- <miquel.raynal@bootlin.com>, linux-mtd@lists.infradead.org,
- Yuta Hayama <hayama@lineo.co.jp>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYCP286CA0232.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:3c7::18) To OS3PR01MB8115.jpnprd01.prod.outlook.com
- (2603:1096:604:171::9)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 636E0E1;
+	Wed, 29 Nov 2023 00:49:36 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2D5F21BF214;
+	Wed, 29 Nov 2023 08:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701247774;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XHYyA04RyuVgTs8xy4NFBtsU7wIEQs7+tVUD7OSa4v0=;
+	b=Rfxa37kBP2potWEHY8/kzMKMdMrXC+ZqZ9mYdpNDz6Jg1+K6/pDj/ozSOv33EtJxeWK3bD
+	2DeT07v8C6W/S+wVqYXxNomK8wV2rGaI/32PEN3Pv2fbzc5PRxpwmysSB28PXyfHrmewrv
+	x78YYdym5A78BVbU1qhwztPAmen2oIh4D6tf/y4PbIuLxA3vCulO4IH8FGhFyjN5NCQXeA
+	Qy3i69NOYY+0MhOrBKCLlSLBXQy8b1z1LCYmEYiqxLNWRMfZpqLiD0O66BPALOQEscjIeN
+	gN0QvND3jht8PlQa4/VjS0voKt8SSUipVLXkQ9X1ooLoF89/3Rg/xe73sAToMg==
+Date: Wed, 29 Nov 2023 09:49:32 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Ronald Wahl <ronald.wahl@raritan.com>
+Cc: Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, Ryan Wanner
+ <ryan.wanner@microchip.com>, stable@vger.kernel.org, Richard Weinberger
+ <richard.weinberger@gmail.com>
+Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any
+ signal
+Message-ID: <20231129094932.2639ca49@xps-13>
+In-Reply-To: <0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com>
+References: <20231127095842.389631-1-miquel.raynal@bootlin.com>
+	<a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com>
+	<0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS3PR01MB8115:EE_|TY3PR01MB11722:EE_
-X-MS-Office365-Filtering-Correlation-Id: 177b105e-1f09-47d8-88b5-08dbf0b544f1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	s4+o0ADvjXm9OP1FSv3umFIB+FDrHrPFgQtySKpwp5H0hZiFH+5jm79xRNh+6x21FCEqr/aLoAknmu8n0hP9/T1dejP4vQAOWCweYHH4wTAOMNb0lSTiecZEPEROY8Ve8y4yi3eEhpf0xEx82D71k1R5Jo1iJNfirvTPLBkyLkxdWk118ckMKvwl5Z2tFw8PflhEo5zKD0Xn6weLnTDgBUUu6qIqnho8s6LL9/g8FgTNXBKTlYsrXoZGQyOpKFeGJ6yFIy3jhQboWugwisrDl1yz8jxjpZnYenn8DhYMrDMGwkPyKrNW7oYzbl/poDoQ+UIkXa8WRdbCL0TMsUUjqJP3b+5O21qUqEhbX55Dci2hI2P1e61JmCpbOciFG5qHefTGEBWOZiJv75o0aL39Ux6pnyREiVR38yBtpsueerpeW/ZQzN/A1y5U5tvDcHmqKK9LYlms5kjZCWcN7wDjATUw8odKfs+mW+qUgiphPbqMiAEiRaCBKpNn8kcp4LuX2y12MDgxdzNPwDLAlYA4Gp6bqzvv06k1tnCCiqqNT4UImhlnjyKNytRwvKvqkpTeY0JVJ/SoHSLN0heQjm1XbKzZXpYJtS+sPxEfSvX0T91p8hr4o+gLPmerMjsQh/G+2GYhpNjuLVHaA7jRldHfQA==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3PR01MB8115.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(396003)(376002)(136003)(39840400004)(230922051799003)(451199024)(1800799012)(64100799003)(186009)(31686004)(478600001)(26005)(2616005)(6506007)(6512007)(38100700002)(31696002)(36756003)(66556008)(83380400001)(2906002)(4326008)(54906003)(41300700001)(86362001)(5660300002)(107886003)(110136005)(8676002)(316002)(66946007)(66476007)(6486002)(8936002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UEczZG8xekFXRlRsMnFqV1RMZTFNeWFQajBnMThsdmpyR2R1eG9xNU50dElW?=
- =?utf-8?B?NXpNeTF4aEE3djl6ZTNpM3ZKWElpZEd3Uzd2NDVDQzdXMjJXbHRjSmNOTFFa?=
- =?utf-8?B?enlZbXR0Q3kzbEd1NjBxcXZneVpEdHNkVVhBRDBrZEF3OVBnK1V1VzhETzNB?=
- =?utf-8?B?cXp5R1NWWTloeGVZN1FEanQvcEhpc3pUaVJrRzZrcVIvRGxQSVFUT2VmWmtT?=
- =?utf-8?B?ZXgxY2M0djRZd3ljbmZXbVJZOE1kNnoxRm1PajFsSHlDWWpLdW93YXJTWVNn?=
- =?utf-8?B?WUVmWXlTaDRaeXlSUzlqaGtZYnE5MDk5WGtKTzlrTnJaWHYzNDRwT2tLMWJy?=
- =?utf-8?B?NkVxc0d2d0hHSHQ2TkcwbXhDQkRVdTV3RjY0LzlmOG1aZHZBWEw5blI5Q1E1?=
- =?utf-8?B?MGxNSTcvZDlRaDNpYk9aRGp4MVlKOXJUZnpmNjYyVXhBM3I1Ri9rRlA5MUVQ?=
- =?utf-8?B?MWdkUFJTaU9HWjk3eHN6NGZLNThWdmdDZjQ4TWp1NVI4cEIzUHNZVXp2SXhQ?=
- =?utf-8?B?eHBGeTRFYTlZOFBFWXp3VjFnMXQ1RU0rdEJhNThFYzZYUjNCa0VmYkFUK3Iw?=
- =?utf-8?B?Rm1YMEdPaE8zM0FUN09xM3ByMXh2VEpmdlRxVDJOVFhhY0pPaHJ3YWh2UUpy?=
- =?utf-8?B?am10SEZmWnhFaER4cVF6b21oYnA4Tnd6cTROa2ZkRlEyaUpqd1Fhb3FNQ1hZ?=
- =?utf-8?B?VVo3Q2NMV3NyNVd5VWR5R1A0Z0ttM1BkbTZvU3FOTmRMaGpBVkpXdmVTSFUw?=
- =?utf-8?B?R3grSVYwenBtMU5FNVY5dkZMeVRvY3JXeXFUVU9ueWNJTENobTNUbXViSTMw?=
- =?utf-8?B?NmFCSWROK1BjWTJsUndocnJtTEgxL1Q3bVJBbmNpVGhFUmw2dnZTcGlIdHZF?=
- =?utf-8?B?SzE2czlPd0gwWTlwQ0J3RHJwcHJhdzJ5U2lQTVNtN2VNTVJwQ29hc2pJdU53?=
- =?utf-8?B?VlpIeHg5NmxueTJUdEhnVFV0TzdtVGVicGRjSjJtQ04zTGwzLzZhOHZ1bmRk?=
- =?utf-8?B?czRyZlhFM0pCa1hLWURxMEVheFBtUXBJdStnTzlhc2tUd3Y0S0VDTWZya3hP?=
- =?utf-8?B?V1Q5bHovSlY0TmRsK1Y2WE5Qck9HOTJnNnpNWmJwWTlZb0V5aXVBVWN0SGJX?=
- =?utf-8?B?N0tlMThnMFJYU3FHcC9KV3g0T1JadVJIVStrcFdKS0ZLUjhPM1Q0czQySlgv?=
- =?utf-8?B?UTJycmxZcnYyTzIyaFNaRkMwdXJXaFg1SmYzMWFOclpBQXVOckl3dkIvbTZD?=
- =?utf-8?B?OWVEUXRmTHczSCtzZWFZN2U4V04rL2wyUjVmSlRHd0dxZ1lyRUFRWHhrZEk5?=
- =?utf-8?B?WTVaRmdmRWFTdGNMa1kreFF1bUFHQmhOUkxIc08rNG1od2tWYVVWcFFxN3lW?=
- =?utf-8?B?UE5lYkh4RW5OOXhxbSs3MUxlbmpqY25WMElzeHRzTkVROXVySVZsSzA5TE1k?=
- =?utf-8?B?ZHd3RUFMRzhFYTU4Mncvc01qQ09QeWpJRER2N2xGUUgyYUNBclIrR2duSmlk?=
- =?utf-8?B?SDRGWGFBRTdCWjd0dlFVdTQyVDhoaEJVVWErT29jNG0ybzNCbTN4dVFOaFJ1?=
- =?utf-8?B?d1NoM0tBdkJpYWpTYU1sbzltayt6RFRlNGFGZFJld3hkZk5EZHcraCs4bnc1?=
- =?utf-8?B?MFlVRGFzYTBxejNRVGlkRnE2MExkVXdMdWhPTm5abFNRZ0dRTFdjZldiSURR?=
- =?utf-8?B?TjlwejZQNERmQnF0UUdZNVVCRjIxbVN0Z3RPTzVZWWhzRVNvYU02UnplYnRr?=
- =?utf-8?B?cFIxQ2s0Qk1tR2xwUUJCSy9Sc0ptZUo0OVEwakdyQ2NWNU11WGhLTUJCcTVy?=
- =?utf-8?B?YkgxSEg2TXVKWTdaVHcxTDdXL2lEcUxacDYvN1dHV1hzY2JrQ1Y3UlcvcXgx?=
- =?utf-8?B?TDJGTk91MFpGL3YxbWhLbkdobDVGWHRaTTFlN0txd0lkWHVjbElCaWR0NUJ6?=
- =?utf-8?B?WWdGQ2hoT25Na1hHYmFGelNYUFhwMmtEUmpRdTh0dXVLSlE4YWJvM3JObnNw?=
- =?utf-8?B?Qm9uRXVGZWJaM2xER1dCVDdnTWx1L0ZPTmttV2lpaFJuRzYxQUFWN3ZndVQz?=
- =?utf-8?B?UVNicGJtTWhGNjNFcWVVMG9wbUY4YThUK0RmOVo5a2V5TzdtKzVkUFdiVy85?=
- =?utf-8?Q?N/OSk+K4Ll3ScXFfdSMjmM1cK?=
-X-OriginatorOrg: lineo.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: 177b105e-1f09-47d8-88b5-08dbf0b544f1
-X-MS-Exchange-CrossTenant-AuthSource: OS3PR01MB8115.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Nov 2023 08:29:14.0465
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 850e1ad4-d43d-42a8-82ab-c68675f36887
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3kQ55jlScHLFsoee6G/mKcgW94gYAv/jU/sblW/NtqWQaKGvS70fEsNC4EkXoB555B79StmaOJUC2hAlmWxahg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3PR01MB11722
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-From: Claire Lin <claire.lin@broadcom.com>
+Hi Ronald,
 
-commit 7f852cc1579297fd763789f8cd370639d0c654b6 upstream.
++ Richard, my dear jffs2 expert ;)
 
-In brcmstb_nand_verify_erased_page(), the ECC chunk pointer calculation
-while correcting erased page bitflips is wrong, fix it.
+ronald.wahl@raritan.com wrote on Mon, 27 Nov 2023 18:54:40 +0100:
 
-Fixes: 02b88eea9f9c ("mtd: brcmnand: Add check for erased page bitflips")
-Signed-off-by: Claire Lin <claire.lin@broadcom.com>
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
----
-After applying e44b9a9c1357 ("mtd: nand: brcmnand: Zero bitflip is not an
-error"), the return value 0 of brcmstb_nand_verify_erased_page() is
-*correctly* interpreted as "no bit flips, no errors". However, that
-function still has the issue that it may incorrectly return 0 for a page
-that contains bitflips. Without this patch, the data buffer of the erased
-page could be passed to a upper layer (e.g. UBIFS) without bitflips being
-detected and corrected.
+> On 27.11.23 16:10, Ronald Wahl wrote:
+> > On 27.11.23 10:58, Miquel Raynal wrote: =20
+> >> The intended move from wait_for_completion_*() to
+> >> wait_for_completion_interruptible_*() was to allow (very) long spi mem=
+or =20
+> y
+> >> transfers to be stopped upon user request instead of freezing the
+> >> machine forever as the timeout value could now be significantly bigger.
+> >>
+> >> However, depending on the user logic, applications can receive many
+> >> signals for their own "internal" purpose and have nothing to do with t=
+he
+> >> requested kernel operations, hence interrupting spi transfers upon any
+> >> signal is probably not a wise choice. Instead, let's switch to
+> >> wait_for_completion_killable_*() to only catch the "important"
+> >> signals. This was likely the intended behavior anyway. =20
+> >
+> > Actually this seems to work. But aborting a process that has a SPI
+> > transfer running causes ugly messages from kernel. This is somehow
+> > unexpected:
+> >
+> > # dd if=3D/dev/urandom of=3D/flashdisk/testfile bs=3D1024 count=3D512
+> > ^C[=C2=A0 380.726760] spi-nor spi0.0: spi transfer canceled
+> > [=C2=A0 380.731688] spi-nor spi0.0: SPI transfer failed: -512
+> > [=C2=A0 380.737141] spi_master spi0: failed to transfer one message fro=
+m queue
+> > [=C2=A0 380.746495] spi-nor spi0.0: spi transfer canceled
+> > [=C2=A0 380.751549] spi-nor spi0.0: SPI transfer failed: -512
+> > [=C2=A0 380.756844] spi_master spi0: failed to transfer one message fro=
+m queue
+> >
+> > JFFS2 also logs an informational message which is less visible but also
+> > may rise eyebrows:
+> > [=C2=A0 380.743904] jffs2: Write of 4164 bytes at 0x0016a47c failed. re=
+tu =20
+> rned
+> > -512, retlen 68
+> >
+> > Killing a process is something to expect in certain cases and it should
+> > not cause such messages which may create some anxiety that something bad
+> > had happened. So maybe the "kill" case should be silent (e.g. level
+> > "debug")
+> > but without out hiding real errors. But even when hiding the message in=
+ t =20
+> he
+> > SPI framework it may cause additional messages in upper layers like JFF=
+S2 =20
+> .
+> > I'm not sure whether all of this is a good idea. This is something othe=
+rs
+> > have to decide. =20
+>=20
+> ... and now I just got a crash when unmounting and remounting jffs2:
+>=20
+> unmount:
+> [ 8245.821105] spi-nor spi0.0: spi transfer canceled
+> [ 8245.826288] spi-nor spi0.0: SPI transfer failed: -512
+> [ 8245.831508] spi_master spi0: failed to transfer one message from queue
+> [ 8245.838484] jffs2: Write of 1092 bytes at 0x00181458 failed. returned =
+-5
+> 12, retlen 68
+> [ 8245.839786] spi-nor spi0.0: spi transfer canceled
+> [ 8245.844759] spi-nor spi0.0: SPI transfer failed: -512
+> [ 8245.850145] spi_master spi0: failed to transfer one message from queue
+> [ 8245.856909] jffs2: Write of 1092 bytes at 0x0018189c failed. returned =
+-5
+> 12, retlen 0
+> [ 8245.856942] jffs2: Not marking the space at 0x0018189c as dirty becaus=
+e the flash driver returned retlen zero
+>=20
+> mount:
+> [ 8831.213456] jffs2: error: (1142) jffs2_link_node_ref: Adding new ref 2=
+8b
+> d9da7 at (0x000ad578-0x000ae5bc) not immediately after previous (0x000ad5=
+78
+> -0x000ad578)
+> [ 8831.228212] Internal error: Oops - undefined instruction: 0 [#1] THUMB2
+> [ 8831.234996] CPU: 0 PID: 1142 Comm: mount Not tainted 6.6.2-sama5 #1
+> [ 8831.241587] Hardware name: Atmel SAMA5
+> [ 8831.245478] PC is at jffs2_link_node_ref+0xe/0xe2
+> [ 8831.250360] LR is at jffs2_link_node_ref+0xb9/0xe2
+> [ 8831.255473] pc : [<c020969c>]    lr : [<c0209747>]    psr: 00000033
+> [ 8831.261893] sp : c974dd78  ip : 00000000  fp : c09c6a5c
+> [ 8831.267428] r10: c1572f18  r9 : 0000e002  r8 : c2849964
+> [ 8831.272801] r7 : 00001a44  r6 : 000ae5bc  r5 : c14df4a8  r4 : c1620208
+> [ 8831.279647] r3 : 00000001  r2 : 40000000  r1 : c090ce3c  r0 : 00000093
+> [ 8831.286340] Flags: nzcv  IRQs on  FIQs on  Mode SVC_32  ISA Thumb  Seg=
+me
+> nt none
+> [ 8831.293974] Control: 50c53c7d  Table: 21470059  DAC: 00000051
+> [ 8831.300025] Register r0 information: non-paged memory
+> [ 8831.305239] Register r1 information: non-slab/vmalloc memory
+> [ 8831.311220] Register r2 information: non-paged memory
+> [ 8831.316427] Register r3 information: non-paged memory
+> [ 8831.321630] Register r4 information: slab kmalloc-2k start c1620000 po=
+in
+> ter offset 520 size 2048
+> [ 8831.330796] Register r5 information: slab jffs2_refblock start c14df3e=
+0 pointer offset 200 size 248
+> [ 8831.340219] Register r6 information: non-paged memory
+> [ 8831.345422] Register r7 information: non-paged memory
+> [ 8831.350784] Register r8 information: slab kmalloc-4k start c2849000 po=
+in
+> ter offset 2404 size 4096
+> [ 8831.360032] Register r9 information: non-paged memory
+> [ 8831.365243] Register r10 information: slab pde_opener start c1572f18 p=
+oi
+> nter offset 0 size 24
+> [ 8831.374137] Register r11 information: non-slab/vmalloc memory
+> [ 8831.380041] Register r12 information: NULL pointer
+> [ 8831.385140] Process mount (pid: 1142, stack limit =3D 0xb9d2bb39)
+> [ 8831.391215] Stack: (0xc974dd78 to 0xc974e000)
+> [ 8831.395884] dd60:                                                     =
+  000ad578 000ae5bc
+> [ 8831.404242] dd80: 000ad578 000ad578 c2849dec c2805e00 c1620208 c2849de=
+c 00000000 c021130d
+> [ 8831.412762] dda0: c1572d50 00000694 0000069c 00000036 00010000 c293775=
+5 00000000 20061985
+> [ 8831.421280] ddc0: 0000069c 00000000 c2849964 c2805e00 c1620208 c284996=
+4 0000069c 00000008
+> [ 8831.429799] dde0: 00000000 c2849ff8 c2849000 c020c40b c09c6a5c c974de3=
+4 c974de30 00000000
+> [ 8831.438154] de00: 00000004 0000069c 00001000 c2937bc0 00000208 c162000=
+0 00000000 000a0000
+> [ 8831.446665] de20: 00000000 00000000 0000000a 00070000 c2849000 0000000=
+0 00001000 00000000
+> [ 8831.455184] de40: 00000000 00000000 00010000 c2805e00 00000000 0000000=
+0 00200000 c2937e00
+> [ 8831.463704] de60: 00000000 00008000 c0975a98 c020e02d c1001300 0000020=
+0 c020f3eb 00000dc0
+> [ 8831.472062] de80: c2937e00 00000000 c020f3eb c2805e00 c156fc80 c29b940=
+0 00200000 c2937e00
+> [ 8831.480584] dea0: 00000000 c020f42d c29b9400 c156fc80 c09c6a64 c29b940=
+0 c1298c00 c156fc80
+> [ 8831.489100] dec0: c020f5c9 c02a853d 0000003a 00000000 c156fc80 c020f5c=
+9 c974df58 c02a85ff
+> [ 8831.497458] dee0: c156fc80 c020f5c9 00000000 c020f5bf c156fc80 c156fc8=
+0 00000020 c016fdc3
+> [ 8831.505976] df00: c156fc80 00000000 c1374780 c0115c75 00000000 0000000=
+0 c156fc80 c0182209
+> [ 8831.514497] df20: c2937e00 c974df58 c2937f80 00000000 c2937e00 c2937f8=
+0 00008000 00000000
+> [ 8831.523015] df40: 0006d71a 00008000 00068991 c0182307 00000000 c015048=
+b c1360d90 c18b3a18
+> [ 8831.531370] df60: 00001000 c2937f80 c2937e00 00000000 00000015 c018253=
+9 00000000 0006d71a
+> [ 8831.539881] df80: 0006d725 00000000 0006d70c 0006d71a 00000015 c010023=
+c c1374780 00000015
+> [ 8831.548399] dfa0: 00068991 c0100041 00000000 0006d70c 0006d70c 0006d71=
+a 0006d725 00008000
+> [ 8831.556908] dfc0: 00000000 0006d70c 0006d71a 00000015 00008000 0000000=
+0 0006d938 00068991
+> [ 8831.565263] dfe0: b6ea606c beb82b9c 00039818 b6ea607c a0000010 0006d70=
+c 00000000 00000000
+> [ 8831.573779]  jffs2_link_node_ref from jffs2_sum_scan_sumnode+0x1a5/0x3=
+20
+> [ 8831.580860]  jffs2_sum_scan_sumnode from jffs2_scan_medium+0x2d7/0xab0
+> [ 8831.587595]  jffs2_scan_medium from jffs2_do_mount_fs+0xeb/0x356
+> [ 8831.593958]  jffs2_do_mount_fs from jffs2_do_fill_super+0xf7/0x182
+> [ 8831.600332]  jffs2_do_fill_super from mtd_get_sb+0x61/0x98
+> [ 8831.606176]  mtd_get_sb from get_tree_mtd+0x4f/0xe8
+> [ 8831.611241]  get_tree_mtd from vfs_get_tree+0x13/0x7c
+> [ 8831.616648]  vfs_get_tree from path_mount+0x409/0x4d4
+> [ 8831.621891]  path_mount from do_mount+0x33/0x40
+> [ 8831.626593]  do_mount from sys_mount+0xeb/0xfe
+> [ 8831.631367]  sys_mount from ret_fast_syscall+0x1/0x5c
+> [ 8831.636591] Exception stack(0xc974dfa8 to 0xc974dff0)
+> [ 8831.641961] dfa0:                   00000000 0006d70c 0006d70c 0006d71=
+a 0006d725 00008000
+> [ 8831.650314] dfc0: 00000000 0006d70c 0006d71a 00000015 00008000 0000000=
+0 0006d938 00068991
+> [ 8831.658818] dfe0: b6ea606c beb82b9c 00039818 b6ea607c
+> [ 8831.664195] Code: 6a63 b085 990a b903 (de02) 6ae5
+> [ 8831.669135] ---[ end trace 0000000000000000 ]---
+> [ 8831.673902] Kernel panic - not syncing: Fatal exception
+>=20
+> The previous aborted I/Os from a dd may also play a role here but the cra=
+sh
+>  is
+> clearly a cause of the interrupted transfers. It's a bit odd that it is an
+> undefined instruction but probably it was a stack overflow.
+>=20
+> Looking back in the SPI driver history I see some occasions where interru=
+pt
+> ible
+> transfers were changed to non-interruptible transfers because filesystems=
+ l
+> ike
+> jffs2 used SIGKILL during unmount or maybe other reasons:
+>=20
+> 775c4c0032c4 "spi: stm32-qspi: remove signal sensitive on completion"
+> 26cfc0dbe43a "spi-zynq-qspi: use wait_for_completion_timeout to make zynq=
+_q
+> spi_exec_mem_op not interruptible"
+> 7f3ac71ac3b0 "spi: davinci: fix spurious i/o error"
+>=20
+> Having them in spi-atmel now seems a bit off and even a source of misbeha=
+vi
+> our
+> and even crashes.
 
-In active stable, 4.14.y and 4.19.y seem to have a same issue.
+It's not just spi-atmel, any spi-mem controller might be tempted to use
+interruptible^Wkillable transfers just because the timeout values can
+be really big as the memory sizes increase.
 
- drivers/mtd/nand/brcmnand/brcmnand.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+One solution is to change the completion helpers back to something
+non-killable/non-interruptible, but the user experience will be
+slightly degraded. The other would be to look into jffs2 (if it's the
+only filesystem playing with signals during unmount, tbh I don't know).
+But maybe this signaling mechanism can't be hacked for compatibility
+reasons. Handling this at the spi level would be a mix of layers, I'm
+not ready for that.
 
-diff --git a/drivers/mtd/nand/brcmnand/brcmnand.c b/drivers/mtd/nand/brcmnand/brcmnand.c
-index fa66663df6e8..267bbba09afb 100644
---- a/drivers/mtd/nand/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/brcmnand/brcmnand.c
-@@ -1753,6 +1753,7 @@ static int brcmstb_nand_verify_erased_page(struct mtd_info *mtd,
- 	int bitflips = 0;
- 	int page = addr >> chip->page_shift;
- 	int ret;
-+	void *ecc_chunk;
- 
- 	if (!buf) {
- 		buf = chip->buffers->databuf;
-@@ -1769,7 +1770,9 @@ static int brcmstb_nand_verify_erased_page(struct mtd_info *mtd,
- 		return ret;
- 
- 	for (i = 0; i < chip->ecc.steps; i++, oob += sas) {
--		ret = nand_check_erased_ecc_chunk(buf, chip->ecc.size,
-+		ecc_chunk = buf + chip->ecc.size * i;
-+		ret = nand_check_erased_ecc_chunk(ecc_chunk,
-+						  chip->ecc.size,
- 						  oob, sas, NULL, 0,
- 						  chip->ecc.strength);
- 		if (ret < 0)
--- 
-2.25.1
+Richard, Mark, what's your opinion here?
+
+Thanks,
+Miqu=C3=A8l
 
