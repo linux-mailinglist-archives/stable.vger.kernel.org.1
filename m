@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-3434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D877FF59F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF747FF551
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5EAD281859
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39241281786
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5717454FAE;
-	Thu, 30 Nov 2023 16:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731CF54FA4;
+	Thu, 30 Nov 2023 16:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1JTvi3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT1epUCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1D0495C2;
-	Thu, 30 Nov 2023 16:30:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3F5C433C9;
-	Thu, 30 Nov 2023 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2729E524C2;
+	Thu, 30 Nov 2023 16:27:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA820C433C7;
+	Thu, 30 Nov 2023 16:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361822;
-	bh=vMW54CLgi7OaIEkDHVmFo42ZO3awxhFXYQGBOqpgEt8=;
+	s=korg; t=1701361670;
+	bh=JnXcdVlFU7SQbQQlm5BtNGTEVWSW6SRsLjK+U3SbKKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1JTvi3dgPI2XVGVfFF3uIRsPNgxFTCuSe1WERCWlAd6x6K6GMpfRue0j/v8NRpvI
-	 gFyatfu4avr/ODk1uY3sGGlpMIM0v30CqpFMdytSZJVG3r9SJQNMswq2J1cEPMvYCF
-	 IZdz0+UjnWuDe8zEAWIUEyRJK1lCO5+ydPXEkwMk=
+	b=jT1epUCe3e7UuudVsMC6S5AvhB9ufBYMjrqLILfP182QzJQ0qsiVBS7unm9pBt9pj
+	 orRhEjlQL1cBZcVfs94is3/ozivCLLobjYuGyoP1itgFxoLL+T60f8rmtjao0UCUq9
+	 SNaRTdrGsPXn2FZOCNxCg7XSYvxFXlUTFwzKIguM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 61/82] io_uring/fs: consider link->flags when getting path for LINKAT
-Date: Thu, 30 Nov 2023 16:22:32 +0000
-Message-ID: <20231130162137.911468776@linuxfoundation.org>
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Will McVicker <willmcvicker@google.com>
+Subject: [PATCH 6.6 106/112] usb: typec: tcpm: Fix sink caps op current check
+Date: Thu, 30 Nov 2023 16:22:33 +0000
+Message-ID: <20231130162143.654678478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +54,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Mirabile <cmirabil@redhat.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit 8479063f1fbee201a8739130e816cc331b675838 upstream.
+commit 187fb003c57c964ea61ac9fbfe41abf3ca9973eb upstream.
 
-In order for `AT_EMPTY_PATH` to work as expected, the fact
-that the user wants that behavior needs to make it to `getname_flags`
-or it will return ENOENT.
+TCPM checks for sink caps operational current even when PD is disabled.
+This incorrectly sets tcpm_set_charge() when PD is disabled.
+Check for sink caps only when PD is enabled.
 
-Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
-Cc:  <stable@vger.kernel.org>
-Link: https://github.com/axboe/liburing/issues/995
-Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
-Link: https://lore.kernel.org/r/20231120105545.1209530-1-cmirabil@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+[   97.572342] Start toggling
+[   97.578949] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
+[   99.571648] CC1: 0 -> 0, CC2: 0 -> 4 [state TOGGLING, polarity 0, connected]
+[   99.571658] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
+[   99.571673] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
+[   99.741778] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
+[   99.789283] CC1: 0 -> 0, CC2: 4 -> 5 [state SNK_DEBOUNCED, polarity 0, connected]
+[   99.789306] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
+[   99.903584] VBUS on
+[   99.903591] state change SNK_DEBOUNCED -> SNK_ATTACHED [rev3 NONE_AMS]
+[   99.903600] polarity 1
+[   99.910155] enable vbus discharge ret:0
+[   99.910160] Requesting mux state 1, usb-role 2, orientation 2
+[   99.946791] state change SNK_ATTACHED -> SNK_STARTUP [rev3 NONE_AMS]
+[   99.946798] state change SNK_STARTUP -> SNK_DISCOVERY [rev3 NONE_AMS]
+[   99.946800] Setting voltage/current limit 5000 mV 500 mA
+[   99.946803] vbus=0 charge:=1
+[  100.027139] state change SNK_DISCOVERY -> SNK_READY [rev3 NONE_AMS]
+[  100.027145] Setting voltage/current limit 5000 mV 3000 mA
+[  100.466830] VBUS on
+
+Cc: stable@vger.kernel.org
+Fixes: 803b1c8a0cea ("usb: typec: tcpm: not sink vbus if operational current is 0mA")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Will McVicker <willmcvicker@google.com>
+Link: https://lore.kernel.org/r/20231101012845.2701348-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/io_uring/fs.c
-+++ b/io_uring/fs.c
-@@ -254,7 +254,7 @@ int io_linkat_prep(struct io_kiocb *req,
- 	newf = u64_to_user_ptr(READ_ONCE(sqe->addr2));
- 	lnk->flags = READ_ONCE(sqe->hardlink_flags);
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index b386102f7a3a..bfb6f9481e87 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4273,7 +4273,8 @@ static void run_state_machine(struct tcpm_port *port)
+ 				current_lim = PD_P_SNK_STDBY_MW / 5;
+ 			tcpm_set_current_limit(port, current_lim, 5000);
+ 			/* Not sink vbus if operational current is 0mA */
+-			tcpm_set_charge(port, !!pdo_max_current(port->snk_pdo[0]));
++			tcpm_set_charge(port, !port->pd_supported ||
++					pdo_max_current(port->snk_pdo[0]));
  
--	lnk->oldpath = getname(oldf);
-+	lnk->oldpath = getname_uflags(oldf, lnk->flags);
- 	if (IS_ERR(lnk->oldpath))
- 		return PTR_ERR(lnk->oldpath);
- 
+ 			if (!port->pd_supported)
+ 				tcpm_set_state(port, SNK_READY, 0);
+-- 
+2.43.0
+
 
 
 
