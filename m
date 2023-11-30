@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-3452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D05D7FF5B8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3107FF603
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 279DC2818C7
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D03CB2118C
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F8AA2D;
-	Thu, 30 Nov 2023 16:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D843A4878B;
+	Thu, 30 Nov 2023 16:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AOv5X513"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmDGZyo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB3B3D382;
-	Thu, 30 Nov 2023 16:31:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59662C433C7;
-	Thu, 30 Nov 2023 16:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910B454F96;
+	Thu, 30 Nov 2023 16:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4213C433C8;
+	Thu, 30 Nov 2023 16:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361867;
-	bh=CxN44Pf+UR6lFQBEbnQfbxMQNF/oGyXSE0wuwBHWLLU=;
+	s=korg; t=1701362017;
+	bh=GFVq84lEEjKT+VfdLsedIFaye8rOEM8JOmCaAz0Zgm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AOv5X513IwcTilYA43IkssjKlPEIRlngUPqTg0qT6/Q+W9Xh1XD2pXv+J+7CLc0YO
-	 Fm+pl95qxNQjHZpTdHQJKTUqW5457kk3goROYrYtLQiOKmdexOaQPIncbfOM+fITRv
-	 tf5hEqQZN1WCpp9Fe4AHxIp2pcZ2KW6VlRi+4FfI=
+	b=NmDGZyo+pflBELz1W4j+gEF/RbyFDlTPx2Ie//dT55uAbRLhAcdJTHvfWnrvzo65X
+	 zo9VHCZphfTC22kE+NaHvLEPRoFaOsB7Pikuhdy58StMLS28PVxU/N8WYndRURcSRV
+	 iqEZ+RG8hPQ60YbUbcCiqjx6oeCCpnCoBQymX/wg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1 55/82] arm64: dts: imx8mn-var-som: add 20ms delay to ethernet regulator enable
+	kernel test robot <lkp@intel.com>,
+	"Souptick Joarder (HPE)" <jrdr.linux@gmail.com>,
+	Robert Foss <robert.foss@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 29/69] media: camss: Replace hard coded value with parameter
 Date: Thu, 30 Nov 2023 16:22:26 +0000
-Message-ID: <20231130162137.710815623@linuxfoundation.org>
+Message-ID: <20231130162134.033233121@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,64 +55,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Souptick Joarder (HPE) <jrdr.linux@gmail.com>
 
-commit 26ca44bdbd13edbe6cbe0dc63327c3316ce01bae upstream.
+[ Upstream commit a312f8982632fb1a882a8dc3c9fd127d082c1c02 ]
 
-This commit is taken from Variscite linux kernel public git repository.
-Original patch author: Nate Drude <nate.d@variscite.com>
-See: https://github.com/varigit/linux-imx/blob/5.15-2.0.x-imx_var01/drivers/net/ethernet/freescale/fec_main.c#L3993-L4050
+Kernel test robot reported below warning ->
+drivers/media/platform/qcom/camss/camss-csid-gen2.c:407:3:
+warning: Value stored to 'val' is never read
+[clang-analyzer-deadcode.DeadStores]
 
-The ethernet phy reset was moved from the fec controller to the
-mdio bus, see for example: 0e825b32c033e1998d0ebaf247f5dab3c340e3bf
+Replace hard coded value with val.
 
-When the fec driver managed the reset, the regulator had time to
-settle during the fec phy reset before calling of_mdiobus_register,
-which probes the mii bus for the phy id to match the correct driver.
-
-Now that the mdio bus controls the reset, the fec driver no longer has
-any delay between enabling the regulator and calling of_mdiobus_register.
-If the regulator voltage has not settled, the phy id will not be read
-correctly and the generic phy driver will be used.
-
-The following call tree explains in more detail:
-
-fec_probe
-  fec_reset_phy                               <- no longer introduces delay after migration to mdio reset
-  fec_enet_mii_init
-    of_mdiobus_register
-      of_mdiobus_register_phy
-        fwnode_mdiobus_register_phy
-          get_phy_device                      <- mii probe for phy id to match driver happens here
-          ...
-          fwnode_mdiobus_phy_device_register
-            phy_device_register
-              mdiobus_register_device
-                mdio_device_reset             <- mdio reset assert / deassert delay happens here
-
-Add a 20ms enable delay to the regulator to fix the issue.
-
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Souptick Joarder (HPE) <jrdr.linux@gmail.com>
+Reviewed-by: Robert Foss <robert.foss@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Stable-dep-of: e655d1ae9703 ("media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater than 3")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/camss/camss-csid-170.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-var-som.dtsi
-@@ -27,6 +27,7 @@
- 		regulator-name = "eth_phy_pwr";
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
-+		regulator-enable-ramp-delay = <20000>;
- 		gpio = <&gpio2 9 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
- 	};
+diff --git a/drivers/media/platform/qcom/camss/camss-csid-170.c b/drivers/media/platform/qcom/camss/camss-csid-170.c
+index 82f59933ad7b3..c234b8d67bc59 100644
+--- a/drivers/media/platform/qcom/camss/camss-csid-170.c
++++ b/drivers/media/platform/qcom/camss/camss-csid-170.c
+@@ -398,7 +398,7 @@ static void csid_configure_stream(struct csid_device *csid, u8 enable)
+ 		writel_relaxed(val, csid->base + CSID_RDI_FRM_DROP_PERIOD(0));
+ 
+ 		val = 0;
+-		writel_relaxed(0, csid->base + CSID_RDI_FRM_DROP_PATTERN(0));
++		writel_relaxed(val, csid->base + CSID_RDI_FRM_DROP_PATTERN(0));
+ 
+ 		val = 1;
+ 		writel_relaxed(val, csid->base + CSID_RDI_IRQ_SUBSAMPLE_PERIOD(0));
+-- 
+2.42.0
+
 
 
 
