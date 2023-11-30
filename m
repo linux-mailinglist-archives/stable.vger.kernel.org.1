@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-3377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D3327FF554
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066997FF5A8
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE6B1C20F7D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377051C20864
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20F754F9C;
-	Thu, 30 Nov 2023 16:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591C154FAD;
+	Thu, 30 Nov 2023 16:30:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSeWeS2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1df17WEb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A4D524C2;
-	Thu, 30 Nov 2023 16:27:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF81C433C8;
-	Thu, 30 Nov 2023 16:27:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148EF54F9B;
+	Thu, 30 Nov 2023 16:30:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159D2C433C7;
+	Thu, 30 Nov 2023 16:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361677;
-	bh=4iGIhksDdHMRpBKKK+cdWmjwrJhRhz5u8DuQGAUIen0=;
+	s=korg; t=1701361835;
+	bh=l3+3dh4DZC9+MOAwdhXpGRiuMY8n0fsoNnrlm/NILeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSeWeS2EP8SYsQaDV0xxydpdLoOVwDr0HcZs6xMEwXnSSE1TRaU0fzc6Qgubkmdq0
-	 pw9EZuV8psnEeKu37Ucwtx0B0zHHsZzstLQYFfYy6BEY21SJDRxhvBtIbMpuYm/EoV
-	 imeXId0jF2fZ2cTszqsLHlgb5NnSo9T/HG1c0Hp4=
+	b=1df17WEbQKPhOkAIILECWG0plINadg7q65ZoQzzh52hKLhd466Gza5TXXnXkPAnqg
+	 zAnwjb1bqcywgz1mwv747XYbD4gqI/q9lx+PHjniARdLqtNS0JuUsMtDDfWtt5e7Uq
+	 vg7UT01/Jpukl9lImkDFnY9Y85BZswI8h5Zml/30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 109/112] usb: dwc3: Fix default mode initialization
-Date: Thu, 30 Nov 2023 16:22:36 +0000
-Message-ID: <20231130162143.740492138@linuxfoundation.org>
+	Long Li <longli@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 66/82] hv_netvsc: Mark VF as slave before exposing it to user-mode
+Date: Thu, 30 Nov 2023 16:22:37 +0000
+Message-ID: <20231130162138.078531300@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +55,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Long Li <longli@microsoft.com>
 
-commit 10d510abd096d620b9fda2dd3e0047c5efc4ad2b upstream.
+commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
 
-The default mode, configurable by DT, shall be set before usb role switch
-driver is registered. Otherwise there is a race between default mode
-and mode set by usb role switch driver.
+When a VF is being exposed form the kernel, it should be marked as "slave"
+before exposing to the user-mode. The VF is not usable without netvsc
+running as master. The user-mode should never see a VF without the "slave"
+flag.
 
-Fixes: 98ed256a4dbad ("usb: dwc3: Add support for role-switch-default-mode binding")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20231025095110.2405281-1-alexander.stein@ew.tq-group.com
+This commit moves the code of setting the slave flag to the time before
+VF is exposed to user-mode.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
+Signed-off-by: Long Li <longli@microsoft.com>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Acked-by: Stephen Hemminger <stephen@networkplumber.org>
+Acked-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/drd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/dwc3/drd.c
-+++ b/drivers/usb/dwc3/drd.c
-@@ -505,6 +505,7 @@ static int dwc3_setup_role_switch(struct
- 		dwc->role_switch_default_mode = USB_DR_MODE_PERIPHERAL;
- 		mode = DWC3_GCTL_PRTCAP_DEVICE;
- 	}
-+	dwc3_set_mode(dwc, mode);
- 
- 	dwc3_role_switch.fwnode = dev_fwnode(dwc->dev);
- 	dwc3_role_switch.set = dwc3_usb_role_switch_set;
-@@ -526,7 +527,6 @@ static int dwc3_setup_role_switch(struct
- 		}
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2204,9 +2204,6 @@ static int netvsc_vf_join(struct net_dev
+ 		goto upper_link_failed;
  	}
  
--	dwc3_set_mode(dwc, mode);
- 	return 0;
+-	/* set slave flag before open to prevent IPv6 addrconf */
+-	vf_netdev->flags |= IFF_SLAVE;
+-
+ 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
+ 
+ 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
+@@ -2313,16 +2310,18 @@ static struct net_device *get_netvsc_bys
+ 
+ 	}
+ 
+-	/* Fallback path to check synthetic vf with
+-	 * help of mac addr
++	/* Fallback path to check synthetic vf with help of mac addr.
++	 * Because this function can be called before vf_netdev is
++	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
++	 * from dev_addr, also try to match to its dev_addr.
++	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
++	 * on a VF that matches to the MAC of a unrelated NETVSC device.
+ 	 */
+ 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
+ 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
+-		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
+-			netdev_notice(vf_netdev,
+-				      "falling back to mac addr based matching\n");
++		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
++		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
+ 			return ndev;
+-		}
+ 	}
+ 
+ 	netdev_notice(vf_netdev,
+@@ -2330,6 +2329,19 @@ static struct net_device *get_netvsc_bys
+ 	return NULL;
  }
- #else
+ 
++static int netvsc_prepare_bonding(struct net_device *vf_netdev)
++{
++	struct net_device *ndev;
++
++	ndev = get_netvsc_byslot(vf_netdev);
++	if (!ndev)
++		return NOTIFY_DONE;
++
++	/* set slave flag before open to prevent IPv6 addrconf */
++	vf_netdev->flags |= IFF_SLAVE;
++	return NOTIFY_DONE;
++}
++
+ static int netvsc_register_vf(struct net_device *vf_netdev)
+ {
+ 	struct net_device_context *net_device_ctx;
+@@ -2754,6 +2766,8 @@ static int netvsc_netdev_event(struct no
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
++	case NETDEV_POST_INIT:
++		return netvsc_prepare_bonding(event_dev);
+ 	case NETDEV_REGISTER:
+ 		return netvsc_register_vf(event_dev);
+ 	case NETDEV_UNREGISTER:
 
 
 
