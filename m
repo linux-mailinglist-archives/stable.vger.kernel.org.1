@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-3387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 729977FF560
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 754117FF52B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71A4D1C2109C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EF39281757
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4601D54FB5;
-	Thu, 30 Nov 2023 16:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66FE54F98;
+	Thu, 30 Nov 2023 16:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+06W5z4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFpFpS8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0181754FAE;
-	Thu, 30 Nov 2023 16:28:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3536FC433C7;
-	Thu, 30 Nov 2023 16:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875E7524C2;
+	Thu, 30 Nov 2023 16:26:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1487DC433C8;
+	Thu, 30 Nov 2023 16:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361703;
-	bh=BIVysDr2BDEaJ28hXVAeQwbi8Q4O0MWfnFeVbZuZS6c=;
+	s=korg; t=1701361593;
+	bh=JVk8OWsQZWl9BKzyax2z/BWlBWaUnswYhqeyIxggpLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+06W5z4Lo+79jZxt3uwA9GxwS0gbDQCjKegijFk6xDPu43GsDIpMcI1sumvKk4r2
-	 pGCUPnNsPcjMQQVkWoFN3f8ORoLP8zFmzPOrP2ekwh7KGtRbe+pLkYUWK24cfJ335Q
-	 s/URwC3ElPSz6DRqGh0Bnt41pG13plen74etWez4=
+	b=VFpFpS8r8xb86rMrz1sX/55K8T4cuA2ij3344JXJjDdI4hP6UENudQCRCPiDSObe/
+	 29wdbSfcsBBbiiVjjm9wCNlvS3ZUboAMswyO4V5lR3YBf2sUdlC57rOi1ml5SOZoRI
+	 641ZPdh2yCmEuV37/QwM/O82HsnnxCTjcTiBar7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herb Wei <weihao.bj@ieisystem.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/82] net: usb: ax88179_178a: fix failed operations during ax88179_reset
-Date: Thu, 30 Nov 2023 16:21:45 +0000
-Message-ID: <20231130162136.413183471@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 059/112] kselftest/arm64: Fix output formatting for za-fork
+Date: Thu, 30 Nov 2023 16:21:46 +0000
+Message-ID: <20231130162142.197815220@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,71 +52,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 0739af07d1d947af27c877f797cb82ceee702515 ]
+commit 460e462d22542adfafd8a5bc979437df73f1cbf3 upstream.
 
-Using generic ASIX Electronics Corp. AX88179 Gigabit Ethernet device,
-the following test cycle has been implemented:
-    - power on
-    - check logs
-    - shutdown
-    - after detecting the system shutdown, disconnect power
-    - after approximately 60 seconds of sleep, power is restored
-Running some cycles, sometimes error logs like this appear:
-    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to write reg index 0x0001: -19
-    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x0001: -19
-    ...
-These failed operation are happening during ax88179_reset execution, so
-the initialization could not be correct.
+The za-fork test does not output a newline when reporting the result of
+the one test it runs, causing the counts printed by kselftest to be
+included in the test name.  Add the newline.
 
-In order to avoid this, we need to increase the delay after reset and
-clock initial operations. By using these larger values, many cycles
-have been run and no failed operations appear.
-
-It would be better to check some status register to verify when the
-operation has finished, but I do not have found any available information
-(neither in the public datasheets nor in the manufacturer's driver). The
-only available information for the necessary delays is the maufacturer's
-driver (original values) but the proposed values are not enough for the
-tested devices.
-
-Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-Reported-by: Herb Wei <weihao.bj@ieisystem.com>
-Tested-by: Herb Wei <weihao.bj@ieisystem.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://lore.kernel.org/r/20231120120642.54334-1-jtornosm@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 266679ffd867 ("kselftest/arm64: Convert za-fork to use kselftest.h")
+Cc: <stable@vger.kernel.org> # 6.4.x
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231116-arm64-fix-za-fork-output-v1-1-42c03d4f5759@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ax88179_178a.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/arm64/fp/za-fork.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index aff39bf3161de..4ea0e155bb0d5 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1583,11 +1583,11 @@ static int ax88179_reset(struct usbnet *dev)
+--- a/tools/testing/selftests/arm64/fp/za-fork.c
++++ b/tools/testing/selftests/arm64/fp/za-fork.c
+@@ -85,7 +85,7 @@ int main(int argc, char **argv)
+ 	 */
+ 	ret = open("/proc/sys/abi/sme_default_vector_length", O_RDONLY, 0);
+ 	if (ret >= 0) {
+-		ksft_test_result(fork_test(), "fork_test");
++		ksft_test_result(fork_test(), "fork_test\n");
  
- 	*tmp16 = AX_PHYPWR_RSTCTL_IPRL;
- 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, tmp16);
--	msleep(200);
-+	msleep(500);
- 
- 	*tmp = AX_CLK_SELECT_ACS | AX_CLK_SELECT_BCS;
- 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_CLK_SELECT, 1, 1, tmp);
--	msleep(100);
-+	msleep(200);
- 
- 	/* Ethernet PHY Auto Detach*/
- 	ax88179_auto_detach(dev);
--- 
-2.42.0
-
+ 	} else {
+ 		ksft_print_msg("SME not supported\n");
 
 
 
