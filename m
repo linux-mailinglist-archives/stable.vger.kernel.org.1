@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-3485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FD27FF5DF
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3317FF5C7
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7781E1C2113A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92C81F20F49
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EDC482CA;
-	Thu, 30 Nov 2023 16:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422484777A;
+	Thu, 30 Nov 2023 16:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVZalI2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1If5j8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744A554F96;
-	Thu, 30 Nov 2023 16:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F04C433C7;
-	Thu, 30 Nov 2023 16:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035D754FBF;
+	Thu, 30 Nov 2023 16:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395C9C433C8;
+	Thu, 30 Nov 2023 16:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361951;
-	bh=AaJO6iKlKbO1oRmuIkVeAMn4tpDyFD+hAhJDpdOA8Yg=;
+	s=korg; t=1701361905;
+	bh=31xIXyZc/NlyjtpbvORBFARyCcqy6qiJ1xVRaePsV0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AVZalI2ywgKLI1NpPQHcElL+KEztbEwDERrDUfh9U3m55TLtb5FoF9RRoAt0G7SUt
-	 Yt885FxZOTF1jbPDPhUReU/dg0iXPgLgqrwJLw4qjLVIU5vaOJVPPAjYYvDQEELsyv
-	 HbiEUfxEIesFS4xFBlXmPOcCsYygjjWL3G+e0+j4=
+	b=Y1If5j8lWMKfaeprvuRt75N3E9i04Ds+WFva7menWzRZwGgE+Is4LwpLJ24lQeHPD
+	 ISS6aIW3E4sYtUNO6P9wXxqsRNmtp5b1w76bJgv51Tl/e127CgO704S9KrtHrrKCwF
+	 27Hy5VsaCbyTlsmj0ECPX4aPLfqmGV6vrEUGbb/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Damien Le Moal <dlemoal@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Christopher Obbard <chris.obbard@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/69] ata: pata_isapnp: Add missing error check for devm_ioport_map()
-Date: Thu, 30 Nov 2023 16:22:06 +0000
-Message-ID: <20231130162133.380387378@linuxfoundation.org>
+Subject: [PATCH 5.15 10/69] drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+Date: Thu, 30 Nov 2023 16:22:07 +0000
+Message-ID: <20231130162133.417222719@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
 References: <20231130162133.035359406@linuxfoundation.org>
@@ -58,36 +59,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
+[ Upstream commit bb0a05acd6121ff0e810b44fdc24dbdfaa46b642 ]
 
-Add missing error return check for devm_ioport_map() and return the
-error if this function call fails.
+Use of DRM_FORMAT_RGB888 and DRM_FORMAT_BGR888 on e.g. RK3288, RK3328
+and RK3399 result in wrong colors being displayed.
 
-Fixes: 0d5ff566779f ("libata: convert to iomap")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+The issue can be observed using modetest:
+
+  modetest -s <connector_id>@<crtc_id>:1920x1080-60@RG24
+  modetest -s <connector_id>@<crtc_id>:1920x1080-60@BG24
+
+Vendor 4.4 kernel apply an inverted rb swap for these formats on VOP
+full framework (IP version 3.x) compared to VOP little framework (2.x).
+
+Fix colors by applying different rb swap for VOP full framework (3.x)
+and VOP little framework (2.x) similar to vendor 4.4 kernel.
+
+Fixes: 85a359f25388 ("drm/rockchip: Add BGR formats to VOP")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Reviewed-by: Christopher Obbard <chris.obbard@collabora.com>
+Tested-by: Christopher Obbard <chris.obbard@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231026191500.2994225-1-jonas@kwiboo.se
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_isapnp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
-index 43bb224430d3c..8892931ea8676 100644
---- a/drivers/ata/pata_isapnp.c
-+++ b/drivers/ata/pata_isapnp.c
-@@ -82,6 +82,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
- 	if (pnp_port_valid(idev, 1)) {
- 		ctl_addr = devm_ioport_map(&idev->dev,
- 					   pnp_port_start(idev, 1), 1);
-+		if (!ctl_addr)
-+			return -ENOMEM;
-+
- 		ap->ioaddr.altstatus_addr = ctl_addr;
- 		ap->ioaddr.ctl_addr = ctl_addr;
- 		ap->ops = &isapnp_port_ops;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index e53b1ecbd7bc0..c7106f1165466 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -249,14 +249,22 @@ static inline void vop_cfg_done(struct vop *vop)
+ 	VOP_REG_SET(vop, common, cfg_done, 1);
+ }
+ 
+-static bool has_rb_swapped(uint32_t format)
++static bool has_rb_swapped(uint32_t version, uint32_t format)
+ {
+ 	switch (format) {
+ 	case DRM_FORMAT_XBGR8888:
+ 	case DRM_FORMAT_ABGR8888:
+-	case DRM_FORMAT_BGR888:
+ 	case DRM_FORMAT_BGR565:
+ 		return true;
++	/*
++	 * full framework (IP version 3.x) only need rb swapped for RGB888 and
++	 * little framework (IP version 2.x) only need rb swapped for BGR888,
++	 * check for 3.x to also only rb swap BGR888 for unknown vop version
++	 */
++	case DRM_FORMAT_RGB888:
++		return VOP_MAJOR(version) == 3;
++	case DRM_FORMAT_BGR888:
++		return VOP_MAJOR(version) != 3;
+ 	default:
+ 		return false;
+ 	}
+@@ -998,7 +1006,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
+ 	VOP_WIN_SET(vop, win, dsp_info, dsp_info);
+ 	VOP_WIN_SET(vop, win, dsp_st, dsp_st);
+ 
+-	rb_swap = has_rb_swapped(fb->format->format);
++	rb_swap = has_rb_swapped(vop->data->version, fb->format->format);
+ 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
+ 
+ 	/*
 -- 
 2.42.0
 
