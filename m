@@ -1,113 +1,121 @@
-Return-Path: <stable+bounces-3473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061187FF5D2
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A46F7FF62D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:36:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5DB1281935
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17521B20F28
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC1648CEB;
-	Thu, 30 Nov 2023 16:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mMdBAWV8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7ED482CA;
+	Thu, 30 Nov 2023 16:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::227])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A0D41B4;
-	Thu, 30 Nov 2023 08:31:57 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 323F92000A;
-	Thu, 30 Nov 2023 16:31:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701361916;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gV797xi3EHSsgCrohMrZSKeBc2F3mil55AHD5+9kXrY=;
-	b=mMdBAWV8m01Tg4INI11/mzYDWX0kf3pzOfTi039efVlOvsIrsMqYFZxwwhQ7PDK2lMvoiT
-	+i9DwVp+gnxMeXKfX1ZC+skcTbImVXeVnHyXLrnYCRh1xPFfoIl3gpq5Cv2mCKImVYe/+F
-	A/rpY/AcJqomxU8jIB3nCzs6qRQFtGLfA9h9rQUuChX4dneMvYrA8wvxNco/oJrAX19ZXG
-	/PgZLIklOt1LPzj29JI35SNkMDGyzuYiDf7AQr7kIRGSu0TcSWYoHjl/GapZ1MgDmCwFHC
-	rLbg/ULOb0AETBWXfxscSZwtkkKdbExE/OcMuzBndJilW1zqTdVz8BAn9Q6Iuw==
-Date: Thu, 30 Nov 2023 17:31:53 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>, Rob Herring
- <robh@kernel.org>, Max Zhen <max.zhen@amd.com>, Sonal Santan
- <sonal.santan@amd.com>, Stefano Stabellini <stefano.stabellini@xilinx.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, Allan Nielsen
- <allan.nielsen@microchip.com>, Horatiu Vultur
- <horatiu.vultur@microchip.com>, Steen Hegelund
- <steen.hegelund@microchip.com>, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] PCI: of: Attach created of_node to existing device
-Message-ID: <20231130173153.1ce8a354@bootlin.com>
-In-Reply-To: <2023113008-prenatal-pushchair-956f@gregkh>
-References: <20231130152418.680966-1-herve.codina@bootlin.com>
-	<20231130152418.680966-3-herve.codina@bootlin.com>
-	<2023113008-prenatal-pushchair-956f@gregkh>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F339A1A4;
+	Thu, 30 Nov 2023 08:36:09 -0800 (PST)
+Received: from hutton.arch.nue2.suse.org (unknown [10.168.144.140])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 0BB0321B3E;
+	Thu, 30 Nov 2023 16:36:08 +0000 (UTC)
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To: linux-mips@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	Aurelien Jarno <aurel32@debian.org>
+Subject: [PATCH] MIPS: kernel: Clear FPU states when setting up kernel threads
+Date: Thu, 30 Nov 2023 17:36:01 +0100
+Message-Id: <20231130163601.185270-1-tsbogend@alpha.franken.de>
+X-Mailer: git-send-email 2.35.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spam-Score: 3.91
+X-Spamd-Result: default: False [3.91 / 50.00];
+	 ARC_NA(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[4];
+	 TO_DN_SOME(0.00)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 MIME_GOOD(-0.10)[text/plain];
+	 R_MISSING_CHARSET(2.50)[];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 NEURAL_HAM_LONG(-0.99)[-0.994];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[franken.de:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 RCVD_COUNT_ZERO(0.00)[0];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+]
 
-Hi Greg,
+io_uring sets up the io worker kernel thread via a syscall out of an
+user space prrocess. This process might have used FPU and since
+copy_thread() didn't clear FPU states for kernel threads a BUG()
+is triggered for using FPU inside kernel. Move code around
+to always clear FPU state for user and kernel threads.
 
-On Thu, 30 Nov 2023 16:18:58 +0000
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Cc: stable@vger.kernel.org
+Reported-by: Aurelien Jarno <aurel32@debian.org>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1055021
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+---
+ arch/mips/kernel/process.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-> On Thu, Nov 30, 2023 at 04:24:04PM +0100, Herve Codina wrote:
-> > The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-> > creates of_node for PCI devices.
-> > During the insertion handling of these new DT nodes done by of_platform,
-> > new devices (struct device) are created.
-> > For each PCI devices a struct device is already present (created and
-> > handled by the PCI core).
-> > Having a second struct device to represent the exact same PCI device is
-> > not correct.
-> > 
-> > On the of_node creation, tell the of_platform that there is no need to
-> > create a device for this node (OF_POPULATED flag), link this newly
-> > created of_node to the already present device and tell fwnode that the
-> > device attached to this of_node is ready (fwnode_dev_initialized()).
-> > 
-> > With this fix, the of_node are available in the sysfs device tree:
-> > /sys/devices/platform/soc/d0070000.pcie/
-> > + of_node -> .../devicetree/base/soc/pcie@d0070000
-> > + pci0000:00
-> >   + 0000:00:00.0
-> >     + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
-> >     + 0000:01:00.0
-> >       + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
-> > 
-> > On the of_node removal, revert the operations.
-> > 
-> > Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-> > Cc: stable@vger.kernel.org  
-> 
-> How can this be cc: stable when the api it relies on is not?
-> 
-> confused,
-
-My bad, I will add cc: stable in the other patch needed.
-
-Sorry about that.
-Hervé
-
+diff --git a/arch/mips/kernel/process.c b/arch/mips/kernel/process.c
+index 5387ed0a5186..b630604c577f 100644
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -121,6 +121,19 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	/*  Put the stack after the struct pt_regs.  */
+ 	childksp = (unsigned long) childregs;
+ 	p->thread.cp0_status = (read_c0_status() & ~(ST0_CU2|ST0_CU1)) | ST0_KERNEL_CUMASK;
++
++	/*
++	 * New tasks lose permission to use the fpu. This accelerates context
++	 * switching for most programs since they don't use the fpu.
++	 */
++	clear_tsk_thread_flag(p, TIF_USEDFPU);
++	clear_tsk_thread_flag(p, TIF_USEDMSA);
++	clear_tsk_thread_flag(p, TIF_MSA_CTX_LIVE);
++
++#ifdef CONFIG_MIPS_MT_FPAFF
++	clear_tsk_thread_flag(p, TIF_FPUBOUND);
++#endif /* CONFIG_MIPS_MT_FPAFF */
++
+ 	if (unlikely(args->fn)) {
+ 		/* kernel thread */
+ 		unsigned long status = p->thread.cp0_status;
+@@ -149,20 +162,8 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	p->thread.reg29 = (unsigned long) childregs;
+ 	p->thread.reg31 = (unsigned long) ret_from_fork;
+ 
+-	/*
+-	 * New tasks lose permission to use the fpu. This accelerates context
+-	 * switching for most programs since they don't use the fpu.
+-	 */
+ 	childregs->cp0_status &= ~(ST0_CU2|ST0_CU1);
+ 
+-	clear_tsk_thread_flag(p, TIF_USEDFPU);
+-	clear_tsk_thread_flag(p, TIF_USEDMSA);
+-	clear_tsk_thread_flag(p, TIF_MSA_CTX_LIVE);
+-
+-#ifdef CONFIG_MIPS_MT_FPAFF
+-	clear_tsk_thread_flag(p, TIF_FPUBOUND);
+-#endif /* CONFIG_MIPS_MT_FPAFF */
+-
+ #ifdef CONFIG_MIPS_FP_SUPPORT
+ 	atomic_set(&p->thread.bd_emu_frame, BD_EMUFRAME_NONE);
+ #endif
 -- 
-Hervé Codina, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.35.3
+
 
