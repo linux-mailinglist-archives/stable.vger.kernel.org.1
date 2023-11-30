@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-3359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAC27FF542
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A893D7FF601
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07E90B20E4B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D935D1C210EA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E813454F9B;
-	Thu, 30 Nov 2023 16:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E785F524D2;
+	Thu, 30 Nov 2023 16:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCypT3KH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2CGptXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A652954FB6;
-	Thu, 30 Nov 2023 16:27:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359FDC433C7;
-	Thu, 30 Nov 2023 16:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFE148CEB;
+	Thu, 30 Nov 2023 16:33:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA9FC433C8;
+	Thu, 30 Nov 2023 16:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361632;
-	bh=PjV9I5NdzFFpmqsHge/TuGd29NqukEti0pNJHpMyDp8=;
+	s=korg; t=1701362014;
+	bh=HCbNYaJUS6XCf4mkSEDj7S9AJVCflarlBMifUiNRj/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCypT3KHCjEEZ87Bld8UCKCQPetQVOeT0QeZD8iRhUGxVteEQiaPftp3Ne4IRHixj
-	 hXe9gtRopuFTE+7X6RMMi/OssOgQSG6V0ylpD6wHeL+p5WvG9fKfGB+ZrykmOrVnaD
-	 Bc9ifHVk53xmIX0gKhXMEw10TNvHCJDHuDmahirA=
+	b=e2CGptXVUo5aYDYiUppoBo60oqa8lFdNU3bQxuXS+v0rf+Yb0z8MIue/wKMBfGe9u
+	 gB/JLKMz2mfjfI+3fF9Su0LQPyc4LTPkx0B8b/zLefkz2XgcU2EbzqS5eIP7yIC68u
+	 z0onm5MO0rgzhgHJYXoqr1ZjVnFVjt1XK/yw18Ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 098/112] bcache: fixup init dirty data errors
+	kernel test robot <lkp@intel.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 28/69] MIPS: KVM: Fix a build warning about variable set but not used
 Date: Thu, 30 Nov 2023 16:22:25 +0000
-Message-ID: <20231130162143.416493163@linuxfoundation.org>
+Message-ID: <20231130162134.003444514@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +53,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 7cc47e64d3d69786a2711a4767e26b26ba63d7ed upstream.
+[ Upstream commit 83767a67e7b6a0291cde5681ec7e3708f3f8f877 ]
 
-We found that after long run, the dirty_data of the bcache device
-will have errors. This error cannot be eliminated unless re-register.
+After commit 411740f5422a ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
+old_pte is no longer used in kvm_mips_map_page(). So remove it to fix a
+build warning about variable set but not used:
 
-We also found that reattach after detach, this error can accumulate.
+   arch/mips/kvm/mmu.c: In function 'kvm_mips_map_page':
+>> arch/mips/kvm/mmu.c:701:29: warning: variable 'old_pte' set but not used [-Wunused-but-set-variable]
+     701 |         pte_t *ptep, entry, old_pte;
+         |                             ^~~~~~~
 
-In bch_sectors_dirty_init(), all inode <= d->id keys will be recounted
-again. This is wrong, we only need to count the keys of the current
-device.
-
-Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-6-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 411740f5422a960 ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070530.aARZCSfh-lkp@intel.com/
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/writeback.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/mips/kvm/mmu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/md/bcache/writeback.c
-+++ b/drivers/md/bcache/writeback.c
-@@ -991,8 +991,11 @@ void bch_sectors_dirty_init(struct bcach
- 		op.count = 0;
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index 1bfd1b501d823..72b5249452273 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -593,7 +593,7 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
+ 	gfn_t gfn = gpa >> PAGE_SHIFT;
+ 	int srcu_idx, err;
+ 	kvm_pfn_t pfn;
+-	pte_t *ptep, entry, old_pte;
++	pte_t *ptep, entry;
+ 	bool writeable;
+ 	unsigned long prot_bits;
+ 	unsigned long mmu_seq;
+@@ -665,7 +665,6 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
+ 	entry = pfn_pte(pfn, __pgprot(prot_bits));
  
- 		for_each_key_filter(&c->root->keys,
--				    k, &iter, bch_ptr_invalid)
-+				    k, &iter, bch_ptr_invalid) {
-+			if (KEY_INODE(k) != op.inode)
-+				continue;
- 			sectors_dirty_init_fn(&op.op, c->root, k);
-+		}
+ 	/* Write the PTE */
+-	old_pte = *ptep;
+ 	set_pte(ptep, entry);
  
- 		rw_unlock(0, c->root);
- 		return;
+ 	err = 0;
+-- 
+2.42.0
+
 
 
 
