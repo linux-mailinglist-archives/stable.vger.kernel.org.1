@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-3415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B6A7FF586
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4757FF54D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6DC3B20DD9
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5CD2817BA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26F754FB4;
-	Thu, 30 Nov 2023 16:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8594D54F98;
+	Thu, 30 Nov 2023 16:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkfvQPU2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o3V8ryef"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAED524C2;
-	Thu, 30 Nov 2023 16:29:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA7EC433C8;
-	Thu, 30 Nov 2023 16:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E65524C2;
+	Thu, 30 Nov 2023 16:27:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4996C433C7;
+	Thu, 30 Nov 2023 16:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361774;
-	bh=ufOu60yQgbsht7YFzxl8N+Dm3alMvUL0RmXYuEwNsyM=;
+	s=korg; t=1701361660;
+	bh=Wb6NCm/ayWcsowgpZUQNhcY6ZBGWvqD6b6yrWuU189U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kkfvQPU2WDA5fhE2NR4h46AJcKqFf5wI37rAZTvz3Nn1qlTKgTiv0+Lgdpx7FQ/vM
-	 BhkhTRc3VN1nOWauTkIYeFultMEEkg6WLoj4Zd8vR0xhhTaCMLl5LZp8xnJXLZhpw8
-	 eqJfTgHNM3JwKo3R/+KtzWVoAFk2TBGdqRS9FjGw=
+	b=o3V8ryefA3lxVniqq6pSnFMo4xGcs3tjHaEuzbCFTGMMe61sYp0ICz6CYpSRMFK5D
+	 OsVo6uOPdSvrCL8pVqyee39hcnprNByUo1hx9kwckry8ML7F4hjtwgGV8enMA+1at6
+	 TY4PIHvq4404j4mpunXAk4V/fel3v65x65lJAN0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
-	Aishwarya Kothari <aishwarya.kothari@toradex.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: [PATCH 6.1 41/82] media: qcom: Initialise V4L2 async notifier later
-Date: Thu, 30 Nov 2023 16:22:12 +0000
-Message-ID: <20231130162137.257185562@linuxfoundation.org>
+	Stanley Chang <stanley_chang@realtek.com>,
+	Johan Hovold <johan+linaro@kernel.org>
+Subject: [PATCH 6.6 086/112] Revert "usb: phy: add usb phy notify port status API"
+Date: Thu, 30 Nov 2023 16:22:13 +0000
+Message-ID: <20231130162143.056999223@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,86 +50,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 5651bab6890a0c5d126e2559b4aa353bed201e47 ]
+commit 1a229d8690a0f8951fc4aa8b76a7efab0d8de342 upstream.
 
-Initialise V4L2 async notifier and parse DT for async sub-devices later,
-just before registering the notifier. This way the device can be made
-available to the V4L2 async framework from the notifier init time onwards.
-A subsequent patch will add struct v4l2_device as an argument to
-v4l2_async_nf_init().
+This reverts commit a08799cf17c22375752abfad3b4a2b34b3acb287.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Tested-by: Philipp Zabel <p.zabel@pengutronix.de> # imx6qp
-Tested-by: Niklas Söderlund <niklas.soderlund@ragnatech.se> # rcar + adv746x
-Tested-by: Aishwarya Kothari <aishwarya.kothari@toradex.com> # Apalis i.MX6Q with TC358743
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # Renesas RZ/G2L SMARC
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The recently added Realtek PHY drivers depend on the new port status
+notification mechanism which was built on the deprecated USB PHY
+implementation and devicetree binding.
+
+Specifically, using these PHYs would require describing the very same
+PHY using both the generic "phy" property and the deprecated "usb-phy"
+property which is clearly wrong.
+
+We should not be building new functionality on top of the legacy USB PHY
+implementation even if it is currently stuck in some kind of
+transitional limbo.
+
+Revert the new notification interface which is broken by design.
+
+Fixes: a08799cf17c2 ("usb: phy: add usb phy notify port status API")
+Cc: stable@vger.kernel.org      # 6.6
+Cc: Stanley Chang <stanley_chang@realtek.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231106110654.31090-4-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ drivers/usb/core/hub.c  | 23 -----------------------
+ include/linux/usb/phy.h | 13 -------------
+ 2 files changed, 36 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 04e65edbfb870..f794215948e71 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1613,14 +1613,6 @@ static int camss_probe(struct platform_device *pdev)
- 	if (!camss->vfe)
- 		return -ENOMEM;
- 
--	v4l2_async_nf_init(&camss->notifier);
+diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+index b4584a0cd484..87480a6e6d93 100644
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -622,29 +622,6 @@ static int hub_ext_port_status(struct usb_hub *hub, int port1, int type,
+ 		ret = 0;
+ 	}
+ 	mutex_unlock(&hub->status_mutex);
 -
--	num_subdevs = camss_of_parse_ports(camss);
--	if (num_subdevs < 0) {
--		ret = num_subdevs;
--		goto err_cleanup;
+-	/*
+-	 * There is no need to lock status_mutex here, because status_mutex
+-	 * protects hub->status, and the phy driver only checks the port
+-	 * status without changing the status.
+-	 */
+-	if (!ret) {
+-		struct usb_device *hdev = hub->hdev;
+-
+-		/*
+-		 * Only roothub will be notified of port state changes,
+-		 * since the USB PHY only cares about changes at the next
+-		 * level.
+-		 */
+-		if (is_root_hub(hdev)) {
+-			struct usb_hcd *hcd = bus_to_hcd(hdev->bus);
+-
+-			if (hcd->usb_phy)
+-				usb_phy_notify_port_status(hcd->usb_phy,
+-							   port1 - 1, *status, *change);
+-		}
 -	}
 -
- 	ret = camss_icc_get(camss);
- 	if (ret < 0)
- 		goto err_cleanup;
-@@ -1652,9 +1644,17 @@ static int camss_probe(struct platform_device *pdev)
- 		goto err_cleanup;
- 	}
- 
-+	v4l2_async_nf_init(&camss->notifier);
-+
-+	num_subdevs = camss_of_parse_ports(camss);
-+	if (num_subdevs < 0) {
-+		ret = num_subdevs;
-+		goto err_cleanup;
-+	}
-+
- 	ret = camss_register_entities(camss);
- 	if (ret < 0)
--		goto err_register_entities;
-+		goto err_cleanup;
- 
- 	if (num_subdevs) {
- 		camss->notifier.ops = &camss_subdev_notifier_ops;
-@@ -1689,9 +1689,8 @@ static int camss_probe(struct platform_device *pdev)
- 
- err_register_subdevs:
- 	camss_unregister_entities(camss);
--err_register_entities:
--	v4l2_device_unregister(&camss->v4l2_dev);
- err_cleanup:
-+	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
- 
  	return ret;
+ }
+ 
+diff --git a/include/linux/usb/phy.h b/include/linux/usb/phy.h
+index b513749582d7..e4de6bc1f69b 100644
+--- a/include/linux/usb/phy.h
++++ b/include/linux/usb/phy.h
+@@ -144,10 +144,6 @@ struct usb_phy {
+ 	 */
+ 	int	(*set_wakeup)(struct usb_phy *x, bool enabled);
+ 
+-	/* notify phy port status change */
+-	int	(*notify_port_status)(struct usb_phy *x, int port,
+-				      u16 portstatus, u16 portchange);
+-
+ 	/* notify phy connect status change */
+ 	int	(*notify_connect)(struct usb_phy *x,
+ 			enum usb_device_speed speed);
+@@ -320,15 +316,6 @@ usb_phy_set_wakeup(struct usb_phy *x, bool enabled)
+ 		return 0;
+ }
+ 
+-static inline int
+-usb_phy_notify_port_status(struct usb_phy *x, int port, u16 portstatus, u16 portchange)
+-{
+-	if (x && x->notify_port_status)
+-		return x->notify_port_status(x, port, portstatus, portchange);
+-	else
+-		return 0;
+-}
+-
+ static inline int
+ usb_phy_notify_connect(struct usb_phy *x, enum usb_device_speed speed)
+ {
 -- 
-2.42.0
+2.43.0
 
 
 
