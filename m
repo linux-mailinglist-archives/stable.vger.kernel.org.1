@@ -1,68 +1,68 @@
-Return-Path: <stable+bounces-3213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067557FF00C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:25:04 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82EAE7FF00F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:25:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4941281FFD
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 13:25:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B966B20E84
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 13:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D945147A47;
-	Thu, 30 Nov 2023 13:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE7147A4C;
+	Thu, 30 Nov 2023 13:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQAuosfi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6pStc0F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD963E47A;
-	Thu, 30 Nov 2023 13:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C90CC433C7;
-	Thu, 30 Nov 2023 13:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121B93E47A;
+	Thu, 30 Nov 2023 13:25:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CF3C433C7;
+	Thu, 30 Nov 2023 13:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701350698;
-	bh=6wXQG8GC4xHQYPa80EXyBOhEFr8itdnJN4uCsBB6Yi0=;
+	s=korg; t=1701350728;
+	bh=B50Myp2r8oz0ilW83tUjs4TPl/03BrY19uVzt55r0H0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KQAuosfibECnkXGBM2E9G412xWv5J7I4boFHF22LgUiNKc8GyoDpMkzSbitx6ngOX
-	 enDFY1isne+gxxvlQpj5WXE4Lu8v/Yw5L5uaNPLlVsO5jycRqvBCE9yBoHE6nZvWsY
-	 1qabRZhpA4CZPuIikP6z6PPL3nw4Ba4LIXQqAYac=
-Date: Thu, 30 Nov 2023 13:24:55 +0000
+	b=f6pStc0F1sdfa1tWHkWUNhb18QGGUsryuBFjcteidqrabLK3qyNf0RjiHBP0Seumv
+	 GO6nhYdK1Tc2eyERnpwVs9vwl/jU+FbG5JHhswZab9DPO5Qq1eXgrU3SFZZpQvH8la
+	 3V0Umi2JaiZHsWaM2pfPGPA0jY/z+jpnwO7c5zEI=
+Date: Thu, 30 Nov 2023 13:25:25 +0000
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: Nathan Chancellor <nathan@kernel.org>, sashal@kernel.org,
-	bhelgaas@google.com, llvm@lists.linux.dev, stable@vger.kernel.org,
-	Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: Re: [PATCH 5.10] PCI: keystone: Drop __init from
- ks_pcie_add_pcie_{ep,port}()
-Message-ID: <2023113047-county-icy-baff@gregkh>
-References: <20231128-5-10-fix-pci-keystone-modpost-warning-v1-1-43240045c516@kernel.org>
- <20231129094800.7uxfxx7h2sa4p5an@pengutronix.de>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: Chuck Lever <cel@kernel.org>, linux-stable <stable@vger.kernel.org>,
+	Linux NFS Mailing List <linux-nfs@vger.kernel.org>
+Subject: Re: [PATCH 0/8] nfsd fixes for 6.5.y
+Message-ID: <2023113013-fanning-esophagus-787f@gregkh>
+References: <170120874713.1515.13712791731008720729.stgit@klimt.1015granger.net>
+ <3C2A1F40-C0F3-412E-87ED-66AC1A2CA0F4@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231129094800.7uxfxx7h2sa4p5an@pengutronix.de>
+In-Reply-To: <3C2A1F40-C0F3-412E-87ED-66AC1A2CA0F4@oracle.com>
 
-On Wed, Nov 29, 2023 at 10:48:00AM +0100, Uwe Kleine-König wrote:
-> On Tue, Nov 28, 2023 at 05:37:00PM -0700, Nathan Chancellor wrote:
-> > This commit has no upstream equivalent.
+On Tue, Nov 28, 2023 at 10:07:11PM +0000, Chuck Lever III wrote:
+> 
+> 
+> > On Nov 28, 2023, at 4:59â€¯PM, Chuck Lever <cel@kernel.org> wrote:
 > > 
-> > After commit db5ebaeb8fda ("PCI: keystone: Don't discard .probe()
-> > callback") in 5.10, there are two modpost warnings when building with
+> > Backport of upstream fixes to NFSD's duplicate reply cache. These 
+> > have been hand-applied and tested with the same reproducer as was 
+> > used to create the upstream fixes.
 > 
-> As with the 5.4 patch:
-> 
-> s/5.10/5.10.202/
+> After applying patches 1 through 6 cleanly, these applied with fuzz
+> and offset but no rejection -- the same as the 6.6.y patch set.
+> The context changes were due to Lorenzo's new nfsd netlink protocol.
 
-Thanks, all now queued up.
+6.5.y is now end-of-life, sorry.
 
 greg k-h
 
