@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-3442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10E37FF5AB
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39BF7FF557
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99BFB281761
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10BE51C20E93
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F4649F9C;
-	Thu, 30 Nov 2023 16:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D52A54FA5;
+	Thu, 30 Nov 2023 16:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJwFyJAD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwklZWe0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19F954F9C;
-	Thu, 30 Nov 2023 16:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFEDC433C7;
-	Thu, 30 Nov 2023 16:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC2C524C2;
+	Thu, 30 Nov 2023 16:28:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8C0C433C7;
+	Thu, 30 Nov 2023 16:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361842;
-	bh=mNUFbS9a19HBNl1NAKlAdZPD2SCJClyPAc0ErWyKcfE=;
+	s=korg; t=1701361684;
+	bh=oND7KgGhtcyv93cQ81I4QW8PE3KC4bkoLMkQ+4ls9bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJwFyJADQ9/hUZOQR250vdDHzJicZSoaQ05UULS6vfPdelhaucw7j6G+INyLmqPb3
-	 xn3xnu6kJwevlk3nfUEKSd4JtYkOc5kHW/cFzJApu5bdh0JSozV4o0y5Z7TXBXZ9z8
-	 fJop9N9bMFeZB+gYbHO64VvHCjSl2O1vCmoqky10=
+	b=NwklZWe0c6PoxoTyGsVRvEjg6LfzSGDIT5a4QHVyj+HUnvyEOnNS5sqU0PNbzCR/v
+	 7RfmSgb8AnRCTly69YYvOXqHM1Bb8MAXcPyifYMAj4MjOL13BC6VVRXKj82JrKBMc0
+	 LxlLomRw7uUZnz4UqWJAhIKftHa2rdtaRQoUjO3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 68/82] bcache: check return value from btree_node_alloc_replacement()
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 6.6 112/112] USB: dwc3: qcom: fix wakeup after probe deferral
 Date: Thu, 30 Nov 2023 16:22:39 +0000
-Message-ID: <20231130162138.134856475@linuxfoundation.org>
+Message-ID: <20231130162143.831208091@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 777967e7e9f6f5f3e153abffb562bffaf4430d26 upstream.
+commit 41f5a0973259db9e4e3c9963d36505f80107d1a0 upstream.
 
-In btree_gc_rewrite_node(), pointer 'n' is not checked after it returns
-from btree_gc_rewrite_node(). There is potential possibility that 'n' is
-a non NULL ERR_PTR(), referencing such error code is not permitted in
-following code. Therefore a return value checking is necessary after 'n'
-is back from btree_node_alloc_replacement().
+The Qualcomm glue driver is overriding the interrupt trigger types
+defined by firmware when requesting the wakeup interrupts during probe.
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231120052503.6122-3-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This can lead to a failure to map the DP/DM wakeup interrupts after a
+probe deferral as the firmware defined trigger types do not match the
+type used for the initial mapping:
+
+	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+
+Fix this by not overriding the firmware provided trigger types when
+requesting the wakeup interrupts.
+
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231120161607.7405-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/dwc3/dwc3-qcom.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1506,6 +1506,8 @@ static int btree_gc_rewrite_node(struct
- 		return 0;
- 
- 	n = btree_node_alloc_replacement(replace, NULL);
-+	if (IS_ERR(n))
-+		return 0;
- 
- 	/* recheck reserve after allocating replacement node */
- 	if (btree_check_reserve(b, NULL)) {
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -549,7 +549,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
+@@ -564,7 +564,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DP_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
+@@ -579,7 +579,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DM_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
+@@ -594,7 +594,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 SS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
 
 
 
