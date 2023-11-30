@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-3362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB3A7FF543
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A72DE7FF598
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6A01C20FC6
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FBEA281816
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8789C54F9C;
-	Thu, 30 Nov 2023 16:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D154FA8;
+	Thu, 30 Nov 2023 16:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZYnJVs6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRCAbd9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4768854F87;
-	Thu, 30 Nov 2023 16:27:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C192FC433C7;
-	Thu, 30 Nov 2023 16:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6F04878B;
+	Thu, 30 Nov 2023 16:30:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CD1C433C7;
+	Thu, 30 Nov 2023 16:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361640;
-	bh=xPR8Jc881NDfofc5/Io/fosGbjq+2h2gKUsFXpNch9U=;
+	s=korg; t=1701361812;
+	bh=ip11hFOvtC8Gntx3q7x8a4IZvGKLj49Hq4cv7lQNRb4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZYnJVs6hLQQr0e3Hpr7uzvTYaCueY2DRwehQXZCfBTJev4rpG1o9Gyyzp0mCK+wZ
-	 6QfizS4Rs0V/fhTHs70TcXI0AMCviHb7WD+/xyIKuN/WxdhRd8dedzCHhaoQyhWilY
-	 EMS6B0mimqketDJWEi/qYBQwh5TW7EovKHDjPSrA=
+	b=fRCAbd9RMO6qsOLGwias15kqQ/Eic2eufm5yVMBf2a0uLzdIdaVM2ch3otXXB0h5e
+	 gMuKy+jgKeyTF5s4tnSn5CuSP4VDm9mK0POOwvJkIqGx6lcifn08uqrxH/GkUve+FM
+	 tNThxBX9J8P1GtaJt4ayzmOISLlb2BMMSbDKekB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 101/112] usb: config: fix iteration issue in usb_get_bos_descriptor()
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.1 57/82] swiotlb-xen: provide the "max_mapping_size" method
 Date: Thu, 30 Nov 2023 16:22:28 +0000
-Message-ID: <20231130162143.505967882@linuxfoundation.org>
+Message-ID: <20231130162137.776251882@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +54,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Keith Busch <kbusch@kernel.org>
 
-commit 974bba5c118f4c2baf00de0356e3e4f7928b4cbc upstream.
+commit bff2a2d453a1b683378b4508b86b84389f551a00 upstream.
 
-The BOS descriptor defines a root descriptor and is the base descriptor for
-accessing a family of related descriptors.
+There's a bug that when using the XEN hypervisor with bios with large
+multi-page bio vectors on NVMe, the kernel deadlocks [1].
 
-Function 'usb_get_bos_descriptor()' encounters an iteration issue when
-skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
-the same descriptor being read repeatedly.
+The deadlocks are caused by inability to map a large bio vector -
+dma_map_sgtable always returns an error, this gets propagated to the block
+layer as BLK_STS_RESOURCE and the block layer retries the request
+indefinitely.
 
-To address this issue, a 'goto' statement is introduced to ensure that the
-pointer and the amount read is updated correctly. This ensures that the
-function iterates to the next descriptor instead of reading the same
-descriptor repeatedly.
+XEN uses the swiotlb framework to map discontiguous pages into contiguous
+runs that are submitted to the PCIe device. The swiotlb framework has a
+limitation on the length of a mapping - this needs to be announced with
+the max_mapping_size method to make sure that the hardware drivers do not
+create larger mappings.
 
+Without max_mapping_size, the NVMe block driver would create large
+mappings that overrun the maximum mapping size.
+
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Link: https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/ [1]
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Suggested-by: Christoph Hellwig <hch@lst.de>
 Cc: stable@vger.kernel.org
-Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231115121325.471454-1-niklas.neronin@linux.intel.com
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Acked-by: Stefano Stabellini <sstabellini@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/151bef41-e817-aea9-675-a35fdac4ed@redhat.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/config.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/xen/swiotlb-xen.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_de
- 
- 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
- 			dev_notice(ddev, "descriptor type invalid, skip\n");
--			continue;
-+			goto skip_to_next_descriptor;
- 		}
- 
- 		switch (cap_type) {
-@@ -1078,6 +1078,7 @@ int usb_get_bos_descriptor(struct usb_de
- 			break;
- 		}
- 
-+skip_to_next_descriptor:
- 		total_len -= length;
- 		buffer += length;
- 	}
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma
+ 	.get_sgtable = dma_common_get_sgtable,
+ 	.alloc_pages = dma_common_alloc_pages,
+ 	.free_pages = dma_common_free_pages,
++	.max_mapping_size = swiotlb_max_mapping_size,
+ };
 
 
 
