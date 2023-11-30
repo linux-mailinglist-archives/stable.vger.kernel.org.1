@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 967AA7FF521
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B747FF577
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C76691C20F98
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A30A1C21060
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071B454F92;
-	Thu, 30 Nov 2023 16:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FE554FBD;
+	Thu, 30 Nov 2023 16:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCSkfLug"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WX9v09M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB9E524C2;
-	Thu, 30 Nov 2023 16:26:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D24C433C8;
-	Thu, 30 Nov 2023 16:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B480154BFB;
+	Thu, 30 Nov 2023 16:29:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43469C433C7;
+	Thu, 30 Nov 2023 16:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361570;
-	bh=9LXHDuM6zzw0I3lLLHbalF+ft4vUXMn+5cHwQxfCcD0=;
+	s=korg; t=1701361746;
+	bh=KhrkuhVxYkSdH2QSivDlYEjZoSEc2GUzN7GmRe0vRus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sCSkfLugr8Ay9/KXuv0PYe6z0T9JVupV1s5KU3qGXK4qjv4F0+rB+OdEkB+PJZmrO
-	 U3HwGsDdE2qDaFkjDgmO/4xzBjmxRyJ3VTLqw6Hnb5RHcFEU7KDUrO1JYC8qW8tR4F
-	 l8NBU0efCsagLbjWRuA0E54nXuD4xL9t/k2qJuTE=
+	b=2WX9v09MrrnJDaI5e56r+2Q9vJZ/9bVX4B8rBtPCi3mz0VQ0X2Rmn3pognwGlbHZg
+	 nHRgw7F27b5hWNIWspecoMrBJ4MXAoephjxHtZpJPPiVSGhKI1WtH+rwEY3nVLyH6I
+	 DAI03+3jGd7Fo+1H6rw/LpNEXX3OTb8yi8m2jK3I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Haberland <sth@linux.ibm.com>,
-	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 074/112] s390/dasd: protect device queue against concurrent access
-Date: Thu, 30 Nov 2023 16:22:01 +0000
-Message-ID: <20231130162142.679539360@linuxfoundation.org>
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 31/82] lockdep: Fix block chain corruption
+Date: Thu, 30 Nov 2023 16:22:02 +0000
+Message-ID: <20231130162136.942501095@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +51,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Höppner <hoeppner@linux.ibm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
+[ Upstream commit bca4104b00fec60be330cd32818dd5c70db3d469 ]
 
-In dasd_profile_start() the amount of requests on the device queue are
-counted. The access to the device queue is unprotected against
-concurrent access. With a lot of parallel I/O, especially with alias
-devices enabled, the device queue can change while dasd_profile_start()
-is accessing the queue. In the worst case this leads to a kernel panic
-due to incorrect pointer accesses.
+Kent reported an occasional KASAN splat in lockdep. Mark then noted:
 
-Fix this by taking the device lock before accessing the queue and
-counting the requests. Additionally the check for a valid profile data
-pointer can be done earlier to avoid unnecessary locking in a hot path.
+> I suspect the dodgy access is to chain_block_buckets[-1], which hits the last 4
+> bytes of the redzone and gets (incorrectly/misleadingly) attributed to
+> nr_large_chain_blocks.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That would mean @size == 0, at which point size_to_bucket() returns -1
+and the above happens.
+
+alloc_chain_hlocks() has 'size - req', for the first with the
+precondition 'size >= rq', which allows the 0.
+
+This code is trying to split a block, del_chain_block() takes what we
+need, and add_chain_block() puts back the remainder, except in the
+above case the remainder is 0 sized and things go sideways.
+
+Fixes: 810507fe6fd5 ("locking/lockdep: Reuse freed chain_hlocks entries")
+Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Kent Overstreet <kent.overstreet@linux.dev>
+Link: https://lkml.kernel.org/r/20231121114126.GH8262@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ kernel/locking/lockdep.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -674,18 +674,20 @@ static void dasd_profile_start(struct da
- 	 * we count each request only once.
- 	 */
- 	device = cqr->startdev;
--	if (device->profile.data) {
--		counter = 1; /* request is not yet queued on the start device */
--		list_for_each(l, &device->ccw_queue)
--			if (++counter >= 31)
--				break;
--	}
-+	if (!device->profile.data)
-+		return;
-+
-+	spin_lock(get_ccwdev_lock(device->cdev));
-+	counter = 1; /* request is not yet queued on the start device */
-+	list_for_each(l, &device->ccw_queue)
-+		if (++counter >= 31)
-+			break;
-+	spin_unlock(get_ccwdev_lock(device->cdev));
-+
- 	spin_lock(&device->profile.lock);
--	if (device->profile.data) {
--		device->profile.data->dasd_io_nr_req[counter]++;
--		if (rq_data_dir(req) == READ)
--			device->profile.data->dasd_read_nr_req[counter]++;
--	}
-+	device->profile.data->dasd_io_nr_req[counter]++;
-+	if (rq_data_dir(req) == READ)
-+		device->profile.data->dasd_read_nr_req[counter]++;
- 	spin_unlock(&device->profile.lock);
- }
- 
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 0224b0329d011..3b38303ed27b3 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -3453,7 +3453,8 @@ static int alloc_chain_hlocks(int req)
+ 		size = chain_block_size(curr);
+ 		if (likely(size >= req)) {
+ 			del_chain_block(0, size, chain_block_next(curr));
+-			add_chain_block(curr + req, size - req);
++			if (size > req)
++				add_chain_block(curr + req, size - req);
+ 			return curr;
+ 		}
+ 	}
+-- 
+2.42.0
+
 
 
 
