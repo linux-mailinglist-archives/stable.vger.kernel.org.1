@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-3317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A104E7FF508
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795877FF4EA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4CC281760
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 194F0B20E4B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F067354F98;
-	Thu, 30 Nov 2023 16:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3765654F96;
+	Thu, 30 Nov 2023 16:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IlMw9hXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZinbBalG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98978524C2;
-	Thu, 30 Nov 2023 16:25:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22AD3C433C8;
-	Thu, 30 Nov 2023 16:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA623495C2;
+	Thu, 30 Nov 2023 16:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AF7C433C8;
+	Thu, 30 Nov 2023 16:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361523;
-	bh=rqlLDcuWrna/vDUSmQgElKQlrm+pmWb0g5J1XphmLrc=;
+	s=korg; t=1701361463;
+	bh=SEiIzS/rLJvNuxg1xMXqmAN6btgco0rjDu1c25AdHTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlMw9hXRYkoV7LCHzSOTs5fKeOXjWNOMzNu/wuM2csSbmy11S/UeM4ZvAjVDfGHPu
-	 re3pSh4BnxcEvFkX0Yc33L312RAkZ4GZkDX/2LC1r7okzBiyyUXiZdfjFnADXEZXdR
-	 LLzjD/z+SlnHyNYGsf6/T5iivQCIwvycx/ezm7Rk=
+	b=ZinbBalGUpNMzW+6G8c5etoAN7Mg2XO2MPK/q3yOwnmxw+KLz09PVUdcAaSfCKfAx
+	 qiZv4GCBzSOzgcWdgUOEsiRFGysCfMjNA3/XGU9+/kYiY1zr/nBscyck1FG1hWelty
+	 +zHCT5XoZTS0F8gtuFbm0AFkSBCuGTGilI1QV/gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Charles Yi <be286@163.com>,
+	Jiri Kosina <jkosina@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/112] accel/ivpu/37xx: Fix hangs related to MMIO reset
-Date: Thu, 30 Nov 2023 16:21:19 +0000
-Message-ID: <20231130162141.337328480@linuxfoundation.org>
+Subject: [PATCH 6.6 033/112] HID: fix HID device resource race between HID core and debugging support
+Date: Thu, 30 Nov 2023 16:21:20 +0000
+Message-ID: <20231130162141.369248996@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -57,110 +57,148 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Charles Yi <be286@163.com>
 
-[ Upstream commit 3f7c0634926daf48cd2f6db6c1197a1047074088 ]
+[ Upstream commit fc43e9c857b7aa55efba9398419b14d9e35dcc7d ]
 
-There is no need to call MMIO reset using VPU_37XX_BUTTRESS_VPU_IP_RESET
-register. IP will be reset by FLR or by entering d0i3. Also IP reset
-during power_up is not needed as the VPU is already in reset.
+hid_debug_events_release releases resources bound to the HID device instance.
+hid_device_release releases the underlying HID device instance potentially
+before hid_debug_events_release has completed releasing debug resources bound
+to the same HID device instance.
 
-Removing MMIO reset improves stability as it a partial device reset
-that is not safe in some corner cases.
+Reference count to prevent the HID device instance from being torn down
+preemptively when HID debugging support is used. When count reaches zero,
+release core resources of HID device instance using hiddev_free.
 
-This change also brings back ivpu_boot_pwr_domain_disable() that
-helps to properly power down VPU when it is hung by a buggy workload.
+The crash:
 
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Fixes: 828d63042aec ("accel/ivpu: Don't enter d0i3 during FLR")
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231115111004.1304092-1-jacek.lawrynowicz@linux.intel.com
+[  120.728477][ T4396] kernel BUG at lib/list_debug.c:53!
+[  120.728505][ T4396] Internal error: Oops - BUG: 0 [#1] PREEMPT SMP
+[  120.739806][ T4396] Modules linked in: bcmdhd dhd_static_buf 8822cu pcie_mhi r8168
+[  120.747386][ T4396] CPU: 1 PID: 4396 Comm: hidt_bridge Not tainted 5.10.110 #257
+[  120.754771][ T4396] Hardware name: Rockchip RK3588 EVB4 LP4 V10 Board (DT)
+[  120.761643][ T4396] pstate: 60400089 (nZCv daIf +PAN -UAO -TCO BTYPE=--)
+[  120.768338][ T4396] pc : __list_del_entry_valid+0x98/0xac
+[  120.773730][ T4396] lr : __list_del_entry_valid+0x98/0xac
+[  120.779120][ T4396] sp : ffffffc01e62bb60
+[  120.783126][ T4396] x29: ffffffc01e62bb60 x28: ffffff818ce3a200
+[  120.789126][ T4396] x27: 0000000000000009 x26: 0000000000980000
+[  120.795126][ T4396] x25: ffffffc012431000 x24: ffffff802c6d4e00
+[  120.801125][ T4396] x23: ffffff8005c66f00 x22: ffffffc01183b5b8
+[  120.807125][ T4396] x21: ffffff819df2f100 x20: 0000000000000000
+[  120.813124][ T4396] x19: ffffff802c3f0700 x18: ffffffc01d2cd058
+[  120.819124][ T4396] x17: 0000000000000000 x16: 0000000000000000
+[  120.825124][ T4396] x15: 0000000000000004 x14: 0000000000003fff
+[  120.831123][ T4396] x13: ffffffc012085588 x12: 0000000000000003
+[  120.837123][ T4396] x11: 00000000ffffbfff x10: 0000000000000003
+[  120.843123][ T4396] x9 : 455103d46b329300 x8 : 455103d46b329300
+[  120.849124][ T4396] x7 : 74707572726f6320 x6 : ffffffc0124b8cb5
+[  120.855124][ T4396] x5 : ffffffffffffffff x4 : 0000000000000000
+[  120.861123][ T4396] x3 : ffffffc011cf4f90 x2 : ffffff81fee7b948
+[  120.867122][ T4396] x1 : ffffffc011cf4f90 x0 : 0000000000000054
+[  120.873122][ T4396] Call trace:
+[  120.876259][ T4396]  __list_del_entry_valid+0x98/0xac
+[  120.881304][ T4396]  hid_debug_events_release+0x48/0x12c
+[  120.886617][ T4396]  full_proxy_release+0x50/0xbc
+[  120.891323][ T4396]  __fput+0xdc/0x238
+[  120.895075][ T4396]  ____fput+0x14/0x24
+[  120.898911][ T4396]  task_work_run+0x90/0x148
+[  120.903268][ T4396]  do_exit+0x1bc/0x8a4
+[  120.907193][ T4396]  do_group_exit+0x8c/0xa4
+[  120.911458][ T4396]  get_signal+0x468/0x744
+[  120.915643][ T4396]  do_signal+0x84/0x280
+[  120.919650][ T4396]  do_notify_resume+0xd0/0x218
+[  120.924262][ T4396]  work_pending+0xc/0x3f0
+
+[ Rahul Rameshbabu <sergeantsagara@protonmail.com>: rework changelog ]
+Fixes: cd667ce24796 ("HID: use debugfs for events/reports dumping")
+Signed-off-by: Charles Yi <be286@163.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_hw_37xx.c | 46 +++++++++++++++----------------
- 1 file changed, 22 insertions(+), 24 deletions(-)
+ drivers/hid/hid-core.c  | 12 ++++++++++--
+ drivers/hid/hid-debug.c |  3 +++
+ include/linux/hid.h     |  3 +++
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/accel/ivpu/ivpu_hw_37xx.c b/drivers/accel/ivpu/ivpu_hw_37xx.c
-index cb9f0196e3ddf..b8010c07eec17 100644
---- a/drivers/accel/ivpu/ivpu_hw_37xx.c
-+++ b/drivers/accel/ivpu/ivpu_hw_37xx.c
-@@ -536,6 +536,16 @@ static int ivpu_boot_pwr_domain_enable(struct ivpu_device *vdev)
- 	return ret;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 8992e3c1e7698..e0181218ad857 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -702,15 +702,22 @@ static void hid_close_report(struct hid_device *device)
+  * Free a device structure, all reports, and all fields.
+  */
+ 
+-static void hid_device_release(struct device *dev)
++void hiddev_free(struct kref *ref)
+ {
+-	struct hid_device *hid = to_hid_device(dev);
++	struct hid_device *hid = container_of(ref, struct hid_device, ref);
+ 
+ 	hid_close_report(hid);
+ 	kfree(hid->dev_rdesc);
+ 	kfree(hid);
  }
  
-+static int ivpu_boot_pwr_domain_disable(struct ivpu_device *vdev)
++static void hid_device_release(struct device *dev)
 +{
-+	ivpu_boot_dpu_active_drive(vdev, false);
-+	ivpu_boot_pwr_island_isolation_drive(vdev, true);
-+	ivpu_boot_pwr_island_trickle_drive(vdev, false);
-+	ivpu_boot_pwr_island_drive(vdev, false);
++	struct hid_device *hid = to_hid_device(dev);
 +
-+	return ivpu_boot_wait_for_pwr_island_status(vdev, 0x0);
++	kref_put(&hid->ref, hiddev_free);
 +}
 +
- static void ivpu_boot_no_snoop_enable(struct ivpu_device *vdev)
- {
- 	u32 val = REGV_RD32(VPU_37XX_HOST_IF_TCU_PTW_OVERRIDES);
-@@ -634,25 +644,17 @@ static int ivpu_hw_37xx_info_init(struct ivpu_device *vdev)
+ /*
+  * Fetch a report description item from the data stream. We support long
+  * items, though they are not used yet.
+@@ -2846,6 +2853,7 @@ struct hid_device *hid_allocate_device(void)
+ 	spin_lock_init(&hdev->debug_list_lock);
+ 	sema_init(&hdev->driver_input_lock, 1);
+ 	mutex_init(&hdev->ll_open_lock);
++	kref_init(&hdev->ref);
  
- static int ivpu_hw_37xx_reset(struct ivpu_device *vdev)
- {
--	int ret;
--	u32 val;
--
--	if (IVPU_WA(punit_disabled))
--		return 0;
-+	int ret = 0;
+ 	hid_bpf_device_init(hdev);
  
--	ret = REGB_POLL_FLD(VPU_37XX_BUTTRESS_VPU_IP_RESET, TRIGGER, 0, TIMEOUT_US);
--	if (ret) {
--		ivpu_err(vdev, "Timed out waiting for TRIGGER bit\n");
--		return ret;
-+	if (ivpu_boot_pwr_domain_disable(vdev)) {
-+		ivpu_err(vdev, "Failed to disable power domain\n");
-+		ret = -EIO;
+diff --git a/drivers/hid/hid-debug.c b/drivers/hid/hid-debug.c
+index e7ef1ea107c9e..7dd83ec74f8a9 100644
+--- a/drivers/hid/hid-debug.c
++++ b/drivers/hid/hid-debug.c
+@@ -1135,6 +1135,7 @@ static int hid_debug_events_open(struct inode *inode, struct file *file)
+ 		goto out;
  	}
+ 	list->hdev = (struct hid_device *) inode->i_private;
++	kref_get(&list->hdev->ref);
+ 	file->private_data = list;
+ 	mutex_init(&list->read_mutex);
  
--	val = REGB_RD32(VPU_37XX_BUTTRESS_VPU_IP_RESET);
--	val = REG_SET_FLD(VPU_37XX_BUTTRESS_VPU_IP_RESET, TRIGGER, val);
--	REGB_WR32(VPU_37XX_BUTTRESS_VPU_IP_RESET, val);
--
--	ret = REGB_POLL_FLD(VPU_37XX_BUTTRESS_VPU_IP_RESET, TRIGGER, 0, TIMEOUT_US);
--	if (ret)
--		ivpu_err(vdev, "Timed out waiting for RESET completion\n");
-+	if (ivpu_pll_disable(vdev)) {
-+		ivpu_err(vdev, "Failed to disable PLL\n");
-+		ret = -EIO;
-+	}
+@@ -1227,6 +1228,8 @@ static int hid_debug_events_release(struct inode *inode, struct file *file)
+ 	list_del(&list->node);
+ 	spin_unlock_irqrestore(&list->hdev->debug_list_lock, flags);
+ 	kfifo_free(&list->hid_debug_fifo);
++
++	kref_put(&list->hdev->ref, hiddev_free);
+ 	kfree(list);
  
- 	return ret;
- }
-@@ -685,10 +687,6 @@ static int ivpu_hw_37xx_power_up(struct ivpu_device *vdev)
- {
- 	int ret;
+ 	return 0;
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 964ca1f15e3f6..3b08a29572298 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -679,6 +679,7 @@ struct hid_device {							/* device report descriptor */
+ 	struct list_head debug_list;
+ 	spinlock_t  debug_list_lock;
+ 	wait_queue_head_t debug_wait;
++	struct kref			ref;
  
--	ret = ivpu_hw_37xx_reset(vdev);
--	if (ret)
--		ivpu_warn(vdev, "Failed to reset HW: %d\n", ret);
--
- 	ret = ivpu_hw_37xx_d0i3_disable(vdev);
- 	if (ret)
- 		ivpu_warn(vdev, "Failed to disable D0I3: %d\n", ret);
-@@ -756,11 +754,11 @@ static int ivpu_hw_37xx_power_down(struct ivpu_device *vdev)
- {
- 	int ret = 0;
+ 	unsigned int id;						/* system unique id */
  
--	if (!ivpu_hw_37xx_is_idle(vdev) && ivpu_hw_37xx_reset(vdev))
--		ivpu_err(vdev, "Failed to reset the VPU\n");
-+	if (!ivpu_hw_37xx_is_idle(vdev))
-+		ivpu_warn(vdev, "VPU not idle during power down\n");
+@@ -687,6 +688,8 @@ struct hid_device {							/* device report descriptor */
+ #endif /* CONFIG_BPF */
+ };
  
--	if (ivpu_pll_disable(vdev)) {
--		ivpu_err(vdev, "Failed to disable PLL\n");
-+	if (ivpu_hw_37xx_reset(vdev)) {
-+		ivpu_err(vdev, "Failed to reset VPU\n");
- 		ret = -EIO;
- 	}
++void hiddev_free(struct kref *ref);
++
+ #define to_hid_device(pdev) \
+ 	container_of(pdev, struct hid_device, dev)
  
 -- 
 2.42.0
