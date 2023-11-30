@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-3419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A230F7FF58A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80ED37FF5D5
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 591471F20F65
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B186A1C21127
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF16D54FAE;
-	Thu, 30 Nov 2023 16:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED96248CEB;
+	Thu, 30 Nov 2023 16:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecx6knV1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhImjuTH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA32495C2;
-	Thu, 30 Nov 2023 16:29:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C97C433C8;
-	Thu, 30 Nov 2023 16:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF9DA11C9B;
+	Thu, 30 Nov 2023 16:32:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C047C433C8;
+	Thu, 30 Nov 2023 16:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361784;
-	bh=V+h1RMpTr7LoxmWUeUnqkE3C5SYgIilRpyH3Wt9HVxE=;
+	s=korg; t=1701361928;
+	bh=Gfr9K9C3G7bv8yhxrKYvazmYcWzxkDLr6zCarPTOjGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecx6knV1f4JRr+hV05zhLlAZlc3gGJJJ3q/4LqrtAoeDrG505v4xHV7zpQt+3mrxM
-	 hJHaYTav1TXmtwaoI9/J+S7fjM+dbeyTkdOGorafI4qq1m9zDG35F2UpqfUL34cnre
-	 eGBAfa6bErmZC8C7ZcA414uymSHcdCZMdseerJsc=
+	b=FhImjuTHrhSdN4ige1opta3ZYNjPQCyVQVW3nq+JBGW00uyuGwIRYoJSWJj3Eqo9z
+	 Ia89NwOWRAFDV0S6NB3+E47tEiLUMX2mCGFWpPL/MDAYSRhoHL4Wk3+LFTAZu9ov8J
+	 N1iuVcIDD6wy3Q6+J5jW2SeSgKSkZ33i2bAILwWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/82] ext4: factor out __es_alloc_extent() and __es_free_extent()
+Subject: [PATCH 5.15 19/69] amd-xgbe: handle the corner-case during tx completion
 Date: Thu, 30 Nov 2023 16:22:16 +0000
-Message-ID: <20231130162137.393881359@linuxfoundation.org>
+Message-ID: <20231130162133.716196356@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,102 +55,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 73a2f033656be11298912201ad50615307b4477a ]
+[ Upstream commit 7121205d5330c6a3cb3379348886d47c77b78d06 ]
 
-Factor out __es_alloc_extent() and __es_free_extent(), which only allocate
-and free extent_status in these two helpers.
+The existing implementation uses software logic to accumulate tx
+completions until the specified time (1ms) is met and then poll them.
+However, there exists a tiny gap which leads to a race between
+resetting and checking the tx_activate flag. Due to this the tx
+completions are not reported to upper layer and tx queue timeout
+kicks-in restarting the device.
 
-The ext4_es_alloc_extent() function is split into __es_alloc_extent()
-and ext4_es_init_extent(). In __es_alloc_extent() we allocate memory using
-GFP_KERNEL | __GFP_NOFAIL | __GFP_ZERO if the memory allocation cannot
-fail, otherwise we use GFP_ATOMIC. and the ext4_es_init_extent() is used to
-initialize extent_status and update related variables after a successful
-allocation.
+To address this, introduce a tx cleanup mechanism as part of the
+periodic maintenance process.
 
-This is to prepare for the use of pre-allocated extent_status later.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-4-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index c9ab439b29f56..45f97c9670a3c 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -461,14 +461,17 @@ static inline bool ext4_es_must_keep(struct extent_status *es)
- 	return false;
- }
- 
--static struct extent_status *
--ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
--		     ext4_fsblk_t pblk)
-+static inline struct extent_status *__es_alloc_extent(bool nofail)
-+{
-+	if (!nofail)
-+		return kmem_cache_alloc(ext4_es_cachep, GFP_ATOMIC);
-+
-+	return kmem_cache_zalloc(ext4_es_cachep, GFP_KERNEL | __GFP_NOFAIL);
-+}
-+
-+static void ext4_es_init_extent(struct inode *inode, struct extent_status *es,
-+		ext4_lblk_t lblk, ext4_lblk_t len, ext4_fsblk_t pblk)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 555db1871ec9f..8d823bc147001 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -682,10 +682,24 @@ static void xgbe_service(struct work_struct *work)
+ static void xgbe_service_timer(struct timer_list *t)
  {
--	struct extent_status *es;
--	es = kmem_cache_alloc(ext4_es_cachep, GFP_ATOMIC);
--	if (es == NULL)
--		return NULL;
- 	es->es_lblk = lblk;
- 	es->es_len = len;
- 	es->es_pblk = pblk;
-@@ -483,8 +486,11 @@ ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
+ 	struct xgbe_prv_data *pdata = from_timer(pdata, t, service_timer);
++	struct xgbe_channel *channel;
++	unsigned int i;
  
- 	EXT4_I(inode)->i_es_all_nr++;
- 	percpu_counter_inc(&EXT4_SB(inode->i_sb)->s_es_stats.es_stats_all_cnt);
-+}
+ 	queue_work(pdata->dev_workqueue, &pdata->service_work);
  
--	return es;
-+static inline void __es_free_extent(struct extent_status *es)
-+{
-+	kmem_cache_free(ext4_es_cachep, es);
- }
- 
- static void ext4_es_free_extent(struct inode *inode, struct extent_status *es)
-@@ -501,7 +507,7 @@ static void ext4_es_free_extent(struct inode *inode, struct extent_status *es)
- 					s_es_stats.es_stats_shk_cnt);
- 	}
- 
--	kmem_cache_free(ext4_es_cachep, es);
-+	__es_free_extent(es);
- }
- 
- /*
-@@ -802,10 +808,12 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
- 		}
- 	}
- 
--	es = ext4_es_alloc_extent(inode, newes->es_lblk, newes->es_len,
--				  newes->es_pblk);
-+	es = __es_alloc_extent(false);
- 	if (!es)
- 		return -ENOMEM;
-+	ext4_es_init_extent(inode, es, newes->es_lblk, newes->es_len,
-+			    newes->es_pblk);
+ 	mod_timer(&pdata->service_timer, jiffies + HZ);
 +
- 	rb_link_node(&es->rb_node, parent, p);
- 	rb_insert_color(&es->rb_node, &tree->root);
++	if (!pdata->tx_usecs)
++		return;
++
++	for (i = 0; i < pdata->channel_count; i++) {
++		channel = pdata->channel[i];
++		if (!channel->tx_ring || channel->tx_timer_active)
++			break;
++		channel->tx_timer_active = 1;
++		mod_timer(&channel->tx_timer,
++			  jiffies + usecs_to_jiffies(pdata->tx_usecs));
++	}
+ }
  
+ static void xgbe_init_timers(struct xgbe_prv_data *pdata)
 -- 
 2.42.0
 
