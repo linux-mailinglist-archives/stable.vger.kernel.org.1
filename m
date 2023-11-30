@@ -1,274 +1,228 @@
-Return-Path: <stable+bounces-3570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F487FFBDE
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:59:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 535387FFC53
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 21:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D7D41C20E82
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:59:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85C601C20DFA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F5653E03;
-	Thu, 30 Nov 2023 19:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70C954FBF;
+	Thu, 30 Nov 2023 20:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="uoBnN6GT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kx7uiucP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C271C198
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:59:09 -0800 (PST)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1d04c097e34so2027555ad.0
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:59:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701374349; x=1701979149; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sj/IaI8LWFBrZHPykmaiEjq1MZr64+UYYOhJiCFj95U=;
-        b=uoBnN6GT2ltgGDwYGzsS5648Be9vS5ULFgIaWSps9zQwFZBYcSKItr6sjtuSWDmJG9
-         MYX1SCx8tfp4146N6JT76C0SBQ2OPRjCefYWU6koik1cHyZUan+MY+dCCBiE6Zc4WlPq
-         j/8MSkaxcPCq4iL8s4c1r9rSdfAJyyGuSSJBt3dTWYDWDl64TBvoEtwcDJ90eC1unhWa
-         6sHpSgDiFSZXOesnCivylvVpoUmEEVSnf9nZxZW1c/ic0zADk4oTfTgcTQP6sxYq1IJg
-         Jbkp+OZXsX8pZTazIGCCZcfmdxGMuJancLaZvsQZlfE4F9WOTTBbIMoWz2IPFIEMStXy
-         S4Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701374349; x=1701979149;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Sj/IaI8LWFBrZHPykmaiEjq1MZr64+UYYOhJiCFj95U=;
-        b=Bvj5lmsLWiQ60gWp9vhCFmdMahreqVTR4Har92kBS63ZR1TF3HVJhl+oc8GL3rB+hi
-         CMAlxrz8GDA28PtjEXB9LfBblooLrDXRYZ19K7jTC0ECh1QRDb8Yng6JMTzjsmMlpex0
-         b8dTDM+1ZzaUc9rdvzip4zvljIAuuiN1BXRZnh29wAjfNMWSgXHiJO1LPJkz7v0EqlTb
-         LERG+pLbjw8wBNM3J0wtqWrS6tt5YCsK+C+YRhC9hMJolkg+Zxv2mkG53mKgd+LNSLs4
-         tIeiqshEUHz9aSJ+VyVQZQJYP9jnvrXk5owfSQGHE10eOBQG5udJ75vkNKqPo52JWTUw
-         9GXw==
-X-Gm-Message-State: AOJu0YyqZn5odFD9lj/oF4n6VBFwbGKTQnq4oLSGVs0MV7zHtkLESde0
-	88s7aIVOUxpjwoATtewLOmxnVr8/3eofFIDUkC3rCw==
-X-Google-Smtp-Source: AGHT+IG5yvU2EmSYMJLB64j4moW24i8HlXn/iqzjEaAQHeqGJb3WnktdSmfJA4L6idoR71PpSUTGAQ==
-X-Received: by 2002:a17:902:c60b:b0:1cf:5746:7ad0 with SMTP id r11-20020a170902c60b00b001cf57467ad0mr29877875plr.14.1701374348786;
-        Thu, 30 Nov 2023 11:59:08 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id f13-20020a170902ce8d00b001cfce2bf48esm1789958plg.43.2023.11.30.11.59.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 11:59:08 -0800 (PST)
-Message-ID: <6568e98c.170a0220.e235d.579f@mx.google.com>
-Date: Thu, 30 Nov 2023 11:59:08 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FE931985;
+	Thu, 30 Nov 2023 12:15:52 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 379661BF20B;
+	Thu, 30 Nov 2023 20:15:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701375350;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mIbIFfrn5l/35BhQp4MbDdbDxlcbSPBpb9WWg24uDPY=;
+	b=kx7uiucPrUVYV+YkZUGY0OF7p0jdMHfxgJ4v75gTrlIn+8GniiSyfnWoFXjww2F9llLD8T
+	ugapChnaDaqMxKvJbKINlumrAY7hGm0dlDLYcBkeZkB8d+Gaf2GYhFPadUbSCfdgvDn12g
+	mJhNK9ge/tJNDFXjsA175ZeZwrm2LVtsEWakxitVwaGfNurHrkfY7jTXU2QllAHDbVWGWH
+	ZhqHpHuNe8rLwMCD5hBISv3ivM9SRbmWFx+1B9+v0vW/D/5utQOQjjOzwUnqTQx7QaGHv0
+	kS7p8N3oqMJ2BtFqdCOafwgoA0C/Szdj+DsmfxrriEvVsO+u+p2oyCQcc/74MQ==
+Date: Thu, 30 Nov 2023 21:15:43 +0100
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Richard Weinberger <richard@nod.at>
+Cc: Ronald Wahl <ronald.wahl@raritan.com>, Mark Brown <broonie@kernel.org>,
+ linux-spi <linux-spi@vger.kernel.org>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, Ryan Wanner <ryan.wanner@microchip.com>,
+ stable <stable@vger.kernel.org>, Richard Weinberger
+ <richard.weinberger@gmail.com>, David Woodhouse <dwmw2@infradead.org>
+Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any
+ signal
+Message-ID: <20231130211543.2801a55b@xps-13>
+In-Reply-To: <1192504136.46091.1701368767836.JavaMail.zimbra@nod.at>
+References: <20231127095842.389631-1-miquel.raynal@bootlin.com>
+	<a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com>
+	<0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com>
+	<20231129094932.2639ca49@xps-13>
+	<723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
+	<1192504136.46091.1701368767836.JavaMail.zimbra@nod.at>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.14.331-21-gbcbac4204b846
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.331-21-gbcbac4204b846)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+X-GND-Sasl: miquel.raynal@bootlin.com
 
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.331-21-gbcbac4204b846)
+Hi Richard,
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.331-21-gbcbac4204b846/
+richard@nod.at wrote on Thu, 30 Nov 2023 19:26:07 +0100 (CET):
 
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.331-21-gbcbac4204b846
-Git Commit: bcbac4204b84634b1a751b6b0f55ec6d671f61e6
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+> ----- Urspr=C3=BCngliche Mail -----
+> > Von: "richard" <richard@nod.at>
+> > An: "Miquel Raynal" <miquel.raynal@bootlin.com>
+> > CC: "Ronald Wahl" <ronald.wahl@raritan.com>, "Mark Brown" <broonie@kern=
+el.org>, "linux-spi" <linux-spi@vger.kernel.org>,
+> > "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Ryan Wanner" <ryan.=
+wanner@microchip.com>, "stable"
+> > <stable@vger.kernel.org>, "Richard Weinberger" <richard.weinberger@gmai=
+l.com>
+> > Gesendet: Donnerstag, 30. November 2023 13:46:14
+> > Betreff: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any =
+signal =20
+>=20
+> > ----- Urspr=C3=BCngliche Mail ----- =20
+> >> Von: "Miquel Raynal" <miquel.raynal@bootlin.com>
+> >> + Richard, my dear jffs2 expert ;) =20
+> >=20
+> > :-S
+> >  =20
+> >>=20
+> >> ronald.wahl@raritan.com wrote on Mon, 27 Nov 2023 18:54:40 +0100:
+> >>  =20
+> >>> On 27.11.23 16:10, Ronald Wahl wrote: =20
+> >>> > On 27.11.23 10:58, Miquel Raynal wrote: =20
+> >>> >> The intended move from wait_for_completion_*() to
+> >>> >> wait_for_completion_interruptible_*() was to allow (very) long spi=
+ memor =20
+> >>> y =20
+> >>> >> transfers to be stopped upon user request instead of freezing the
+> >>> >> machine forever as the timeout value could now be significantly bi=
+gger.
+> >>> >>
+> >>> >> However, depending on the user logic, applications can receive many
+> >>> >> signals for their own "internal" purpose and have nothing to do wi=
+th the
+> >>> >> requested kernel operations, hence interrupting spi transfers upon=
+ any
+> >>> >> signal is probably not a wise choice. Instead, let's switch to
+> >>> >> wait_for_completion_killable_*() to only catch the "important"
+> >>> >> signals. This was likely the intended behavior anyway. =20
+> >>> >
+> >>> > Actually this seems to work. But aborting a process that has a SPI
+> >>> > transfer running causes ugly messages from kernel. This is somehow
+> >>> > unexpected:
+> >>> >
+> >>> > # dd if=3D/dev/urandom of=3D/flashdisk/testfile bs=3D1024 count=3D5=
+12
+> >>> > ^C[=C2=A0 380.726760] spi-nor spi0.0: spi transfer canceled
+> >>> > [=C2=A0 380.731688] spi-nor spi0.0: SPI transfer failed: -512
+> >>> > [=C2=A0 380.737141] spi_master spi0: failed to transfer one message=
+ from queue
+> >>> > [=C2=A0 380.746495] spi-nor spi0.0: spi transfer canceled
+> >>> > [=C2=A0 380.751549] spi-nor spi0.0: SPI transfer failed: -512
+> >>> > [=C2=A0 380.756844] spi_master spi0: failed to transfer one message=
+ from queue
+> >>> >
+> >>> > JFFS2 also logs an informational message which is less visible but =
+also
+> >>> > may rise eyebrows:
+> >>> > [=C2=A0 380.743904] jffs2: Write of 4164 bytes at 0x0016a47c failed=
+. retu =20
+> >>> rned =20
+> >>> > -512, retlen 68 =20
+> >=20
+> > Ugly kernel messages are a normal consequence of killing an IO.
+> > Chances are good that we'll find bugs in the upper layers.
+> >  =20
+> >>> > Killing a process is something to expect in certain cases and it sh=
+ould
+> >>> > not cause such messages which may create some anxiety that somethin=
+g bad
+> >>> > had happened. So maybe the "kill" case should be silent (e.g. level
+> >>> > "debug")
+> >>> > but without out hiding real errors. But even when hiding the messag=
+e in t =20
+> >>> he =20
+> >>> > SPI framework it may cause additional messages in upper layers like=
+ JFFS2 =20
+> >>> . =20
+> >>> > I'm not sure whether all of this is a good idea. This is something =
+others
+> >>> > have to decide. =20
+> >>>=20
+> >>> ... and now I just got a crash when unmounting and remounting jffs2:
+> >>>=20
+> >>> unmount:
+> >>> [ 8245.821105] spi-nor spi0.0: spi transfer canceled
+> >>> [ 8245.826288] spi-nor spi0.0: SPI transfer failed: -512
+> >>> [ 8245.831508] spi_master spi0: failed to transfer one message from q=
+ueue
+> >>> [ 8245.838484] jffs2: Write of 1092 bytes at 0x00181458 failed. retur=
+ned -5
+> >>> 12, retlen 68
+> >>> [ 8245.839786] spi-nor spi0.0: spi transfer canceled
+> >>> [ 8245.844759] spi-nor spi0.0: SPI transfer failed: -512
+> >>> [ 8245.850145] spi_master spi0: failed to transfer one message from q=
+ueue
+> >>> [ 8245.856909] jffs2: Write of 1092 bytes at 0x0018189c failed. retur=
+ned -5
+> >>> 12, retlen 0
+> >>> [ 8245.856942] jffs2: Not marking the space at 0x0018189c as dirty be=
+cause the
+> >>> flash driver returned retlen zero =20
+> >=20
+> > jffs2 has a garbage collect thread which can be controlled using various
+> > signals.
+> > To terminate the thread, jffs2 sends SIGKILL upon umount.
+> > If the gc thread does IO while that, you gonna kill the IO too.
+> >  =20
+> >>> mount:
+> >>> [ 8831.213456] jffs2: error: (1142) jffs2_link_node_ref: Adding new r=
+ef 28b
+> >>> d9da7 at (0x000ad578-0x000ae5bc) not immediately after previous (0x00=
+0ad578
+> >>> -0x000ad578)
+> >>> [ 8831.228212] Internal error: Oops - undefined instruction: 0 [#1] T=
+HUMB2 =20
+> >=20
+> >=20
+> > I fear this is a jffs2 (summary feature) bug. Chances are great that yo=
+u're able
+> > to trigger the very same using a sudden loss of power.
+> >  =20
+> >> It's not just spi-atmel, any spi-mem controller might be tempted to use
+> >> interruptible^Wkillable transfers just because the timeout values can
+> >> be really big as the memory sizes increase.
+> >>=20
+> >> One solution is to change the completion helpers back to something
+> >> non-killable/non-interruptible, but the user experience will be
+> >> slightly degraded. The other would be to look into jffs2 (if it's the
+> >> only filesystem playing with signals during unmount, tbh I don't know).
+> >> But maybe this signaling mechanism can't be hacked for compatibility
+> >> reasons. Handling this at the spi level would be a mix of layers, I'm
+> >> not ready for that.
+> >>=20
+> >> Richard, Mark, what's your opinion here? =20
+> >=20
+> > I *think* we can remove the signal handling code from jffs2 since it ma=
+kes
+> > already use of the kthread_should_stop() API.
+> > That way we can keep the SPI transfer interruptible by signals.
+> > ...reading right now into the history to figure better. =20
+>=20
+> After a brief discussion with dwmw2 another question came up, if an spi t=
+ransfer
+> is cancelled, *all* other IO do the filesystem has to stop too.
+> IO can happen concurrently, if only one IO path dies but the other ones c=
+an
+> make progress, the filesystem becomes inconsistent and all hope is lost.
+>=20
+> Miquel, is this guaranteed by your changes?
 
-Warnings Detected:
+Absolutely not, the changes are in a spi controller, there is nothing
+specific to the user there. If a filesystem transfer get interrupted,
+it's the filesystem responsibility to cancel the other IOs if that's
+relevant for its own consistency?
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+Thanks,
+Miqu=C3=A8l
 
