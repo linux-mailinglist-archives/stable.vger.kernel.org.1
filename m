@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 951A87FF5D1
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E887FF587
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03008B20D81
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 724F01C20DF8
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D13482DC;
-	Thu, 30 Nov 2023 16:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8711354FB2;
+	Thu, 30 Nov 2023 16:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucYJhYWO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKZIYIXe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FDB54FA4;
-	Thu, 30 Nov 2023 16:32:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E25C433C8;
-	Thu, 30 Nov 2023 16:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8C354FA6;
+	Thu, 30 Nov 2023 16:29:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A82C433C8;
+	Thu, 30 Nov 2023 16:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361920;
-	bh=bK6F9Z29i3hLWXAKP8s23VrROVNSfBftxRATnRp+T0E=;
+	s=korg; t=1701361776;
+	bh=zbTSV5XafWpgCjBa6X6zJdflJ31HSlyM9yGFCiDo6jY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ucYJhYWOYeRpZ0YnXtfHU+k9H8BuNf1n+Wy0gTrtvJ3ZmXn5QsReT9irANuHsyFxM
-	 352mKSRt958Aueal6IwSuTCav631XH2fIFxaIHm2YdxfIvWqB0HbvWfX/izAmu/t1g
-	 pVRGzAcxUOrSfgwx+5/7K/gxzBk0+YTZxm5VCZjY=
+	b=GKZIYIXeuxpkun2GZqi0ExvPo0JjYGkfTI/yPGLge8FqhzyDfrKWCPTfMJ4iizYIV
+	 6I/lVlG1AgS6lCOGDL7ZSeNFGef6AanGT1xfuMhwk7GEI55mYIh4UwEDB2d7UCA7ZP
+	 VTDr9OzyYP7I+Pu3KefPqm4hnEkDsk5ce6kgVB9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Stabellini <stefano.stabellini@amd.com>,
-	Juergen Gross <jgross@suse.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 16/69] arm/xen: fix xen_vcpu_info allocation alignment
+Subject: [PATCH 6.1 42/82] media: qcom: camss: Fix V4L2 async notifier error path
 Date: Thu, 30 Nov 2023 16:22:13 +0000
-Message-ID: <20231130162133.615667622@linuxfoundation.org>
+Message-ID: <20231130162137.289310511@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Stabellini <sstabellini@kernel.org>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 7bf9a6b46549852a37e6d07e52c601c3c706b562 ]
+[ Upstream commit b278080a89f452063915beda0ade6b3ed5ee4271 ]
 
-xen_vcpu_info is a percpu area than needs to be mapped by Xen.
-Currently, it could cross a page boundary resulting in Xen being unable
-to map it:
+Previously the jump label err_cleanup was used higher in the probe()
+function to release the async notifier however the async notifier
+registration was moved later in the code rendering the previous four jumps
+redundant.
 
-[    0.567318] kernel BUG at arch/arm64/xen/../../arm/xen/enlighten.c:164!
-[    0.574002] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+Rename the label from err_cleanup to err_v4l2_device_unregister to capture
+what the jump does.
 
-Fix the issue by using __alloc_percpu and requesting alignment for the
-memory allocation.
-
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-
-Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2311221501340.2053963@ubuntu-linux-20-04-desktop
-Fixes: 24d5373dda7c ("arm/xen: Use alloc_percpu rather than __alloc_percpu")
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 51397a4ec75d ("media: qcom: Initialise V4L2 async notifier later")
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: fix old name in commit log: err_v4l2_device_register -> err_v4l2_device_unregister]
+Stable-dep-of: f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/xen/enlighten.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/xen/enlighten.c b/arch/arm/xen/enlighten.c
-index 27277d6bbfa5a..59de416c61a30 100644
---- a/arch/arm/xen/enlighten.c
-+++ b/arch/arm/xen/enlighten.c
-@@ -359,7 +359,8 @@ static int __init xen_guest_init(void)
- 	 * for secondary CPUs as they are brought up.
- 	 * For uniformity we use VCPUOP_register_vcpu_info even on cpu0.
- 	 */
--	xen_vcpu_info = alloc_percpu(struct vcpu_info);
-+	xen_vcpu_info = __alloc_percpu(sizeof(struct vcpu_info),
-+				       1 << fls(sizeof(struct vcpu_info) - 1));
- 	if (xen_vcpu_info == NULL)
- 		return -ENOMEM;
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index f794215948e71..f490ad2266960 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1615,21 +1615,21 @@ static int camss_probe(struct platform_device *pdev)
+ 
+ 	ret = camss_icc_get(camss);
+ 	if (ret < 0)
+-		goto err_cleanup;
++		return ret;
+ 
+ 	ret = camss_configure_pd(camss);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to configure power domains: %d\n", ret);
+-		goto err_cleanup;
++		return ret;
+ 	}
+ 
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+-		goto err_cleanup;
++		return ret;
+ 
+ 	ret = dma_set_mask_and_coherent(dev, 0xffffffff);
+ 	if (ret)
+-		goto err_cleanup;
++		return ret;
+ 
+ 	camss->media_dev.dev = camss->dev;
+ 	strscpy(camss->media_dev.model, "Qualcomm Camera Subsystem",
+@@ -1641,7 +1641,7 @@ static int camss_probe(struct platform_device *pdev)
+ 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
+-		goto err_cleanup;
++		return ret;
+ 	}
+ 
+ 	v4l2_async_nf_init(&camss->notifier);
+@@ -1649,12 +1649,12 @@ static int camss_probe(struct platform_device *pdev)
+ 	num_subdevs = camss_of_parse_ports(camss);
+ 	if (num_subdevs < 0) {
+ 		ret = num_subdevs;
+-		goto err_cleanup;
++		goto err_v4l2_device_unregister;
+ 	}
+ 
+ 	ret = camss_register_entities(camss);
+ 	if (ret < 0)
+-		goto err_cleanup;
++		goto err_v4l2_device_unregister;
+ 
+ 	if (num_subdevs) {
+ 		camss->notifier.ops = &camss_subdev_notifier_ops;
+@@ -1689,7 +1689,7 @@ static int camss_probe(struct platform_device *pdev)
+ 
+ err_register_subdevs:
+ 	camss_unregister_entities(camss);
+-err_cleanup:
++err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
  
 -- 
 2.42.0
