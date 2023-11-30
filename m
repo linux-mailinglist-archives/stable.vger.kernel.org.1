@@ -1,121 +1,122 @@
-Return-Path: <stable+bounces-3231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C924A7FF1D6
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:31:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E6C7FF1F2
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:33:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0586D1C20DA9
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:31:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24772B214CF
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7907A487AF;
-	Thu, 30 Nov 2023 14:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9436F5100C;
+	Thu, 30 Nov 2023 14:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrMCa2pm"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="RiJYYlkN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D67051001
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FCEC433C8;
-	Thu, 30 Nov 2023 14:31:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701354700;
-	bh=Mc3Q7Lqb6K00e9vYad1YKf9fMfL1wahq7acpMf2BTDg=;
-	h=Subject:To:Cc:From:Date:From;
-	b=OrMCa2pmFaPEsed2xjR/EVpDfCPR+39gYZ6RiZ8Jk0prJ93JDuNQ6dOGoJxTYVhB7
-	 Gyrnporqu9MlAJpKkEZYFOMFliinnpXb9HX172Ix0p7fC5CUbiV7bu6GDdmb2Xqn6J
-	 iqaNQ08IyXIV4VdYy5+KZcVYKBvTfu6r6JUkavx4=
-Subject: FAILED: patch "[PATCH] io_uring: fix off-by one bvec index" failed to apply to 5.4-stable tree
-To: kbusch@kernel.org,axboe@kernel.dk
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 30 Nov 2023 14:31:26 +0000
-Message-ID: <2023113025-eastbound-uninstall-c2e0@gregkh>
+Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F179BD
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 06:33:08 -0800 (PST)
+Received: by mail-io1-xd34.google.com with SMTP id ca18e2360f4ac-7b05e65e784so2403339f.1
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 06:33:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701354787; x=1701959587; darn=vger.kernel.org;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pJPRP/rGos1L8yAQoqnTYka6cOglpc8Neu8PdeAkang=;
+        b=RiJYYlkNbu7FAYLfWB7dMLARbr3S0mpfu4lIMAMaJrL94acU4UPUE5ZUlO9pjth/WV
+         vO4sxqWTA8z5U51RHc3DGMuXPhFWIT0hM/5rQBYdF4TeCjkXlBlu9JpK2iah1haQEvFW
+         vvIQrbY0EKmNh5fBQBuXQD0cnexFs0/RnhMDE1uFlnAWgHB9pjpu3T/j/oytseysjPkC
+         A7SLxPnD/bQK+l7wujBD1nok62wXEry85FsBN/tj4JVKcwqyBBIpa0gnwzANsgab9Xe7
+         nW3fyLzwqr0WjMcbQZhZ1A/+Zi+r2CxEvG6CLFzGl8RxABIu2LCUtHF0YtrAOQCVgrZL
+         reZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701354787; x=1701959587;
+        h=in-reply-to:from:references:cc:to:content-language:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=pJPRP/rGos1L8yAQoqnTYka6cOglpc8Neu8PdeAkang=;
+        b=F9FnJ9fKDDY5tKDg73DQ5oC0+Mi9okSkvKPXc0tIK4fCjhCKKx3gU1NLgh8ybYqzAg
+         gHLi6tHDva3wQz0X4ncaWQas2trbAMCn1yXd2Fv96V6ZZncpEsLu0kFL26Fuszvh3M4K
+         +d+kX8W6X1/9JQTlbSLPSTJtWWpaoia3RqfJaMPFf2HjUPc50Ltk/g7aT8TyBIhl2Sng
+         PCn7GWg34BlQK6zJ7T0H/4UvOyffS5OoqhqMjOHjh3au9EDZEa+t0FlNAvQceyd7nh/o
+         IZQ43bnO0dSVGEaA1nNp54pos4PktMLZdwbO0GAzZSgtjNAm/EaLt/U/Px5o6EQlwhI7
+         akGw==
+X-Gm-Message-State: AOJu0Yz3u0ddqY7CKMeW0Zre5SEcycq0KT/VFKzmNRaVNJlImP6ptKb2
+	htg7zgo9V4b/nijyPE4q6cTenw==
+X-Google-Smtp-Source: AGHT+IEZQ/+5iRwWyhA7efPPQaU+ITkjQSP7+SJEbgZsbbFVUxtSjiCqrkwupx2YuRk+lEqK4RUEwA==
+X-Received: by 2002:a92:ce8c:0:b0:35c:7b32:241f with SMTP id r12-20020a92ce8c000000b0035c7b32241fmr16730117ilo.2.1701354787469;
+        Thu, 30 Nov 2023 06:33:07 -0800 (PST)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id y19-20020a056e02129300b0035cc242a29bsm395254ilq.48.2023.11.30.06.33.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Nov 2023 06:33:06 -0800 (PST)
+Content-Type: multipart/mixed; boundary="------------6VqPbNG80nGeyhJbzjiv7nPY"
+Message-ID: <1325a4a7-15b3-4e3b-af51-c2c660ab8456@kernel.dk>
+Date: Thu, 30 Nov 2023 07:33:06 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-
-
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x d6fef34ee4d102be448146f24caf96d7b4a05401
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113025-eastbound-uninstall-c2e0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-d6fef34ee4d1 ("io_uring: fix off-by one bvec index")
-57bebf807e2a ("io_uring/rsrc: optimise registered huge pages")
-b000ae0ec2d7 ("io_uring/rsrc: optimise single entry advance")
-c059f7858408 ("io_uring: move io_import_fixed()")
-f337a84d3952 ("io_uring: opcode independent fixed buf import")
-f3b44f92e59a ("io_uring: move read/write related opcodes to its own file")
-c98817e6cd44 ("io_uring: move remaining file table manipulation to filetable.c")
-735729844819 ("io_uring: move rsrc related data, core, and commands")
-3b77495a9723 ("io_uring: split provided buffers handling into its own file")
-7aaff708a768 ("io_uring: move cancelation into its own file")
-329061d3e2f9 ("io_uring: move poll handling into its own file")
-cfd22e6b3319 ("io_uring: add opcode name to io_op_defs")
-92ac8beaea1f ("io_uring: include and forward-declaration sanitation")
-c9f06aa7de15 ("io_uring: move io_uring_task (tctx) helpers into its own file")
-a4ad4f748ea9 ("io_uring: move fdinfo helpers to its own file")
-e5550a1447bf ("io_uring: use io_is_uring_fops() consistently")
-17437f311490 ("io_uring: move SQPOLL related handling into its own file")
-59915143e89f ("io_uring: move timeout opcodes and handling into its own file")
-e418bbc97bff ("io_uring: move our reference counting into a header")
-36404b09aa60 ("io_uring: move msg_ring into its own file")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From d6fef34ee4d102be448146f24caf96d7b4a05401 Mon Sep 17 00:00:00 2001
-From: Keith Busch <kbusch@kernel.org>
-Date: Mon, 20 Nov 2023 14:18:31 -0800
-Subject: [PATCH] io_uring: fix off-by one bvec index
-
-If the offset equals the bv_len of the first registered bvec, then the
-request does not include any of that first bvec. Skip it so that drivers
-don't have to deal with a zero length bvec, which was observed to break
-NVMe's PRP list creation.
-
+User-Agent: Mozilla Thunderbird
+Subject: Re: FAILED: patch "[PATCH] io_uring: fix off-by one bvec index"
+ failed to apply to 6.1-stable tree
+Content-Language: en-US
+To: gregkh@linuxfoundation.org, kbusch@kernel.org
 Cc: stable@vger.kernel.org
-Fixes: bd11b3a391e3 ("io_uring: don't use iov_iter_advance() for fixed buffers")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20231120221831.2646460-1-kbusch@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+References: <2023113023-heaviness-easel-554e@gregkh>
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <2023113023-heaviness-easel-554e@gregkh>
 
-diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
-index 7034be555334..f521c5965a93 100644
---- a/io_uring/rsrc.c
-+++ b/io_uring/rsrc.c
-@@ -1258,7 +1258,7 @@ int io_import_fixed(int ddir, struct iov_iter *iter,
- 		 */
- 		const struct bio_vec *bvec = imu->bvec;
- 
--		if (offset <= bvec->bv_len) {
-+		if (offset < bvec->bv_len) {
- 			/*
- 			 * Note, huge pages buffers consists of one large
- 			 * bvec entry and should always go this way. The other
+This is a multi-part message in MIME format.
+--------------6VqPbNG80nGeyhJbzjiv7nPY
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 11/30/23 7:31 AM, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.1-stable tree.
+
+Already tested these, here's the 6.1 variant.
+
+-- 
+Jens Axboe
+
+--------------6VqPbNG80nGeyhJbzjiv7nPY
+Content-Type: text/x-patch; charset=UTF-8;
+ name="6.1-io_uring-fix-off-by-one-bvec-index.patch"
+Content-Disposition: attachment;
+ filename="6.1-io_uring-fix-off-by-one-bvec-index.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSAwMTYzNjAyOTc3NWJjZjAyM2RhNzNhNmMwOTRhMzcxYTA0MDhhZTBlIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBLZWl0aCBCdXNjaCA8a2J1c2NoQGtlcm5lbC5vcmc+
+CkRhdGU6IE1vbiwgMjAgTm92IDIwMjMgMTQ6MTg6MzEgLTA4MDAKU3ViamVjdDogW1BBVENI
+XSBpb191cmluZzogZml4IG9mZi1ieSBvbmUgYnZlYyBpbmRleAoKY29tbWl0IGQ2ZmVmMzRl
+ZTRkMTAyYmU0NDgxNDZmMjRjYWY5NmQ3YjRhMDU0MDEgdXBzdHJlYW0uCgpJZiB0aGUgb2Zm
+c2V0IGVxdWFscyB0aGUgYnZfbGVuIG9mIHRoZSBmaXJzdCByZWdpc3RlcmVkIGJ2ZWMsIHRo
+ZW4gdGhlCnJlcXVlc3QgZG9lcyBub3QgaW5jbHVkZSBhbnkgb2YgdGhhdCBmaXJzdCBidmVj
+LiBTa2lwIGl0IHNvIHRoYXQgZHJpdmVycwpkb24ndCBoYXZlIHRvIGRlYWwgd2l0aCBhIHpl
+cm8gbGVuZ3RoIGJ2ZWMsIHdoaWNoIHdhcyBvYnNlcnZlZCB0byBicmVhawpOVk1lJ3MgUFJQ
+IGxpc3QgY3JlYXRpb24uCgpDYzogc3RhYmxlQHZnZXIua2VybmVsLm9yZwpGaXhlczogYmQx
+MWIzYTM5MWUzICgiaW9fdXJpbmc6IGRvbid0IHVzZSBpb3ZfaXRlcl9hZHZhbmNlKCkgZm9y
+IGZpeGVkIGJ1ZmZlcnMiKQpTaWduZWQtb2ZmLWJ5OiBLZWl0aCBCdXNjaCA8a2J1c2NoQGtl
+cm5lbC5vcmc+Ckxpbms6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL3IvMjAyMzExMjAyMjE4
+MzEuMjY0NjQ2MC0xLWtidXNjaEBtZXRhLmNvbQpTaWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9l
+IDxheGJvZUBrZXJuZWwuZGs+Ci0tLQogaW9fdXJpbmcvcnNyYy5jIHwgMiArLQogMSBmaWxl
+IGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pCgpkaWZmIC0tZ2l0IGEv
+aW9fdXJpbmcvcnNyYy5jIGIvaW9fdXJpbmcvcnNyYy5jCmluZGV4IGNjZTk1MTY0MjA0Zi4u
+N2FkYTAzMzliMzg3IDEwMDY0NAotLS0gYS9pb191cmluZy9yc3JjLmMKKysrIGIvaW9fdXJp
+bmcvcnNyYy5jCkBAIC0xMzUxLDcgKzEzNTEsNyBAQCBpbnQgaW9faW1wb3J0X2ZpeGVkKGlu
+dCBkZGlyLCBzdHJ1Y3QgaW92X2l0ZXIgKml0ZXIsCiAJCSAqLwogCQljb25zdCBzdHJ1Y3Qg
+YmlvX3ZlYyAqYnZlYyA9IGltdS0+YnZlYzsKIAotCQlpZiAob2Zmc2V0IDw9IGJ2ZWMtPmJ2
+X2xlbikgeworCQlpZiAob2Zmc2V0IDwgYnZlYy0+YnZfbGVuKSB7CiAJCQlpb3ZfaXRlcl9h
+ZHZhbmNlKGl0ZXIsIG9mZnNldCk7CiAJCX0gZWxzZSB7CiAJCQl1bnNpZ25lZCBsb25nIHNl
+Z19za2lwOwotLSAKMi40Mi4wCgo=
+
+--------------6VqPbNG80nGeyhJbzjiv7nPY--
 
