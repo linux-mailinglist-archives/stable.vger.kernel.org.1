@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-3467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9BB7FF5C8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9F67FF548
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65621281845
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A62712817AA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD89354FB5;
-	Thu, 30 Nov 2023 16:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136A354F93;
+	Thu, 30 Nov 2023 16:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJ4/UEk/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1zJbTLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7312A54F9C;
-	Thu, 30 Nov 2023 16:31:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35E3C433C8;
-	Thu, 30 Nov 2023 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C887F54F87;
+	Thu, 30 Nov 2023 16:27:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CB7C433C9;
+	Thu, 30 Nov 2023 16:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361908;
-	bh=D2FBmdqzKLwJA67Fyv6msNKZ8gjftjkA7h7e2vbxCSU=;
+	s=korg; t=1701361647;
+	bh=lDFNM8NpnSjL4G+SJtbf5IzPSsShLXaNPfX7tfdQ34k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJ4/UEk/jfvBhvy0rWFccCf0xdp3VWzPATD1krDJvR3KL0JLOw/jmP9CQc7q2d0bt
-	 KK/R6ASI1BMngUz5f68EoFZC5xA//0p1Q3wj+IRFv2SMsHP08mCbYNkT/6IthcMkLI
-	 y2EIXWT3JdTvCNjx71OsTGp09MjDjIxoNO0VY9xQ=
+	b=I1zJbTLrJ9jEdvIqETaPPb1s3fZxCITNqhN8ITiEFrVKXBfQNIZglnLnyq3lIePqi
+	 XFRfv6Fp56FDJmb+SPE8kBpJ5aXA5kIsACavKE14lItT09Dn+8maN/j+tf4JsAp747
+	 D4gYIZONtjpYEIGd1F2Kgb65MfcdcMrwb4NCxVu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 11/69] HID: core: store the unique system identifier in hid_device
+	Mark Hasemeyer <markhas@chromium.org>,
+	Sanket Goswami <Sanket.Goswami@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.6 081/112] platform/x86/amd/pmc: adjust getting DRAM size behavior
 Date: Thu, 30 Nov 2023 16:22:08 +0000
-Message-ID: <20231130162133.448814354@linuxfoundation.org>
+Message-ID: <20231130162142.891002508@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,67 +53,105 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
 
-[ Upstream commit 1e839143d674603b0bbbc4c513bca35404967dbc ]
+commit c6ea14d557343cd3af6c6be2f5a78c98bdb281bb upstream.
 
-This unique identifier is currently used only for ensuring uniqueness in
-sysfs. However, this could be handful for userspace to refer to a specific
-hid_device by this id.
+amd_pmc_get_dram_size() is used to get the DRAM size information. But
+in the current code, mailbox command to get the DRAM size info is sent
+based on the values of dev->major and dev->minor.
 
-2 use cases are in my mind: LEDs (and their naming convention), and
-HID-BPF.
+But dev->major and dev->minor will have either junk or zero assigned to
+them until at least once a call to amd_pmc_get_smu_version() is made
+which ideally populates dev->major and dev->minor.
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Link: https://lore.kernel.org/r/20220902132938.2409206-9-benjamin.tissoires@redhat.com
-Stable-dep-of: fc43e9c857b7 ("HID: fix HID device resource race between HID core and debugging support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, adding a amd_pmc_get_smu_version() call to
+amd_pmc_get_dram_size() has a downside of elevating the boot times.
+
+After talking to the PMFW team, it's understood that the "get dram
+size" mbox command would only be supported on specific platforms (like
+Mendocino) and not all. So, adjust getting DRAM size behavior such
+that,
+
+- if running on Rembrandt or Mendocino and the underlying PMFW knows
+how to execute the "get dram size" command it shall give the custom
+dram size.
+
+- if the underlying FW does not report the dram size, we just proceed
+further and assign the default dram size.
+
+The simplest way to address this is to remove amd_pmc_get_dram_size()
+function and directly call the "get dram size" command in the
+amd_pmc_s2d_init().
+
+Reported-by: Mark Hasemeyer <markhas@chromium.org>
+Fixes: be8325fb3d8c ("platform/x86/amd: pmc: Get STB DRAM size from PMFW")
+Cc: stable@vger.kernel.org
+Suggested-by: Sanket Goswami <Sanket.Goswami@amd.com>
+Signed-off-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://lore.kernel.org/r/20231116170121.3372222-1-Shyam-sundar.S-k@amd.com
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-core.c | 4 +++-
- include/linux/hid.h    | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmc/pmc.c |   31 ++-----------------------------
+ 1 file changed, 2 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index d941023c56289..35046adf1294e 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2442,10 +2442,12 @@ int hid_add_device(struct hid_device *hdev)
- 			hid_warn(hdev, "bad device descriptor (%d)\n", ret);
- 	}
- 
-+	hdev->id = atomic_inc_return(&id);
-+
- 	/* XXX hack, any other cleaner solution after the driver core
- 	 * is converted to allow more than 20 bytes as the device name? */
- 	dev_set_name(&hdev->dev, "%04X:%04X:%04X.%04X", hdev->bus,
--		     hdev->vendor, hdev->product, atomic_inc_return(&id));
-+		     hdev->vendor, hdev->product, hdev->id);
- 
- 	hid_debug_register(hdev, dev_name(&hdev->dev));
- 	ret = device_add(&hdev->dev);
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index c3478e396829e..4fa40d2e821f2 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -630,6 +630,8 @@ struct hid_device {							/* device report descriptor */
- 	struct list_head debug_list;
- 	spinlock_t  debug_list_lock;
- 	wait_queue_head_t debug_wait;
-+
-+	unsigned int id;						/* system unique id */
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -912,33 +912,6 @@ static const struct pci_device_id pmc_pc
+ 	{ }
  };
  
- #define to_hid_device(pdev) \
--- 
-2.42.0
-
+-static int amd_pmc_get_dram_size(struct amd_pmc_dev *dev)
+-{
+-	int ret;
+-
+-	switch (dev->cpu_id) {
+-	case AMD_CPU_ID_YC:
+-		if (!(dev->major > 90 || (dev->major == 90 && dev->minor > 39))) {
+-			ret = -EINVAL;
+-			goto err_dram_size;
+-		}
+-		break;
+-	default:
+-		ret = -EINVAL;
+-		goto err_dram_size;
+-	}
+-
+-	ret = amd_pmc_send_cmd(dev, S2D_DRAM_SIZE, &dev->dram_size, dev->s2d_msg_id, true);
+-	if (ret || !dev->dram_size)
+-		goto err_dram_size;
+-
+-	return 0;
+-
+-err_dram_size:
+-	dev_err(dev->dev, "DRAM size command not supported for this platform\n");
+-	return ret;
+-}
+-
+ static int amd_pmc_s2d_init(struct amd_pmc_dev *dev)
+ {
+ 	u32 phys_addr_low, phys_addr_hi;
+@@ -957,8 +930,8 @@ static int amd_pmc_s2d_init(struct amd_p
+ 		return -EIO;
+ 
+ 	/* Get DRAM size */
+-	ret = amd_pmc_get_dram_size(dev);
+-	if (ret)
++	ret = amd_pmc_send_cmd(dev, S2D_DRAM_SIZE, &dev->dram_size, dev->s2d_msg_id, true);
++	if (ret || !dev->dram_size)
+ 		dev->dram_size = S2D_TELEMETRY_DRAMBYTES_MAX;
+ 
+ 	/* Get STB DRAM address */
 
 
 
