@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823067FF5C0
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 579CC7FF615
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:34:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E52D5B20EF9
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB954B20EFD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A9A11C9B;
-	Thu, 30 Nov 2023 16:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C7251002;
+	Thu, 30 Nov 2023 16:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyL9q2cr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuEXEJVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14BC482CA;
-	Thu, 30 Nov 2023 16:31:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A8ACC433C8;
-	Thu, 30 Nov 2023 16:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5F84777A;
+	Thu, 30 Nov 2023 16:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B19FC433C8;
+	Thu, 30 Nov 2023 16:34:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361884;
-	bh=ldd32EmYqaUrDZ83TLjtx3wmnJ+N3yexkAbcRriETUg=;
+	s=korg; t=1701362059;
+	bh=F17T9EASQ9/gagLxZz9Eqz/d6guy28O078ypJRacUa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyL9q2crntFFUQHWVzwrGTey2g1OCU4emzsU6m+6hdziE7nUHBrI6Y6WRJt4NA4mC
-	 jpwOk90U1P/tsqbYybns+Zi2EKpjkiUEFCxX3hr3aACu4K8hHuwa9rEeuOPUTwr75G
-	 z0T2tI0b5P/6nWwnPS0DGFnx5B080ue3m6nHTZVw=
+	b=BuEXEJVOaAsl489dBDU5oFy2i2CgEDC2BOwJs4vatdEB686C4kgWH/yT/JuHMIt8a
+	 cAxspEF4XDW5RystCtUkS1SujKsI+Zm49ttRrkSU460NWqszveRE17Zgdgd6A8J85D
+	 C0u9jlEoWxRslEAwCRWaEnYEr1GFHIUCa+O9I/CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Ivan Ivanov <ivan.ivanov@suse.com>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 77/82] USB: dwc2: write HCINT with INTMASK applied
+	Yangyu Chen <cyy@cyyself.name>,
+	Asuna Yang <SpriteOvO@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 51/69] USB: serial: option: add Luat Air72*U series products
 Date: Thu, 30 Nov 2023 16:22:48 +0000
-Message-ID: <20231130162138.436962235@linuxfoundation.org>
+Message-ID: <20231130162134.749975702@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,85 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Asuna Yang <spriteovo@gmail.com>
 
-commit 0583bc776ca5b5a3f5752869fc31cf7322df2b35 upstream.
+commit da90e45d5afc4da2de7cd3ea7943d0f1baa47cc2 upstream.
 
-dwc2_hc_n_intr() writes back INTMASK as read but evaluates it
-with intmask applied. In stress testing this causes spurious
-interrupts like this:
+Update the USB serial option driver support for Luat Air72*U series
+products.
 
-[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 7 - ChHltd set, but reason is unknown
-[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 0 - ChHltd set, but reason is unknown
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 4 - ChHltd set, but reason is unknown
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_update_urb_state_abn(): trimming xfer length
+ID 1782:4e00 Spreadtrum Communications Inc. UNISOC-8910
 
-Applying INTMASK prevents this. The issue exists in all versions of the
-driver.
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
+P: Vendor=1782 ProdID=4e00 Rev=00.00
+S: Manufacturer=UNISOC
+S: Product=UNISOC-8910
+C: #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=400mA
+I: If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E: Ad=82(I) Atr=03(Int.) MxPS= 8 Ivl=4096ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Tested-by: Ivan Ivanov <ivan.ivanov@suse.com>
-Tested-by: Andrea della Porta <andrea.porta@suse.com>
-Link: https://lore.kernel.org/r/20231115144514.15248-1-oneukum@suse.com
-Cc: stable <stable@kernel.org>
+If#= 2: AT
+If#= 3: PPP + AT
+If#= 4: Debug
+
+Co-developed-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc2/hcd_intr.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc2/hcd_intr.c
-+++ b/drivers/usb/dwc2/hcd_intr.c
-@@ -2015,15 +2015,17 @@ static void dwc2_hc_n_intr(struct dwc2_h
- {
- 	struct dwc2_qtd *qtd;
- 	struct dwc2_host_chan *chan;
--	u32 hcint, hcintmsk;
-+	u32 hcint, hcintraw, hcintmsk;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -609,6 +609,8 @@ static void option_instat_callback(struc
+ #define UNISOC_VENDOR_ID			0x1782
+ /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
+ #define TOZED_PRODUCT_LT70C			0x4055
++/* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
++#define LUAT_PRODUCT_AIR720U			0x4e00
  
- 	chan = hsotg->hc_ptr_array[chnum];
+ /* Device flags */
  
--	hcint = dwc2_readl(hsotg, HCINT(chnum));
-+	hcintraw = dwc2_readl(hsotg, HCINT(chnum));
- 	hcintmsk = dwc2_readl(hsotg, HCINTMSK(chnum));
-+	hcint = hcintraw & hcintmsk;
-+	dwc2_writel(hsotg, hcint, HCINT(chnum));
-+
- 	if (!chan) {
- 		dev_err(hsotg->dev, "## hc_ptr_array for channel is NULL ##\n");
--		dwc2_writel(hsotg, hcint, HCINT(chnum));
- 		return;
- 	}
- 
-@@ -2032,11 +2034,9 @@ static void dwc2_hc_n_intr(struct dwc2_h
- 			 chnum);
- 		dev_vdbg(hsotg->dev,
- 			 "  hcint 0x%08x, hcintmsk 0x%08x, hcint&hcintmsk 0x%08x\n",
--			 hcint, hcintmsk, hcint & hcintmsk);
-+			 hcintraw, hcintmsk, hcint);
- 	}
- 
--	dwc2_writel(hsotg, hcint, HCINT(chnum));
--
- 	/*
- 	 * If we got an interrupt after someone called
- 	 * dwc2_hcd_endpoint_disable() we don't want to crash below
-@@ -2046,8 +2046,7 @@ static void dwc2_hc_n_intr(struct dwc2_h
- 		return;
- 	}
- 
--	chan->hcint = hcint;
--	hcint &= hcintmsk;
-+	chan->hcint = hcintraw;
- 
- 	/*
- 	 * If the channel was halted due to a dequeue, the qtd list might
+@@ -2271,6 +2273,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
