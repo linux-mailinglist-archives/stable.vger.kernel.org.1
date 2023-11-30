@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-3292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76CAC7FF4E8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F367FF4FA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EABC1F20F5F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F915B20DAA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2539854F9C;
-	Thu, 30 Nov 2023 16:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E894354F9B;
+	Thu, 30 Nov 2023 16:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JcPwZz3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWWoGoKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2111495C2;
-	Thu, 30 Nov 2023 16:24:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BB6C433C7;
-	Thu, 30 Nov 2023 16:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6B495C2;
+	Thu, 30 Nov 2023 16:24:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A78C433C8;
+	Thu, 30 Nov 2023 16:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361461;
-	bh=mnLdTYIh0yYlKg0IQFsdooYIsDNyvU3GkHnPOVUeKEc=;
+	s=korg; t=1701361488;
+	bh=kcFdUMeKugdzYyMH2TOs3hn9qEkYhnbMJBpSd5TPicM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JcPwZz3/yxe8t5hOP7MggyzOswSbH+Uc1nFzZx/pk34AGVzJy4pJjrNfqhOzHiNvd
-	 ye51u/1i4GPHR9aXNTv//A9IdFvVYW4inX+Lp4rlck9aFMSdqLE4NlvUbjSWAZFbxN
-	 uWmbC7fOrmws+9gpJnJSQdfwTI0Ik2zlcwYCvz7Q=
+	b=PWWoGoKTQiz6yZqkKxkXYws0G5mwQ/1bXwiVZPpJn/H8DW04LAvg5fiSUgEBfOEna
+	 TuH9W2/EIi2dA3ULUg1RWz6y8L6rDgYlAFCiQruFW50/k+8li336X6JgpkN6QK4PJA
+	 JDgHZrIK3NN6S70l5sK4FSvNZafgK6TtHxTqO/LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
+	Tavian Barnes <tavianator@tavianator.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/112] block: update the stable_writes flag in bdev_add
-Date: Thu, 30 Nov 2023 16:21:11 +0000
-Message-ID: <20231130162141.086403021@linuxfoundation.org>
+Subject: [PATCH 6.6 025/112] libfs: getdents() should return 0 after reaching EOD
+Date: Thu, 30 Nov 2023 16:21:12 +0000
+Message-ID: <20231130162141.117879007@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -59,44 +58,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 1898efcdbed32bb1c67269c985a50bab0dbc9493 ]
+[ Upstream commit 796432efab1e372d404e7a71cc6891a53f105051 ]
 
-Propagate the per-queue stable_write flags into each bdev inode in bdev_add.
-This makes sure devices that require stable writes have it set for I/O
-on the block device node as well.
+The new directory offset helpers don't conform with the convention
+of getdents() returning no more entries once a directory file
+descriptor has reached the current end-of-directory.
 
-Note that this doesn't cover the case of a flag changing on a live device
-yet.  We should handle that as well, but I plan to cover it as part of a
-more general rework of how changing runtime paramters on block devices
-works.
+To address this, copy the logic from dcache_readdir() to mark the
+open directory file descriptor once EOD has been reached. Seeking
+resets the mark.
 
-Fixes: 1cb039f3dc16 ("bdi: replace BDI_CAP_STABLE_WRITES with a queue and a sb flag")
-Reported-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231025141020.192413-3-hch@lst.de
-Tested-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reported-by: Tavian Barnes <tavianator@tavianator.com>
+Closes: https://lore.kernel.org/linux-fsdevel/20231113180616.2831430-1-tavianator@tavianator.com/
+Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://lore.kernel.org/r/170043792492.4628.15646203084646716134.stgit@bazille.1015granger.net
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/libfs.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/block/bdev.c b/block/bdev.c
-index f3b13aa1b7d42..04dba25b0019e 100644
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -425,6 +425,8 @@ void bdev_set_nr_sectors(struct block_device *bdev, sector_t sectors)
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 37f2d34ee090b..189447cf4acf5 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -396,6 +396,8 @@ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
+ 		return -EINVAL;
+ 	}
  
- void bdev_add(struct block_device *bdev, dev_t dev)
++	/* In this case, ->private_data is protected by f_pos_lock */
++	file->private_data = NULL;
+ 	return vfs_setpos(file, offset, U32_MAX);
+ }
+ 
+@@ -425,7 +427,7 @@ static bool offset_dir_emit(struct dir_context *ctx, struct dentry *dentry)
+ 			  inode->i_ino, fs_umode_to_dtype(inode->i_mode));
+ }
+ 
+-static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
++static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
  {
-+	if (bdev_stable_writes(bdev))
-+		mapping_set_stable_writes(bdev->bd_inode->i_mapping);
- 	bdev->bd_dev = dev;
- 	bdev->bd_inode->i_rdev = dev;
- 	bdev->bd_inode->i_ino = dev;
+ 	struct offset_ctx *so_ctx = inode->i_op->get_offset_ctx(inode);
+ 	XA_STATE(xas, &so_ctx->xa, ctx->pos);
+@@ -434,7 +436,7 @@ static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
+ 	while (true) {
+ 		dentry = offset_find_next(&xas);
+ 		if (!dentry)
+-			break;
++			return ERR_PTR(-ENOENT);
+ 
+ 		if (!offset_dir_emit(ctx, dentry)) {
+ 			dput(dentry);
+@@ -444,6 +446,7 @@ static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
+ 		dput(dentry);
+ 		ctx->pos = xas.xa_index + 1;
+ 	}
++	return NULL;
+ }
+ 
+ /**
+@@ -476,7 +479,12 @@ static int offset_readdir(struct file *file, struct dir_context *ctx)
+ 	if (!dir_emit_dots(file, ctx))
+ 		return 0;
+ 
+-	offset_iterate_dir(d_inode(dir), ctx);
++	/* In this case, ->private_data is protected by f_pos_lock */
++	if (ctx->pos == 2)
++		file->private_data = NULL;
++	else if (file->private_data == ERR_PTR(-ENOENT))
++		return 0;
++	file->private_data = offset_iterate_dir(d_inode(dir), ctx);
+ 	return 0;
+ }
+ 
 -- 
 2.42.0
 
