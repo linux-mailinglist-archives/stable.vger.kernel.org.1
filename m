@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-3366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9105B7FF549
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89FAE7FF581
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A8F5B20DBD
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5CFCB20D9B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C80F54FA5;
-	Thu, 30 Nov 2023 16:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B3F54FAF;
+	Thu, 30 Nov 2023 16:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjxRz4XH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1P/BCVs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F154F92;
-	Thu, 30 Nov 2023 16:27:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B55B6C433C8;
-	Thu, 30 Nov 2023 16:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AFA54BFB;
+	Thu, 30 Nov 2023 16:29:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7124AC433C8;
+	Thu, 30 Nov 2023 16:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361650;
-	bh=jQrM7E+O+PHHLrJr3Bjs2x+o+xcwd/CQzoWgCoHdtlo=;
+	s=korg; t=1701361766;
+	bh=j87Z1vqTmt8bbvbzDxmLpn2zcK56npmmB1c95OgyQTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjxRz4XHfNh4bqwasjXwxhMcD3buAzSxXIB5tx5B9qem53khQN93WS1U53q+svFxj
-	 FAHWr8cfToYEtO5OqIo+msx96u8luqV/ky2YoHh31JfY16ZcLERYiQG0ckGmjRtSwk
-	 Yxq9Ko5eBP99VojHhkdLZKwGPkqkbuxfrk+uJa/8=
+	b=E1P/BCVsqzmaPBxSY3jcZh6ek8s1IU1Rf6cidUXsI23LjsMMPfxrv2oQX19ojUdNg
+	 uPeqF2jzUpOLyQdEO2ypPDPmVNL52hjjpSCfeJCuq5JWm1wuJfKwIt9gyZ5HdLXvET
+	 u2X517YNewrnDHHeboZ4V9LCWk4HrZUsyxDhdwz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 082/112] platform/x86: ideapad-laptop: Set max_brightness before using it
-Date: Thu, 30 Nov 2023 16:22:09 +0000
-Message-ID: <20231130162142.920857227@linuxfoundation.org>
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Robert Foss <robert.foss@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 39/82] media: camss: Split power domain management
+Date: Thu, 30 Nov 2023 16:22:10 +0000
+Message-ID: <20231130162137.201081652@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +53,206 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
+From: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
 
-commit 7a3c36eef9a5d13b16aa954da54224c9c6bed339 upstream.
+[ Upstream commit 46cc031754985ee24034d55687540adb079f8630 ]
 
-max_brightness is used in ideapad_kbd_bl_brightness_get() before it's set,
-causing ideapad_kbd_bl_brightness_get() to return -EINVAL sometimes.
+There are three cases of power domain management on supported platforms:
+1) CAMSS on MSM8916, where a single VFE power domain is operated outside
+   of the camss device driver,
+2) CAMSS on MSM8996 and SDM630/SDM660, where two VFE power domains are
+   managed separately by the camss device driver, the power domains are
+   linked and unlinked on demand by their functions vfe_pm_domain_on()
+   and vfe_pm_domain_off() respectively,
+3) CAMSS on SDM845 and SM8250 platforms, and there are two VFE power
+   domains and their parent power domain TITAN_TOP, the latter one
+   shall be turned on prior to turning on any of VFE power domains.
 
-Fixes: ecaa1867b524 ("platform/x86: ideapad-laptop: Add support for keyboard backlights using KBLC ACPI symbol")
-Signed-off-by: Stuart Hayhurst <stuart.a.hayhurst@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231114114055.6220-2-stuart.a.hayhurst@gmail.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Due to a previously missing link between TITAN_TOP and VFEx power domains
+in the latter case, which is now fixed by [1], it was decided always to
+turn on all found VFE power domains and TITAN_TOP power domain, even if
+just one particular VFE is needed to be enabled or none of VFE power
+domains are required, for instance the latter case is when vfe_lite is in
+use. This misusage becomes more incovenient and clumsy, if next generations
+are to be supported, for instance CAMSS on SM8450 has three VFE power
+domains.
+
+The change splits the power management support for platforms with TITAN_TOP
+parent power domain, and, since 'power-domain-names' property is not
+present in camss device tree nodes, the assumption is that the first
+N power domains from the 'power-domains' list correspond to VFE power
+domains, and, if the number of power domains is greater than number of
+non-lite VFEs, then the last power domain from the list is the TITAN_TOP
+power domain.
+
+Signed-off-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Reviewed-by: Robert Foss <robert.foss@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Stable-dep-of: f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ .../media/platform/qcom/camss/camss-vfe-170.c | 20 ++++++++++++-
+ .../media/platform/qcom/camss/camss-vfe-480.c | 20 ++++++++++++-
+ drivers/media/platform/qcom/camss/camss.c     | 30 ++++++++++---------
+ 3 files changed, 54 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/platform/x86/ideapad-laptop.c b/drivers/platform/x86/ideapad-laptop.c
-index ac037540acfc..88eefccb6ed2 100644
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1425,18 +1425,17 @@ static int ideapad_kbd_bl_init(struct ideapad_private *priv)
- 	if (WARN_ON(priv->kbd_bl.initialized))
- 		return -EEXIST;
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-170.c b/drivers/media/platform/qcom/camss/camss-vfe-170.c
+index 07b64d257512c..f9492b1d16e3e 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe-170.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-170.c
+@@ -671,7 +671,12 @@ static void vfe_isr_wm_done(struct vfe_device *vfe, u8 wm)
+  */
+ static void vfe_pm_domain_off(struct vfe_device *vfe)
+ {
+-	/* nop */
++	struct camss *camss = vfe->camss;
++
++	if (vfe->id >= camss->vfe_num)
++		return;
++
++	device_link_del(camss->genpd_link[vfe->id]);
+ }
  
--	brightness = ideapad_kbd_bl_brightness_get(priv);
--	if (brightness < 0)
--		return brightness;
+ /*
+@@ -680,6 +685,19 @@ static void vfe_pm_domain_off(struct vfe_device *vfe)
+  */
+ static int vfe_pm_domain_on(struct vfe_device *vfe)
+ {
++	struct camss *camss = vfe->camss;
++	enum vfe_line_id id = vfe->id;
++
++	if (id >= camss->vfe_num)
++		return 0;
++
++	camss->genpd_link[id] = device_link_add(camss->dev, camss->genpd[id],
++						DL_FLAG_STATELESS |
++						DL_FLAG_PM_RUNTIME |
++						DL_FLAG_RPM_ACTIVE);
++	if (!camss->genpd_link[id])
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/media/platform/qcom/camss/camss-vfe-480.c b/drivers/media/platform/qcom/camss/camss-vfe-480.c
+index ab42600f7a745..72f5cfeeb49bf 100644
+--- a/drivers/media/platform/qcom/camss/camss-vfe-480.c
++++ b/drivers/media/platform/qcom/camss/camss-vfe-480.c
+@@ -478,7 +478,12 @@ static void vfe_isr_wm_done(struct vfe_device *vfe, u8 wm)
+  */
+ static void vfe_pm_domain_off(struct vfe_device *vfe)
+ {
+-	/* nop */
++	struct camss *camss = vfe->camss;
++
++	if (vfe->id >= camss->vfe_num)
++		return;
++
++	device_link_del(camss->genpd_link[vfe->id]);
+ }
+ 
+ /*
+@@ -487,6 +492,19 @@ static void vfe_pm_domain_off(struct vfe_device *vfe)
+  */
+ static int vfe_pm_domain_on(struct vfe_device *vfe)
+ {
++	struct camss *camss = vfe->camss;
++	enum vfe_line_id id = vfe->id;
++
++	if (id >= camss->vfe_num)
++		return 0;
++
++	camss->genpd_link[id] = device_link_add(camss->dev, camss->genpd[id],
++						DL_FLAG_STATELESS |
++						DL_FLAG_PM_RUNTIME |
++						DL_FLAG_RPM_ACTIVE);
++	if (!camss->genpd_link[id])
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 5057b2c4cf6c4..f7fa84f623282 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1453,7 +1453,6 @@ static const struct media_device_ops camss_media_ops = {
+ static int camss_configure_pd(struct camss *camss)
+ {
+ 	struct device *dev = camss->dev;
+-	int last_pm_domain = 0;
+ 	int i;
+ 	int ret;
+ 
+@@ -1484,32 +1483,34 @@ static int camss_configure_pd(struct camss *camss)
+ 	if (!camss->genpd_link)
+ 		return -ENOMEM;
+ 
++	/*
++	 * VFE power domains are in the beginning of the list, and while all
++	 * power domains should be attached, only if TITAN_TOP power domain is
++	 * found in the list, it should be linked over here.
++	 */
+ 	for (i = 0; i < camss->genpd_num; i++) {
+ 		camss->genpd[i] = dev_pm_domain_attach_by_id(camss->dev, i);
+ 		if (IS_ERR(camss->genpd[i])) {
+ 			ret = PTR_ERR(camss->genpd[i]);
+ 			goto fail_pm;
+ 		}
++	}
+ 
+-		camss->genpd_link[i] = device_link_add(camss->dev, camss->genpd[i],
+-						       DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |
+-						       DL_FLAG_RPM_ACTIVE);
+-		if (!camss->genpd_link[i]) {
+-			dev_pm_domain_detach(camss->genpd[i], true);
++	if (i > camss->vfe_num) {
++		camss->genpd_link[i - 1] = device_link_add(camss->dev, camss->genpd[i - 1],
++							   DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |
++							   DL_FLAG_RPM_ACTIVE);
++		if (!camss->genpd_link[i - 1]) {
+ 			ret = -EINVAL;
+ 			goto fail_pm;
+ 		}
 -
--	priv->kbd_bl.last_brightness = brightness;
--
- 	if (ideapad_kbd_bl_check_tristate(priv->kbd_bl.type)) {
- 		priv->kbd_bl.led.max_brightness = 2;
- 	} else {
- 		priv->kbd_bl.led.max_brightness = 1;
+-		last_pm_domain = i;
  	}
  
-+	brightness = ideapad_kbd_bl_brightness_get(priv);
-+	if (brightness < 0)
-+		return brightness;
+ 	return 0;
+ 
+ fail_pm:
+-	for (i = 0; i < last_pm_domain; i++) {
+-		device_link_del(camss->genpd_link[i]);
++	for (--i ; i >= 0; i--)
+ 		dev_pm_domain_detach(camss->genpd[i], true);
+-	}
+ 
+ 	return ret;
+ }
+@@ -1709,10 +1710,11 @@ void camss_delete(struct camss *camss)
+ 	if (camss->genpd_num == 1)
+ 		return;
+ 
+-	for (i = 0; i < camss->genpd_num; i++) {
+-		device_link_del(camss->genpd_link[i]);
++	if (camss->genpd_num > camss->vfe_num)
++		device_link_del(camss->genpd_link[camss->genpd_num - 1]);
 +
-+	priv->kbd_bl.last_brightness = brightness;
- 	priv->kbd_bl.led.name                    = "platform::" LED_FUNCTION_KBD_BACKLIGHT;
- 	priv->kbd_bl.led.brightness_get          = ideapad_kbd_bl_led_cdev_brightness_get;
- 	priv->kbd_bl.led.brightness_set_blocking = ideapad_kbd_bl_led_cdev_brightness_set;
++	for (i = 0; i < camss->genpd_num; i++)
+ 		dev_pm_domain_detach(camss->genpd[i], true);
+-	}
+ }
+ 
+ /*
 -- 
-2.43.0
+2.42.0
 
 
 
