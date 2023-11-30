@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-3483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BF17FF5DD
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B36E37FF579
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626401C2110D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA9A281816
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E80D4878B;
-	Thu, 30 Nov 2023 16:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089DE54FAD;
+	Thu, 30 Nov 2023 16:29:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLclcHDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAsTgQgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C34D3AC1A;
-	Thu, 30 Nov 2023 16:32:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED18C433C8;
-	Thu, 30 Nov 2023 16:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80A054BFB;
+	Thu, 30 Nov 2023 16:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4417FC433C8;
+	Thu, 30 Nov 2023 16:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361946;
-	bh=tC7ln+L+qiHszMe1MI7jaUUC5xV4zP/QCZpmVH12KGU=;
+	s=korg; t=1701361751;
+	bh=gJrLfLi5Bsbci6Yd8Q4dIjwy8ewnbPmDLCFVnOUZa2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLclcHDT8Q45zbzAkkDecd+8jGCX0ZruiPolWHKjNjoKyAOdyYt02mMdpA4A5sd0J
-	 QoqV067MoXpSH4PXE0mmgKzY35pSpUb4EaX1aMGnWJ8qkPaN3Pl80LXC5RoEKQWpYW
-	 +l1FuRVsYIJBAxvI6K5hyNK8YVUw9KC6GZwtqMsY=
+	b=cAsTgQgDePSGIGKn3tSUSf0dZGCe5qa/PMF8jfzWlCmKjB+kTwMhntYDD3RMyR7V+
+	 +/mUBmkfnUKT1BcVBUvp7uBtI8X73qwxLACOCSrvccDE/JnMTaHUZZlbGQw7u8uz8A
+	 5Nnvpyt2SYip7sqQQMlUSAoAbTJICRA0CndO0sro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 07/69] wireguard: use DEV_STATS_INC()
+Subject: [PATCH 6.1 33/82] smb3: allow dumping session and tcon id to improve stats analysis and debugging
 Date: Thu, 30 Nov 2023 16:22:04 +0000
-Message-ID: <20231130162133.307406592@linuxfoundation.org>
+Message-ID: <20231130162137.007961310@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,123 +53,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit 93da8d75a66568ba4bb5b14ad2833acd7304cd02 ]
+[ Upstream commit de4eceab578ead12a71e5b5588a57e142bbe8ceb ]
 
-wg_xmit() can be called concurrently, KCSAN reported [1]
-some device stats updates can be lost.
+When multiple mounts are to the same share from the same client it was not
+possible to determine which section of /proc/fs/cifs/Stats (and DebugData)
+correspond to that mount.  In some recent examples this turned out to  be
+a significant problem when trying to analyze performance data - since
+there are many cases where unless we know the tree id and session id we
+can't figure out which stats (e.g. number of SMB3.1.1 requests by type,
+the total time they take, which is slowest, how many fail etc.) apply to
+which mount. The only existing loosely related ioctl CIFS_IOC_GET_MNT_INFO
+does not return the information needed to uniquely identify which tcon
+is which mount although it does return various flags and device info.
 
-Use DEV_STATS_INC() for this unlikely case.
+Add a cifs.ko ioctl CIFS_IOC_GET_TCON_INFO (0x800ccf0c) to return tid,
+session id, tree connect count.
 
-[1]
-BUG: KCSAN: data-race in wg_xmit / wg_xmit
-
-read-write to 0xffff888104239160 of 8 bytes by task 1375 on cpu 0:
-wg_xmit+0x60f/0x680 drivers/net/wireguard/device.c:231
-__netdev_start_xmit include/linux/netdevice.h:4918 [inline]
-netdev_start_xmit include/linux/netdevice.h:4932 [inline]
-xmit_one net/core/dev.c:3543 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3559
-...
-
-read-write to 0xffff888104239160 of 8 bytes by task 1378 on cpu 1:
-wg_xmit+0x60f/0x680 drivers/net/wireguard/device.c:231
-__netdev_start_xmit include/linux/netdevice.h:4918 [inline]
-netdev_start_xmit include/linux/netdevice.h:4932 [inline]
-xmit_one net/core/dev.c:3543 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3559
-...
-
-v2: also change wg_packet_consume_data_done() (Hangbin Liu)
-    and wg_packet_purge_staged_packets()
-
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireguard/device.c  |  4 ++--
- drivers/net/wireguard/receive.c | 12 ++++++------
- drivers/net/wireguard/send.c    |  3 ++-
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ fs/smb/client/cifs_ioctl.h |  6 ++++++
+ fs/smb/client/ioctl.c      | 25 +++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
-diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
-index 5eaef79c06e16..e5e344af34237 100644
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -193,7 +193,7 @@ static netdev_tx_t wg_xmit(struct sk_buff *skb, struct net_device *dev)
- 	 */
- 	while (skb_queue_len(&peer->staged_packet_queue) > MAX_STAGED_PACKETS) {
- 		dev_kfree_skb(__skb_dequeue(&peer->staged_packet_queue));
--		++dev->stats.tx_dropped;
-+		DEV_STATS_INC(dev, tx_dropped);
- 	}
- 	skb_queue_splice_tail(&packets, &peer->staged_packet_queue);
- 	spin_unlock_bh(&peer->staged_packet_queue.lock);
-@@ -211,7 +211,7 @@ static netdev_tx_t wg_xmit(struct sk_buff *skb, struct net_device *dev)
- 	else if (skb->protocol == htons(ETH_P_IPV6))
- 		icmpv6_ndo_send(skb, ICMPV6_DEST_UNREACH, ICMPV6_ADDR_UNREACH, 0);
- err:
--	++dev->stats.tx_errors;
-+	DEV_STATS_INC(dev, tx_errors);
- 	kfree_skb(skb);
- 	return ret;
+diff --git a/fs/smb/client/cifs_ioctl.h b/fs/smb/client/cifs_ioctl.h
+index 332588e77c311..26327442e383b 100644
+--- a/fs/smb/client/cifs_ioctl.h
++++ b/fs/smb/client/cifs_ioctl.h
+@@ -26,6 +26,11 @@ struct smb_mnt_fs_info {
+ 	__u64   cifs_posix_caps;
+ } __packed;
+ 
++struct smb_mnt_tcon_info {
++	__u32	tid;
++	__u64	session_id;
++} __packed;
++
+ struct smb_snapshot_array {
+ 	__u32	number_of_snapshots;
+ 	__u32	number_of_snapshots_returned;
+@@ -108,6 +113,7 @@ struct smb3_notify_info {
+ #define CIFS_IOC_NOTIFY _IOW(CIFS_IOCTL_MAGIC, 9, struct smb3_notify)
+ #define CIFS_DUMP_FULL_KEY _IOWR(CIFS_IOCTL_MAGIC, 10, struct smb3_full_key_debug_info)
+ #define CIFS_IOC_NOTIFY_INFO _IOWR(CIFS_IOCTL_MAGIC, 11, struct smb3_notify_info)
++#define CIFS_IOC_GET_TCON_INFO _IOR(CIFS_IOCTL_MAGIC, 12, struct smb_mnt_tcon_info)
+ #define CIFS_IOC_SHUTDOWN _IOR('X', 125, __u32)
+ 
+ /*
+diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
+index 6419ec47c2a85..ae9905e2b9d4a 100644
+--- a/fs/smb/client/ioctl.c
++++ b/fs/smb/client/ioctl.c
+@@ -117,6 +117,20 @@ static long cifs_ioctl_copychunk(unsigned int xid, struct file *dst_file,
+ 	return rc;
  }
-diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
-index f500aaf678370..d38b24339a1f9 100644
---- a/drivers/net/wireguard/receive.c
-+++ b/drivers/net/wireguard/receive.c
-@@ -423,20 +423,20 @@ static void wg_packet_consume_data_done(struct wg_peer *peer,
- 	net_dbg_skb_ratelimited("%s: Packet has unallowed src IP (%pISc) from peer %llu (%pISpfsc)\n",
- 				dev->name, skb, peer->internal_id,
- 				&peer->endpoint.addr);
--	++dev->stats.rx_errors;
--	++dev->stats.rx_frame_errors;
-+	DEV_STATS_INC(dev, rx_errors);
-+	DEV_STATS_INC(dev, rx_frame_errors);
- 	goto packet_processed;
- dishonest_packet_type:
- 	net_dbg_ratelimited("%s: Packet is neither ipv4 nor ipv6 from peer %llu (%pISpfsc)\n",
- 			    dev->name, peer->internal_id, &peer->endpoint.addr);
--	++dev->stats.rx_errors;
--	++dev->stats.rx_frame_errors;
-+	DEV_STATS_INC(dev, rx_errors);
-+	DEV_STATS_INC(dev, rx_frame_errors);
- 	goto packet_processed;
- dishonest_packet_size:
- 	net_dbg_ratelimited("%s: Packet has incorrect size from peer %llu (%pISpfsc)\n",
- 			    dev->name, peer->internal_id, &peer->endpoint.addr);
--	++dev->stats.rx_errors;
--	++dev->stats.rx_length_errors;
-+	DEV_STATS_INC(dev, rx_errors);
-+	DEV_STATS_INC(dev, rx_length_errors);
- 	goto packet_processed;
- packet_processed:
- 	dev_kfree_skb(skb);
-diff --git a/drivers/net/wireguard/send.c b/drivers/net/wireguard/send.c
-index 95c853b59e1da..0d48e0f4a1ba3 100644
---- a/drivers/net/wireguard/send.c
-+++ b/drivers/net/wireguard/send.c
-@@ -333,7 +333,8 @@ static void wg_packet_create_data(struct wg_peer *peer, struct sk_buff *first)
- void wg_packet_purge_staged_packets(struct wg_peer *peer)
+ 
++static long smb_mnt_get_tcon_info(struct cifs_tcon *tcon, void __user *arg)
++{
++	int rc = 0;
++	struct smb_mnt_tcon_info tcon_inf;
++
++	tcon_inf.tid = tcon->tid;
++	tcon_inf.session_id = tcon->ses->Suid;
++
++	if (copy_to_user(arg, &tcon_inf, sizeof(struct smb_mnt_tcon_info)))
++		rc = -EFAULT;
++
++	return rc;
++}
++
+ static long smb_mnt_get_fsinfo(unsigned int xid, struct cifs_tcon *tcon,
+ 				void __user *arg)
  {
- 	spin_lock_bh(&peer->staged_packet_queue.lock);
--	peer->device->dev->stats.tx_dropped += peer->staged_packet_queue.qlen;
-+	DEV_STATS_ADD(peer->device->dev, tx_dropped,
-+		      peer->staged_packet_queue.qlen);
- 	__skb_queue_purge(&peer->staged_packet_queue);
- 	spin_unlock_bh(&peer->staged_packet_queue.lock);
- }
+@@ -410,6 +424,17 @@ long cifs_ioctl(struct file *filep, unsigned int command, unsigned long arg)
+ 			tcon = tlink_tcon(pSMBFile->tlink);
+ 			rc = smb_mnt_get_fsinfo(xid, tcon, (void __user *)arg);
+ 			break;
++		case CIFS_IOC_GET_TCON_INFO:
++			cifs_sb = CIFS_SB(inode->i_sb);
++			tlink = cifs_sb_tlink(cifs_sb);
++			if (IS_ERR(tlink)) {
++				rc = PTR_ERR(tlink);
++				break;
++			}
++			tcon = tlink_tcon(tlink);
++			rc = smb_mnt_get_tcon_info(tcon, (void __user *)arg);
++			cifs_put_tlink(tlink);
++			break;
+ 		case CIFS_ENUMERATE_SNAPSHOTS:
+ 			if (pSMBFile == NULL)
+ 				break;
 -- 
 2.42.0
 
