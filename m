@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1237FF57D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1947F7FF547
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 395251F20F49
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FAF1B20D99
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D1554FA6;
-	Thu, 30 Nov 2023 16:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC7E54FAD;
+	Thu, 30 Nov 2023 16:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqvAtBC/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bXlzr8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D94354BFB;
-	Thu, 30 Nov 2023 16:29:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF88C433C7;
-	Thu, 30 Nov 2023 16:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A30B54F87;
+	Thu, 30 Nov 2023 16:27:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CA0C433C8;
+	Thu, 30 Nov 2023 16:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361759;
-	bh=7BjuZ7i+uy/NaLtd+jOOPW/XVrrF20uZiAI+bbEsXow=;
+	s=korg; t=1701361645;
+	bh=jNkK2vXHkzK7FmYBQ2s14zLcsnKvooSxWHzfWKglV8A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qqvAtBC/4qDmtAz76ImGv7yin6grextGrMqFLgSAlFAt9tIdUhfmIpuHEAbjL7yBI
-	 s/eZpC4t6JMtwVsNrewxxwbGviWWL0YZpaADPWzktsuWGHKMWIJ5Hm9eBeHgZAhX9F
-	 K3tpOAmfLsGHgki+EKjl4R7Bj0W6VGRA3oq+oEEo=
+	b=0bXlzr8G3HvQWv21BiAu6Dc1141OerlAMtPEnGI59FTkAXCiwLc25HolBzxQtlVQ5
+	 bNDGa1RO2YGLQKjZ8uZZ1BJid3oPiJKsJmZu+B2nXKAn9e8ZhWlqlHWo7UpiH4YfEG
+	 tqWZ9SN2TNR0aqItuYLYq4VVrLEdyKJXHOE/rzZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/82] cifs: account for primary channel in the interface list
+	Yangyu Chen <cyy@cyyself.name>,
+	Asuna Yang <SpriteOvO@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 080/112] USB: serial: option: add Luat Air72*U series products
 Date: Thu, 30 Nov 2023 16:22:07 +0000
-Message-ID: <20231130162137.100409651@linuxfoundation.org>
+Message-ID: <20231130162142.858726556@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,123 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Asuna Yang <spriteovo@gmail.com>
 
-[ Upstream commit fa1d0508bdd4a68c5e40f85f635712af8c12f180 ]
+commit da90e45d5afc4da2de7cd3ea7943d0f1baa47cc2 upstream.
 
-The refcounting of server interfaces should account
-for the primary channel too. Although this is not
-strictly necessary, doing so will account for the primary
-channel in DebugData.
+Update the USB serial option driver support for Luat Air72*U series
+products.
 
+ID 1782:4e00 Spreadtrum Communications Inc. UNISOC-8910
+
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
+P: Vendor=1782 ProdID=4e00 Rev=00.00
+S: Manufacturer=UNISOC
+S: Product=UNISOC-8910
+C: #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=400mA
+I: If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E: Ad=82(I) Atr=03(Int.) MxPS= 8 Ivl=4096ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+If#= 2: AT
+If#= 3: PPP + AT
+If#= 4: Debug
+
+Co-developed-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/sess.c    | 28 ++++++++++++++++++++++++++++
- fs/smb/client/smb2ops.c |  6 ++++++
- 2 files changed, 34 insertions(+)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index 33e724545c5b4..634035bcb9347 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -288,6 +288,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	struct cifs_server_iface *iface = NULL;
- 	struct cifs_server_iface *old_iface = NULL;
- 	struct cifs_server_iface *last_iface = NULL;
-+	struct sockaddr_storage ss;
- 	int rc = 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -609,6 +609,8 @@ static void option_instat_callback(struc
+ #define UNISOC_VENDOR_ID			0x1782
+ /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
+ #define TOZED_PRODUCT_LT70C			0x4055
++/* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
++#define LUAT_PRODUCT_AIR720U			0x4e00
  
- 	spin_lock(&ses->chan_lock);
-@@ -306,6 +307,10 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	}
- 	spin_unlock(&ses->chan_lock);
+ /* Device flags */
  
-+	spin_lock(&server->srv_lock);
-+	ss = server->dstaddr;
-+	spin_unlock(&server->srv_lock);
-+
- 	spin_lock(&ses->iface_lock);
- 	if (!ses->iface_count) {
- 		spin_unlock(&ses->iface_lock);
-@@ -319,6 +324,16 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 
- 	/* then look for a new one */
- 	list_for_each_entry(iface, &ses->iface_list, iface_head) {
-+		if (!chan_index) {
-+			/* if we're trying to get the updated iface for primary channel */
-+			if (!cifs_match_ipaddr((struct sockaddr *) &ss,
-+					       (struct sockaddr *) &iface->sockaddr))
-+				continue;
-+
-+			kref_get(&iface->refcount);
-+			break;
-+		}
-+
- 		/* do not mix rdma and non-rdma interfaces */
- 		if (iface->rdma_capable != server->rdma)
- 			continue;
-@@ -345,6 +360,13 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 		cifs_dbg(FYI, "unable to find a suitable iface\n");
- 	}
- 
-+	if (!chan_index && !iface) {
-+		cifs_dbg(FYI, "unable to get the interface matching: %pIS\n",
-+			 &ss);
-+		spin_unlock(&ses->iface_lock);
-+		return 0;
-+	}
-+
- 	/* now drop the ref to the current iface */
- 	if (old_iface && iface) {
- 		cifs_dbg(FYI, "replacing iface: %pIS with %pIS\n",
-@@ -367,6 +389,12 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 			old_iface->weight_fulfilled--;
- 
- 		kref_put(&old_iface->refcount, release_iface);
-+	} else if (!chan_index) {
-+		/* special case: update interface for primary channel */
-+		cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
-+			 &iface->sockaddr);
-+		iface->num_channels++;
-+		iface->weight_fulfilled++;
- 	} else {
- 		WARN_ON(!iface);
- 		cifs_dbg(FYI, "adding new iface: %pIS\n", &iface->sockaddr);
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 2c1898803279a..4cc56e4695fbc 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -752,6 +752,7 @@ SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_
- 	unsigned int ret_data_len = 0;
- 	struct network_interface_info_ioctl_rsp *out_buf = NULL;
- 	struct cifs_ses *ses = tcon->ses;
-+	struct TCP_Server_Info *pserver;
- 
- 	/* do not query too frequently */
- 	if (ses->iface_last_update &&
-@@ -776,6 +777,11 @@ SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_
- 	if (rc)
- 		goto out;
- 
-+	/* check if iface is still active */
-+	pserver = ses->chans[0].server;
-+	if (pserver && !cifs_chan_is_iface_active(ses, pserver))
-+		cifs_chan_update_iface(ses, pserver);
-+
- out:
- 	kfree(out_buf);
- 	return rc;
--- 
-2.42.0
-
+@@ -2271,6 +2273,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
