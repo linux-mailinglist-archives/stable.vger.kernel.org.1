@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CCB7FF56C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1158E7FF50A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D28AE1C2104F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE71B28170F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F8854FAE;
-	Thu, 30 Nov 2023 16:28:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D2154F93;
+	Thu, 30 Nov 2023 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVDA47St"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBh14aib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A6254F87;
-	Thu, 30 Nov 2023 16:28:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550E9C433C7;
-	Thu, 30 Nov 2023 16:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2256C482CB;
+	Thu, 30 Nov 2023 16:25:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D63C433C8;
+	Thu, 30 Nov 2023 16:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361728;
-	bh=ZKOkJc0HWdHC4pkB8lf+pLniA8iVWueCmnPGn6yC1jA=;
+	s=korg; t=1701361529;
+	bh=+j23nzxVVZVEcus4h+dqekYcnEEBb2Ajv6hFGaJzve4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVDA47StyJALA3qv8DSElADxPQxsWlXrjatT0OTSliaadyD0hFJ0NmZTw030MtDdL
-	 rcl3UgmcsCKLnRbGqpri8/lfbllra8UKlZhLDmd8lIQ26gvqRID8AP5nfbQg16oduE
-	 SVnKNErwCM87yQFkmDiNDuUOmSKho+VYX9KIbWo8=
+	b=OBh14aibVa0mmxnPaenVKa3rSQ1nu2wJabF1yVP6P1lsmKJEoaymfJxlH7VVHysik
+	 ngQwrc9rNsUQ5SxHlBlOCD2oFOyrfU5imsl/KFuhtihRi+SeKMbjCXm9rchx499hS1
+	 x8FPz6+GBZ2iv2bREH1WX+D5ZPsF6ejL4829wwSk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/82] drm/panel: simple: Fix Innolux G101ICE-L01 timings
-Date: Thu, 30 Nov 2023 16:21:37 +0000
-Message-ID: <20231130162136.171287397@linuxfoundation.org>
+Subject: [PATCH 6.6 051/112] afs: Fix file locking on R/O volumes to operate in local mode
+Date: Thu, 30 Nov 2023 16:21:38 +0000
+Message-ID: <20231130162141.944316730@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,58 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 3f9a91b6c00e655d27bd785dcda1742dbdc31bda ]
+[ Upstream commit b590eb41be766c5a63acc7e8896a042f7a4e8293 ]
 
-The Innolux G101ICE-L01 datasheet [1] page 17 table
-6.1 INPUT SIGNAL TIMING SPECIFICATIONS
-indicates that maximum vertical blanking time is 40 lines.
-Currently the driver uses 29 lines.
+AFS doesn't really do locking on R/O volumes as fileservers don't maintain
+state with each other and thus a lock on a R/O volume file on one
+fileserver will not be be visible to someone looking at the same file on
+another fileserver.
 
-Fix it, and since this panel is a DE panel, adjust the timings
-to make them less hostile to controllers which cannot do 1 px
-HSA/VSA, distribute the delays evenly between all three parts.
+Further, the server may return an error if you try it.
 
-[1] https://www.data-modul.com/sites/default/files/products/G101ICE-L01-C2-specification-12042389.pdf
+Fix this by doing what other AFS clients do and handle filelocking on R/O
+volume files entirely within the client and don't touch the server.
 
-Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231008223256.279196-1-marex@denx.de
+Fixes: 6c6c1d63c243 ("afs: Provide mount-time configurable byte-range file locking emulation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ fs/afs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index be2900a42b808..005377f58eb4a 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -2205,13 +2205,13 @@ static const struct panel_desc innolux_g070y2_t02 = {
- static const struct display_timing innolux_g101ice_l01_timing = {
- 	.pixelclock = { 60400000, 71100000, 74700000 },
- 	.hactive = { 1280, 1280, 1280 },
--	.hfront_porch = { 41, 80, 100 },
--	.hback_porch = { 40, 79, 99 },
--	.hsync_len = { 1, 1, 1 },
-+	.hfront_porch = { 30, 60, 70 },
-+	.hback_porch = { 30, 60, 70 },
-+	.hsync_len = { 22, 40, 60 },
- 	.vactive = { 800, 800, 800 },
--	.vfront_porch = { 5, 11, 14 },
--	.vback_porch = { 4, 11, 14 },
--	.vsync_len = { 1, 1, 1 },
-+	.vfront_porch = { 3, 8, 14 },
-+	.vback_porch = { 3, 8, 14 },
-+	.vsync_len = { 4, 7, 12 },
- 	.flags = DISPLAY_FLAGS_DE_HIGH,
- };
+diff --git a/fs/afs/super.c b/fs/afs/super.c
+index 95d713074dc81..e95fb4cb4fcd2 100644
+--- a/fs/afs/super.c
++++ b/fs/afs/super.c
+@@ -407,6 +407,8 @@ static int afs_validate_fc(struct fs_context *fc)
+ 			return PTR_ERR(volume);
  
+ 		ctx->volume = volume;
++		if (volume->type != AFSVL_RWVOL)
++			ctx->flock_mode = afs_flock_mode_local;
+ 	}
+ 
+ 	return 0;
 -- 
 2.42.0
 
