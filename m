@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-3513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FDA7FF604
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DB67FF536
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 003A7281985
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A3F28175B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9532254F96;
-	Thu, 30 Nov 2023 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0210554F98;
+	Thu, 30 Nov 2023 16:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0m3bMyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TViEKA6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5673B51C3E;
-	Thu, 30 Nov 2023 16:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FAFC433C8;
-	Thu, 30 Nov 2023 16:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4468495C2;
+	Thu, 30 Nov 2023 16:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3021EC433C7;
+	Thu, 30 Nov 2023 16:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701362022;
-	bh=3jZpCcGps+RnQl5thUcQ/EfkAL+KaKnT/tDquP7aHqY=;
+	s=korg; t=1701361612;
+	bh=Bxul39rimGG2XsP6wocYmqsd3e5zh5tQ9/9LfM65hKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A0m3bMyGjkN/R0eQv9mOT+BnaL79MV6zvUqCBm0VlAJ45nh1LJRt9hInNEhJSYFH2
-	 UIOodI4puPtu7TN6wVouZbTugmEh6BLpm1fchUi1sPrwkioifhAnWsbhXPpCo7CBpL
-	 JkP5c+qnIWonbfAZYPw1+em3L+T0lpwkSv9be4mM=
+	b=TViEKA6LJCBOhfMUxYHUWtKemgbnXM1tCzRfKNaFhQGGBsnQ/3VA7+sx83GHmEACH
+	 FiEN+IOk/gFlKi7WmkQwgSa5pSzvwO9zBCDpEKBTVZQ8rT1CUzafuJQEV8dHwQ+FiL
+	 Ov9rSIyn9TxyynhjhiG7jw+RLfkbx5r5Fyt4xC6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 21/69] net: axienet: Fix check for partial TX checksum
+Subject: [PATCH 6.6 091/112] cifs: fix leak of iface for primary channel
 Date: Thu, 30 Nov 2023 16:22:18 +0000
-Message-ID: <20231130162133.774455034@linuxfoundation.org>
+Message-ID: <20231130162143.220767690@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,40 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
+[ Upstream commit 29954d5b1e0d67a4cd61c30c2201030c97e94b1e ]
 
-Due to a typo, the code checked the RX checksum feature in the TX path.
+My last change in this area introduced a change which
+accounted for primary channel in the interface ref count.
+However, it did not reduce this ref count on deallocation
+of the primary channel. i.e. during umount.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixing this leak here, by dropping this ref count for
+primary channel while freeing up the session.
+
+Fixes: fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
+Cc: stable@vger.kernel.org
+Reported-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/connect.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index e7f6c29b8dd82..63f33126d02fe 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -763,7 +763,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
- 			/* Tx Full Checksum Offload Enabled */
- 			cur_p->app0 |= 2;
--		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
-+		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
- 			csum_start_off = skb_transport_offset(skb);
- 			csum_index_off = csum_start_off + skb->csum_offset;
- 			/* Tx Partial Checksum Offload Enabled */
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index a9632c060bceb..d517651d7bcea 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2034,6 +2034,12 @@ void __cifs_put_smb_ses(struct cifs_ses *ses)
+ 		}
+ 	}
+ 
++	/* we now account for primary channel in iface->refcount */
++	if (ses->chans[0].iface) {
++		kref_put(&ses->chans[0].iface->refcount, release_iface);
++		ses->chans[0].server = NULL;
++	}
++
+ 	sesInfoFree(ses);
+ 	cifs_put_tcp_session(server, 0);
+ }
 -- 
 2.42.0
 
