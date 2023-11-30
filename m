@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2F57FF589
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:44 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A12177FF535
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09E2D281809
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACB51B20EB3
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4AA54F9C;
-	Thu, 30 Nov 2023 16:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9A254F9C;
+	Thu, 30 Nov 2023 16:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cF6HHehn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wosYh3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F87495C2;
-	Thu, 30 Nov 2023 16:29:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 840E1C433C7;
-	Thu, 30 Nov 2023 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9A054F8F;
+	Thu, 30 Nov 2023 16:26:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCFB0C433C8;
+	Thu, 30 Nov 2023 16:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361781;
-	bh=I8z1OLCECh7HR1Q0k8wbpFmk63llfWn5PIYUSwfZtI0=;
+	s=korg; t=1701361607;
+	bh=ALmLbIr387FD4rWyYbUlxQbVOOkauqdO3Z2jvE4QIpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cF6HHehnn9A9kF90dfmYAj4+rrNHuCOYASF9qA+H66P5obP816DzutpW0SP08E2He
-	 Wvic58SY/7hHYhfIPLYpuPO4A1Ik3UF+5qndSq7YL8YdJIvn35O1KVCDDNUsWYoeQE
-	 QXLIXm0HUc/PsasOjB3SBizf+/6Rfea/4DJaEOFY=
+	b=0wosYh3vF0gMtrEisdSj80Q0VIzzqh8h8WdMauZpExBc96xz+xHraZnkldGEtOk2T
+	 ksxnRioueUw2anEq0weJ9yMx/i7HLR89Xw2ivFamdx+VIKT4icgEu3aNhfIlyzL5Li
+	 2yRU6VsxXZ6JztsBzaTWqOCxFdUOezkLz6eN1JKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 44/82] ext4: add a new helper to check if es must be kept
-Date: Thu, 30 Nov 2023 16:22:15 +0000
-Message-ID: <20231130162137.354910984@linuxfoundation.org>
+Subject: [PATCH 6.6 089/112] cifs: distribute channels across interfaces based on speed
+Date: Thu, 30 Nov 2023 16:22:16 +0000
+Message-ID: <20231130162143.162505927@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,113 +53,254 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 9649eb18c6288f514cacffdd699d5cd999c2f8f6 ]
+[ Upstream commit a6d8fb54a515f0546ffdb7870102b1238917e567 ]
 
-In the extent status tree, we have extents which we can just drop without
-issues and extents we must not drop - this depends on the extent's status
-- currently ext4_es_is_delayed() extents must stay, others may be dropped.
+Today, if the server interfaces RSS capable, we simply
+choose the fastest interface to setup a channel. This is not
+a scalable approach, and does not make a lot of attempt to
+distribute the connections.
 
-A helper function is added to help determine if the current extent can
-be dropped, although only ext4_es_is_delayed() extents cannot be dropped
-currently.
+This change does a weighted distribution of channels across
+all the available server interfaces, where the weight is
+a function of the advertised interface speed.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Also make sure that we don't mix rdma and non-rdma for channels.
+
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Stable-dep-of: fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 34 +++++++++++++++++++++-------------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ fs/smb/client/cifs_debug.c | 16 ++++++++
+ fs/smb/client/cifsglob.h   |  2 +
+ fs/smb/client/sess.c       | 84 +++++++++++++++++++++++++++++++-------
+ 3 files changed, 88 insertions(+), 14 deletions(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index b57e497679ef9..c9ab439b29f56 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -448,6 +448,19 @@ static void ext4_es_list_del(struct inode *inode)
- 	spin_unlock(&sbi->s_es_lock);
- }
+diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
+index 9a0ccd87468ea..16282ecfe17a7 100644
+--- a/fs/smb/client/cifs_debug.c
++++ b/fs/smb/client/cifs_debug.c
+@@ -279,6 +279,8 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
+ 	struct cifs_ses *ses;
+ 	struct cifs_tcon *tcon;
+ 	struct cifs_server_iface *iface;
++	size_t iface_weight = 0, iface_min_speed = 0;
++	struct cifs_server_iface *last_iface = NULL;
+ 	int c, i, j;
  
-+/*
-+ * Returns true if we cannot fail to allocate memory for this extent_status
-+ * entry and cannot reclaim it until its status changes.
-+ */
-+static inline bool ext4_es_must_keep(struct extent_status *es)
-+{
-+	/* fiemap, bigalloc, and seek_data/hole need to use it. */
-+	if (ext4_es_is_delayed(es))
-+		return true;
+ 	seq_puts(m,
+@@ -542,11 +544,25 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
+ 					   "\tLast updated: %lu seconds ago",
+ 					   ses->iface_count,
+ 					   (jiffies - ses->iface_last_update) / HZ);
 +
-+	return false;
-+}
++			last_iface = list_last_entry(&ses->iface_list,
++						     struct cifs_server_iface,
++						     iface_head);
++			iface_min_speed = last_iface->speed;
 +
- static struct extent_status *
- ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
- 		     ext4_fsblk_t pblk)
-@@ -460,10 +473,8 @@ ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
- 	es->es_len = len;
- 	es->es_pblk = pblk;
+ 			j = 0;
+ 			list_for_each_entry(iface, &ses->iface_list,
+ 						 iface_head) {
+ 				seq_printf(m, "\n\t%d)", ++j);
+ 				cifs_dump_iface(m, iface);
++
++				iface_weight = iface->speed / iface_min_speed;
++				seq_printf(m, "\t\tWeight (cur,total): (%zu,%zu)"
++					   "\n\t\tAllocated channels: %u\n",
++					   iface->weight_fulfilled,
++					   iface_weight,
++					   iface->num_channels);
++
+ 				if (is_ses_using_iface(ses, iface))
+ 					seq_puts(m, "\t\t[CONNECTED]\n");
+ 			}
+diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
+index e55f49e278a2e..b8d1c19f67714 100644
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -969,6 +969,8 @@ struct cifs_server_iface {
+ 	struct list_head iface_head;
+ 	struct kref refcount;
+ 	size_t speed;
++	size_t weight_fulfilled;
++	unsigned int num_channels;
+ 	unsigned int rdma_capable : 1;
+ 	unsigned int rss_capable : 1;
+ 	unsigned int is_active : 1; /* unset if non existent */
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 61cc7c415491e..65545e65f1eb6 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -164,7 +164,9 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
+ 	int left;
+ 	int rc = 0;
+ 	int tries = 0;
++	size_t iface_weight = 0, iface_min_speed = 0;
+ 	struct cifs_server_iface *iface = NULL, *niface = NULL;
++	struct cifs_server_iface *last_iface = NULL;
+ 
+ 	spin_lock(&ses->chan_lock);
+ 
+@@ -192,21 +194,11 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
+ 	}
+ 	spin_unlock(&ses->chan_lock);
  
 -	/*
--	 * We don't count delayed extent because we never try to reclaim them
+-	 * Keep connecting to same, fastest, iface for all channels as
+-	 * long as its RSS. Try next fastest one if not RSS or channel
+-	 * creation fails.
 -	 */
--	if (!ext4_es_is_delayed(es)) {
-+	/* We never try to reclaim a must kept extent, so we don't count it. */
-+	if (!ext4_es_must_keep(es)) {
- 		if (!EXT4_I(inode)->i_es_shk_nr++)
- 			ext4_es_list_add(inode);
- 		percpu_counter_inc(&EXT4_SB(inode->i_sb)->
-@@ -481,8 +492,8 @@ static void ext4_es_free_extent(struct inode *inode, struct extent_status *es)
- 	EXT4_I(inode)->i_es_all_nr--;
- 	percpu_counter_dec(&EXT4_SB(inode->i_sb)->s_es_stats.es_stats_all_cnt);
+-	spin_lock(&ses->iface_lock);
+-	iface = list_first_entry(&ses->iface_list, struct cifs_server_iface,
+-				 iface_head);
+-	spin_unlock(&ses->iface_lock);
+-
+ 	while (left > 0) {
  
--	/* Decrease the shrink counter when this es is not delayed */
--	if (!ext4_es_is_delayed(es)) {
-+	/* Decrease the shrink counter when we can reclaim the extent. */
-+	if (!ext4_es_must_keep(es)) {
- 		BUG_ON(EXT4_I(inode)->i_es_shk_nr == 0);
- 		if (!--EXT4_I(inode)->i_es_shk_nr)
- 			ext4_es_list_del(inode);
-@@ -853,7 +864,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
- 					  128, EXT4_I(inode)))
- 		goto retry;
--	if (err == -ENOMEM && !ext4_es_is_delayed(&newes))
-+	if (err == -ENOMEM && !ext4_es_must_keep(&newes))
- 		err = 0;
- 
- 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
-@@ -1704,11 +1715,8 @@ static int es_do_reclaim_extents(struct ext4_inode_info *ei, ext4_lblk_t end,
- 
- 		(*nr_to_scan)--;
- 		node = rb_next(&es->rb_node);
--		/*
--		 * We can't reclaim delayed extent from status tree because
--		 * fiemap, bigallic, and seek_data/hole need to use it.
--		 */
--		if (ext4_es_is_delayed(es))
-+
-+		if (ext4_es_must_keep(es))
- 			goto next;
- 		if (ext4_es_is_referenced(es)) {
- 			ext4_es_clear_referenced(es);
-@@ -1772,7 +1780,7 @@ void ext4_clear_inode_es(struct inode *inode)
- 	while (node) {
- 		es = rb_entry(node, struct extent_status, rb_node);
- 		node = rb_next(node);
--		if (!ext4_es_is_delayed(es)) {
-+		if (!ext4_es_must_keep(es)) {
- 			rb_erase(&es->rb_node, &tree->root);
- 			ext4_es_free_extent(inode, es);
+ 		tries++;
+ 		if (tries > 3*ses->chan_max) {
+-			cifs_dbg(FYI, "too many channel open attempts (%d channels left to open)\n",
++			cifs_dbg(VFS, "too many channel open attempts (%d channels left to open)\n",
+ 				 left);
+ 			break;
  		}
+@@ -214,17 +206,35 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
+ 		spin_lock(&ses->iface_lock);
+ 		if (!ses->iface_count) {
+ 			spin_unlock(&ses->iface_lock);
++			cifs_dbg(VFS, "server %s does not advertise interfaces\n",
++				      ses->server->hostname);
+ 			break;
+ 		}
+ 
++		if (!iface)
++			iface = list_first_entry(&ses->iface_list, struct cifs_server_iface,
++						 iface_head);
++		last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
++					     iface_head);
++		iface_min_speed = last_iface->speed;
++
+ 		list_for_each_entry_safe_from(iface, niface, &ses->iface_list,
+ 				    iface_head) {
++			/* do not mix rdma and non-rdma interfaces */
++			if (iface->rdma_capable != ses->server->rdma)
++				continue;
++
+ 			/* skip ifaces that are unusable */
+ 			if (!iface->is_active ||
+ 			    (is_ses_using_iface(ses, iface) &&
+-			     !iface->rss_capable)) {
++			     !iface->rss_capable))
++				continue;
++
++			/* check if we already allocated enough channels */
++			iface_weight = iface->speed / iface_min_speed;
++
++			if (iface->weight_fulfilled >= iface_weight)
+ 				continue;
+-			}
+ 
+ 			/* take ref before unlock */
+ 			kref_get(&iface->refcount);
+@@ -241,10 +251,21 @@ int cifs_try_adding_channels(struct cifs_ses *ses)
+ 				continue;
+ 			}
+ 
+-			cifs_dbg(FYI, "successfully opened new channel on iface:%pIS\n",
++			iface->num_channels++;
++			iface->weight_fulfilled++;
++			cifs_dbg(VFS, "successfully opened new channel on iface:%pIS\n",
+ 				 &iface->sockaddr);
+ 			break;
+ 		}
++
++		/* reached end of list. reset weight_fulfilled and start over */
++		if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
++			list_for_each_entry(iface, &ses->iface_list, iface_head)
++				iface->weight_fulfilled = 0;
++			spin_unlock(&ses->iface_lock);
++			iface = NULL;
++			continue;
++		}
+ 		spin_unlock(&ses->iface_lock);
+ 
+ 		left--;
+@@ -263,8 +284,10 @@ int
+ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ {
+ 	unsigned int chan_index;
++	size_t iface_weight = 0, iface_min_speed = 0;
+ 	struct cifs_server_iface *iface = NULL;
+ 	struct cifs_server_iface *old_iface = NULL;
++	struct cifs_server_iface *last_iface = NULL;
+ 	int rc = 0;
+ 
+ 	spin_lock(&ses->chan_lock);
+@@ -284,13 +307,34 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 	spin_unlock(&ses->chan_lock);
+ 
+ 	spin_lock(&ses->iface_lock);
++	if (!ses->iface_count) {
++		spin_unlock(&ses->iface_lock);
++		cifs_dbg(VFS, "server %s does not advertise interfaces\n", ses->server->hostname);
++		return 0;
++	}
++
++	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
++				     iface_head);
++	iface_min_speed = last_iface->speed;
++
+ 	/* then look for a new one */
+ 	list_for_each_entry(iface, &ses->iface_list, iface_head) {
++		/* do not mix rdma and non-rdma interfaces */
++		if (iface->rdma_capable != server->rdma)
++			continue;
++
+ 		if (!iface->is_active ||
+ 		    (is_ses_using_iface(ses, iface) &&
+ 		     !iface->rss_capable)) {
+ 			continue;
+ 		}
++
++		/* check if we already allocated enough channels */
++		iface_weight = iface->speed / iface_min_speed;
++
++		if (iface->weight_fulfilled >= iface_weight)
++			continue;
++
+ 		kref_get(&iface->refcount);
+ 		break;
+ 	}
+@@ -306,10 +350,22 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 		cifs_dbg(FYI, "replacing iface: %pIS with %pIS\n",
+ 			 &old_iface->sockaddr,
+ 			 &iface->sockaddr);
++
++		old_iface->num_channels--;
++		if (old_iface->weight_fulfilled)
++			old_iface->weight_fulfilled--;
++		iface->num_channels++;
++		iface->weight_fulfilled++;
++
+ 		kref_put(&old_iface->refcount, release_iface);
+ 	} else if (old_iface) {
+ 		cifs_dbg(FYI, "releasing ref to iface: %pIS\n",
+ 			 &old_iface->sockaddr);
++
++		old_iface->num_channels--;
++		if (old_iface->weight_fulfilled)
++			old_iface->weight_fulfilled--;
++
+ 		kref_put(&old_iface->refcount, release_iface);
+ 	} else {
+ 		WARN_ON(!iface);
 -- 
 2.42.0
 
