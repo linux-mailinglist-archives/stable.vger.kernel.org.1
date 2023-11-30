@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-3280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E4E7FF4D8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:23:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79ED7FF4DB
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D189A1F20F5A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042161C20F27
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352DE54F8F;
-	Thu, 30 Nov 2023 16:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751EC54F94;
+	Thu, 30 Nov 2023 16:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiwhZ0aR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwZsc5YS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641F495C2;
-	Thu, 30 Nov 2023 16:23:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73873C433C7;
-	Thu, 30 Nov 2023 16:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323E2495C2;
+	Thu, 30 Nov 2023 16:23:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673D3C433C8;
+	Thu, 30 Nov 2023 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361430;
-	bh=eGUSjeZey+KSWN9aFm/u6zcNEiDtIpZ9mtDmHR1N6Q8=;
+	s=korg; t=1701361435;
+	bh=n+r8wmF+/O5yjwOOHNpXye+K58HtvjBMQbm4By4xeig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiwhZ0aRwTa0KETh0/x8o0w2Qo9gOKcZ4JxRKbPBEVy559PW+Ac8XNKvSIRf7jvRL
-	 lbW/ypFBDGz8mdeMkD2zB69K/Z3qbRhmzlYJlKCwGS2+cqX3gsBHbdCdVKw7G/PfW/
-	 nCbkrlwvpmlN5tHKdDc0HcEtB9AIya/IfHkTXWYY=
+	b=RwZsc5YS9RR5vw7zQPQwgvz5BuTJvIdP5uC4A0KxLUZzV0hrCw1Ws2Kh2wJYA8G68
+	 tu3XFngK33fgGpZhZGpxFYaKnNjW+5zbQ1aXrYNDm9CI36J8VUeYaohY6QjX2ESjV3
+	 GIDneubv8/gbZCQMrARHZttFJUtzQQjBlN9WWPM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/112] octeontx2-pf: Fix memory leak during interface down
-Date: Thu, 30 Nov 2023 16:21:07 +0000
-Message-ID: <20231130162140.962484619@linuxfoundation.org>
+Subject: [PATCH 6.6 021/112] ata: pata_isapnp: Add missing error check for devm_ioport_map()
+Date: Thu, 30 Nov 2023 16:21:08 +0000
+Message-ID: <20231130162140.995165466@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -58,35 +58,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 5f228d7c8a539714c1e9b7e7534f76bb7979f268 ]
+[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
 
-During 'ifconfig <netdev> down' one RSS memory was not getting freed.
-This patch fixes the same.
+Add missing error return check for devm_ioport_map() and return the
+error if this function call fails.
 
-Fixes: 81a4362016e7 ("octeontx2-pf: Add RSS multi group support")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0d5ff566779f ("libata: convert to iomap")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/pata_isapnp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 91b99fd703616..ba95ac9132746 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1934,6 +1934,8 @@ int otx2_stop(struct net_device *netdev)
- 	/* Clear RSS enable flag */
- 	rss = &pf->hw.rss_info;
- 	rss->enable = false;
-+	if (!netif_is_rxfh_configured(netdev))
-+		kfree(rss->rss_ctx[DEFAULT_RSS_CONTEXT_GROUP]);
- 
- 	/* Cleanup Queue IRQ */
- 	vec = pci_irq_vector(pf->pdev,
+diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
+index 25a63d043c8e1..0f77e04240661 100644
+--- a/drivers/ata/pata_isapnp.c
++++ b/drivers/ata/pata_isapnp.c
+@@ -82,6 +82,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
+ 	if (pnp_port_valid(idev, 1)) {
+ 		ctl_addr = devm_ioport_map(&idev->dev,
+ 					   pnp_port_start(idev, 1), 1);
++		if (!ctl_addr)
++			return -ENOMEM;
++
+ 		ap->ioaddr.altstatus_addr = ctl_addr;
+ 		ap->ioaddr.ctl_addr = ctl_addr;
+ 		ap->ops = &isapnp_port_ops;
 -- 
 2.42.0
 
