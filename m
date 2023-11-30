@@ -1,66 +1,65 @@
-Return-Path: <stable+bounces-3566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08D17FFBB8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:46:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D264F7FFBBF
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D64428280C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:46:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64942B20E7E
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05453E01;
-	Thu, 30 Nov 2023 19:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1933C537F9;
+	Thu, 30 Nov 2023 19:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="b4oQpmwm"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="XnXwgLPZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6EDD5C
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:41 -0800 (PST)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-7b393fd9419so6309239f.0
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:41 -0800 (PST)
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B24D7D
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:42 -0800 (PST)
+Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-7b05e65e784so6243739f.1
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701373601; x=1701978401; darn=vger.kernel.org;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701373602; x=1701978402; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rzni/7YGjthyX/EKfOM3P3qwS1b3E+PYRXzgk/3HwtU=;
-        b=b4oQpmwmKPW7DgXXS5pRaL4H0dc7S8TdNy3Wj7W/IqquqQo6ko7dpbSOhq+eNJX8em
-         9l8K8GA2Rs6GEoOPsq7kHYr/lMlQohjOkoUlKzZLRx9o1G+7DSsKXgrsuexKpJVLyCiH
-         Al7/b6CV+XCaWbGQjmwOjwOqq4vDGn/ZnWUxq3LPu6eZywcguavY0G0mjyI2QNUId109
-         aXvbFx/waNVHWK5OXs8rP8V1KFE67bVhkBuCGQ+LQkUpghQqbHX9ipWN0K0nWxLLTSiQ
-         LWESbHkbHoP2LedCez82geWbKQC7kFEbblVa9iSzFtcSJKGkpNr5NTp5vphQ/4YVMpb3
-         aosw==
+        bh=f9hDKK//PcdFxhtS7/Qn7jAt09MAas7oaU4k4FD1Rqw=;
+        b=XnXwgLPZvmIeKv2Y9jZtds8oYOniL/y4dXZrOBat7gqzpaT/wA3b9mK1k06+L/IsVW
+         xmftrj7K1Xr7lkTuDA44QTNiBuSYA+L25pGFYt7KP7iwr6Nu0zz2Ey4gRl2THyW6k7ur
+         LuUEaOEL3hrSPVsw/9raK9Jtv2r5NqkbrLgJDN+uKAOdy9G6hCdh+d0RnbpqbwR4FVeA
+         xUBGfzZo/klUzWUylM+8LDesp1dhdYqGnKBgQXWRUMWtpHGJtGpQRLTSKS0XLStgYYVi
+         T40L+ddaH9UDgzdKfqZb+gneehZui2HyeVcDkOARPjmkc1yFLecHXjGSayzBWubfEs7k
+         B7RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701373601; x=1701978401;
+        d=1e100.net; s=20230601; t=1701373602; x=1701978402;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rzni/7YGjthyX/EKfOM3P3qwS1b3E+PYRXzgk/3HwtU=;
-        b=RVPy8JqeAG5B4+EvY2fH1JNbNSXezttIzLMRQYuqznz/+y7jPYqzdNbJUj9ewgIYib
-         D0kU2CgACahOgGkn1Rwf9FJj4Oc0M5akby4V20GxRd39sEH6bQdyrxwMGDWHzwuBMptw
-         bpv8FXQTdAqxauEIRVF9/2NmoxLt6SSEp+QoRSRUX7LAZVU/0DTNp0PEvtWOHoTO2meb
-         AMouFwcWLlFrrXsc2YxP0va9F7WFbwPZu1ehNGu3qVarrSjdrMKx7deLlbva6u+rnk4v
-         P/eoEVeLDqBM37chSRJ5N8eKS1ilFO+gUVo1DdyrJREhfPoqpAhj/U2hk/AK2Ca2bux6
-         /Oog==
-X-Gm-Message-State: AOJu0Yy/6FGQr0ORVpN2W0Bmo3w5Vav6fmCZ/5+0l3sCHQPh6L6ErP0T
-	HrPacTOkrk7QD7O41HNE55jY5XF7tXhqNo8ATaXy+w==
-X-Google-Smtp-Source: AGHT+IGC3u4ZpnZCT+lO/hHmrcofG05ga5uT1s4J/28aCYMZ/Hx7i65Y9YHMKbcs/IFc15WQg0qk6g==
-X-Received: by 2002:a05:6602:489a:b0:7b3:95a4:de9c with SMTP id ee26-20020a056602489a00b007b395a4de9cmr19103111iob.1.1701373600877;
-        Thu, 30 Nov 2023 11:46:40 -0800 (PST)
+        bh=f9hDKK//PcdFxhtS7/Qn7jAt09MAas7oaU4k4FD1Rqw=;
+        b=n3Vr4GTGFcS7oRiC4pnZ5EGVktG3ZdbwikzVB2A+P6si71SXYZUxcM2EWNkw/brqEk
+         P3ofGNDzD4n3Y8PwwkfkpkQrjJmfw0b2eP2w3NpUKaQaIq/s54jQDkZj8GtaJgvk1V2p
+         jnRc/1fvqflRUlLyQzQSSuoHh650EAou4mV/BeiBFjw4LlIUneh3b2ul8J0WV66m7o6j
+         R/LV6YpVicpVN4iZSNnRWQkcHShitylUgY/+Xu2SuNHtqOC/yObcBIk7tJYEFMjOHD4V
+         NeJFgZY9unW1dpj3hcw43fcIkj8ami6Qdli9pxIH1oKJ9sVjdj1+aE2iG9kPSNCOuZe7
+         0Q9g==
+X-Gm-Message-State: AOJu0YzA1tQ9bpTzRSmZ6oPwWeksHmKtmv3YrVyNWsbiN98LIfJPiXeA
+	3Ab6EOBGfYJfOCdmF2yEwEpQMhN1IwaUvlt8IZcZhQ==
+X-Google-Smtp-Source: AGHT+IFJ6mHvElhGT5jPQ8JYEJZcf+L1A7r0mDrYJ68VOR4tM1Lj8OUi3k06cw9dAGnoUNZ86ahGUg==
+X-Received: by 2002:a5e:9512:0:b0:7b0:75a7:6606 with SMTP id r18-20020a5e9512000000b007b075a76606mr22604509ioj.0.1701373602272;
+        Thu, 30 Nov 2023 11:46:42 -0800 (PST)
 Received: from localhost.localdomain ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id a18-20020a029f92000000b004667167d8cdsm461179jam.116.2023.11.30.11.46.39
+        by smtp.gmail.com with ESMTPSA id a18-20020a029f92000000b004667167d8cdsm461179jam.116.2023.11.30.11.46.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 11:46:39 -0800 (PST)
+        Thu, 30 Nov 2023 11:46:41 -0800 (PST)
 From: Jens Axboe <axboe@kernel.dk>
 To: io-uring@vger.kernel.org
 Cc: Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 1/8] io_uring: don't allow discontig pages for IORING_SETUP_NO_MMAP
-Date: Thu, 30 Nov 2023 12:45:47 -0700
-Message-ID: <20231130194633.649319-2-axboe@kernel.dk>
+	stable@vger.kernel.org
+Subject: [PATCH 2/8] io_uring: don't guard IORING_OFF_PBUF_RING with SETUP_NO_MMAP
+Date: Thu, 30 Nov 2023 12:45:48 -0700
+Message-ID: <20231130194633.649319-3-axboe@kernel.dk>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231130194633.649319-1-axboe@kernel.dk>
 References: <20231130194633.649319-1-axboe@kernel.dk>
@@ -72,86 +71,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-io_sqes_map() is used rather than io_mem_alloc(), if the application
-passes in memory for mapping rather than have the kernel allocate it and
-then mmap(2) the ranges. This then calls __io_uaddr_map() to perform the
-page mapping and pinning, which checks if we end up with the same pages,
-if more than one page is mapped. But this check is incorrect and only
-checks if the first and last pages are the same, where it really should
-be checking if the mapped pages are contigous. This allows mapping a
-single normal page, or a huge page range.
-
-Down the line we can add support for remapping pages to be virtually
-contigous, which is really all that io_uring cares about.
+This flag only applies to the SQ and CQ rings, it's perfectly valid
+to use a mmap approach for the provided ring buffers. Move the
+check into where it belongs.
 
 Cc: stable@vger.kernel.org
 Fixes: 03d89a2de25b ("io_uring: support for user allocated memory for rings/sqes")
-Reported-by: Jann Horn <jannh@google.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- io_uring/io_uring.c | 39 +++++++++++++++++++++------------------
- 1 file changed, 21 insertions(+), 18 deletions(-)
+ io_uring/io_uring.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index ed254076c723..b45abfd75415 100644
+index b45abfd75415..52e4b14ad8aa 100644
 --- a/io_uring/io_uring.c
 +++ b/io_uring/io_uring.c
-@@ -2697,6 +2697,7 @@ static void *__io_uaddr_map(struct page ***pages, unsigned short *npages,
- {
- 	struct page **page_array;
- 	unsigned int nr_pages;
-+	void *page_addr;
- 	int ret, i;
+@@ -3478,16 +3478,18 @@ static void *io_uring_validate_mmap_request(struct file *file,
+ 	struct page *page;
+ 	void *ptr;
  
- 	*npages = 0;
-@@ -2718,27 +2719,29 @@ static void *__io_uaddr_map(struct page ***pages, unsigned short *npages,
- 		io_pages_free(&page_array, ret > 0 ? ret : 0);
- 		return ret < 0 ? ERR_PTR(ret) : ERR_PTR(-EFAULT);
- 	}
--	/*
--	 * Should be a single page. If the ring is small enough that we can
--	 * use a normal page, that is fine. If we need multiple pages, then
--	 * userspace should use a huge page. That's the only way to guarantee
--	 * that we get contigious memory, outside of just being lucky or
--	 * (currently) having low memory fragmentation.
--	 */
--	if (page_array[0] != page_array[ret - 1])
--		goto err;
- 
--	/*
--	 * Can't support mapping user allocated ring memory on 32-bit archs
--	 * where it could potentially reside in highmem. Just fail those with
--	 * -EINVAL, just like we did on kernels that didn't support this
--	 * feature.
--	 */
-+	page_addr = page_address(page_array[0]);
- 	for (i = 0; i < nr_pages; i++) {
--		if (PageHighMem(page_array[i])) {
--			ret = -EINVAL;
-+		ret = -EINVAL;
-+
-+		/*
-+		 * Can't support mapping user allocated ring memory on 32-bit
-+		 * archs where it could potentially reside in highmem. Just
-+		 * fail those with -EINVAL, just like we did on kernels that
-+		 * didn't support this feature.
-+		 */
-+		if (PageHighMem(page_array[i]))
- 			goto err;
--		}
-+
-+		/*
-+		 * No support for discontig pages for now, should either be a
-+		 * single normal page, or a huge page. Later on we can add
-+		 * support for remapping discontig pages, for now we will
-+		 * just fail them with EINVAL.
-+		 */
-+		if (page_address(page_array[i]) != page_addr)
-+			goto err;
-+		page_addr += PAGE_SIZE;
- 	}
- 
- 	*pages = page_array;
+-	/* Don't allow mmap if the ring was setup without it */
+-	if (ctx->flags & IORING_SETUP_NO_MMAP)
+-		return ERR_PTR(-EINVAL);
+-
+ 	switch (offset & IORING_OFF_MMAP_MASK) {
+ 	case IORING_OFF_SQ_RING:
+ 	case IORING_OFF_CQ_RING:
++		/* Don't allow mmap if the ring was setup without it */
++		if (ctx->flags & IORING_SETUP_NO_MMAP)
++			return ERR_PTR(-EINVAL);
+ 		ptr = ctx->rings;
+ 		break;
+ 	case IORING_OFF_SQES:
++		/* Don't allow mmap if the ring was setup without it */
++		if (ctx->flags & IORING_SETUP_NO_MMAP)
++			return ERR_PTR(-EINVAL);
+ 		ptr = ctx->sq_sqes;
+ 		break;
+ 	case IORING_OFF_PBUF_RING: {
 -- 
 2.42.0
 
