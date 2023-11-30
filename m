@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-3431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D7487FF59A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781F17FF544
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E1341C21060
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A98531C20DDD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D654878B;
-	Thu, 30 Nov 2023 16:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0ACC54FA5;
+	Thu, 30 Nov 2023 16:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK3eVx0k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSSteSBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F38351002;
-	Thu, 30 Nov 2023 16:30:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4B8C433C8;
-	Thu, 30 Nov 2023 16:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B078454F92;
+	Thu, 30 Nov 2023 16:27:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEABC433C7;
+	Thu, 30 Nov 2023 16:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361815;
-	bh=cAuO7KJa7Itwwp/aTZZgv872r2PYV1MygvbzRy9HNjY=;
+	s=korg; t=1701361642;
+	bh=oR0sA8FhegUltbQwChRn8PUwK7glbkKbxQioHIaiEyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GK3eVx0kAQmiPHhTlGWnQDyMhbQIvyDxbTkcbwOQxznMNwWOYkclDmttKVa+mFdWV
-	 Yh0D3mF8GXYX8Lku22L5thHP+CUkLQFBMV3iefWxS71o7zFNQhisjfOG0NneZTZA3M
-	 7x+gNWZz0LgrzPFD0Gturp1ILwgdq124e9sZSR28=
+	b=WSSteSBptDUmbEbDv3Rv57u2urY4Mk3ElhQPXQ7YqmJ/qYWhhOjVYRyYQISCIzCG7
+	 NDHnEi+lfmYsbD9bFCKrFLj+PPhhbEU4lXZoVS8wSY5t6Al53+JGyvSzCXyIenfGUN
+	 mvu3RVLAroXAcslKXJnxOw0wzLb2quUGw80udeFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 58/82] bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 102/112] usb: cdnsp: Fix deadlock issue during using NCM gadget
 Date: Thu, 30 Nov 2023 16:22:29 +0000
-Message-ID: <20231130162137.810729566@linuxfoundation.org>
+Message-ID: <20231130162143.532011805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +52,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit f72f4312d4388376fc8a1f6cf37cb21a0d41758b upstream.
+commit 58f2fcb3a845fcbbad2f3196bb37d744e0506250 upstream.
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") do the following change inside btree_gc_coalesce(),
+The interrupt service routine registered for the gadget is a primary
+handler which mask the interrupt source and a threaded handler which
+handles the source of the interrupt. Since the threaded handler is
+voluntary threaded, the IRQ-core does not disable bottom halves before
+invoke the handler like it does for the forced-threaded handler.
 
-31 @@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(
-32         memset(new_nodes, 0, sizeof(new_nodes));
-33         closure_init_stack(&cl);
-34
-35 -       while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
-36 +       while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
-37                 keys += r[nodes++].keys;
-38
-39         blocks = btree_default_blocks(b->c) * 2 / 3;
+Due to changes in networking it became visible that a network gadget's
+completions handler may schedule a softirq which remains unprocessed.
+The gadget's completion handler is usually invoked either in hard-IRQ or
+soft-IRQ context. In this context it is enough to just raise the softirq
+because the softirq itself will be handled once that context is left.
+In the case of the voluntary threaded handler, there is nothing that
+will process pending softirqs. Which means it remain queued until
+another random interrupt (on this CPU) fires and handles it on its exit
+path or another thread locks and unlocks a lock with the bh suffix.
+Worst case is that the CPU goes idle and the NOHZ complains about
+unhandled softirqs.
 
-At line 35 the original r[nodes].b is not always allocatored from
-__bch_btree_node_alloc(), and possibly initialized as NULL pointer by
-caller of btree_gc_coalesce(). Therefore the change at line 36 is not
-correct.
+Disable bottom halves before acquiring the lock (and disabling
+interrupts) and enable them after dropping the lock. This ensures that
+any pending softirqs will handled right away.
 
-This patch replaces the mistaken IS_ERR() by IS_ERR_OR_NULL() to avoid
-potential issue.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Cc:  <stable@vger.kernel.org> # 6.5+
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-9-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+cc: stable@vger.kernel.org
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20231108093125.224963-1-pawell@cadence.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-ring.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1342,7 +1342,7 @@ static int btree_gc_coalesce(struct btre
- 	memset(new_nodes, 0, sizeof(new_nodes));
- 	closure_init_stack(&cl);
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -1529,6 +1529,7 @@ irqreturn_t cdnsp_thread_irq_handler(int
+ 	unsigned long flags;
+ 	int counter = 0;
  
--	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
-+	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
- 		keys += r[nodes++].keys;
++	local_bh_disable();
+ 	spin_lock_irqsave(&pdev->lock, flags);
  
- 	blocks = btree_default_blocks(b->c) * 2 / 3;
+ 	if (pdev->cdnsp_state & (CDNSP_STATE_HALTED | CDNSP_STATE_DYING)) {
+@@ -1541,6 +1542,7 @@ irqreturn_t cdnsp_thread_irq_handler(int
+ 			cdnsp_died(pdev);
+ 
+ 		spin_unlock_irqrestore(&pdev->lock, flags);
++		local_bh_enable();
+ 		return IRQ_HANDLED;
+ 	}
+ 
+@@ -1557,6 +1559,7 @@ irqreturn_t cdnsp_thread_irq_handler(int
+ 	cdnsp_update_erst_dequeue(pdev, event_ring_deq, 1);
+ 
+ 	spin_unlock_irqrestore(&pdev->lock, flags);
++	local_bh_enable();
+ 
+ 	return IRQ_HANDLED;
+ }
 
 
 
