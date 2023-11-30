@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AF87FF202
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:34:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC6F7FF204
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:34:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4331F1C20D09
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:34:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3515B21E76
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50999482DD;
-	Thu, 30 Nov 2023 14:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7644879F;
+	Thu, 30 Nov 2023 14:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGr72kMv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oogFvW+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1273951C31
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:34:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459A3C433C7;
-	Thu, 30 Nov 2023 14:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9D55100D
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:34:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C7EC433C7;
+	Thu, 30 Nov 2023 14:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701354859;
-	bh=boi2YTsC8paWvP+0WBilUdFH4ze8GgHIJDG/dx5dEOI=;
+	s=korg; t=1701354863;
+	bh=kiClTHtc/qsslUsfUnk0UTJA3zF8Uvtwxi/WTyD2E5I=;
 	h=Subject:To:Cc:From:Date:From;
-	b=gGr72kMvmvAxUTphrqqey+DrAy27hLr08KFQzc+jH26EPGxojuR1VMHOlmPssiLo3
-	 Ww+2qiBnkQMZdvEk9L0Y/Ab5AGs8r3IQSdzHdjrOuOusMUBwmeN5WcQohlpeLiexP3
-	 gLzdEQKI47VPo0moDWrgA1UGBK1ILXnCUYZxKNnI=
-Subject: FAILED: patch "[PATCH] hv_netvsc: fix race of netvsc and VF register_netdevice" failed to apply to 5.15-stable tree
+	b=oogFvW+v8iBqbhZZIzkSkn5XvPWiuCfKzcz5Hfw7Tf7BjGX1ROKqfeRB6yEUkHN0y
+	 Cg3xnjOcTk93vQAeYihiMzcZ4I0dfbpwmtYrIVwCXNqFJDG0glyQSR1XRM7upq5nZ9
+	 CK1UlvYSV4xQn44A83oeLGPsuhjPdyGpuA++/ynk=
+Subject: FAILED: patch "[PATCH] hv_netvsc: fix race of netvsc and VF register_netdevice" failed to apply to 5.10-stable tree
 To: haiyangz@microsoft.com,decui@microsoft.com,horms@kernel.org,pabeni@redhat.com,wojciech.drewek@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 30 Nov 2023 14:34:17 +0000
-Message-ID: <2023113017-caloric-unbeaten-432b@gregkh>
+Date: Thu, 30 Nov 2023 14:34:18 +0000
+Message-ID: <2023113018-crisply-tameness-85ee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x d30fb712e52964f2cf9a9c14cf67078394044837
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113017-caloric-unbeaten-432b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113018-crisply-tameness-85ee@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
