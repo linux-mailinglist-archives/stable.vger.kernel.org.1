@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-3422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0187FF58F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFF997FF518
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 586DAB20E33
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECBC1281783
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA2654FAF;
-	Thu, 30 Nov 2023 16:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B49F554FAB;
+	Thu, 30 Nov 2023 16:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZI9UULR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AaTiRhKq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDBD495C2;
-	Thu, 30 Nov 2023 16:29:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7B5C433C8;
-	Thu, 30 Nov 2023 16:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EAB54FA8;
+	Thu, 30 Nov 2023 16:25:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920D7C433C7;
+	Thu, 30 Nov 2023 16:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361792;
-	bh=mXXN+JaRNEvgtgKFZpXEkE/ABZf3HmqlBYf/O50qRe8=;
+	s=korg; t=1701361552;
+	bh=kag4vTvai0VnroRLRSRf9ysfCxrqkUO5n8gx5S86zUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZI9UULRvVjX6h72Vt+KW+jIwgI3+wpu2nsUI6uqVPVsFfEJcS0iyQ6QX5jgkZciT
-	 hw7Vic/rifTG6K8EsxjH/uTpDo17OAcsUi0CaqcJq3NR1n+NLl5gM3DJGs2QhFeMEB
-	 8yH3WDibpwISttFWKV4VgzPefiXS43IftbxjvZd0=
+	b=AaTiRhKqWXRE4WS+PXk9WsW8XvkNfD3PxIrwrHth9Pj4FPUgrk9ZX+LU4V3vuwMqL
+	 Kp5tKi6fhCKUp7udOUa/5eY+wiY3yA3sLOdZCmG7BbDRK3cFoL9aW2q5dcZOU5+GUq
+	 KtC/h8QI6npqZ3GnSZ+sqV5XPrwLQixir+czLDig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Marco Elver <elver@google.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/82] mm,kfence: decouple kfence from page granularity mapping judgement
+	syzbot+40d43509a099ea756317@syzkaller.appspotmail.com,
+	Jann Horn <jannh@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 068/112] tls: fix NULL deref on tls_sw_splice_eof() with empty record
 Date: Thu, 30 Nov 2023 16:21:55 +0000
-Message-ID: <20231130162136.718156306@linuxfoundation.org>
+Message-ID: <20231130162142.481412522@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,222 +53,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit bfa7965b33ab79fc3b2f8adc14704075fe2416cd ]
+commit 53f2cb491b500897a619ff6abd72f565933760f0 upstream.
 
-Kfence only needs its pool to be mapped as page granularity, if it is
-inited early. Previous judgement was a bit over protected. From [1], Mark
-suggested to "just map the KFENCE region a page granularity". So I
-decouple it from judgement and do page granularity mapping for kfence
-pool only. Need to be noticed that late init of kfence pool still requires
-page granularity mapping.
+syzkaller discovered that if tls_sw_splice_eof() is executed as part of
+sendfile() when the plaintext/ciphertext sk_msg are empty, the send path
+gets confused because the empty ciphertext buffer does not have enough
+space for the encryption overhead. This causes tls_push_record() to go on
+the `split = true` path (which is only supposed to be used when interacting
+with an attached BPF program), and then get further confused and hit the
+tls_merge_open_record() path, which then assumes that there must be at
+least one populated buffer element, leading to a NULL deref.
 
-Page granularity mapping in theory cost more(2M per 1GB) memory on arm64
-platform. Like what I've tested on QEMU(emulated 1GB RAM) with
-gki_defconfig, also turning off rodata protection:
-Before:
-[root@liebao ]# cat /proc/meminfo
-MemTotal:         999484 kB
-After:
-[root@liebao ]# cat /proc/meminfo
-MemTotal:        1001480 kB
+It is possible to have empty plaintext/ciphertext buffers if we previously
+bailed from tls_sw_sendmsg_locked() via the tls_trim_both_msgs() path.
+tls_sw_push_pending_record() already handles this case correctly; let's do
+the same check in tls_sw_splice_eof().
 
-To implement this, also relocate the kfence pool allocation before the
-linear mapping setting up, arm64_kfence_alloc_pool is to allocate phys
-addr, __kfence_pool is to be set after linear mapping set up.
-
-LINK: [1] https://lore.kernel.org/linux-arm-kernel/Y+IsdrvDNILA59UN@FVFF77S0Q05N/
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Reviewed-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Link: https://lore.kernel.org/r/1679066974-690-1-git-send-email-quic_zhenhuah@quicinc.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: acfa60dbe038 ("arm64: mm: Fix "rodata=on" when CONFIG_RODATA_FULL_DEFAULT_ENABLED=y")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: df720d288dbb ("tls/sw: Use splice_eof() to flush")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+40d43509a099ea756317@syzkaller.appspotmail.com
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://lore.kernel.org/r/20231122214447.675768-1-jannh@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/kfence.h | 10 ++++++
- arch/arm64/mm/mmu.c             | 61 +++++++++++++++++++++++++++++++++
- arch/arm64/mm/pageattr.c        |  7 ++--
- mm/kfence/core.c                |  4 +++
- 4 files changed, 80 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/include/asm/kfence.h b/arch/arm64/include/asm/kfence.h
-index aa855c6a0ae6f..a81937fae9f6d 100644
---- a/arch/arm64/include/asm/kfence.h
-+++ b/arch/arm64/include/asm/kfence.h
-@@ -19,4 +19,14 @@ static inline bool kfence_protect_page(unsigned long addr, bool protect)
- 	return true;
- }
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index a78e8e722409..316f76187962 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -1232,11 +1232,14 @@ void tls_sw_splice_eof(struct socket *sock)
+ 	lock_sock(sk);
  
-+#ifdef CONFIG_KFENCE
-+extern bool kfence_early_init;
-+static inline bool arm64_kfence_can_set_direct_map(void)
-+{
-+	return !kfence_early_init;
-+}
-+#else /* CONFIG_KFENCE */
-+static inline bool arm64_kfence_can_set_direct_map(void) { return false; }
-+#endif /* CONFIG_KFENCE */
-+
- #endif /* __ASM_KFENCE_H */
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 9a7c389651540..4b302dbf78e96 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -24,6 +24,7 @@
- #include <linux/mm.h>
- #include <linux/vmalloc.h>
- #include <linux/set_memory.h>
-+#include <linux/kfence.h>
+ retry:
++	/* same checks as in tls_sw_push_pending_record() */
+ 	rec = ctx->open_rec;
+ 	if (!rec)
+ 		goto unlock;
  
- #include <asm/barrier.h>
- #include <asm/cputype.h>
-@@ -38,6 +39,7 @@
- #include <asm/ptdump.h>
- #include <asm/tlbflush.h>
- #include <asm/pgalloc.h>
-+#include <asm/kfence.h>
+ 	msg_pl = &rec->msg_plaintext;
++	if (msg_pl->sg.size == 0)
++		goto unlock;
  
- #define NO_BLOCK_MAPPINGS	BIT(0)
- #define NO_CONT_MAPPINGS	BIT(1)
-@@ -521,12 +523,67 @@ static int __init enable_crash_mem_map(char *arg)
- }
- early_param("crashkernel", enable_crash_mem_map);
- 
-+#ifdef CONFIG_KFENCE
-+
-+bool __ro_after_init kfence_early_init = !!CONFIG_KFENCE_SAMPLE_INTERVAL;
-+
-+/* early_param() will be parsed before map_mem() below. */
-+static int __init parse_kfence_early_init(char *arg)
-+{
-+	int val;
-+
-+	if (get_option(&arg, &val))
-+		kfence_early_init = !!val;
-+	return 0;
-+}
-+early_param("kfence.sample_interval", parse_kfence_early_init);
-+
-+static phys_addr_t __init arm64_kfence_alloc_pool(void)
-+{
-+	phys_addr_t kfence_pool;
-+
-+	if (!kfence_early_init)
-+		return 0;
-+
-+	kfence_pool = memblock_phys_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
-+	if (!kfence_pool) {
-+		pr_err("failed to allocate kfence pool\n");
-+		kfence_early_init = false;
-+		return 0;
-+	}
-+
-+	/* Temporarily mark as NOMAP. */
-+	memblock_mark_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+
-+	return kfence_pool;
-+}
-+
-+static void __init arm64_kfence_map_pool(phys_addr_t kfence_pool, pgd_t *pgdp)
-+{
-+	if (!kfence_pool)
-+		return;
-+
-+	/* KFENCE pool needs page-level mapping. */
-+	__map_memblock(pgdp, kfence_pool, kfence_pool + KFENCE_POOL_SIZE,
-+			pgprot_tagged(PAGE_KERNEL),
-+			NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS);
-+	memblock_clear_nomap(kfence_pool, KFENCE_POOL_SIZE);
-+	__kfence_pool = phys_to_virt(kfence_pool);
-+}
-+#else /* CONFIG_KFENCE */
-+
-+static inline phys_addr_t arm64_kfence_alloc_pool(void) { return 0; }
-+static inline void arm64_kfence_map_pool(phys_addr_t kfence_pool, pgd_t *pgdp) { }
-+
-+#endif /* CONFIG_KFENCE */
-+
- static void __init map_mem(pgd_t *pgdp)
- {
- 	static const u64 direct_map_end = _PAGE_END(VA_BITS_MIN);
- 	phys_addr_t kernel_start = __pa_symbol(_stext);
- 	phys_addr_t kernel_end = __pa_symbol(__init_begin);
- 	phys_addr_t start, end;
-+	phys_addr_t early_kfence_pool;
- 	int flags = NO_EXEC_MAPPINGS;
- 	u64 i;
- 
-@@ -539,6 +596,8 @@ static void __init map_mem(pgd_t *pgdp)
- 	 */
- 	BUILD_BUG_ON(pgd_index(direct_map_end - 1) == pgd_index(direct_map_end));
- 
-+	early_kfence_pool = arm64_kfence_alloc_pool();
-+
- 	if (can_set_direct_map())
- 		flags |= NO_BLOCK_MAPPINGS | NO_CONT_MAPPINGS;
- 
-@@ -604,6 +663,8 @@ static void __init map_mem(pgd_t *pgdp)
- 		}
- 	}
- #endif
-+
-+	arm64_kfence_map_pool(early_kfence_pool, pgdp);
- }
- 
- void mark_rodata_ro(void)
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 5922178d7a064..47f532e13d532 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -11,6 +11,7 @@
- #include <asm/cacheflush.h>
- #include <asm/set_memory.h>
- #include <asm/tlbflush.h>
-+#include <asm/kfence.h>
- 
- struct page_change_data {
- 	pgprot_t set_mask;
-@@ -22,12 +23,14 @@ bool rodata_full __ro_after_init = IS_ENABLED(CONFIG_RODATA_FULL_DEFAULT_ENABLED
- bool can_set_direct_map(void)
- {
- 	/*
--	 * rodata_full, DEBUG_PAGEALLOC and KFENCE require linear map to be
-+	 * rodata_full and DEBUG_PAGEALLOC require linear map to be
- 	 * mapped at page granularity, so that it is possible to
- 	 * protect/unprotect single pages.
-+	 *
-+	 * KFENCE pool requires page-granular mapping if initialized late.
- 	 */
- 	return (rodata_enabled && rodata_full) || debug_pagealloc_enabled() ||
--		IS_ENABLED(CONFIG_KFENCE);
-+		arm64_kfence_can_set_direct_map();
- }
- 
- static int change_page_range(pte_t *ptep, unsigned long addr, void *data)
-diff --git a/mm/kfence/core.c b/mm/kfence/core.c
-index a477b7fb8aa33..c597cfebb0e86 100644
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -828,6 +828,10 @@ void __init kfence_alloc_pool(void)
- 	if (!kfence_sample_interval)
- 		return;
- 
-+	/* if the pool has already been initialized by arch, skip the below. */
-+	if (__kfence_pool)
-+		return;
-+
- 	__kfence_pool = memblock_alloc(KFENCE_POOL_SIZE, PAGE_SIZE);
- 
- 	if (!__kfence_pool)
+ 	/* Check the BPF advisor and perform transmission. */
+ 	ret = bpf_exec_tx_verdict(msg_pl, sk, false, TLS_RECORD_TYPE_DATA,
 -- 
-2.42.0
+2.43.0
 
 
 
