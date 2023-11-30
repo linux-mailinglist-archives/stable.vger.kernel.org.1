@@ -1,45 +1,51 @@
-Return-Path: <stable+bounces-3210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D4087FEEDE
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 13:22:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 872627FEF74
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 13:46:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5931C281C6B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 12:22:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41CE8282191
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 12:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A884A46435;
-	Thu, 30 Nov 2023 12:22:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGI2nGPI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C29718E07;
+	Thu, 30 Nov 2023 12:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B34E34555
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 12:22:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21150C433C7;
-	Thu, 30 Nov 2023 12:22:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701346937;
-	bh=gwb1GBCsOvRHdGI7B2sk516Lc3TuyoRMTLmOUTD6IZw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GGI2nGPIYKKd8tWoXxm0BcxkSPS09xrNN85hFWy3ZjE5uzF6oNcw1jBk2zHf7vj4w
-	 urKSfjKns5+gWnqGTzlE4bQtGjBFsLMvlD5rKxGmHeUIB9mNYRb7y8t8Vys9aYDe0r
-	 9kYEWx20QyeGI+91wvfmox21LOjxorR0jLGvpw4Q=
-Date: Thu, 30 Nov 2023 12:22:14 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ronald Monthero <debug.penguin32@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: Backport submission - rcu: Avoid tracing a few functions
- executed in stop machine
-Message-ID: <2023113012-humorous-marshy-3060@gregkh>
-References: <CALk6Uxo5ymxu_P_7=LnLZwTgjYbrdE7gzwyeQVxeR431SPuxyw@mail.gmail.com>
- <2023112431-matching-imperfect-1b76@gregkh>
- <CALk6UxqZtm_MR9cYyN2UvTF_7xPH0D-zQ_uUjZKjNGfU-JOX-A@mail.gmail.com>
- <CALk6Uxoq=f7ews1Beve3qW_38w0sw1fnpJvmwMDfxy9eM+1AmA@mail.gmail.com>
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E59D50;
+	Thu, 30 Nov 2023 04:46:18 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id D72266413F6E;
+	Thu, 30 Nov 2023 13:46:15 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 3LnPvv4jQdaJ; Thu, 30 Nov 2023 13:46:15 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 208F56343783;
+	Thu, 30 Nov 2023 13:46:15 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id wbcgb4kmcsrJ; Thu, 30 Nov 2023 13:46:15 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id ED0E86413F6E;
+	Thu, 30 Nov 2023 13:46:14 +0100 (CET)
+Date: Thu, 30 Nov 2023 13:46:14 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Ronald Wahl <ronald.wahl@raritan.com>, Mark Brown <broonie@kernel.org>, 
+	linux-spi@vger.kernel.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Ryan Wanner <ryan.wanner@microchip.com>, 
+	stable <stable@vger.kernel.org>, 
+	Richard Weinberger <richard.weinberger@gmail.com>
+Message-ID: <723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
+In-Reply-To: <20231129094932.2639ca49@xps-13>
+References: <20231127095842.389631-1-miquel.raynal@bootlin.com> <a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com> <0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com> <20231129094932.2639ca49@xps-13>
+Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any
+ signal
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -47,92 +53,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALk6Uxoq=f7ews1Beve3qW_38w0sw1fnpJvmwMDfxy9eM+1AmA@mail.gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
+Thread-Topic: atmel: Do not cancel a transfer upon any signal
+Thread-Index: NUX+aeuXSFektAI71KkStBMryS5HyA==
 
-On Thu, Nov 30, 2023 at 10:07:03PM +1000, Ronald Monthero wrote:
-> On Thu, Nov 30, 2023 at 12:08 AM Ronald Monthero
-> <debug.penguin32@gmail.com> wrote:
-> >
-> > On Sat, Nov 25, 2023 at 2:10 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Tue, Nov 21, 2023 at 12:09:38AM +1000, Ronald Monthero wrote:
-> > > > Dear stable maintainers,
-> > > > I like to indicate the oops encountered and request the below patch to
-> > > > be backported to v 5.15. The fix is important to avoid recurring oops
-> > > > in context of rcu detected stalls.
-> > > >
-> > > > subject: rcu: Avoid tracing a few functions executed in stop machine
-> > > > commit  48f8070f5dd8
-> > > > Target kernel version   v 5.15
-> > > > Reason for Application: To avoid oops due to rcu_prempt detect stalls
-> > > > on cpus/tasks
-> > > >
-> > > > Environment and oops context: Issue was observed in my environment on
-> > > > 5.15.193 kernel (arm platform). The patch is helpful to avoid the
-> > > > below oops indicated in [1] and [2]
-> > >
-> > > As the patch does not apply cleanly, we need a working and tested
-> > > backport so we know to apply the correct version.
-> > >
-> > > Can you please provide that as you've obviously already done this?
-> >
-> > Hi Greg,
-> > Sorry I notice my typo error 193 instead of 93. I have tested on the
-> > 5.15.93-rt58  kernel.
-> 
-> Hi Greg,
-> I used a 5.15.93 kernel
-> - on arm32 bit platform I tested with 5.15.93-rt58 (rt kernel) ,  on
-> real hardware - Freescale LS1021A, 32 bit Cortex A7 processor
-> - on x86_64 platform I tested non rt kernel 5.15.93  -  virtual
-> machine - qemu platform
-> 
-> Below is the build log after patch to kernel/rcu/tree.h on x86_64
-> 
-> linux-5.15.93$ make
->   CALL    scripts/checksyscalls.sh
->   CALL    scripts/atomic/check-atomics.sh
->   DESCEND objtool
->   DESCEND bpf/resolve_btfids
->   CHK     include/generated/compile.h
->   CC      kernel/rcu/tree.o                         <<<
->   AR      kernel/rcu/built-in.a                     <<<
->   AR      kernel/built-in.a
->   CHK     kernel/kheaders_data.tar.xz
->   GEN     .version
->   CHK     include/generated/compile.h
->   UPD     include/generated/compile.h
->   CC      init/version.o
->   AR      init/built-in.a
->   LD      vmlinux.o
->   MODPOST vmlinux.symvers
->   MODINFO modules.builtin.modinfo
->   GEN     modules.builtin
->   LD      .tmp_vmlinux.btf
->   BTF     .btf.vmlinux.bin.o
->   LD      .tmp_vmlinux.kallsyms1
-> 
-> < snipped >
-> 
->   BTF [M] sound/usb/usx2y/snd-usb-usx2y.ko
->   BTF [M] sound/virtio/virtio_snd.ko
->   BTF [M] sound/x86/snd-hdmi-lpe-audio.ko
->   BTF [M] sound/xen/snd_xen_front.ko
->   BTF [M] virt/lib/irqbypass.ko
-> linux-5.15.93$
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Miquel Raynal" <miquel.raynal@bootlin.com>
+> + Richard, my dear jffs2 expert ;)
 
-I don't understand what you are showing here, sorry.
+:-S
 
-I do not have a working backport anywhere that I can see, that is what
-we need.  As you seem to have one, can you please submit it?
+>=20
+> ronald.wahl@raritan.com wrote on Mon, 27 Nov 2023 18:54:40 +0100:
+>=20
+>> On 27.11.23 16:10, Ronald Wahl wrote:
+>> > On 27.11.23 10:58, Miquel Raynal wrote:
+>> >> The intended move from wait_for_completion_*() to
+>> >> wait_for_completion_interruptible_*() was to allow (very) long spi me=
+mor
+>> y
+>> >> transfers to be stopped upon user request instead of freezing the
+>> >> machine forever as the timeout value could now be significantly bigge=
+r.
+>> >>
+>> >> However, depending on the user logic, applications can receive many
+>> >> signals for their own "internal" purpose and have nothing to do with =
+the
+>> >> requested kernel operations, hence interrupting spi transfers upon an=
+y
+>> >> signal is probably not a wise choice. Instead, let's switch to
+>> >> wait_for_completion_killable_*() to only catch the "important"
+>> >> signals. This was likely the intended behavior anyway.
+>> >
+>> > Actually this seems to work. But aborting a process that has a SPI
+>> > transfer running causes ugly messages from kernel. This is somehow
+>> > unexpected:
+>> >
+>> > # dd if=3D/dev/urandom of=3D/flashdisk/testfile bs=3D1024 count=3D512
+>> > ^C[=C2=A0 380.726760] spi-nor spi0.0: spi transfer canceled
+>> > [=C2=A0 380.731688] spi-nor spi0.0: SPI transfer failed: -512
+>> > [=C2=A0 380.737141] spi_master spi0: failed to transfer one message fr=
+om queue
+>> > [=C2=A0 380.746495] spi-nor spi0.0: spi transfer canceled
+>> > [=C2=A0 380.751549] spi-nor spi0.0: SPI transfer failed: -512
+>> > [=C2=A0 380.756844] spi_master spi0: failed to transfer one message fr=
+om queue
+>> >
+>> > JFFS2 also logs an informational message which is less visible but als=
+o
+>> > may rise eyebrows:
+>> > [=C2=A0 380.743904] jffs2: Write of 4164 bytes at 0x0016a47c failed. r=
+etu
+>> rned
+>> > -512, retlen 68
 
-Also note, if you are using the -rt kernel, that changes lots of stuff
-that we know nothing about, please work with the -rt kernel developers
-about that.
+Ugly kernel messages are a normal consequence of killing an IO.
+Chances are good that we'll find bugs in the upper layers.
 
-thanks,
+>> > Killing a process is something to expect in certain cases and it shoul=
+d
+>> > not cause such messages which may create some anxiety that something b=
+ad
+>> > had happened. So maybe the "kill" case should be silent (e.g. level
+>> > "debug")
+>> > but without out hiding real errors. But even when hiding the message i=
+n t
+>> he
+>> > SPI framework it may cause additional messages in upper layers like JF=
+FS2
+>> .
+>> > I'm not sure whether all of this is a good idea. This is something oth=
+ers
+>> > have to decide.
+>>=20
+>> ... and now I just got a crash when unmounting and remounting jffs2:
+>>=20
+>> unmount:
+>> [ 8245.821105] spi-nor spi0.0: spi transfer canceled
+>> [ 8245.826288] spi-nor spi0.0: SPI transfer failed: -512
+>> [ 8245.831508] spi_master spi0: failed to transfer one message from queu=
+e
+>> [ 8245.838484] jffs2: Write of 1092 bytes at 0x00181458 failed. returned=
+ -5
+>> 12, retlen 68
+>> [ 8245.839786] spi-nor spi0.0: spi transfer canceled
+>> [ 8245.844759] spi-nor spi0.0: SPI transfer failed: -512
+>> [ 8245.850145] spi_master spi0: failed to transfer one message from queu=
+e
+>> [ 8245.856909] jffs2: Write of 1092 bytes at 0x0018189c failed. returned=
+ -5
+>> 12, retlen 0
+>> [ 8245.856942] jffs2: Not marking the space at 0x0018189c as dirty becau=
+se the
+>> flash driver returned retlen zero
 
-greg k-h
+jffs2 has a garbage collect thread which can be controlled using various si=
+gnals.
+To terminate the thread, jffs2 sends SIGKILL upon umount.
+If the gc thread does IO while that, you gonna kill the IO too.
+=20
+>> mount:
+>> [ 8831.213456] jffs2: error: (1142) jffs2_link_node_ref: Adding new ref =
+28b
+>> d9da7 at (0x000ad578-0x000ae5bc) not immediately after previous (0x000ad=
+578
+>> -0x000ad578)
+>> [ 8831.228212] Internal error: Oops - undefined instruction: 0 [#1] THUM=
+B2
+
+
+I fear this is a jffs2 (summary feature) bug. Chances are great that you're=
+ able
+to trigger the very same using a sudden loss of power.
+
+> It's not just spi-atmel, any spi-mem controller might be tempted to use
+> interruptible^Wkillable transfers just because the timeout values can
+> be really big as the memory sizes increase.
+>=20
+> One solution is to change the completion helpers back to something
+> non-killable/non-interruptible, but the user experience will be
+> slightly degraded. The other would be to look into jffs2 (if it's the
+> only filesystem playing with signals during unmount, tbh I don't know).
+> But maybe this signaling mechanism can't be hacked for compatibility
+> reasons. Handling this at the spi level would be a mix of layers, I'm
+> not ready for that.
+>=20
+> Richard, Mark, what's your opinion here?
+
+I *think* we can remove the signal handling code from jffs2 since it makes
+already use of the kthread_should_stop() API.
+That way we can keep the SPI transfer interruptible by signals.
+...reading right now into the history to figure better.
+
+
+Thanks,
+//richard
 
