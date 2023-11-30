@@ -1,289 +1,158 @@
-Return-Path: <stable+bounces-3565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 148AB7FFBA5
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:42:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08D17FFBB8
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 259EF1C20C6E
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D64428280C
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:46:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E869E53E03;
-	Thu, 30 Nov 2023 19:42:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05453E01;
+	Thu, 30 Nov 2023 19:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="A6qzD/uf"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="b4oQpmwm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1621A19B9
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:41:42 -0800 (PST)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1cfc34b6890so11499425ad.1
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:41:42 -0800 (PST)
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F6EDD5C
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:41 -0800 (PST)
+Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-7b393fd9419so6309239f.0
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701373301; x=1701978101; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=xkjOFW8iIRzrboEU6CI7fcRC+4rSvCf9ycgbTzE74z0=;
-        b=A6qzD/ufM/qkDbPP382eoN2ZaxNWsGFh796L41rMOFX0/58vNQHsOaBP5OQVvEY+DC
-         d41KgdW0y+/qZ7LQsZfCgrwzwpP9qfe4NYuEs2VM9mdRxkZw1NdIsTrBJLhFQb5mF/rX
-         66ynseDFqkRoyMjLzT68gx6jG431cw7Wh+6Y403glwDEkUNm596aHTAHoXqhXaQqKPUf
-         CAx2XFvmpCkTw8cY6emmPino48+iRb8amkXBpDQDrINZFId4MSlCCqt3JoboOXOk1F0v
-         WxHCacjsyazRSZCEF8MYNgLmXd9bItEdsK7hE/pppOLsWRMu4pXU9mzcO6GpY4mvVaRK
-         EAjg==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701373601; x=1701978401; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rzni/7YGjthyX/EKfOM3P3qwS1b3E+PYRXzgk/3HwtU=;
+        b=b4oQpmwmKPW7DgXXS5pRaL4H0dc7S8TdNy3Wj7W/IqquqQo6ko7dpbSOhq+eNJX8em
+         9l8K8GA2Rs6GEoOPsq7kHYr/lMlQohjOkoUlKzZLRx9o1G+7DSsKXgrsuexKpJVLyCiH
+         Al7/b6CV+XCaWbGQjmwOjwOqq4vDGn/ZnWUxq3LPu6eZywcguavY0G0mjyI2QNUId109
+         aXvbFx/waNVHWK5OXs8rP8V1KFE67bVhkBuCGQ+LQkUpghQqbHX9ipWN0K0nWxLLTSiQ
+         LWESbHkbHoP2LedCez82geWbKQC7kFEbblVa9iSzFtcSJKGkpNr5NTp5vphQ/4YVMpb3
+         aosw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701373301; x=1701978101;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xkjOFW8iIRzrboEU6CI7fcRC+4rSvCf9ycgbTzE74z0=;
-        b=iu81UsAcC9MmNrW5HbHzIBxkBpAbzTFB/jspGT3c7B5LiYxnPbQAJHu+RiWA2/U1Cz
-         c5vA3O2ZbHImp6uDIB+zabGu15wCrRFqCBjqNeAHaa4OrffE/zOlXosw3SHArR/hqNjH
-         QL5EhubvPuawIfm66Eww5H+dws3QEvMqgn+SDjzQczM+QT0OGp0CIZSYPm5j79RnR0r3
-         FYDXY049hCZ3zMKR8rgD9LtFfv8lDh5ZUvr1BIydxyHe7G/RZ9tfHU6ZUmXRI/x/Hkrw
-         gbHkC9X9QvFfh/kNHGD+6j0DiuynFkizlbuqQfiPxMq0Q6dbeAZEtYpuKnB0cHK4Wh68
-         0ttQ==
-X-Gm-Message-State: AOJu0YzPb6m/hAiN/hhl1pBxTEB5Tq5VTq/LEvZuzUkhgP7Xht42cht6
-	Y6pt8DM3sf4H8ugoFIodzmahiMdRkjUTVKJiluyStQ==
-X-Google-Smtp-Source: AGHT+IEM1BUEXu0lDQQM0de+hAq3pNUEsefyKe5TW8c8q8eJChd0qgjkdqfo9advO0peD0+dd3GC/g==
-X-Received: by 2002:a17:902:d2cf:b0:1cf:d8c5:22a8 with SMTP id n15-20020a170902d2cf00b001cfd8c522a8mr18877831plc.21.1701373300733;
-        Thu, 30 Nov 2023 11:41:40 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id w3-20020a170902a70300b001cfc34965aesm1783578plq.50.2023.11.30.11.41.39
+        d=1e100.net; s=20230601; t=1701373601; x=1701978401;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rzni/7YGjthyX/EKfOM3P3qwS1b3E+PYRXzgk/3HwtU=;
+        b=RVPy8JqeAG5B4+EvY2fH1JNbNSXezttIzLMRQYuqznz/+y7jPYqzdNbJUj9ewgIYib
+         D0kU2CgACahOgGkn1Rwf9FJj4Oc0M5akby4V20GxRd39sEH6bQdyrxwMGDWHzwuBMptw
+         bpv8FXQTdAqxauEIRVF9/2NmoxLt6SSEp+QoRSRUX7LAZVU/0DTNp0PEvtWOHoTO2meb
+         AMouFwcWLlFrrXsc2YxP0va9F7WFbwPZu1ehNGu3qVarrSjdrMKx7deLlbva6u+rnk4v
+         P/eoEVeLDqBM37chSRJ5N8eKS1ilFO+gUVo1DdyrJREhfPoqpAhj/U2hk/AK2Ca2bux6
+         /Oog==
+X-Gm-Message-State: AOJu0Yy/6FGQr0ORVpN2W0Bmo3w5Vav6fmCZ/5+0l3sCHQPh6L6ErP0T
+	HrPacTOkrk7QD7O41HNE55jY5XF7tXhqNo8ATaXy+w==
+X-Google-Smtp-Source: AGHT+IGC3u4ZpnZCT+lO/hHmrcofG05ga5uT1s4J/28aCYMZ/Hx7i65Y9YHMKbcs/IFc15WQg0qk6g==
+X-Received: by 2002:a05:6602:489a:b0:7b3:95a4:de9c with SMTP id ee26-20020a056602489a00b007b395a4de9cmr19103111iob.1.1701373600877;
+        Thu, 30 Nov 2023 11:46:40 -0800 (PST)
+Received: from localhost.localdomain ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id a18-20020a029f92000000b004667167d8cdsm461179jam.116.2023.11.30.11.46.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 11:41:40 -0800 (PST)
-Message-ID: <6568e574.170a0220.e1df1.58e8@mx.google.com>
-Date: Thu, 30 Nov 2023 11:41:40 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 30 Nov 2023 11:46:39 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: io-uring@vger.kernel.org
+Cc: Jens Axboe <axboe@kernel.dk>,
+	stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 1/8] io_uring: don't allow discontig pages for IORING_SETUP_NO_MMAP
+Date: Thu, 30 Nov 2023 12:45:47 -0700
+Message-ID: <20231130194633.649319-2-axboe@kernel.dk>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231130194633.649319-1-axboe@kernel.dk>
+References: <20231130194633.649319-1-axboe@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.15.140-70-g66b7d5ed6e672
-Subject: stable-rc/linux-5.15.y build: 20 builds: 4 failed, 16 passed, 8 errors,
- 3 warnings (v5.15.140-70-g66b7d5ed6e672)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
 
-stable-rc/linux-5.15.y build: 20 builds: 4 failed, 16 passed, 8 errors, 3 w=
-arnings (v5.15.140-70-g66b7d5ed6e672)
+io_sqes_map() is used rather than io_mem_alloc(), if the application
+passes in memory for mapping rather than have the kernel allocate it and
+then mmap(2) the ranges. This then calls __io_uaddr_map() to perform the
+page mapping and pinning, which checks if we end up with the same pages,
+if more than one page is mapped. But this check is incorrect and only
+checks if the first and last pages are the same, where it really should
+be checking if the mapped pages are contigous. This allows mapping a
+single normal page, or a huge page range.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.140-70-g66b7d5ed6e672/
+Down the line we can add support for remapping pages to be virtually
+contigous, which is really all that io_uring cares about.
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.140-70-g66b7d5ed6e672
-Git Commit: 66b7d5ed6e672f126e1cfd6c53868c6610ca5686
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Build Failures Detected:
-
-arm:
-    omap2plus_defconfig: (gcc-10) FAIL
-
-i386:
-    i386_defconfig: (gcc-10) FAIL
-
-x86_64:
-    x86_64_defconfig: (gcc-10) FAIL
-    x86_64_defconfig+x86-board: (gcc-10) FAIL
-
-Errors and Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-    omap2plus_defconfig (gcc-10): 2 errors
-
-i386:
-    i386_defconfig (gcc-10): 2 errors
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 2 errors, 1 warning
-    x86_64_defconfig+x86-board (gcc-10): 2 errors, 1 warning
-
-Errors summary:
-
-    2    trace_kprobe.c:(.text+0x3228): undefined reference to `kallsyms_on=
-_each_symbol'
-    2    trace_kprobe.c:(.text+0x29f5): undefined reference to `kallsyms_on=
-_each_symbol'
-    2    /tmp/kci/linux/build/../kernel/trace/trace_kprobe.c:736: undefined=
- reference to `kallsyms_on_each_symbol'
-    1    trace_kprobe.c:(.text+0x2d9b): undefined reference to `kallsyms_on=
-_each_symbol'
-    1    trace_kprobe.c:(.text+0x25d6): undefined reference to `kallsyms_on=
-_each_symbol'
-
-Warnings summary:
-
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 secti=
-on mismatches
-
-Errors:
-    trace_kprobe.c:(.text+0x25d6): undefined reference to `kallsyms_on_each=
-_symbol'
-    trace_kprobe.c:(.text+0x2d9b): undefined reference to `kallsyms_on_each=
-_symbol'
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 s=
-ection mismatches
-
-Errors:
-    /tmp/kci/linux/build/../kernel/trace/trace_kprobe.c:736: undefined refe=
-rence to `kallsyms_on_each_symbol'
-    /tmp/kci/linux/build/../kernel/trace/trace_kprobe.c:736: undefined refe=
-rence to `kallsyms_on_each_symbol'
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 FAIL, 2 errors, 1 warning, 0 se=
-ction mismatches
-
-Errors:
-    trace_kprobe.c:(.text+0x29f5): undefined reference to `kallsyms_on_each=
-_symbol'
-    trace_kprobe.c:(.text+0x3228): undefined reference to `kallsyms_on_each=
-_symbol'
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 2 errors, 1 war=
-ning, 0 section mismatches
-
-Errors:
-    trace_kprobe.c:(.text+0x29f5): undefined reference to `kallsyms_on_each=
-_symbol'
-    trace_kprobe.c:(.text+0x3228): undefined reference to `kallsyms_on_each=
-_symbol'
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
+Cc: stable@vger.kernel.org
+Fixes: 03d89a2de25b ("io_uring: support for user allocated memory for rings/sqes")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
-For more info write to <info@kernelci.org>
+ io_uring/io_uring.c | 39 +++++++++++++++++++++------------------
+ 1 file changed, 21 insertions(+), 18 deletions(-)
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index ed254076c723..b45abfd75415 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2697,6 +2697,7 @@ static void *__io_uaddr_map(struct page ***pages, unsigned short *npages,
+ {
+ 	struct page **page_array;
+ 	unsigned int nr_pages;
++	void *page_addr;
+ 	int ret, i;
+ 
+ 	*npages = 0;
+@@ -2718,27 +2719,29 @@ static void *__io_uaddr_map(struct page ***pages, unsigned short *npages,
+ 		io_pages_free(&page_array, ret > 0 ? ret : 0);
+ 		return ret < 0 ? ERR_PTR(ret) : ERR_PTR(-EFAULT);
+ 	}
+-	/*
+-	 * Should be a single page. If the ring is small enough that we can
+-	 * use a normal page, that is fine. If we need multiple pages, then
+-	 * userspace should use a huge page. That's the only way to guarantee
+-	 * that we get contigious memory, outside of just being lucky or
+-	 * (currently) having low memory fragmentation.
+-	 */
+-	if (page_array[0] != page_array[ret - 1])
+-		goto err;
+ 
+-	/*
+-	 * Can't support mapping user allocated ring memory on 32-bit archs
+-	 * where it could potentially reside in highmem. Just fail those with
+-	 * -EINVAL, just like we did on kernels that didn't support this
+-	 * feature.
+-	 */
++	page_addr = page_address(page_array[0]);
+ 	for (i = 0; i < nr_pages; i++) {
+-		if (PageHighMem(page_array[i])) {
+-			ret = -EINVAL;
++		ret = -EINVAL;
++
++		/*
++		 * Can't support mapping user allocated ring memory on 32-bit
++		 * archs where it could potentially reside in highmem. Just
++		 * fail those with -EINVAL, just like we did on kernels that
++		 * didn't support this feature.
++		 */
++		if (PageHighMem(page_array[i]))
+ 			goto err;
+-		}
++
++		/*
++		 * No support for discontig pages for now, should either be a
++		 * single normal page, or a huge page. Later on we can add
++		 * support for remapping discontig pages, for now we will
++		 * just fail them with EINVAL.
++		 */
++		if (page_address(page_array[i]) != page_addr)
++			goto err;
++		page_addr += PAGE_SIZE;
+ 	}
+ 
+ 	*pages = page_array;
+-- 
+2.42.0
+
 
