@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-3430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A72DE7FF598
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBDA7FF5E9
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FBEA281816
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3064C1C21175
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B58D154FA8;
-	Thu, 30 Nov 2023 16:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E213555766;
+	Thu, 30 Nov 2023 16:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRCAbd9R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grMNAVJz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6F04878B;
-	Thu, 30 Nov 2023 16:30:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CD1C433C7;
-	Thu, 30 Nov 2023 16:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB56495D9;
+	Thu, 30 Nov 2023 16:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8C8C433C8;
+	Thu, 30 Nov 2023 16:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361812;
-	bh=ip11hFOvtC8Gntx3q7x8a4IZvGKLj49Hq4cv7lQNRb4=;
+	s=korg; t=1701361961;
+	bh=xurkWOm46CGx774EHVG87GQxFz0j/7W2621pmyCayCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fRCAbd9RMO6qsOLGwias15kqQ/Eic2eufm5yVMBf2a0uLzdIdaVM2ch3otXXB0h5e
-	 gMuKy+jgKeyTF5s4tnSn5CuSP4VDm9mK0POOwvJkIqGx6lcifn08uqrxH/GkUve+FM
-	 tNThxBX9J8P1GtaJt4ayzmOISLlb2BMMSbDKekB4=
+	b=grMNAVJzWrSwJolu44qbZ2sY+7nQj3GXvsfE+bNqqsO//Dyh6qlcLkhcLFoKz0uo0
+	 l+JKW3QqzmYVhYnrsT2JPx0UgCdwYB/sk0416oHx19SUiwiqZYYDMpc7DrEokov8W8
+	 yFgk+6Mne90fx4QnhJrFs95nVQoZCxGzBe9ZZ4EA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 6.1 57/82] swiotlb-xen: provide the "max_mapping_size" method
-Date: Thu, 30 Nov 2023 16:22:28 +0000
-Message-ID: <20231130162137.776251882@linuxfoundation.org>
+	Andrey Konovalov <andrey.konovalov@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 32/69] media: qcom: camss: Fix csid-gen2 for test pattern generator
+Date: Thu, 30 Nov 2023 16:22:29 +0000
+Message-ID: <20231130162134.133390467@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +53,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Andrey Konovalov <andrey.konovalov@linaro.org>
 
-commit bff2a2d453a1b683378b4508b86b84389f551a00 upstream.
+[ Upstream commit 87889f1b7ea40d2544b49c62092e6ef2792dced7 ]
 
-There's a bug that when using the XEN hypervisor with bios with large
-multi-page bio vectors on NVMe, the kernel deadlocks [1].
+In the current driver csid Test Pattern Generator (TPG) doesn't work.
+This change:
+- fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
+- fixes the shift by one between test_pattern control value and the
+  actual pattern.
+- drops fixed VC of 0x0a which testing showed prohibited some test
+  patterns in the CSID to produce output.
+So that TPG starts working, but with the below limitations:
+- only test_pattern=9 works as it should
+- test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
+- the rest of test_pattern's don't work (yavta doesn't get the data)
+- regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
+  order is always the same (RGGB for any RAW8 or RAW10P format in
+  4608x2592 resolution).
 
-The deadlocks are caused by inability to map a large bio vector -
-dma_map_sgtable always returns an error, this gets propagated to the block
-layer as BLK_STS_RESOURCE and the block layer retries the request
-indefinitely.
+Tested with:
 
-XEN uses the swiotlb framework to map discontiguous pages into contiguous
-runs that are submitted to the PCIe device. The swiotlb framework has a
-limitation on the length of a mapping - this needs to be announced with
-the max_mapping_size method to make sure that the hardware drivers do not
-create larger mappings.
+RAW10P format, VC0:
+ media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+ v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
+ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
 
-Without max_mapping_size, the NVMe block driver would create large
-mappings that overrun the maximum mapping size.
+RAW10P format, VC1:
+ media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
+ media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
+ v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
+ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
 
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Link: https://lore.kernel.org/stable/ZTNH0qtmint%2FzLJZ@mail-itl/ [1]
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Suggested-by: Christoph Hellwig <hch@lst.de>
+RAW8 format, VC0:
+ media-ctl --reset
+ media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
+ media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
+ media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
+
+Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
 Cc: stable@vger.kernel.org
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Acked-by: Stefano Stabellini <sstabellini@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/151bef41-e817-aea9-675-a35fdac4ed@redhat.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/swiotlb-xen.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/qcom/camss/camss-csid-170.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/xen/swiotlb-xen.c
-+++ b/drivers/xen/swiotlb-xen.c
-@@ -405,4 +405,5 @@ const struct dma_map_ops xen_swiotlb_dma
- 	.get_sgtable = dma_common_get_sgtable,
- 	.alloc_pages = dma_common_alloc_pages,
- 	.free_pages = dma_common_free_pages,
-+	.max_mapping_size = swiotlb_max_mapping_size,
- };
+diff --git a/drivers/media/platform/qcom/camss/camss-csid-170.c b/drivers/media/platform/qcom/camss/camss-csid-170.c
+index 270a960165b53..f7839e994bda6 100644
+--- a/drivers/media/platform/qcom/camss/camss-csid-170.c
++++ b/drivers/media/platform/qcom/camss/camss-csid-170.c
+@@ -348,9 +348,6 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
+ 		u8 dt_id = vc;
+ 
+ 		if (tg->enabled) {
+-			/* Config Test Generator */
+-			vc = 0xa;
+-
+ 			/* configure one DT, infinite frames */
+ 			val = vc << TPG_VC_CFG0_VC_NUM;
+ 			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
+@@ -363,14 +360,14 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
+ 
+ 			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
+ 
+-			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
+-			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
++			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
++			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
+ 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
+ 
+ 			val = format->data_type << TPG_DT_n_CFG_1_DATA_TYPE;
+ 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_1(0));
+ 
+-			val = tg->mode << TPG_DT_n_CFG_2_PAYLOAD_MODE;
++			val = (tg->mode - 1) << TPG_DT_n_CFG_2_PAYLOAD_MODE;
+ 			val |= 0xBE << TPG_DT_n_CFG_2_USER_SPECIFIED_PAYLOAD;
+ 			val |= format->decode_format << TPG_DT_n_CFG_2_ENCODE_FORMAT;
+ 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_2(0));
+-- 
+2.42.0
+
 
 
 
