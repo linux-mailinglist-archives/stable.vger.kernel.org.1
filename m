@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-3484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D383E7FF5DE
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1BC7FF53D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5272817F5
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67F6F281765
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2978654FB3;
-	Thu, 30 Nov 2023 16:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4CD54F9B;
+	Thu, 30 Nov 2023 16:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddj2kJva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X3BrKMk2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE187A2D;
-	Thu, 30 Nov 2023 16:32:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ADF4C433C8;
-	Thu, 30 Nov 2023 16:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD46C54F92;
+	Thu, 30 Nov 2023 16:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44EB9C433C7;
+	Thu, 30 Nov 2023 16:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361948;
-	bh=Fru3sbe8iQwTUz2L98WrgKSYYDNd7Lug1kNhx6ZDwUw=;
+	s=korg; t=1701361627;
+	bh=xopBy8s5sP98Ujk0ZYc+cBov0VzPPMCpbI4zOVybMvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddj2kJvataWAdynIArFSY7s98HTwyr81a5ECAXk5UzzBZrfk9h6Thm9FEbIXdKmbQ
-	 5q0i/x+aLUA5xIgibkjaWD6Xnagt0+bqfT5FMPGm5ibCMtO8oEvamGgQfDeKWJdJib
-	 xVr0sYnm0AdtpAjAYGCuZCQa8HvSjr8/9US/h+x0=
+	b=X3BrKMk2ECCgSAs4e49JdXSxGPxoFdl7t5LuJMGZ1zC5sKMp0ZG2G/6f3voQaEMJg
+	 JqWyVmL/7tAVOibuVY3l9BURVbmbQ8m9m6GfKcnFExhwjPkDzomKDh8mo17QWKIj22
+	 /Y5OtUw2tnK+Z9MFfegf0CtTmi/3O6I6jOaqovf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 08/69] octeontx2-pf: Fix memory leak during interface down
-Date: Thu, 30 Nov 2023 16:22:05 +0000
-Message-ID: <20231130162133.342678327@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	stable <stable@kernel.org>,
+	Matthias Kaehlcke <mka@chromium.org>
+Subject: [PATCH 6.6 079/112] usb: misc: onboard-hub: add support for Microchip USB5744
+Date: Thu, 30 Nov 2023 16:22:06 +0000
+Message-ID: <20231130162142.827559218@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +54,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit 5f228d7c8a539714c1e9b7e7534f76bb7979f268 ]
+commit 6972b38ca05235f6142715db7062ecc87a422e22 upstream.
 
-During 'ifconfig <netdev> down' one RSS memory was not getting freed.
-This patch fixes the same.
+Add support for the Microchip USB5744 USB3.0 and USB2.0 Hub.
 
-Fixes: 81a4362016e7 ("octeontx2-pf: Add RSS multi group support")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The Microchip USB5744 supports two power supplies, one for 1V2 and one
+for 3V3. According to the datasheet there is no need for a delay between
+power on and reset, so this value is set to 0.
+
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Cc: stable <stable@kernel.org>
+Acked-by: Matthias Kaehlcke <mka@chromium.org>
+Link: https://lore.kernel.org/r/20231113145921.30104-3-francesco@dolcini.it
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/misc/onboard_usb_hub.c |    2 ++
+ drivers/usb/misc/onboard_usb_hub.h |    7 +++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index a718d42daeb5e..8cb4b16ffad77 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1838,6 +1838,8 @@ int otx2_stop(struct net_device *netdev)
- 	/* Clear RSS enable flag */
- 	rss = &pf->hw.rss_info;
- 	rss->enable = false;
-+	if (!netif_is_rxfh_configured(netdev))
-+		kfree(rss->rss_ctx[DEFAULT_RSS_CONTEXT_GROUP]);
+--- a/drivers/usb/misc/onboard_usb_hub.c
++++ b/drivers/usb/misc/onboard_usb_hub.c
+@@ -437,6 +437,8 @@ static const struct usb_device_id onboar
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2412) }, /* USB2412 USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2514) }, /* USB2514B USB 2.0 */
+ 	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2517) }, /* USB2517 USB 2.0 */
++	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x2744) }, /* USB5744 USB 2.0 */
++	{ USB_DEVICE(VENDOR_ID_MICROCHIP, 0x5744) }, /* USB5744 USB 3.0 */
+ 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x0411) }, /* RTS5411 USB 3.1 */
+ 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x5411) }, /* RTS5411 USB 2.1 */
+ 	{ USB_DEVICE(VENDOR_ID_REALTEK, 0x0414) }, /* RTS5414 USB 3.2 */
+--- a/drivers/usb/misc/onboard_usb_hub.h
++++ b/drivers/usb/misc/onboard_usb_hub.h
+@@ -16,6 +16,11 @@ static const struct onboard_hub_pdata mi
+ 	.num_supplies = 1,
+ };
  
- 	/* Cleanup Queue IRQ */
- 	vec = pci_irq_vector(pf->pdev,
--- 
-2.42.0
-
++static const struct onboard_hub_pdata microchip_usb5744_data = {
++	.reset_us = 0,
++	.num_supplies = 2,
++};
++
+ static const struct onboard_hub_pdata realtek_rts5411_data = {
+ 	.reset_us = 0,
+ 	.num_supplies = 1,
+@@ -50,6 +55,8 @@ static const struct of_device_id onboard
+ 	{ .compatible = "usb424,2412", .data = &microchip_usb424_data, },
+ 	{ .compatible = "usb424,2514", .data = &microchip_usb424_data, },
+ 	{ .compatible = "usb424,2517", .data = &microchip_usb424_data, },
++	{ .compatible = "usb424,2744", .data = &microchip_usb5744_data, },
++	{ .compatible = "usb424,5744", .data = &microchip_usb5744_data, },
+ 	{ .compatible = "usb451,8140", .data = &ti_tusb8041_data, },
+ 	{ .compatible = "usb451,8142", .data = &ti_tusb8041_data, },
+ 	{ .compatible = "usb4b4,6504", .data = &cypress_hx3_data, },
 
 
 
