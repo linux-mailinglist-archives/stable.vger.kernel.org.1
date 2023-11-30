@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-3429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 604317FF599
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988507FF5E6
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F25B20BBD
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 520AE281964
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFEB11C9B;
-	Thu, 30 Nov 2023 16:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8FC482CA;
+	Thu, 30 Nov 2023 16:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLFJZ0pd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfp0njxC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F277D495D9;
-	Thu, 30 Nov 2023 16:30:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B897C433C8;
-	Thu, 30 Nov 2023 16:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E9E55771;
+	Thu, 30 Nov 2023 16:32:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57A2C433C7;
+	Thu, 30 Nov 2023 16:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361810;
-	bh=S7kuL67gLEnZ5PM2MiunJ0iFfY5rtwSH1AzFWHaH7No=;
+	s=korg; t=1701361956;
+	bh=8q9j/9bLBi1UYHeNQZqX4wZNez8lgvx1V6XhQd12cqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLFJZ0pd9OJk2QChkIksmklyP9LPvrlfY+G35Iad7MCf4OIgUzb5ehGKxQmTsR79t
-	 W0X/IjpprLIw8HiLtEAVZMCpHGO6Cc1I3YVAp9x2ZXKRVhcCnghATCRpOU2BOfVq93
-	 74iBo6wlLJKolUZzv69E6Ony2BsiovQaNcO/dTB8=
+	b=Gfp0njxCWE/iM/wkGzmmAe5laRWttXrSWOoOR8V1RUD+ztelISE9bRO0Jcvmb2XEh
+	 Qml1LBqRH629oEQGXZhmR1VUJEV9zm5b8deyEmhAYrVzLJQR+4b5JhajM+8J2X46cv
+	 ECr/gZ+s86GMRmVFpbMkNK/bVVqNNKmO4l6AncEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 48/82] ext4: using nofail preallocation in ext4_es_remove_extent()
+Subject: [PATCH 5.15 22/69] afs: Return ENOENT if no cell DNS record can be found
 Date: Thu, 30 Nov 2023 16:22:19 +0000
-Message-ID: <20231130162137.492748540@linuxfoundation.org>
+Message-ID: <20231130162133.802865760@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,76 +55,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
+[ Upstream commit 0167236e7d66c5e1e85d902a6abc2529b7544539 ]
 
-If __es_remove_extent() returns an error it means that when splitting
-extent, allocating an extent that must be kept failed, where returning
-an error directly would cause the extent tree to be inconsistent. So we
-use GFP_NOFAIL to pre-allocate an extent_status and pass it to
-__es_remove_extent() to avoid this problem.
+Make AFS return error ENOENT if no cell SRV or AFSDB DNS record (or
+cellservdb config file record) can be found rather than returning
+EDESTADDRREQ.
 
-In addition, since the allocated memory is outside the i_es_lock, the
-extent_status tree may change and the pre-allocated extent_status is
-no longer needed, so we release the pre-allocated extent_status when
-es->es_len is not initialized.
+Also add cell name lookup info to the cursor dump.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Fixes: d5c32c89b208 ("afs: Fix cell DNS lookup")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/afs/vl_rotate.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 682f5e4ce2d00..cb8241adda929 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1456,6 +1456,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	ext4_lblk_t end;
- 	int err = 0;
- 	int reserved = 0;
-+	struct extent_status *es = NULL;
+diff --git a/fs/afs/vl_rotate.c b/fs/afs/vl_rotate.c
+index 488e58490b16e..eb415ce563600 100644
+--- a/fs/afs/vl_rotate.c
++++ b/fs/afs/vl_rotate.c
+@@ -58,6 +58,12 @@ static bool afs_start_vl_iteration(struct afs_vl_cursor *vc)
+ 		}
  
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return 0;
-@@ -1470,17 +1471,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	end = lblk + len - 1;
- 	BUG_ON(end < lblk);
- 
-+retry:
-+	if (err && !es)
-+		es = __es_alloc_extent(true);
- 	/*
- 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
- 	 * so that we are sure __es_shrink() is done with the inode before it
- 	 * is reclaimed.
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
-+	err = __es_remove_extent(inode, lblk, end, &reserved, es);
-+	if (es && !es->es_len)
-+		__es_free_extent(es);
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
-+	if (err)
-+		goto retry;
+ 		/* Status load is ordered after lookup counter load */
++		if (cell->dns_status == DNS_LOOKUP_GOT_NOT_FOUND) {
++			pr_warn("No record of cell %s\n", cell->name);
++			vc->error = -ENOENT;
++			return false;
++		}
 +
- 	ext4_es_print_tree(inode);
- 	ext4_da_release_space(inode, reserved);
--	return err;
-+	return 0;
- }
+ 		if (cell->dns_source == DNS_RECORD_UNAVAILABLE) {
+ 			vc->error = -EDESTADDRREQ;
+ 			return false;
+@@ -285,6 +291,7 @@ bool afs_select_vlserver(struct afs_vl_cursor *vc)
+  */
+ static void afs_vl_dump_edestaddrreq(const struct afs_vl_cursor *vc)
+ {
++	struct afs_cell *cell = vc->cell;
+ 	static int count;
+ 	int i;
  
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
+@@ -294,6 +301,9 @@ static void afs_vl_dump_edestaddrreq(const struct afs_vl_cursor *vc)
+ 
+ 	rcu_read_lock();
+ 	pr_notice("EDESTADDR occurred\n");
++	pr_notice("CELL: %s err=%d\n", cell->name, cell->error);
++	pr_notice("DNS: src=%u st=%u lc=%x\n",
++		  cell->dns_source, cell->dns_status, cell->dns_lookup_count);
+ 	pr_notice("VC: ut=%lx ix=%u ni=%hu fl=%hx err=%hd\n",
+ 		  vc->untried, vc->index, vc->nr_iterations, vc->flags, vc->error);
+ 
 -- 
 2.42.0
 
