@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-3307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FCF7FF4FC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EABA7FF569
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 620EAB20DA1
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 420891F20F4B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E0154F93;
-	Thu, 30 Nov 2023 16:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF8154FAD;
+	Thu, 30 Nov 2023 16:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdC2HZuE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rU8fyZ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB03482CB;
-	Thu, 30 Nov 2023 16:24:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8B7C433C7;
-	Thu, 30 Nov 2023 16:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B9E54F87;
+	Thu, 30 Nov 2023 16:28:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AB1C433C8;
+	Thu, 30 Nov 2023 16:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361498;
-	bh=q8YEab1jaU7sw/H76vmcmWtmwN4kMCmxz804ReXbZ8g=;
+	s=korg; t=1701361721;
+	bh=HZnNybWZboq8ui578CNlEkl8PGyewW2wWggpmUXsfgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdC2HZuEhLz0A/QBws37B1Az3AJPbf8iNh3VsgEzJoX+SJ81auHjopRXDFyAVmQbb
-	 T3QCTnJ3qHFb5EAJB82tvdGkftBqYR4shh6pJ8UQzSWDbMEB7blmPyUSXNSA2HTGDO
-	 l9AzbaS0WGGrFIUsw5GZoVwUPQzEuFOVY5g3UOzs=
+	b=1rU8fyZ8ha/4dUWqVQNpojrC3+dcPnVClggIcMj7059sC2pMGfugTaA8qziMQFhWh
+	 lpjJT0rfDCZN+6eJ5xTdPpZD5Xf9yl13e8KyZ1J4stl5hFzSoreKe8TCyLRMbvbfMi
+	 uYYMX4QFr6tBdcKsE/HqsH0lR55anvJtlFGvFwk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Ivan Vecera <ivecera@redhat.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shuijing Li <shuijing.li@mediatek.com>,
+	Xinlei Lee <xinlei.lee@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 046/112] i40e: Fix adding unsupported cloud filters
-Date: Thu, 30 Nov 2023 16:21:33 +0000
-Message-ID: <20231130162141.770594090@linuxfoundation.org>
+Subject: [PATCH 6.1 03/82] drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
+Date: Thu, 30 Nov 2023 16:21:34 +0000
+Message-ID: <20231130162136.088364988@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,81 +55,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Vecera <ivecera@redhat.com>
+From: Shuijing Li <shuijing.li@mediatek.com>
 
-[ Upstream commit 4e20655e503e3a478cd1682bf25e3202dd823da8 ]
+[ Upstream commit 812562b8d881ce6d33fed8052b3a10b718430fb5 ]
 
-If a VF tries to add unsupported cloud filter through virtchnl
-then i40e_add_del_cloud_filter(_big_buf) returns -ENOTSUPP but
-this error code is stored in 'ret' instead of 'aq_ret' that
-is used as error code sent back to VF. In this scenario where
-one of the mentioned functions fails the value of 'aq_ret'
-is zero so the VF will incorrectly receive a 'success'.
+For "boe,tv105wum-nw0" this special panel, it is stipulated in
+the panel spec that MIPI needs to keep the LP11 state before
+the lcm_reset pin is pulled high.
 
-Use 'aq_ret' to store return value and remove 'ret' local
-variable. Additionally fix the issue when filter allocation
-fails, in this case no notification is sent back to the VF.
-
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://lore.kernel.org/r/20231121211338.3348677-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shuijing Li <shuijing.li@mediatek.com>
+Signed-off-by: Xinlei Lee <xinlei.lee@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230515094955.15982-3-shuijing.li@mediatek.com
+Stable-dep-of: 6965809e5269 ("drm/panel: auo,b101uan08.3: Fine tune the panel power sequence")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/intel/i40e/i40e_virtchnl_pf.c   | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index d3d6415553ed6..4441b00297f47 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3842,7 +3842,7 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 	struct i40e_pf *pf = vf->pf;
- 	struct i40e_vsi *vsi = NULL;
- 	int aq_ret = 0;
--	int i, ret;
-+	int i;
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index c924f1124ebca..733e28a2536a4 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -36,6 +36,7 @@ struct panel_desc {
+ 	const struct panel_init_cmd *init_cmds;
+ 	unsigned int lanes;
+ 	bool discharge_on_disable;
++	bool lp11_before_reset;
+ };
  
- 	if (!i40e_sync_vf_state(vf, I40E_VF_STATE_ACTIVE)) {
- 		aq_ret = -EINVAL;
-@@ -3866,8 +3866,10 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 	}
+ struct boe_panel {
+@@ -1269,6 +1270,10 @@ static int boe_panel_prepare(struct drm_panel *panel)
  
- 	cfilter = kzalloc(sizeof(*cfilter), GFP_KERNEL);
--	if (!cfilter)
--		return -ENOMEM;
-+	if (!cfilter) {
-+		aq_ret = -ENOMEM;
-+		goto err_out;
+ 	usleep_range(10000, 11000);
+ 
++	if (boe->desc->lp11_before_reset) {
++		mipi_dsi_dcs_nop(boe->dsi);
++		usleep_range(1000, 2000);
 +	}
+ 	gpiod_set_value(boe->enable_gpio, 1);
+ 	usleep_range(1000, 2000);
+ 	gpiod_set_value(boe->enable_gpio, 0);
+@@ -1495,6 +1500,7 @@ static const struct panel_desc boe_tv105wum_nw0_desc = {
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 		      MIPI_DSI_MODE_LPM,
+ 	.init_cmds = boe_init_cmd,
++	.lp11_before_reset = true,
+ };
  
- 	/* parse destination mac address */
- 	for (i = 0; i < ETH_ALEN; i++)
-@@ -3915,13 +3917,13 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
- 
- 	/* Adding cloud filter programmed as TC filter */
- 	if (tcf.dst_port)
--		ret = i40e_add_del_cloud_filter_big_buf(vsi, cfilter, true);
-+		aq_ret = i40e_add_del_cloud_filter_big_buf(vsi, cfilter, true);
- 	else
--		ret = i40e_add_del_cloud_filter(vsi, cfilter, true);
--	if (ret) {
-+		aq_ret = i40e_add_del_cloud_filter(vsi, cfilter, true);
-+	if (aq_ret) {
- 		dev_err(&pf->pdev->dev,
- 			"VF %d: Failed to add cloud filter, err %pe aq_err %s\n",
--			vf->vf_id, ERR_PTR(ret),
-+			vf->vf_id, ERR_PTR(aq_ret),
- 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
- 		goto err_free;
- 	}
+ static int boe_panel_get_modes(struct drm_panel *panel,
 -- 
 2.42.0
 
