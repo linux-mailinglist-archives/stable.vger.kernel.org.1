@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-3567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D264F7FFBBF
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEDF7FFBBE
 	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64942B20E7E
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:46:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC271C20D28
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:46:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1933C537F9;
-	Thu, 30 Nov 2023 19:46:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A5F52F9E;
+	Thu, 30 Nov 2023 19:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="XnXwgLPZ"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="YpP0Tl5p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B24D7D
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:42 -0800 (PST)
-Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-7b05e65e784so6243739f.1
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:42 -0800 (PST)
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A1B793
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:45 -0800 (PST)
+Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-35cfd975a53so1082345ab.1
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:46:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701373602; x=1701978402; darn=vger.kernel.org;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701373605; x=1701978405; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=f9hDKK//PcdFxhtS7/Qn7jAt09MAas7oaU4k4FD1Rqw=;
-        b=XnXwgLPZvmIeKv2Y9jZtds8oYOniL/y4dXZrOBat7gqzpaT/wA3b9mK1k06+L/IsVW
-         xmftrj7K1Xr7lkTuDA44QTNiBuSYA+L25pGFYt7KP7iwr6Nu0zz2Ey4gRl2THyW6k7ur
-         LuUEaOEL3hrSPVsw/9raK9Jtv2r5NqkbrLgJDN+uKAOdy9G6hCdh+d0RnbpqbwR4FVeA
-         xUBGfzZo/klUzWUylM+8LDesp1dhdYqGnKBgQXWRUMWtpHGJtGpQRLTSKS0XLStgYYVi
-         T40L+ddaH9UDgzdKfqZb+gneehZui2HyeVcDkOARPjmkc1yFLecHXjGSayzBWubfEs7k
-         B7RQ==
+        bh=hxeP5jSRRX1HG4Q7VF5uTV5vDunsnLEvK5wo5+KXwMg=;
+        b=YpP0Tl5pAtrtu6Ltuw5syOoZYFCOax/w/1It8VueVa15f3z5QsuRpnhXCvQP3vNGTa
+         ZShsVmDUJe+C984NeZ20hSCiK1o4gc/3s2XgkyIINZbgbTeCpgksgEXBMek1y++vi5Pn
+         akH2z5Lj9SJtVZM0F8U0n6HznlKT2Bo/eFW7OZsA0/8JhkQCJzYLo41nwluijOnw1Fso
+         sHIttV9kEnBz0FPjB238RZ98/+qzsoYjyZTxjnpETY0u9t/p0Q+IMgrtL12SRSx0nvJY
+         T0qilMKcQ1LGvvDyIhzcDJOyuRFrk/YaEnkdOZc4t04kRek4boEFY+gLlqMtUi4GFO/I
+         p/Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701373602; x=1701978402;
+        d=1e100.net; s=20230601; t=1701373605; x=1701978405;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=f9hDKK//PcdFxhtS7/Qn7jAt09MAas7oaU4k4FD1Rqw=;
-        b=n3Vr4GTGFcS7oRiC4pnZ5EGVktG3ZdbwikzVB2A+P6si71SXYZUxcM2EWNkw/brqEk
-         P3ofGNDzD4n3Y8PwwkfkpkQrjJmfw0b2eP2w3NpUKaQaIq/s54jQDkZj8GtaJgvk1V2p
-         jnRc/1fvqflRUlLyQzQSSuoHh650EAou4mV/BeiBFjw4LlIUneh3b2ul8J0WV66m7o6j
-         R/LV6YpVicpVN4iZSNnRWQkcHShitylUgY/+Xu2SuNHtqOC/yObcBIk7tJYEFMjOHD4V
-         NeJFgZY9unW1dpj3hcw43fcIkj8ami6Qdli9pxIH1oKJ9sVjdj1+aE2iG9kPSNCOuZe7
-         0Q9g==
-X-Gm-Message-State: AOJu0YzA1tQ9bpTzRSmZ6oPwWeksHmKtmv3YrVyNWsbiN98LIfJPiXeA
-	3Ab6EOBGfYJfOCdmF2yEwEpQMhN1IwaUvlt8IZcZhQ==
-X-Google-Smtp-Source: AGHT+IFJ6mHvElhGT5jPQ8JYEJZcf+L1A7r0mDrYJ68VOR4tM1Lj8OUi3k06cw9dAGnoUNZ86ahGUg==
-X-Received: by 2002:a5e:9512:0:b0:7b0:75a7:6606 with SMTP id r18-20020a5e9512000000b007b075a76606mr22604509ioj.0.1701373602272;
-        Thu, 30 Nov 2023 11:46:42 -0800 (PST)
+        bh=hxeP5jSRRX1HG4Q7VF5uTV5vDunsnLEvK5wo5+KXwMg=;
+        b=Kp72rT6aRvSoQAyyUTj0m/4E3fLuWO0jUQZxIYIKmHiFHbOVBO/AO9M/oZ4MCdk6Wq
+         sn4LKjVVHprSM00bwp5Vy6O/d95hG+uYh7jiJUkcCbLoejXPGuAFkx0YIo4nhlefAxIK
+         zefdRI8PRiYgaGAC2IoOkryTRsgTmJPq0UWP0/B4n2HEvNQbnUiV5cKfcPWiMVkPVH1n
+         iSYclWLRsWCFyq3YhhXC32bRTegj5/wACgk2M0nFdWG99YGbnssrmZGkhi01tmDiUHNd
+         v7MMpn+GNEo4QthoM1hdHTin1e5EjSkK+tssigaq4vICHfhPZ1W+zTjEqBLGbU8pZ4N+
+         MUPw==
+X-Gm-Message-State: AOJu0Yzvcxgd1Ii/Qn49tl4InnJbdbBnQFUvDIqVdDKQBFtQ4CXkDDq4
+	q3WHXdapIsmj3IwhAGTC0aj/+fPMOoF156QhA/pekQ==
+X-Google-Smtp-Source: AGHT+IGsIkCPSEw70Evsd2pxr6HUEd73RHYUxadc7Yk55VL/36orPOUQVAZ/dKVmJRfgw7e4/50weg==
+X-Received: by 2002:a6b:660f:0:b0:7b3:58c4:b894 with SMTP id a15-20020a6b660f000000b007b358c4b894mr20263864ioc.1.1701373604903;
+        Thu, 30 Nov 2023 11:46:44 -0800 (PST)
 Received: from localhost.localdomain ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id a18-20020a029f92000000b004667167d8cdsm461179jam.116.2023.11.30.11.46.40
+        by smtp.gmail.com with ESMTPSA id a18-20020a029f92000000b004667167d8cdsm461179jam.116.2023.11.30.11.46.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 11:46:41 -0800 (PST)
+        Thu, 30 Nov 2023 11:46:43 -0800 (PST)
 From: Jens Axboe <axboe@kernel.dk>
 To: io-uring@vger.kernel.org
 Cc: Jens Axboe <axboe@kernel.dk>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/8] io_uring: don't guard IORING_OFF_PBUF_RING with SETUP_NO_MMAP
-Date: Thu, 30 Nov 2023 12:45:48 -0700
-Message-ID: <20231130194633.649319-3-axboe@kernel.dk>
+	stable@vger.kernel.org,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 4/8] io_uring/kbuf: defer release of mapped buffer rings
+Date: Thu, 30 Nov 2023 12:45:50 -0700
+Message-ID: <20231130194633.649319-5-axboe@kernel.dk>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231130194633.649319-1-axboe@kernel.dk>
 References: <20231130194633.649319-1-axboe@kernel.dk>
@@ -71,44 +72,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This flag only applies to the SQ and CQ rings, it's perfectly valid
-to use a mmap approach for the provided ring buffers. Move the
-check into where it belongs.
+If a provided buffer ring is setup with IOU_PBUF_RING_MMAP, then the
+kernel allocates the memory for it and the application is expected to
+mmap(2) this memory. However, io_uring uses remap_pfn_range() for this
+operation, so we cannot rely on normal munmap/release on freeing them
+for us.
+
+Stash an io_buf_free entry away for each of these, if any, and provide
+a helper to free them post ->release().
 
 Cc: stable@vger.kernel.org
-Fixes: 03d89a2de25b ("io_uring: support for user allocated memory for rings/sqes")
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Reported-by: Jann Horn <jannh@google.com>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- io_uring/io_uring.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ include/linux/io_uring_types.h |  3 +++
+ io_uring/io_uring.c            |  2 ++
+ io_uring/kbuf.c                | 44 ++++++++++++++++++++++++++++++----
+ io_uring/kbuf.h                |  2 ++
+ 4 files changed, 46 insertions(+), 5 deletions(-)
 
+diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+index d3009d56af0b..805bb635cdf5 100644
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -340,6 +340,9 @@ struct io_ring_ctx {
+ 
+ 	struct list_head	io_buffers_cache;
+ 
++	/* deferred free list, protected by ->uring_lock */
++	struct hlist_head	io_buf_list;
++
+ 	/* Keep this last, we don't need it for the fast path */
+ 	struct wait_queue_head		poll_wq;
+ 	struct io_restriction		restrictions;
 diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index b45abfd75415..52e4b14ad8aa 100644
+index e40b11438210..3a216f0744dd 100644
 --- a/io_uring/io_uring.c
 +++ b/io_uring/io_uring.c
-@@ -3478,16 +3478,18 @@ static void *io_uring_validate_mmap_request(struct file *file,
- 	struct page *page;
+@@ -325,6 +325,7 @@ static __cold struct io_ring_ctx *io_ring_ctx_alloc(struct io_uring_params *p)
+ 	INIT_LIST_HEAD(&ctx->sqd_list);
+ 	INIT_LIST_HEAD(&ctx->cq_overflow_list);
+ 	INIT_LIST_HEAD(&ctx->io_buffers_cache);
++	INIT_HLIST_HEAD(&ctx->io_buf_list);
+ 	io_alloc_cache_init(&ctx->rsrc_node_cache, IO_NODE_ALLOC_CACHE_MAX,
+ 			    sizeof(struct io_rsrc_node));
+ 	io_alloc_cache_init(&ctx->apoll_cache, IO_ALLOC_CACHE_MAX,
+@@ -2950,6 +2951,7 @@ static __cold void io_ring_ctx_free(struct io_ring_ctx *ctx)
+ 		ctx->mm_account = NULL;
+ 	}
+ 	io_rings_free(ctx);
++	io_kbuf_mmap_list_free(ctx);
+ 
+ 	percpu_ref_exit(&ctx->refs);
+ 	free_uid(ctx->user);
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index a1e4239c7d75..85e680fc74ce 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -33,6 +33,11 @@ struct io_provide_buf {
+ 	__u16				bid;
+ };
+ 
++struct io_buf_free {
++	struct hlist_node		list;
++	void				*mem;
++};
++
+ static inline struct io_buffer_list *io_buffer_get_list(struct io_ring_ctx *ctx,
+ 							unsigned int bgid)
+ {
+@@ -223,7 +228,10 @@ static int __io_remove_buffers(struct io_ring_ctx *ctx,
+ 	if (bl->is_mapped) {
+ 		i = bl->buf_ring->tail - bl->head;
+ 		if (bl->is_mmap) {
+-			folio_put(virt_to_folio(bl->buf_ring));
++			/*
++			 * io_kbuf_list_free() will free the page(s) at
++			 * ->release() time.
++			 */
+ 			bl->buf_ring = NULL;
+ 			bl->is_mmap = 0;
+ 		} else if (bl->buf_nr_pages) {
+@@ -531,18 +539,28 @@ static int io_pin_pbuf_ring(struct io_uring_buf_reg *reg,
+ 	return -EINVAL;
+ }
+ 
+-static int io_alloc_pbuf_ring(struct io_uring_buf_reg *reg,
++static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
++			      struct io_uring_buf_reg *reg,
+ 			      struct io_buffer_list *bl)
+ {
+-	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
++	struct io_buf_free *ibf;
+ 	size_t ring_size;
  	void *ptr;
  
--	/* Don't allow mmap if the ring was setup without it */
--	if (ctx->flags & IORING_SETUP_NO_MMAP)
--		return ERR_PTR(-EINVAL);
--
- 	switch (offset & IORING_OFF_MMAP_MASK) {
- 	case IORING_OFF_SQ_RING:
- 	case IORING_OFF_CQ_RING:
-+		/* Don't allow mmap if the ring was setup without it */
-+		if (ctx->flags & IORING_SETUP_NO_MMAP)
-+			return ERR_PTR(-EINVAL);
- 		ptr = ctx->rings;
- 		break;
- 	case IORING_OFF_SQES:
-+		/* Don't allow mmap if the ring was setup without it */
-+		if (ctx->flags & IORING_SETUP_NO_MMAP)
-+			return ERR_PTR(-EINVAL);
- 		ptr = ctx->sq_sqes;
- 		break;
- 	case IORING_OFF_PBUF_RING: {
+ 	ring_size = reg->ring_entries * sizeof(struct io_uring_buf_ring);
+-	ptr = (void *) __get_free_pages(gfp, get_order(ring_size));
++	ptr = io_mem_alloc(ring_size);
+ 	if (!ptr)
+ 		return -ENOMEM;
+ 
++	/* Allocate and store deferred free entry */
++	ibf = kmalloc(sizeof(*ibf), GFP_KERNEL_ACCOUNT);
++	if (!ibf) {
++		io_mem_free(ptr);
++		return -ENOMEM;
++	}
++	ibf->mem = ptr;
++	hlist_add_head(&ibf->list, &ctx->io_buf_list);
++
+ 	bl->buf_ring = ptr;
+ 	bl->is_mapped = 1;
+ 	bl->is_mmap = 1;
+@@ -599,7 +617,7 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+ 	if (!(reg.flags & IOU_PBUF_RING_MMAP))
+ 		ret = io_pin_pbuf_ring(&reg, bl);
+ 	else
+-		ret = io_alloc_pbuf_ring(&reg, bl);
++		ret = io_alloc_pbuf_ring(ctx, &reg, bl);
+ 
+ 	if (!ret) {
+ 		bl->nr_entries = reg.ring_entries;
+@@ -649,3 +667,19 @@ void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
+ 
+ 	return bl->buf_ring;
+ }
++
++/*
++ * Called at or after ->release(), free the mmap'ed buffers that we used
++ * for memory mapped provided buffer rings.
++ */
++void io_kbuf_mmap_list_free(struct io_ring_ctx *ctx)
++{
++	struct io_buf_free *ibf;
++	struct hlist_node *tmp;
++
++	hlist_for_each_entry_safe(ibf, tmp, &ctx->io_buf_list, list) {
++		hlist_del(&ibf->list);
++		io_mem_free(ibf->mem);
++		kfree(ibf);
++	}
++}
+diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
+index f2d615236b2c..6c7646e6057c 100644
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -51,6 +51,8 @@ int io_provide_buffers(struct io_kiocb *req, unsigned int issue_flags);
+ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg);
+ int io_unregister_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg);
+ 
++void io_kbuf_mmap_list_free(struct io_ring_ctx *ctx);
++
+ unsigned int __io_put_kbuf(struct io_kiocb *req, unsigned issue_flags);
+ 
+ bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
 -- 
 2.42.0
 
