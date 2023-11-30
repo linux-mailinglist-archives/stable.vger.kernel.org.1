@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-3390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E51F7FF565
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28C367FF50D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC7071C20F20
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59B411C20F21
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23D354F9C;
-	Thu, 30 Nov 2023 16:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9978654F9B;
+	Thu, 30 Nov 2023 16:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ0OFUxb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4sLKJ6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B48B524C2;
-	Thu, 30 Nov 2023 16:28:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADFCC433C8;
-	Thu, 30 Nov 2023 16:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A11954F90;
+	Thu, 30 Nov 2023 16:25:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7831FC433C7;
+	Thu, 30 Nov 2023 16:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361711;
-	bh=FoDkNXbBAZeq0t2RA0ojIL3QYHHU/mbaYwqVJKIxPc4=;
+	s=korg; t=1701361536;
+	bh=2YtktEvZdv2duc8AkNwlRV3THDhm6iLg720iTL2gD6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJ0OFUxb/+9QYD8Npsw5veSaXbKg7Skh7tX9dexUczHMx6M/IoqIib8tdSA/+QB11
-	 YUgmYQZ/24EgdbGpIGzB2gc2sZY7YQ2Tp4SzfcEoF7Mn8rCAMl5zTxsd6m0rd7VVYa
-	 z8IixRKxrYmnVxdY+PMwLT1uVHrKhiofv+g1+o7o=
+	b=N4sLKJ6HfT8V4XdyJ9RHZkNWaUVsDtn16MGmJy5rKN1fOCDq8evG0ecybRYYYhrPk
+	 FcHvEnkM0cT2iI8zfSfbneTooDVb9APfAUzCnyczmWdmZ4yIzabtMV7De5oWGM18HP
+	 URM11Tn1EouPmqjd0MROs1RWOOQwHvCUTNLzwAh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/82] octeontx2-pf: Fix ntuple rule creation to direct packet to VF with higher Rx queue than its PF
-Date: Thu, 30 Nov 2023 16:21:48 +0000
-Message-ID: <20231130162136.504951749@linuxfoundation.org>
+	Gil Fine <gil.fine@linux.intel.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 6.6 062/112] thunderbolt: Set lane bonding bit only for downstream port
+Date: Thu, 30 Nov 2023 16:21:49 +0000
+Message-ID: <20231130162142.293313207@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,83 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-[ Upstream commit 4aa1d8f89b10cdc25a231dabf808d8935e0b137a ]
+commit 24d85bb3be373b5831699bddf698b392bd2b904d upstream.
 
-It is possible to add a ntuple rule which would like to direct packet to
-a VF whose number of queues are greater/less than its PF's queue numbers.
-For example a PF can have 2 Rx queues but a VF created on that PF can have
-8 Rx queues. As of today, ntuple rule will reject rule because it is
-checking the requested queue number against PF's number of Rx queues.
-As a part of this fix if the action of a ntuple rule is to move a packet
-to a VF's queue then the check is removed. Also, a debug information is
-printed to aware user that it is user's responsibility to cross check if
-the requested queue number on that VF is a valid one.
+Fix the lane bonding procedure to follow the steps described in USB4
+Connection Manager guide. Hence, set the lane bonding bit only for
+downstream port. This is needed for certain ASMedia device, otherwise
+lane bonding fails and the device disconnects.
 
-Fixes: f0a1913f8a6f ("octeontx2-pf: Add support for ethtool ntuple filters")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231121165624.3664182-1-sumang@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../marvell/octeontx2/nic/otx2_flows.c        | 20 ++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/switch.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-index 934c199667b59..5c4a4d3557702 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-@@ -1069,6 +1069,7 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
- 	struct ethhdr *eth_hdr;
- 	bool new = false;
- 	int err = 0;
-+	u64 vf_num;
- 	u32 ring;
- 
- 	if (!flow_cfg->max_flows) {
-@@ -1081,7 +1082,21 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
- 	if (!(pfvf->flags & OTX2_FLAG_NTUPLE_SUPPORT))
- 		return -ENOMEM;
- 
--	if (ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
-+	/* Number of queues on a VF can be greater or less than
-+	 * the PF's queue. Hence no need to check for the
-+	 * queue count. Hence no need to check queue count if PF
-+	 * is installing for its VF. Below is the expected vf_num value
-+	 * based on the ethtool commands.
-+	 *
-+	 * e.g.
-+	 * 1. ethtool -U <netdev> ... action -1  ==> vf_num:255
-+	 * 2. ethtool -U <netdev> ... action <queue_num>  ==> vf_num:0
-+	 * 3. ethtool -U <netdev> ... vf <vf_idx> queue <queue_num>  ==>
-+	 *    vf_num:vf_idx+1
-+	 */
-+	vf_num = ethtool_get_flow_spec_ring_vf(fsp->ring_cookie);
-+	if (!is_otx2_vf(pfvf->pcifunc) && !vf_num &&
-+	    ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
- 		return -EINVAL;
- 
- 	if (fsp->location >= otx2_get_maxflows(flow_cfg))
-@@ -1163,6 +1178,9 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
- 		flow_cfg->nr_flows++;
- 	}
- 
-+	if (flow->is_vf)
-+		netdev_info(pfvf->netdev,
-+			    "Make sure that VF's queue number is within its queue limit\n");
- 	return 0;
- }
- 
--- 
-2.42.0
-
+--- a/drivers/thunderbolt/switch.c
++++ b/drivers/thunderbolt/switch.c
+@@ -1082,7 +1082,7 @@ int tb_port_lane_bonding_enable(struct t
+ 	 * Only set bonding if the link was not already bonded. This
+ 	 * avoids the lane adapter to re-enter bonding state.
+ 	 */
+-	if (width == TB_LINK_WIDTH_SINGLE) {
++	if (width == TB_LINK_WIDTH_SINGLE && !tb_is_upstream_port(port)) {
+ 		ret = tb_port_set_lane_bonding(port, true);
+ 		if (ret)
+ 			goto err_lane1;
 
 
 
