@@ -1,146 +1,189 @@
-Return-Path: <stable+bounces-3207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482937FEBC3
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 10:22:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6F57FEBDC
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 10:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03CFB28209B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 09:22:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6834628201D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 09:30:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF075374D1;
-	Thu, 30 Nov 2023 09:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5409338DFB;
+	Thu, 30 Nov 2023 09:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Y7vTyJUK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5y2F7Pf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79F0A9D;
-	Thu, 30 Nov 2023 01:21:54 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2243F40E0239;
-	Thu, 30 Nov 2023 09:21:52 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=fail (4096-bit key)
-	reason="fail (body has been altered)" header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 4ubGk9wQ3yGk; Thu, 30 Nov 2023 09:21:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1701336108; bh=GBEhqV+mubDB6FPJ/dMhpSO9uCBniobBE/30dBfoP1E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y7vTyJUKfO/m/6Q05oNE0nB9e+JeuSZtvDdd4VcuQS6H/Dovit7G6zOnY0OAZUuYO
-	 AwHaDeBel8ETDgg7GkEjHZHm2z8oFtIrDy4fX6mGCMzPxPLixzAo2VDzeKQrvvGDdZ
-	 ujdIiH2ZJ9JAcOOHdrH7MSGf00cBDqAdy9SuyHho3ieqJx4YeW7HmEYtmTSJMVrj9m
-	 K4xrUrdS0itJGa+3M7P+LplIYYdJ8m6HcrT4sWEOdVDhm7DQ/K8yojEXFNS1+ga2Gg
-	 0QGB5elyo2cl7GuJA1lAUR/BjSSKXYzfGAVARKZVpy7nsRE1aTiWMC1OJH4Hjk5Tso
-	 RjpP5SX/03k1s4ugVQHC1w0F8kGSXBVrUmALO2WQtcOWDXoQCIAdQVKYWoY9z8UNvJ
-	 gbQkdhpqt1L7NwCLW6PHSNv22ZZpn6d/hgLJtDhcF/7TDXCPKXdeoZI0JoyHC5ZKsg
-	 qyPYoYMPrgKFp5Z500gSyfldAiDY1Jjrffk9TLBveLCgXCl0aKtCGkYCsNtQjStGye
-	 j9DVPpRk7oMAfkpSTTlpoQI9Z3i3rZBzxrkhGtQ629bfNs48IeoiPyzP+epNJroBGa
-	 PY3haMimJnzmwwhByWMLzvGDO+24grp0cmw3cOU5rn+/apnyobYq2VoL6HtG3MQ5Ls
-	 Vj3xyTFGSswpzlHhKquVYydo=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0394240E0030;
-	Thu, 30 Nov 2023 09:21:23 +0000 (UTC)
-Date: Thu, 30 Nov 2023 10:21:19 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"stefan.bader@canonical.com" <stefan.bader@canonical.com>,
-	"tim.gardner@canonical.com" <tim.gardner@canonical.com>,
-	"roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
-	"cascardo@canonical.com" <cascardo@canonical.com>,
-	"kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Michael Kelley <mhkelley58@gmail.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"Cui, Dexuan" <decui@microsoft.com>
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Message-ID: <20231130092119.GBZWhUD6LscxYOpxNl@fat_crate.local>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <0799b692-4b26-4e00-9cec-fdc4c929ea58@linux.microsoft.com>
- <20231129164049.GVZWdpkVlc8nUvl/jx@fat_crate.local>
- <DM8PR11MB575085570AF48AF4690986EDE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20231130075559.GAZWhAD5ScHoxbbTxL@fat_crate.local>
- <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
+Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D428F;
+	Thu, 30 Nov 2023 01:30:16 -0800 (PST)
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3330fd19820so477788f8f.1;
+        Thu, 30 Nov 2023 01:30:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701336615; x=1701941415; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YuNTtw2jvQuN4PhWTyrra/q1irsKXH/DVcQCJL0iMU8=;
+        b=A5y2F7Pf1S/HONNiXrAK86jZe3N0SOoE0ONtsedAbsiHvs9L74N5zUq8qQThQmLewt
+         nUIoBcDKPvgnROW8NtM5gKmbngCeCPcgXyy1qsasf1E2K9pbA/pC6+PXD0uLpebDWt71
+         FYVLy+FGUrZ5MaQhmjO6aq8PSUDoHtBSzFmqTjU0LF8VH4yTMXHkQFmRitGcSlq+EgRJ
+         zupk3WddIoIyb/B/XXNhqLbBcEflXJ+UliAWsYnhvsYNBuR3kSKH1rzV1DWPscRuT7oZ
+         QfURIePypK+AKvalyFDh2o695IBC6XLQET3E7z8NsOROZ3/JCmW6qmQZ5c9KSBgTgvQi
+         ZjFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701336615; x=1701941415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YuNTtw2jvQuN4PhWTyrra/q1irsKXH/DVcQCJL0iMU8=;
+        b=oJLN2pmu9MHiCl4i193svxQOdkLvoXUxF3t0UXQ4aNzLVsjDmIDvfmWm/2TaYdbNab
+         Fw6zO/Dfu/gKAOfXBufySoKZS9vGvy2QM4OInq2eWI/yAxlGeVf0Hr8wiVLnM7MyHPgR
+         mSohZreZik0rvMgfiY2Ca4vWcEm8tSGK1r0r9u0RLPgf7+tE+Geuz1843HOVFDt4OP2Q
+         u32JZkjWsG9YXlSfm9tmnJBDKAy+IVsFw8DD6SlktqtXw+WwIH5AE16kuSf8TmAVPPnd
+         PEL18Tly4XC7jwpAkkyAiz1PP26wSR1MD3y2n9S6f97/s5+b2HBxQQD4Le0nOqt2hGag
+         Jtvg==
+X-Gm-Message-State: AOJu0Yycr885N2g/frdsGR3C0Wbk6NtrWIjZanz1fdcqzXBncWmJUiLf
+	OdiwQFM8PoKojqxTyrd9HG4=
+X-Google-Smtp-Source: AGHT+IFAVSELyNE3gO5IZKHYWynOhknEH6eayw8ijvtfgxPELrwyf3opc19adLXw5KJhk7G47spEdg==
+X-Received: by 2002:adf:f588:0:b0:332:eb19:9530 with SMTP id f8-20020adff588000000b00332eb199530mr14011097wro.32.1701336614960;
+        Thu, 30 Nov 2023 01:30:14 -0800 (PST)
+Received: from gmail.com (1F2EF55A.nat.pool.telekom.hu. [31.46.245.90])
+        by smtp.gmail.com with ESMTPSA id r13-20020adfe68d000000b00333040a4752sm995326wrm.114.2023.11.30.01.30.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Nov 2023 01:30:14 -0800 (PST)
+Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
+Date: Thu, 30 Nov 2023 10:30:11 +0100
+From: Ingo Molnar <mingo@kernel.org>
+To: Ashwin Dayanand Kamat <kashwindayan@vmware.com>
+Cc: linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, bp@alien8.de,
+	brijesh.singh@amd.com, tglx@linutronix.de, mingo@redhat.com,
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+	jroedel@suse.de, stable@vger.kernel.org, ganb@vmware.com,
+	tkundu@vmware.com, vsirnapalli@vmware.com, akaher@vmware.com,
+	amakhalov@vmware.com, namit@vmware.com
+Subject: [PATCH] x86/sev: Fix kernel crash due to late update to read-only
+ ghcb_version
+Message-ID: <ZWhWI2GvfleyGKsa@gmail.com>
+References: <1701254429-18250-1-git-send-email-kashwindayan@vmware.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <1701254429-18250-1-git-send-email-kashwindayan@vmware.com>
 
-On Thu, Nov 30, 2023 at 08:31:03AM +0000, Reshetova, Elena wrote:
-> No threats whatsoever,
 
-I don't mean you - others. :-)
+* Ashwin Dayanand Kamat <kashwindayan@vmware.com> wrote:
 
-> I just truly don=E2=80=99t know details of SEV architecture on this and=
- how it
-> envisioned to operate under this nesting scenario.  I raised this
-> point to see if we can build the common understanding on this. My
-> personal understanding (please correct me) was that SEV would also
-> allow different types of L2 guests, so I think we should be aligning
-> on this.
+> From: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+> 
+> kernel crash was observed because of page fault, while running
+> cpuhotplug ltp testcases on SEV-ES enabled systems. The crash was
+> observed during hotplug after the CPU was offlined and the process
+> was migrated to different cpu. setup_ghcb() is called again which
+> tries to update ghcb_version in sev_es_negotiate_protocol(). Ideally this
+> is a read_only variable which is initialised during booting.
+> This results in pagefault.
 
-Yes, makes sense. The only L2 thing I've heard of is some Azure setup.
+Applied to tip:x86/urgent, thanks.
 
-> Yes, agree, so what are our options and overall strategy on this?  We
-> can try to push as much as possible complexity into L1 VMM in this
-> scenario to keep the guest kernel almost free from these sprinkling
-> differences.
+Tom: I've added your Suggested-by and Acked-by, which appeared to be the 
+case given the v1 discussion, let me know if that's not accurate.
 
-I like that angle. :)
+I've also tidied up the changelog - final version attached below.
 
-> Afterall the L1 VMM can emulate whatever it wants for the guest.
-> We can also see if there is a true need to add another virtualization
-> abstraction here, i.e. "nested encrypted guest".
+Thanks,
 
-Yes, that too. I'm sceptical but there are use cases with that paravisor
-thing and being able to run an unmodified guest, i.e., something like
-a very old OS which no one develops anymore but customers simply can't
-part ways with it for raisins.
+	Ingo
 
-> Any other options we should be considering as overall strategy?
+============>
+From: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+Date: Wed, 29 Nov 2023 16:10:29 +0530
+Subject: [PATCH] x86/sev: Fix kernel crash due to late update to read-only ghcb_version
 
-The less the kernel knows about guests, the better, I'd say.
+A write-access violation page fault kernel crash was observed while running
+cpuhotplug LTP testcases on SEV-ES enabled systems. The crash was
+observed during hotplug, after the CPU was offlined and the process
+was migrated to different CPU. setup_ghcb() is called again which
+tries to update ghcb_version in sev_es_negotiate_protocol(). Ideally this
+is a read_only variable which is initialised during booting.
 
-The other thing I'm missing most of the time is, people come with those
-patches enabling this and that but nowhere does it say: "we would love
-to have this because of this great idea we had" or "brings so much more
-performance" or "amazing code quality imrpovement" or, or other great
-reason.
+Trying to write it results in a pagefault:
 
-Rather, it is "yeah, we do this and you should support it". Well, nope.
+  BUG: unable to handle page fault for address: ffffffffba556e70
+  #PF: supervisor write access in kernel mode
+  #PF: error_code(0x0003) - permissions violation
+  [ ...]
+  Call Trace:
+   <TASK>
+   ? __die_body.cold+0x1a/0x1f
+   ? __die+0x2a/0x35
+   ? page_fault_oops+0x10c/0x270
+   ? setup_ghcb+0x71/0x100
+   ? __x86_return_thunk+0x5/0x6
+   ? search_exception_tables+0x60/0x70
+   ? __x86_return_thunk+0x5/0x6
+   ? fixup_exception+0x27/0x320
+   ? kernelmode_fixup_or_oops+0xa2/0x120
+   ? __bad_area_nosemaphore+0x16a/0x1b0
+   ? kernel_exc_vmm_communication+0x60/0xb0
+   ? bad_area_nosemaphore+0x16/0x20
+   ? do_kern_addr_fault+0x7a/0x90
+   ? exc_page_fault+0xbd/0x160
+   ? asm_exc_page_fault+0x27/0x30
+   ? setup_ghcb+0x71/0x100
+   ? setup_ghcb+0xe/0x100
+   cpu_init_exception_handling+0x1b9/0x1f0
 
-Thx.
+The fix is to call sev_es_negotiate_protocol() only in the BSP boot phase,
+and it only needs to be done once in any case.
 
---=20
-Regards/Gruss,
-    Boris.
+[ mingo: Refined the changelog. ]
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Co-developed-by: Bo Gan <bo.gan@broadcom.com>
+Signed-off-by: Bo Gan <bo.gan@broadcom.com>
+Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/1701254429-18250-1-git-send-email-kashwindayan@vmware.com
+---
+ arch/x86/kernel/sev.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
+index 70472eebe719..c67285824e82 100644
+--- a/arch/x86/kernel/sev.c
++++ b/arch/x86/kernel/sev.c
+@@ -1234,10 +1234,6 @@ void setup_ghcb(void)
+ 	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
+ 		return;
+ 
+-	/* First make sure the hypervisor talks a supported protocol. */
+-	if (!sev_es_negotiate_protocol())
+-		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
+-
+ 	/*
+ 	 * Check whether the runtime #VC exception handler is active. It uses
+ 	 * the per-CPU GHCB page which is set up by sev_es_init_vc_handling().
+@@ -1254,6 +1250,13 @@ void setup_ghcb(void)
+ 		return;
+ 	}
+ 
++	/*
++	 * Make sure the hypervisor talks a supported protocol.
++	 * This gets called only in the BSP boot phase.
++	 */
++	if (!sev_es_negotiate_protocol())
++		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
++
+ 	/*
+ 	 * Clear the boot_ghcb. The first exception comes in before the bss
+ 	 * section is cleared.
 
