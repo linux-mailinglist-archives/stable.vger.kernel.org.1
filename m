@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246957FF539
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 511137FF5B1
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABD5AB20D8B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C8C42817B2
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F35D54F93;
-	Thu, 30 Nov 2023 16:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B59E54F9C;
+	Thu, 30 Nov 2023 16:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6HPZUeg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKzHFm7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD99D495C2;
-	Thu, 30 Nov 2023 16:26:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47750C433C9;
-	Thu, 30 Nov 2023 16:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4367751C3E;
+	Thu, 30 Nov 2023 16:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4147C433C8;
+	Thu, 30 Nov 2023 16:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361617;
-	bh=YvQIlXQMDrC42T5Iph5eJsBQDpWheHmYeCZ9CgBibtk=;
+	s=korg; t=1701361855;
+	bh=idUiVwcq4wAroLGPB3ZBN57DKHdBvDbaPdguXxjejx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6HPZUegunR668XNVaApYbM/betout+cLtcGD4s7p0thYS7O4J4sGtrLO7FyI7BhY
-	 Pu+qAUFycR1mYFqWvMME2mLy7/XgAV0be1edCb0BTVqDBiCz3LlJSzy559t/JPnXjU
-	 KtDqmWP2SJyBZ2IJqY/DdYJB2gZS47FATx+Db1bU=
+	b=qKzHFm7XbZIPwQNmG+crzgAUqw479Y9oztjELUbFryih45ry55bBpOi8/O2LyzVAo
+	 j3O+F9/biu4v7x2PIGoq6yk1x8TuQ2JjnAWTZUnFTCrTahUxQitIs4lPGSNYiqB7/v
+	 yZgWjCeYwQaEdthy5vJqXp4eKI6AGfFzdiji9p9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/112] ALSA: hda/realtek: Add quirks for ASUS 2024 Zenbooks
-Date: Thu, 30 Nov 2023 16:22:20 +0000
-Message-ID: <20231130162143.277497831@linuxfoundation.org>
+Subject: [PATCH 6.1 50/82] ext4: using nofail preallocation in ext4_es_insert_extent()
+Date: Thu, 30 Nov 2023 16:22:21 +0000
+Message-ID: <20231130162137.561801290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +54,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 61cbc08fdb04fd445458b0f4cba7e6929afdfaef ]
+[ Upstream commit 2a69c450083db164596c75c0f5b4d9c4c0e18eba ]
 
-These ASUS Zenbook laptops use Realtek HDA codec combined with
-2xCS35L41 Amplifiers using SPI or I2C with External Boost or
-Internal Boost.
+Similar to in ext4_es_insert_delayed_block(), we use preallocations that
+do not fail to avoid inconsistencies, but we do not care about es that are
+not must be kept, and we return 0 even if such es memory allocation fails.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231115162116.494968-2-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-9-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/ext4/extents_status.c | 38 ++++++++++++++++++++++++++------------
+ 1 file changed, 26 insertions(+), 12 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 60e99389bcdcd..87bc1d2f8a432 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9869,13 +9869,17 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x19e1, "ASUS UX581LV", ALC295_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1a13, "Asus G73Jw", ALC269_FIXUP_ASUS_G73JW),
- 	SND_PCI_QUIRK(0x1043, 0x1a30, "ASUS X705UD", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1a63, "ASUS UX3405MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a83, "ASUS UM5302LA", ALC294_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1a8f, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1b11, "ASUS UX431DA", ALC294_FIXUP_ASUS_COEF_1B),
- 	SND_PCI_QUIRK(0x1043, 0x1b13, "Asus U41SV", ALC269_FIXUP_INV_DMIC),
- 	SND_PCI_QUIRK(0x1043, 0x1b93, "ASUS G614JVR/JIR", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1bbd, "ASUS Z550MA", ALC255_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x1c03, "ASUS UM3406HA", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c23, "Asus X55U", ALC269_FIXUP_LIMIT_INT_MIC_BOOST),
-+	SND_PCI_QUIRK(0x1043, 0x1c33, "ASUS UX5304MA", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1043, 0x1c43, "ASUS UX8406MA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c62, "ASUS GU603", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index e382fe1788f1e..934c14f9edb9f 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -840,8 +840,11 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ {
+ 	struct extent_status newes;
+ 	ext4_lblk_t end = lblk + len - 1;
+-	int err = 0;
++	int err1 = 0;
++	int err2 = 0;
+ 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
++	struct extent_status *es1 = NULL;
++	struct extent_status *es2 = NULL;
+ 
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return 0;
+@@ -869,29 +872,40 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 
+ 	ext4_es_insert_extent_check(inode, &newes);
+ 
++retry:
++	if (err1 && !es1)
++		es1 = __es_alloc_extent(true);
++	if ((err1 || err2) && !es2)
++		es2 = __es_alloc_extent(true);
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+-	err = __es_remove_extent(inode, lblk, end, NULL, NULL);
+-	if (err != 0)
++
++	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
++	if (err1 != 0)
++		goto error;
++
++	err2 = __es_insert_extent(inode, &newes, es2);
++	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
++		err2 = 0;
++	if (err2 != 0)
+ 		goto error;
+-retry:
+-	err = __es_insert_extent(inode, &newes, NULL);
+-	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
+-					  128, EXT4_I(inode)))
+-		goto retry;
+-	if (err == -ENOMEM && !ext4_es_must_keep(&newes))
+-		err = 0;
+ 
+ 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
+ 	    (status & EXTENT_STATUS_WRITTEN ||
+ 	     status & EXTENT_STATUS_UNWRITTEN))
+ 		__revise_pending(inode, lblk, len);
+ 
++	/* es is pre-allocated but not used, free it. */
++	if (es1 && !es1->es_len)
++		__es_free_extent(es1);
++	if (es2 && !es2->es_len)
++		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
++	if (err1 || err2)
++		goto retry;
+ 
+ 	ext4_es_print_tree(inode);
+-
+-	return err;
++	return 0;
+ }
+ 
+ /*
 -- 
 2.42.0
 
