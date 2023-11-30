@@ -1,367 +1,1206 @@
-Return-Path: <stable+bounces-3486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC9C7FF5E4
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FA37FF592
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA94DB21027
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 484B3B20FAD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC354878B;
-	Thu, 30 Nov 2023 16:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B9B54FBD;
+	Thu, 30 Nov 2023 16:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SqSYD+Vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7UjcGfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753C3AC1A;
-	Thu, 30 Nov 2023 16:32:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4987FC433C8;
-	Thu, 30 Nov 2023 16:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1183495C2;
+	Thu, 30 Nov 2023 16:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96FFC433C7;
+	Thu, 30 Nov 2023 16:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361953;
-	bh=6aXVIvQBx9aeiaq30aVe+oD6Myf4KUKl9YRrLfuerb0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SqSYD+VmOmRSQEelAxMR7VdQ0SIEHu5QMvQmINSuBidcgJKvAaByQbUBmONjlFYhh
-	 loX5iQHbnSqgnomgYUTEbuHDO1PM7SmBK6DektSN2f8VZ3/4pOP/tqK6WavqjClBrm
-	 /cejn+mB8K3b9kpfRKANmkhqa7g4YmbMX8LxS9nQ=
+	s=korg; t=1701361797;
+	bh=jZGgxvlgU/GmHaEkQyUs8S/ja9s7dVtcUE93G6kgjlM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Q7UjcGfCnGrJCfVW6wG65ViFkHSwJ+s3yXZ7zaZ7Opum/GU+Wr2AIUO1bPGVdupZS
+	 Z2KQPmm6nvu9DK/ZZzFyYE8Lxy+YRP8OIQzBo0Yd/Hi8mPsTPD6hrHSaxb246lL/Hi
+	 HW0gRY+hjtr1q9l6U5ZgRMvtkt1ycDE6i9vw2xAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 5.15 00/69] 5.15.141-rc1 review
+	Jan Sokolowski <jan.sokolowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Gurucharan G <gurucharanx.g@intel.com>
+Subject: [PATCH 6.1 26/82] i40e: use ERR_PTR error print in i40e messages
 Date: Thu, 30 Nov 2023 16:21:57 +0000
-Message-ID: <20231130162133.035359406@linuxfoundation.org>
+Message-ID: <20231130162136.788804532@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.141-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-5.15.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 5.15.141-rc1
-X-KernelTest-Deadline: 2023-12-02T16:21+00:00
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 5.15.141 release.
-There are 69 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Jan Sokolowski <jan.sokolowski@intel.com>
+
+[ Upstream commit d5ba18423f87709146c120b20e4a1b8a5b528a76 ]
+
+In i40e_status removal patches, i40e_status conversion
+to strings was removed in order to easily refactor
+the code to use standard errornums. This however made it
+more difficult for read error logs.
+
+Use %pe formatter to print error messages in human-readable
+format.
+
+Signed-off-by: Jan Sokolowski <jan.sokolowski@intel.com>
+Tested-by: Gurucharan G <gurucharanx.g@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 4e20655e503e ("i40e: Fix adding unsupported cloud filters")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/intel/i40e/i40e_client.c |   8 +-
+ drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c |  16 +-
+ .../net/ethernet/intel/i40e/i40e_ethtool.c    |  40 +--
+ drivers/net/ethernet/intel/i40e/i40e_main.c   | 299 +++++++++---------
+ drivers/net/ethernet/intel/i40e/i40e_nvm.c    |   4 +-
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    |  28 +-
+ 6 files changed, 198 insertions(+), 197 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_client.c b/drivers/net/ethernet/intel/i40e/i40e_client.c
+index 8bcb98b85e3d9..a289f1bb3dbfc 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_client.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_client.c
+@@ -686,8 +686,8 @@ static int i40e_client_update_vsi_ctxt(struct i40e_info *ldev,
+ 	ctxt.flags = I40E_AQ_VSI_TYPE_PF;
+ 	if (err) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get PF vsi config, err %d aq_err %s\n",
+-			 err,
++			 "couldn't get PF vsi config, err %pe aq_err %s\n",
++			 ERR_PTR(err),
+ 			 i40e_aq_str(&pf->hw,
+ 				     pf->hw.aq.asq_last_status));
+ 		return -ENOENT;
+@@ -714,8 +714,8 @@ static int i40e_client_update_vsi_ctxt(struct i40e_info *ldev,
+ 		err = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+ 		if (err) {
+ 			dev_info(&pf->pdev->dev,
+-				 "update VSI ctxt for PE failed, err %d aq_err %s\n",
+-				 err,
++				 "update VSI ctxt for PE failed, err %pe aq_err %s\n",
++				 ERR_PTR(err),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 		}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c b/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c
+index bba70bd5703bf..195421d863ab1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_dcb_nl.c
+@@ -135,8 +135,8 @@ static int i40e_dcbnl_ieee_setets(struct net_device *netdev,
+ 	ret = i40e_hw_dcb_config(pf, &pf->tmp_cfg);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Failed setting DCB ETS configuration err %d aq_err %s\n",
+-			 ret,
++			 "Failed setting DCB ETS configuration err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EINVAL;
+ 	}
+@@ -174,8 +174,8 @@ static int i40e_dcbnl_ieee_setpfc(struct net_device *netdev,
+ 	ret = i40e_hw_dcb_config(pf, &pf->tmp_cfg);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Failed setting DCB PFC configuration err %d aq_err %s\n",
+-			 ret,
++			 "Failed setting DCB PFC configuration err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EINVAL;
+ 	}
+@@ -225,8 +225,8 @@ static int i40e_dcbnl_ieee_setapp(struct net_device *netdev,
+ 	ret = i40e_hw_dcb_config(pf, &pf->tmp_cfg);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Failed setting DCB configuration err %d aq_err %s\n",
+-			 ret,
++			 "Failed setting DCB configuration err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EINVAL;
+ 	}
+@@ -290,8 +290,8 @@ static int i40e_dcbnl_ieee_delapp(struct net_device *netdev,
+ 	ret = i40e_hw_dcb_config(pf, &pf->tmp_cfg);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Failed setting DCB configuration err %d aq_err %s\n",
+-			 ret,
++			 "Failed setting DCB configuration err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EINVAL;
+ 	}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+index e632041aed5f8..107bcca7db8c9 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+@@ -1453,8 +1453,8 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
+ 		status = i40e_aq_set_phy_config(hw, &config, NULL);
+ 		if (status) {
+ 			netdev_info(netdev,
+-				    "Set phy config failed, err %d aq_err %s\n",
+-				    status,
++				    "Set phy config failed, err %pe aq_err %s\n",
++				    ERR_PTR(status),
+ 				    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 			err = -EAGAIN;
+ 			goto done;
+@@ -1463,8 +1463,8 @@ static int i40e_set_link_ksettings(struct net_device *netdev,
+ 		status = i40e_update_link_info(hw);
+ 		if (status)
+ 			netdev_dbg(netdev,
+-				   "Updating link info failed with err %d aq_err %s\n",
+-				   status,
++				   "Updating link info failed with err %pe aq_err %s\n",
++				   ERR_PTR(status),
+ 				   i40e_aq_str(hw, hw->aq.asq_last_status));
+ 
+ 	} else {
+@@ -1515,8 +1515,8 @@ static int i40e_set_fec_cfg(struct net_device *netdev, u8 fec_cfg)
+ 		status = i40e_aq_set_phy_config(hw, &config, NULL);
+ 		if (status) {
+ 			netdev_info(netdev,
+-				    "Set phy config failed, err %d aq_err %s\n",
+-				    status,
++				    "Set phy config failed, err %pe aq_err %s\n",
++				    ERR_PTR(status),
+ 				    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 			err = -EAGAIN;
+ 			goto done;
+@@ -1529,8 +1529,8 @@ static int i40e_set_fec_cfg(struct net_device *netdev, u8 fec_cfg)
+ 			 * (e.g. no physical connection etc.)
+ 			 */
+ 			netdev_dbg(netdev,
+-				   "Updating link info failed with err %d aq_err %s\n",
+-				   status,
++				   "Updating link info failed with err %pe aq_err %s\n",
++				   ERR_PTR(status),
+ 				   i40e_aq_str(hw, hw->aq.asq_last_status));
+ 	}
+ 
+@@ -1636,8 +1636,8 @@ static int i40e_nway_reset(struct net_device *netdev)
+ 
+ 	ret = i40e_aq_set_link_restart_an(hw, link_up, NULL);
+ 	if (ret) {
+-		netdev_info(netdev, "link restart failed, err %d aq_err %s\n",
+-			    ret,
++		netdev_info(netdev, "link restart failed, err %pe aq_err %s\n",
++			    ERR_PTR(ret),
+ 			    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return -EIO;
+ 	}
+@@ -1753,20 +1753,20 @@ static int i40e_set_pauseparam(struct net_device *netdev,
+ 	status = i40e_set_fc(hw, &aq_failures, link_up);
+ 
+ 	if (aq_failures & I40E_SET_FC_AQ_FAIL_GET) {
+-		netdev_info(netdev, "Set fc failed on the get_phy_capabilities call with err %d aq_err %s\n",
+-			    status,
++		netdev_info(netdev, "Set fc failed on the get_phy_capabilities call with err %pe aq_err %s\n",
++			    ERR_PTR(status),
+ 			    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		err = -EAGAIN;
+ 	}
+ 	if (aq_failures & I40E_SET_FC_AQ_FAIL_SET) {
+-		netdev_info(netdev, "Set fc failed on the set_phy_config call with err %d aq_err %s\n",
+-			    status,
++		netdev_info(netdev, "Set fc failed on the set_phy_config call with err %pe aq_err %s\n",
++			    ERR_PTR(status),
+ 			    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		err = -EAGAIN;
+ 	}
+ 	if (aq_failures & I40E_SET_FC_AQ_FAIL_UPDATE) {
+-		netdev_info(netdev, "Set fc failed on the get_link_info call with err %d aq_err %s\n",
+-			    status,
++		netdev_info(netdev, "Set fc failed on the get_link_info call with err %pe aq_err %s\n",
++			    ERR_PTR(status),
+ 			    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		err = -EAGAIN;
+ 	}
+@@ -5360,8 +5360,8 @@ static int i40e_set_priv_flags(struct net_device *dev, u32 flags)
+ 						0, NULL);
+ 		if (ret && pf->hw.aq.asq_last_status != I40E_AQ_RC_ESRCH) {
+ 			dev_info(&pf->pdev->dev,
+-				 "couldn't set switch config bits, err %d aq_err %s\n",
+-				 ret,
++				 "couldn't set switch config bits, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			/* not a fatal problem, just keep going */
+@@ -5433,8 +5433,8 @@ static int i40e_set_priv_flags(struct net_device *dev, u32 flags)
+ 					return -EBUSY;
+ 				default:
+ 					dev_warn(&pf->pdev->dev,
+-						 "Starting FW LLDP agent failed: error: %d, %s\n",
+-						 status,
++						 "Starting FW LLDP agent failed: error: %pe, %s\n",
++						 ERR_PTR(status),
+ 						 i40e_aq_str(&pf->hw,
+ 							     adq_err));
+ 					return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 68ee2c59692d1..9f5824eb8808a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -1822,8 +1822,8 @@ static int i40e_set_mac(struct net_device *netdev, void *p)
+ 		ret = i40e_aq_mac_address_write(hw, I40E_AQC_WRITE_TYPE_LAA_WOL,
+ 						addr->sa_data, NULL);
+ 		if (ret)
+-			netdev_info(netdev, "Ignoring error from firmware on LAA update, status %d, AQ ret %s\n",
+-				    ret,
++			netdev_info(netdev, "Ignoring error from firmware on LAA update, status %pe, AQ ret %s\n",
++				    ERR_PTR(ret),
+ 				    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 	}
+ 
+@@ -1854,8 +1854,8 @@ static int i40e_config_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
+ 		ret = i40e_aq_set_rss_key(hw, vsi->id, seed_dw);
+ 		if (ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "Cannot set RSS key, err %d aq_err %s\n",
+-				 ret,
++				 "Cannot set RSS key, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 			return ret;
+ 		}
+@@ -1866,8 +1866,8 @@ static int i40e_config_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
+ 		ret = i40e_aq_set_rss_lut(hw, vsi->id, pf_lut, lut, lut_size);
+ 		if (ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "Cannot set RSS lut, err %d aq_err %s\n",
+-				 ret,
++				 "Cannot set RSS lut, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 			return ret;
+ 		}
+@@ -2358,8 +2358,8 @@ void i40e_aqc_del_filters(struct i40e_vsi *vsi, const char *vsi_name,
+ 	if (aq_ret && !(aq_status == I40E_AQ_RC_ENOENT)) {
+ 		*retval = -EIO;
+ 		dev_info(&vsi->back->pdev->dev,
+-			 "ignoring delete macvlan error on %s, err %d, aq_err %s\n",
+-			 vsi_name, aq_ret,
++			 "ignoring delete macvlan error on %s, err %pe, aq_err %s\n",
++			 vsi_name, ERR_PTR(aq_ret),
+ 			 i40e_aq_str(hw, aq_status));
+ 	}
+ }
+@@ -2488,8 +2488,8 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
+ 							   NULL);
+ 		if (aq_ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "Set default VSI failed, err %d, aq_err %s\n",
+-				 aq_ret,
++				 "Set default VSI failed, err %pe, aq_err %s\n",
++				 ERR_PTR(aq_ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		}
+ 	} else {
+@@ -2500,8 +2500,8 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
+ 						  true);
+ 		if (aq_ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "set unicast promisc failed, err %d, aq_err %s\n",
+-				 aq_ret,
++				 "set unicast promisc failed, err %pe, aq_err %s\n",
++				 ERR_PTR(aq_ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		}
+ 		aq_ret = i40e_aq_set_vsi_multicast_promiscuous(
+@@ -2510,8 +2510,8 @@ static int i40e_set_promiscuous(struct i40e_pf *pf, bool promisc)
+ 						  promisc, NULL);
+ 		if (aq_ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "set multicast promisc failed, err %d, aq_err %s\n",
+-				 aq_ret,
++				 "set multicast promisc failed, err %pe, aq_err %s\n",
++				 ERR_PTR(aq_ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		}
+ 	}
+@@ -2815,9 +2815,9 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 			retval = i40e_aq_rc_to_posix(aq_ret,
+ 						     hw->aq.asq_last_status);
+ 			dev_info(&pf->pdev->dev,
+-				 "set multi promisc failed on %s, err %d aq_err %s\n",
++				 "set multi promisc failed on %s, err %pe aq_err %s\n",
+ 				 vsi_name,
+-				 aq_ret,
++				 ERR_PTR(aq_ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		} else {
+ 			dev_info(&pf->pdev->dev, "%s allmulti mode.\n",
+@@ -2835,10 +2835,10 @@ int i40e_sync_vsi_filters(struct i40e_vsi *vsi)
+ 			retval = i40e_aq_rc_to_posix(aq_ret,
+ 						     hw->aq.asq_last_status);
+ 			dev_info(&pf->pdev->dev,
+-				 "Setting promiscuous %s failed on %s, err %d aq_err %s\n",
++				 "Setting promiscuous %s failed on %s, err %pe aq_err %s\n",
+ 				 cur_promisc ? "on" : "off",
+ 				 vsi_name,
+-				 aq_ret,
++				 ERR_PTR(aq_ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		}
+ 	}
+@@ -2986,8 +2986,8 @@ void i40e_vlan_stripping_enable(struct i40e_vsi *vsi)
+ 	ret = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&vsi->back->pdev->dev,
+-			 "update vlan stripping failed, err %d aq_err %s\n",
+-			 ret,
++			 "update vlan stripping failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&vsi->back->hw,
+ 				     vsi->back->hw.aq.asq_last_status));
+ 	}
+@@ -3021,8 +3021,8 @@ void i40e_vlan_stripping_disable(struct i40e_vsi *vsi)
+ 	ret = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&vsi->back->pdev->dev,
+-			 "update vlan stripping failed, err %d aq_err %s\n",
+-			 ret,
++			 "update vlan stripping failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&vsi->back->hw,
+ 				     vsi->back->hw.aq.asq_last_status));
+ 	}
+@@ -3266,8 +3266,8 @@ int i40e_vsi_add_pvid(struct i40e_vsi *vsi, u16 vid)
+ 	ret = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&vsi->back->pdev->dev,
+-			 "add pvid failed, err %d aq_err %s\n",
+-			 ret,
++			 "add pvid failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&vsi->back->hw,
+ 				     vsi->back->hw.aq.asq_last_status));
+ 		return -ENOENT;
+@@ -5533,8 +5533,8 @@ static int i40e_vsi_get_bw_info(struct i40e_vsi *vsi)
+ 	ret = i40e_aq_query_vsi_bw_config(hw, vsi->seid, &bw_config, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get PF vsi bw config, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get PF vsi bw config, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EINVAL;
+ 	}
+@@ -5544,8 +5544,8 @@ static int i40e_vsi_get_bw_info(struct i40e_vsi *vsi)
+ 					       NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get PF vsi ets bw config, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get PF vsi ets bw config, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EINVAL;
+ 	}
+@@ -5734,8 +5734,8 @@ int i40e_update_adq_vsi_queues(struct i40e_vsi *vsi, int vsi_offset)
+ 
+ 	ret = i40e_aq_update_vsi_params(hw, &ctxt, NULL);
+ 	if (ret) {
+-		dev_info(&pf->pdev->dev, "Update vsi config failed, err %d aq_err %s\n",
+-			 ret,
++		dev_info(&pf->pdev->dev, "Update vsi config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return ret;
+ 	}
+@@ -5790,8 +5790,8 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
+ 						  &bw_config, NULL);
+ 		if (ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "Failed querying vsi bw info, err %d aq_err %s\n",
+-				 ret,
++				 "Failed querying vsi bw info, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 			goto out;
+ 		}
+@@ -5857,8 +5857,8 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
+ 	ret = i40e_aq_update_vsi_params(hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Update vsi tc config failed, err %d aq_err %s\n",
+-			 ret,
++			 "Update vsi tc config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -5870,8 +5870,8 @@ static int i40e_vsi_config_tc(struct i40e_vsi *vsi, u8 enabled_tc)
+ 	ret = i40e_vsi_get_bw_info(vsi);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Failed updating vsi bw info, err %d aq_err %s\n",
+-			 ret,
++			 "Failed updating vsi bw info, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -5962,8 +5962,8 @@ int i40e_set_bw_limit(struct i40e_vsi *vsi, u16 seid, u64 max_tx_rate)
+ 					  I40E_MAX_BW_INACTIVE_ACCUM, NULL);
+ 	if (ret)
+ 		dev_err(&pf->pdev->dev,
+-			"Failed set tx rate (%llu Mbps) for vsi->seid %u, err %d aq_err %s\n",
+-			max_tx_rate, seid, ret,
++			"Failed set tx rate (%llu Mbps) for vsi->seid %u, err %pe aq_err %s\n",
++			max_tx_rate, seid, ERR_PTR(ret),
+ 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 	return ret;
+ }
+@@ -6038,8 +6038,8 @@ static void i40e_remove_queue_channels(struct i40e_vsi *vsi)
+ 			last_aq_status = pf->hw.aq.asq_last_status;
+ 			if (ret)
+ 				dev_info(&pf->pdev->dev,
+-					 "Failed to delete cloud filter, err %d aq_err %s\n",
+-					 ret,
++					 "Failed to delete cloud filter, err %pe aq_err %s\n",
++					 ERR_PTR(ret),
+ 					 i40e_aq_str(&pf->hw, last_aq_status));
+ 			kfree(cfilter);
+ 		}
+@@ -6173,8 +6173,8 @@ static int i40e_vsi_reconfig_rss(struct i40e_vsi *vsi, u16 rss_size)
+ 	ret = i40e_config_rss(vsi, seed, lut, vsi->rss_table_size);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Cannot set RSS lut, err %d aq_err %s\n",
+-			 ret,
++			 "Cannot set RSS lut, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		kfree(lut);
+ 		return ret;
+@@ -6272,8 +6272,8 @@ static int i40e_add_channel(struct i40e_pf *pf, u16 uplink_seid,
+ 	ret = i40e_aq_add_vsi(hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "add new vsi failed, err %d aq_err %s\n",
+-			 ret,
++			 "add new vsi failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw,
+ 				     pf->hw.aq.asq_last_status));
+ 		return -ENOENT;
+@@ -6518,8 +6518,8 @@ static int i40e_validate_and_set_switch_mode(struct i40e_vsi *vsi)
+ 					mode, NULL);
+ 	if (ret && hw->aq.asq_last_status != I40E_AQ_RC_ESRCH)
+ 		dev_err(&pf->pdev->dev,
+-			"couldn't set switch config bits, err %d aq_err %s\n",
+-			ret,
++			"couldn't set switch config bits, err %pe aq_err %s\n",
++			ERR_PTR(ret),
+ 			i40e_aq_str(hw,
+ 				    hw->aq.asq_last_status));
+ 
+@@ -6719,8 +6719,8 @@ int i40e_veb_config_tc(struct i40e_veb *veb, u8 enabled_tc)
+ 						   &bw_data, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "VEB bw config failed, err %d aq_err %s\n",
+-			 ret,
++			 "VEB bw config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -6729,8 +6729,8 @@ int i40e_veb_config_tc(struct i40e_veb *veb, u8 enabled_tc)
+ 	ret = i40e_veb_get_bw_info(veb);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Failed getting veb bw config, err %d aq_err %s\n",
+-			 ret,
++			 "Failed getting veb bw config, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 	}
+ 
+@@ -6813,8 +6813,8 @@ static int i40e_resume_port_tx(struct i40e_pf *pf)
+ 	ret = i40e_aq_resume_port_tx(hw, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Resume Port Tx failed, err %d aq_err %s\n",
+-			  ret,
++			 "Resume Port Tx failed, err %pe aq_err %s\n",
++			  ERR_PTR(ret),
+ 			  i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		/* Schedule PF reset to recover */
+ 		set_bit(__I40E_PF_RESET_REQUESTED, pf->state);
+@@ -6838,8 +6838,8 @@ static int i40e_suspend_port_tx(struct i40e_pf *pf)
+ 	ret = i40e_aq_suspend_port_tx(hw, pf->mac_seid, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Suspend Port Tx failed, err %d aq_err %s\n",
+-			 ret,
++			 "Suspend Port Tx failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		/* Schedule PF reset to recover */
+ 		set_bit(__I40E_PF_RESET_REQUESTED, pf->state);
+@@ -6878,8 +6878,8 @@ static int i40e_hw_set_dcb_config(struct i40e_pf *pf,
+ 	ret = i40e_set_dcb_config(&pf->hw);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Set DCB Config failed, err %d aq_err %s\n",
+-			 ret,
++			 "Set DCB Config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -6995,8 +6995,8 @@ int i40e_hw_dcb_config(struct i40e_pf *pf, struct i40e_dcbx_config *new_cfg)
+ 		 i40e_aqc_opc_modify_switching_comp_ets, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Modify Port ETS failed, err %d aq_err %s\n",
+-			 ret,
++			 "Modify Port ETS failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -7033,8 +7033,8 @@ int i40e_hw_dcb_config(struct i40e_pf *pf, struct i40e_dcbx_config *new_cfg)
+ 	ret = i40e_aq_dcb_updated(&pf->hw, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "DCB Updated failed, err %d aq_err %s\n",
+-			 ret,
++			 "DCB Updated failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -7117,8 +7117,8 @@ int i40e_dcb_sw_default_config(struct i40e_pf *pf)
+ 		 i40e_aqc_opc_enable_switching_comp_ets, NULL);
+ 	if (err) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Enable Port ETS failed, err %d aq_err %s\n",
+-			 err,
++			 "Enable Port ETS failed, err %pe aq_err %s\n",
++			 ERR_PTR(err),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		err = -ENOENT;
+ 		goto out;
+@@ -7197,8 +7197,8 @@ static int i40e_init_pf_dcb(struct i40e_pf *pf)
+ 		pf->flags |= I40E_FLAG_DISABLE_FW_LLDP;
+ 	} else {
+ 		dev_info(&pf->pdev->dev,
+-			 "Query for DCB configuration failed, err %d aq_err %s\n",
+-			 err,
++			 "Query for DCB configuration failed, err %pe aq_err %s\n",
++			 ERR_PTR(err),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 	}
+ 
+@@ -7436,8 +7436,8 @@ static int i40e_force_link_state(struct i40e_pf *pf, bool is_up)
+ 					   NULL);
+ 	if (err) {
+ 		dev_err(&pf->pdev->dev,
+-			"failed to get phy cap., ret =  %d last_status =  %s\n",
+-			err,
++			"failed to get phy cap., ret =  %pe last_status =  %s\n",
++			ERR_PTR(err),
+ 			i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return err;
+ 	}
+@@ -7448,8 +7448,8 @@ static int i40e_force_link_state(struct i40e_pf *pf, bool is_up)
+ 					   NULL);
+ 	if (err) {
+ 		dev_err(&pf->pdev->dev,
+-			"failed to get phy cap., ret =  %d last_status =  %s\n",
+-			err,
++			"failed to get phy cap., ret =  %pe last_status =  %s\n",
++			ERR_PTR(err),
+ 			i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return err;
+ 	}
+@@ -7493,8 +7493,8 @@ static int i40e_force_link_state(struct i40e_pf *pf, bool is_up)
+ 
+ 	if (err) {
+ 		dev_err(&pf->pdev->dev,
+-			"set phy config ret =  %d last_status =  %s\n",
+-			err,
++			"set phy config ret =  %pe last_status =  %s\n",
++			ERR_PTR(err),
+ 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return err;
+ 	}
+@@ -7834,8 +7834,8 @@ static int i40e_fwd_ring_up(struct i40e_vsi *vsi, struct net_device *vdev,
+ 			rx_ring->netdev = NULL;
+ 		}
+ 		dev_info(&pf->pdev->dev,
+-			 "Error adding mac filter on macvlan err %d, aq_err %s\n",
+-			  ret,
++			 "Error adding mac filter on macvlan err %pe, aq_err %s\n",
++			  ERR_PTR(ret),
+ 			  i40e_aq_str(hw, aq_err));
+ 		netdev_err(vdev, "L2fwd offload disabled to L2 filter error\n");
+ 	}
+@@ -7907,8 +7907,8 @@ static int i40e_setup_macvlans(struct i40e_vsi *vsi, u16 macvlan_cnt, u16 qcnt,
+ 	ret = i40e_aq_update_vsi_params(hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Update vsi tc config failed, err %d aq_err %s\n",
+-			 ret,
++			 "Update vsi tc config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return ret;
+ 	}
+@@ -8123,8 +8123,8 @@ static void i40e_fwd_del(struct net_device *netdev, void *vdev)
+ 				ch->fwd = NULL;
+ 			} else {
+ 				dev_info(&pf->pdev->dev,
+-					 "Error deleting mac filter on macvlan err %d, aq_err %s\n",
+-					  ret,
++					 "Error deleting mac filter on macvlan err %pe, aq_err %s\n",
++					  ERR_PTR(ret),
+ 					  i40e_aq_str(hw, aq_err));
+ 			}
+ 			break;
+@@ -8875,7 +8875,8 @@ static int i40e_delete_clsflower(struct i40e_vsi *vsi,
+ 	kfree(filter);
+ 	if (err) {
+ 		dev_err(&pf->pdev->dev,
+-			"Failed to delete cloud filter, err %d\n", err);
++			"Failed to delete cloud filter, err %pe\n",
++			ERR_PTR(err));
+ 		return i40e_aq_rc_to_posix(err, pf->hw.aq.asq_last_status);
+ 	}
+ 
+@@ -9437,8 +9438,8 @@ static int i40e_handle_lldp_event(struct i40e_pf *pf,
+ 			pf->flags &= ~I40E_FLAG_DCB_CAPABLE;
+ 		} else {
+ 			dev_info(&pf->pdev->dev,
+-				 "Failed querying DCB configuration data from firmware, err %d aq_err %s\n",
+-				 ret,
++				 "Failed querying DCB configuration data from firmware, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 		}
+@@ -10264,8 +10265,8 @@ static void i40e_enable_pf_switch_lb(struct i40e_pf *pf)
+ 	ret = i40e_aq_get_vsi_params(&pf->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get PF vsi config, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get PF vsi config, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return;
+ 	}
+@@ -10276,8 +10277,8 @@ static void i40e_enable_pf_switch_lb(struct i40e_pf *pf)
+ 	ret = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "update vsi switch failed, err %d aq_err %s\n",
+-			 ret,
++			 "update vsi switch failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 	}
+ }
+@@ -10300,8 +10301,8 @@ static void i40e_disable_pf_switch_lb(struct i40e_pf *pf)
+ 	ret = i40e_aq_get_vsi_params(&pf->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get PF vsi config, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get PF vsi config, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return;
+ 	}
+@@ -10312,8 +10313,8 @@ static void i40e_disable_pf_switch_lb(struct i40e_pf *pf)
+ 	ret = i40e_aq_update_vsi_params(&vsi->back->hw, &ctxt, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "update vsi switch failed, err %d aq_err %s\n",
+-			 ret,
++			 "update vsi switch failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 	}
+ }
+@@ -10457,8 +10458,8 @@ static int i40e_get_capabilities(struct i40e_pf *pf,
+ 			buf_len = data_size;
+ 		} else if (pf->hw.aq.asq_last_status != I40E_AQ_RC_OK || err) {
+ 			dev_info(&pf->pdev->dev,
+-				 "capability discovery failed, err %d aq_err %s\n",
+-				 err,
++				 "capability discovery failed, err %pe aq_err %s\n",
++				 ERR_PTR(err),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			return -ENODEV;
+@@ -10595,8 +10596,8 @@ static int i40e_rebuild_cloud_filters(struct i40e_vsi *vsi, u16 seid)
+ 
+ 		if (ret) {
+ 			dev_dbg(&pf->pdev->dev,
+-				"Failed to rebuild cloud filter, err %d aq_err %s\n",
+-				ret,
++				"Failed to rebuild cloud filter, err %pe aq_err %s\n",
++				ERR_PTR(ret),
+ 				i40e_aq_str(&pf->hw,
+ 					    pf->hw.aq.asq_last_status));
+ 			return ret;
+@@ -10836,8 +10837,8 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
+ 	/* rebuild the basics for the AdminQ, HMC, and initial HW switch */
+ 	ret = i40e_init_adminq(&pf->hw);
+ 	if (ret) {
+-		dev_info(&pf->pdev->dev, "Rebuild AdminQ failed, err %d aq_err %s\n",
+-			 ret,
++		dev_info(&pf->pdev->dev, "Rebuild AdminQ failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto clear_recovery;
+ 	}
+@@ -10948,8 +10949,8 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
+ 					 I40E_AQ_EVENT_MEDIA_NA |
+ 					 I40E_AQ_EVENT_MODULE_QUAL_FAIL), NULL);
+ 	if (ret)
+-		dev_info(&pf->pdev->dev, "set phy mask fail, err %d aq_err %s\n",
+-			 ret,
++		dev_info(&pf->pdev->dev, "set phy mask fail, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 
+ 	/* Rebuild the VSIs and VEBs that existed before reset.
+@@ -11052,8 +11053,8 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
+ 		msleep(75);
+ 		ret = i40e_aq_set_link_restart_an(&pf->hw, true, NULL);
+ 		if (ret)
+-			dev_info(&pf->pdev->dev, "link restart failed, err %d aq_err %s\n",
+-				 ret,
++			dev_info(&pf->pdev->dev, "link restart failed, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 	}
+@@ -11084,9 +11085,9 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
+ 	ret = i40e_set_promiscuous(pf, pf->cur_promisc);
+ 	if (ret)
+ 		dev_warn(&pf->pdev->dev,
+-			 "Failed to restore promiscuous setting: %s, err %d aq_err %s\n",
++			 "Failed to restore promiscuous setting: %s, err %pe aq_err %s\n",
+ 			 pf->cur_promisc ? "on" : "off",
+-			 ret,
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 
+ 	i40e_reset_all_vfs(pf, true);
+@@ -12220,8 +12221,8 @@ static int i40e_get_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
+ 			(struct i40e_aqc_get_set_rss_key_data *)seed);
+ 		if (ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "Cannot get RSS key, err %d aq_err %s\n",
+-				 ret,
++				 "Cannot get RSS key, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			return ret;
+@@ -12234,8 +12235,8 @@ static int i40e_get_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
+ 		ret = i40e_aq_get_rss_lut(hw, vsi->id, pf_lut, lut, lut_size);
+ 		if (ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "Cannot get RSS lut, err %d aq_err %s\n",
+-				 ret,
++				 "Cannot get RSS lut, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			return ret;
+@@ -12575,8 +12576,8 @@ int i40e_commit_partition_bw_setting(struct i40e_pf *pf)
+ 	last_aq_status = pf->hw.aq.asq_last_status;
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Cannot acquire NVM for read access, err %d aq_err %s\n",
+-			 ret,
++			 "Cannot acquire NVM for read access, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, last_aq_status));
+ 		goto bw_commit_out;
+ 	}
+@@ -12592,8 +12593,8 @@ int i40e_commit_partition_bw_setting(struct i40e_pf *pf)
+ 	last_aq_status = pf->hw.aq.asq_last_status;
+ 	i40e_release_nvm(&pf->hw);
+ 	if (ret) {
+-		dev_info(&pf->pdev->dev, "NVM read error, err %d aq_err %s\n",
+-			 ret,
++		dev_info(&pf->pdev->dev, "NVM read error, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, last_aq_status));
+ 		goto bw_commit_out;
+ 	}
+@@ -12606,8 +12607,8 @@ int i40e_commit_partition_bw_setting(struct i40e_pf *pf)
+ 	last_aq_status = pf->hw.aq.asq_last_status;
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "Cannot acquire NVM for write access, err %d aq_err %s\n",
+-			 ret,
++			 "Cannot acquire NVM for write access, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, last_aq_status));
+ 		goto bw_commit_out;
+ 	}
+@@ -12626,8 +12627,8 @@ int i40e_commit_partition_bw_setting(struct i40e_pf *pf)
+ 	i40e_release_nvm(&pf->hw);
+ 	if (ret)
+ 		dev_info(&pf->pdev->dev,
+-			 "BW settings NOT SAVED, err %d aq_err %s\n",
+-			 ret,
++			 "BW settings NOT SAVED, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, last_aq_status));
+ bw_commit_out:
+ 
+@@ -12681,8 +12682,8 @@ static bool i40e_is_total_port_shutdown_enabled(struct i40e_pf *pf)
+ 
+ err_nvm:
+ 	dev_warn(&pf->pdev->dev,
+-		 "total-port-shutdown feature is off due to read nvm error: %d\n",
+-		 read_status);
++		 "total-port-shutdown feature is off due to read nvm error: %pe\n",
++		 ERR_PTR(read_status));
+ 	return ret;
+ }
+ 
+@@ -13009,8 +13010,8 @@ static int i40e_udp_tunnel_set_port(struct net_device *netdev,
+ 	ret = i40e_aq_add_udp_tunnel(hw, ntohs(ti->port), type, &filter_index,
+ 				     NULL);
+ 	if (ret) {
+-		netdev_info(netdev, "add UDP port failed, err %d aq_err %s\n",
+-			    ret,
++		netdev_info(netdev, "add UDP port failed, err %pe aq_err %s\n",
++			    ERR_PTR(ret),
+ 			    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return -EIO;
+ 	}
+@@ -13029,8 +13030,8 @@ static int i40e_udp_tunnel_unset_port(struct net_device *netdev,
+ 
+ 	ret = i40e_aq_del_udp_tunnel(hw, ti->hw_priv, NULL);
+ 	if (ret) {
+-		netdev_info(netdev, "delete UDP port failed, err %d aq_err %s\n",
+-			    ret,
++		netdev_info(netdev, "delete UDP port failed, err %pe aq_err %s\n",
++			    ERR_PTR(ret),
+ 			    i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		return -EIO;
+ 	}
+@@ -13919,8 +13920,8 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
+ 		ctxt.flags = I40E_AQ_VSI_TYPE_PF;
+ 		if (ret) {
+ 			dev_info(&pf->pdev->dev,
+-				 "couldn't get PF vsi config, err %d aq_err %s\n",
+-				 ret,
++				 "couldn't get PF vsi config, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			return -ENOENT;
+@@ -13969,8 +13970,8 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
+ 			ret = i40e_aq_update_vsi_params(hw, &ctxt, NULL);
+ 			if (ret) {
+ 				dev_info(&pf->pdev->dev,
+-					 "update vsi failed, err %d aq_err %s\n",
+-					 ret,
++					 "update vsi failed, err %pe aq_err %s\n",
++					 ERR_PTR(ret),
+ 					 i40e_aq_str(&pf->hw,
+ 						    pf->hw.aq.asq_last_status));
+ 				ret = -ENOENT;
+@@ -13992,9 +13993,9 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
+ 				 * message and continue
+ 				 */
+ 				dev_info(&pf->pdev->dev,
+-					 "failed to configure TCs for main VSI tc_map 0x%08x, err %d aq_err %s\n",
++					 "failed to configure TCs for main VSI tc_map 0x%08x, err %pe aq_err %s\n",
+ 					 enabled_tc,
+-					 ret,
++					 ERR_PTR(ret),
+ 					 i40e_aq_str(&pf->hw,
+ 						    pf->hw.aq.asq_last_status));
+ 			}
+@@ -14088,8 +14089,8 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
+ 		ret = i40e_aq_add_vsi(hw, &ctxt, NULL);
+ 		if (ret) {
+ 			dev_info(&vsi->back->pdev->dev,
+-				 "add vsi failed, err %d aq_err %s\n",
+-				 ret,
++				 "add vsi failed, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			ret = -ENOENT;
+@@ -14120,8 +14121,8 @@ static int i40e_add_vsi(struct i40e_vsi *vsi)
+ 	ret = i40e_vsi_get_bw_info(vsi);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get vsi bw info, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get vsi bw info, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		/* VSI is already added so not tearing that up */
+ 		ret = 0;
+@@ -14567,8 +14568,8 @@ static int i40e_veb_get_bw_info(struct i40e_veb *veb)
+ 						  &bw_data, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "query veb bw config failed, err %d aq_err %s\n",
+-			 ret,
++			 "query veb bw config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, hw->aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -14577,8 +14578,8 @@ static int i40e_veb_get_bw_info(struct i40e_veb *veb)
+ 						   &ets_data, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "query veb bw ets config failed, err %d aq_err %s\n",
+-			 ret,
++			 "query veb bw ets config failed, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, hw->aq.asq_last_status));
+ 		goto out;
+ 	}
+@@ -14774,8 +14775,8 @@ static int i40e_add_veb(struct i40e_veb *veb, struct i40e_vsi *vsi)
+ 	/* get a VEB from the hardware */
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't add VEB, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't add VEB, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EPERM;
+ 	}
+@@ -14785,16 +14786,16 @@ static int i40e_add_veb(struct i40e_veb *veb, struct i40e_vsi *vsi)
+ 					 &veb->stats_idx, NULL, NULL, NULL);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get VEB statistics idx, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get VEB statistics idx, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return -EPERM;
+ 	}
+ 	ret = i40e_veb_get_bw_info(veb);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't get VEB bw info, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't get VEB bw info, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		i40e_aq_delete_element(&pf->hw, veb->seid, NULL);
+ 		return -ENOENT;
+@@ -15050,8 +15051,8 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit, bool lock_acqui
+ 	ret = i40e_fetch_switch_configuration(pf, false);
+ 	if (ret) {
+ 		dev_info(&pf->pdev->dev,
+-			 "couldn't fetch switch config, err %d aq_err %s\n",
+-			 ret,
++			 "couldn't fetch switch config, err %pe aq_err %s\n",
++			 ERR_PTR(ret),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		return ret;
+ 	}
+@@ -15077,8 +15078,8 @@ static int i40e_setup_pf_switch(struct i40e_pf *pf, bool reinit, bool lock_acqui
+ 						NULL);
+ 		if (ret && pf->hw.aq.asq_last_status != I40E_AQ_RC_ESRCH) {
+ 			dev_info(&pf->pdev->dev,
+-				 "couldn't set switch config bits, err %d aq_err %s\n",
+-				 ret,
++				 "couldn't set switch config bits, err %pe aq_err %s\n",
++				 ERR_PTR(ret),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 			/* not a fatal problem, just keep going */
+@@ -15984,8 +15985,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 					 I40E_AQ_EVENT_MEDIA_NA |
+ 					 I40E_AQ_EVENT_MODULE_QUAL_FAIL), NULL);
+ 	if (err)
+-		dev_info(&pf->pdev->dev, "set phy mask fail, err %d aq_err %s\n",
+-			 err,
++		dev_info(&pf->pdev->dev, "set phy mask fail, err %pe aq_err %s\n",
++			 ERR_PTR(err),
+ 			 i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 
+ 	/* Reconfigure hardware for allowing smaller MSS in the case
+@@ -16003,8 +16004,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		msleep(75);
+ 		err = i40e_aq_set_link_restart_an(&pf->hw, true, NULL);
+ 		if (err)
+-			dev_info(&pf->pdev->dev, "link restart failed, err %d aq_err %s\n",
+-				 err,
++			dev_info(&pf->pdev->dev, "link restart failed, err %pe aq_err %s\n",
++				 ERR_PTR(err),
+ 				 i40e_aq_str(&pf->hw,
+ 					     pf->hw.aq.asq_last_status));
+ 	}
+@@ -16136,8 +16137,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* get the requested speeds from the fw */
+ 	err = i40e_aq_get_phy_capabilities(hw, false, false, &abilities, NULL);
+ 	if (err)
+-		dev_dbg(&pf->pdev->dev, "get requested speeds ret =  %d last_status =  %s\n",
+-			err,
++		dev_dbg(&pf->pdev->dev, "get requested speeds ret =  %pe last_status =  %s\n",
++			ERR_PTR(err),
+ 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 	pf->hw.phy.link_info.requested_speeds = abilities.link_speed;
+ 
+@@ -16147,8 +16148,8 @@ static int i40e_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	/* get the supported phy types from the fw */
+ 	err = i40e_aq_get_phy_capabilities(hw, false, true, &abilities, NULL);
+ 	if (err)
+-		dev_dbg(&pf->pdev->dev, "get supported phy types ret =  %d last_status =  %s\n",
+-			err,
++		dev_dbg(&pf->pdev->dev, "get supported phy types ret =  %pe last_status =  %s\n",
++			ERR_PTR(err),
+ 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 
+ 	/* make sure the MFS hasn't been set lower than the default */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_nvm.c b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
+index 779ba907009a5..f99c1f7fec406 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_nvm.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
+@@ -1429,8 +1429,8 @@ static int i40e_nvmupd_exec_aq(struct i40e_hw *hw,
+ 				       buff_size, &cmd_details);
+ 	if (status) {
+ 		i40e_debug(hw, I40E_DEBUG_NVM,
+-			   "%s err %d aq_err %s\n",
+-			   __func__, status,
++			   "%s err %pe aq_err %s\n",
++			   __func__, ERR_PTR(status),
+ 			   i40e_aq_str(hw, hw->aq.asq_last_status));
+ 		*perrno = i40e_aq_rc_to_posix(status, hw->aq.asq_last_status);
+ 		return status;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 547e67d9470b7..fb87912b47617 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1264,9 +1264,9 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
+ 			int aq_err = pf->hw.aq.asq_last_status;
+ 
+ 			dev_err(&pf->pdev->dev,
+-				"VF %d failed to set multicast promiscuous mode err %d aq_err %s\n",
++				"VF %d failed to set multicast promiscuous mode err %pe aq_err %s\n",
+ 				vf->vf_id,
+-				aq_ret,
++				ERR_PTR(aq_ret),
+ 				i40e_aq_str(&pf->hw, aq_err));
+ 
+ 			return aq_ret;
+@@ -1280,9 +1280,9 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
+ 			int aq_err = pf->hw.aq.asq_last_status;
+ 
+ 			dev_err(&pf->pdev->dev,
+-				"VF %d failed to set unicast promiscuous mode err %d aq_err %s\n",
++				"VF %d failed to set unicast promiscuous mode err %pe aq_err %s\n",
+ 				vf->vf_id,
+-				aq_ret,
++				ERR_PTR(aq_ret),
+ 				i40e_aq_str(&pf->hw, aq_err));
+ 		}
+ 
+@@ -1297,9 +1297,9 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
+ 			int aq_err = pf->hw.aq.asq_last_status;
+ 
+ 			dev_err(&pf->pdev->dev,
+-				"VF %d failed to set multicast promiscuous mode err %d aq_err %s\n",
++				"VF %d failed to set multicast promiscuous mode err %pe aq_err %s\n",
+ 				vf->vf_id,
+-				aq_ret,
++				ERR_PTR(aq_ret),
+ 				i40e_aq_str(&pf->hw, aq_err));
+ 
+ 			if (!aq_tmp)
+@@ -1313,9 +1313,9 @@ i40e_set_vsi_promisc(struct i40e_vf *vf, u16 seid, bool multi_enable,
+ 			int aq_err = pf->hw.aq.asq_last_status;
+ 
+ 			dev_err(&pf->pdev->dev,
+-				"VF %d failed to set unicast promiscuous mode err %d aq_err %s\n",
++				"VF %d failed to set unicast promiscuous mode err %pe aq_err %s\n",
+ 				vf->vf_id,
+-				aq_ret,
++				ERR_PTR(aq_ret),
+ 				i40e_aq_str(&pf->hw, aq_err));
+ 
+ 			if (!aq_tmp)
+@@ -3615,8 +3615,8 @@ static void i40e_del_all_cloud_filters(struct i40e_vf *vf)
+ 			ret = i40e_add_del_cloud_filter(vsi, cfilter, false);
+ 		if (ret)
+ 			dev_err(&pf->pdev->dev,
+-				"VF %d: Failed to delete cloud filter, err %d aq_err %s\n",
+-				vf->vf_id, ret,
++				"VF %d: Failed to delete cloud filter, err %pe aq_err %s\n",
++				vf->vf_id, ERR_PTR(ret),
+ 				i40e_aq_str(&pf->hw,
+ 					    pf->hw.aq.asq_last_status));
+ 
+@@ -3718,8 +3718,8 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		ret = i40e_add_del_cloud_filter(vsi, &cfilter, false);
+ 	if (ret) {
+ 		dev_err(&pf->pdev->dev,
+-			"VF %d: Failed to delete cloud filter, err %d aq_err %s\n",
+-			vf->vf_id, ret,
++			"VF %d: Failed to delete cloud filter, err %pe aq_err %s\n",
++			vf->vf_id, ERR_PTR(ret),
+ 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto err;
+ 	}
+@@ -3852,8 +3852,8 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		ret = i40e_add_del_cloud_filter(vsi, cfilter, true);
+ 	if (ret) {
+ 		dev_err(&pf->pdev->dev,
+-			"VF %d: Failed to add cloud filter, err %d aq_err %s\n",
+-			vf->vf_id, ret,
++			"VF %d: Failed to add cloud filter, err %pe aq_err %s\n",
++			vf->vf_id, ERR_PTR(ret),
+ 			i40e_aq_str(&pf->hw, pf->hw.aq.asq_last_status));
+ 		goto err_free;
+ 	}
+-- 
+2.42.0
 
-Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.141-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 5.15.141-rc1
-
-Keith Busch <kbusch@kernel.org>
-    io_uring: fix off-by one bvec index
-
-Johan Hovold <johan+linaro@kernel.org>
-    USB: dwc3: qcom: fix wakeup after probe deferral
-
-Johan Hovold <johan+linaro@kernel.org>
-    USB: dwc3: qcom: fix software node leak on probe errors
-
-Ricardo Ribalda <ribalda@chromium.org>
-    usb: dwc3: set the dma max_seg_size
-
-Alexander Stein <alexander.stein@ew.tq-group.com>
-    usb: dwc3: Fix default mode initialization
-
-Oliver Neukum <oneukum@suse.com>
-    USB: dwc2: write HCINT with INTMASK applied
-
-Badhri Jagan Sridharan <badhri@google.com>
-    usb: typec: tcpm: Skip hard reset when in error recovery
-
-Lech Perczak <lech.perczak@gmail.com>
-    USB: serial: option: don't claim interface 4 for ZTE MF290
-
-Puliang Lu <puliang.lu@fibocom.com>
-    USB: serial: option: fix FM101R-GL defines
-
-Victor Fragoso <victorffs@hotmail.com>
-    USB: serial: option: add Fibocom L7xx modules
-
-Pawel Laszczak <pawell@cadence.com>
-    usb: cdnsp: Fix deadlock issue during using NCM gadget
-
-Mingzhe Zou <mingzhe.zou@easystack.cn>
-    bcache: fixup lock c->root error
-
-Mingzhe Zou <mingzhe.zou@easystack.cn>
-    bcache: fixup init dirty data errors
-
-Rand Deeb <rand.sec96@gmail.com>
-    bcache: prevent potential division by zero error
-
-Coly Li <colyli@suse.de>
-    bcache: check return value from btree_node_alloc_replacement()
-
-Mikulas Patocka <mpatocka@redhat.com>
-    dm-delay: fix a race between delay_presuspend and delay_bio
-
-Long Li <longli@microsoft.com>
-    hv_netvsc: Mark VF as slave before exposing it to user-mode
-
-Haiyang Zhang <haiyangz@microsoft.com>
-    hv_netvsc: Fix race of register_netdevice_notifier and VF register
-
-Asuna Yang <spriteovo@gmail.com>
-    USB: serial: option: add Luat Air72*U series products
-
-Jan Höppner <hoeppner@linux.ibm.com>
-    s390/dasd: protect device queue against concurrent access
-
-Charles Mirabile <cmirabil@redhat.com>
-    io_uring/fs: consider link->flags when getting path for LINKAT
-
-Mingzhe Zou <mingzhe.zou@easystack.cn>
-    bcache: fixup multi-threaded bch_sectors_dirty_init() wake-up race
-
-Song Liu <song@kernel.org>
-    md: fix bi_status reporting in md_end_clone_io
-
-Coly Li <colyli@suse.de>
-    bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
-
-Keith Busch <kbusch@kernel.org>
-    swiotlb-xen: provide the "max_mapping_size" method
-
-Hans de Goede <hdegoede@redhat.com>
-    ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CVA
-
-Krister Johansen <kjlx@templeofstupid.com>
-    proc: sysctl: prevent aliased sysctls from getting passed to init
-
-Francis Laniel <flaniel@linux.microsoft.com>
-    tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-
-Zhang Yi <yi.zhang@huawei.com>
-    ext4: make sure allocate pending entry not fail
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: fix slab-use-after-free in ext4_es_insert_extent()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: using nofail preallocation in ext4_es_insert_extent()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: using nofail preallocation in ext4_es_insert_delayed_block()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: using nofail preallocation in ext4_es_remove_extent()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: use pre-allocated es in __es_remove_extent()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: use pre-allocated es in __es_insert_extent()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: factor out __es_alloc_extent() and __es_free_extent()
-
-Baokun Li <libaokun1@huawei.com>
-    ext4: add a new helper to check if es must be kept
-
-Andrey Konovalov <andrey.konovalov@linaro.org>
-    media: qcom: camss: Fix csid-gen2 for test pattern generator
-
-Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-    media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater than 3
-
-Milen Mitkov <quic_mmitkov@quicinc.com>
-    media: camss: sm8250: Virtual channels for CSID
-
-Souptick Joarder (HPE) <jrdr.linux@gmail.com>
-    media: camss: Replace hard coded value with parameter
-
-Huacai Chen <chenhuacai@kernel.org>
-    MIPS: KVM: Fix a build warning about variable set but not used
-
-Peter Zijlstra <peterz@infradead.org>
-    lockdep: Fix block chain corruption
-
-Johan Hovold <johan+linaro@kernel.org>
-    USB: dwc3: qcom: fix ACPI platform device leak
-
-Johan Hovold <johan+linaro@kernel.org>
-    USB: dwc3: qcom: fix resource leaks on probe deferral
-
-Christoph Hellwig <hch@lst.de>
-    nvmet: nul-terminate the NQNs passed in the connect command
-
-David Howells <dhowells@redhat.com>
-    afs: Fix file locking on R/O volumes to operate in local mode
-
-David Howells <dhowells@redhat.com>
-    afs: Return ENOENT if no cell DNS record can be found
-
-Samuel Holland <samuel.holland@sifive.com>
-    net: axienet: Fix check for partial TX checksum
-
-Raju Rangoju <Raju.Rangoju@amd.com>
-    amd-xgbe: propagate the correct speed and duplex status
-
-Raju Rangoju <Raju.Rangoju@amd.com>
-    amd-xgbe: handle the corner-case during tx completion
-
-Raju Rangoju <Raju.Rangoju@amd.com>
-    amd-xgbe: handle corner-case during sfp hotplug
-
-Suman Ghosh <sumang@marvell.com>
-    octeontx2-pf: Fix ntuple rule creation to direct packet to VF with higher Rx queue than its PF
-
-Stefano Stabellini <sstabellini@kernel.org>
-    arm/xen: fix xen_vcpu_info allocation alignment
-
-D. Wythe <alibuda@linux.alibaba.com>
-    net/smc: avoid data corruption caused by decline
-
-Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-    net: usb: ax88179_178a: fix failed operations during ax88179_reset
-
-Kunwu Chan <chentao@kylinos.cn>
-    ipv4: Correct/silence an endian warning in __ip_do_redirect
-
-Charles Yi <be286@163.com>
-    HID: fix HID device resource race between HID core and debugging support
-
-Benjamin Tissoires <benjamin.tissoires@redhat.com>
-    HID: core: store the unique system identifier in hid_device
-
-Jonas Karlman <jonas@kwiboo.se>
-    drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
-
-Chen Ni <nichen@iscas.ac.cn>
-    ata: pata_isapnp: Add missing error check for devm_ioport_map()
-
-Suman Ghosh <sumang@marvell.com>
-    octeontx2-pf: Fix memory leak during interface down
-
-Eric Dumazet <edumazet@google.com>
-    wireguard: use DEV_STATS_INC()
-
-Marek Vasut <marex@denx.de>
-    drm/panel: simple: Fix Innolux G101ICE-L01 timings
-
-Marek Vasut <marex@denx.de>
-    drm/panel: simple: Fix Innolux G101ICE-L01 bus flags
-
-Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
-    drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
-
-Shuijing Li <shuijing.li@mediatek.com>
-    drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
-
-David Howells <dhowells@redhat.com>
-    afs: Make error on cell lookup failure consistent with OpenAFS
-
-David Howells <dhowells@redhat.com>
-    afs: Fix afs_server_list to be cleaned up with RCU
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/arm/xen/enlighten.c                           |   3 +-
- arch/mips/kvm/mmu.c                                |   3 +-
- drivers/acpi/resource.c                            |   7 +
- drivers/ata/pata_isapnp.c                          |   3 +
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c     |   7 +
- drivers/gpu/drm/panel/panel-simple.c               |  13 +-
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |  14 +-
- drivers/hid/hid-core.c                             |  16 +-
- drivers/hid/hid-debug.c                            |   3 +
- drivers/md/bcache/btree.c                          |   4 +-
- drivers/md/bcache/sysfs.c                          |   2 +-
- drivers/md/bcache/writeback.c                      |  22 +-
- drivers/md/dm-delay.c                              |  17 +-
- drivers/md/md.c                                    |   3 +-
- drivers/media/platform/qcom/camss/camss-csid-170.c |  65 +++--
- drivers/media/platform/qcom/camss/camss-csid.c     |  44 ++-
- drivers/media/platform/qcom/camss/camss-csid.h     |  11 +-
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c           |  14 +
- drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c       |  11 +-
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c          |  14 +-
- .../ethernet/marvell/octeontx2/nic/otx2_flows.c    |  20 +-
- .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |   2 +
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c  |   2 +-
- drivers/net/hyperv/netvsc_drv.c                    |  41 ++-
- drivers/net/usb/ax88179_178a.c                     |   4 +-
- drivers/net/wireguard/device.c                     |   4 +-
- drivers/net/wireguard/receive.c                    |  12 +-
- drivers/net/wireguard/send.c                       |   3 +-
- drivers/nvme/target/fabrics-cmd.c                  |   4 +
- drivers/s390/block/dasd.c                          |  24 +-
- drivers/usb/cdns3/cdnsp-ring.c                     |   3 +
- drivers/usb/dwc2/hcd_intr.c                        |  15 +-
- drivers/usb/dwc3/core.c                            |   2 +
- drivers/usb/dwc3/drd.c                             |   2 +-
- drivers/usb/dwc3/dwc3-qcom.c                       |  65 +++--
- drivers/usb/serial/option.c                        |  11 +-
- drivers/usb/typec/tcpm/tcpm.c                      |   9 +
- drivers/xen/swiotlb-xen.c                          |   1 +
- fs/afs/dynroot.c                                   |   4 +-
- fs/afs/internal.h                                  |   1 +
- fs/afs/server_list.c                               |   2 +-
- fs/afs/super.c                                     |   2 +
- fs/afs/vl_rotate.c                                 |  10 +
- fs/ext4/extents_status.c                           | 306 +++++++++++++++------
- fs/proc/proc_sysctl.c                              |   7 +
- include/linux/hid.h                                |   5 +
- include/linux/sysctl.h                             |   6 +
- init/main.c                                        |   4 +
- io_uring/io_uring.c                                |   4 +-
- kernel/locking/lockdep.c                           |   3 +-
- kernel/trace/trace_kprobe.c                        |  74 +++++
- kernel/trace/trace_probe.h                         |   1 +
- net/ipv4/route.c                                   |   2 +-
- net/smc/af_smc.c                                   |   8 +-
- 55 files changed, 704 insertions(+), 239 deletions(-)
 
 
 
