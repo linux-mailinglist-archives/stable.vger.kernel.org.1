@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FDB7FF1D5
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:31:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C924A7FF1D6
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:31:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F94C28269F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:31:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0586D1C20DA9
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9956951034;
-	Thu, 30 Nov 2023 14:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7907A487AF;
+	Thu, 30 Nov 2023 14:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7XDlZ1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrMCa2pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA6E51001
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:31:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51BEC433C8;
-	Thu, 30 Nov 2023 14:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D67051001
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53FCEC433C8;
+	Thu, 30 Nov 2023 14:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701354698;
-	bh=OnqMd0Kmay4niPQlqXGnLNZy3M/91LqaBk7IepwuuUE=;
+	s=korg; t=1701354700;
+	bh=Mc3Q7Lqb6K00e9vYad1YKf9fMfL1wahq7acpMf2BTDg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=l7XDlZ1Qgg1iZaJZ8bne9HDO2AQhbzv2Sctp2NYFagTjkdJ7y0KlTG9x800l4rlw1
-	 dDLVGQhGUOtVCbH8rwCi/dhw+cOjpR5NSFa1Oqrhr66ImLldAoo08nBOdhs6Q3xwjS
-	 vsao5t5OlGSdqOf/7g1aELe2GHfP9LR2bciolBgY=
-Subject: FAILED: patch "[PATCH] io_uring: fix off-by one bvec index" failed to apply to 5.10-stable tree
+	b=OrMCa2pmFaPEsed2xjR/EVpDfCPR+39gYZ6RiZ8Jk0prJ93JDuNQ6dOGoJxTYVhB7
+	 Gyrnporqu9MlAJpKkEZYFOMFliinnpXb9HX172Ix0p7fC5CUbiV7bu6GDdmb2Xqn6J
+	 iqaNQ08IyXIV4VdYy5+KZcVYKBvTfu6r6JUkavx4=
+Subject: FAILED: patch "[PATCH] io_uring: fix off-by one bvec index" failed to apply to 5.4-stable tree
 To: kbusch@kernel.org,axboe@kernel.dk
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 30 Nov 2023 14:31:25 +0000
-Message-ID: <2023113025-wrist-mummify-38c1@gregkh>
+Date: Thu, 30 Nov 2023 14:31:26 +0000
+Message-ID: <2023113025-eastbound-uninstall-c2e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x d6fef34ee4d102be448146f24caf96d7b4a05401
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113025-wrist-mummify-38c1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113025-eastbound-uninstall-c2e0@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
