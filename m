@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-3369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781617FF54B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B6A7FF586
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8F551C20F7D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6DC3B20DD9
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01F8454FA5;
-	Thu, 30 Nov 2023 16:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A26F754FB4;
+	Thu, 30 Nov 2023 16:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWLL/yrf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkfvQPU2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B767D54F87;
-	Thu, 30 Nov 2023 16:27:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D6AC433C9;
-	Thu, 30 Nov 2023 16:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAED524C2;
+	Thu, 30 Nov 2023 16:29:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAA7EC433C8;
+	Thu, 30 Nov 2023 16:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361657;
-	bh=zQZcKfFNwxsLn0Rxdv3i0a577po3BzR+KHab7aQ8cms=;
+	s=korg; t=1701361774;
+	bh=ufOu60yQgbsht7YFzxl8N+Dm3alMvUL0RmXYuEwNsyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWLL/yrfxUqa3TyhxH9Aos91flTcH4O659c9rzl4tjNB6YF/SygU6PxZ9DUQTZUaS
-	 BaUeQ8yQldO/fVH5VVtcfvGUOpuijGdIt5HVSHvDGow0osTesAEn8mV1XVfmFeiuxk
-	 PCoPBvCraWPnNjzSZKxSm4tPxDsFe/df0QsgQh4w=
+	b=kkfvQPU2WDA5fhE2NR4h46AJcKqFf5wI37rAZTvz3Nn1qlTKgTiv0+Lgdpx7FQ/vM
+	 BhkhTRc3VN1nOWauTkIYeFultMEEkg6WLoj4Zd8vR0xhhTaCMLl5LZp8xnJXLZhpw8
+	 eqJfTgHNM3JwKo3R/+KtzWVoAFk2TBGdqRS9FjGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 085/112] hv_netvsc: Mark VF as slave before exposing it to user-mode
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+	Aishwarya Kothari <aishwarya.kothari@toradex.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH 6.1 41/82] media: qcom: Initialise V4L2 async notifier later
 Date: Thu, 30 Nov 2023 16:22:12 +0000
-Message-ID: <20231130162143.024171885@linuxfoundation.org>
+Message-ID: <20231130162137.257185562@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,102 +55,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
+[ Upstream commit 5651bab6890a0c5d126e2559b4aa353bed201e47 ]
 
-When a VF is being exposed form the kernel, it should be marked as "slave"
-before exposing to the user-mode. The VF is not usable without netvsc
-running as master. The user-mode should never see a VF without the "slave"
-flag.
+Initialise V4L2 async notifier and parse DT for async sub-devices later,
+just before registering the notifier. This way the device can be made
+available to the V4L2 async framework from the notifier init time onwards.
+A subsequent patch will add struct v4l2_device as an argument to
+v4l2_async_nf_init().
 
-This commit moves the code of setting the slave flag to the time before
-VF is exposed to user-mode.
-
-Cc: stable@vger.kernel.org
-Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
-Signed-off-by: Long Li <longli@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Tested-by: Philipp Zabel <p.zabel@pengutronix.de> # imx6qp
+Tested-by: Niklas Söderlund <niklas.soderlund@ragnatech.se> # rcar + adv746x
+Tested-by: Aishwarya Kothari <aishwarya.kothari@toradex.com> # Apalis i.MX6Q with TC358743
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com> # Renesas RZ/G2L SMARC
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Stable-dep-of: f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/media/platform/qcom/camss/camss.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2206,9 +2206,6 @@ static int netvsc_vf_join(struct net_dev
- 		goto upper_link_failed;
- 	}
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index 04e65edbfb870..f794215948e71 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1613,14 +1613,6 @@ static int camss_probe(struct platform_device *pdev)
+ 	if (!camss->vfe)
+ 		return -ENOMEM;
  
--	/* set slave flag before open to prevent IPv6 addrconf */
--	vf_netdev->flags |= IFF_SLAVE;
+-	v4l2_async_nf_init(&camss->notifier);
 -
- 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
- 
- 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
-@@ -2315,16 +2312,18 @@ static struct net_device *get_netvsc_bys
- 
+-	num_subdevs = camss_of_parse_ports(camss);
+-	if (num_subdevs < 0) {
+-		ret = num_subdevs;
+-		goto err_cleanup;
+-	}
+-
+ 	ret = camss_icc_get(camss);
+ 	if (ret < 0)
+ 		goto err_cleanup;
+@@ -1652,9 +1644,17 @@ static int camss_probe(struct platform_device *pdev)
+ 		goto err_cleanup;
  	}
  
--	/* Fallback path to check synthetic vf with
--	 * help of mac addr
-+	/* Fallback path to check synthetic vf with help of mac addr.
-+	 * Because this function can be called before vf_netdev is
-+	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
-+	 * from dev_addr, also try to match to its dev_addr.
-+	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
-+	 * on a VF that matches to the MAC of a unrelated NETVSC device.
- 	 */
- 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
- 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
--		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
--			netdev_notice(vf_netdev,
--				      "falling back to mac addr based matching\n");
-+		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
-+		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
- 			return ndev;
--		}
- 	}
- 
- 	netdev_notice(vf_netdev,
-@@ -2332,6 +2331,19 @@ static struct net_device *get_netvsc_bys
- 	return NULL;
- }
- 
-+static int netvsc_prepare_bonding(struct net_device *vf_netdev)
-+{
-+	struct net_device *ndev;
++	v4l2_async_nf_init(&camss->notifier);
 +
-+	ndev = get_netvsc_byslot(vf_netdev);
-+	if (!ndev)
-+		return NOTIFY_DONE;
++	num_subdevs = camss_of_parse_ports(camss);
++	if (num_subdevs < 0) {
++		ret = num_subdevs;
++		goto err_cleanup;
++	}
 +
-+	/* set slave flag before open to prevent IPv6 addrconf */
-+	vf_netdev->flags |= IFF_SLAVE;
-+	return NOTIFY_DONE;
-+}
-+
- static int netvsc_register_vf(struct net_device *vf_netdev)
- {
- 	struct net_device_context *net_device_ctx;
-@@ -2758,6 +2770,8 @@ static int netvsc_netdev_event(struct no
- 		return NOTIFY_DONE;
+ 	ret = camss_register_entities(camss);
+ 	if (ret < 0)
+-		goto err_register_entities;
++		goto err_cleanup;
  
- 	switch (event) {
-+	case NETDEV_POST_INIT:
-+		return netvsc_prepare_bonding(event_dev);
- 	case NETDEV_REGISTER:
- 		return netvsc_register_vf(event_dev);
- 	case NETDEV_UNREGISTER:
+ 	if (num_subdevs) {
+ 		camss->notifier.ops = &camss_subdev_notifier_ops;
+@@ -1689,9 +1689,8 @@ static int camss_probe(struct platform_device *pdev)
+ 
+ err_register_subdevs:
+ 	camss_unregister_entities(camss);
+-err_register_entities:
+-	v4l2_device_unregister(&camss->v4l2_dev);
+ err_cleanup:
++	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
+ 
+ 	return ret;
+-- 
+2.42.0
+
 
 
 
