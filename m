@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-3466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3317FF5C7
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1237FF57D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92C81F20F49
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 395251F20F49
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422484777A;
-	Thu, 30 Nov 2023 16:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D1554FA6;
+	Thu, 30 Nov 2023 16:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1If5j8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qqvAtBC/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035D754FBF;
-	Thu, 30 Nov 2023 16:31:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395C9C433C8;
-	Thu, 30 Nov 2023 16:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D94354BFB;
+	Thu, 30 Nov 2023 16:29:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF88C433C7;
+	Thu, 30 Nov 2023 16:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361905;
-	bh=31xIXyZc/NlyjtpbvORBFARyCcqy6qiJ1xVRaePsV0E=;
+	s=korg; t=1701361759;
+	bh=7BjuZ7i+uy/NaLtd+jOOPW/XVrrF20uZiAI+bbEsXow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1If5j8lWMKfaeprvuRt75N3E9i04Ds+WFva7menWzRZwGgE+Is4LwpLJ24lQeHPD
-	 ISS6aIW3E4sYtUNO6P9wXxqsRNmtp5b1w76bJgv51Tl/e127CgO704S9KrtHrrKCwF
-	 27Hy5VsaCbyTlsmj0ECPX4aPLfqmGV6vrEUGbb/g=
+	b=qqvAtBC/4qDmtAz76ImGv7yin6grextGrMqFLgSAlFAt9tIdUhfmIpuHEAbjL7yBI
+	 s/eZpC4t6JMtwVsNrewxxwbGviWWL0YZpaADPWzktsuWGHKMWIJ5Hm9eBeHgZAhX9F
+	 K3tpOAmfLsGHgki+EKjl4R7Bj0W6VGRA3oq+oEEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Christopher Obbard <chris.obbard@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 10/69] drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+Subject: [PATCH 6.1 36/82] cifs: account for primary channel in the interface list
 Date: Thu, 30 Nov 2023 16:22:07 +0000
-Message-ID: <20231130162133.417222719@linuxfoundation.org>
+Message-ID: <20231130162137.100409651@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,78 +54,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit bb0a05acd6121ff0e810b44fdc24dbdfaa46b642 ]
+[ Upstream commit fa1d0508bdd4a68c5e40f85f635712af8c12f180 ]
 
-Use of DRM_FORMAT_RGB888 and DRM_FORMAT_BGR888 on e.g. RK3288, RK3328
-and RK3399 result in wrong colors being displayed.
+The refcounting of server interfaces should account
+for the primary channel too. Although this is not
+strictly necessary, doing so will account for the primary
+channel in DebugData.
 
-The issue can be observed using modetest:
-
-  modetest -s <connector_id>@<crtc_id>:1920x1080-60@RG24
-  modetest -s <connector_id>@<crtc_id>:1920x1080-60@BG24
-
-Vendor 4.4 kernel apply an inverted rb swap for these formats on VOP
-full framework (IP version 3.x) compared to VOP little framework (2.x).
-
-Fix colors by applying different rb swap for VOP full framework (3.x)
-and VOP little framework (2.x) similar to vendor 4.4 kernel.
-
-Fixes: 85a359f25388 ("drm/rockchip: Add BGR formats to VOP")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Reviewed-by: Christopher Obbard <chris.obbard@collabora.com>
-Tested-by: Christopher Obbard <chris.obbard@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231026191500.2994225-1-jonas@kwiboo.se
+Cc: stable@vger.kernel.org
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/smb/client/sess.c    | 28 ++++++++++++++++++++++++++++
+ fs/smb/client/smb2ops.c |  6 ++++++
+ 2 files changed, 34 insertions(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index e53b1ecbd7bc0..c7106f1165466 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -249,14 +249,22 @@ static inline void vop_cfg_done(struct vop *vop)
- 	VOP_REG_SET(vop, common, cfg_done, 1);
- }
+diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
+index 33e724545c5b4..634035bcb9347 100644
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -288,6 +288,7 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 	struct cifs_server_iface *iface = NULL;
+ 	struct cifs_server_iface *old_iface = NULL;
+ 	struct cifs_server_iface *last_iface = NULL;
++	struct sockaddr_storage ss;
+ 	int rc = 0;
  
--static bool has_rb_swapped(uint32_t format)
-+static bool has_rb_swapped(uint32_t version, uint32_t format)
- {
- 	switch (format) {
- 	case DRM_FORMAT_XBGR8888:
- 	case DRM_FORMAT_ABGR8888:
--	case DRM_FORMAT_BGR888:
- 	case DRM_FORMAT_BGR565:
- 		return true;
-+	/*
-+	 * full framework (IP version 3.x) only need rb swapped for RGB888 and
-+	 * little framework (IP version 2.x) only need rb swapped for BGR888,
-+	 * check for 3.x to also only rb swap BGR888 for unknown vop version
-+	 */
-+	case DRM_FORMAT_RGB888:
-+		return VOP_MAJOR(version) == 3;
-+	case DRM_FORMAT_BGR888:
-+		return VOP_MAJOR(version) != 3;
- 	default:
- 		return false;
+ 	spin_lock(&ses->chan_lock);
+@@ -306,6 +307,10 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
  	}
-@@ -998,7 +1006,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
- 	VOP_WIN_SET(vop, win, dsp_info, dsp_info);
- 	VOP_WIN_SET(vop, win, dsp_st, dsp_st);
+ 	spin_unlock(&ses->chan_lock);
  
--	rb_swap = has_rb_swapped(fb->format->format);
-+	rb_swap = has_rb_swapped(vop->data->version, fb->format->format);
- 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
++	spin_lock(&server->srv_lock);
++	ss = server->dstaddr;
++	spin_unlock(&server->srv_lock);
++
+ 	spin_lock(&ses->iface_lock);
+ 	if (!ses->iface_count) {
+ 		spin_unlock(&ses->iface_lock);
+@@ -319,6 +324,16 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
  
- 	/*
+ 	/* then look for a new one */
+ 	list_for_each_entry(iface, &ses->iface_list, iface_head) {
++		if (!chan_index) {
++			/* if we're trying to get the updated iface for primary channel */
++			if (!cifs_match_ipaddr((struct sockaddr *) &ss,
++					       (struct sockaddr *) &iface->sockaddr))
++				continue;
++
++			kref_get(&iface->refcount);
++			break;
++		}
++
+ 		/* do not mix rdma and non-rdma interfaces */
+ 		if (iface->rdma_capable != server->rdma)
+ 			continue;
+@@ -345,6 +360,13 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 		cifs_dbg(FYI, "unable to find a suitable iface\n");
+ 	}
+ 
++	if (!chan_index && !iface) {
++		cifs_dbg(FYI, "unable to get the interface matching: %pIS\n",
++			 &ss);
++		spin_unlock(&ses->iface_lock);
++		return 0;
++	}
++
+ 	/* now drop the ref to the current iface */
+ 	if (old_iface && iface) {
+ 		cifs_dbg(FYI, "replacing iface: %pIS with %pIS\n",
+@@ -367,6 +389,12 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
+ 			old_iface->weight_fulfilled--;
+ 
+ 		kref_put(&old_iface->refcount, release_iface);
++	} else if (!chan_index) {
++		/* special case: update interface for primary channel */
++		cifs_dbg(FYI, "referencing primary channel iface: %pIS\n",
++			 &iface->sockaddr);
++		iface->num_channels++;
++		iface->weight_fulfilled++;
+ 	} else {
+ 		WARN_ON(!iface);
+ 		cifs_dbg(FYI, "adding new iface: %pIS\n", &iface->sockaddr);
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 2c1898803279a..4cc56e4695fbc 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -752,6 +752,7 @@ SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_
+ 	unsigned int ret_data_len = 0;
+ 	struct network_interface_info_ioctl_rsp *out_buf = NULL;
+ 	struct cifs_ses *ses = tcon->ses;
++	struct TCP_Server_Info *pserver;
+ 
+ 	/* do not query too frequently */
+ 	if (ses->iface_last_update &&
+@@ -776,6 +777,11 @@ SMB3_request_interfaces(const unsigned int xid, struct cifs_tcon *tcon, bool in_
+ 	if (rc)
+ 		goto out;
+ 
++	/* check if iface is still active */
++	pserver = ses->chans[0].server;
++	if (pserver && !cifs_chan_is_iface_active(ses, pserver))
++		cifs_chan_update_iface(ses, pserver);
++
+ out:
+ 	kfree(out_buf);
+ 	return rc;
 -- 
 2.42.0
 
