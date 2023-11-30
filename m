@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-3270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E037FF4D0
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:23:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD2AE7FF4DA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:23:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A71FB20E0B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:23:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09FF31C20DC6
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FE654F98;
-	Thu, 30 Nov 2023 16:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A847654F91;
+	Thu, 30 Nov 2023 16:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPYqmrIb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tk0iWbQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DF0495C2;
-	Thu, 30 Nov 2023 16:23:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C91C433C9;
-	Thu, 30 Nov 2023 16:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F248495C2;
+	Thu, 30 Nov 2023 16:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF2F9C433C8;
+	Thu, 30 Nov 2023 16:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361406;
-	bh=b1h8gtZEdCTCPlCJsoCp+Gb+TSDaIrTZ2XUZRWD4otY=;
+	s=korg; t=1701361433;
+	bh=Um0P2lzvLS2CLlTNMUua+gBPi8d6c4YGTzw+qRDe/ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPYqmrIbzlEI1HQNWJMPkt8sAWIQUCdon3pC43UeQcJbmLeqvHMuh821gYkG58KZh
-	 qBfqdtIOG3AarlUKkY0+Mr7/qyC6GeJYR8qSDbPvtQrkfkHv1vTV6qc5U+UkXv7gvP
-	 HACEr33d6ovO0z27QMDIcyrQxzODEIj3JBEQBNz0=
+	b=Tk0iWbQP8qjBO4qCCaI7aLu7mMIWcAYxgan+4zZCWNoeqeO98UZCeJTnD8lrWZlBX
+	 KJXHydVFmBYWa/AwauaLJAT0tfx4zfxczLNWc5XbLgqCZ6ZZUlOkL4IpCtz//6sqwm
+	 n3n3QIzvHD2UuSVmtBJrq+2X7bLA/FdkOnukkCM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-nfs@vger.kernel.org,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 002/112] NFSD: Fix checksum mismatches in the duplicate reply cache
-Date: Thu, 30 Nov 2023 16:20:49 +0000
-Message-ID: <20231130162140.390349216@linuxfoundation.org>
+	Marc Zyngier <maz@kernel.org>,
+	Fang Xiang <fangxiang3@xiaomi.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 003/112] irqchip/gic-v3-its: Flush ITS tables correctly in non-coherent GIC designs
+Date: Thu, 30 Nov 2023 16:20:50 +0000
+Message-ID: <20231130162140.425801170@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -57,188 +58,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Fang Xiang <fangxiang3@xiaomi.com>
 
-[ Upstream commit bf51c52a1f3c238d72c64e14d5e7702d3a245b82 ]
+[ Upstream commit d3badb15613c14dd35d3495b1dde5c90fcd616dd ]
 
-nfsd_cache_csum() currently assumes that the server's RPC layer has
-been advancing rq_arg.head[0].iov_base as it decodes an incoming
-request, because that's the way it used to work. On entry, it
-expects that buf->head[0].iov_base points to the start of the NFS
-header, and excludes the already-decoded RPC header.
+In non-coherent GIC designs, the ITS tables must be flushed before writing
+to the GITS_BASER<n> registers, otherwise the ITS could read dirty tables,
+which results in unpredictable behavior.
 
-These days however, head[0].iov_base now points to the start of the
-RPC header during all processing. It no longer points at the NFS
-Call header when execution arrives at nfsd_cache_csum().
+Flush the tables right at the begin of its_setup_baser() to prevent that.
 
-In a retransmitted RPC the XID and the NFS header are supposed to
-be the same as the original message, but the contents of the
-retransmitted RPC header can be different. For example, for krb5,
-the GSS sequence number will be different between the two. Thus if
-the RPC header is always included in the DRC checksum computation,
-the checksum of the retransmitted message might not match the
-checksum of the original message, even though the NFS part of these
-messages is identical.
+[ tglx: Massage changelog ]
 
-The result is that, even if a matching XID is found in the DRC,
-the checksum mismatch causes the server to execute the
-retransmitted RPC transaction again.
-
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a8707f553884 ("irqchip/gic-v3: Add Rockchip 3588001 erratum workaround")
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Fang Xiang <fangxiang3@xiaomi.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20231030083256.4345-1-fangxiang3@xiaomi.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/cache.h    |    4 +--
- fs/nfsd/nfscache.c |   64 +++++++++++++++++++++++++++++++++++------------------
- fs/nfsd/nfssvc.c   |   10 +++++++-
- 3 files changed, 54 insertions(+), 24 deletions(-)
+ drivers/irqchip/irq-gic-v3-its.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/fs/nfsd/cache.h
-+++ b/fs/nfsd/cache.h
-@@ -84,8 +84,8 @@ int	nfsd_net_reply_cache_init(struct nfs
- void	nfsd_net_reply_cache_destroy(struct nfsd_net *nn);
- int	nfsd_reply_cache_init(struct nfsd_net *);
- void	nfsd_reply_cache_shutdown(struct nfsd_net *);
--int	nfsd_cache_lookup(struct svc_rqst *rqstp,
--			  struct nfsd_cacherep **cacherep);
-+int	nfsd_cache_lookup(struct svc_rqst *rqstp, unsigned int start,
-+			  unsigned int len, struct nfsd_cacherep **cacherep);
- void	nfsd_cache_update(struct svc_rqst *rqstp, struct nfsd_cacherep *rp,
- 			  int cachetype, __be32 *statp);
- int	nfsd_reply_cache_stats_show(struct seq_file *m, void *v);
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -368,33 +368,52 @@ nfsd_reply_cache_scan(struct shrinker *s
- 	return freed;
- }
- 
--/*
-- * Walk an xdr_buf and get a CRC for at most the first RC_CSUMLEN bytes
-+/**
-+ * nfsd_cache_csum - Checksum incoming NFS Call arguments
-+ * @buf: buffer containing a whole RPC Call message
-+ * @start: starting byte of the NFS Call header
-+ * @remaining: size of the NFS Call header, in bytes
-+ *
-+ * Compute a weak checksum of the leading bytes of an NFS procedure
-+ * call header to help verify that a retransmitted Call matches an
-+ * entry in the duplicate reply cache.
-+ *
-+ * To avoid assumptions about how the RPC message is laid out in
-+ * @buf and what else it might contain (eg, a GSS MIC suffix), the
-+ * caller passes us the exact location and length of the NFS Call
-+ * header.
-+ *
-+ * Returns a 32-bit checksum value, as defined in RFC 793.
-  */
--static __wsum
--nfsd_cache_csum(struct svc_rqst *rqstp)
-+static __wsum nfsd_cache_csum(struct xdr_buf *buf, unsigned int start,
-+			      unsigned int remaining)
- {
-+	unsigned int base, len;
-+	struct xdr_buf subbuf;
-+	__wsum csum = 0;
-+	void *p;
- 	int idx;
--	unsigned int base;
--	__wsum csum;
--	struct xdr_buf *buf = &rqstp->rq_arg;
--	const unsigned char *p = buf->head[0].iov_base;
--	size_t csum_len = min_t(size_t, buf->head[0].iov_len + buf->page_len,
--				RC_CSUMLEN);
--	size_t len = min(buf->head[0].iov_len, csum_len);
-+
-+	if (remaining > RC_CSUMLEN)
-+		remaining = RC_CSUMLEN;
-+	if (xdr_buf_subsegment(buf, &subbuf, start, remaining))
-+		return csum;
- 
- 	/* rq_arg.head first */
--	csum = csum_partial(p, len, 0);
--	csum_len -= len;
-+	if (subbuf.head[0].iov_len) {
-+		len = min_t(unsigned int, subbuf.head[0].iov_len, remaining);
-+		csum = csum_partial(subbuf.head[0].iov_base, len, csum);
-+		remaining -= len;
-+	}
- 
- 	/* Continue into page array */
--	idx = buf->page_base / PAGE_SIZE;
--	base = buf->page_base & ~PAGE_MASK;
--	while (csum_len) {
--		p = page_address(buf->pages[idx]) + base;
--		len = min_t(size_t, PAGE_SIZE - base, csum_len);
-+	idx = subbuf.page_base / PAGE_SIZE;
-+	base = subbuf.page_base & ~PAGE_MASK;
-+	while (remaining) {
-+		p = page_address(subbuf.pages[idx]) + base;
-+		len = min_t(unsigned int, PAGE_SIZE - base, remaining);
- 		csum = csum_partial(p, len, csum);
--		csum_len -= len;
-+		remaining -= len;
- 		base = 0;
- 		++idx;
- 	}
-@@ -465,6 +484,8 @@ out:
- /**
-  * nfsd_cache_lookup - Find an entry in the duplicate reply cache
-  * @rqstp: Incoming Call to find
-+ * @start: starting byte in @rqstp->rq_arg of the NFS Call header
-+ * @len: size of the NFS Call header, in bytes
-  * @cacherep: OUT: DRC entry for this request
-  *
-  * Try to find an entry matching the current call in the cache. When none
-@@ -478,7 +499,8 @@ out:
-  *   %RC_REPLY: Reply from cache
-  *   %RC_DROPIT: Do not process the request further
-  */
--int nfsd_cache_lookup(struct svc_rqst *rqstp, struct nfsd_cacherep **cacherep)
-+int nfsd_cache_lookup(struct svc_rqst *rqstp, unsigned int start,
-+		      unsigned int len, struct nfsd_cacherep **cacherep)
- {
- 	struct nfsd_net		*nn;
- 	struct nfsd_cacherep	*rp, *found;
-@@ -494,7 +516,7 @@ int nfsd_cache_lookup(struct svc_rqst *r
- 		goto out;
- 	}
- 
--	csum = nfsd_cache_csum(rqstp);
-+	csum = nfsd_cache_csum(&rqstp->rq_arg, start, len);
- 
- 	/*
- 	 * Since the common case is a cache miss followed by an insert,
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -988,6 +988,7 @@ int nfsd_dispatch(struct svc_rqst *rqstp
- 	const struct svc_procedure *proc = rqstp->rq_procinfo;
- 	__be32 *statp = rqstp->rq_accept_statp;
- 	struct nfsd_cacherep *rp;
-+	unsigned int start, len;
- 	__be32 *nfs_reply;
- 
- 	/*
-@@ -996,11 +997,18 @@ int nfsd_dispatch(struct svc_rqst *rqstp
- 	 */
- 	rqstp->rq_cachetype = proc->pc_cachetype;
- 
-+	/*
-+	 * ->pc_decode advances the argument stream past the NFS
-+	 * Call header, so grab the header's starting location and
-+	 * size now for the call to nfsd_cache_lookup().
-+	 */
-+	start = xdr_stream_pos(&rqstp->rq_arg_stream);
-+	len = xdr_stream_remaining(&rqstp->rq_arg_stream);
- 	if (!proc->pc_decode(rqstp, &rqstp->rq_arg_stream))
- 		goto out_decode_err;
- 
- 	rp = NULL;
--	switch (nfsd_cache_lookup(rqstp, &rp)) {
-+	switch (nfsd_cache_lookup(rqstp, start, len, &rp)) {
- 	case RC_DOIT:
+diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
+index a8c89df1a9978..9a7a74239eabb 100644
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -2379,12 +2379,12 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
  		break;
- 	case RC_REPLY:
+ 	}
+ 
++	if (!shr)
++		gic_flush_dcache_to_poc(base, PAGE_ORDER_TO_SIZE(order));
++
+ 	its_write_baser(its, baser, val);
+ 	tmp = baser->val;
+ 
+-	if (its->flags & ITS_FLAGS_FORCE_NON_SHAREABLE)
+-		tmp &= ~GITS_BASER_SHAREABILITY_MASK;
+-
+ 	if ((val ^ tmp) & GITS_BASER_SHAREABILITY_MASK) {
+ 		/*
+ 		 * Shareability didn't stick. Just use
+@@ -2394,10 +2394,9 @@ static int its_setup_baser(struct its_node *its, struct its_baser *baser,
+ 		 * non-cacheable as well.
+ 		 */
+ 		shr = tmp & GITS_BASER_SHAREABILITY_MASK;
+-		if (!shr) {
++		if (!shr)
+ 			cache = GITS_BASER_nC;
+-			gic_flush_dcache_to_poc(base, PAGE_ORDER_TO_SIZE(order));
+-		}
++
+ 		goto retry_baser;
+ 	}
+ 
+@@ -2609,6 +2608,11 @@ static int its_alloc_tables(struct its_node *its)
+ 		/* erratum 24313: ignore memory access type */
+ 		cache = GITS_BASER_nCnB;
+ 
++	if (its->flags & ITS_FLAGS_FORCE_NON_SHAREABLE) {
++		cache = GITS_BASER_nC;
++		shr = 0;
++	}
++
+ 	for (i = 0; i < GITS_BASER_NR_REGS; i++) {
+ 		struct its_baser *baser = its->tables + i;
+ 		u64 val = its_read_baser(its, baser);
+-- 
+2.42.0
+
 
 
 
