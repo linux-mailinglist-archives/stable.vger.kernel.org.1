@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-3530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6277FF617
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:34:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E617FF5C2
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A760A281875
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:34:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4089C1F20F7E
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E3654FA4;
-	Thu, 30 Nov 2023 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F833D382;
+	Thu, 30 Nov 2023 16:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PuIkjhB+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oABXmtTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF2E524D2;
-	Thu, 30 Nov 2023 16:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A1EDC433C8;
-	Thu, 30 Nov 2023 16:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A7854F96;
+	Thu, 30 Nov 2023 16:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15DBC433C8;
+	Thu, 30 Nov 2023 16:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701362064;
-	bh=reoQCcrKWNcA/f1zrXoK80ly1kHp8F8xjq7b2XpycpY=;
+	s=korg; t=1701361890;
+	bh=AJn0BsB/nxFf1ZIb/++AHZtcLUFdVO6SwtrJrQNbBsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PuIkjhB+2JLPp4vqGP8CRhSNlPiYyr+or0i6mYlbxD9WSlusabCDsA8P0fT+iw90b
-	 GVBvz/0frVFu2u2fqFL4GQzOAFZCWY+NJ/5oYeYtkjr3F2XGghoLsdJoIxsYO4OMyu
-	 8AOCzTcCufsx9bx2YVdf5J/vMBoPO1nCTFlUamDE=
+	b=oABXmtTaGZLXf0OmeMbl37N4iP7XLtkNficbnvmyN6ueGogjtBauGcEMO8ceSelAO
+	 jEzTRN3BE019N/UWi1yxBT2YJwZD9hKmEvek93UyThEEVmVNeISZ/t2yirs9TT09oG
+	 U2eM9I8SbJJTDY51chQN3JFRGptBG8o/tXwDjbfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 53/69] hv_netvsc: Mark VF as slave before exposing it to user-mode
+	Zubin Mithra <zsm@chromium.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 79/82] usb: dwc3: set the dma max_seg_size
 Date: Thu, 30 Nov 2023 16:22:50 +0000
-Message-ID: <20231130162134.804130162@linuxfoundation.org>
+Message-ID: <20231130162138.498390767@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,100 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
+commit 8bbae288a85abed6a1cf7d185d8b9dc2f5dcb12c upstream.
 
-When a VF is being exposed form the kernel, it should be marked as "slave"
-before exposing to the user-mode. The VF is not usable without netvsc
-running as master. The user-mode should never see a VF without the "slave"
-flag.
+Allow devices to have dma operations beyond 4K, and avoid warnings such
+as:
 
-This commit moves the code of setting the slave flag to the time before
-VF is exposed to user-mode.
+DMA-API: dwc3 a600000.usb: mapping sg segment longer than device claims to support [len=86016] [max=65536]
 
 Cc: stable@vger.kernel.org
-Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
-Signed-off-by: Long Li <longli@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Reported-by: Zubin Mithra <zsm@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231026-dwc3-v2-1-1d4fd5c3e067@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/usb/dwc3/core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2227,9 +2227,6 @@ static int netvsc_vf_join(struct net_dev
- 		goto upper_link_failed;
- 	}
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2036,6 +2036,8 @@ static int dwc3_probe(struct platform_de
  
--	/* set slave flag before open to prevent IPv6 addrconf */
--	vf_netdev->flags |= IFF_SLAVE;
--
- 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
+ 	pm_runtime_put(dev);
  
- 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
-@@ -2336,16 +2333,18 @@ static struct net_device *get_netvsc_bys
- 
- 	}
- 
--	/* Fallback path to check synthetic vf with
--	 * help of mac addr
-+	/* Fallback path to check synthetic vf with help of mac addr.
-+	 * Because this function can be called before vf_netdev is
-+	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
-+	 * from dev_addr, also try to match to its dev_addr.
-+	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
-+	 * on a VF that matches to the MAC of a unrelated NETVSC device.
- 	 */
- 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
- 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
--		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
--			netdev_notice(vf_netdev,
--				      "falling back to mac addr based matching\n");
-+		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
-+		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
- 			return ndev;
--		}
- 	}
- 
- 	netdev_notice(vf_netdev,
-@@ -2353,6 +2352,19 @@ static struct net_device *get_netvsc_bys
- 	return NULL;
- }
- 
-+static int netvsc_prepare_bonding(struct net_device *vf_netdev)
-+{
-+	struct net_device *ndev;
++	dma_set_max_seg_size(dev, UINT_MAX);
 +
-+	ndev = get_netvsc_byslot(vf_netdev);
-+	if (!ndev)
-+		return NOTIFY_DONE;
-+
-+	/* set slave flag before open to prevent IPv6 addrconf */
-+	vf_netdev->flags |= IFF_SLAVE;
-+	return NOTIFY_DONE;
-+}
-+
- static int netvsc_register_vf(struct net_device *vf_netdev)
- {
- 	struct net_device_context *net_device_ctx;
-@@ -2772,6 +2784,8 @@ static int netvsc_netdev_event(struct no
- 		return NOTIFY_DONE;
+ 	return 0;
  
- 	switch (event) {
-+	case NETDEV_POST_INIT:
-+		return netvsc_prepare_bonding(event_dev);
- 	case NETDEV_REGISTER:
- 		return netvsc_register_vf(event_dev);
- 	case NETDEV_UNREGISTER:
+ err5:
 
 
 
