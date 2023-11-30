@@ -1,233 +1,184 @@
-Return-Path: <stable+bounces-3548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB6A7FF8F7
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:01:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C15C7FF91C
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 810A51C210CC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 18:01:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A4051C20EA7
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 18:11:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF5C59147;
-	Thu, 30 Nov 2023 18:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FEB59155;
+	Thu, 30 Nov 2023 18:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="cjPmx3Nw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OgpWtBgL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06097103
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 10:01:00 -0800 (PST)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1cfc34b6890so10665535ad.1
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 10:01:00 -0800 (PST)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8160D131
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 10:11:43 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6cb66f23eddso1095275b3a.0
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 10:11:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701367259; x=1701972059; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=JQyRUlW3tq7qZN5abA1lxTi/w1cyoJ7C9DwyOU7vU4Q=;
-        b=cjPmx3Nwgp3fbwdHl7wbd35D+9KpISVAB4VQMnsNbO+qoGhrreDiM6rRYRVHhRsvDY
-         urn/ifBfzzj0nkpNNXu4MWtyVaQJ1TUOwYlwSPjNP0OX1HBcrPAXBbXSGdnP7sIIxmrT
-         17skYpZWMFFS91xATv8G+rva30X2dN4bQW25x/cxeiqMgYzWAaz/EQ19CDXKMILyhRR1
-         knuWvjfiubBsBZ16pennPoSXk2D3i7QX3C0tTzycDvu/0VIDB8LEeQNagLWnutYN2mTd
-         +755Wp+lwhIjYe9u0XdZwHqXVDopECrZaOPeDNSTPg94uGVfMoDItT/jnBV1PhAAZhEC
-         CaHg==
+        d=linaro.org; s=google; t=1701367903; x=1701972703; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RNgtprTXnSXEG7sYtWfKlL6JyfLEgg9nzEegbfWpJTI=;
+        b=OgpWtBgLwsGC4QZcmS4I1pyZnEPrkll2QmpBPz7DyRmAeHs/4T9xIjA+Ccq6QHBE79
+         3yHqYiDoVjLYaYlNleBQBEPC5e95SA8dv+FIxlnaeNM6rErbDjt45DuAYvtdyFp3rBct
+         rf9tGL82YE7Li2m8n+Womao6HmmUC76pRp09NwYQOTaZca9g3NgcUDAUVEiAzITsJ3Iy
+         q8tLvUHED+IUd+ruqd+bp2vptcKFAafJ7+G6XjhUJZ5p72XLUue8EY5nhloz2msujfiR
+         8yRjUJVOwkTUxUJteGiiWf59kvCSNp6slYc8JOtZZwn7vIyh48flRk/UzAUgTytXCE5G
+         e1aA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701367259; x=1701972059;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JQyRUlW3tq7qZN5abA1lxTi/w1cyoJ7C9DwyOU7vU4Q=;
-        b=eGJPdiNuu686YAnpEMhV0S0GbBT0w8O5boV65dHO901pJuNoBIGlgiAannHl3Pdm2d
-         q0jPMvOHCp+ii68OzVPrlhNh4GKchnd64bBLzZX+lqQhB3ExQ8+5PF/rbG/11Sy9YrnI
-         iVNZNIahQ1KzA4alLjrMIAEoDh1SkvOOpWTOfN6HXxtEy0JUdW4TmvKZ95yWzR2mJatR
-         gNpuK5OGWzC1BqwdsKdImOF2ppuTwOYpBAcymYmY+L1iXQbTgdoo5nJI3DXSql/69zNN
-         EnMsZGzsVTZdAV0GWZQ1jEQ62M2HQlCON7ReHfY0b3Rz5+N5DcTlczWqlUcUZhzA2kd3
-         oM3Q==
-X-Gm-Message-State: AOJu0YzJZLGdJdCvtLsyPk/zgBByWSMD3VU2aemMVSrUrXO/pNxgCRYo
-	Y7OpWTA+WXC/703S/ZrF5DwtSw0O540rkHNRK1UbxQ==
-X-Google-Smtp-Source: AGHT+IFYUNjArCcI+z2mbHdPO9OksSa3+8Pu8C3oGOTtbT/IaQ+T3oM3nPF9DeLPtxd1vbajcJy4cg==
-X-Received: by 2002:a17:902:b109:b0:1d0:922:f65e with SMTP id q9-20020a170902b10900b001d00922f65emr10564813plr.2.1701367258997;
-        Thu, 30 Nov 2023 10:00:58 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id z14-20020a170903018e00b001bf8779e051sm1674054plg.289.2023.11.30.10.00.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 10:00:58 -0800 (PST)
-Message-ID: <6568cdda.170a0220.af24e.51a7@mx.google.com>
-Date: Thu, 30 Nov 2023 10:00:58 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        d=1e100.net; s=20230601; t=1701367903; x=1701972703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RNgtprTXnSXEG7sYtWfKlL6JyfLEgg9nzEegbfWpJTI=;
+        b=ZDEumK0COAk2eLAgFAa+dcnA7UrmVUwh5oYvI0StNY88/JLAEban9P9RuaYmsHRp8j
+         Agfl8TxHJ8nUmKs60z4tSP+vK4GxgD7IM6piQyHMNd9aM/l+ltupSSmhNXEIa2KloZAS
+         CgGJObBjRH0smbiLYWBjIzmegvSyVbKrOpyyqWn01VClwZnYDotB2SbCS94DZRBI9GGD
+         oNaJaDj29eUNsSLZpqBF21BWZVeERdu8qP4OWS2TK7DLg4HOVXNQ4u5H67H93AsBbemP
+         dfiGZHUOGSA59ttLBq/oob2sYRqt2MoxsOq9SEDhiByPwoxt7H10NukleOYmJYKJoFhF
+         zPEA==
+X-Gm-Message-State: AOJu0YyeRsJfk5e6+nywTZFWdoLEEY6it1h6d/CYl6YTYNieIwMtSpN+
+	NxLwMuZl88ugbv/ZrnNWOSNP2s9TXj+OMm29/0wP0e/QOGwocJL5Wwa5wRZJ
+X-Google-Smtp-Source: AGHT+IGedkIyqsw0Qgh2ilKDtIK7r8EKT6xybDMBQyF5e/OvFulhnXxuxRY/6wWfVwGPFjlz9iPl2iAC/9bJsMESWfs=
+X-Received: by 2002:a05:6a00:35ce:b0:6cb:8c91:682 with SMTP id
+ dc14-20020a056a0035ce00b006cb8c910682mr26682257pfb.29.1701367902766; Thu, 30
+ Nov 2023 10:11:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20231130162133.035359406@linuxfoundation.org> <CAEUSe7-yhmQkr1iK-82+Sc_YpVtWUQhuKoazoXHF_3oP9XTt4Q@mail.gmail.com>
+ <e2e50813-79ba-4c84-b6ae-6885cbef54ab@roeck-us.net>
+In-Reply-To: <e2e50813-79ba-4c84-b6ae-6885cbef54ab@roeck-us.net>
+From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date: Thu, 30 Nov 2023 12:11:31 -0600
+Message-ID: <CAEUSe78tYPTFuauB7cxZzvAeMhzB_25Q8DqLUfF7Nro9WsUhNw@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/69] 5.15.141-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, 
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, 
+	rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	Guenter Roeck <linux@roeck-us.net>, flaniel@linux.microsoft.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.202-70-g7a1294e8eed9d
-Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.202-70-g7a1294e8eed9d)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
-10.202-70-g7a1294e8eed9d)
+Hello!
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-0/kernel/v5.10.202-70-g7a1294e8eed9d/
+On Thu, 30 Nov 2023 at 11:44, Guenter Roeck <linux@roeck-us.net> wrote:
+> On 11/30/23 09:21, Daniel D=C3=ADaz wrote:
+> > Hello!
+> >
+> > Lots of failures everywhere:
+> > * clang-17-lkftconfig                 arm64
+> > * clang-17-lkftconfig                 arm64
+> > * clang-17-lkftconfig                 arm64
+> > * clang-lkftconfig                    arm64
+> > * clang-lkftconfig                    arm
+> > * clang-lkftconfig                    i386
+> > * clang-lkftconfig                    x86_64
+> > * gcc-12-lkftconfig                   arm64
+> > * gcc-12-lkftconfig                   arm
+> > * gcc-12-lkftconfig                   i386
+> > * gcc-12-lkftconfig                   x86_64
+> > * gcc-12-lkftconfig-64k_page_size     arm64
+> > * gcc-12-lkftconfig-64k_page_size     arm64
+> > * gcc-12-lkftconfig-armv8_features    arm64
+> > * gcc-12-lkftconfig-debug             arm64
+> > * gcc-12-lkftconfig-debug             arm64
+> > * gcc-12-lkftconfig-debug             arm
+> > * gcc-12-lkftconfig-debug             i386
+> > * gcc-12-lkftconfig-debug             x86_64
+> > * gcc-12-lkftconfig-debug-kmemleak    arm64
+> > * gcc-12-lkftconfig-debug-kmemleak    arm
+> > * gcc-12-lkftconfig-debug-kmemleak    i386
+> > * gcc-12-lkftconfig-debug-kmemleak    x86_64
+> > * gcc-12-lkftconfig-devicetree        arm64
+> > * gcc-12-lkftconfig-kasan             arm64
+> > * gcc-12-lkftconfig-kasan             arm64
+> > * gcc-12-lkftconfig-kasan             x86_64
+> > * gcc-12-lkftconfig-kselftest         arm64
+> > * gcc-12-lkftconfig-kselftest-kernel  arm64
+> > * gcc-12-lkftconfig-kselftest-kernel  arm
+> > * gcc-12-lkftconfig-kselftest-kernel  i386
+> > * gcc-12-lkftconfig-kunit             arm64
+> > * gcc-12-lkftconfig-kunit             arm64
+> > * gcc-12-lkftconfig-kunit             arm
+> > * gcc-12-lkftconfig-kunit             i386
+> > * gcc-12-lkftconfig-kunit             x86_64
+> > * gcc-12-lkftconfig-libgpiod          arm64
+> > * gcc-12-lkftconfig-libgpiod          arm
+> > * gcc-12-lkftconfig-libgpiod          i386
+> > * gcc-12-lkftconfig-libgpiod          x86_64
+> > * gcc-12-lkftconfig-perf              arm64
+> > * gcc-12-lkftconfig-perf-kernel       arm64
+> > * gcc-12-lkftconfig-perf-kernel       arm
+> > * gcc-12-lkftconfig-perf-kernel       i386
+> > * gcc-12-lkftconfig-perf-kernel       x86_64
+> > * gcc-12-lkftconfig-rcutorture        arm64
+> > * gcc-12-lkftconfig-rcutorture        arm64
+> > * gcc-12-lkftconfig-rcutorture        arm
+> > * gcc-12-lkftconfig-rcutorture        i386
+> > * gcc-12-lkftconfig-rcutorture        x86_64
+> >
+> > It's essentially this:
+> >
+> > -----8<-----
+> >    make --silent --keep-going --jobs=3D8
+> > O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=3Dx86_64 SRCARCH=
+=3Dx86
+> > CROSS_COMPILE=3Dx86_64-linux-gnu- 'CC=3Dsccache x86_64-linux-gnu-gcc'
+> > 'HOSTCC=3Dsccache gcc'
+> >    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x51:
+> > unreachable instruction
+> >    x86_64-linux-gnu-ld: kernel/trace/trace_kprobe.o: in function
+> > `__trace_kprobe_create':
+> >    trace_kprobe.c:(.text+0x2f39): undefined reference to
+> > `kallsyms_on_each_symbol'
+> >    x86_64-linux-gnu-ld: kernel/trace/trace_kprobe.o: in function
+> > `create_local_trace_kprobe':
+> >    trace_kprobe.c:(.text+0x384b): undefined reference to
+> > `kallsyms_on_each_symbol'
+> >    make[1]: *** [/builds/linux/Makefile:1227: vmlinux] Error 1
+> >    make[1]: Target '__all' not remade because of errors.
+> >    make: *** [Makefile:226: __sub-make] Error 2
+> >    make: Target '__all' not remade because of errors.
+> > ----->8-----
+> >
+> > It only affects 5.15. Bisection in progress.
+>
+> I guess it will point to
+>
+> >> Francis Laniel <flaniel@linux.microsoft.com>
+> >>      tracing/kprobes: Return EADDRNOTAVAIL when func matches several s=
+ymbols
 
-Tree: stable-rc
-Branch: queue/5.10
-Git Describe: v5.10.202-70-g7a1294e8eed9d
-Git Commit: 7a1294e8eed9d6014a7eb559185e420d53c3623d
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+It sure did!:
 
-Warnings Detected:
+  commit 7b4375c36a4c0e1b4b97ccbcdd427db5a460e04f
+  Author: Francis Laniel <flaniel@linux.microsoft.com>
+  Date:   Fri Oct 20 13:42:49 2023 +0300
 
-arc:
+      tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbo=
+ls
 
-arm64:
+      commit b022f0c7e404887a7c5229788fc99eff9f9a80d5 upstream.
 
-arm:
+Reverting that commit made the build pass again.
 
-i386:
+Greetings!
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
 
