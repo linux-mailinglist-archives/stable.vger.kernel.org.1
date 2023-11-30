@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDB57FF57C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FD27FF5DF
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D09D1C21069
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7781E1C2113A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D58E54FAD;
-	Thu, 30 Nov 2023 16:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0EDC482CA;
+	Thu, 30 Nov 2023 16:32:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ak3+hl2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVZalI2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72ED54BFB;
-	Thu, 30 Nov 2023 16:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45768C433C7;
-	Thu, 30 Nov 2023 16:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744A554F96;
+	Thu, 30 Nov 2023 16:32:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01F04C433C7;
+	Thu, 30 Nov 2023 16:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361756;
-	bh=xeDBBFkqDiUv2Zns+nevMCkl5SGGBx5rA+o/sDg3JUQ=;
+	s=korg; t=1701361951;
+	bh=AaJO6iKlKbO1oRmuIkVeAMn4tpDyFD+hAhJDpdOA8Yg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ak3+hl2sIFMMIn5979bBpyTniiHb4LocHhS+3xzqFaWS9KyhwFAupF6HWi7F9770w
-	 tQqvRdwSI5iwUI7Lip83mACjMMRkgeVsNv+nmM73Xrae9CBaeO0zRY+SUZpC/pfoo2
-	 n/FLghGhTMsdqSAmv2uSS7VSfrT1mJGP15Y9OmCk=
+	b=AVZalI2ywgKLI1NpPQHcElL+KEztbEwDERrDUfh9U3m55TLtb5FoF9RRoAt0G7SUt
+	 Yt885FxZOTF1jbPDPhUReU/dg0iXPgLgqrwJLw4qjLVIU5vaOJVPPAjYYvDQEELsyv
+	 HbiEUfxEIesFS4xFBlXmPOcCsYygjjWL3G+e0+j4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/82] cifs: distribute channels across interfaces based on speed
+Subject: [PATCH 5.15 09/69] ata: pata_isapnp: Add missing error check for devm_ioport_map()
 Date: Thu, 30 Nov 2023 16:22:06 +0000
-Message-ID: <20231130162137.070386121@linuxfoundation.org>
+Message-ID: <20231130162133.380387378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,254 +54,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit a6d8fb54a515f0546ffdb7870102b1238917e567 ]
+[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
 
-Today, if the server interfaces RSS capable, we simply
-choose the fastest interface to setup a channel. This is not
-a scalable approach, and does not make a lot of attempt to
-distribute the connections.
+Add missing error return check for devm_ioport_map() and return the
+error if this function call fails.
 
-This change does a weighted distribution of channels across
-all the available server interfaces, where the weight is
-a function of the advertised interface speed.
-
-Also make sure that we don't mix rdma and non-rdma for channels.
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Stable-dep-of: fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
+Fixes: 0d5ff566779f ("libata: convert to iomap")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifs_debug.c | 16 ++++++++
- fs/smb/client/cifsglob.h   |  2 +
- fs/smb/client/sess.c       | 84 +++++++++++++++++++++++++++++++-------
- 3 files changed, 88 insertions(+), 14 deletions(-)
+ drivers/ata/pata_isapnp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
-index 8233fb2f0ca63..0acb455368f23 100644
---- a/fs/smb/client/cifs_debug.c
-+++ b/fs/smb/client/cifs_debug.c
-@@ -220,6 +220,8 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
- 	struct cifs_ses *ses;
- 	struct cifs_tcon *tcon;
- 	struct cifs_server_iface *iface;
-+	size_t iface_weight = 0, iface_min_speed = 0;
-+	struct cifs_server_iface *last_iface = NULL;
- 	int c, i, j;
- 
- 	seq_puts(m,
-@@ -461,11 +463,25 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
- 					   "\tLast updated: %lu seconds ago",
- 					   ses->iface_count,
- 					   (jiffies - ses->iface_last_update) / HZ);
+diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
+index 43bb224430d3c..8892931ea8676 100644
+--- a/drivers/ata/pata_isapnp.c
++++ b/drivers/ata/pata_isapnp.c
+@@ -82,6 +82,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
+ 	if (pnp_port_valid(idev, 1)) {
+ 		ctl_addr = devm_ioport_map(&idev->dev,
+ 					   pnp_port_start(idev, 1), 1);
++		if (!ctl_addr)
++			return -ENOMEM;
 +
-+			last_iface = list_last_entry(&ses->iface_list,
-+						     struct cifs_server_iface,
-+						     iface_head);
-+			iface_min_speed = last_iface->speed;
-+
- 			j = 0;
- 			list_for_each_entry(iface, &ses->iface_list,
- 						 iface_head) {
- 				seq_printf(m, "\n\t%d)", ++j);
- 				cifs_dump_iface(m, iface);
-+
-+				iface_weight = iface->speed / iface_min_speed;
-+				seq_printf(m, "\t\tWeight (cur,total): (%zu,%zu)"
-+					   "\n\t\tAllocated channels: %u\n",
-+					   iface->weight_fulfilled,
-+					   iface_weight,
-+					   iface->num_channels);
-+
- 				if (is_ses_using_iface(ses, iface))
- 					seq_puts(m, "\t\t[CONNECTED]\n");
- 			}
-diff --git a/fs/smb/client/cifsglob.h b/fs/smb/client/cifsglob.h
-index 6c8a55608c9bd..2e814eadd6aef 100644
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -956,6 +956,8 @@ struct cifs_server_iface {
- 	struct list_head iface_head;
- 	struct kref refcount;
- 	size_t speed;
-+	size_t weight_fulfilled;
-+	unsigned int num_channels;
- 	unsigned int rdma_capable : 1;
- 	unsigned int rss_capable : 1;
- 	unsigned int is_active : 1; /* unset if non existent */
-diff --git a/fs/smb/client/sess.c b/fs/smb/client/sess.c
-index f0d164873500b..33e724545c5b4 100644
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -164,7 +164,9 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 	int left;
- 	int rc = 0;
- 	int tries = 0;
-+	size_t iface_weight = 0, iface_min_speed = 0;
- 	struct cifs_server_iface *iface = NULL, *niface = NULL;
-+	struct cifs_server_iface *last_iface = NULL;
- 
- 	spin_lock(&ses->chan_lock);
- 
-@@ -192,21 +194,11 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 	}
- 	spin_unlock(&ses->chan_lock);
- 
--	/*
--	 * Keep connecting to same, fastest, iface for all channels as
--	 * long as its RSS. Try next fastest one if not RSS or channel
--	 * creation fails.
--	 */
--	spin_lock(&ses->iface_lock);
--	iface = list_first_entry(&ses->iface_list, struct cifs_server_iface,
--				 iface_head);
--	spin_unlock(&ses->iface_lock);
--
- 	while (left > 0) {
- 
- 		tries++;
- 		if (tries > 3*ses->chan_max) {
--			cifs_dbg(FYI, "too many channel open attempts (%d channels left to open)\n",
-+			cifs_dbg(VFS, "too many channel open attempts (%d channels left to open)\n",
- 				 left);
- 			break;
- 		}
-@@ -214,17 +206,35 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 		spin_lock(&ses->iface_lock);
- 		if (!ses->iface_count) {
- 			spin_unlock(&ses->iface_lock);
-+			cifs_dbg(VFS, "server %s does not advertise interfaces\n",
-+				      ses->server->hostname);
- 			break;
- 		}
- 
-+		if (!iface)
-+			iface = list_first_entry(&ses->iface_list, struct cifs_server_iface,
-+						 iface_head);
-+		last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
-+					     iface_head);
-+		iface_min_speed = last_iface->speed;
-+
- 		list_for_each_entry_safe_from(iface, niface, &ses->iface_list,
- 				    iface_head) {
-+			/* do not mix rdma and non-rdma interfaces */
-+			if (iface->rdma_capable != ses->server->rdma)
-+				continue;
-+
- 			/* skip ifaces that are unusable */
- 			if (!iface->is_active ||
- 			    (is_ses_using_iface(ses, iface) &&
--			     !iface->rss_capable)) {
-+			     !iface->rss_capable))
-+				continue;
-+
-+			/* check if we already allocated enough channels */
-+			iface_weight = iface->speed / iface_min_speed;
-+
-+			if (iface->weight_fulfilled >= iface_weight)
- 				continue;
--			}
- 
- 			/* take ref before unlock */
- 			kref_get(&iface->refcount);
-@@ -241,10 +251,21 @@ int cifs_try_adding_channels(struct cifs_sb_info *cifs_sb, struct cifs_ses *ses)
- 				continue;
- 			}
- 
--			cifs_dbg(FYI, "successfully opened new channel on iface:%pIS\n",
-+			iface->num_channels++;
-+			iface->weight_fulfilled++;
-+			cifs_dbg(VFS, "successfully opened new channel on iface:%pIS\n",
- 				 &iface->sockaddr);
- 			break;
- 		}
-+
-+		/* reached end of list. reset weight_fulfilled and start over */
-+		if (list_entry_is_head(iface, &ses->iface_list, iface_head)) {
-+			list_for_each_entry(iface, &ses->iface_list, iface_head)
-+				iface->weight_fulfilled = 0;
-+			spin_unlock(&ses->iface_lock);
-+			iface = NULL;
-+			continue;
-+		}
- 		spin_unlock(&ses->iface_lock);
- 
- 		left--;
-@@ -263,8 +284,10 @@ int
- cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- {
- 	unsigned int chan_index;
-+	size_t iface_weight = 0, iface_min_speed = 0;
- 	struct cifs_server_iface *iface = NULL;
- 	struct cifs_server_iface *old_iface = NULL;
-+	struct cifs_server_iface *last_iface = NULL;
- 	int rc = 0;
- 
- 	spin_lock(&ses->chan_lock);
-@@ -284,13 +307,34 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 	spin_unlock(&ses->chan_lock);
- 
- 	spin_lock(&ses->iface_lock);
-+	if (!ses->iface_count) {
-+		spin_unlock(&ses->iface_lock);
-+		cifs_dbg(VFS, "server %s does not advertise interfaces\n", ses->server->hostname);
-+		return 0;
-+	}
-+
-+	last_iface = list_last_entry(&ses->iface_list, struct cifs_server_iface,
-+				     iface_head);
-+	iface_min_speed = last_iface->speed;
-+
- 	/* then look for a new one */
- 	list_for_each_entry(iface, &ses->iface_list, iface_head) {
-+		/* do not mix rdma and non-rdma interfaces */
-+		if (iface->rdma_capable != server->rdma)
-+			continue;
-+
- 		if (!iface->is_active ||
- 		    (is_ses_using_iface(ses, iface) &&
- 		     !iface->rss_capable)) {
- 			continue;
- 		}
-+
-+		/* check if we already allocated enough channels */
-+		iface_weight = iface->speed / iface_min_speed;
-+
-+		if (iface->weight_fulfilled >= iface_weight)
-+			continue;
-+
- 		kref_get(&iface->refcount);
- 		break;
- 	}
-@@ -306,10 +350,22 @@ cifs_chan_update_iface(struct cifs_ses *ses, struct TCP_Server_Info *server)
- 		cifs_dbg(FYI, "replacing iface: %pIS with %pIS\n",
- 			 &old_iface->sockaddr,
- 			 &iface->sockaddr);
-+
-+		old_iface->num_channels--;
-+		if (old_iface->weight_fulfilled)
-+			old_iface->weight_fulfilled--;
-+		iface->num_channels++;
-+		iface->weight_fulfilled++;
-+
- 		kref_put(&old_iface->refcount, release_iface);
- 	} else if (old_iface) {
- 		cifs_dbg(FYI, "releasing ref to iface: %pIS\n",
- 			 &old_iface->sockaddr);
-+
-+		old_iface->num_channels--;
-+		if (old_iface->weight_fulfilled)
-+			old_iface->weight_fulfilled--;
-+
- 		kref_put(&old_iface->refcount, release_iface);
- 	} else {
- 		WARN_ON(!iface);
+ 		ap->ioaddr.altstatus_addr = ctl_addr;
+ 		ap->ioaddr.ctl_addr = ctl_addr;
+ 		ap->ops = &isapnp_port_ops;
 -- 
 2.42.0
 
