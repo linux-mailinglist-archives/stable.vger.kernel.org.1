@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DDA7FF5EA
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB3A7FF543
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DADEBB20D81
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D6A01C20FC6
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA09C54FA4;
-	Thu, 30 Nov 2023 16:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8789C54F9C;
+	Thu, 30 Nov 2023 16:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHi6yssL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZYnJVs6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663C55578F;
-	Thu, 30 Nov 2023 16:32:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B07C433C7;
-	Thu, 30 Nov 2023 16:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4768854F87;
+	Thu, 30 Nov 2023 16:27:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C192FC433C7;
+	Thu, 30 Nov 2023 16:27:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361959;
-	bh=VJe+GCDDnmO3haJ1RjmhIci+1T+tfv8QN6qgEGiO6NI=;
+	s=korg; t=1701361640;
+	bh=xPR8Jc881NDfofc5/Io/fosGbjq+2h2gKUsFXpNch9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHi6yssLvvESKdUyTxLN/fmSRd/ATZCdruLJiugSUFq0zPbmc2fhVBS5NTRLX3PPh
-	 th/JqlVjIwxwzO4ITcQbJsW7RANrwXPDJ7s4K1OzzlCeNBszllfIkasefBuXPNgD/F
-	 ZyQtlp2tpB7cnsKv5cTewSgtMPSS0BzZ2HUxPSws=
+	b=fZYnJVs6hLQQr0e3Hpr7uzvTYaCueY2DRwehQXZCfBTJev4rpG1o9Gyyzp0mCK+wZ
+	 6QfizS4Rs0V/fhTHs70TcXI0AMCviHb7WD+/xyIKuN/WxdhRd8dedzCHhaoQyhWilY
+	 EMS6B0mimqketDJWEi/qYBQwh5TW7EovKHDjPSrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/69] media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater than 3
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 101/112] usb: config: fix iteration issue in usb_get_bos_descriptor()
 Date: Thu, 30 Nov 2023 16:22:28 +0000
-Message-ID: <20231130162134.107252741@linuxfoundation.org>
+Message-ID: <20231130162143.505967882@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit e655d1ae9703286cef7fda8675cad62f649dc183 ]
+commit 974bba5c118f4c2baf00de0356e3e4f7928b4cbc upstream.
 
-VC_MODE = 0 implies a two bit VC address.
-VC_MODE = 1 is required for VCs with a larger address than two bits.
+The BOS descriptor defines a root descriptor and is the base descriptor for
+accessing a family of related descriptors.
 
-Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
+Function 'usb_get_bos_descriptor()' encounters an iteration issue when
+skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
+the same descriptor being read repeatedly.
+
+To address this issue, a 'goto' statement is introduced to ensure that the
+pointer and the amount read is updated correctly. This ensures that the
+function iterates to the next descriptor instead of reading the same
+descriptor repeatedly.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231115121325.471454-1-niklas.neronin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-csid-170.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/core/config.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-csid-170.c b/drivers/media/platform/qcom/camss/camss-csid-170.c
-index 7ccf0c11a1a21..270a960165b53 100644
---- a/drivers/media/platform/qcom/camss/camss-csid-170.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-170.c
-@@ -442,6 +442,8 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
- 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG0);
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_de
  
- 	val = 1 << CSI2_RX_CFG1_PACKET_ECC_CORRECTION_EN;
-+	if (vc > 3)
-+		val |= 1 << CSI2_RX_CFG1_VC_MODE;
- 	val |= 1 << CSI2_RX_CFG1_MISR_EN;
- 	writel_relaxed(val, csid->base + CSID_CSI2_RX_CFG1); // csi2_vc_mode_shift_val ?
+ 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
+ 			dev_notice(ddev, "descriptor type invalid, skip\n");
+-			continue;
++			goto skip_to_next_descriptor;
+ 		}
  
--- 
-2.42.0
-
+ 		switch (cap_type) {
+@@ -1078,6 +1078,7 @@ int usb_get_bos_descriptor(struct usb_de
+ 			break;
+ 		}
+ 
++skip_to_next_descriptor:
+ 		total_len -= length;
+ 		buffer += length;
+ 	}
 
 
 
