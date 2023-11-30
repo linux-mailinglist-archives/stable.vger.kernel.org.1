@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-3308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341317FF4FB
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91D97FF56B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF7B1F20F26
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9C351C20E07
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36F4D54F98;
-	Thu, 30 Nov 2023 16:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC6A54F90;
+	Thu, 30 Nov 2023 16:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqqE8Mi2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0u8PKtz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC56B482CB;
-	Thu, 30 Nov 2023 16:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C04BC433C8;
-	Thu, 30 Nov 2023 16:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBC0524C2;
+	Thu, 30 Nov 2023 16:28:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65065C433C8;
+	Thu, 30 Nov 2023 16:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361500;
-	bh=n80YUGbDRzkDDoYch5h4QL72YFOCe+YPrpd+SFSasWk=;
+	s=korg; t=1701361723;
+	bh=UMi+JtAGivaPX6ttX8MgboiPqsSbguOF3H+PqMWMDh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqqE8Mi2764Z+Pl9dXBvp07aaSSxZsr3/8fIG/M9LNSE1rhSTaaE2/tCk4ecTN09k
-	 BGw1p2ysEdKUNBzXnr65n05TD0zR7kLovd74zQB6ZXODuteiQGK/EC38Zq5zjRFMVT
-	 KtkGEOJw4aecnAJ/bN/Gn+fb7xk8Y9pd0Lz0XydI=
+	b=C0u8PKtzv11S+VV1Y0haPN1TtkXc+nfOrl8wHWAhcEOx/sc1YUgyxBcIV6mPjFw3Z
+	 FqJ1DCyB9Yj+pWTcw4+4cMKBdLS/Ne3pINJe4gJv7hW0W+HFI1CWcvsFDTQsPGIdza
+	 JmLWT1MPazOFwBQwtU7Seg3LhTj95WEUy1SG5wcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Bogdan Marcynkov <bmarcynk@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/112] vsock/test: fix SEQPACKET message bounds test
-Date: Thu, 30 Nov 2023 16:21:34 +0000
-Message-ID: <20231130162141.807131212@linuxfoundation.org>
+Subject: [PATCH 6.1 04/82] drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
+Date: Thu, 30 Nov 2023 16:21:35 +0000
+Message-ID: <20231130162136.113274440@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,101 +53,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+From: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
 
-[ Upstream commit f0863888f6cfef33e3117dccfe94fa78edf76be4 ]
+[ Upstream commit 6965809e526917b73c8f9178173184dcf13cec4b ]
 
-Tune message length calculation to make this test work on machines
-where 'getpagesize()' returns >32KB. Now maximum message length is not
-hardcoded (on machines above it was smaller than 'getpagesize()' return
-value, thus we get negative value and test fails), but calculated at
-runtime and always bigger than 'getpagesize()' result. Reproduced on
-aarch64 with 64KB page size.
+For "auo,b101uan08.3" this panel, it is stipulated in the panel spec that
+MIPI needs to keep the LP11 state before the lcm_reset pin is pulled high.
 
-Fixes: 5c338112e48a ("test/vsock: rework message bounds test")
-Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Reported-by: Bogdan Marcynkov <bmarcynk@redhat.com>
-Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
-Link: https://lore.kernel.org/r/20231121211642.163474-1-avkrasnov@salutedevices.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 56ad624b4cb5 ("drm/panel: support for auo, b101uan08.3 wuxga dsi video mode panel")
+Signed-off-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231114044205.613421-1-xuxinxiong@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/vsock/vsock_test.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/vsock/vsock_test.c b/tools/testing/vsock/vsock_test.c
-index 90718c2fd4ea9..5dc7767039f6f 100644
---- a/tools/testing/vsock/vsock_test.c
-+++ b/tools/testing/vsock/vsock_test.c
-@@ -392,11 +392,12 @@ static void test_stream_msg_peek_server(const struct test_opts *opts)
- }
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index 733e28a2536a4..1c008bd9102ff 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -1473,6 +1473,7 @@ static const struct panel_desc auo_b101uan08_3_desc = {
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 		      MIPI_DSI_MODE_LPM,
+ 	.init_cmds = auo_b101uan08_3_init_cmd,
++	.lp11_before_reset = true,
+ };
  
- #define SOCK_BUF_SIZE (2 * 1024 * 1024)
--#define MAX_MSG_SIZE (32 * 1024)
-+#define MAX_MSG_PAGES 4
- 
- static void test_seqpacket_msg_bounds_client(const struct test_opts *opts)
- {
- 	unsigned long curr_hash;
-+	size_t max_msg_size;
- 	int page_size;
- 	int msg_count;
- 	int fd;
-@@ -412,7 +413,8 @@ static void test_seqpacket_msg_bounds_client(const struct test_opts *opts)
- 
- 	curr_hash = 0;
- 	page_size = getpagesize();
--	msg_count = SOCK_BUF_SIZE / MAX_MSG_SIZE;
-+	max_msg_size = MAX_MSG_PAGES * page_size;
-+	msg_count = SOCK_BUF_SIZE / max_msg_size;
- 
- 	for (int i = 0; i < msg_count; i++) {
- 		ssize_t send_size;
-@@ -423,7 +425,7 @@ static void test_seqpacket_msg_bounds_client(const struct test_opts *opts)
- 		/* Use "small" buffers and "big" buffers. */
- 		if (i & 1)
- 			buf_size = page_size +
--					(rand() % (MAX_MSG_SIZE - page_size));
-+					(rand() % (max_msg_size - page_size));
- 		else
- 			buf_size = 1 + (rand() % page_size);
- 
-@@ -479,7 +481,6 @@ static void test_seqpacket_msg_bounds_server(const struct test_opts *opts)
- 	unsigned long remote_hash;
- 	unsigned long curr_hash;
- 	int fd;
--	char buf[MAX_MSG_SIZE];
- 	struct msghdr msg = {0};
- 	struct iovec iov = {0};
- 
-@@ -507,8 +508,13 @@ static void test_seqpacket_msg_bounds_server(const struct test_opts *opts)
- 	control_writeln("SRVREADY");
- 	/* Wait, until peer sends whole data. */
- 	control_expectln("SENDDONE");
--	iov.iov_base = buf;
--	iov.iov_len = sizeof(buf);
-+	iov.iov_len = MAX_MSG_PAGES * getpagesize();
-+	iov.iov_base = malloc(iov.iov_len);
-+	if (!iov.iov_base) {
-+		perror("malloc");
-+		exit(EXIT_FAILURE);
-+	}
-+
- 	msg.msg_iov = &iov;
- 	msg.msg_iovlen = 1;
- 
-@@ -533,6 +539,7 @@ static void test_seqpacket_msg_bounds_server(const struct test_opts *opts)
- 		curr_hash += hash_djb2(msg.msg_iov[0].iov_base, recv_size);
- 	}
- 
-+	free(iov.iov_base);
- 	close(fd);
- 	remote_hash = control_readulong();
- 
+ static const struct drm_display_mode boe_tv105wum_nw0_default_mode = {
 -- 
 2.42.0
 
