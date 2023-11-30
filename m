@@ -1,117 +1,75 @@
-Return-Path: <stable+bounces-3242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7E07FF29B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:40:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0079B7FF2C7
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BA591C20F94
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:40:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78554B20F20
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12BC5100D;
-	Thu, 30 Nov 2023 14:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GWzzjqgr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8886651C34;
+	Thu, 30 Nov 2023 14:46:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B46BE93;
-	Thu, 30 Nov 2023 06:40:44 -0800 (PST)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 308F540E0030;
-	Thu, 30 Nov 2023 14:40:42 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id zijeYWMRN7vv; Thu, 30 Nov 2023 14:40:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1701355240; bh=h0qwow19NdKO2+/XrBUXodPBR9R3/3gl99cArdMrp3w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GWzzjqgrfLnSQPKE0qba0s7RZ54I13eojfslwg0fAcYdiA12TK8XDBQkvoWks8ifV
-	 I/yj7qWWWt/1cAXrL47wvl7R8T+q92wFeUxThqrGyBhZR/nOY+C4kOdocjFX8QDPW9
-	 5pMzCLDVv0Eo4mV2tmNgKzmW4FS3wVIJY/N9UFnqGkBC+jGDUr4zOdTcIjf3gdkvY6
-	 jwwLd9C8220jj6W2G2Or6BPmSgHfieZDFr3c1ty9L5wT8DQGy7Zx3QzMrGG4L2AXTq
-	 nhPgnFKeBSmw07LAqri0Nb1tVmz61+BFWIzv7cJdR+hMneNc0P4mLwnpa4UHUCt/Iw
-	 MuyOazyjjadjifxvdSTZh8eoneG99HjiXzyKutoeeJbx3QAGmbmwhpN3vIXekbloO6
-	 BlgMN+uq7i5R/MspJgGDqd3kiZef3NPj+AsB3belkSCDi9JCWZDFjsPf2V3sibVtsL
-	 GZ7VzV0khKEj8Hv9onSX8M/mxE5V5JBLDG2bmVsrftboqiwmJ4Poz8G6nHCRFwGHhe
-	 IRhefBSFLNt0Gi07+wz3ZUdQZGbPzhi7AMQSBrstDjHh6AL+qdkQAKzBBAST3zvqSb
-	 F/9pY96ebjtRJNzPjBLqh+C8bNUgF03g7PFxxytDL6OYAEc6gaiU7pq/ubtpmHMs4D
-	 1ueM1ZNR66s0O69R14YftBV4=
-Received: from zn.tnic (pd95304da.dip0.t-ipconnect.de [217.83.4.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9862640E0239;
-	Thu, 30 Nov 2023 14:40:05 +0000 (UTC)
-Date: Thu, 30 Nov 2023 15:40:01 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Shuai Xue <xueshuai@linux.alibaba.com>
-Cc: james.morse@arm.com, rafael@kernel.org, wangkefeng.wang@huawei.com,
-	tanxiaofei@huawei.com, mawupeng1@huawei.com, tony.luck@intel.com,
-	linmiaohe@huawei.com, naoya.horiguchi@nec.com,
-	gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
-	stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com,
-	ardb@kernel.org, ying.huang@intel.com, ashish.kalra@amd.com,
-	baolin.wang@linux.alibaba.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
-	robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
-	zhuo.song@linux.alibaba.com
-Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task
- work with proper si_code
-Message-ID: <20231130144001.GGZWiewYtvMSJir62f@fat_crate.local>
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-1-xueshuai@linux.alibaba.com>
- <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
- <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
- <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
- <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
- <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
- <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
+Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE2A693
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 06:45:57 -0800 (PST)
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-FEAT: A7bf7mETiWjtEkIHMIVyV9QvCCTXh+5mnyeiFxe2FqgvFgaXMFxbyQo/mwv6v
+	LapWuSDcFmGIKWkGbn/N4voVialGkBm4IMX89z1FtXkoTd3cP/UoJfC5PhT9Ey15L2eXh54
+	mAyHt0QEqrk6z84OvOp+PUAmAl5uewJomIefmb7e9r+/8lE/R3iIpaKLDsxNR8BkzR97zFk
+	q/T6WpbU5awb660k72TpCeCIaGJ/rA8hBh2ZUoHUToVrBm+Yge0QjdrNkB9T9CRi2N2Kxc9
+	v0VkyxClj4gepXmLsNiaXl/HWdDWVRYdqLOH/Z4fdu2miBIfsTV3M1i6wwTvTJzRjGsQqiE
+	ZfdNmwdS0Dk2P7loBhnkIk1vrLuXsSa9URTMIgqHchSHbGZvks=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-STYLE: 
+X-QQ-mid: t5gz7a-2t1701355524t1936382
+From: "=?utf-8?B?5YWz5paH5rab?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?R3JlZyBLSA==?=" <gregkh@linuxfoundation.org>
+Cc: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>, "=?utf-8?B?U2FzaGEgTGV2aW4=?=" <sashal@kernel.org>, "=?utf-8?B?aGlsZGF3dQ==?=" <hildawu@realtek.com>
+Subject: Re: [Re V2]:Patch "Bluetooth: btusb: Add 0bda:b85b for Fn-Link RTL8852BE" has been added to the 5.10-stable tree
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Thu, 30 Nov 2023 22:45:24 +0800
+X-Priority: 3
+Message-ID: <tencent_31EB5F576CF463EF7C66CEDC@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20231124043548.86153-1-sashal@kernel.org>
+	<tencent_27789A681229CCB77BE3E186@qq.com>
+	<tencent_13CC3606408C86A21D09FB05@qq.com>
+	<2023112442-glitzy-rocking-4a8a@gregkh>
+	<tencent_429FA9BD3B6671BC788386A6@qq.com>
+	<2023113015-justifier-nastiness-3c66@gregkh>
+	<tencent_7B1A767250D25DDD0AA40C93@qq.com>
+	<2023113024-huff-cushy-3b6b@gregkh>
+In-Reply-To: <2023113024-huff-cushy-3b6b@gregkh>
+X-QQ-ReplyHash: 3711289092
+X-BIZMAIL-ID: 5136379285096628118
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Thu, 30 Nov 2023 22:45:26 +0800 (CST)
+Feedback-ID: t:uniontech.com:qybglogicsvrgz:qybglogicsvrgz5a-2
 
-FTR, this is starting to make sense, thanks for explaining.
+PiBUaGVzZSBkbyBub3QgYXBwbHkgY2xlYW5seSB0byB0aG9zZSBrZXJuZWwgdHJlZXMsIGNh
+biB5b3UgcGxlYXNlIHByb3ZpZGUNCj4gYSB3b3JraW5nIHNldCBvZiBiYWNrcG9ydGVkIHBh
+dGNoZXMgdGhhdCBhcmUgZml4ZWQgdXAgYW5kIHRlc3RlZCBmb3INCj4gdGhlc2UgYnJhbmNo
+ZXM/DQpUaGFua3MgZm9yIHlvdXIga2luZGx5IHJlbWluZGVyLiANCkkgd2lsbCByZXNlbmQg
+cGF0Y2hlcyBzZXQgdG8gbWFpbGluZyBsaXN0cyBhZnRlciB0ZXN0aW5nLg0KDQpCZXN0IFJl
+Z2FyZHMNCmd1YW4gd2VudGFv
 
-Replying only to this one for now:
-
-On Thu, Nov 30, 2023 at 10:58:53AM +0800, Shuai Xue wrote:
-> To reproduce this problem:
-> 
-> 	# STEP1: enable early kill mode
-> 	#sysctl -w vm.memory_failure_early_kill=1
-> 	vm.memory_failure_early_kill = 1
-> 
-> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
-
-So this is for ARM folks to deal with, BUT:
-
-A consumed uncorrectable error on x86 means panic. On some hw like on
-AMD, that error doesn't even get seen by the OS but the hw does
-something called syncflood to prevent further error propagation. So
-there's no any action required - the hw does that.
-
-But I'd like to hear from ARM folks whether consuming an uncorrectable
-error even lets software run. Dunno.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
 
