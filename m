@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-3474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF847FF5D4
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 091CF7FF588
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A676EB2111A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B0CD1C21029
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A21495D9;
-	Thu, 30 Nov 2023 16:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FBC054FAE;
+	Thu, 30 Nov 2023 16:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSmWXYa3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Evr6Kf77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9819F10EF;
-	Thu, 30 Nov 2023 16:32:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226FAC433CA;
-	Thu, 30 Nov 2023 16:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEF3524C2;
+	Thu, 30 Nov 2023 16:29:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC46C433C7;
+	Thu, 30 Nov 2023 16:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361923;
-	bh=WuyndmYbmTkS93EbjuN2wV+hI0xfm4yNOsC7Szgte5c=;
+	s=korg; t=1701361779;
+	bh=Ccoaa0wrnaceK2DCAsTNaLM+hfi8rFNbDo55+UKd874=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSmWXYa3kryIOOz+7g3wIJh2li7ncYJHctEkEVJK9XZ0rHGucHJ3Z5+RpY46k5pJu
-	 FbqUwaLkKQ9B9pDp50vUKqAs3ATcbVKaFr5oo/0oXC9JYjG5PBpwA8snYiK23OZsuD
-	 X3C1MmSenCulOzOwFzX85MuKnrFrLCIUxdfBlxlA=
+	b=Evr6Kf77SQJomlwNH6y4AH5vMQkiFoko0KH97lb+ufcqGwznJ68Yli7oCvUfkb2pv
+	 5sCvH99L4dbiLnSJoKdz1WAlVkgdsg0NKmqsS05a2rL0AVNHoVXWfyj3MeE4YJ1j01
+	 iYzNQCzRtkQdh7Cbm2aE28Ablg7JeruoNe8ri5q8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 17/69] octeontx2-pf: Fix ntuple rule creation to direct packet to VF with higher Rx queue than its PF
+Subject: [PATCH 6.1 43/82] media: qcom: camss: Fix genpd cleanup
 Date: Thu, 30 Nov 2023 16:22:14 +0000
-Message-ID: <20231130162133.645757760@linuxfoundation.org>
+Message-ID: <20231130162137.322866205@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,80 +53,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-[ Upstream commit 4aa1d8f89b10cdc25a231dabf808d8935e0b137a ]
+[ Upstream commit f69791c39745e64621216fe8919cb73c0065002b ]
 
-It is possible to add a ntuple rule which would like to direct packet to
-a VF whose number of queues are greater/less than its PF's queue numbers.
-For example a PF can have 2 Rx queues but a VF created on that PF can have
-8 Rx queues. As of today, ntuple rule will reject rule because it is
-checking the requested queue number against PF's number of Rx queues.
-As a part of this fix if the action of a ntuple rule is to move a packet
-to a VF's queue then the check is removed. Also, a debug information is
-printed to aware user that it is user's responsibility to cross check if
-the requested queue number on that VF is a valid one.
+Right now we never release the power-domains properly on the error path.
+Add a routine to be reused for this purpose and appropriate jumps in
+probe() to run that routine where necessary.
 
-Fixes: f0a1913f8a6f ("octeontx2-pf: Add support for ethtool ntuple filters")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231121165624.3664182-1-sumang@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2f6f8af67203 ("media: camss: Refactor VFE power domain toggling")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/nic/otx2_flows.c        | 20 ++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/camss/camss.c | 35 ++++++++++++++---------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-index 483f660cebc40..c3e5ebc416676 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-@@ -1002,6 +1002,7 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
- 	struct ethhdr *eth_hdr;
- 	bool new = false;
- 	int err = 0;
-+	u64 vf_num;
- 	u32 ring;
- 
- 	if (!flow_cfg->max_flows) {
-@@ -1014,7 +1015,21 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
- 	if (!(pfvf->flags & OTX2_FLAG_NTUPLE_SUPPORT))
- 		return -ENOMEM;
- 
--	if (ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
-+	/* Number of queues on a VF can be greater or less than
-+	 * the PF's queue. Hence no need to check for the
-+	 * queue count. Hence no need to check queue count if PF
-+	 * is installing for its VF. Below is the expected vf_num value
-+	 * based on the ethtool commands.
-+	 *
-+	 * e.g.
-+	 * 1. ethtool -U <netdev> ... action -1  ==> vf_num:255
-+	 * 2. ethtool -U <netdev> ... action <queue_num>  ==> vf_num:0
-+	 * 3. ethtool -U <netdev> ... vf <vf_idx> queue <queue_num>  ==>
-+	 *    vf_num:vf_idx+1
-+	 */
-+	vf_num = ethtool_get_flow_spec_ring_vf(fsp->ring_cookie);
-+	if (!is_otx2_vf(pfvf->pcifunc) && !vf_num &&
-+	    ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
- 		return -EINVAL;
- 
- 	if (fsp->location >= otx2_get_maxflows(flow_cfg))
-@@ -1096,6 +1111,9 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
- 		flow_cfg->nr_flows++;
- 	}
- 
-+	if (flow->is_vf)
-+		netdev_info(pfvf->netdev,
-+			    "Make sure that VF's queue number is within its queue limit\n");
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index f490ad2266960..a30461de3e844 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -1538,6 +1538,20 @@ static int camss_icc_get(struct camss *camss)
  	return 0;
  }
  
++static void camss_genpd_cleanup(struct camss *camss)
++{
++	int i;
++
++	if (camss->genpd_num == 1)
++		return;
++
++	if (camss->genpd_num > camss->vfe_num)
++		device_link_del(camss->genpd_link[camss->genpd_num - 1]);
++
++	for (i = 0; i < camss->genpd_num; i++)
++		dev_pm_domain_detach(camss->genpd[i], true);
++}
++
+ /*
+  * camss_probe - Probe CAMSS platform device
+  * @pdev: Pointer to CAMSS platform device
+@@ -1625,11 +1639,11 @@ static int camss_probe(struct platform_device *pdev)
+ 
+ 	ret = camss_init_subdevices(camss);
+ 	if (ret < 0)
+-		return ret;
++		goto err_genpd_cleanup;
+ 
+ 	ret = dma_set_mask_and_coherent(dev, 0xffffffff);
+ 	if (ret)
+-		return ret;
++		goto err_genpd_cleanup;
+ 
+ 	camss->media_dev.dev = camss->dev;
+ 	strscpy(camss->media_dev.model, "Qualcomm Camera Subsystem",
+@@ -1641,7 +1655,7 @@ static int camss_probe(struct platform_device *pdev)
+ 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
+ 	if (ret < 0) {
+ 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
+-		return ret;
++		goto err_genpd_cleanup;
+ 	}
+ 
+ 	v4l2_async_nf_init(&camss->notifier);
+@@ -1692,28 +1706,19 @@ static int camss_probe(struct platform_device *pdev)
+ err_v4l2_device_unregister:
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	v4l2_async_nf_cleanup(&camss->notifier);
++err_genpd_cleanup:
++	camss_genpd_cleanup(camss);
+ 
+ 	return ret;
+ }
+ 
+ void camss_delete(struct camss *camss)
+ {
+-	int i;
+-
+ 	v4l2_device_unregister(&camss->v4l2_dev);
+ 	media_device_unregister(&camss->media_dev);
+ 	media_device_cleanup(&camss->media_dev);
+ 
+ 	pm_runtime_disable(camss->dev);
+-
+-	if (camss->genpd_num == 1)
+-		return;
+-
+-	if (camss->genpd_num > camss->vfe_num)
+-		device_link_del(camss->genpd_link[camss->genpd_num - 1]);
+-
+-	for (i = 0; i < camss->genpd_num; i++)
+-		dev_pm_domain_detach(camss->genpd[i], true);
+ }
+ 
+ /*
+@@ -1732,6 +1737,8 @@ static void camss_remove(struct platform_device *pdev)
+ 
+ 	if (atomic_read(&camss->ref_count) == 0)
+ 		camss_delete(camss);
++
++	camss_genpd_cleanup(camss);
+ }
+ 
+ static const struct of_device_id camss_dt_match[] = {
 -- 
 2.42.0
 
