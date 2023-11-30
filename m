@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-3465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39B07FF5C6
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF2087FF51F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B142B20E48
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E175A1C20DEC
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B53C54F9C;
-	Thu, 30 Nov 2023 16:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D4D54F9B;
+	Thu, 30 Nov 2023 16:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aEBp72FW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kWaGYQsK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8C83AC1A;
-	Thu, 30 Nov 2023 16:31:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE14C433C7;
-	Thu, 30 Nov 2023 16:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23443524C2;
+	Thu, 30 Nov 2023 16:26:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1209C433C9;
+	Thu, 30 Nov 2023 16:26:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361903;
-	bh=t3DBteq2V0bKgU1XdAvCRI0SSPbx17F3bf1bk78nz80=;
+	s=korg; t=1701361563;
+	bh=0SlmiANb8pxM4vEWBvQfMuLZc9UTI/6yPx4v66GF1ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aEBp72FWfbIKhvbCQgeh2kJjrIOoCoD/Ee03l3+WaTk3U3SQ6Ocgk6GWAVDtdk5aM
-	 rxSmk+yMkuAlaT1nvitfpNC3ZdHglL94gRk5kS/huHG4ACCJ1ip1RAI/+qnVbAPENw
-	 rnf8SLGzeCR6mG8V7+yP2ywo9QHLnVmOQEFJBTEI=
+	b=kWaGYQsKjKZsB1QXY7bogCekVwUacct6VNN5Ipd+J34DZ6QZuoFq66kTRHHIHbsT/
+	 ainogiXovvL5u739WU0DHSEDGDo0Ero3ienfJnXXxTncWhWXb4uW3L0wlV2rV6S0DO
+	 9WS2VzVvV/IkyRhEkcH7bMraEEOjk1Lmh/WaejAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 01/69] afs: Fix afs_server_list to be cleaned up with RCU
+	Bhanu Victor DiCara <00bvd0+linux@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Xiao Ni <xni@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Guoqing Jiang <guoqing.jiang@linux.dev>
+Subject: [PATCH 6.6 071/112] md: fix bi_status reporting in md_end_clone_io
 Date: Thu, 30 Nov 2023 16:21:58 +0000
-Message-ID: <20231130162133.087572211@linuxfoundation.org>
+Message-ID: <20231130162142.578210326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +55,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit e6bace7313d61e31f2b16fa3d774fd8cb3cb869e ]
+commit 45b478951b2ba5aea70b2850c49c1aa83aedd0d2 upstream.
 
-afs_server_list is accessed with the rcu_read_lock() held from
-volume->servers, so it needs to be cleaned up correctly.
+md_end_clone_io() may overwrite error status in orig_bio->bi_status with
+BLK_STS_OK. This could happen when orig_bio has BIO_CHAIN (split by
+md_submit_bio => bio_split_to_limits, for example). As a result, upper
+layer may miss error reported from md (or the device) and consider the
+failed IO was successful.
 
-Fix this by using kfree_rcu() instead of kfree().
+Fix this by only update orig_bio->bi_status when current bio reports
+error and orig_bio is BLK_STS_OK. This is the same behavior as
+__bio_chain_endio().
 
-Fixes: 8a070a964877 ("afs: Detect cell aliases 1 - Cells with root volumes")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10764815ff47 ("md: add io accounting for raid0 and raid5")
+Cc: stable@vger.kernel.org # v5.14+
+Reported-by: Bhanu Victor DiCara <00bvd0+linux@gmail.com>
+Closes: https://lore.kernel.org/regressions/5727380.DvuYhMxLoT@bvd0/
+Signed-off-by: Song Liu <song@kernel.org>
+Tested-by: Xiao Ni <xni@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/internal.h    | 1 +
- fs/afs/server_list.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/md.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 567e61b553f56..183200c6ce20e 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -556,6 +556,7 @@ struct afs_server_entry {
- };
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8669,7 +8669,8 @@ static void md_end_clone_io(struct bio *
+ 	struct bio *orig_bio = md_io_clone->orig_bio;
+ 	struct mddev *mddev = md_io_clone->mddev;
  
- struct afs_server_list {
-+	struct rcu_head		rcu;
- 	afs_volid_t		vids[AFS_MAXTYPES]; /* Volume IDs */
- 	refcount_t		usage;
- 	unsigned char		nr_servers;
-diff --git a/fs/afs/server_list.c b/fs/afs/server_list.c
-index ed9056703505f..b59896b1de0af 100644
---- a/fs/afs/server_list.c
-+++ b/fs/afs/server_list.c
-@@ -17,7 +17,7 @@ void afs_put_serverlist(struct afs_net *net, struct afs_server_list *slist)
- 		for (i = 0; i < slist->nr_servers; i++)
- 			afs_unuse_server(net, slist->servers[i].server,
- 					 afs_server_trace_put_slist);
--		kfree(slist);
-+		kfree_rcu(slist, rcu);
- 	}
- }
+-	orig_bio->bi_status = bio->bi_status;
++	if (bio->bi_status && !orig_bio->bi_status)
++		orig_bio->bi_status = bio->bi_status;
  
--- 
-2.42.0
-
+ 	if (md_io_clone->start_time)
+ 		bio_end_io_acct(orig_bio, md_io_clone->start_time);
 
 
 
