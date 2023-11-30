@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F38E7FF5A7
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3327FF554
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE31928171C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DE6B1C20F7D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBD04878B;
-	Thu, 30 Nov 2023 16:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20F754F9C;
+	Thu, 30 Nov 2023 16:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eamDoiw2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSeWeS2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFB154F9B;
-	Thu, 30 Nov 2023 16:30:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D364C433CB;
-	Thu, 30 Nov 2023 16:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A4D524C2;
+	Thu, 30 Nov 2023 16:27:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF81C433C8;
+	Thu, 30 Nov 2023 16:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361832;
-	bh=Pn3+9dNHdBtSEWPPj3jIL3HsbR+uJ2y9lUMYnoS/sq0=;
+	s=korg; t=1701361677;
+	bh=4iGIhksDdHMRpBKKK+cdWmjwrJhRhz5u8DuQGAUIen0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eamDoiw26NUDo99x7AAcDz9RCT4WOEV6KkgjC//f0L8F2HoBNrUQf4RQoqnqyddcB
-	 CjY6gmw3Q+qL+kuar19nRZXev+tyA0H60Wu/Ryd6NbL5BW+zifov5p1ldMFZqJl4a6
-	 ZZqNBCuFcfdHhiWIBcuZAOJB2S0TUSXoXARgUWzA=
+	b=tSeWeS2EP8SYsQaDV0xxydpdLoOVwDr0HcZs6xMEwXnSSE1TRaU0fzc6Qgubkmdq0
+	 pw9EZuV8psnEeKu37Ucwtx0B0zHHsZzstLQYFfYy6BEY21SJDRxhvBtIbMpuYm/EoV
+	 imeXId0jF2fZ2cTszqsLHlgb5NnSo9T/HG1c0Hp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 65/82] hv_netvsc: Fix race of register_netdevice_notifier and VF register
+	stable <stable@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 109/112] usb: dwc3: Fix default mode initialization
 Date: Thu, 30 Nov 2023 16:22:36 +0000
-Message-ID: <20231130162138.047130045@linuxfoundation.org>
+Message-ID: <20231130162143.740492138@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +53,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 85520856466ed6bc3b1ccb013cddac70ceb437db upstream.
+commit 10d510abd096d620b9fda2dd3e0047c5efc4ad2b upstream.
 
-If VF NIC is registered earlier, NETDEV_REGISTER event is replayed,
-but NETDEV_POST_INIT is not.
+The default mode, configurable by DT, shall be set before usb role switch
+driver is registered. Otherwise there is a race between default mode
+and mode set by usb role switch driver.
 
-Move register_netdevice_notifier() earlier, so the call back
-function is set before probing.
-
-Cc: stable@vger.kernel.org
-Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
-Reported-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 98ed256a4dbad ("usb: dwc3: Add support for role-switch-default-mode binding")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231025095110.2405281-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/drd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2789,12 +2789,17 @@ static int __init netvsc_drv_init(void)
+--- a/drivers/usb/dwc3/drd.c
++++ b/drivers/usb/dwc3/drd.c
+@@ -505,6 +505,7 @@ static int dwc3_setup_role_switch(struct
+ 		dwc->role_switch_default_mode = USB_DR_MODE_PERIPHERAL;
+ 		mode = DWC3_GCTL_PRTCAP_DEVICE;
  	}
- 	netvsc_ring_bytes = ring_size * PAGE_SIZE;
++	dwc3_set_mode(dwc, mode);
  
-+	register_netdevice_notifier(&netvsc_netdev_notifier);
-+
- 	ret = vmbus_driver_register(&netvsc_drv);
- 	if (ret)
--		return ret;
-+		goto err_vmbus_reg;
+ 	dwc3_role_switch.fwnode = dev_fwnode(dwc->dev);
+ 	dwc3_role_switch.set = dwc3_usb_role_switch_set;
+@@ -526,7 +527,6 @@ static int dwc3_setup_role_switch(struct
+ 		}
+ 	}
  
--	register_netdevice_notifier(&netvsc_netdev_notifier);
+-	dwc3_set_mode(dwc, mode);
  	return 0;
-+
-+err_vmbus_reg:
-+	unregister_netdevice_notifier(&netvsc_netdev_notifier);
-+	return ret;
  }
- 
- MODULE_LICENSE("GPL");
+ #else
 
 
 
