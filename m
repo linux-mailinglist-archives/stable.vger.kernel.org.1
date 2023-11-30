@@ -1,44 +1,46 @@
-Return-Path: <stable+bounces-3302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA6C7FF4F3
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370677FF4F6
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D0801C20E34
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5BDA281726
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7359E54F93;
-	Thu, 30 Nov 2023 16:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5413C54FAC;
+	Thu, 30 Nov 2023 16:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRrUWL1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7XB4n6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31E9B495C2;
-	Thu, 30 Nov 2023 16:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C80C433C8;
-	Thu, 30 Nov 2023 16:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF7854FA5;
+	Thu, 30 Nov 2023 16:24:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922FAC433C8;
+	Thu, 30 Nov 2023 16:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361486;
-	bh=WLLTOS11P4/pAefPXYGiksEe2Jgu/wxOZivXQeX0Ajw=;
+	s=korg; t=1701361490;
+	bh=tCQ2GpQZHfLuQlGivttN7AewQPVUFoQYhE354uT1w4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRrUWL1F+0dNlP8WZjjqnqUQqeNxyRzWxBniA+phrQbLcKc15T16VeZw6kn9ic0Xw
-	 i1kzflfHPHnGVuI2gPSEPf19i14pPcokRQ2bv6x51Wrofml5bzNU7o7LbSEfjDnyiZ
-	 ccb1paoVIlXJaHEKgh+Bs5uWYSomLusHzi36pWIk=
+	b=v7XB4n6vBGUcPLML3Vo+BiT8nkDQ3wrwjWhTp2nyhGyXoNxJh82wJb5SQV3e20Bu8
+	 77l7PyIFti5Q6/pG8zxoWQ10PSBpgv6LvYDFWYF6+f8B6U81ZU/pQs92VFwpYxFz2t
+	 5m3Pb63zA3m1h0w4P1dEpwupOmXUpg9fS0otfFGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 042/112] net: veth: fix ethtool stats reporting
-Date: Thu, 30 Nov 2023 16:21:29 +0000
-Message-ID: <20231130162141.649037414@linuxfoundation.org>
+Subject: [PATCH 6.6 043/112] amd-xgbe: handle corner-case during sfp hotplug
+Date: Thu, 30 Nov 2023 16:21:30 +0000
+Message-ID: <20231130162141.677668176@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -57,46 +59,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 818ad9cc90d4a7165caaee7e32800c50d0564ec3 ]
+[ Upstream commit 676ec53844cbdf2f47e68a076cdff7f0ec6cbe3f ]
 
-Fix a possible misalignment between page_pool stats and tx xdp_stats
-reported in veth_get_ethtool_stats routine.
-The issue can be reproduced configuring the veth pair with the
-following tx/rx queues:
+Force the mode change for SFI in Fixed PHY configurations. Fixed PHY
+configurations needs PLL to be enabled while doing mode set. When the
+SFP module isn't connected during boot, driver assumes AN is ON and
+attempts auto-negotiation. However, if the connected SFP comes up in
+Fixed PHY configuration the link will not come up as PLL isn't enabled
+while the initial mode set command is issued. So, force the mode change
+for SFI in Fixed PHY configuration to fix link issues.
 
-$ip link add v0 numtxqueues 2 numrxqueues 4 type veth peer name v1 \
- numtxqueues 1 numrxqueues 1
-
-and loading a simple XDP program on v0 that just returns XDP_PASS.
-In this case on v0 the page_pool stats overwrites tx xdp_stats for queue 1.
-Fix the issue incrementing pp_idx of dev->real_num_tx_queues * VETH_TQ_STATS_LEN
-since we always report xdp_stats for all tx queues in ethtool.
-
-Fixes: 4fc418053ec7 ("net: veth: add page_pool stats")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/c5b5d0485016836448453f12846c7c4ab75b094a.1700593593.git.lorenzo@kernel.org
+Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/veth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 0ee5d1e0759fb..af326b91506eb 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -236,8 +236,8 @@ static void veth_get_ethtool_stats(struct net_device *dev,
- 				data[tx_idx + j] += *(u64 *)(base + offset);
- 			}
- 		} while (u64_stats_fetch_retry(&rq_stats->syncp, start));
--		pp_idx = tx_idx + VETH_TQ_STATS_LEN;
- 	}
-+	pp_idx = idx + dev->real_num_tx_queues * VETH_TQ_STATS_LEN;
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index 32d2c6fac6526..4a2dc705b5280 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -1193,7 +1193,19 @@ static int xgbe_phy_config_fixed(struct xgbe_prv_data *pdata)
+ 	if (pdata->phy.duplex != DUPLEX_FULL)
+ 		return -EINVAL;
  
- page_pool_stats:
- 	veth_get_page_pool_stats(dev, &data[pp_idx]);
+-	xgbe_set_mode(pdata, mode);
++	/* Force the mode change for SFI in Fixed PHY config.
++	 * Fixed PHY configs needs PLL to be enabled while doing mode set.
++	 * When the SFP module isn't connected during boot, driver assumes
++	 * AN is ON and attempts autonegotiation. However, if the connected
++	 * SFP comes up in Fixed PHY config, the link will not come up as
++	 * PLL isn't enabled while the initial mode set command is issued.
++	 * So, force the mode change for SFI in Fixed PHY configuration to
++	 * fix link issues.
++	 */
++	if (mode == XGBE_MODE_SFI)
++		xgbe_change_mode(pdata, mode);
++	else
++		xgbe_set_mode(pdata, mode);
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
