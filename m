@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-3324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D0A7FF511
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCED7FF574
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F24D51C20A5F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 864A42817E3
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89EF954F9B;
-	Thu, 30 Nov 2023 16:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E4C54FAD;
+	Thu, 30 Nov 2023 16:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uP66cMgp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b84RHCbI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371AD54F93;
-	Thu, 30 Nov 2023 16:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52170C433C7;
-	Thu, 30 Nov 2023 16:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F3154BFB;
+	Thu, 30 Nov 2023 16:29:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFF7C433C8;
+	Thu, 30 Nov 2023 16:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361542;
-	bh=KBf3ckFH8ZZdbhJFP2ziQdIn7EjeCpKZg3OLh74OB9I=;
+	s=korg; t=1701361741;
+	bh=koP2vmfshckH462ll3JuEfwjwC3v6OKR6J0YFmRJ3XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uP66cMgpkzD9pkSU5JOK89Gd0VTwBkJ5YMJoApwI/hAkWsz+KkodCm6WnGe7PgdSZ
-	 q5RZhltvwtI+14a8Fa5Stkf1wI6ZbDBld97nFL3SUDU8EMI95nYTvktU65+rbdZ4xe
-	 w0MNpyZdttR6f9GjTIcnWoVo/xTa25XO+7pWAVUQ=
+	b=b84RHCbIhs+26g29YglGONFP+Eq5C3gxuspkLjj5U6MjmG8ukD95e4SnP6v39p9k8
+	 b6+HgGLuILUKx449KE/mUnMhkFiP93R+lBXI4OkE8/cBwCwQytSfb85AhfAsKtVvSg
+	 ZJJXWGbk1jQUjKJ3HLshrx3C90KkwyMtt36VVR9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 064/112] ACPI: processor_idle: use raw_safe_halt() in acpi_idle_play_dead()
-Date: Thu, 30 Nov 2023 16:21:51 +0000
-Message-ID: <20231130162142.352058541@linuxfoundation.org>
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 21/82] net: axienet: Fix check for partial TX checksum
+Date: Thu, 30 Nov 2023 16:21:52 +0000
+Message-ID: <20231130162136.627745853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +55,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit 9bb69ba4c177dccaa1f5b5cbdf80b67813328348 upstream.
+[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
 
-Xen HVM guests were observed taking triple-faults when attempting to
-online a previously offlined vCPU.
+Due to a typo, the code checked the RX checksum feature in the TX path.
 
-Investigation showed that the fault was coming from a failing call
-to lockdep_assert_irqs_disabled(), in load_current_idt() which was
-too early in the CPU bringup to actually catch the exception and
-report the failure cleanly.
-
-This was a false positive, caused by acpi_idle_play_dead() setting
-the per-cpu hardirqs_enabled flag by calling safe_halt(). Switch it
-to use raw_safe_halt() instead, which doesn't do so.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_idle.c | 2 +-
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/processor_idle.c b/drivers/acpi/processor_idle.c
-index 3a34a8c425fe..55437f5e0c3a 100644
---- a/drivers/acpi/processor_idle.c
-+++ b/drivers/acpi/processor_idle.c
-@@ -592,7 +592,7 @@ static int acpi_idle_play_dead(struct cpuidle_device *dev, int index)
- 	while (1) {
- 
- 		if (cx->entry_method == ACPI_CSTATE_HALT)
--			safe_halt();
-+			raw_safe_halt();
- 		else if (cx->entry_method == ACPI_CSTATE_SYSTEMIO) {
- 			io_idle(cx->address);
- 		} else
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index d14648558338b..5ea9dc251dd9a 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -821,7 +821,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
+ 			/* Tx Full Checksum Offload Enabled */
+ 			cur_p->app0 |= 2;
+-		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
++		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
+ 			csum_start_off = skb_transport_offset(skb);
+ 			csum_index_off = csum_start_off + skb->csum_offset;
+ 			/* Tx Partial Checksum Offload Enabled */
 -- 
-2.43.0
+2.42.0
 
 
 
