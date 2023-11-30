@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 233E27FF600
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32FC17FF53E
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D26B9281902
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3E5428178C
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716F451002;
-	Thu, 30 Nov 2023 16:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E8754F9C;
+	Thu, 30 Nov 2023 16:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpSJAhRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ed/7KC1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CBA10EF;
-	Thu, 30 Nov 2023 16:33:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19CCC433C8;
-	Thu, 30 Nov 2023 16:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382ED54F92;
+	Thu, 30 Nov 2023 16:27:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC1CC433C9;
+	Thu, 30 Nov 2023 16:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701362012;
-	bh=77W147Gi9TWtjzISkaxerQok9T6kzp9lQR4a9N1KpDU=;
+	s=korg; t=1701361630;
+	bh=vyqwSARttmcK/Q2xY0pd6CA/n+DFvVdEAMQktUucBOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PpSJAhRAeZ4Gfr6IDKf3gw9jZ4SNE+Ac83Cr54OKEBGlcljo0iQPI+uzYQW3CFWPJ
-	 CE2cQ2KuuJI+Qsewon9UaxFJMPxo1FjTH0Z9xhGj7qklX3azs7doNyCRoTtQ4uLhOS
-	 uktNsbx7BMcFnAGKI+1pOL6z8tPk+EMwPoiCBwPg=
+	b=ed/7KC1xxs0uL/mrAjUz2Gtz7Jk0zoEh35btzkxeo/N8NvogWyoxfQlmmh7lUycLv
+	 V3QrsqCtV/8FkxEnWoQlpsZNkNU/XHuQ5zH6gU/ziS+Yq4xtLRO06Xa1jkSJoiUf+w
+	 FJ+f7fXWG839r1oub3EVpIBn1LxQcL77etvT2YHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/69] lockdep: Fix block chain corruption
+	Rand Deeb <rand.sec96@gmail.com>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 097/112] bcache: prevent potential division by zero error
 Date: Thu, 30 Nov 2023 16:22:24 +0000
-Message-ID: <20231130162133.968896224@linuxfoundation.org>
+Message-ID: <20231130162143.388607117@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit bca4104b00fec60be330cd32818dd5c70db3d469 ]
+commit 2c7f497ac274a14330208b18f6f734000868ebf9 upstream.
 
-Kent reported an occasional KASAN splat in lockdep. Mark then noted:
+In SHOW(), the variable 'n' is of type 'size_t.' While there is a
+conditional check to verify that 'n' is not equal to zero before
+executing the 'do_div' macro, concerns arise regarding potential
+division by zero error in 64-bit environments.
 
-> I suspect the dodgy access is to chain_block_buckets[-1], which hits the last 4
-> bytes of the redzone and gets (incorrectly/misleadingly) attributed to
-> nr_large_chain_blocks.
+The concern arises when 'n' is 64 bits in size, greater than zero, and
+the lower 32 bits of it are zeros. In such cases, the conditional check
+passes because 'n' is non-zero, but the 'do_div' macro casts 'n' to
+'uint32_t,' effectively truncating it to its lower 32 bits.
+Consequently, the 'n' value becomes zero.
 
-That would mean @size == 0, at which point size_to_bucket() returns -1
-and the above happens.
+To fix this potential division by zero error and ensure precise
+division handling, this commit replaces the 'do_div' macro with
+div64_u64(). div64_u64() is designed to work with 64-bit operands,
+guaranteeing that division is performed correctly.
 
-alloc_chain_hlocks() has 'size - req', for the first with the
-precondition 'size >= rq', which allows the 0.
+This change enhances the robustness of the code, ensuring that division
+operations yield accurate results in all scenarios, eliminating the
+possibility of division by zero, and improving compatibility across
+different 64-bit environments.
 
-This code is trying to split a block, del_chain_block() takes what we
-need, and add_chain_block() puts back the remainder, except in the
-above case the remainder is 0 sized and things go sideways.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 810507fe6fd5 ("locking/lockdep: Reuse freed chain_hlocks entries")
-Reported-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Kent Overstreet <kent.overstreet@linux.dev>
-Link: https://lkml.kernel.org/r/20231121114126.GH8262@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-5-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/locking/lockdep.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/bcache/sysfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index e6a282bc16652..770ff5bf14878 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -3416,7 +3416,8 @@ static int alloc_chain_hlocks(int req)
- 		size = chain_block_size(curr);
- 		if (likely(size >= req)) {
- 			del_chain_block(0, size, chain_block_next(curr));
--			add_chain_block(curr + req, size - req);
-+			if (size > req)
-+				add_chain_block(curr + req, size - req);
- 			return curr;
- 		}
- 	}
--- 
-2.42.0
-
+--- a/drivers/md/bcache/sysfs.c
++++ b/drivers/md/bcache/sysfs.c
+@@ -1103,7 +1103,7 @@ SHOW(__bch_cache)
+ 			sum += INITIAL_PRIO - cached[i];
+ 
+ 		if (n)
+-			do_div(sum, n);
++			sum = div64_u64(sum, n);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(q); i++)
+ 			q[i] = INITIAL_PRIO - cached[n * (i + 1) /
 
 
 
