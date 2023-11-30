@@ -1,233 +1,116 @@
-Return-Path: <stable+bounces-3195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AB447FE4FF
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 01:38:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 168D27FE64D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 02:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF9AFB20FA2
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 00:38:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47B231C208FF
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 01:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB63388;
-	Thu, 30 Nov 2023 00:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F5D6FA2;
+	Thu, 30 Nov 2023 01:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="uSe0OL2p"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z3mRjB/g"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94F91BC
-	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 16:38:10 -0800 (PST)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-5c2ad6a5515so342576a12.2
-        for <stable@vger.kernel.org>; Wed, 29 Nov 2023 16:38:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701304690; x=1701909490; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=6JJtXQRmDyqaN0xH4h8jullEPz9wgrCByKH3kovmXDs=;
-        b=uSe0OL2px7x9Alqose3meHUXQkKSgn0XcHGS7hF5BsXKDcHJbA4D+K3YI1WgBRbxhy
-         1EMmnSs9L18hqfTzI5F+esWXqqsXuzi8UROtUxNUqNnO5l6/H6pUBNmqeX0nWRKMZ0Ha
-         zh26/Vd6qOv+IQW1RIdsAbJ0JgXwdrPGqt2vDYywPUXfq2RfHbcPJKGIBAzGtETIMhrX
-         hynW75+qLyoRdXcGFkERmbTPfuBeCgwfb2WoWu1uZh2QdpJahEAck1JPWMVs+HoAYznB
-         WGhkCNnSCw1ZiHaeXTnjbWthGgCTu2pNaHWdhF9souwqCUHf1B8AvjQ4txyN7Iwv0/Nm
-         xPaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701304690; x=1701909490;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6JJtXQRmDyqaN0xH4h8jullEPz9wgrCByKH3kovmXDs=;
-        b=qKHa9QfPf/0v7/vwlA898gPX92vxjyGvHSgW2eMaZ5lEY6PYs9g5oktysseRqAbVyi
-         xgNLJAvUmc2dPyF0Snj8QXvpdwJDh7krcFj09L2dea42C4MwlM2JcqezqQ/Vlo1ub8WP
-         ka9/6pEbdsF4UV/iZbzXOQ4Y/wkB5UfgKocJojU3D+oI2F7AsrrWiOviphtGQP8UDxs/
-         YvhkrEpO1X2iCjXLvwRiztSbqj5yDaRxuFEd3DNPAr8MW7wqxceurYGVWyV/SkAERh7y
-         ZQEaTRV0Xpirr/TT6xjBXPJJOo1uVYqBGouwh0TOo5nnIJduZ6RStPyIqMM+x004fbPn
-         S/dg==
-X-Gm-Message-State: AOJu0YywK5YgTFPDkUhAkEQBCRpBroAptTpWC4iFEhnrGdRkSFLmywG2
-	5SGcVAw1IAQuqN1L91jUNHnSlvane7jIo1cLziwQEA==
-X-Google-Smtp-Source: AGHT+IH8LV+nVfVjZYi1IlHMmBzXmwjcs74I1Y65rXMzooM2id1oE2UtN+55XrLRTcZHkLQjkoG5Vw==
-X-Received: by 2002:a05:6a20:d396:b0:18b:d31f:7d25 with SMTP id iq22-20020a056a20d39600b0018bd31f7d25mr23808397pzb.38.1701304689693;
-        Wed, 29 Nov 2023 16:38:09 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id ix4-20020a170902f80400b001cfba9dac6esm8669264plb.115.2023.11.29.16.38.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Nov 2023 16:38:09 -0800 (PST)
-Message-ID: <6567d971.170a0220.bd94.6a93@mx.google.com>
-Date: Wed, 29 Nov 2023 16:38:09 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C33D5198
+	for <stable@vger.kernel.org>; Wed, 29 Nov 2023 17:41:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701308480;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A+mAc5bUWQHIfKcRKPqP2W6po7z2iVLf+97SiNfRjUQ=;
+	b=Z3mRjB/gbHpdQsrzrMb8eWj+V+RDUM5VxEldCrTQYXilPX8i7hT3GV1jAFsJ05vc4m3fsZ
+	gfx3af18VyoD+JSsLPwTwGxh2WeFLMeEqSEZ0+ivkLjQI7L28vm3Yvr4glMSKp0dnHtlb5
+	i+1iWnPxUpuOk1EDHtAGyUybglZ6/ok=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-483-tegoFPWqOWuDru5oX104Rg-1; Wed,
+ 29 Nov 2023 20:41:16 -0500
+X-MC-Unique: tegoFPWqOWuDru5oX104Rg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3ACCF29AA3BF;
+	Thu, 30 Nov 2023 01:41:16 +0000 (UTC)
+Received: from localhost (unknown [10.72.113.96])
+	by smtp.corp.redhat.com (Postfix) with ESMTPS id 881A6112130B;
+	Thu, 30 Nov 2023 01:41:15 +0000 (UTC)
+Date: Thu, 30 Nov 2023 09:41:12 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org,
+	eric_devolder@yahoo.com, agordeev@linux.ibm.com,
+	kernel-team@cloudflare.com, stable@vger.kernel.org
+Subject: Re: [PATCH] kexec: drop dependency on ARCH_SUPPORTS_KEXEC from
+ CRASH_DUMP
+Message-ID: <ZWfoOLEnS+TnikpA@MiWiFi-R3L-srv>
+References: <20231129220409.55006-1-ignat@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Branch: queue/5.10
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v5.10.202-53-ga1e0fa8fccd1b
-Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.202-53-ga1e0fa8fccd1b)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231129220409.55006-1-ignat@cloudflare.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
-10.202-53-ga1e0fa8fccd1b)
+On 11/29/23 at 10:04pm, Ignat Korchagin wrote:
+> In commit f8ff23429c62 ("kernel/Kconfig.kexec: drop select of KEXEC for
+> CRASH_DUMP") we tried to fix a config regression, where CONFIG_CRASH_DUMP
+> required CONFIG_KEXEC.
+> 
+> However, it was not enough at least for arm64 platforms. While further testing
+> the patch with our arm64 config I noticed that CONFIG_CRASH_DUMP is unavailable
+> in menuconfig. This is because CONFIG_CRASH_DUMP still depends on the new
+> CONFIG_ARCH_SUPPORTS_KEXEC introduced in commit 91506f7e5d21 ("arm64/kexec:
+> refactor for kernel/Kconfig.kexec") and on arm64 CONFIG_ARCH_SUPPORTS_KEXEC
+> requires CONFIG_PM_SLEEP_SMP=y, which in turn requires either CONFIG_SUSPEND=y
+> or CONFIG_HIBERNATION=y neither of which are set in our config.
+> 
+> Given that we already established that CONFIG_KEXEC (which is a switch for kexec
+> system call itself) is not required for CONFIG_CRASH_DUMP drop
+> CONFIG_ARCH_SUPPORTS_KEXEC dependency as well. The arm64 kernel builds just fine
+> with CONFIG_CRASH_DUMP=y and with both CONFIG_KEXEC=n and CONFIG_KEXEC_FILE=n
+> after f8ff23429c62 ("kernel/Kconfig.kexec: drop select of KEXEC for CRASH_DUMP")
+> and this patch are applied given that the necessary shared bits are included via
+> CONFIG_KEXEC_CORE dependency.
+> 
+> Fixes: 91506f7e5d21 ("arm64/kexec: refactor for kernel/Kconfig.kexec")
+> Cc: stable@vger.kernel.org # 6.6+: f8ff234: kernel/Kconfig.kexec: drop select of KEXEC for CRASH_DUMP
+> Cc: stable@vger.kernel.org # 6.6+
+> Signed-off-by: Ignat Korchagin <ignat@cloudflare.com>
+> ---
+>  kernel/Kconfig.kexec | 1 -
+>  1 file changed, 1 deletion(-)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-0/kernel/v5.10.202-53-ga1e0fa8fccd1b/
+This is a good catch, thanks.
 
-Tree: stable-rc
-Branch: queue/5.10
-Git Describe: v5.10.202-53-ga1e0fa8fccd1b
-Git Commit: a1e0fa8fccd1b3bc456aad06901708c2127860d9
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Acked-by: Baoquan He <bhe@redhat.com>
 
-Warnings Detected:
+> 
+> diff --git a/kernel/Kconfig.kexec b/kernel/Kconfig.kexec
+> index fc38f1ae3a30..946dffa048b7 100644
+> --- a/kernel/Kconfig.kexec
+> +++ b/kernel/Kconfig.kexec
+> @@ -96,7 +96,6 @@ config KEXEC_JUMP
+>  config CRASH_DUMP
+>  	bool "kernel crash dumps"
+>  	depends on ARCH_SUPPORTS_CRASH_DUMP
+> -	depends on ARCH_SUPPORTS_KEXEC
+>  	select CRASH_CORE
+>  	select KEXEC_CORE
+>  	help
+> -- 
+> 2.39.2
+> 
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
 
