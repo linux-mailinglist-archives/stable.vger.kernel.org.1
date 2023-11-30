@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68307FF2DC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:49:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46C77FF2DD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:49:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1257A1C21007
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:49:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10E611C21017
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6251E48CD8;
-	Thu, 30 Nov 2023 14:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559C64778A;
+	Thu, 30 Nov 2023 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxrjKzZI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpNuZy7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B84778E
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:49:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27746C433CB;
-	Thu, 30 Nov 2023 14:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A81551C31
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:49:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21624C433C9;
+	Thu, 30 Nov 2023 14:49:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701355779;
-	bh=I5auG9HX6bjkHLteCKiEJ/xxTQTIfQjncY29AodRMpg=;
+	s=korg; t=1701355783;
+	bh=D/epsrHkEJMayGNAxdwFGtrRhYtNw7kz7dqtfS53URg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=hxrjKzZIrNlMJ3xWYLjwTKUPTC+i3HK4srnaCpC3KQL/PJ4T5SK2HBM/ONPxo0fzH
-	 /P6ckjmQw05UbckXx2BrJx0BF6NGztVRvfINDHzheEeXKM8caefyUurLLTxwIn1fuS
-	 rVIWYavhY9iQohV2/zYTo5qNqXxpMSoQTuCDui+s=
-Subject: FAILED: patch "[PATCH] USB: xhci-plat: fix legacy PHY double init" failed to apply to 5.10-stable tree
+	b=VpNuZy7bP1V64AS4PjH9xxJFpL4naKOs56SBMTYQKK44FE/854SJcbl1bmxu4v/uP
+	 LzrFVuZYl+h1JJDbNK+6BworA20ZTMMYqGEMhsF1wWqhx4fHZJmbRBCz67RZ4o/KrX
+	 y9GvNgrFLb2Pho2c9aywFthXYZDVGf1WwVOH7ZDs=
+Subject: FAILED: patch "[PATCH] USB: xhci-plat: fix legacy PHY double init" failed to apply to 5.4-stable tree
 To: johan+linaro@kernel.org,gregkh@linuxfoundation.org,mripard@kernel.org,stanley_chang@realtek.com,stefan.eichenberger@toradex.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 30 Nov 2023 14:49:34 +0000
-Message-ID: <2023113034-dill-come-1127@gregkh>
+Date: Thu, 30 Nov 2023 14:49:36 +0000
+Message-ID: <2023113035-preachy-negation-de20@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 16b7e0cccb243033de4406ffb4d892365041a1e7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113034-dill-come-1127@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113035-preachy-negation-de20@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,9 @@ e0fe986972f5 ("usb: host: xhci-plat: prepare operation w/o shared hcd")
 0cf1ea040a7e ("usb: host: xhci-plat: create shared hcd after having added main hcd")
 8e10548f7f48 ("Revert "usb: host: xhci: mvebu: make USB 3.0 PHY optional for Armada 3720"")
 3241929b67d2 ("usb: host: xhci: mvebu: make USB 3.0 PHY optional for Armada 3720")
+f768e718911e ("usb: host: xhci-plat: add priv quirk for skip PHY initialization")
+a66d21d7dba8 ("usb: xhci: Add support for Renesas controller with memory")
+ff4c65ca48f0 ("usb: hci: add hc_driver as argument for usb_hcd_pci_probe")
 
 thanks,
 
