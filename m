@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-3492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0D77FF5EC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D877FF59F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE5E1C21187
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5EAD281859
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718CF5576F;
-	Thu, 30 Nov 2023 16:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5717454FAE;
+	Thu, 30 Nov 2023 16:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/L1mnBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1JTvi3d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DE53AC1A;
-	Thu, 30 Nov 2023 16:32:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AB9C433C8;
-	Thu, 30 Nov 2023 16:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1D0495C2;
+	Thu, 30 Nov 2023 16:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A3F5C433C9;
+	Thu, 30 Nov 2023 16:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361969;
-	bh=x012mOz1QZByT4Ue2uWYp5koHOLxgGMogXhyqDp7hDQ=;
+	s=korg; t=1701361822;
+	bh=vMW54CLgi7OaIEkDHVmFo42ZO3awxhFXYQGBOqpgEt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/L1mnBykV7Q8qPK/u00kt4/W0oiwdHvzVsmQeiZd2OcsR8gsqquuBO3pfwuKkr9a
-	 gdYC/hEVzp5GWAeQNO/V/lHf0qq/IW3sPLCzB1jJVXbyjsQwOEElNvxrroC49A4o2v
-	 fYC9AHyCVJjEiKdpgJCEhOPcI4TtP/WI5c7LdB2s=
+	b=U1JTvi3dgPI2XVGVfFF3uIRsPNgxFTCuSe1WERCWlAd6x6K6GMpfRue0j/v8NRpvI
+	 gFyatfu4avr/ODk1uY3sGGlpMIM0v30CqpFMdytSZJVG3r9SJQNMswq2J1cEPMvYCF
+	 IZdz0+UjnWuDe8zEAWIUEyRJK1lCO5+ydPXEkwMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/69] ext4: use pre-allocated es in __es_insert_extent()
+	Charles Mirabile <cmirabil@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 61/82] io_uring/fs: consider link->flags when getting path for LINKAT
 Date: Thu, 30 Nov 2023 16:22:32 +0000
-Message-ID: <20231130162134.227431718@linuxfoundation.org>
+Message-ID: <20231130162137.911468776@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,104 +52,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Charles Mirabile <cmirabil@redhat.com>
 
-[ Upstream commit 95f0b320339a977cf69872eac107122bf536775d ]
+commit 8479063f1fbee201a8739130e816cc331b675838 upstream.
 
-Pass a extent_status pointer prealloc to __es_insert_extent(). If the
-pointer is non-null, it is used directly when a new extent_status is
-needed to avoid memory allocation failures.
+In order for `AT_EMPTY_PATH` to work as expected, the fact
+that the user wants that behavior needs to make it to `getname_flags`
+or it will return ENOENT.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-5-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
+Cc:  <stable@vger.kernel.org>
+Link: https://github.com/axboe/liburing/issues/995
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Link: https://lore.kernel.org/r/20231120105545.1209530-1-cmirabil@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ io_uring/fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 012033db41062..0d810ce7580d1 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -144,7 +144,8 @@
- static struct kmem_cache *ext4_es_cachep;
- static struct kmem_cache *ext4_pending_cachep;
+--- a/io_uring/fs.c
++++ b/io_uring/fs.c
+@@ -254,7 +254,7 @@ int io_linkat_prep(struct io_kiocb *req,
+ 	newf = u64_to_user_ptr(READ_ONCE(sqe->addr2));
+ 	lnk->flags = READ_ONCE(sqe->hardlink_flags);
  
--static int __es_insert_extent(struct inode *inode, struct extent_status *newes);
-+static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
-+			      struct extent_status *prealloc);
- static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 			      ext4_lblk_t end, int *reserved);
- static int es_reclaim_extents(struct ext4_inode_info *ei, int *nr_to_scan);
-@@ -769,7 +770,8 @@ static inline void ext4_es_insert_extent_check(struct inode *inode,
- }
- #endif
+-	lnk->oldpath = getname(oldf);
++	lnk->oldpath = getname_uflags(oldf, lnk->flags);
+ 	if (IS_ERR(lnk->oldpath))
+ 		return PTR_ERR(lnk->oldpath);
  
--static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
-+static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
-+			      struct extent_status *prealloc)
- {
- 	struct ext4_es_tree *tree = &EXT4_I(inode)->i_es_tree;
- 	struct rb_node **p = &tree->root.rb_node;
-@@ -809,7 +811,10 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
- 		}
- 	}
- 
--	es = __es_alloc_extent(false);
-+	if (prealloc)
-+		es = prealloc;
-+	else
-+		es = __es_alloc_extent(false);
- 	if (!es)
- 		return -ENOMEM;
- 	ext4_es_init_extent(inode, es, newes->es_lblk, newes->es_len,
-@@ -869,7 +874,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 	if (err != 0)
- 		goto error;
- retry:
--	err = __es_insert_extent(inode, &newes);
-+	err = __es_insert_extent(inode, &newes, NULL);
- 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
- 					  128, EXT4_I(inode)))
- 		goto retry;
-@@ -919,7 +924,7 @@ void ext4_es_cache_extent(struct inode *inode, ext4_lblk_t lblk,
- 
- 	es = __es_tree_search(&EXT4_I(inode)->i_es_tree.root, lblk);
- 	if (!es || es->es_lblk > end)
--		__es_insert_extent(inode, &newes);
-+		__es_insert_extent(inode, &newes, NULL);
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- }
- 
-@@ -1365,7 +1370,7 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 					orig_es.es_len - len2;
- 			ext4_es_store_pblock_status(&newes, block,
- 						    ext4_es_status(&orig_es));
--			err = __es_insert_extent(inode, &newes);
-+			err = __es_insert_extent(inode, &newes, NULL);
- 			if (err) {
- 				es->es_lblk = orig_es.es_lblk;
- 				es->es_len = orig_es.es_len;
-@@ -2020,7 +2025,7 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
- 	if (err != 0)
- 		goto error;
- retry:
--	err = __es_insert_extent(inode, &newes);
-+	err = __es_insert_extent(inode, &newes, NULL);
- 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
- 					  128, EXT4_I(inode)))
- 		goto retry;
--- 
-2.42.0
-
 
 
 
