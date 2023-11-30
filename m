@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-3382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 329D87FF558
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44E3B7FF4F9
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E15562817C1
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 767161C20DA9
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5035854FA5;
-	Thu, 30 Nov 2023 16:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7C054F9D;
+	Thu, 30 Nov 2023 16:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AWgQL8yz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyoQVVWq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 129D6524C2;
-	Thu, 30 Nov 2023 16:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93765C433C8;
-	Thu, 30 Nov 2023 16:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B283495C2;
+	Thu, 30 Nov 2023 16:24:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE9AC433C9;
+	Thu, 30 Nov 2023 16:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361689;
-	bh=T5xfDgedaRsXC0AZ0eAaw8OhbSyHHmdi745yiuWnRXA=;
+	s=korg; t=1701361495;
+	bh=DA60IAKbNwr+DLdBu+KHLKyx4O9RYy4HFi8Tm6GndaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AWgQL8yzjE/c8XCDLz4inPzY5eIyTMESI9d4rcnNbWxiPvYbZbZ6eVo4p+G845LkW
-	 iZwTgOcGnMZxp7ZtwrTgBkIQ3XUjrNWR1k65zBcw0BVeIk8JeEdXfNoz9kYnEh2iJs
-	 Ou5Ll60kpDyBdZVQmgXigrWNN3+8QLqlM/mtheJU=
+	b=RyoQVVWq7i6xuvHXrn+B/tVWdfCqdxf1m8n0B1RlSxI5/2LlLjVMDJQhJxfkARSZc
+	 k3u4yhPRp/eJbFgxgtsDHmDJRZib9V93bWMXC2K3SluRt9008hpombl/VbIg8/Kvlp
+	 7UuRgawXDMfeWqbYxgubfujLdL6l5kNv6YFFvXHY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 01/82] afs: Fix afs_server_list to be cleaned up with RCU
+Subject: [PATCH 6.6 045/112] amd-xgbe: propagate the correct speed and duplex status
 Date: Thu, 30 Nov 2023 16:21:32 +0000
-Message-ID: <20231130162136.027908416@linuxfoundation.org>
+Message-ID: <20231130162141.735223606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +55,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit e6bace7313d61e31f2b16fa3d774fd8cb3cb869e ]
+[ Upstream commit 7a2323ac24a50311f64a3a9b54ed5bef5821ecae ]
 
-afs_server_list is accessed with the rcu_read_lock() held from
-volume->servers, so it needs to be cleaned up correctly.
+xgbe_get_link_ksettings() does not propagate correct speed and duplex
+information to ethtool during cable unplug. Due to which ethtool reports
+incorrect values for speed and duplex.
 
-Fix this by using kfree_rcu() instead of kfree().
+Address this by propagating correct information.
 
-Fixes: 8a070a964877 ("afs: Detect cell aliases 1 - Cells with root volumes")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Fixes: 7c12aa08779c ("amd-xgbe: Move the PHY support into amd-xgbe")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/internal.h    | 1 +
- fs/afs/server_list.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 9ba7b68375c9f..c2d70fc1698c0 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -552,6 +552,7 @@ struct afs_server_entry {
- };
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
+index 6e83ff59172a3..32fab5e772462 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
+@@ -314,10 +314,15 @@ static int xgbe_get_link_ksettings(struct net_device *netdev,
  
- struct afs_server_list {
-+	struct rcu_head		rcu;
- 	afs_volid_t		vids[AFS_MAXTYPES]; /* Volume IDs */
- 	refcount_t		usage;
- 	unsigned char		nr_servers;
-diff --git a/fs/afs/server_list.c b/fs/afs/server_list.c
-index ed9056703505f..b59896b1de0af 100644
---- a/fs/afs/server_list.c
-+++ b/fs/afs/server_list.c
-@@ -17,7 +17,7 @@ void afs_put_serverlist(struct afs_net *net, struct afs_server_list *slist)
- 		for (i = 0; i < slist->nr_servers; i++)
- 			afs_unuse_server(net, slist->servers[i].server,
- 					 afs_server_trace_put_slist);
--		kfree(slist);
-+		kfree_rcu(slist, rcu);
- 	}
- }
+ 	cmd->base.phy_address = pdata->phy.address;
  
+-	cmd->base.autoneg = pdata->phy.autoneg;
+-	cmd->base.speed = pdata->phy.speed;
+-	cmd->base.duplex = pdata->phy.duplex;
++	if (netif_carrier_ok(netdev)) {
++		cmd->base.speed = pdata->phy.speed;
++		cmd->base.duplex = pdata->phy.duplex;
++	} else {
++		cmd->base.speed = SPEED_UNKNOWN;
++		cmd->base.duplex = DUPLEX_UNKNOWN;
++	}
+ 
++	cmd->base.autoneg = pdata->phy.autoneg;
+ 	cmd->base.port = PORT_NONE;
+ 
+ 	XGBE_LM_COPY(cmd, supported, lks, supported);
 -- 
 2.42.0
 
