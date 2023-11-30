@@ -1,61 +1,141 @@
-Return-Path: <stable+bounces-3261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0634E7FF32B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:05:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D64487FF385
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54CE7B20E48
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:05:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915272819BA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E514E51C2A;
-	Thu, 30 Nov 2023 15:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2B7524BD;
+	Thu, 30 Nov 2023 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fMv+iZtc"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EBvGX9ZX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B0648CF7
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 15:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2077C433C8;
-	Thu, 30 Nov 2023 15:05:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701356726;
-	bh=MdwqTtqvRUM9JDIV1bxonjqQxJvkmHoFAMNuKOS/8tA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fMv+iZtcKIDZMgAVUO0wApKgyYP3JcDzsFRKB36PEiQRu/BjyKUxWVWJKQZwAZYiu
-	 4425gyVceQz0Ojq1wrSEhXNSUqTrybe0H6c3wxcNu9+FF5skeJJicFG/maYuNBxJHN
-	 li3SmTVH2of4c1MVjmopFOObfsJprm3k0rqxdOL4=
-Date: Thu, 30 Nov 2023 15:05:23 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: kbusch@kernel.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] io_uring: fix off-by one bvec index"
- failed to apply to 5.4-stable tree
-Message-ID: <2023113016-unknowing-decoy-a13d@gregkh>
-References: <2023113025-eastbound-uninstall-c2e0@gregkh>
- <bc136dd7-9b65-4d10-8b0d-105c90246543@kernel.dk>
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0641B3;
+	Thu, 30 Nov 2023 07:24:27 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id 4A1BBFF816;
+	Thu, 30 Nov 2023 15:24:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701357866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XjanQLiV96Fread002ZWRWE0O5XHgSgVvDb1R2qXIW8=;
+	b=EBvGX9ZXy3DQtGO2d7/eRwWcKL6Sfo+JOIqYIcEo/3+97xrmIbCerPNHwK1Dwg7Cugso0C
+	0yC0SZrS5or2CqWTZAxlat8R4nOGhLEt1EB7ne/4un/xEruvnZwAiuqBFDZA+D6Jjo1Jjp
+	W3ZVpgnTcHW89C/7Wyiwtl6K4Ssp/Z2axUVwYrmybO2Q9dSJRgoXze9YP6k908EXlRbgzI
+	o6KC6L8AkvSN4xBDs4THH0fkOHi9M13udqzFEWI7wbUfIALJG1a2jZ9nq78APXvq9dnGzM
+	jSx4UTaaWymqFcMDxr6suoCEcYNRdCBY+IVxz9ZU5dvH6XOedCNwajbsDt8kKQ==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Rob Herring <robh@kernel.org>
+Cc: Max Zhen <max.zhen@amd.com>,
+	Sonal Santan <sonal.santan@amd.com>,
+	Stefano Stabellini <stefano.stabellini@xilinx.com>,
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] PCI: of: Attach created of_node to existing device
+Date: Thu, 30 Nov 2023 16:24:04 +0100
+Message-ID: <20231130152418.680966-3-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231130152418.680966-1-herve.codina@bootlin.com>
+References: <20231130152418.680966-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc136dd7-9b65-4d10-8b0d-105c90246543@kernel.dk>
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-On Thu, Nov 30, 2023 at 07:36:17AM -0700, Jens Axboe wrote:
-> On 11/30/23 7:31 AM, gregkh@linuxfoundation.org wrote:
-> > 
-> > The patch below does not apply to the 5.4-stable tree.
-> 
-> And the 5.4 variant attached.
+The commit 407d1a51921e ("PCI: Create device tree node for bridge")
+creates of_node for PCI devices.
+During the insertion handling of these new DT nodes done by of_platform,
+new devices (struct device) are created.
+For each PCI devices a struct device is already present (created and
+handled by the PCI core).
+Having a second struct device to represent the exact same PCI device is
+not correct.
 
-Thanks, all backports now queued up.
+On the of_node creation, tell the of_platform that there is no need to
+create a device for this node (OF_POPULATED flag), link this newly
+created of_node to the already present device and tell fwnode that the
+device attached to this of_node is ready (fwnode_dev_initialized()).
 
-greg k-h
+With this fix, the of_node are available in the sysfs device tree:
+/sys/devices/platform/soc/d0070000.pcie/
++ of_node -> .../devicetree/base/soc/pcie@d0070000
++ pci0000:00
+  + 0000:00:00.0
+    + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
+    + 0000:01:00.0
+      + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
+
+On the of_node removal, revert the operations.
+
+Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ drivers/pci/of.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+index 51e3dd0ea5ab..5afd2731e876 100644
+--- a/drivers/pci/of.c
++++ b/drivers/pci/of.c
+@@ -615,7 +615,8 @@ void of_pci_remove_node(struct pci_dev *pdev)
+ 	np = pci_device_to_OF_node(pdev);
+ 	if (!np || !of_node_check_flag(np, OF_DYNAMIC))
+ 		return;
+-	pdev->dev.of_node = NULL;
++
++	device_remove_of_node(&pdev->dev);
+ 
+ 	of_changeset_revert(np->data);
+ 	of_changeset_destroy(np->data);
+@@ -668,12 +669,22 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+ 	if (ret)
+ 		goto out_free_node;
+ 
++	/*
++	 * This of_node will be added to an existing device.
++	 * Avoid any device creation and use the existing device
++	 */
++	of_node_set_flag(np, OF_POPULATED);
++	np->fwnode.dev = &pdev->dev;
++	fwnode_dev_initialized(&np->fwnode, true);
++
+ 	ret = of_changeset_apply(cset);
+ 	if (ret)
+ 		goto out_free_node;
+ 
+ 	np->data = cset;
+-	pdev->dev.of_node = np;
++
++	/* Add the of_node to the existing device */
++	device_add_of_node(&pdev->dev, np);
+ 	kfree(name);
+ 
+ 	return;
+-- 
+2.42.0
+
 
