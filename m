@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F8A7FF4DC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2304A7FF509
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23306281677
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:23:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4591C1C20E3F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAEF254F93;
-	Thu, 30 Nov 2023 16:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908A354F94;
+	Thu, 30 Nov 2023 16:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQzsCsiF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+UwSCt/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61160495C2;
-	Thu, 30 Nov 2023 16:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D96C433C8;
-	Thu, 30 Nov 2023 16:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFF0524C2;
+	Thu, 30 Nov 2023 16:25:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8943C433C7;
+	Thu, 30 Nov 2023 16:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361438;
-	bh=YzaIDP0EVhHq/C8F8+UVDXvrFw42wJQrjNlu+mwohb8=;
+	s=korg; t=1701361526;
+	bh=rTRUCl3hdNQA08gTwPJyXvSw0wgLYaQfYr+v/59c/A0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQzsCsiF5gPmW0LBjfZHVpaftPm9vNaUHi/fuIjzngjHyfUJgBhvVIjMWcPicvs6h
-	 ciQRDYvoECcg9/pE0ealjHiPMYtjNCbP0cwXmnjU+KWXm0djpjmMefNKAP9M28HvnU
-	 r7P2sECkAVRxK4LIAK/GeR+GpI2AcYl0MKWhmCS0=
+	b=J+UwSCt/FE1Kjg2mFW9uz6+npK+wXnczPeYWKBTEmmbVLodA0ODJwcX/uLx0B6Mu5
+	 rMum0XUxzhoUee8KgplWZfhDTSLFIl33BGwOy+MbQt15WPdGSfEenKwUDgebjMt+ZH
+	 Mhk6Pl0Bn1t1NcClFkNWBYKOVEA2tpFrR9aB+wU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-	Nirmoy Das <nirmoy.das@intel.com>,
-	Andi Shyti <andi.shyti@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 022/112] drm/i915: do not clean GT table on error path
-Date: Thu, 30 Nov 2023 16:21:09 +0000
-Message-ID: <20231130162141.029506287@linuxfoundation.org>
+Subject: [PATCH 6.6 023/112] filemap: add a per-mapping stable writes flag
+Date: Thu, 30 Nov 2023 16:21:10 +0000
+Message-ID: <20231130162141.059873017@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -60,98 +60,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrzej Hajda <andrzej.hajda@intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 0561794b6b642b84b879bf97061c4b4fa692839e ]
+[ Upstream commit 762321dab9a72760bf9aec48362f932717c9424d ]
 
-The only task of intel_gt_release_all is to zero gt table. Calling
-it on error path prevents intel_gt_driver_late_release_all (called from
-i915_driver_late_release) to cleanup GTs, causing leakage.
-After i915_driver_late_release GT array is not used anymore so
-it does not need cleaning at all.
+folio_wait_stable waits for writeback to finish before modifying the
+contents of a folio again, e.g. to support check summing of the data
+in the block integrity code.
 
-Sample leak report:
+Currently this behavior is controlled by the SB_I_STABLE_WRITES flag
+on the super_block, which means it is uniform for the entire file system.
+This is wrong for the block device pseudofs which is shared by all
+block devices, or file systems that can use multiple devices like XFS
+witht the RT subvolume or btrfs (although btrfs currently reimplements
+folio_wait_stable anyway).
 
-BUG i915_request (...): Objects remaining in i915_request on __kmem_cache_shutdown()
-...
-Object 0xffff888113420040 @offset=64
-Allocated in __i915_request_create+0x75/0x610 [i915] age=18339 cpu=1 pid=1454
- kmem_cache_alloc+0x25b/0x270
- __i915_request_create+0x75/0x610 [i915]
- i915_request_create+0x109/0x290 [i915]
- __engines_record_defaults+0xca/0x440 [i915]
- intel_gt_init+0x275/0x430 [i915]
- i915_gem_init+0x135/0x2c0 [i915]
- i915_driver_probe+0x8d1/0xdc0 [i915]
+Add a per-address_space AS_STABLE_WRITES flag to control the behavior
+in a more fine grained way.  The existing SB_I_STABLE_WRITES is kept
+to initialize AS_STABLE_WRITES to the existing default which covers
+most cases.
 
-v2: removed whole intel_gt_release_all
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8489
-Fixes: bec68cc9ea42 ("drm/i915: Prepare for multiple GTs")
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231115-dont_clean_gt_on_error_path-v2-1-54250125470a@intel.com
-(cherry picked from commit e899505533852bf1da133f2f4c9a9655ff77f7e5)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231025141020.192413-2-hch@lst.de
+Tested-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 1898efcdbed3 ("block: update the stable_writes flag in bdev_add")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/gt/intel_gt.c | 11 -----------
- drivers/gpu/drm/i915/i915_driver.c |  4 +---
- 2 files changed, 1 insertion(+), 14 deletions(-)
+ fs/inode.c              |  2 ++
+ include/linux/pagemap.h | 17 +++++++++++++++++
+ mm/page-writeback.c     |  2 +-
+ 3 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_gt.c b/drivers/gpu/drm/i915/gt/intel_gt.c
-index 449f0b7fc8434..95631e8f39e7b 100644
---- a/drivers/gpu/drm/i915/gt/intel_gt.c
-+++ b/drivers/gpu/drm/i915/gt/intel_gt.c
-@@ -967,8 +967,6 @@ int intel_gt_probe_all(struct drm_i915_private *i915)
+diff --git a/fs/inode.c b/fs/inode.c
+index 84bc3c76e5ccb..ae1a6410b53d7 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -215,6 +215,8 @@ int inode_init_always(struct super_block *sb, struct inode *inode)
+ 	lockdep_set_class_and_name(&mapping->invalidate_lock,
+ 				   &sb->s_type->invalidate_lock_key,
+ 				   "mapping.invalidate_lock");
++	if (sb->s_iflags & SB_I_STABLE_WRITES)
++		mapping_set_stable_writes(mapping);
+ 	inode->i_private = NULL;
+ 	inode->i_mapping = mapping;
+ 	INIT_HLIST_HEAD(&inode->i_dentry);	/* buggered by rcu freeing */
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 351c3b7f93a14..8c9608b217b00 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -204,6 +204,8 @@ enum mapping_flags {
+ 	AS_NO_WRITEBACK_TAGS = 5,
+ 	AS_LARGE_FOLIO_SUPPORT = 6,
+ 	AS_RELEASE_ALWAYS,	/* Call ->release_folio(), even if no private data */
++	AS_STABLE_WRITES,	/* must wait for writeback before modifying
++				   folio contents */
+ };
  
- err:
- 	i915_probe_error(i915, "Failed to initialize %s! (%d)\n", gtdef->name, ret);
--	intel_gt_release_all(i915);
--
- 	return ret;
+ /**
+@@ -289,6 +291,21 @@ static inline void mapping_clear_release_always(struct address_space *mapping)
+ 	clear_bit(AS_RELEASE_ALWAYS, &mapping->flags);
  }
  
-@@ -987,15 +985,6 @@ int intel_gt_tiles_init(struct drm_i915_private *i915)
- 	return 0;
- }
- 
--void intel_gt_release_all(struct drm_i915_private *i915)
--{
--	struct intel_gt *gt;
--	unsigned int id;
--
--	for_each_gt(gt, i915, id)
--		i915->gt[id] = NULL;
--}
--
- void intel_gt_info_print(const struct intel_gt_info *info,
- 			 struct drm_printer *p)
++static inline bool mapping_stable_writes(const struct address_space *mapping)
++{
++	return test_bit(AS_STABLE_WRITES, &mapping->flags);
++}
++
++static inline void mapping_set_stable_writes(struct address_space *mapping)
++{
++	set_bit(AS_STABLE_WRITES, &mapping->flags);
++}
++
++static inline void mapping_clear_stable_writes(struct address_space *mapping)
++{
++	clear_bit(AS_STABLE_WRITES, &mapping->flags);
++}
++
+ static inline gfp_t mapping_gfp_mask(struct address_space * mapping)
  {
-diff --git a/drivers/gpu/drm/i915/i915_driver.c b/drivers/gpu/drm/i915/i915_driver.c
-index ec4d26b3c17cc..8dc5f85b7747b 100644
---- a/drivers/gpu/drm/i915/i915_driver.c
-+++ b/drivers/gpu/drm/i915/i915_driver.c
-@@ -777,7 +777,7 @@ int i915_driver_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	ret = i915_driver_mmio_probe(i915);
- 	if (ret < 0)
--		goto out_tiles_cleanup;
-+		goto out_runtime_pm_put;
- 
- 	ret = i915_driver_hw_probe(i915);
- 	if (ret < 0)
-@@ -837,8 +837,6 @@ int i915_driver_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	i915_ggtt_driver_late_release(i915);
- out_cleanup_mmio:
- 	i915_driver_mmio_release(i915);
--out_tiles_cleanup:
--	intel_gt_release_all(i915);
- out_runtime_pm_put:
- 	enable_rpm_wakeref_asserts(&i915->runtime_pm);
- 	i915_driver_late_release(i915);
+ 	return mapping->gfp_mask;
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index b8d3d7040a506..4656534b8f5cc 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -3110,7 +3110,7 @@ EXPORT_SYMBOL_GPL(folio_wait_writeback_killable);
+  */
+ void folio_wait_stable(struct folio *folio)
+ {
+-	if (folio_inode(folio)->i_sb->s_iflags & SB_I_STABLE_WRITES)
++	if (mapping_stable_writes(folio_mapping(folio)))
+ 		folio_wait_writeback(folio);
+ }
+ EXPORT_SYMBOL_GPL(folio_wait_stable);
 -- 
 2.42.0
 
