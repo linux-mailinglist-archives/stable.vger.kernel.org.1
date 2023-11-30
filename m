@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E9A77FF5EF
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC3A7FF552
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58C2B2818BB
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B011C20F6A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B6754FB5;
-	Thu, 30 Nov 2023 16:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B3954F9C;
+	Thu, 30 Nov 2023 16:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWWRfR0X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFMPBN6d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E475524C1;
-	Thu, 30 Nov 2023 16:32:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB52C433C7;
-	Thu, 30 Nov 2023 16:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0904524C2;
+	Thu, 30 Nov 2023 16:27:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F11FC433C8;
+	Thu, 30 Nov 2023 16:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361974;
-	bh=5p055QthmRTyZLMnhrJrZmnZ45/vnNdpwM7HWXE06gA=;
+	s=korg; t=1701361672;
+	bh=aXHARWxhx8CGbeuMeuTR84aNy1RzXFye1h769zQg9Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xWWRfR0XLhcU8htxuKMPQDwGe7/7NXTaStAA8Nqvv7EWuJmp6BH84XXYbrB+G9oLs
-	 Px+ZQmtka/qv4ZcWyDUKtfJzxW6sj/twnFoMiztLEKuoI8xiySt7HqoWv4/BaX+VYh
-	 j48prJyfcv2vtxN9Au2qie/piC2cwqICfwCDHW00=
+	b=xFMPBN6dY5J0HLD8GRit1WpZPNLQGvFz6Q8+vh0Kefe8+llT6p/xbv35Xr6e4cqw5
+	 yPw+2P7aqjUujHfS/La2rgYwyN8KX7scgdg2IwGHc7ezXaL5DGvthN55pvMEJZY+k6
+	 UENSLVX55Mglo/2btjbaxk/Dd5NzsuhjAvTwfr1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/69] ext4: using nofail preallocation in ext4_es_remove_extent()
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogeus <heikki.krogerus@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 107/112] usb: typec: tcpm: Skip hard reset when in error recovery
 Date: Thu, 30 Nov 2023 16:22:34 +0000
-Message-ID: <20231130162134.293744180@linuxfoundation.org>
+Message-ID: <20231130162143.682964096@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,79 +53,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
+commit a6fe37f428c19dd164c2111157d4a1029bd853aa upstream.
 
-If __es_remove_extent() returns an error it means that when splitting
-extent, allocating an extent that must be kept failed, where returning
-an error directly would cause the extent tree to be inconsistent. So we
-use GFP_NOFAIL to pre-allocate an extent_status and pass it to
-__es_remove_extent() to avoid this problem.
+Hard reset queued prior to error recovery (or) received during
+error recovery will make TCPM to prematurely exit error recovery
+sequence. Ignore hard resets received during error recovery (or)
+port reset sequence.
 
-In addition, since the allocated memory is outside the i_es_lock, the
-extent_status tree may change and the pre-allocated extent_status is
-no longer needed, so we release the pre-allocated extent_status when
-es->es_len is not initialized.
+```
+[46505.459688] state change SNK_READY -> ERROR_RECOVERY [rev3 NONE_AMS]
+[46505.459706] state change ERROR_RECOVERY -> PORT_RESET [rev3 NONE_AMS]
+[46505.460433] disable vbus discharge ret:0
+[46505.461226] Setting usb_comm capable false
+[46505.467244] Setting voltage/current limit 0 mV 0 mA
+[46505.467262] polarity 0
+[46505.470695] Requesting mux state 0, usb-role 0, orientation 0
+[46505.475621] cc:=0
+[46505.476012] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev3 NONE_AMS]
+[46505.476020] Received hard reset
+[46505.476024] state change PORT_RESET -> HARD_RESET_START [rev3 HARD_RESET]
+```
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogeus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231101021909.2962679-1-badhri@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 10550d62a6763..4af825eb0cb45 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1457,6 +1457,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	ext4_lblk_t end;
- 	int err = 0;
- 	int reserved = 0;
-+	struct extent_status *es = NULL;
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5392,6 +5392,15 @@ static void _tcpm_pd_hard_reset(struct t
+ 	if (port->bist_request == BDO_MODE_TESTDATA && port->tcpc->set_bist_data)
+ 		port->tcpc->set_bist_data(port->tcpc, false);
  
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return 0;
-@@ -1471,17 +1472,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	end = lblk + len - 1;
- 	BUG_ON(end < lblk);
- 
-+retry:
-+	if (err && !es)
-+		es = __es_alloc_extent(true);
- 	/*
- 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
- 	 * so that we are sure __es_shrink() is done with the inode before it
- 	 * is reclaimed.
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
-+	err = __es_remove_extent(inode, lblk, end, &reserved, es);
-+	if (es && !es->es_len)
-+		__es_free_extent(es);
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
-+	if (err)
-+		goto retry;
++	switch (port->state) {
++	case ERROR_RECOVERY:
++	case PORT_RESET:
++	case PORT_RESET_WAIT_OFF:
++		return;
++	default:
++		break;
++	}
 +
- 	ext4_es_print_tree(inode);
- 	ext4_da_release_space(inode, reserved);
--	return err;
-+	return 0;
- }
- 
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
--- 
-2.42.0
-
+ 	if (port->ams != NONE_AMS)
+ 		port->ams = NONE_AMS;
+ 	if (port->hard_reset_count < PD_N_HARD_RESET_COUNT)
 
 
 
