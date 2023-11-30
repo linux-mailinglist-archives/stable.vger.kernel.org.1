@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-3303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F367FF4FA
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BF17FF502
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F915B20DAA
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 766F41C20CAA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E894354F9B;
-	Thu, 30 Nov 2023 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE07754F96;
+	Thu, 30 Nov 2023 16:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWWoGoKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIWdfwNj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6B495C2;
-	Thu, 30 Nov 2023 16:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A78C433C8;
-	Thu, 30 Nov 2023 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EEB4482CB;
+	Thu, 30 Nov 2023 16:25:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC36C433C7;
+	Thu, 30 Nov 2023 16:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361488;
-	bh=kcFdUMeKugdzYyMH2TOs3hn9qEkYhnbMJBpSd5TPicM=;
+	s=korg; t=1701361508;
+	bh=Ftqq3xfrtkvh+Np2U7j6uckka0ex5meDiOcjP/mFZmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWWoGoKTQiz6yZqkKxkXYws0G5mwQ/1bXwiVZPpJn/H8DW04LAvg5fiSUgEBfOEna
-	 TuH9W2/EIi2dA3ULUg1RWz6y8L6rDgYlAFCiQruFW50/k+8li336X6JgpkN6QK4PJA
-	 JDgHZrIK3NN6S70l5sK4FSvNZafgK6TtHxTqO/LI=
+	b=zIWdfwNjFHiuXf8nxEfkBoumXTDlf8/c0nITRhYH+zqwQKXyEhQUZS/o7GNyrsXlE
+	 3LvoTY3oenWh0Dz29vcHVr5pQGmgNXEqIgjyaItWW/a2hRaW8MsdFY728Rb9aIvob+
+	 /9WDiI2Jwht70O+dE+kCh1Qz0pbMEkVFc4OxaDVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tavian Barnes <tavianator@tavianator.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Christopher Obbard <chris.obbard@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 025/112] libfs: getdents() should return 0 after reaching EOD
-Date: Thu, 30 Nov 2023 16:21:12 +0000
-Message-ID: <20231130162141.117879007@linuxfoundation.org>
+Subject: [PATCH 6.6 026/112] drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+Date: Thu, 30 Nov 2023 16:21:13 +0000
+Message-ID: <20231130162141.146196913@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -58,82 +59,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 796432efab1e372d404e7a71cc6891a53f105051 ]
+[ Upstream commit bb0a05acd6121ff0e810b44fdc24dbdfaa46b642 ]
 
-The new directory offset helpers don't conform with the convention
-of getdents() returning no more entries once a directory file
-descriptor has reached the current end-of-directory.
+Use of DRM_FORMAT_RGB888 and DRM_FORMAT_BGR888 on e.g. RK3288, RK3328
+and RK3399 result in wrong colors being displayed.
 
-To address this, copy the logic from dcache_readdir() to mark the
-open directory file descriptor once EOD has been reached. Seeking
-resets the mark.
+The issue can be observed using modetest:
 
-Reported-by: Tavian Barnes <tavianator@tavianator.com>
-Closes: https://lore.kernel.org/linux-fsdevel/20231113180616.2831430-1-tavianator@tavianator.com/
-Fixes: 6faddda69f62 ("libfs: Add directory operations for stable offsets")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Link: https://lore.kernel.org/r/170043792492.4628.15646203084646716134.stgit@bazille.1015granger.net
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+  modetest -s <connector_id>@<crtc_id>:1920x1080-60@RG24
+  modetest -s <connector_id>@<crtc_id>:1920x1080-60@BG24
+
+Vendor 4.4 kernel apply an inverted rb swap for these formats on VOP
+full framework (IP version 3.x) compared to VOP little framework (2.x).
+
+Fix colors by applying different rb swap for VOP full framework (3.x)
+and VOP little framework (2.x) similar to vendor 4.4 kernel.
+
+Fixes: 85a359f25388 ("drm/rockchip: Add BGR formats to VOP")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Reviewed-by: Christopher Obbard <chris.obbard@collabora.com>
+Tested-by: Christopher Obbard <chris.obbard@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231026191500.2994225-1-jonas@kwiboo.se
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/libfs.c | 14 +++++++++++---
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 14 +++++++++++---
  1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/libfs.c b/fs/libfs.c
-index 37f2d34ee090b..189447cf4acf5 100644
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -396,6 +396,8 @@ static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
- 		return -EINVAL;
- 	}
- 
-+	/* In this case, ->private_data is protected by f_pos_lock */
-+	file->private_data = NULL;
- 	return vfs_setpos(file, offset, U32_MAX);
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index 41cd12d5f2fa2..4b338cb89d32d 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -247,14 +247,22 @@ static inline void vop_cfg_done(struct vop *vop)
+ 	VOP_REG_SET(vop, common, cfg_done, 1);
  }
  
-@@ -425,7 +427,7 @@ static bool offset_dir_emit(struct dir_context *ctx, struct dentry *dentry)
- 			  inode->i_ino, fs_umode_to_dtype(inode->i_mode));
- }
- 
--static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
-+static void *offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
+-static bool has_rb_swapped(uint32_t format)
++static bool has_rb_swapped(uint32_t version, uint32_t format)
  {
- 	struct offset_ctx *so_ctx = inode->i_op->get_offset_ctx(inode);
- 	XA_STATE(xas, &so_ctx->xa, ctx->pos);
-@@ -434,7 +436,7 @@ static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
- 	while (true) {
- 		dentry = offset_find_next(&xas);
- 		if (!dentry)
--			break;
-+			return ERR_PTR(-ENOENT);
- 
- 		if (!offset_dir_emit(ctx, dentry)) {
- 			dput(dentry);
-@@ -444,6 +446,7 @@ static void offset_iterate_dir(struct inode *inode, struct dir_context *ctx)
- 		dput(dentry);
- 		ctx->pos = xas.xa_index + 1;
+ 	switch (format) {
+ 	case DRM_FORMAT_XBGR8888:
+ 	case DRM_FORMAT_ABGR8888:
+-	case DRM_FORMAT_BGR888:
+ 	case DRM_FORMAT_BGR565:
+ 		return true;
++	/*
++	 * full framework (IP version 3.x) only need rb swapped for RGB888 and
++	 * little framework (IP version 2.x) only need rb swapped for BGR888,
++	 * check for 3.x to also only rb swap BGR888 for unknown vop version
++	 */
++	case DRM_FORMAT_RGB888:
++		return VOP_MAJOR(version) == 3;
++	case DRM_FORMAT_BGR888:
++		return VOP_MAJOR(version) != 3;
+ 	default:
+ 		return false;
  	}
-+	return NULL;
- }
+@@ -1013,7 +1021,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
+ 	VOP_WIN_SET(vop, win, dsp_info, dsp_info);
+ 	VOP_WIN_SET(vop, win, dsp_st, dsp_st);
  
- /**
-@@ -476,7 +479,12 @@ static int offset_readdir(struct file *file, struct dir_context *ctx)
- 	if (!dir_emit_dots(file, ctx))
- 		return 0;
+-	rb_swap = has_rb_swapped(fb->format->format);
++	rb_swap = has_rb_swapped(vop->data->version, fb->format->format);
+ 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
  
--	offset_iterate_dir(d_inode(dir), ctx);
-+	/* In this case, ->private_data is protected by f_pos_lock */
-+	if (ctx->pos == 2)
-+		file->private_data = NULL;
-+	else if (file->private_data == ERR_PTR(-ENOENT))
-+		return 0;
-+	file->private_data = offset_iterate_dir(d_inode(dir), ctx);
- 	return 0;
- }
- 
+ 	/*
 -- 
 2.42.0
 
