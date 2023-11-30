@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-3505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95C87FF5FA
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A337FF5BA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 843992818BB
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 330451C20DFD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD1C10EF;
-	Thu, 30 Nov 2023 16:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD3951002;
+	Thu, 30 Nov 2023 16:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7rIMbMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfxdHttZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AD211C9B;
-	Thu, 30 Nov 2023 16:33:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55457C433C7;
-	Thu, 30 Nov 2023 16:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4584878B;
+	Thu, 30 Nov 2023 16:31:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADC13C433C7;
+	Thu, 30 Nov 2023 16:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701362001;
-	bh=1hGrS0IcwTHmLh6ahiLYWKHeNRHSQBAKOryQgVQfAcw=;
+	s=korg; t=1701361875;
+	bh=8zv/ePYMsZBPK+3VweulX0mtgoCR/DUSiaLfkbSFKj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7rIMbMe1QYeWjh2q/n38w+jzBmGIUXMGofPmC2lV1oewiLJUvAot2XYRU7Z4JfeJ
-	 Fv2bHi0RrOIHg3z9D9xwrSXojXKUGnPuBd1fGY4wqwtdLiRcJz3S1HAjQkCBi7H2Hp
-	 7qXCkXSR0TT0ZztAQJzpoqd6FXM5t7rEFZyWWxSo=
+	b=EfxdHttZlhvjzpyMrl93CTRmyXiKBfHS+U7ust1Y4yQIl0sXTi0U3vOp0AKZ6zRAj
+	 Bk912G8AIaBRBpRjPsmGFnVAk2EtZ9BAecfM29UiHRnM9n4HwcR23u/p13vOQkWVW/
+	 cd27aK27OiCQ2JvZdECuFxpv7BZVKJeavCjx1IzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bhanu Victor DiCara <00bvd0+linux@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Xiao Ni <xni@redhat.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Guoqing Jiang <guoqing.jiang@linux.dev>
-Subject: [PATCH 5.15 47/69] md: fix bi_status reporting in md_end_clone_io
-Date: Thu, 30 Nov 2023 16:22:44 +0000
-Message-ID: <20231130162134.613736887@linuxfoundation.org>
+	Puliang Lu <puliang.lu@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 74/82] USB: serial: option: fix FM101R-GL defines
+Date: Thu, 30 Nov 2023 16:22:45 +0000
+Message-ID: <20231130162138.336069050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,49 +52,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-commit 45b478951b2ba5aea70b2850c49c1aa83aedd0d2 upstream.
+commit a1092619dd28ac0fcf23016160a2fdccd98ef935 upstream.
 
-md_end_clone_io() may overwrite error status in orig_bio->bi_status with
-BLK_STS_OK. This could happen when orig_bio has BIO_CHAIN (split by
-md_submit_bio => bio_split_to_limits, for example). As a result, upper
-layer may miss error reported from md (or the device) and consider the
-failed IO was successful.
+Modify the definition of the two Fibocom FM101R-GL PID macros, which had
+their PIDs switched.
 
-Fix this by only update orig_bio->bi_status when current bio reports
-error and orig_bio is BLK_STS_OK. This is the same behavior as
-__bio_chain_endio().
+The correct PIDs are:
 
-Fixes: 10764815ff47 ("md: add io accounting for raid0 and raid5")
-Cc: stable@vger.kernel.org # v5.14+
-Reported-by: Bhanu Victor DiCara <00bvd0+linux@gmail.com>
-Closes: https://lore.kernel.org/regressions/5727380.DvuYhMxLoT@bvd0/
-Signed-off-by: Song Liu <song@kernel.org>
-Tested-by: Xiao Ni <xni@redhat.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+- VID:PID 413C:8213, FM101R-GL ESIM are laptop M.2 cards (with
+  MBIM interfaces for Linux)
+
+- VID:PID 413C:8215, FM101R-GL are laptop M.2 cards (with
+  MBIM interface for Linux)
+
+0x8213: mbim, tty
+0x8215: mbim, tty
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Fixes: 52480e1f1a25 ("USB: serial: option: add Fibocom to DELL custom modem FM101R-GL")
+Link: https://lore.kernel.org/lkml/TYZPR02MB508845BAD7936A62A105CE5D89DFA@TYZPR02MB5088.apcprd02.prod.outlook.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -8627,7 +8627,8 @@ static void md_end_io_acct(struct bio *b
- 	struct md_io_acct *md_io_acct = bio->bi_private;
- 	struct bio *orig_bio = md_io_acct->orig_bio;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -203,8 +203,8 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
  
--	orig_bio->bi_status = bio->bi_status;
-+	if (bio->bi_status && !orig_bio->bi_status)
-+		orig_bio->bi_status = bio->bi_status;
+-#define DELL_PRODUCT_FM101R			0x8213
+-#define DELL_PRODUCT_FM101R_ESIM		0x8215
++#define DELL_PRODUCT_FM101R_ESIM		0x8213
++#define DELL_PRODUCT_FM101R			0x8215
  
- 	bio_end_io_acct(orig_bio, md_io_acct->start_time);
- 	bio_put(bio);
+ #define KYOCERA_VENDOR_ID			0x0c88
+ #define KYOCERA_PRODUCT_KPC650			0x17da
 
 
 
