@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-3336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37C177FF523
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D677FF5DA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E750D281705
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957C81C2118C
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88ADE54F98;
-	Thu, 30 Nov 2023 16:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72F03AC1A;
+	Thu, 30 Nov 2023 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPLCvOd+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L2y3lcJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C78524C2;
-	Thu, 30 Nov 2023 16:26:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DBCC433C8;
-	Thu, 30 Nov 2023 16:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA883D382;
+	Thu, 30 Nov 2023 16:32:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DE8C433C8;
+	Thu, 30 Nov 2023 16:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361573;
-	bh=jEPMfLXENFZP2Wp4UQFzCB4dT5bGm9Bssnwrclg63W0=;
+	s=korg; t=1701361941;
+	bh=1osSwHthi+SM9O6yiy/I6LhLoEfFnxfweyGDJ0xwZu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPLCvOd+xew0xen2xfKHYepYriSGHIht1RGFS5NVXQlgJKbxTuBbxmrp7NmaWXRj8
-	 CQsmxNyEXSiL4gW5SiG7pYYe6x9fiAEE+mM9guQ0IG0qHyFxNUGrJCqrOxfQUkUmBK
-	 r8p+6lp369E+2uYKhnGyuR/AqLfBHqqicEmOW2F0=
+	b=L2y3lcJqw1TYzXBvxBfbj+J37ElTUso48ZWNnMKpp0UouRh5tggK3e8M/7q0B92D1
+	 xZt0CrLKWduDdLuFvZ08xXwIZAZjzvusci/9IZp649akb4NXsRqSesmvciwbLmSGPa
+	 +yZ5GhOMm+QxeWf9B0rsZ8W0a1S1e4WhwWvIw14o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 075/112] platform/x86: hp-bioscfg: Simplify return check in hp_add_other_attributes()
+	Marek Vasut <marex@denx.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 05/69] drm/panel: simple: Fix Innolux G101ICE-L01 bus flags
 Date: Thu, 30 Nov 2023 16:22:02 +0000
-Message-ID: <20231130162142.710913410@linuxfoundation.org>
+Message-ID: <20231130162133.235046108@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +51,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+From: Marek Vasut <marex@denx.de>
 
-commit c5dbf04160005e07e8ca7232a7faa77ab1547ae0 upstream.
+[ Upstream commit 06fc41b09cfbc02977acd9189473593a37d82d9b ]
 
-All cases in switch-case have a same goto on error, move the return
-check out of the switch. This is a cleanup.
+Add missing .bus_flags = DRM_BUS_FLAG_DE_HIGH to this panel description,
+ones which match both the datasheet and the panel display_timing flags .
 
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231113200742.3593548-1-harshit.m.mogalapalli@oracle.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231008223315.279215-1-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/bioscfg.c |    8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
-@@ -630,21 +630,19 @@ static int hp_add_other_attributes(int a
- 	switch (attr_type) {
- 	case HPWMI_SECURE_PLATFORM_TYPE:
- 		ret = hp_populate_secure_platform_data(attr_name_kobj);
--		if (ret)
--			goto err_other_attr_init;
- 		break;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index e58eb93e9bc9e..28d1e661f99b1 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2555,6 +2555,7 @@ static const struct panel_desc innolux_g101ice_l01 = {
+ 		.disable = 200,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
- 	case HPWMI_SURE_START_TYPE:
- 		ret = hp_populate_sure_start_data(attr_name_kobj);
--		if (ret)
--			goto err_other_attr_init;
- 		break;
- 
- 	default:
- 		ret = -EINVAL;
--		goto err_other_attr_init;
- 	}
- 
-+	if (ret)
-+		goto err_other_attr_init;
-+
- 	mutex_unlock(&bioscfg_drv.mutex);
- 	return 0;
- 
+-- 
+2.42.0
+
 
 
 
