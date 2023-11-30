@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-3464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C9F7FF5C5
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C95C87FF5FA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7189828185D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 843992818BB
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064F448CEB;
-	Thu, 30 Nov 2023 16:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD1C10EF;
+	Thu, 30 Nov 2023 16:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMeUASrZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7rIMbMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F0F482DC;
-	Thu, 30 Nov 2023 16:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4450FC433C8;
-	Thu, 30 Nov 2023 16:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5AD211C9B;
+	Thu, 30 Nov 2023 16:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55457C433C7;
+	Thu, 30 Nov 2023 16:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361900;
-	bh=WqSgLy81nbyWwA9PHXiM2u4DocweRC7FAdUa0scZ2tQ=;
+	s=korg; t=1701362001;
+	bh=1hGrS0IcwTHmLh6ahiLYWKHeNRHSQBAKOryQgVQfAcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMeUASrZovS481utr48LK1bGXtJq4fNrVj6auGKQzNaY/T6y8CuSxo69ghnhr+UYx
-	 PXwEOycRZxfQ4z/3LIdhQqyXNVQhCFvZFnwz3Hp9HGHBi6bRfIae2IuVi37S6/HV6k
-	 k2IG9uiHW1EtVpcHzKlLBQ+nutPmN/25dq6pfyNc=
+	b=l7rIMbMe1QYeWjh2q/n38w+jzBmGIUXMGofPmC2lV1oewiLJUvAot2XYRU7Z4JfeJ
+	 Fv2bHi0RrOIHg3z9D9xwrSXojXKUGnPuBd1fGY4wqwtdLiRcJz3S1HAjQkCBi7H2Hp
+	 7qXCkXSR0TT0ZztAQJzpoqd6FXM5t7rEFZyWWxSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Fragoso <victorffs@hotmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 73/82] USB: serial: option: add Fibocom L7xx modules
+	Bhanu Victor DiCara <00bvd0+linux@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Xiao Ni <xni@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Guoqing Jiang <guoqing.jiang@linux.dev>
+Subject: [PATCH 5.15 47/69] md: fix bi_status reporting in md_end_clone_io
 Date: Thu, 30 Nov 2023 16:22:44 +0000
-Message-ID: <20231130162138.298079114@linuxfoundation.org>
+Message-ID: <20231130162134.613736887@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +55,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Fragoso <victorffs@hotmail.com>
+From: Song Liu <song@kernel.org>
 
-commit e389fe8b68137344562fb6e4d53d8a89ef6212dd upstream.
+commit 45b478951b2ba5aea70b2850c49c1aa83aedd0d2 upstream.
 
-Add support for Fibocom L716-EU module series.
+md_end_clone_io() may overwrite error status in orig_bio->bi_status with
+BLK_STS_OK. This could happen when orig_bio has BIO_CHAIN (split by
+md_submit_bio => bio_split_to_limits, for example). As a result, upper
+layer may miss error reported from md (or the device) and consider the
+failed IO was successful.
 
-L716-EU is a Fibocom module based on ZTE's V3E/V3T chipset.
+Fix this by only update orig_bio->bi_status when current bio reports
+error and orig_bio is BLK_STS_OK. This is the same behavior as
+__bio_chain_endio().
 
-Device creates multiple interfaces when connected to PC as follows:
- - Network Interface: ECM or RNDIS (set by FW or AT Command)
- - ttyUSB0: AT port
- - ttyUSB1: Modem port
- - ttyUSB2: AT2 port
- - ttyUSB3: Trace port for log information
- - ADB: ADB port for debugging. ("Driver=usbfs" when ADB server enabled)
-
-Here are the outputs of lsusb and usb-devices:
-$ ls /dev/ttyUSB*
-/dev/ttyUSB0  /dev/ttyUSB1  /dev/ttyUSB2  /dev/ttyUSB3
-
-usb-devices:
-L716-EU (ECM mode):
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 51 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
-S:  Manufacturer=Fibocom,Incorporated
-S:  Product=Fibocom Mobile Boardband
-S:  SerialNumber=1234567890ABCDEF
-C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-L716-EU (RNDIS mode):
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 49 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
-S:  Manufacturer=Fibocom,Incorporated
-S:  Product=Fibocom Mobile Boardband
-S:  SerialNumber=1234567890ABCDEF
-C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=87(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Victor Fragoso <victorffs@hotmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 10764815ff47 ("md: add io accounting for raid0 and raid5")
+Cc: stable@vger.kernel.org # v5.14+
+Reported-by: Bhanu Victor DiCara <00bvd0+linux@gmail.com>
+Closes: https://lore.kernel.org/regressions/5727380.DvuYhMxLoT@bvd0/
+Signed-off-by: Song Liu <song@kernel.org>
+Tested-by: Xiao Ni <xni@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Guoqing Jiang <guoqing.jiang@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/md.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2251,6 +2251,7 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1782, 0x4d11, 0xff) },			/* Fibocom L610 (ECM/RNDIS mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0001, 0xff, 0xff, 0xff) },	/* Fibocom L716-EU (ECM/RNDIS mode) */
- 	{ USB_DEVICE(0x2cb7, 0x0104),						/* Fibocom NL678 series */
- 	  .driver_info = RSVD(4) | RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0105, 0xff),			/* Fibocom NL678 series */
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -8627,7 +8627,8 @@ static void md_end_io_acct(struct bio *b
+ 	struct md_io_acct *md_io_acct = bio->bi_private;
+ 	struct bio *orig_bio = md_io_acct->orig_bio;
+ 
+-	orig_bio->bi_status = bio->bi_status;
++	if (bio->bi_status && !orig_bio->bi_status)
++		orig_bio->bi_status = bio->bi_status;
+ 
+ 	bio_end_io_acct(orig_bio, md_io_acct->start_time);
+ 	bio_put(bio);
 
 
 
