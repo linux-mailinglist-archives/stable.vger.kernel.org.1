@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-3355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE2F47FF53C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D623F7FF5B2
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 711E8B20C1D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 900EE2816E9
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCC954F93;
-	Thu, 30 Nov 2023 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00DED11C9B;
+	Thu, 30 Nov 2023 16:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AipNf0KV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhGMD9Fg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56F8495C2;
-	Thu, 30 Nov 2023 16:27:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F8AFC433C7;
-	Thu, 30 Nov 2023 16:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7209537F9;
+	Thu, 30 Nov 2023 16:30:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438FDC433C7;
+	Thu, 30 Nov 2023 16:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361622;
-	bh=7iNw+ZcTgp6UKAw4giaZjrL8935uG71HQOm0nSqDcGg=;
+	s=korg; t=1701361857;
+	bh=MoORLIuFywKYtjAYyYlOGDO/NSoI95fbAI9X6rGTv+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AipNf0KVqQF+VOP+6+81HAgW+eZxo7pXU/c3SNF1y/mY95/xW3SL+LKTgJY/4LmV8
-	 XLH3sz+c/1HvyB7l7pNCdPzSwu7H6w0JEsHb1o/G5i4WDFkVFWedlEhsKR9mrWqzRi
-	 dmqUDxbCzBcgkPhKpfBPgV7Sc3q+frdgM8576iXw=
+	b=LhGMD9Fg7CZtnBMBMnyrkUdWMjCxnzmUb4P5LqBbZrKTHelC5PLTKTr4awARnXiaR
+	 D1LLUV2XdFcW7mrBxzmVDQ4DbB/SkoS7YRwWTap6lY0fvowfxMw0C5AL7tGm/jFExM
+	 NBXCKlcPYVKPEAKMc16MG8pZpppbzk3guixd3vBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peilin Ye <peilin.ye@bytedance.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Yikebaer Aizezi <yikebaer61@gmail.com>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/112] veth: Use tstats per-CPU traffic counters
+Subject: [PATCH 6.1 51/82] ext4: fix slab-use-after-free in ext4_es_insert_extent()
 Date: Thu, 30 Nov 2023 16:22:22 +0000
-Message-ID: <20231130162143.336656090@linuxfoundation.org>
+Message-ID: <20231130162137.590872130@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,117 +56,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peilin Ye <peilin.ye@bytedance.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 6f2684bf2b4460c84d0d34612a939f78b96b03fc ]
+[ Upstream commit 768d612f79822d30a1e7d132a4d4b05337ce42ec ]
 
-Currently veth devices use the lstats per-CPU traffic counters, which only
-cover TX traffic. veth_get_stats64() actually populates RX stats of a veth
-device from its peer's TX counters, based on the assumption that a veth
-device can _only_ receive packets from its peer, which is no longer true:
+Yikebaer reported an issue:
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_es_insert_extent+0xc68/0xcb0
+fs/ext4/extents_status.c:894
+Read of size 4 at addr ffff888112ecc1a4 by task syz-executor/8438
 
-For example, recent CNIs (like Cilium) can use the bpf_redirect_peer() BPF
-helper to redirect traffic from NIC's tc ingress to veth's tc ingress (in
-a different netns), skipping veth's peer device. Unfortunately, this kind
-of traffic isn't currently accounted for in veth's RX stats.
+CPU: 1 PID: 8438 Comm: syz-executor Not tainted 6.5.0-rc5 #1
+Call Trace:
+ [...]
+ kasan_report+0xba/0xf0 mm/kasan/report.c:588
+ ext4_es_insert_extent+0xc68/0xcb0 fs/ext4/extents_status.c:894
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
 
-In preparation for the fix, use tstats (instead of lstats) to maintain
-both RX and TX counters for each veth device. We'll use RX counters for
-bpf_redirect_peer() traffic, and keep using TX counters for the usual
-"peer-to-peer" traffic. In veth_get_stats64(), calculate RX stats by
-_adding_ RX count to peer's TX count, in order to cover both kinds of
-traffic.
+Allocated by task 8438:
+ [...]
+ kmem_cache_zalloc include/linux/slab.h:693 [inline]
+ __es_alloc_extent fs/ext4/extents_status.c:469 [inline]
+ ext4_es_insert_extent+0x672/0xcb0 fs/ext4/extents_status.c:873
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
 
-veth_stats_rx() might need a name change (perhaps to "veth_stats_xdp()")
-for less confusion, but let's leave it to another patch to keep the fix
-minimal.
+Freed by task 8438:
+ [...]
+ kmem_cache_free+0xec/0x490 mm/slub.c:3823
+ ext4_es_try_to_merge_right fs/ext4/extents_status.c:593 [inline]
+ __es_insert_extent+0x9f4/0x1440 fs/ext4/extents_status.c:802
+ ext4_es_insert_extent+0x2ca/0xcb0 fs/ext4/extents_status.c:882
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
+==================================================================
 
-Signed-off-by: Peilin Ye <peilin.ye@bytedance.com>
-Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20231114004220.6495-5-daniel@iogearbox.net
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+The flow of issue triggering is as follows:
+1. remove es
+      raw es               es  removed  es1
+|-------------------| -> |----|.......|------|
+
+2. insert es
+  es   insert   es1      merge with es  es1     merge with es and free es1
+|----|.......|------| -> |------------|------| -> |-------------------|
+
+es merges with newes, then merges with es1, frees es1, then determines
+if es1->es_len is 0 and triggers a UAF.
+
+The code flow is as follows:
+ext4_es_insert_extent
+  es1 = __es_alloc_extent(true);
+  es2 = __es_alloc_extent(true);
+  __es_remove_extent(inode, lblk, end, NULL, es1)
+    __es_insert_extent(inode, &newes, es1) ---> insert es1 to es tree
+  __es_insert_extent(inode, &newes, es2)
+    ext4_es_try_to_merge_right
+      ext4_es_free_extent(inode, es1) --->  es1 is freed
+  if (es1 && !es1->es_len)
+    // Trigger UAF by determining if es1 is used.
+
+We determine whether es1 or es2 is used immediately after calling
+__es_remove_extent() or __es_insert_extent() to avoid triggering a
+UAF if es1 or es2 is freed.
+
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
+Closes: https://lore.kernel.org/lkml/CALcu4raD4h9coiyEBL4Bm0zjDwxC2CyPiTwsP3zFuhot6y9Beg@mail.gmail.com
+Fixes: 2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230815070808.3377171-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/veth.c | 30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ fs/ext4/extents_status.c | 44 +++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index af326b91506eb..0f798bcbe25cd 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -373,7 +373,7 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	skb_tx_timestamp(skb);
- 	if (likely(veth_forward_skb(rcv, skb, rq, use_napi) == NET_RX_SUCCESS)) {
- 		if (!use_napi)
--			dev_lstats_add(dev, length);
-+			dev_sw_netstats_tx_add(dev, 1, length);
- 		else
- 			__veth_xdp_flush(rq);
- 	} else {
-@@ -387,14 +387,6 @@ static netdev_tx_t veth_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return ret;
- }
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 934c14f9edb9f..e8533b4f891bf 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -882,23 +882,29 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
  
--static u64 veth_stats_tx(struct net_device *dev, u64 *packets, u64 *bytes)
--{
--	struct veth_priv *priv = netdev_priv(dev);
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
+ 		err2 = 0;
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
+ 
+ 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
+ 	    (status & EXTENT_STATUS_WRITTEN ||
+ 	     status & EXTENT_STATUS_UNWRITTEN))
+ 		__revise_pending(inode, lblk, len);
 -
--	dev_lstats_read(dev, packets, bytes);
--	return atomic64_read(&priv->dropped);
--}
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
+@@ -1495,8 +1501,12 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	 */
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 	err = __es_remove_extent(inode, lblk, end, &reserved, es);
+-	if (es && !es->es_len)
+-		__es_free_extent(es);
++	/* Free preallocated extent if it didn't get used. */
++	if (es) {
++		if (!es->es_len)
++			__es_free_extent(es);
++		es = NULL;
++	}
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err)
+ 		goto retry;
+@@ -2055,19 +2065,25 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
+ 
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
+ 
+ 	if (allocated)
+ 		__insert_pending(inode, lblk);
 -
- static void veth_stats_rx(struct veth_stats *result, struct net_device *dev)
- {
- 	struct veth_priv *priv = netdev_priv(dev);
-@@ -432,24 +424,24 @@ static void veth_get_stats64(struct net_device *dev,
- 	struct veth_priv *priv = netdev_priv(dev);
- 	struct net_device *peer;
- 	struct veth_stats rx;
--	u64 packets, bytes;
- 
--	tot->tx_dropped = veth_stats_tx(dev, &packets, &bytes);
--	tot->tx_bytes = bytes;
--	tot->tx_packets = packets;
-+	tot->tx_dropped = atomic64_read(&priv->dropped);
-+	dev_fetch_sw_netstats(tot, dev->tstats);
- 
- 	veth_stats_rx(&rx, dev);
- 	tot->tx_dropped += rx.xdp_tx_err;
- 	tot->rx_dropped = rx.rx_drops + rx.peer_tq_xdp_xmit_err;
--	tot->rx_bytes = rx.xdp_bytes;
--	tot->rx_packets = rx.xdp_packets;
-+	tot->rx_bytes += rx.xdp_bytes;
-+	tot->rx_packets += rx.xdp_packets;
- 
- 	rcu_read_lock();
- 	peer = rcu_dereference(priv->peer);
- 	if (peer) {
--		veth_stats_tx(peer, &packets, &bytes);
--		tot->rx_bytes += bytes;
--		tot->rx_packets += packets;
-+		struct rtnl_link_stats64 tot_peer = {};
-+
-+		dev_fetch_sw_netstats(&tot_peer, peer->tstats);
-+		tot->rx_bytes += tot_peer.tx_bytes;
-+		tot->rx_packets += tot_peer.tx_packets;
- 
- 		veth_stats_rx(&rx, peer);
- 		tot->tx_dropped += rx.peer_tq_xdp_xmit_err;
-@@ -1776,7 +1768,7 @@ static void veth_setup(struct net_device *dev)
- 			       NETIF_F_HW_VLAN_STAG_RX);
- 	dev->needs_free_netdev = true;
- 	dev->priv_destructor = veth_dev_free;
--	dev->pcpu_stat_type = NETDEV_PCPU_STAT_LSTATS;
-+	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
- 	dev->max_mtu = ETH_MAX_MTU;
- 
- 	dev->hw_features = VETH_FEATURES;
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
 -- 
 2.42.0
 
