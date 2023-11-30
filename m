@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-3479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8845B7FF5D9
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC1057FF522
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41B6D281888
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63A52B20C3A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDDC51C3E;
-	Thu, 30 Nov 2023 16:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CD454F9C;
+	Thu, 30 Nov 2023 16:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFbwHgyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiWUKR/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B6C55762;
-	Thu, 30 Nov 2023 16:32:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F96C433C8;
-	Thu, 30 Nov 2023 16:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545CA54F92;
+	Thu, 30 Nov 2023 16:26:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8317DC433C7;
+	Thu, 30 Nov 2023 16:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361936;
-	bh=N7JAx6i0yauVK+9SQ/NjITlUc5ErfgirHep5xDrfxfc=;
+	s=korg; t=1701361567;
+	bh=hM4/mw5qk4pLh9lwoCR1T+XBb+1j3wpLUEu5f1F5XUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFbwHgybtvD4jJlUs54POSNCzOIBToTsh//pA6EjT3pFds0Sq+ydsX9xI0Si+qU77
-	 YE7p5FWheYnlmvvvH5M8nyP5v7NfgoDa+XhiLGFxGzliWDfuofrAbJf9mKWJoT7zHa
-	 7mSDqB0cmf4VaR2QbhB0LMdUsWl8FMqfJRm1hNnw=
+	b=kiWUKR/OZ+d+FTSNd8/lO1+yAlH57pok7XEXXiBoDESZIVDZ9TEgBWxeqpqorNfM2
+	 NnUmhE+iXiYEDXdMfbu9lyBqW6+OEVocRRDg/3gqu8NW9uRIUGdpbnddhPQ1ZlmDAB
+	 lNga2VhXa8Fhneqk9Hq32oEzIb1p6xUybCi4QRus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuijing Li <shuijing.li@mediatek.com>,
-	Xinlei Lee <xinlei.lee@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 03/69] drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
+	Charles Mirabile <cmirabil@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 073/112] io_uring/fs: consider link->flags when getting path for LINKAT
 Date: Thu, 30 Nov 2023 16:22:00 +0000
-Message-ID: <20231130162133.159160028@linuxfoundation.org>
+Message-ID: <20231130162142.647231728@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,63 +52,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuijing Li <shuijing.li@mediatek.com>
+From: Charles Mirabile <cmirabil@redhat.com>
 
-[ Upstream commit 812562b8d881ce6d33fed8052b3a10b718430fb5 ]
+commit 8479063f1fbee201a8739130e816cc331b675838 upstream.
 
-For "boe,tv105wum-nw0" this special panel, it is stipulated in
-the panel spec that MIPI needs to keep the LP11 state before
-the lcm_reset pin is pulled high.
+In order for `AT_EMPTY_PATH` to work as expected, the fact
+that the user wants that behavior needs to make it to `getname_flags`
+or it will return ENOENT.
 
-Signed-off-by: Shuijing Li <shuijing.li@mediatek.com>
-Signed-off-by: Xinlei Lee <xinlei.lee@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230515094955.15982-3-shuijing.li@mediatek.com
-Stable-dep-of: 6965809e5269 ("drm/panel: auo,b101uan08.3: Fine tune the panel power sequence")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
+Cc:  <stable@vger.kernel.org>
+Link: https://github.com/axboe/liburing/issues/995
+Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
+Link: https://lore.kernel.org/r/20231120105545.1209530-1-cmirabil@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ io_uring/fs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index db9d0b86d5428..3229e5eabbd21 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -36,6 +36,7 @@ struct panel_desc {
- 	const struct panel_init_cmd *init_cmds;
- 	unsigned int lanes;
- 	bool discharge_on_disable;
-+	bool lp11_before_reset;
- };
+--- a/io_uring/fs.c
++++ b/io_uring/fs.c
+@@ -254,7 +254,7 @@ int io_linkat_prep(struct io_kiocb *req,
+ 	newf = u64_to_user_ptr(READ_ONCE(sqe->addr2));
+ 	lnk->flags = READ_ONCE(sqe->hardlink_flags);
  
- struct boe_panel {
-@@ -551,6 +552,10 @@ static int boe_panel_prepare(struct drm_panel *panel)
+-	lnk->oldpath = getname(oldf);
++	lnk->oldpath = getname_uflags(oldf, lnk->flags);
+ 	if (IS_ERR(lnk->oldpath))
+ 		return PTR_ERR(lnk->oldpath);
  
- 	usleep_range(5000, 10000);
- 
-+	if (boe->desc->lp11_before_reset) {
-+		mipi_dsi_dcs_nop(boe->dsi);
-+		usleep_range(1000, 2000);
-+	}
- 	gpiod_set_value(boe->enable_gpio, 1);
- 	usleep_range(1000, 2000);
- 	gpiod_set_value(boe->enable_gpio, 0);
-@@ -719,6 +724,7 @@ static const struct panel_desc boe_tv105wum_nw0_desc = {
- 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
- 		      MIPI_DSI_MODE_LPM,
- 	.init_cmds = boe_init_cmd,
-+	.lp11_before_reset = true,
- };
- 
- static int boe_panel_get_modes(struct drm_panel *panel,
--- 
-2.42.0
-
 
 
 
