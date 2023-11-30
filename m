@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-3500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C187FF5F4
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46F837FF5AD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82F2A1C211A4
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 781281C20FC5
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4507537F9;
-	Thu, 30 Nov 2023 16:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A2C48CEB;
+	Thu, 30 Nov 2023 16:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="texp8yrM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asniIJGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717CE495D9;
-	Thu, 30 Nov 2023 16:33:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA377C433C8;
-	Thu, 30 Nov 2023 16:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C4B54F9B;
+	Thu, 30 Nov 2023 16:30:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E26C433C7;
+	Thu, 30 Nov 2023 16:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361989;
-	bh=/ktQrckJrDWcgfDwta6JMoKXEnq/ebQAv4POd/ypDAY=;
+	s=korg; t=1701361845;
+	bh=12G0y3HtGD6f3e14q5xep6L+6noxgedl+GjQwfnmNJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=texp8yrMtnVuSkPvg4zuXb3i5lNR2bTwT/1AQ/7FelntdE8r42HH/D4CH12Yd2oZU
-	 Qjk0kogPpwJ6x7yc9TNJndCfvnjKZi3CplEBMaw7YcmNqT09taiCZ92leuK0VJc7iN
-	 xFdQMYfvyC01uAx1Wv10E5KqgEJuyLsrE9s/Iw4M=
+	b=asniIJGwilqPKp4jDkqUMTMGLb0oE0uOS9O5nLw+RvTPUJYM+K9sHclmHQb5mnacI
+	 pog5WFLawosMJ9JfZoANQW4SWqM8YxnwmXVUV6Hy0Fgtduejcpo/AIHf/qy+IRZl3v
+	 12Q07yqtMhu3lKqr/GKyrwgq6rC+hlZ63l/uPWmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Francis Laniel <flaniel@linux.microsoft.com>
-Subject: [PATCH 5.15 42/69] tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols
-Date: Thu, 30 Nov 2023 16:22:39 +0000
-Message-ID: <20231130162134.460514886@linuxfoundation.org>
+	Rand Deeb <rand.sec96@gmail.com>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 69/82] bcache: prevent potential division by zero error
+Date: Thu, 30 Nov 2023 16:22:40 +0000
+Message-ID: <20231130162138.163473667@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,154 +53,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francis Laniel <flaniel@linux.microsoft.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit b022f0c7e404887a7c5229788fc99eff9f9a80d5 upstream.
+commit 2c7f497ac274a14330208b18f6f734000868ebf9 upstream.
 
-When a kprobe is attached to a function that's name is not unique (is
-static and shares the name with other functions in the kernel), the
-kprobe is attached to the first function it finds. This is a bug as the
-function that it is attaching to is not necessarily the one that the
-user wants to attach to.
+In SHOW(), the variable 'n' is of type 'size_t.' While there is a
+conditional check to verify that 'n' is not equal to zero before
+executing the 'do_div' macro, concerns arise regarding potential
+division by zero error in 64-bit environments.
 
-Instead of blindly picking a function to attach to what is ambiguous,
-error with EADDRNOTAVAIL to let the user know that this function is not
-unique, and that the user must use another unique function with an
-address offset to get to the function they want to attach to.
+The concern arises when 'n' is 64 bits in size, greater than zero, and
+the lower 32 bits of it are zeros. In such cases, the conditional check
+passes because 'n' is non-zero, but the 'do_div' macro casts 'n' to
+'uint32_t,' effectively truncating it to its lower 32 bits.
+Consequently, the 'n' value becomes zero.
 
-Link: https://lore.kernel.org/all/20231020104250.9537-2-flaniel@linux.microsoft.com/
+To fix this potential division by zero error and ensure precise
+division handling, this commit replaces the 'do_div' macro with
+div64_u64(). div64_u64() is designed to work with 64-bit operands,
+guaranteeing that division is performed correctly.
 
-Cc: stable@vger.kernel.org
-Fixes: 413d37d1eb69 ("tracing: Add kprobe-based event tracer")
-Suggested-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Francis Laniel <flaniel@linux.microsoft.com>
-Link: https://lore.kernel.org/lkml/20230819101105.b0c104ae4494a7d1f2eea742@kernel.org/
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+This change enhances the robustness of the code, ensuring that division
+operations yield accurate results in all scenarios, eliminating the
+possibility of division by zero, and improving compatibility across
+different 64-bit environments.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-5-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_kprobe.c |   74 ++++++++++++++++++++++++++++++++++++++++++++
- kernel/trace/trace_probe.h  |    1 
- 2 files changed, 75 insertions(+)
+ drivers/md/bcache/sysfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -708,6 +708,36 @@ static struct notifier_block trace_kprob
- 	.priority = 1	/* Invoked after kprobe module callback */
- };
+--- a/drivers/md/bcache/sysfs.c
++++ b/drivers/md/bcache/sysfs.c
+@@ -1103,7 +1103,7 @@ SHOW(__bch_cache)
+ 			sum += INITIAL_PRIO - cached[i];
  
-+struct count_symbols_struct {
-+	const char *func_name;
-+	unsigned int count;
-+};
-+
-+static int count_symbols(void *data, const char *name, struct module *unused0,
-+			 unsigned long unused1)
-+{
-+	struct count_symbols_struct *args = data;
-+
-+	if (strcmp(args->func_name, name))
-+		return 0;
-+
-+	args->count++;
-+
-+	return 0;
-+}
-+
-+static unsigned int number_of_same_symbols(char *func_name)
-+{
-+	struct count_symbols_struct args = {
-+		.func_name = func_name,
-+		.count = 0,
-+	};
-+
-+	kallsyms_on_each_symbol(count_symbols, &args);
-+
-+	return args.count;
-+}
-+
- static int __trace_kprobe_create(int argc, const char *argv[])
- {
- 	/*
-@@ -836,6 +866,31 @@ static int __trace_kprobe_create(int arg
- 		}
- 	}
+ 		if (n)
+-			do_div(sum, n);
++			sum = div64_u64(sum, n);
  
-+	if (symbol && !strchr(symbol, ':')) {
-+		unsigned int count;
-+
-+		count = number_of_same_symbols(symbol);
-+		if (count > 1) {
-+			/*
-+			 * Users should use ADDR to remove the ambiguity of
-+			 * using KSYM only.
-+			 */
-+			trace_probe_log_err(0, NON_UNIQ_SYMBOL);
-+			ret = -EADDRNOTAVAIL;
-+
-+			goto error;
-+		} else if (count == 0) {
-+			/*
-+			 * We can return ENOENT earlier than when register the
-+			 * kprobe.
-+			 */
-+			trace_probe_log_err(0, BAD_PROBE_ADDR);
-+			ret = -ENOENT;
-+
-+			goto error;
-+		}
-+	}
-+
- 	trace_probe_log_set_index(0);
- 	if (event) {
- 		ret = traceprobe_parse_event_name(&event, &group, buf,
-@@ -1755,6 +1810,7 @@ static int unregister_kprobe_event(struc
- }
- 
- #ifdef CONFIG_PERF_EVENTS
-+
- /* create a trace_kprobe, but don't add it to global lists */
- struct trace_event_call *
- create_local_trace_kprobe(char *func, void *addr, unsigned long offs,
-@@ -1765,6 +1821,24 @@ create_local_trace_kprobe(char *func, vo
- 	int ret;
- 	char *event;
- 
-+	if (func) {
-+		unsigned int count;
-+
-+		count = number_of_same_symbols(func);
-+		if (count > 1)
-+			/*
-+			 * Users should use addr to remove the ambiguity of
-+			 * using func only.
-+			 */
-+			return ERR_PTR(-EADDRNOTAVAIL);
-+		else if (count == 0)
-+			/*
-+			 * We can return ENOENT earlier than when register the
-+			 * kprobe.
-+			 */
-+			return ERR_PTR(-ENOENT);
-+	}
-+
- 	/*
- 	 * local trace_kprobes are not added to dyn_event, so they are never
- 	 * searched in find_trace_kprobe(). Therefore, there is no concern of
---- a/kernel/trace/trace_probe.h
-+++ b/kernel/trace/trace_probe.h
-@@ -405,6 +405,7 @@ extern int traceprobe_define_arg_fields(
- 	C(BAD_MAXACT,		"Invalid maxactive number"),		\
- 	C(MAXACT_TOO_BIG,	"Maxactive is too big"),		\
- 	C(BAD_PROBE_ADDR,	"Invalid probed address or symbol"),	\
-+	C(NON_UNIQ_SYMBOL,	"The symbol is not unique"),		\
- 	C(BAD_RETPROBE,		"Retprobe address must be an function entry"), \
- 	C(BAD_ADDR_SUFFIX,	"Invalid probed address suffix"), \
- 	C(NO_GROUP_NAME,	"Group name is not specified"),		\
+ 		for (i = 0; i < ARRAY_SIZE(q); i++)
+ 			q[i] = INITIAL_PRIO - cached[n * (i + 1) /
 
 
 
