@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1947F7FF547
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2758F7FF57E
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FAF1B20D99
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09C01F20F48
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC7E54FAD;
-	Thu, 30 Nov 2023 16:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B9554FAF;
+	Thu, 30 Nov 2023 16:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bXlzr8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucSg0tO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A30B54F87;
-	Thu, 30 Nov 2023 16:27:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0CA0C433C8;
-	Thu, 30 Nov 2023 16:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEC854FAD;
+	Thu, 30 Nov 2023 16:29:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D9CC433C7;
+	Thu, 30 Nov 2023 16:29:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361645;
-	bh=jNkK2vXHkzK7FmYBQ2s14zLcsnKvooSxWHzfWKglV8A=;
+	s=korg; t=1701361761;
+	bh=5EWQ6y2i2cqNSQYPO6+AXzWo8QIkNnIdBzKmOGLxQAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bXlzr8G3HvQWv21BiAu6Dc1141OerlAMtPEnGI59FTkAXCiwLc25HolBzxQtlVQ5
-	 bNDGa1RO2YGLQKjZ8uZZ1BJid3oPiJKsJmZu+B2nXKAn9e8ZhWlqlHWo7UpiH4YfEG
-	 tqWZ9SN2TNR0aqItuYLYq4VVrLEdyKJXHOE/rzZk=
+	b=ucSg0tO181R28Onu9Yo/CJzLa1hD+2HRnfyRNcWEQO2jjdrOjRA9BkwzPYmI4GgmW
+	 k739fUk0UUACnK7uV0CtFw2J2wXGO6jZz97Kramldfoo4dx3YDNKUrDpzAELBGX8A9
+	 wu3iMV+6n0jtN92RYtuqvWltRSjffoOHkvfopBfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangyu Chen <cyy@cyyself.name>,
-	Asuna Yang <SpriteOvO@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 080/112] USB: serial: option: add Luat Air72*U series products
-Date: Thu, 30 Nov 2023 16:22:07 +0000
-Message-ID: <20231130162142.858726556@linuxfoundation.org>
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 37/82] cifs: fix leak of iface for primary channel
+Date: Thu, 30 Nov 2023 16:22:08 +0000
+Message-ID: <20231130162137.135687180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asuna Yang <spriteovo@gmail.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit da90e45d5afc4da2de7cd3ea7943d0f1baa47cc2 upstream.
+[ Upstream commit 29954d5b1e0d67a4cd61c30c2201030c97e94b1e ]
 
-Update the USB serial option driver support for Luat Air72*U series
-products.
+My last change in this area introduced a change which
+accounted for primary channel in the interface ref count.
+However, it did not reduce this ref count on deallocation
+of the primary channel. i.e. during umount.
 
-ID 1782:4e00 Spreadtrum Communications Inc. UNISOC-8910
+Fixing this leak here, by dropping this ref count for
+primary channel while freeing up the session.
 
-T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
-D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
-P: Vendor=1782 ProdID=4e00 Rev=00.00
-S: Manufacturer=UNISOC
-S: Product=UNISOC-8910
-C: #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=400mA
-I: If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E: Ad=82(I) Atr=03(Int.) MxPS= 8 Ivl=4096ms
-I: If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-If#= 2: AT
-If#= 3: PPP + AT
-If#= 4: Debug
-
-Co-developed-by: Yangyu Chen <cyy@cyyself.name>
-Signed-off-by: Yangyu Chen <cyy@cyyself.name>
-Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
+Fixes: fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/connect.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -609,6 +609,8 @@ static void option_instat_callback(struc
- #define UNISOC_VENDOR_ID			0x1782
- /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
- #define TOZED_PRODUCT_LT70C			0x4055
-+/* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
-+#define LUAT_PRODUCT_AIR720U			0x4e00
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index 6ca1e00b3f76a..5b19918938346 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -2070,6 +2070,12 @@ void cifs_put_smb_ses(struct cifs_ses *ses)
+ 		}
+ 	}
  
- /* Device flags */
- 
-@@ -2271,6 +2273,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
++	/* we now account for primary channel in iface->refcount */
++	if (ses->chans[0].iface) {
++		kref_put(&ses->chans[0].iface->refcount, release_iface);
++		ses->chans[0].server = NULL;
++	}
++
+ 	sesInfoFree(ses);
+ 	cifs_put_tcp_session(server, 0);
+ }
+-- 
+2.42.0
+
 
 
 
