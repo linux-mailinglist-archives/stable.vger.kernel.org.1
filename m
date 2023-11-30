@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC3A7FF552
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B70227FF5A4
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B011C20F6A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E85D21C211E6
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B3954F9C;
-	Thu, 30 Nov 2023 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C48D4878B;
+	Thu, 30 Nov 2023 16:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFMPBN6d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfWPLiZv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0904524C2;
-	Thu, 30 Nov 2023 16:27:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F11FC433C8;
-	Thu, 30 Nov 2023 16:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E54A2D;
+	Thu, 30 Nov 2023 16:30:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B27E2C433CA;
+	Thu, 30 Nov 2023 16:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361672;
-	bh=aXHARWxhx8CGbeuMeuTR84aNy1RzXFye1h769zQg9Tk=;
+	s=korg; t=1701361828;
+	bh=3vSo4jQB9C8bo/jo4mK1HwcKs1LdECV5865IucBoPsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xFMPBN6dY5J0HLD8GRit1WpZPNLQGvFz6Q8+vh0Kefe8+llT6p/xbv35Xr6e4cqw5
-	 yPw+2P7aqjUujHfS/La2rgYwyN8KX7scgdg2IwGHc7ezXaL5DGvthN55pvMEJZY+k6
-	 UENSLVX55Mglo/2btjbaxk/Dd5NzsuhjAvTwfr1g=
+	b=cfWPLiZvrlMCmOKWC5eYeFFmBFqYI2Q5cre/y2grnsh7++mGyXu8lYS4OtL8r+SgL
+	 NBg2017nBMN6nyEujtSQ64tgLyHJ3pgeZrPooHrnj1GMQGw6t9fF1HcA57iVhw6HMR
+	 L710yZ1aoggUwh9AHoK19oPbKc77gRhTgDeBdzJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Heikki Krogeus <heikki.krogerus@linux.intel.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 107/112] usb: typec: tcpm: Skip hard reset when in error recovery
+	Yangyu Chen <cyy@cyyself.name>,
+	Asuna Yang <SpriteOvO@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 63/82] USB: serial: option: add Luat Air72*U series products
 Date: Thu, 30 Nov 2023 16:22:34 +0000
-Message-ID: <20231130162143.682964096@linuxfoundation.org>
+Message-ID: <20231130162137.981664475@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Asuna Yang <spriteovo@gmail.com>
 
-commit a6fe37f428c19dd164c2111157d4a1029bd853aa upstream.
+commit da90e45d5afc4da2de7cd3ea7943d0f1baa47cc2 upstream.
 
-Hard reset queued prior to error recovery (or) received during
-error recovery will make TCPM to prematurely exit error recovery
-sequence. Ignore hard resets received during error recovery (or)
-port reset sequence.
+Update the USB serial option driver support for Luat Air72*U series
+products.
 
-```
-[46505.459688] state change SNK_READY -> ERROR_RECOVERY [rev3 NONE_AMS]
-[46505.459706] state change ERROR_RECOVERY -> PORT_RESET [rev3 NONE_AMS]
-[46505.460433] disable vbus discharge ret:0
-[46505.461226] Setting usb_comm capable false
-[46505.467244] Setting voltage/current limit 0 mV 0 mA
-[46505.467262] polarity 0
-[46505.470695] Requesting mux state 0, usb-role 0, orientation 0
-[46505.475621] cc:=0
-[46505.476012] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev3 NONE_AMS]
-[46505.476020] Received hard reset
-[46505.476024] state change PORT_RESET -> HARD_RESET_START [rev3 HARD_RESET]
-```
+ID 1782:4e00 Spreadtrum Communications Inc. UNISOC-8910
 
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
+P: Vendor=1782 ProdID=4e00 Rev=00.00
+S: Manufacturer=UNISOC
+S: Product=UNISOC-8910
+C: #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=400mA
+I: If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E: Ad=82(I) Atr=03(Int.) MxPS= 8 Ivl=4096ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+If#= 2: AT
+If#= 3: PPP + AT
+If#= 4: Debug
+
+Co-developed-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogeus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231101021909.2962679-1-badhri@google.com
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -5392,6 +5392,15 @@ static void _tcpm_pd_hard_reset(struct t
- 	if (port->bist_request == BDO_MODE_TESTDATA && port->tcpc->set_bist_data)
- 		port->tcpc->set_bist_data(port->tcpc, false);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -609,6 +609,8 @@ static void option_instat_callback(struc
+ #define UNISOC_VENDOR_ID			0x1782
+ /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
+ #define TOZED_PRODUCT_LT70C			0x4055
++/* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
++#define LUAT_PRODUCT_AIR720U			0x4e00
  
-+	switch (port->state) {
-+	case ERROR_RECOVERY:
-+	case PORT_RESET:
-+	case PORT_RESET_WAIT_OFF:
-+		return;
-+	default:
-+		break;
-+	}
-+
- 	if (port->ams != NONE_AMS)
- 		port->ams = NONE_AMS;
- 	if (port->hard_reset_count < PD_N_HARD_RESET_COUNT)
+ /* Device flags */
+ 
+@@ -2271,6 +2273,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
