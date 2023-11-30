@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-3427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A807FF595
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A187FF5DB
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7067A28189A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F38FB211EF
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5343951002;
-	Thu, 30 Nov 2023 16:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDBB537F9;
+	Thu, 30 Nov 2023 16:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1Ykm4vC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWxCCYXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C74A2D;
-	Thu, 30 Nov 2023 16:30:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953F5C433C7;
-	Thu, 30 Nov 2023 16:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E5954FA4;
+	Thu, 30 Nov 2023 16:32:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EF0C433C7;
+	Thu, 30 Nov 2023 16:32:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361804;
-	bh=W2irlgcMGTMrI1D4NLFkDx1Smown6fI0hMlY9wnSxHI=;
+	s=korg; t=1701361938;
+	bh=LSrd7Xo6CHCLhmWzyRi8Sc8Yebe97Aono6GznSpLJk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1Ykm4vCXxTnbScTz0G8NpcucgJlKvn9K/fG29lF959TJIGBCvrYVz3nG188AVQWn
-	 ZThDy5CUqkMDIkqs9jYp8rf8j1IF3DillDJxBP1ZzCvjXOj/fcGalLX/IcISFprr3f
-	 G9UJYDUGXgqudSUxtC4N5udnSpmAQBch4Gyg4M+c=
+	b=yWxCCYXn5HpuNXFVsrL4qxScdRWd01VRBw4+CVRnF8xY8+AaEiTheZ9OvWAliCp0q
+	 9UOUEKyu5k3FsgViSN9hKiCDDfIagUkKuIBpxcI5mRRXnZx8RGaDhr3c5MAx1gjdNW
+	 WnC2E0iFI7bGf0sc7S2leWKOSx/iWxgK/yrNM41s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Lee Jones <lee@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Andrew Halaney <ahalaney@redhat.com>,
+	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/82] USB: dwc3: qcom: fix resource leaks on probe deferral
-Date: Thu, 30 Nov 2023 16:22:00 +0000
-Message-ID: <20231130162136.879040131@linuxfoundation.org>
+Subject: [PATCH 5.15 04/69] drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
+Date: Thu, 30 Nov 2023 16:22:01 +0000
+Message-ID: <20231130162133.193567836@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,82 +53,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
 
-[ Upstream commit 51392a1879ff06dc21b68aef4825f6ef68a7be42 ]
+[ Upstream commit 6965809e526917b73c8f9178173184dcf13cec4b ]
 
-The driver needs to deregister and free the newly allocated dwc3 core
-platform device on ACPI probe errors (e.g. probe deferral) and on driver
-unbind but instead it leaked those resources while erroneously dropping
-a reference to the parent platform device which is still in use.
+For "auo,b101uan08.3" this panel, it is stipulated in the panel spec that
+MIPI needs to keep the LP11 state before the lcm_reset pin is pulled high.
 
-For OF probing the driver takes a reference to the dwc3 core platform
-device which has also always been leaked.
-
-Fix the broken ACPI tear down and make sure to drop the dwc3 core
-reference for both OF and ACPI.
-
-Fixes: 8fd95da2cfb5 ("usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()")
-Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
-Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
-Cc: stable@vger.kernel.org      # 4.18
-Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Lee Jones <lee@kernel.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20231117173650.21161-2-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 9cf87666fc6e ("USB: dwc3: qcom: fix ACPI platform device leak")
+Fixes: 56ad624b4cb5 ("drm/panel: support for auo, b101uan08.3 wuxga dsi video mode panel")
+Signed-off-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231114044205.613421-1-xuxinxiong@huaqin.corp-partner.google.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
-index 72c22851d7eef..0c68227fe899e 100644
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -759,6 +759,7 @@ static int dwc3_qcom_of_register_core(struct platform_device *pdev)
- 	if (!qcom->dwc3) {
- 		ret = -ENODEV;
- 		dev_err(dev, "failed to get dwc3 platform device\n");
-+		of_platform_depopulate(dev);
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index 3229e5eabbd21..9e518213a54ff 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -697,6 +697,7 @@ static const struct panel_desc auo_b101uan08_3_desc = {
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 		      MIPI_DSI_MODE_LPM,
+ 	.init_cmds = auo_b101uan08_3_init_cmd,
++	.lp11_before_reset = true,
+ };
  
- node_put:
-@@ -901,7 +902,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 
- 	if (ret) {
- 		dev_err(dev, "failed to register DWC3 Core, err=%d\n", ret);
--		goto depopulate;
-+		goto clk_disable;
- 	}
- 
- 	ret = dwc3_qcom_interconnect_init(qcom);
-@@ -936,7 +937,8 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
- 	if (np)
- 		of_platform_depopulate(&pdev->dev);
- 	else
--		platform_device_put(pdev);
-+		platform_device_del(qcom->dwc3);
-+	platform_device_put(qcom->dwc3);
- clk_disable:
- 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
- 		clk_disable_unprepare(qcom->clks[i]);
-@@ -959,7 +961,8 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
- 	if (np)
- 		of_platform_depopulate(&pdev->dev);
- 	else
--		platform_device_put(pdev);
-+		platform_device_del(qcom->dwc3);
-+	platform_device_put(qcom->dwc3);
- 
- 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
- 		clk_disable_unprepare(qcom->clks[i]);
+ static const struct drm_display_mode boe_tv105wum_nw0_default_mode = {
 -- 
 2.42.0
 
