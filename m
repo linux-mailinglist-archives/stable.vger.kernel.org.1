@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-3374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF747FF551
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 094947FF5A3
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39241281786
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AC22818A0
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731CF54FA4;
-	Thu, 30 Nov 2023 16:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D098B54FA8;
+	Thu, 30 Nov 2023 16:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT1epUCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fIMkt3NV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2729E524C2;
-	Thu, 30 Nov 2023 16:27:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA820C433C7;
-	Thu, 30 Nov 2023 16:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8BE5576B;
+	Thu, 30 Nov 2023 16:30:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199DFC433C9;
+	Thu, 30 Nov 2023 16:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361670;
-	bh=JnXcdVlFU7SQbQQlm5BtNGTEVWSW6SRsLjK+U3SbKKc=;
+	s=korg; t=1701361825;
+	bh=BUkv/Iw3mDWIsvz/ZPFhokJcnxFRlBNk7THmGFkD3FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jT1epUCe3e7UuudVsMC6S5AvhB9ufBYMjrqLILfP182QzJQ0qsiVBS7unm9pBt9pj
-	 orRhEjlQL1cBZcVfs94is3/ozivCLLobjYuGyoP1itgFxoLL+T60f8rmtjao0UCUq9
-	 SNaRTdrGsPXn2FZOCNxCg7XSYvxFXlUTFwzKIguM=
+	b=fIMkt3NVCL7TPTnhqBXHOVe83IegAVZlLKYmAifqWLLrN72Dhwhi8cFYFoYY7SPW8
+	 vjBti0liYSyicupkmdQazUFm49rIYsTRSk+jIj3xYPc7P9Uz/2ZTihXZIwL29Zj8g2
+	 PuSdShsFZ5E8366RTwHKJFmmNuJ5b2KWFvaz6wmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Will McVicker <willmcvicker@google.com>
-Subject: [PATCH 6.6 106/112] usb: typec: tcpm: Fix sink caps op current check
+	Stefan Haberland <sth@linux.ibm.com>,
+	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 62/82] s390/dasd: protect device queue against concurrent access
 Date: Thu, 30 Nov 2023 16:22:33 +0000
-Message-ID: <20231130162143.654678478@linuxfoundation.org>
+Message-ID: <20231130162137.951222224@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +51,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Jan Höppner <hoeppner@linux.ibm.com>
 
-commit 187fb003c57c964ea61ac9fbfe41abf3ca9973eb upstream.
+commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
 
-TCPM checks for sink caps operational current even when PD is disabled.
-This incorrectly sets tcpm_set_charge() when PD is disabled.
-Check for sink caps only when PD is enabled.
+In dasd_profile_start() the amount of requests on the device queue are
+counted. The access to the device queue is unprotected against
+concurrent access. With a lot of parallel I/O, especially with alias
+devices enabled, the device queue can change while dasd_profile_start()
+is accessing the queue. In the worst case this leads to a kernel panic
+due to incorrect pointer accesses.
 
-[   97.572342] Start toggling
-[   97.578949] CC1: 0 -> 0, CC2: 0 -> 0 [state TOGGLING, polarity 0, disconnected]
-[   99.571648] CC1: 0 -> 0, CC2: 0 -> 4 [state TOGGLING, polarity 0, connected]
-[   99.571658] state change TOGGLING -> SNK_ATTACH_WAIT [rev3 NONE_AMS]
-[   99.571673] pending state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED @ 170 ms [rev3 NONE_AMS]
-[   99.741778] state change SNK_ATTACH_WAIT -> SNK_DEBOUNCED [delayed 170 ms]
-[   99.789283] CC1: 0 -> 0, CC2: 4 -> 5 [state SNK_DEBOUNCED, polarity 0, connected]
-[   99.789306] state change SNK_DEBOUNCED -> SNK_DEBOUNCED [rev3 NONE_AMS]
-[   99.903584] VBUS on
-[   99.903591] state change SNK_DEBOUNCED -> SNK_ATTACHED [rev3 NONE_AMS]
-[   99.903600] polarity 1
-[   99.910155] enable vbus discharge ret:0
-[   99.910160] Requesting mux state 1, usb-role 2, orientation 2
-[   99.946791] state change SNK_ATTACHED -> SNK_STARTUP [rev3 NONE_AMS]
-[   99.946798] state change SNK_STARTUP -> SNK_DISCOVERY [rev3 NONE_AMS]
-[   99.946800] Setting voltage/current limit 5000 mV 500 mA
-[   99.946803] vbus=0 charge:=1
-[  100.027139] state change SNK_DISCOVERY -> SNK_READY [rev3 NONE_AMS]
-[  100.027145] Setting voltage/current limit 5000 mV 3000 mA
-[  100.466830] VBUS on
+Fix this by taking the device lock before accessing the queue and
+counting the requests. Additionally the check for a valid profile data
+pointer can be done earlier to avoid unnecessary locking in a hot path.
 
-Cc: stable@vger.kernel.org
-Fixes: 803b1c8a0cea ("usb: typec: tcpm: not sink vbus if operational current is 0mA")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Will McVicker <willmcvicker@google.com>
-Link: https://lore.kernel.org/r/20231101012845.2701348-1-badhri@google.com
+Cc:  <stable@vger.kernel.org>
+Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/s390/block/dasd.c |   24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index b386102f7a3a..bfb6f9481e87 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4273,7 +4273,8 @@ static void run_state_machine(struct tcpm_port *port)
- 				current_lim = PD_P_SNK_STDBY_MW / 5;
- 			tcpm_set_current_limit(port, current_lim, 5000);
- 			/* Not sink vbus if operational current is 0mA */
--			tcpm_set_charge(port, !!pdo_max_current(port->snk_pdo[0]));
-+			tcpm_set_charge(port, !port->pd_supported ||
-+					pdo_max_current(port->snk_pdo[0]));
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -673,18 +673,20 @@ static void dasd_profile_start(struct da
+ 	 * we count each request only once.
+ 	 */
+ 	device = cqr->startdev;
+-	if (device->profile.data) {
+-		counter = 1; /* request is not yet queued on the start device */
+-		list_for_each(l, &device->ccw_queue)
+-			if (++counter >= 31)
+-				break;
+-	}
++	if (!device->profile.data)
++		return;
++
++	spin_lock(get_ccwdev_lock(device->cdev));
++	counter = 1; /* request is not yet queued on the start device */
++	list_for_each(l, &device->ccw_queue)
++		if (++counter >= 31)
++			break;
++	spin_unlock(get_ccwdev_lock(device->cdev));
++
+ 	spin_lock(&device->profile.lock);
+-	if (device->profile.data) {
+-		device->profile.data->dasd_io_nr_req[counter]++;
+-		if (rq_data_dir(req) == READ)
+-			device->profile.data->dasd_read_nr_req[counter]++;
+-	}
++	device->profile.data->dasd_io_nr_req[counter]++;
++	if (rq_data_dir(req) == READ)
++		device->profile.data->dasd_read_nr_req[counter]++;
+ 	spin_unlock(&device->profile.lock);
+ }
  
- 			if (!port->pd_supported)
- 				tcpm_set_state(port, SNK_READY, 0);
--- 
-2.43.0
-
 
 
 
