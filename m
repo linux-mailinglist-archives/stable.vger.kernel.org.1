@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-3439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066997FF5A8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 302867FF5F2
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 377051C20864
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C396CB21223
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591C154FAD;
-	Thu, 30 Nov 2023 16:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E047954FA4;
+	Thu, 30 Nov 2023 16:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1df17WEb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNR9GqWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148EF54F9B;
-	Thu, 30 Nov 2023 16:30:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159D2C433C7;
-	Thu, 30 Nov 2023 16:30:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F023AC1A;
+	Thu, 30 Nov 2023 16:33:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DC4C433C7;
+	Thu, 30 Nov 2023 16:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361835;
-	bh=l3+3dh4DZC9+MOAwdhXpGRiuMY8n0fsoNnrlm/NILeA=;
+	s=korg; t=1701361981;
+	bh=m0F/F7Ko1xCCdtAXsioAUtlIxPJxeNzItZNK5+266JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1df17WEbQKPhOkAIILECWG0plINadg7q65ZoQzzh52hKLhd466Gza5TXXnXkPAnqg
-	 zAnwjb1bqcywgz1mwv747XYbD4gqI/q9lx+PHjniARdLqtNS0JuUsMtDDfWtt5e7Uq
-	 vg7UT01/Jpukl9lImkDFnY9Y85BZswI8h5Zml/30=
+	b=BNR9GqWcyjuXGvVrU36IsvqSqQlYQ5YyEKHfhU91csLuj0wXlSr9Kk1/lVziOiBzJ
+	 IMzEbWk0Y1P1Afeawsyv5Lv8b/QwiUYgCt0UOeCgLEWQSovWuI9nC+JZM3SiGxjsfn
+	 AdauIMyVafM2k5DLrBWJqTtdaNPYz9Gs9s4F5+qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 66/82] hv_netvsc: Mark VF as slave before exposing it to user-mode
+	Yikebaer Aizezi <yikebaer61@gmail.com>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 40/69] ext4: fix slab-use-after-free in ext4_es_insert_extent()
 Date: Thu, 30 Nov 2023 16:22:37 +0000
-Message-ID: <20231130162138.078531300@linuxfoundation.org>
+Message-ID: <20231130162134.402276165@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,100 +56,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
+[ Upstream commit 768d612f79822d30a1e7d132a4d4b05337ce42ec ]
 
-When a VF is being exposed form the kernel, it should be marked as "slave"
-before exposing to the user-mode. The VF is not usable without netvsc
-running as master. The user-mode should never see a VF without the "slave"
-flag.
+Yikebaer reported an issue:
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_es_insert_extent+0xc68/0xcb0
+fs/ext4/extents_status.c:894
+Read of size 4 at addr ffff888112ecc1a4 by task syz-executor/8438
 
-This commit moves the code of setting the slave flag to the time before
-VF is exposed to user-mode.
+CPU: 1 PID: 8438 Comm: syz-executor Not tainted 6.5.0-rc5 #1
+Call Trace:
+ [...]
+ kasan_report+0xba/0xf0 mm/kasan/report.c:588
+ ext4_es_insert_extent+0xc68/0xcb0 fs/ext4/extents_status.c:894
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
 
-Cc: stable@vger.kernel.org
-Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
-Signed-off-by: Long Li <longli@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allocated by task 8438:
+ [...]
+ kmem_cache_zalloc include/linux/slab.h:693 [inline]
+ __es_alloc_extent fs/ext4/extents_status.c:469 [inline]
+ ext4_es_insert_extent+0x672/0xcb0 fs/ext4/extents_status.c:873
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
+
+Freed by task 8438:
+ [...]
+ kmem_cache_free+0xec/0x490 mm/slub.c:3823
+ ext4_es_try_to_merge_right fs/ext4/extents_status.c:593 [inline]
+ __es_insert_extent+0x9f4/0x1440 fs/ext4/extents_status.c:802
+ ext4_es_insert_extent+0x2ca/0xcb0 fs/ext4/extents_status.c:882
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
+==================================================================
+
+The flow of issue triggering is as follows:
+1. remove es
+      raw es               es  removed  es1
+|-------------------| -> |----|.......|------|
+
+2. insert es
+  es   insert   es1      merge with es  es1     merge with es and free es1
+|----|.......|------| -> |------------|------| -> |-------------------|
+
+es merges with newes, then merges with es1, frees es1, then determines
+if es1->es_len is 0 and triggers a UAF.
+
+The code flow is as follows:
+ext4_es_insert_extent
+  es1 = __es_alloc_extent(true);
+  es2 = __es_alloc_extent(true);
+  __es_remove_extent(inode, lblk, end, NULL, es1)
+    __es_insert_extent(inode, &newes, es1) ---> insert es1 to es tree
+  __es_insert_extent(inode, &newes, es2)
+    ext4_es_try_to_merge_right
+      ext4_es_free_extent(inode, es1) --->  es1 is freed
+  if (es1 && !es1->es_len)
+    // Trigger UAF by determining if es1 is used.
+
+We determine whether es1 or es2 is used immediately after calling
+__es_remove_extent() or __es_insert_extent() to avoid triggering a
+UAF if es1 or es2 is freed.
+
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
+Closes: https://lore.kernel.org/lkml/CALcu4raD4h9coiyEBL4Bm0zjDwxC2CyPiTwsP3zFuhot6y9Beg@mail.gmail.com
+Fixes: 2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230815070808.3377171-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ fs/ext4/extents_status.c | 44 +++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2204,9 +2204,6 @@ static int netvsc_vf_join(struct net_dev
- 		goto upper_link_failed;
- 	}
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 1327cd9505db7..6c55ab427e650 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -883,23 +883,29 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
  
--	/* set slave flag before open to prevent IPv6 addrconf */
--	vf_netdev->flags |= IFF_SLAVE;
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
+ 		err2 = 0;
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
+ 
+ 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
+ 	    (status & EXTENT_STATUS_WRITTEN ||
+ 	     status & EXTENT_STATUS_UNWRITTEN))
+ 		__revise_pending(inode, lblk, len);
 -
- 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
- 
- 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
-@@ -2313,16 +2310,18 @@ static struct net_device *get_netvsc_bys
- 
- 	}
- 
--	/* Fallback path to check synthetic vf with
--	 * help of mac addr
-+	/* Fallback path to check synthetic vf with help of mac addr.
-+	 * Because this function can be called before vf_netdev is
-+	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
-+	 * from dev_addr, also try to match to its dev_addr.
-+	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
-+	 * on a VF that matches to the MAC of a unrelated NETVSC device.
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
+@@ -1496,8 +1502,12 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
  	 */
- 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
- 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
--		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
--			netdev_notice(vf_netdev,
--				      "falling back to mac addr based matching\n");
-+		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
-+		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
- 			return ndev;
--		}
- 	}
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 	err = __es_remove_extent(inode, lblk, end, &reserved, es);
+-	if (es && !es->es_len)
+-		__es_free_extent(es);
++	/* Free preallocated extent if it didn't get used. */
++	if (es) {
++		if (!es->es_len)
++			__es_free_extent(es);
++		es = NULL;
++	}
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err)
+ 		goto retry;
+@@ -2055,19 +2065,25 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
  
- 	netdev_notice(vf_netdev,
-@@ -2330,6 +2329,19 @@ static struct net_device *get_netvsc_bys
- 	return NULL;
- }
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
  
-+static int netvsc_prepare_bonding(struct net_device *vf_netdev)
-+{
-+	struct net_device *ndev;
-+
-+	ndev = get_netvsc_byslot(vf_netdev);
-+	if (!ndev)
-+		return NOTIFY_DONE;
-+
-+	/* set slave flag before open to prevent IPv6 addrconf */
-+	vf_netdev->flags |= IFF_SLAVE;
-+	return NOTIFY_DONE;
-+}
-+
- static int netvsc_register_vf(struct net_device *vf_netdev)
- {
- 	struct net_device_context *net_device_ctx;
-@@ -2754,6 +2766,8 @@ static int netvsc_netdev_event(struct no
- 		return NOTIFY_DONE;
- 
- 	switch (event) {
-+	case NETDEV_POST_INIT:
-+		return netvsc_prepare_bonding(event_dev);
- 	case NETDEV_REGISTER:
- 		return netvsc_register_vf(event_dev);
- 	case NETDEV_UNREGISTER:
+ 	if (allocated)
+ 		__insert_pending(inode, lblk);
+-
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
+-- 
+2.42.0
+
 
 
 
