@@ -1,141 +1,70 @@
-Return-Path: <stable+bounces-3262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64487FF385
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 568F87FF3D8
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 915272819BA
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:24:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2369B20D73
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F2B7524BD;
-	Thu, 30 Nov 2023 15:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F80B537E5;
+	Thu, 30 Nov 2023 15:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EBvGX9ZX"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="rPLsZVZE"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0641B3;
-	Thu, 30 Nov 2023 07:24:27 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id 4A1BBFF816;
-	Thu, 30 Nov 2023 15:24:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701357866;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XjanQLiV96Fread002ZWRWE0O5XHgSgVvDb1R2qXIW8=;
-	b=EBvGX9ZXy3DQtGO2d7/eRwWcKL6Sfo+JOIqYIcEo/3+97xrmIbCerPNHwK1Dwg7Cugso0C
-	0yC0SZrS5or2CqWTZAxlat8R4nOGhLEt1EB7ne/4un/xEruvnZwAiuqBFDZA+D6Jjo1Jjp
-	W3ZVpgnTcHW89C/7Wyiwtl6K4Ssp/Z2axUVwYrmybO2Q9dSJRgoXze9YP6k908EXlRbgzI
-	o6KC6L8AkvSN4xBDs4THH0fkOHi9M13udqzFEWI7wbUfIALJG1a2jZ9nq78APXvq9dnGzM
-	jSx4UTaaWymqFcMDxr6suoCEcYNRdCBY+IVxz9ZU5dvH6XOedCNwajbsDt8kKQ==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Rob Herring <robh@kernel.org>
-Cc: Max Zhen <max.zhen@amd.com>,
-	Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] PCI: of: Attach created of_node to existing device
-Date: Thu, 30 Nov 2023 16:24:04 +0100
-Message-ID: <20231130152418.680966-3-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231130152418.680966-1-herve.codina@bootlin.com>
-References: <20231130152418.680966-1-herve.codina@bootlin.com>
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC2010DF
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 07:45:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:To:From:
+	Date:cc:subject:date:message-id:reply-to;
+	bh=L6c8YEPUjhs486jZ86UhMLQyfRljF+lfXlZh+sQm62k=; b=rPLsZVZEGl3HyCTNlF7z9NDOJQ
+	27uX1UGheeMJjUeELADl4DFTaK/5pPEsnHD0t4AFoiDn38H7gIX/uGqzwTsIOMy0uSs3dQP2F+09t
+	or6o3r6y+KacQCGNJAWx5vGDL+zzQEvHsie17jQnLLVY8W9gUlUD7fDKY7mioWtMia+k=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:42806 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1r8jDm-0001KW-OS
+	for stable@vger.kernel.org; Thu, 30 Nov 2023 10:44:59 -0500
+Date: Thu, 30 Nov 2023 10:44:58 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: stable@vger.kernel.org
+Message-Id: <20231130104458.d1059ec296a655f8312663c3@hugovil.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+Subject: auxdisplay: hd44780: move cursor home after clear display
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-creates of_node for PCI devices.
-During the insertion handling of these new DT nodes done by of_platform,
-new devices (struct device) are created.
-For each PCI devices a struct device is already present (created and
-handled by the PCI core).
-Having a second struct device to represent the exact same PCI device is
-not correct.
+Hi,
+the following patch:
 
-On the of_node creation, tell the of_platform that there is no need to
-create a device for this node (OF_POPULATED flag), link this newly
-created of_node to the already present device and tell fwnode that the
-device attached to this of_node is ready (fwnode_dev_initialized()).
+35b464e32c8b auxdisplay: hd44780: move cursor home after clear display
+command
 
-With this fix, the of_node are available in the sysfs device tree:
-/sys/devices/platform/soc/d0070000.pcie/
-+ of_node -> .../devicetree/base/soc/pcie@d0070000
-+ pci0000:00
-  + 0000:00:00.0
-    + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
-    + 0000:01:00.0
-      + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
+Was introduced in kernel 6.6.
 
-On the of_node removal, revert the operations.
+Without it, the LCD messages are not displayed in the correct
+position.
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/pci/of.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+I would like it to be applied to the stable kernel 6.1.
 
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index 51e3dd0ea5ab..5afd2731e876 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -615,7 +615,8 @@ void of_pci_remove_node(struct pci_dev *pdev)
- 	np = pci_device_to_OF_node(pdev);
- 	if (!np || !of_node_check_flag(np, OF_DYNAMIC))
- 		return;
--	pdev->dev.of_node = NULL;
-+
-+	device_remove_of_node(&pdev->dev);
- 
- 	of_changeset_revert(np->data);
- 	of_changeset_destroy(np->data);
-@@ -668,12 +669,22 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
- 	if (ret)
- 		goto out_free_node;
- 
-+	/*
-+	 * This of_node will be added to an existing device.
-+	 * Avoid any device creation and use the existing device
-+	 */
-+	of_node_set_flag(np, OF_POPULATED);
-+	np->fwnode.dev = &pdev->dev;
-+	fwnode_dev_initialized(&np->fwnode, true);
-+
- 	ret = of_changeset_apply(cset);
- 	if (ret)
- 		goto out_free_node;
- 
- 	np->data = cset;
--	pdev->dev.of_node = np;
-+
-+	/* Add the of_node to the existing device */
-+	device_add_of_node(&pdev->dev, np);
- 	kfree(name);
- 
- 	return;
--- 
-2.42.0
+The patch applies cleanly and was tested on this kernel using a
+custom board with a Variscite IMX8MN NANO SOM and a NewHaven LCD.
 
+Thank you,
+Hugo Villeneuve
 
