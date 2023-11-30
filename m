@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844667FF585
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DA5E7FF54A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C12BB20E5E
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC8FC2817BA
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398C954FA6;
-	Thu, 30 Nov 2023 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73AB154FA4;
+	Thu, 30 Nov 2023 16:27:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S49sYArA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9EEYvdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD24154F8F;
-	Thu, 30 Nov 2023 16:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66827C433C9;
-	Thu, 30 Nov 2023 16:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37B7254F87;
+	Thu, 30 Nov 2023 16:27:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB9DCC433C8;
+	Thu, 30 Nov 2023 16:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361771;
-	bh=qKfp1a9eXUsN4BvJ5smXDuQdX/krJ46cUrsBTzI4BbM=;
+	s=korg; t=1701361655;
+	bh=3gXi877jkKB+Dfi5k8yZ5Cbi0vZiYjGhq75YWypigZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S49sYArAtnRiZ7LqLoQYz87EpMA5ZbOD4Vxy+Wgrooguy2cRgoZwTbxcXRUPje8cI
-	 bP99CyAEulXr+b42Uv52VyI7qcEJZgNpfVM1BhxnbGfCmVVWixtI3juzNaKBDdHO3E
-	 IIYltNVRI9Ak6gfs4cJ4Jw9yjz9gYxHKIRj2j+xQ=
+	b=t9EEYvdlI11hjVGBm1sMPVbet3Q1p8XsyGWkEFJ15qxVRUsNMUuOUZcqV5VD2FeR0
+	 ONrpr1RlEl6pCOZKtR/sfExmkme2WX9JkER8v2XLVtdlesgoLoYAqzf7ZPrbnJbaXd
+	 9uC8QndG+8jE4Yu8t3x1GH2tjp4mzSGDtCh+24sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 40/82] media: camss: Convert to platform remove callback returning void
+	Dexuan Cui <decui@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 084/112] hv_netvsc: Fix race of register_netdevice_notifier and VF register
 Date: Thu, 30 Nov 2023 16:22:11 +0000
-Message-ID: <20231130162137.230254848@linuxfoundation.org>
+Message-ID: <20231130162142.990254529@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +52,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-[ Upstream commit 428bbf4be4018aefa26e4d6531779fa8925ecaaf ]
+commit 85520856466ed6bc3b1ccb013cddac70ceb437db upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+If VF NIC is registered earlier, NETDEV_REGISTER event is replayed,
+but NETDEV_POST_INIT is not.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+Move register_netdevice_notifier() earlier, so the call back
+function is set before probing.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Stable-dep-of: f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
+Reported-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/hyperv/netvsc_drv.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index f7fa84f623282..04e65edbfb870 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1723,7 +1723,7 @@ void camss_delete(struct camss *camss)
-  *
-  * Always returns 0.
-  */
--static int camss_remove(struct platform_device *pdev)
-+static void camss_remove(struct platform_device *pdev)
- {
- 	struct camss *camss = platform_get_drvdata(pdev);
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2793,12 +2793,17 @@ static int __init netvsc_drv_init(void)
+ 	}
+ 	netvsc_ring_bytes = ring_size * PAGE_SIZE;
  
-@@ -1733,8 +1733,6 @@ static int camss_remove(struct platform_device *pdev)
++	register_netdevice_notifier(&netvsc_netdev_notifier);
++
+ 	ret = vmbus_driver_register(&netvsc_drv);
+ 	if (ret)
+-		return ret;
++		goto err_vmbus_reg;
  
- 	if (atomic_read(&camss->ref_count) == 0)
- 		camss_delete(camss);
--
--	return 0;
+-	register_netdevice_notifier(&netvsc_netdev_notifier);
+ 	return 0;
++
++err_vmbus_reg:
++	unregister_netdevice_notifier(&netvsc_netdev_notifier);
++	return ret;
  }
  
- static const struct of_device_id camss_dt_match[] = {
-@@ -1796,7 +1794,7 @@ static const struct dev_pm_ops camss_pm_ops = {
- 
- static struct platform_driver qcom_camss_driver = {
- 	.probe = camss_probe,
--	.remove = camss_remove,
-+	.remove_new = camss_remove,
- 	.driver = {
- 		.name = "qcom-camss",
- 		.of_match_table = camss_dt_match,
--- 
-2.42.0
-
+ MODULE_LICENSE("GPL");
 
 
 
