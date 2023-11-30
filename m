@@ -1,141 +1,468 @@
-Return-Path: <stable+bounces-3539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED917FF77F
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:57:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7C7D7FF812
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 18:21:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70416B210B7
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:57:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7180C281669
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA3F55C31;
-	Thu, 30 Nov 2023 16:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D2C5674A;
+	Thu, 30 Nov 2023 17:21:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="R2xXMZck"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g8Kr0wlc"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0460910D0;
-	Thu, 30 Nov 2023 08:57:13 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPA id BB2681BF203;
-	Thu, 30 Nov 2023 16:57:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701363432;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XjanQLiV96Fread002ZWRWE0O5XHgSgVvDb1R2qXIW8=;
-	b=R2xXMZckGm13RP0RGLzamc4Vgb6v7iI8z4vIwQ/qs0jNoSNLHzqHx3vBAFWijCIKXGoCkR
-	L6jLjdFc4H6Ypp8lt0HC2umsPm0Wtp/2Dg6BX51kdMlpF7uwLCXm1tTJceX9HXlOFdwslW
-	SSTu2wlzabNte5XhMNvUumhiEkxKoxVxq5vbS87LrpgMM/BBWUboYAfkiC2t3dZzr5VR2N
-	uhTN4z5TIGNF1F+ruh4VjIQkmBtVJiE9yt1oVGQgWo63uHXekz3R9hFZ/3zTzAVW5zCXLa
-	hltDZrB5FZRCau61Gfr4AZkomtvzn+FetxJhKnEtAO95BL7grV5qp7Qc+q6MXA==
-From: Herve Codina <herve.codina@bootlin.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Rob Herring <robh@kernel.org>
-Cc: Max Zhen <max.zhen@amd.com>,
-	Sonal Santan <sonal.santan@amd.com>,
-	Stefano Stabellini <stefano.stabellini@xilinx.com>,
-	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Allan Nielsen <allan.nielsen@microchip.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Steen Hegelund <steen.hegelund@microchip.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Herve Codina <herve.codina@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] PCI: of: Attach created of_node to existing device
-Date: Thu, 30 Nov 2023 17:56:59 +0100
-Message-ID: <20231130165700.685764-3-herve.codina@bootlin.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231130165700.685764-1-herve.codina@bootlin.com>
-References: <20231130165700.685764-1-herve.codina@bootlin.com>
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D31BE90
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 09:21:45 -0800 (PST)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6cd89f2af9dso1195382b3a.1
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 09:21:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701364905; x=1701969705; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=q+1NKp8OKw0P/eE393b072NrkaHsOaU7RRQgiOkDqJU=;
+        b=g8Kr0wlcWDXpJUFR4W3YqDeJk3rFqsFJ60ibl8f5wt476iGLJjUv0EqfbMQk6/NWEw
+         rlCPz0i17ND0GSLtSk1z3U/jJFZGjsVwWI78z4MwsyFJ7GyWz7lYvNrEt6eJcracshK5
+         OTyQTdOhNsyMmdyBDJOVoyTOyagVEtjyD/yzTbEAyPXB59CskwvWTR/LHmkLSSUfWklq
+         tV8yoG9Y7w3Mhmeyvsk/oxLX6JWTC63TTbl4ZHwPWiHsG/3InvYb0hz3OGuZZji4hrNt
+         IE67p1pSGqjoROIYNZ8m8sEDeODf14Kgd9lk0VNWygGxprVOp7lcJHjwyyHFQkx1zETd
+         5CRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701364905; x=1701969705;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=q+1NKp8OKw0P/eE393b072NrkaHsOaU7RRQgiOkDqJU=;
+        b=egCd5SIZudtWrZoL6a5gX869Qk4Q2RMLdMF/egm8YF6lVmYJzbEvD82/bUuR/E7D/S
+         dC1SEfCgZwqy9DEKbfCkFeTBKfPuJPK4ht3rBB1eaXZMIrkMT1jemCGoQtqBf+ZY2reP
+         EcXD5rSH5Rhbtnf40Vknzdxr/mdSLRb7bsRAzlQyXskNMhUn0LclbymRei1ZVKwLvKV4
+         axJ7mLEiQNN/vJ37t6W76J+Z9A/WrkyMKwTTwjKGAtIX29FRW8BUJnqZSSn/J4VR3bRj
+         Aoi+iZVdNe1EgHEpz0AfJrE820cylgZcjv70Bu32JlPVw8fVLJ8kIaBE4WaudxkL5et9
+         sI4g==
+X-Gm-Message-State: AOJu0Yz8u/pqJUmvcT9gb/TAdimcf1uJSo6J4DIjczyea4UAdsSvcmYi
+	QqaVYorhQ9rkS2YZS800Sn4wcfEklyXVPoV/THYAZQ==
+X-Google-Smtp-Source: AGHT+IFG73GreE7X7IFciPqn7XMItr6fyqJiIVhevq5xHQacVAUnnKVb0qJxgsjCwPHIQwtqXIodji1vcuJ5iPNamPE=
+X-Received: by 2002:a05:6a00:244a:b0:6cb:a2f7:83d with SMTP id
+ d10-20020a056a00244a00b006cba2f7083dmr25774630pfj.19.1701364905208; Thu, 30
+ Nov 2023 09:21:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: herve.codina@bootlin.com
+References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
+Date: Thu, 30 Nov 2023 11:21:34 -0600
+Message-ID: <CAEUSe7-yhmQkr1iK-82+Sc_YpVtWUQhuKoazoXHF_3oP9XTt4Q@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/69] 5.15.141-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The commit 407d1a51921e ("PCI: Create device tree node for bridge")
-creates of_node for PCI devices.
-During the insertion handling of these new DT nodes done by of_platform,
-new devices (struct device) are created.
-For each PCI devices a struct device is already present (created and
-handled by the PCI core).
-Having a second struct device to represent the exact same PCI device is
-not correct.
+Hello!
 
-On the of_node creation, tell the of_platform that there is no need to
-create a device for this node (OF_POPULATED flag), link this newly
-created of_node to the already present device and tell fwnode that the
-device attached to this of_node is ready (fwnode_dev_initialized()).
+Lots of failures everywhere:
+* clang-17-lkftconfig                 arm64
+* clang-17-lkftconfig                 arm64
+* clang-17-lkftconfig                 arm64
+* clang-lkftconfig                    arm64
+* clang-lkftconfig                    arm
+* clang-lkftconfig                    i386
+* clang-lkftconfig                    x86_64
+* gcc-12-lkftconfig                   arm64
+* gcc-12-lkftconfig                   arm
+* gcc-12-lkftconfig                   i386
+* gcc-12-lkftconfig                   x86_64
+* gcc-12-lkftconfig-64k_page_size     arm64
+* gcc-12-lkftconfig-64k_page_size     arm64
+* gcc-12-lkftconfig-armv8_features    arm64
+* gcc-12-lkftconfig-debug             arm64
+* gcc-12-lkftconfig-debug             arm64
+* gcc-12-lkftconfig-debug             arm
+* gcc-12-lkftconfig-debug             i386
+* gcc-12-lkftconfig-debug             x86_64
+* gcc-12-lkftconfig-debug-kmemleak    arm64
+* gcc-12-lkftconfig-debug-kmemleak    arm
+* gcc-12-lkftconfig-debug-kmemleak    i386
+* gcc-12-lkftconfig-debug-kmemleak    x86_64
+* gcc-12-lkftconfig-devicetree        arm64
+* gcc-12-lkftconfig-kasan             arm64
+* gcc-12-lkftconfig-kasan             arm64
+* gcc-12-lkftconfig-kasan             x86_64
+* gcc-12-lkftconfig-kselftest         arm64
+* gcc-12-lkftconfig-kselftest-kernel  arm64
+* gcc-12-lkftconfig-kselftest-kernel  arm
+* gcc-12-lkftconfig-kselftest-kernel  i386
+* gcc-12-lkftconfig-kunit             arm64
+* gcc-12-lkftconfig-kunit             arm64
+* gcc-12-lkftconfig-kunit             arm
+* gcc-12-lkftconfig-kunit             i386
+* gcc-12-lkftconfig-kunit             x86_64
+* gcc-12-lkftconfig-libgpiod          arm64
+* gcc-12-lkftconfig-libgpiod          arm
+* gcc-12-lkftconfig-libgpiod          i386
+* gcc-12-lkftconfig-libgpiod          x86_64
+* gcc-12-lkftconfig-perf              arm64
+* gcc-12-lkftconfig-perf-kernel       arm64
+* gcc-12-lkftconfig-perf-kernel       arm
+* gcc-12-lkftconfig-perf-kernel       i386
+* gcc-12-lkftconfig-perf-kernel       x86_64
+* gcc-12-lkftconfig-rcutorture        arm64
+* gcc-12-lkftconfig-rcutorture        arm64
+* gcc-12-lkftconfig-rcutorture        arm
+* gcc-12-lkftconfig-rcutorture        i386
+* gcc-12-lkftconfig-rcutorture        x86_64
 
-With this fix, the of_node are available in the sysfs device tree:
-/sys/devices/platform/soc/d0070000.pcie/
-+ of_node -> .../devicetree/base/soc/pcie@d0070000
-+ pci0000:00
-  + 0000:00:00.0
-    + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
-    + 0000:01:00.0
-      + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
+It's essentially this:
 
-On the of_node removal, revert the operations.
+-----8<-----
+  make --silent --keep-going --jobs=3D8
+O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=3Dx86_64 SRCARCH=3Dx8=
+6
+CROSS_COMPILE=3Dx86_64-linux-gnu- 'CC=3Dsccache x86_64-linux-gnu-gcc'
+'HOSTCC=3Dsccache gcc'
+  arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x51:
+unreachable instruction
+  x86_64-linux-gnu-ld: kernel/trace/trace_kprobe.o: in function
+`__trace_kprobe_create':
+  trace_kprobe.c:(.text+0x2f39): undefined reference to
+`kallsyms_on_each_symbol'
+  x86_64-linux-gnu-ld: kernel/trace/trace_kprobe.o: in function
+`create_local_trace_kprobe':
+  trace_kprobe.c:(.text+0x384b): undefined reference to
+`kallsyms_on_each_symbol'
+  make[1]: *** [/builds/linux/Makefile:1227: vmlinux] Error 1
+  make[1]: Target '__all' not remade because of errors.
+  make: *** [Makefile:226: __sub-make] Error 2
+  make: Target '__all' not remade because of errors.
+----->8-----
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Cc: stable@vger.kernel.org
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
----
- drivers/pci/of.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+It only affects 5.15. Bisection in progress.
 
-diff --git a/drivers/pci/of.c b/drivers/pci/of.c
-index 51e3dd0ea5ab..5afd2731e876 100644
---- a/drivers/pci/of.c
-+++ b/drivers/pci/of.c
-@@ -615,7 +615,8 @@ void of_pci_remove_node(struct pci_dev *pdev)
- 	np = pci_device_to_OF_node(pdev);
- 	if (!np || !of_node_check_flag(np, OF_DYNAMIC))
- 		return;
--	pdev->dev.of_node = NULL;
-+
-+	device_remove_of_node(&pdev->dev);
- 
- 	of_changeset_revert(np->data);
- 	of_changeset_destroy(np->data);
-@@ -668,12 +669,22 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
- 	if (ret)
- 		goto out_free_node;
- 
-+	/*
-+	 * This of_node will be added to an existing device.
-+	 * Avoid any device creation and use the existing device
-+	 */
-+	of_node_set_flag(np, OF_POPULATED);
-+	np->fwnode.dev = &pdev->dev;
-+	fwnode_dev_initialized(&np->fwnode, true);
-+
- 	ret = of_changeset_apply(cset);
- 	if (ret)
- 		goto out_free_node;
- 
- 	np->data = cset;
--	pdev->dev.of_node = np;
-+
-+	/* Add the of_node to the existing device */
-+	device_add_of_node(&pdev->dev, np);
- 	kfree(name);
- 
- 	return;
--- 
-2.42.0
+Greetings!
 
+Daniel D=C3=ADaz
+daniel.diaz@linaro.org
+
+
+
+On Thu, 30 Nov 2023 at 10:32, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.141 release.
+> There are 69 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.141-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
+> -------------
+> Pseudo-Shortlog of commits:
+>
+> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>     Linux 5.15.141-rc1
+>
+> Keith Busch <kbusch@kernel.org>
+>     io_uring: fix off-by one bvec index
+>
+> Johan Hovold <johan+linaro@kernel.org>
+>     USB: dwc3: qcom: fix wakeup after probe deferral
+>
+> Johan Hovold <johan+linaro@kernel.org>
+>     USB: dwc3: qcom: fix software node leak on probe errors
+>
+> Ricardo Ribalda <ribalda@chromium.org>
+>     usb: dwc3: set the dma max_seg_size
+>
+> Alexander Stein <alexander.stein@ew.tq-group.com>
+>     usb: dwc3: Fix default mode initialization
+>
+> Oliver Neukum <oneukum@suse.com>
+>     USB: dwc2: write HCINT with INTMASK applied
+>
+> Badhri Jagan Sridharan <badhri@google.com>
+>     usb: typec: tcpm: Skip hard reset when in error recovery
+>
+> Lech Perczak <lech.perczak@gmail.com>
+>     USB: serial: option: don't claim interface 4 for ZTE MF290
+>
+> Puliang Lu <puliang.lu@fibocom.com>
+>     USB: serial: option: fix FM101R-GL defines
+>
+> Victor Fragoso <victorffs@hotmail.com>
+>     USB: serial: option: add Fibocom L7xx modules
+>
+> Pawel Laszczak <pawell@cadence.com>
+>     usb: cdnsp: Fix deadlock issue during using NCM gadget
+>
+> Mingzhe Zou <mingzhe.zou@easystack.cn>
+>     bcache: fixup lock c->root error
+>
+> Mingzhe Zou <mingzhe.zou@easystack.cn>
+>     bcache: fixup init dirty data errors
+>
+> Rand Deeb <rand.sec96@gmail.com>
+>     bcache: prevent potential division by zero error
+>
+> Coly Li <colyli@suse.de>
+>     bcache: check return value from btree_node_alloc_replacement()
+>
+> Mikulas Patocka <mpatocka@redhat.com>
+>     dm-delay: fix a race between delay_presuspend and delay_bio
+>
+> Long Li <longli@microsoft.com>
+>     hv_netvsc: Mark VF as slave before exposing it to user-mode
+>
+> Haiyang Zhang <haiyangz@microsoft.com>
+>     hv_netvsc: Fix race of register_netdevice_notifier and VF register
+>
+> Asuna Yang <spriteovo@gmail.com>
+>     USB: serial: option: add Luat Air72*U series products
+>
+> Jan H=C3=B6ppner <hoeppner@linux.ibm.com>
+>     s390/dasd: protect device queue against concurrent access
+>
+> Charles Mirabile <cmirabil@redhat.com>
+>     io_uring/fs: consider link->flags when getting path for LINKAT
+>
+> Mingzhe Zou <mingzhe.zou@easystack.cn>
+>     bcache: fixup multi-threaded bch_sectors_dirty_init() wake-up race
+>
+> Song Liu <song@kernel.org>
+>     md: fix bi_status reporting in md_end_clone_io
+>
+> Coly Li <colyli@suse.de>
+>     bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_c=
+oalesce()
+>
+> Keith Busch <kbusch@kernel.org>
+>     swiotlb-xen: provide the "max_mapping_size" method
+>
+> Hans de Goede <hdegoede@redhat.com>
+>     ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CVA
+>
+> Krister Johansen <kjlx@templeofstupid.com>
+>     proc: sysctl: prevent aliased sysctls from getting passed to init
+>
+> Francis Laniel <flaniel@linux.microsoft.com>
+>     tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbo=
+ls
+>
+> Zhang Yi <yi.zhang@huawei.com>
+>     ext4: make sure allocate pending entry not fail
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: fix slab-use-after-free in ext4_es_insert_extent()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: using nofail preallocation in ext4_es_insert_extent()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: using nofail preallocation in ext4_es_insert_delayed_block()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: using nofail preallocation in ext4_es_remove_extent()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: use pre-allocated es in __es_remove_extent()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: use pre-allocated es in __es_insert_extent()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: factor out __es_alloc_extent() and __es_free_extent()
+>
+> Baokun Li <libaokun1@huawei.com>
+>     ext4: add a new helper to check if es must be kept
+>
+> Andrey Konovalov <andrey.konovalov@linaro.org>
+>     media: qcom: camss: Fix csid-gen2 for test pattern generator
+>
+> Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>     media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater t=
+han 3
+>
+> Milen Mitkov <quic_mmitkov@quicinc.com>
+>     media: camss: sm8250: Virtual channels for CSID
+>
+> Souptick Joarder (HPE) <jrdr.linux@gmail.com>
+>     media: camss: Replace hard coded value with parameter
+>
+> Huacai Chen <chenhuacai@kernel.org>
+>     MIPS: KVM: Fix a build warning about variable set but not used
+>
+> Peter Zijlstra <peterz@infradead.org>
+>     lockdep: Fix block chain corruption
+>
+> Johan Hovold <johan+linaro@kernel.org>
+>     USB: dwc3: qcom: fix ACPI platform device leak
+>
+> Johan Hovold <johan+linaro@kernel.org>
+>     USB: dwc3: qcom: fix resource leaks on probe deferral
+>
+> Christoph Hellwig <hch@lst.de>
+>     nvmet: nul-terminate the NQNs passed in the connect command
+>
+> David Howells <dhowells@redhat.com>
+>     afs: Fix file locking on R/O volumes to operate in local mode
+>
+> David Howells <dhowells@redhat.com>
+>     afs: Return ENOENT if no cell DNS record can be found
+>
+> Samuel Holland <samuel.holland@sifive.com>
+>     net: axienet: Fix check for partial TX checksum
+>
+> Raju Rangoju <Raju.Rangoju@amd.com>
+>     amd-xgbe: propagate the correct speed and duplex status
+>
+> Raju Rangoju <Raju.Rangoju@amd.com>
+>     amd-xgbe: handle the corner-case during tx completion
+>
+> Raju Rangoju <Raju.Rangoju@amd.com>
+>     amd-xgbe: handle corner-case during sfp hotplug
+>
+> Suman Ghosh <sumang@marvell.com>
+>     octeontx2-pf: Fix ntuple rule creation to direct packet to VF with hi=
+gher Rx queue than its PF
+>
+> Stefano Stabellini <sstabellini@kernel.org>
+>     arm/xen: fix xen_vcpu_info allocation alignment
+>
+> D. Wythe <alibuda@linux.alibaba.com>
+>     net/smc: avoid data corruption caused by decline
+>
+> Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+>     net: usb: ax88179_178a: fix failed operations during ax88179_reset
+>
+> Kunwu Chan <chentao@kylinos.cn>
+>     ipv4: Correct/silence an endian warning in __ip_do_redirect
+>
+> Charles Yi <be286@163.com>
+>     HID: fix HID device resource race between HID core and debugging supp=
+ort
+>
+> Benjamin Tissoires <benjamin.tissoires@redhat.com>
+>     HID: core: store the unique system identifier in hid_device
+>
+> Jonas Karlman <jonas@kwiboo.se>
+>     drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+>
+> Chen Ni <nichen@iscas.ac.cn>
+>     ata: pata_isapnp: Add missing error check for devm_ioport_map()
+>
+> Suman Ghosh <sumang@marvell.com>
+>     octeontx2-pf: Fix memory leak during interface down
+>
+> Eric Dumazet <edumazet@google.com>
+>     wireguard: use DEV_STATS_INC()
+>
+> Marek Vasut <marex@denx.de>
+>     drm/panel: simple: Fix Innolux G101ICE-L01 timings
+>
+> Marek Vasut <marex@denx.de>
+>     drm/panel: simple: Fix Innolux G101ICE-L01 bus flags
+>
+> Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
+>     drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
+>
+> Shuijing Li <shuijing.li@mediatek.com>
+>     drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
+>
+> David Howells <dhowells@redhat.com>
+>     afs: Make error on cell lookup failure consistent with OpenAFS
+>
+> David Howells <dhowells@redhat.com>
+>     afs: Fix afs_server_list to be cleaned up with RCU
+>
+>
+> -------------
+>
+> Diffstat:
+>
+>  Makefile                                           |   4 +-
+>  arch/arm/xen/enlighten.c                           |   3 +-
+>  arch/mips/kvm/mmu.c                                |   3 +-
+>  drivers/acpi/resource.c                            |   7 +
+>  drivers/ata/pata_isapnp.c                          |   3 +
+>  drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c     |   7 +
+>  drivers/gpu/drm/panel/panel-simple.c               |  13 +-
+>  drivers/gpu/drm/rockchip/rockchip_drm_vop.c        |  14 +-
+>  drivers/hid/hid-core.c                             |  16 +-
+>  drivers/hid/hid-debug.c                            |   3 +
+>  drivers/md/bcache/btree.c                          |   4 +-
+>  drivers/md/bcache/sysfs.c                          |   2 +-
+>  drivers/md/bcache/writeback.c                      |  22 +-
+>  drivers/md/dm-delay.c                              |  17 +-
+>  drivers/md/md.c                                    |   3 +-
+>  drivers/media/platform/qcom/camss/camss-csid-170.c |  65 +++--
+>  drivers/media/platform/qcom/camss/camss-csid.c     |  44 ++-
+>  drivers/media/platform/qcom/camss/camss-csid.h     |  11 +-
+>  drivers/net/ethernet/amd/xgbe/xgbe-drv.c           |  14 +
+>  drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c       |  11 +-
+>  drivers/net/ethernet/amd/xgbe/xgbe-mdio.c          |  14 +-
+>  .../ethernet/marvell/octeontx2/nic/otx2_flows.c    |  20 +-
+>  .../net/ethernet/marvell/octeontx2/nic/otx2_pf.c   |   2 +
+>  drivers/net/ethernet/xilinx/xilinx_axienet_main.c  |   2 +-
+>  drivers/net/hyperv/netvsc_drv.c                    |  41 ++-
+>  drivers/net/usb/ax88179_178a.c                     |   4 +-
+>  drivers/net/wireguard/device.c                     |   4 +-
+>  drivers/net/wireguard/receive.c                    |  12 +-
+>  drivers/net/wireguard/send.c                       |   3 +-
+>  drivers/nvme/target/fabrics-cmd.c                  |   4 +
+>  drivers/s390/block/dasd.c                          |  24 +-
+>  drivers/usb/cdns3/cdnsp-ring.c                     |   3 +
+>  drivers/usb/dwc2/hcd_intr.c                        |  15 +-
+>  drivers/usb/dwc3/core.c                            |   2 +
+>  drivers/usb/dwc3/drd.c                             |   2 +-
+>  drivers/usb/dwc3/dwc3-qcom.c                       |  65 +++--
+>  drivers/usb/serial/option.c                        |  11 +-
+>  drivers/usb/typec/tcpm/tcpm.c                      |   9 +
+>  drivers/xen/swiotlb-xen.c                          |   1 +
+>  fs/afs/dynroot.c                                   |   4 +-
+>  fs/afs/internal.h                                  |   1 +
+>  fs/afs/server_list.c                               |   2 +-
+>  fs/afs/super.c                                     |   2 +
+>  fs/afs/vl_rotate.c                                 |  10 +
+>  fs/ext4/extents_status.c                           | 306 +++++++++++++++=
+------
+>  fs/proc/proc_sysctl.c                              |   7 +
+>  include/linux/hid.h                                |   5 +
+>  include/linux/sysctl.h                             |   6 +
+>  init/main.c                                        |   4 +
+>  io_uring/io_uring.c                                |   4 +-
+>  kernel/locking/lockdep.c                           |   3 +-
+>  kernel/trace/trace_kprobe.c                        |  74 +++++
+>  kernel/trace/trace_probe.h                         |   1 +
+>  net/ipv4/route.c                                   |   2 +-
+>  net/smc/af_smc.c                                   |   8 +-
+>  55 files changed, 704 insertions(+), 239 deletions(-)
+>
+>
+>
 
