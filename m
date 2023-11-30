@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-3391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F287FF566
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F12087FF510
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C4FAB20DA5
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 408A9B20C4F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AD554FA6;
-	Thu, 30 Nov 2023 16:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3FE54FA6;
+	Thu, 30 Nov 2023 16:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d37uTLmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8pX884O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68BD524C2;
-	Thu, 30 Nov 2023 16:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619FDC433CB;
-	Thu, 30 Nov 2023 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B59482CB;
+	Thu, 30 Nov 2023 16:25:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114A7C433C9;
+	Thu, 30 Nov 2023 16:25:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361713;
-	bh=cFoZLixjjMlB+7xPygqCOR+1zini64MPm3UHtu12ppI=;
+	s=korg; t=1701361539;
+	bh=i43QYNS5OHqQRJ2JK66P4B/mioa7czyut2Fk5eK2SNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d37uTLmm5cedkSpOds4sD1RRvOTwcyNy1JbjpfuW/nPrMOJTET/LAsV79QOLq7AHo
-	 cwxKAmhz4jhVtS/PpPnyfgyrMw04WwOxeLGBufnSIEFVyojBkSxSpOaSANTVpXuV2U
-	 qzMrP1mTDSY8ofmaHSAenW58fATQ4cbZt7DtkMuA=
+	b=n8pX884OLOno6eMh0eVoMWDmDvZG00ZHsnb7BE6WBKuEsZUkL72R2UvfgwWTvTXnj
+	 RjC2bxLKhkHQrP6fQmH5uJX0nbxKwh4T/WG6VLDNgxNN3sDtkBakhoaA0hs5x1KxaS
+	 h0CR2h/jkKgUAEKGADepixQiVf51N7oTAg3ActPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/82] amd-xgbe: handle corner-case during sfp hotplug
-Date: Thu, 30 Nov 2023 16:21:49 +0000
-Message-ID: <20231130162136.532840955@linuxfoundation.org>
+	"Owen T. Heisler" <writer@owenh.net>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 063/112] ACPI: video: Use acpi_device_fix_up_power_children()
+Date: Thu, 30 Nov 2023 16:21:50 +0000
+Message-ID: <20231130162142.320627123@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +54,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 676ec53844cbdf2f47e68a076cdff7f0ec6cbe3f ]
+commit c93695494606326d7fd72b46a2a657139ccb0dec upstream.
 
-Force the mode change for SFI in Fixed PHY configurations. Fixed PHY
-configurations needs PLL to be enabled while doing mode set. When the
-SFP module isn't connected during boot, driver assumes AN is ON and
-attempts auto-negotiation. However, if the connected SFP comes up in
-Fixed PHY configuration the link will not come up as PLL isn't enabled
-while the initial mode set command is issued. So, force the mode change
-for SFI in Fixed PHY configuration to fix link issues.
+Commit 89c290ea7589 ("ACPI: video: Put ACPI video and its child devices
+into D0 on boot") introduced calling acpi_device_fix_up_power_extended()
+on the video card for which the ACPI video bus is the companion device.
 
-Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This unnecessarily touches the power-state of the GPU itself, while
+the issue it tries to address only requires calling _PS0 on the child
+devices.
+
+Touching the power-state of the GPU itself is causing suspend / resume
+issues on e.g. a Lenovo ThinkPad W530.
+
+Instead use acpi_device_fix_up_power_children(), which only touches
+the child devices, to fix this.
+
+Fixes: 89c290ea7589 ("ACPI: video: Put ACPI video and its child devices into D0 on boot")
+Reported-by: Owen T. Heisler <writer@owenh.net>
+Closes: https://lore.kernel.org/regressions/9f36fb06-64c4-4264-aaeb-4e1289e764c4@owenh.net/
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/273
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218124
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Tested-by: Owen T. Heisler <writer@owenh.net>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Cc: 6.6+ <stable@vger.kernel.org> # 6.6+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/acpi/acpi_video.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index ca7372369b3e6..60be836b294bb 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1178,7 +1178,19 @@ static int xgbe_phy_config_fixed(struct xgbe_prv_data *pdata)
- 	if (pdata->phy.duplex != DUPLEX_FULL)
- 		return -EINVAL;
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index 0b7a01f38b65..d321ca7160d9 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -2031,7 +2031,7 @@ static int acpi_video_bus_add(struct acpi_device *device)
+ 	 * HP ZBook Fury 16 G10 requires ACPI video's child devices have _PS0
+ 	 * evaluated to have functional panel brightness control.
+ 	 */
+-	acpi_device_fix_up_power_extended(device);
++	acpi_device_fix_up_power_children(device);
  
--	xgbe_set_mode(pdata, mode);
-+	/* Force the mode change for SFI in Fixed PHY config.
-+	 * Fixed PHY configs needs PLL to be enabled while doing mode set.
-+	 * When the SFP module isn't connected during boot, driver assumes
-+	 * AN is ON and attempts autonegotiation. However, if the connected
-+	 * SFP comes up in Fixed PHY config, the link will not come up as
-+	 * PLL isn't enabled while the initial mode set command is issued.
-+	 * So, force the mode change for SFI in Fixed PHY configuration to
-+	 * fix link issues.
-+	 */
-+	if (mode == XGBE_MODE_SFI)
-+		xgbe_change_mode(pdata, mode);
-+	else
-+		xgbe_set_mode(pdata, mode);
- 
- 	return 0;
- }
+ 	pr_info("%s [%s] (multi-head: %s  rom: %s  post: %s)\n",
+ 	       ACPI_VIDEO_DEVICE_NAME, acpi_device_bid(device),
 -- 
-2.42.0
+2.43.0
 
 
 
