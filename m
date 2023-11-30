@@ -1,50 +1,45 @@
-Return-Path: <stable+bounces-3290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43A467FF4E5
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:24:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FD77FF4CF
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:23:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3B3BB20D85
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F36E1C20F5D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:23:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FB854FAD;
-	Thu, 30 Nov 2023 16:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106B754F9F;
+	Thu, 30 Nov 2023 16:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayfV/YQ1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oxq8fLXr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE52C495C2;
-	Thu, 30 Nov 2023 16:24:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AFAC433C7;
-	Thu, 30 Nov 2023 16:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D8C54BFC;
+	Thu, 30 Nov 2023 16:23:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC2BC433C8;
+	Thu, 30 Nov 2023 16:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361456;
-	bh=hmS6qzjC8ohOZlhzc6PcnbNDE31gKNBLew2/dLvKVNE=;
+	s=korg; t=1701361408;
+	bh=GZ35uInGPlwnxS+tzCMXBMqlaPNr58mSRYX/o4ao3ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayfV/YQ1tAhQLzYAvmEWp2Kdvb3Chja7rkcgNCpmKKndjnUnIY3AV7p9k6S7yetvj
-	 DOWjQFuAwE+gDtPdHmoV3DXENgAfuoIllKMq7CwBxFHcjznsWUkIz3jMTdVZogQg6U
-	 BE2q428nGioIRCTDKymYHFiAPPKPn1YI1hMxGXXA=
+	b=Oxq8fLXrj/GyIGHpMzsqwF4izdZ2lq90jkPmoonOONpjefyC4QGzK6Br3Z8uTCPpn
+	 YmswAi4JkbsLRsZSFe5TgqyNCyrmAHBU9QaLSp7om3+9I4dzwNyov1gVWTJ3yI/yJC
+	 F6jhYE7VYgQePXsUjLd6QWuJfSnH0YhS9Zi4TYUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
 	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
 	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 010/112] rxrpc: Defer the response to a PING ACK until weve parsed it
-Date: Thu, 30 Nov 2023 16:20:57 +0000
-Message-ID: <20231130162140.647405804@linuxfoundation.org>
+Subject: [PATCH 6.6 011/112] afs: Fix afs_server_list to be cleaned up with RCU
+Date: Thu, 30 Nov 2023 16:20:58 +0000
+Message-ID: <20231130162140.675239451@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
 References: <20231130162140.298098091@linuxfoundation.org>
@@ -65,116 +60,48 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 1a01319feef7047aa2ba400ffa3e047776aa29ca ]
+[ Upstream commit e6bace7313d61e31f2b16fa3d774fd8cb3cb869e ]
 
-Defer the generation of a PING RESPONSE ACK in response to a PING ACK until
-we've parsed the PING ACK so that we pick up any changes to the packet
-queue so that we can update ackinfo.
+afs_server_list is accessed with the rcu_read_lock() held from
+volume->servers, so it needs to be cleaned up correctly.
 
-This is also applied to an ACK generated in response to an ACK with the
-REQUEST_ACK flag set.
+Fix this by using kfree_rcu() instead of kfree().
 
-Note that whilst the problem was added in commit 248f219cb8bc, it didn't
-really matter at that point because the ACK was proposed in softirq mode
-and generated asynchronously later in process context, taking the latest
-values at the time.  But this fix is only needed since the move to parse
-incoming packets in an I/O thread rather than in softirq and generate the
-ACK at point of proposal (b0346843b1076b34a0278ff601f8f287535cb064).
-
-Fixes: 248f219cb8bc ("rxrpc: Rewrite the data and ack handling code")
+Fixes: 8a070a964877 ("afs: Detect cell aliases 1 - Cells with root volumes")
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
 cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/input.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ fs/afs/internal.h    | 1 +
+ fs/afs/server_list.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/input.c b/net/rxrpc/input.c
-index 3f9594d125192..92495e73b8699 100644
---- a/net/rxrpc/input.c
-+++ b/net/rxrpc/input.c
-@@ -814,14 +814,6 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 		}
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index da73b97e19a9a..5041eae64423a 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -553,6 +553,7 @@ struct afs_server_entry {
+ };
+ 
+ struct afs_server_list {
++	struct rcu_head		rcu;
+ 	afs_volid_t		vids[AFS_MAXTYPES]; /* Volume IDs */
+ 	refcount_t		usage;
+ 	unsigned char		nr_servers;
+diff --git a/fs/afs/server_list.c b/fs/afs/server_list.c
+index ed9056703505f..b59896b1de0af 100644
+--- a/fs/afs/server_list.c
++++ b/fs/afs/server_list.c
+@@ -17,7 +17,7 @@ void afs_put_serverlist(struct afs_net *net, struct afs_server_list *slist)
+ 		for (i = 0; i < slist->nr_servers; i++)
+ 			afs_unuse_server(net, slist->servers[i].server,
+ 					 afs_server_trace_put_slist);
+-		kfree(slist);
++		kfree_rcu(slist, rcu);
  	}
- 
--	if (ack.reason == RXRPC_ACK_PING) {
--		rxrpc_send_ACK(call, RXRPC_ACK_PING_RESPONSE, ack_serial,
--			       rxrpc_propose_ack_respond_to_ping);
--	} else if (sp->hdr.flags & RXRPC_REQUEST_ACK) {
--		rxrpc_send_ACK(call, RXRPC_ACK_REQUESTED, ack_serial,
--			       rxrpc_propose_ack_respond_to_ack);
--	}
--
- 	/* If we get an EXCEEDS_WINDOW ACK from the server, it probably
- 	 * indicates that the client address changed due to NAT.  The server
- 	 * lost the call because it switched to a different peer.
-@@ -832,7 +824,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	    rxrpc_is_client_call(call)) {
- 		rxrpc_set_call_completion(call, RXRPC_CALL_REMOTELY_ABORTED,
- 					  0, -ENETRESET);
--		return;
-+		goto send_response;
- 	}
- 
- 	/* If we get an OUT_OF_SEQUENCE ACK from the server, that can also
-@@ -846,7 +838,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	    rxrpc_is_client_call(call)) {
- 		rxrpc_set_call_completion(call, RXRPC_CALL_REMOTELY_ABORTED,
- 					  0, -ENETRESET);
--		return;
-+		goto send_response;
- 	}
- 
- 	/* Discard any out-of-order or duplicate ACKs (outside lock). */
-@@ -854,7 +846,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 		trace_rxrpc_rx_discard_ack(call->debug_id, ack_serial,
- 					   first_soft_ack, call->acks_first_seq,
- 					   prev_pkt, call->acks_prev_seq);
--		return;
-+		goto send_response;
- 	}
- 
- 	info.rxMTU = 0;
-@@ -894,7 +886,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	case RXRPC_CALL_SERVER_AWAIT_ACK:
- 		break;
- 	default:
--		return;
-+		goto send_response;
- 	}
- 
- 	if (before(hard_ack, call->acks_hard_ack) ||
-@@ -906,7 +898,7 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 	if (after(hard_ack, call->acks_hard_ack)) {
- 		if (rxrpc_rotate_tx_window(call, hard_ack, &summary)) {
- 			rxrpc_end_tx_phase(call, false, rxrpc_eproto_unexpected_ack);
--			return;
-+			goto send_response;
- 		}
- 	}
- 
-@@ -924,6 +916,14 @@ static void rxrpc_input_ack(struct rxrpc_call *call, struct sk_buff *skb)
- 				   rxrpc_propose_ack_ping_for_lost_reply);
- 
- 	rxrpc_congestion_management(call, skb, &summary, acked_serial);
-+
-+send_response:
-+	if (ack.reason == RXRPC_ACK_PING)
-+		rxrpc_send_ACK(call, RXRPC_ACK_PING_RESPONSE, ack_serial,
-+			       rxrpc_propose_ack_respond_to_ping);
-+	else if (sp->hdr.flags & RXRPC_REQUEST_ACK)
-+		rxrpc_send_ACK(call, RXRPC_ACK_REQUESTED, ack_serial,
-+			       rxrpc_propose_ack_respond_to_ack);
  }
  
- /*
 -- 
 2.42.0
 
