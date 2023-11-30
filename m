@@ -1,82 +1,193 @@
-Return-Path: <stable+bounces-3537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F9327FF6A1
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:46:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4061C7FF77D
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 173AB2817C6
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:45:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7105C1C2116F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A91341C08;
-	Thu, 30 Nov 2023 16:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080FA56440;
+	Thu, 30 Nov 2023 16:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="g0IqENEd"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Xtp5wPQs"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D3CF1A4;
-	Thu, 30 Nov 2023 08:45:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1701362749; x=1701967549; i=rwarsow@gmx.de;
-	bh=B9k2q+vbaQ5LJUoIraLCmsvQD6achnJuAYo6Jr1VKxY=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
-	b=g0IqENEdV2M3ePFWqk9OmZMwK66je4EsG1y+NFxV4Ncxegb4/ldNZ1l1IBitRHSp
-	 6zZpHAhxSMKbtCZxXdG/Ez3rhSarHiMhVuwdehdaSSCK6ONAVRqNVtI0KCkRUP9yi
-	 jD8oI20mXrPO/4F+36FDZeMsWdfS6xkSR+LpmwS9Y8RELsIBg8GsPzfIXjT20mt5k
-	 bLy/q0cJnTxveU6jAfJJ3U+mrIkC3Cbs0PaaYhBYzjTpCGCwy4FiVlM5TV11A8Dol
-	 ZC8ZZmTkkLsbYtb1X/mkrAyEWVuvMrw0JfuU8YsFO1CjxV+yqCiZQlHKcu8su3jEy
-	 03dkyQxyngmbtE0Vdw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.32.217]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MMGRA-1qsrTm3V7m-00JG2m; Thu, 30
- Nov 2023 17:45:48 +0100
-Message-ID: <2764073e-73a6-4927-a7e2-163fa71d34e1@gmx.de>
-Date: Thu, 30 Nov 2023 17:45:48 +0100
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::228])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D7D510DB;
+	Thu, 30 Nov 2023 08:57:12 -0800 (PST)
+Received: by mail.gandi.net (Postfix) with ESMTPA id E63221BF205;
+	Thu, 30 Nov 2023 16:57:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701363431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Jm60+J+CYJrK2sHEFWjb0jmzaPleL4egUI26kWWOyu8=;
+	b=Xtp5wPQsc+mP8/wUeDLsebCQBiTDsHw4ja3/eEJNJ1j1mn2TXWLHLBXxfCiDdcSdhDIjCA
+	sjAwfuSRUGBOGdXzNxh9def0VLeg51y1mRh0EaUldZfEZO6C3SjN8uLlvh9DjUyNW5IZIN
+	1ukankeKO05V4VjC7D8fHCzVKcGqP/I52KVFDo81B1penFj1sjoXsBQLdpyyO7sNPzyy+9
+	yPxKBIZ/0qK5g1N0m7C2rWShMwm2+ctyiq3ysSs6illr7s+f8lRUiMvnc4WF30Hx2aaHgG
+	DZaF3p7bkyIn76547h8TMvl17T+vKwRBq2wAyjD5olDJpa7U5oQTxLf+7jWrWA==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Rob Herring <robh@kernel.org>
+Cc: Max Zhen <max.zhen@amd.com>,
+	Sonal Santan <sonal.santan@amd.com>,
+	Stefano Stabellini <stefano.stabellini@xilinx.com>,
+	Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] driver core: Introduce device_{add,remove}_of_node()
+Date: Thu, 30 Nov 2023 17:56:58 +0100
+Message-ID: <20231130165700.685764-2-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231130165700.685764-1-herve.codina@bootlin.com>
+References: <20231130165700.685764-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Ronald Warsow <rwarsow@gmx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.6 000/112] 6.6.4-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:eMYynn9vWiVxG6Dx3edEes1nw/MIJPCVgRoj20a30VoBSE7KOZq
- OThumm36kKni/FYJaL6R/FGT7vzBYMuZjxxIFC68LBS3zsHHcGtcvCBE3MEdZ44M3FNPB0G
- J/d4A1hJshcCPiPbqf8I5afXMqdw0jicMBBRFWazC5n/SeucE8sP3jUMf/fSsvWw17kvf6I
- AJk50Y/cQycCtZ+WpcQgQ==
-UI-OutboundReport: notjunk:1;M01:P0:9nYgRrwXc8k=;t+Cha0gMzEz6NTYamw8jaTVUZn3
- Zn96Z7ffCIDagju3Fl0WhFLzt9z9thYTs1Hu51bTgk0QByWAtfIsPLF8DGqVSu2B9C6jMWgtO
- JABbtWwCsQkG8FcJFYFLtLamqm4p7nhlfM7UrKCLlpsOAE/VrKcGCZ5Nh/J51feVYWwsCRH42
- 3SfqsBXYhQYUCHfY2/vyKlrPV8cvGtll3eRMq9UV39b4r+m5eJ1ov4KmRD0TbFRzr5TBMfzkb
- jGnrSlpNolYCLY7mDM5TKp+Ws/tJCn3ib8sR7XWbp4KXo670k64ICfQc/Hdgny4dRbE2sZUd6
- WWz4ytwjhJSf/0GEwNpO1/EjS6wAwm8k/qIGU7viJWgY/9ZGzeg+vMrZwqmLHX0Ly1DvkpJzx
- KkvIvau7FuB3if77imxBospYSZXoFHmj5Piyo/MhmUjwtuB5lB5+iJbR23ex3GW3HjPkPpivX
- b069L255vzq3Lnvy4YimzWdxR9mKqXpensi5SNkdhU8U8fc+TB4IfkNxhghPEoMvDOpXPV/Cz
- 680wkVn2OTiwJigE3ZR3ylZRe4E55HuhvHd71rkEGcrDpSdkNWfc9GeUE6duXnVjjucwwFIAN
- sQAHuT/b1RFbjVOzfaMx2kP8ZduWx43AnFh3zOIsVWI+n0hcFiuCyJ1xUTOVkRDbTcQnxtuir
- IYlJwCqWkdniE1Mh/PS/eyHKJXCGCWLpfjYDNACg0kOooejMHFd7ZiX5wLqoIg8ATzsuurk44
- A3JRD3rE/gocmQhXe4V2UICVUo8gERhAaUHz+IvMvEeBwBB62/X9IFHVNaFLKsrOA/3kcAb1l
- i6kl0JVCpVYE9fp7x8nEyF1OimBYeT3dBcOCrh67dFvX+WjhrEaAjqE7MTyfOaos04Opf4Iit
- FBnqsnSjqE3xn5FlauEdbnJvpBTYxCm+P3A4JIynXU2lmWgbHhvpl9NMRY0SkfG6IxvcftBQJ
- l9RPLw==
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: herve.codina@bootlin.com
 
-Hi Greg
+An of_node can be duplicated from an existing device using
+device_set_of_node_from_dev() or initialized using device_set_node()
+In both cases, these functions have to be called before the device_add()
+call in order to have the of_node link created in the device sysfs
+directory. Further more, these function cannot prevent any of_node
+and/or fwnode overwrites.
 
-6.6.4-rc1
+When adding an of_node on an already present device, the following
+operations need to be done:
+- Attach the of_node if no of_node were already attached
+- Attach the of_node as a fwnode if no fwnode were already attached
+- Create the of_node sysfs link if needed
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake: i5-11400)
+This is the purpose of device_add_of_node().
+device_remove_of_node() reverts the operations done by
+device_add_of_node().
 
-Thanks
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ drivers/base/core.c    | 74 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/device.h |  2 ++
+ 2 files changed, 76 insertions(+)
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 2926f3b1f868..ac026187ac6a 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -5046,6 +5046,80 @@ void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode)
+ }
+ EXPORT_SYMBOL_GPL(set_secondary_fwnode);
+ 
++/**
++ * device_remove_of_node - Remove an of_node from a device
++ * @dev: device whose device-tree node is being removed
++ */
++void device_remove_of_node(struct device *dev)
++{
++	dev = get_device(dev);
++	if (!dev)
++		return;
++
++	if (!dev->of_node)
++		goto end;
++
++	sysfs_remove_link(&dev->kobj, "of_node");
++
++	if (dev->fwnode == of_fwnode_handle(dev->of_node))
++		dev->fwnode = NULL;
++
++	of_node_put(dev->of_node);
++	dev->of_node = NULL;
++
++end:
++	put_device(dev);
++}
++EXPORT_SYMBOL_GPL(device_remove_of_node);
++
++/**
++ * device_add_of_node - Add an of_node to an existing device
++ * @dev: device whose device-tree node is being added
++ * @of_node: of_node to add
++ */
++void device_add_of_node(struct device *dev, struct device_node *of_node)
++{
++	int ret;
++
++	if (!of_node)
++		return;
++
++	dev = get_device(dev);
++	if (!dev)
++		return;
++
++	if (dev->of_node) {
++		dev_warn(dev, "Replace node %pOF with %pOF\n", dev->of_node, of_node);
++		device_remove_of_node(dev);
++	}
++
++	dev->of_node = of_node_get(of_node);
++
++	if (!dev->fwnode)
++		dev->fwnode = of_fwnode_handle(of_node);
++
++	if (!dev->p) {
++		/*
++		 * device_add() was not previously called.
++		 * The of_node link will be created when device_add() is called.
++		 */
++		goto end;
++	}
++
++	/*
++	 * device_add() was previously called and so the of_node link was not
++	 * created by device_add_class_symlinks().
++	 * Create this link now.
++	 */
++	ret = sysfs_create_link(&dev->kobj, of_node_kobj(of_node), "of_node");
++	if (ret)
++		dev_warn(dev, "Error %d creating of_node link\n", ret);
++
++end:
++	put_device(dev);
++}
++EXPORT_SYMBOL_GPL(device_add_of_node);
++
+ /**
+  * device_set_of_node_from_dev - reuse device-tree node of another device
+  * @dev: device whose device-tree node is being set
+diff --git a/include/linux/device.h b/include/linux/device.h
+index d7a72a8749ea..2b093e62907a 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -1128,6 +1128,8 @@ int device_offline(struct device *dev);
+ int device_online(struct device *dev);
+ void set_primary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
+ void set_secondary_fwnode(struct device *dev, struct fwnode_handle *fwnode);
++void device_add_of_node(struct device *dev, struct device_node *of_node);
++void device_remove_of_node(struct device *dev);
+ void device_set_of_node_from_dev(struct device *dev, const struct device *dev2);
+ void device_set_node(struct device *dev, struct fwnode_handle *fwnode);
+ 
+-- 
+2.42.0
 
 
