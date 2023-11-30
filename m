@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A187FF5DB
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F3977FF576
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F38FB211EF
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90B4A1C21075
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDBB537F9;
-	Thu, 30 Nov 2023 16:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 902CC54FB2;
+	Thu, 30 Nov 2023 16:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWxCCYXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM+WVxVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E5954FA4;
-	Thu, 30 Nov 2023 16:32:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EF0C433C7;
-	Thu, 30 Nov 2023 16:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D90C54F8F;
+	Thu, 30 Nov 2023 16:29:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9ABAC433C7;
+	Thu, 30 Nov 2023 16:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361938;
-	bh=LSrd7Xo6CHCLhmWzyRi8Sc8Yebe97Aono6GznSpLJk4=;
+	s=korg; t=1701361744;
+	bh=Viv+BOF5kptM59K3VsRthusCOUbpYaoKHnj3c/43lmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yWxCCYXn5HpuNXFVsrL4qxScdRWd01VRBw4+CVRnF8xY8+AaEiTheZ9OvWAliCp0q
-	 9UOUEKyu5k3FsgViSN9hKiCDDfIagUkKuIBpxcI5mRRXnZx8RGaDhr3c5MAx1gjdNW
-	 WnC2E0iFI7bGf0sc7S2leWKOSx/iWxgK/yrNM41s=
+	b=IM+WVxVRgnT4HXnkbmORK2h5iRq3/7LAbj5RYM++2iYZ24Q7AkcDIa/foWTpzHurF
+	 BbsQoFBKl51qdl7IbktGVHG1dgLUeb/EF8gzAjlzmU4j3FmEWvfMSZWWeVk+E/zyrJ
+	 1T8AGKeHH4bahF5UBMFY/FlNdopOQNc7gU8B0Sro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
-	Douglas Anderson <dianders@chromium.org>,
+	Shawn Guo <shawn.guo@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 04/69] drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
+Subject: [PATCH 6.1 30/82] USB: dwc3: qcom: fix ACPI platform device leak
 Date: Thu, 30 Nov 2023 16:22:01 +0000
-Message-ID: <20231130162133.193567836@linuxfoundation.org>
+Message-ID: <20231130162136.912016015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,39 +54,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 6965809e526917b73c8f9178173184dcf13cec4b ]
+[ Upstream commit 9cf87666fc6e08572341fe08ecd909935998fbbd ]
 
-For "auo,b101uan08.3" this panel, it is stipulated in the panel spec that
-MIPI needs to keep the LP11 state before the lcm_reset pin is pulled high.
+Make sure to free the "urs" platform device, which is created for some
+ACPI platforms, on probe errors and on driver unbind.
 
-Fixes: 56ad624b4cb5 ("drm/panel: support for auo, b101uan08.3 wuxga dsi video mode panel")
-Signed-off-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231114044205.613421-1-xuxinxiong@huaqin.corp-partner.google.com
+Compile-tested only.
+
+Fixes: c25c210f590e ("usb: dwc3: qcom: add URS Host support for sdm845 ACPI boot")
+Cc: Shawn Guo <shawn.guo@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Andrew Halaney <ahalaney@redhat.com>
+Acked-by: Shawn Guo <shawn.guo@linaro.org>
+Link: https://lore.kernel.org/r/20231117173650.21161-4-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/dwc3-qcom.c | 37 +++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index 3229e5eabbd21..9e518213a54ff 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -697,6 +697,7 @@ static const struct panel_desc auo_b101uan08_3_desc = {
- 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
- 		      MIPI_DSI_MODE_LPM,
- 	.init_cmds = auo_b101uan08_3_init_cmd,
-+	.lp11_before_reset = true,
- };
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 0c68227fe899e..0f51a6c70b781 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -768,9 +768,9 @@ static int dwc3_qcom_of_register_core(struct platform_device *pdev)
+ 	return ret;
+ }
  
- static const struct drm_display_mode boe_tv105wum_nw0_default_mode = {
+-static struct platform_device *
+-dwc3_qcom_create_urs_usb_platdev(struct device *dev)
++static struct platform_device *dwc3_qcom_create_urs_usb_platdev(struct device *dev)
+ {
++	struct platform_device *urs_usb = NULL;
+ 	struct fwnode_handle *fwh;
+ 	struct acpi_device *adev;
+ 	char name[8];
+@@ -790,9 +790,26 @@ dwc3_qcom_create_urs_usb_platdev(struct device *dev)
+ 
+ 	adev = to_acpi_device_node(fwh);
+ 	if (!adev)
+-		return NULL;
++		goto err_put_handle;
++
++	urs_usb = acpi_create_platform_device(adev, NULL);
++	if (IS_ERR_OR_NULL(urs_usb))
++		goto err_put_handle;
++
++	return urs_usb;
+ 
+-	return acpi_create_platform_device(adev, NULL);
++err_put_handle:
++	fwnode_handle_put(fwh);
++
++	return urs_usb;
++}
++
++static void dwc3_qcom_destroy_urs_usb_platdev(struct platform_device *urs_usb)
++{
++	struct fwnode_handle *fwh = urs_usb->dev.fwnode;
++
++	platform_device_unregister(urs_usb);
++	fwnode_handle_put(fwh);
+ }
+ 
+ static int dwc3_qcom_probe(struct platform_device *pdev)
+@@ -877,13 +894,13 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	qcom->qscratch_base = devm_ioremap_resource(dev, parent_res);
+ 	if (IS_ERR(qcom->qscratch_base)) {
+ 		ret = PTR_ERR(qcom->qscratch_base);
+-		goto clk_disable;
++		goto free_urs;
+ 	}
+ 
+ 	ret = dwc3_qcom_setup_irq(pdev);
+ 	if (ret) {
+ 		dev_err(dev, "failed to setup IRQs, err=%d\n", ret);
+-		goto clk_disable;
++		goto free_urs;
+ 	}
+ 
+ 	/*
+@@ -902,7 +919,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 
+ 	if (ret) {
+ 		dev_err(dev, "failed to register DWC3 Core, err=%d\n", ret);
+-		goto clk_disable;
++		goto free_urs;
+ 	}
+ 
+ 	ret = dwc3_qcom_interconnect_init(qcom);
+@@ -939,6 +956,9 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	else
+ 		platform_device_del(qcom->dwc3);
+ 	platform_device_put(qcom->dwc3);
++free_urs:
++	if (qcom->urs_usb)
++		dwc3_qcom_destroy_urs_usb_platdev(qcom->urs_usb);
+ clk_disable:
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+@@ -964,6 +984,9 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+ 		platform_device_del(qcom->dwc3);
+ 	platform_device_put(qcom->dwc3);
+ 
++	if (qcom->urs_usb)
++		dwc3_qcom_destroy_urs_usb_platdev(qcom->urs_usb);
++
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
 -- 
 2.42.0
 
