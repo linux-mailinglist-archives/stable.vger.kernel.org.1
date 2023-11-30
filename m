@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-3564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5017FFB77
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:38:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 148AB7FFBA5
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 20:42:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1CB5B20DAE
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:38:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 259EF1C20C6E
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:42:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABA052F79;
-	Thu, 30 Nov 2023 19:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E869E53E03;
+	Thu, 30 Nov 2023 19:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="S4ZI/Cpe"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="A6qzD/uf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E141310E2
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:38:44 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cf98ffc257so12878135ad.3
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:38:44 -0800 (PST)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1621A19B9
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:41:42 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1cfc34b6890so11499425ad.1
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 11:41:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701373124; x=1701977924; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701373301; x=1701978101; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=cDwYjv2/a6mE8wejwg0/UyZBow2PyxzvE4zwq9uiIgM=;
-        b=S4ZI/CpeHr9/9TZkVAUafiL2xfFNf9A8rrugRvfENgLU0HwpFc8SB4B7NAV/ivGlss
-         m8jba8T/Q/QwYJcTzYHt9TwymZrx51M4cjqDUpQI8bcsg9n9PLY2QEkHthZdEGNQpLnt
-         XhnqGSos8TDDaO+bnW3ZDD4Gzl/wP34ML0MxprsmavDV8Or4HTk9rhuJh8ukIX2gWh2g
-         z1iO/S5AMbzRcQ2zWWSsSy94uwNSkEN98J+Kw1KDrKrnPZ0LsHIVpsf+MD2emG2Wdtgc
-         erg/7tdJiyVQCHWEqA57TNbSwRqSYOsYcEeRYFS5yLJU6LOnZM+IxynakDu+Bc2ptD9W
-         XLFA==
+        bh=xkjOFW8iIRzrboEU6CI7fcRC+4rSvCf9ycgbTzE74z0=;
+        b=A6qzD/ufM/qkDbPP382eoN2ZaxNWsGFh796L41rMOFX0/58vNQHsOaBP5OQVvEY+DC
+         d41KgdW0y+/qZ7LQsZfCgrwzwpP9qfe4NYuEs2VM9mdRxkZw1NdIsTrBJLhFQb5mF/rX
+         66ynseDFqkRoyMjLzT68gx6jG431cw7Wh+6Y403glwDEkUNm596aHTAHoXqhXaQqKPUf
+         CAx2XFvmpCkTw8cY6emmPino48+iRb8amkXBpDQDrINZFId4MSlCCqt3JoboOXOk1F0v
+         WxHCacjsyazRSZCEF8MYNgLmXd9bItEdsK7hE/pppOLsWRMu4pXU9mzcO6GpY4mvVaRK
+         EAjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701373124; x=1701977924;
+        d=1e100.net; s=20230601; t=1701373301; x=1701978101;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cDwYjv2/a6mE8wejwg0/UyZBow2PyxzvE4zwq9uiIgM=;
-        b=OS8uKnZVU7by+baofKJalDwxRutqIvSBxhE0t+uU49ZqFRmz+/qzxkRpklJjv31uZF
-         l4gPJ76ZM4nQQmcvcuS+OhgUldr4gIEcVq8XyXr49iBE6i4gQ7rB8w1gGImmP8P48b3T
-         DBglJyPJV24/R0rHFs2hpl4P+PfvdXu2ILftF8jHaA8AWAFQLbuqjQNW7vvYRt+z2rPu
-         T9oTpkdwE2AeZp3i3f4iWQ6FqUCE+hxGzYRzyLBOO/rT1vNOpZMjHUNWKQjRapU5Gzyw
-         4BONB3IIoHrLT/gg7oudepaO0mWKg7I1E10fBuBHAVLsDW6T4fYjlhDCxddu0ihO3RJ8
-         +vVg==
-X-Gm-Message-State: AOJu0Yy/uWjPPVqmBvJ5Mb/p0bUl9UfK6yWEqtJxJxkPLUqqGMZ165Mr
-	Ej3NkPkf+byuFAU1p817GbiKlSP7SmBiVBIlxs2Y8g==
-X-Google-Smtp-Source: AGHT+IFkiexnfB0LRydpAZbiPVQj4yaoc8aTz2flRZKk6qPbr7rqSvcGtmOxTuFL6Cf8KclW7ymxlQ==
-X-Received: by 2002:a17:903:183:b0:1cc:449b:689e with SMTP id z3-20020a170903018300b001cc449b689emr30752134plg.20.1701373123864;
-        Thu, 30 Nov 2023 11:38:43 -0800 (PST)
+        bh=xkjOFW8iIRzrboEU6CI7fcRC+4rSvCf9ycgbTzE74z0=;
+        b=iu81UsAcC9MmNrW5HbHzIBxkBpAbzTFB/jspGT3c7B5LiYxnPbQAJHu+RiWA2/U1Cz
+         c5vA3O2ZbHImp6uDIB+zabGu15wCrRFqCBjqNeAHaa4OrffE/zOlXosw3SHArR/hqNjH
+         QL5EhubvPuawIfm66Eww5H+dws3QEvMqgn+SDjzQczM+QT0OGp0CIZSYPm5j79RnR0r3
+         FYDXY049hCZ3zMKR8rgD9LtFfv8lDh5ZUvr1BIydxyHe7G/RZ9tfHU6ZUmXRI/x/Hkrw
+         gbHkC9X9QvFfh/kNHGD+6j0DiuynFkizlbuqQfiPxMq0Q6dbeAZEtYpuKnB0cHK4Wh68
+         0ttQ==
+X-Gm-Message-State: AOJu0YzPb6m/hAiN/hhl1pBxTEB5Tq5VTq/LEvZuzUkhgP7Xht42cht6
+	Y6pt8DM3sf4H8ugoFIodzmahiMdRkjUTVKJiluyStQ==
+X-Google-Smtp-Source: AGHT+IEM1BUEXu0lDQQM0de+hAq3pNUEsefyKe5TW8c8q8eJChd0qgjkdqfo9advO0peD0+dd3GC/g==
+X-Received: by 2002:a17:902:d2cf:b0:1cf:d8c5:22a8 with SMTP id n15-20020a170902d2cf00b001cfd8c522a8mr18877831plc.21.1701373300733;
+        Thu, 30 Nov 2023 11:41:40 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id iy15-20020a170903130f00b001cf5d4f8f26sm1769800plb.248.2023.11.30.11.38.43
+        by smtp.gmail.com with ESMTPSA id w3-20020a170902a70300b001cfc34965aesm1783578plq.50.2023.11.30.11.41.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 11:38:43 -0800 (PST)
-Message-ID: <6568e4c3.170a0220.33ea3.56d7@mx.google.com>
-Date: Thu, 30 Nov 2023 11:38:43 -0800 (PST)
+        Thu, 30 Nov 2023 11:41:40 -0800 (PST)
+Message-ID: <6568e574.170a0220.e1df1.58e8@mx.google.com>
+Date: Thu, 30 Nov 2023 11:41:40 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -63,74 +63,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 X-Kernelci-Report-Type: build
-X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Branch: linux-5.15.y
 X-Kernelci-Tree: stable-rc
-X-Kernelci-Kernel: v4.19.300-33-g467e4247b42cf
-Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.300-33-g467e4247b42cf)
+X-Kernelci-Kernel: v5.15.140-70-g66b7d5ed6e672
+Subject: stable-rc/linux-5.15.y build: 20 builds: 4 failed, 16 passed, 8 errors,
+ 3 warnings (v5.15.140-70-g66b7d5ed6e672)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
-v4.19.300-33-g467e4247b42cf)
+stable-rc/linux-5.15.y build: 20 builds: 4 failed, 16 passed, 8 errors, 3 w=
+arnings (v5.15.140-70-g66b7d5ed6e672)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.300-33-g467e4247b42cf/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.140-70-g66b7d5ed6e672/
 
 Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.300-33-g467e4247b42cf
-Git Commit: 467e4247b42cf850bd3a413fc5ef2909a295c61f
+Branch: linux-5.15.y
+Git Describe: v5.15.140-70-g66b7d5ed6e672
+Git Commit: 66b7d5ed6e672f126e1cfd6c53868c6610ca5686
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
 
 Build Failures Detected:
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+arm:
+    omap2plus_defconfig: (gcc-10) FAIL
 
-Warnings Detected:
+i386:
+    i386_defconfig: (gcc-10) FAIL
+
+x86_64:
+    x86_64_defconfig: (gcc-10) FAIL
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
+
+Errors and Warnings Detected:
 
 arc:
 
 arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
 arm:
+    omap2plus_defconfig (gcc-10): 2 errors
 
 i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 errors
 
 mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
 
 x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 errors, 1 warning
+    x86_64_defconfig+x86-board (gcc-10): 2 errors, 1 warning
 
+Errors summary:
+
+    2    trace_kprobe.c:(.text+0x3228): undefined reference to `kallsyms_on=
+_each_symbol'
+    2    trace_kprobe.c:(.text+0x29f5): undefined reference to `kallsyms_on=
+_each_symbol'
+    2    /tmp/kci/linux/build/../kernel/trace/trace_kprobe.c:736: undefined=
+ reference to `kallsyms_on_each_symbol'
+    1    trace_kprobe.c:(.text+0x2d9b): undefined reference to `kallsyms_on=
+_each_symbol'
+    1    trace_kprobe.c:(.text+0x25d6): undefined reference to `kallsyms_on=
+_each_symbol'
 
 Warnings summary:
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    4    WARNING: modpost: Found 1 section mismatch(es).
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -141,64 +149,38 @@ Detailed per-defconfig build reports:
 
 ---------------------------------------------------------------------------=
 -----
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
 Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
 ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
 ---------------------------------------------------------------------------=
 -----
@@ -207,13 +189,14 @@ haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
 
 ---------------------------------------------------------------------------=
 -----
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+i386_defconfig (i386, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 secti=
 on mismatches
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+Errors:
+    trace_kprobe.c:(.text+0x25d6): undefined reference to `kallsyms_on_each=
+_symbol'
+    trace_kprobe.c:(.text+0x2d9b): undefined reference to `kallsyms_on_each=
+_symbol'
 
 ---------------------------------------------------------------------------=
 -----
@@ -225,46 +208,46 @@ ection mismatches
 multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
 ---------------------------------------------------------------------------=
 -----
 multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 2 errors, 0 warnings, 0 s=
 ection mismatches
 
+Errors:
+    /tmp/kci/linux/build/../kernel/trace/trace_kprobe.c:736: undefined refe=
+rence to `kallsyms_on_each_symbol'
+    /tmp/kci/linux/build/../kernel/trace/trace_kprobe.c:736: undefined refe=
+rence to `kallsyms_on_each_symbol'
+
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
  mismatches
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -273,23 +256,33 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 FAIL, 2 errors, 1 warning, 0 se=
+ction mismatches
+
+Errors:
+    trace_kprobe.c:(.text+0x29f5): undefined reference to `kallsyms_on_each=
+_symbol'
+    trace_kprobe.c:(.text+0x3228): undefined reference to `kallsyms_on_each=
+_symbol'
 
 Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 2 errors, 1 war=
+ning, 0 section mismatches
+
+Errors:
+    trace_kprobe.c:(.text+0x29f5): undefined reference to `kallsyms_on_each=
+_symbol'
+    trace_kprobe.c:(.text+0x3228): undefined reference to `kallsyms_on_each=
+_symbol'
 
 Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
 
 ---
 For more info write to <info@kernelci.org>
