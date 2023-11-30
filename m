@@ -1,189 +1,147 @@
-Return-Path: <stable+bounces-3208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6F57FEBDC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 10:30:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD1957FEE9A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 13:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6834628201D
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 09:30:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 284F3B20DDC
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 12:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5409338DFB;
-	Thu, 30 Nov 2023 09:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3894C45BE6;
+	Thu, 30 Nov 2023 12:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5y2F7Pf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ncyBQiNT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7D428F;
-	Thu, 30 Nov 2023 01:30:16 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-3330fd19820so477788f8f.1;
-        Thu, 30 Nov 2023 01:30:16 -0800 (PST)
+Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B5184
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 04:07:16 -0800 (PST)
+Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-40b472f98b1so6758305e9.3
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 04:07:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701336615; x=1701941415; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YuNTtw2jvQuN4PhWTyrra/q1irsKXH/DVcQCJL0iMU8=;
-        b=A5y2F7Pf1S/HONNiXrAK86jZe3N0SOoE0ONtsedAbsiHvs9L74N5zUq8qQThQmLewt
-         nUIoBcDKPvgnROW8NtM5gKmbngCeCPcgXyy1qsasf1E2K9pbA/pC6+PXD0uLpebDWt71
-         FYVLy+FGUrZ5MaQhmjO6aq8PSUDoHtBSzFmqTjU0LF8VH4yTMXHkQFmRitGcSlq+EgRJ
-         zupk3WddIoIyb/B/XXNhqLbBcEflXJ+UliAWsYnhvsYNBuR3kSKH1rzV1DWPscRuT7oZ
-         QfURIePypK+AKvalyFDh2o695IBC6XLQET3E7z8NsOROZ3/JCmW6qmQZ5c9KSBgTgvQi
-         ZjFw==
+        d=gmail.com; s=20230601; t=1701346035; x=1701950835; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=biEY9+8Tb07WJt0NiFiN/4G6xbQRZfkGA93WnoulE44=;
+        b=ncyBQiNTKf/gf4d+dp8bbwCLFiE4VRBThUFelS2tXlmlxURkeKxFte1a9uDQcf18lt
+         jdl+V8tLfougq2emibo0pr4wXn7tRGj/l6B9omGWG/0Uoo5C0xRqM+zeqo9aeEZ1bYnN
+         7F40A5hp3Gp6C6SsrQtE6d/f1PNlZCKgOZREocXWh/4Uqm2NEr4VRicUmaGAO6xnB/nD
+         ROaqCH6MuR2uXHkurF4+Ea81fGK+PhL5VIPgxd6I3szg5Npp9Zq3nsepaT2B87wSblYq
+         4kMvaHaduH7CzMX9zTlY5HRnAZ8PLgYRv8tS13vyQ2buugqroZR8k4g2YxtSeUXM26pJ
+         0Q4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701336615; x=1701941415;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1701346035; x=1701950835;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YuNTtw2jvQuN4PhWTyrra/q1irsKXH/DVcQCJL0iMU8=;
-        b=oJLN2pmu9MHiCl4i193svxQOdkLvoXUxF3t0UXQ4aNzLVsjDmIDvfmWm/2TaYdbNab
-         Fw6zO/Dfu/gKAOfXBufySoKZS9vGvy2QM4OInq2eWI/yAxlGeVf0Hr8wiVLnM7MyHPgR
-         mSohZreZik0rvMgfiY2Ca4vWcEm8tSGK1r0r9u0RLPgf7+tE+Geuz1843HOVFDt4OP2Q
-         u32JZkjWsG9YXlSfm9tmnJBDKAy+IVsFw8DD6SlktqtXw+WwIH5AE16kuSf8TmAVPPnd
-         PEL18Tly4XC7jwpAkkyAiz1PP26wSR1MD3y2n9S6f97/s5+b2HBxQQD4Le0nOqt2hGag
-         Jtvg==
-X-Gm-Message-State: AOJu0Yycr885N2g/frdsGR3C0Wbk6NtrWIjZanz1fdcqzXBncWmJUiLf
-	OdiwQFM8PoKojqxTyrd9HG4=
-X-Google-Smtp-Source: AGHT+IFAVSELyNE3gO5IZKHYWynOhknEH6eayw8ijvtfgxPELrwyf3opc19adLXw5KJhk7G47spEdg==
-X-Received: by 2002:adf:f588:0:b0:332:eb19:9530 with SMTP id f8-20020adff588000000b00332eb199530mr14011097wro.32.1701336614960;
-        Thu, 30 Nov 2023 01:30:14 -0800 (PST)
-Received: from gmail.com (1F2EF55A.nat.pool.telekom.hu. [31.46.245.90])
-        by smtp.gmail.com with ESMTPSA id r13-20020adfe68d000000b00333040a4752sm995326wrm.114.2023.11.30.01.30.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 01:30:14 -0800 (PST)
-Sender: Ingo Molnar <mingo.kernel.org@gmail.com>
-Date: Thu, 30 Nov 2023 10:30:11 +0100
-From: Ingo Molnar <mingo@kernel.org>
-To: Ashwin Dayanand Kamat <kashwindayan@vmware.com>
-Cc: linux-kernel@vger.kernel.org, thomas.lendacky@amd.com, bp@alien8.de,
-	brijesh.singh@amd.com, tglx@linutronix.de, mingo@redhat.com,
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
-	jroedel@suse.de, stable@vger.kernel.org, ganb@vmware.com,
-	tkundu@vmware.com, vsirnapalli@vmware.com, akaher@vmware.com,
-	amakhalov@vmware.com, namit@vmware.com
-Subject: [PATCH] x86/sev: Fix kernel crash due to late update to read-only
- ghcb_version
-Message-ID: <ZWhWI2GvfleyGKsa@gmail.com>
-References: <1701254429-18250-1-git-send-email-kashwindayan@vmware.com>
+        bh=biEY9+8Tb07WJt0NiFiN/4G6xbQRZfkGA93WnoulE44=;
+        b=ZKJNMjS2c7GykulZ3qGRHAbZ1QhSNTURb7QXhqRvs9DjYMV9Jm4IEswLDn+0Ij3FMp
+         tHwfX4yh4eU771Ob53BZKvF3pNFkaLuKiEqHbv+NYc4H/HMgYyVYdlUkFG5iKYhQidnD
+         KpuhsGfDR+2q8PowvEfr2RxQW6D0qE/3GCCfwkQpkvuz053UYEfV+Z9Q0XxZO7blhgZ3
+         nGk9fSn4LTf02rN5/ouyXb9vYw8fFyNbTiRn/3YMh/T3nU9MLM5Vp9Epimzqaw81xY8Z
+         IIXJksPhPE6CYdEmbODNWzaa32qD+TEaYdUTAg5m93QLzSl8EVuz++q861+DsL0462+g
+         zCEw==
+X-Gm-Message-State: AOJu0Ywf/UuOo+VfoTeRs6Iy/BSe5y+F0zt0WQE5Keo593lfrQtvKmxq
+	jGfYd+w4NlZLmiDjYUDMsI1hYv++hcbaXEtkFQiquZm2Mn4=
+X-Google-Smtp-Source: AGHT+IGXo3MX08+L9Ad0RtPS5baiguxhlQVzIDEkTPTNTt5eK9F7MLgK+KyXUmNxN2JbGLW+JK0J9FIvYo/PER+is1c=
+X-Received: by 2002:a05:600c:1d17:b0:401:eb0:a974 with SMTP id
+ l23-20020a05600c1d1700b004010eb0a974mr17555775wms.3.1701346035081; Thu, 30
+ Nov 2023 04:07:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1701254429-18250-1-git-send-email-kashwindayan@vmware.com>
+References: <CALk6Uxo5ymxu_P_7=LnLZwTgjYbrdE7gzwyeQVxeR431SPuxyw@mail.gmail.com>
+ <2023112431-matching-imperfect-1b76@gregkh> <CALk6UxqZtm_MR9cYyN2UvTF_7xPH0D-zQ_uUjZKjNGfU-JOX-A@mail.gmail.com>
+In-Reply-To: <CALk6UxqZtm_MR9cYyN2UvTF_7xPH0D-zQ_uUjZKjNGfU-JOX-A@mail.gmail.com>
+From: Ronald Monthero <debug.penguin32@gmail.com>
+Date: Thu, 30 Nov 2023 22:07:03 +1000
+Message-ID: <CALk6Uxoq=f7ews1Beve3qW_38w0sw1fnpJvmwMDfxy9eM+1AmA@mail.gmail.com>
+Subject: Re: Backport submission - rcu: Avoid tracing a few functions executed
+ in stop machine
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, Nov 30, 2023 at 12:08=E2=80=AFAM Ronald Monthero
+<debug.penguin32@gmail.com> wrote:
+>
+> On Sat, Nov 25, 2023 at 2:10=E2=80=AFAM Greg KH <gregkh@linuxfoundation.o=
+rg> wrote:
+> >
+> > On Tue, Nov 21, 2023 at 12:09:38AM +1000, Ronald Monthero wrote:
+> > > Dear stable maintainers,
+> > > I like to indicate the oops encountered and request the below patch t=
+o
+> > > be backported to v 5.15. The fix is important to avoid recurring oops
+> > > in context of rcu detected stalls.
+> > >
+> > > subject: rcu: Avoid tracing a few functions executed in stop machine
+> > > commit  48f8070f5dd8
+> > > Target kernel version   v 5.15
+> > > Reason for Application: To avoid oops due to rcu_prempt detect stalls
+> > > on cpus/tasks
+> > >
+> > > Environment and oops context: Issue was observed in my environment on
+> > > 5.15.193 kernel (arm platform). The patch is helpful to avoid the
+> > > below oops indicated in [1] and [2]
+> >
+> > As the patch does not apply cleanly, we need a working and tested
+> > backport so we know to apply the correct version.
+> >
+> > Can you please provide that as you've obviously already done this?
+>
+> Hi Greg,
+> Sorry I notice my typo error 193 instead of 93. I have tested on the
+> 5.15.93-rt58  kernel.
 
-* Ashwin Dayanand Kamat <kashwindayan@vmware.com> wrote:
+Hi Greg,
+I used a 5.15.93 kernel
+- on arm32 bit platform I tested with 5.15.93-rt58 (rt kernel) ,  on
+real hardware - Freescale LS1021A, 32 bit Cortex A7 processor
+- on x86_64 platform I tested non rt kernel 5.15.93  -  virtual
+machine - qemu platform
 
-> From: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-> 
-> kernel crash was observed because of page fault, while running
-> cpuhotplug ltp testcases on SEV-ES enabled systems. The crash was
-> observed during hotplug after the CPU was offlined and the process
-> was migrated to different cpu. setup_ghcb() is called again which
-> tries to update ghcb_version in sev_es_negotiate_protocol(). Ideally this
-> is a read_only variable which is initialised during booting.
-> This results in pagefault.
+Below is the build log after patch to kernel/rcu/tree.h on x86_64
 
-Applied to tip:x86/urgent, thanks.
+linux-5.15.93$ make
+  CALL    scripts/checksyscalls.sh
+  CALL    scripts/atomic/check-atomics.sh
+  DESCEND objtool
+  DESCEND bpf/resolve_btfids
+  CHK     include/generated/compile.h
+  CC      kernel/rcu/tree.o                         <<<
+  AR      kernel/rcu/built-in.a                     <<<
+  AR      kernel/built-in.a
+  CHK     kernel/kheaders_data.tar.xz
+  GEN     .version
+  CHK     include/generated/compile.h
+  UPD     include/generated/compile.h
+  CC      init/version.o
+  AR      init/built-in.a
+  LD      vmlinux.o
+  MODPOST vmlinux.symvers
+  MODINFO modules.builtin.modinfo
+  GEN     modules.builtin
+  LD      .tmp_vmlinux.btf
+  BTF     .btf.vmlinux.bin.o
+  LD      .tmp_vmlinux.kallsyms1
 
-Tom: I've added your Suggested-by and Acked-by, which appeared to be the 
-case given the v1 discussion, let me know if that's not accurate.
+< snipped >
 
-I've also tidied up the changelog - final version attached below.
+  BTF [M] sound/usb/usx2y/snd-usb-usx2y.ko
+  BTF [M] sound/virtio/virtio_snd.ko
+  BTF [M] sound/x86/snd-hdmi-lpe-audio.ko
+  BTF [M] sound/xen/snd_xen_front.ko
+  BTF [M] virt/lib/irqbypass.ko
+linux-5.15.93$
 
-Thanks,
-
-	Ingo
-
-============>
-From: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Date: Wed, 29 Nov 2023 16:10:29 +0530
-Subject: [PATCH] x86/sev: Fix kernel crash due to late update to read-only ghcb_version
-
-A write-access violation page fault kernel crash was observed while running
-cpuhotplug LTP testcases on SEV-ES enabled systems. The crash was
-observed during hotplug, after the CPU was offlined and the process
-was migrated to different CPU. setup_ghcb() is called again which
-tries to update ghcb_version in sev_es_negotiate_protocol(). Ideally this
-is a read_only variable which is initialised during booting.
-
-Trying to write it results in a pagefault:
-
-  BUG: unable to handle page fault for address: ffffffffba556e70
-  #PF: supervisor write access in kernel mode
-  #PF: error_code(0x0003) - permissions violation
-  [ ...]
-  Call Trace:
-   <TASK>
-   ? __die_body.cold+0x1a/0x1f
-   ? __die+0x2a/0x35
-   ? page_fault_oops+0x10c/0x270
-   ? setup_ghcb+0x71/0x100
-   ? __x86_return_thunk+0x5/0x6
-   ? search_exception_tables+0x60/0x70
-   ? __x86_return_thunk+0x5/0x6
-   ? fixup_exception+0x27/0x320
-   ? kernelmode_fixup_or_oops+0xa2/0x120
-   ? __bad_area_nosemaphore+0x16a/0x1b0
-   ? kernel_exc_vmm_communication+0x60/0xb0
-   ? bad_area_nosemaphore+0x16/0x20
-   ? do_kern_addr_fault+0x7a/0x90
-   ? exc_page_fault+0xbd/0x160
-   ? asm_exc_page_fault+0x27/0x30
-   ? setup_ghcb+0x71/0x100
-   ? setup_ghcb+0xe/0x100
-   cpu_init_exception_handling+0x1b9/0x1f0
-
-The fix is to call sev_es_negotiate_protocol() only in the BSP boot phase,
-and it only needs to be done once in any case.
-
-[ mingo: Refined the changelog. ]
-
-Fixes: 95d33bfaa3e1 ("x86/sev: Register GHCB memory when SEV-SNP is active")
-Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Bo Gan <bo.gan@broadcom.com>
-Signed-off-by: Ashwin Dayanand Kamat <ashwin.kamat@broadcom.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/1701254429-18250-1-git-send-email-kashwindayan@vmware.com
----
- arch/x86/kernel/sev.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/kernel/sev.c b/arch/x86/kernel/sev.c
-index 70472eebe719..c67285824e82 100644
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1234,10 +1234,6 @@ void setup_ghcb(void)
- 	if (!cc_platform_has(CC_ATTR_GUEST_STATE_ENCRYPT))
- 		return;
- 
--	/* First make sure the hypervisor talks a supported protocol. */
--	if (!sev_es_negotiate_protocol())
--		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
--
- 	/*
- 	 * Check whether the runtime #VC exception handler is active. It uses
- 	 * the per-CPU GHCB page which is set up by sev_es_init_vc_handling().
-@@ -1254,6 +1250,13 @@ void setup_ghcb(void)
- 		return;
- 	}
- 
-+	/*
-+	 * Make sure the hypervisor talks a supported protocol.
-+	 * This gets called only in the BSP boot phase.
-+	 */
-+	if (!sev_es_negotiate_protocol())
-+		sev_es_terminate(SEV_TERM_SET_GEN, GHCB_SEV_ES_GEN_REQ);
-+
- 	/*
- 	 * Clear the boot_ghcb. The first exception comes in before the bss
- 	 * section is cleared.
+BR,
+ronald
 
