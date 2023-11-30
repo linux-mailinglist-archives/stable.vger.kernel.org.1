@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD97C7FF611
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:34:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C667FF5BD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 788AC2818EC
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CDCD281825
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 103364777A;
-	Thu, 30 Nov 2023 16:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8782354F96;
+	Thu, 30 Nov 2023 16:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIuC1EqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWMoyVsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C133351002;
-	Thu, 30 Nov 2023 16:34:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3FBC433C8;
-	Thu, 30 Nov 2023 16:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B6F482CA;
+	Thu, 30 Nov 2023 16:31:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597AC433C7;
+	Thu, 30 Nov 2023 16:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701362052;
-	bh=kcEaNCkot7MYRlZocFXvXyCL0zxl5laKFruyChgDqZk=;
+	s=korg; t=1701361882;
+	bh=L1MPuxY6DHpFj6I0nX96GgVW+zRh4EGyZVkHJHA7TKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIuC1EqDw2EFnGWvHE5jkuZ0JD9VQyY+2uMV+bMENltPjYXAusAGAjQvo9dySxgAc
-	 QE07xIv4Hu1PpwbP4Sj0V4GlLGuXp+oxHPNiQEhr3z8YcJz5WdYpFDWJyX/YngcPHE
-	 W/WDhQu9qOBtzP4CzPg1Aic/VRamzMahfYkVJh2M=
+	b=yWMoyVsrzRWeI/cfzacjn3nkP4sX8mOzT1xIr8/I2WtUYf25urvRFd+A+C+jwLgz9
+	 TuPkiL3sHs+SM34Udq7/O2q8wBWa9BWRt6I7ChwlY8V/wTUjmRajd5cUKUvrLT2GFD
+	 23ZRqcIX83TKYSrikqSdlG85m7EwY5VNpXI/knMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Haberland <sth@linux.ibm.com>,
-	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.15 50/69] s390/dasd: protect device queue against concurrent access
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Heikki Krogeus <heikki.krogerus@linux.intel.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 76/82] usb: typec: tcpm: Skip hard reset when in error recovery
 Date: Thu, 30 Nov 2023 16:22:47 +0000
-Message-ID: <20231130162134.722700241@linuxfoundation.org>
+Message-ID: <20231130162138.405662356@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
-References: <20231130162133.035359406@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +51,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Höppner <hoeppner@linux.ibm.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
+commit a6fe37f428c19dd164c2111157d4a1029bd853aa upstream.
 
-In dasd_profile_start() the amount of requests on the device queue are
-counted. The access to the device queue is unprotected against
-concurrent access. With a lot of parallel I/O, especially with alias
-devices enabled, the device queue can change while dasd_profile_start()
-is accessing the queue. In the worst case this leads to a kernel panic
-due to incorrect pointer accesses.
+Hard reset queued prior to error recovery (or) received during
+error recovery will make TCPM to prematurely exit error recovery
+sequence. Ignore hard resets received during error recovery (or)
+port reset sequence.
 
-Fix this by taking the device lock before accessing the queue and
-counting the requests. Additionally the check for a valid profile data
-pointer can be done earlier to avoid unnecessary locking in a hot path.
+```
+[46505.459688] state change SNK_READY -> ERROR_RECOVERY [rev3 NONE_AMS]
+[46505.459706] state change ERROR_RECOVERY -> PORT_RESET [rev3 NONE_AMS]
+[46505.460433] disable vbus discharge ret:0
+[46505.461226] Setting usb_comm capable false
+[46505.467244] Setting voltage/current limit 0 mV 0 mA
+[46505.467262] polarity 0
+[46505.470695] Requesting mux state 0, usb-role 0, orientation 0
+[46505.475621] cc:=0
+[46505.476012] pending state change PORT_RESET -> PORT_RESET_WAIT_OFF @ 100 ms [rev3 NONE_AMS]
+[46505.476020] Received hard reset
+[46505.476024] state change PORT_RESET -> HARD_RESET_START [rev3 HARD_RESET]
+```
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogeus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231101021909.2962679-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/usb/typec/tcpm/tcpm.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -697,18 +697,20 @@ static void dasd_profile_start(struct da
- 	 * we count each request only once.
- 	 */
- 	device = cqr->startdev;
--	if (device->profile.data) {
--		counter = 1; /* request is not yet queued on the start device */
--		list_for_each(l, &device->ccw_queue)
--			if (++counter >= 31)
--				break;
--	}
-+	if (!device->profile.data)
-+		return;
-+
-+	spin_lock(get_ccwdev_lock(device->cdev));
-+	counter = 1; /* request is not yet queued on the start device */
-+	list_for_each(l, &device->ccw_queue)
-+		if (++counter >= 31)
-+			break;
-+	spin_unlock(get_ccwdev_lock(device->cdev));
-+
- 	spin_lock(&device->profile.lock);
--	if (device->profile.data) {
--		device->profile.data->dasd_io_nr_req[counter]++;
--		if (rq_data_dir(req) == READ)
--			device->profile.data->dasd_read_nr_req[counter]++;
--	}
-+	device->profile.data->dasd_io_nr_req[counter]++;
-+	if (rq_data_dir(req) == READ)
-+		device->profile.data->dasd_read_nr_req[counter]++;
- 	spin_unlock(&device->profile.lock);
- }
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -5426,6 +5426,15 @@ static void _tcpm_pd_hard_reset(struct t
+ 	if (port->bist_request == BDO_MODE_TESTDATA && port->tcpc->set_bist_data)
+ 		port->tcpc->set_bist_data(port->tcpc, false);
  
++	switch (port->state) {
++	case ERROR_RECOVERY:
++	case PORT_RESET:
++	case PORT_RESET_WAIT_OFF:
++		return;
++	default:
++		break;
++	}
++
+ 	if (port->ams != NONE_AMS)
+ 		port->ams = NONE_AMS;
+ 	if (port->hard_reset_count < PD_N_HARD_RESET_COUNT)
 
 
 
