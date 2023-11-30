@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 136DD7FF550
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0D77FF5EC
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 445841C2104A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:27:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EE5E1C21187
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC5354FA6;
-	Thu, 30 Nov 2023 16:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718CF5576F;
+	Thu, 30 Nov 2023 16:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mNPG14a2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/L1mnBy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD88C524C2;
-	Thu, 30 Nov 2023 16:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A229C433C7;
-	Thu, 30 Nov 2023 16:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DE53AC1A;
+	Thu, 30 Nov 2023 16:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AB9C433C8;
+	Thu, 30 Nov 2023 16:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361667;
-	bh=nH0ETA1mFusnjRdtULl5ejOJME1S5D6AEXkqT4vhAAQ=;
+	s=korg; t=1701361969;
+	bh=x012mOz1QZByT4Ue2uWYp5koHOLxgGMogXhyqDp7hDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mNPG14a27cW7J2hcJ/kMDVtCItMda9ics0cpng9gEr5xTt9rTWjX5jQsb1SUIX3ZK
-	 cnrctvr9RhQMl1NBZgau4MlddKM3Qewfupqs+XuBoF03E0zhR6UmbxqK6r6BdOa2vi
-	 Bv86eblUPU9GqB7RkWTNPmlKXnrNpb2heeJssevw=
+	b=L/L1mnBykV7Q8qPK/u00kt4/W0oiwdHvzVsmQeiZd2OcsR8gsqquuBO3pfwuKkr9a
+	 gdYC/hEVzp5GWAeQNO/V/lHf0qq/IW3sPLCzB1jJVXbyjsQwOEElNvxrroC49A4o2v
+	 fYC9AHyCVJjEiKdpgJCEhOPcI4TtP/WI5c7LdB2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 105/112] USB: serial: option: dont claim interface 4 for ZTE MF290
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 35/69] ext4: use pre-allocated es in __es_insert_extent()
 Date: Thu, 30 Nov 2023 16:22:32 +0000
-Message-ID: <20231130162143.620895241@linuxfoundation.org>
+Message-ID: <20231130162134.227431718@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +52,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 8771127e25d6c20d458ad27cf32f7fcfc1755e05 upstream.
+[ Upstream commit 95f0b320339a977cf69872eac107122bf536775d ]
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Free the interface up, to rebind it to
-qmi_wwan driver.
-The proper configuration is:
+Pass a extent_status pointer prealloc to __es_insert_extent(). If the
+pointer is non-null, it is used directly when a new extent_status is
+needed to avoid memory allocation failures.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
-
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-5-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/extents_status.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1548,7 +1548,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0165, 0xff, 0xff, 0xff) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0167, 0xff, 0xff, 0xff),
- 	  .driver_info = RSVD(4) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff),
-+	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0191, 0xff, 0xff, 0xff), /* ZTE EuFi890 */
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0196, 0xff, 0xff, 0xff) },
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 012033db41062..0d810ce7580d1 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -144,7 +144,8 @@
+ static struct kmem_cache *ext4_es_cachep;
+ static struct kmem_cache *ext4_pending_cachep;
+ 
+-static int __es_insert_extent(struct inode *inode, struct extent_status *newes);
++static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
++			      struct extent_status *prealloc);
+ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 			      ext4_lblk_t end, int *reserved);
+ static int es_reclaim_extents(struct ext4_inode_info *ei, int *nr_to_scan);
+@@ -769,7 +770,8 @@ static inline void ext4_es_insert_extent_check(struct inode *inode,
+ }
+ #endif
+ 
+-static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
++static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
++			      struct extent_status *prealloc)
+ {
+ 	struct ext4_es_tree *tree = &EXT4_I(inode)->i_es_tree;
+ 	struct rb_node **p = &tree->root.rb_node;
+@@ -809,7 +811,10 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
+ 		}
+ 	}
+ 
+-	es = __es_alloc_extent(false);
++	if (prealloc)
++		es = prealloc;
++	else
++		es = __es_alloc_extent(false);
+ 	if (!es)
+ 		return -ENOMEM;
+ 	ext4_es_init_extent(inode, es, newes->es_lblk, newes->es_len,
+@@ -869,7 +874,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	if (err != 0)
+ 		goto error;
+ retry:
+-	err = __es_insert_extent(inode, &newes);
++	err = __es_insert_extent(inode, &newes, NULL);
+ 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
+ 					  128, EXT4_I(inode)))
+ 		goto retry;
+@@ -919,7 +924,7 @@ void ext4_es_cache_extent(struct inode *inode, ext4_lblk_t lblk,
+ 
+ 	es = __es_tree_search(&EXT4_I(inode)->i_es_tree.root, lblk);
+ 	if (!es || es->es_lblk > end)
+-		__es_insert_extent(inode, &newes);
++		__es_insert_extent(inode, &newes, NULL);
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ }
+ 
+@@ -1365,7 +1370,7 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 					orig_es.es_len - len2;
+ 			ext4_es_store_pblock_status(&newes, block,
+ 						    ext4_es_status(&orig_es));
+-			err = __es_insert_extent(inode, &newes);
++			err = __es_insert_extent(inode, &newes, NULL);
+ 			if (err) {
+ 				es->es_lblk = orig_es.es_lblk;
+ 				es->es_len = orig_es.es_len;
+@@ -2020,7 +2025,7 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 	if (err != 0)
+ 		goto error;
+ retry:
+-	err = __es_insert_extent(inode, &newes);
++	err = __es_insert_extent(inode, &newes, NULL);
+ 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
+ 					  128, EXT4_I(inode)))
+ 		goto retry;
+-- 
+2.42.0
+
 
 
 
