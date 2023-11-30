@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-3338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 958CA7FF525
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A426D7FF571
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:28:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 387D9B20D24
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D32DF1C21032
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97C9254F98;
-	Thu, 30 Nov 2023 16:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2710A54FAD;
+	Thu, 30 Nov 2023 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EESeyZJs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCurSb5g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F3A524C2;
-	Thu, 30 Nov 2023 16:26:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1116C433C7;
-	Thu, 30 Nov 2023 16:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90F154F90;
+	Thu, 30 Nov 2023 16:28:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 649E7C433C8;
+	Thu, 30 Nov 2023 16:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361578;
-	bh=FUUxMssgfH9mChtN3HZ2T6DRfqLki6P9dx6HE4v1i6M=;
+	s=korg; t=1701361736;
+	bh=MUO0i46eQ1mTEG5qZL3CCeHxXOf4rR/3cHOj7LctG1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EESeyZJs7wwpSVrm4FAob0QEW4CQcdn3Rg4L18dD6Pexyms/GMCDWZLVpSabdLy5g
-	 n5EnC6ZyyWbxqSMwrBSQ7ZQKwK9GUJznoRi2PmD3A4ycRSC4SEZ2C3GQ/8qtrL9kD7
-	 r46HV8sLNSvujzAyycDFGcpXYFzKBofd+aEzIC7A=
+	b=sCurSb5gZTbWDSxY72XC8FWwn/7QyjYS1/bkf4lE80hwumEek9Rmc0NA2gYDv+Z6F
+	 TJc+KXOxSt+fBZig6ZaWniIpST2TBKigEQd2KrSuV9TT9xu91greq9ZegVxOMOEslm
+	 LE9V7WSHdPHs6MhDhm84a1xONcBPs+LKvqnixjo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alon Zahavi <zahavi.alon@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/112] nvmet: nul-terminate the NQNs passed in the connect command
+Subject: [PATCH 6.1 09/82] ata: pata_isapnp: Add missing error check for devm_ioport_map()
 Date: Thu, 30 Nov 2023 16:21:40 +0000
-Message-ID: <20231130162142.009772119@linuxfoundation.org>
+Message-ID: <20231130162136.261473565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,50 +54,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 1c22e0295a5eb571c27b53c7371f95699ef705ff ]
+[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
 
-The host and subsystem NQNs are passed in the connect command payload and
-interpreted as nul-terminated strings.  Ensure they actually are
-nul-terminated before using them.
+Add missing error return check for devm_ioport_map() and return the
+error if this function call fails.
 
-Fixes: a07b4970f464 "nvmet: add a generic NVMe target")
-Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 0d5ff566779f ("libata: convert to iomap")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fabrics-cmd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/pata_isapnp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index 43b5bd8bb6a52..d8da840a1c0ed 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -244,6 +244,8 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 		goto out;
- 	}
- 
-+	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
-+	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
- 	status = nvmet_alloc_ctrl(d->subsysnqn, d->hostnqn, req,
- 				  le32_to_cpu(c->kato), &ctrl);
- 	if (status)
-@@ -313,6 +315,8 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 		goto out;
- 	}
- 
-+	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
-+	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
- 	ctrl = nvmet_ctrl_find_get(d->subsysnqn, d->hostnqn,
- 				   le16_to_cpu(d->cntlid), req);
- 	if (!ctrl) {
+diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
+index 43bb224430d3c..8892931ea8676 100644
+--- a/drivers/ata/pata_isapnp.c
++++ b/drivers/ata/pata_isapnp.c
+@@ -82,6 +82,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
+ 	if (pnp_port_valid(idev, 1)) {
+ 		ctl_addr = devm_ioport_map(&idev->dev,
+ 					   pnp_port_start(idev, 1), 1);
++		if (!ctl_addr)
++			return -ENOMEM;
++
+ 		ap->ioaddr.altstatus_addr = ctl_addr;
+ 		ap->ioaddr.ctl_addr = ctl_addr;
+ 		ap->ops = &isapnp_port_ops;
 -- 
 2.42.0
 
