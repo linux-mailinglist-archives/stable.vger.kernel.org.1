@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-3351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DB67FF536
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 604317FF599
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A3F28175B
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F25B20BBD
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0210554F98;
-	Thu, 30 Nov 2023 16:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFEB11C9B;
+	Thu, 30 Nov 2023 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TViEKA6L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLFJZ0pd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4468495C2;
-	Thu, 30 Nov 2023 16:26:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3021EC433C7;
-	Thu, 30 Nov 2023 16:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F277D495D9;
+	Thu, 30 Nov 2023 16:30:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B897C433C8;
+	Thu, 30 Nov 2023 16:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361612;
-	bh=Bxul39rimGG2XsP6wocYmqsd3e5zh5tQ9/9LfM65hKU=;
+	s=korg; t=1701361810;
+	bh=S7kuL67gLEnZ5PM2MiunJ0iFfY5rtwSH1AzFWHaH7No=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TViEKA6LJCBOhfMUxYHUWtKemgbnXM1tCzRfKNaFhQGGBsnQ/3VA7+sx83GHmEACH
-	 FiEN+IOk/gFlKi7WmkQwgSa5pSzvwO9zBCDpEKBTVZQ8rT1CUzafuJQEV8dHwQ+FiL
-	 Ov9rSIyn9TxyynhjhiG7jw+RLfkbx5r5Fyt4xC6w=
+	b=FLFJZ0pd9OJk2QChkIksmklyP9LPvrlfY+G35Iad7MCf4OIgUzb5ehGKxQmTsR79t
+	 W0X/IjpprLIw8HiLtEAVZMCpHGO6Cc1I3YVAp9x2ZXKRVhcCnghATCRpOU2BOfVq93
+	 74iBo6wlLJKolUZzv69E6Ony2BsiovQaNcO/dTB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/112] cifs: fix leak of iface for primary channel
-Date: Thu, 30 Nov 2023 16:22:18 +0000
-Message-ID: <20231130162143.220767690@linuxfoundation.org>
+Subject: [PATCH 6.1 48/82] ext4: using nofail preallocation in ext4_es_remove_extent()
+Date: Thu, 30 Nov 2023 16:22:19 +0000
+Message-ID: <20231130162137.492748540@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +54,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 29954d5b1e0d67a4cd61c30c2201030c97e94b1e ]
+[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
 
-My last change in this area introduced a change which
-accounted for primary channel in the interface ref count.
-However, it did not reduce this ref count on deallocation
-of the primary channel. i.e. during umount.
+If __es_remove_extent() returns an error it means that when splitting
+extent, allocating an extent that must be kept failed, where returning
+an error directly would cause the extent tree to be inconsistent. So we
+use GFP_NOFAIL to pre-allocate an extent_status and pass it to
+__es_remove_extent() to avoid this problem.
 
-Fixing this leak here, by dropping this ref count for
-primary channel while freeing up the session.
+In addition, since the allocated memory is outside the i_es_lock, the
+extent_status tree may change and the pre-allocated extent_status is
+no longer needed, so we release the pre-allocated extent_status when
+es->es_len is not initialized.
 
-Fixes: fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
-Cc: stable@vger.kernel.org
-Reported-by: Paulo Alcantara <pc@manguebit.com>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/ext4/extents_status.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index a9632c060bceb..d517651d7bcea 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -2034,6 +2034,12 @@ void __cifs_put_smb_ses(struct cifs_ses *ses)
- 		}
- 	}
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 682f5e4ce2d00..cb8241adda929 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -1456,6 +1456,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	ext4_lblk_t end;
+ 	int err = 0;
+ 	int reserved = 0;
++	struct extent_status *es = NULL;
  
-+	/* we now account for primary channel in iface->refcount */
-+	if (ses->chans[0].iface) {
-+		kref_put(&ses->chans[0].iface->refcount, release_iface);
-+		ses->chans[0].server = NULL;
-+	}
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return 0;
+@@ -1470,17 +1471,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	end = lblk + len - 1;
+ 	BUG_ON(end < lblk);
+ 
++retry:
++	if (err && !es)
++		es = __es_alloc_extent(true);
+ 	/*
+ 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
+ 	 * so that we are sure __es_shrink() is done with the inode before it
+ 	 * is reclaimed.
+ 	 */
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+-	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
++	err = __es_remove_extent(inode, lblk, end, &reserved, es);
++	if (es && !es->es_len)
++		__es_free_extent(es);
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
++	if (err)
++		goto retry;
 +
- 	sesInfoFree(ses);
- 	cifs_put_tcp_session(server, 0);
+ 	ext4_es_print_tree(inode);
+ 	ext4_da_release_space(inode, reserved);
+-	return err;
++	return 0;
  }
+ 
+ static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
 -- 
 2.42.0
 
