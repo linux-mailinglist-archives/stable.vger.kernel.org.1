@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-3334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1057FF522
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A807FF595
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:30:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63A52B20C3A
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7067A28189A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CD454F9C;
-	Thu, 30 Nov 2023 16:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5343951002;
+	Thu, 30 Nov 2023 16:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kiWUKR/O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1Ykm4vC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545CA54F92;
-	Thu, 30 Nov 2023 16:26:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8317DC433C7;
-	Thu, 30 Nov 2023 16:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C74A2D;
+	Thu, 30 Nov 2023 16:30:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953F5C433C7;
+	Thu, 30 Nov 2023 16:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361567;
-	bh=hM4/mw5qk4pLh9lwoCR1T+XBb+1j3wpLUEu5f1F5XUQ=;
+	s=korg; t=1701361804;
+	bh=W2irlgcMGTMrI1D4NLFkDx1Smown6fI0hMlY9wnSxHI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kiWUKR/OZ+d+FTSNd8/lO1+yAlH57pok7XEXXiBoDESZIVDZ9TEgBWxeqpqorNfM2
-	 NnUmhE+iXiYEDXdMfbu9lyBqW6+OEVocRRDg/3gqu8NW9uRIUGdpbnddhPQ1ZlmDAB
-	 lNga2VhXa8Fhneqk9Hq32oEzIb1p6xUybCi4QRus=
+	b=S1Ykm4vCXxTnbScTz0G8NpcucgJlKvn9K/fG29lF959TJIGBCvrYVz3nG188AVQWn
+	 ZThDy5CUqkMDIkqs9jYp8rf8j1IF3DillDJxBP1ZzCvjXOj/fcGalLX/IcISFprr3f
+	 G9UJYDUGXgqudSUxtC4N5udnSpmAQBch4Gyg4M+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Mirabile <cmirabil@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 073/112] io_uring/fs: consider link->flags when getting path for LINKAT
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Lee Jones <lee@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 29/82] USB: dwc3: qcom: fix resource leaks on probe deferral
 Date: Thu, 30 Nov 2023 16:22:00 +0000
-Message-ID: <20231130162142.647231728@linuxfoundation.org>
+Message-ID: <20231130162136.879040131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
-References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+References: <20231130162135.977485944@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +55,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Mirabile <cmirabil@redhat.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 8479063f1fbee201a8739130e816cc331b675838 upstream.
+[ Upstream commit 51392a1879ff06dc21b68aef4825f6ef68a7be42 ]
 
-In order for `AT_EMPTY_PATH` to work as expected, the fact
-that the user wants that behavior needs to make it to `getname_flags`
-or it will return ENOENT.
+The driver needs to deregister and free the newly allocated dwc3 core
+platform device on ACPI probe errors (e.g. probe deferral) and on driver
+unbind but instead it leaked those resources while erroneously dropping
+a reference to the parent platform device which is still in use.
 
-Fixes: cf30da90bc3a ("io_uring: add support for IORING_OP_LINKAT")
-Cc:  <stable@vger.kernel.org>
-Link: https://github.com/axboe/liburing/issues/995
-Signed-off-by: Charles Mirabile <cmirabil@redhat.com>
-Link: https://lore.kernel.org/r/20231120105545.1209530-1-cmirabil@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+For OF probing the driver takes a reference to the dwc3 core platform
+device which has also always been leaked.
+
+Fix the broken ACPI tear down and make sure to drop the dwc3 core
+reference for both OF and ACPI.
+
+Fixes: 8fd95da2cfb5 ("usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()")
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Lee Jones <lee@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231117173650.21161-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 9cf87666fc6e ("USB: dwc3: qcom: fix ACPI platform device leak")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/fs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-qcom.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/io_uring/fs.c
-+++ b/io_uring/fs.c
-@@ -254,7 +254,7 @@ int io_linkat_prep(struct io_kiocb *req,
- 	newf = u64_to_user_ptr(READ_ONCE(sqe->addr2));
- 	lnk->flags = READ_ONCE(sqe->hardlink_flags);
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 72c22851d7eef..0c68227fe899e 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -759,6 +759,7 @@ static int dwc3_qcom_of_register_core(struct platform_device *pdev)
+ 	if (!qcom->dwc3) {
+ 		ret = -ENODEV;
+ 		dev_err(dev, "failed to get dwc3 platform device\n");
++		of_platform_depopulate(dev);
+ 	}
  
--	lnk->oldpath = getname(oldf);
-+	lnk->oldpath = getname_uflags(oldf, lnk->flags);
- 	if (IS_ERR(lnk->oldpath))
- 		return PTR_ERR(lnk->oldpath);
+ node_put:
+@@ -901,7 +902,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
  
+ 	if (ret) {
+ 		dev_err(dev, "failed to register DWC3 Core, err=%d\n", ret);
+-		goto depopulate;
++		goto clk_disable;
+ 	}
+ 
+ 	ret = dwc3_qcom_interconnect_init(qcom);
+@@ -936,7 +937,8 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	if (np)
+ 		of_platform_depopulate(&pdev->dev);
+ 	else
+-		platform_device_put(pdev);
++		platform_device_del(qcom->dwc3);
++	platform_device_put(qcom->dwc3);
+ clk_disable:
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+@@ -959,7 +961,8 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+ 	if (np)
+ 		of_platform_depopulate(&pdev->dev);
+ 	else
+-		platform_device_put(pdev);
++		platform_device_del(qcom->dwc3);
++	platform_device_put(qcom->dwc3);
+ 
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+-- 
+2.42.0
+
 
 
 
