@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351CE7FF207
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:34:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3AF37FF20A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 15:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5968C1C20DD8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:34:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45638B21F55
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 14:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE0B5103A;
-	Thu, 30 Nov 2023 14:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3871D487AF;
+	Thu, 30 Nov 2023 14:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noAd5L8B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtTepNqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1E85101A
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFEAC433C8;
-	Thu, 30 Nov 2023 14:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB95751C2E
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 14:34:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E5ACC433C8;
+	Thu, 30 Nov 2023 14:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701354868;
-	bh=xFu4oywQyvNboV95EVyDegUuiDG9GmL6N/9W8UK7ZK8=;
+	s=korg; t=1701354872;
+	bh=AOhToeXGenXebu5oD8+YHp6WFKyNZRfwyVjM0gQDQNo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=noAd5L8B6xORye2HSJnMLWQqw7K2GsewTKvIbWWgc3K/O9mbM2Mb8fleysqm2Njqi
-	 bj3+fDuDwr7rGN/7vZi2ADhh7OHENHVVwpNbLTsJC0D3Mo4TKNhAVM/Lgde88HB4GP
-	 9HRSoGHuizgDRfcgE+JA4RbX7B8g6S9ikHjKFlRY=
-Subject: FAILED: patch "[PATCH] hv_netvsc: fix race of netvsc and VF register_netdevice" failed to apply to 4.19-stable tree
+	b=xtTepNqYjr5rdAfFvGOxhNq9/P2jN6d/lIxSz7nW2TLHrmweq3kvyTahzjTbnBjhp
+	 TLDnSdeuju3LtoOoUJ/P0qfgduJR4WdhLvBlQdkRu+NFRlitv2uzz7Q98IjzeqU0Yq
+	 YFmBuh63sS50BUPLcFkBUO4Tiut8aShgLAueotHk=
+Subject: FAILED: patch "[PATCH] hv_netvsc: fix race of netvsc and VF register_netdevice" failed to apply to 4.14-stable tree
 To: haiyangz@microsoft.com,decui@microsoft.com,horms@kernel.org,pabeni@redhat.com,wojciech.drewek@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 30 Nov 2023 14:34:20 +0000
-Message-ID: <2023113020-shifter-qualifier-2df2@gregkh>
+Date: Thu, 30 Nov 2023 14:34:21 +0000
+Message-ID: <2023113021-gravy-baboon-118b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x d30fb712e52964f2cf9a9c14cf67078394044837
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113020-shifter-qualifier-2df2@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023113021-gravy-baboon-118b@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -71,6 +71,13 @@ bf48648d650d ("hv_netvsc: Fix IP header checksum for coalesced packets")
 17d912568984 ("hv_netvsc: Fix hash key value reset after other ops")
 7c9f335a3ff2 ("hv_netvsc: Refactor assignments of struct netvsc_device_info")
 2a7f8c3b1d3f ("hv_netvsc: remove ndo_poll_controller")
+d6792a5a0747 ("hv_netvsc: Add handler for LRO setting change")
+c8e4eff4675f ("hv_netvsc: Add support for LRO/RSC in the vSwitch")
+00d7ddba1143 ("hv_netvsc: pair VF based on serial number")
+018349d70f28 ("hv_netvsc: fix schedule in RCU context")
+e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
+b93c1b5ac864 ("hv_netvsc: ignore devices that are not PCI")
+d5acba26bfa0 ("Merge tag 'char-misc-4.19-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/char-misc")
 
 thanks,
 
