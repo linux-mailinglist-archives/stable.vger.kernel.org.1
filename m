@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-3416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E887FF587
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FF847FF5D4
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:32:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 724F01C20DF8
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A676EB2111A
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:32:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8711354FB2;
-	Thu, 30 Nov 2023 16:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A21495D9;
+	Thu, 30 Nov 2023 16:32:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKZIYIXe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSmWXYa3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8C354FA6;
-	Thu, 30 Nov 2023 16:29:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A82C433C8;
-	Thu, 30 Nov 2023 16:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9819F10EF;
+	Thu, 30 Nov 2023 16:32:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226FAC433CA;
+	Thu, 30 Nov 2023 16:32:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361776;
-	bh=zbTSV5XafWpgCjBa6X6zJdflJ31HSlyM9yGFCiDo6jY=;
+	s=korg; t=1701361923;
+	bh=WuyndmYbmTkS93EbjuN2wV+hI0xfm4yNOsC7Szgte5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKZIYIXeuxpkun2GZqi0ExvPo0JjYGkfTI/yPGLge8FqhzyDfrKWCPTfMJ4iizYIV
-	 6I/lVlG1AgS6lCOGDL7ZSeNFGef6AanGT1xfuMhwk7GEI55mYIh4UwEDB2d7UCA7ZP
-	 VTDr9OzyYP7I+Pu3KefPqm4hnEkDsk5ce6kgVB9Q=
+	b=QSmWXYa3kryIOOz+7g3wIJh2li7ncYJHctEkEVJK9XZ0rHGucHJ3Z5+RpY46k5pJu
+	 FbqUwaLkKQ9B9pDp50vUKqAs3ATcbVKaFr5oo/0oXC9JYjG5PBpwA8snYiK23OZsuD
+	 X3C1MmSenCulOzOwFzX85MuKnrFrLCIUxdfBlxlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Suman Ghosh <sumang@marvell.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 42/82] media: qcom: camss: Fix V4L2 async notifier error path
-Date: Thu, 30 Nov 2023 16:22:13 +0000
-Message-ID: <20231130162137.289310511@linuxfoundation.org>
+Subject: [PATCH 5.15 17/69] octeontx2-pf: Fix ntuple rule creation to direct packet to VF with higher Rx queue than its PF
+Date: Thu, 30 Nov 2023 16:22:14 +0000
+Message-ID: <20231130162133.645757760@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162133.035359406@linuxfoundation.org>
+References: <20231130162133.035359406@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,94 +55,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Suman Ghosh <sumang@marvell.com>
 
-[ Upstream commit b278080a89f452063915beda0ade6b3ed5ee4271 ]
+[ Upstream commit 4aa1d8f89b10cdc25a231dabf808d8935e0b137a ]
 
-Previously the jump label err_cleanup was used higher in the probe()
-function to release the async notifier however the async notifier
-registration was moved later in the code rendering the previous four jumps
-redundant.
+It is possible to add a ntuple rule which would like to direct packet to
+a VF whose number of queues are greater/less than its PF's queue numbers.
+For example a PF can have 2 Rx queues but a VF created on that PF can have
+8 Rx queues. As of today, ntuple rule will reject rule because it is
+checking the requested queue number against PF's number of Rx queues.
+As a part of this fix if the action of a ntuple rule is to move a packet
+to a VF's queue then the check is removed. Also, a debug information is
+printed to aware user that it is user's responsibility to cross check if
+the requested queue number on that VF is a valid one.
 
-Rename the label from err_cleanup to err_v4l2_device_unregister to capture
-what the jump does.
-
-Fixes: 51397a4ec75d ("media: qcom: Initialise V4L2 async notifier later")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: fix old name in commit log: err_v4l2_device_register -> err_v4l2_device_unregister]
-Stable-dep-of: f69791c39745 ("media: qcom: camss: Fix genpd cleanup")
+Fixes: f0a1913f8a6f ("octeontx2-pf: Add support for ethtool ntuple filters")
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20231121165624.3664182-1-sumang@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ .../marvell/octeontx2/nic/otx2_flows.c        | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index f794215948e71..f490ad2266960 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -1615,21 +1615,21 @@ static int camss_probe(struct platform_device *pdev)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+index 483f660cebc40..c3e5ebc416676 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+@@ -1002,6 +1002,7 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
+ 	struct ethhdr *eth_hdr;
+ 	bool new = false;
+ 	int err = 0;
++	u64 vf_num;
+ 	u32 ring;
  
- 	ret = camss_icc_get(camss);
- 	if (ret < 0)
--		goto err_cleanup;
-+		return ret;
+ 	if (!flow_cfg->max_flows) {
+@@ -1014,7 +1015,21 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
+ 	if (!(pfvf->flags & OTX2_FLAG_NTUPLE_SUPPORT))
+ 		return -ENOMEM;
  
- 	ret = camss_configure_pd(camss);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to configure power domains: %d\n", ret);
--		goto err_cleanup;
-+		return ret;
+-	if (ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
++	/* Number of queues on a VF can be greater or less than
++	 * the PF's queue. Hence no need to check for the
++	 * queue count. Hence no need to check queue count if PF
++	 * is installing for its VF. Below is the expected vf_num value
++	 * based on the ethtool commands.
++	 *
++	 * e.g.
++	 * 1. ethtool -U <netdev> ... action -1  ==> vf_num:255
++	 * 2. ethtool -U <netdev> ... action <queue_num>  ==> vf_num:0
++	 * 3. ethtool -U <netdev> ... vf <vf_idx> queue <queue_num>  ==>
++	 *    vf_num:vf_idx+1
++	 */
++	vf_num = ethtool_get_flow_spec_ring_vf(fsp->ring_cookie);
++	if (!is_otx2_vf(pfvf->pcifunc) && !vf_num &&
++	    ring >= pfvf->hw.rx_queues && fsp->ring_cookie != RX_CLS_FLOW_DISC)
+ 		return -EINVAL;
+ 
+ 	if (fsp->location >= otx2_get_maxflows(flow_cfg))
+@@ -1096,6 +1111,9 @@ int otx2_add_flow(struct otx2_nic *pfvf, struct ethtool_rxnfc *nfc)
+ 		flow_cfg->nr_flows++;
  	}
  
- 	ret = camss_init_subdevices(camss);
- 	if (ret < 0)
--		goto err_cleanup;
-+		return ret;
- 
- 	ret = dma_set_mask_and_coherent(dev, 0xffffffff);
- 	if (ret)
--		goto err_cleanup;
-+		return ret;
- 
- 	camss->media_dev.dev = camss->dev;
- 	strscpy(camss->media_dev.model, "Qualcomm Camera Subsystem",
-@@ -1641,7 +1641,7 @@ static int camss_probe(struct platform_device *pdev)
- 	ret = v4l2_device_register(camss->dev, &camss->v4l2_dev);
- 	if (ret < 0) {
- 		dev_err(dev, "Failed to register V4L2 device: %d\n", ret);
--		goto err_cleanup;
-+		return ret;
- 	}
- 
- 	v4l2_async_nf_init(&camss->notifier);
-@@ -1649,12 +1649,12 @@ static int camss_probe(struct platform_device *pdev)
- 	num_subdevs = camss_of_parse_ports(camss);
- 	if (num_subdevs < 0) {
- 		ret = num_subdevs;
--		goto err_cleanup;
-+		goto err_v4l2_device_unregister;
- 	}
- 
- 	ret = camss_register_entities(camss);
- 	if (ret < 0)
--		goto err_cleanup;
-+		goto err_v4l2_device_unregister;
- 
- 	if (num_subdevs) {
- 		camss->notifier.ops = &camss_subdev_notifier_ops;
-@@ -1689,7 +1689,7 @@ static int camss_probe(struct platform_device *pdev)
- 
- err_register_subdevs:
- 	camss_unregister_entities(camss);
--err_cleanup:
-+err_v4l2_device_unregister:
- 	v4l2_device_unregister(&camss->v4l2_dev);
- 	v4l2_async_nf_cleanup(&camss->notifier);
++	if (flow->is_vf)
++		netdev_info(pfvf->netdev,
++			    "Make sure that VF's queue number is within its queue limit\n");
+ 	return 0;
+ }
  
 -- 
 2.42.0
