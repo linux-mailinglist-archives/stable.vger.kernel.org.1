@@ -1,184 +1,214 @@
-Return-Path: <stable+bounces-3549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C15C7FF91C
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:11:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B95C7FF94B
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 19:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A4051C20EA7
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 18:11:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FC75281594
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 18:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FEB59155;
-	Thu, 30 Nov 2023 18:11:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OgpWtBgL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CFEF59176;
+	Thu, 30 Nov 2023 18:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dkim=none
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8160D131
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 10:11:43 -0800 (PST)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6cb66f23eddso1095275b3a.0
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 10:11:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701367903; x=1701972703; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RNgtprTXnSXEG7sYtWfKlL6JyfLEgg9nzEegbfWpJTI=;
-        b=OgpWtBgLwsGC4QZcmS4I1pyZnEPrkll2QmpBPz7DyRmAeHs/4T9xIjA+Ccq6QHBE79
-         3yHqYiDoVjLYaYlNleBQBEPC5e95SA8dv+FIxlnaeNM6rErbDjt45DuAYvtdyFp3rBct
-         rf9tGL82YE7Li2m8n+Womao6HmmUC76pRp09NwYQOTaZca9g3NgcUDAUVEiAzITsJ3Iy
-         q8tLvUHED+IUd+ruqd+bp2vptcKFAafJ7+G6XjhUJZ5p72XLUue8EY5nhloz2msujfiR
-         8yRjUJVOwkTUxUJteGiiWf59kvCSNp6slYc8JOtZZwn7vIyh48flRk/UzAUgTytXCE5G
-         e1aA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701367903; x=1701972703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RNgtprTXnSXEG7sYtWfKlL6JyfLEgg9nzEegbfWpJTI=;
-        b=ZDEumK0COAk2eLAgFAa+dcnA7UrmVUwh5oYvI0StNY88/JLAEban9P9RuaYmsHRp8j
-         Agfl8TxHJ8nUmKs60z4tSP+vK4GxgD7IM6piQyHMNd9aM/l+ltupSSmhNXEIa2KloZAS
-         CgGJObBjRH0smbiLYWBjIzmegvSyVbKrOpyyqWn01VClwZnYDotB2SbCS94DZRBI9GGD
-         oNaJaDj29eUNsSLZpqBF21BWZVeERdu8qP4OWS2TK7DLg4HOVXNQ4u5H67H93AsBbemP
-         dfiGZHUOGSA59ttLBq/oob2sYRqt2MoxsOq9SEDhiByPwoxt7H10NukleOYmJYKJoFhF
-         zPEA==
-X-Gm-Message-State: AOJu0YyeRsJfk5e6+nywTZFWdoLEEY6it1h6d/CYl6YTYNieIwMtSpN+
-	NxLwMuZl88ugbv/ZrnNWOSNP2s9TXj+OMm29/0wP0e/QOGwocJL5Wwa5wRZJ
-X-Google-Smtp-Source: AGHT+IGedkIyqsw0Qgh2ilKDtIK7r8EKT6xybDMBQyF5e/OvFulhnXxuxRY/6wWfVwGPFjlz9iPl2iAC/9bJsMESWfs=
-X-Received: by 2002:a05:6a00:35ce:b0:6cb:8c91:682 with SMTP id
- dc14-20020a056a0035ce00b006cb8c910682mr26682257pfb.29.1701367902766; Thu, 30
- Nov 2023 10:11:42 -0800 (PST)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A3F810D0;
+	Thu, 30 Nov 2023 10:26:11 -0800 (PST)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 135876342D5B;
+	Thu, 30 Nov 2023 19:26:09 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id OHUiJK2Uhhwo; Thu, 30 Nov 2023 19:26:08 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 4B5A563434F3;
+	Thu, 30 Nov 2023 19:26:08 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 8i2yOpB63Iq4; Thu, 30 Nov 2023 19:26:08 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 108576342D5B;
+	Thu, 30 Nov 2023 19:26:08 +0100 (CET)
+Date: Thu, 30 Nov 2023 19:26:07 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Ronald Wahl <ronald.wahl@raritan.com>, Mark Brown <broonie@kernel.org>, 
+	linux-spi <linux-spi@vger.kernel.org>, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+	Ryan Wanner <ryan.wanner@microchip.com>, 
+	stable <stable@vger.kernel.org>, 
+	Richard Weinberger <richard.weinberger@gmail.com>, 
+	David Woodhouse <dwmw2@infradead.org>
+Message-ID: <1192504136.46091.1701368767836.JavaMail.zimbra@nod.at>
+In-Reply-To: <723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
+References: <20231127095842.389631-1-miquel.raynal@bootlin.com> <a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com> <0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com> <20231129094932.2639ca49@xps-13> <723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
+Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any
+ signal
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231130162133.035359406@linuxfoundation.org> <CAEUSe7-yhmQkr1iK-82+Sc_YpVtWUQhuKoazoXHF_3oP9XTt4Q@mail.gmail.com>
- <e2e50813-79ba-4c84-b6ae-6885cbef54ab@roeck-us.net>
-In-Reply-To: <e2e50813-79ba-4c84-b6ae-6885cbef54ab@roeck-us.net>
-From: =?UTF-8?B?RGFuaWVsIETDrWF6?= <daniel.diaz@linaro.org>
-Date: Thu, 30 Nov 2023 12:11:31 -0600
-Message-ID: <CAEUSe78tYPTFuauB7cxZzvAeMhzB_25Q8DqLUfF7Nro9WsUhNw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/69] 5.15.141-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, 
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, 
-	rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	Guenter Roeck <linux@roeck-us.net>, flaniel@linux.microsoft.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF97 (Linux)/8.8.12_GA_3809)
+Thread-Topic: atmel: Do not cancel a transfer upon any signal
+Thread-Index: NUX+aeuXSFektAI71KkStBMryS5HyD9Hm8AJ
 
-Hello!
+----- Urspr=C3=BCngliche Mail -----
+> Von: "richard" <richard@nod.at>
+> An: "Miquel Raynal" <miquel.raynal@bootlin.com>
+> CC: "Ronald Wahl" <ronald.wahl@raritan.com>, "Mark Brown" <broonie@kernel=
+.org>, "linux-spi" <linux-spi@vger.kernel.org>,
+> "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Ryan Wanner" <ryan.wa=
+nner@microchip.com>, "stable"
+> <stable@vger.kernel.org>, "Richard Weinberger" <richard.weinberger@gmail.=
+com>
+> Gesendet: Donnerstag, 30. November 2023 13:46:14
+> Betreff: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any si=
+gnal
 
-On Thu, 30 Nov 2023 at 11:44, Guenter Roeck <linux@roeck-us.net> wrote:
-> On 11/30/23 09:21, Daniel D=C3=ADaz wrote:
-> > Hello!
-> >
-> > Lots of failures everywhere:
-> > * clang-17-lkftconfig                 arm64
-> > * clang-17-lkftconfig                 arm64
-> > * clang-17-lkftconfig                 arm64
-> > * clang-lkftconfig                    arm64
-> > * clang-lkftconfig                    arm
-> > * clang-lkftconfig                    i386
-> > * clang-lkftconfig                    x86_64
-> > * gcc-12-lkftconfig                   arm64
-> > * gcc-12-lkftconfig                   arm
-> > * gcc-12-lkftconfig                   i386
-> > * gcc-12-lkftconfig                   x86_64
-> > * gcc-12-lkftconfig-64k_page_size     arm64
-> > * gcc-12-lkftconfig-64k_page_size     arm64
-> > * gcc-12-lkftconfig-armv8_features    arm64
-> > * gcc-12-lkftconfig-debug             arm64
-> > * gcc-12-lkftconfig-debug             arm64
-> > * gcc-12-lkftconfig-debug             arm
-> > * gcc-12-lkftconfig-debug             i386
-> > * gcc-12-lkftconfig-debug             x86_64
-> > * gcc-12-lkftconfig-debug-kmemleak    arm64
-> > * gcc-12-lkftconfig-debug-kmemleak    arm
-> > * gcc-12-lkftconfig-debug-kmemleak    i386
-> > * gcc-12-lkftconfig-debug-kmemleak    x86_64
-> > * gcc-12-lkftconfig-devicetree        arm64
-> > * gcc-12-lkftconfig-kasan             arm64
-> > * gcc-12-lkftconfig-kasan             arm64
-> > * gcc-12-lkftconfig-kasan             x86_64
-> > * gcc-12-lkftconfig-kselftest         arm64
-> > * gcc-12-lkftconfig-kselftest-kernel  arm64
-> > * gcc-12-lkftconfig-kselftest-kernel  arm
-> > * gcc-12-lkftconfig-kselftest-kernel  i386
-> > * gcc-12-lkftconfig-kunit             arm64
-> > * gcc-12-lkftconfig-kunit             arm64
-> > * gcc-12-lkftconfig-kunit             arm
-> > * gcc-12-lkftconfig-kunit             i386
-> > * gcc-12-lkftconfig-kunit             x86_64
-> > * gcc-12-lkftconfig-libgpiod          arm64
-> > * gcc-12-lkftconfig-libgpiod          arm
-> > * gcc-12-lkftconfig-libgpiod          i386
-> > * gcc-12-lkftconfig-libgpiod          x86_64
-> > * gcc-12-lkftconfig-perf              arm64
-> > * gcc-12-lkftconfig-perf-kernel       arm64
-> > * gcc-12-lkftconfig-perf-kernel       arm
-> > * gcc-12-lkftconfig-perf-kernel       i386
-> > * gcc-12-lkftconfig-perf-kernel       x86_64
-> > * gcc-12-lkftconfig-rcutorture        arm64
-> > * gcc-12-lkftconfig-rcutorture        arm64
-> > * gcc-12-lkftconfig-rcutorture        arm
-> > * gcc-12-lkftconfig-rcutorture        i386
-> > * gcc-12-lkftconfig-rcutorture        x86_64
-> >
-> > It's essentially this:
-> >
-> > -----8<-----
-> >    make --silent --keep-going --jobs=3D8
-> > O=3D/home/tuxbuild/.cache/tuxmake/builds/1/build ARCH=3Dx86_64 SRCARCH=
-=3Dx86
-> > CROSS_COMPILE=3Dx86_64-linux-gnu- 'CC=3Dsccache x86_64-linux-gnu-gcc'
-> > 'HOSTCC=3Dsccache gcc'
-> >    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x51:
-> > unreachable instruction
-> >    x86_64-linux-gnu-ld: kernel/trace/trace_kprobe.o: in function
-> > `__trace_kprobe_create':
-> >    trace_kprobe.c:(.text+0x2f39): undefined reference to
-> > `kallsyms_on_each_symbol'
-> >    x86_64-linux-gnu-ld: kernel/trace/trace_kprobe.o: in function
-> > `create_local_trace_kprobe':
-> >    trace_kprobe.c:(.text+0x384b): undefined reference to
-> > `kallsyms_on_each_symbol'
-> >    make[1]: *** [/builds/linux/Makefile:1227: vmlinux] Error 1
-> >    make[1]: Target '__all' not remade because of errors.
-> >    make: *** [Makefile:226: __sub-make] Error 2
-> >    make: Target '__all' not remade because of errors.
-> > ----->8-----
-> >
-> > It only affects 5.15. Bisection in progress.
->
-> I guess it will point to
->
-> >> Francis Laniel <flaniel@linux.microsoft.com>
-> >>      tracing/kprobes: Return EADDRNOTAVAIL when func matches several s=
-ymbols
+> ----- Urspr=C3=BCngliche Mail -----
+>> Von: "Miquel Raynal" <miquel.raynal@bootlin.com>
+>> + Richard, my dear jffs2 expert ;)
+>=20
+> :-S
+>=20
+>>=20
+>> ronald.wahl@raritan.com wrote on Mon, 27 Nov 2023 18:54:40 +0100:
+>>=20
+>>> On 27.11.23 16:10, Ronald Wahl wrote:
+>>> > On 27.11.23 10:58, Miquel Raynal wrote:
+>>> >> The intended move from wait_for_completion_*() to
+>>> >> wait_for_completion_interruptible_*() was to allow (very) long spi m=
+emor
+>>> y
+>>> >> transfers to be stopped upon user request instead of freezing the
+>>> >> machine forever as the timeout value could now be significantly bigg=
+er.
+>>> >>
+>>> >> However, depending on the user logic, applications can receive many
+>>> >> signals for their own "internal" purpose and have nothing to do with=
+ the
+>>> >> requested kernel operations, hence interrupting spi transfers upon a=
+ny
+>>> >> signal is probably not a wise choice. Instead, let's switch to
+>>> >> wait_for_completion_killable_*() to only catch the "important"
+>>> >> signals. This was likely the intended behavior anyway.
+>>> >
+>>> > Actually this seems to work. But aborting a process that has a SPI
+>>> > transfer running causes ugly messages from kernel. This is somehow
+>>> > unexpected:
+>>> >
+>>> > # dd if=3D/dev/urandom of=3D/flashdisk/testfile bs=3D1024 count=3D512
+>>> > ^C[=C2=A0 380.726760] spi-nor spi0.0: spi transfer canceled
+>>> > [=C2=A0 380.731688] spi-nor spi0.0: SPI transfer failed: -512
+>>> > [=C2=A0 380.737141] spi_master spi0: failed to transfer one message f=
+rom queue
+>>> > [=C2=A0 380.746495] spi-nor spi0.0: spi transfer canceled
+>>> > [=C2=A0 380.751549] spi-nor spi0.0: SPI transfer failed: -512
+>>> > [=C2=A0 380.756844] spi_master spi0: failed to transfer one message f=
+rom queue
+>>> >
+>>> > JFFS2 also logs an informational message which is less visible but al=
+so
+>>> > may rise eyebrows:
+>>> > [=C2=A0 380.743904] jffs2: Write of 4164 bytes at 0x0016a47c failed. =
+retu
+>>> rned
+>>> > -512, retlen 68
+>=20
+> Ugly kernel messages are a normal consequence of killing an IO.
+> Chances are good that we'll find bugs in the upper layers.
+>=20
+>>> > Killing a process is something to expect in certain cases and it shou=
+ld
+>>> > not cause such messages which may create some anxiety that something =
+bad
+>>> > had happened. So maybe the "kill" case should be silent (e.g. level
+>>> > "debug")
+>>> > but without out hiding real errors. But even when hiding the message =
+in t
+>>> he
+>>> > SPI framework it may cause additional messages in upper layers like J=
+FFS2
+>>> .
+>>> > I'm not sure whether all of this is a good idea. This is something ot=
+hers
+>>> > have to decide.
+>>>=20
+>>> ... and now I just got a crash when unmounting and remounting jffs2:
+>>>=20
+>>> unmount:
+>>> [ 8245.821105] spi-nor spi0.0: spi transfer canceled
+>>> [ 8245.826288] spi-nor spi0.0: SPI transfer failed: -512
+>>> [ 8245.831508] spi_master spi0: failed to transfer one message from que=
+ue
+>>> [ 8245.838484] jffs2: Write of 1092 bytes at 0x00181458 failed. returne=
+d -5
+>>> 12, retlen 68
+>>> [ 8245.839786] spi-nor spi0.0: spi transfer canceled
+>>> [ 8245.844759] spi-nor spi0.0: SPI transfer failed: -512
+>>> [ 8245.850145] spi_master spi0: failed to transfer one message from que=
+ue
+>>> [ 8245.856909] jffs2: Write of 1092 bytes at 0x0018189c failed. returne=
+d -5
+>>> 12, retlen 0
+>>> [ 8245.856942] jffs2: Not marking the space at 0x0018189c as dirty beca=
+use the
+>>> flash driver returned retlen zero
+>=20
+> jffs2 has a garbage collect thread which can be controlled using various
+> signals.
+> To terminate the thread, jffs2 sends SIGKILL upon umount.
+> If the gc thread does IO while that, you gonna kill the IO too.
+>=20
+>>> mount:
+>>> [ 8831.213456] jffs2: error: (1142) jffs2_link_node_ref: Adding new ref=
+ 28b
+>>> d9da7 at (0x000ad578-0x000ae5bc) not immediately after previous (0x000a=
+d578
+>>> -0x000ad578)
+>>> [ 8831.228212] Internal error: Oops - undefined instruction: 0 [#1] THU=
+MB2
+>=20
+>=20
+> I fear this is a jffs2 (summary feature) bug. Chances are great that you'=
+re able
+> to trigger the very same using a sudden loss of power.
+>=20
+>> It's not just spi-atmel, any spi-mem controller might be tempted to use
+>> interruptible^Wkillable transfers just because the timeout values can
+>> be really big as the memory sizes increase.
+>>=20
+>> One solution is to change the completion helpers back to something
+>> non-killable/non-interruptible, but the user experience will be
+>> slightly degraded. The other would be to look into jffs2 (if it's the
+>> only filesystem playing with signals during unmount, tbh I don't know).
+>> But maybe this signaling mechanism can't be hacked for compatibility
+>> reasons. Handling this at the spi level would be a mix of layers, I'm
+>> not ready for that.
+>>=20
+>> Richard, Mark, what's your opinion here?
+>=20
+> I *think* we can remove the signal handling code from jffs2 since it make=
+s
+> already use of the kthread_should_stop() API.
+> That way we can keep the SPI transfer interruptible by signals.
+> ...reading right now into the history to figure better.
 
-It sure did!:
+After a brief discussion with dwmw2 another question came up, if an spi tra=
+nsfer
+is cancelled, *all* other IO do the filesystem has to stop too.
+IO can happen concurrently, if only one IO path dies but the other ones can
+make progress, the filesystem becomes inconsistent and all hope is lost.
 
-  commit 7b4375c36a4c0e1b4b97ccbcdd427db5a460e04f
-  Author: Francis Laniel <flaniel@linux.microsoft.com>
-  Date:   Fri Oct 20 13:42:49 2023 +0300
+Miquel, is this guaranteed by your changes?
 
-      tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbo=
-ls
-
-      commit b022f0c7e404887a7c5229788fc99eff9f9a80d5 upstream.
-
-Reverting that commit made the build pass again.
-
-Greetings!
-
-Daniel D=C3=ADaz
-daniel.diaz@linaro.org
+Thanks,
+//richard
 
