@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-3406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B36E37FF579
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 894307FF52F
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 17:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA9A281816
-	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F8932817A1
+	for <lists+stable@lfdr.de>; Thu, 30 Nov 2023 16:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089DE54FAD;
-	Thu, 30 Nov 2023 16:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3EF754F98;
+	Thu, 30 Nov 2023 16:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cAsTgQgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkG3Hh0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80A054BFB;
-	Thu, 30 Nov 2023 16:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4417FC433C8;
-	Thu, 30 Nov 2023 16:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA2F524C2;
+	Thu, 30 Nov 2023 16:26:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC68C433C9;
+	Thu, 30 Nov 2023 16:26:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701361751;
-	bh=gJrLfLi5Bsbci6Yd8Q4dIjwy8ewnbPmDLCFVnOUZa2Q=;
+	s=korg; t=1701361599;
+	bh=g0rpaKQq6qnF1qxduhxZ/NDcjBVSxRW2Jd/MYss/RFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cAsTgQgDePSGIGKn3tSUSf0dZGCe5qa/PMF8jfzWlCmKjB+kTwMhntYDD3RMyR7V+
-	 +/mUBmkfnUKT1BcVBUvp7uBtI8X73qwxLACOCSrvccDE/JnMTaHUZZlbGQw7u8uz8A
-	 5Nnvpyt2SYip7sqQQMlUSAoAbTJICRA0CndO0sro=
+	b=OkG3Hh0cmHAGXmjBZKatyxWoM8yT7qKo+lpuLpmLhCQrt/n+slToESqS3ki9oUR6J
+	 GfaZGhJuF7mdcdwIhWO0GhEJF1SBWEQ62HRKhJi8qq4vb51fVDqN6WsJF//Kme0Smv
+	 cAG5C1JKxZZQkUxtQMWLKgYYwopcSctwGk6cUcIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/82] smb3: allow dumping session and tcon id to improve stats analysis and debugging
-Date: Thu, 30 Nov 2023 16:22:04 +0000
-Message-ID: <20231130162137.007961310@linuxfoundation.org>
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 078/112] dt-bindings: usb: microchip,usb5744: Add second supply
+Date: Thu, 30 Nov 2023 16:22:05 +0000
+Message-ID: <20231130162142.800364061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+References: <20231130162140.298098091@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,107 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-[ Upstream commit de4eceab578ead12a71e5b5588a57e142bbe8ceb ]
+commit d0c930b745cafde8e7d25d0356c648bca669556a upstream.
 
-When multiple mounts are to the same share from the same client it was not
-possible to determine which section of /proc/fs/cifs/Stats (and DebugData)
-correspond to that mount.  In some recent examples this turned out to  be
-a significant problem when trying to analyze performance data - since
-there are many cases where unless we know the tree id and session id we
-can't figure out which stats (e.g. number of SMB3.1.1 requests by type,
-the total time they take, which is slowest, how many fail etc.) apply to
-which mount. The only existing loosely related ioctl CIFS_IOC_GET_MNT_INFO
-does not return the information needed to uniquely identify which tcon
-is which mount although it does return various flags and device info.
+The USB5744 has two power supplies one for 3V3 and one for 1V2. Add the
+second supply to the USB5744 DT binding.
 
-Add a cifs.ko ioctl CIFS_IOC_GET_TCON_INFO (0x800ccf0c) to return tid,
-session id, tree connect count.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20231113145921.30104-2-francesco@dolcini.it
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifs_ioctl.h |  6 ++++++
- fs/smb/client/ioctl.c      | 25 +++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ Documentation/devicetree/bindings/usb/microchip,usb5744.yaml |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/cifs_ioctl.h b/fs/smb/client/cifs_ioctl.h
-index 332588e77c311..26327442e383b 100644
---- a/fs/smb/client/cifs_ioctl.h
-+++ b/fs/smb/client/cifs_ioctl.h
-@@ -26,6 +26,11 @@ struct smb_mnt_fs_info {
- 	__u64   cifs_posix_caps;
- } __packed;
+--- a/Documentation/devicetree/bindings/usb/microchip,usb5744.yaml
++++ b/Documentation/devicetree/bindings/usb/microchip,usb5744.yaml
+@@ -36,7 +36,11 @@ properties:
  
-+struct smb_mnt_tcon_info {
-+	__u32	tid;
-+	__u64	session_id;
-+} __packed;
+   vdd-supply:
+     description:
+-      VDD power supply to the hub
++      3V3 power supply to the hub
 +
- struct smb_snapshot_array {
- 	__u32	number_of_snapshots;
- 	__u32	number_of_snapshots_returned;
-@@ -108,6 +113,7 @@ struct smb3_notify_info {
- #define CIFS_IOC_NOTIFY _IOW(CIFS_IOCTL_MAGIC, 9, struct smb3_notify)
- #define CIFS_DUMP_FULL_KEY _IOWR(CIFS_IOCTL_MAGIC, 10, struct smb3_full_key_debug_info)
- #define CIFS_IOC_NOTIFY_INFO _IOWR(CIFS_IOCTL_MAGIC, 11, struct smb3_notify_info)
-+#define CIFS_IOC_GET_TCON_INFO _IOR(CIFS_IOCTL_MAGIC, 12, struct smb_mnt_tcon_info)
- #define CIFS_IOC_SHUTDOWN _IOR('X', 125, __u32)
++  vdd2-supply:
++    description:
++      1V2 power supply to the hub
  
- /*
-diff --git a/fs/smb/client/ioctl.c b/fs/smb/client/ioctl.c
-index 6419ec47c2a85..ae9905e2b9d4a 100644
---- a/fs/smb/client/ioctl.c
-+++ b/fs/smb/client/ioctl.c
-@@ -117,6 +117,20 @@ static long cifs_ioctl_copychunk(unsigned int xid, struct file *dst_file,
- 	return rc;
- }
- 
-+static long smb_mnt_get_tcon_info(struct cifs_tcon *tcon, void __user *arg)
-+{
-+	int rc = 0;
-+	struct smb_mnt_tcon_info tcon_inf;
-+
-+	tcon_inf.tid = tcon->tid;
-+	tcon_inf.session_id = tcon->ses->Suid;
-+
-+	if (copy_to_user(arg, &tcon_inf, sizeof(struct smb_mnt_tcon_info)))
-+		rc = -EFAULT;
-+
-+	return rc;
-+}
-+
- static long smb_mnt_get_fsinfo(unsigned int xid, struct cifs_tcon *tcon,
- 				void __user *arg)
- {
-@@ -410,6 +424,17 @@ long cifs_ioctl(struct file *filep, unsigned int command, unsigned long arg)
- 			tcon = tlink_tcon(pSMBFile->tlink);
- 			rc = smb_mnt_get_fsinfo(xid, tcon, (void __user *)arg);
- 			break;
-+		case CIFS_IOC_GET_TCON_INFO:
-+			cifs_sb = CIFS_SB(inode->i_sb);
-+			tlink = cifs_sb_tlink(cifs_sb);
-+			if (IS_ERR(tlink)) {
-+				rc = PTR_ERR(tlink);
-+				break;
-+			}
-+			tcon = tlink_tcon(tlink);
-+			rc = smb_mnt_get_tcon_info(tcon, (void __user *)arg);
-+			cifs_put_tlink(tlink);
-+			break;
- 		case CIFS_ENUMERATE_SNAPSHOTS:
- 			if (pSMBFile == NULL)
- 				break;
--- 
-2.42.0
-
+   peer-hub:
+     $ref: /schemas/types.yaml#/definitions/phandle
+@@ -62,6 +66,7 @@ allOf:
+       properties:
+         reset-gpios: false
+         vdd-supply: false
++        vdd2-supply: false
+         peer-hub: false
+         i2c-bus: false
+     else:
 
 
 
