@@ -1,57 +1,27 @@
-Return-Path: <stable+bounces-3591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A767FFFE5
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 01:09:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A3DB8001CA
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 03:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DEA1281B06
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 00:09:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CC29B210E7
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 02:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3C5368;
-	Fri,  1 Dec 2023 00:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1E3cbMw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354DA1FDE;
+	Fri,  1 Dec 2023 02:58:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-x32.google.com (mail-oa1-x32.google.com [IPv6:2001:4860:4864:20::32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73E9E196
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 16:09:28 -0800 (PST)
-Received: by mail-oa1-x32.google.com with SMTP id 586e51a60fabf-1f9f23b4fa2so302863fac.0
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 16:09:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1701389368; x=1701994168; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4fHHUuDWZn9YqqYK3EYAhJra7nQxFC5yxmzo6hYrotQ=;
-        b=F1E3cbMw7WdlGcPDREoA6iDs/vuMRsVzWyNJuAMxcW+/TC4SweAp36wrGw1IQJi14l
-         3HW9zwhKYuCGKdgGBq2GTnKwWilPReEBSXtPdku8YHiQttkiZbl+389ACj/Pzob01lik
-         nAEG9+fRoLZ8ACEBrEKl4GqHPkAYMLnbVwMyg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701389368; x=1701994168;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4fHHUuDWZn9YqqYK3EYAhJra7nQxFC5yxmzo6hYrotQ=;
-        b=m7CFiOJ3GOjhuDGSXRl8tqZY5NysCvR5OtKjef7HmP2U8UEf+xJhDnhjyV8b95OovJ
-         /pcEYGDXfVRfoeWyjWF1A/FW9dnicgdHSlPmpy/Nl7cdt14La5HpA7SdSB6kbFr/fzzs
-         vlPpkioxpK9zSIbs3BjjIbMKZIHAeqKPHQkGH/rIz8BTnY9qQ8Q3GOwx06+xWfdgbvdZ
-         MbCiXpNc1roKSNXSV2v1C/a3Ow5Ay7HuhQ0Sm/q0Iw2JS3kw5HOt4PZVaC6vSfG9ZZPp
-         2XrLKCHNpIxs/Urvy1oyjim4gIliY35dxCf5prGYFmLeTY2FHYzDl6wElujfH61iasep
-         Gakw==
-X-Gm-Message-State: AOJu0YxKAdCGGgTubd8t3ZlXDypyG8WSIj3yiLZRyJCH3CvXx7EisyTB
-	MCpjnTtKs/YPeND1QOvau6HXZQ==
-X-Google-Smtp-Source: AGHT+IG8zzeD/auPSzGDXSrUbTz7+QRxnqkXG7XFtfKuRtBOeOFYfWJ5FDWCIruPxeg5QPBDml1OIg==
-X-Received: by 2002:a05:6870:4c12:b0:1fa:3b7d:157d with SMTP id pk18-20020a0568704c1200b001fa3b7d157dmr4532394oab.1.1701389367779;
-        Thu, 30 Nov 2023 16:09:27 -0800 (PST)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id e24-20020a0568301e5800b006cd09ba046fsm315807otj.61.2023.11.30.16.09.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Nov 2023 16:09:27 -0800 (PST)
-Message-ID: <30b73319-4958-4089-8dbc-7c72e66cccec@linuxfoundation.org>
-Date: Thu, 30 Nov 2023 17:09:26 -0700
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6DBB1717;
+	Thu, 30 Nov 2023 18:58:50 -0800 (PST)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VxTrXdf_1701399524;
+Received: from 30.240.114.121(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VxTrXdf_1701399524)
+          by smtp.aliyun-inc.com;
+          Fri, 01 Dec 2023 10:58:47 +0800
+Message-ID: <8cefd789-36da-4208-9511-f826a4508612@linux.alibaba.com>
+Date: Fri, 1 Dec 2023 10:58:42 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,46 +29,125 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/82] 6.1.65-rc1 review
+Subject: Re: [PATCH v9 0/2] ACPI: APEI: handle synchronous errors in task work
+ with proper si_code
 Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20231130162135.977485944@linuxfoundation.org>
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: James Morse <james.morse@arm.com>, Borislav Petkov <bp@alien8.de>
+Cc: rafael@kernel.org, wangkefeng.wang@huawei.com, tanxiaofei@huawei.com,
+ mawupeng1@huawei.com, tony.luck@intel.com, linmiaohe@huawei.com,
+ naoya.horiguchi@nec.com, gregkh@linuxfoundation.org, will@kernel.org,
+ jarkko@kernel.org, linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+ stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+ ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
+ tglx@linutronix.de, mingo@redhat.com, dave.hansen@linux.intel.com,
+ lenb@kernel.org, hpa@zytor.com, robert.moore@intel.com, lvying6@huawei.com,
+ xiexiuqi@huawei.com, zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-1-xueshuai@linux.alibaba.com>
+ <20231123150710.GEZV9qnkWMBWrggGc1@fat_crate.local>
+ <9e92e600-86a4-4456-9de4-b597854b107c@linux.alibaba.com>
+ <20231125121059.GAZWHkU27odMLns7TZ@fat_crate.local>
+ <1048123e-b608-4db1-8d5f-456dd113d06f@linux.alibaba.com>
+ <20231129185406.GBZWeIzqwgRQe7XDo/@fat_crate.local>
+ <a3cd9b79-4be5-4f77-b32a-51a624a65ec0@linux.alibaba.com>
+ <20231130144001.GGZWiewYtvMSJir62f@fat_crate.local>
+ <d83545f0-af15-10bc-0f5d-9b531b54b9dd@arm.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <d83545f0-af15-10bc-0f5d-9b531b54b9dd@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 11/30/23 09:21, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.65 release.
-> There are 82 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.65-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-Compiled and booted on my test system. No dmesg regressions.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-thanks,
--- Shuah
+On 2023/12/1 01:43, James Morse wrote:
+> Hi Boris,
+> 
+> On 30/11/2023 14:40, Borislav Petkov wrote:
+>> FTR, this is starting to make sense, thanks for explaining.
+>>
+>> Replying only to this one for now:
+>>
+>> On Thu, Nov 30, 2023 at 10:58:53AM +0800, Shuai Xue wrote:
+>>> To reproduce this problem:
+>>>
+>>> 	# STEP1: enable early kill mode
+>>> 	#sysctl -w vm.memory_failure_early_kill=1
+>>> 	vm.memory_failure_early_kill = 1
+>>>
+>>> 	# STEP2: inject an UCE error and consume it to trigger a synchronous error
+>>
+>> So this is for ARM folks to deal with, BUT:
+>>
+>> A consumed uncorrectable error on x86 means panic. On some hw like on
+>> AMD, that error doesn't even get seen by the OS but the hw does
+>> something called syncflood to prevent further error propagation. So
+>> there's no any action required - the hw does that.
 
+The "consume" is at the application point of view, e.g. a memory read. If
+poison is enable, then a SRAR error will be detected and a MCE raised
+at the point of the consumption in the execution flow.
+
+A generic Intel x86 hw behaves like below:
+
+1. UE Error Inject at a known Physical Address. (by einj_mem_uc through EINJ interface)
+2. Core Issue a Memory Read to the same Physical Address (by a singe memory read)
+3. iMC Detects the error.
+4. HA logs UCA error and signals CMCI if enabled
+5. HA Forward data with poison indication bit set.
+6. CBo detects the Poison data. Does not log any error.
+7. MLC detects the Poison data.
+8. DCU detects the Poison data, logs SRAR error and trigger MCERR if recoverable
+9. OS/VMM takes corresponding recovery action based on affected state.
+
+In our example:
+-  step 2 is triggered by a singe memory read.
+-  step 8: UCR errors detected on data load, MCACOD 134H, triggering MCERR
+-  step 9: the kernel is excepted to send sigbus with si_code BUS_MCEERR_AR (code 4)
+
+I also run the same test  in AMD EPYC platform, e.g. Milan, Genoa, which
+behaves the same as Intel Xeon platform, e.g. Icelake, SPR.
+
+The ARMv8.2 RAS extension support similar data poison mechanism, a
+Synchronous External Abort on arm64 (analogy Machine Check Exception on
+x86) will be trigger in setp 8. See James comments for details.  But the
+kernel sends sigbus with si_code BUS_MCEERR_AO (code 5) , tested on
+Alibaba Yitian710 and Huawei Kunepng 920.
+
+
+>>
+>> But I'd like to hear from ARM folks whether consuming an uncorrectable
+>> error even lets software run. Dunno.
+> 
+> I think we mean different things by 'consume' here.
+> 
+> I'd assume Shuai's test is poisoning a cache-line. When the CPU tries to access that
+> cache-line it will get an 'external abort' signal back from the memory system. Shuai - is
+> this what you mean by 'consume' - the CPU received external abort from the poisoned cache
+> line?
+> 
+
+Yes, exactly. Thank you for point it out. We are talking about synchronous errors.
+
+> It's then up to the CPU whether it can put the world back in order to take this as
+> synchronous-external-abort or asynchronous-external-abort, which for arm64 are two
+> different interrupt/exception types.
+> The synchronous exceptions can't be masked, but the asynchronous one can.
+> If by the time the asynchronous-external-abort interrupt/exception has been unmasked, the
+> CPU has used the poisoned value in some calculation (which is what we usually mean by
+> consume) which has resulted in a memory access - it will report the error as 'uncontained'
+> because the error has been silently propagated. APEI should always report those a 'fatal',
+> and there is little point getting the OS involved at this point. Also in this category are
+> things like 'tag ram corruption', where you can no longer trust anything about memory.
+> 
+> Everything in this thread is about synchronous errors where this can't happen. The CPU
+> stops and does takes an interrupt/exception instead.
+> 
+> 
+
+Thank you for explaining.
+
+Best Regards,
+Shuai
 
