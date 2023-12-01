@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-3668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13365801182
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 18:22:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4544801186
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 18:22:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2D0B281BBE
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 17:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D73D281BAE
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736FE4E1C2;
-	Fri,  1 Dec 2023 17:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7D94E1B4;
+	Fri,  1 Dec 2023 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XJ7RDV8g"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DM4YkdGp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3593C197
-	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 09:22:38 -0800 (PST)
-Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-6c337ce11ceso3101013b3a.1
-        for <stable@vger.kernel.org>; Fri, 01 Dec 2023 09:22:38 -0800 (PST)
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41F1ED48
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 09:22:47 -0800 (PST)
+Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-1d04d286b5cso8931315ad.0
+        for <stable@vger.kernel.org>; Fri, 01 Dec 2023 09:22:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701451358; x=1702056158; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1701451367; x=1702056167; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5toQfm61AxoDXcHH2HxdKHhT1Jhp0yKNSM0cF/gdzkI=;
-        b=XJ7RDV8gXbnF1z27UPPj/XTXUqF9FROQcVuGqGs/T35Sa7nSQ8/3L3ZeVA5I/eIA+c
-         xNTE90J1AhoQUhent4qaotvTStqMmFSB0bVleXILgq9YpTeFEa5Zhl/prKUaBTUM5I93
-         +7Qik/jtsINvzF9D9YCmeTIuw7rJGCb5xSGbf4vpnNbOmj0ceEldpf5sASFMyQvgWlly
-         G7r64vG9IrrVevUVd528YvBIqsjjSg1dR043IEA/swJBy/AXRIAS8PkBBydfh0J8VJrV
-         3CEw+GER+hCm4qIwXfp9X8xAh02SPQGzfdL0EI4VHin6CXr4pqWK07DO4q6AVzGSdzMq
-         2BuA==
+        bh=VC2uJLzEqyfXA07DP6aRcEwY5WDZYJjFpRfi6yvMkTY=;
+        b=DM4YkdGpaS+Q4/yBF4UQ7iF6WTlEMj4+z4R6cDBPMZOrlBrBkCtTGniUQ6rSvNfH7z
+         kp3iOVYyXQuoieP7RCz6lXojvaRY0OBSIzC9oZV/Q/GIa0H6EOBJCHR6XF3NHflK8i/C
+         X54aVeJ20Uib0ooDcDRg4LMEIkyK1DxW/ApZmB0t1zHrli6lDWMIexG1wpQ4KFZlDab4
+         JR3vHbveX2MhCQ933OEBI7BlEVI8RVLJuvsfW5I/GOtOXn2FZP68uLw9u1LMpcYP6GxM
+         ct0aimurUfOBHvxNy4ZUHVcAuD5Q8JueDR7AEB+gZ0k8L86jBdX18ORkkQzn+JAsGinY
+         ElTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701451358; x=1702056158;
+        d=1e100.net; s=20230601; t=1701451367; x=1702056167;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5toQfm61AxoDXcHH2HxdKHhT1Jhp0yKNSM0cF/gdzkI=;
-        b=EVbzZuO4Pdkaq1VCw7L1uNWRJCrIPB/S+L2lTIp0Y+vXNq+5DaRwhf34czWdkido5E
-         87tDplVzj5aAitolCiHeudFxjdMdCEoHYzzDYihUkTTk5wo5DOXqhWrqk+/VHNCjxEPr
-         cOBA1IGqd3aJbDaO6KJZrQVdmS4zhfS6dhslnoZlSN+3FNYS1PNlIGbZpbhAlD9HzVhT
-         zhBX96tY9LdP596sMpa48ahtzxO8g/VtCj5WHFjDHPJDTy4pdKNEsfBBa6Db4a4WIsxb
-         SfLE5rJ3HjYw68JDgTJVHPrTl6cuIHxopKtnTmYhdgsfth4MS9NuaG3h2/Kq/Qt+AjfS
-         pncA==
-X-Gm-Message-State: AOJu0YxC7SFLwjjB6HevGjNirRYCOIcAiVN1LQuFot9X9ICUGnDCoGcH
-	DVd+wbwQCOwl2uunwalvwWbEqVxbhIsdmA==
-X-Google-Smtp-Source: AGHT+IFP/gsG/lerEEDvVYFpMGdlc1rxmXtWWEkLfAZ21X9HZUO53NHr0O+qW03ZYFMUPzd4YffSjhH5v1lNyw==
+        bh=VC2uJLzEqyfXA07DP6aRcEwY5WDZYJjFpRfi6yvMkTY=;
+        b=g3wuc1BPo9PAy8ebFZKMCmcZ/iEHysF0fUIveV2WUCX+RpxBMPWPJ978B0z4805BEO
+         qUq4vAgRhrMmTYTDNeMuttGQT4EA6FbHCgX2PoLRGfHYboSfhwI7lmoJAHNaWLW2AAxg
+         p0keclvLuAyYfoPDOsOW5aT1D7dFfLxUnD6Mxu4pXNOmQ+unh0rdfPZLozgs9Tl4egUe
+         8dHtFMNZct6k3ipVnhTP84rWPZYUH43hhe/Grf55Vwwnmo1+rbiof6LJsboHnuObp1Rg
+         KRvv0QLa+G/zB4QkDVt0Bmy37qd69hV9KdwEDavGB2WFOIFhJ7Sm5Xjba7NG45Igk7o5
+         tS4g==
+X-Gm-Message-State: AOJu0Ywya34G6qQy/zJqDis6JzZD8aZgSIQX+nQNZ2xf31UAq+2g71sH
+	X2FsXfbosr2lXyygp4oMaPsL7kbl35hRwQ==
+X-Google-Smtp-Source: AGHT+IEkcV1p6eqdu0bez7LWIawyKVoI1FER2wUkLTAiVsOWMewcldTbRdmYDL1RqOrJrrmFZZ1q2xec/67Bmg==
 X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a05:6a00:3a03:b0:6cd:810:3875 with SMTP
- id fj3-20020a056a003a0300b006cd08103875mr4820906pfb.5.1701451357594; Fri, 01
- Dec 2023 09:22:37 -0800 (PST)
-Date: Fri,  1 Dec 2023 17:21:31 +0000
+ (user=cmllamas job=sendgmr) by 2002:a17:902:8644:b0:1d0:3090:957d with SMTP
+ id y4-20020a170902864400b001d03090957dmr668283plt.11.1701451366752; Fri, 01
+ Dec 2023 09:22:46 -0800 (PST)
+Date: Fri,  1 Dec 2023 17:21:35 +0000
 In-Reply-To: <20231201172212.1813387-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,114 +59,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20231201172212.1813387-1-cmllamas@google.com>
 X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
-Message-ID: <20231201172212.1813387-3-cmllamas@google.com>
-Subject: [PATCH v2 02/28] binder: fix use-after-free in shinker's callback
+Message-ID: <20231201172212.1813387-7-cmllamas@google.com>
+Subject: [PATCH v2 06/28] binder: fix trivial typo of binder_free_buf_locked()
 From: Carlos Llamas <cmllamas@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
 Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	stable@vger.kernel.org, Liam Howlett <liam.howlett@oracle.com>, 
-	Minchan Kim <minchan@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, Todd Kjos <tkjos@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-The mmap read lock is used during the shrinker's callback, which means
-that using alloc->vma pointer isn't safe as it can race with munmap().
-As of commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
-munmap") the mmap lock is downgraded after the vma has been isolated.
+Fix minor misspelling of the function in the comment section.
 
-I was able to reproduce this issue by manually adding some delays and
-triggering page reclaiming through the shrinker's debug sysfs. The
-following KASAN report confirms the UAF:
+No functional changes in this patch.
 
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in zap_page_range_single+0x470/0x4b8
-  Read of size 8 at addr ffff356ed50e50f0 by task bash/478
-
-  CPU: 1 PID: 478 Comm: bash Not tainted 6.6.0-rc5-00055-g1c8b86a3799f-dirty #70
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   zap_page_range_single+0x470/0x4b8
-   binder_alloc_free_page+0x608/0xadc
-   __list_lru_walk_one+0x130/0x3b0
-   list_lru_walk_node+0xc4/0x22c
-   binder_shrink_scan+0x108/0x1dc
-   shrinker_debugfs_scan_write+0x2b4/0x500
-   full_proxy_write+0xd4/0x140
-   vfs_write+0x1ac/0x758
-   ksys_write+0xf0/0x1dc
-   __arm64_sys_write+0x6c/0x9c
-
-  Allocated by task 492:
-   kmem_cache_alloc+0x130/0x368
-   vm_area_alloc+0x2c/0x190
-   mmap_region+0x258/0x18bc
-   do_mmap+0x694/0xa60
-   vm_mmap_pgoff+0x170/0x29c
-   ksys_mmap_pgoff+0x290/0x3a0
-   __arm64_sys_mmap+0xcc/0x144
-
-  Freed by task 491:
-   kmem_cache_free+0x17c/0x3c8
-   vm_area_free_rcu_cb+0x74/0x98
-   rcu_core+0xa38/0x26d4
-   rcu_core_si+0x10/0x1c
-   __do_softirq+0x2fc/0xd24
-
-  Last potentially related work creation:
-   __call_rcu_common.constprop.0+0x6c/0xba0
-   call_rcu+0x10/0x1c
-   vm_area_free+0x18/0x24
-   remove_vma+0xe4/0x118
-   do_vmi_align_munmap.isra.0+0x718/0xb5c
-   do_vmi_munmap+0xdc/0x1fc
-   __vm_munmap+0x10c/0x278
-   __arm64_sys_munmap+0x58/0x7c
-
-Fix this issue by performing instead a vma_lookup() which will fail to
-find the vma that was isolated before the mmap lock downgrade. Note that
-this option has better performance than upgrading to a mmap write lock
-which would increase contention. Plus, mmap_write_trylock() has been
-recently removed anyway.
-
-Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
 Cc: stable@vger.kernel.org
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>
+Fixes: 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
- drivers/android/binder_alloc.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/android/binder_alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index 138f6d43d13b..9d2eff70c3ba 100644
+index 9b5c4d446efa..a124d2743c69 100644
 --- a/drivers/android/binder_alloc.c
 +++ b/drivers/android/binder_alloc.c
-@@ -1005,7 +1005,9 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- 		goto err_mmget;
- 	if (!mmap_read_trylock(mm))
- 		goto err_mmap_read_lock_failed;
--	vma = binder_alloc_get_vma(alloc);
-+	vma = vma_lookup(mm, page_addr);
-+	if (vma && vma != binder_alloc_get_vma(alloc))
-+		goto err_invalid_vma;
- 
- 	list_lru_isolate(lru, item);
- 	spin_unlock(lock);
-@@ -1031,6 +1033,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
- 	mutex_unlock(&alloc->mutex);
- 	return LRU_REMOVED_RETRY;
- 
-+err_invalid_vma:
-+	mmap_read_unlock(mm);
- err_mmap_read_lock_failed:
- 	mmput_async(mm);
- err_mmget:
+@@ -704,7 +704,7 @@ void binder_alloc_free_buf(struct binder_alloc *alloc,
+ 	/*
+ 	 * We could eliminate the call to binder_alloc_clear_buf()
+ 	 * from binder_alloc_deferred_release() by moving this to
+-	 * binder_alloc_free_buf_locked(). However, that could
++	 * binder_free_buf_locked(). However, that could
+ 	 * increase contention for the alloc mutex if clear_on_free
+ 	 * is used frequently for large buffers. The mutex is not
+ 	 * needed for correctness here.
 -- 
 2.43.0.rc2.451.g8631bc7472-goog
 
