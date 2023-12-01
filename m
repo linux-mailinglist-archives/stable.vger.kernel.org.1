@@ -1,179 +1,98 @@
-Return-Path: <stable+bounces-3629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B7CE800A17
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 12:50:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE014800A24
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 12:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D4FE1C20E0E
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 11:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 674A828177D
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 11:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB21D219E0;
-	Fri,  1 Dec 2023 11:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B912219FF;
+	Fri,  1 Dec 2023 11:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="e8G17xEo";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jgqH76Jo"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gj1R3fIK"
 X-Original-To: stable@vger.kernel.org
-Received: from wout5-smtp.messagingengine.com (wout5-smtp.messagingengine.com [64.147.123.21])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86E3D1704;
-	Fri,  1 Dec 2023 03:50:40 -0800 (PST)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailout.west.internal (Postfix) with ESMTP id 9013F3200AAB;
-	Fri,  1 Dec 2023 06:50:37 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Fri, 01 Dec 2023 06:50:38 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:message-id:mime-version:reply-to:sender:subject
-	:subject:to:to; s=fm2; t=1701431437; x=1701517837; bh=jXjXrL2mgt
-	AhGYKgcBP0Wx2CKz797XazsgwROZ/jzWY=; b=e8G17xEobyMa27KHIIvZPT+i3q
-	ooQo9Ob5ml8IvuHuMaiOjmdZJWtDpLoObh/z4XeAUuX4QpekUR4PdEhdzOH1lgA+
-	d7rv5c12frW4M4qC4C9Xae2n70cwYrOhWJ/ISev2px5xINy6nxJxzxqVE1kU5H0s
-	RN+FB4CmaubnOxE4NGUiY1ZgliXRhdYC8C8aVGD6jBMZ3Tmpdjr9pQsbtbKt1jsn
-	+6G9LHN1E4MPCFIo7pfqtnAQktEsue+vn3DGKaLU1r0tVZYtoNPIk3Gp/jAMD3+V
-	i9FpFAgsfkcm33Mu89tOfcf1LtoBl6rYQ2lhzr7bedzT9+wF7mO0+ss5hloA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701431437; x=1701517837; bh=jXjXrL2mgtAhG
-	YKgcBP0Wx2CKz797XazsgwROZ/jzWY=; b=jgqH76Jo0tfYlS3yw0FTrrlf+LqiO
-	wvQVWEUDB6YAP2RA+PrxAyxt7rTB4jjEzERSkAeJdeuWjDviPwB+BpTxjjKYJyOV
-	efjfNmqT4Fudi9n/dyBNE5W+7ADEUFHWxpIgG8xHhyppGjItCdwLw16m1NXshg6H
-	QEzDjoMetGdzdTtn7wYNdPIRQp85q9AZTaDRqE2Zk8xws4Hxv8NcfbYOwvywY+7g
-	OGBQ8kaytY7dOj64y1WJ5au/2D4KdkrFpPt5vHNCLjd/h4UxtQWgDlR64tMhZSPi
-	5hAlpuDL0z20lSNA7x4wiw5nBSyTD75ZziW/X9ohbw7E/EvIxc7BhjPBQ==
-X-ME-Sender: <xms:jMhpZRo6CywO-zJzOOLGSnuwZ1bepIM6WQwj8q0FErQikwbeFGX5Rw>
-    <xme:jMhpZTo16Tq_bcuQHV0zCaHhp_wm_fBoGqlXp_6SoqaykxmVuqads7JdefdLkvDYh
-    zqCy6IVXdnW2WU2los>
-X-ME-Received: <xmr:jMhpZeMd9u_EsIy0-zhH0aNB8XrHIexnUR3ctnlkryCqRbvmJp4CObVMB7HQQijGOBosMAg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudeiledgfeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffoggfgsedtkeertd
-    ertddtnecuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghes
-    fhhlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepvdeuteekleeuudfgueethe
-    dtuddthfdtleffgefhieehfeeigedvtdeuveetiedunecuffhomhgrihhnpehkvghrnhgv
-    lhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehjihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhm
-X-ME-Proxy: <xmx:jMhpZc4XzPZHTj1NrBmhw5RfXgFRzzSv3Wl99-W5GHplQryTmZOLIw>
-    <xmx:jMhpZQ77dESwpSM0tgvTFpzrmQIUTm-MT3cU9ZdDHenOBv1FH5_kOw>
-    <xmx:jMhpZUgVLFUaJSiJQC2A0ZLrqfQ-0VFAUtUvvczTKIdvdi3T63JHpA>
-    <xmx:jchpZdtZgwR_huc0n7GixtSvYpkABpKRFaAOI08zKIEqA5CktXusuw>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 Dec 2023 06:50:35 -0500 (EST)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-To: linux-pci@vger.kernel.org
-Cc: lpieralisi@kernel.org,
-	kw@linux.com,
-	robh@kernel.org,
-	linux-kernel@vger.kernel.org,
-	chenhuacai@kernel.org,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v6] pci: loongson: Workaround MIPS firmware MRRS settings
-Date: Fri,  1 Dec 2023 11:50:28 +0000
-Message-Id: <20231201115028.84351-1-jiaxun.yang@flygoat.com>
-X-Mailer: git-send-email 2.34.1
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 350941B4
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 03:56:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701431782;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bcOERy4n8CRS+7evS6pVyIbNEma6ZLagFwPNpYFCddY=;
+	b=Gj1R3fIKU788jbf+dhY5GaTIKKx+D+krqwpeS8hprO533XRQ1L759i/zqWE3ZZy9Rb1MUv
+	xsMT8RoKeYf4wMujTwwwOXJSPivK5DZ6k/9crljNVwIGQ6tCD/Lvx1kuYs/hUlOQ7KNkdU
+	Aa7qQ/lJwAA3Qriz+kQWNkrRdUbohkM=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-656-2PdFzcwlPb66x7JLoJeOig-1; Fri, 01 Dec 2023 06:56:19 -0500
+X-MC-Unique: 2PdFzcwlPb66x7JLoJeOig-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C8AF9811E7B;
+	Fri,  1 Dec 2023 11:56:18 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.42.28.161])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id DDC23492BFC;
+	Fri,  1 Dec 2023 11:56:17 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20231201-orchideen-modewelt-e009de4562c6@brauner>
+References: <20231201-orchideen-modewelt-e009de4562c6@brauner>
+To: Christian Brauner <brauner@kernel.org>
+Cc: dhowells@redhat.com, Lukas Schauer <lukas@schauer.dev>,
+    linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] pipe: wakeup wr_wait after setting max_usage
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <3429983.1701431777.1@warthog.procyon.org.uk>
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 01 Dec 2023 11:56:17 +0000
+Message-ID: <3429984.1701431777@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.10
 
-This is a partial revert of commit 8b3517f88ff2 ("PCI:
-loongson: Prevent LS7A MRRS increases") for MIPS based Loongson.
+Christian Brauner <brauner@kernel.org> wrote:
 
-There are many MIPS based Loongson systems in wild that
-shipped with firmware which does not set maximum MRRS properly.
+> From: Lukas Schauer <lukas@schauer.dev>
+> =
 
-Limiting MRRS to 256 for all as MIPS Loongson comes with higher
-MRRS support is considered rare.
+> Commit c73be61cede5 ("pipe: Add general notification queue support") a
+> regression was introduced that would lock up resized pipes under certain
+> conditions. See the reproducer in [1].
+> =
 
-It must be done at device enablement stage because MRRS setting
-may get lost if the parent bridge lost PCI_COMMAND_MASTER, and
-we are only sure parent bridge is enabled at this point.
+> The commit resizing the pipe ring size was moved to a different
+> function, doing that moved the wakeup for pipe->wr_wait before actually
+> raising pipe->max_usage. If a pipe was full before the resize occured it
+> would result in the wakeup never actually triggering pipe_write.
+> =
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217680
-Fixes: 8b3517f88ff2 ("PCI: loongson: Prevent LS7A MRRS increases")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
-v4: Improve commit message
-v5:
-	- Improve commit message and comments.
-	- Style fix from Huacai's off-list input.
-v6: Fix a typo
----
- drivers/pci/controller/pci-loongson.c | 47 ++++++++++++++++++++++++---
- 1 file changed, 42 insertions(+), 5 deletions(-)
+> Set @max_usage and @nr_accounted before waking writers if this isn't a
+> watch queue.
+> =
 
-diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
-index d45e7b8dc530..e181d99decf1 100644
---- a/drivers/pci/controller/pci-loongson.c
-+++ b/drivers/pci/controller/pci-loongson.c
-@@ -80,13 +80,50 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_LOONGSON,
- 			DEV_LS7A_LPC, system_bus_quirk);
- 
-+/*
-+ * Some Loongson PCIe ports have h/w limitations of maximum read
-+ * request size. They can't handle anything larger than this.
-+ * Sane firmware will set proper MRRS at boot, so we only need
-+ * no_inc_mrrs for bridges. However, some MIPS Loongson firmware
-+ * won't set MRRS properly, and we have to enforce maximum safe
-+ * MRRS, which is 256 bytes.
-+ */
-+#ifdef CONFIG_MIPS
-+static void loongson_set_min_mrrs_quirk(struct pci_dev *pdev)
-+{
-+	struct pci_bus *bus = pdev->bus;
-+	struct pci_dev *bridge;
-+	static const struct pci_device_id bridge_devids[] = {
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-+		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
-+		{ 0, },
-+	};
-+
-+	/* look for the matching bridge */
-+	while (!pci_is_root_bus(bus)) {
-+		bridge = bus->self;
-+		bus = bus->parent;
-+
-+		if (pci_match_id(bridge_devids, bridge)) {
-+			if (pcie_get_readrq(pdev) > 256) {
-+				pci_info(pdev, "limiting MRRS to 256\n");
-+				pcie_set_readrq(pdev, 256);
-+			}
-+			break;
-+		}
-+	}
-+}
-+DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, loongson_set_min_mrrs_quirk);
-+#endif
-+
- static void loongson_mrrs_quirk(struct pci_dev *pdev)
- {
--	/*
--	 * Some Loongson PCIe ports have h/w limitations of maximum read
--	 * request size. They can't handle anything larger than this. So
--	 * force this limit on any devices attached under these ports.
--	 */
- 	struct pci_host_bridge *bridge = pci_find_host_bridge(pdev->bus);
- 
- 	bridge->no_inc_mrrs = 1;
--- 
-2.34.1
+> Fixes: c73be61cede5 ("pipe: Add general notification queue support")
+> Link: https://bugzilla.kernel.org/show_bug.cgi?id=3D212295 [1]
+> Cc: <stable@vger.kernel.org>
+> [Christian Brauner <brauner@kernel.org>: rewrite to account for watch qu=
+eues]
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+
+Reviewed-by: David Howells <dhowells@redhat.com>
 
 
