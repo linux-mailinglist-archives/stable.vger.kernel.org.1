@@ -1,88 +1,178 @@
-Return-Path: <stable+bounces-3675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 826348013D7
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 21:01:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD71801428
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 21:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DABC1F20F1D
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 20:01:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B307F281D5E
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 20:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B082F51C21;
-	Fri,  1 Dec 2023 20:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3BEF56B8B;
+	Fri,  1 Dec 2023 20:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0yVGh7M"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="uhdpIcC8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7337654BC1
-	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 20:01:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AF5C433C8;
-	Fri,  1 Dec 2023 20:01:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701460901;
-	bh=eO0+A/HoDSUXkRzZYBTH4WJttajSMnTAC/ilJrr2b+g=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=Z0yVGh7M8sUHaxzmBGXP/uhJvlMZo1QvDo+u38ssMkZSwc4XX7TlReiKiCdk6P/2k
-	 VU7OFp+IfVGwH55/whD1sHyzxSVso4oGqclMT4LZHeEph5Xx6rgwZnKxbCj+r6Lqio
-	 UrZGc58gBfjaCTR/yuGRok0EZ2SvS9R4+5lSA0aEfm+DlJOWuvaAjsdgHHZpwV2S0q
-	 bw9lEmUSZnYJJSloJarRf7YkQ5S6GG2N/kl5CHZm/xWdoPcEPtsL/uqp7siUZw3h9h
-	 m98lDoPMJCfy3ngUCOXKGybzXiMH6au43I9kcBaECH5HMnfrUexYgqhyx0Faxgi2hx
-	 kL77x2GoS4cYA==
-Date: Fri, 1 Dec 2023 20:01:36 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Matthias Reichl <hias@horus.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org,
-	jslaby@suse.cz
-Subject: Re: Linux 6.6.3
-Message-ID: <dea2db44-2e13-47c1-be0b-8548bfd54473@sirena.org.uk>
-References: <2023112811-ecosphere-defender-a75a@gregkh>
- <ZWo45hiK-n8W_yWJ@camel3.lan>
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2051.outbound.protection.outlook.com [40.107.8.51])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DF25A8;
+	Fri,  1 Dec 2023 12:14:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jQXoy00uj/CKJk2FIyRdyQLGSQjuVscem8oH9b2PFERFZBtH/jl0kdbCaSMR05BypqlE17r8h0Aulr8a/VTixkzs9S5AdcC0Y1an/2lx2KpWCKoKQ7nZQhi5Y0WHa4/RlKS0E9m1oq9PlXI3x8T0aslU2Lrs9ETzcZhN2CZjzKiGcL6v0GV6pQ5v50UONlZeFDn9UunCPeeqO1XUkM/yRYYRyD1OUrTsiDBqRnFt138yCMSogeP0UeKFIQCWfs+pIySJmpeVsW0Ex4qqNwr6B0N9VSXDCqWSh0f5YnLBhB85dbh5G5fRFIytPw+DLbzy75/8SI9I9h+0hMYV2p431g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m/wB5Y3nXgp9MixbMHI6a5JCOkXDuSQevMM4zlDm3go=;
+ b=XIBxhR4xKQknzWGiR324a94eE0DBNNcZD1Pzrjdxr1DncS+l1uAK+EggM2qLughhS7sqC0V7WN11ps/Wz6CBB0I1NTIzkYhrUFVifwDqTN2Y/39r4iWYt6NZyGZPSQBA+7gHB1QrBvCDwQ+A6/Cx4CfaVhSCwmb1mccwqSdY18IHIPAsrNaPyt8STI94EKssxzCe8ozE1ROIA4KXHKnYNOroeQtVzatI2rA5DqTKOY/lCdal/+Lh99J+znZmUIh48SFUBkanNNEEFxPNFztne9WSq+MK21hYlzC6LRKUeZuntTgqVldaEvYxJJvZJ6/wlS1N8EJY7Wg+5/af+RRV5Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=suse.com; dmarc=pass action=none header.from=suse.com;
+ dkim=pass header.d=suse.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=m/wB5Y3nXgp9MixbMHI6a5JCOkXDuSQevMM4zlDm3go=;
+ b=uhdpIcC8GojWd5bRb9fAAFoeUTzHAm2ySz6K+QwyOJD0IMADIzV98YUUtaywzqhmQaGBz/DrrBVL1/n1N4xPRwMd42qtKtfcdNrXiRtSjiJKurxgP/o1MFjqPCsf/LYv4NKftprRgklUBP4fJQ+hk+ZrUOpLtoXQ/2tdMozoUBMPLhKMJ+iUiQqlQTg1fxm1wzUCqxOn4fbBwwH49KjJs/kYtKKZengeH4zE311LJCzZVEEioiWk/S+rGIHeZm/Fv5lGWkdErfMIhW+dwoqDE9hcuRHRry3HXjScjFY5AyP7vS0qopTrCACcSnjUproMg8ixuOANP5OyIaBN47Z9Ag==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=suse.com;
+Received: from VE1PR04MB6478.eurprd04.prod.outlook.com (2603:10a6:803:12a::10)
+ by AS8PR04MB7653.eurprd04.prod.outlook.com (2603:10a6:20b:299::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.13; Fri, 1 Dec
+ 2023 20:14:49 +0000
+Received: from VE1PR04MB6478.eurprd04.prod.outlook.com
+ ([fe80::775f:9e9:ef9a:6a09]) by VE1PR04MB6478.eurprd04.prod.outlook.com
+ ([fe80::775f:9e9:ef9a:6a09%4]) with mapi id 15.20.7046.015; Fri, 1 Dec 2023
+ 20:14:48 +0000
+Message-ID: <4ce32363-378c-4ea3-9a4e-d7274d4f7787@suse.com>
+Date: Fri, 1 Dec 2023 21:14:46 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] net: usb: ax88179_178a: avoid failed operations when
+ device is disconnected
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, greg@kroah.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org, oneukum@suse.com, pabeni@redhat.com,
+ stern@rowland.harvard.edu, stable@vger.kernel.org
+References: <2023120130-repair-tackle-698e@gregkh>
+ <20231201132647.178979-1-jtornosm@redhat.com>
+Content-Language: en-US
+From: Oliver Neukum <oneukum@suse.com>
+In-Reply-To: <20231201132647.178979-1-jtornosm@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BE1P281CA0192.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:8d::14) To VE1PR04MB6478.eurprd04.prod.outlook.com
+ (2603:10a6:803:12a::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="yLjAKkh/iKJFbDI8"
-Content-Disposition: inline
-In-Reply-To: <ZWo45hiK-n8W_yWJ@camel3.lan>
-X-Cookie: The early worm gets the late bird.
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR04MB6478:EE_|AS8PR04MB7653:EE_
+X-MS-Office365-Filtering-Correlation-Id: d719336f-4eb6-4cac-5d21-08dbf2aa2ad0
+X-LD-Processed: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba,ExtFwd
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	g73qm4NihvHGcQw++nsp+XWKhOSclthWWpF+9mixSS/l8FFg+x1jmN74awNAGqKMTHTocu2yYKni3/Siql4Tj00DklA9X2e6Sf2lEP3ySw/teg2Td/LuweN20QQ0rj+1nN7EMrY7zg+oruOXt+INaI0KEWzraUC/GQtQza6fB1Kk1BjkJGfi06VFy4QZs6oUvroF+cembDT+aCe17kDKbot+IRMCiF/abY+QdzJqIvgLwuSfqfigThHecxgNY0bhoK5+jZE7xV+pf3vnK97fd6yDv9q4tk/9396+WEJT4sONJNStEsWN2Tz3C1RXp7a/hfBv+uA3IiUjVpX5SPblqso+8P1lkr+ZXwLZxmBgVCjcgdML/1/kGZKu/LXpYoeAKoPk47UQW/I3O9itYPB3Q6Wne23NY9j0lLxpLykM7bpZjtMGtrin81v9eB3ToDaX1PBtZZmA4wzhY7wuWLfJF2mWNuwHmHgPe0UUCCTC9QpDfocYEtOTxW8v55ahzg7j8Alrm/wZ95uX3uaa4+/qInJ2KIs/otk5fj+MiNBlVmR4wOtWvMrpdcWOhbvq4bTOftr0XUlOyoPMZCNFl/WE5/sUeN0YiJgm0x2ai7uLe2FCGDLsOhf6Caqtm+a9KxqIAVMZM8W6kUoiiMO8boTvzQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR04MB6478.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(376002)(396003)(39860400002)(346002)(230922051799003)(451199024)(64100799003)(186009)(1800799012)(38100700002)(41300700001)(6512007)(83380400001)(2616005)(316002)(6486002)(508600001)(66556008)(66946007)(66476007)(6506007)(53546011)(36756003)(5660300002)(2906002)(7416002)(8676002)(4326008)(8936002)(31696002)(86362001)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N3NDMmdyZUJaajNGeHh2NFdVSXdIK1liM0d1cWhTbzZPZWIrbXFNc1c1U2N4?=
+ =?utf-8?B?N2NxUS9JTnhQQytmanRldWFVanN1bGRuZXpUVlFZbWNISkVCZ3BPN0kwOU14?=
+ =?utf-8?B?U0cxV0p4SnRmVlBNQzJMODVWL2ZMZjQyaG5vMnlFeHNlUzQ0R2xPM1NGb3g2?=
+ =?utf-8?B?bXZuMTZvclJDVmNKZVhvQktLYkZEeFI1ZUp4ckRoYlJ3L00vcXlsUmpRVlk4?=
+ =?utf-8?B?Ukl1NnlmZ3c4N0VPYlF6Nk5IbVR1MjJsbjM1QUxKVlduMEVSQVYwSnRuK2pk?=
+ =?utf-8?B?K3lPR2pLL2FnYVdhQ2tWOEFCT0ZnS2QwK2dLdE8wUFFYR2x0ZVVPb1k5ZjM0?=
+ =?utf-8?B?RWVsblRaWXdkcFBYVTJKa1RpU2phV1FJcCtHbEFrRjJiZkc3cGhTcFB5NEMv?=
+ =?utf-8?B?djYydHVQRWwvSFQzQ1pDVWRaZnJxRFJKU3VlbFVzVU1iQ21nTEJpZHEyL1dy?=
+ =?utf-8?B?dlBESEhZdHB1aGZUYlJYUFJid1AvYXZOeXFrZk14QzdiemZOK0pNOFRLN0Jm?=
+ =?utf-8?B?b3NVQzZqRjhFdVJoajdRMDdUczYwZE1HNWhqZFdRcmhqMWxyQVRxRU1lbWZU?=
+ =?utf-8?B?L3dDYkhnOSs5MHdHRlY1YXVuSERuM0VSeDVvODg2d3NzeUVXVnVDZDJkZGd2?=
+ =?utf-8?B?cUFrT2R3N0x4UjNOQS84azB5WWtNNzUxOFBkbk9zMytIazBYUmY3MHhrV0Ji?=
+ =?utf-8?B?V2lNb2k5K004VS9ib2thMkE1NWFFOTBMSnI5TWpvSWlTcEh4UVl1TWR2OFRU?=
+ =?utf-8?B?UndPUWw4WjBUUHlkY0lnOU8veXFVYlBFM3Uzam5iZFgrTEYrQnU5U2RONVU3?=
+ =?utf-8?B?clN5V0IvQWo2UkY0bi9heC9rYnFhNzVHMG0zS0JJRi9zK0lUWVRuVEdXNXlD?=
+ =?utf-8?B?RU1YVGtkUGxnREprM0JCL3JmQ1ZSMVZkYVg1MXVobENQa0UyUnh4WXhoOG1O?=
+ =?utf-8?B?YVM2M1VWbndQUUkzM2ZES05saUFTOXRUdjR0R0VLdzUvWThXSHZEUDNibnVF?=
+ =?utf-8?B?VnA2VEluZHUrN3JxdWN1UlNhRUZTWlJnMWE3dnpQeTYyaGJ3aVlVbXkzcEtM?=
+ =?utf-8?B?djhPaDhPWHVmZ1VCRzJndlJIOGNpTlNUaGQ0b0p2OVN2NmV5UEYrVFQyWFJa?=
+ =?utf-8?B?OG5JZkJOcy9pU3FmNnZiUHJnaWdxMDdqZ202RDFOS20wUldTd0hFL3Z3UUhL?=
+ =?utf-8?B?MUJQWEl4ZFpjaWJXTFRGNktwK2VCdVI0SHpJeEJ3cU9DSjBCTFpNSnp6TlJZ?=
+ =?utf-8?B?dEpNUmdEOEE1aFZ1Qjdvc2Y2Wk5IU3MxNDBuS0k4ZW5EWDB5eGQvMmZ3VCtR?=
+ =?utf-8?B?QjhnQWovbUI5QmhmdDhIdkpEZVRDN0Q0MGpoNEFlNTM1UjlDajhQRm4xZ3Nr?=
+ =?utf-8?B?U080UElCUUY1dlU2VmpGdG5HVEtWcCt5ekQ5RUdhWG15Wlo3c1VwMGRic0ZE?=
+ =?utf-8?B?VEJMR0hoVy9xUVlnZVJVZUVBeGp1SjlCNDExRzJXNExoSHVUdlJhdFZWeCtS?=
+ =?utf-8?B?YXFxa1MrekJXcXJ2aGR4dWxBby9oZ0NsamREVlc4Unh5RW9QbTl6b2hNTTFF?=
+ =?utf-8?B?bDlsaXVEbkdFQmF6Q3V5WWplcTFLSXZ1M2duVTVqTzkvTDl1eU9xTndqTFRX?=
+ =?utf-8?B?K3RnVTNPZVZPdU5zbWp2Y3FpcFJlZlZ4dVhtUmVZb2lmSlVGeXVjYkZLd1Y4?=
+ =?utf-8?B?WHN1OStKVFpNTGZZdWxjbE1RZS9DVndnaGhoanZSd1JSY3RoeUxpenpqT0pw?=
+ =?utf-8?B?WEVjVUp2ZitwTFdUYmlZRHpqVzRITGpWK0gxQmdhT2NDUEEvYlNEbXdvc2NF?=
+ =?utf-8?B?UTg1NXR3azBzYlROZUJuSHA1WFZaTEJxcHBic3czRWxEbGRvQ0dWejJxTXpF?=
+ =?utf-8?B?TEF5MzR2Nm5BYTdiSkdYYjE0bEp0RHF5aTZKajRQaHdYT0pMRHg3TWdEdWJJ?=
+ =?utf-8?B?M0FqRVFLQXVQUmljNDB6R2lyM3ByQWlYNjZ0T1dTTStKQlM5K2h6aUs4Yk9h?=
+ =?utf-8?B?d01GdkhrU2E3amcxWlEydzVWVEd6MWpGcjVaYkJ3cWtqQ2R6QysvWEkrVU5M?=
+ =?utf-8?B?OU13bWtrQmVFb3RRa2FyWktvM0VBNis2NHlSSTdUWHFsLzZQa2R1Mzk5dFZw?=
+ =?utf-8?B?dHJyYXhlR2FUck9qZHVTS05xb21tSHY1bEZzZUZPVU9EV2JRRG5RcFd5UTJF?=
+ =?utf-8?Q?KYyXTV56a8vfnBqpUEu9kdEQjeuoaVAgLCQcEvPz+NTB?=
+X-OriginatorOrg: suse.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d719336f-4eb6-4cac-5d21-08dbf2aa2ad0
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR04MB6478.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2023 20:14:48.2663
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: f7a17af6-1c5c-4a36-aa8b-f5be247aa4ba
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K5+dJYt0ZX8MGKNnBdfhtAEyqMMfUXCwW0IdogWOhT8eqK1TJCyiUdgPS1vwamxbcSoJ+odPa3pLWUyz4l54Vg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7653
 
+On 01.12.23 14:26, Jose Ignacio Tornos Martinez wrote:
+Hi,
 
---yLjAKkh/iKJFbDI8
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+this is much better.
+   
+> @@ -1661,14 +1668,19 @@ static int ax88179_reset(struct usbnet *dev)
+>   
+>   static int ax88179_stop(struct usbnet *dev)
+>   {
+> +	struct ax88179_data *ax179_data = dev->driver_priv;
+>   	u16 tmp16;
+>   
+> +	ax179_data->stopping_unbinding = 1;
 
-On Fri, Dec 01, 2023 at 08:49:58PM +0100, Matthias Reichl wrote:
+This is problematic. ndo_stop() is not limited to disconnection.
+It is also used whenever an interface transitions from up to down.
 
-> I'm not familiar with the regcache code but it looks a bit like the
-> return value from the regcache_read check is leaking out - not
-> assigning the value to ret seems to resolve the issue, too
-> (no idea though if that would be the correct fix):
+> +
+>   	ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
+>   			 2, 2, &tmp16);
+>   	tmp16 &= ~AX_MEDIUM_RECEIVE_EN;
+>   	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
+>   			  2, 2, &tmp16);
+>   
+> +	ax179_data->stopping_unbinding = 0;
+> +
+>   	return 0;
+>   }
+>   
 
-That looks sensible, can you submit as a proper patch please?
+On a general note, you are going for a belt and suspenders approach.
+It seems to me that you have two options.
 
---yLjAKkh/iKJFbDI8
-Content-Type: application/pgp-signature; name="signature.asc"
+1. Do as Alan suggested and ignore ENODEV. You'd be acknowledging that
+these devices are hotpluggable and therefore -ENODEV is not an error
+2. Use only a flag. But if you do that, you are setting it in the wrong
+place. It should be set in usbnet_disconnect()
 
------BEGIN PGP SIGNATURE-----
+O and, well, this is a very mior issue, but you've introduced a memory
+ordering issue. You ought to use smp_wmb() after setting the flag and
+smp_rmb() before reading it.
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVqO58ACgkQJNaLcl1U
-h9BZUAf/R0pVAXDalAF0Bfn7Of6eKAwLqYXSIdXvgq+CKZ6wfJlzAO6nKAbnEIc0
-R/dhGkURtTHhE9XNVoFYLiIx5xfOxlAi0D03I753lKOYmTspm0alp+BgoVvFWnpy
-uE2Kl8mCycb7BwO17BFIc1Lf8PPdHTzGEhDiG4uWX/2wnjGVBnKaYuTNdOIr4jc/
-iC0PdgWCJxvGYKz67wJ4DSO8lKV9/oky4Etcgcix1ZOCrvAgXXICsgzpDDuc1BDJ
-29Cm77qEqckdPfyt8UO5ziZtPQeBxw93QDpFTJOtUo9rhtKrwPUObNqJNNFhuqEM
-Sh5gua5CigMj0MpxQOPDTF/QTiZEFQ==
-=FoTj
------END PGP SIGNATURE-----
-
---yLjAKkh/iKJFbDI8--
+	Regards
+		Oliver
 
