@@ -1,106 +1,189 @@
-Return-Path: <stable+bounces-3641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2DF800BB9
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 14:22:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5D2F800BDB
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 14:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFBB1C20CF8
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:22:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144001C20FFA
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AC72D63E;
-	Fri,  1 Dec 2023 13:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6008F2574E;
+	Fri,  1 Dec 2023 13:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="c7IR14nm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a1QxHGZ4"
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9BD813E;
-	Fri,  1 Dec 2023 05:22:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1701436943; x=1732972943;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SFiMiObX9ZGFEyE4h8oReM51+m2Od7/qLb1KYhjjjLg=;
-  b=c7IR14nm6CKShldHQDU/xM2tM+cDw5OP2LZN+pd7f+wgu5hpNfoMKFto
-   HZBVFXN7kbIuiTbLkpSJHhHNmhz40iUN4bbP3jQ5p87N1mhsqE7NBRu/R
-   l5bkj0ng9ho8e2CgLJ6tj713nNIO4Lq2VYKacvqT6Xqg8A6ef0Mrj8gmr
-   J5Aj/UxYA+/hyrW/sxXLgg98PWi05pFr7DDnMnfsXIHem8kJsDLya3B96
-   dQn3h3BweFhsCagKv9BOODV+zbQrvhcZncNIs62TufYzzjeBCFwpz+/i4
-   jUsd57R164hx9SkcOFCh6AlF6Z4DBl1S6uUB8Fa01DyBGkk9ZytlcCJDa
-   Q==;
-X-CSE-ConnectionGUID: h4Jrgyr3T9i1kHEvfFr0NQ==
-X-CSE-MsgGUID: QYF4eAE9TJCZvZov9yd8ew==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.04,241,1695711600"; 
-   d="asc'?scan'208";a="179742437"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 01 Dec 2023 06:22:22 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 1 Dec 2023 06:22:00 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Fri, 1 Dec 2023 06:21:57 -0700
-Date: Fri, 1 Dec 2023 13:21:28 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-	<akpm@linux-foundation.org>, <linux@roeck-us.net>, <shuah@kernel.org>,
-	<patches@kernelci.org>, <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-	<jonathanh@nvidia.com>, <f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>,
-	<srw@sladewatkins.net>, <rwarsow@gmx.de>, <conor@kernel.org>,
-	<allen.lkml@gmail.com>
-Subject: Re: [PATCH 6.6 000/112] 6.6.4-rc1 review
-Message-ID: <20231201-prize-deck-be172f77a4bb@wendy>
-References: <20231130162140.298098091@linuxfoundation.org>
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD2AC10FC
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 05:27:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701437239;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5i1eC0ROgK2gZ5RGOpll/NrHkavhR+ZFmj0eHmTcPiE=;
+	b=a1QxHGZ4/WrAO9doBLsoAiTT06Gjp0CYFC3Ya+PlMw+CwsmfN4NU6WSEykrUtAtm/irmhw
+	jWSspM7xUjnilcH2DBe9atm+sYCKD04Ozw/wczmzLe+5Fp2HVwQ+T4jNKJTPio7xHY0IP7
+	tEoA9KpNx7DbB1aW+NgN61ZccrMCpW8=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-232-ANTKSBixPGqBzlomZSIBnA-1; Fri,
+ 01 Dec 2023 08:27:14 -0500
+X-MC-Unique: ANTKSBixPGqBzlomZSIBnA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6F2EE381AE57;
+	Fri,  1 Dec 2023 13:27:13 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.68])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id F21571C060AE;
+	Fri,  1 Dec 2023 13:27:09 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: greg@kroah.com
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	oneukum@suse.com,
+	pabeni@redhat.com,
+	stern@rowland.harvard.edu,
+	stable@vger.kernel.org
+Subject: [PATCH v3] net: usb: ax88179_178a: avoid failed operations when device is disconnected
+Date: Fri,  1 Dec 2023 14:26:47 +0100
+Message-ID: <20231201132647.178979-1-jtornosm@redhat.com>
+In-Reply-To: <2023120130-repair-tackle-698e@gregkh>
+References: <2023120130-repair-tackle-698e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="CGVL03bvG34QNHYM"
-Content-Disposition: inline
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
 
---CGVL03bvG34QNHYM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+When the device is disconnected we get the following messages showing
+failed operations:
+Nov 28 20:22:11 localhost kernel: usb 2-3: USB disconnect, device number 2
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: unregister 'ax88179_178a' usb-0000:02:00.0-3, ASIX AX88179 USB 3.0 Gigabit Ethernet
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: Failed to read reg index 0x0002: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: Failed to write reg index 0x0002: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0002: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0001: -19
+Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0002: -19
 
-On Thu, Nov 30, 2023 at 04:20:47PM +0000, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.4 release.
-> There are 112 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
-> Anything received after that time might be too late.
+The reason is that although the device is detached, normal stop and
+unbind operations are commanded from the driver. These operations are
+not necessary in this situation, so avoid these logs when the device is
+detached if the result of the operation is -ENODEV and if the new flag
+informing about the stopping or unbind operation is enabled.
 
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
+cc: stable@vger.kernel.org
+Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+---
+V1 -> V2:
+- Follow the suggestions from Alan Stern and Oliver Neukum to check the
+result of the operations (-ENODEV) and not the internal state of the USB 
+layer (USB_STATE_NOTATTACHED).
+V2 -> V3
+- Add cc: stable line in the signed-off-by area.
 
-Cheers,
-Conor.
+ drivers/net/usb/ax88179_178a.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---CGVL03bvG34QNHYM
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index 4ea0e155bb0d..105bae360128 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -173,6 +173,7 @@ struct ax88179_data {
+ 	u8 in_pm;
+ 	u32 wol_supported;
+ 	u32 wolopts;
++	u8 stopping_unbinding;
+ };
+ 
+ struct ax88179_int_data {
+@@ -208,6 +209,7 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ {
+ 	int ret;
+ 	int (*fn)(struct usbnet *, u8, u8, u16, u16, void *, u16);
++	struct ax88179_data *ax179_data = dev->driver_priv;
+ 
+ 	BUG_ON(!dev);
+ 
+@@ -219,7 +221,7 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ 	ret = fn(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 value, index, data, size);
+ 
+-	if (unlikely(ret < 0))
++	if (unlikely(ret < 0 && !(ret == -ENODEV && ax179_data->stopping_unbinding)))
+ 		netdev_warn(dev->net, "Failed to read reg index 0x%04x: %d\n",
+ 			    index, ret);
+ 
+@@ -231,6 +233,7 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ {
+ 	int ret;
+ 	int (*fn)(struct usbnet *, u8, u8, u16, u16, const void *, u16);
++	struct ax88179_data *ax179_data = dev->driver_priv;
+ 
+ 	BUG_ON(!dev);
+ 
+@@ -242,7 +245,7 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+ 	ret = fn(dev, cmd, USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+ 		 value, index, data, size);
+ 
+-	if (unlikely(ret < 0))
++	if (unlikely(ret < 0 && !(ret == -ENODEV && ax179_data->stopping_unbinding)))
+ 		netdev_warn(dev->net, "Failed to write reg index 0x%04x: %d\n",
+ 			    index, ret);
+ 
+@@ -1308,6 +1311,8 @@ static void ax88179_unbind(struct usbnet *dev, struct usb_interface *intf)
+ 	struct ax88179_data *ax179_data = dev->driver_priv;
+ 	u16 tmp16;
+ 
++	ax179_data->stopping_unbinding = 1;
++
+ 	/* Configure RX control register => stop operation */
+ 	tmp16 = AX_RX_CTL_STOP;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_RX_CTL, 2, 2, &tmp16);
+@@ -1319,6 +1324,8 @@ static void ax88179_unbind(struct usbnet *dev, struct usb_interface *intf)
+ 	tmp16 = 0;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, &tmp16);
+ 
++	ax179_data->stopping_unbinding = 0;
++
+ 	kfree(ax179_data);
+ }
+ 
+@@ -1661,14 +1668,19 @@ static int ax88179_reset(struct usbnet *dev)
+ 
+ static int ax88179_stop(struct usbnet *dev)
+ {
++	struct ax88179_data *ax179_data = dev->driver_priv;
+ 	u16 tmp16;
+ 
++	ax179_data->stopping_unbinding = 1;
++
+ 	ax88179_read_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
+ 			 2, 2, &tmp16);
+ 	tmp16 &= ~AX_MEDIUM_RECEIVE_EN;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_MEDIUM_STATUS_MODE,
+ 			  2, 2, &tmp16);
+ 
++	ax179_data->stopping_unbinding = 0;
++
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZWnd2AAKCRB4tDGHoIJi
-0uO2AQDgaoRRvbNVU+L0vVmYKaIMArJIz6JH3K0QDUdd7M77KwD+O2iYvcBIwEeb
-zZl1lG7BTtD04V/w8ec46x9ppu093wc=
-=vWEC
------END PGP SIGNATURE-----
-
---CGVL03bvG34QNHYM--
 
