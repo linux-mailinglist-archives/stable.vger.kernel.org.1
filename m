@@ -1,87 +1,241 @@
-Return-Path: <stable+bounces-3636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DF7800B5E
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 14:01:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675CD800B89
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 14:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E2C1C20F52
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:01:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 227992815FE
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6892555A;
-	Fri,  1 Dec 2023 13:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E3F2576D;
+	Fri,  1 Dec 2023 13:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZtzyTb/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z4N7S12T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A04F6FAE;
-	Fri,  1 Dec 2023 13:01:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FABC433C9;
-	Fri,  1 Dec 2023 13:01:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701435686;
-	bh=nKZ13NuAVFyDVkkW6Kh85flwpj1kfXAcyGjj3u/r2rM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZtzyTb/ueqkSWBKnyrnh/Od1ffBPrIdv0630oHmteh22P3XWB0RvdCdXLG40N/lV
-	 RwZWys0BeiyRQMjLG/Mu+RjpJm2jXhm80jL0xr+u/jeHHBfdpgboZPYPzpyxcXArSO
-	 hvd9T2/RkMvYpjxC+XK33vuimtR+lQ4FBSZeO1HEg7zJRaZEj9gcx1muV/cBiBKstn
-	 2Yu3nC/gVdid0m8p6voJYKjn6RBsa9t9gbA7cGkysfJOzbhNJhtOqorT3lF1POzyM/
-	 if5AU6ITTUoGybZ0+mZN7uroxNWdUD7JxyH1AbWtbV0p6ILo7BlmqcfLh16dRSoHC9
-	 YytwDAcvG+aMw==
-From: Christian Brauner <brauner@kernel.org>
-To: David Howells <dhowells@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>,
-	Lukas Schauer <lukas@schauer.dev>,
-	linux-fsdevel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pipe: wakeup wr_wait after setting max_usage
-Date: Fri,  1 Dec 2023 14:01:11 +0100
-Message-ID: <20231201-reparationen-einfuhr-da33df9ff38e@brauner>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231201-orchideen-modewelt-e009de4562c6@brauner>
-References: <20231201-orchideen-modewelt-e009de4562c6@brauner>
+Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47F8510D
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 05:14:46 -0800 (PST)
+Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6ce322b62aeso259601a34.3
+        for <stable@vger.kernel.org>; Fri, 01 Dec 2023 05:14:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701436485; x=1702041285; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0W16F4lcpZ8yLA66z8Ns7cQEkaAJSZRgZlujODAFBjY=;
+        b=Z4N7S12TIhIjHH/WEkMDl5I9O60qpLL9cSuzvzU7C1WWVdfP8+/I0k3Z7UhJJ9zzLs
+         9VIXwU8wVaiDpV8lPHDwUd63py464PJCsj5FzKuBzWInbh1fTI9KIdZ0t2trc/0RMqeK
+         EZm9TECSWZC/py5gLDxSSh4tioaPv9lcEZ0ONGOq34zaIga7+HG4XbiJDP741V0Vo31Q
+         ebktrHaI86VaF/le0ReJ3KTrXdjNhHDbeK+sHceLf3WjV19gSHS8yM6pHk5DlwAzMCUw
+         N/7KD8RuBKrE+7tpXJ1Jdi0iqU3eKx+2izV5RUF6XFv89ST9XkV3HgHgrlKAbY58bBS5
+         2leQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701436485; x=1702041285;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0W16F4lcpZ8yLA66z8Ns7cQEkaAJSZRgZlujODAFBjY=;
+        b=KaNiDNWl0I9ou6NP0KRnlfqTaP9H5pFqaAbjgy1uuXYmFIaaj77REW8Bc11DhxkimP
+         ZWccx1qQ5QVFl9sJ6MS85sWX5/rl7SMU0xYjcoQV3HZNEZQoHvGw9edjZxwCt0lSGGxH
+         JM9rYPX+dSyupBKPXCqDGre6lPava6fiNyjvnHRLMpxRNkz0y4LdOxjBXdeMuDeKzsla
+         mGVRnw4GZ0k1MUZqlb+sLqMwiK2qmrSYlN3hbHQuctf27s2b/02agbxhaTVqbjgd0mOP
+         7abJnC/9eRZvY9k3sRAU6UBqjM1c5jMx1Fr0c2EFoOSoAK7qI8gghTljESvF9E6Sbd0w
+         XevQ==
+X-Gm-Message-State: AOJu0YynU2TVa8iJk9pVMAqvKv3h4SOM81jxG4YcOoDEP4SwvhSnzo30
+	Y9L6+08fkCizI9e0VGsARDzvWsABRqq1tpMLQFUVDuN81cTV8bl8joY=
+X-Google-Smtp-Source: AGHT+IFXeQf2TOaP+x86KeVNznhphAjy5NQ2X3ZGv+eAupqFUPllnCV4oSIRSe387vTiOXL/OxelT7sLz3tjjeaLbt8=
+X-Received: by 2002:a05:6830:1011:b0:6d8:6c3f:50a2 with SMTP id
+ a17-20020a056830101100b006d86c3f50a2mr1432559otp.6.1701436485512; Fri, 01 Dec
+ 2023 05:14:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=brauner@kernel.org; h=from:subject:message-id; bh=nKZ13NuAVFyDVkkW6Kh85flwpj1kfXAcyGjj3u/r2rM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRm3hRbUMOy52qvVW7QRd4fon/0pT/e7n29p1ct9HTyx LpVxxq3d5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykJ4Phn920m4kKKlMWCez2 FJP/sLRTqCPp3xPFf+x/2Tjf/Dvp2Mrwh4ulmoNd/F3Hxfo3bVODfghaek7zrwwIm8ijErUs72g NIwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
+References: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 1 Dec 2023 18:44:33 +0530
+Message-ID: <CA+G9fYuaN6uYzfKn1wc3-_9TFAQeRt8mTGi+WwB8WkH151P0FQ@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/112] 6.6.4-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 01 Dec 2023 11:11:28 +0100, Christian Brauner wrote:
-> Commit c73be61cede5 ("pipe: Add general notification queue support") a
-> regression was introduced that would lock up resized pipes under certain
-> conditions. See the reproducer in [1].
-> 
-> The commit resizing the pipe ring size was moved to a different
-> function, doing that moved the wakeup for pipe->wr_wait before actually
-> raising pipe->max_usage. If a pipe was full before the resize occured it
-> would result in the wakeup never actually triggering pipe_write.
-> 
-> [...]
+On Thu, 30 Nov 2023 at 21:53, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.6.4 release.
+> There are 112 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.4-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Applied to the vfs.misc branch of the vfs/vfs.git tree.
-Patches in the vfs.misc branch should appear in linux-next soon.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Results from Linaro's test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
+## Build
+* kernel: 6.6.4-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.6.y
+* git commit: 6ed60a9257c16a5f571b2354c4c0178caa70fc71
+* git describe: v6.6.3-113-g6ed60a9257c1
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.3-113-g6ed60a9257c1
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.misc
+## Test Regressions (compared to v6.6.3)
 
-[1/1] pipe: wakeup wr_wait after setting max_usage
-      https://git.kernel.org/vfs/vfs/c/348806de39e0
+## Metric Regressions (compared to v6.6.3)
+
+## Test Fixes (compared to v6.6.3)
+
+## Metric Fixes (compared to v6.6.3)
+
+## Test result summary
+total: 154229, pass: 132702, fail: 2283, skip: 19120, xfail: 124
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 145 total, 145 passed, 0 failed
+* arm64: 52 total, 50 passed, 2 failed
+* i386: 41 total, 40 passed, 1 failed
+* mips: 26 total, 26 passed, 0 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 36 total, 36 passed, 0 failed
+* riscv: 25 total, 25 passed, 0 failed
+* s390: 13 total, 13 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 46 passed, 0 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-livepatch
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* libgpiod
+* libhugetlbfs
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* network-basic-tests
+* perf
+* rcutorture
+* v4l2-compliance
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
