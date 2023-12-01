@@ -1,93 +1,329 @@
-Return-Path: <stable+bounces-3600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7C780042D
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 07:52:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB5980044B
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 08:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 092A12815BE
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 06:52:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3470EB211B2
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 07:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D1111700;
-	Fri,  1 Dec 2023 06:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3emrjF8t"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7391172A;
+	Fri,  1 Dec 2023 07:03:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC18810FD
-	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 22:52:16 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id 41be03b00d2f7-5c210e34088so170136a12.2
-        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 22:52:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701413536; x=1702018336; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=VRkIzUVL8moRADOVLqm0jiXF7LpIsgbB7K5Hlu0moR0=;
-        b=3emrjF8tq9YkovhG6MamCwPIG2D3nJ3WyiLVhWXophCXF1ftTYGkB8L/HK27oXqF3h
-         Tuxg+02yLCiLNiJ70Ats7xdMaP566lcqGv+LNP2nAuaurXthDJm7+FzR4SnZHbqdL+uQ
-         NKhOV9b3LxZb+pLxKfPZ6PTMTuZcV5HeNFGCyBrW0VW4GOk8dX29efOWOh7ckNE0KbSk
-         svUah+yWjX89dfvwVCzx3rWI/JbviDrcq/hq5QOJmYhl80gpSQqwfQoWwWPm9i5I/MhR
-         3NE1FNHZlKllbQ3vExn+Z6qV9Ij4cx8kFlFUlC8IqEHXvIgI0QGdMkX4W+mS1RKK8tTv
-         bRkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701413536; x=1702018336;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VRkIzUVL8moRADOVLqm0jiXF7LpIsgbB7K5Hlu0moR0=;
-        b=Iio7bAcgai962Hc+Z3zbm8rgR6dGvPvIxEXSSb+jHKXix0lPYfuEui7AO2Rfwx6JPo
-         nr1k/T653qgfEEieddWvw+w7/qWucwuq6wpB4K4yc+rWDsiGTm5oKFvHVvpDFwbYfQj1
-         ba4qVevuuSqyqrlpHJn6xxi1qdIkK73TREXvIq4w4Snh8HLhxHQP6UVtTP/zQpVd3COu
-         XZNpgVaZdHjOKf15F4iCmZny2JDWobKrYaQE0Zs5nc/XrzTQ150wKsYGzsB1Q82tOAeu
-         d6PJi+1rmTbq89HJon82rOsKgdzYUdlymqbSeArYRH4+n9W3pna0NfqIreqQt9fcWAhK
-         2lJw==
-X-Gm-Message-State: AOJu0YzYoM1E+UAoBuXXlaqLFlDjxUyOZtg37aSZoAo7ERCK1QJ+THOH
-	Uy9SFDZUmH1WuPqxdnTtO0SJgQ==
-X-Google-Smtp-Source: AGHT+IGWPGI675H9YKswKjhhnrgi5wfg1KyVPlIuzV/jrOYnGNKTcqiL4Toa+T/GI3sDDyN+6jrgig==
-X-Received: by 2002:a05:6a21:99a7:b0:18b:208b:7043 with SMTP id ve39-20020a056a2199a700b0018b208b7043mr33191190pzb.49.1701413536061;
-        Thu, 30 Nov 2023 22:52:16 -0800 (PST)
-Received: from google.com (170.102.105.34.bc.googleusercontent.com. [34.105.102.170])
-        by smtp.gmail.com with ESMTPSA id y31-20020a056a00181f00b006cd82bddd9dsm2272486pfa.157.2023.11.30.22.52.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Nov 2023 22:52:15 -0800 (PST)
-Date: Fri, 1 Dec 2023 06:52:11 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Martijn Coenen <maco@android.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Todd Kjos <tkjos@android.com>, Todd Kjos <tkjos@google.com>,
-	kernel-team@android.com, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 05/21] binder: fix trivial typo of
- binder_free_buf_locked()
-Message-ID: <ZWmCm8zzqJkaop1Z@google.com>
-References: <20231102185934.773885-6-cmllamas@google.com>
- <20231107090805.257105-1-aliceryhl@google.com>
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BF37103;
+	Thu, 30 Nov 2023 23:03:40 -0800 (PST)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046050;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VxXwK5O_1701414213;
+Received: from 30.240.114.121(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VxXwK5O_1701414213)
+          by smtp.aliyun-inc.com;
+          Fri, 01 Dec 2023 15:03:37 +0800
+Message-ID: <b56fbae2-0d9b-4c42-94bf-7fd58b3fd738@linux.alibaba.com>
+Date: Fri, 1 Dec 2023 15:03:28 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231107090805.257105-1-aliceryhl@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 2/2] ACPI: APEI: handle synchronous exceptions in task
+ work
+Content-Language: en-US
+To: James Morse <james.morse@arm.com>, rafael@kernel.org,
+ wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
+ tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
+ gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org
+Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+ linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
+ stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
+ ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
+ bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
+ dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
+ robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
+ zhuo.song@linux.alibaba.com
+References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
+ <20231007072818.58951-3-xueshuai@linux.alibaba.com>
+ <874f0170-a829-47db-8882-52b9ed8e869d@arm.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <874f0170-a829-47db-8882-52b9ed8e869d@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Nov 07, 2023 at 09:08:05AM +0000, Alice Ryhl wrote:
-> It's a bit confusing that the pair of methods binder_alloc_free_buf and
-> binder_free_buf_locked are inconsistent in whether they user the alloc_
-> prefix. It might be worth it to change them to be consistent?
 
-Right, the prefix is concistent across the APIs but not really for the
-local function names. I wouldn't mind adding the "alloc" part, it just
-seemed easier to fix the comment and backport that.
 
---
-Carlos Llamas
+On 2023/12/1 01:39, James Morse wrote:
+> Hi Shuai,
+> 
+> On 07/10/2023 08:28, Shuai Xue wrote:
+>> Hardware errors could be signaled by synchronous interrupt,
+> 
+> I'm struggling with 'synchronous interrupt'. Do you mean arm64's 'precise' (all
+> instructions before the exception were executed, and none after).
+> Otherwise, surely any interrupt from a background scrubber is inherently asynchronous!
+> 
+
+I am sorry, this is typo. I mean asynchronous interrupt.
+
+> 
+>> e.g.  when an
+>> error is detected by a background scrubber, or signaled by synchronous
+>> exception, e.g. when an uncorrected error is consumed. Both synchronous and
+>> asynchronous error are queued and handled by a dedicated kthread in
+>> workqueue.
+>>
+>> commit 7f17b4a121d0 ("ACPI: APEI: Kick the memory_failure() queue for
+>> synchronous errors") keep track of whether memory_failure() work was
+>> queued, and make task_work pending to flush out the workqueue so that the
+>> work for synchronous error is processed before returning to user-space.
+> 
+> It does it regardless, if user-space was interrupted by APEI any work queued as a result
+> of that should be completed before we go back to user-space. Otherwise we can bounce
+> between user-space and firmware, with the kernel only running the APEI code, and never
+> making progress.
+> 
+
+Agreed.
+
+> 
+>> The trick ensures that the corrupted page is unmapped and poisoned. And
+>> after returning to user-space, the task starts at current instruction which
+>> triggering a page fault in which kernel will send SIGBUS to current process
+>> due to VM_FAULT_HWPOISON.
+>>
+>> However, the memory failure recovery for hwpoison-aware mechanisms does not
+>> work as expected. For example, hwpoison-aware user-space processes like
+>> QEMU register their customized SIGBUS handler and enable early kill mode by
+>> seting PF_MCE_EARLY at initialization. Then the kernel will directly notify
+> 
+> (setting, directly)
+
+Thank you. Will fix it.
+
+> 
+>> the process by sending a SIGBUS signal in memory failure with wrong
+> 
+>> si_code: the actual user-space process accessing the corrupt memory
+>> location, but its memory failure work is handled in a kthread context, so
+>> it will send SIGBUS with BUS_MCEERR_AO si_code to the actual user-space
+>> process instead of BUS_MCEERR_AR in kill_proc().
+> 
+> This is hard to parse, "the user-space process is accessing"? (dropping 'actual' and
+> adding 'is')
+
+Will fix it.
+
+
+> 
+> 
+> Wasn't this behaviour fixed by the previous patch?
+> 
+> What problem are you fixing here?
+
+
+Nope. The memory_failure() runs in a kthread context, but not the
+user-space process which consuming poison data.
+
+
+    // kill_proc() in memory-failure.c
+
+	if ((flags & MF_ACTION_REQUIRED) && (t == current))
+		ret = force_sig_mceerr(BUS_MCEERR_AR,
+				 (void __user *)tk->addr, addr_lsb);
+	else
+		ret = send_sig_mceerr(BUS_MCEERR_AO, (void __user *)tk->addr,
+				      addr_lsb, t);
+
+So, even we queue memory_failure() with MF_ACTION_REQUIRED flags in
+previous patch, it will still send a sigbus with BUS_MCEERR_AO in the else
+branch of kill_proc().
+
+> 
+> 
+>> To this end, separate synchronous and asynchronous error handling into
+>> different paths like X86 platform does:
+>>
+>> - valid synchronous errors: queue a task_work to synchronously send SIGBUS
+>>   before ret_to_user.
+> 
+>> - valid asynchronous errors: queue a work into workqueue to asynchronously
+>>   handle memory failure.
+> 
+> Why? The signal issue was fixed by the previous patch. Why delay the handling of a
+> poisoned memory location further?
+
+The signal issue is not fixed completely. See my reply above.
+
+> 
+> 
+>> - abnormal branches such as invalid PA, unexpected severity, no memory
+>>   failure config support, invalid GUID section, OOM, etc.
+> 
+> ... do what?
+
+If no memory failure work is queued for abnormal errors, do a force kill.
+Will also add this comment to commit log.
+
+> 
+> 
+>> Then for valid synchronous errors, the current context in memory failure is
+>> exactly belongs to the task consuming poison data and it will send SIBBUS
+>> with proper si_code.
+> 
+> 
+>> diff --git a/arch/x86/kernel/cpu/mce/core.c b/arch/x86/kernel/cpu/mce/core.c
+>> index 6f35f724cc14..1675ff77033d 100644
+>> --- a/arch/x86/kernel/cpu/mce/core.c
+>> +++ b/arch/x86/kernel/cpu/mce/core.c
+>> @@ -1334,17 +1334,10 @@ static void kill_me_maybe(struct callback_head *cb)
+>>  		return;
+>>  	}
+>>  
+>> -	/*
+>> -	 * -EHWPOISON from memory_failure() means that it already sent SIGBUS
+>> -	 * to the current process with the proper error info,
+>> -	 * -EOPNOTSUPP means hwpoison_filter() filtered the error event,
+>> -	 *
+>> -	 * In both cases, no further processing is required.
+>> -	 */
+>>  	if (ret == -EHWPOISON || ret == -EOPNOTSUPP)
+>>  		return;
+>>  
+>> -	pr_err("Memory error not recovered");
+>> +	pr_err("Sending SIGBUS to current task due to memory error not recovered");
+>>  	kill_me_now(cb);
+>>  }
+>>  
+> 
+> I'm not sure how this hunk is relevant to the commit message.
+
+I handle memory_failure() error code in its arm64 call site
+memory_failure_cb() with some comments, similar to x86 call site
+kill_me_maybe(). I moved these two part comments to function declaration,
+followed by review comments from Kefeng.
+
+I should split this into a separate patch. Will do it in next version.
+
+> 
+> 
+>> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
+>> index 88178aa6222d..014401a65ed5 100644
+>> --- a/drivers/acpi/apei/ghes.c
+>> +++ b/drivers/acpi/apei/ghes.c
+>> @@ -484,6 +497,18 @@ static bool ghes_do_memory_failure(u64 physical_addr, int flags)
+>>  		return false;
+>>  	}
+>>  
+>> +	if (flags == MF_ACTION_REQUIRED && current->mm) {
+>> +		twcb = kmalloc(sizeof(*twcb), GFP_ATOMIC);
+>> +		if (!twcb)
+>> +			return false;
+> 
+> Yuck - New failure modes! This is why the existing code always has this memory allocated
+> in struct ghes_estatus_node.
+
+Are you suggesting to move fields of struct sync_task_work to struct
+ghes_estatus_node, and use ghes_estatus_node here? Or we can just alloc
+struct sync_task_work with gen_pool_alloc from ghes_estatus_pool.
+
+> 
+> 
+>> +		twcb->pfn = pfn;
+>> +		twcb->flags = flags;
+>> +		init_task_work(&twcb->twork, memory_failure_cb);
+>> +		task_work_add(current, &twcb->twork, TWA_RESUME);
+>> +		return true;
+>> +	}
+>> +
+>>  	memory_failure_queue(pfn, flags);
+>>  	return true;
+>>  }
+> 
+> [..]
+> 
+>> @@ -696,7 +721,14 @@ static bool ghes_do_proc(struct ghes *ghes,
+>>  		}
+>>  	}
+>>  
+>> -	return queued;
+>> +	/*
+>> +	 * If no memory failure work is queued for abnormal synchronous
+>> +	 * errors, do a force kill.
+>> +	 */
+>> +	if (sync && !queued) {
+>> +		pr_err("Sending SIGBUS to current task due to memory error not recovered");
+>> +		force_sig(SIGBUS);
+>> +	}
+>>  }
+> 
+> I think this is a lot of churn, and this hunk is the the only meaningful change in
+> behaviour. Can you explain how this happens?
+
+For example:
+- invalid GUID section in ghes_do_proc()
+- CPER_MEM_VALID_PA is not set, unexpected severity in
+  ghes_handle_memory_failure().
+- CONFIG_ACPI_APEI_MEMORY_FAILURE is not enabled, !pfn_vaild(pfn) in
+  ghes_do_memory_failure()
+
+> 
+> 
+> Wouldn't it be simpler to split ghes_kick_task_work() to have a sync/async version.
+> The synchronous version can unconditionally force_sig_mceerr(BUS_MCEERR_AR, ...) after
+> memory_failure_queue_kick() - but that still means memory_failure() is unable to disappear
+> errors that it fixed - see MF_RECOVERED.
+
+Sorry, I don't think so. Unconditionally send a sigbus is not a good
+choice.  For example, if a sync memory error detected in instruction memory
+error, the kernel should transparently fix and no signal should be send.
+
+    ./einj_mem_uc instr
+    [168522.751671] Memory failure: 0x89dedd: corrupted page was clean: dropped without side effects
+    [168522.751679] Memory failure: 0x89dedd: recovery action for clean LRU page: Recovered
+
+With this patch set, the instr case behaves consistently on both the arm64 and x86 platforms.
+
+The complex page error_states are handled in memory_failure(). IMHO, we
+should left this part to it.
+
+> 
+>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+>> index 4d6e43c88489..0d02f8a0b556 100644
+>> --- a/mm/memory-failure.c
+>> +++ b/mm/memory-failure.c
+>> @@ -2161,9 +2161,12 @@ static int memory_failure_dev_pagemap(unsigned long pfn, int flags,
+>>   * Must run in process context (e.g. a work queue) with interrupts
+>>   * enabled and no spinlocks held.
+>>   *
+>> - * Return: 0 for successfully handled the memory error,
+>> - *         -EOPNOTSUPP for hwpoison_filter() filtered the error event,
+>> - *         < 0(except -EOPNOTSUPP) on failure.
+>> + * Return values:
+>> + *   0             - success
+>> + *   -EOPNOTSUPP   - hwpoison_filter() filtered the error event.
+>> + *   -EHWPOISON    - sent SIGBUS to the current process with the proper
+>> + *                   error info by kill_accessing_process().
+>> + *   other negative values - failure
+>>   */
+>>  int memory_failure(unsigned long pfn, int flags)
+>>  {
+> 
+> I'm not sure how this hunk is relevant to the commit message.
+
+
+As mentioned, I will split this into a separate patch.
+
+> 
+> 
+> Thanks,
+> 
+> James
+
+
+Thank you for valuable comments.
+Best Regards,
+Shuai
 
