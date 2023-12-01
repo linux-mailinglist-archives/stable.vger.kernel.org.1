@@ -1,72 +1,55 @@
-Return-Path: <stable+bounces-3679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E750980147C
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 21:31:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E368016DF
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 23:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D55F281D8A
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 20:31:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E95EF281F18
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 22:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2FC4EB5E;
-	Fri,  1 Dec 2023 20:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C945538DDA;
+	Fri,  1 Dec 2023 22:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyXp9Mun"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UvKxojd9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62D9C10EA;
-	Fri,  1 Dec 2023 12:31:06 -0800 (PST)
-Received: by mail-oi1-x22e.google.com with SMTP id 5614622812f47-3b843b61d8aso632691b6e.0;
-        Fri, 01 Dec 2023 12:31:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701462665; x=1702067465; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SmWwVjROmEBWXhhUWxe/J66BmaEO8046zm5J7gWNdho=;
-        b=lyXp9MunLkFCfmueDIEHSzGToDquCL7NYal6vY3kROy3yjjcjTwwXg03oSvdlqgQn6
-         kXflRabl3yQ5g4+7LYNb5Rn1/QG1JdSo/ITN4GWJI5YRd8t4kpKD6NTjcFoSN/ddlbSw
-         hM/xn8gpMS8DiYhPN8Spq8ICafKZ10sp/GyCNrE7a212KJszNvb9FiOOzkjNvdEHdkb0
-         6jTN8sQm0hbLOh3YIaKmWcEspv7uN53EFof/aHxhk/ca2cSawaJpwMnTO0NavTmManLk
-         OA+RImrup/hUjPec9kGNmspNlkCrF0RqgfKtJ362zUzV0Ot08jmco2fE1XYy2//ASi2Z
-         7C8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701462665; x=1702067465;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SmWwVjROmEBWXhhUWxe/J66BmaEO8046zm5J7gWNdho=;
-        b=j5AFPrHwT3OUOIq3gKMk8gLnFZ7czr+iWLklccLMUU3vriKzu7NqSc59f220oZ9FQq
-         7rvHp1WwZ0bjr0ba/M2x0IiPNDHhXQEVpgfbzYmaOckows8jddi2UYWg9HgnEAxfEsf0
-         daF5+6Nw1iuhYiBD6OjZkRFR6SD0CEsy+xsVV4c7yIr19N5OIfqDWQBf0k3FGeHbWzgf
-         OjhJrdWLGDQVb67HQEjqjf3mkmIAt1XA5oa8LsJjzoZa2vTwEg28y4/CDmzgJwttqNh3
-         x4HAXLeZLSISl08oVu3QdGr1e1NsBOAXUU2uObxna+og3dTnWQHqsJYD7rs6Yy+WwHbq
-         x4Ng==
-X-Gm-Message-State: AOJu0Yybh9mczb7ENHU4Bt7bUbBCf8Id8e6vEtYCA6tOYyIAJCo3bb3e
-	oNXppmCtBB+cFHVWYEFMvkQ=
-X-Google-Smtp-Source: AGHT+IG+dEZfs+IGd7jRnQ5/CQJAH9M+/2aYZ3NM/KmOzK0+5/6Vy/bcyc5NKgAXg7njXm49LmCZYw==
-X-Received: by 2002:a05:6808:14cb:b0:3b8:b063:5d69 with SMTP id f11-20020a05680814cb00b003b8b0635d69mr86605oiw.80.1701462665697;
-        Fri, 01 Dec 2023 12:31:05 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id z26-20020a54459a000000b003b845ba61c8sm671265oib.12.2023.12.01.12.31.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Dec 2023 12:31:05 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 1 Dec 2023 12:31:04 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/112] 6.6.4-rc1 review
-Message-ID: <34b46642-7834-4fcf-9112-954688faf0c2@roeck-us.net>
-References: <20231130162140.298098091@linuxfoundation.org>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B5B619D4;
+	Fri,  1 Dec 2023 22:49:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FABC433C7;
+	Fri,  1 Dec 2023 22:49:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701470970;
+	bh=7UHBRH5A/rAUW8O3WYeKaOaOXX0+pl8vP8IIGkcTjO8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=UvKxojd96ybvz4wCT9QMbUD7BYFKOW7L32k1cM25SmfLk6GBxSewQ5EydhsMm94us
+	 rygz+JfUakNQhTBUUoZVdDPJZbLsJOmsHmZcxkfXI74F+u5hHmYqcOFdSgYh+A3x59
+	 jkiHiPltMgj7x0VouBYtCgsE2dAgWul/msywmd8AhKr2goC5+57p0FTwkJfxIclrgU
+	 YP/WqlHhVtbEvhtLIJwTT0oAaL/v1k0YU0Vty1JTCYD1U6z+HOZzPcBat3lC0hGqGe
+	 Dey12bQ/+2mx2mUkRM4vY28KyXA1OpnRC9gHm2DBWfkJHK9GUMU6ggiR549HbVmcXk
+	 bu0iD+ZH2Vf5Q==
+Date: Fri, 1 Dec 2023 16:49:28 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Lizhi Hou <lizhi.hou@amd.com>,
+	Rob Herring <robh@kernel.org>, Max Zhen <max.zhen@amd.com>,
+	Sonal Santan <sonal.santan@amd.com>,
+	Stefano Stabellini <stefano.stabellini@xilinx.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] PCI: of: Attach created of_node to existing device
+Message-ID: <20231201224928.GA534494@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,24 +58,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231130162140.298098091@linuxfoundation.org>
+In-Reply-To: <20231130165700.685764-3-herve.codina@bootlin.com>
 
-On Thu, Nov 30, 2023 at 04:20:47PM +0000, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.4 release.
-> There are 112 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Thu, Nov 30, 2023 at 05:56:59PM +0100, Herve Codina wrote:
+> The commit 407d1a51921e ("PCI: Create device tree node for bridge")
+> creates of_node for PCI devices.
+> During the insertion handling of these new DT nodes done by of_platform,
+> new devices (struct device) are created.
+> For each PCI devices a struct device is already present (created and
+> handled by the PCI core).
+> Having a second struct device to represent the exact same PCI device is
+> not correct.
+
+Can you rewrap this or, if you intend multiple paragraphs, add blank
+lines between them?
+
+> On the of_node creation, tell the of_platform that there is no need to
+> create a device for this node (OF_POPULATED flag), link this newly
+> created of_node to the already present device and tell fwnode that the
+> device attached to this of_node is ready (fwnode_dev_initialized()).
 > 
-> Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
-> Anything received after that time might be too late.
+> With this fix, the of_node are available in the sysfs device tree:
+> /sys/devices/platform/soc/d0070000.pcie/
+> + of_node -> .../devicetree/base/soc/pcie@d0070000
+> + pci0000:00
+>   + 0000:00:00.0
+>     + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0
+>     + 0000:01:00.0
+>       + of_node -> .../devicetree/base/soc/pcie@d0070000/pci@0,0/dev@0,0
 > 
-
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 530 pass: 530 fail: 0
-
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-
-Guenter
+> On the of_node removal, revert the operations.
+> 
+> Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> ---
+>  drivers/pci/of.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/of.c b/drivers/pci/of.c
+> index 51e3dd0ea5ab..5afd2731e876 100644
+> --- a/drivers/pci/of.c
+> +++ b/drivers/pci/of.c
+> @@ -615,7 +615,8 @@ void of_pci_remove_node(struct pci_dev *pdev)
+>  	np = pci_device_to_OF_node(pdev);
+>  	if (!np || !of_node_check_flag(np, OF_DYNAMIC))
+>  		return;
+> -	pdev->dev.of_node = NULL;
+> +
+> +	device_remove_of_node(&pdev->dev);
+>  
+>  	of_changeset_revert(np->data);
+>  	of_changeset_destroy(np->data);
+> @@ -668,12 +669,22 @@ void of_pci_make_dev_node(struct pci_dev *pdev)
+>  	if (ret)
+>  		goto out_free_node;
+>  
+> +	/*
+> +	 * This of_node will be added to an existing device.
+> +	 * Avoid any device creation and use the existing device
+> +	 */
+> +	of_node_set_flag(np, OF_POPULATED);
+> +	np->fwnode.dev = &pdev->dev;
+> +	fwnode_dev_initialized(&np->fwnode, true);
+> +
+>  	ret = of_changeset_apply(cset);
+>  	if (ret)
+>  		goto out_free_node;
+>  
+>  	np->data = cset;
+> -	pdev->dev.of_node = np;
+> +
+> +	/* Add the of_node to the existing device */
+> +	device_add_of_node(&pdev->dev, np);
+>  	kfree(name);
+>  
+>  	return;
+> -- 
+> 2.42.0
+> 
 
