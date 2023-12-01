@@ -1,68 +1,87 @@
-Return-Path: <stable+bounces-3635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDD6800B40
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:44:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72DF7800B5E
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 14:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768FF1F20F8A
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 12:44:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2E2C1C20F52
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA8B200CB;
-	Fri,  1 Dec 2023 12:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6892555A;
+	Fri,  1 Dec 2023 13:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnrmfvMk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FZtzyTb/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576675954E;
-	Fri,  1 Dec 2023 12:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B36CC433C7;
-	Fri,  1 Dec 2023 12:44:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701434647;
-	bh=ah7J3Jqo85Y9L6UmtUaNFJgYT5iUf/nZE7iW/HuhMYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CnrmfvMkp6yoWoq8NJ1XEtT4O7m4/JQFa1GxIQtgU5F5aVDX1HP/VVulkZDwyD9T4
-	 BGMGmR+Ksv/nWBy6gUv3Kf7zzXD15PwDGmDpOZ3O6677P90vL/UIHKVpfsF9QLy/r8
-	 85SsqfXldhr9nl3+62tAyAV3Mi9xas7AUdSF1E1o=
-Date: Fri, 1 Dec 2023 12:44:04 +0000
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lukasz Luba <lukasz.luba@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-	daniel.lezcano@linaro.org, rafael@kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A04F6FAE;
+	Fri,  1 Dec 2023 13:01:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FABC433C9;
+	Fri,  1 Dec 2023 13:01:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701435686;
+	bh=nKZ13NuAVFyDVkkW6Kh85flwpj1kfXAcyGjj3u/r2rM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FZtzyTb/ueqkSWBKnyrnh/Od1ffBPrIdv0630oHmteh22P3XWB0RvdCdXLG40N/lV
+	 RwZWys0BeiyRQMjLG/Mu+RjpJm2jXhm80jL0xr+u/jeHHBfdpgboZPYPzpyxcXArSO
+	 hvd9T2/RkMvYpjxC+XK33vuimtR+lQ4FBSZeO1HEg7zJRaZEj9gcx1muV/cBiBKstn
+	 2Yu3nC/gVdid0m8p6voJYKjn6RBsa9t9gbA7cGkysfJOzbhNJhtOqorT3lF1POzyM/
+	 if5AU6ITTUoGybZ0+mZN7uroxNWdUD7JxyH1AbWtbV0p6ILo7BlmqcfLh16dRSoHC9
+	 YytwDAcvG+aMw==
+From: Christian Brauner <brauner@kernel.org>
+To: David Howells <dhowells@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Lukas Schauer <lukas@schauer.dev>,
+	linux-fsdevel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] powercap: DTPM: Fix the missing cpufreq_cpu_put() calls
-Message-ID: <2023120139-staging-sprang-7e77@gregkh>
-References: <20231201123205.1996790-1-lukasz.luba@arm.com>
+Subject: Re: [PATCH] pipe: wakeup wr_wait after setting max_usage
+Date: Fri,  1 Dec 2023 14:01:11 +0100
+Message-ID: <20231201-reparationen-einfuhr-da33df9ff38e@brauner>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <20231201-orchideen-modewelt-e009de4562c6@brauner>
+References: <20231201-orchideen-modewelt-e009de4562c6@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231201123205.1996790-1-lukasz.luba@arm.com>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1313; i=brauner@kernel.org; h=from:subject:message-id; bh=nKZ13NuAVFyDVkkW6Kh85flwpj1kfXAcyGjj3u/r2rM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRm3hRbUMOy52qvVW7QRd4fon/0pT/e7n29p1ct9HTyx LpVxxq3d5SyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEykJ4Phn920m4kKKlMWCez2 FJP/sLRTqCPp3xPFf+x/2Tjf/Dvp2Mrwh4ulmoNd/F3Hxfo3bVODfghaek7zrwwIm8ijErUs72g NIwA=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On Fri, Dec 01, 2023 at 12:32:05PM +0000, Lukasz Luba wrote:
-> The policy returned by cpufreq_cpu_get() has to be released with
-> the help of cpufreq_cpu_put() to balance its kobject reference counter
-> properly.
+On Fri, 01 Dec 2023 11:11:28 +0100, Christian Brauner wrote:
+> Commit c73be61cede5 ("pipe: Add general notification queue support") a
+> regression was introduced that would lock up resized pipes under certain
+> conditions. See the reproducer in [1].
 > 
-> Add the missing calls to cpufreq_cpu_put() in the code.
+> The commit resizing the pipe ring size was moved to a different
+> function, doing that moved the wakeup for pipe->wr_wait before actually
+> raising pipe->max_usage. If a pipe was full before the resize occured it
+> would result in the wakeup never actually triggering pipe_write.
 > 
-> Fixes: 0aea2e4ec2a2 ("powercap/dtpm_cpu: Reset per_cpu variable in the release function")
-> Fixes: 0e8f68d7f048 ("powercap/drivers/dtpm: Add CPU energy model based support")
-> Cc: <stable@vger.kernel.org> # v5.10+
+> [...]
 
-But the Fixes: tags are for commits that are only in 5.12 and newer, how
-can this be relevant for 5.10?
+Applied to the vfs.misc branch of the vfs/vfs.git tree.
+Patches in the vfs.misc branch should appear in linux-next soon.
 
-thanks,
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-greg k-h
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.misc
+
+[1/1] pipe: wakeup wr_wait after setting max_usage
+      https://git.kernel.org/vfs/vfs/c/348806de39e0
 
