@@ -1,178 +1,72 @@
-Return-Path: <stable+bounces-3594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C250D8002FC
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 06:22:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA42800305
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 06:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E88A31C20F2C
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 05:22:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2478B20B3C
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 05:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A0379F0;
-	Fri,  1 Dec 2023 05:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1655079EC;
+	Fri,  1 Dec 2023 05:30:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A950C10FC;
-	Thu, 30 Nov 2023 21:22:35 -0800 (PST)
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=xueshuai@linux.alibaba.com;NM=1;PH=DS;RN=34;SR=0;TI=SMTPD_---0VxVHB4Y_1701408150;
-Received: from 30.240.114.121(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0VxVHB4Y_1701408150)
-          by smtp.aliyun-inc.com;
-          Fri, 01 Dec 2023 13:22:32 +0800
-Message-ID: <c89342d5-79a2-47cb-b1dc-e69f0d528862@linux.alibaba.com>
-Date: Fri, 1 Dec 2023 13:22:26 +0800
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6E4210FD
+	for <stable@vger.kernel.org>; Thu, 30 Nov 2023 21:30:05 -0800 (PST)
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2865742e256so311766a91.0
+        for <stable@vger.kernel.org>; Thu, 30 Nov 2023 21:30:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701408605; x=1702013405;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RQe6d2mCUPulMVUITPnzEMGLHtagoGQTfC04bjLvHSA=;
+        b=bfvELtfV2ZaO6TCLQJlVx5OZ7UxWGMWKH19lRSLFeu41aBomyNm7TInRu9rht7fkiQ
+         NMxgyQgQ2SZ7dJr69EOnUPHU8cMaQr12Psuhw/E9LOm4CkC+v7J3zrAZ5iQt0l9P4GwF
+         Kt5NhnShk5tWT8N6MX9RbDe8stvDFRLbJGQfGzyiQxlIPSHHiG+TktBNz2OdSBZZ9R8k
+         6v5bRKRvL7QiP9H8KZOkOTensgWpqVNOUAramOIz+sYtLBwNe6JNbEVbe89becwHHkio
+         PWVJryEXraZv+2dfaZyOLPglP7J2UDfhSJZGCJKLxOgJ6efH1FOgxLiLLKS62lTm7Dy+
+         knDA==
+X-Gm-Message-State: AOJu0YwJyavx2/+5lGLrOYUnGyoIMHdGoXt05yd6XXoItZj6yJDRJSKS
+	fsLctYEJP+H/nrFFMTp/zwVhMqU0gZ8milEfzlQgv9+/Og5zFw==
+X-Google-Smtp-Source: AGHT+IF45VaQkQh+Qb+PGGfjTtPwchq5ZjseiLMMo4bOpYwJMdx97BiiVyx0dAeFXwy/vqFqrFVkEeWAXevsinFMSaY=
+X-Received: by 2002:a17:90b:3850:b0:285:c1e1:66e with SMTP id
+ nl16-20020a17090b385000b00285c1e1066emr15306836pjb.48.1701408604697; Thu, 30
+ Nov 2023 21:30:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 1/2] ACPI: APEI: set memory failure flags as
- MF_ACTION_REQUIRED on synchronous events
-Content-Language: en-US
-To: James Morse <james.morse@arm.com>, rafael@kernel.org,
- wangkefeng.wang@huawei.com, tanxiaofei@huawei.com, mawupeng1@huawei.com,
- tony.luck@intel.com, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- gregkh@linuxfoundation.org, will@kernel.org, jarkko@kernel.org
-Cc: linux-acpi@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- linux-edac@vger.kernel.org, acpica-devel@lists.linuxfoundation.org,
- stable@vger.kernel.org, x86@kernel.org, justin.he@arm.com, ardb@kernel.org,
- ying.huang@intel.com, ashish.kalra@amd.com, baolin.wang@linux.alibaba.com,
- bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
- dave.hansen@linux.intel.com, lenb@kernel.org, hpa@zytor.com,
- robert.moore@intel.com, lvying6@huawei.com, xiexiuqi@huawei.com,
- zhuo.song@linux.alibaba.com
-References: <20221027042445.60108-1-xueshuai@linux.alibaba.com>
- <20231007072818.58951-2-xueshuai@linux.alibaba.com>
- <c77e1909-8e03-6b2f-ecaf-c5b395642688@arm.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <c77e1909-8e03-6b2f-ecaf-c5b395642688@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Namhyung Kim <namhyung@kernel.org>
+Date: Thu, 30 Nov 2023 21:29:53 -0800
+Message-ID: <CAM9d7chJ8kP5VP+SbQzFfhvRD49X5qccnzysY6hJHgWG2KSLbw@mail.gmail.com>
+Subject: 5.x-stable backport request
+To: stable@vger.kernel.org
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Pablo Galindo Salgado <pablogsal@gmail.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
+Hello,
 
+Please queue up this commit for the v5.x long-term stable
+series (and v4.19 too).
 
-On 2023/12/1 01:39, James Morse wrote:
-> Hi Shuai,
-> 
-> On 07/10/2023 08:28, Shuai Xue wrote:
->> There are two major types of uncorrected recoverable (UCR) errors :
-> 
-> Is UCR a well known x86 acronym? It's best to just spell this out each time,
-> there is enough jargon in this area already.
+ * commit: 89b15d00527b7825ff19130ed83478e80e3fae99
+   ("perf inject: Fix GEN_ELF_TEXT_OFFSET for jit")
+ * Author: Adrian Hunter <adrian.hunter@intel.com>
 
-Quite agreed, will replace the commit log with "uncorrected recoverable error".
+The 5.x stable series has the commit babd04386b1df8c3
+("perf jit: Include program header in ELF files") to include an
+ELF program header for the JIT binaries but it misses this fix
+to update the offset of the text section and the symbol.
 
-> 
->>
->> - Action Required (AR): The error is detected and the processor already
->>   consumes the memory. OS requires to take action (for example, offline
->>   failure page/kill failure thread) to recover this uncorrectable error.
->>
->> - Action Optional (AO): The error is detected out of processor execution
->>   context. Some data in the memory are corrupted. But the data have not
->>   been consumed. OS is optional to take action to recover this
->>   uncorrectable error.
-> 
-> As elsewhere, please don't think of errors as 'action required', this is how
-> things get reported to user-space. Action-required for one thread may be
-> action-optional for another that has the same page mapped - its really not a
-> property of the error.
-> It would be better to describe this as synchronous and asynchronous, or in-band
-> and out-of-band.
+This resulted in failures of symbolizing jit code properly.
+The above commit should be applied to fix it.
 
-Thank you for explanation. I will change to "synchronous and asynchronous".
-
-> 
-> 
->> The essential difference between AR and AO errors is that AR is a
->> synchronous event, while AO is an asynchronous event. The hardware will
->> signal a synchronous exception (Machine Check Exception on X86 and
->> Synchronous External Abort on Arm64) when an error is detected and the
->> memory access has been architecturally executed.
-> 
->> When APEI firmware first is enabled, a platform may describe one error
->> source for the handling of synchronous errors (e.g. MCE or SEA notification
->> ), or for handling asynchronous errors (e.g. SCI or External Interrupt
->> notification). In other words, we can distinguish synchronous errors by
->> APEI notification. For AR errors, kernel will kill current process
->> accessing the poisoned page by sending SIGBUS with BUS_MCEERR_AR. In
->> addition, for AO errors, kernel will notify the process who owns the
->> poisoned page by sending SIGBUS with BUS_MCEERR_AO in early kill mode.
->> However, the GHES driver always sets mf_flags to 0 so that all UCR errors
->> are handled as AO errors in memory failure.
-> 
-> To make this easier to read:
->  UCR and AR -> synchronous
->  AO -> asynchronous
-> 
-
-Will do that.
-
-> 
->> To this end, set memory failure flags as MF_ACTION_REQUIRED on synchronous
->> events.
-> 
->> Fixes: ba61ca4aab47 ("ACPI, APEI, GHES: Add hardware memory error recovery support")'
-> 
-> Erm, this predates arm64 support, and what you have here doesn't change the behaviour on x86.
-> 
-> You can blame 7f17b4a121d0d50 ("ACPI: APEI: Kick the memory_failure() queue for
-> synchronous errors"), which should have covered this.
-
-Do you mean just drop the "Fixes" tags?
-
-> 
->> diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
->> index ef59d6ea16da..88178aa6222d 100644
->> --- a/drivers/acpi/apei/ghes.c
->> +++ b/drivers/acpi/apei/ghes.c
->> @@ -101,6 +101,20 @@ static inline bool is_hest_type_generic_v2(struct ghes *ghes)
->>  	return ghes->generic->header.type == ACPI_HEST_TYPE_GENERIC_ERROR_V2;
->>  }
->>  
->> +/*
->> + * A platform may describe one error source for the handling of synchronous
->> + * errors (e.g. MCE or SEA), or for handling asynchronous errors (e.g. SCI
->> + * or External Interrupt). On x86, the HEST notifications are always
->> + * asynchronous, so only SEA on ARM is delivered as a synchronous
->> + * notification.
->> + */
->> +static inline bool is_hest_sync_notify(struct ghes *ghes)
->> +{
->> +	u8 notify_type = ghes->generic->notify.type;
->> +
->> +	return notify_type == ACPI_HEST_NOTIFY_SEA;
->> +}
-> 
-> and as you had in earlier versions, sometimes SDEI.
-> SDEI can report by synchronous and asynchronous errors, I wouldn't too surprised if the
-> hardware NMI can be used for the same. It would be good to chase up having a hint of this
-> in the CPER records and pass that in here as a hint.> 
-> Unfortunately, its not safe to assume either way for SDEI.
-
-For SDEI notification, only x0-x17 has preserved by firmware.  As SDEI
-TRM[1] describes "the dispatcher can simulate an exception-like entry into
-the client, **with the client providing an additional asynchronous entry
-point similar to an interrupt entry point**".  The client (kernel) lacks
-complete synchronous context, e.g. system register (ELR, ESR, etc). So I
-think SDEI notification should not be used for asynchronous error, can you
-help to confirm this?
-
-For NMI notification, as far as I know, AArch64 (aka arm64 in the Linux
-tree) does not provide architected NMIs.
-
-> 
-> Reviewed-by: James Morse <james.morse@arm.com>
-> 
-
-Thank you for valuable comments.
-
-Best Regards,
-Shuai
-
-[1] https://developer.arm.com/documentation/den0054/latest/
+Thanks,
+Namhyung
 
