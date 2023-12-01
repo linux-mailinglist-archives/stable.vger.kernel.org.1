@@ -1,111 +1,68 @@
-Return-Path: <stable+bounces-3634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD773800B37
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:41:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDD6800B40
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 13:44:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF74A1C208F7
-	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 12:41:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 768FF1F20F8A
+	for <lists+stable@lfdr.de>; Fri,  1 Dec 2023 12:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D0A200CB;
-	Fri,  1 Dec 2023 12:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FA8B200CB;
+	Fri,  1 Dec 2023 12:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OaGNG6Ko"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnrmfvMk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEE15954E;
-	Fri,  1 Dec 2023 12:41:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D35AC433CA;
-	Fri,  1 Dec 2023 12:41:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701434509;
-	bh=imMZhfTtyyGFtFcaYBtnqz4qJYY6QUgBBX1z+Bcmn78=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=OaGNG6KoKebXZRxH+/ZzHRN3G7Und64V4LWYAEwksUBOhkovG8ua4z9z9GooqAs+j
-	 N6CNHSflRxHdz+mHZyXsvpWHy+jEZ5ixIUvVTBMqrv3cU7kLpB+U0lxeuyRobCikPX
-	 VTHvEu2CxYIVQvKMwUB6il4hiMgmU6+67vGr/JRw0XwEAuhHu9r7SSTjn/7jFJ+zcg
-	 sN1ab4TSp6b+GsWDPWyfdtFmqGgS9yXEmuBSkEa1Y6fjHeBtF0tT1bHuMci799Ncio
-	 USHE0ASdS78KNCU7GXR27jHCIFRW0+fvy501KVas50Yg1Hx+DoZ+kkkuKnkdHMe+Lo
-	 9L8mJICKTParQ==
-Content-Type: text/plain; charset="utf-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576675954E;
+	Fri,  1 Dec 2023 12:44:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B36CC433C7;
+	Fri,  1 Dec 2023 12:44:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701434647;
+	bh=ah7J3Jqo85Y9L6UmtUaNFJgYT5iUf/nZE7iW/HuhMYc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CnrmfvMkp6yoWoq8NJ1XEtT4O7m4/JQFa1GxIQtgU5F5aVDX1HP/VVulkZDwyD9T4
+	 BGMGmR+Ksv/nWBy6gUv3Kf7zzXD15PwDGmDpOZ3O6677P90vL/UIHKVpfsF9QLy/r8
+	 85SsqfXldhr9nl3+62tAyAV3Mi9xas7AUdSF1E1o=
+Date: Fri, 1 Dec 2023 12:44:04 +0000
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Lukasz Luba <lukasz.luba@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+	daniel.lezcano@linaro.org, rafael@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] powercap: DTPM: Fix the missing cpufreq_cpu_put() calls
+Message-ID: <2023120139-staging-sprang-7e77@gregkh>
+References: <20231201123205.1996790-1-lukasz.luba@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 01/10] wifi: rtlwifi: Remove bogus and dangerous ASPM
- disable/enable code
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20231124084725.12738-2-ilpo.jarvinen@linux.intel.com>
-References: <20231124084725.12738-2-ilpo.jarvinen@linux.intel.com>
-To: =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: "John W. Linville" <linville@tuxdriver.com>,
- Larry Finger <Larry.Finger@lwfinger.net>, linux-wireless@vger.kernel.org,
- Ping-Ke Shih <pkshih@realtek.com>, Bjorn Helgaas <bhelgaas@google.com>,
- linux-kernel@vger.kernel.org,
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Bjorn Helgaas <bhelgaas@kernel.org>, stable@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170143450482.2072551.1616110971687036096.kvalo@kernel.org>
-Date: Fri,  1 Dec 2023 12:41:46 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231201123205.1996790-1-lukasz.luba@arm.com>
 
-Ilpo Järvinen <ilpo.jarvinen@linux.intel.com> wrote:
-
-> Ever since introduction in the commit 0c8173385e54 ("rtl8192ce: Add new
-> driver") the rtlwifi code has, according to comments, attempted to
-> disable/enable ASPM of the upstream bridge by writing into its LNKCTL
-> register. However, the code has never been correct because it performs
-> the writes to the device instead of the upstream bridge.
+On Fri, Dec 01, 2023 at 12:32:05PM +0000, Lukasz Luba wrote:
+> The policy returned by cpufreq_cpu_get() has to be released with
+> the help of cpufreq_cpu_put() to balance its kobject reference counter
+> properly.
 > 
-> Worse yet, the offset where the PCIe capabilities reside is derived
-> from the offset of the upstream bridge. As a result, the write will use
-> an offset on the device that does not relate to the LNKCTL register
-> making the ASPM disable/enable code outright dangerous.
+> Add the missing calls to cpufreq_cpu_put() in the code.
 > 
-> Because of those problems, there is no indication that the driver needs
-> disable/enable ASPM on the upstream bridge. As the Capabilities offset
-> is not correctly calculated for the write to target device's LNKCTL
-> register, the code is not disabling/enabling device's ASPM either.
-> Therefore, just remove the upstream bridge related ASPM disable/enable
-> code entirely.
-> 
-> The upstream bridge related ASPM code was the only user of the struct
-> mp_adapter members num4bytes, pcibridge_pciehdr_offset, and
-> pcibridge_linkctrlreg so those are removed as well.
-> 
-> Note: This change does not remove the code related to changing the
-> device's ASPM on purpose (which is independent of this flawed code
-> related to upstream bridge's ASPM).
-> 
-> Suggested-by: Bjorn Helgaas <bhelgaas@kernel.org>
-> Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-> Fixes: 886e14b65a8f ("rtlwifi: Eliminate raw reads and writes from PCIe portion")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Fixes: 0aea2e4ec2a2 ("powercap/dtpm_cpu: Reset per_cpu variable in the release function")
+> Fixes: 0e8f68d7f048 ("powercap/drivers/dtpm: Add CPU energy model based support")
+> Cc: <stable@vger.kernel.org> # v5.10+
 
-10 patches applied to wireless-next.git, thanks.
+But the Fixes: tags are for commits that are only in 5.12 and newer, how
+can this be relevant for 5.10?
 
-b3943b3c2971 wifi: rtlwifi: Remove bogus and dangerous ASPM disable/enable code
-5894d0089cbc wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
-a4fcac11a25a wifi: rtlwifi: Convert to use PCIe capability accessors
-6e071ae899f1 wifi: rtlwifi: rtl8821ae: Remove unnecessary PME_Status bit set
-760bfed91201 wifi: rtlwifi: rtl8821ae: Reverse PM Capability exists check
-9dcc75e0b7d0 wifi: rtlwifi: rtl8821ae: Use pci_find_capability()
-7bd350d2ac91 wifi: rtlwifi: rtl8821ae: Add pdev into _rtl8821ae_clear_pci_pme_status()
-05b311a3f915 wifi: rtlwifi: rtl8821ae: Access full PMCS reg and use pci_regs.h
-217fbc032eaa wifi: rtlwifi: Remove unused PCI related defines and struct
-874a0eda000d wifi: rtlwifi: Remove bridge vendor/device ids
+thanks,
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20231124084725.12738-2-ilpo.jarvinen@linux.intel.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+greg k-h
 
