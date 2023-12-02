@@ -1,110 +1,119 @@
-Return-Path: <stable+bounces-3687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84C618019A3
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 02:45:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CFA6801A19
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 03:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371E3280C35
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 01:45:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AC37B20E80
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 02:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8517C0;
-	Sat,  2 Dec 2023 01:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB6B619D3;
+	Sat,  2 Dec 2023 02:40:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m076SBOp"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="QzS/a9D0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C5D10EF
-	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 17:45:42 -0800 (PST)
-Received: by mail-il1-x142.google.com with SMTP id e9e14a558f8ab-35d53f61754so3936985ab.0
-        for <stable@vger.kernel.org>; Fri, 01 Dec 2023 17:45:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701481541; x=1702086341; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IFoJxCf6whhpmJUGlYDfcPfMwMbqeYht8Z2DaE/hxuI=;
-        b=m076SBOp4BZ65wEungjMaHNjm5pcmDvhtHTk5fgfLuen6E5JyX4N2PlIzKKMi3izYw
-         doeNsn1hP2V+QRqmNl0W8yuQjjWTCKYe3OhJrfx8TGsdj0Ed3g0VGDoUKj+SN7Q5RF9i
-         OZTnCJYlV7y+RI6maQjNUCD5P6iHbnkYYET3hfNaudp0vChmSHAcZzBH+EmF7XxEJ1DO
-         +RhxMdpH57B5dLHs1csQimNcRzqm2jfUvl3f/xeqOmyZCJKuAd0ml7w0W2bSxEtGRLJq
-         KZ7gBACgipbW1RsshOmCayHxLakq8YDz1epcg+vf3GrtW3AHaIDnrf9/goZBOS4K3eEW
-         0WCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701481541; x=1702086341;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IFoJxCf6whhpmJUGlYDfcPfMwMbqeYht8Z2DaE/hxuI=;
-        b=MLiWWPyKTdrUaBGipu6yWGe7mN74j4+f89Sb+BRUCvaQEyq0EJ6jlUur3e8ISAujnk
-         qOq4zux1j9BcdadiBsNlg3bqj2fW99rmSnb3JcooVJqeAb47jSjOmzlBlEgS7SOCRGGm
-         PqBpSA6VicQ+H25gcm+i0XB1xR7Vk8xe2eqQyPRFZACbUc757Lbh4KYjunTf0HZfktVt
-         sA+LP/qVtk8vlagShuPUvmcZ7ZN7s8Z+mislx0EQ2zUOF7hd6bk8NSFNK6bZ3fWh98J7
-         EFkAUl1HiPQAtEN1NSMSJ2ytiQYMhqz4jzv6LuDbd96ln7avwRENHRN2HzhjlrBYNuZg
-         CA9Q==
-X-Gm-Message-State: AOJu0YyIXvgGus7mHxzTjOE/ZKcK04L8Y4xdH7BSiKWBGMmzCq+oVMT6
-	DGBFP3qvX+QgEyj/dHP6Gpk2vOPYf2P9Bg==
-X-Google-Smtp-Source: AGHT+IF3sUvwObXkcll0KNe6MvxUEb5KP4tDHsKorCzRqaGll3tspi6+15hEzyPJyivbIzi089/O0w==
-X-Received: by 2002:a92:db0f:0:b0:35d:59a2:331f with SMTP id b15-20020a92db0f000000b0035d59a2331fmr460515iln.35.1701481540927;
-        Fri, 01 Dec 2023 17:45:40 -0800 (PST)
-Received: from google.com ([136.226.64.177])
-        by smtp.gmail.com with ESMTPSA id 12-20020a170902c20c00b001d05433d402sm2056384pll.148.2023.12.01.17.45.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Dec 2023 17:45:40 -0800 (PST)
-From: Maxwell Nguyen <hphyperxdev@gmail.com>
-To: stable@vger.kernel.org
-Cc: Maxwell Nguyen <hphyperxdev@gmail.com>,
-	Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>,
-	Max Nguyen <maxwell.nguyen@hp.com>
-Subject: [PATCH V2 2/2] Add HyperX Clutch Gladiate support for v6.1
-Date: Fri,  1 Dec 2023 17:44:25 -0800
-Message-Id: <20231202014424.64330-1-hphyperxdev@gmail.com>
-X-Mailer: git-send-email 2.39.3
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D2DD48
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 18:40:25 -0800 (PST)
+Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
+	by cmsmtp with ESMTPS
+	id 9CUNrf5xkhqFd9FvcrLhCl; Sat, 02 Dec 2023 02:40:25 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 9FvbrDQEhkUbt9Fvcr2ltJ; Sat, 02 Dec 2023 02:40:24 +0000
+X-Authority-Analysis: v=2.4 cv=WpU4jPTv c=1 sm=1 tr=0 ts=656a9918
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=uOIN_qzTAUQ1CVH6syYA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=wecCP6qWyg0CiDeCAcHuomYTctD0knb+GmZrYJf9CB0=; b=QzS/a9D0bn4y8O0QKOFKaAn/sS
+	htY+otFCIJ8Z2RQ6RBhEJLf2OqullQyj8GWaZ3fsca5QO2u/6YokSI0nbvd5JZWWbugzEXwg72StN
+	vHU/Haan+vSYINRF5B8VVSM1mO5iA51EyZGUEWF8LTF4rUk+ARpQ4gsLo+UeHkatcNByf/t0MfQsx
+	CJXSNPkVXcv/25aqR+Njg3AryCICjkSuZAg4yiX8dpnRv47EmtvJrFs+MF5qy/Fk/dSJYm6iXjNlj
+	xPcCm2cVsSzbDBLutpWQ+yKsj5FTEFBmhQHB+HXT4Snc4VgRLjuXkIKxF1OMc/gw8YetPEgqQ00Oo
+	w23TKQmw==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:57994 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1r9FvZ-000Os8-1R;
+	Fri, 01 Dec 2023 19:40:21 -0700
+Subject: Re: [PATCH 6.1 00/82] 6.1.65-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231130162135.977485944@linuxfoundation.org>
+In-Reply-To: <20231130162135.977485944@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <7a0c1245-0868-4804-0c81-f7558d4ed40f@w6rz.net>
+Date: Fri, 1 Dec 2023 18:40:18 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1r9FvZ-000Os8-1R
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:57994
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfMxcIIHf97DpdlzUCcwDkRdvnp1jkW/ix3SDIKbhuPp7wvMiLEhEFXRHyGchcEUUt9FiYputwfG3jsJ6/QINxy5qOYWeOvVvSQXav0+a0wPG8Dc3NF35
+ SgqY3W6hgYUmUE7oRatAHvysZeu/CIWH22I3G19gEkn5H+k7eHnKrB95SdiDZmTH416KmQXa4x5LdA==
 
-Add HyperX controller support to xpad_device and xpad_table
+On 11/30/23 8:21 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.65 release.
+> There are 82 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 02 Dec 2023 16:21:18 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.65-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Add to LTS versions 6.1
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-commit e28a0974d749e5105d77233c0a84d35c37da047e upstream
-Separate patch to account for added functions in later LTS version that are not present.
-
-Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
----
- drivers/input/joystick/xpad.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index 2959d80f7fdb..5f2ff6999df4 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -136,6 +136,7 @@ static const struct xpad_device {
- 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f10, "Thrustmaster Modena GT Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0xb326, "Thrustmaster Gamepad GP XID", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
- 	{ 0x045e, 0x0202, "Microsoft X-Box pad v1 (US)", 0, XTYPE_XBOX },
- 	{ 0x045e, 0x0285, "Microsoft X-Box pad (Japan)", 0, XTYPE_XBOX },
- 	{ 0x045e, 0x0287, "Microsoft Xbox Controller S", 0, XTYPE_XBOX },
-@@ -459,6 +460,7 @@ static const struct usb_device_id xpad_table[] = {
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 Controller */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster X-Box 360 controllers */
-+	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One Controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft X-Box One controllers */
- 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech X-Box 360 style controllers */
--- 
-2.39.3
+Tested-by: Ron Economos <re@w6rz.net>
 
 
