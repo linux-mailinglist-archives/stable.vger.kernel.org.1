@@ -1,64 +1,67 @@
-Return-Path: <stable+bounces-3685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C093180190E
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 01:41:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA12801999
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 02:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52216B20C08
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 00:41:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E30E281E29
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 01:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E144185D;
-	Sat,  2 Dec 2023 00:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B1815A6;
+	Sat,  2 Dec 2023 01:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MmVF1NpK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ml2QjxRU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B47817EF;
-	Sat,  2 Dec 2023 00:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702EDC433C7;
-	Sat,  2 Dec 2023 00:41:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701477664;
-	bh=rISLER/E+7fKsH5Uo4QvBPenL8iXEwDiTGCD2NOxQh0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmVF1NpKxJ4IAy858mP04qtAtHq31qtlgBQlVJRy8oNJKaVHeFHS8gXyJ9GrlKOrt
-	 9uNEPXMEPWLWsOXypOdEh4R98WKaEAnzHfU7fggDmMCsQF11z+UJ1S3kBEcUqQ2ifi
-	 F0fTD5kBgQiYC+K3koX9oJnYs7ZwyL4p/StqMhUMm9Q72yRG7QF0cvaLea201cDvwz
-	 CzMLnrIA6cMJku6po6wLni+qGhoGt3t7IGI90sgAflKsp3YC5bCJ/07Z/g3FLIVp90
-	 63p8taypJCOWpjQ9NBdLKPuYUQcwhz0Go+eFw3fBTdGcqv6LYZz3syp3S4DBqVvVmh
-	 uCt7S+ECm1ZEA==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 5.15 00/68] 5.15.141-rc2 review
-Date: Sat,  2 Dec 2023 00:41:01 +0000
-Message-Id: <20231202004101.46385-1-sj@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231201082345.123842367@linuxfoundation.org>
-References: 
+Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 026BF116
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 17:42:18 -0800 (PST)
+Received: by mail-oi1-x241.google.com with SMTP id 5614622812f47-3b8412723c4so813694b6e.0
+        for <stable@vger.kernel.org>; Fri, 01 Dec 2023 17:42:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701481336; x=1702086136; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KBTvMeskTEpkIFEbp7wSmUUr64n6oXZw6+AiiZsxmgA=;
+        b=Ml2QjxRUwEw8RDBt3g/j+XeiHFcfctUlLscSL2prlVurLE7FtULqK53yZxibZIuz5K
+         wulRyw/eWp0Xij+rMz1vFXkmZe9J7aq/+dIrx9SDguSpPNq3hDCS3Uy75Dx5f4pWIM/3
+         LQxOUSy4npWdUyCCK2aaGQaojViJMtqOVPRYgtMpm2gaXd+4y6mWOtWd00vvQadbUxoo
+         lTpyVj2e6qalbzpWPtTQtQKybYpjC4oDbl/1VkP/vvHga8Su0VatL77E+xEky6SDAXaR
+         Vmc+SnPCMMk8zNObOxsrH3fRvYrHNz10aA0sMK+IH9eqit+nGWOTNxHewGpsSpaAyZqC
+         2IhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701481336; x=1702086136;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KBTvMeskTEpkIFEbp7wSmUUr64n6oXZw6+AiiZsxmgA=;
+        b=JF0s8YyIm4d7DCAs/T0EIsh+toMRnn6Udxgb5sVMwV6+AOqM+h6lGu+ZIzMdm2M8p/
+         IS1NWCiPSCdfll0Mb8ZlEHAVU+CypiUihzINdQr9t3Tw/oGPZ+5nAQsLo7RiPf62iXMe
+         4tKIeD3yqzaZQBZe3dY9Sq+w6jSWlbJc7ZbYssPXCnsy1Gu3Z7L/6zMu2RmKCr5HkYAL
+         4r6/750YCT7xm7H2VbHGdauGqdNeyUaj5xp36mvXyg+0AIQlo8SfwiSh83HFyuL3lHQt
+         HffXA1z8Ymhbunf4NccrWXKjGrvJK0tRF3XbZqBtFj+yGsjfdbMh3jwbF9396wHnuE8c
+         WdtA==
+X-Gm-Message-State: AOJu0Yw9M53V8045gGaSZWoC+d4RcIBJmR5vMxPV8Qj4d0xdZ1QTJ+Zu
+	wRAXe4YpvtyqMK7z5toq5DE2/I8mFCgbSQ==
+X-Google-Smtp-Source: AGHT+IEAqxx3bBImt+/CyyTUvjH8VKrY1xw/FYRgytsnBWiLQXhvcEJvZ1ptLkm3dao/lswG5yLXkQ==
+X-Received: by 2002:a05:6808:228a:b0:3b8:b063:8266 with SMTP id bo10-20020a056808228a00b003b8b0638266mr504512oib.104.1701481336266;
+        Fri, 01 Dec 2023 17:42:16 -0800 (PST)
+Received: from google.com ([136.226.64.177])
+        by smtp.gmail.com with ESMTPSA id bm10-20020a056a00320a00b006c4d128b71esm3703920pfb.98.2023.12.01.17.42.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Dec 2023 17:42:15 -0800 (PST)
+From: Maxwell Nguyen <hphyperxdev@gmail.com>
+To: stable@vger.kernel.org
+Cc: Maxwell Nguyen <hphyperxdev@gmail.com>,
+	Chris Toledanes <chris.toledanes@hp.com>,
+	Carl Ng <carl.ng@hp.com>,
+	Max Nguyen <maxwell.nguyen@hp.com>
+Subject: [PATCH V2 1/2] Add HyperX Clutch Gladiate support for v4.19 to v5.15
+Date: Fri,  1 Dec 2023 17:38:44 -0800
+Message-Id: <20231202013843.64125-1-hphyperxdev@gmail.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,55 +70,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hello,
+Add HyperX controller support to xpad_device and xpad_table
 
-On 2023-12-01T08:25:54+00:00 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+Add to LTS versions 4.19, 5.4, 5.10, 5.15
 
-> This is the start of the stable review cycle for the 5.15.141 release.
-> There are 68 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 03 Dec 2023 08:23:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.141-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
+commit e28a0974d749e5105d77233c0a84d35c37da047e upstream
+Separate patch to account for added functions in later LTS version that are not present.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
-
-Tested-by: SeongJae Park <sj@kernel.org>
-
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] c66b1a8641b0 ("Linux 5.15.141-rc2")
-
-Thanks,
-SJ
-
-[...]
-
+Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
+Reviewed-by: Carl Ng <carl.ng@hp.com>
+Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
 ---
+ drivers/input/joystick/xpad.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_i386_idle_flag.sh
-ok 13 selftests: damon-tests: build_i386_highpte.sh
-ok 14 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index 4c914f75a902..0aad4f417f0d 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -118,6 +118,7 @@ static const struct xpad_device {
+ 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0x0f10, "Thrustmaster Modena GT Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0xb326, "Thrustmaster Gamepad GP XID", 0, XTYPE_XBOX360 },
++	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x0202, "Microsoft X-Box pad v1 (US)", 0, XTYPE_XBOX },
+ 	{ 0x045e, 0x0285, "Microsoft X-Box pad (Japan)", 0, XTYPE_XBOX },
+ 	{ 0x045e, 0x0287, "Microsoft Xbox Controller S", 0, XTYPE_XBOX },
+@@ -420,6 +421,7 @@ static const struct usb_device_id xpad_table[] = {
+ 	{ USB_INTERFACE_INFO('X', 'B', 0) },	/* X-Box USB-IF not approved class */
+ 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 Controller */
+ 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster X-Box 360 controllers */
++	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One Controllers */
+ 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft X-Box One controllers */
+ 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech X-Box 360 style controllers */
+-- 
+2.39.3
+
 
