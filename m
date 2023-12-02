@@ -1,225 +1,171 @@
-Return-Path: <stable+bounces-3693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA31801AEA
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 06:28:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85234801B0F
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 07:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 086C41F21154
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 05:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 293A51F21164
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 06:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF51A8C06;
-	Sat,  2 Dec 2023 05:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B183F8C0B;
+	Sat,  2 Dec 2023 06:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="PYchB29d";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="SWnEJrQl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JOtGTS2E"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 195C6B3;
-	Fri,  1 Dec 2023 21:28:08 -0800 (PST)
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B258chr022615;
-	Sat, 2 Dec 2023 05:27:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=kh07AeTv0q9vBA5CUdZBYrnP7mFxiVeoqOSWupUEU+U=;
- b=PYchB29dm2L9BWAS5dT/6vFbQViwQfQQygyORaC45nvauUw+4RY8nQzvGvL1SM41deh0
- kDawnoAqT+KK6NKrLxUJZBJefAMXqY3HLNu3knVrE8MxhQtZWXE49TzW9HZAsKYwF4Bc
- lAQUpXY7KgkurnYnS1U7Ef7RIMmJvL1FPhH+uVXqahWzO+acGwz2LhpVN8OW2j2fZtzg
- io15fFwJ6yS6k7hLz8IopR/k0ciO/DBPYfXFliQ5SSTEqrIJBFFzF1EsbG7l67VmqK5l
- WXy3sycYeYNhMzcFg9MhgvSdQp8cV1UpOpGLkeeqPfSWUH4TdrCzWioaUu4KfXDKrtaT sw== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3uqwmeg21e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 02 Dec 2023 05:27:32 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 3B24I6Xx020704;
-	Sat, 2 Dec 2023 05:27:31 GMT
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3uqu13d2hw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 02 Dec 2023 05:27:31 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=V4xh/MRh3Lqd/ejVmzvEnj/tPVffnrOF/SqBppNvWMoymJ0kKBLtpCfWXOe+BU5+QReYQHXvEO38jtSMbHJoYQWEvii/tqF+0WfWMUL92ylO9w/mE6kBk8Wey0AfyoFScVUm6p3tcplZZKhya82gFf0ryP0SwIRr7HCtHmzYwterdW8GlCEbJJF3Fb2GfIXkBcWIRxtfp9dj95qM0vysxDGrhhpl6CiPwZbwZs/LedYe2+m2fDAIkkrjCNFrJoD2csq9AGewbKt4yrdUah+mctU32qBKiHqitXL7O+9azZxj+4bGIfKzM2Ye7eyHggkOy2gnT0bl76sdpRJGj7tIxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kh07AeTv0q9vBA5CUdZBYrnP7mFxiVeoqOSWupUEU+U=;
- b=byU7v5/A9wyHh+XZwVMHVM6Ch7xmxbFFOZ27Dps6UiM0wuXeUce5J35qftx9ejK8fLvil1dXlVAexNSvvJmIC53tgE8fBbCloyA9bWoGNslpRKIxH/zjiBekz6emONgz/PxnFCQ1ttQ8yHmiFtIo5ra41yGstf8V1PVNfyP2uL1GAPf33FNMpmA7/W7EjtILh+pBkZxGIzLp6Q2PCyJO44UxOhQKtGt0ioNtxuM3XoV0nlDg0sQZmV+Xo/6dZi6Vbo09kcG2BYQ48rxMaVwzIpYPUSimeT0fe17UAdYEr4sM6qqmFDy6cCaD9hsJfddVn+wro9Vj/xtUcpasbW4I9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FDA110F4
+	for <stable@vger.kernel.org>; Fri,  1 Dec 2023 22:56:29 -0800 (PST)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1fab887fab8so935692fac.0
+        for <stable@vger.kernel.org>; Fri, 01 Dec 2023 22:56:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kh07AeTv0q9vBA5CUdZBYrnP7mFxiVeoqOSWupUEU+U=;
- b=SWnEJrQl9f4viLlh2H6zp39W9t8t2S7nr7hfDtPrv0J55TqCwLQ4EjsAtkscgkRSObYICtKG5SzJPE8dZEO0LN0hcK7kV7HSoIdoW2NbhHqrEAvc0neDYjKWsjfHSXGfyzwvtxqSMn4/zNvszKPoFU2Qv2h3pybtNnNntnM4sYo=
-Received: from SN7PR10MB6287.namprd10.prod.outlook.com (2603:10b6:806:26d::14)
- by SJ2PR10MB7759.namprd10.prod.outlook.com (2603:10b6:a03:578::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.27; Sat, 2 Dec
- 2023 05:27:28 +0000
-Received: from SN7PR10MB6287.namprd10.prod.outlook.com
- ([fe80::7295:59ac:ffbc:e40a]) by SN7PR10MB6287.namprd10.prod.outlook.com
- ([fe80::7295:59ac:ffbc:e40a%7]) with mapi id 15.20.7046.028; Sat, 2 Dec 2023
- 05:27:28 +0000
-Message-ID: <7e0b8965-eb0e-4141-b4ec-32fd688e038f@oracle.com>
-Date: Sat, 2 Dec 2023 10:57:15 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 00/68] 5.15.141-rc2 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>
-References: <20231201082345.123842367@linuxfoundation.org>
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20231201082345.123842367@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYWP286CA0021.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:400:262::12) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+        d=gmail.com; s=20230601; t=1701500188; x=1702104988; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=plhJ6YHK8cj47+ydus8zBUtduES+Y83+LisP9zrOjQU=;
+        b=JOtGTS2EnARlqDOTPkWWpzghQ8PgcyxtKT5uItz7Xnz3zVBsC53iEhN+b8RPyXrDNG
+         o0Ie/bnE0ZChwq51+9vEvaTqFi026vGvh0pWrZaldgQbsS8Z0G2hRDjH8RVjKISNHN3Z
+         y126Ezvr5jHta+knbB4DvM4BO4nQ8aPySf6J05VlfoQ0iqIjjoo0oyNhgyHPzVUXJ56P
+         rOVTynReQ2lLi2dRS5Yf7VPmj6esoRk2hoNOLn+k96T03Qe7dF+Q6oAa4/QBoCjq7+Nf
+         x1NVMFL9Vy7gAhogOOqCa+mx95dhg8gNP4ZF1VimB3BptWjjkHFo51in9CX9m9Nuc81c
+         HPEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701500188; x=1702104988;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=plhJ6YHK8cj47+ydus8zBUtduES+Y83+LisP9zrOjQU=;
+        b=bY+vIGFUjq6xbBYwXCtJjqsXxvnr7yKVlX2wYoJNjzN+WPl/ZS5ylvRV9smunLf5Z6
+         s97PadcYsnT1vNYG5wv5JxX7KyY6iCrZSqZydEML6Xf/VJgP1fq9WZhVNSuN57U22t/p
+         FKOrSGqQQpUlUC0G6pmbYkHpyruOVRaBvqJ6n1H69tOGpZGVOjAyrKeS680oajKmZ4UW
+         EOmlMP7MOKULDUbz1UcCSCjGTgJVJYtRtCoGdsV83lr1BP/a9+h5p3dm8H4cSyMNSpp6
+         XQo21J0hCn6g/LfrJlqSF8M5+sW4iw0GkMVqLh1YbZMkU2QW5jgardvVuh/fz7bwhHlz
+         OyOA==
+X-Gm-Message-State: AOJu0YxGCaQ/qrX7kYfzxy+BfQcDkMSxyaQq+3dguYc/kgv/jfp2ACRn
+	xrKL9j5PhaZN3lE5hexZX+Cc/RdInotHUQ==
+X-Google-Smtp-Source: AGHT+IHYjtgjx2YzmTW+LRDTliVs+/6IdKaPL4F9dqmuwdw4U1lR9nlL/EGYvkWQKdk/9YtZcZEyfA==
+X-Received: by 2002:a05:6870:63a5:b0:1fb:75c:3fef with SMTP id t37-20020a05687063a500b001fb075c3fefmr1035810oap.79.1701500188138;
+        Fri, 01 Dec 2023 22:56:28 -0800 (PST)
+Received: from localhost.localdomain ([149.167.148.189])
+        by smtp.gmail.com with ESMTPSA id r10-20020a63ce4a000000b00588e8421fa8sm4145120pgi.84.2023.12.01.22.56.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Dec 2023 22:56:27 -0800 (PST)
+From: Ronald Monthero <debug.penguin32@gmail.com>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	Ronald Monthero <debug.penguin32@gmail.com>
+Subject: [PATCH] rcu: Avoid tracing a few functions executed in stop machine
+Date: Sat,  2 Dec 2023 16:56:16 +1000
+Message-Id: <20231202065616.710903-1-debug.penguin32@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2023112431-matching-imperfect-1b76@gregkh>
+References: <2023112431-matching-imperfect-1b76@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR10MB6287:EE_|SJ2PR10MB7759:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0cebd5c5-35b9-4473-ff21-08dbf2f75f59
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	59y9ZDkm5MUbYn+EAEAUvKg+SUj+TV7o8Huqo95Jba17dv+wTzjgPwSmCjCTCKPtS3mUc9vR0PFeZ2CkK51noaEyCGqb5Vlx+bmAxSMzdSbWD8NOl4650EE0K1wZ19/0bWzKHzSt2vO8oNWBw3guhfFFDMQqIEE4B64XRAX9PCHyujwbzMdOfwMvKrkd1Z15nvD+cED6aYtTVOF/mngKZ8NAMfim4P7P0xVneCz7avNqfmA3ANnRFx+NKCu6hqHkfYGrrkHSpl0PmQUYIqt2I/YAOHIVdtS79te/PosMSCFz0FGWHtsDXkIosm97rBzwPKVFEVOAaYZ7rnxmKlxNI2n8Ay4QKj7FR8n5ZIFD8UsQK+ohmg64m8lXLcbEc2hUQYfSQsuKaSk6I6SyaXzwTkNG42bUBG9Yml+N+vbDTDweVTE/PvY48oYnczWXF/NDaD4i6fSA7C3V+9pmAysQR70dcz86XMwLvQiTez/8Aap3IRl7JJlR1NrzrJUJsRvX0QVfieFmS3HvKjKYEoXdQ+RVR9aHYlcZ2p9rVW2IxLCySf1VZsTVm24iRmrfH7k56e3jGqTPuAXg45UsBm7UxeffWUN7n+pZYx/bDQjPt//35XNbaxNdH0eXN0Cp9yVbu3c1nzjwsopWQO1mtbnJlw==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR10MB6287.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(376002)(136003)(396003)(39860400002)(230922051799003)(64100799003)(1800799012)(451199024)(186009)(4326008)(4744005)(31686004)(2906002)(8676002)(8936002)(41300700001)(66556008)(26005)(6666004)(316002)(66946007)(54906003)(66476007)(7416002)(5660300002)(6512007)(107886003)(2616005)(53546011)(6506007)(86362001)(31696002)(966005)(38100700002)(6486002)(478600001)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?dUNXY2pIa2Q1bWFuaWdGc051Z0hRSFJOMEVuYnlTMHBKRVhsKzZId2s5aHBV?=
- =?utf-8?B?dTMrZVFqbU1mb3ByS2hYNWd3Tjg3RzQyYSszeDhGYTZTVzFKTVpwaG42VXZj?=
- =?utf-8?B?MjJkRkRqTlJZTWxoUENrSGFBQXZJMFppVHpsdm0yMjN4S1JWTkdhd0Urbksw?=
- =?utf-8?B?LzV2Uk9XMEVNSGxDY0NWRE9BdkhBS2lUc2FFQ0FUL0k5a2tRRDJYWTZ5WWh0?=
- =?utf-8?B?NHl3SnVvcHpjN2ZoY0M1RWw1K2lBTTFYb3hRZ2dpQWZhSHRDbFRjNEp2OHQx?=
- =?utf-8?B?OUVWdVZOKysvTUtHNWZNbmJjWXY0V1YydThXK1poMW0vdkUwQyt5Q1FOQ3ZP?=
- =?utf-8?B?WEw1WVIxZWRleHY4M3Z5L0RYUGpJMmFESVBIcCtlWVJEMVZaTG1CbjJaQXZI?=
- =?utf-8?B?dlJKdUtNQnhwNjd0SGw1cHBIQWpxN2dlMC9UMStyNCt6WjhiY2NmUkxWTVUz?=
- =?utf-8?B?NllCTUVnaExxSVJqMVZ1bXdHbG5PVnQ2L0tzblhhazlWU2xGamJFeEl0L2cw?=
- =?utf-8?B?Q2lyWVVFdlZwR3dkVjVpUDA4d2FUYVFBbm9TejNCemk2TXpuU3VlcEROa3Ru?=
- =?utf-8?B?YWlFbG9vK1Z3dHdKTFBCVFgyQjl0NU9qTkcyZU1ZYjRzakZLNm51SDJRMjFr?=
- =?utf-8?B?OWpyc2hhSjhqKzRUM1EvR3A1UndMZTh2WGJFZVNqUXI2N0Myd1lpQksyUlBu?=
- =?utf-8?B?bmEyNDhQVkdDRWlXaTRYR09JZTJYU3dnSVNuNk4yL0oraFVhWlk5clVZVlFx?=
- =?utf-8?B?VVZJWS9PWTR4V1kwc0QrSTl1QW9RZDRNZFhseWFiRkVZSG9Ic25wZ2Zyei8w?=
- =?utf-8?B?cnFIQmlXWWFHZzhXQ0g4L29FNzhzNXp5V3ZTYTl4L0NDTHNSSDNuR3N3STBM?=
- =?utf-8?B?ZFU0dnMxTDhkSE1KY0YzZVNqUFdPdVJQZXdGc1dmcVVRMW4zdm9ORW5aMUZq?=
- =?utf-8?B?V2xPaENUNlhLT25DczBSU005SUNxTmNvQW14NitYTHF1T1VYcDRhdHBRYkZm?=
- =?utf-8?B?OWhEeGNvUTcrY2swMm9Rd0NncHl5YnRFL0FJNmZ4eUw0VVhCUi9RbUZ3ZWx1?=
- =?utf-8?B?Z2lZZG8yRmI3OHFnd3kxUXhyOGp5bTRpQ0RvM1kvSTNGc1ZXMjFjMzh0TUVS?=
- =?utf-8?B?VVRVb0hOaVNrMHpoalZiYVlnMVhZUzhBVHNQTWUwZCtuTit3Uko1V3hGTklp?=
- =?utf-8?B?K1VwYVhVQjRRWEtNcnI3d3k3WFZ2cFVoSHVyZHpmMjRGQWhPRkVVVE96QStt?=
- =?utf-8?B?cUFMcWUzVitHMHFMdEVNM3phNjgrQjRaNTBqdU4zN2U5QzM4TXM4OU92WnF0?=
- =?utf-8?B?K1p4WTUxU1dLUWJ4UDdSR0RaTXJPMUl0MmdpNXdheVZWZjVTTEF1R2hsSmlT?=
- =?utf-8?B?WFc2WXhXNGFHQ09lNHg4bVZJNFNRcmhsV0gyb2RNOC9YV3luRDMwLzVMMUZ4?=
- =?utf-8?B?OTNjdjVmU1Q3VzF0Vm5sT1pFYnpQbHI2Y2hoSklKRmJlWUpPcU44UDhCejVH?=
- =?utf-8?B?UHpwTFFmL0tlckdRUjk5OGtESzhWM09BZm0xNmNzUG9pYXo2M0RYRy9RZ3VQ?=
- =?utf-8?B?VFVXUXVHK1ZTZk1UNlJoQUJPYjdQNkJNSVBtRVhVcEJCYzJmUDhSWUNXN2U5?=
- =?utf-8?B?dEYzSkhoVE1xeWZDd0lZSHduZGxBMTArWmNlZGlRajlpLzRWRmtEVTUycWRx?=
- =?utf-8?B?aDh3WHIxb0I4TUZ2Q0tQVFJneHl0L3BCVFJtSTZBaW9oWTcyRXdGMUxENzNT?=
- =?utf-8?B?dVh1UVg5Sk9WcERqaEFETytLekRtOFV0d21mU0s0Yk5FTlIxdCtkZE1QMzda?=
- =?utf-8?B?T3QwYVF3QUVaTHZFb0JuOHc5RzJlNHA2azBmaUJNNEhvRVprUFJpK1l2VEY3?=
- =?utf-8?B?RTdvMTEvc1puTjFoMUFvL1dZMHB3ZXM1YUZrb1FBVW9KTE9qZHM3N1RHaGda?=
- =?utf-8?B?VEhzOTkwK2VBK0kxd0Frd1Zla2RITFFOMFZ1eFpGVHZwbjZONUlVMnVST2ZS?=
- =?utf-8?B?ZVk0b1hyLzFRZDBlT1liNEd0NTFLajByTkdhNzF6L0pSM1RteHcraUNHRjBD?=
- =?utf-8?B?RDBHdUNrK213Tno3MWQvVU93V0F5ZmRHcnQ2bHJ3RGQ3R2lsMXBPdE9MRjlD?=
- =?utf-8?B?QnFTUFcyaDRLZnNSRlJ4UDZ1bGJOa2VNdjlvZDk1NENBVDRZdzR2bE13bzdY?=
- =?utf-8?B?dXc9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	=?utf-8?B?WW4yeURyM0UzZS92NG9wbGRFdWQrbmxzb2dzUldyUDBMK09UZTFlclZLRFVX?=
- =?utf-8?B?Sy9LNnI2ZStSWXRQZEtrNnVCZTcvM0c2Z0paa0tXMGpDWEdMMC9DS1NuZjdF?=
- =?utf-8?B?dnpVeU90NjJkSzN6NUhXTU5tQVFaRXVoSHpCZTZmWGFNN1ZVR2xYTGZQUThv?=
- =?utf-8?B?UEFuSDR6S09VVEx4dHo1eUI1ald5M0tueXJjVS9uaWFuNWdubDdOS1k0UzAy?=
- =?utf-8?B?TzN3N0diNmJURE1zOVV1MHNDNHhnWnlDODU1cHBEcG1tK3N4TFpQSDhncFNu?=
- =?utf-8?B?YU5xVTZlczFzMTJESDltVjZ2Um1XSGlrWG04UE1qZEp1UEF0K2IvL2N6eEQ0?=
- =?utf-8?B?VE1BeVlmL0NrYlczRnVtc0pRb2tSNWRUN1plaGxoWmlMb0FNaitBYmptdStL?=
- =?utf-8?B?cU4yU3o1Y0IzNHdTdm9pZ3VtWlZPVk81WWVsT3MvSFhmdEU3WmFPbDVCdkQ0?=
- =?utf-8?B?ZWkxdFk4UE8zM2gwcTFkNmRRWUNldXg3NFMzN2QzRnlFZFNwVWVCTEx2dGxL?=
- =?utf-8?B?T2UrdzNnZXF0RHhYWERlYVArRkZDNmJ3b01XME9CdCtBbzdPVFkxc3pVaG5s?=
- =?utf-8?B?VVpaNDVMTFNpT2dEbUVEcUxOTFd4b3BnLzllcnRqRXZmSWJzZU4rcmdnMXUw?=
- =?utf-8?B?MG9xbHlnUzZyU1RzMlZxcW5FZXl5WGxhWVZ5VmMrR0R0amV2cVNSM3c2dmRY?=
- =?utf-8?B?UFJjS00zakxBYjNXN3pLWml1eGVodlh4UVQ0RXpOM3dCa1ZBSmF4RmJxYlVv?=
- =?utf-8?B?TGt5VThoTG9xUndRUnJhRGNUbUtVZXpWM0szVzc3cFY3Rm1rU1p3UEFPYnQ2?=
- =?utf-8?B?MEVKWktaVVJ0S0dqSDRrd2FDYThBY1d1VmJZWklaWVdtV3pYcGVkTkx1Yitt?=
- =?utf-8?B?aDNMdDA5YWZIRnk3bUJNazJQOWFLMzc4WUVucGYvakM5WHV5cHFDQmZITU5S?=
- =?utf-8?B?VmMvL1Uza0VjNUtCNnJ5cE50M2xBWno2WHZWaksxVWtTSlhnTWxFL3o4R3I1?=
- =?utf-8?B?YkFOSDltUVNDMkRUYzNuNzBvN1huS0pMcTc0RXJVSVpuNzVycHpKdzBQV3R3?=
- =?utf-8?B?RzNydW5zMUtkcVVYeW9vWDZ0Q2FBTWxPZnQ5aCt1WnowekQ4eHJDU1ovYngr?=
- =?utf-8?B?S3BGdktmQXl0a2pzN3hQcXZWWlFvRERsK2NoQ0JSZGJkTytHL29NdzdSS3Nq?=
- =?utf-8?B?KzAvYlFyR3hrNzJNNXJmbWJSL0JKNHRqc2dJQm1QUmswaVA4VjNXcGZMUVpJ?=
- =?utf-8?B?MjdVOFBNZEVNY1VoM21lZXBzVmQxdE5aN013S011VEhDNWFUMjV0djF4YmNQ?=
- =?utf-8?B?WHh0dmhSUkRzMDZuNEtHemRNMzhKMEhBVG9BUjZDem1BQnFEdmJ1U2o0ekdU?=
- =?utf-8?B?eHJOTTMxZGJXRUMzY1NGZGlmdGtBbkRGNHBGeU1MdjY2ZklIK2l0aWpURHlH?=
- =?utf-8?B?c1pLMVVKSlBJMkJjS1AvWHRXK2NNczdrWGxSVEhZMlFHenR2UGRuMzFEdWFq?=
- =?utf-8?B?bGFLNFQrV0pHT3ZQTFFhTXRDWVZkczJGSWpCc0FUTEoraWg1dHNIUmdZWU5G?=
- =?utf-8?Q?VGGpfIX0ySCf55ulxsubmgOg5HBt58BQrfEw1aXdbY54W9?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cebd5c5-35b9-4473-ff21-08dbf2f75f59
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Dec 2023 05:27:28.6906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vC88UpPOzs+9btbZO65mMThEe90Jm3NWjvDp/lVPJeSBS+rVxMiqhTJlar+YzilosvyXMjH60U6eNflniUvwmv0ou/++I3kn17MQ91a/6pCsQ616B/bSnGWqOYDR5Blr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7759
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-02_03,2023-11-30_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 spamscore=0
- malwarescore=0 phishscore=0 bulkscore=0 adultscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311060000 definitions=main-2312020039
-X-Proofpoint-ORIG-GUID: ajXdkdICTgTSjId2QwC77zAyByihynhi
-X-Proofpoint-GUID: ajXdkdICTgTSjId2QwC77zAyByihynhi
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+[upstream commit 48f8070f5dd8]
+This backport patch for kernel 5.15v is derived from upstream
+48f8070f5dd8. On 5.15 kernel it fixes recurring oops in context of rcu
+detected stalls, indicated below.
 
-On 01/12/23 1:55 pm, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.141 release.
-> There are 68 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sun, 03 Dec 2023 08:23:33 +0000.
-> Anything received after that time might be too late.
-> 
+log :
+root@ls1021atwr:~# uname -r
+5.15.93-rt58+ge0f69a158d5b
+oops dump stack
 
-No problems seen on x86_64 and aarch64 with our testing.
+** ID_531 main/smp_fsm.c:1884 <inrcu: INFO: rcu_preempt detected
+stalls on CPUs/tasks:   <<< [1]
+rcu:    Tasks blocked on level-0 rcu_node (CPUs 0-1): P116/2:b..l
+        (detected by 1, t=2102 jiffies, g=12741, q=1154)
+task:irq/31-arm-irq1 state:D stack: 0 pid:116 ppid:2 flags:0x00000000
+[<8064b97f>] (__schedule) from [<8064bb01>] (schedule+0x8d/0xc2)
+[<8064bb01>] (schedule) from [<8064fa65>] (schedule_timeout+0x6d/0xa0)
+[<8064fa65>] (schedule_timeout) from [<804ba353>]
+(fsl_ifc_run_command+0x6f/0x178)
+[<804ba353>] (fsl_ifc_run_command) from [<804ba72f>]
+(fsl_ifc_cmdfunc+0x203/0x2b8)
+[<804ba72f>] (fsl_ifc_cmdfunc) from [<804b135f>]
+....
+< snipped >
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+rcu: rcu_preempt kthread timer wakeup didn't happen for 764 jiffies!
+g12741 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x1000
+rcu:    Possible timer handling issue on cpu=0 timer-softirq=1095
+rcu: rcu_preempt kthread starved for 765 jiffies! g12741 f0x0
+RCU_GP_WAIT_FQS(5) ->state=0x1000 ->cpu=0    <<< [2]
+rcu:    Unless rcu_preempt kthread gets sufficient CPU time, OOM is
+now expected behavior.
+rcu: RCU grace-period kthread stack dump:
+task:rcu_preempt     state:D stack: 0 pid: 13 ppid:     2 flags:0x00000000
+[<8064b97f>] (__schedule) from [<8064ba03>] (schedule_rtlock+0x1b/0x2e)
+[<8064ba03>] (schedule_rtlock) from [<8064ea6f>]
+(rtlock_slowlock_locked+0x93/0x108)
+[<8064ea6f>] (rtlock_slowlock_locked) from [<8064eb1b>]
+[<8064eb1b>] (rt_spin_lock) from [<8021b723>] (__local_bh_disable_ip+0x6b/0x110)
+[<8021b723>] (__local_bh_disable_ip) from [<8025a90f>]
+(del_timer_sync+0x7f/0xe0)
+[<8025a90f>] (del_timer_sync) from [<8064fa6b>] (schedule_timeout+0x73/0xa0)
+Exception stack(0x820fffb0 to 0x820ffff8)
+rcu: Stack dump where RCU GP kthread last ran:
+...
+Sending NMI from CPU 1 to CPUs 0:
+NMI backtrace for cpu 0
+<  .. >
 
-Thanks,
-Harshit
+Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
+---
+ kernel/rcu/tree_plugin.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index d070059163d7..36ca6bacd430 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -458,7 +458,7 @@ static bool rcu_preempt_has_tasks(struct rcu_node *rnp)
+  * be quite short, for example, in the case of the call from
+  * rcu_read_unlock_special().
+  */
+-static void
++static notrace void
+ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
+ {
+ 	bool empty_exp;
+@@ -578,7 +578,7 @@ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
+  * is disabled.  This function cannot be expected to understand these
+  * nuances, so the caller must handle them.
+  */
+-static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
++static notrace bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ {
+ 	return (__this_cpu_read(rcu_data.exp_deferred_qs) ||
+ 		READ_ONCE(t->rcu_read_unlock_special.s)) &&
+@@ -592,7 +592,7 @@ static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+  * evaluate safety in terms of interrupt, softirq, and preemption
+  * disabling.
+  */
+-static void rcu_preempt_deferred_qs(struct task_struct *t)
++static notrace void rcu_preempt_deferred_qs(struct task_struct *t)
+ {
+ 	unsigned long flags;
+ 
+@@ -922,7 +922,7 @@ static bool rcu_preempt_has_tasks(struct rcu_node *rnp)
+  * Because there is no preemptible RCU, there can be no deferred quiescent
+  * states.
+  */
+-static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
++static notrace bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ {
+ 	return false;
+ }
+-- 
+2.34.1
 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.141-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
