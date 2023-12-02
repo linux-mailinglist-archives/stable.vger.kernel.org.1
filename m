@@ -1,156 +1,225 @@
-Return-Path: <stable+bounces-3703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6DE801B79
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 09:20:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BEFF801C5F
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 12:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B24281F211AE
-	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 08:20:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90E13281C89
+	for <lists+stable@lfdr.de>; Sat,  2 Dec 2023 11:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482E2D2FF;
-	Sat,  2 Dec 2023 08:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5401511732;
+	Sat,  2 Dec 2023 11:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GFhgzukW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iYGsUZMO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D8F1198;
-	Sat,  2 Dec 2023 00:19:50 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a00ac0101d9so419348466b.0;
-        Sat, 02 Dec 2023 00:19:49 -0800 (PST)
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D93918C;
+	Sat,  2 Dec 2023 03:14:49 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-50be8ced3ddso322698e87.1;
+        Sat, 02 Dec 2023 03:14:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701505188; x=1702109988; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ngS2ris1InPJCJ/71s9B7T9BRtWlJbWZ8eermDVsAPc=;
-        b=GFhgzukWyDXg7MgnY46Fk/3BnJ5WW7jIrguE3BWfbAs5NSPlxS04R6SzdtvZVx3o4I
-         QLEhUdc805I1Trt3h+GOp5mJWjl/7GI6oJscoHzMqbh7Xty6KdwQK5QDlfCOCBb7t6bJ
-         umMnf3ka3H8D8lilraegnFFK7xJX4SOliNj4Fofyc/SuDu+DWnmzNxWUKzBeP45FYZqr
-         Nb9fmqa/IdmQCrJQnOgeAkQVFz5LZ3Me9EYdqkgFLovZa5HnARtp5m1ZfncT+BFPvGFA
-         EfwzdSHOhhaLY0nlTbX7AgzWGmAATo7Y/EqhhiGjuU2oE5PzzOlaowahxWMTiP27jA6u
-         f7yw==
+        d=gmail.com; s=20230601; t=1701515687; x=1702120487; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PuBq2+K/7D2dQZmzmoJVP8xhMAQEZQpTZUllDtcXKL0=;
+        b=iYGsUZMOwNSi4kcBYQExtlBzOL7XefsKZ5eR2tw8hEQuPNy9PHBlrO3w1bTwrZOoFo
+         JDOvO/QTiUgkfshqsOWlpbPvJtSicW5Ydydn4HR1Vm7kjW9qUye2iZGA3zBnAXftfC3t
+         5IGbtfrLLigaocsuNvSzG2jG+NyUjBkN5VV+7yfR+vC/EQ9HOrULvoAUnfEUj54/aPk0
+         a5PEAMVRHNh56knGg0gcspRzKUYeAleRgRaEfglxDl5p3piPTTahzB5/TKP7sEv2wxxz
+         FbqcIo3usdS85p88gvgKP22SSmwFvPAApHNoSMifhdhvXI2Pv8kl5GzFifIV734WxLky
+         Pbbg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701505188; x=1702109988;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ngS2ris1InPJCJ/71s9B7T9BRtWlJbWZ8eermDVsAPc=;
-        b=Ze30m9oI8c1boZ6E5rFrURt2w1jkmUqB3xeQEEJsMSmGkBw/w1DFaX6qItlOWP5Mk4
-         5fchMO5v/rwyuw2EIJd7uIkA15Q4WJiw0giSbIdBLfaYa6ubW7X3WNtN/NdZSprakUWP
-         zIDf+AAwvmvKrOexWQ8F70TJhVxbwOnJot6yBfW2PobQzLdgYodAj7aVkhU1JXCTSz4q
-         lUOsQH2LcqUkWTtiFbOnHPENRi4isr1/Goy9NFl5pnJ7tp/82xR54EDvbJr/D4NKRUm4
-         KNcFXpuX9vphwTYzeIOjA6af9h7CFS1BKAEk4Ftbv4hPa2pVM9E4jMmhVIY8GxOsZeAh
-         ExKQ==
-X-Gm-Message-State: AOJu0Yw5lb+gQ8Xp2/82oYpaEzqBPmtYVbXbztBI9PdxBGO0oLts8TdU
-	xq39g4INBqFFfVg07T+3rk8=
-X-Google-Smtp-Source: AGHT+IHWXh9VTXKmwGrvfSO853aykEmjVyN78J/yeawbEJQEovLJurQPBXSZ6B3//ZNgrNwLMNLFBA==
-X-Received: by 2002:a17:906:10c8:b0:a19:a1ba:da52 with SMTP id v8-20020a17090610c800b00a19a1bada52mr1277430ejv.121.1701505187903;
-        Sat, 02 Dec 2023 00:19:47 -0800 (PST)
-Received: from ?IPV6:2a01:c23:c5f2:af00:b411:4430:8d9f:2d09? (dynamic-2a01-0c23-c5f2-af00-b411-4430-8d9f-2d09.c23.pool.telefonica.de. [2a01:c23:c5f2:af00:b411:4430:8d9f:2d09])
-        by smtp.googlemail.com with ESMTPSA id re17-20020a170906d8d100b009fc0c42098csm2835546ejb.173.2023.12.02.00.19.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 02 Dec 2023 00:19:47 -0800 (PST)
-Message-ID: <5576d307-36f7-4cb5-80e7-290b659ba573@gmail.com>
-Date: Sat, 2 Dec 2023 09:19:48 +0100
+        d=1e100.net; s=20230601; t=1701515687; x=1702120487;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PuBq2+K/7D2dQZmzmoJVP8xhMAQEZQpTZUllDtcXKL0=;
+        b=Q6pKU/ufN1KhpM8TPmm8mROJMKhL9R3J14cutH9canbup+bl75RmEGWOdYS4AKx0p2
+         /m/6C+gfcOlPBip/WR1AYuq56qODYf3yaTeIIDwMIE/FF3o1/C7UCWY9kbfyYEW/gvMq
+         GodE/D1S0EAc5AJEnWxhrIwWzw5f5xaM9GsFG1+5ZN+3zdH/rb2RzEjUDZ9Jiw6iLI9Y
+         1FjLprZZZkDtALZjoY5WskdHJWhWD9YdESoVTk7OFOZ+hGJ7I99fIHu5GS3vDJh9V8/L
+         yJPCLz7Q1yYZqYl61D+wHDlr3YzZ5ELQ0DZ84JLcfjHjmK1PQq+EL8qWH3/J7GIVLku3
+         vTGA==
+X-Gm-Message-State: AOJu0YyPUrP580s/BX1IsSWQ/B8YT2QL6iMIiiZErf5ncUTWV1i8mI3B
+	fZMLjo0Nm0xU5wZ/f8oWUdw=
+X-Google-Smtp-Source: AGHT+IG7kVjMeVBgDP3m5uSVWIH3RtNl20t5xeaTlMHlt3DR8NIK3nAoVqSfOvnQ8yp9IiRrmZ7zGQ==
+X-Received: by 2002:a05:6512:1593:b0:50b:d764:8811 with SMTP id bp19-20020a056512159300b0050bd7648811mr2125188lfb.93.1701515687394;
+        Sat, 02 Dec 2023 03:14:47 -0800 (PST)
+Received: from localhost ([95.79.203.166])
+        by smtp.gmail.com with ESMTPSA id o10-20020ac24e8a000000b00507a5f385f0sm693135lfr.266.2023.12.02.03.14.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Dec 2023 03:14:46 -0800 (PST)
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Serge Semin <fancer.lancer@gmail.com>,
+	Alexey Malahov <Alexey.Malahov@baikalelectronics.ru>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Aleksandar Rikalo <aleksandar.rikalo@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Baoquan He <bhe@redhat.com>,
+	Chao-ying Fu <cfu@wavecomp.com>,
+	Yinglu Yang <yangyinglu@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Mike Rapoport <rppt@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Marc Zyngier <maz@kernel.org>,
+	linux-mips@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2 3/6] mips: Fix max_mapnr being uninitialized on early stages
+Date: Sat,  2 Dec 2023 14:14:20 +0300
+Message-ID: <20231202111430.18059-4-fancer.lancer@gmail.com>
+X-Mailer: git-send-email 2.42.1
+In-Reply-To: <20231202111430.18059-1-fancer.lancer@gmail.com>
+References: <20231202111430.18059-1-fancer.lancer@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] r8169: fix rtl8125b PAUSE frames blasting when
- suspended
-Content-Language: en-US
-To: ChunHao Lin <hau@realtek.com>
-Cc: nic_swsd@realtek.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, grundler@chromium.org, stable@vger.kernel.org
-References: <20231129155350.5843-1-hau@realtek.com>
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <20231129155350.5843-1-hau@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 29.11.2023 16:53, ChunHao Lin wrote:
-> When FIFO reaches near full state, device will issue pause frame.
-> If pause slot is enabled(set to 1), in this time, device will issue
-> pause frame only once. But if pause slot is disabled(set to 0), device
-> will keep sending pause frames until FIFO reaches near empty state.
-> 
-> When pause slot is disabled, if there is no one to handle receive
-> packets, device FIFO will reach near full state and keep sending
-> pause frames. That will impact entire local area network.
-> 
-> This issue can be reproduced in Chromebox (not Chromebook) in
-> developer mode running a test image (and v5.10 kernel):
-> 1) ping -f $CHROMEBOX (from workstation on same local network)
-> 2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
-> 3) ping $ROUTER (wait until ping fails from workstation)
-> 
-> Takes about ~20-30 seconds after step 2 for the local network to
-> stop working.
-> 
-> Fix this issue by enabling pause slot to only send pause frame once
-> when FIFO reaches near full state.
-> 
-> Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
-> Reported-by: Grant Grundler <grundler@chromium.org>
-> Tested-by: Grant Grundler <grundler@chromium.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: ChunHao Lin <hau@realtek.com>
-> ---
-> v2:
-> - update comment and title.
-> ---
+max_mapnr variable is utilized in the pfn_valid() method in order to
+determine the upper PFN space boundary. Having it uninitialized
+effectively makes any PFN passed to that method invalid. That in its turn
+causes the kernel mm-subsystem occasion malfunctions even after the
+max_mapnr variable is actually properly updated. For instance,
+pfn_valid() is called in the init_unavailable_range() method in the
+framework of the calls-chain on MIPS:
+setup_arch()
++-> paging_init()
+    +-> free_area_init()
+        +-> memmap_init()
+            +-> memmap_init_zone_range()
+                +-> init_unavailable_range()
 
-Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Since pfn_valid() always returns "false" value before max_mapnr is
+initialized in the mem_init() method, any flatmem page-holes will be left
+in the poisoned/uninitialized state including the IO-memory pages. Thus
+any further attempts to map/remap the IO-memory by using MMU may fail.
+In particular it happened in my case on attempt to map the SRAM region.
+The kernel bootup procedure just crashed on the unhandled unaligned access
+bug raised in the __update_cache() method:
 
+> Unhandled kernel unaligned access[#1]:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-XXX-dirty #2056
+> ...
+> Call Trace:
+> [<8011ef9c>] __update_cache+0x88/0x1bc
+> [<80385944>] ioremap_page_range+0x110/0x2a4
+> [<80126948>] ioremap_prot+0x17c/0x1f4
+> [<80711b80>] __devm_ioremap+0x8c/0x120
+> [<80711e0c>] __devm_ioremap_resource+0xf4/0x218
+> [<808bf244>] sram_probe+0x4f4/0x930
+> [<80889d20>] platform_probe+0x68/0xec
+> ...
+
+Let's fix the problem by initializing the max_mapnr variable as soon as
+the required data is available. In particular it can be done right in the
+paging_init() method before free_area_init() is called since all the PFN
+zone boundaries have already been calculated by that time.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+
+---
+
+Note I don't really know since what point that problem actually exists.
+Based on the commits log it might had been persistent even before the
+boot_mem_map allocator was dropped. On the other hand I hadn't seen it
+actually come out before moving my working tree from kernel 6.5-rc4 to
+6.7-rc1. So after updating the kernel I got the unhandled unaligned access
+BUG() due to the access to compound head pointer the __update_cache()
+method (see the commit log). After enabling the DEBUG_VM config I managed
+to find out that the IO-memory pages were just left uninitialized and
+poisoned:
+
+> page:81367080 is uninitialized and poisoned (pfn 8192)
+> page dumped because: VM_BUG_ON_PAGE(PagePoisoned(p))
+> Kernel bug detected[#1]:
+> CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc1-00298-g88721b1a9ad5-dirty
+> $ 0   : 00000000 812d0000 00000034 dced7cdf
+> $ 4   : dced7cdf 00594000 10000000 ffff00fe
+> $ 8   : 8196bfe0 00000000 00000001 818458c0
+> $12   : 00000000 00000000 00000000 00000216
+> $16   : 00002800 81227b80 00000000 00000000
+> $20   : 00000000 00000000 00000000 00000000
+> $24   : 0000022b 818458c0
+> $28   : 81968000 8196be68 00000000 803a0920
+> Hi    : 00000000
+> Lo    : 00000000
+> epc   : 8039d2a4 BUG+0x0/0x4
+> ra    : 803a0920 post_alloc_hook+0x0/0x128
+> Status: 10000003 KERNEL EXL IE
+> Cause : 00800424 (ExcCode 09)
+> PrId  : 0001a830 (MIPS P5600)
+> Modules linked in:
+> Process swapper/0 (pid: 1, threadinfo=81968000, task=819a0000, tls=00000000)
+> Stack : 00000000 8101ccb0 00000000 8196bd00 00000000 80359768 818a8300 00000001
+>         81139088 8114438c 8042e4f8 81297a2c 81297a2c 81255e90 819a1b50 dced7cdf
+>         81297a2c 81297a2c 00000000 81227b80 00000000 81241168 811394b0 00000000
+>         81140000 80e2cee0 00000000 00000000 00000000 00000000 00000000 819b0000
+>         81140000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+>         ...
+> Call Trace:
+> [<8039d2a4>] BUG+0x0/0x4
+> [<803a0920>] post_alloc_hook+0x0/0x128
+>
+> Code: 01001025  03e00008  24020001 <000c000d> 2403003c  27bdffd0  afb2001c  3c12812f  8e4269e4
+
+Which in its turn made me digging deeper into the way the MMIO-space pages
+are initialized. That's how I got into the pfn_valid() and
+init_unavailable_range() working improperly on my setup.
+
+Anyway none of the problems above I spotted on kernel 6.5-rc4. So what
+actually triggered having them finally popped up isn't that easy to be
+foundn seeing the involved code hasn't changed much.
+---
+ arch/mips/mm/init.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 5dcb525a8995..6e368a4658b5 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -422,7 +422,12 @@ void __init paging_init(void)
+ 		       (highend_pfn - max_low_pfn) << (PAGE_SHIFT - 10));
+ 		max_zone_pfns[ZONE_HIGHMEM] = max_low_pfn;
+ 	}
++
++	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
++#else
++	max_mapnr = max_low_pfn;
+ #endif
++	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+ 
+ 	free_area_init(max_zone_pfns);
+ }
+@@ -458,13 +463,6 @@ void __init mem_init(void)
+ 	 */
+ 	BUILD_BUG_ON(IS_ENABLED(CONFIG_32BIT) && (PFN_PTE_SHIFT > PAGE_SHIFT));
+ 
+-#ifdef CONFIG_HIGHMEM
+-	max_mapnr = highend_pfn ? highend_pfn : max_low_pfn;
+-#else
+-	max_mapnr = max_low_pfn;
+-#endif
+-	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
+-
+ 	maar_init();
+ 	memblock_free_all();
+ 	setup_zero_pages();	/* Setup zeroed pages.  */
+-- 
+2.42.1
 
 
