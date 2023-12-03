@@ -1,109 +1,129 @@
-Return-Path: <stable+bounces-3731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E378023D6
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:50:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7BED8023D8
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:50:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728901F204E1
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:50:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10BB2B20A29
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F6EDDC9;
-	Sun,  3 Dec 2023 12:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0803E54D;
+	Sun,  3 Dec 2023 12:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="RgM2IiZH";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sCRwjC1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MH3j4nH4"
 X-Original-To: stable@vger.kernel.org
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE109C2
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 04:50:19 -0800 (PST)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id 2F0E65C0099;
-	Sun,  3 Dec 2023 07:50:19 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Sun, 03 Dec 2023 07:50:19 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm1; t=1701607819; x=1701694219; bh=I3
-	ucwdrspbk0VS5Nt5+RUiMLnCZcI7XGOrNj/XfP4MA=; b=RgM2IiZHrMBZCye5z2
-	SZ3yaBCWMk42Q6a/yN85CGu47GLGN0NGHHcHiaOh/wvfxDAvScTEry0z2xVKtRSP
-	JT+RUYQlfVfBy+21IBTP5CApkgYEPU5UorPQeDVWQLrHtO/QCCwoiT0utUi2Cla+
-	6QC3qABnYWYPaS85DubUijsZcwipuw928yOCkCrTq870YWuSW/NcwqO2uBIB2Vmj
-	U9IFav2F3W37ye05L8+/RoCp2t+nx7/ZCoshjzUkPXxmn8bhnEAuUks/gm9/19eE
-	qDpCrYaTXFtfvn+NA6AvvPW7Zi7PYdML80g7eIDbRsFy5dYfGZnWbnLP7Lbt45At
-	9cBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701607819; x=1701694219; bh=I3ucwdrspbk0V
-	S5Nt5+RUiMLnCZcI7XGOrNj/XfP4MA=; b=sCRwjC1FTtNbDaFOYmI9p/SwVL94h
-	9MHg91cJunV5GAl/1kjaw9uw4Gig9pCa31eQl58KuQe+JGdTx8yifYD1dxpXouwY
-	Js1AK4H3eea1TNt+FhCqI+Ai2NbdsL6G3Z16iIVeWvTMBA0Q2PSsLJFLAtCyCXnL
-	CksCt5DPKJu2onWJCy+/7HD05BrOEFUBCLxq2eQzqxYkTDouVXdKNGNSG2pfSZD9
-	thc6fE81/ygGQYMo2QkoTt/rXh6axWm6IbBIW7kd3Q6XWuPoLJYcKyjlR8GB9yiw
-	wwnjv6kLu0KJOFLndVPL3vT6eTB4ld43B6K0PBBsafTR65QfeJXuob9dg==
-X-ME-Sender: <xms:inlsZWkDbczucoJ-5mdy3_gQv2rG1HW_BND1VD0Yd3heBlaFsNeP3Q>
-    <xme:inlsZd3lPHZfAwudxNSBSUfTuQmYvRoN5QgAI9qepkPxax-tMdlSvvC06t50Uo-YB
-    ajRxUv0VBN1xw>
-X-ME-Received: <xmr:inlsZUrFjpPCrnsOf6nZD9FYVh4RjvtSTHVG8ajg7k19QPxhJVh94l8sa3qS>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudejgedggeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:inlsZanoJWr6ZhQiJmhNcMQHODQQUiztGJzXChlOBVOSBhTZXxZEQw>
-    <xmx:inlsZU2qO4frjXRIWwZSKEKSqYJbC_UNYVsVZ81dpZGpsiaIFAM1DQ>
-    <xmx:inlsZRtNS3VEFxAf0HnA7x_bNxPCvg2DkxyoG2jyhoIdAA5e1IcsYQ>
-    <xmx:i3lsZVKUAfJ-Se7WAXRKiWK0ZM82aFHkeGClTy2orVny5oisiUvODw>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 3 Dec 2023 07:50:18 -0500 (EST)
-Date: Sun, 3 Dec 2023 13:50:15 +0100
-From: Greg KH <greg@kroah.com>
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: stable@vger.kernel.org, Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Pablo Galindo Salgado <pablogsal@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>
-Subject: Re: 5.x-stable backport request
-Message-ID: <2023120309-veal-kinship-06f0@gregkh>
-References: <CAM9d7chJ8kP5VP+SbQzFfhvRD49X5qccnzysY6hJHgWG2KSLbw@mail.gmail.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD0FDF51
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:50:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C40DC433C7;
+	Sun,  3 Dec 2023 12:50:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701607844;
+	bh=N93QlO3qWOIfDhZ6puLzypj48F1UB6LoKo2B/FTu43g=;
+	h=Subject:To:Cc:From:Date:From;
+	b=MH3j4nH48uhqJ/WQEcZXV1D9iR8UXmKbC2CedPk+frnvqrmVbFLbWEn6MamcTPEGJ
+	 MWVWDK+6RiieS8joumIU8zzLt1jBOLwaZ7kWSEfgGyUiu5P8+ziCCm2hDW0EDrWEqq
+	 oEAeJ6XHSSoQlEz0YOeMrsB6f2ZTzRpnhNUh6VRI=
+Subject: FAILED: patch "[PATCH] cifs: Fix FALLOC_FL_ZERO_RANGE by setting i_size if EOF moved" failed to apply to 5.15-stable tree
+To: dhowells@redhat.com,jlayton@kernel.org,nspmangalore@gmail.com,pc@manguebit.com,rohiths.msft@gmail.com,stfrench@microsoft.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sun, 03 Dec 2023 13:50:41 +0100
+Message-ID: <2023120341-floss-starring-3167@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAM9d7chJ8kP5VP+SbQzFfhvRD49X5qccnzysY6hJHgWG2KSLbw@mail.gmail.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 30, 2023 at 09:29:53PM -0800, Namhyung Kim wrote:
-> Hello,
-> 
-> Please queue up this commit for the v5.x long-term stable
-> series (and v4.19 too).
-> 
->  * commit: 89b15d00527b7825ff19130ed83478e80e3fae99
->    ("perf inject: Fix GEN_ELF_TEXT_OFFSET for jit")
->  * Author: Adrian Hunter <adrian.hunter@intel.com>
-> 
-> The 5.x stable series has the commit babd04386b1df8c3
-> ("perf jit: Include program header in ELF files") to include an
-> ELF program header for the JIT binaries but it misses this fix
-> to update the offset of the text section and the symbol.
-> 
-> This resulted in failures of symbolizing jit code properly.
-> The above commit should be applied to fix it.
 
-Now queued up, thanks.
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 83d5518b124dfd605f10a68128482c839a239f9d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120341-floss-starring-3167@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+83d5518b124d ("cifs: Fix FALLOC_FL_ZERO_RANGE by setting i_size if EOF moved")
+38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
+abdb1742a312 ("cifs: get rid of mount options string parsing")
+9fd29a5bae6e ("cifs: use fs_context for automounts")
+c919c164fc87 ("smb3: missing inode locks in zero range")
+400d0ad63b19 ("cifs: remove useless parameter 'is_fsctl' from SMB2_ioctl()")
+5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
+332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 83d5518b124dfd605f10a68128482c839a239f9d Mon Sep 17 00:00:00 2001
+From: David Howells <dhowells@redhat.com>
+Date: Wed, 29 Nov 2023 16:56:17 +0000
+Subject: [PATCH] cifs: Fix FALLOC_FL_ZERO_RANGE by setting i_size if EOF moved
+
+Fix the cifs filesystem implementations of FALLOC_FL_ZERO_RANGE, in
+smb3_zero_range(), to set i_size after extending the file on the server.
+
+Fixes: 72c419d9b073 ("cifs: fix smb3_zero_range so it can expand the file-size when required")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Howells <dhowells@redhat.com>
+Acked-by: Paulo Alcantara <pc@manguebit.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: linux-mm@kvack.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 82ab62fd0040..f1b0b2b11ab2 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3311,6 +3311,7 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
+ 	struct inode *inode = file_inode(file);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsFileInfo *cfile = file->private_data;
++	unsigned long long new_size;
+ 	long rc;
+ 	unsigned int xid;
+ 	__le64 eof;
+@@ -3341,10 +3342,15 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
+ 	/*
+ 	 * do we also need to change the size of the file?
+ 	 */
+-	if (keep_size == false && i_size_read(inode) < offset + len) {
+-		eof = cpu_to_le64(offset + len);
++	new_size = offset + len;
++	if (keep_size == false && (unsigned long long)i_size_read(inode) < new_size) {
++		eof = cpu_to_le64(new_size);
+ 		rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+ 				  cfile->fid.volatile_fid, cfile->pid, &eof);
++		if (rc >= 0) {
++			truncate_setsize(inode, new_size);
++			fscache_resize_cookie(cifs_inode_cookie(inode), new_size);
++		}
+ 	}
+ 
+  zero_range_exit:
+
 
