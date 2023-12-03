@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDAE80244B
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:38:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4DA80245D
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:48:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D371C208FE
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:38:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54141F21195
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:48:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E31AFC02;
-	Sun,  3 Dec 2023 13:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BE011733;
+	Sun,  3 Dec 2023 13:48:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H09c0dn1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OcwRyZTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8D5C2EE
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:38:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECD3C433C7;
-	Sun,  3 Dec 2023 13:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02846156C3
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A400C433C8;
+	Sun,  3 Dec 2023 13:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701610713;
-	bh=BkV/kAFPGPbj/VkJxYuzyJ6tFKmr8nrzybt/jfxp+cQ=;
+	s=korg; t=1701611282;
+	bh=8DjSmmM4XWLBBd64TpfCkmMz8P4knS3werDHv9+knLc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=H09c0dn14rWto9ggY4WmxeZVPhpxVhLhlzBBOAa5zAcgesPq39RnA3Hu/0FCO+/b7
-	 KU6fluVkbsUyWkFbnlDSLyoDAIn39/atoTba3zEvOO4AtK22jqLkjirVfm26yx2+Wr
-	 OXKtqXLrN8s4HU8hC2OK//boi2MxcJtMvIwGjXd0=
-Subject: FAILED: patch "[PATCH] kprobes: consistent rcu api usage for kretprobe holder" failed to apply to 5.15-stable tree
-To: inwardvessel@gmail.com,mhiramat@kernel.org
+	b=OcwRyZTb3kYnXUtUuMtfUuhFFMJjVyNbroji4BX3lP+tW2bPL0x2kxlCKsx1aX5op
+	 UFrp+DQBUs7SaASXML7cOoWo+0/VosXb5NgHHKv3FHMjDVdU5I+8l2gkGEmjdsKOrk
+	 LTiwZPSm9eh5sCL9SJ/7Avc9VVGUm9Om21AIefC4=
+Subject: FAILED: patch "[PATCH] io_uring/kbuf: defer release of mapped buffer rings" failed to apply to 6.6-stable tree
+To: axboe@kernel.dk,jannh@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:38:19 +0100
-Message-ID: <2023120319-failing-aviator-303a@gregkh>
+Date: Sun, 03 Dec 2023 14:47:59 +0100
+Message-ID: <2023120359-fit-broom-4a79@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,42 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x d839a656d0f3caca9f96e9bf912fd394ac6a11bc
+git cherry-pick -x c392cbecd8eca4c53f2bf508731257d9d0a21c2d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120319-failing-aviator-303a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120359-fit-broom-4a79@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-d839a656d0f3 ("kprobes: consistent rcu api usage for kretprobe holder")
-4bbd93455659 ("kprobes: kretprobe scalability improvement")
-8865aea0471c ("kernel: kprobes: Use struct_size()")
-195b9cb5b288 ("fprobe: Ensure running fprobe_exit_handler() finished before calling rethook_free()")
-5f81018753df ("fprobe: Release rethook after the ftrace_ops is unregistered")
-76d0de5729c0 ("fprobe: Pass entry_data to handlers")
-0a1ebe35cb3b ("rethook: fix a potential memleak in rethook_alloc()")
-d05ea35e7eea ("fprobe: Check rethook_alloc() return in rethook initialization")
-c09eb2e578eb ("bpf: Adjust kprobe_multi entry_ip for CONFIG_X86_KERNEL_IBT")
-c0f3bb4054ef ("rethook: Reject getting a rethook if RCU is not watching")
-439940491807 ("kprobes: Fix build errors with CONFIG_KRETPROBES=n")
-73f9b911faa7 ("kprobes: Use rethook for kretprobe if possible")
-9052e4e83762 ("fprobe: Fix smatch type mismatch warning")
-f70986902c86 ("bpf: Fix kprobe_multi return probe backtrace")
-f705ec764b34 ("Revert "bpf: Add support to inline bpf_get_func_ip helper on x86"")
-2c6401c966ae ("selftests/bpf: Add kprobe_multi bpf_cookie test")
-f7a11eeccb11 ("selftests/bpf: Add kprobe_multi attach test")
-ca74823c6e16 ("bpf: Add cookie support to programs attached with kprobe multi link")
-97ee4d20ee67 ("bpf: Add support to inline bpf_get_func_ip helper on x86")
-42a5712094e8 ("bpf: Add bpf_get_func_ip kprobe helper for multi kprobe link")
+c392cbecd8ec ("io_uring/kbuf: defer release of mapped buffer rings")
 
 thanks,
 
@@ -88,85 +69,160 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d839a656d0f3caca9f96e9bf912fd394ac6a11bc Mon Sep 17 00:00:00 2001
-From: JP Kobryn <inwardvessel@gmail.com>
-Date: Fri, 1 Dec 2023 14:53:55 +0900
-Subject: [PATCH] kprobes: consistent rcu api usage for kretprobe holder
+From c392cbecd8eca4c53f2bf508731257d9d0a21c2d Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Mon, 27 Nov 2023 16:47:04 -0700
+Subject: [PATCH] io_uring/kbuf: defer release of mapped buffer rings
 
-It seems that the pointer-to-kretprobe "rp" within the kretprobe_holder is
-RCU-managed, based on the (non-rethook) implementation of get_kretprobe().
-The thought behind this patch is to make use of the RCU API where possible
-when accessing this pointer so that the needed barriers are always in place
-and to self-document the code.
+If a provided buffer ring is setup with IOU_PBUF_RING_MMAP, then the
+kernel allocates the memory for it and the application is expected to
+mmap(2) this memory. However, io_uring uses remap_pfn_range() for this
+operation, so we cannot rely on normal munmap/release on freeing them
+for us.
 
-The __rcu annotation to "rp" allows for sparse RCU checking. Plain writes
-done to the "rp" pointer are changed to make use of the RCU macro for
-assignment. For the single read, the implementation of get_kretprobe()
-is simplified by making use of an RCU macro which accomplishes the same,
-but note that the log warning text will be more generic.
+Stash an io_buf_free entry away for each of these, if any, and provide
+a helper to free them post ->release().
 
-I did find that there is a difference in assembly generated between the
-usage of the RCU macros vs without. For example, on arm64, when using
-rcu_assign_pointer(), the corresponding store instruction is a
-store-release (STLR) which has an implicit barrier. When normal assignment
-is done, a regular store (STR) is found. In the macro case, this seems to
-be a result of rcu_assign_pointer() using smp_store_release() when the
-value to write is not NULL.
-
-Link: https://lore.kernel.org/all/20231122132058.3359-1-inwardvessel@gmail.com/
-
-Fixes: d741bf41d7c7 ("kprobes: Remove kretprobe hash")
 Cc: stable@vger.kernel.org
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index ab1da3142b06..64672bace560 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -139,7 +139,7 @@ static inline bool kprobe_ftrace(struct kprobe *p)
-  *
-  */
- struct kretprobe_holder {
--	struct kretprobe	*rp;
-+	struct kretprobe __rcu *rp;
- 	struct objpool_head	pool;
+diff --git a/include/linux/io_uring_types.h b/include/linux/io_uring_types.h
+index d3009d56af0b..805bb635cdf5 100644
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -340,6 +340,9 @@ struct io_ring_ctx {
+ 
+ 	struct list_head	io_buffers_cache;
+ 
++	/* deferred free list, protected by ->uring_lock */
++	struct hlist_head	io_buf_list;
++
+ 	/* Keep this last, we don't need it for the fast path */
+ 	struct wait_queue_head		poll_wq;
+ 	struct io_restriction		restrictions;
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index e40b11438210..3a216f0744dd 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -325,6 +325,7 @@ static __cold struct io_ring_ctx *io_ring_ctx_alloc(struct io_uring_params *p)
+ 	INIT_LIST_HEAD(&ctx->sqd_list);
+ 	INIT_LIST_HEAD(&ctx->cq_overflow_list);
+ 	INIT_LIST_HEAD(&ctx->io_buffers_cache);
++	INIT_HLIST_HEAD(&ctx->io_buf_list);
+ 	io_alloc_cache_init(&ctx->rsrc_node_cache, IO_NODE_ALLOC_CACHE_MAX,
+ 			    sizeof(struct io_rsrc_node));
+ 	io_alloc_cache_init(&ctx->apoll_cache, IO_ALLOC_CACHE_MAX,
+@@ -2950,6 +2951,7 @@ static __cold void io_ring_ctx_free(struct io_ring_ctx *ctx)
+ 		ctx->mm_account = NULL;
+ 	}
+ 	io_rings_free(ctx);
++	io_kbuf_mmap_list_free(ctx);
+ 
+ 	percpu_ref_exit(&ctx->refs);
+ 	free_uid(ctx->user);
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index a1e4239c7d75..85e680fc74ce 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -33,6 +33,11 @@ struct io_provide_buf {
+ 	__u16				bid;
  };
  
-@@ -245,10 +245,7 @@ unsigned long kretprobe_trampoline_handler(struct pt_regs *regs,
- 
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
++struct io_buf_free {
++	struct hlist_node		list;
++	void				*mem;
++};
++
+ static inline struct io_buffer_list *io_buffer_get_list(struct io_ring_ctx *ctx,
+ 							unsigned int bgid)
  {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return READ_ONCE(ri->rph->rp);
-+	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
+@@ -223,7 +228,10 @@ static int __io_remove_buffers(struct io_ring_ctx *ctx,
+ 	if (bl->is_mapped) {
+ 		i = bl->buf_ring->tail - bl->head;
+ 		if (bl->is_mmap) {
+-			folio_put(virt_to_folio(bl->buf_ring));
++			/*
++			 * io_kbuf_list_free() will free the page(s) at
++			 * ->release() time.
++			 */
+ 			bl->buf_ring = NULL;
+ 			bl->is_mmap = 0;
+ 		} else if (bl->buf_nr_pages) {
+@@ -531,18 +539,28 @@ static int io_pin_pbuf_ring(struct io_uring_buf_reg *reg,
+ 	return -EINVAL;
  }
  
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 075a632e6c7c..d5a0ee40bf66 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -2252,7 +2252,7 @@ int register_kretprobe(struct kretprobe *rp)
- 		rp->rph = NULL;
+-static int io_alloc_pbuf_ring(struct io_uring_buf_reg *reg,
++static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
++			      struct io_uring_buf_reg *reg,
+ 			      struct io_buffer_list *bl)
+ {
+-	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
++	struct io_buf_free *ibf;
+ 	size_t ring_size;
+ 	void *ptr;
+ 
+ 	ring_size = reg->ring_entries * sizeof(struct io_uring_buf_ring);
+-	ptr = (void *) __get_free_pages(gfp, get_order(ring_size));
++	ptr = io_mem_alloc(ring_size);
+ 	if (!ptr)
  		return -ENOMEM;
- 	}
--	rp->rph->rp = rp;
-+	rcu_assign_pointer(rp->rph->rp, rp);
- 	rp->nmissed = 0;
- 	/* Establish function entry probe point */
- 	ret = register_kprobe(&rp->kp);
-@@ -2300,7 +2300,7 @@ void unregister_kretprobes(struct kretprobe **rps, int num)
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- 		rethook_free(rps[i]->rh);
- #else
--		rps[i]->rph->rp = NULL;
-+		rcu_assign_pointer(rps[i]->rph->rp, NULL);
- #endif
- 	}
- 	mutex_unlock(&kprobe_mutex);
+ 
++	/* Allocate and store deferred free entry */
++	ibf = kmalloc(sizeof(*ibf), GFP_KERNEL_ACCOUNT);
++	if (!ibf) {
++		io_mem_free(ptr);
++		return -ENOMEM;
++	}
++	ibf->mem = ptr;
++	hlist_add_head(&ibf->list, &ctx->io_buf_list);
++
+ 	bl->buf_ring = ptr;
+ 	bl->is_mapped = 1;
+ 	bl->is_mmap = 1;
+@@ -599,7 +617,7 @@ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg)
+ 	if (!(reg.flags & IOU_PBUF_RING_MMAP))
+ 		ret = io_pin_pbuf_ring(&reg, bl);
+ 	else
+-		ret = io_alloc_pbuf_ring(&reg, bl);
++		ret = io_alloc_pbuf_ring(ctx, &reg, bl);
+ 
+ 	if (!ret) {
+ 		bl->nr_entries = reg.ring_entries;
+@@ -649,3 +667,19 @@ void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
+ 
+ 	return bl->buf_ring;
+ }
++
++/*
++ * Called at or after ->release(), free the mmap'ed buffers that we used
++ * for memory mapped provided buffer rings.
++ */
++void io_kbuf_mmap_list_free(struct io_ring_ctx *ctx)
++{
++	struct io_buf_free *ibf;
++	struct hlist_node *tmp;
++
++	hlist_for_each_entry_safe(ibf, tmp, &ctx->io_buf_list, list) {
++		hlist_del(&ibf->list);
++		io_mem_free(ibf->mem);
++		kfree(ibf);
++	}
++}
+diff --git a/io_uring/kbuf.h b/io_uring/kbuf.h
+index f2d615236b2c..6c7646e6057c 100644
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -51,6 +51,8 @@ int io_provide_buffers(struct io_kiocb *req, unsigned int issue_flags);
+ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg);
+ int io_unregister_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg);
+ 
++void io_kbuf_mmap_list_free(struct io_ring_ctx *ctx);
++
+ unsigned int __io_put_kbuf(struct io_kiocb *req, unsigned issue_flags);
+ 
+ bool io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
 
 
