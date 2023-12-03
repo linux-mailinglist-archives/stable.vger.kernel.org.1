@@ -1,241 +1,313 @@
-Return-Path: <stable+bounces-3814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D76802724
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 20:52:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FE4480272F
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 21:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D87371F211AA
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 19:52:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F411C208F8
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 20:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CB218B00;
-	Sun,  3 Dec 2023 19:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B920818B0C;
+	Sun,  3 Dec 2023 20:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=natalenko.name header.i=@natalenko.name header.b="fq17eXjp"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="exOHda1K"
 X-Original-To: stable@vger.kernel.org
-Received: from vulcan.natalenko.name (vulcan.natalenko.name [104.207.131.136])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A88AA5;
-	Sun,  3 Dec 2023 11:52:41 -0800 (PST)
-Received: from spock.localnet (unknown [94.142.239.106])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by vulcan.natalenko.name (Postfix) with ESMTPSA id 8748B15BEF1E;
-	Sun,  3 Dec 2023 20:52:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=natalenko.name;
-	s=dkim-20170712; t=1701633157;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4wMVCVObgzmwcJOuu+aKIsCcHKEPTod9TuG1xyf6Axo=;
-	b=fq17eXjpweF2uu7lLww9PmutjPYA8Wyp/Ed8Ze8qJK1IOdpgGtedz02tO0BGyyL+BYPqJN
-	aJOTo0L5YPR9F6Ftn//saGvvwlCP0u0FVAvSGqPYGjoQ1tH6B5OyYPHrjlJhzYgG8HjPxs
-	rA9010E2996tc7FG/beDjAP29lfu5RE=
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-To: Greg KH <gregkh@linuxfoundation.org>,
- "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>,
- Basavaraj Natikar <bnatikar@amd.com>
-Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
- Basavaraj Natikar <Basavaraj.Natikar@amd.com>, stable@vger.kernel.org,
- Thorsten Leemhuis <regressions@leemhuis.info>, regressions@lists.linux.dev,
- linux-bluetooth@vger.kernel.org,
- Mario Limonciello <mario.limonciello@amd.com>,
- Mathias Nyman <mathias.nyman@intel.com>, linux-usb@vger.kernel.org
-Subject: Re: Regression: Inoperative bluetooth, Intel chipset,
- mainline kernel 6.6.2+
-Date: Sun, 03 Dec 2023 20:52:26 +0100
-Message-ID: <12335218.O9o76ZdvQC@natalenko.name>
-In-Reply-To: <4c8072b9-637b-a871-4dc1-3031aa3712bd@amd.com>
-References:
- <ee109942-ef8e-45b9-8cb9-a98a787fe094@moonlit-rail.com>
- <93b7d9ca-788a-53cd-efdb-6a61b583c550@amd.com>
- <4c8072b9-637b-a871-4dc1-3031aa3712bd@amd.com>
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1DEAC0
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:10:41 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-58ce8513da1so2666485eaf.2
+        for <stable@vger.kernel.org>; Sun, 03 Dec 2023 12:10:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701634241; x=1702239041; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=XD2E6bXYb7J1mG0LHbsQ5S7Uo691ejmPU1PYdkrSHR4=;
+        b=exOHda1Kd878jToyhO1M1NhXkHiYKLXSBC0aZuodyt0Yind8UfHr2HJGB/yRcsyHoc
+         RMf+3ralkA8/OwEt/DHeRZzqBC+VCdGlV/zJK/8aWaFf7ZsZroRXsEgGsof2wffhGR6U
+         yQ6pc2lpbVp7YR11kx1KcopUvO1tXgPappkysf4rI7FYeN9yhiQr48VD19qGqZaNgl2W
+         oiZecLKcpfCnAktQt85AbwespmdOCkzrpERehGTPMo4qD8HAfxQa/vSkTmgiAyFeG9vQ
+         FeKhx8P+7phr0TFKWHj333Z3qsNyRdxyTTIegQqHahEXGGOcLy0AijqCDVl6gKmaJrXn
+         ZWng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701634241; x=1702239041;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XD2E6bXYb7J1mG0LHbsQ5S7Uo691ejmPU1PYdkrSHR4=;
+        b=L71sdOPSo8wkAbKAi8DMr0oWVYjnacPivwFuNg/aHkBJqKT3XdWITx8Ixh1bho1vTP
+         +JU0j6ln4uOhYoh22N2WJPkeCPe/8hXqdzNxmg7Sb8GKIIuzREMzKVnQzriTM1eYysnz
+         IfeZKWLvUVPTnTXkbkvsgShb2HlDS2J9+4HGVqUwOGl4zpa6rPbVyu2C6CtvI/TDAPKu
+         0H7AIeoy06P+swh9pGC20EAByK7tLJo53p7HFlxeH9qcfS9FGjsZH43KyLyZdfiRQeir
+         u7QxJkvLnxbbTb2JThD5y0MUDEHfy7nzHPW8G/UmWAUkdUNY/86M2qi1xCwE/XPagEvS
+         teFw==
+X-Gm-Message-State: AOJu0YwXQrAnnUuuJQzebt+pJT2aQrwlSznYFi2IYh486LKGXibl/Kw5
+	wE7Id/g8RXnLpQtqhzaJit8lnjd95Z9Nv6WBst+0LQ==
+X-Google-Smtp-Source: AGHT+IGuPGN9cbGsYW0yT94UczrU7kmMQ2JZdssSdqfvnz9iqVlSmkCi29emqF32kqR7JbTRlKF3Bg==
+X-Received: by 2002:a05:6358:7f0b:b0:16d:fc4d:9fe5 with SMTP id p11-20020a0563587f0b00b0016dfc4d9fe5mr3266595rwn.3.1701634240628;
+        Sun, 03 Dec 2023 12:10:40 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id s21-20020a62e715000000b006bb5ff51177sm2757946pfh.194.2023.12.03.12.10.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Dec 2023 12:10:40 -0800 (PST)
+Message-ID: <656ce0c0.620a0220.4276d.554c@mx.google.com>
+Date: Sun, 03 Dec 2023 12:10:40 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart5733948.DvuYhMxLoT";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
-
---nextPart5733948.DvuYhMxLoT
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"; protected-headers="v1"
-From: Oleksandr Natalenko <oleksandr@natalenko.name>
-Date: Sun, 03 Dec 2023 20:52:26 +0100
-Message-ID: <12335218.O9o76ZdvQC@natalenko.name>
-In-Reply-To: <4c8072b9-637b-a871-4dc1-3031aa3712bd@amd.com>
-MIME-Version: 1.0
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.10.202-89-g101afac3a6283
+Subject: stable-rc/linux-5.10.y baseline: 144 runs,
+ 4 regressions (v5.10.202-89-g101afac3a6283)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Hello.
+stable-rc/linux-5.10.y baseline: 144 runs, 4 regressions (v5.10.202-89-g101=
+afac3a6283)
 
-On ned=C4=9Ble 3. prosince 2023 17:24:28 CET Basavaraj Natikar wrote:
->=20
-> On 12/3/2023 9:46 PM, Basavaraj Natikar wrote:
-> > On 12/3/2023 2:08 PM, Greg KH wrote:
-> >> On Sun, Dec 03, 2023 at 03:32:52AM -0500, Kris Karas (Bug Reporting) w=
-rote:
-> >>> Greg KH wrote:
-> >>>> Thanks for testing, any chance you can try 6.6.4-rc1?  Or wait a few
-> >>>> hours for me to release 6.6.4 if you don't want to mess with a -rc
-> >>>> release.
-> >>> As I mentioned to Greg off-list (to save wasting other peoples' bandw=
-idth),
-> >>> I couldn't find 6.6.4-rc1.  Looking in wrong git tree?  But 6.6.4 is =
-now
-> >>> out, which I have tested and am running at the moment, albeit with the
-> >>> problem commit from 6.6.2 backed out.
-> >>>
-> >>> There is no change with respect to this bug.  The problematic patch
-> >>> introduced in 6.6.2 was neither reverted nor amended.  The "opcode 0x=
-0c03
-> >>> failed" lines to the kernel log continue to be present.
-> >>>
-> >>>> Also, is this showing up in 6.7-rc3?  If so, that would be a big hel=
-p in
-> >>>> tracking this down.
-> >>> The bug shows up in 6.7-rc3 as well, exactly as it does here in 6.6.2=
-+ and
-> >>> in 6.1.63+.  The problematic patch bisected earlier appears identical=
-ly (and
-> >>> seems to have been introduced simultaneously) in these recent release=
-s.
-> >> Ok, in a way, this is good as that means I haven't missed a fix, but b=
-ad
-> >> in that this does affect everyone more.
-> >>
-> >> So let's start over, you found the offending commit, and nothing has
-> >> fixed it, so what do we do?  xhci/amd developers, any ideas?
-> > Can we enable RPM on specific controllers for AMD xHC 1.1
-> > instead to cover all AMD xHC 1.1?=20
-> >
-> > Please find below the proposed changes and let me know if it is OK?
-> > =20
-> > Author: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-> > Date:   Sun Dec 3 18:28:27 2023 +0530
-> >
-> >     xhci: Remove RPM as default policy to cover AMD xHC 1.1
-> >
-> >     xHC 1.1 runtime PM as default policy causes issues on few AMD contr=
-ollers.
-> >     Hence remove RPM as default policy to cover AMD xHC 1.1 and add only
-> >     AMD USB host controller (1022:43f7) which has RPM support.=20
-> >
-> >     Fixes: 4baf12181509 ("xhci: Loosen RPM as default policy to cover f=
-or AMD xHC 1.1")
-> >     Link: https://lore.kernel.org/all/2023120329-length-strum-9ee1@greg=
-kh
-> >     Signed-off-by: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
-> >
-> > diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-> > index 95ed9404f6f8..7ffd6b8227cc 100644
-> > --- a/drivers/usb/host/xhci-pci.c
-> > +++ b/drivers/usb/host/xhci-pci.c
-> > @@ -535,7 +535,7 @@ static void xhci_pci_quirks(struct device *dev, str=
-uct xhci_hcd *xhci)
-> >         /* xHC spec requires PCI devices to support D3hot and D3cold */
-> >         if (xhci->hci_version >=3D 0x120)
-> >                 xhci->quirks |=3D XHCI_DEFAULT_PM_RUNTIME_ALLOW;
-> > -       else if (pdev->vendor =3D=3D PCI_VENDOR_ID_AMD && xhci->hci_ver=
-sion >=3D 0x110)
-> > +       else if (pdev->vendor =3D=3D PCI_VENDOR_ID_AMD && pdev->vendor =
-=3D=3D 0x43f7)
->=20
-> sorry its=20
-> pdev->device =3D=3D 0x43f7
->=20
-> Incorrect ---> else if (pdev->vendor =3D=3D PCI_VENDOR_ID_AMD && pdev->ve=
-ndor =3D=3D 0x43f7)
-> correct line --> else if (pdev->vendor =3D=3D PCI_VENDOR_ID_AMD && pdev->=
-device =3D=3D 0x43f7)
->=20
-> >                 xhci->quirks |=3D XHCI_DEFAULT_PM_RUNTIME_ALLOW;
-> >
-> >         if (xhci->quirks & XHCI_RESET_ON_RESUME)
+Regressions Summary
+-------------------
 
-Given the following hardware:
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+juno-uboot         | arm64  | lab-broonie   | gcc-10   | defconfig         =
+         | 1          =
 
-[~]> lspci -nn | grep -i usb
-06:00.4 USB controller [0c03]: Realtek Semiconductor Co., Ltd. RTL811x EHCI=
- host controller [10ec:816d] (rev 1a)
-07:00.1 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Matisse U=
-SB 3.0 Host Controller [1022:149c]
-07:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Matisse U=
-SB 3.0 Host Controller [1022:149c]
-0f:00.3 USB controller [0c03]: Advanced Micro Devices, Inc. [AMD] Matisse U=
-SB 3.0 Host Controller [1022:149c]
+qemu_x86_64        | x86_64 | lab-baylibre  | gcc-10   | x86_64_defconfig+x=
+86-board | 1          =
 
-and v6.6.4 kernel, without this patch:
+sun50i-h6-pine-h64 | arm64  | lab-clabbe    | gcc-10   | defconfig         =
+         | 1          =
 
-[~]> LC_TIME=3DC jctl -kb -1 --grep 'hci version'
-Dec 03 13:22:03 archlinux kernel: xhci_hcd 0000:07:00.1: hcc params 0x0278f=
-fe5 hci version 0x110 quirks 0x0000000200000410
-Dec 03 13:22:03 archlinux kernel: xhci_hcd 0000:07:00.3: hcc params 0x0278f=
-fe5 hci version 0x110 quirks 0x0000000200000410
-Dec 03 13:22:03 archlinux kernel: xhci_hcd 0000:0f:00.3: hcc params 0x0278f=
-fe5 hci version 0x110 quirks 0x0000000200000410
-
-With the patch applied:
-
-[~]> LC_TIME=3DC jctl -kb --grep 'hci version'
-Dec 03 20:46:59 archlinux kernel: xhci_hcd 0000:07:00.1: hcc params 0x0278f=
-fe5 hci version 0x110 quirks 0x0000000000000410
-Dec 03 20:46:59 archlinux kernel: xhci_hcd 0000:07:00.3: hcc params 0x0278f=
-fe5 hci version 0x110 quirks 0x0000000000000410
-Dec 03 20:46:59 archlinux kernel: xhci_hcd 0000:0f:00.3: hcc params 0x0278f=
-fe5 hci version 0x110 quirks 0x0000000000000410
-
-(note the difference in `quirks` as expected)
-
-Hence, feel free to add:
-
-Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Link: https://lore.kernel.org/lkml/5993222.lOV4Wx5bFT@natalenko.name/
-
-Thank you.
-
-> >
-> > Thanks,
-> > --
-> > Basavaraj
-> >
-> >> thanks,
-> >>
-> >> greg k-h
->=20
->=20
->=20
+sun50i-h6-pine-h64 | arm64  | lab-collabora | gcc-10   | defconfig         =
+         | 1          =
 
 
-=2D-=20
-Oleksandr Natalenko (post-factum)
---nextPart5733948.DvuYhMxLoT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+  Details:  https://kernelci.org/test/job/stable-rc/branch/linux-5.10.y/ker=
+nel/v5.10.202-89-g101afac3a6283/plan/baseline/
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEZUOOw5ESFLHZZtOKil/iNcg8M0sFAmVs3HoACgkQil/iNcg8
-M0vXgxAAnCuDbSTJjvqeMrlLQN9AR7j2d3d+p+pxye+TJs8stCZsuDnx2hRHBKKk
-8ELfC1MekYFRV+z8bGHH9GrZ5I+coJH2/Wu0oCljzZ5eYJgDoqkbgMIUYpV5szF4
-UHnn8jeaPAWNylB+YWXiapr94LmLEJmaInIgQdcN8QKB4XJWWlCzM8XCpkHocp6Q
-5aObF6YE3c0Bw6pm/qRmTzYsYWvhkKgc01jmpHdavVjVIebwdaBf0Smnp3xZNE0Z
-iprlBujByKSaGSRaOccRSnu2hJ/IlOB1ccRzJJ5iXTbih2m6d483+VVtphKTiCSc
-GsPE+vdGjfh6UFXiLi19OoBc4AlzPVAOMDz2yR1L61RMBiIpKK4C3ZnoNRTPHSbu
-CLdud76hl0jIDocB8/0mkYKap5OOFg62Ksm0V1TvKoAk2Br1B6uu9RmkrSsOW3oN
-2JM6vqc0IjqD0EbRLGHZa9LhFQTcQR0+wD24Zq5zQAizQLo1R8PTUrd/avwo48Kv
-bmY/Wh5B5gaVxvfUdgtZnGSbMIBcNIGndzEQic38qw068LgtbZoxUbuvR5eIzu8u
-CxUcMg4oZFujQz4XD8VUkAdwfVFbaABehIomhF2U+IU2RVjq0hnZPgL3G3ZUNx/O
-Dl7/Y0NGkbG+31ELB+cMgJeR1XZV1szcfV8ydb4WirwLUQ+CTSI=
-=UPkH
------END PGP SIGNATURE-----
-
---nextPart5733948.DvuYhMxLoT--
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   linux-5.10.y
+  Describe: v5.10.202-89-g101afac3a6283
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      101afac3a62836f4295abf27f5add57c4acd1190 =
 
 
 
+Test Regressions
+---------------- =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+juno-uboot         | arm64  | lab-broonie   | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656cafd76720b8019ae13558
+
+  Results:     50 PASS, 11 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot=
+.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/arm64/defconfig/gcc-10/lab-broonie/baseline-juno-uboot=
+.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656cafd76720b8019ae13591
+        failing since 4 days (last pass: v5.10.201-185-ga30cecbc89f2f, firs=
+t fail: v5.10.202)
+
+    2023-12-03T16:41:33.877348  / # #
+    2023-12-03T16:41:33.980239  export SHELL=3D/bin/sh
+    2023-12-03T16:41:33.981028  #
+    2023-12-03T16:41:34.083049  / # export SHELL=3D/bin/sh. /lava-302482/en=
+vironment
+    2023-12-03T16:41:34.083872  =
+
+    2023-12-03T16:41:34.185945  / # . /lava-302482/environment/lava-302482/=
+bin/lava-test-runner /lava-302482/1
+    2023-12-03T16:41:34.187350  =
+
+    2023-12-03T16:41:34.201410  / # /lava-302482/bin/lava-test-runner /lava=
+-302482/1
+    2023-12-03T16:41:34.260256  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-12-03T16:41:34.260803  + cd /lava-302482/1/tests/1_bootrr =
+
+    ... (10 line(s) more)  =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+qemu_x86_64        | x86_64 | lab-baylibre  | gcc-10   | x86_64_defconfig+x=
+86-board | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656cadba893653b26fe134a0
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: x86_64_defconfig+x86-board
+  Compiler:    gcc-10 (gcc (Debian 10.2.1-6) 10.2.1 20210110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/x86_64/x86_64_defconfig+x86-board/gcc-10/lab-baylibre/=
+baseline-qemu_x86_64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/x86_64/x86_64_defconfig+x86-board/gcc-10/lab-baylibre/=
+baseline-qemu_x86_64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/x86/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/656cadba893653b26fe13=
+4a1
+        new failure (last pass: v5.10.202) =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+sun50i-h6-pine-h64 | arm64  | lab-clabbe    | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656cade4835e0ffb97e134b1
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-p=
+ine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-p=
+ine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656cade4835e0ffb97e134b6
+        failing since 53 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-12-03T16:33:32.695405  <8>[   16.986126] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 446408_1.5.2.4.1>
+    2023-12-03T16:33:32.800494  / # #
+    2023-12-03T16:33:32.902153  export SHELL=3D/bin/sh
+    2023-12-03T16:33:32.902813  #
+    2023-12-03T16:33:33.003829  / # export SHELL=3D/bin/sh. /lava-446408/en=
+vironment
+    2023-12-03T16:33:33.004436  =
+
+    2023-12-03T16:33:33.105491  / # . /lava-446408/environment/lava-446408/=
+bin/lava-test-runner /lava-446408/1
+    2023-12-03T16:33:33.106427  =
+
+    2023-12-03T16:33:33.110646  / # /lava-446408/bin/lava-test-runner /lava=
+-446408/1
+    2023-12-03T16:33:33.177804  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch   | lab           | compiler | defconfig         =
+         | regressions
+-------------------+--------+---------------+----------+-------------------=
+---------+------------
+sun50i-h6-pine-h64 | arm64  | lab-collabora | gcc-10   | defconfig         =
+         | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656cadf3835e0ffb97e134f8
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
+6-pine-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/linux-5.10.y/v5.10.2=
+02-89-g101afac3a6283/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h=
+6-pine-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656cadf3835e0ffb97e134fd
+        failing since 53 days (last pass: v5.10.176-224-g10e9fd53dc59, firs=
+t fail: v5.10.198)
+
+    2023-12-03T16:40:08.647961  / # #
+
+    2023-12-03T16:40:08.748576  export SHELL=3D/bin/sh
+
+    2023-12-03T16:40:08.748705  #
+
+    2023-12-03T16:40:08.849209  / # export SHELL=3D/bin/sh. /lava-12170939/=
+environment
+
+    2023-12-03T16:40:08.849415  =
+
+
+    2023-12-03T16:40:08.950266  / # . /lava-12170939/environment/lava-12170=
+939/bin/lava-test-runner /lava-12170939/1
+
+    2023-12-03T16:40:08.951331  =
+
+
+    2023-12-03T16:40:08.961519  / # /lava-12170939/bin/lava-test-runner /la=
+va-12170939/1
+
+    2023-12-03T16:40:09.023554  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-03T16:40:09.024043  + cd /lava-1217093<8>[   18.074157] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12170939_1.5.2.4.5>
+ =
+
+    ... (10 line(s) more)  =
+
+ =20
 
