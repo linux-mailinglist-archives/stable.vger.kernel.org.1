@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F55802434
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:22:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE89802435
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:22:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 147231F2115F
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE3C280EB4
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD6FF505;
-	Sun,  3 Dec 2023 13:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A60F9EB;
+	Sun,  3 Dec 2023 13:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8A7llzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETYDCIgI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE20C8CB
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:22:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1323C433C8;
-	Sun,  3 Dec 2023 13:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF47C8CB
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:22:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF03C433C8;
+	Sun,  3 Dec 2023 13:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701609752;
-	bh=4SEmsUbekGkEDjYw7wjlhTTP4NsuQR/EnGQgDPJuPas=;
+	s=korg; t=1701609754;
+	bh=ILnQep/R91HhNa0BP7f9bfRRs4StUoJ7XFk+uOAEyfw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=w8A7llzMxhlBsyB5815KXQ9m64fTRIWavW/V1mj3q0lrqmLSwkbnYTzsesYJ/umsA
-	 LPBvd6ELjKixxZRnebI6QDQiHNTJIiyDLPse6QbSLAi1qI+u9aJCgNGzDpyzjN/OhY
-	 jxgNyiMIqwBn20SvDBqBtmzyCvhz5EoGGoUPgorw=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix conversions between bytes and KB" failed to apply to 6.1-stable tree
+	b=ETYDCIgINegUBV5StI9Th4WVzKIo1tsmwLVMzL4oqulZUnOhyRsBGwqBjY6scnAIJ
+	 netA1LQlr9hwr9xQeVMj+CPapcDDTvPqXtb7QyVHYU2LafWFNXbhpcnEtoOh9J1hNc
+	 72Emo8nftSlu/taJISDROEdvo2VPbwvI4bQaOByY=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix conversions between bytes and KB" failed to apply to 6.6-stable tree
 To: syed.hassan@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:22:22 +0100
-Message-ID: <2023120322-unsigned-payee-0413@gregkh>
+Date: Sun, 03 Dec 2023 14:22:23 +0100
+Message-ID: <2023120323-excavate-humility-3731@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x dcf6cd7f35de572a946e2805ed32eb20d429a881
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120322-unsigned-payee-0413@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120323-excavate-humility-3731@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,17 +70,6 @@ c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal
 39d39a019657 ("drm/amd/display: switch to new ODM policy for windowed MPO ODM support")
 0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
 96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
-ca030d83f53b ("drm/amd/display: always acquire MPO pipe for every blending tree")
-71ba6b577a35 ("drm/amd/display: Add interface to enable DPIA trace")
-75bd42fd2e8e ("drm/amd/display: Prevent invalid pipe connections")
-da915efaa213 ("drm/amd/display: ABM pause toggle")
-c35b6ea8f2ec ("drm/amd/display: Set minimum requirement for using PSR-SU on Rembrandt")
-bbe4418f22b9 ("drm/amd/display: Include CSC updates in new fast update path")
-33e82119cfb2 ("drm/amd/display: Only use ODM2:1 policy for high pixel rate displays")
-0baae6246307 ("drm/amd/display: Refactor fast update to use new HWSS build sequence")
-24e461e84f1c ("drm/amd/display: add ODM case when looking for first split pipe")
-3a10a44a3e00 ("drm/amd/display: clean up some inconsistent indenting")
-268182606f26 ("drm/amd/display: Update correct DCN314 register header")
 
 thanks,
 
