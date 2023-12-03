@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB0448023E0
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:52:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90E458023E1
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AFB5B209D2
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:52:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B16C11C20856
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:52:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16507DF51;
-	Sun,  3 Dec 2023 12:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1D8DDC9;
+	Sun,  3 Dec 2023 12:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IinFZ/iU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4FEhxSs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6301DDC9
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:52:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1DCC433C8;
-	Sun,  3 Dec 2023 12:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BDC3D79
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:52:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 964ABC433C8;
+	Sun,  3 Dec 2023 12:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701607944;
-	bh=EBtXgQT5X/mIujHXLCDjpV63EGrg1jEhQc5Fma1RB0o=;
+	s=korg; t=1701607953;
+	bh=rW6Yl+/KFTxGeIzC/83+ZtSU3XaxlDXvtdyRZZxHlPM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=IinFZ/iUd+HJbG/yHgiveJmvga7GpoCB7szGDyaq4aug+/8yujSL+lzdBZOEOdftu
-	 kJQCeqrXIYfcjHr0Ik8TXwpAhFLkyaPbWB8DZqcD3kaglnPtfMNFjiWwI4jMOqkieO
-	 RnNfy009GcbnImc6O1VVEWjOYrdj+YCtqxxSi7Dk=
-Subject: FAILED: patch "[PATCH] rethook: Use __rcu pointer for rethook::handler" failed to apply to 6.6-stable tree
+	b=n4FEhxSsht0W8O+Qk8ynntBpQIZMC2rlqSsJ5Zot9xjwOJnxsvaUJIhb0RX8jseDV
+	 Dm6fnyEjVKZ7sOIMgmozlF839mHhClLCRDpmJ0JS0gCbzKcsnq63deDgcULJtuWiUl
+	 UKIi+ypzKRGkhBYCN7Hqak0LgCk6eTDSzCRQ3HSY=
+Subject: FAILED: patch "[PATCH] rethook: Use __rcu pointer for rethook::handler" failed to apply to 6.1-stable tree
 To: mhiramat@kernel.org,inwardvessel@gmail.com,lkp@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 13:52:20 +0100
-Message-ID: <2023120320-obtuse-gap-3bfa@gregkh>
+Date: Sun, 03 Dec 2023 13:52:21 +0100
+Message-ID: <2023120321-emboss-bunion-bf59@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x a1461f1fd6cfdc4b8917c9d4a91e92605d1f28dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120320-obtuse-gap-3bfa@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120321-emboss-bunion-bf59@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 a1461f1fd6cf ("rethook: Use __rcu pointer for rethook::handler")
 4bbd93455659 ("kprobes: kretprobe scalability improvement")
+8865aea0471c ("kernel: kprobes: Use struct_size()")
+195b9cb5b288 ("fprobe: Ensure running fprobe_exit_handler() finished before calling rethook_free()")
+5f81018753df ("fprobe: Release rethook after the ftrace_ops is unregistered")
+76d0de5729c0 ("fprobe: Pass entry_data to handlers")
 
 thanks,
 
