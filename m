@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7204A80243E
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:35:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B0C9802441
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAA280DFA
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:35:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A6F01C20902
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DBBFC02;
-	Sun,  3 Dec 2023 13:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E6DB11737;
+	Sun,  3 Dec 2023 13:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZdNaohl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbagwd92"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA65EF9FC
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:35:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79CEC433CA;
-	Sun,  3 Dec 2023 13:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E183D11735
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:35:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC32C433C9;
+	Sun,  3 Dec 2023 13:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701610530;
-	bh=0ED8r/vHfhjCDWFS0lJaiA3tbtV81rX0NE0tIqMHvK8=;
+	s=korg; t=1701610540;
+	bh=yQwr0fit6nR2V+HhoGgG7SGYOTy4ExkTrRLvwX5iHbo=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RZdNaohlY8UFNXqsQWIyH8H33e93Ryk2LqgjMnA+9ujjdq6r5871XvnmJOQaylThK
-	 hq9Z5eh3M71AfKVT/6LHgCRy4DytN7blyHK3fGdY5u/wWwRPbZqIV3phtgsL9xDljk
-	 yiFNo2eMAZPgYLfIvhslqfxGhAFEXK/akw6k8mCg=
-Subject: FAILED: patch "[PATCH] wifi: cfg80211: fix CQM for non-range use" failed to apply to 6.6-stable tree
-To: johannes.berg@intel.com
+	b=bbagwd92pcfi5RYLDz8qL75CeXaZ7G9iypXqSIs4G0yBcyNAfCipzPZEqbywFHP0f
+	 eQYmxdzJsMmbPm9l1VrP401K/2AfL0HsCLH6DFHsm3Kx5W4FLsc4WByiyc7AVYfsBz
+	 CBZM2SxiYNGAsYOqbc7lSN1kAnsxHgsDcehZAzJQ=
+Subject: FAILED: patch "[PATCH] r8169: fix deadlock on RTL8125 in jumbo mtu mode" failed to apply to 6.1-stable tree
+To: hkallweit1@gmail.com,free122448@hotmail.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:35:19 +0100
-Message-ID: <2023120319-cubicle-showdown-d666@gregkh>
+Date: Sun, 03 Dec 2023 14:35:36 +0100
+Message-ID: <2023120336-turtle-despise-fa88@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7e7efdda6adb385fbdfd6f819d76bc68c923c394
+git cherry-pick -x 59d395ed606d8df14615712b0cdcdadb2d962175
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120319-cubicle-showdown-d666@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120336-turtle-despise-fa88@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-7e7efdda6adb ("wifi: cfg80211: fix CQM for non-range use")
-7d6904bf26b9 ("Merge wireless into wireless-next")
+59d395ed606d ("r8169: fix deadlock on RTL8125 in jumbo mtu mode")
+621735f59064 ("r8169: fix rare issue with broken rx after link-down on RTL8125")
+80c0576ef179 ("r8169: disable ASPM in case of tx timeout")
+4b6c6065fca1 ("r8169: use tp_to_dev instead of open code")
 
 thanks,
 
@@ -70,139 +72,54 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7e7efdda6adb385fbdfd6f819d76bc68c923c394 Mon Sep 17 00:00:00 2001
-From: Johannes Berg <johannes.berg@intel.com>
-Date: Mon, 6 Nov 2023 23:17:16 +0100
-Subject: [PATCH] wifi: cfg80211: fix CQM for non-range use
+From 59d395ed606d8df14615712b0cdcdadb2d962175 Mon Sep 17 00:00:00 2001
+From: Heiner Kallweit <hkallweit1@gmail.com>
+Date: Sun, 26 Nov 2023 19:36:46 +0100
+Subject: [PATCH] r8169: fix deadlock on RTL8125 in jumbo mtu mode
 
-My prior race fix here broke CQM when ranges aren't used, as
-the reporting worker now requires the cqm_config to be set in
-the wdev, but isn't set when there's no range configured.
+The original change results in a deadlock if jumbo mtu mode is used.
+Reason is that the phydev lock is held when rtl_reset_work() is called
+here, and rtl_jumbo_config() calls phy_start_aneg() which also tries
+to acquire the phydev lock. Fix this by calling rtl_reset_work()
+asynchronously.
 
-Rather than continuing to special-case the range version, set
-the cqm_config always and configure accordingly, also tracking
-if range was used or not to be able to clear the configuration
-appropriately with the same API, which was actually not right
-if both were implemented by a driver for some reason, as is
-the case with mac80211 (though there the implementations are
-equivalent so it doesn't matter.)
-
-Also, the original multiple-RSSI commit lost checking for the
-callback, so might have potentially crashed if a driver had
-neither implementation, and userspace tried to use it despite
-not being advertised as supported.
-
+Fixes: 621735f59064 ("r8169: fix rare issue with broken rx after link-down on RTL8125")
+Reported-by: Ian Chen <free122448@hotmail.com>
+Tested-by: Ian Chen <free122448@hotmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
-Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/caf6a487-ef8c-4570-88f9-f47a659faf33@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index 4c692c7faf30..cb61d33d4f1e 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -293,6 +293,7 @@ struct cfg80211_cqm_config {
- 	u32 rssi_hyst;
- 	s32 last_rssi_event_value;
- 	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
-+	bool use_range_api;
- 	int n_rssi_thresholds;
- 	s32 rssi_thresholds[] __counted_by(n_rssi_thresholds);
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 295366a85c63..a43e33e4b25e 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -579,6 +579,7 @@ struct rtl8169_tc_offsets {
+ enum rtl_flag {
+ 	RTL_FLAG_TASK_ENABLED = 0,
+ 	RTL_FLAG_TASK_RESET_PENDING,
++	RTL_FLAG_TASK_RESET_NO_QUEUE_WAKE,
+ 	RTL_FLAG_TASK_TX_TIMEOUT,
+ 	RTL_FLAG_MAX
  };
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 569234bc2be6..dbfed5a2d7b6 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12787,10 +12787,6 @@ static int cfg80211_cqm_rssi_update(struct cfg80211_registered_device *rdev,
- 	int i, n, low_index;
- 	int err;
- 
--	/* RSSI reporting disabled? */
--	if (!cqm_config)
--		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
--
- 	/*
- 	 * Obtain current RSSI value if possible, if not and no RSSI threshold
- 	 * event has been received yet, we should receive an event after a
-@@ -12865,23 +12861,25 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
- 		return -EOPNOTSUPP;
- 
--	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
--		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
--			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
--
--		return rdev_set_cqm_rssi_config(rdev, dev,
--						thresholds[0], hysteresis);
--	}
--
--	if (!wiphy_ext_feature_isset(&rdev->wiphy,
--				     NL80211_EXT_FEATURE_CQM_RSSI_LIST))
--		return -EOPNOTSUPP;
--
- 	if (n_thresholds == 1 && thresholds[0] == 0) /* Disabling */
- 		n_thresholds = 0;
- 
- 	old = wiphy_dereference(wdev->wiphy, wdev->cqm_config);
- 
-+	/* if already disabled just succeed */
-+	if (!n_thresholds && !old)
-+		return 0;
-+
-+	if (n_thresholds > 1) {
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
-+		    !rdev->ops->set_cqm_rssi_range_config)
-+			return -EOPNOTSUPP;
-+	} else {
-+		if (!rdev->ops->set_cqm_rssi_config)
-+			return -EOPNOTSUPP;
-+	}
-+
- 	if (n_thresholds) {
- 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
- 						 n_thresholds),
-@@ -12894,13 +12892,26 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 		memcpy(cqm_config->rssi_thresholds, thresholds,
- 		       flex_array_size(cqm_config, rssi_thresholds,
- 				       n_thresholds));
-+		cqm_config->use_range_api = n_thresholds > 1 ||
-+					    !rdev->ops->set_cqm_rssi_config;
- 
- 		rcu_assign_pointer(wdev->cqm_config, cqm_config);
-+
-+		if (cqm_config->use_range_api)
-+			err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
-+		else
-+			err = rdev_set_cqm_rssi_config(rdev, dev,
-+						       thresholds[0],
-+						       hysteresis);
+@@ -4582,6 +4583,8 @@ static void rtl_task(struct work_struct *work)
+ reset:
+ 		rtl_reset_work(tp);
+ 		netif_wake_queue(tp->dev);
++	} else if (test_and_clear_bit(RTL_FLAG_TASK_RESET_NO_QUEUE_WAKE, tp->wk.flags)) {
++		rtl_reset_work(tp);
+ 	}
+ out_unlock:
+ 	rtnl_unlock();
+@@ -4615,7 +4618,7 @@ static void r8169_phylink_handler(struct net_device *ndev)
  	} else {
- 		RCU_INIT_POINTER(wdev->cqm_config, NULL);
-+		/* if enabled as range also disable via range */
-+		if (old->use_range_api)
-+			err = rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
-+		else
-+			err = rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+ 		/* In few cases rx is broken after link-down otherwise */
+ 		if (rtl_is_8125(tp))
+-			rtl_reset_work(tp);
++			rtl_schedule_task(tp, RTL_FLAG_TASK_RESET_NO_QUEUE_WAKE);
+ 		pm_runtime_idle(d);
  	}
  
--	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
- 	if (err) {
- 		rcu_assign_pointer(wdev->cqm_config, old);
- 		kfree_rcu(cqm_config, rcu_head);
-@@ -19009,10 +19020,11 @@ void cfg80211_cqm_rssi_notify_work(struct wiphy *wiphy, struct wiphy_work *work)
- 	s32 rssi_level;
- 
- 	cqm_config = wiphy_dereference(wdev->wiphy, wdev->cqm_config);
--	if (!wdev->cqm_config)
-+	if (!cqm_config)
- 		return;
- 
--	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
-+	if (cqm_config->use_range_api)
-+		cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
- 
- 	rssi_level = cqm_config->last_rssi_event_value;
- 	rssi_event = cqm_config->last_rssi_event_type;
 
 
