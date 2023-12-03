@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26FE802401
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:14:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B190802403
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83FDB280CE1
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:14:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC754280D1B
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B309E57E;
-	Sun,  3 Dec 2023 13:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA5391172C;
+	Sun,  3 Dec 2023 13:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vNejw13p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoZKGcdd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD75E1115
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:14:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495E0C433C8;
-	Sun,  3 Dec 2023 13:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6DD156D3
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:15:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B818C433C8;
+	Sun,  3 Dec 2023 13:15:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701609291;
-	bh=5hqYIYcR3+Zuy6DBV5njguO/i59WnQKxJBhAs5nd/rg=;
+	s=korg; t=1701609336;
+	bh=bLC+aiEiZLO5MnIsjzjzWqWKLJZRqZidwGHc+4z9WCw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vNejw13pNkNQ9w+CR9jB6arAL3xBTXudp1jFiWJlUCymbC/xk8GXvGf4A4fF63tkA
-	 asFtaifcWfXRP3qVO2J+wHXzY/fkkVBu9tLzBXP04Q8kqH4eL7m8mBqeReJs3EVFyR
-	 LkYLkNHFObnT7YzwPf3LqBZxtA4XolqThdDsVceY=
-Subject: FAILED: patch "[PATCH] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card" failed to apply to 6.1-stable tree
+	b=zoZKGcddirCVKFqwEx08F27I7YsLVMdKvZnnfqWR244o/Hk0PuTCf8Lp5ni1X6/aH
+	 DZOq/iR49217sh1lZ/AKn03BzdR57x8/EuCUcOTVIgRY6kXIi57EH/yUKtt2HwNYc0
+	 A9RyAfWclwiYsGgcTsoUQfkqEfBe54LpUUOhG9/g=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card" failed to apply to 5.15-stable tree
 To: wenchao.chen@unisoc.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:14:48 +0100
-Message-ID: <2023120348-devious-grafting-3f8d@gregkh>
+Date: Sun, 03 Dec 2023 14:15:33 +0100
+Message-ID: <2023120332-porous-marsupial-beef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 477865af60b2117ceaa1d558e03559108c15c78c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120348-devious-grafting-3f8d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120332-porous-marsupial-beef@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
