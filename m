@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66ACF8023DC
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:51:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB0448023E0
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DFC29B209D8
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:51:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AFB5B209D2
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 084A6DDC9;
-	Sun,  3 Dec 2023 12:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16507DF51;
+	Sun,  3 Dec 2023 12:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H+ajR8b0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IinFZ/iU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDF43D79
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:51:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177C4C433C7;
-	Sun,  3 Dec 2023 12:51:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6301DDC9
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:52:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1DCC433C8;
+	Sun,  3 Dec 2023 12:52:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701607863;
-	bh=oHs2kPX8HK61BU/agLFwHI1VdA9cb1kPVEY9Y8fNauY=;
+	s=korg; t=1701607944;
+	bh=EBtXgQT5X/mIujHXLCDjpV63EGrg1jEhQc5Fma1RB0o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=H+ajR8b0D2d3Zg2VBu8Jdwk+8ybcpn6obep2CsMpK4ieGbLWcRImlA016Mp8r6XnT
-	 qWNgX/JfMuaE/YAJdN89ye4HcQ9rppZoKNG8BSvJ1xbAq4BQLJAbewUVQysGO5/WWu
-	 VCifMr7tALFB/s5/pkC898szKJqwCkPx185VlCaY=
-Subject: FAILED: patch "[PATCH] cifs: Fix FALLOC_FL_INSERT_RANGE by setting i_size after EOF" failed to apply to 5.15-stable tree
-To: dhowells@redhat.com,jlayton@kernel.org,nspmangalore@gmail.com,pc@manguebit.com,rohiths.msft@gmail.com,stfrench@microsoft.com
+	b=IinFZ/iUd+HJbG/yHgiveJmvga7GpoCB7szGDyaq4aug+/8yujSL+lzdBZOEOdftu
+	 kJQCeqrXIYfcjHr0Ik8TXwpAhFLkyaPbWB8DZqcD3kaglnPtfMNFjiWwI4jMOqkieO
+	 RnNfy009GcbnImc6O1VVEWjOYrdj+YCtqxxSi7Dk=
+Subject: FAILED: patch "[PATCH] rethook: Use __rcu pointer for rethook::handler" failed to apply to 6.6-stable tree
+To: mhiramat@kernel.org,inwardvessel@gmail.com,lkp@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 13:50:55 +0100
-Message-ID: <2023120354-regulate-encourage-cb36@gregkh>
+Date: Sun, 03 Dec 2023 13:52:20 +0100
+Message-ID: <2023120320-obtuse-gap-3bfa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 88010155f02b2c3b03c71609ba6ceeb457ece095
+git cherry-pick -x a1461f1fd6cfdc4b8917c9d4a91e92605d1f28dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120354-regulate-encourage-cb36@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120320-obtuse-gap-3bfa@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-88010155f02b ("cifs: Fix FALLOC_FL_INSERT_RANGE by setting i_size after EOF moved")
+a1461f1fd6cf ("rethook: Use __rcu pointer for rethook::handler")
+4bbd93455659 ("kprobes: kretprobe scalability improvement")
 
 thanks,
 
@@ -69,41 +70,141 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 88010155f02b2c3b03c71609ba6ceeb457ece095 Mon Sep 17 00:00:00 2001
-From: David Howells <dhowells@redhat.com>
-Date: Wed, 29 Nov 2023 16:56:18 +0000
-Subject: [PATCH] cifs: Fix FALLOC_FL_INSERT_RANGE by setting i_size after EOF
- moved
+From a1461f1fd6cfdc4b8917c9d4a91e92605d1f28dc Mon Sep 17 00:00:00 2001
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Date: Fri, 1 Dec 2023 14:53:56 +0900
+Subject: [PATCH] rethook: Use __rcu pointer for rethook::handler
 
-Fix the cifs filesystem implementations of FALLOC_FL_INSERT_RANGE, in
-smb3_insert_range(), to set i_size after extending the file on the server
-and before we do the copy to open the gap (as we don't clean up the EOF
-marker if the copy fails).
+Since the rethook::handler is an RCU-maganged pointer so that it will
+notice readers the rethook is stopped (unregistered) or not, it should
+be an __rcu pointer and use appropriate functions to be accessed. This
+will use appropriate memory barrier when accessing it. OTOH,
+rethook::data is never changed, so we don't need to check it in
+get_kretprobe().
 
-Fixes: 7fe6fe95b936 ("cifs: add FALLOC_FL_INSERT_RANGE support")
+NOTE: To avoid sparse warning, rethook::handler is defined by a raw
+function pointer type with __rcu instead of rethook_handler_t.
+
+Link: https://lore.kernel.org/all/170126066201.398836.837498688669005979.stgit@devnote2/
+
+Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
 Cc: stable@vger.kernel.org
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311241808.rv9ceuAh-lkp@intel.com/
+Tested-by: JP Kobryn <inwardvessel@gmail.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index f1b0b2b11ab2..45931115f475 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3745,6 +3745,9 @@ static long smb3_insert_range(struct file *file, struct cifs_tcon *tcon,
- 	if (rc < 0)
- 		goto out_2;
+diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+index 64672bace560..0ff44d6633e3 100644
+--- a/include/linux/kprobes.h
++++ b/include/linux/kprobes.h
+@@ -197,10 +197,8 @@ extern int arch_trampoline_kprobe(struct kprobe *p);
+ #ifdef CONFIG_KRETPROBE_ON_RETHOOK
+ static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
+ {
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
+-		"Kretprobe is accessed from instance under preemptive context");
+-
+-	return (struct kretprobe *)READ_ONCE(ri->node.rethook->data);
++	/* rethook::data is non-changed field, so that you can access it freely. */
++	return (struct kretprobe *)ri->node.rethook->data;
+ }
+ static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
+ {
+diff --git a/include/linux/rethook.h b/include/linux/rethook.h
+index ce69b2b7bc35..ba60962805f6 100644
+--- a/include/linux/rethook.h
++++ b/include/linux/rethook.h
+@@ -28,7 +28,12 @@ typedef void (*rethook_handler_t) (struct rethook_node *, void *, unsigned long,
+  */
+ struct rethook {
+ 	void			*data;
+-	rethook_handler_t	handler;
++	/*
++	 * To avoid sparse warnings, this uses a raw function pointer with
++	 * __rcu, instead of rethook_handler_t. But this must be same as
++	 * rethook_handler_t.
++	 */
++	void (__rcu *handler) (struct rethook_node *, void *, unsigned long, struct pt_regs *);
+ 	struct objpool_head	pool;
+ 	struct rcu_head		rcu;
+ };
+diff --git a/kernel/trace/rethook.c b/kernel/trace/rethook.c
+index 6fd7d4ecbbc6..fa03094e9e69 100644
+--- a/kernel/trace/rethook.c
++++ b/kernel/trace/rethook.c
+@@ -48,7 +48,7 @@ static void rethook_free_rcu(struct rcu_head *head)
+  */
+ void rethook_stop(struct rethook *rh)
+ {
+-	WRITE_ONCE(rh->handler, NULL);
++	rcu_assign_pointer(rh->handler, NULL);
+ }
  
-+	truncate_setsize(inode, old_eof + len);
-+	fscache_resize_cookie(cifs_inode_cookie(inode), i_size_read(inode));
+ /**
+@@ -63,7 +63,7 @@ void rethook_stop(struct rethook *rh)
+  */
+ void rethook_free(struct rethook *rh)
+ {
+-	WRITE_ONCE(rh->handler, NULL);
++	rethook_stop(rh);
+ 
+ 	call_rcu(&rh->rcu, rethook_free_rcu);
+ }
+@@ -82,6 +82,12 @@ static int rethook_fini_pool(struct objpool_head *head, void *context)
+ 	return 0;
+ }
+ 
++static inline rethook_handler_t rethook_get_handler(struct rethook *rh)
++{
++	return (rethook_handler_t)rcu_dereference_check(rh->handler,
++							rcu_read_lock_any_held());
++}
 +
- 	rc = smb2_copychunk_range(xid, cfile, cfile, off, count, off + len);
- 	if (rc < 0)
- 		goto out_2;
+ /**
+  * rethook_alloc() - Allocate struct rethook.
+  * @data: a data to pass the @handler when hooking the return.
+@@ -107,7 +113,7 @@ struct rethook *rethook_alloc(void *data, rethook_handler_t handler,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	rh->data = data;
+-	rh->handler = handler;
++	rcu_assign_pointer(rh->handler, handler);
+ 
+ 	/* initialize the objpool for rethook nodes */
+ 	if (objpool_init(&rh->pool, num, size, GFP_KERNEL, rh,
+@@ -135,9 +141,10 @@ static void free_rethook_node_rcu(struct rcu_head *head)
+  */
+ void rethook_recycle(struct rethook_node *node)
+ {
+-	lockdep_assert_preemption_disabled();
++	rethook_handler_t handler;
+ 
+-	if (likely(READ_ONCE(node->rethook->handler)))
++	handler = rethook_get_handler(node->rethook);
++	if (likely(handler))
+ 		objpool_push(node, &node->rethook->pool);
+ 	else
+ 		call_rcu(&node->rcu, free_rethook_node_rcu);
+@@ -153,9 +160,7 @@ NOKPROBE_SYMBOL(rethook_recycle);
+  */
+ struct rethook_node *rethook_try_get(struct rethook *rh)
+ {
+-	rethook_handler_t handler = READ_ONCE(rh->handler);
+-
+-	lockdep_assert_preemption_disabled();
++	rethook_handler_t handler = rethook_get_handler(rh);
+ 
+ 	/* Check whether @rh is going to be freed. */
+ 	if (unlikely(!handler))
+@@ -300,7 +305,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
+ 		rhn = container_of(first, struct rethook_node, llist);
+ 		if (WARN_ON_ONCE(rhn->frame != frame))
+ 			break;
+-		handler = READ_ONCE(rhn->rethook->handler);
++		handler = rethook_get_handler(rhn->rethook);
+ 		if (handler)
+ 			handler(rhn, rhn->rethook->data,
+ 				correct_ret_addr, regs);
 
 
