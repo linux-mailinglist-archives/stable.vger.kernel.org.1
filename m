@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3DFD80243D
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:35:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7204A80243E
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A370280E76
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CCAA280DFA
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC30F9DF;
-	Sun,  3 Dec 2023 13:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DBBFC02;
+	Sun,  3 Dec 2023 13:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs3003UE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RZdNaohl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41DF9EAD2
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:35:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E901C433C7;
-	Sun,  3 Dec 2023 13:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA65EF9FC
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:35:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79CEC433CA;
+	Sun,  3 Dec 2023 13:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701610520;
-	bh=ZKidVExSs/EkfO1NYzqFVjjh1T+mQOIfZ2hw7QaEIPc=;
+	s=korg; t=1701610530;
+	bh=0ED8r/vHfhjCDWFS0lJaiA3tbtV81rX0NE0tIqMHvK8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fs3003UEEsG/6DGHbsLX5D50/t+OtGVNRggUxaHSYFoGHwNAkO5yVvqS2yTuoTxgV
-	 goEFtaeoF0YlKWdkpvowgNO4LSvzllJSbo5WZ7VJD1fy5vpsvZ1+qiQAp4UrFy4phi
-	 RSSZ0jtCFmA2eFALWT9B1e65QbnKEOhRC/dX/9b4=
-Subject: FAILED: patch "[PATCH] wifi: cfg80211: fix CQM for non-range use" failed to apply to 6.1-stable tree
+	b=RZdNaohlY8UFNXqsQWIyH8H33e93Ryk2LqgjMnA+9ujjdq6r5871XvnmJOQaylThK
+	 hq9Z5eh3M71AfKVT/6LHgCRy4DytN7blyHK3fGdY5u/wWwRPbZqIV3phtgsL9xDljk
+	 yiFNo2eMAZPgYLfIvhslqfxGhAFEXK/akw6k8mCg=
+Subject: FAILED: patch "[PATCH] wifi: cfg80211: fix CQM for non-range use" failed to apply to 6.6-stable tree
 To: johannes.berg@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:35:17 +0100
-Message-ID: <2023120317-skimming-autograph-9878@gregkh>
+Date: Sun, 03 Dec 2023 14:35:19 +0100
+Message-ID: <2023120319-cubicle-showdown-d666@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7e7efdda6adb385fbdfd6f819d76bc68c923c394
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120317-skimming-autograph-9878@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120319-cubicle-showdown-d666@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
