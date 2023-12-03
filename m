@@ -1,109 +1,80 @@
-Return-Path: <stable+bounces-3822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC7B68027B8
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 22:15:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A8680286E
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 23:30:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 363831F21224
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 21:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E05E280AAA
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 22:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7E718C3F;
-	Sun,  3 Dec 2023 21:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C5517998;
+	Sun,  3 Dec 2023 22:30:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=horus.com header.i=@horus.com header.b="WCN7iiIk"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3978D0
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:15:08 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-304-X4AvT-tEMg2K4WwiKTdRmw-1; Sun, 03 Dec 2023 21:15:05 +0000
-X-MC-Unique: X4AvT-tEMg2K4WwiKTdRmw-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Sun, 3 Dec
- 2023 21:14:49 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Sun, 3 Dec 2023 21:14:49 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Arnd Bergmann' <arnd@arndb.de>, Dmitry Torokhov
-	<dmitry.torokhov@gmail.com>, Zack Rusin <zackr@vmware.com>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "VMware
- Graphics Reviewers" <linux-graphics-maintainer@vmware.com>, Robert Jarzmik
-	<robert.jarzmik@free.fr>, Raul Rangel <rrangel@chromium.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] input/vmmouse: Fix device name copies
-Thread-Topic: [PATCH] input/vmmouse: Fix device name copies
-Thread-Index: AQHaJipxBM/uGJI7Q0K7wjneTI1KYbCYDPww
-Date: Sun, 3 Dec 2023 21:14:49 +0000
-Message-ID: <f3e6cab719c646bf91265b6fd2887061@AcuMS.aculab.com>
-References: <20231127204206.3593559-1-zack@kde.org>
- <ZWzLvctpo1nNTMOo@google.com>
- <d180f06b-64b0-4885-9794-5127c297a0f0@app.fastmail.com>
-In-Reply-To: <d180f06b-64b0-4885-9794-5127c297a0f0@app.fastmail.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+Received: from mail.horus.com (mail.horus.com [78.46.148.228])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AFAC116;
+	Sun,  3 Dec 2023 14:30:20 -0800 (PST)
+Received: from [192.168.1.22] (193-81-119-54.adsl.highway.telekom.at [193.81.119.54])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.horus.com (Postfix) with ESMTPSA id D069C640D9;
+	Sun,  3 Dec 2023 23:30:18 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=horus.com;
+	s=20180324; t=1701642618;
+	bh=SG4QXUafv7HBFyUQGEy8Wdv6fwaRmduVMKl810igHa8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WCN7iiIkXOuAaT+gX21mk9w9Rzs+zstRivGernVUh9P8UQrgDN2DZ3JUgUq0fe1G9
+	 bZMBSDw6sKHRewm6FfhntBeNRHQRt9A/bSuc9K7QRKQAr402ir1iQOL0lfq8bWGYUJ
+	 5cZxOe7h0hXysLK/b//N8afuRWyNtLyhS9VaOQjw=
+Received: by camel3.lan (Postfix, from userid 1000)
+	id 65B965401F9; Sun,  3 Dec 2023 23:30:18 +0100 (CET)
+Date: Sun, 3 Dec 2023 23:30:18 +0100
+From: Matthias Reichl <hias@horus.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	torvalds@linux-foundation.org, stable@vger.kernel.org,
+	jslaby@suse.cz
+Subject: Re: Linux 6.6.3
+Message-ID: <ZW0BeuPt-B1HAban@camel3.lan>
+Mail-Followup-To: Matthias Reichl <hias@horus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+	torvalds@linux-foundation.org, stable@vger.kernel.org,
+	jslaby@suse.cz
+References: <2023112811-ecosphere-defender-a75a@gregkh>
+ <ZWo45hiK-n8W_yWJ@camel3.lan>
+ <dea2db44-2e13-47c1-be0b-8548bfd54473@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dea2db44-2e13-47c1-be0b-8548bfd54473@sirena.org.uk>
 
-RnJvbTogQXJuZCBCZXJnbWFubg0KPiBTZW50OiAwMyBEZWNlbWJlciAyMDIzIDIwOjUxDQo+IE9u
-IFN1biwgRGVjIDMsIDIwMjMsIGF0IDE5OjQxLCBEbWl0cnkgVG9yb2tob3Ygd3JvdGU6DQo+ID4g
-T24gTW9uLCBOb3YgMjcsIDIwMjMgYXQgMDM6NDI6MDZQTSAtMDUwMCwgWmFjayBSdXNpbiB3cm90
-ZToNCj4gPj4gRnJvbTogWmFjayBSdXNpbiA8emFja3JAdm13YXJlLmNvbT4NCj4gPj4NCj4gPj4g
-TWFrZSBzdXJlIHZtbW91c2VfZGF0YTo6cGh5cyBjYW4gaG9sZCBzZXJpbzo6cGh5cyAod2hpY2gg
-aXMgMzIgYnl0ZXMpDQo+ID4+IHBsdXMgYW4gZXh0cmEgc3RyaW5nLCBleHRlbmQgaXQgdG8gNjQu
-DQo+ID4+DQo+ID4+IEZpeGVzIGdjYzEzIHdhcm5pbmdzOg0KPiA+PiBkcml2ZXJzL2lucHV0L21v
-dXNlL3ZtbW91c2UuYzogSW4gZnVuY3Rpb24g4oCYdm1tb3VzZV9pbml04oCZOg0KPiA+PiBkcml2
-ZXJzL2lucHV0L21vdXNlL3ZtbW91c2UuYzo0NTU6NTM6IHdhcm5pbmc6IOKAmC9pbnB1dDHigJkg
-ZGlyZWN0aXZlIG91dHB1dCBtYXkgYmUgdHJ1bmNhdGVkIHdyaXRpbmcNCj4gNyBieXRlcyBpbnRv
-IGEgcmVnaW9uIG9mIHNpemUgYmV0d2VlbiAxIGFuZCAzMiBbLVdmb3JtYXQtdHJ1bmNhdGlvbj1d
-DQo+ID4+ICAgNDU1IHwgICAgICAgICBzbnByaW50Zihwcml2LT5waHlzLCBzaXplb2YocHJpdi0+
-cGh5cyksICIlcy9pbnB1dDEiLA0KPiA+PiAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBefn5+fn5+DQo+ID4+IGRyaXZlcnMvaW5wdXQv
-bW91c2Uvdm1tb3VzZS5jOjQ1NTo5OiBub3RlOiDigJhzbnByaW50ZuKAmSBvdXRwdXQgYmV0d2Vl
-biA4IGFuZCAzOSBieXRlcyBpbnRvIGENCj4gZGVzdGluYXRpb24gb2Ygc2l6ZSAzMg0KPiA+PiAg
-IDQ1NSB8ICAgICAgICAgc25wcmludGYocHJpdi0+cGh5cywgc2l6ZW9mKHByaXYtPnBoeXMpLCAi
-JXMvaW5wdXQxIiwNCj4gPj4gICAgICAgfCAgICAgICAgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+ICAgNDU2IHwgICAgICAgICAgICAg
-ICAgICBwc21vdXNlLT5wczJkZXYuc2VyaW8tPnBoeXMpOw0KPiA+PiAgICAgICB8ICAgICAgICAg
-ICAgICAgICAgfn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fg0KPiA+DQo+ID4gVGhpcyBzaW1w
-bHkgd2FzdGVzIDMyIGJ5dGVzLiBJdCBpcyBwZXJmZWN0bHkgZmluZSB0byB0cnVuY2F0ZSBwaHlz
-DQo+ID4gKHdoaWNoIGRvZXMgbm90IGhhcHBlbiBpbiByZWFsIGxpZmUpLg0KPiA+DQo+ID4gLVdm
-b3JtYXQtdHJ1bmNhdGlvbiBpcyBkaXNhYmxlZCBpbiBub3JtYWwgYnVpbGRzLCBmb2xrcyBzaG91
-bGQgc3RvcA0KPiA+IHVzaW5nIGl0IHdpdGggVz0xIGFzIHdlbGwuDQo+IA0KPiBJdCBkb2VzIGZp
-bmQgcmVhbCBidWdzLCBhbmQgd2UgYXJlIGZhaXJseSBjbG9zZSB0byBiZWluZyBhYmxlDQo+IHRv
-IGVuYWJsZSBpdCBieSBkZWZhdWx0IG9uY2UgdGhlIHJlbWFpbmluZyB3YXJuaW5ncyBhcmUgYWxs
-DQo+IGZpeGVkLg0KPiANCj4gSXQgYWxzbyBkb2Vzbid0IHdhc3RlIGFueSBtZW1vcnkgaW4gdGhp
-cyBzcGVjaWZpYyBjYXNlIHNpbmNlDQo+IHZtbW91c2VfZGF0YSBpcyBjdXJyZW50bHkgYXQgMTY4
-IGJ5dGVzLCB3aGljaCBnZXRzIHJvdW5kZWQNCj4gdXAgdG8gZWl0aGVyIDE5MiBvciAyNTYgYnl0
-ZXMgYW55d2F5LiBJJ2Qgc3VnZ2VzdCB1c2luZw0KPiB0aGUgbWluaW11bSBzaXplIHRoYXQgaXMg
-bGFyZ2UgZW5vdWdoIHRob3VnaCwgaW4gdGhpcyBjYXNlDQo+IDM5IGJ5dGVzIGZvciB0aGUgc3Ry
-aW5nIEkgZ3Vlc3MuDQoNClRoYXQgcmF0aGVyIGRlcGVuZHMgb24gd2hldGhlciBhbnkgb2YgdGhl
-IGVhcmxpZXIgY2hhcltdIGxlbmd0aHMNCmhhdmUgYmVlbiByb3VuZGVkIHVwIHRvIGEgJ25pY2Un
-IHZhbHVlLg0KDQpJJ2QgYWxzbyBoYXZlIHRob3VnaHQgdGhhdCBkYW5nZXJvdXMgb3ZlcmZsb3dz
-IHdvdWxkIGNvbWUgZnJvbQ0KdW5ib3VuZGVkICVzIGZvcm1hdHMsIG5vdCBmaXhlZCBzaXplIHN0
-cmluZ3Mgb3IgaW50ZWdlcnMgdGhhdCBhcmUNCmFsd2F5cyBzbWFsbC4NCg0KVGhlcmUgcmVhbGx5
-IG91Z2h0IHRvIGJlIGEgc2FuZSBtZXRob2Qgb2YgdGVsbGluZyBnY2Mgbm90IHRvIGJsZWF0DQph
-Ym91dCBzbnByaW50ZigpIHBvdGVudGlhbGx5IG92ZXJmbG93aW5nIHRoZSB0YXJnZXQuDQoNCkkn
-dmUgdHJpZWQgYSBmZXcgdGhpbmcgYnV0IG5vbmUgb2YgdGhlbSB3b3JrLg0KSUlSQyB1c2luZyB0
-aGUgcmVzdWx0IChpbiBzb21lIHdheXMpIGlzIGVub3VnaCwgYnV0IG5laXRoZXINCih2b2lkKXNu
-cHJpbnRmKC4uLik7IG9yIGlmIChzbnByaW50ZiguLi4pKTsgaXMgZW5vdWdoDQooYnV0IHRoZXkg
-J2ZpeCcgJ3dhcm4gdW51c2VkIHJlc3VsdCcpLg0KDQoJRGF2aWQNCg0KPiANCj4gICAgICBBcm5k
-DQoNCi0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBG
-YXJtLCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2
-IChXYWxlcykNCg==
+On Fri, Dec 01, 2023 at 08:01:36PM +0000, Mark Brown wrote:
+> On Fri, Dec 01, 2023 at 08:49:58PM +0100, Matthias Reichl wrote:
+> 
+> > I'm not familiar with the regcache code but it looks a bit like the
+> > return value from the regcache_read check is leaking out - not
+> > assigning the value to ret seems to resolve the issue, too
+> > (no idea though if that would be the correct fix):
+> 
+> That looks sensible, can you submit as a proper patch please?
 
+Thanks a lot for the feedback, I sent out the patch
+https://lore.kernel.org/lkml/20231203222216.96547-1-hias@horus.com/T/#u
+
+so long,
+
+Hias
 
