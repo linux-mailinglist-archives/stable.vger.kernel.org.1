@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A814A802443
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:35:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 877B3802444
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A2E1F2115F
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:35:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC7B1C2098C
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:35:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBA5FBFC;
-	Sun,  3 Dec 2023 13:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69663F9C4;
+	Sun,  3 Dec 2023 13:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CF+0MIlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIHQGM2p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DA2F9C4
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7128C433C7;
-	Sun,  3 Dec 2023 13:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293B9C2EE
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:35:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420CFC433C7;
+	Sun,  3 Dec 2023 13:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701610552;
-	bh=2HI4YIDJ8fsNtakYy8fzj6ROUMM/wYh5SZ+L2JAvFh8=;
+	s=korg; t=1701610555;
+	bh=+GG2eLMKC7zF4NqDQgqO8ds5A9h6knR1Wm4kFSUm57E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=CF+0MIlG7vySLWbNxSFiSqb+4Ube1z/fvXM7RkrtARbo7v87Rki7zYHuU3Z8ViNPg
-	 MHL/IJgnhHSGPm6DtD5TJOhcLVYrb2loD1YlWTm8kh8dJ0fzJPqspwH7U92jtz4CO5
-	 sE/BstARfllsa4D3HoZagecIyJVy0QO624CS1Q04=
-Subject: FAILED: patch "[PATCH] r8169: fix deadlock on RTL8125 in jumbo mtu mode" failed to apply to 5.10-stable tree
+	b=LIHQGM2pGwOtp+syR29REsNKX1yHjMPUFFWgXC0CjGRVll3WFSL8jWx49UFHmTHmC
+	 utObhWB+kODI62EXMHGsILs64tBPU/lV6kfJU+xqBLtopRNvD9FTuj7sKakYxaf8Px
+	 ycWy9/bfrdIag3IViTfAmcuFRgpQfHn+o/CIdJD0=
+Subject: FAILED: patch "[PATCH] r8169: fix deadlock on RTL8125 in jumbo mtu mode" failed to apply to 5.4-stable tree
 To: hkallweit1@gmail.com,free122448@hotmail.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:35:38 +0100
-Message-ID: <2023120338-handiness-grinch-6532@gregkh>
+Date: Sun, 03 Dec 2023 14:35:39 +0100
+Message-ID: <2023120339-facing-absentee-ae63@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 59d395ed606d8df14615712b0cdcdadb2d962175
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120338-handiness-grinch-6532@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120339-facing-absentee-ae63@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -65,6 +65,22 @@ Possible dependencies:
 621735f59064 ("r8169: fix rare issue with broken rx after link-down on RTL8125")
 80c0576ef179 ("r8169: disable ASPM in case of tx timeout")
 4b6c6065fca1 ("r8169: use tp_to_dev instead of open code")
+476c4f5de368 ("r8169: mark device as not present when in PCI D3")
+0c28a63a47bf ("r8169: move napi_disable call and rename rtl8169_hw_reset")
+120068481405 ("r8169: fix failing WoL")
+8ac8e8c64b53 ("r8169: make rtl8169_down central chip quiesce function")
+bac75d8565e8 ("r8169: move some calls to rtl8169_hw_reset")
+27dc36aefc73 ("r8169: change driver data type")
+12b1bc75cd46 ("r8169: improve rtl_remove_one")
+13f15b59ad70 ("r8169: remove remaining call to mdiobus_unregister")
+ce740c5f6f7a ("r8169: improve reset handling for chips from RTL8168g")
+9617886fa65d ("r8169: add helper rtl_enable_rxdvgate")
+d6836ef02c17 ("r8169: use fsleep in polling functions")
+93882c6f210a ("r8169: switch from netif_xxx message functions to netdev_xxx")
+d56f58cec90d ("r8169: simplify counter handling")
+0360c046ca18 ("r8169: move setting OCP base to generic init code")
+b8447abc4c8f ("r8169: factor out rtl8169_tx_map")
+e18958c6a204 ("r8169: simplify rtl_task")
 
 thanks,
 
