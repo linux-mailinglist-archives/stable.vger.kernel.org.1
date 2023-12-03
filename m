@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6098023E8
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:54:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BAD78023E9
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A51BA1F21109
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:54:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A71BB209E6
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 12:54:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00508DF51;
-	Sun,  3 Dec 2023 12:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02280DF51;
+	Sun,  3 Dec 2023 12:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kyN8f96L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5Wj6pNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08673D79
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:54:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13BE3C433C8;
-	Sun,  3 Dec 2023 12:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A2F3D79
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:54:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8542C433C9;
+	Sun,  3 Dec 2023 12:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701608067;
-	bh=REDx9U8tgwEkV1at/+S72TOizDLKiH4V3T4OPvNOu7M=;
+	s=korg; t=1701608076;
+	bh=cDmXLM7GNDqNikCxdlWrueZJu+hdsT1XNx3kOyS5t7k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kyN8f96L9sNJXdfXPRs+S/cUwv2IIzltax6zUlVDQUeqwtCmIGatJvuOoMM01jCnw
-	 VuV+9xcXM2kTV7daePUWT4fgDRmyuMmoprJdi4hF5Bw3x4u8VgbKVzlyz5GHlYpArt
-	 YYkVIjGVxiodabYTH5ZRdRLwqEto9DLsBRqD5z0Y=
-Subject: FAILED: patch "[PATCH] mmc: cqhci: Fix task clearing in CQE error recovery" failed to apply to 5.10-stable tree
+	b=b5Wj6pNTkhhvtm20BVoVbx37umu5KBpnu+yHFMLppWChoRRHqmMGsn41qu369QvcC
+	 qX+EAMehoxb/EVtEJtQf+NdDlFeZazNsGKOgwS1YHRMedkREEewH0aQxhqfbdRcWni
+	 e8IcCBN5AZoTpa3LG9ybdOB/q64BJKbiVYZCLp4Q=
+Subject: FAILED: patch "[PATCH] mmc: cqhci: Fix task clearing in CQE error recovery" failed to apply to 5.4-stable tree
 To: adrian.hunter@intel.com,avri.altman@wdc.com,korneld@chromium.org,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 13:54:23 +0100
-Message-ID: <2023120322-clunky-gloomily-3273@gregkh>
+Date: Sun, 03 Dec 2023 13:54:24 +0100
+Message-ID: <2023120324-last-vista-7454@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1de1b77982e1a1df9707cb11f9b1789e6b8919d4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120322-clunky-gloomily-3273@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120324-last-vista-7454@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
