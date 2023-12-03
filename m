@@ -1,80 +1,288 @@
-Return-Path: <stable+bounces-3708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E898020B1
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 05:51:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC710802157
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 07:51:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 634E31C208E4
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 04:51:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDD241C208CA
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 06:51:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB3B1FA0;
-	Sun,  3 Dec 2023 04:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7CB2104;
+	Sun,  3 Dec 2023 06:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhd5nNqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXEcSOUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D006F15CC;
-	Sun,  3 Dec 2023 04:51:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B21C433C7;
-	Sun,  3 Dec 2023 04:51:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701579101;
-	bh=S0yq8trChhQB2QxtIfpHYOXLs2J2fS+sqWGhqbXRkuQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhd5nNqWV4U1XmA1QMb2m+SmDA38x6TgCz5gTaUz/pWG+WHhRFjK5p96Yq46v/lMx
-	 cyX/GPDCrT3SW4HOL7hhiWBXzHQ8/8XEq7xNiX+1x5aKwATEPkFd4/8gPnNniCv6i2
-	 wL1bNgXnJ55HrenTRcdbf2kMIObZu7OM8nuSKuw2oLLa1lJ0wNMvdEswa3sSPDeRDq
-	 nS2O6jrRPttLUjr44sHmZQYaWivlW8+OT/cEnLPfO5QDVdy4ZO5Jts76FfXloVsiCQ
-	 mYeGhIXQOVflTYElk0vr7e140HUWH2+XzqRuCNQys83Vt6F3bC/JVqXbwGG0Zb675d
-	 BCRIV+pqZ4teg==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Andy Gross <agross@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDCE17FD
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 06:51:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FF3C433C8;
+	Sun,  3 Dec 2023 06:51:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701586285;
+	bh=N+Rh70zsU3qX10WnIguH6nrVBA7TkEs3HeS2DV9AzwA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dXEcSOUvlCi8+zsUGyV3e2Ibm8j39Y5tWJ1tQefSnwF/X9jIciU58/4ZrmyJo4NcN
+	 9vDwNFYL5YpuRPzOOaLbqIz2dEL0+37GwBNxJr8sDGtKuz6kK0vIrmgMVqr8Jt3Ff7
+	 comNbMpFhOsqYQO4HWWOXGbXNsdT5kW5Ll/DITCk=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: sc8280xp-crd: fix eDP phy compatible
-Date: Sat,  2 Dec 2023 20:54:32 -0800
-Message-ID: <170157925833.1717511.5166881247887847999.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231016080658.6667-1-johan+linaro@kernel.org>
-References: <20231016080658.6667-1-johan+linaro@kernel.org>
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 5.15.141
+Date: Sun,  3 Dec 2023 07:51:21 +0100
+Message-ID: <2023120321-identify-connected-5156@gregkh>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+I'm announcing the release of the 5.15.141 kernel.
 
-On Mon, 16 Oct 2023 10:06:58 +0200, Johan Hovold wrote:
-> The sc8280xp Display Port PHYs can be used in either DP or eDP mode and
-> this is configured using the devicetree compatible string which defaults
-> to DP mode in the SoC dtsi.
-> 
-> Override the default compatible string for the CRD eDP PHY node so that
-> the eDP settings are used.
-> 
-> [...]
+All users of the 5.15 kernel series must upgrade.
 
-Applied, thanks!
+The updated 5.15.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-5.15.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-[1/1] arm64: dts: qcom: sc8280xp-crd: fix eDP phy compatible
-      commit: 663affdb12b3e26c77d103327cf27de720c8117e
+thanks,
 
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
+greg k-h
+
+------------
+
+ Makefile                                                |    2 
+ arch/arm/xen/enlighten.c                                |    3 
+ arch/mips/kvm/mmu.c                                     |    3 
+ drivers/acpi/resource.c                                 |    7 
+ drivers/ata/pata_isapnp.c                               |    3 
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c          |    7 
+ drivers/gpu/drm/panel/panel-simple.c                    |   13 
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c             |   14 
+ drivers/hid/hid-core.c                                  |   16 
+ drivers/hid/hid-debug.c                                 |    3 
+ drivers/md/bcache/btree.c                               |    4 
+ drivers/md/bcache/sysfs.c                               |    2 
+ drivers/md/bcache/writeback.c                           |   22 -
+ drivers/md/dm-delay.c                                   |   17 
+ drivers/md/md.c                                         |    3 
+ drivers/media/platform/qcom/camss/camss-csid-170.c      |   65 ++-
+ drivers/media/platform/qcom/camss/camss-csid.c          |   44 +-
+ drivers/media/platform/qcom/camss/camss-csid.h          |   11 
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c                |   14 
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c            |   11 
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c               |   14 
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c |   20 -
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c    |    2 
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c       |    2 
+ drivers/net/hyperv/netvsc_drv.c                         |   41 +-
+ drivers/net/usb/ax88179_178a.c                          |    4 
+ drivers/net/wireguard/device.c                          |    4 
+ drivers/net/wireguard/receive.c                         |   12 
+ drivers/net/wireguard/send.c                            |    3 
+ drivers/nvme/target/fabrics-cmd.c                       |    4 
+ drivers/s390/block/dasd.c                               |   24 -
+ drivers/usb/cdns3/cdnsp-ring.c                          |    3 
+ drivers/usb/dwc2/hcd_intr.c                             |   15 
+ drivers/usb/dwc3/core.c                                 |    2 
+ drivers/usb/dwc3/drd.c                                  |    2 
+ drivers/usb/dwc3/dwc3-qcom.c                            |   65 ++-
+ drivers/usb/serial/option.c                             |   11 
+ drivers/usb/typec/tcpm/tcpm.c                           |    9 
+ drivers/xen/swiotlb-xen.c                               |    1 
+ fs/afs/dynroot.c                                        |    4 
+ fs/afs/internal.h                                       |    1 
+ fs/afs/server_list.c                                    |    2 
+ fs/afs/super.c                                          |    2 
+ fs/afs/vl_rotate.c                                      |   10 
+ fs/ext4/extents_status.c                                |  306 +++++++++++-----
+ fs/proc/proc_sysctl.c                                   |    7 
+ include/linux/hid.h                                     |    5 
+ include/linux/sysctl.h                                  |    6 
+ init/main.c                                             |    4 
+ io_uring/io_uring.c                                     |    4 
+ kernel/locking/lockdep.c                                |    3 
+ net/ipv4/route.c                                        |    2 
+ net/smc/af_smc.c                                        |    8 
+ 53 files changed, 628 insertions(+), 238 deletions(-)
+
+Alexander Stein (1):
+      usb: dwc3: Fix default mode initialization
+
+Andrey Konovalov (1):
+      media: qcom: camss: Fix csid-gen2 for test pattern generator
+
+Asuna Yang (1):
+      USB: serial: option: add Luat Air72*U series products
+
+Badhri Jagan Sridharan (1):
+      usb: typec: tcpm: Skip hard reset when in error recovery
+
+Baokun Li (8):
+      ext4: add a new helper to check if es must be kept
+      ext4: factor out __es_alloc_extent() and __es_free_extent()
+      ext4: use pre-allocated es in __es_insert_extent()
+      ext4: use pre-allocated es in __es_remove_extent()
+      ext4: using nofail preallocation in ext4_es_remove_extent()
+      ext4: using nofail preallocation in ext4_es_insert_delayed_block()
+      ext4: using nofail preallocation in ext4_es_insert_extent()
+      ext4: fix slab-use-after-free in ext4_es_insert_extent()
+
+Benjamin Tissoires (1):
+      HID: core: store the unique system identifier in hid_device
+
+Bryan O'Donoghue (1):
+      media: qcom: camss: Fix set CSI2_RX_CFG1_VC_MODE when VC is greater than 3
+
+Charles Mirabile (1):
+      io_uring/fs: consider link->flags when getting path for LINKAT
+
+Charles Yi (1):
+      HID: fix HID device resource race between HID core and debugging support
+
+Chen Ni (1):
+      ata: pata_isapnp: Add missing error check for devm_ioport_map()
+
+Christoph Hellwig (1):
+      nvmet: nul-terminate the NQNs passed in the connect command
+
+Coly Li (2):
+      bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
+      bcache: check return value from btree_node_alloc_replacement()
+
+D. Wythe (1):
+      net/smc: avoid data corruption caused by decline
+
+David Howells (4):
+      afs: Fix afs_server_list to be cleaned up with RCU
+      afs: Make error on cell lookup failure consistent with OpenAFS
+      afs: Return ENOENT if no cell DNS record can be found
+      afs: Fix file locking on R/O volumes to operate in local mode
+
+Eric Dumazet (1):
+      wireguard: use DEV_STATS_INC()
+
+Greg Kroah-Hartman (1):
+      Linux 5.15.141
+
+Haiyang Zhang (1):
+      hv_netvsc: Fix race of register_netdevice_notifier and VF register
+
+Hans de Goede (1):
+      ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CVA
+
+Huacai Chen (1):
+      MIPS: KVM: Fix a build warning about variable set but not used
+
+Jan Höppner (1):
+      s390/dasd: protect device queue against concurrent access
+
+Johan Hovold (4):
+      USB: dwc3: qcom: fix resource leaks on probe deferral
+      USB: dwc3: qcom: fix ACPI platform device leak
+      USB: dwc3: qcom: fix software node leak on probe errors
+      USB: dwc3: qcom: fix wakeup after probe deferral
+
+Jonas Karlman (1):
+      drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+
+Jose Ignacio Tornos Martinez (1):
+      net: usb: ax88179_178a: fix failed operations during ax88179_reset
+
+Keith Busch (2):
+      swiotlb-xen: provide the "max_mapping_size" method
+      io_uring: fix off-by one bvec index
+
+Krister Johansen (1):
+      proc: sysctl: prevent aliased sysctls from getting passed to init
+
+Kunwu Chan (1):
+      ipv4: Correct/silence an endian warning in __ip_do_redirect
+
+Lech Perczak (1):
+      USB: serial: option: don't claim interface 4 for ZTE MF290
+
+Long Li (1):
+      hv_netvsc: Mark VF as slave before exposing it to user-mode
+
+Marek Vasut (2):
+      drm/panel: simple: Fix Innolux G101ICE-L01 bus flags
+      drm/panel: simple: Fix Innolux G101ICE-L01 timings
+
+Mikulas Patocka (1):
+      dm-delay: fix a race between delay_presuspend and delay_bio
+
+Milen Mitkov (1):
+      media: camss: sm8250: Virtual channels for CSID
+
+Mingzhe Zou (3):
+      bcache: fixup multi-threaded bch_sectors_dirty_init() wake-up race
+      bcache: fixup init dirty data errors
+      bcache: fixup lock c->root error
+
+Oliver Neukum (1):
+      USB: dwc2: write HCINT with INTMASK applied
+
+Pawel Laszczak (1):
+      usb: cdnsp: Fix deadlock issue during using NCM gadget
+
+Peter Zijlstra (1):
+      lockdep: Fix block chain corruption
+
+Puliang Lu (1):
+      USB: serial: option: fix FM101R-GL defines
+
+Raju Rangoju (3):
+      amd-xgbe: handle corner-case during sfp hotplug
+      amd-xgbe: handle the corner-case during tx completion
+      amd-xgbe: propagate the correct speed and duplex status
+
+Rand Deeb (1):
+      bcache: prevent potential division by zero error
+
+Ricardo Ribalda (1):
+      usb: dwc3: set the dma max_seg_size
+
+Samuel Holland (1):
+      net: axienet: Fix check for partial TX checksum
+
+Shuijing Li (1):
+      drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
+
+Song Liu (1):
+      md: fix bi_status reporting in md_end_clone_io
+
+Souptick Joarder (HPE) (1):
+      media: camss: Replace hard coded value with parameter
+
+Stefano Stabellini (1):
+      arm/xen: fix xen_vcpu_info allocation alignment
+
+Suman Ghosh (2):
+      octeontx2-pf: Fix memory leak during interface down
+      octeontx2-pf: Fix ntuple rule creation to direct packet to VF with higher Rx queue than its PF
+
+Victor Fragoso (1):
+      USB: serial: option: add Fibocom L7xx modules
+
+Xuxin Xiong (1):
+      drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
+
+Zhang Yi (1):
+      ext4: make sure allocate pending entry not fail
+
 
