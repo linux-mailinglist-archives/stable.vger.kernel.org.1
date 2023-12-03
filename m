@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B4980244A
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:38:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EDAE80244B
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:38:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C2CB1F21181
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D371C208FE
 	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F1DF9FC;
-	Sun,  3 Dec 2023 13:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E31AFC02;
+	Sun,  3 Dec 2023 13:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+LjkxKA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H09c0dn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B57C2EE
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:38:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 719FBC433C8;
-	Sun,  3 Dec 2023 13:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8D5C2EE
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:38:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ECD3C433C7;
+	Sun,  3 Dec 2023 13:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701610709;
-	bh=axZvkITcJdYUE09D8uAWdp3fUlJ5n4LhxPwx1oL/I2E=;
+	s=korg; t=1701610713;
+	bh=BkV/kAFPGPbj/VkJxYuzyJ6tFKmr8nrzybt/jfxp+cQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1+LjkxKAXTPiA7MnjhZBapqUwOrjTxZe6ygBoZ3uK2l8JzFig0lmRPKA4GqlVwrn8
-	 VIUPZ1tCLqFrGpiDN5FAtn8szt2/t8+4hUSrHAZd6TeATd+SYrETN+y4lAMhLaWikd
-	 Lri0lsHCNwroaMAhQCrVCMhy/LnZ6cp1xWjYpv1w=
-Subject: FAILED: patch "[PATCH] kprobes: consistent rcu api usage for kretprobe holder" failed to apply to 6.1-stable tree
+	b=H09c0dn14rWto9ggY4WmxeZVPhpxVhLhlzBBOAa5zAcgesPq39RnA3Hu/0FCO+/b7
+	 KU6fluVkbsUyWkFbnlDSLyoDAIn39/atoTba3zEvOO4AtK22jqLkjirVfm26yx2+Wr
+	 OXKtqXLrN8s4HU8hC2OK//boi2MxcJtMvIwGjXd0=
+Subject: FAILED: patch "[PATCH] kprobes: consistent rcu api usage for kretprobe holder" failed to apply to 5.15-stable tree
 To: inwardvessel@gmail.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:38:18 +0100
-Message-ID: <2023120318-banana-quilt-5997@gregkh>
+Date: Sun, 03 Dec 2023 14:38:19 +0100
+Message-ID: <2023120319-failing-aviator-303a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x d839a656d0f3caca9f96e9bf912fd394ac6a11bc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120318-banana-quilt-5997@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120319-failing-aviator-303a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,20 @@ d839a656d0f3 ("kprobes: consistent rcu api usage for kretprobe holder")
 195b9cb5b288 ("fprobe: Ensure running fprobe_exit_handler() finished before calling rethook_free()")
 5f81018753df ("fprobe: Release rethook after the ftrace_ops is unregistered")
 76d0de5729c0 ("fprobe: Pass entry_data to handlers")
+0a1ebe35cb3b ("rethook: fix a potential memleak in rethook_alloc()")
+d05ea35e7eea ("fprobe: Check rethook_alloc() return in rethook initialization")
+c09eb2e578eb ("bpf: Adjust kprobe_multi entry_ip for CONFIG_X86_KERNEL_IBT")
+c0f3bb4054ef ("rethook: Reject getting a rethook if RCU is not watching")
+439940491807 ("kprobes: Fix build errors with CONFIG_KRETPROBES=n")
+73f9b911faa7 ("kprobes: Use rethook for kretprobe if possible")
+9052e4e83762 ("fprobe: Fix smatch type mismatch warning")
+f70986902c86 ("bpf: Fix kprobe_multi return probe backtrace")
+f705ec764b34 ("Revert "bpf: Add support to inline bpf_get_func_ip helper on x86"")
+2c6401c966ae ("selftests/bpf: Add kprobe_multi bpf_cookie test")
+f7a11eeccb11 ("selftests/bpf: Add kprobe_multi attach test")
+ca74823c6e16 ("bpf: Add cookie support to programs attached with kprobe multi link")
+97ee4d20ee67 ("bpf: Add support to inline bpf_get_func_ip helper on x86")
+42a5712094e8 ("bpf: Add bpf_get_func_ip kprobe helper for multi kprobe link")
 
 thanks,
 
