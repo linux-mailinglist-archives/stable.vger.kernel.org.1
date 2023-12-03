@@ -1,133 +1,174 @@
-Return-Path: <stable+bounces-3819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D82B802794
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 21:51:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 349DC8027A1
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 21:57:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8571C2095E
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 20:51:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3EBA1F211DE
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 20:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 480C218636;
-	Sun,  3 Dec 2023 20:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85374182AC;
+	Sun,  3 Dec 2023 20:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="dLvCS2kc";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Z3FUh2jo"
+	dkim=pass (2048-bit key) header.d=alyssa.is header.i=@alyssa.is header.b="oG3sgBr5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pAfWzn3N"
 X-Original-To: stable@vger.kernel.org
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E2A6CF;
-	Sun,  3 Dec 2023 12:51:16 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.west.internal (Postfix) with ESMTP id 1FE0E32004E7;
-	Sun,  3 Dec 2023 15:51:13 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Sun, 03 Dec 2023 15:51:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to; s=fm3; t=
-	1701636672; x=1701723072; bh=mkoL5GRW1yQRxowg4OvJz3ED7Ey6jz21dth
-	CJqqVr+U=; b=dLvCS2kcTUwS9N4Xm5V+Ixe/ePgUeMixtxKJf6bEK8zUMcZGQHk
-	ihibKZJnuFVA0v76C7DNwXB8RbrZdA2z8QJUhbFwKIa839NgpObO4CnVS22/n4UO
-	QE9fk/dvYOBy2HUTEqb8BMa5/WcJl/dD2QNkL7V7nHsxjotSDl+owVhCjjLJtPjr
-	ovNMAjv0sLXUcIfL9buo0+YcB8gV84cVcMgQEwaK7ZZ9oUXeSxOwHWH+oia7ib6u
-	xX2KbQfx9FR7mRrx8klT4bvZ7DFS+yPlFNEglfBCAB+FXawMFrHMYpNB7U8Z1qtj
-	vmFR7fU4VioOlLM5lJc9KldGa5nn1kXNDXg==
+Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93A87D6
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 12:57:23 -0800 (PST)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailout.nyi.internal (Postfix) with ESMTP id D55C15C0159;
+	Sun,  3 Dec 2023 15:57:22 -0500 (EST)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Sun, 03 Dec 2023 15:57:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alyssa.is; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm3; t=1701637042; x=1701723442; bh=4Z
+	/fGdtWxhmus/QtkDC03Lf4hSdh2IdQELBGib5hdMs=; b=oG3sgBr5MpyGM080ml
+	UTQsdXBa172u+R0VY2NVw3POssRNePmxC1U69iaBfHvoRM6e7U8tOc7zY/FeRSP6
+	EzI2QdWvITFKqxRpk+odWVDLFPjEfPdERh1MlSymslfK8LxWNCVHAs7EnaW7iRoj
+	kSj2dCFa4AFXoDNtzS6PAiXK0VLtO923Z1IuDC1XnVLYqRZREYRN+Fa+bSMqM2GM
+	R0ft/Qwc/Gfk8VkhGtsnYo2lea+KiFliotd0/Yo5ck4TP5KPLrQ6P6y+kCJwUXgn
+	humqLBeaEolIXcuPIHMIIXUxOz/gosEQtUQpRC7s1xwg+/sxH3KyntYFriWUeetw
+	6sdQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
-	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1701636672; x=1701723072; bh=mkoL5GRW1yQRxowg4OvJz3ED7Ey6jz21dth
-	CJqqVr+U=; b=Z3FUh2joJ1dbaU9RDz9StRNo6WbzpMM2RNCmYusIJP4eVk9yP/z
-	CasVYXX8XXAbdfgyx2Q08w1X13OMg6hxfXCSUt+d1u54y+s4EPvZQKqtwW6syjIN
-	JZ1NkiwsXcHPTAn215EPuc9x86iITXaPjkkzYBBf1oP91yTxSuRhveJBJv1kz5AR
-	OdrlHJQ8XlhX6F+rTT9v0/mtpBygAbBPQXlrbIDLwOv4/h6Rb978hQlXt8nG29w1
-	WZF3M9nPft2prjyQtr3jIDZpyFckO4VFNJ/jSvpx+KMNcqyq9L9x5Rt0XPqFSCmK
-	qVlgXkOPxNwtDJuVle2iUK3pY0aaisxopsw==
-X-ME-Sender: <xms:QOpsZYHs0OwSGa7EubYD9zNO7Ok40cmOuVYrK306vyUTUN6MOCT1PQ>
-    <xme:QOpsZRW1UrbkXKYesxG3MGW-ai-cbrcbrzUeFq664RHUR-UgecYz0pDOA2GidyDkN
-    Dzabj9EWrhw0NQoj1c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudejgedgudegvdcutefuodetggdotefrod
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1701637042; x=1701723442; bh=4Z/fGdtWxhmus
+	/QtkDC03Lf4hSdh2IdQELBGib5hdMs=; b=pAfWzn3N9photzFEcv8pAoy02u/Hh
+	dseORM1JlWiSaJ3uqWgEG7ywJqO37MjMR3MW+Ugn7Ajt5vLEucXQt3sS9CIrxlS0
+	/F0OlDdTpz8wdP00jV9ASqQY2qKjbranhCv10sGqIMwHkCHlVWTe+bYf8yscB94z
+	manNqkAgFksT121Ib21rGBR7DAFqFJ55iP7GvNDKNQk40uK76pUL/WQ+BXPrsbOt
+	7SacDv6KuxyKySiteq3eKqmymmb6j/vbYZ6/ZmN6WVNUA7W0DCJHhKA+iFYZLHCE
+	30+U/gyDPD3QrAHBW6rr4f/DCKXDxiIcn7w/VUy4Gy28UhqFs8TBsGsSg==
+X-ME-Sender: <xms:setsZYXngvOxnGcmSsSBtH9jP6qVqbCHr0pQt0s-O1SxkAyIy1es0w>
+    <xme:setsZcktUFdRhW-11jZ_I68uQ6HhoixovMAQfxD_BeP0CfCkUTsnbESeePQ2_NCCK
+    t2lCIb_dez3IIarcw>
+X-ME-Received: <xmr:setsZcZs8rBpdI7B_9qbfrOHJVP-QHT__f3cF---eVnsYfUJHx36kPRWuZXjvtj5ZW8orbJou-OYYn8CdhKZYExHVmPw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudejgedgudegfecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgfgsehtqhertderreejnecuhfhrohhmpedf
-    tehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrf
-    grthhtvghrnhepgeefjeehvdelvdffieejieejiedvvdfhleeivdelveehjeelteegudek
-    tdfgjeevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eprghrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:QOpsZSJQpAwxp8q__I9nN2JHe5GdnAFofplzqxH4jJyIf2hU1W0Gtw>
-    <xmx:QOpsZaEWMKLUkFkerTtNabH1mQ9kqcZ7UNfH8PdQlKYZd7BH6Om_Ww>
-    <xmx:QOpsZeUMfvkCWJpfq6aBG7ZtDRxQljPcspglDCX1u5q9DNfEPicVXQ>
-    <xmx:QOpsZQeWZkK8Zpt40IfxooiIgNXINL8-8uawybNvvPWg-xW8plK7bQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 58C5DB60089; Sun,  3 Dec 2023 15:51:12 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1178-geeaf0069a7-fm-20231114.001-geeaf0069
+    enucfjughrpefhvfevufgjfhffkfggtgesghdtreertddttdenucfhrhhomheptehlhihs
+    shgrucftohhsshcuoehhihesrghlhihsshgrrdhisheqnecuggftrfgrthhtvghrnheptd
+    dtkedtvdeltdeufeetheffjedtjeektdegudegjedujefhveevtdekueejgeejnecuffho
+    mhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpehhihesrghlhihsshgrrdhish
+X-ME-Proxy: <xmx:sutsZXWgXWTzCG5v_ufblFZBqNwH6nr7aGlDz7Bs9Himw2-OB89Hcw>
+    <xmx:sutsZSk0JngmoTkc5eyc5ynCshQINh8VaH4OviFxnXaOJVCfN-Vjww>
+    <xmx:sutsZcen059QSKiyXfODaNUxKYyDjF8nd5I4kTSbeTpQV8RoP5ggOg>
+    <xmx:sutsZQY4vU1arnpogu2h_m15PXko1cdxqNwn-xpPl25-JzkjK_LpWA>
+Feedback-ID: i12284293:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 3 Dec 2023 15:57:21 -0500 (EST)
+Received: by mbp.qyliss.net (Postfix, from userid 1000)
+	id D6DE375D9; Sun,  3 Dec 2023 21:57:19 +0100 (CET)
+From: Alyssa Ross <hi@alyssa.is>
+To: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org, stable@vger.kernel.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ daniel@ffwll.ch, javierm@redhat.com
+Subject: Re: [PATCH v3] drm/atomic-helpers: Invoke end_fb_access while
+ owning plane state
+In-Reply-To: <20231128090158.15564-1-tzimmermann@suse.de>
+References: <20231128090158.15564-1-tzimmermann@suse.de>
+Date: Sun, 03 Dec 2023 21:57:15 +0100
+Message-ID: <87r0k3c8d0.fsf@alyssa.is>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <d180f06b-64b0-4885-9794-5127c297a0f0@app.fastmail.com>
-In-Reply-To: <ZWzLvctpo1nNTMOo@google.com>
-References: <20231127204206.3593559-1-zack@kde.org>
- <ZWzLvctpo1nNTMOo@google.com>
-Date: Sun, 03 Dec 2023 21:50:51 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Dmitry Torokhov" <dmitry.torokhov@gmail.com>,
- "Zack Rusin" <zackr@vmware.com>
-Cc: linux-kernel@vger.kernel.org,
- "VMware Graphics Reviewers" <linux-graphics-maintainer@vmware.com>,
- "Robert Jarzmik" <robert.jarzmik@free.fr>,
- "Raul Rangel" <rrangel@chromium.org>, linux-input@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH] input/vmmouse: Fix device name copies
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha256; protocol="application/pgp-signature"
 
-On Sun, Dec 3, 2023, at 19:41, Dmitry Torokhov wrote:
-> On Mon, Nov 27, 2023 at 03:42:06PM -0500, Zack Rusin wrote:
->> From: Zack Rusin <zackr@vmware.com>
->>=20
->> Make sure vmmouse_data::phys can hold serio::phys (which is 32 bytes)
->> plus an extra string, extend it to 64.
->>=20
->> Fixes gcc13 warnings:
->> drivers/input/mouse/vmmouse.c: In function =E2=80=98vmmouse_init=E2=80=
-=99:
->> drivers/input/mouse/vmmouse.c:455:53: warning: =E2=80=98/input1=E2=80=
-=99 directive output may be truncated writing 7 bytes into a region of s=
-ize between 1 and 32 [-Wformat-truncation=3D]
->>   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
->>       |                                                     ^~~~~~~
->> drivers/input/mouse/vmmouse.c:455:9: note: =E2=80=98snprintf=E2=80=99=
- output between 8 and 39 bytes into a destination of size 32
->>   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
->>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->>   456 |                  psmouse->ps2dev.serio->phys);
->>       |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--=-=-=
+Content-Type: text/plain
+
+Thomas Zimmermann <tzimmermann@suse.de> writes:
+
+> Invoke drm_plane_helper_funcs.end_fb_access before
+> drm_atomic_helper_commit_hw_done(). The latter function hands over
+> ownership of the plane state to the following commit, which might
+> free it. Releasing resources in end_fb_access then operates on undefined
+> state. This bug has been observed with non-blocking commits when they
+> are being queued up quickly.
 >
-> This simply wastes 32 bytes. It is perfectly fine to truncate phys
-> (which does not happen in real life).
+> Here is an example stack trace from the bug report. The plane state has
+> been free'd already, so the pages for drm_gem_fb_vunmap() are gone.
 >
-> -Wformat-truncation is disabled in normal builds, folks should stop
-> using it with W=3D1 as well.
+> Unable to handle kernel paging request at virtual address 0000000100000049
+> [...]
+>  drm_gem_fb_vunmap+0x18/0x74
+>  drm_gem_end_shadow_fb_access+0x1c/0x2c
+>  drm_atomic_helper_cleanup_planes+0x58/0xd8
+>  drm_atomic_helper_commit_tail+0x90/0xa0
+>  commit_tail+0x15c/0x188
+>  commit_work+0x14/0x20
+>
+> Fix this by running end_fb_access immediately after updating all planes
+> in drm_atomic_helper_commit_planes(). The existing clean-up helper
+> drm_atomic_helper_cleanup_planes() now only handles cleanup_fb.
+>
+> For aborted commits, roll back from drm_atomic_helper_prepare_planes()
+> in the new helper drm_atomic_helper_unprepare_planes(). This case is
+> different from regular cleanup, as we have to release the new state;
+> regular cleanup releases the old state. The new helper also invokes
+> cleanup_fb for all planes.
+>
+> The changes mostly involve DRM's atomic helpers. Only two drivers, i915
+> and nouveau, implement their own commit function. Update them to invoke
+> drm_atomic_helper_unprepare_planes(). Drivers with custom commit_tail
+> function do not require changes.
+>
+> v3:
+> 	* add drm_atomic_helper_unprepare_planes() for rolling back
+> 	* use correct state for end_fb_access
+> v2:
+> 	* fix test in drm_atomic_helper_cleanup_planes()
+>
+> Reported-by: Alyssa Ross <hi@alyssa.is>
+> Closes: https://lore.kernel.org/dri-devel/87leazm0ya.fsf@alyssa.is/
+> Suggested-by: Daniel Vetter <daniel@ffwll.ch>
+> Fixes: 94d879eaf7fb ("drm/atomic-helper: Add {begin,end}_fb_access to plane helpers")
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: <stable@vger.kernel.org> # v6.2+
 
-It does find real bugs, and we are fairly close to being able
-to enable it by default once the remaining warnings are all
-fixed.
+I've been running this for days now, and haven't had a single Oops.
+Given the rate with which I encountered them before in this
+configuration, it looks very likely that the issue is resolved.
 
-It also doesn't waste any memory in this specific case since
-vmmouse_data is currently at 168 bytes, which gets rounded
-up to either 192 or 256 bytes anyway. I'd suggest using
-the minimum size that is large enough though, in this case
-39 bytes for the string I guess.
+Tested-by: Alyssa Ross <hi@alyssa.is>
 
-     Arnd
+And, once the wrong parameter name in the kerneldoc identified by the
+kernel test robot is resolved,
+
+Reviewed-by: Alyssa Ross <hi@alyssa.is>
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEH9wgcxqlHM/ARR3h+dvtSFmyccAFAmVs66sACgkQ+dvtSFmy
+ccBm/g/+JtddooDhlyC0BzeDXpHuQiKW9puH1MFtU/nvGRXXoxUw7t1KavA85g1x
+tEJ39rDvyptmEZzH4Y54RIlm94LtfOkhp6nWUaESMKupIRo1+REDOBKlxysE5iBA
+yKkRm2yuEOOh3zdvBvmShVEMQhzG5eb3aKkYrgvrnnAof2QSWmwdQlp4Oxu8YYUS
+UM+qW7wgTiPx1TXo1nVu1l5dk4+Y5MufGMjF1JqsUDEkklQLomc/wIxYWXQKkBrh
+j0MHOQCSZ/ZfJPf5d4UJOn42F0J/luJb48e+sieWokhPXpAxkt1oRr4JgW2Iy3BA
+cGryrTu7HXaUepJjSqTYyKyL5OLfxwhNqKSpQgJbCcRjws+olV3YK6afrj6r6olt
+AfzNwd5r+d4eorosCrRRXMRBxSbRmUDSGxHLWY8DaexrpmrOpwl3gLO+euAPQSdt
+IBGZFO4h9P66ZsuS5VYo4xIawOAc3af37Q543qFv7DJDPL2TyRkyr+p4knvWkwAv
+M54CYFaq8WSjNZ6T/1CzCHeyGxkV0gKi2FxYQp3uR+YClFsQMxn23ex97j8CIR+h
+N80UZtx1rz/RYU2mokBG5gQRMA4CaEYVCPyg243DZ4A0BUF0XPq4eHD8vaCkl/lw
+0RhpJzHveufm4W+wOq3JfNI2RU/nka8wUBqyElPJCRH8dktT8Ts=
+=jM9Y
+-----END PGP SIGNATURE-----
+--=-=-=--
 
