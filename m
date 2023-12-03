@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FA1802437
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:22:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFF5802436
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:22:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6026B209DF
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28F42280E83
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31879F505;
-	Sun,  3 Dec 2023 13:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F53DF9EB;
+	Sun,  3 Dec 2023 13:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYBzrn1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvsVfSMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA17EC8CB
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504FDC433C7;
-	Sun,  3 Dec 2023 13:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16883C8CB
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31FAC433C7;
+	Sun,  3 Dec 2023 13:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701609761;
-	bh=2mrML5jFE0zWiRPjm1gqvV8qu698xGgd33bHUzqmkzw=;
+	s=korg; t=1701609765;
+	bh=bVbtrJxjgV3VQQVYJ3y/pdOnlvqy0NT8nuzFRMlex50=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zYBzrn1TaDiNHQr7PnoYYPVNj05SjDmXAAd1OGD1X414FlB0ZZeJ/Y7hGAUn+sszL
-	 IEY/yKHMA/wz5v7fY1Hj4JGcjpFM3XeJbynGZcJQ+Yim9tAUWe5F5ktDaRdHLdheuM
-	 ZvpfpwxgZ/PpMxvZFKNSzdIgkEbr6CGzDwdECQ4E=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.6-stable tree
+	b=zvsVfSMuAIgU8TkTGTs5W6NpuB7gXt5KGq6PY/KwBV4xoafEkfGhlKe4GG2scnwRI
+	 8UyCQXGU0e9a82qGveVhi2FoLmWvyU1GE6m64imVmzggw+pglvH1USDLPfaI6uS4js
+	 yYScXkBsf0l0jKhNRV6eus9W/WjeziuMkykZaQeI=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.1-stable tree
 To: sungkim@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:22:32 +0100
-Message-ID: <2023120332-plural-connector-44df@gregkh>
+Date: Sun, 03 Dec 2023 14:22:33 +0100
+Message-ID: <2023120333-sliver-duplex-6926@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 47831f4860d4e8cdfee4910d2b76ccd892fd72d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120332-plural-connector-44df@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120333-sliver-duplex-6926@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,9 @@ fb8c3ef80584 ("drm/amd/display: Update dc.h for DCN35 support")
 5e77c339a291 ("drm/amd/display: Skip dmub memory flush when not needed")
 0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
 96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
+53f328807946 ("drm/amd/display: implement pipe type definition and adding accessors")
+73d450926432 ("drm/amd/display: fix incorrect stream_res allocation for older ASIC")
+198f0e895349 ("drm/amd/display: rename acquire_idle_pipe_for_layer to acquire_free_pipe_as_sec_dpp_pipe")
 
 thanks,
 
