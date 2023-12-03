@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9AA1802438
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:28:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7B180243A
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:31:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F8091C208FF
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:28:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 407FD1C20901
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A80F505;
-	Sun,  3 Dec 2023 13:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D18EF9C4;
+	Sun,  3 Dec 2023 13:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9Ej1tou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0fMuL21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF76EAFF
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:28:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBF65C433C8;
-	Sun,  3 Dec 2023 13:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B019C2EE
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:31:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEB4C433C8;
+	Sun,  3 Dec 2023 13:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701610094;
-	bh=fTkIgdOktyRBKuC7KJIXlpJCgnRMQTzx+sF+NBS44gc=;
+	s=korg; t=1701610289;
+	bh=Uln+sFK2Vmt7l/R5coXVbMWIwHOiW1tVtbHuIWI4KgY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=d9Ej1touatz+kETtovs52NwX/yawgeHIHHrwj+IfQ7dw2ISujuJnroEFjWyy9ai1b
-	 JY9IQ3kjuL4hO94GMiPsJ3lxAMT+dfNRkH8hgGoR00zYLXFPsgK97+xnwyiWPNGmDU
-	 dspaaVo2GJK1JpLli+Aats1u5Jtd/DGWonYvi/Do=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Increase num voltage states to 40" failed to apply to 6.6-stable tree
-To: alvin.lee2@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,samson.tam@amd.com
+	b=u0fMuL2189/VBdZsWeCTG0AiZAYP69DQMPk7WeNw1sPFtEcSDG99tn7n1ihj/U/X/
+	 9xFPqEg8RuzWnv9CfZyjRtRm274ENDa9Xs6M643P400lWCKCN9R+K/JNfuiy8JUmKr
+	 2jUUIS/H9Q/6jCqYBwX1iITrD+YDkQ7QhVzZNRe4=
+Subject: FAILED: patch "[PATCH] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card" failed to apply to 5.10-stable tree
+To: wenchao.chen@unisoc.com,ulf.hansson@linaro.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:28:11 +0100
-Message-ID: <2023120311-exporter-another-f868@gregkh>
+Date: Sun, 03 Dec 2023 14:31:11 +0100
+Message-ID: <2023120311-backlands-resupply-6887@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 67e38874b85b8df7b23d29f78ac3d7ecccd9519d
+git cherry-pick -x 477865af60b2117ceaa1d558e03559108c15c78c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120311-exporter-another-f868@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120311-backlands-resupply-6887@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-67e38874b85b ("drm/amd/display: Increase num voltage states to 40")
+477865af60b2 ("mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled")
 
 thanks,
 
@@ -69,36 +69,88 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 67e38874b85b8df7b23d29f78ac3d7ecccd9519d Mon Sep 17 00:00:00 2001
-From: Alvin Lee <alvin.lee2@amd.com>
-Date: Wed, 8 Nov 2023 17:16:28 -0500
-Subject: [PATCH] drm/amd/display: Increase num voltage states to 40
+From 477865af60b2117ceaa1d558e03559108c15c78c Mon Sep 17 00:00:00 2001
+From: Wenchao Chen <wenchao.chen@unisoc.com>
+Date: Wed, 15 Nov 2023 16:34:06 +0800
+Subject: [PATCH] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card
+ was pulled
 
-[Description]
-If during driver init stage there are greater than 20
-intermediary voltage states while constructing the SOC
-BB we could hit issues because we will index outside of the
-clock_limits array and start overwriting data. Increase the
-total number of states to 40 to avoid this issue.
+With cat regulator_summary, we found that vqmmc was not shutting
+down after the card was pulled.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+cat /sys/kernel/debug/regulator/regulator_summary
+1.before fix
+1)Insert SD card
+ vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dc_features.h b/drivers/gpu/drm/amd/display/dc/dml/dc_features.h
-index 2cbdd75429ff..6e669a2c5b2d 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dc_features.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dc_features.h
-@@ -36,7 +36,7 @@
-  * Define the maximum amount of states supported by the ASIC. Every ASIC has a
-  * specific number of states; this macro defines the maximum number of states.
-  */
--#define DC__VOLTAGE_STATES 20
-+#define DC__VOLTAGE_STATES 40
- #define DC__NUM_DPP__4 1
- #define DC__NUM_DPP__0_PRESENT 1
- #define DC__NUM_DPP__1_PRESENT 1
+2)Pull out the SD card
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2.after fix
+1)Insert SD cardt
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2)Pull out the SD card
+ vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
+
+Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 6b84ba27e6ab..6b8a57e2d20f 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -416,12 +416,33 @@ static void sdhci_sprd_request_done(struct sdhci_host *host,
+ 	mmc_request_done(host->mmc, mrq);
+ }
+ 
++static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
++				 unsigned short vdd)
++{
++	struct mmc_host *mmc = host->mmc;
++
++	switch (mode) {
++	case MMC_POWER_OFF:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
++
++		mmc_regulator_disable_vqmmc(mmc);
++		break;
++	case MMC_POWER_ON:
++		mmc_regulator_enable_vqmmc(mmc);
++		break;
++	case MMC_POWER_UP:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
++		break;
++	}
++}
++
+ static struct sdhci_ops sdhci_sprd_ops = {
+ 	.read_l = sdhci_sprd_readl,
+ 	.write_l = sdhci_sprd_writel,
+ 	.write_w = sdhci_sprd_writew,
+ 	.write_b = sdhci_sprd_writeb,
+ 	.set_clock = sdhci_sprd_set_clock,
++	.set_power = sdhci_sprd_set_power,
+ 	.get_max_clock = sdhci_sprd_get_max_clock,
+ 	.get_min_clock = sdhci_sprd_get_min_clock,
+ 	.set_bus_width = sdhci_set_bus_width,
+@@ -823,6 +844,10 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+ 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
+ 			 SDHCI_SUPPORT_DDR50);
+ 
++	ret = mmc_regulator_get_supply(host->mmc);
++	if (ret)
++		goto pm_runtime_disable;
++
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
+ 		goto pm_runtime_disable;
 
 
