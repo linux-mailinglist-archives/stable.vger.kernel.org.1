@@ -1,85 +1,71 @@
-Return-Path: <stable+bounces-3810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8328D802691
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 20:12:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD91F802692
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 20:14:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF101C208F8
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 19:12:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3833DB207FC
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 19:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB8A179AC;
-	Sun,  3 Dec 2023 19:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF6E17993;
+	Sun,  3 Dec 2023 19:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ECuFZvJE"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C1SzQLKy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C13CD9
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 11:12:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701630726; x=1733166726;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=AwLIK8J5ESG9AHU+Ow4GlsB1m9qs/3Fj4qZzX2C1AjY=;
-  b=ECuFZvJE1WExL4CrlQfIRApcKOmmryV1ETaJA2jnTnpJP61zqDBS/7H2
-   2+edAFCdpikqyYq0t2IU1XP9gtgHb7umnqmPEQN7ef93Hg0g91Z8KTnU4
-   nLmFpJ9x+6FIRW7GgC9jS8n/joWpkiAGuCQK97u7eR1P4eAUujKT+64bx
-   m1McfkHZo2BLwkqnnPO1o7maw7YjNnTV1hTudjU2W8eR+dpr++F0duj40
-   FBFP+NSBcA4AyNJ7W3HufbcOQWlBjQDufjnWU3jhD6OMNaYZGMNpp6Uhs
-   Jy6n4O9j85ZkWYRQrJ92zZWndUURhoMSDEhvjWLybP/nt+UxoWkRvl0Vx
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="479858832"
-X-IronPort-AV: E=Sophos;i="6.04,248,1695711600"; 
-   d="scan'208";a="479858832"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Dec 2023 11:12:05 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="720098799"
-X-IronPort-AV: E=Sophos;i="6.04,248,1695711600"; 
-   d="scan'208";a="720098799"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga003.jf.intel.com with ESMTP; 03 Dec 2023 11:12:04 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1r9rso-0006zs-0w;
-	Sun, 03 Dec 2023 19:12:02 +0000
-Date: Mon, 4 Dec 2023 03:11:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87BF9E3
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 11:14:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=91cBSBsaZuDf/yVzH7aZURJm0UvkLSdhHfheIQLFymQ=;
+	t=1701630844; x=1702840444; b=C1SzQLKyrRwjTURJqO8+11leWK3fBP5oJcYNLoIjlZhDOL6
+	ZVNB5dSBAAloxBU8whXw2akyEFCxTUTJEW7HOF6bscM/cJnKxCj5qNvE0quDw7h/GCQsoN1R9TdYp
+	c0sdxHhTmfDMmHEXrC3ryAksFHZDloYU5a5A9CdNPbPqdCD0QdxupM8n6EjjJvFOvQsYB/XzombPL
+	PtIoMeCQnnWvUs3wAbNxk3sEP1aYEU1r3M7/4W13wWYXvagBEQU7Wb98Z9PhnKlm3dYN0dlnFLWrT
+	khI2YoPflZoN6hV/yPzm7hFdB3N/Oz+8i/An8fqNv04LHNev9vtmfrOx68eedoVg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1r9ruj-0000000DmuV-3lV1;
+	Sun, 03 Dec 2023 20:14:02 +0100
+Message-ID: <f7965d3bd612ade8535407c06f99bfee77432bfe.camel@sipsolutions.net>
 Subject: Re: [PATCH 6.1,6.6] wifi: cfg80211: fix CQM for non-range use
-Message-ID: <ZWzS5yuKKYCVIxz9@520bc4c78bef>
+From: Johannes Berg <johannes@sipsolutions.net>
+To: kernel test robot <lkp@intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Date: Sun, 03 Dec 2023 20:14:00 +0100
+In-Reply-To: <ZWzS5yuKKYCVIxz9@520bc4c78bef>
+References: <ZWzS5yuKKYCVIxz9@520bc4c78bef>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231203190842.25478-2-johannes@sipsolutions.net>
-
-Hi,
-
-Thanks for your patch.
-
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.1,6.6] wifi: cfg80211: fix CQM for non-range use
-Link: https://lore.kernel.org/stable/20231203190842.25478-2-johannes%40sipsolutions.net
-
-Please ignore this mail if the patch is not relevant for upstream.
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+X-malware-bazaar: not-scanned
 
 
+> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+>=20
+> The check is based on https://www.kernel.org/doc/html/latest/process/stab=
+le-kernel-rules.html#option-3
+>=20
+> Rule: The upstream commit ID must be specified with a separate line above=
+ the commit text.
+> Subject: [PATCH 6.1,6.6] wifi: cfg80211: fix CQM for non-range use
+> Link: https://lore.kernel.org/stable/20231203190842.25478-2-johannes%40si=
+psolutions.net
+>=20
 
+OK, so I spelled it "Commit" and not "commit" ...?
+
+johannes
 
