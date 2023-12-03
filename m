@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-3765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE89802435
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:22:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54FA1802437
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 14:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE3C280EB4
-	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:22:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6026B209DF
+	for <lists+stable@lfdr.de>; Sun,  3 Dec 2023 13:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62A60F9EB;
-	Sun,  3 Dec 2023 13:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31879F505;
+	Sun,  3 Dec 2023 13:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETYDCIgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYBzrn1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF47C8CB
-	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:22:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF03C433C8;
-	Sun,  3 Dec 2023 13:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA17EC8CB
+	for <stable@vger.kernel.org>; Sun,  3 Dec 2023 13:22:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504FDC433C7;
+	Sun,  3 Dec 2023 13:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701609754;
-	bh=ILnQep/R91HhNa0BP7f9bfRRs4StUoJ7XFk+uOAEyfw=;
+	s=korg; t=1701609761;
+	bh=2mrML5jFE0zWiRPjm1gqvV8qu698xGgd33bHUzqmkzw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ETYDCIgINegUBV5StI9Th4WVzKIo1tsmwLVMzL4oqulZUnOhyRsBGwqBjY6scnAIJ
-	 netA1LQlr9hwr9xQeVMj+CPapcDDTvPqXtb7QyVHYU2LafWFNXbhpcnEtoOh9J1hNc
-	 72Emo8nftSlu/taJISDROEdvo2VPbwvI4bQaOByY=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix conversions between bytes and KB" failed to apply to 6.6-stable tree
-To: syed.hassan@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
+	b=zYBzrn1TaDiNHQr7PnoYYPVNj05SjDmXAAd1OGD1X414FlB0ZZeJ/Y7hGAUn+sszL
+	 IEY/yKHMA/wz5v7fY1Hj4JGcjpFM3XeJbynGZcJQ+Yim9tAUWe5F5ktDaRdHLdheuM
+	 ZvpfpwxgZ/PpMxvZFKNSzdIgkEbr6CGzDwdECQ4E=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix black screen on video playback with" failed to apply to 6.6-stable tree
+To: sungkim@amd.com,alexander.deucher@amd.com,hamza.mahfooz@amd.com,nicholas.kazlauskas@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 03 Dec 2023 14:22:23 +0100
-Message-ID: <2023120323-excavate-humility-3731@gregkh>
+Date: Sun, 03 Dec 2023 14:22:32 +0100
+Message-ID: <2023120332-plural-connector-44df@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,20 +54,28 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x dcf6cd7f35de572a946e2805ed32eb20d429a881
+git cherry-pick -x 47831f4860d4e8cdfee4910d2b76ccd892fd72d1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120323-excavate-humility-3731@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120332-plural-connector-44df@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-dcf6cd7f35de ("drm/amd/display: Fix conversions between bytes and KB")
-b141fa036c90 ("drm/amd/display: Reduce stack size by splitting function")
-7966f319c66d ("drm/amd/display: Introduce DML2")
-6e2c4941ce0c ("drm/amd/display: Move dml code under CONFIG_DRM_AMD_DC_FP guard")
-c51d87202d1f ("drm/amd/display: do not attempt ODM power optimization if minimal transition doesn't exist")
-1cb87e048975 ("drm/amd/display: Add DCN35 blocks to Makefile")
-39d39a019657 ("drm/amd/display: switch to new ODM policy for windowed MPO ODM support")
+47831f4860d4 ("drm/amd/display: Fix black screen on video playback with embedded panel")
+c0af8c744e7e ("drm/amd/display: Make driver backwards-compatible with non-IPS PMFW")
+1288d7020809 ("drm/amd/display: Improve x86 and dmub ips handshake")
+c0f8b83188c7 ("drm/amd/display: disable IPS")
+93a66cef607c ("drm/amd/display: Add IPS control flag")
+dc01c4b79bfe ("drm/amd/display: Update driver and IPS interop")
+77ad5f6febdc ("drm/amd/display: Add new logs for AutoDPMTest")
+0fa45b6aeae4 ("drm/amd/display: Add DCN35 Resource")
+ec129fa356be ("drm/amd/display: Add DCN35 init")
+65138eb72e1f ("drm/amd/display: Add DCN35 DMUB")
+8774029f76b9 ("drm/amd/display: Add DCN35 CLK_MGR")
+6f8b7565cca4 ("drm/amd/display: Add DCN35 HWSEQ")
+920f879c8360 ("drm/amd/display: Add DCN35 PG_CNTL")
+fb8c3ef80584 ("drm/amd/display: Update dc.h for DCN35 support")
+5e77c339a291 ("drm/amd/display: Skip dmub memory flush when not needed")
 0b9dc439f404 ("drm/amd/display: Write flip addr to scratch reg for subvp")
 96182df99dad ("drm/amd/display: Enable runtime register offset init for DCN32 DMUB")
 
@@ -77,114 +85,78 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From dcf6cd7f35de572a946e2805ed32eb20d429a881 Mon Sep 17 00:00:00 2001
-From: Taimur Hassan <syed.hassan@amd.com>
-Date: Fri, 10 Nov 2023 10:15:28 -0500
-Subject: [PATCH] drm/amd/display: Fix conversions between bytes and KB
+From 47831f4860d4e8cdfee4910d2b76ccd892fd72d1 Mon Sep 17 00:00:00 2001
+From: Sung Joon Kim <sungkim@amd.com>
+Date: Fri, 10 Nov 2023 11:33:45 -0500
+Subject: [PATCH] drm/amd/display: Fix black screen on video playback with
+ embedded panel
 
-[Why]
-There are a number of instances where we convert HostVMMinPageSize or
-GPUVMMinPageSize from bytes to KB by dividing (rather than multiplying) and
-vice versa.
-Additionally, in some cases, a parameter is passed through DML in KB but
-later checked as if it were in bytes.
+[why]
+We have dynamic power control in driver but
+should be ignored when power is forced on.
+
+[how]
+Bypass any power control when it's forced on.
 
 Cc: stable@vger.kernel.org
 Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Taimur Hassan <syed.hassan@amd.com>
+Signed-off-by: Sung Joon Kim <sungkim@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-index 510be909cd75..59718ee33e51 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/display_mode_core.c
-@@ -6329,7 +6329,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 				mode_lib->ms.NoOfDPPThisState,
- 				mode_lib->ms.dpte_group_bytes,
- 				s->HostVMInefficiencyFactor,
--				mode_lib->ms.soc.hostvm_min_page_size_kbytes,
-+				mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
- 				mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels);
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 19f8d83698be..63a0b885b6f0 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -1132,7 +1132,6 @@ void dcn35_clk_mgr_construct(
+ 			ctx->dc->debug.disable_dpp_power_gate = false;
+ 			ctx->dc->debug.disable_hubp_power_gate = false;
+ 			ctx->dc->debug.disable_dsc_power_gate = false;
+-			ctx->dc->debug.disable_hpo_power_gate = false;
+ 		} else {
+ 			/*let's reset the config control flag*/
+ 			ctx->dc->config.disable_ips = DMUB_IPS_DISABLE_ALL; /*pmfw not support it, disable it all*/
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
+index 46f71ff08fd1..d19db8e9b8a5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn35/dcn35_pg_cntl.c
+@@ -261,6 +261,7 @@ void pg_cntl35_hpo_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 	uint32_t power_gate = power_on ? 0 : 1;
+ 	uint32_t pwr_status = power_on ? 0 : 2;
+ 	uint32_t org_ip_request_cntl;
++	uint32_t power_forceon;
+ 	bool block_enabled;
  
- 		s->NextMaxVStartup = s->MaxVStartupAllPlanes[j];
-@@ -6542,7 +6542,7 @@ static void dml_prefetch_check(struct display_mode_lib_st *mode_lib)
- 						mode_lib->ms.cache_display_cfg.plane.HostVMEnable,
- 						mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels,
- 						mode_lib->ms.cache_display_cfg.plane.GPUVMEnable,
--						mode_lib->ms.soc.hostvm_min_page_size_kbytes,
-+						mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
- 						mode_lib->ms.PDEAndMetaPTEBytesPerFrame[j][k],
- 						mode_lib->ms.MetaRowBytes[j][k],
- 						mode_lib->ms.DPTEBytesPerRow[j][k],
-@@ -7687,7 +7687,7 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
- 		CalculateVMRowAndSwath_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
- 		CalculateVMRowAndSwath_params->GPUVMMaxPageTableLevels = mode_lib->ms.cache_display_cfg.plane.GPUVMMaxPageTableLevels;
- 		CalculateVMRowAndSwath_params->GPUVMMinPageSizeKBytes = mode_lib->ms.cache_display_cfg.plane.GPUVMMinPageSizeKBytes;
--		CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
-+		CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
- 		CalculateVMRowAndSwath_params->PTEBufferModeOverrideEn = mode_lib->ms.cache_display_cfg.plane.PTEBufferModeOverrideEn;
- 		CalculateVMRowAndSwath_params->PTEBufferModeOverrideVal = mode_lib->ms.cache_display_cfg.plane.PTEBufferMode;
- 		CalculateVMRowAndSwath_params->PTEBufferSizeNotExceeded = mode_lib->ms.PTEBufferSizeNotExceededPerState;
-@@ -7957,7 +7957,7 @@ dml_bool_t dml_core_mode_support(struct display_mode_lib_st *mode_lib)
- 		UseMinimumDCFCLK_params->GPUVMMaxPageTableLevels = mode_lib->ms.cache_display_cfg.plane.GPUVMMaxPageTableLevels;
- 		UseMinimumDCFCLK_params->HostVMEnable = mode_lib->ms.cache_display_cfg.plane.HostVMEnable;
- 		UseMinimumDCFCLK_params->NumberOfActiveSurfaces = mode_lib->ms.num_active_planes;
--		UseMinimumDCFCLK_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
-+		UseMinimumDCFCLK_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
- 		UseMinimumDCFCLK_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
- 		UseMinimumDCFCLK_params->DynamicMetadataVMEnabled = mode_lib->ms.ip.dynamic_metadata_vm_enabled;
- 		UseMinimumDCFCLK_params->ImmediateFlipRequirement = s->ImmediateFlipRequiredFinal;
-@@ -8699,7 +8699,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 	CalculateVMRowAndSwath_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
- 	CalculateVMRowAndSwath_params->GPUVMMaxPageTableLevels = mode_lib->ms.cache_display_cfg.plane.GPUVMMaxPageTableLevels;
- 	CalculateVMRowAndSwath_params->GPUVMMinPageSizeKBytes = mode_lib->ms.cache_display_cfg.plane.GPUVMMinPageSizeKBytes;
--	CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
-+	CalculateVMRowAndSwath_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
- 	CalculateVMRowAndSwath_params->PTEBufferModeOverrideEn = mode_lib->ms.cache_display_cfg.plane.PTEBufferModeOverrideEn;
- 	CalculateVMRowAndSwath_params->PTEBufferModeOverrideVal = mode_lib->ms.cache_display_cfg.plane.PTEBufferMode;
- 	CalculateVMRowAndSwath_params->PTEBufferSizeNotExceeded = s->dummy_boolean_array[0];
-@@ -8805,7 +8805,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 			mode_lib->ms.cache_display_cfg.hw.DPPPerSurface,
- 			locals->dpte_group_bytes,
- 			s->HostVMInefficiencyFactor,
--			mode_lib->ms.soc.hostvm_min_page_size_kbytes,
-+			mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
- 			mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels);
+ 	if (pg_cntl->ctx->dc->debug.ignore_pg ||
+@@ -277,6 +278,10 @@ void pg_cntl35_hpo_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 			return;
+ 	}
  
- 	locals->TCalc = 24.0 / locals->DCFCLKDeepSleep;
-@@ -8995,7 +8995,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 			CalculatePrefetchSchedule_params->GPUVMEnable = mode_lib->ms.cache_display_cfg.plane.GPUVMEnable;
- 			CalculatePrefetchSchedule_params->HostVMEnable = mode_lib->ms.cache_display_cfg.plane.HostVMEnable;
- 			CalculatePrefetchSchedule_params->HostVMMaxNonCachedPageTableLevels = mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels;
--			CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes;
-+			CalculatePrefetchSchedule_params->HostVMMinPageSize = mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024;
- 			CalculatePrefetchSchedule_params->DynamicMetadataEnable = mode_lib->ms.cache_display_cfg.plane.DynamicMetadataEnable[k];
- 			CalculatePrefetchSchedule_params->DynamicMetadataVMEnabled = mode_lib->ms.ip.dynamic_metadata_vm_enabled;
- 			CalculatePrefetchSchedule_params->DynamicMetadataLinesBeforeActiveRequired = mode_lib->ms.cache_display_cfg.plane.DynamicMetadataLinesBeforeActiveRequired[k];
-@@ -9240,7 +9240,7 @@ void dml_core_mode_programming(struct display_mode_lib_st *mode_lib, const struc
- 						mode_lib->ms.cache_display_cfg.plane.HostVMEnable,
- 						mode_lib->ms.cache_display_cfg.plane.HostVMMaxPageTableLevels,
- 						mode_lib->ms.cache_display_cfg.plane.GPUVMEnable,
--						mode_lib->ms.soc.hostvm_min_page_size_kbytes,
-+						mode_lib->ms.soc.hostvm_min_page_size_kbytes * 1024,
- 						locals->PDEAndMetaPTEBytesFrame[k],
- 						locals->MetaRowByte[k],
- 						locals->PixelPTEBytesPerRow[k],
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-index 2b9638c6d9b0..48caa34a5ce7 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -515,8 +515,8 @@ void dml2_translate_socbb_params(const struct dc *in, struct soc_bounding_box_st
- 	out->do_urgent_latency_adjustment = in_soc_params->do_urgent_latency_adjustment;
- 	out->dram_channel_width_bytes = (dml_uint_t)in_soc_params->dram_channel_width_bytes;
- 	out->fabric_datapath_to_dcn_data_return_bytes = (dml_uint_t)in_soc_params->fabric_datapath_to_dcn_data_return_bytes;
--	out->gpuvm_min_page_size_kbytes = in_soc_params->gpuvm_min_page_size_bytes * 1024;
--	out->hostvm_min_page_size_kbytes = in_soc_params->hostvm_min_page_size_bytes * 1024;
-+	out->gpuvm_min_page_size_kbytes = in_soc_params->gpuvm_min_page_size_bytes / 1024;
-+	out->hostvm_min_page_size_kbytes = in_soc_params->hostvm_min_page_size_bytes / 1024;
- 	out->mall_allocated_for_dcn_mbytes = (dml_uint_t)in_soc_params->mall_allocated_for_dcn_mbytes;
- 	out->max_avg_dram_bw_use_normal_percent = in_soc_params->max_avg_dram_bw_use_normal_percent;
- 	out->max_avg_fabric_bw_use_normal_percent = in_soc_params->max_avg_fabric_bw_use_normal_percent;
++	REG_GET(DOMAIN25_PG_CONFIG, DOMAIN_POWER_FORCEON, &power_forceon);
++	if (power_forceon)
++		return;
++
+ 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
+ 	if (org_ip_request_cntl == 0)
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
+@@ -304,6 +309,7 @@ void pg_cntl35_io_clk_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 	uint32_t power_gate = power_on ? 0 : 1;
+ 	uint32_t pwr_status = power_on ? 0 : 2;
+ 	uint32_t org_ip_request_cntl;
++	uint32_t power_forceon;
+ 	bool block_enabled;
+ 
+ 	if (pg_cntl->ctx->dc->debug.ignore_pg ||
+@@ -319,6 +325,10 @@ void pg_cntl35_io_clk_pg_control(struct pg_cntl *pg_cntl, bool power_on)
+ 			return;
+ 	}
+ 
++	REG_GET(DOMAIN22_PG_CONFIG, DOMAIN_POWER_FORCEON, &power_forceon);
++	if (power_forceon)
++		return;
++
+ 	REG_GET(DC_IP_REQUEST_CNTL, IP_REQUEST_EN, &org_ip_request_cntl);
+ 	if (org_ip_request_cntl == 0)
+ 		REG_SET(DC_IP_REQUEST_CNTL, 0, IP_REQUEST_EN, 1);
 
 
