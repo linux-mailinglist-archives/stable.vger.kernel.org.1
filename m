@@ -1,111 +1,138 @@
-Return-Path: <stable+bounces-3903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15472803B80
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 18:27:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA9F3803BDD
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 18:42:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C20281091
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 17:27:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76045281091
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 17:42:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE8E2E828;
-	Mon,  4 Dec 2023 17:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WzGYea8n"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578342E84B;
+	Mon,  4 Dec 2023 17:42:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1B6FE
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 09:27:09 -0800 (PST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5d3f951af5aso51937367b3.0
-        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 09:27:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1701710829; x=1702315629; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=WhY7K21fTuleJoRqinTH8FQOk8orwGh5uZOpWymHf1Q=;
-        b=WzGYea8n8gKWhOwUN/QBnPZuZ64gGSovVSoWBoiu4lbkEjmhix1LpnW/02s19SFZrU
-         QMVFdWKaxmPZunHSypbzY+U7yR2JTPyA41Cbhk3LyKYudi8ww5ybiC3hT+8dLtwBDuQq
-         Qg74t1rFE9TL1mv3NkTfGz2vK3NybbXMukI32VwczFC2vBgCRWOjUSHMYJs+emm/e3nO
-         xJFhfR5/0+lQmbwE/Uo0mGt4fp6L7vE/lQzYwMNzQTTLWdUS1e4TAi4krkOISbwofcZg
-         mKe0cT4CAIz81vMLSxpK8K8AUvk5aMUMSlTkMo+6raEgYH+8Z5D8apajVYlCQjqmzIDZ
-         9+Jg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701710829; x=1702315629;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WhY7K21fTuleJoRqinTH8FQOk8orwGh5uZOpWymHf1Q=;
-        b=pmMKITUyoI114vMzI45JPPtkEC1AirDyVO3C1EQeNeVZc6a2NTc/tnNjZ2Aq1yHl6o
-         /69OgWKJRrt9dsJYR+7pBdNp8eGeFgc5jB3SdU3KESjuCUXLFeIcINYHvg/hiSKb1pUl
-         442HIXhZcuwQYlVIME1vTSWTxUl+XhLgFB4sC+quzzwuNK1c5CYOOgvHwtQcNIp+blnV
-         BirZTVCsTXEBugr5DJP9lHh6ZitodOTkqT1VataPC79g/FvZjVVJ7RnUJXcAGX5J7oG4
-         0NjuMlFseNp4dM4fZgQ+ydI9IBvfM70sa8UQNTzm72SIDO5/FkUU8gKYjkUp16VvKqhn
-         Bqlg==
-X-Gm-Message-State: AOJu0Yw6T2/2pdb281k13Hadw6yyYfzQXnbwqqkl0WhDm+gJuMU+rMkd
-	0t39K6CZceweiTJMmi0NAz/VaBEWK/42fUT+
-X-Google-Smtp-Source: AGHT+IEhvePiHl3xyV55jaT6gG1N1cwFNsflp2+fj8EBDZAd96hh+3/YkVm099+dmC2eTTOXHiutCQyCzt5QJhnb
-X-Received: from jthoughton.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:2a4f])
- (user=jthoughton job=sendgmr) by 2002:a81:b61d:0:b0:5d3:84d4:eb35 with SMTP
- id u29-20020a81b61d000000b005d384d4eb35mr358241ywh.3.1701710828830; Mon, 04
- Dec 2023 09:27:08 -0800 (PST)
-Date: Mon,  4 Dec 2023 17:26:45 +0000
-In-Reply-To: <20231204172646.2541916-1-jthoughton@google.com>
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724F9DF
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 09:42:06 -0800 (PST)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rACxI-0007A1-TU; Mon, 04 Dec 2023 18:42:04 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rACxF-00DZHx-E5; Mon, 04 Dec 2023 18:42:01 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rACxF-00ECAC-4n; Mon, 04 Dec 2023 18:42:01 +0100
+Date: Mon, 4 Dec 2023 18:42:00 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Saravana Kannan <saravanak@google.com>,
+	stable <stable@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	James Clark <james.clark@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>, kernel@pengutronix.de
+Subject: Re: [PATCH 5.15.y] driver core: Release all resources during unbind
+ before updating device links
+Message-ID: <20231204174200.6gl3fqgg7adzqdgq@pengutronix.de>
+References: <2023112330-squealer-strife-0ecc@gregkh>
+ <20231123132835.486026-1-u.kleine-koenig@pengutronix.de>
+ <2023112401-willing-drove-581c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20231204172646.2541916-1-jthoughton@google.com>
-X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
-Message-ID: <20231204172646.2541916-2-jthoughton@google.com>
-Subject: [PATCH 1/2] arm64: hugetlb: Distinguish between hw and sw dirtiness
- in __cont_access_flags_changed
-From: James Houghton <jthoughton@google.com>
-To: Steve Capper <steve.capper@arm.com>, Will Deacon <will@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>, Muchun Song <songmuchun@bytedance.com>, 
-	Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	James Houghton <jthoughton@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="y5trw4asru3mx4v7"
+Content-Disposition: inline
+In-Reply-To: <2023112401-willing-drove-581c@gregkh>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-__cont_access_flags_changed was originally introduced to avoid making
-unnecessary changes to the PTEs. Consider the following case: all the
-PTEs in the contiguous group have PTE_DIRTY | PTE_RDONLY | PTE_WRITE,
-and we are running on a system without HAFDBS.  When writing via these
-PTEs, we will get a page fault, and hugetlb_fault will (rightly)
-attempt to update the PTEs with PTE_DIRTY | PTE_WRITE, but, as both the
-original PTEs and the new PTEs are pte_dirty(),
-__cont_access_flags_changed prevents the pgprot update from occurring.
 
-To avoid the page fault loop that we get ourselves into, distinguish
-between hardware-dirty and software-dirty for this check. Non-contiguous
-PTEs aren't broken in the same way, as we will always write a new PTE
-unless the new PTE is exactly equal to the old one.
+--y5trw4asru3mx4v7
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
-Signed-off-by: James Houghton <jthoughton@google.com>
-Cc: <stable@vger.kernel.org>
+Hello Greg,
 
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index f5aae342632c..87a9564976fa 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -437,7 +437,10 @@ static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
- 	for (i = 0; i < ncontig; i++) {
- 		pte_t orig_pte = ptep_get(ptep + i);
- 
--		if (pte_dirty(pte) != pte_dirty(orig_pte))
-+		if (pte_sw_dirty(pte) != pte_sw_dirty(orig_pte))
-+			return 1;
-+
-+		if (pte_hw_dirty(pte) != pte_hw_dirty(orig_pte))
- 			return 1;
- 
- 		if (pte_young(pte) != pte_young(orig_pte))
--- 
-2.43.0.rc2.451.g8631bc7472-goog
+On Fri, Nov 24, 2023 at 04:44:08PM +0000, Greg Kroah-Hartman wrote:
+> On Thu, Nov 23, 2023 at 02:28:36PM +0100, Uwe Kleine-K=F6nig wrote:
+> > From: Saravana Kannan <saravanak@google.com>
+> >=20
+> > [ Upstream commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 ]
+> >=20
+> > This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
+> > dependencies tracking support") where the device link status was
+> > incorrectly updated in the driver unbind path before all the device's
+> > resources were released.
+> >=20
+> > Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking sup=
+port")
+> > Cc: stable <stable@kernel.org>
+> > Reported-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pen=
+gutronix.de/
+> > Signed-off-by: Saravana Kannan <saravanak@google.com>
+> > Cc: Thierry Reding <thierry.reding@gmail.com>
+> > Cc: Yang Yingliang <yangyingliang@huawei.com>
+> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > Cc: Mark Brown <broonie@kernel.org>
+> > Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+> > Cc: James Clark <james.clark@arm.com>
+> > Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+> > Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@goog=
+le.com
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> > [...]
+>=20
+> Thanks, I've queued this up now.
 
+I see it landed in v5.15.140 (as
+947c9e12ddd6866603fd60000c0cca8981687dd3), but not in v5.10.x and the
+older stables. It should go there, too.
+
+947c9e12ddd6866603fd60000c0cca8981687dd3 can be cherry-picked without
+conflicts on top of v5.10.202, 5.4.262, 4.19.300 and 4.14.331.
+
+Best regards
+Uwe
+
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--y5trw4asru3mx4v7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVuD2gACgkQj4D7WH0S
+/k7OZwf/QFu1P6Nw9kfgVpzJIb0i5W3JkhEryDvX+JQu1HG9t+eIqsdsZDo9yvTm
+3FfsC3psbNMJxtiNmsUHO2cbQi0VDJQipRfPo/uRMcY+IMg8uDVrXLD7SyZ3WfTx
+AgjcjOrpY4BLndGZGCkQl9hviSsBEb4aRMPQ7+ATxVP88oytKdtuKhyE5ma1ek4u
+XC4WH8gYRbg56IKnBxsPdjL22QZCd081caVDFPsEiWv99vWy4vf/GDzTjEnymNcn
+gKEHrLoVasM7IOEqiCirX/Y70T6c4MOLcCmkqM1OVdSeqPop4d+AVWb/IorB1QAU
+0kP4kTirKJ6IkjRUurdDyKMYmgyMbw==
+=37HW
+-----END PGP SIGNATURE-----
+
+--y5trw4asru3mx4v7--
 
