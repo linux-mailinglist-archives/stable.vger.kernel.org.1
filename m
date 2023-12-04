@@ -1,93 +1,100 @@
-Return-Path: <stable+bounces-3907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75BEA803E93
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:41:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE32803F5A
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 314D2281150
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 19:41:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13A9C281254
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2409631751;
-	Mon,  4 Dec 2023 19:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2E03218E;
+	Mon,  4 Dec 2023 20:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANWs+TIf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FqaCNQo4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BF52E847
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 19:41:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA421C433C7;
-	Mon,  4 Dec 2023 19:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6789335EE1;
+	Mon,  4 Dec 2023 20:33:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBF78C433C9;
+	Mon,  4 Dec 2023 20:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701718891;
-	bh=3C0nPZo9CCHmXGvbhUfVNnJa+k7CGkGWbImyARSlMsY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ANWs+TIfhQ8ApqGE4Ht8uvpSQryDFWTWu9jIuaDk1uNyzwX3hmkWzS969XR3jKVuc
-	 FpW5KS/qwdAgtR/W4N80LouZSgZv1KmkAgtHrTgWS94S36Rqy1NTE66YEALBIt7+Hd
-	 qKbYrAD9I31v5Y3V1+xSHEEMbYQZIKA/DR51i5FhYwJSroiraO0rN9ch9fGqEsAo/T
-	 MO5pwwGmrzXiVawHDPhT7FQLfvstHhYRG6zsEnUpqS6zZaq+8XFlQAev1nxpC5t7c9
-	 im2gVchMvcktTzABe2naJCX/eaFfp0whkZ3uFU9YP7qzrhbonRQMmXEJhX4atgeE85
-	 3I3uUYQdnvM+g==
-Date: Mon, 4 Dec 2023 14:41:29 -0500
+	s=k20201202; t=1701722001;
+	bh=rd8BmPu27v75Rg65UrLZRuh/0JMkbcbIdVmUTxGWlAw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FqaCNQo45I5cJ3LSoXcYJKE0oPQ9fE/zDsLrlPWRCeaCD51yNAhsDmEMIcATtGOGp
+	 4pPNrz7NYtJqQTBPj28SlwV3WihMCUgSst1F/I/nZDYH96H9dRR+0fUrIMOwj/pRNq
+	 pkzhCvl9/HucnKEhrvuN7x/W1m5OrAILKaQeeET6qhKq7JmB3c+J926ofZ2jQnlODf
+	 V0r4HauDLPI5V1Os+1aPlLkwsXpPnB2r8bGhyblsDdWLDdQVcdCn3/23uR6v0eJ8pb
+	 L5c0DpyUtXNq4FPHMpnWSO6N7kBTQ4Ay1x7g/C9VpLrhKB7qAuovp3nrjg5ncITwUR
+	 NhfiuNvGI9iww==
 From: Sasha Levin <sashal@kernel.org>
-To: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: stable-commits@vger.kernel.org, ville.syrjala@linux.intel.com,
-	stable@vger.kernel.org,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: Patch "drm/i915: Call intel_pre_plane_updates() also for pipes
- getting enabled" has been added to the 6.1-stable tree
-Message-ID: <ZW4raf5GE24YZX0B@sashalap>
-References: <20231204104250.2009121-1-sashal@kernel.org>
- <87il5e2owb.fsf@intel.com>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Chester Lin <clin@suse.com>,
+	kernel test robot <lkp@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/32] pinctrl: s32cc: Avoid possible string truncation
+Date: Mon,  4 Dec 2023 15:32:21 -0500
+Message-ID: <20231204203317.2092321-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <87il5e2owb.fsf@intel.com>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.4
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 04, 2023 at 01:22:28PM +0200, Jani Nikula wrote:
->On Mon, 04 Dec 2023, Sasha Levin <sashal@kernel.org> wrote:
->> This is a note to let you know that I've just added the patch titled
->>
->>     drm/i915: Call intel_pre_plane_updates() also for pipes getting enabled
->>
->> to the 6.1-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      drm-i915-call-intel_pre_plane_updates-also-for-pipes.patch
->> and it can be found in the queue-6.1 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->
->Turns out this one requires another commit to go with it, both for
->v6.7-rc* and stable backports. I was just a bit too late with it for
->v6.7-rc4 [1].
->
->Please hold off with all stable backports of this until you can backport
->
->96d7e7940136 ("drm/i915: Check pipe active state in {planes,vrr}_{enabling,disabling}()")
->
->from drm-intel-fixes with it. It should find its way to v6.7-rc5.
->
->Thanks, and sorry for the mess. :(
+From: Chester Lin <clin@suse.com>
 
-No worries, and thanks for letting us know. I'll drop this patch from
-all trees.
+[ Upstream commit 08e8734d877a9a0fb8af1254a4ce58734fbef296 ]
 
+With "W=1" and "-Wformat-truncation" build options, the kernel test robot
+found a possible string truncation warning in pinctrl-s32cc.c, which uses
+an 8-byte char array to hold a memory region name "map%u". Since the
+maximum number of digits that a u32 value can present is 10, and the "map"
+string occupies 3 bytes with a termination '\0', which means the rest 4
+bytes cannot fully present the integer "X" that exceeds 4 digits.
+
+Here we check if the number >= 10000, which is the lowest value that
+contains more than 4 digits.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311030159.iyUGjNGF-lkp@intel.com/
+Signed-off-by: Chester Lin <clin@suse.com>
+Link: https://lore.kernel.org/r/20231107141044.24058-1-clin@suse.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 7daff9f186cd8..f0cad2c501f76 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -843,8 +843,8 @@ static int s32_pinctrl_probe_dt(struct platform_device *pdev,
+ 	if (!np)
+ 		return -ENODEV;
+ 
+-	if (mem_regions == 0) {
+-		dev_err(&pdev->dev, "mem_regions is 0\n");
++	if (mem_regions == 0 || mem_regions >= 10000) {
++		dev_err(&pdev->dev, "mem_regions is invalid: %u\n", mem_regions);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-Thanks,
-Sasha
+2.42.0
+
 
