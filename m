@@ -1,181 +1,109 @@
-Return-Path: <stable+bounces-3843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB453802F16
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:46:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BCD802F93
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 11:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E125B20A5F
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:46:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B37351F2111B
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BF21D53A;
-	Mon,  4 Dec 2023 09:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AE311EB42;
+	Mon,  4 Dec 2023 10:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="rPk0hNXw";
-	dkim=permerror (0-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="WBm/rMl4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JSGELP0I"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8CC106;
-	Mon,  4 Dec 2023 01:46:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1701683177; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=pJudvDMWVylERXpP3nXifI54PwmHy6yRb7Ypnhpzgj7ZoVcDiGHBjsg/8R75Z5e1W6
-    DMfi3mnwbZA6YWq0v7fZaRxmysOJBQVtG0mcO0IE1tzcyMXrDztGOOdxmqRyIWNw+qgF
-    yMve/5gREh7iIgqlpV/ZQSQLQvXWGEfAFjxlYE/BTBl8sw5AecdjthMHTW+QZu/j1pVb
-    oTCJVAhUH6rAWUrFKlwmNOZUSZ1VvrKdyVJ3NuLqWXdnX7uAdFdk0vpyUJpzTy1MXVt1
-    O5P/k58x2wjTAkEvck3MSReq/6MmelJTZiK15FGh6QKvi1Qe2dmHiHm+wEupCFepOOd4
-    6BbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701683177;
-    s=strato-dkim-0002; d=strato.com;
-    h=Cc:To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=vPDDwu/LFJBTyJh71GaE5A1eXeoeKpnofr6UkCT3JFc=;
-    b=bd2THfus25v89rcBx4MqjHLvnuJmGkBScugwnrIMCaFKKsevsnVAXqQBJSnUk9/T8P
-    tF8xQtZLkxJ4XzHKwcbiJAPd0nmExJKxt3Glr53CTt5yT7xpAmV/de93QwA94ku92AsD
-    CnyFogbpcvuSdBQZRPSyaMQAdJH+2JfzJBa3IttDUF93DvUEKUTRXqXlwhZ5A8yK0Df+
-    qy6Ss9A7SZp9sIEWt2GXodmOfa6O6EYwJOFtt1OOgwvcvoqLYG0bKQ8wT24Ix3kNS3WU
-    Td8K4AfTY3MElWi03nNmfMYwCDSANsdaKgvR5BhnOgieteffnl04weYE/pU3HbgOUu+U
-    R6aQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701683177;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=Cc:To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=vPDDwu/LFJBTyJh71GaE5A1eXeoeKpnofr6UkCT3JFc=;
-    b=rPk0hNXwy2KILWychu1slf4uvwLJiipWZ2W0xPHJ8gFStNsZUkEcqJTJVFbxf2dDV3
-    zDtjhGHKCPKWIvzbSidbDBq6LkPTzvtARTNy0ILUgv14avRr0VyV8HGgaeRRGtTQGyNO
-    kGmGUCknTErt4eLIEpv27DLIg39t8GXUWFs9TZuiJCpdL8VhN0t2rcHnEue8k+QeLTXJ
-    UjwV5U/WT1OPVitHhsrHJFI43AquUKs2lSlg2SS2Knp9HABnXCekPKc6GRnhqE5Z2JYx
-    9nMOkVCZOiM0HaC0XsfyG7ISWEBY5Wexg6GFPb1E0aw/SMrHVXvFfKpGu7lbyK7hG7v3
-    EXtA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701683177;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=Cc:To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
-    bh=vPDDwu/LFJBTyJh71GaE5A1eXeoeKpnofr6UkCT3JFc=;
-    b=WBm/rMl4qC5EUAACv3CtuLo+TKvmcHiI9F+fVlKzN2o6kMxDlpRZk20CgOo64UwzJj
-    qNipme+P/lOSFYRJ/GAw==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn8u4l+/zY="
-Received: from [192.168.244.3]
-    by smtp.strato.de (RZmta 49.9.7 DYNA|AUTH)
-    with ESMTPSA id R5487bzB49kG9je
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 4 Dec 2023 10:46:16 +0100 (CET)
-From: Stephan Gerhold <stephan@gerhold.net>
-Date: Mon, 04 Dec 2023 10:46:11 +0100
-Subject: [PATCH] arm64: dts: qcom: Add missing vio-supply for AW2013
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB080B6;
+	Mon,  4 Dec 2023 02:07:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701684479; x=1733220479;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=LB2msYuHbVBbT2sen68LQlC3A1iL6Pk3GW17gEzOLH0=;
+  b=JSGELP0IcQVi5WmsTT0w+2vhHTpPdPHSCLZLmqDmoG1G5i5ucgzERHAs
+   jcBTGkyNGTm6eF+JoK8eku2kNeTIHIKaw43A+HKevLte5hpvv22jHNHbH
+   rljO6fSiH6xFMkWWmtvlUi/m+tWjygHI7zTFDjeoqgSk0ETnGnvq5uWib
+   dW/ktoZ9WgOmc8MId00YWRzVNGutIujl0fpE6CPTF486od04+JyfhftOq
+   7GhXNO4Zv4GnGTjAT1gGobxr2i8mxN/NAM974ozN9TkMF+FYMa6oKb1rk
+   kQJSf9cWff53F5j3YR+Z30TpnI0cEHoFO/1vtis/41b4EahIO5ZUVqNY5
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="373898273"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="373898273"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 02:07:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="888481091"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="888481091"
+Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
+  by fmsmga002.fm.intel.com with ESMTP; 04 Dec 2023 02:07:56 -0800
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: <linux-usb@vger.kernel.org>,
+	linux-bluetooth@vger.kernel.org,
+	mario.limonciello@amd.com,
+	regressions@lists.linux.dev,
+	regressions@leemhuis.info,
+	Basavaraj.Natikar@amd.com,
+	pmenzel@molgen.mpg.de,
+	bugs-a21@moonlit-rail.com,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] Revert "xhci: Enable RPM on controllers that support low-power states"
+Date: Mon,  4 Dec 2023 12:08:58 +0200
+Message-Id: <20231204100859.1332772-1-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <3d3b8fd3-a1b9-9793-b709-eda447ebd1ab@linux.intel.com>
+References: <3d3b8fd3-a1b9-9793-b709-eda447ebd1ab@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231204-qcom-aw2013-vio-v1-1-5d264bb5c0b2@gerhold.net>
-X-B4-Tracking: v=1; b=H4sIAOKfbWUC/x3MQQ5AMBBA0avIrE3STkvCVcSCGsyC0iZIGnfXW
- L7F/wkiB+EIbZEg8CVR/J6hywLcOuwLo0zZQIqMJmXxdH7D4SalDV7isdHT6BRVztYWcnUEnuX
- 5j13/vh8qnxsnYQAAAA==
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Andy Gross <agross@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, linux-arm-msm@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>
-X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-Add the missing vio-supply to all usages of the AW2013 LED controller
-to ensure that the regulator needed for pull-up of the interrupt and
-I2C lines is really turned on. While this seems to have worked fine so
-far some of these regulators are not guaranteed to be always-on. For
-example, pm8916_l6 is typically turned off together with the display
-if there aren't any other devices (e.g. sensors) keeping it always-on.
+This reverts commit a5d6264b638efeca35eff72177fd28d149e0764b.
 
-Cc:  <stable@vger.kernel.org> # 6.6
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+This patch was an attempt to solve issues seen when enabling runtime PM
+as default for all AMD 1.1 xHC hosts. see commit 4baf12181509
+("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
+
+This was not enough, regressions are still seen, so start from a clean
+slate and revert both of them.
+
+This patch went to stable and should be reverted from there as well
+
+Fixes: a5d6264b638e ("xhci: Enable RPM on controllers that support low-power states")
+Cc: stable@vger.kernel.org
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
 ---
-I omitted the Fixes: tag here as it would be 5 separate commits, and
-it's really only useful to backport this to v6.6+ since this is where
-the necessary driver addition landed (see commit baca986e1f2c3 ("leds:
-aw2013: Enable pull-up supply for interrupt and I2C"). I'm not aware
-that anyone actually ran into trouble with this missing regulator yet.
----
- arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts  | 1 +
- arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts | 1 +
- arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts      | 1 +
- arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts    | 1 +
- arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts     | 1 +
- 5 files changed, 5 insertions(+)
+ drivers/usb/host/xhci-pci.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
-index 37fa55166918..5f24c40a6020 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
-@@ -104,6 +104,7 @@ led-controller@45 {
- 		#size-cells = <0>;
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 95ed9404f6f8..bde43cef8846 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -695,9 +695,7 @@ static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
+ 	/* USB-2 and USB-3 roothubs initialized, allow runtime pm suspend */
+ 	pm_runtime_put_noidle(&dev->dev);
  
- 		vcc-supply = <&pm8916_l17>;
-+		vio-supply = <&pm8916_l6>;
+-	if (pci_choose_state(dev, PMSG_SUSPEND) == PCI_D0)
+-		pm_runtime_forbid(&dev->dev);
+-	else if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
++	if (xhci->quirks & XHCI_DEFAULT_PM_RUNTIME_ALLOW)
+ 		pm_runtime_allow(&dev->dev);
  
- 		led@0 {
- 			reg = <0>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-index d4b88c787e59..510b3b3c4e3c 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-@@ -142,6 +142,7 @@ led-controller@45 {
- 		#size-cells = <0>;
- 
- 		vcc-supply = <&pm8916_l16>;
-+		vio-supply = <&pm8916_l5>;
- 
- 		led@0 {
- 			reg = <0>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
-index ed95d09cedb1..6b9245cd8b0c 100644
---- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
-@@ -111,6 +111,7 @@ led-controller@45 {
- 		reg = <0x45>;
- 
- 		vcc-supply = <&pm8953_l10>;
-+		vio-supply = <&pm8953_l5>;
- 
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
-index 61ff629c9bf3..9ac4f507e321 100644
---- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
-@@ -104,6 +104,7 @@ led-controller@45 {
- 		reg = <0x45>;
- 
- 		vcc-supply = <&pm8953_l10>;
-+		vio-supply = <&pm8953_l5>;
- 
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
-index 1a1d3f92a511..b0588f30f8f1 100644
---- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
-@@ -113,6 +113,7 @@ led-controller@45 {
- 		reg = <0x45>;
- 
- 		vcc-supply = <&pm8953_l10>;
-+		vio-supply = <&pm8953_l5>;
- 
- 		#address-cells = <1>;
- 		#size-cells = <0>;
-
----
-base-commit: adcad44bd1c73a5264bff525e334e2f6fc01bb9b
-change-id: 20231204-qcom-aw2013-vio-91dbc025c464
-
-Best regards,
+ 	dma_set_max_seg_size(&dev->dev, UINT_MAX);
 -- 
-Stephan Gerhold <stephan@gerhold.net>
+2.25.1
 
 
