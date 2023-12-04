@@ -1,139 +1,94 @@
-Return-Path: <stable+bounces-3850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D7380302E
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 11:25:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D74803035
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 11:25:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9AE1B20A77
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:25:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A99C11C20A61
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD0522313;
-	Mon,  4 Dec 2023 10:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="csUxHlaz";
-	dkim=permerror (0-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="V0mH2p0h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DAD21342;
+	Mon,  4 Dec 2023 10:25:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-X-Greylist: delayed 185 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 04 Dec 2023 02:24:39 PST
-Received: from mo4-p02-ob.smtp.rzone.de (mo4-p02-ob.smtp.rzone.de [85.215.255.81])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0FAA129;
-	Mon,  4 Dec 2023 02:24:39 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1701685292; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=mt2Sv/Pql0jiqXPCAUjVkHPemFANe2vQ70e5FrbhPNrqX5H36oIMDgkgoSWFVQdyYQ
-    Cbmxog3KWk7Z0ZEc7CYH4DIFTquu6Ch9Ot/dr5Kl6B8AS0yvZPzt2sbb2QZ+uiywzg4V
-    pbEphNCQKUA1ofzZxfR6bUmh04J/ZJkhRzvO5NJRyUnuPCXeC2q/63NCU3lWjuRhhlMB
-    S6EE3c62oVNxSdOoY3B+D8z8u2iPLSJt7hfCjhJRmbb/vDOfLQyAnwkya4LPehQ3CkFt
-    hPS4eXBLo3eBgp84oxf+S784FWhslxR7yWtikjAT411dILCPxfzyFOmPHKXC1s9xkTVo
-    Cg+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701685292;
-    s=strato-dkim-0002; d=strato.com;
-    h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
-    From:Subject:Sender;
-    bh=xEB0wIQxDD7Q+oCC+SxhubyPvyNdktr5eK2L/lsv3xc=;
-    b=Vg1G3ULwHtvFsUQsStCW6mRp6U812dBh23GMWJgq9K+Gl1k59nowlkF1g4hWLb4Vit
-    AeQ6Ajx57Wjz15s2qL9ruIIHTqVS2FUpAURPC3aqFeAVOJpZLtx2tMbXB9CSniNHeBAc
-    Mfpg8xUC+eYYP0v18ZwP2LnG4DxzEZNh/2/11hFe9CNQG2jmqmkaRKyGFtY8bVIeiRtx
-    0tZD2PcOtshcUaw1cmyi6yEIASQ+1lTinpSesW+YZDlDE4EpHXRLgeRLnP8jIDrHO9ZH
-    Lfi+fGgT18VNqiNx+IMVz5qAydyKKpkt0kRCdDwcjWqSjjmyaHCjBOhHPBnLfWdcHWcg
-    fOuA==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701685292;
-    s=strato-dkim-0002; d=gerhold.net;
-    h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
-    From:Subject:Sender;
-    bh=xEB0wIQxDD7Q+oCC+SxhubyPvyNdktr5eK2L/lsv3xc=;
-    b=csUxHlazh+KuKR/3CC+hIPDU5F7X1c3zmMlT+ULMD8WY/LEtEb9DTAJrpxJJMbhe3u
-    7+NCVNE9LJEaQ/tyji2JbE5Jc0wbr44VE5tUT+K5ekZgQ9ZreV5bLO+BlbB7FQ1FBgkT
-    FZAscyS2VClPFvN8PVBU5z9Nqu7uW/w8r5oKfR/LeTw3V3/HzXqbGPVSSJnh4acMWkxL
-    gOU83nov9ynH433mF3bUF+H+vekuSQIzlr2UrxgFrQz7E/kOOFaoiZN0hXCabH06o+85
-    krjLcMFgUn/JcplNFBbscvtNnCC8BMi26XzV1frwp6LghRlSecd3yeKBEvukDxtaDLib
-    QZHg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701685292;
-    s=strato-dkim-0003; d=gerhold.net;
-    h=Cc:To:In-Reply-To:References:Message-Id:Subject:Date:From:Cc:Date:
-    From:Subject:Sender;
-    bh=xEB0wIQxDD7Q+oCC+SxhubyPvyNdktr5eK2L/lsv3xc=;
-    b=V0mH2p0hBCHZhrkE6nDSgeWPd3zsS2k5LWzFtJ3wN0l1EUbgKaVzXvC8F/VGadLQBr
-    CfrXMmKL/w6f1ek6JnBQ==
-X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn8u4l+/zY="
-Received: from [192.168.244.3]
-    by smtp.strato.de (RZmta 49.9.7 DYNA|AUTH)
-    with ESMTPSA id R5487bzB4ALVA1y
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Mon, 4 Dec 2023 11:21:31 +0100 (CET)
-From: Stephan Gerhold <stephan@gerhold.net>
-Date: Mon, 04 Dec 2023 11:21:21 +0100
-Subject: [PATCH 2/2] arm64: dts: qcom: msm8939: Make blsp_dma
- controlled-remotely
+Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FEE71713
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 02:25:15 -0800 (PST)
+Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
+	(envelope-from <hverkuil@linuxtv.org>)
+	id 1rA68X-00AMvC-U1; Mon, 04 Dec 2023 10:25:13 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Mon, 04 Dec 2023 10:21:46 +0000
+Subject: [git:media_stage/master] media: imx355: Enable runtime PM before registering async sub-device
+To: linuxtv-commits@linuxtv.org
+Cc: Bingbu Cao <bingbu.cao@intel.com>, Sakari Ailus <sakari.ailus@linux.intel.com>, stable@vger.kernel.org
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1rA68X-00AMvC-U1@www.linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231204-msm8916-blsp-dma-remote-v1-2-3e49c8838c8d@gerhold.net>
-References: <20231204-msm8916-blsp-dma-remote-v1-0-3e49c8838c8d@gerhold.net>
-In-Reply-To: <20231204-msm8916-blsp-dma-remote-v1-0-3e49c8838c8d@gerhold.net>
-To: Bjorn Andersson <andersson@kernel.org>
-Cc: Andy Gross <agross@kernel.org>, 
- Konrad Dybcio <konrad.dybcio@linaro.org>, 
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.12.4
 
-The blsp_dma controller is shared between the different subsystems,
-which is why it is already initialized by the firmware. We should not
-reinitialize it from Linux to avoid potential other users of the DMA
-engine to misbehave.
+This is an automatic generated email to let you know that the following patch were queued:
 
-In mainline this can be described using the "qcom,controlled-remotely"
-property. In the downstream/vendor kernel from Qualcomm there is an
-opposite "qcom,managed-locally" property. This property is *not* set
-for the qcom,sps-dma@7884000 [1] so adding "qcom,controlled-remotely"
-upstream matches the behavior of the downstream/vendor kernel.
+Subject: media: imx355: Enable runtime PM before registering async sub-device
+Author:  Bingbu Cao <bingbu.cao@intel.com>
+Date:    Wed Nov 22 17:46:06 2023 +0800
 
-Adding this seems to fix some weird issues with UART where both
-input/output becomes garbled with certain obscure firmware versions on
-some devices.
+As the sensor device maybe accessible right after its async sub-device is
+registered, such as ipu-bridge will try to power up sensor by sensor's
+client device's runtime PM from the async notifier callback, if runtime PM
+is not enabled, it will fail.
 
-[1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L866-872
+So runtime PM should be ready before its async sub-device is registered
+and accessible by others.
 
-Cc: <stable@vger.kernel.org> # 6.5
-Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+Fixes: df0b5c4a7ddd ("media: add imx355 camera sensor driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bingbu Cao <bingbu.cao@intel.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+
+ drivers/media/i2c/imx355.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
 ---
-This should only be backported to v6.5+ since it depends on commit
-8975dd41a9db ("dmaengine: qcom: bam_dma: allow omitting
-num-{channels,ees}") which landed in v6.5.
----
- arch/arm64/boot/dts/qcom/msm8939.dtsi | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-index 95610a32750a..9eb8f1ceee99 100644
---- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
-@@ -1761,6 +1761,7 @@ blsp_dma: dma-controller@7884000 {
- 			clock-names = "bam_clk";
- 			#dma-cells = <1>;
- 			qcom,ee = <0>;
-+			qcom,controlled-remotely;
- 		};
+diff --git a/drivers/media/i2c/imx355.c b/drivers/media/i2c/imx355.c
+index e1b1d2fc79dd..8c995c58743a 100644
+--- a/drivers/media/i2c/imx355.c
++++ b/drivers/media/i2c/imx355.c
+@@ -1747,10 +1747,6 @@ static int imx355_probe(struct i2c_client *client)
+ 		goto error_handler_free;
+ 	}
  
- 		blsp_uart1: serial@78af000 {
-
--- 
-2.43.0
-
+-	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
+-	if (ret < 0)
+-		goto error_media_entity;
+-
+ 	/*
+ 	 * Device is already turned on by i2c-core with ACPI domain PM.
+ 	 * Enable runtime PM and turn off the device.
+@@ -1759,9 +1755,15 @@ static int imx355_probe(struct i2c_client *client)
+ 	pm_runtime_enable(&client->dev);
+ 	pm_runtime_idle(&client->dev);
+ 
++	ret = v4l2_async_register_subdev_sensor(&imx355->sd);
++	if (ret < 0)
++		goto error_media_entity_runtime_pm;
++
+ 	return 0;
+ 
+-error_media_entity:
++error_media_entity_runtime_pm:
++	pm_runtime_disable(&client->dev);
++	pm_runtime_set_suspended(&client->dev);
+ 	media_entity_cleanup(&imx355->sd.entity);
+ 
+ error_handler_free:
 
