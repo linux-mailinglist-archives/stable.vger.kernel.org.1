@@ -1,206 +1,376 @@
-Return-Path: <stable+bounces-3880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F21803525
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 14:39:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72774803532
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 14:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E62528109A
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:39:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C5E2B2097C
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D9725540;
-	Mon,  4 Dec 2023 13:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3F2250FA;
+	Mon,  4 Dec 2023 13:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hy/8Psmf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WVZmQm5V"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id A0BF9191;
-	Mon,  4 Dec 2023 05:39:09 -0800 (PST)
-Received: from [100.66.64.18] (unknown [108.143.43.187])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 246E020B74C1;
-	Mon,  4 Dec 2023 05:39:03 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 246E020B74C1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701697148;
-	bh=BtY3bVxPtr2XdgE2ZvKoiT1mqgpjS0iGQgzugKiTo+A=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=hy/8PsmfTgS7df7xb+x9yGMaoEJdmcwSkjs0qSk4z8IGyhirMOK7pvLeWIx9kAeOA
-	 oH52/3UsyfwuFtBdEP/mYS8f65zzZxyUm6kE2TIPyHtdRgRlur5d0PJVff+1AfFnjC
-	 dUkGUg41jrA0GKxcGRmUSz9LShxyjqXmVJaaNSlU=
-Message-ID: <8747ed90-72b8-49bf-8df7-5c5f06056fe2@linux.microsoft.com>
-Date: Mon, 4 Dec 2023 14:39:03 +0100
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CD11A4
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 05:40:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701697209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v6t/lQmuA+KYylReR8Tt2Y7vgpwmnlbkgXVn4TYobKw=;
+	b=WVZmQm5VX31webJ+XVQclvNuJpqlPlRLuicZtp386bNNyP66mMUzhpHh7Gumrsp2DUKMKm
+	/lgoSFs/G6+R0aujcp1o4KLD/auAIiegDLvBUALdhvkD/m782kEmQKHqczFXu0zDHAvESL
+	E4eLp56haOaI+r8NQ8d2MFPJxdTYN+I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-627-md7771juN1C1WCGWk6Ah8A-1; Mon, 04 Dec 2023 08:40:02 -0500
+X-MC-Unique: md7771juN1C1WCGWk6Ah8A-1
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-333387a7f96so192766f8f.1
+        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 05:40:02 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701697201; x=1702302001;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v6t/lQmuA+KYylReR8Tt2Y7vgpwmnlbkgXVn4TYobKw=;
+        b=LdC9ZnG4oPKNbUiQCDJqoM0WWIzsCJi8UVphAopEFw50teL4dbhfhHUFBxTv3mzmVU
+         MZqWoAIR0jMZ1MQBA6GihJP3piqhlX9BgifMjS022FR7juZV1v5a5qfz6uz5PS+mjzfp
+         V3SJMdQ/gPtZQLyVLu8JgjBQCjSypH6jjbjIGJq5nAeNi6XaCtqCg056WyWjcON12CrQ
+         uO/GgK8blin2sPbNywI6SvUukvr7nVe1nwGJCIndhQtIvc0vNnMwdjSCjqUthTLMcAAK
+         L25esQ1fDyaHkonb90IsJ7GkFG/4YWLFto7Y0v2vnXd4/fmaZc1PDjjW/CCW5gzfA3/n
+         5fsg==
+X-Gm-Message-State: AOJu0YytpAaQ/npOC4bP4C4auBQnXttEyhYsozBBJjq3IkLwOd63I9XQ
+	el86UGVkVBAy7ypNKGJ00A7ymuIuDf7wPHfPCpuwC8sh3tgERX7pcB8A6JjzzES2N4onOcCBQnc
+	psreIgBJ0udeayrhj
+X-Received: by 2002:a5d:6d8c:0:b0:333:4ba7:bcca with SMTP id l12-20020a5d6d8c000000b003334ba7bccamr1530588wrs.5.1701697201646;
+        Mon, 04 Dec 2023 05:40:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IF68EVZkyh2dq89LJeZ2Hqh2HG/I8GyNndlUdxiJ1SFemCE2BAyi2/b4hVGpQDmHiPId/lbXQ==
+X-Received: by 2002:a5d:6d8c:0:b0:333:4ba7:bcca with SMTP id l12-20020a5d6d8c000000b003334ba7bccamr1530571wrs.5.1701697201283;
+        Mon, 04 Dec 2023 05:40:01 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb ([2001:9e8:32c8:b00:227b:d2ff:fe26:2a7a])
+        by smtp.gmail.com with ESMTPSA id x16-20020adfec10000000b003333beb564asm6255853wrn.5.2023.12.04.05.39.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 05:40:00 -0800 (PST)
+Message-ID: <2648aef32cd5a2272cd3ce8cd7ed5b29b2d21cad.camel@redhat.com>
+Subject: Re: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Hanjun Guo <guohanjun@huawei.com>, NeilBrown <neilb@suse.de>, Kent
+ Overstreet <kent.overstreet@gmail.com>,  Jakub Kicinski <kuba@kernel.org>,
+ Niklas Schnelle <schnelle@linux.ibm.com>, Uladzislau Koshchanka
+ <koshchanka@gmail.com>, John Sanpe <sanpeqf@gmail.com>, Dave Jiang
+ <dave.jiang@intel.com>,  "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+ Kees Cook <keescook@chromium.org>, David Gow <davidgow@google.com>, Herbert
+ Xu <herbert@gondor.apana.org.au>, Shuah Khan <skhan@linuxfoundation.org>,
+ "wuqiang.matt" <wuqiang.matt@bytedance.com>,  Yury Norov
+ <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>, 
+ dakr@redhat.com
+Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linux-arch@vger.kernel.org, stable@vger.kernel.org, Arnd Bergmann
+ <arnd@kernel.org>
+Date: Mon, 04 Dec 2023 14:39:58 +0100
+In-Reply-To: <20231204123834.29247-6-pstanner@redhat.com>
+References: <20231204123834.29247-1-pstanner@redhat.com>
+	 <20231204123834.29247-6-pstanner@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Content-Language: en-US
-To: "Reshetova, Elena" <elena.reshetova@intel.com>,
- Borislav Petkov <bp@alien8.de>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "stefan.bader@canonical.com" <stefan.bader@canonical.com>,
- "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
- "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
- "cascardo@canonical.com" <cascardo@canonical.com>,
- "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "sashal@kernel.org" <sashal@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Michael Kelley <mhkelley58@gmail.com>, Nikolay Borisov
- <nik.borisov@suse.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
- <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>,
- "Cui, Dexuan" <decui@microsoft.com>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <0799b692-4b26-4e00-9cec-fdc4c929ea58@linux.microsoft.com>
- <20231129164049.GVZWdpkVlc8nUvl/jx@fat_crate.local>
- <DM8PR11MB575085570AF48AF4690986EDE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20231130075559.GAZWhAD5ScHoxbbTxL@fat_crate.local>
- <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 30/11/2023 09:31, Reshetova, Elena wrote:
-> 
->> On Thu, Nov 30, 2023 at 07:08:00AM +0000, Reshetova, Elena wrote:
->>> ...
->>> 3. Normal TDX 1.0 guest that is unaware that it runs in partitioned
->>>    environment
->>> 4. and so on
->>
->> There's a reason I call it a virt zoo.
->>
->>> I don’t know if AMD architecture would support all this spectrum of
->>> the guests through.
->>
->> I hear threats...
-> 
-> No threats whatsoever, I just truly don’t know details of SEV architecture
-> on this and how it envisioned to operate under this nesting scenario.
-> I raised this point to see if we can build the common understanding 
-> on this. My personal understanding (please correct me) was that SEV
-> would also allow different types of L2 guests, so I think we should be
-> aligning on this.
-I don't think SNP allows the level of freedom you describe. But regardless
-of the possibilities, I can't think of users of this technology actually
-being interested in running all of these options. Would love to hear someone
-speak up.
+On Mon, 2023-12-04 at 13:38 +0100, Philipp Stanner wrote:
+> The implementation of pci_iounmap() is currently scattered over two
+> files, drivers/pci/iomap.c and lib/iomap.c. Additionally,
+> architectures can define their own version.
+>=20
+> To have only one version, it's necessary to create a helper function,
+> iomem_is_ioport(), that tells pci_iounmap() whether the passed
+> address
+> points to an ioport or normal memory.
+>=20
+> iomem_is_ioport() can be provided through two different ways:
+> =C2=A0 1. The architecture itself provides it. As of today, the version
+> =C2=A0=C2=A0=C2=A0=C2=A0 coming from lib/iomap.c de facto is the x86-spec=
+ific version and
+> =C2=A0=C2=A0=C2=A0=C2=A0 comes into play when CONFIG_GENERIC_IOMAP is sel=
+ected. This
+> rather
+> =C2=A0=C2=A0=C2=A0=C2=A0 confusing naming is an artifact left by the remo=
+val of IA64.
+> =C2=A0 2. As a default version in include/asm-generic/io.h for those
+> =C2=A0=C2=A0=C2=A0=C2=A0 architectures that don't use CONFIG_GENERIC_IOMA=
+P, but also
+> don't
+> =C2=A0=C2=A0=C2=A0=C2=A0 provide their own version of iomem_is_ioport().
+>=20
+> Once all architectures that support ports provide iomem_is_ioport(),
+> the
+> arch-specific definitions for pci_iounmap() can be removed and the
+> archs
+> can use the generic implementation, instead.
+>=20
+> Create a unified version of pci_iounmap() in drivers/pci/iomap.c.
+> Provide the function iomem_is_ioport() in include/asm-generic/io.h
+> (generic) and lib/iomap.c ("pseudo-generic" for x86).
+>=20
+> Remove the CONFIG_GENERIC_IOMAP guard around
+> ARCH_WANTS_GENERIC_PCI_IOUNMAP so that configs that set
+> CONFIG_GENERIC_PCI_IOMAP without CONFIG_GENERIC_IOMAP still get the
+> function.
+>=20
+> Add TODOs for follow-up work on the "generic is not generic but
+> x86-spcific"-Problem.
+>=20
+> Suggested-by: Arnd Bergmann <arnd@kernel.org>
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> ---
+> =C2=A0drivers/pci/iomap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ | 46 ++++++++++++-----------------------
+> --
+> =C2=A0include/asm-generic/io.h=C2=A0=C2=A0=C2=A0 | 27 +++++++++++++++++++=
++--
+> =C2=A0include/asm-generic/iomap.h | 21 +++++++++++++++++
+> =C2=A0lib/iomap.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 28 ++++++++++++++++------
+> =C2=A04 files changed, 82 insertions(+), 40 deletions(-)
+>=20
+> diff --git a/drivers/pci/iomap.c b/drivers/pci/iomap.c
+> index 91285fcff1ba..439ba2e9710f 100644
+> --- a/drivers/pci/iomap.c
+> +++ b/drivers/pci/iomap.c
+> @@ -135,44 +135,28 @@ void __iomem *pci_iomap_wc(struct pci_dev *dev,
+> int bar, unsigned long maxlen)
+> =C2=A0EXPORT_SYMBOL_GPL(pci_iomap_wc);
+> =C2=A0
+> =C2=A0/*
+> - * pci_iounmap() somewhat illogically comes from lib/iomap.c for the
+> - * CONFIG_GENERIC_IOMAP case, because that's the code that knows
+> about
+> - * the different IOMAP ranges.
+> + * This check is still necessary due to legacy reasons.
+> =C2=A0 *
+> - * But if the architecture does not use the generic iomap code, and
+> if
+> - * it has _not_ defined it's own private pci_iounmap function, we
+> define
+> - * it here.
+> - *
+> - * NOTE! This default implementation assumes that if the
+> architecture
+> - * support ioport mapping (HAS_IOPORT_MAP), the ioport mapping will
+> - * be fixed to the range [ PCI_IOBASE, PCI_IOBASE+IO_SPACE_LIMIT [,
+> - * and does not need unmapping with 'ioport_unmap()'.
+> - *
+> - * If you have different rules for your architecture, you need to
+> - * implement your own pci_iounmap() that knows the rules for where
+> - * and how IO vs MEM get mapped.
+> - *
+> - * This code is odd, and the ARCH_HAS/ARCH_WANTS #define logic comes
+> - * from legacy <asm-generic/io.h> header file behavior. In
+> particular,
+> - * it would seem to make sense to do the iounmap(p) for the non-IO-
+> space
+> - * case here regardless, but that's not what the old header file
+> code
+> - * did. Probably incorrectly, but this is meant to be bug-for-bug
+> - * compatible.
+> + * TODO: Have all architectures that provide their own pci_iounmap()
+> provide
+> + * iomem_is_ioport() instead. Remove this #if afterwards.
+> =C2=A0 */
+> =C2=A0#if defined(ARCH_WANTS_GENERIC_PCI_IOUNMAP)
+> =C2=A0
+> -void pci_iounmap(struct pci_dev *dev, void __iomem *p)
+> +/**
+> + * pci_iounmap - Unmapp a mapping
+> + * @dev: PCI device the mapping belongs to
+> + * @addr: start address of the mapping
+> + *
+> + * Unmapp a PIO or MMIO mapping.
+> + */
+> +void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
+> =C2=A0{
+> -#ifdef ARCH_HAS_GENERIC_IOPORT_MAP
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t start =3D (uintptr_t=
+) PCI_IOBASE;
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t addr =3D (uintptr_t)=
+ p;
+> -
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (addr >=3D start && addr < =
+start + IO_SPACE_LIMIT) {
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0ioport_unmap(p);
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (iomem_is_ioport(addr)) {
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0ioport_unmap(addr);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0return;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> -#endif
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iounmap(p);
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iounmap(addr);
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL(pci_iounmap);
+> =C2=A0
+> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+> index bac63e874c7b..58c7bf4080da 100644
+> --- a/include/asm-generic/io.h
+> +++ b/include/asm-generic/io.h
+> @@ -1129,11 +1129,34 @@ extern void ioport_unmap(void __iomem *p);
+> =C2=A0#endif /* CONFIG_GENERIC_IOMAP */
+> =C2=A0#endif /* CONFIG_HAS_IOPORT_MAP */
+> =C2=A0
+> -#ifndef CONFIG_GENERIC_IOMAP
+> +/*
+> + * TODO:
+> + * remove this once all architectures replaced their pci_iounmap()
+> with
+> + * a custom implementation of iomem_is_ioport().
+> + */
+> =C2=A0#ifndef pci_iounmap
+> +#define pci_iounmap pci_iounmap
+> =C2=A0#define ARCH_WANTS_GENERIC_PCI_IOUNMAP
+> +#endif /* pci_iounmap */
+> +
+> +/*
+> + * This function is a helper only needed for the generic
+> pci_iounmap().
+> + * It's provided here if the architecture does not provide its own
+> version.
+> + */
+> +#ifndef iomem_is_ioport
+> +#define iomem_is_ioport iomem_is_ioport
+> +static inline bool iomem_is_ioport(void __iomem *addr_raw)
+> +{
+> +#ifdef CONFIG_HAS_IOPORT
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t start =3D (uintptr_t=
+)PCI_IOBASE;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0uintptr_t addr =3D (uintptr_t)=
+addr_raw;
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (addr >=3D start && addr < =
+start + IO_SPACE_LIMIT)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return true;
+> =C2=A0#endif
+> -#endif
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> +}
+> +#endif /* iomem_is_ioport */
+> =C2=A0
+> =C2=A0#ifndef xlate_dev_mem_ptr
+> =C2=A0#define xlate_dev_mem_ptr xlate_dev_mem_ptr
+> diff --git a/include/asm-generic/iomap.h b/include/asm-
+> generic/iomap.h
+> index 196087a8126e..2cdc6988a102 100644
+> --- a/include/asm-generic/iomap.h
+> +++ b/include/asm-generic/iomap.h
+> @@ -110,6 +110,27 @@ static inline void __iomem
+> *ioremap_np(phys_addr_t offset, size_t size)
+> =C2=A0}
+> =C2=A0#endif
+> =C2=A0
+> +/*
+> + * If CONFIG_GENERIC_IOMAP is selected and the architecture does NOT
+> provide its
+> + * own version, ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT makes sure that
+> the generic
+> + * version from asm-generic/io.h is NOT used and instead the second
+> "generic"
+> + * version from lib/iomap.c is used.
+> + *
+> + * There are currently two generic versions because of a difficult
+> cleanup
+> + * process. Namely, the version in lib/iomap.c once was really
+> generic when IA64
+> + * still existed. Today, it's only really used by x86.
+> + *
+> + * TODO: Move the version from lib/iomap.c to x86 specific code.
+> Then, remove
+> + * this ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT-mechanism.
+> + */
+> +#ifdef CONFIG_GENERIC_IOMAP
+> +#ifndef iomem_is_ioport
+> +#define iomem_is_ioport iomem_is_ioport
+> +bool iomem_is_ioport(void __iomem *addr);
+> +#define ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT
+> +#endif /* iomem_is_ioport */
+> +#endif /* CONFIG_GENERIC_IOMAP */
+> +
+> =C2=A0#include <asm-generic/pci_iomap.h>
+> =C2=A0
+> =C2=A0#endif
+> diff --git a/lib/iomap.c b/lib/iomap.c
+> index 4f8b31baa575..eb9a879ebf42 100644
+> --- a/lib/iomap.c
+> +++ b/lib/iomap.c
+> @@ -418,12 +418,26 @@ EXPORT_SYMBOL(ioport_map);
+> =C2=A0EXPORT_SYMBOL(ioport_unmap);
+> =C2=A0#endif /* CONFIG_HAS_IOPORT_MAP */
+> =C2=A0
+> -#ifdef CONFIG_PCI
+> -/* Hide the details if this is a MMIO or PIO address space and just
+> do what
+> - * you expect in the correct way. */
+> -void pci_iounmap(struct pci_dev *dev, void __iomem * addr)
+> +/*
+> + * If CONFIG_GENERIC_IOMAP is selected and the architecture does NOT
+> provide its
+> + * own version, ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT makes sure that
+> the generic
+> + * version from asm-generic/io.h is NOT used and instead the second
+> "generic"
+> + * version from this file here is used.
+> + *
+> + * There are currently two generic versions because of a difficult
+> cleanup
+> + * process. Namely, the version in lib/iomap.c once was really
+> generic when IA64
+> + * still existed. Today, it's only really used by x86.
+> + *
+> + * TODO: Move this function to x86-specific code.
+> + */
+> +#if defined(ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT)
+> +bool iomem_is_ioport(void __iomem *addr)
+> =C2=A0{
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0IO_COND(addr, /* nothing */, i=
+ounmap(addr));
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long port =3D (unsign=
+ed long __force)addr;
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (port > PIO_OFFSET && port =
+< PIO_RESERVED)
 
-I think of VMPLs provided by SNP and the TD-partitioning L1/L2 scheme as
-the equivalent of ARM's trustzone/EL3 concept. It lets you separate high
-privilege operations into a hardware isolated context. In this case it's
-within the same confidential computing boundary. That's our use case.
- 
-> 
->>
->>> Instead we should have a flexible way for the L2 guest to discover
->>> the virt environment it runs in (as modelled by L1 VMM) and the
->>> baseline should not to assume it is a TDX or SEV guest, but assume
->>> this is some special virt guest (or legacy guest, whatever approach
->>> is cleaner) and expose additional interfaces to it.
->>
->> You can do flexible all you want but all that guest zoo is using the
->> kernel. The same code base which boots on gazillion incarnations of real
->> hardware. And we have trouble keeping that code base clean already.
-> 
-> Fully agree, I wasn’t objecting this. What I was objecting is to make
-> explicit assumptions on what the L2 guest under TDX partitioning is. 
-> 
+by the way:
+Reading that again my instinctive feeling would be that it should be
+port >=3D PIO_OFFSET.
 
-That's fair, my intention was to have this simple logic (if td-partitioning,
-then this and this is given) until a different user of TD-partitioning comes
-along and then we figure out which parts generalize.
+This is, however, the exactly copied logic from the IO_COND macro in
+lib/iomap.c. Is it possible that this macro contains a bug here?
 
->>
->> Now, all those weird guests come along, they're more or less
->> "compatible" but not fully. So they have to do an exception here,
->> disable some feature there which they don't want/support/cannot/bla. Or
->> they use a paravisor which does *some* of the work for them so that
->> needs to be accomodated too.
->>
->> And so they start sprinkling around all those "differences" around the
->> kernel. And turn it into an unmaintainable mess. We've been here before
->> - last time it was called "if (XEN)"... and we're already getting there
->> again only with two L1 encrypted guests technologies. I'm currently
->> working on trimming down some of the SEV mess we've already added...
->>
->> So - and I've said this a bunch of times already - whatever guest type
->> it is, its interaction with the main kernel better be properly designed
->> and abstracted away so that it doesn't turn into a mess.
-> 
-> Yes, agree, so what are our options and overall strategy on this? 
-> We can try to push as much as possible complexity into L1 VMM in this
-> scenario to keep the guest kernel almost free from these sprinkling differences.
-> Afterall the L1 VMM can emulate whatever it wants for the guest.
-> We can also see if there is a true need to add another virtualization
-> abstraction here, i.e. "nested encrypted guest". But to justify this one
-> we need to have usecases/scenarios where L1 VMM actually cannot run
-> L2 guest (legacy or TDX enabled) as it is. 
-> @Jeremi Piotrowski do you have such usecase/scenarios you can describe?
-> > Any other options we should be considering as overall strategy? 
+P.
 
-Just taking a step back: we're big SNP and TDX users. The only kind of guest
-that meets our users needs on both SNP and TDX and that we support across
-our server fleet is closest to what you listed as 2:
-"guest with a CoCo security module (paravisor) and targeted CoCo enlightenments".
-
-We're aligned on the need to push complexity out of the kernel which is exactly
-what has happened (also across vendors): the guest is mostly unconcerned by the
-differences between TDX and SNP (except notification hypercall in the I/O path),
-does not need all the changes in the early boot code that TDX/SNP have forced,
-switches page visibility with the same hypercall for both etc.
-
-I'm not aware of use cases for fully legacy guests, and my guess is they would suffer
-from excessive overhead.
-
-I am also not aware of use cases for "pretending to be an TDX 1.0 guest". Doing that
-removes opportunities to share kernel code with normal guests and SNP guests on hyperv.
-I'd also like to point out something that Michael wrote here[1] regarding paravisor
-interfaces:
-"But it seems like any kind of (forwarding) scheme needs to be a well-defined contract
-that would work for both TDX and SEV-SNP."
-
-[1]: https://lore.kernel.org/lkml/SN6PR02MB415717E09C249A31F2A4E229D4BCA@SN6PR02MB4157.namprd02.prod.outlook.com/
-
-Another thing to note: in SNP you *need* to interact with VMPL0 (~L1 VMM) when
-running at other VMPLs (eg. pvalidate and rmpadjust only possible at VMPL0) so
-the kernel needs to cooperate with VMPL0 to operate. On skimming the TD-part
-spec I'm not sure how "supporting fast-path I/O" would be possible with supporting
-a "TDX 1.0 guest" with no TD-part awareness (if you need to trap all TDVMCALL then
-that's not OK).
-
-Now back to the topic at hand: I think what's needed is to stop treating
-X86_FEATURE_TDX_GUEST as an all-or-nothing thing. Split out the individual
-enlightenment into separate CC attributes, allow them to be selected without
-requiring you to buy the whole zoo. I don't think we need a "nested encrypted guest"
-abstraction.
-
-Jeremi
-
-> 
-> Best Regards,
-> Elena.
-> 
->>
->> Thx.
->>
->> --
->> Regards/Gruss,
->>     Boris.
->>
->> https://people.kernel.org/tglx/notes-about-netiquette
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return true;
+> +
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return false;
+> =C2=A0}
+> -EXPORT_SYMBOL(pci_iounmap);
+> -#endif /* CONFIG_PCI */
+> +#endif /* ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT */
 
 
