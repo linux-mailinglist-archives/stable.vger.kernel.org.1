@@ -1,114 +1,206 @@
-Return-Path: <stable+bounces-3879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CE31803514
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 14:38:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F21803525
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 14:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBE1F280FA1
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E62528109A
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A12555B;
-	Mon,  4 Dec 2023 13:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D9725540;
+	Mon,  4 Dec 2023 13:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Cgiypl4L";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="stj+BqHc"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hy/8Psmf"
 X-Original-To: stable@vger.kernel.org
-X-Greylist: delayed 104 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 04 Dec 2023 05:38:02 PST
-Received: from new2-smtp.messagingengine.com (new2-smtp.messagingengine.com [66.111.4.224])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1680CB2;
-	Mon,  4 Dec 2023 05:38:02 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 5EC605809C8;
-	Mon,  4 Dec 2023 08:38:01 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Mon, 04 Dec 2023 08:38:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1701697081; x=1701704281; bh=gu
-	842SvCxM10CbBvjGGfXJsdDRM+ooxinHUyG93c9tM=; b=Cgiypl4L3d/VkkXaIb
-	0z+ZBP4uKrtoQJ0WdttPRebjgssJBJmG1xo/53dGJ/c2gAqAbj7LE3IZKwL+6lAD
-	wegXMIVwkvbmmgV+rQ8qiHcOpMuCyqd9ojgMuUQ66RCjEVMR5kIusZpYoM3xuJPg
-	F+CmN6INnwo19tTYg3YKuoTvFo9rRIoG3HR2+kAtYwmV1w2kET9BT2Q5z4Z7qj8V
-	uzunLN9USsPmqfkVTsu3ll2QpGG/yZyqzYAPwreQt6xZOJfe5dUR0XX/ujprdcIi
-	B97VRBOafQLRiee1sWz9xDnxo7Evj7JU6PKHLyT8u1oDdtiE4pJdDBySZucg6jiu
-	MaKQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701697081; x=1701704281; bh=gu842SvCxM10C
-	bBvjGGfXJsdDRM+ooxinHUyG93c9tM=; b=stj+BqHcw6AZozZiDBSlZjiqJmpHV
-	K8ejaSOwjVWAKsMhOmyEqXl5tVZxPaNpzGqPlj6AbOPZkzL2q2Yv+WTTWXq5tFOz
-	EqAcDVi6Wruu4eBUK8zdaJQMh3E/ZjNhOtfnmFLCqVdw4G4cyolw6BnBH516Tv8B
-	xtos9wJPIza7VB9LV7r5AOGC9RcJjpLfnqY3OpeNgNPBcb1GbLFFcqgI87VK0ZVg
-	kp2GX7/ytuQr1TwHnWN+LQ90LsoSP2A/x+nj95six5dDVCCD7sU5OA7dY3QDcO5b
-	Qcln6D+UTQthHdqmo2hujdtXIVQ6Mu9t1EbFhFsesfIZfasrizoV2svLw==
-X-ME-Sender: <xms:OdZtZYzMG6GvJFDIlB0HSjjUONwPNZyLrMgKOLwGLLLiDLpNHcv49A>
-    <xme:OdZtZcT7odOkvR8tRzBz7MooeWkNBzNR0Mg4I-KHQWsn-zles928mVDCyGWGjngqT
-    mZN8xZALs_hA3q8_Ew>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudejiedgheehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:OdZtZaWiOqzI1NZ1YozuQUScTtBWb6AY-UGT273rxAtysK9nmVbtdA>
-    <xmx:OdZtZWjqFk4Fy1WiyjaHH5dCzwOg9CdsmqwJ10LEOugDAIi4uwG84w>
-    <xmx:OdZtZaACf1pjxOFrHu6pMh3IdlXbuzJfswe6mD3yebTbYbbF96s6rQ>
-    <xmx:OdZtZcwcjrxeM4CY1moE4xfF9Wflkk1qiOzg1I3OQDV9sEtnkMhrRQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 1565EB60089; Mon,  4 Dec 2023 08:38:00 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1178-geeaf0069a7-fm-20231114.001-geeaf0069
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id A0BF9191;
+	Mon,  4 Dec 2023 05:39:09 -0800 (PST)
+Received: from [100.66.64.18] (unknown [108.143.43.187])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 246E020B74C1;
+	Mon,  4 Dec 2023 05:39:03 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 246E020B74C1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1701697148;
+	bh=BtY3bVxPtr2XdgE2ZvKoiT1mqgpjS0iGQgzugKiTo+A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hy/8PsmfTgS7df7xb+x9yGMaoEJdmcwSkjs0qSk4z8IGyhirMOK7pvLeWIx9kAeOA
+	 oH52/3UsyfwuFtBdEP/mYS8f65zzZxyUm6kE2TIPyHtdRgRlur5d0PJVff+1AfFnjC
+	 dUkGUg41jrA0GKxcGRmUSz9LShxyjqXmVJaaNSlU=
+Message-ID: <8747ed90-72b8-49bf-8df7-5c5f06056fe2@linux.microsoft.com>
+Date: Mon, 4 Dec 2023 14:39:03 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <652e62ba-5e23-4672-875a-8b5a3a8cb494@app.fastmail.com>
-In-Reply-To: <20231204123834.29247-3-pstanner@redhat.com>
-References: <20231204123834.29247-1-pstanner@redhat.com>
- <20231204123834.29247-3-pstanner@redhat.com>
-Date: Mon, 04 Dec 2023 14:37:40 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Philipp Stanner" <pstanner@redhat.com>,
- "Bjorn Helgaas" <bhelgaas@google.com>, "Hanjun Guo" <guohanjun@huawei.com>,
- "Neil Brown" <neilb@suse.de>, "Kent Overstreet" <kent.overstreet@gmail.com>,
- "Jakub Kicinski" <kuba@kernel.org>,
- "Niklas Schnelle" <schnelle@linux.ibm.com>,
- "Uladzislau Koshchanka" <koshchanka@gmail.com>,
- "John Sanpe" <sanpeqf@gmail.com>, "Dave Jiang" <dave.jiang@intel.com>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Kees Cook" <keescook@chromium.org>, "David Gow" <davidgow@google.com>,
- "Herbert Xu" <herbert@gondor.apana.org.au>,
- "Shuah Khan" <skhan@linuxfoundation.org>,
- "wuqiang.matt" <wuqiang.matt@bytedance.com>,
- "Yury Norov" <yury.norov@gmail.com>, "Jason Baron" <jbaron@akamai.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Ben Dooks" <ben.dooks@codethink.co.uk>, "Danilo Krummrich" <dakr@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/5] lib: move pci_iomap.c to drivers/pci/
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
+ TDX init
+Content-Language: en-US
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ Borislav Petkov <bp@alien8.de>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "stefan.bader@canonical.com" <stefan.bader@canonical.com>,
+ "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
+ "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
+ "cascardo@canonical.com" <cascardo@canonical.com>,
+ "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "sashal@kernel.org" <sashal@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Ingo Molnar <mingo@redhat.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Michael Kelley <mhkelley58@gmail.com>, Nikolay Borisov
+ <nik.borisov@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>,
+ "Cui, Dexuan" <decui@microsoft.com>
+References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
+ <0799b692-4b26-4e00-9cec-fdc4c929ea58@linux.microsoft.com>
+ <20231129164049.GVZWdpkVlc8nUvl/jx@fat_crate.local>
+ <DM8PR11MB575085570AF48AF4690986EDE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <20231130075559.GAZWhAD5ScHoxbbTxL@fat_crate.local>
+ <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Dec 4, 2023, at 13:38, Philipp Stanner wrote:
-> This file is guarded by an #ifdef CONFIG_PCI. It, consequently, does not
-> belong to lib/ because it is not generic infrastructure.
->
-> Move the file to drivers/pci/ and implement the necessary changes to
-> Makefiles and Kconfigs.
->
-> Suggested-by: Danilo Krummrich <dakr@redhat.com>
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+On 30/11/2023 09:31, Reshetova, Elena wrote:
+> 
+>> On Thu, Nov 30, 2023 at 07:08:00AM +0000, Reshetova, Elena wrote:
+>>> ...
+>>> 3. Normal TDX 1.0 guest that is unaware that it runs in partitioned
+>>>    environment
+>>> 4. and so on
+>>
+>> There's a reason I call it a virt zoo.
+>>
+>>> I don’t know if AMD architecture would support all this spectrum of
+>>> the guests through.
+>>
+>> I hear threats...
+> 
+> No threats whatsoever, I just truly don’t know details of SEV architecture
+> on this and how it envisioned to operate under this nesting scenario.
+> I raised this point to see if we can build the common understanding 
+> on this. My personal understanding (please correct me) was that SEV
+> would also allow different types of L2 guests, so I think we should be
+> aligning on this.
+I don't think SNP allows the level of freedom you describe. But regardless
+of the possibilities, I can't think of users of this technology actually
+being interested in running all of these options. Would love to hear someone
+speak up.
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+I think of VMPLs provided by SNP and the TD-partitioning L1/L2 scheme as
+the equivalent of ARM's trustzone/EL3 concept. It lets you separate high
+privilege operations into a hardware isolated context. In this case it's
+within the same confidential computing boundary. That's our use case.
+ 
+> 
+>>
+>>> Instead we should have a flexible way for the L2 guest to discover
+>>> the virt environment it runs in (as modelled by L1 VMM) and the
+>>> baseline should not to assume it is a TDX or SEV guest, but assume
+>>> this is some special virt guest (or legacy guest, whatever approach
+>>> is cleaner) and expose additional interfaces to it.
+>>
+>> You can do flexible all you want but all that guest zoo is using the
+>> kernel. The same code base which boots on gazillion incarnations of real
+>> hardware. And we have trouble keeping that code base clean already.
+> 
+> Fully agree, I wasn’t objecting this. What I was objecting is to make
+> explicit assumptions on what the L2 guest under TDX partitioning is. 
+> 
+
+That's fair, my intention was to have this simple logic (if td-partitioning,
+then this and this is given) until a different user of TD-partitioning comes
+along and then we figure out which parts generalize.
+
+>>
+>> Now, all those weird guests come along, they're more or less
+>> "compatible" but not fully. So they have to do an exception here,
+>> disable some feature there which they don't want/support/cannot/bla. Or
+>> they use a paravisor which does *some* of the work for them so that
+>> needs to be accomodated too.
+>>
+>> And so they start sprinkling around all those "differences" around the
+>> kernel. And turn it into an unmaintainable mess. We've been here before
+>> - last time it was called "if (XEN)"... and we're already getting there
+>> again only with two L1 encrypted guests technologies. I'm currently
+>> working on trimming down some of the SEV mess we've already added...
+>>
+>> So - and I've said this a bunch of times already - whatever guest type
+>> it is, its interaction with the main kernel better be properly designed
+>> and abstracted away so that it doesn't turn into a mess.
+> 
+> Yes, agree, so what are our options and overall strategy on this? 
+> We can try to push as much as possible complexity into L1 VMM in this
+> scenario to keep the guest kernel almost free from these sprinkling differences.
+> Afterall the L1 VMM can emulate whatever it wants for the guest.
+> We can also see if there is a true need to add another virtualization
+> abstraction here, i.e. "nested encrypted guest". But to justify this one
+> we need to have usecases/scenarios where L1 VMM actually cannot run
+> L2 guest (legacy or TDX enabled) as it is. 
+> @Jeremi Piotrowski do you have such usecase/scenarios you can describe?
+> > Any other options we should be considering as overall strategy? 
+
+Just taking a step back: we're big SNP and TDX users. The only kind of guest
+that meets our users needs on both SNP and TDX and that we support across
+our server fleet is closest to what you listed as 2:
+"guest with a CoCo security module (paravisor) and targeted CoCo enlightenments".
+
+We're aligned on the need to push complexity out of the kernel which is exactly
+what has happened (also across vendors): the guest is mostly unconcerned by the
+differences between TDX and SNP (except notification hypercall in the I/O path),
+does not need all the changes in the early boot code that TDX/SNP have forced,
+switches page visibility with the same hypercall for both etc.
+
+I'm not aware of use cases for fully legacy guests, and my guess is they would suffer
+from excessive overhead.
+
+I am also not aware of use cases for "pretending to be an TDX 1.0 guest". Doing that
+removes opportunities to share kernel code with normal guests and SNP guests on hyperv.
+I'd also like to point out something that Michael wrote here[1] regarding paravisor
+interfaces:
+"But it seems like any kind of (forwarding) scheme needs to be a well-defined contract
+that would work for both TDX and SEV-SNP."
+
+[1]: https://lore.kernel.org/lkml/SN6PR02MB415717E09C249A31F2A4E229D4BCA@SN6PR02MB4157.namprd02.prod.outlook.com/
+
+Another thing to note: in SNP you *need* to interact with VMPL0 (~L1 VMM) when
+running at other VMPLs (eg. pvalidate and rmpadjust only possible at VMPL0) so
+the kernel needs to cooperate with VMPL0 to operate. On skimming the TD-part
+spec I'm not sure how "supporting fast-path I/O" would be possible with supporting
+a "TDX 1.0 guest" with no TD-part awareness (if you need to trap all TDVMCALL then
+that's not OK).
+
+Now back to the topic at hand: I think what's needed is to stop treating
+X86_FEATURE_TDX_GUEST as an all-or-nothing thing. Split out the individual
+enlightenment into separate CC attributes, allow them to be selected without
+requiring you to buy the whole zoo. I don't think we need a "nested encrypted guest"
+abstraction.
+
+Jeremi
+
+> 
+> Best Regards,
+> Elena.
+> 
+>>
+>> Thx.
+>>
+>> --
+>> Regards/Gruss,
+>>     Boris.
+>>
+>> https://people.kernel.org/tglx/notes-about-netiquette
+
 
