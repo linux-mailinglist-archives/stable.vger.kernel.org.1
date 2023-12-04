@@ -1,58 +1,48 @@
-Return-Path: <stable+bounces-3912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3C94803F63
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:33:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5868B803F64
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DB18B20BB6
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:33:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A42F281298
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB9933CC6;
-	Mon,  4 Dec 2023 20:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054EB34188;
+	Mon,  4 Dec 2023 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qxf8c8dm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AFeYO7U6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6914B35EF4;
-	Mon,  4 Dec 2023 20:33:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE26C433D9;
-	Mon,  4 Dec 2023 20:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FEF35EED;
+	Mon,  4 Dec 2023 20:33:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC57C433C9;
+	Mon,  4 Dec 2023 20:33:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701722014;
-	bh=XQbnVYfDI13f/xKWRvmhD+fRVkADSaH7DGVZa3M65ao=;
+	s=k20201202; t=1701722016;
+	bh=SehovYGp2WIhK9Sz1LzhxlrOBSnyqZqFJHAjzsJbaEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qxf8c8dmP7g+qNyAGmlkNWkznzzIr6FYnn1a75GBY2zMJgcUywDeCFGWQQshMz/am
-	 H6Kef/5HoTKP6+n8Snd5yi7+qh+If6PJCUkGSoi4JxAM3XVLa9EbbUdT3ZhJgnQUCg
-	 Py8leyHa67cjm/q5B6oNmgyr/JMZZ7Koza4XCFsdz+ob/HQo7V7Ym+95PyIb3tqadD
-	 QhnLa9QJXS9TPDQQ020CNv9QzxRfTtZZ+7Iefs2bPOBZx4TxEHjFULEZvBZ/G1J9/7
-	 IfqBngS5x1a1S/L/Y1C8thZZkn4MJaXJ5Ojx6FpLfGpZZqDTGftIXxwAhHPUcMJMZY
-	 bhX2EOvQMwf/g==
+	b=AFeYO7U6A/f2Xi/74vpfmSKfnUL6ea0urPNwFRhARqWLtmeSFzPat9lhSQGUmy+DZ
+	 /7Bp74b8wvXvu/a3bdzbvwMA5+Ur9/irJSR1kMGT4S+mAjrbDvAam+iy9dHBMQSXDD
+	 eoFIvOnT4JanyLwjcrfoJV+gbr5oKlin3mX41qZZS3RStet5gU0aVNoV+X1MIfOmCB
+	 aLw2YrK10C2AJhrNKsGWjaVn2Dngak1xfnDyfk6tTHYSY66rFG/S/Q4ky5tz93nmGN
+	 5qH5y3IGzsLWx9XzDYb4ErRYLxid3JosgUQAMj+R1eoeArM69llO5NSG082QyxdR/4
+	 Uj1TIuN5CpmSg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	luke@ljones.dev,
-	andy.chi@canonical.com,
-	shenghao-ding@ti.com,
-	ruinairas1992@gmail.com,
-	l.guzenko@web.de,
-	yangyuchi66@gmail.com,
-	vitalyr@opensource.cirrus.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 05/32] ALSA: hda - Fix speaker and headset mic pin config for CHUWI CoreBook XPro
-Date: Mon,  4 Dec 2023 15:32:25 -0500
-Message-ID: <20231204203317.2092321-5-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 06/32] ksmbd: separately allocate ci per dentry
+Date: Mon,  4 Dec 2023 15:32:26 -0500
+Message-ID: <20231204203317.2092321-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231204203317.2092321-1-sashal@kernel.org>
 References: <20231204203317.2092321-1-sashal@kernel.org>
@@ -67,56 +57,179 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.4
 Content-Transfer-Encoding: 8bit
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 7c9caa299335df94ad1c58f70a22f16a540eab60 ]
+[ Upstream commit 4274a9dc6aeb9fea66bffba15697a35ae8983b6a ]
 
-This patch corrected the speaker and headset mic pin config to the more
-appropriate values.
+xfstests generic/002 test fail when enabling smb2 leases feature.
+This test create hard link file, but removeal failed.
+ci has a file open count to count file open through the smb client,
+but in the case of hard link files, The allocation of ci per inode
+cause incorrectly open count for file deletion. This patch allocate
+ci per dentry to counts open counts for hard link.
 
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20231117170923.106822-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/smb/server/smb2pdu.c   |  2 +-
+ fs/smb/server/vfs.c       |  2 +-
+ fs/smb/server/vfs_cache.c | 33 +++++++++++++--------------------
+ fs/smb/server/vfs_cache.h |  6 +++---
+ 4 files changed, 18 insertions(+), 25 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 87bc1d2f8a432..8e2504dbeceaf 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -7168,6 +7168,7 @@ enum {
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
-+	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -7520,6 +7521,14 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc269_fixup_pincfg_U7x7_headset_mic,
- 	},
-+	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x18, 0x03a19020 }, /* headset mic */
-+			{ 0x1b, 0x90170150 }, /* speaker */
-+			{ }
-+		},
-+	},
- 	[ALC269_FIXUP_AMIC] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -10163,6 +10172,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 93262ca3f58a7..a85f3cc7c181f 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3038,7 +3038,7 @@ int smb2_open(struct ksmbd_work *work)
+ 		}
+ 	}
+ 
+-	rc = ksmbd_query_inode_status(d_inode(path.dentry->d_parent));
++	rc = ksmbd_query_inode_status(path.dentry->d_parent);
+ 	if (rc == KSMBD_INODE_STATUS_PENDING_DELETE) {
+ 		rc = -EBUSY;
+ 		goto err_out;
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 9919c07035d80..1b6c671f8a942 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -715,7 +715,7 @@ int ksmbd_vfs_rename(struct ksmbd_work *work, const struct path *old_path,
+ 		goto out3;
+ 	}
+ 
+-	parent_fp = ksmbd_lookup_fd_inode(d_inode(old_child->d_parent));
++	parent_fp = ksmbd_lookup_fd_inode(old_child->d_parent);
+ 	if (parent_fp) {
+ 		if (parent_fp->daccess & FILE_DELETE_LE) {
+ 			pr_err("parent dir is opened with delete access\n");
+diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
+index c91eac6514dd9..ddf233994ddbb 100644
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -66,14 +66,14 @@ static unsigned long inode_hash(struct super_block *sb, unsigned long hashval)
+ 	return tmp & inode_hash_mask;
+ }
+ 
+-static struct ksmbd_inode *__ksmbd_inode_lookup(struct inode *inode)
++static struct ksmbd_inode *__ksmbd_inode_lookup(struct dentry *de)
+ {
+ 	struct hlist_head *head = inode_hashtable +
+-		inode_hash(inode->i_sb, inode->i_ino);
++		inode_hash(d_inode(de)->i_sb, (unsigned long)de);
+ 	struct ksmbd_inode *ci = NULL, *ret_ci = NULL;
+ 
+ 	hlist_for_each_entry(ci, head, m_hash) {
+-		if (ci->m_inode == inode) {
++		if (ci->m_de == de) {
+ 			if (atomic_inc_not_zero(&ci->m_count))
+ 				ret_ci = ci;
+ 			break;
+@@ -84,26 +84,16 @@ static struct ksmbd_inode *__ksmbd_inode_lookup(struct inode *inode)
+ 
+ static struct ksmbd_inode *ksmbd_inode_lookup(struct ksmbd_file *fp)
+ {
+-	return __ksmbd_inode_lookup(file_inode(fp->filp));
++	return __ksmbd_inode_lookup(fp->filp->f_path.dentry);
+ }
+ 
+-static struct ksmbd_inode *ksmbd_inode_lookup_by_vfsinode(struct inode *inode)
+-{
+-	struct ksmbd_inode *ci;
+-
+-	read_lock(&inode_hash_lock);
+-	ci = __ksmbd_inode_lookup(inode);
+-	read_unlock(&inode_hash_lock);
+-	return ci;
+-}
+-
+-int ksmbd_query_inode_status(struct inode *inode)
++int ksmbd_query_inode_status(struct dentry *dentry)
+ {
+ 	struct ksmbd_inode *ci;
+ 	int ret = KSMBD_INODE_STATUS_UNKNOWN;
+ 
+ 	read_lock(&inode_hash_lock);
+-	ci = __ksmbd_inode_lookup(inode);
++	ci = __ksmbd_inode_lookup(dentry);
+ 	if (ci) {
+ 		ret = KSMBD_INODE_STATUS_OK;
+ 		if (ci->m_flags & (S_DEL_PENDING | S_DEL_ON_CLS))
+@@ -143,7 +133,7 @@ void ksmbd_fd_set_delete_on_close(struct ksmbd_file *fp,
+ static void ksmbd_inode_hash(struct ksmbd_inode *ci)
+ {
+ 	struct hlist_head *b = inode_hashtable +
+-		inode_hash(ci->m_inode->i_sb, ci->m_inode->i_ino);
++		inode_hash(d_inode(ci->m_de)->i_sb, (unsigned long)ci->m_de);
+ 
+ 	hlist_add_head(&ci->m_hash, b);
+ }
+@@ -157,7 +147,6 @@ static void ksmbd_inode_unhash(struct ksmbd_inode *ci)
+ 
+ static int ksmbd_inode_init(struct ksmbd_inode *ci, struct ksmbd_file *fp)
+ {
+-	ci->m_inode = file_inode(fp->filp);
+ 	atomic_set(&ci->m_count, 1);
+ 	atomic_set(&ci->op_count, 0);
+ 	atomic_set(&ci->sop_count, 0);
+@@ -166,6 +155,7 @@ static int ksmbd_inode_init(struct ksmbd_inode *ci, struct ksmbd_file *fp)
+ 	INIT_LIST_HEAD(&ci->m_fp_list);
+ 	INIT_LIST_HEAD(&ci->m_op_list);
+ 	rwlock_init(&ci->m_lock);
++	ci->m_de = fp->filp->f_path.dentry;
+ 	return 0;
+ }
+ 
+@@ -488,12 +478,15 @@ struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid)
+ 	return fp;
+ }
+ 
+-struct ksmbd_file *ksmbd_lookup_fd_inode(struct inode *inode)
++struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry)
+ {
+ 	struct ksmbd_file	*lfp;
+ 	struct ksmbd_inode	*ci;
++	struct inode		*inode = d_inode(dentry);
+ 
+-	ci = ksmbd_inode_lookup_by_vfsinode(inode);
++	read_lock(&inode_hash_lock);
++	ci = __ksmbd_inode_lookup(dentry);
++	read_unlock(&inode_hash_lock);
+ 	if (!ci)
+ 		return NULL;
+ 
+diff --git a/fs/smb/server/vfs_cache.h b/fs/smb/server/vfs_cache.h
+index 03d0bf941216f..8325cf4527c46 100644
+--- a/fs/smb/server/vfs_cache.h
++++ b/fs/smb/server/vfs_cache.h
+@@ -51,7 +51,7 @@ struct ksmbd_inode {
+ 	atomic_t			op_count;
+ 	/* opinfo count for streams */
+ 	atomic_t			sop_count;
+-	struct inode			*m_inode;
++	struct dentry			*m_de;
+ 	unsigned int			m_flags;
+ 	struct hlist_node		m_hash;
+ 	struct list_head		m_fp_list;
+@@ -140,7 +140,7 @@ struct ksmbd_file *ksmbd_lookup_fd_slow(struct ksmbd_work *work, u64 id,
+ void ksmbd_fd_put(struct ksmbd_work *work, struct ksmbd_file *fp);
+ struct ksmbd_file *ksmbd_lookup_durable_fd(unsigned long long id);
+ struct ksmbd_file *ksmbd_lookup_fd_cguid(char *cguid);
+-struct ksmbd_file *ksmbd_lookup_fd_inode(struct inode *inode);
++struct ksmbd_file *ksmbd_lookup_fd_inode(struct dentry *dentry);
+ unsigned int ksmbd_open_durable_fd(struct ksmbd_file *fp);
+ struct ksmbd_file *ksmbd_open_fd(struct ksmbd_work *work, struct file *filp);
+ void ksmbd_close_tree_conn_fds(struct ksmbd_work *work);
+@@ -164,7 +164,7 @@ enum KSMBD_INODE_STATUS {
+ 	KSMBD_INODE_STATUS_PENDING_DELETE,
+ };
+ 
+-int ksmbd_query_inode_status(struct inode *inode);
++int ksmbd_query_inode_status(struct dentry *dentry);
+ bool ksmbd_inode_pending_delete(struct ksmbd_file *fp);
+ void ksmbd_set_inode_pending_delete(struct ksmbd_file *fp);
+ void ksmbd_clear_inode_pending_delete(struct ksmbd_file *fp);
 -- 
 2.42.0
 
