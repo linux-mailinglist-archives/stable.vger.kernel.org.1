@@ -1,94 +1,102 @@
-Return-Path: <stable+bounces-3977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C25B804011
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:37:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C217C804057
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9626281380
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:37:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BB46281328
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7E62E839;
-	Mon,  4 Dec 2023 20:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8812FC25;
+	Mon,  4 Dec 2023 20:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DseyW8QA"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="H/WMcxmV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC7A364B1;
-	Mon,  4 Dec 2023 20:37:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36590C433C7;
-	Mon,  4 Dec 2023 20:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701722258;
-	bh=jQ+D2iihSTK+aKrxjtXFfBlStzbtYXPCbVhBZbnb9bo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DseyW8QAj8aBxawwdrp9SofXXecA8Ygo5O4qtDnMWwuRwSEe9rB/ijhcuV7WQjvln
-	 xOHvc/2NSucx+ZLy/+tEdSi6CZLZCR1Cck++tsFWO+B1drwszqOYlhUEVAwm172HeI
-	 9hTTGHzBD0fBqnFqhni0ZPzwtoNGdOY0gpT2Acy+rKehTuYrqD9YoYp1L/vxcTl1R6
-	 +L1wivZ2fmpPuHL6xV2JPSoq3ZlcTu9f7rq96rBbtoP/ghJXZc3HFhL46kYWrJC8WB
-	 CWMwNwukU9GQjDhDpZFRT7WROOtHOq9Pjcr0ptGjCnXVnQaiFqAUPMmFtz9kNVhMMh
-	 M5olsi8q9zz4A==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14] wifi: cfg80211: lock wiphy mutex for rfkill poll
-Date: Mon,  4 Dec 2023 15:37:34 -0500
-Message-ID: <20231204203735.2095033-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:242:246e::2])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23F1AA;
+	Mon,  4 Dec 2023 12:45:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=IzuQejDpRVhj/RMqVK3vOEQVqngyGrm2sTvalLaOwLg=;
+	t=1701722759; x=1702932359; b=H/WMcxmV0wxRurMtewK+gpNJ/8Evke2GSY/JzvBZXuAB3+k
+	v7s6xENb+LIx4zVJ4QnBTH+DkSd2MSOaJSpSgto22gS+wVb3ebOwE4Wg1MeFhCLWElq2SA35UedNt
+	Cn4h6RIIwi/EhXVdqmjZoN43yvd+Xu1UgGHqIbjbSQT8dKbWc8KMORFOGwKFSH9C3jUx8LC2Ufboe
+	VMZmlXuPkxqKrZiI/4TkOLhlQCX9Uc4hG7qWABRmNaiIHR2/m8MK960em7hBcwe7/fVWFEIyztOpk
+	JbnPaY+FUkz7nPsNdPdjQfyv6QO32nR9n+6vD0i8UaMBITexKH/uhhzNd9UvuCAw==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1rAFpE-0000000FFfd-2z3a;
+	Mon, 04 Dec 2023 21:45:57 +0100
+Message-ID: <1a7a8caa3fe9b4e3271239b86ebd24a41464b79f.camel@sipsolutions.net>
+Subject: Re: [PATCH AUTOSEL 6.6 15/32] debugfs: annotate debugfs handlers
+ vs. removal with lockdep
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Sasha Levin <sashal@kernel.org>, "linux-kernel@vger.kernel.org"
+	 <linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	 <stable@vger.kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Mon, 04 Dec 2023 21:45:55 +0100
+In-Reply-To: <20231204203317.2092321-15-sashal@kernel.org>
+References: <20231204203317.2092321-1-sashal@kernel.org>
+	 <20231204203317.2092321-15-sashal@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.1 (3.50.1-1.fc39) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.331
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Mon, 2023-12-04 at 20:32 +0000, Sasha Levin wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+>=20
+> [ Upstream commit f4acfcd4deb158b96595250cc332901b282d15b0 ]
+>=20
+> When you take a lock in a debugfs handler but also try
+> to remove the debugfs file under that lock, things can
+> deadlock since the removal has to wait for all users
+> to finish.
+>=20
+> Add lockdep annotations in debugfs_file_get()/_put()
+> to catch such issues.
+>=20
 
-[ Upstream commit 8e2f6f2366219b3304b227bdd2f04b64c92e3e12 ]
+This (and the previous patch) probably got picked up as dependencies for
+the locking things, but ... we reverted this.
 
-We want to guarantee the mutex is held for pretty much
-all operations, so ensure that here as well.
+For 6.6, _maybe_ it's worth backporting this including the revert, but
+then I'd do that only when the revert landed to have them together. But
+then you should apply all the six patches listed below _and_ the revert,
+the set as here doesn't do anything useful.
 
-Reported-by: syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- net/wireless/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+However ... given that debugfs is root-only, and you have to be
+reading/writing a file _while_ disconnecting and the file is removed,
+perhaps the whole thing isn't worth backporting at all.
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 0e08629b15d1d..abe7912a23760 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -202,7 +202,9 @@ static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
- {
- 	struct cfg80211_registered_device *rdev = data;
- 
-+	wiphy_lock(&rdev->wiphy);
- 	rdev_rfkill_poll(rdev);
-+	wiphy_unlock(&rdev->wiphy);
- }
- 
- void cfg80211_stop_p2p_device(struct cfg80211_registered_device *rdev,
--- 
-2.42.0
 
+
+For 6.1 and earlier, I believe it's not needed at all, so please drop
+from there all of these:
+
+ - debugfs: fix automount d_fsdata usage
+ - debugfs: annotate debugfs handlers vs. removal with lockdep
+ - debugfs: add API to allow debugfs operations cancellation
+ - wifi: cfg80211: add locked debugfs wrappers
+ - wifi: mac80211: use wiphy locked debugfs helpers for agg_status
+ - wifi: mac80211: use wiphy locked debugfs for sdata/link
+
+
+I'd kind of think just dropping all of these completely makes more
+sense.
+
+johannes
 
