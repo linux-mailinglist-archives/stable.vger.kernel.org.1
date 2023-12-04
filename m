@@ -1,183 +1,274 @@
-Return-Path: <stable+bounces-3874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFB7B803328
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:40:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DB980333F
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:43:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0131F210C6
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:40:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8721F210A6
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:43:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004D623759;
-	Mon,  4 Dec 2023 12:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C5723759;
+	Mon,  4 Dec 2023 12:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=grpleg.onmicrosoft.com header.i=@grpleg.onmicrosoft.com header.b="h18MxAXI"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="v3opTgY+"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2091.outbound.protection.outlook.com [40.107.7.91])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F10AA;
-	Mon,  4 Dec 2023 04:39:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ARIUeQKGMQLTQ/VZ4Zmv4H7IajeWMIRpk9BcptZPJ73Qt6N1zki0Z8oP6h/7QXtQycoQVerl2CJxcb3FESUxlGdnxfnuTAwXJkgPn177uStXAwyJSejBCWulzDCiYJKFtOZcab55gFsi/wtK7Qvl6+7nvRlxc7BGzhal20I5iWXPgw5eSSk5UfoJlicjZ2Goveq4Llcv/hUGPqnit41ET7T6zcvGXy360dCHEsnrAcjC4OOHiZpehR2nPt2Gfyra9N+IzAa9bdcz8enPofecqIAXG+D4Qavep0i37iVhZ7Htpu2mxzaKmFHtGVHQs1ps0aaNzUhAvaWBZNWxg7Z4qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8IzhnmkV5N02rHYOsDijOAPkBTTy1pCUUmgS9RrXMLU=;
- b=frgEXsCCoMQflaVzQhd0qeyhut3X9StgKleY+ZvgpBNA90kTiJ/ltoILM12vjGQln8ClRipo+kCKYjPbdjqJOk/PAnA6IbhtWfdFujgJCc2HRFx1ulnNcGhVOh0Qzrc9wSCgTPM8ITJiMEFkRVneXtGY6SazydYn91YwBT5XIiFoQenOwAqEfBWMYg7FIFvvbnKzyuN2HwUVuoYVl8l2fwonK3RLuaDC+4gLGSfILWU72y0tbXc2pStr0WuR0mIw617pNx1SJbtkZ9x16/3sonpob59dC8DuZYotf4XnmPMs3woKX0FWoMvCHGLKyVku+0nczZQFmbV+Y/OWDtMCnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=raritan.com; dmarc=pass action=none header.from=raritan.com;
- dkim=pass header.d=raritan.com; arc=none
+Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89A9190
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 04:43:17 -0800 (PST)
+Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6cbe716b511so3272324b3a.3
+        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 04:43:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=grpleg.onmicrosoft.com; s=selector1-grpleg-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8IzhnmkV5N02rHYOsDijOAPkBTTy1pCUUmgS9RrXMLU=;
- b=h18MxAXIoZhgivH405s+RibUKMXNGRv6Vbwi1WYqiJix5zUM0ZAiPgzT2BBogD6Fcmwuvzu8dFeIJ5LFcJipShCV83KFD68KGfIYeKHYXxeQ5BVgGIHD8AQ3z9cwLvWsGtR7kd6FwdX8D7Ovvzu/WzP+8X+qZaa9Kz3mzM4n6t4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=raritan.com;
-Received: from DB8PR06MB6539.eurprd06.prod.outlook.com (2603:10a6:10:12f::23)
- by AM7PR06MB6817.eurprd06.prod.outlook.com (2603:10a6:20b:18e::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.33; Mon, 4 Dec
- 2023 12:39:48 +0000
-Received: from DB8PR06MB6539.eurprd06.prod.outlook.com
- ([fe80::98dd:e9db:b7d8:9001]) by DB8PR06MB6539.eurprd06.prod.outlook.com
- ([fe80::98dd:e9db:b7d8:9001%3]) with mapi id 15.20.7046.028; Mon, 4 Dec 2023
- 12:39:48 +0000
-Message-ID: <9221ba01-ae23-4dff-9736-01567de53f36@raritan.com>
-Date: Mon, 4 Dec 2023 13:39:46 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
-Content-Language: en-US
-To: Mark Brown <broonie@kernel.org>
-Cc: David Laight <David.Laight@aculab.com>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, linux-spi <linux-spi@vger.kernel.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Ryan Wanner <ryan.wanner@microchip.com>, stable <stable@vger.kernel.org>,
- Richard Weinberger <richard.weinberger@gmail.com>,
- David Woodhouse <dwmw2@infradead.org>
-References: <a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com>
- <0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com>
- <20231129094932.2639ca49@xps-13>
- <723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
- <1192504136.46091.1701368767836.JavaMail.zimbra@nod.at>
- <20231130211543.2801a55b@xps-13>
- <d4ffca97-bb5d-4c42-a025-69b308c24f82@raritan.com>
- <4642281ef2e749a3b69bbea5474ecdf1@AcuMS.aculab.com>
- <c7980bbf-04aa-4c52-9c6c-f3a1169e90f9@raritan.com>
- <6f603fdd-12dc-4929-98aa-bee1f533e8e2@raritan.com>
- <79a34e2c-013b-42e8-80e4-52fa3c9e1194@sirena.org.uk>
-From: Ronald Wahl <ronald.wahl@raritan.com>
-In-Reply-To: <79a34e2c-013b-42e8-80e4-52fa3c9e1194@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: FR3P281CA0171.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a0::7) To DB8PR06MB6539.eurprd06.prod.outlook.com
- (2603:10a6:10:12f::23)
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701693796; x=1702298596; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=u2D5H/40E07u4uzoUkBpdk/K+y+wwPiPVe0R9TJhoCo=;
+        b=v3opTgY+YTWzL4VBGyJuXYs1BiU0cPkRkeLxBS3Cip67NSZTEKz0Gk9HjnVoXzPvzj
+         pvdednr0azzyvSV/mZv4pPbfS+hOQIwxatJnwfna7M8DE3DAuICpZvoFwxiGKAfoO0u/
+         0IVUOdg3PmchCaLRRKMPFKtgii1EtlLvEJSqK/iRTMUsv4cWu3rQTddwbRI+oBQvS/3Q
+         vPNSO7dX+4lA68h3NgYNbcxe4JDGTDvqpUlDalXLja/qg7pLkcXJshhEKcMscAo3kgdw
+         ao3B7DzpgDyN/gWTeOaddkQp0OPOQ9I+ASu6Bk6AE7Rvf1btoEFbo0WceZhr9Z5I0fFh
+         g7lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701693796; x=1702298596;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u2D5H/40E07u4uzoUkBpdk/K+y+wwPiPVe0R9TJhoCo=;
+        b=Ouc0WP67bo5KZfNkxjvt7R92hypnLhhzsKKKeh8AhAD7hqClOEwgGAuyRq/2ZzUPoF
+         CEHu8SsYFtxK3BC28gYeK21YNELC5zgqmyixzgKZAxn7ITgvmRO6jlJavrmAvXBzlaQn
+         LSjPIS80GZJdZaVkU0ftN0dMhmDXA9q661NwyY4kdTETT3YOfeQMvuYShcLCuVE2BrAg
+         cnrlHZtGGxD6hpwC5JyUGxGU8DNiY1FOZp0Ialuuhl8Bh10FdJgnGKoBKnRGLhGPSwNg
+         4Yr2yWiydFw3o7mHQpBj6CyimQO5RpeHbcFrQu9Vk+kk3L/FVQwbrP0hSC+AqnfYb0nt
+         GbfQ==
+X-Gm-Message-State: AOJu0YxyoSQBW0+tDlTfvwomJ2NEQXSzRKJe/pn3yetl5Cwxdw0ytrWB
+	sZcpB4yraTslEgQyO5u4Et4uP5MIdWeBAhfgQoJxMA==
+X-Google-Smtp-Source: AGHT+IG7dGsuuZVnkdVP/m8LhIfl3FO1MtwJyeNwJcwKaUUxpPJ+hoVdww+2XfCA7FqZwARIKDuFkA==
+X-Received: by 2002:a05:6a20:3c8b:b0:187:fbe3:b4d7 with SMTP id b11-20020a056a203c8b00b00187fbe3b4d7mr2061979pzj.9.1701693796480;
+        Mon, 04 Dec 2023 04:43:16 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id y72-20020a62ce4b000000b006ce5fc42ce4sm861908pfg.50.2023.12.04.04.43.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 04:43:16 -0800 (PST)
+Message-ID: <656dc964.620a0220.1b615.1cac@mx.google.com>
+Date: Mon, 04 Dec 2023 04:43:16 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB8PR06MB6539:EE_|AM7PR06MB6817:EE_
-X-MS-Office365-Filtering-Correlation-Id: bd0cce9c-4fb0-4041-610b-08dbf4c61a57
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	svIrr9i2xFR7Uk65DzylUjlkfnfjBvDtvR6iQCAGmX7f/Zq5usAzlC3a+zdpJkUXkDqAWkbYOANnhvVyK93CPuDtFYe7BvxopGQ822HTDcYmsfS9Q2Li6hq11WVrzizf8M3HA8CQzOTpbUriKLiHuXOzxn2RfeibNF45PiETsTveJD5RdRl3lbeRwUNLZgZJt/6zpgcQJ8y/0XCRIyqG7nuvgDPTvaPoM27J6/TgdrdQ/9Dt4gC1KOvs2ODw6vUgevNjpLrfzYMBRBG9YrRwZo36hhWtSDY64X7FooEq6N9wDVbFJNtxFhqgP2oOgI4f1tKVkmjhXjf2UyR1x6E6ndHX0FndwKOw36VKm5wAdEjAonk2HruK4zY1jXPtnozkgSko5Jp6ePJlq7gHTuKLngKgvOlWpMrZ5+OyYmugZNFy/7Ct2zf64piE0ZzrZ3nKwTgse3Om0R4YFoosmcWFOE9EqFKNF0EJRVFOrqLrk2vnz0y9xBfEfs2L7BMGq2tyS6GToA+57JMTstrFHZXdPKfrb4XLpAMxdXZuKwZgIhIbwGvX1isLoa/zTreUBSTqiiwr46plyj+kNLQb4Af1fnoPEQI96gZDZT8Nc9E2mslPn91VFMxkPgvu2nwG5/77k3nUVkzISPOuFEQMsvsesw==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR06MB6539.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(346002)(396003)(136003)(366004)(39860400002)(230922051799003)(1800799012)(64100799003)(451199024)(186009)(26005)(478600001)(83380400001)(6486002)(6512007)(6506007)(66574015)(53546011)(36756003)(2616005)(316002)(6916009)(66476007)(54906003)(66946007)(66556008)(31686004)(38100700002)(5660300002)(4326008)(86362001)(7416002)(8936002)(8676002)(2906002)(44832011)(31696002)(41300700001)(43740500002)(45980500001);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eHpDUXRyRlR2K0NreTJISWNDUHR2RS8rMUpQMTBYdDR5YW54OFJEZmFYVlU0?=
- =?utf-8?B?NnM5Q1JzU1ovVG5yb3JhcUlzNXlvVEVnL0h2Y1dFdGd5SnhwdUl3eG44Sk1Q?=
- =?utf-8?B?RDU1cHc2RWg2bmRRcEJCY0pxY2lJZGhqak9TVzEyN3NhVU9STHI2MDVuRU8x?=
- =?utf-8?B?dUMvVm44KzlJc2lMOGxqUDNPT2JwdjdTeGRZdWxQWGRVdWp4M3ZyOUhHZG02?=
- =?utf-8?B?MW5OZU9DWWZGd212ZktrUDF6b3FGaHVZdDRVT0xTdytyR1pFK2tSZE9hUTNM?=
- =?utf-8?B?SnZONmdTaHdZVGNwUVVKMGN4UlNjNFg2NTBNTyt1VXU2eWNSdHh3dFZiMjZy?=
- =?utf-8?B?SUV6RU9rVUtoeG5vL2lNK0dEVkF6TUtXcmZ5K2MyMEVlRDV2bUpWQ1FXamRp?=
- =?utf-8?B?RU9KR1VOWWFFRGtOMTdqZ1Vyb2UyeEhSb0g3WHpNMThFMll0UmhOSnlHRTd0?=
- =?utf-8?B?RlFsOGJNaVdxYkU4V0tSS2Q5ZVpsek1EWGFqWk9QT2tYRDhrdkVXc1E0M0JG?=
- =?utf-8?B?NkF3elZnZmpvYkpWSFNwTUVSYjFqTytnUHlwZzZnUnluaU1DT29LajBKTy9U?=
- =?utf-8?B?ckEyVHFjdUR6ZFMwL2pveFVmNDJwQU5naE1YTDQvMm12b2hWRkFwQVY3anAr?=
- =?utf-8?B?djBOSVpxeHBqTUd1SjdxWkdIUlNTMmtsSHJkQWl5d1RCYzd3QUhNaVJidDlL?=
- =?utf-8?B?YVFhb2RXTFQyRytQSjVLczluNHo1SWZLYlpxM0V6a0EvcXdzd3dUcFBrN0c5?=
- =?utf-8?B?STJUMC9ONVZRTXNmUFNVODg1bXh1eXRsYi94SE5oZlh5c0xQUEp6K0g1MUFa?=
- =?utf-8?B?S0FYQU1nWHhCR2tvR3Bka0RFYkQ5MytVaXA4dmxKS0UweEJBbnVhTEl4UjBZ?=
- =?utf-8?B?TE5iYi9kZ29xOVlXTDlDUDhJK0hwN3BzZ0p0S1VtKzZneThKRzhjMWphenRK?=
- =?utf-8?B?VlN0TGJrUmlzcFdhc3NLWXp3K1VacERZdTIya2lBWFlDdkF3TDJlMUdickJz?=
- =?utf-8?B?K1RVa205TlpqRGh0Y3NHNTVVVTFQN3QxY3hoZlZKcUhad3FKRVR2SGlXVkE3?=
- =?utf-8?B?VVUwNTVoNkJQR3IvMVhnek44T2xpa3oxZmlKQ2R4MjZ3bHVQbGVLSjYrR05L?=
- =?utf-8?B?N2IyMFBKUlFxNVdDbjRoTHdENUdxcGtEYXIybVk4L3RHclh1bndJNi8rUVdS?=
- =?utf-8?B?ZFJPOHh6RFp1ZUJaeGdMaEdyYkxPU0s1T3JDbHBvbzBWRUF0dVBHQ0ZDZjdh?=
- =?utf-8?B?Ri9kbkFWWHpkS1JGVzM5QmlBS0hUYUpBWjZFQUJ2dzAyUnBwNHEwVHZoeVlE?=
- =?utf-8?B?cmtYUVZXRHhKaEJPR0lnOWNuOUxTVG9XVmNHSlpPdC9kVkFIaTRuWXRjcUQv?=
- =?utf-8?B?T1RPZUM4TjhZMUJ5eWRWVy9zOG1XZ1J5ckJaazh5Vks0cVN5QWNmNWJTQnIr?=
- =?utf-8?B?d3orUXppVGxEMVViSTJreG91NzVVaW9TNUoraEtmWTJGZ3JFQ1RkTzBUUkpX?=
- =?utf-8?B?Y21aRVpVSnJBRXZzKzdrUUlQUXBRMjVRNWZ5cjZtaTYvdUd4Tm9HRWlDSWU2?=
- =?utf-8?B?VytSRC92Wm9lZnVHRWkxS3V0QkZkSy8wc1YvNUNsMDRjOTN1dElsV2JLVU4r?=
- =?utf-8?B?OEVWa2N4c3lNNzNsOEhVNGNaUHZHQTE2ajdYekJsaGw1YkVSTW4wNDlhRlhB?=
- =?utf-8?B?L3pDU1hTZmxUWDhrWUdRVm9TbTdEc2xFblJGS29sUHl6OGoxeHpUbEU3QVY4?=
- =?utf-8?B?enl4TWhnTjNUL1E3K2ZJSXU4SFYxb1MwOTlwendvVldDVzZoZDlMcmwzV2hO?=
- =?utf-8?B?aTRXbStHVkp1cGQraHA3OTk4U2s1eStkU2dleHkyV0NIYzNMeE53Ni81Ym1C?=
- =?utf-8?B?dnhOcVFlSkxYNGZSRjRYeWpMVHYvamh2WGE3YnF6ekdIRm04OG5rZ2I3M1Bj?=
- =?utf-8?B?bm93MFR0dWhRaTFJekl3aVhpZCtDdVNuMlJ2YmJaNW9uZ2JEK01ZcTlybEpj?=
- =?utf-8?B?UzNyS1VCc0FUdUFuL2t3RWNHTWpMck1ZVmxod1VRVDJUMlZLTlMzdmRsRzU1?=
- =?utf-8?B?QVRlOHpzdzdQZ2xndExXS2MreGx1TUdpcjJGMVE4ZHJLMEl4UytaNzRwRmFE?=
- =?utf-8?B?a1JKazVQamNiKzVlY3A3T3hvdk1BMm9NbU1rZkRmK3MyQTdNSHNKWWc3Q0Vt?=
- =?utf-8?B?bnc9PQ==?=
-X-OriginatorOrg: raritan.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bd0cce9c-4fb0-4041-610b-08dbf4c61a57
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR06MB6539.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 12:39:48.6897
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 199686b5-bef4-4960-8786-7a6b1888fee3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2N0DKvNbDuK9o/NI+7Q/F1Q6EnmzXRaolA9BDjXaqsvHps6qNO88VejJIwNYuPxyNPU6Ft0XIJ9BUpCwZB14yA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR06MB6817
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.331-29-g5a99f45b0e1ae
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.331-29-g5a99f45b0e1ae)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On 04.12.23 13:26, Mark Brown wrote:
-> On Mon, Dec 04, 2023 at 12:54:50PM +0100, Ronald Wahl wrote:
->
->> Revert e0205d6203c2 "spi: atmel: Prevent false timeouts on long transfer=
-s"
->> and the two new patches that are already added to one or more devel tree=
-s
->> [1/2] spi: atmel: Do not cancel a transfer upon any signal
->>        commit: 595d2639451d3490c545c644ece726a0410ad39b
->> [2/2] spi: atmel: Drop unused defines
->>        commit: 28d8051efae17b6d83544f3c1cf06f6a71677e91
->
-> If you want to submit changes please follow the process in
-> submitting-patches.rst.
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.331-29-g5a99f45b0e1ae)
 
-I can actually do this but I wanted to give Miquel the chance to do the
-work.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.331-29-g5a99f45b0e1ae/
 
-- ron
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.331-29-g5a99f45b0e1ae
+Git Commit: 5a99f45b0e1aea3f2f335ec3316873ea0749d6e0
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-________________________________
+Warnings Detected:
 
-Ce message, ainsi que tous les fichiers joints =C3=A0 ce message, peuvent c=
-ontenir des informations sensibles et/ ou confidentielles ne devant pas =C3=
-=AAtre divulgu=C3=A9es. Si vous n'=C3=AAtes pas le destinataire de ce messa=
-ge (ou que vous recevez ce message par erreur), nous vous remercions de le =
-notifier imm=C3=A9diatement =C3=A0 son exp=C3=A9diteur, et de d=C3=A9truire=
- ce message. Toute copie, divulgation, modification, utilisation ou diffusi=
-on, non autoris=C3=A9e, directe ou indirecte, de tout ou partie de ce messa=
-ge, est strictement interdite.
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
 
-This e-mail, and any document attached hereby, may contain confidential and=
-/or privileged information. If you are not the intended recipient (or have =
-received this e-mail in error) please notify the sender immediately and des=
-troy this e-mail. Any unauthorized, direct or indirect, copying, disclosure=
-, distribution or other use of the material or parts thereof is strictly fo=
-rbidden.
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
