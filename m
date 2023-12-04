@@ -1,159 +1,111 @@
-Return-Path: <stable+bounces-3902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E50F803AA7
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 17:45:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15472803B80
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 18:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87A7A1C20B1F
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 16:45:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C20281091
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 17:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064662511D;
-	Mon,  4 Dec 2023 16:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE8E2E828;
+	Mon,  4 Dec 2023 17:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KFlFC6V3"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WzGYea8n"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 301939B;
-	Mon,  4 Dec 2023 08:45:08 -0800 (PST)
-Received: from [172.20.10.13] (unknown [83.232.59.81])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 0511820B74C0;
-	Mon,  4 Dec 2023 08:44:51 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0511820B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701708307;
-	bh=WmfHCN3jVeLCujfeKdxoJP9+xwCwqUAHJemHoreeygQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KFlFC6V35RPeaHC9w0beCchXcugku32yKVEsntKZ3fKxjfVgUqS68wvMhqXHdbBbE
-	 frmWEegr00kCD9RMUNe6mjL52CJ2jwKyND8zZ9wRe7sMGxSgqsnpQUDI2HGBVnZi7k
-	 M82u7dWOIncYGS28B/PcXwmhxyVDQCkk1nOwdxog=
-Message-ID: <450a50ba-4c87-4137-9feb-de8f17e3dfa6@linux.microsoft.com>
-Date: Mon, 4 Dec 2023 17:44:48 +0100
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D1B6FE
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 09:27:09 -0800 (PST)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5d3f951af5aso51937367b3.0
+        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 09:27:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1701710829; x=1702315629; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WhY7K21fTuleJoRqinTH8FQOk8orwGh5uZOpWymHf1Q=;
+        b=WzGYea8n8gKWhOwUN/QBnPZuZ64gGSovVSoWBoiu4lbkEjmhix1LpnW/02s19SFZrU
+         QMVFdWKaxmPZunHSypbzY+U7yR2JTPyA41Cbhk3LyKYudi8ww5ybiC3hT+8dLtwBDuQq
+         Qg74t1rFE9TL1mv3NkTfGz2vK3NybbXMukI32VwczFC2vBgCRWOjUSHMYJs+emm/e3nO
+         xJFhfR5/0+lQmbwE/Uo0mGt4fp6L7vE/lQzYwMNzQTTLWdUS1e4TAi4krkOISbwofcZg
+         mKe0cT4CAIz81vMLSxpK8K8AUvk5aMUMSlTkMo+6raEgYH+8Z5D8apajVYlCQjqmzIDZ
+         9+Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701710829; x=1702315629;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WhY7K21fTuleJoRqinTH8FQOk8orwGh5uZOpWymHf1Q=;
+        b=pmMKITUyoI114vMzI45JPPtkEC1AirDyVO3C1EQeNeVZc6a2NTc/tnNjZ2Aq1yHl6o
+         /69OgWKJRrt9dsJYR+7pBdNp8eGeFgc5jB3SdU3KESjuCUXLFeIcINYHvg/hiSKb1pUl
+         442HIXhZcuwQYlVIME1vTSWTxUl+XhLgFB4sC+quzzwuNK1c5CYOOgvHwtQcNIp+blnV
+         BirZTVCsTXEBugr5DJP9lHh6ZitodOTkqT1VataPC79g/FvZjVVJ7RnUJXcAGX5J7oG4
+         0NjuMlFseNp4dM4fZgQ+ydI9IBvfM70sa8UQNTzm72SIDO5/FkUU8gKYjkUp16VvKqhn
+         Bqlg==
+X-Gm-Message-State: AOJu0Yw6T2/2pdb281k13Hadw6yyYfzQXnbwqqkl0WhDm+gJuMU+rMkd
+	0t39K6CZceweiTJMmi0NAz/VaBEWK/42fUT+
+X-Google-Smtp-Source: AGHT+IEhvePiHl3xyV55jaT6gG1N1cwFNsflp2+fj8EBDZAd96hh+3/YkVm099+dmC2eTTOXHiutCQyCzt5QJhnb
+X-Received: from jthoughton.c.googlers.com ([fda3:e722:ac3:cc00:14:4d90:c0a8:2a4f])
+ (user=jthoughton job=sendgmr) by 2002:a81:b61d:0:b0:5d3:84d4:eb35 with SMTP
+ id u29-20020a81b61d000000b005d384d4eb35mr358241ywh.3.1701710828830; Mon, 04
+ Dec 2023 09:27:08 -0800 (PST)
+Date: Mon,  4 Dec 2023 17:26:45 +0000
+In-Reply-To: <20231204172646.2541916-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Content-Language: en-US
-To: Borislav Petkov <bp@alien8.de>,
- "Reshetova, Elena" <elena.reshetova@intel.com>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "stefan.bader@canonical.com" <stefan.bader@canonical.com>,
- "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
- "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
- "cascardo@canonical.com" <cascardo@canonical.com>,
- "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "sashal@kernel.org" <sashal@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ingo Molnar <mingo@redhat.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Michael Kelley <mhkelley58@gmail.com>, Nikolay Borisov
- <nik.borisov@suse.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
- <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>,
- "Cui, Dexuan" <decui@microsoft.com>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <0799b692-4b26-4e00-9cec-fdc4c929ea58@linux.microsoft.com>
- <20231129164049.GVZWdpkVlc8nUvl/jx@fat_crate.local>
- <DM8PR11MB575085570AF48AF4690986EDE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20231130075559.GAZWhAD5ScHoxbbTxL@fat_crate.local>
- <DM8PR11MB575049E0C9F36001F0F374CEE782A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <20231130092119.GBZWhUD6LscxYOpxNl@fat_crate.local>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20231130092119.GBZWhUD6LscxYOpxNl@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20231204172646.2541916-1-jthoughton@google.com>
+X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
+Message-ID: <20231204172646.2541916-2-jthoughton@google.com>
+Subject: [PATCH 1/2] arm64: hugetlb: Distinguish between hw and sw dirtiness
+ in __cont_access_flags_changed
+From: James Houghton <jthoughton@google.com>
+To: Steve Capper <steve.capper@arm.com>, Will Deacon <will@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>, Muchun Song <songmuchun@bytedance.com>, 
+	Anshuman Khandual <anshuman.khandual@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	James Houghton <jthoughton@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 30/11/2023 10:21, Borislav Petkov wrote:
-> On Thu, Nov 30, 2023 at 08:31:03AM +0000, Reshetova, Elena wrote:
->> No threats whatsoever,
-> 
-> I don't mean you - others. :-)
-> 
->> I just truly don’t know details of SEV architecture on this and how it
->> envisioned to operate under this nesting scenario.  I raised this
->> point to see if we can build the common understanding on this. My
->> personal understanding (please correct me) was that SEV would also
->> allow different types of L2 guests, so I think we should be aligning
->> on this.
-> 
-> Yes, makes sense. The only L2 thing I've heard of is some Azure setup.
+__cont_access_flags_changed was originally introduced to avoid making
+unnecessary changes to the PTEs. Consider the following case: all the
+PTEs in the contiguous group have PTE_DIRTY | PTE_RDONLY | PTE_WRITE,
+and we are running on a system without HAFDBS.  When writing via these
+PTEs, we will get a page fault, and hugetlb_fault will (rightly)
+attempt to update the PTEs with PTE_DIRTY | PTE_WRITE, but, as both the
+original PTEs and the new PTEs are pte_dirty(),
+__cont_access_flags_changed prevents the pgprot update from occurring.
 
-"L2" is the Intel terminology in TD-partitioning (see figure 11.2 in [1]),
-but Azure uses it for the exact same thing as VMPLs in SEV-SNP. On the AMD
-side the community is working on Coconut SVSM[2] and there was an AMD SVSM[3]
-project before that, both of them have the same idea as the Azure paravisor.
-SUSE, Red Hat, IBM and others are active in SVSM development, we've also started
-contributing. I think this kind of usage will also appear on TDX soon.
+To avoid the page fault loop that we get ourselves into, distinguish
+between hardware-dirty and software-dirty for this check. Non-contiguous
+PTEs aren't broken in the same way, as we will always write a new PTE
+unless the new PTE is exactly equal to the old one.
 
-[1]: https://cdrdv2.intel.com/v1/dl/getContent/773039
-[2]: https://github.com/coconut-svsm/svsm
-[3]: https://github.com/AMDESE/linux-svsm
+Fixes: 031e6e6b4e12 ("arm64: hugetlb: Avoid unnecessary clearing in huge_ptep_set_access_flags")
+Signed-off-by: James Houghton <jthoughton@google.com>
+Cc: <stable@vger.kernel.org>
 
-> 
->> Yes, agree, so what are our options and overall strategy on this?  We
->> can try to push as much as possible complexity into L1 VMM in this
->> scenario to keep the guest kernel almost free from these sprinkling
->> differences.
-> 
-> I like that angle. :)
-> 
->> Afterall the L1 VMM can emulate whatever it wants for the guest.
->> We can also see if there is a true need to add another virtualization
->> abstraction here, i.e. "nested encrypted guest".
-> 
-> Yes, that too. I'm sceptical but there are use cases with that paravisor
-> thing and being able to run an unmodified guest, i.e., something like
-> a very old OS which no one develops anymore but customers simply can't
-> part ways with it for raisins
-
-I don't think we'll be seeing Windows XP TDX/SNP guests :)
-
-The primary use case for the paravisor (/SVSM) is pretty common across the
-the industry and projects that I shared: TPM emulation. Then comes the
-other stuff: live migration, "trustlets", further device emulation. All this
-inside the confidential boundary.
-
-> 
->> Any other options we should be considering as overall strategy?
-> 
-> The less the kernel knows about guests, the better, I'd say.
-> 
-
-The challenge lies in navigating the Venn diagram of: standard guest,
-TDX guest and SNP guest. Is a "guest" more "TDX" or more "Hyper-V" (or KVM/Vmware)?
-Should the TDX (and SNP) code be extended with more knowledge of hypervisor
-interfaces or should the hypervisor interfaces know more about TDX/SNP.
-
-I'd love it if we all had some agreement on this. I posted these patches
-based on suggestions that TDX guest-ness takes precedence.
-
-> The other thing I'm missing most of the time is, people come with those
-> patches enabling this and that but nowhere does it say: "we would love
-> to have this because of this great idea we had" or "brings so much more
-> performance" or "amazing code quality imrpovement" or, or other great
-> reason.
-> 
-> Rather, it is "yeah, we do this and you should support it". Well, nope.
-> 
-I hear you, that's we've been making an effort to be more open about use cases
-and capabilities along with patches. We also care about simplifying the code
-to make it easier to follow the flows. I think the whole kernel has come
-a long way since the first confidential guest patches were posted.
-
-Jeremi
-
-> Thx.
-> 
+diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
+index f5aae342632c..87a9564976fa 100644
+--- a/arch/arm64/mm/hugetlbpage.c
++++ b/arch/arm64/mm/hugetlbpage.c
+@@ -437,7 +437,10 @@ static int __cont_access_flags_changed(pte_t *ptep, pte_t pte, int ncontig)
+ 	for (i = 0; i < ncontig; i++) {
+ 		pte_t orig_pte = ptep_get(ptep + i);
+ 
+-		if (pte_dirty(pte) != pte_dirty(orig_pte))
++		if (pte_sw_dirty(pte) != pte_sw_dirty(orig_pte))
++			return 1;
++
++		if (pte_hw_dirty(pte) != pte_hw_dirty(orig_pte))
+ 			return 1;
+ 
+ 		if (pte_young(pte) != pte_young(orig_pte))
+-- 
+2.43.0.rc2.451.g8631bc7472-goog
 
 
