@@ -1,199 +1,380 @@
-Return-Path: <stable+bounces-3894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 257E48038D7
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 16:29:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EAD3803908
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 16:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 470191C20A93
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 15:29:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41B181F210D0
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 15:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80E42C857;
-	Mon,  4 Dec 2023 15:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AAE2C870;
+	Mon,  4 Dec 2023 15:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="vWI4x890"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="RfVeVhvY"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CE86B0;
-	Mon,  4 Dec 2023 07:29:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=QTd6QpQxFZnQxy9FusKqZh72sGevdEcw+KVPhDMm1CFmBqGpjpm/vfeXDXY27VIJ96hbCDN/8QkmRBxtn5dGh3uSeS/iLLqza5vBmFQfQOLFufX9ZYaqR/e/GPcPf/Qcec1ZZDlqbV6bMpfCEj9ssP2QT8Pv4n5IEngbfSpdPgG8aLSCQaVirRHwRwDKCK3Qi86NKlaT5geX7VajHrdCnEXOs5mXWONe8SaKCfEGtOgaGBKP2cnDuu7zNz2Eg//fGYlcajXik45gQRY9tTjyJO3XoxT1O1jzWemjJBje+NI9ArohTkz5976mpl/6K0slTJQC9f0J7tLDOVikpL4Rzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xMvQhM8RWERdywVGGf9d6GCnblKibINeViMgxj2/bHM=;
- b=EBZL78V43Fux0bAkDRfkJOJkXJHeH1Tf8ASJlha4eOHDHwwmm7gdH96JPcjlVW8ScDLV2gsbiY+ZvCMK0jwzWVzeanVn6rFvn9rkHTm8I2mYyEEd2HfyaElCF8nUTbAaEP0iT0z7KxM8zDYg+KhFTzS6XHC4GrPft1oI+ekWDvjp1iIfXYWQZB0ItFpg/vDerz05t6cwRgm5sfLsX2t66Z5QFqpYi0xkddiDO+jcTgZL4FC2+lZHLcwT2wAzgts/771thNJGuprbiTNl9GCYQZN3kAPVzSYtbCP7JaHdEKQdj816oOsBvtQ6OJK6yaWhSuiSapt5w2x01TUH4yjF+Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xMvQhM8RWERdywVGGf9d6GCnblKibINeViMgxj2/bHM=;
- b=vWI4x890dKl4j2vNujxujEoCmOTOXTsIc5bim7s288dmzOIZG5Y1KxQvtLZkcRZyv7kl9b3KPNzzpkbhns1sW1ipqZFoe24mDcCCz000F+f/8TIwqTh+7rd9DGwXjMN9jFmwMSBFhpXSduns28JpjjlH7U7NSKBZ0P1fmxGvSTg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5040.namprd12.prod.outlook.com (2603:10b6:5:38b::19)
- by CY8PR12MB7561.namprd12.prod.outlook.com (2603:10b6:930:94::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.23; Mon, 4 Dec
- 2023 15:29:46 +0000
-Received: from DM4PR12MB5040.namprd12.prod.outlook.com
- ([fe80::6f3c:cedb:bf1e:7504]) by DM4PR12MB5040.namprd12.prod.outlook.com
- ([fe80::6f3c:cedb:bf1e:7504%4]) with mapi id 15.20.7046.033; Mon, 4 Dec 2023
- 15:29:46 +0000
-Message-ID: <e0781c30-a22e-40b5-a387-bae92672c2cd@amd.com>
-Date: Mon, 4 Dec 2023 20:59:35 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] Revert "xhci: Enable RPM on controllers that support
- low-power states"
-Content-Language: en-US
-To: Mathias Nyman <mathias.nyman@linux.intel.com>, gregkh@linuxfoundation.org
-Cc: linux-usb@vger.kernel.org, linux-bluetooth@vger.kernel.org,
- mario.limonciello@amd.com, regressions@lists.linux.dev,
- regressions@leemhuis.info, Basavaraj.Natikar@amd.com, pmenzel@molgen.mpg.de,
- bugs-a21@moonlit-rail.com, stable@vger.kernel.org
-References: <3d3b8fd3-a1b9-9793-b709-eda447ebd1ab@linux.intel.com>
- <20231204100859.1332772-1-mathias.nyman@linux.intel.com>
- <070b3ce1-815c-4f3d-af09-e02cda8f9bf0@amd.com>
- <db579656-5700-d99b-f1eb-c1e27749eb7b@linux.intel.com>
- <f28b4e98-dd9b-458e-8a72-a9da3c0727cd@amd.com>
- <273a8811-f34e-dbe7-c301-bb796ddcced1@linux.intel.com>
-From: Basavaraj Natikar <bnatikar@amd.com>
-In-Reply-To: <273a8811-f34e-dbe7-c301-bb796ddcced1@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BMXPR01CA0074.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:b00:54::14) To DM4PR12MB5040.namprd12.prod.outlook.com
- (2603:10b6:5:38b::19)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40D46B0
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 07:41:12 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-28647f4ebd9so2800713a91.3
+        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 07:41:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701704471; x=1702309271; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SokId88jukRLfCTxk8ctMAtCOLyveKtRsKr3LrV/dt0=;
+        b=RfVeVhvYohOpMup5QYlsavG24ev0yNuE2iMEq/6HTM0X2Oij3NwFOHrgUgSLfjXyGD
+         /ts2ljXdnPqWUd8lHzGXFkjJmxvYtnRT/XLkgysgOhWusCMNMcNLN8/TVvVHB/bFeiar
+         4V9n2CFZFWKzMhCL4OUtpKl49yS92BnwGKyrvtf9PPH4rkw2faf4/5bKqXymMo5gw2Hr
+         wC9PUDBW7oFfOozWLfgEhdmsfq3R90oPeEhUgJ4AhT0JUf/behyKKON4sFurM9/k5UIh
+         KXG+drEA70Ep0lOL7rk/ET94stoY6JQGhARQkV0mg4lxZ8oxlN3embIhwpEr0Nn9GRjG
+         6YYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701704471; x=1702309271;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SokId88jukRLfCTxk8ctMAtCOLyveKtRsKr3LrV/dt0=;
+        b=ja58YDqQYZ5e6vzSgf2B3F6IvU9m/qL7arUqLJecLkmlMvkVU1ElXaQvEG4k4U2EZF
+         l+JMvHPgUs266y/x+oXXYnnIRYhHdrlspDCx6r7qqDSj/slCEil2iIByhnbYZiuzzDTP
+         SR+gw+VdMAJCHKhmk+MO5Vaih7T0uhXDk0vf+H/6eSgVdeFJ20kD+5KNfVVk266lrI3c
+         pQr+G9OFzaswtB5nhORJD7Cb5NE2acuysxq1nAqE7J2/RyxmqLbcD8AtDv2twQQo+oP2
+         +7wXs7Lgw0Yf5FslzChN+3v8AF1nF9s8ihY/WYc6v409hktiuFQH7pHp9rMtvXhE41YJ
+         AdiA==
+X-Gm-Message-State: AOJu0YznZPRMktbYHEGv1RpdnGVqBT/VczGcjaen3Wj/RnUEVV+vAabi
+	IuxHNlmjgUCYMEbVUtk3FO9gZHr79r1bCJLbIOjBvg==
+X-Google-Smtp-Source: AGHT+IFDYfv/XHrM0LPhSFbFoAa3LOjswZ/fFiJzkMSN5wYoJHAwuuuza4EEn+1YwQ0nYR1akvMqjw==
+X-Received: by 2002:a17:90a:fe86:b0:286:6cc1:5fdd with SMTP id co6-20020a17090afe8600b002866cc15fddmr1573694pjb.96.1701704471194;
+        Mon, 04 Dec 2023 07:41:11 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id b6-20020a17090a7ac600b002868635df0asm3329890pjl.37.2023.12.04.07.41.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 07:41:10 -0800 (PST)
+Message-ID: <656df316.170a0220.832d5.7164@mx.google.com>
+Date: Mon, 04 Dec 2023 07:41:10 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5040:EE_|CY8PR12MB7561:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e88b695-44a5-4aaa-08b8-08dbf4ddd8ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	1NQrg7FELx9AuSg8SUQlJe/fme2f8+nxUJLfKm+fkbYYnP3tlmRqJWj7Ztv9wesHffjR53Y6vhvDCgB5y+DRVuC37bbzQQUlQ0+h3VtHR3WsYIkKI0zKmbQvZoz8TJ6GTZ/vPeyp4f5q14sITXymOgLKq9LOawfh6xnOe99LFb1R5mIleHjyt056wKwxXzzuS0obKrGTu7oZ8ItSJM7e0ki+RZ1XXONPL0R/zMslFR29NHU6k0OwCzseZ2nZNUnSOg7h5RA/tHtqeuUbg5OP/pMgVmTMRO20ryNuqI5yNFjn+n2pbnhcFv0FG99/ikjz2hKMh3rICkscaKyEZPfQuvwWbmFohi0GmHxdQcqeXqolcoAImoleribgUbhH3VsuzCowmO09C/yOR6MiDlTolGnkE3cp0Qf9bOGhm5busLuNwoesmRnRNmRpA8R+RZcEeB74H8IctByyyp67Gi/dwPfmwydTzVaiGbnSrAYUsATYfe2BnvguHywLXk/z5nCVdj7yvr23FyZDZzBnqv1pN8U0pphnp7XKQRhMR+MEI3h2zxiI/ysIi5LmNnUUiJe+MvLvwYBHniPYCpiOWJ143mBaD+7uRuJllNpXDTTwGn9fEhkug7oxS7keXr5EQCP0YaR0znJ4SvZHIsh31Hux1Q==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5040.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(366004)(396003)(376002)(39860400002)(136003)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(6666004)(6506007)(6486002)(6512007)(31696002)(53546011)(8676002)(36756003)(5660300002)(8936002)(966005)(41300700001)(478600001)(31686004)(2616005)(66476007)(66946007)(66556008)(4326008)(38100700002)(26005)(316002)(2906002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RUhIZVhqYnRnQStueE5OQ0tMZDZudnhtSVRrZm1nM1BvR2dHc1V6RUc5bDVL?=
- =?utf-8?B?SHFsb0N0eTNtMVBtdEt6Vm96TXJvWDIzU0lqbkJBMURoY2pVVHppd3JCRHBH?=
- =?utf-8?B?RzRJd0l1UnAwTGpWakI1V1dTd3lpb2o4VXJ4OTZiQlZUbXBNTnMvL2RNUDJF?=
- =?utf-8?B?L3ErZHQyM2VnOFowMGRWRCtNT2xUTTl4ZE9OalU4eXFTQ1RWQTFta3V1aGRI?=
- =?utf-8?B?aWJYZ1ZxSGkyUEhTdWFmQVNidDRTWjF6Zkt4L0JFdEd4bEJwRVRZUGZpa3dM?=
- =?utf-8?B?OWozMnh5clY1eHY3d09tRXlNY1oybVdZU29JSjVtMktaYmgyU0Zua3pMQTJI?=
- =?utf-8?B?MHduTFNKbVJUZllJTytDYnEvMzZUbHFLNWtGT2MxOVdEdFpRTkZvS0tOL2p2?=
- =?utf-8?B?VnhEUmtpSzI3S2ZxNWFPbGUwQlIrNzQ5U2RKTmJPTng4K3ZXUEk1dGwyYlJ2?=
- =?utf-8?B?Z3YrWmJqQktab0liTkJyenpMbGtUTktMaVpvRkpmOHl0U3d6VnNTanR1Tzc5?=
- =?utf-8?B?NitjMXRQcXgrTHVFTVhHeFpncXV4eXhoSHU3OVJTK2dGVU9Xd3NjUXc2Tk9F?=
- =?utf-8?B?eUkyeVIrcEdTTXBLOXJ4ME1pUmI3T0NvNVFKSks4Ny9wekVmdy9raUZDbTJD?=
- =?utf-8?B?YXBnTTZiSGdKRCtCd3lXZWVJZTMwNmZra3J0R2Mxd0hMT3BmZk44NnNTZ2dC?=
- =?utf-8?B?dE9TNVZpZmNXMFd1TmhHVVZnZmVoWXJ2eHUwdy9QSlhxUDhiWDRJaVk3VDRO?=
- =?utf-8?B?ak94Y1lzZ0Zva09LcTRXNU9Za0lxVEdtNVdWbC9Sc3JjS00vZkUwYmVkY2Rs?=
- =?utf-8?B?eEQzNmxBT01kVE1Yb3AxejR3RFhWbXAvUjN5NVBvd1NTN1FmZDFRZm13N01N?=
- =?utf-8?B?SG5ZSmU3K2szc2UrL0FRbUd5TlRsdWMwM0JqQVBIaHBqY3FmT1I3ZGd5YXly?=
- =?utf-8?B?N1liTmFMOUFZa1RuZkZSb0JoMjRubUphMHdNaitzMENpNnREQU1Id2tCQnQv?=
- =?utf-8?B?WW5tTzE2anFHOXVaMDgyUm12QmZKeDZFby9VcHZIK01HczgzSnFHeVdMWnVa?=
- =?utf-8?B?VGx0NGl2SUJVL0J2Z1BjMnBuK2kvY1E0TkFXOUhaaWQzK2ZzbGpaWDJZVmxP?=
- =?utf-8?B?U3BZZXc4ajE3Q3FjN3NZcnBLYTZMNmdSZEwvWnFqRExhaUc2ZFMyR21acXVr?=
- =?utf-8?B?WStwTnNLMEE3Y1pSM1Fya3c3K2NFczBzTDFuQURlOGlkampGaXpOWFE5dDV0?=
- =?utf-8?B?WnRwa1pNM3R2L0swM1dkeTlWYk1HQWVoSDZqOUtaaW5iNmplb0JRdzR5VSty?=
- =?utf-8?B?REliMHZ4aEc5ZTNrWGpKVXpJcXN6VFhXakxsU09pWk9KZFdMQWNhNmc5RXRF?=
- =?utf-8?B?aFZmZDJxVUdKbk5ZWjg2T3p5V0NUQjBCMXlUdlkxNzNJQVZicmM2YUpLaWJn?=
- =?utf-8?B?bkgzeGwzcE9xaW9kU0VxdU1xWnRSMEZTaVVzWGsvTVVaTklRYVduWmI3ZVBK?=
- =?utf-8?B?R0crNlJDV1U5QWtGN1FEV1lRR3YzbWo0bURaY2Q4UlRsYnBZajUzOU5iRjln?=
- =?utf-8?B?enIrN0hxT0NTb2ZWN3RhWUZieEZPTWVha3lSWmhGY2RFZ0V6ZVFYaHJ5NTE2?=
- =?utf-8?B?LzB4MlN3Qm1Na1M2L3lEbnhDTGF0Q1UzSDNrWExvckZ4amczMWxFZFhmanBC?=
- =?utf-8?B?STY2dHhiTGN4czVLdlNXWkdkZ29Tbk51QTJIYXpSYlQ3S1FwdkJUdldBZ0gz?=
- =?utf-8?B?VE1JaEZlazNHTUpqNnZMOU1QNlRmMTQ5VXlhbG5nVmgzckJKbTJaUWJ5K2pw?=
- =?utf-8?B?ZWFtNDdkN2Zveno0dVBLbWpWRHpXK1JuZTNyODNSQjhva1FxMDhXdlhTbVBm?=
- =?utf-8?B?c2dFbndQbHhUejV2WVZmU0J3WTczbmZleERRS0VydmMxeVJ2OGk5Y2dmVW9u?=
- =?utf-8?B?d1pOcUl2WDdpZ0pYMm9aMjFacUdDQzh5aEl3T2kzZWIvSGRwdHhlT1JGc2tL?=
- =?utf-8?B?cVFmY3Yzak85S1g5OW9LSWdPYThRdW9oaVlRRkFDWU9mSEpVSDd5QTB1RmVK?=
- =?utf-8?B?U0VwaE1jVUxJb3lkU2RmTnpwaTM0dHQ3UzVhcHhSMURhSnFtdWpJZ2ZMT0kz?=
- =?utf-8?Q?NKmg3ocUuni5ruYLteCzaRjio?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e88b695-44a5-4aaa-08b8-08dbf4ddd8ac
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5040.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Dec 2023 15:29:46.7027
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Gznxtr5Q4knTROAHH6e5ed3jv2lNpCwCXuETF58RZBVodnSqF8Ki7YTyxN3DdhYbW72dmB+aB1+JmkQoWULRDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7561
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.1.65-95-g9ea643fb97f9d
+Subject: stable-rc/queue/6.1 baseline: 140 runs,
+ 5 regressions (v6.1.65-95-g9ea643fb97f9d)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
+
+stable-rc/queue/6.1 baseline: 140 runs, 5 regressions (v6.1.65-95-g9ea643fb=
+97f9d)
+
+Regressions Summary
+-------------------
+
+platform           | arch  | lab             | compiler | defconfig        =
+   | regressions
+-------------------+-------+-----------------+----------+------------------=
+---+------------
+beaglebone-black   | arm   | lab-broonie     | gcc-10   | omap2plus_defconf=
+ig | 1          =
+
+imx6dl-riotboard   | arm   | lab-pengutronix | gcc-10   | multi_v7_defconfi=
+g  | 1          =
+
+r8a77960-ulcb      | arm64 | lab-collabora   | gcc-10   | defconfig        =
+   | 1          =
+
+sun50i-h6-pine-h64 | arm64 | lab-clabbe      | gcc-10   | defconfig        =
+   | 1          =
+
+sun50i-h6-pine-h64 | arm64 | lab-collabora   | gcc-10   | defconfig        =
+   | 1          =
 
 
-On 12/4/2023 8:36 PM, Mathias Nyman wrote:
-> On 4.12.2023 16.49, Basavaraj Natikar wrote:
->>
->> On 12/4/2023 7:52 PM, Mathias Nyman wrote:
->>> On 4.12.2023 12.49, Basavaraj Natikar wrote:
->>>>
->>>> On 12/4/2023 3:38 PM, Mathias Nyman wrote:
->>>>> This reverts commit a5d6264b638efeca35eff72177fd28d149e0764b.
->>>>>
->>>>> This patch was an attempt to solve issues seen when enabling
->>>>> runtime PM
->>>>> as default for all AMD 1.1 xHC hosts. see commit 4baf12181509
->>>>> ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
->>>>
->>>> AFAK, only 4baf12181509 commit has regression on AMD xHc 1.1 below is
->>>> not regression
->>>> patch and its unrelated to AMD xHC 1.1.
->>>>
->>>> Only [PATCH 2/2] Revert "xhci: Loosen RPM as default policy to cover
->>>> for AMD xHC 1.1"
->>>> alone in this series solves regression issues.
->>>>
->>>
->>> Patch a5d6264b638e ("xhci: Enable RPM on controllers that support
->>> low-power states")
->>> was originally not supposed to go to stable. It was added later as it
->>> solved some
->>> cases triggered by 4baf12181509 ("xhci: Loosen RPM as default policy
->>> to cover for AMD xHC 1.1")
->>> see:
->>> https://lore.kernel.org/linux-usb/5993222.lOV4Wx5bFT@natalenko.name/
->>>
->>> Turns out it wasn't enough.
->>>
->>> If we now revert 4baf12181509 "xhci: Loosen RPM as default policy to
->>> cover for AMD xHC 1.1"
->>> I still think it makes sense to also revert a5d6264b638e.
->>> Especially from the stable kernels.
->>
->> Yes , a5d6264b638e still solves other issues if underlying hardware
->> doesn't support RPM
->> if we revert a5d6264b638e on stable releases then new issues (not
->> related to regression)
->> other than AMD xHC 1.1 controllers including xHC 1.2 will still exist
->> on stable releases.
->
-> Ok, got it, so a5d6264b638e also solves other issues than those
-> exposed by 4baf12181509.
-> And that one (a5d6264b638) should originally have been marked for stable.
->
-> So only revert 4baf12181509, PATCH 2/2 in this series
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
+el/v6.1.65-95-g9ea643fb97f9d/plan/baseline/
 
-Thank you, that is correct.
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/6.1
+  Describe: v6.1.65-95-g9ea643fb97f9d
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      9ea643fb97f9d02c5de515a8f66a8207ebd53596 =
 
-Thanks,
---
-Basavaraj
 
->
-> Thanks
-> Mathias
 
+Test Regressions
+---------------- =
+
+
+
+platform           | arch  | lab             | compiler | defconfig        =
+   | regressions
+-------------------+-------+-----------------+----------+------------------=
+---+------------
+beaglebone-black   | arm   | lab-broonie     | gcc-10   | omap2plus_defconf=
+ig | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656dc092bfde6d9d0be13493
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: omap2plus_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beagleb=
+one-black.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm/omap2plus_defconfig/gcc-10/lab-broonie/baseline-beagleb=
+one-black.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/656dc092bfde6d9d0be13=
+494
+        new failure (last pass: v6.1.65-53-gab9d7fb08abaf) =
+
+ =
+
+
+
+platform           | arch  | lab             | compiler | defconfig        =
+   | regressions
+-------------------+-------+-----------------+----------+------------------=
+---+------------
+imx6dl-riotboard   | arm   | lab-pengutronix | gcc-10   | multi_v7_defconfi=
+g  | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656dbf4fd1985db645e1347c
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: multi_v7_defconfig
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm/multi_v7_defconfig/gcc-10/lab-pengutronix/baseline-imx6=
+dl-riotboard.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm/multi_v7_defconfig/gcc-10/lab-pengutronix/baseline-imx6=
+dl-riotboard.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656dbf4fd1985db645e13485
+        new failure (last pass: v6.1.65-53-gab9d7fb08abaf)
+
+    2023-12-04T11:59:50.968240  + set[   14.988710] <LAVA_SIGNAL_ENDRUN 0_d=
+mesg 1014147_1.5.2.3.1>
+    2023-12-04T11:59:50.968508   +x
+    2023-12-04T11:59:51.074093  / # #
+    2023-12-04T11:59:51.175219  export SHELL=3D/bin/sh
+    2023-12-04T11:59:51.175664  #
+    2023-12-04T11:59:51.276420  / # export SHELL=3D/bin/sh. /lava-1014147/e=
+nvironment
+    2023-12-04T11:59:51.276784  =
+
+    2023-12-04T11:59:51.377496  / # . /lava-1014147/environment/lava-101414=
+7/bin/lava-test-runner /lava-1014147/1
+    2023-12-04T11:59:51.378335  =
+
+    2023-12-04T11:59:51.381081  / # /lava-1014147/bin/lava-test-runner /lav=
+a-1014147/1 =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab             | compiler | defconfig        =
+   | regressions
+-------------------+-------+-----------------+----------+------------------=
+---+------------
+r8a77960-ulcb      | arm64 | lab-collabora   | gcc-10   | defconfig        =
+   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656dbc0b72244563fae13567
+
+  Results:     4 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb=
+.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulcb=
+.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656dbc0b72244563fae13570
+        failing since 11 days (last pass: v6.1.31-26-gef50524405c2, first f=
+ail: v6.1.63-176-gecc0fed1ffa4)
+
+    2023-12-04T11:53:45.074401  / # #
+
+    2023-12-04T11:53:45.176640  export SHELL=3D/bin/sh
+
+    2023-12-04T11:53:45.177352  #
+
+    2023-12-04T11:53:45.278748  / # export SHELL=3D/bin/sh. /lava-12177032/=
+environment
+
+    2023-12-04T11:53:45.279469  =
+
+
+    2023-12-04T11:53:45.380956  / # . /lava-12177032/environment/lava-12177=
+032/bin/lava-test-runner /lava-12177032/1
+
+    2023-12-04T11:53:45.382058  =
+
+
+    2023-12-04T11:53:45.398395  / # /lava-12177032/bin/lava-test-runner /la=
+va-12177032/1
+
+    2023-12-04T11:53:45.447397  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-04T11:53:45.447908  + cd /lav<8>[   19.113909] <LAVA_SIGNAL_STA=
+RTRUN 1_bootrr 12177032_1.5.2.4.5>
+ =
+
+    ... (28 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab             | compiler | defconfig        =
+   | regressions
+-------------------+-------+-----------------+----------+------------------=
+---+------------
+sun50i-h6-pine-h64 | arm64 | lab-clabbe      | gcc-10   | defconfig        =
+   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656dbbfd72244563fae13516
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h=
+64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-h=
+64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656dbbfd72244563fae1351f
+        failing since 11 days (last pass: v6.1.22-372-g971903477e72, first =
+fail: v6.1.63-176-gecc0fed1ffa4)
+
+    2023-12-04T11:46:00.803342  / # #
+    2023-12-04T11:46:00.904960  export SHELL=3D/bin/sh
+    2023-12-04T11:46:00.905557  #
+    2023-12-04T11:46:01.006529  / # export SHELL=3D/bin/sh. /lava-446492/en=
+vironment
+    2023-12-04T11:46:01.007130  =
+
+    2023-12-04T11:46:01.108139  / # . /lava-446492/environment/lava-446492/=
+bin/lava-test-runner /lava-446492/1
+    2023-12-04T11:46:01.108974  =
+
+    2023-12-04T11:46:01.114721  / # /lava-446492/bin/lava-test-runner /lava=
+-446492/1
+    2023-12-04T11:46:01.187991  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-12-04T11:46:01.188291  + cd /lava-446492/<8>[   18.575246] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 446492_1.5.2.4.5> =
+
+    ... (11 line(s) more)  =
+
+ =
+
+
+
+platform           | arch  | lab             | compiler | defconfig        =
+   | regressions
+-------------------+-------+-----------------+----------+------------------=
+---+------------
+sun50i-h6-pine-h64 | arm64 | lab-collabora   | gcc-10   | defconfig        =
+   | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/656dbc1f604a9a8a29e13479
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pin=
+e-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.65-95=
+-g9ea643fb97f9d/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pin=
+e-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/656dbc1f604a9a8a29e13482
+        failing since 11 days (last pass: v6.1.22-372-g971903477e72, first =
+fail: v6.1.63-176-gecc0fed1ffa4)
+
+    2023-12-04T11:53:58.567460  / # #
+
+    2023-12-04T11:53:58.669694  export SHELL=3D/bin/sh
+
+    2023-12-04T11:53:58.670376  #
+
+    2023-12-04T11:53:58.771695  / # export SHELL=3D/bin/sh. /lava-12177030/=
+environment
+
+    2023-12-04T11:53:58.772443  =
+
+
+    2023-12-04T11:53:58.873930  / # . /lava-12177030/environment/lava-12177=
+030/bin/lava-test-runner /lava-12177030/1
+
+    2023-12-04T11:53:58.875021  =
+
+
+    2023-12-04T11:53:58.891855  / # /lava-12177030/bin/lava-test-runner /la=
+va-12177030/1
+
+    2023-12-04T11:53:58.958869  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-04T11:53:58.959371  + cd /lava-1217703<8>[   19.419986] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12177030_1.5.2.4.5>
+ =
+
+    ... (11 line(s) more)  =
+
+ =20
 
