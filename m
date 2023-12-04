@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-3916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09B56803F6C
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:33:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11DE0803F6E
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8B40281260
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:33:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEBE22812B3
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C2B33CF1;
-	Mon,  4 Dec 2023 20:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A033418F;
+	Mon,  4 Dec 2023 20:33:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OZejgbE4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b4aWd4t4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39FE34188;
-	Mon,  4 Dec 2023 20:33:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755A3C433CA;
-	Mon,  4 Dec 2023 20:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FEF35EF5;
+	Mon,  4 Dec 2023 20:33:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8A2C433C7;
+	Mon,  4 Dec 2023 20:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701722021;
-	bh=X1klMmWdf1dNqRM/ewLPdf27HcjpBybRBVQtAuh6UXI=;
+	s=k20201202; t=1701722024;
+	bh=40ewDILkJWQcO31G58cjJ0L3RCQpKqcx73H5B5VDZvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZejgbE4vcAkhEmZFqS5njVCbKsQMPqwGjtuzaBIWlI+aQg6Hs3oogpdJ49yvKPs/
-	 lcRKUmSD3QVJX/SHedpUIPTGZ1/b3eijLdeIqda0ME2BAXS9bJHBKA3pU8jmCnPZ26
-	 PRqUuJT4CIXY0tLUqsr2nstqC1iB7a2/IQQExhK/UADrPJIsbCpFnCBx8iLo99QapH
-	 cGSLz50wViDcs8uSI040hs4oCd8c9mhDqVWFUSl6A2uSg/PGbfuup3LyvqtbiDVSTZ
-	 ob+wHUQd+nY8SGtjgvYDgXFWlrzCFu+JR6RilhSEmdigu0mHntp64ctU4MoMw2aqWQ
-	 ITGvYqQ0jO1+A==
+	b=b4aWd4t4td4C0EqD9IrW+Q8FLRpJM0p+/OHXF9zHEOMDNXpOZ6I5f2/3zURvtRGpc
+	 PqssrxAf+PFRYr9R9VZLZ+NpRiR9u/hCrXYqYEMW5w7e293sDURoHvT6cZTbl01RcM
+	 ykZ8jfo/HZQFl0viMRnMNFmwDaniGpcfOdjxlkkB3u3UX7LLUOIzkCOwaR9nr+Q9cD
+	 V6tjOX5OcrzzMrc38CNXnKec5tQezZKQNKap8uhIwnl17wicgppTXZ5sc7m0sEg2/p
+	 Nmhx4e7cRVyqDFYE4F/wCYRwHWhUdFIPt2YSVO4WKqgWaBt5piPj4xHmo0Zokue6eR
+	 kS0GYyoI5Uvdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 09/32] ksmbd: don't update ->op_state as OPLOCK_STATE_NONE on error
-Date: Mon,  4 Dec 2023 15:32:29 -0500
-Message-ID: <20231204203317.2092321-9-sashal@kernel.org>
+	matttbe@kernel.org,
+	martineau@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	mptcp@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 10/32] mptcp: fix uninit-value in mptcp_incoming_options
+Date: Mon,  4 Dec 2023 15:32:30 -0500
+Message-ID: <20231204203317.2092321-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231204203317.2092321-1-sashal@kernel.org>
 References: <20231204203317.2092321-1-sashal@kernel.org>
@@ -57,33 +63,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.4
 Content-Transfer-Encoding: 8bit
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit cd80ce7e68f1624ac29cd0a6b057789d1236641e ]
+[ Upstream commit 237ff253f2d4f6307b7b20434d7cbcc67693298b ]
 
-ksmbd set ->op_state as OPLOCK_STATE_NONE on lease break ack error.
-op_state of lease should not be updated because client can send lease
-break ack again. This patch fix smb2.lease.breaking2 test failure.
+Added initialization use_ack to mptcp_parse_option().
 
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/mptcp/options.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 7eaac1098f637..78517e3b53104 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -8228,7 +8228,6 @@ static void smb21_lease_break_ack(struct ksmbd_work *work)
- 		return;
- 
- err_out:
--	opinfo->op_state = OPLOCK_STATE_NONE;
- 	wake_up_interruptible_all(&opinfo->oplock_q);
- 	atomic_dec(&opinfo->breaking_cnt);
- 	wake_up_interruptible_all(&opinfo->oplock_brk);
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index cd15ec73073e0..c53914012d01d 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -108,6 +108,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 			mp_opt->suboptions |= OPTION_MPTCP_DSS;
+ 			mp_opt->use_map = 1;
+ 			mp_opt->mpc_map = 1;
++			mp_opt->use_ack = 0;
+ 			mp_opt->data_len = get_unaligned_be16(ptr);
+ 			ptr += 2;
+ 		}
 -- 
 2.42.0
 
