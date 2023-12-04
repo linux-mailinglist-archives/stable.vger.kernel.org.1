@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-3856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D269803117
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 11:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F0080311F
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:00:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6FE7280F15
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B23F4280E60
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 11:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BD9224FE;
-	Mon,  4 Dec 2023 10:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5B1D224F1;
+	Mon,  4 Dec 2023 11:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="THxqjWhJ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="z8GxFUzr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F0B9CC
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 02:59:44 -0800 (PST)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-a00c200782dso592219066b.1
-        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 02:59:43 -0800 (PST)
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12D11113
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 03:00:00 -0800 (PST)
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-54cdef4c913so895132a12.1
+        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 02:59:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701687582; x=1702292382; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1701687598; x=1702292398; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=/0HgHBQ0hx8GhQGLQxTtBI+1qocQEqc+9+F9Qoq89AE=;
-        b=THxqjWhJP193OdEDpAs3IJsULiFS9oKHPkt8lB4o9dSj+1uIebsTDFoeY9pgEUIKWG
-         IPZ2l588LLqeC0H84+tY1m2Bu0PRFknR7w8uJVUuTbInVrb1YOGi2aP2hL8/usJW2rU0
-         DEt/RWipXa0svK3zAthSQp1ZWWe3tHtvzEC+ptjAjZvBWg43YCMDki+Ug8Ctqd4oZX7i
-         LjkS/m2kklWD2RjnYiVJ1h4DspsvuYhEsi++2fzY8Tlna9XPbHgWOWnZt+vtDxAp3Bvq
-         4oz/TgktmWM71iuvgnUaoUlY2hvZs+E3mOo1WCiQ8ouK/Y88Tl3ugbF1UOrWXdVLSInI
-         BWtA==
+        bh=0UZiTscdrvqfLrwy30AwVqngp6T7XzxdwFwSMft6nhU=;
+        b=z8GxFUzrTjz/WjrEsC/J1q1fF8XtJah/s1bHBE5mfAvZPMRsgpB5cIafOe+/r9vxr0
+         oz6ldwuoP5YaVpte6E7LI//dD/kRLOVDCFLbTHmTih1eH0ruIT33KYpeTKwDVCzZIzwh
+         3cKb2jbACiqwTM5pFZUfanYMxF2Xw+0q3LqQjVEQgHZTMQX7T3MVOQ904HH5/E3yU4gV
+         x/hHzKgEbUTocn4UdJcsYgyy6kJQY7Mr+dcMNJiKmIe+AuQg3R1QG7kQuzNtzYkKAAqO
+         MV50GPZS1bnoAdTrZfx3TfI9eh0xNBXLEXNWAxpJvEhtAy4LFwj56/jpQ8zkPEfazzOE
+         40DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701687582; x=1702292382;
+        d=1e100.net; s=20230601; t=1701687598; x=1702292398;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/0HgHBQ0hx8GhQGLQxTtBI+1qocQEqc+9+F9Qoq89AE=;
-        b=d8Pj/dmsOcqzOu3a+hvW18HpCGRDv7wGmcbUarAIvp0ZpQmt3ElMioV7bjKjkQy3+N
-         2nF/ISqmIVXglAzxCbYR7RpXxDD2kgUH66f5QP4G7Pd4Evlfqp1cJpFTMghgs/kK9Nzk
-         yq9NhXfxMDWA4mCon9lMtFVZLwWBy6u1HsXEzGyE7Azv3i2sqh2Ng7e2LATfdktXL7uF
-         gE5CALGxlBiUsM+UkPAg2gLZLZrjlTLYFlbm+E7wsJIjSwpXyhmGAoiPxQ/pgaWtHmBy
-         eqRgGJ22uJzvAVG28TEOmDBCEPVmsHUOZD3YS5drlb38OQA+jdSE8wKy1RCO5ZfX8k9g
-         CH0Q==
-X-Gm-Message-State: AOJu0YwZuW3rYJCD11sAmUDn0Y5Q9KaGp+WcNkhj6oPTtJAWqlRcmyTX
-	XI5y8Xv3J0DLKzJG4nIXVfsgpw==
-X-Google-Smtp-Source: AGHT+IGv4vUMb4KB9godAH5Y+diZk9TpgDQc8jfgSTmIpUrIMAi3Qm+1ZtlHQHqpQXnUwIL1Ho+pCg==
-X-Received: by 2002:a17:906:d3:b0:a1a:4f0a:2ede with SMTP id 19-20020a17090600d300b00a1a4f0a2edemr1468893eji.219.1701687582397;
-        Mon, 04 Dec 2023 02:59:42 -0800 (PST)
+        bh=0UZiTscdrvqfLrwy30AwVqngp6T7XzxdwFwSMft6nhU=;
+        b=Ee6L/XXDmtrvRmN+TxjjN6QgWl0k2r3n74xoMyiRy3/9Wu1E11NSUwDln18KMiTfdm
+         ubxWXy2a2x/0KLI2ekz9OlL0V847+KZUatNbspo3mUqzi3kzRPHWnKdg/A+QZgYxJ0jq
+         2YEbXHGK/sfbTgGjkrYI4Ir+Wq+dh5jJCcCPJI+aktkXZAxO/LakbWyoAZ9GjOguuFsu
+         Gu7L8OwZPOoqyrAePBkOCpDENcK6Fbg7kkvkeUyfFDn2rO0prYBNhrAsfCNdt+WBCvXA
+         W1JcGfpFqTm2dK9A7gq/bNdlBeCy4WFKQo1Hi2ydsVl7GHQSvg97rWad5Be/0NxBytba
+         1QXQ==
+X-Gm-Message-State: AOJu0YxSg58s5res5HcZLYFehFdUEWrRZxOGiXncVO57ddcbzq5xoD19
+	jSyxUi1OsU6CGPoltGdr7BL2kg==
+X-Google-Smtp-Source: AGHT+IH6YNMJgPuilryBN3FihpD8caMksKHY0VPo7u2+B069qKRk7r4odWOBmch9unNmjJPoEsKOHg==
+X-Received: by 2002:a17:906:24b:b0:9a5:dc2b:6a5 with SMTP id 11-20020a170906024b00b009a5dc2b06a5mr5354376ejl.35.1701687598414;
+        Mon, 04 Dec 2023 02:59:58 -0800 (PST)
 Received: from ?IPV6:2001:1c06:2302:5600:366d:ca8f:f3af:381? (2001-1c06-2302-5600-366d-ca8f-f3af-0381.cable.dynamic.v6.ziggo.nl. [2001:1c06:2302:5600:366d:ca8f:f3af:381])
-        by smtp.gmail.com with ESMTPSA id jt14-20020a170906ca0e00b00a13f7286209sm5168944ejb.8.2023.12.04.02.59.41
+        by smtp.gmail.com with ESMTPSA id jt14-20020a170906ca0e00b00a13f7286209sm5168944ejb.8.2023.12.04.02.59.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 02:59:41 -0800 (PST)
-Message-ID: <1aa2b7c9-b512-4101-83b6-1a5d4ca8e2f6@linaro.org>
-Date: Mon, 4 Dec 2023 11:59:40 +0100
+        Mon, 04 Dec 2023 02:59:57 -0800 (PST)
+Message-ID: <cd8af752-34ec-4ac3-8713-08add7d29b32@linaro.org>
+Date: Mon, 4 Dec 2023 11:59:57 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,7 +62,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] arm64: dts: qcom: msm8916: Make blsp_dma
+Subject: Re: [PATCH 2/2] arm64: dts: qcom: msm8939: Make blsp_dma
  controlled-remotely
 Content-Language: en-US
 To: Stephan Gerhold <stephan@gerhold.net>,
@@ -71,9 +71,9 @@ Cc: Andy Gross <agross@kernel.org>, Konrad Dybcio <konrad.dybcio@linaro.org>,
  linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
 References: <20231204-msm8916-blsp-dma-remote-v1-0-3e49c8838c8d@gerhold.net>
- <20231204-msm8916-blsp-dma-remote-v1-1-3e49c8838c8d@gerhold.net>
+ <20231204-msm8916-blsp-dma-remote-v1-2-3e49c8838c8d@gerhold.net>
 From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20231204-msm8916-blsp-dma-remote-v1-1-3e49c8838c8d@gerhold.net>
+In-Reply-To: <20231204-msm8916-blsp-dma-remote-v1-2-3e49c8838c8d@gerhold.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -93,24 +93,24 @@ On 04/12/2023 11:21, Stephan Gerhold wrote:
 > input/output becomes garbled with certain obscure firmware versions on
 > some devices.
 > 
-> [1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/arch/arm/boot/dts/qcom/msm8916.dtsi#L1466-1472
+> [1]: https://git.codelinaro.org/clo/la/kernel/msm-3.10/-/blob/LA.BR.1.2.9.1-02310-8x16.0/arch/arm/boot/dts/qcom/msm8939-common.dtsi#L866-872
 > 
 > Cc: <stable@vger.kernel.org> # 6.5
-> Fixes: a0e5fb103150 ("arm64: dts: qcom: Add msm8916 BLSP device nodes")
+> Fixes: 61550c6c156c ("arm64: dts: qcom: Add msm8939 SoC")
 > Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
 > ---
 > This should only be backported to v6.5+ since it depends on commit
 > 8975dd41a9db ("dmaengine: qcom: bam_dma: allow omitting
 > num-{channels,ees}") which landed in v6.5.
 > ---
->   arch/arm64/boot/dts/qcom/msm8916.dtsi | 1 +
+>   arch/arm64/boot/dts/qcom/msm8939.dtsi | 1 +
 >   1 file changed, 1 insertion(+)
 > 
-> diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-> index e8a14dd7e7c2..7f8327b0dbdb 100644
-> --- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-> +++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-> @@ -2155,6 +2155,7 @@ blsp_dma: dma-controller@7884000 {
+> diff --git a/arch/arm64/boot/dts/qcom/msm8939.dtsi b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+> index 95610a32750a..9eb8f1ceee99 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8939.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8939.dtsi
+> @@ -1761,6 +1761,7 @@ blsp_dma: dma-controller@7884000 {
 >   			clock-names = "bam_clk";
 >   			#dma-cells = <1>;
 >   			qcom,ee = <0>;
