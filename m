@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-3835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AA2802CA8
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:05:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10E13802CB5
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8E671F210BD
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 08:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0896280D48
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 08:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B003DCA4E;
-	Mon,  4 Dec 2023 08:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BBECA5D;
+	Mon,  4 Dec 2023 08:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="j6oD8z3R";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Oru0SiJ3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="C5U/F/Ll";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fXHjAAxs"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8A8AF2;
-	Mon,  4 Dec 2023 00:05:49 -0800 (PST)
-Date: Mon, 4 Dec 2023 09:05:43 +0100
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42FFBD6;
+	Mon,  4 Dec 2023 00:08:04 -0800 (PST)
+Date: Mon, 4 Dec 2023 09:08:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1701677147;
+	s=2020; t=1701677282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mQmyeYAKXR5sNCK52r1a6ZEMHQE3SqWqGZ+6/p6FiCQ=;
-	b=j6oD8z3Rpoh+gYRI+/mo1ZjPafwzAfoW2xwyBrMGZNjaYQ0WtmxrIKKX3lymOmKdJX5grg
-	lK/tz7LDqaTaobI7uhv1JlMDz8qty4Je0cfg56c6z6o1dMKn5MgF4kWUefF5w6TG6um+4j
-	T0R22j7B40umPJk1kBvSvYypBxFj6pPvUGrXz8+CX8yGvwgUvBYvkG3WOapmwF+5lv2qZt
-	2t7DB56V5AExSE8bStkUB7BmWVsz+d/+gOEd59sbIAijz987Bfg9qu/d8yleyQmvjArUh/
-	2nMMj9EWuTj1br7R8Y2SSifIf1tVz9xOw6U1TwiD6oMxek9MzuzpTGbwrJGFgA==
+	bh=1O43gu5PaMZy8WHsduQMVxyUn86WTVQVBI1S32LITWU=;
+	b=C5U/F/LlO+5RNABUNBkv/Ol0xLQtsE8Xh8aRhQPOotP2REzKiRLOKo16IpYzLZEfryw94r
+	92qaOO7nOBbKtsVbFno4nmCI7i+ir49nMvOG6CaAhQI+02fcdNzjGJGAGiJoAWI4yGx4bk
+	nw5lQLzzQImfrgCKTtwMLE0erH8EXT7yEk1i0RCJ8lPiqtqO+XcKJsTlEWwNuhQDLqnJTO
+	fvNibImQCh16s8aZoD/mpz0tkpAIV8H/Lq5cbsl440uzTP2/lrldHIChZsQ5GAIFWZg1bf
+	sjsmtmoSERHT1UsnNrR/1dn0PdEtiuDXJRiS4mqKx5aNT13wXAED3flKWPgPDw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1701677147;
+	s=2020e; t=1701677282;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mQmyeYAKXR5sNCK52r1a6ZEMHQE3SqWqGZ+6/p6FiCQ=;
-	b=Oru0SiJ3hwLxBodXkETHIzVPdNq176mAy0HkpfNpAr6d3Q3ueQUnIXN4xVb0dU3G1gVWts
-	EdWb+Kfw5z60tQCA==
+	bh=1O43gu5PaMZy8WHsduQMVxyUn86WTVQVBI1S32LITWU=;
+	b=fXHjAAxs2tbT0NWE56bKj7ScO4A2dt+QV/Gt00hi2wiJr/tZMqeaJXV2fxqbzwTU0jar7L
+	SAZ88CTh1rZJm2Aw==
 From: Nam Cao <namcao@linutronix.de>
 To: Emil Renner Berthing <emil.renner.berthing@canonical.com>
 Cc: Emil Renner Berthing <kernel@esmil.dk>,
@@ -51,10 +51,11 @@ Cc: Emil Renner Berthing <kernel@esmil.dk>,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH 2/2] pinctrl: starfive: jh7100: ignore disabled device
  tree nodes
-Message-ID: <20231204080543.C8LyBqTM@linutronix.de>
+Message-ID: <20231204080801.uo8nzeyU@linutronix.de>
 References: <fd8bf044799ae50a6291ae150ef87b4f1923cacb.1701422582.git.namcao@linutronix.de>
  <fe4c15dcc3074412326b8dc296b0cbccf79c49bf.1701422582.git.namcao@linutronix.de>
  <CAJM55Z9CooaYqeTuZK0FARKupf_StTSfWBo7ziv4KtGq6pEVaQ@mail.gmail.com>
+ <CAJM55Z-yam5RnsztYFSKVGoshLFaUau=rOmArsDsZnLYm3jE+Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,61 +64,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAJM55Z9CooaYqeTuZK0FARKupf_StTSfWBo7ziv4KtGq6pEVaQ@mail.gmail.com>
+In-Reply-To: <CAJM55Z-yam5RnsztYFSKVGoshLFaUau=rOmArsDsZnLYm3jE+Q@mail.gmail.com>
 
-Hi Emil,
+On Fri, Dec 01, 2023 at 03:43:04PM +0100, Emil Renner Berthing wrote:
+> I just noticed the Allwinner D1 device trees use /omit-if-no-ref/ in front of
+> the pin group nodes. I think all current pin group nodes (for the JH7100 at
+> least) are used by some peripheral, so if you're removing peripherals from the
+> device tree you should be removing the reference too and this scheme should
+> work for you.
 
-On Fri, Dec 01, 2023 at 03:28:27PM +0100, Emil Renner Berthing wrote:
-> Nam Cao wrote:
-> > diff --git a/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c b/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-> > index 530fe340a9a1..561fd0c6b9b0 100644
-> > --- a/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-> > +++ b/drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c
-> > @@ -492,7 +492,7 @@ static int starfive_dt_node_to_map(struct pinctrl_dev *pctldev,
-> >
-> > nmaps = 0;
-> > ngroups = 0;
-> > - for_each_child_of_node(np, child) {
-> > + for_each_available_child_of_node(np, child) {
->
-> Is this safe to do? I mean will the children considered "available" not change
-> as drivers are loaded during boot so this is racy?
-
-I think if node removal like this causes race condition, we would
-already have race condition with node addition too: "what if the nodes
-are added while the drivers are being loaded?"
-
-At least with U-Boot, the device tree overlay is "merged" into the base
-device tree, before the kernel even runs, so no race there. I don't know
-if there are any cases where the device tree overlay is not guaranteed
-to be applied before driver loading, but those cases do not sound sane
-to me: they would cause race condition, regardless of whether nodes are
-added or removed.
-
-> Also arguably this is not a bugfix, but a new feature.
-
-I'm not sure myself, I haven't seen official documentation/rules about
-this. But many people do consider this to be a bug:
-
-"Though you can add/override 'status' with 'status = "disabled";' which
-should be treated very similar to a node not being present. I say
-similar because it's a source of bugs for the OS to fail to pay
-attention to status property." - Rob Herring [1].
-
-"Linux has widespread use of the "status" property to indicate that a
-node does not exist. (...). Expect efforts to fix the kernel code to
-respect the "status" property." - elinux.org [2].
-
-And I do agree with them. When someone write a device tree with some
-nodes with "status = disabled" for whatever reasons, clearly they intend
-to exclude these nodes.
-
-Though I must admit that I am still quite new, so please correct me if
-my reasoning/understanding is flawed.
+If I am not mistaken, /omit-if-no-ref/ (and similar stuffs like
+/delete-node/ and /delete-property/) is only for compile-time node
+removal. It doesn't do anything with device tree overlay.
 
 Best regards,
 Nam
-
-[1] https://lore.kernel.org/lkml/CAL_JsqLV5d5cL3o3Dx=--zGD37c5O09rL9AXyRFmceTfBHt3Zg@mail.gmail.com/
-[2] https://elinux.org/Device_Tree_Linux#status_property
 
