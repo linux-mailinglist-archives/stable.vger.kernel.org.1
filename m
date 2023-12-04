@@ -1,90 +1,181 @@
-Return-Path: <stable+bounces-3842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93150802EC8
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:38:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB453802F16
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:46:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C40C91C209DD
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:38:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E125B20A5F
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C730C1A726;
-	Mon,  4 Dec 2023 09:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BF21D53A;
+	Mon,  4 Dec 2023 09:46:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="rPk0hNXw";
+	dkim=permerror (0-bit key) header.d=gerhold.net header.i=@gerhold.net header.b="WBm/rMl4"
 X-Original-To: stable@vger.kernel.org
-Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78F05B2
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 01:38:19 -0800 (PST)
-Received: from hverkuil by www.linuxtv.org with local (Exim 4.92)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1rA5P7-00AJUd-EU; Mon, 04 Dec 2023 09:38:17 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Mon, 04 Dec 2023 09:37:47 +0000
-Subject: [git:media_stage/master] media: i2c: st-mipid02: correct format propagation
-To: linuxtv-commits@linuxtv.org
-Cc: Benjamin Mugnier <benjamin.mugnier@foss.st.com>, Daniel Scally <dan.scally@ideasonboard.com>, Jacopo Mondi <jacopo.mondi@ideasonboard.com>, Alain Volmat <alain.volmat@foss.st.com>, stable@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1rA5P7-00AJUd-EU@www.linuxtv.org>
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.50])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D8CC106;
+	Mon,  4 Dec 2023 01:46:29 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1701683177; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=pJudvDMWVylERXpP3nXifI54PwmHy6yRb7Ypnhpzgj7ZoVcDiGHBjsg/8R75Z5e1W6
+    DMfi3mnwbZA6YWq0v7fZaRxmysOJBQVtG0mcO0IE1tzcyMXrDztGOOdxmqRyIWNw+qgF
+    yMve/5gREh7iIgqlpV/ZQSQLQvXWGEfAFjxlYE/BTBl8sw5AecdjthMHTW+QZu/j1pVb
+    oTCJVAhUH6rAWUrFKlwmNOZUSZ1VvrKdyVJ3NuLqWXdnX7uAdFdk0vpyUJpzTy1MXVt1
+    O5P/k58x2wjTAkEvck3MSReq/6MmelJTZiK15FGh6QKvi1Qe2dmHiHm+wEupCFepOOd4
+    6BbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1701683177;
+    s=strato-dkim-0002; d=strato.com;
+    h=Cc:To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=vPDDwu/LFJBTyJh71GaE5A1eXeoeKpnofr6UkCT3JFc=;
+    b=bd2THfus25v89rcBx4MqjHLvnuJmGkBScugwnrIMCaFKKsevsnVAXqQBJSnUk9/T8P
+    tF8xQtZLkxJ4XzHKwcbiJAPd0nmExJKxt3Glr53CTt5yT7xpAmV/de93QwA94ku92AsD
+    CnyFogbpcvuSdBQZRPSyaMQAdJH+2JfzJBa3IttDUF93DvUEKUTRXqXlwhZ5A8yK0Df+
+    qy6Ss9A7SZp9sIEWt2GXodmOfa6O6EYwJOFtt1OOgwvcvoqLYG0bKQ8wT24Ix3kNS3WU
+    Td8K4AfTY3MElWi03nNmfMYwCDSANsdaKgvR5BhnOgieteffnl04weYE/pU3HbgOUu+U
+    R6aQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1701683177;
+    s=strato-dkim-0002; d=gerhold.net;
+    h=Cc:To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=vPDDwu/LFJBTyJh71GaE5A1eXeoeKpnofr6UkCT3JFc=;
+    b=rPk0hNXwy2KILWychu1slf4uvwLJiipWZ2W0xPHJ8gFStNsZUkEcqJTJVFbxf2dDV3
+    zDtjhGHKCPKWIvzbSidbDBq6LkPTzvtARTNy0ILUgv14avRr0VyV8HGgaeRRGtTQGyNO
+    kGmGUCknTErt4eLIEpv27DLIg39t8GXUWFs9TZuiJCpdL8VhN0t2rcHnEue8k+QeLTXJ
+    UjwV5U/WT1OPVitHhsrHJFI43AquUKs2lSlg2SS2Knp9HABnXCekPKc6GRnhqE5Z2JYx
+    9nMOkVCZOiM0HaC0XsfyG7ISWEBY5Wexg6GFPb1E0aw/SMrHVXvFfKpGu7lbyK7hG7v3
+    EXtA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1701683177;
+    s=strato-dkim-0003; d=gerhold.net;
+    h=Cc:To:Message-Id:Subject:Date:From:Cc:Date:From:Subject:Sender;
+    bh=vPDDwu/LFJBTyJh71GaE5A1eXeoeKpnofr6UkCT3JFc=;
+    b=WBm/rMl4qC5EUAACv3CtuLo+TKvmcHiI9F+fVlKzN2o6kMxDlpRZk20CgOo64UwzJj
+    qNipme+P/lOSFYRJ/GAw==
+X-RZG-AUTH: ":P3gBZUipdd93FF5ZZvYFPugejmSTVR2nRPhVOQjVd4CteZ/7jYgS+mLFY+H0JAn8u4l+/zY="
+Received: from [192.168.244.3]
+    by smtp.strato.de (RZmta 49.9.7 DYNA|AUTH)
+    with ESMTPSA id R5487bzB49kG9je
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 4 Dec 2023 10:46:16 +0100 (CET)
+From: Stephan Gerhold <stephan@gerhold.net>
+Date: Mon, 04 Dec 2023 10:46:11 +0100
+Subject: [PATCH] arm64: dts: qcom: Add missing vio-supply for AW2013
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231204-qcom-aw2013-vio-v1-1-5d264bb5c0b2@gerhold.net>
+X-B4-Tracking: v=1; b=H4sIAOKfbWUC/x3MQQ5AMBBA0avIrE3STkvCVcSCGsyC0iZIGnfXW
+ L7F/wkiB+EIbZEg8CVR/J6hywLcOuwLo0zZQIqMJmXxdH7D4SalDV7isdHT6BRVztYWcnUEnuX
+ 5j13/vh8qnxsnYQAAAA==
+To: Bjorn Andersson <andersson@kernel.org>
+Cc: Andy Gross <agross@kernel.org>, 
+ Konrad Dybcio <konrad.dybcio@linaro.org>, linux-arm-msm@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Stephan Gerhold <stephan@gerhold.net>
+X-Mailer: b4 0.12.4
 
-This is an automatic generated email to let you know that the following patch were queued:
+Add the missing vio-supply to all usages of the AW2013 LED controller
+to ensure that the regulator needed for pull-up of the interrupt and
+I2C lines is really turned on. While this seems to have worked fine so
+far some of these regulators are not guaranteed to be always-on. For
+example, pm8916_l6 is typically turned off together with the display
+if there aren't any other devices (e.g. sensors) keeping it always-on.
 
-Subject: media: i2c: st-mipid02: correct format propagation
-Author:  Alain Volmat <alain.volmat@foss.st.com>
-Date:    Mon Nov 13 15:57:30 2023 +0100
+Cc:  <stable@vger.kernel.org> # 6.6
+Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
+---
+I omitted the Fixes: tag here as it would be 5 separate commits, and
+it's really only useful to backport this to v6.6+ since this is where
+the necessary driver addition landed (see commit baca986e1f2c3 ("leds:
+aw2013: Enable pull-up supply for interrupt and I2C"). I'm not aware
+that anyone actually ran into trouble with this missing regulator yet.
+---
+ arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts  | 1 +
+ arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts | 1 +
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts      | 1 +
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts    | 1 +
+ arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts     | 1 +
+ 5 files changed, 5 insertions(+)
 
-Use a copy of the struct v4l2_subdev_format when propagating
-format from the sink to source pad in order to avoid impacting the
-sink format returned to the application.
-
-Thanks to Jacopo Mondi for pointing the issue.
-
-Fixes: 6c01e6f3f27b ("media: st-mipid02: Propagate format from sink to source pad")
-Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Reviewed-by: Benjamin Mugnier <benjamin.mugnier@foss.st.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
- drivers/media/i2c/st-mipid02.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+index 37fa55166918..5f24c40a6020 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
+@@ -104,6 +104,7 @@ led-controller@45 {
+ 		#size-cells = <0>;
+ 
+ 		vcc-supply = <&pm8916_l17>;
++		vio-supply = <&pm8916_l6>;
+ 
+ 		led@0 {
+ 			reg = <0>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+index d4b88c787e59..510b3b3c4e3c 100644
+--- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
++++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
+@@ -142,6 +142,7 @@ led-controller@45 {
+ 		#size-cells = <0>;
+ 
+ 		vcc-supply = <&pm8916_l16>;
++		vio-supply = <&pm8916_l5>;
+ 
+ 		led@0 {
+ 			reg = <0>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
+index ed95d09cedb1..6b9245cd8b0c 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-mido.dts
+@@ -111,6 +111,7 @@ led-controller@45 {
+ 		reg = <0x45>;
+ 
+ 		vcc-supply = <&pm8953_l10>;
++		vio-supply = <&pm8953_l5>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
+index 61ff629c9bf3..9ac4f507e321 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-tissot.dts
+@@ -104,6 +104,7 @@ led-controller@45 {
+ 		reg = <0x45>;
+ 
+ 		vcc-supply = <&pm8953_l10>;
++		vio-supply = <&pm8953_l5>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+diff --git a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
+index 1a1d3f92a511..b0588f30f8f1 100644
+--- a/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
++++ b/arch/arm64/boot/dts/qcom/msm8953-xiaomi-vince.dts
+@@ -113,6 +113,7 @@ led-controller@45 {
+ 		reg = <0x45>;
+ 
+ 		vcc-supply = <&pm8953_l10>;
++		vio-supply = <&pm8953_l5>;
+ 
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
 
 ---
+base-commit: adcad44bd1c73a5264bff525e334e2f6fc01bb9b
+change-id: 20231204-qcom-aw2013-vio-91dbc025c464
 
-diff --git a/drivers/media/i2c/st-mipid02.c b/drivers/media/i2c/st-mipid02.c
-index b08a249b5fdd..914f915749a8 100644
---- a/drivers/media/i2c/st-mipid02.c
-+++ b/drivers/media/i2c/st-mipid02.c
-@@ -769,6 +769,7 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
- 				 struct v4l2_subdev_format *format)
- {
- 	struct mipid02_dev *bridge = to_mipid02_dev(sd);
-+	struct v4l2_subdev_format source_fmt;
- 	struct v4l2_mbus_framefmt *fmt;
- 
- 	format->format.code = get_fmt_code(format->format.code);
-@@ -780,8 +781,12 @@ static void mipid02_set_fmt_sink(struct v4l2_subdev *sd,
- 
- 	*fmt = format->format;
- 
--	/* Propagate the format change to the source pad */
--	mipid02_set_fmt_source(sd, sd_state, format);
-+	/*
-+	 * Propagate the format change to the source pad, taking
-+	 * care not to update the format pointer given back to user
-+	 */
-+	source_fmt = *format;
-+	mipid02_set_fmt_source(sd, sd_state, &source_fmt);
- }
- 
- static int mipid02_set_fmt(struct v4l2_subdev *sd,
+Best regards,
+-- 
+Stephan Gerhold <stephan@gerhold.net>
+
 
