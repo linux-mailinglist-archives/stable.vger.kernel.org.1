@@ -1,90 +1,233 @@
-Return-Path: <stable+bounces-3864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A678803265
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:20:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E7F803286
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BC531C209CE
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:20:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 265E11F2106D
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EAB1241E0;
-	Mon,  4 Dec 2023 12:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F71241E2;
+	Mon,  4 Dec 2023 12:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="QXKwIh5h"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDBC7C3
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 04:20:13 -0800 (PST)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-60-K7DYLW98P6-DWLMqtfZ-_w-1; Mon, 04 Dec 2023 12:20:10 +0000
-X-MC-Unique: K7DYLW98P6-DWLMqtfZ-_w-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 4 Dec
- 2023 12:19:51 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 4 Dec 2023 12:19:51 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Ronald Wahl' <ronald.wahl@raritan.com>, Miquel Raynal
-	<miquel.raynal@bootlin.com>, Richard Weinberger <richard@nod.at>
-CC: Mark Brown <broonie@kernel.org>, linux-spi <linux-spi@vger.kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Ryan Wanner
-	<ryan.wanner@microchip.com>, stable <stable@vger.kernel.org>, "Richard
- Weinberger" <richard.weinberger@gmail.com>, David Woodhouse
-	<dwmw2@infradead.org>
-Subject: RE: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
-Thread-Topic: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
-Thread-Index: AQHaI83ukY9MluaJ202j4i3vSuy9G7CUP/NAgAAvu4CABJ+L0A==
-Date: Mon, 4 Dec 2023 12:19:51 +0000
-Message-ID: <b0070511200c4e11b3b57e3c77e05388@AcuMS.aculab.com>
-References: <20231127095842.389631-1-miquel.raynal@bootlin.com>
- <a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com>
- <0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com>
- <20231129094932.2639ca49@xps-13>
- <723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
- <1192504136.46091.1701368767836.JavaMail.zimbra@nod.at>
- <20231130211543.2801a55b@xps-13>
- <d4ffca97-bb5d-4c42-a025-69b308c24f82@raritan.com>
- <4642281ef2e749a3b69bbea5474ecdf1@AcuMS.aculab.com>
- <c7980bbf-04aa-4c52-9c6c-f3a1169e90f9@raritan.com>
-In-Reply-To: <c7980bbf-04aa-4c52-9c6c-f3a1169e90f9@raritan.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60657C3
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 04:24:52 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5c206572eedso2363561a12.0
+        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 04:24:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701692691; x=1702297491; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=NtDaoWjXI9mI70yN5yKg0mwg/xZ7BzGsdOqmMpj37yI=;
+        b=QXKwIh5h6CL4LOvBN006f0QyJZjhM9ciPHL1V5RMelTgglhbbA10aHDkdtP6jWxaHG
+         GHpzpKerzUrJAcSkyvMclT118YIz88t8+5Wq6nba525ucyjAzwCWYQSLDAyQK5SpR7Up
+         AfCZ6IRF88AJ8TVPgFZojbvNrUiGcXbASAnUD7fk5AUpWPeM6t4XHJV02/J8VACL92J2
+         oZ++bWBOLKjkmedQ99ATaMNZ6BzIdvo11b1OrxlMCAHWPN64laGa29926OP8G2X8gQYZ
+         BlXTlkigSTCh2VPq3yTnf7zUYYT2UFYqJId5LyOLBOTNX76xHxrC9aOFS1khjyl1dTj7
+         C6TQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701692691; x=1702297491;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NtDaoWjXI9mI70yN5yKg0mwg/xZ7BzGsdOqmMpj37yI=;
+        b=swh019tLNQXsV7fPxB6g2WZegqcXiSPyJsOyYP3q/qTxn6unH9V480WdUuTmgxWR1g
+         /lVXAObJ6Wn0uNdiHv+sMPS498UHBXY3i/UkRCqEplfJICaJlG8IowOFB2NlfajUn50E
+         Vv8FCxfiapySJ624hdB095VjEvcXAOWVbmLRlxqw0cWn04Mt//0CbcPacCDOf4IJ9lHO
+         IEkMbZQN+84GNoktvh3Dc80E//VNHXVOSrFySpccaqhPP3T+98sQfQo3BeWyFAhsSH4/
+         nhv9RcG+0GTPWhbJyQXndvBf562UlB5l4tLrKApRCbtvx9noAzq7AR1r/ugk2GyN17K5
+         qZrA==
+X-Gm-Message-State: AOJu0Yzh1yUHMZcH0+P99LH7BaQgO/TvIVwSJLxs700O2Ovmqiq/56bx
+	LBVuiCwPrVF+VGKf0V+bG+4J5uenPUFIqeuV5b1/cw==
+X-Google-Smtp-Source: AGHT+IECBcXB/KN8cCHRQw+ffryzf0rY1Qh2VLJmBkWXV+2Em9V+qn8UnZcPgZzoL0Xb+iFnCRiRRA==
+X-Received: by 2002:a05:6a21:1485:b0:18f:97c:8a3c with SMTP id od5-20020a056a21148500b0018f097c8a3cmr3728069pzb.103.1701692691268;
+        Mon, 04 Dec 2023 04:24:51 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id fb16-20020a056a002d9000b006cbb5f2cbe0sm7455795pfb.102.2023.12.04.04.24.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 04:24:50 -0800 (PST)
+Message-ID: <656dc512.050a0220.ba2cc.39f6@mx.google.com>
+Date: Mon, 04 Dec 2023 04:24:50 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.10
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.202-137-gc7b177feb6f93
+Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.202-137-gc7b177feb6f93)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Li4uDQo+ID4+IFRoaXMgY2FsY3VsYXRpb24gaXMgYWN0dWFsbHkgd3JvbmcgYnkgZmFjdG9yIDEw
-MDAuIEEgMjBNSHogU1BJIGJ1cyBpcyBub3QNCj4gPj4gcmVhbGx5IHNsb3cgYW5kIGl0IHdpbGwg
-dHJhbnNmZXIgfjIuNU1CL3Mgb3ZlciBhIHNpbmdsZSBsYW5lLg0KPiA+PiBUaGUgY2FsY3VsYXRp
-b24gd291bGQgYmUgcmlnaHQgZm9yIDIwa0h6IGJ1dCBJIHRoaW5rIHRoaXMgaXMgYSBtb3JlDQo+
-ID4+IGVzb3RlcmljIGNhc2UsIGlzbid0IGl0Pw0KPiA+DQo+ID4gU29tZSBvZiB0aGUgc3VtcyBh
-cmUgd3JvbmcsIGJ1dCB0aGUgY29uY2x1c2lvbiBtaWdodCBiZSByaWdodC4NCj4gPiBBIDRNQiB0
-cmFuc2ZlciBhdCAyME1IeiBvbmx5IGhhcyA1IGNsb2Nrcy9ieXRlIC0gc2VlbXMgbG93IGlmIGl0
-DQo+ID4gaXMgb25seSB1c2luZyAxIGRhdGEgYml0Lg0KPiANCj4gQ2FuJ3QgcmVhbGx5IGZvbGxv
-dy4gRWFjaCBkYXRhIGJpdCByZXF1aXJlcyBvbmUgY2xvY2sgb24gc2luZ2xlIHdpcmUNCj4gU1BJ
-LiBBZHJlc3NpbmcgYW5kIHRoZSBsaWtlIG1heSByZXF1aXJlIGEgYml0IG9mIG92ZXJoZWFkIGJ1
-dCB0aGF0DQo+IHNob3VsZCBub3QgYmUgdGhhdCBtdWNoICgxMi41JT8pLg0KDQpUaGF0IGlzIGZv
-ciA0TUIgaW4gb25lIHNlY29uZCBhdCAyME1Iei4NCg0KQW4gU1BJIHJlYWQgdHJhbnNmZXIgY2Fu
-IGJlIHByZXR0eSBtdWNoIGFueSBsZW5ndGggLSB5b3UganVzdCBrZWVwDQpvbiBjbG9ja2luZyBv
-dXQgZGF0YS4gVGhlIG92ZXJoZWFkIGlzIGluZGVwZW5kZW50IG9mIHRoZSBsZW5ndGguDQoNCkEg
-bWVtb3J5IGNlbGwganVzdCByZW1pbmRlZCBtZSB0aGF0IHNvbWUgU1BJIGRldmljZXMgYXJlIG1h
-ZGUNCm9mIHR3byAob3IgbW9yZSkgbWVtb3J5IGJsb2NrcyAtIGFuZCB5b3UgY2FuJ3QgZG8gc2Vx
-dWVudGlhbA0KcmVhZHMgZnJvbSBvbmUgYmxvY2sgdG8gdGhlIG5leHQuDQooSXQgbWlnaHQgYmUg
-bHlpbmcuLi4pDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJlc3MgTGFrZXNpZGUsIEJy
-YW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsxIDFQVCwgVUsNClJlZ2lz
-dHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
+stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
+10.202-137-gc7b177feb6f93)
 
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.202-137-gc7b177feb6f93/
+
+Tree: stable-rc
+Branch: queue/5.10
+Git Describe: v5.10.202-137-gc7b177feb6f93
+Git Commit: c7b177feb6f9336342e8b40121d985056e782d5c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
