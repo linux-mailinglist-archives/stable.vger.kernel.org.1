@@ -1,239 +1,126 @@
-Return-Path: <stable+bounces-3839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C9F802DC7
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:06:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE56802DF0
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 10:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 433411C209D2
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:06:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6ED05B209CC
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 09:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8506FFBF6;
-	Mon,  4 Dec 2023 09:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7750212E6A;
+	Mon,  4 Dec 2023 09:11:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="j//CgpC7";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="R5nDLT7H"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f4bOH0QP"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3BC8A8
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 01:06:03 -0800 (PST)
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1701680761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w0RHPuylzjf2VY8WqL6+gEk3yXY54fNHKs28poMiXGQ=;
-	b=j//CgpC7MK7zdwA/T4PHenWHV/07wFhIPAkJu0LjLoP9Pqa5gZLp8ZvF1SGd11tEw/1Stk
-	/kzwMoktMFvq1H9/b/mLfiTgt5c5eblEH7R+Xtgo4zm32sZFAyBh2IkCGg3ZLqCUMKMfUS
-	FEAIN10axkgRbJOJLoF2ocqTuuWxA058Ha4syY43bzn3di+kPdbW6t6Po2fWFQY7cKZW5r
-	fMNcpb602n+xpsHqJq+EuvYQBA4VP9h95XpVKTt47WafuPpaWLYHStbpRY8pLQ/8o1CrGH
-	jLzIZwr93V3UWgJz5iV/bdzrWQ2pv+0qldKh3yQt14X5cJLCpyb2RuMYn0I1aw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1701680761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w0RHPuylzjf2VY8WqL6+gEk3yXY54fNHKs28poMiXGQ=;
-	b=R5nDLT7HXxwu1uEDbBtJdK15wm24s/XwqyQd/PXlZIRtMomxTm8CbMYYWFw8nchSrVnWdL
-	mbDTbtZXftTPAzBA==
-To: gregkh@linuxfoundation.org, den@valinux.co.jp
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] x86/apic/msi: Fix misconfigured
- non-maskable MSI quirk" failed to apply to 6.1-stable tree
-In-Reply-To: <2023112040-sudden-savanna-4847@gregkh>
-References: <2023112040-sudden-savanna-4847@gregkh>
-Date: Mon, 04 Dec 2023 10:06:00 +0100
-Message-ID: <878r6axrpj.ffs@tglx>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C2CECD;
+	Mon,  4 Dec 2023 01:11:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701681062; x=1733217062;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=HF7PazhEJaUGDhVtrd2okSZVq55CFcLcBkpdxxWUXIo=;
+  b=f4bOH0QPV64OldHGwH+Tc5dtE/PnCv4iyK2fLqiEBn46QP+XIbzda5v0
+   fib1wy8qAD3/FFbktT3ZYPEJhLwhmGE2F9FA6Xv4mIPkh35nnMBBgFPlP
+   Ry0270p/QV5GOJMGWxtOSA4EGHFwbklUio7lSQymGXptHU4n/8v0iVlvw
+   nls1F7KFDecs2aDDxa//mi0i5fZmNPloexv+c075c+7xFcpoAt21bxcFc
+   bFkkV+X55aOGD6756I/jT/omVw9Jj5F5EDFFfVXPakSg0F8ozB8LRog5+
+   VReemyB/g2OMs1l8xdByo5g0gq996M01mcU6ev8u5xEjjY818ASjxzZme
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="7027004"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="7027004"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 01:11:01 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="861314906"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="861314906"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by FMSMGA003.fm.intel.com with ESMTP; 04 Dec 2023 01:10:57 -0800
+Message-ID: <3d3b8fd3-a1b9-9793-b709-eda447ebd1ab@linux.intel.com>
+Date: Mon, 4 Dec 2023 11:12:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>,
+ "Kris Karas (Bug Reporting)" <bugs-a21@moonlit-rail.com>
+Cc: Paul Menzel <pmenzel@molgen.mpg.de>,
+ Basavaraj Natikar <Basavaraj.Natikar@amd.com>, stable@vger.kernel.org,
+ Thorsten Leemhuis <regressions@leemhuis.info>, regressions@lists.linux.dev,
+ linux-bluetooth@vger.kernel.org,
+ Mario Limonciello <mario.limonciello@amd.com>,
+ Mathias Nyman <mathias.nyman@intel.com>, linux-usb@vger.kernel.org
+References: <ee109942-ef8e-45b9-8cb9-a98a787fe094@moonlit-rail.com>
+ <8d6070c8-3f82-4a12-8c60-7f1862fef9d9@leemhuis.info>
+ <2023120119-bonus-judgingly-bf57@gregkh>
+ <6a710423-e76c-437e-ba59-b9cefbda3194@moonlit-rail.com>
+ <55c50bf5-bffb-454e-906e-4408c591cb63@molgen.mpg.de>
+ <2023120213-octagon-clarity-5be3@gregkh>
+ <f1e0a872-cd9a-4ef4-9ac9-cd13cf2d6ea4@moonlit-rail.com>
+ <2023120259-subject-lubricant-579f@gregkh>
+ <ef575387-4a52-49bd-9c26-3a03ac816b61@moonlit-rail.com>
+ <2023120329-length-strum-9ee1@gregkh>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: Re: Regression: Inoperative bluetooth, Intel chipset, mainline kernel
+ 6.6.2+
+In-Reply-To: <2023120329-length-strum-9ee1@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Nov 20 2023 at 16:28, gregkh@linuxfoundation.org wrote:
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+On 3.12.2023 10.38, Greg KH wrote:
+> On Sun, Dec 03, 2023 at 03:32:52AM -0500, Kris Karas (Bug Reporting) wrote:
+>> Greg KH wrote:
+>>> Thanks for testing, any chance you can try 6.6.4-rc1?  Or wait a few
+>>> hours for me to release 6.6.4 if you don't want to mess with a -rc
+>>> release.
+>>
+>> As I mentioned to Greg off-list (to save wasting other peoples' bandwidth),
+>> I couldn't find 6.6.4-rc1.  Looking in wrong git tree?  But 6.6.4 is now
+>> out, which I have tested and am running at the moment, albeit with the
+>> problem commit from 6.6.2 backed out.
+>>
+>> There is no change with respect to this bug.  The problematic patch
+>> introduced in 6.6.2 was neither reverted nor amended.  The "opcode 0x0c03
+>> failed" lines to the kernel log continue to be present.
+>>
+>>> Also, is this showing up in 6.7-rc3?  If so, that would be a big help in
+>>> tracking this down.
+>>
+>> The bug shows up in 6.7-rc3 as well, exactly as it does here in 6.6.2+ and
+>> in 6.1.63+.  The problematic patch bisected earlier appears identically (and
+>> seems to have been introduced simultaneously) in these recent releases.
+> 
+> Ok, in a way, this is good as that means I haven't missed a fix, but bad
+> in that this does affect everyone more.
+> 
+> So let's start over, you found the offending commit, and nothing has
+> fixed it, so what do we do?  xhci/amd developers, any ideas?
+> thanks,
+> 
+> greg k-h
+> 
 
-See below.
+I suggest reverting these two patches from everywhere (all stable):
+a5d6264b638e xhci: Enable RPM on controllers that support low-power states
+4baf12181509 xhci: Loosen RPM as default policy to cover for AMD xHC 1.1
 
-Thanks,
+Then write a new well tested patch that adds default runtime pm to those AMD
+hosts that support it. And only add that to usb-next
 
-        tglx
----
-From: Koichiro Den <den@valinux.co.jp>
-Date: Thu Oct 26 12:20:36 2023 +0900
-Subject: x86/apic/msi: Fix misconfigured non-maskable MSI quirk
+-Mathias
 
-commit b56ebe7c896dc78b5865ec2c4b1dae3c93537517 upstream.
 
-commit ef8dd01538ea ("genirq/msi: Make interrupt allocation less
-convoluted"), reworked the code so that the x86 specific quirk for affinity
-setting of non-maskable PCI/MSI interrupts is not longer activated if
-necessary.
 
-This could be solved by restoring the original logic in the core MSI code,
-but after a deeper analysis it turned out that the quirk flag is not
-required at all.
 
-The quirk is only required when the PCI/MSI device cannot mask the MSI
-interrupts, which in turn also prevents reservation mode from being enabled
-for the affected interrupt.
-
-This allows ot remove the NOMASK quirk bit completely as msi_set_affinity()
-can instead check whether reservation mode is enabled for the interrupt,
-which gives exactly the same answer.
-
-Even in the momentary non-existing case that the reservation mode would be
-not set for a maskable MSI interrupt this would not cause any harm as it
-just would cause msi_set_affinity() to go needlessly through the
-functionaly equivalent slow path, which works perfectly fine with maskable
-interrupts as well.
-
-Rework msi_set_affinity() to query the reservation mode and remove all
-NOMASK quirk logic from the core code.
-
-[ tglx: Massaged changelog ]
-
-Fixes: ef8dd01538ea ("genirq/msi: Make interrupt allocation less convoluted")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026032036.2462428-1-den@valinux.co.jp
----
- arch/x86/kernel/apic/msi.c |    8 +++-----
- include/linux/irq.h        |   24 +++---------------------
- kernel/irq/debugfs.c       |    1 -
- kernel/irq/msi.c           |   12 +-----------
- 4 files changed, 7 insertions(+), 38 deletions(-)
-
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -55,14 +55,14 @@ msi_set_affinity(struct irq_data *irqd,
- 	 * caused by the non-atomic update of the address/data pair.
- 	 *
- 	 * Direct update is possible when:
--	 * - The MSI is maskable (remapped MSI does not use this code path)).
--	 *   The quirk bit is not set in this case.
-+	 * - The MSI is maskable (remapped MSI does not use this code path).
-+	 *   The reservation mode bit is set in this case.
- 	 * - The new vector is the same as the old vector
- 	 * - The old vector is MANAGED_IRQ_SHUTDOWN_VECTOR (interrupt starts up)
- 	 * - The interrupt is not yet started up
- 	 * - The new destination CPU is the same as the old destination CPU
- 	 */
--	if (!irqd_msi_nomask_quirk(irqd) ||
-+	if (!irqd_can_reserve(irqd) ||
- 	    cfg->vector == old_cfg.vector ||
- 	    old_cfg.vector == MANAGED_IRQ_SHUTDOWN_VECTOR ||
- 	    !irqd_is_started(irqd) ||
-@@ -202,8 +202,6 @@ struct irq_domain * __init native_create
- 	if (!d) {
- 		irq_domain_free_fwnode(fn);
- 		pr_warn("Failed to initialize PCI-MSI irqdomain.\n");
--	} else {
--		d->flags |= IRQ_DOMAIN_MSI_NOMASK_QUIRK;
- 	}
- 	return d;
- }
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -215,8 +215,6 @@ struct irq_data {
-  * IRQD_SINGLE_TARGET		- IRQ allows only a single affinity target
-  * IRQD_DEFAULT_TRIGGER_SET	- Expected trigger already been set
-  * IRQD_CAN_RESERVE		- Can use reservation mode
-- * IRQD_MSI_NOMASK_QUIRK	- Non-maskable MSI quirk for affinity change
-- *				  required
-  * IRQD_HANDLE_ENFORCE_IRQCTX	- Enforce that handle_irq_*() is only invoked
-  *				  from actual interrupt context.
-  * IRQD_AFFINITY_ON_ACTIVATE	- Affinity is set on activation. Don't call
-@@ -245,10 +243,9 @@ enum {
- 	IRQD_SINGLE_TARGET		= (1 << 24),
- 	IRQD_DEFAULT_TRIGGER_SET	= (1 << 25),
- 	IRQD_CAN_RESERVE		= (1 << 26),
--	IRQD_MSI_NOMASK_QUIRK		= (1 << 27),
--	IRQD_HANDLE_ENFORCE_IRQCTX	= (1 << 28),
--	IRQD_AFFINITY_ON_ACTIVATE	= (1 << 29),
--	IRQD_IRQ_ENABLED_ON_SUSPEND	= (1 << 30),
-+	IRQD_HANDLE_ENFORCE_IRQCTX	= (1 << 27),
-+	IRQD_AFFINITY_ON_ACTIVATE	= (1 << 28),
-+	IRQD_IRQ_ENABLED_ON_SUSPEND	= (1 << 29),
- };
- 
- #define __irqd_to_state(d) ACCESS_PRIVATE((d)->common, state_use_accessors)
-@@ -423,21 +420,6 @@ static inline bool irqd_can_reserve(stru
- 	return __irqd_to_state(d) & IRQD_CAN_RESERVE;
- }
- 
--static inline void irqd_set_msi_nomask_quirk(struct irq_data *d)
--{
--	__irqd_to_state(d) |= IRQD_MSI_NOMASK_QUIRK;
--}
--
--static inline void irqd_clr_msi_nomask_quirk(struct irq_data *d)
--{
--	__irqd_to_state(d) &= ~IRQD_MSI_NOMASK_QUIRK;
--}
--
--static inline bool irqd_msi_nomask_quirk(struct irq_data *d)
--{
--	return __irqd_to_state(d) & IRQD_MSI_NOMASK_QUIRK;
--}
--
- static inline void irqd_set_affinity_on_activate(struct irq_data *d)
- {
- 	__irqd_to_state(d) |= IRQD_AFFINITY_ON_ACTIVATE;
---- a/kernel/irq/debugfs.c
-+++ b/kernel/irq/debugfs.c
-@@ -121,7 +121,6 @@ static const struct irq_bit_descr irqdat
- 	BIT_MASK_DESCR(IRQD_AFFINITY_ON_ACTIVATE),
- 	BIT_MASK_DESCR(IRQD_MANAGED_SHUTDOWN),
- 	BIT_MASK_DESCR(IRQD_CAN_RESERVE),
--	BIT_MASK_DESCR(IRQD_MSI_NOMASK_QUIRK),
- 
- 	BIT_MASK_DESCR(IRQD_FORWARDED_TO_VCPU),
- 
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -807,7 +807,6 @@ static int msi_handle_pci_fail(struct ir
- 
- #define VIRQ_CAN_RESERVE	0x01
- #define VIRQ_ACTIVATE		0x02
--#define VIRQ_NOMASK_QUIRK	0x04
- 
- static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflags)
- {
-@@ -816,8 +815,6 @@ static int msi_init_virq(struct irq_doma
- 
- 	if (!(vflags & VIRQ_CAN_RESERVE)) {
- 		irqd_clr_can_reserve(irqd);
--		if (vflags & VIRQ_NOMASK_QUIRK)
--			irqd_set_msi_nomask_quirk(irqd);
- 
- 		/*
- 		 * If the interrupt is managed but no CPU is available to
-@@ -877,15 +874,8 @@ int __msi_domain_alloc_irqs(struct irq_d
- 	 * Interrupt can use a reserved vector and will not occupy
- 	 * a real device vector until the interrupt is requested.
- 	 */
--	if (msi_check_reservation_mode(domain, info, dev)) {
-+	if (msi_check_reservation_mode(domain, info, dev))
- 		vflags |= VIRQ_CAN_RESERVE;
--		/*
--		 * MSI affinity setting requires a special quirk (X86) when
--		 * reservation mode is active.
--		 */
--		if (domain->flags & IRQ_DOMAIN_MSI_NOMASK_QUIRK)
--			vflags |= VIRQ_NOMASK_QUIRK;
--	}
- 
- 	msi_for_each_desc(desc, dev, MSI_DESC_NOTASSOCIATED) {
- 		ops->set_desc(&arg, desc);
 
