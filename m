@@ -1,46 +1,60 @@
-Return-Path: <stable+bounces-3964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7222803FED
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:36:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82CC8803FF1
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058231C20BB9
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:36:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2EBE1C20B84
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31CE335F11;
-	Mon,  4 Dec 2023 20:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCB5635EE9;
+	Mon,  4 Dec 2023 20:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kCOeJyFc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlmCToEC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E282635EFF
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 20:36:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7440C433C7;
-	Mon,  4 Dec 2023 20:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784DD364A0
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 20:36:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B52C433C8;
+	Mon,  4 Dec 2023 20:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701722201;
-	bh=wEc5WzDZF5MbrAIQio1Vn6QX7Oz+x5tQfZkKBTtVWJ0=;
+	s=k20201202; t=1701722207;
+	bh=7SpBkG5U3H0DpwISDYrm1eepjOwjk1foe+S2EwXq48I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kCOeJyFckKCw9jBlWOWjoc/WrBcu/AVqp7yTe1G5LcoQmd2ZGLY+M2/XLjZSWxeC7
-	 I7BczYifuy6EU7VpMvC17X5zTpzBT4RZvbdHlnsXkmPMQWhEQXb1hivUq0pnpIZCSz
-	 dC0qtYgmwcqkvy5XBMAn99CPs/Gzi31frgBNLYP13Yk7DDzN5kkH1qypIDKLX5XXpb
-	 sCFIDfzN5S5LGQpbmw2CrVo8vyT3wHq64Ayr2m207DQuhX+vx8jRUlRLCZ1zQsB1j5
-	 UDvjNp+BxbSCW1r54uLcGI6DE1rB9uZvFD1N5ZYZoYfrgyLyqF4ikHJ01Bs+0UwBAq
-	 WjbSiQuEhDCSA==
+	b=dlmCToECEuMdVMaLy1wjCa9pL2/ob+BwBgIzw6eO6KFAvjcdVkeDhmKyAU9A63jfv
+	 a7B4yS8Fb6acQuDICsTPYjvxERV77uHqnHaORk7WYhXAvshFbaXe8b+ExeP/aUumfc
+	 TLY09JCk+cqh8u+qtaO9nzXzkPmBE/8HkZCWwGKiRFfEtCkntYVmOBvab2N2u/kfJm
+	 WO/GJzXkXghDMR6ovuoTrkZ2HBYcBBw2hmZk5pWvEH9k2iIwrNFOjEmfqxhK1mGhJA
+	 V2ZmLmv4cjBeAXgLaizhQ4XTv93XyryTU3N1GtK3mp6hAHF4mt6KkoeNW2mSXPdN3X
+	 KRMFAH16qtoPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.15 08/10] debugfs: add API to allow debugfs operations cancellation
-Date: Mon,  4 Dec 2023 15:36:05 -0500
-Message-ID: <20231204203616.2094529-8-sashal@kernel.org>
+Cc: Lu Yao <yaolu@kylinos.cn>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	shashank.sharma@amd.com,
+	Hawking.Zhang@amd.com,
+	srinivasan.shanmugam@amd.com,
+	victorchengchi.lu@amd.com,
+	Praful.Swarnakar@amd.com,
+	le.ma@amd.com,
+	tom.stdenis@amd.com,
+	andrealmeid@igalia.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 09/10] drm/amdgpu: Fix cat debugfs amdgpu_regs_didt causes kernel null pointer
+Date: Mon,  4 Dec 2023 15:36:06 -0500
+Message-ID: <20231204203616.2094529-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231204203616.2094529-1-sashal@kernel.org>
 References: <20231204203616.2094529-1-sashal@kernel.org>
@@ -50,237 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.141
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Lu Yao <yaolu@kylinos.cn>
 
-[ Upstream commit 8c88a474357ead632b07c70bf7f119ace8c3b39e ]
+[ Upstream commit 2161e09cd05a50d80736fe397145340d2e8f6c05 ]
 
-In some cases there might be longer-running hardware accesses
-in debugfs files, or attempts to acquire locks, and we want
-to still be able to quickly remove the files.
+For 'AMDGPU_FAMILY_SI' family cards, in 'si_common_early_init' func, init
+'didt_rreg' and 'didt_wreg' to 'NULL'. But in func
+'amdgpu_debugfs_regs_didt_read/write', using 'RREG32_DIDT' 'WREG32_DIDT'
+lacks of relevant judgment. And other 'amdgpu_ip_block_version' that use
+these two definitions won't be added for 'AMDGPU_FAMILY_SI'.
 
-Introduce a cancellations API to use inside the debugfs handler
-functions to be able to cancel such operations on a per-file
-basis.
+So, add null pointer judgment before calling.
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Lu Yao <yaolu@kylinos.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/file.c       | 82 +++++++++++++++++++++++++++++++++++++++++
- fs/debugfs/inode.c      | 32 +++++++++++++++-
- fs/debugfs/internal.h   |  5 +++
- include/linux/debugfs.h | 19 ++++++++++
- 4 files changed, 137 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
-index a1aea4d1637c7..a1144f1de8c36 100644
---- a/fs/debugfs/file.c
-+++ b/fs/debugfs/file.c
-@@ -114,6 +114,8 @@ int debugfs_file_get(struct dentry *dentry)
- 		lockdep_init_map(&fsd->lockdep_map, fsd->lock_name ?: "debugfs",
- 				 &fsd->key, 0);
- #endif
-+		INIT_LIST_HEAD(&fsd->cancellations);
-+		mutex_init(&fsd->cancellations_mtx);
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index beb199d13451b..632d8df04ef45 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -342,6 +342,9 @@ static ssize_t amdgpu_debugfs_regs_didt_read(struct file *f, char __user *buf,
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
- 	/*
-@@ -156,6 +158,86 @@ void debugfs_file_put(struct dentry *dentry)
- }
- EXPORT_SYMBOL_GPL(debugfs_file_put);
++	if (!adev->didt_rreg)
++		return -EOPNOTSUPP;
++
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+ 	if (r < 0) {
+ 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+@@ -401,6 +404,9 @@ static ssize_t amdgpu_debugfs_regs_didt_write(struct file *f, const char __user
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
  
-+/**
-+ * debugfs_enter_cancellation - enter a debugfs cancellation
-+ * @file: the file being accessed
-+ * @cancellation: the cancellation object, the cancel callback
-+ *	inside of it must be initialized
-+ *
-+ * When a debugfs file is removed it needs to wait for all active
-+ * operations to complete. However, the operation itself may need
-+ * to wait for hardware or completion of some asynchronous process
-+ * or similar. As such, it may need to be cancelled to avoid long
-+ * waits or even deadlocks.
-+ *
-+ * This function can be used inside a debugfs handler that may
-+ * need to be cancelled. As soon as this function is called, the
-+ * cancellation's 'cancel' callback may be called, at which point
-+ * the caller should proceed to call debugfs_leave_cancellation()
-+ * and leave the debugfs handler function as soon as possible.
-+ * Note that the 'cancel' callback is only ever called in the
-+ * context of some kind of debugfs_remove().
-+ *
-+ * This function must be paired with debugfs_leave_cancellation().
-+ */
-+void debugfs_enter_cancellation(struct file *file,
-+				struct debugfs_cancellation *cancellation)
-+{
-+	struct debugfs_fsdata *fsd;
-+	struct dentry *dentry = F_DENTRY(file);
++	if (!adev->didt_wreg)
++		return -EOPNOTSUPP;
 +
-+	INIT_LIST_HEAD(&cancellation->list);
-+
-+	if (WARN_ON(!d_is_reg(dentry)))
-+		return;
-+
-+	if (WARN_ON(!cancellation->cancel))
-+		return;
-+
-+	fsd = READ_ONCE(dentry->d_fsdata);
-+	if (WARN_ON(!fsd ||
-+		    ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)))
-+		return;
-+
-+	mutex_lock(&fsd->cancellations_mtx);
-+	list_add(&cancellation->list, &fsd->cancellations);
-+	mutex_unlock(&fsd->cancellations_mtx);
-+
-+	/* if we're already removing wake it up to cancel */
-+	if (d_unlinked(dentry))
-+		complete(&fsd->active_users_drained);
-+}
-+EXPORT_SYMBOL_GPL(debugfs_enter_cancellation);
-+
-+/**
-+ * debugfs_leave_cancellation - leave cancellation section
-+ * @file: the file being accessed
-+ * @cancellation: the cancellation previously registered with
-+ *	debugfs_enter_cancellation()
-+ *
-+ * See the documentation of debugfs_enter_cancellation().
-+ */
-+void debugfs_leave_cancellation(struct file *file,
-+				struct debugfs_cancellation *cancellation)
-+{
-+	struct debugfs_fsdata *fsd;
-+	struct dentry *dentry = F_DENTRY(file);
-+
-+	if (WARN_ON(!d_is_reg(dentry)))
-+		return;
-+
-+	fsd = READ_ONCE(dentry->d_fsdata);
-+	if (WARN_ON(!fsd ||
-+		    ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)))
-+		return;
-+
-+	mutex_lock(&fsd->cancellations_mtx);
-+	if (!list_empty(&cancellation->list))
-+		list_del(&cancellation->list);
-+	mutex_unlock(&fsd->cancellations_mtx);
-+}
-+EXPORT_SYMBOL_GPL(debugfs_leave_cancellation);
-+
- /*
-  * Only permit access to world-readable files when the kernel is locked down.
-  * We also need to exclude any file that has ways to write or alter it as root
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 014ff204548d9..48cb009139945 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -225,6 +225,8 @@ static void debugfs_release_dentry(struct dentry *dentry)
- 		lockdep_unregister_key(&fsd->key);
- 		kfree(fsd->lock_name);
- #endif
-+		WARN_ON(!list_empty(&fsd->cancellations));
-+		mutex_destroy(&fsd->cancellations_mtx);
- 	}
- 
- 	kfree(fsd);
-@@ -724,8 +726,36 @@ static void __debugfs_file_removed(struct dentry *dentry)
- 	lock_map_acquire(&fsd->lockdep_map);
- 	lock_map_release(&fsd->lockdep_map);
- 
--	if (!refcount_dec_and_test(&fsd->active_users))
-+	/* if we hit zero, just wait for all to finish */
-+	if (!refcount_dec_and_test(&fsd->active_users)) {
- 		wait_for_completion(&fsd->active_users_drained);
-+		return;
-+	}
-+
-+	/* if we didn't hit zero, try to cancel any we can */
-+	while (refcount_read(&fsd->active_users)) {
-+		struct debugfs_cancellation *c;
-+
-+		/*
-+		 * Lock the cancellations. Note that the cancellations
-+		 * structs are meant to be on the stack, so we need to
-+		 * ensure we either use them here or don't touch them,
-+		 * and debugfs_leave_cancellation() will wait for this
-+		 * to be finished processing before exiting one. It may
-+		 * of course win and remove the cancellation, but then
-+		 * chances are we never even got into this bit, we only
-+		 * do if the refcount isn't zero already.
-+		 */
-+		mutex_lock(&fsd->cancellations_mtx);
-+		while ((c = list_first_entry_or_null(&fsd->cancellations,
-+						     typeof(*c), list))) {
-+			list_del_init(&c->list);
-+			c->cancel(dentry, c->cancel_data);
-+		}
-+		mutex_unlock(&fsd->cancellations_mtx);
-+
-+		wait_for_completion(&fsd->active_users_drained);
-+	}
- }
- 
- static void remove_one(struct dentry *victim)
-diff --git a/fs/debugfs/internal.h b/fs/debugfs/internal.h
-index c7d61cfc97d26..0c4c68cf161f8 100644
---- a/fs/debugfs/internal.h
-+++ b/fs/debugfs/internal.h
-@@ -8,6 +8,7 @@
- #ifndef _DEBUGFS_INTERNAL_H_
- #define _DEBUGFS_INTERNAL_H_
- #include <linux/lockdep.h>
-+#include <linux/list.h>
- 
- struct file_operations;
- 
-@@ -29,6 +30,10 @@ struct debugfs_fsdata {
- 			struct lock_class_key key;
- 			char *lock_name;
- #endif
-+
-+			/* protect cancellations */
-+			struct mutex cancellations_mtx;
-+			struct list_head cancellations;
- 		};
- 	};
- };
-diff --git a/include/linux/debugfs.h b/include/linux/debugfs.h
-index ea2d919fd9c79..c9c65b132c0fd 100644
---- a/include/linux/debugfs.h
-+++ b/include/linux/debugfs.h
-@@ -171,6 +171,25 @@ ssize_t debugfs_write_file_bool(struct file *file, const char __user *user_buf,
- ssize_t debugfs_read_file_str(struct file *file, char __user *user_buf,
- 			      size_t count, loff_t *ppos);
- 
-+/**
-+ * struct debugfs_cancellation - cancellation data
-+ * @list: internal, for keeping track
-+ * @cancel: callback to call
-+ * @cancel_data: extra data for the callback to call
-+ */
-+struct debugfs_cancellation {
-+	struct list_head list;
-+	void (*cancel)(struct dentry *, void *);
-+	void *cancel_data;
-+};
-+
-+void __acquires(cancellation)
-+debugfs_enter_cancellation(struct file *file,
-+			   struct debugfs_cancellation *cancellation);
-+void __releases(cancellation)
-+debugfs_leave_cancellation(struct file *file,
-+			   struct debugfs_cancellation *cancellation);
-+
- #else
- 
- #include <linux/err.h>
+ 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
+ 	if (r < 0) {
+ 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
 -- 
 2.42.0
 
