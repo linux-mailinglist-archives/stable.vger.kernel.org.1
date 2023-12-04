@@ -1,104 +1,113 @@
-Return-Path: <stable+bounces-3866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED96D803293
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:26:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88EA58032E1
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 13:34:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9549280F92
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:26:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 404AD1F21026
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 12:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0508F241ED;
-	Mon,  4 Dec 2023 12:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAB623772;
+	Mon,  4 Dec 2023 12:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="npdgGGtS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="acI6P9xA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC98E241E3;
-	Mon,  4 Dec 2023 12:26:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B42C433CB;
-	Mon,  4 Dec 2023 12:26:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701692790;
-	bh=YovzdwyeTKDZ5DVdLeomgGxw2Pm3ziZCMy1aF6v84XI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=npdgGGtSJFZhvbFnJGhAj53dUdNSzwrYXE+ZSORe1wf6YizhYF7l/0u02ytnGkfI7
-	 dN5si9DwwgjXHwJLdXbX/ugmo+o1kWuQXxs+ZWv68zSRxXAIww8necas1wahyt5un6
-	 cVmkhk63h4pkAUpwMq0OHL+vcNEEi975XxxvEbHZU9OIWVEgQJAG+dnqDdEpAVM+mY
-	 Tt6UhGh4JC2YVkCZUbBCc0Kh1OSWmpvZmcb1PahqXPZz08KJznL1ZEc3AkqnwnqayJ
-	 Y8sw0og1oiPZm0fEixqgJ+vvm030wfWue/C1D9Ah6O/kFYysK4NsTUgusjW1rEC8md
-	 VTGf8hK+ZqIeA==
-Date: Mon, 4 Dec 2023 12:26:25 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Ronald Wahl <ronald.wahl@raritan.com>
-Cc: David Laight <David.Laight@aculab.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	linux-spi <linux-spi@vger.kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	stable <stable@vger.kernel.org>,
-	Richard Weinberger <richard.weinberger@gmail.com>,
-	David Woodhouse <dwmw2@infradead.org>
-Subject: Re: [PATCH 1/2] spi: atmel: Do not cancel a transfer upon any signal
-Message-ID: <79a34e2c-013b-42e8-80e4-52fa3c9e1194@sirena.org.uk>
-References: <a90feacc-adb0-4d7d-b0a4-f777be8d3677@raritan.com>
- <0ce4c673-5c0b-4181-9d8b-53bcb0521f3e@raritan.com>
- <20231129094932.2639ca49@xps-13>
- <723263313.45007.1701348374765.JavaMail.zimbra@nod.at>
- <1192504136.46091.1701368767836.JavaMail.zimbra@nod.at>
- <20231130211543.2801a55b@xps-13>
- <d4ffca97-bb5d-4c42-a025-69b308c24f82@raritan.com>
- <4642281ef2e749a3b69bbea5474ecdf1@AcuMS.aculab.com>
- <c7980bbf-04aa-4c52-9c6c-f3a1169e90f9@raritan.com>
- <6f603fdd-12dc-4929-98aa-bee1f533e8e2@raritan.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D57390;
+	Mon,  4 Dec 2023 04:34:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701693256; x=1733229256;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=mnr4bWi12b9AfsIeCU0DhhtBPdySntmuu+VSuI/vb0U=;
+  b=acI6P9xA3h+ZqVWVJX2wmZEPLYu2b7wkX+EDUXOZcyv6G8ORh+Ri3GBQ
+   bKu+uZsjbus0EX276+pRfqYoE8R8cGtnJjMun0cDPhOOi8+1WxM++LydV
+   t84nnF/OFJfbCaHb/0Ur+ficRbspBqUd7waVQv4gRWSeje6B23owEjOm1
+   cZy1YtX431EQBmGgvqXlTsvmIcIUoBw4PON8as441m+MzR+gXZ0FfNOPF
+   212vZqY3aPm2BAqXvAkZl8Pse1oq92CKtyFeaR37Mrp3j+7ahxRWsypuS
+   g6iQGw4qZlCaJIbwAFzqeecSDdtroUXGyr1gvz509Z96qrdaiS4RE+gtp
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="575985"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="575985"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 04:34:15 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10913"; a="746827684"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="746827684"
+Received: from turnipsi.fi.intel.com (HELO kekkonen.fi.intel.com) ([10.237.72.44])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 04:34:13 -0800
+Received: from punajuuri.localdomain (punajuuri.localdomain [192.168.240.130])
+	by kekkonen.fi.intel.com (Postfix) with ESMTP id 6D80311FB5E;
+	Mon,  4 Dec 2023 14:34:10 +0200 (EET)
+Received: from sailus by punajuuri.localdomain with local (Exim 4.96)
+	(envelope-from <sakari.ailus@linux.intel.com>)
+	id 1rA898-003fEM-2n;
+	Mon, 04 Dec 2023 14:33:58 +0200
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: hverkuil-cisco@xs4all.nl,
+	laurent.pinchart@ideasonboard.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH 5.10 1/1] media: smiapp: Correctly initialise try compose rectangle
+Date: Mon,  4 Dec 2023 14:33:48 +0200
+Message-Id: <20231204123348.873466-1-sakari.ailus@linux.intel.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <2023112431-footpath-exes-5997@gregkh>
+References: <2023112431-footpath-exes-5997@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="bxdGx1TjhAw5cCTy"
-Content-Disposition: inline
-In-Reply-To: <6f603fdd-12dc-4929-98aa-bee1f533e8e2@raritan.com>
-X-Cookie: For office use only.
+Content-Transfer-Encoding: 8bit
 
+commit 724ff68e968b19d786870d333f9952bdd6b119cb upstream.
 
---bxdGx1TjhAw5cCTy
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Initialise the try sink compose rectangle size to the sink compose
+rectangle for binner and scaler sub-devices. This was missed due to the
+faulty condition that lead to the compose rectangles to be initialised for
+the pixel array sub-device where it is not relevant.
 
-On Mon, Dec 04, 2023 at 12:54:50PM +0100, Ronald Wahl wrote:
+Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[Sakari Ailus: Backport the change to the smiapp driver.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+---
+Hi Greg,
 
-> Revert e0205d6203c2 "spi: atmel: Prevent false timeouts on long transfers"
-> and the two new patches that are already added to one or more devel trees
-> [1/2] spi: atmel: Do not cancel a transfer upon any signal
->       commit: 595d2639451d3490c545c644ece726a0410ad39b
-> [2/2] spi: atmel: Drop unused defines
->       commit: 28d8051efae17b6d83544f3c1cf06f6a71677e91
+Here's a backport of the ccs driver patch as in older kernels the driver
+was called smiapp.
 
-If you want to submit changes please follow the process in
-submitting-patches.rst.
+This patch also applies to all stable trees older than 5.10.
 
---bxdGx1TjhAw5cCTy
-Content-Type: application/pgp-signature; name="signature.asc"
+ drivers/media/i2c/smiapp/smiapp-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/media/i2c/smiapp/smiapp-core.c b/drivers/media/i2c/smiapp/smiapp-core.c
+index 6fc0680a93d0..3bf96b047132 100644
+--- a/drivers/media/i2c/smiapp/smiapp-core.c
++++ b/drivers/media/i2c/smiapp/smiapp-core.c
+@@ -2647,7 +2647,7 @@ static int smiapp_open(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 		try_fmt->code = sensor->internal_csi_format->code;
+ 		try_fmt->field = V4L2_FIELD_NONE;
+ 
+-		if (ssd != sensor->pixel_array)
++		if (ssd == sensor->pixel_array)
+ 			continue;
+ 
+ 		try_comp = v4l2_subdev_get_try_compose(sd, fh->pad, i);
+-- 
+2.39.2
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmVtxXAACgkQJNaLcl1U
-h9ApIQgAg4yln6y42AK2Z8YVL32YRdPxhKnohjQNR60syOC30bBSBgK+3VuHz2fm
-6r+JwbvsGSUhGDHNXlARaMP5qT5GKgDlgFx0mEAWnJVwiLDr3sw3gVxmaRyTJDcN
-nJeQWbpnwX68aA72M3ajbjM8lbumQ8QZQsbkkAPGFFg/gN+M9xJbxGFqOUaI19ch
-zzU78iLhqBWtFM93gEjQZ+dkHQWJ8fWIzO3+jMAo7mHpKrhxLGYQwuGZP+AU8thR
-MSTQt6YdxDUssqN0SWBF1nskbrSs5JWETH18qQpbO2VASgNW5bhg1G5ivf9GYXgn
-DpmssLh6Cdx7FE8EPARethplVEIJzg==
-=XLst
------END PGP SIGNATURE-----
-
---bxdGx1TjhAw5cCTy--
 
