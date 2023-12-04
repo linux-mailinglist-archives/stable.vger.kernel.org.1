@@ -1,164 +1,103 @@
-Return-Path: <stable+bounces-3885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBB6803610
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 15:10:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09034803648
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 15:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3771C1F2129E
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 14:10:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85754B2096B
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 14:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983F0286AC;
-	Mon,  4 Dec 2023 14:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F9828DA7;
+	Mon,  4 Dec 2023 14:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iJzgs2zO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SaCT2Z3a"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7E0BA4
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 06:09:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701698991;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jre80fB5gxpOyf9zLOpdEKJWXB6ZQSAxU9A6LZTXLUU=;
-	b=iJzgs2zOhe5x1Ye1n4v1svUQ/4UmR1X+K2fBj3JrcSOSYW+iQBNPwvXXT7B69HoGfhWEa3
-	I3ZYo2ftHI2ESEG4CJDiLlbqSeGZVMweqFU0Mk9vAK40hZ2O/ClIb03Pt556awAryLXYQK
-	zTDFhqFQr2bYVdpDr5fg0deqv7nGbTk=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-635-TookpIowNZScG3dbTWF2mA-1; Mon, 04 Dec 2023 09:09:47 -0500
-X-MC-Unique: TookpIowNZScG3dbTWF2mA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-40b4302eac2so7857115e9.1
-        for <stable@vger.kernel.org>; Mon, 04 Dec 2023 06:09:47 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701698986; x=1702303786;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Jre80fB5gxpOyf9zLOpdEKJWXB6ZQSAxU9A6LZTXLUU=;
-        b=s+yVkU1JRqTKs7ZBWaixcGAHF+PZoP3dkqzsLgRy21+9kVJHN38utMY3raSddH4K8G
-         0S1umxUAFl3+zjaqpbNG+w1kdhrZGlq9rohvC4viJXTrkUeD9nmxdqYeuQG1Vw7aqGc8
-         uRXNE+YTlfXRBZBNcMOArvwQeIkXqhy1BKOaoaupW0y2+bbCx01iOND2cZOgRUsiSuD4
-         syWbl2phDKyZpE/yWfHcd/OUgANGeworsOTcsqbfDN1IQtW62qRDyQu09/LOCh+J0LD+
-         rVR5n+DVk4Iw0SdM+/Ca8UtrwzXvlYDaPWsVJNxuFuMW76hc3U3N+wNmTdwWHa+pBfYe
-         PsGA==
-X-Gm-Message-State: AOJu0Yy3dZgdmVbf3lLccRo4lEUcUTcJUQnC5YOUNdCx6JTCnu2m2FjM
-	k6voqzNBNwdDvz5BGrIl+ii8OA4btk2p8VapGUAK9aGqRiu4riCs7z4WxGM+C17L3DYX5hMRCAD
-	UUOBd/ZlnL/Z2CuSf
-X-Received: by 2002:a05:600c:54f0:b0:40b:4b69:b1a0 with SMTP id jb16-20020a05600c54f000b0040b4b69b1a0mr13770510wmb.3.1701698986426;
-        Mon, 04 Dec 2023 06:09:46 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEJtBakyTXcypMCsbpyGW4pbrYduXqfybcZT8Y5r8OtdcfhfgemCNcPW36ooJSmFpsFslzUwA==
-X-Received: by 2002:a05:600c:54f0:b0:40b:4b69:b1a0 with SMTP id jb16-20020a05600c54f000b0040b4b69b1a0mr13770492wmb.3.1701698986081;
-        Mon, 04 Dec 2023 06:09:46 -0800 (PST)
-Received: from pstanner-thinkpadt14sgen1.remote.csb ([2001:9e8:32c8:b00:227b:d2ff:fe26:2a7a])
-        by smtp.gmail.com with ESMTPSA id bi19-20020a05600c3d9300b0040b54d7ebb9sm15028705wmb.41.2023.12.04.06.09.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Dec 2023 06:09:45 -0800 (PST)
-Message-ID: <e5d53e44709f7da1ba4b8f8a4687efcffdd6addb.camel@redhat.com>
-Subject: Re: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Arnd Bergmann <arnd@arndb.de>, Bjorn Helgaas <bhelgaas@google.com>, 
- Hanjun Guo <guohanjun@huawei.com>, Neil Brown <neilb@suse.de>, Kent
- Overstreet <kent.overstreet@gmail.com>,  Jakub Kicinski <kuba@kernel.org>,
- Niklas Schnelle <schnelle@linux.ibm.com>, Uladzislau Koshchanka
- <koshchanka@gmail.com>, John Sanpe <sanpeqf@gmail.com>, Dave Jiang
- <dave.jiang@intel.com>,  Masami Hiramatsu <mhiramat@kernel.org>, Kees Cook
- <keescook@chromium.org>, David Gow <davidgow@google.com>,  Herbert Xu
- <herbert@gondor.apana.org.au>, Shuah Khan <skhan@linuxfoundation.org>,
- "wuqiang.matt" <wuqiang.matt@bytedance.com>, Yury Norov
- <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Andrew Morton
- <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>, Danilo
- Krummrich <dakr@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, Linux-Arch
-	 <linux-arch@vger.kernel.org>, stable@vger.kernel.org, Arnd Bergmann
-	 <arnd@kernel.org>, pstanner@redhat.com
-Date: Mon, 04 Dec 2023 15:09:43 +0100
-In-Reply-To: <05173886-444c-4bae-b1a5-d2b068e9c4a5@app.fastmail.com>
-References: <20231204123834.29247-1-pstanner@redhat.com>
-	 <20231204123834.29247-6-pstanner@redhat.com>
-	 <2648aef32cd5a2272cd3ce8cd7ed5b29b2d21cad.camel@redhat.com>
-	 <05173886-444c-4bae-b1a5-d2b068e9c4a5@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 899BDA4;
+	Mon,  4 Dec 2023 06:21:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701699677; x=1733235677;
+  h=message-id:date:mime-version:to:cc:references:from:
+   subject:in-reply-to:content-transfer-encoding;
+  bh=S/q+3vorDfPpthd0q6uZxtoV7s+8c0tIQjUWqprsjHc=;
+  b=SaCT2Z3aoLZhoVgz6DYtvnpC+sjJNETTu9f2OtMDaxHX3+HJMsHja7gE
+   zbtPb8koGtTX3SDIvDooHYxlPTvKwnvPhSwxN0AE+h6RSAX4NI8Q/iP0O
+   /5vvCaIatDNERyi7gMddAAg9yVClda5qfj33SDZl8VHgJEXjnS3NnJhFG
+   8xdAAvsFurzvAwYaWnJHjH6CW9nzmWxiqEnSGNfrC8qOy4upmXD7r+qU7
+   WxhVmOLi6+Q+8+jnWdKI3h4mnAlt2u3PhrPZ0+yeRqNIHLQDv6GWW3o1H
+   5ubyReT2flmW6++xXNpa36YCZmAzFh5iQ3jJG3s03RmVCLfZzVmYxaLIF
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="460233418"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="460233418"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Dec 2023 06:21:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="861391915"
+X-IronPort-AV: E=Sophos;i="6.04,249,1695711600"; 
+   d="scan'208";a="861391915"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by FMSMGA003.fm.intel.com with ESMTP; 04 Dec 2023 06:21:14 -0800
+Message-ID: <db579656-5700-d99b-f1eb-c1e27749eb7b@linux.intel.com>
+Date: Mon, 4 Dec 2023 16:22:33 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.13.0
+Content-Language: en-US
+To: Basavaraj Natikar <bnatikar@amd.com>, gregkh@linuxfoundation.org
+Cc: linux-usb@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+ mario.limonciello@amd.com, regressions@lists.linux.dev,
+ regressions@leemhuis.info, Basavaraj.Natikar@amd.com, pmenzel@molgen.mpg.de,
+ bugs-a21@moonlit-rail.com, stable@vger.kernel.org
+References: <3d3b8fd3-a1b9-9793-b709-eda447ebd1ab@linux.intel.com>
+ <20231204100859.1332772-1-mathias.nyman@linux.intel.com>
+ <070b3ce1-815c-4f3d-af09-e02cda8f9bf0@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: Re: [PATCH 1/2] Revert "xhci: Enable RPM on controllers that support
+ low-power states"
+In-Reply-To: <070b3ce1-815c-4f3d-af09-e02cda8f9bf0@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 2023-12-04 at 14:50 +0100, Arnd Bergmann wrote:
-> On Mon, Dec 4, 2023, at 14:39, Philipp Stanner wrote:
-> > On Mon, 2023-12-04 at 13:38 +0100, Philipp Stanner wrote:
->=20
-> > > + */
-> > > +#if defined(ARCH_WANTS_GENERIC_IOMEM_IS_IOPORT)
-> > > +bool iomem_is_ioport(void __iomem *addr)
-> > > =C2=A0{
-> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0IO_COND(addr, /* nothing *=
-/, iounmap(addr));
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long port =3D (un=
-signed long __force)addr;
-> > > +
-> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (port > PIO_OFFSET && p=
-ort < PIO_RESERVED)
-> >=20
-> > by the way:
-> > Reading that again my instinctive feeling would be that it should
-> > be
-> > port >=3D PIO_OFFSET.
-> >=20
-> > This is, however, the exactly copied logic from the IO_COND macro
-> > in
-> > lib/iomap.c. Is it possible that this macro contains a bug here?
->=20
-> Right, I think that would make more sense, but there is no
-> practical difference as long as I/O port 0 is always unused,
-> which is at least true on x86 because of PCIBIOS_MIN_IO.
-> Commit bb356ddb78b2 ("RISC-V: PCI: Avoid handing out address
-> 0 to devices") describes how setting PCIBIOS_MIN_IO to 0
-> caused other problems.
+On 4.12.2023 12.49, Basavaraj Natikar wrote:
+> 
+> On 12/4/2023 3:38 PM, Mathias Nyman wrote:
+>> This reverts commit a5d6264b638efeca35eff72177fd28d149e0764b.
+>>
+>> This patch was an attempt to solve issues seen when enabling runtime PM
+>> as default for all AMD 1.1 xHC hosts. see commit 4baf12181509
+>> ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
+> 
+> AFAK, only 4baf12181509 commit has regression on AMD xHc 1.1 below is not regression
+> patch and its unrelated to AMD xHC 1.1.
+> 
+> Only [PATCH 2/2] Revert "xhci: Loosen RPM as default policy to cover for AMD xHC 1.1"
+> alone in this series solves regression issues.
+> 
 
-Ok, makes sense.
+Patch a5d6264b638e ("xhci: Enable RPM on controllers that support low-power states")
+was originally not supposed to go to stable. It was added later as it solved some
+cases triggered by 4baf12181509 ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
+see:
+https://lore.kernel.org/linux-usb/5993222.lOV4Wx5bFT@natalenko.name/
 
-But should we then adjust iomem_is_ioport() in asm-generic/io.h, as
-well, so that it matches IO_COND()'s behavior?
+Turns out it wasn't enough.
 
-It currently does this:
+If we now revert 4baf12181509 "xhci: Loosen RPM as default policy to cover for AMD xHC 1.1"
+I still think it makes sense to also revert a5d6264b638e.
+Especially from the stable kernels.
 
-	uintptr_t start =3D (uintptr_t)PCI_IOBASE;
-	uintptr_t addr =3D (uintptr_t)addr_raw;
+This way we roll back this whole issue to a known working state.
 
-	if (addr >=3D start && addr < start + IO_SPACE_LIMIT)
-		return true;
-
-and if the architecture does not set PCI_IOBASE, then it's set per
-default to 0, as well.
-
-So we have two inconsistent definitons
-
->=20
-> I would just leave the logic consistent with IO_COND here,
-> or maybe use IO_COND() directly, like
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IO_COND(addr, return true, /* nothing */);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return false;
-
-I considered using it to increase consistency. However, I valued
-improved readability more. Considering that the mid-term goal is to
-move it to x86 anyways I'd like to leave it that way for now.
-
-
-P.
-
->=20
-> =C2=A0=C2=A0=C2=A0=C2=A0 Arnd
->=20
-
+Thanks
+Mathias
 
