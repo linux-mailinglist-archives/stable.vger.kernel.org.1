@@ -1,48 +1,59 @@
-Return-Path: <stable+bounces-3929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37CD1803F99
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB58803F9E
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 21:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9728CB20BCE
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:34:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95ADCB20AE9
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893FB35EF6;
-	Mon,  4 Dec 2023 20:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D3B3418F;
+	Mon,  4 Dec 2023 20:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQfHhGBa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uDlYXIPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4579B381D2;
-	Mon,  4 Dec 2023 20:34:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55A9C433CC;
-	Mon,  4 Dec 2023 20:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D857639FC5
+	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 20:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175EEC433CA;
+	Mon,  4 Dec 2023 20:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701722052;
-	bh=PGvdhsaMBMYO+a/7wVrzlPR3gLeQ5lkgOcpsQ7exj7E=;
+	s=k20201202; t=1701722066;
+	bh=cq6q6SprEF7TJmOidVjn7rV5ZJdddDKd2dLoRMiSmoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQfHhGBatVYZl/v4UUhTuuVQvPlpOvQbG7YyiahZTa1JrLQKpvZ6YX/6tMO0yhi1l
-	 su5RwV5DxpOhXEv3C/r8Untse3WtPMkak7ETFvaE/rdPDfeTtaMfd7E4fDJK6EKhHx
-	 RnHdeqXoBAPdu99vAyvrBi4FAoFVrw/lmEZj2NrZ7W6VrALbmVtWM2OlkrKd91ieAt
-	 HW4ZlwaqrcxE0fNWIJOOnhqzy7PTKncMEfPSDXzF1GIHUt7hNtMnkOhbFjnc8PzwjM
-	 yjfNGimMAd89GD7e1GBOBAZUp86jaSRHKcJFSPfYwGR94huK1aOboGlwNPIQZ+E2wn
-	 01Dt0u3yVUVEg==
+	b=uDlYXIPH9DbNeq9VNJJD0VyE1rVxcOQ2qb7hrlojgSvYw6RuQdVIyx7+yag1i629i
+	 5tfkVwFZtFe/iP8n+Panfat4rI5wYcv3M6SRF06IFZq/hBI2H/Be2prtisLUukh2Ji
+	 XYfBQhV84rWs6qoknLbsuvh2T82K1dWv/xa2+qecdtYbWjL2Y/CvV/fNOGOgVsxzIw
+	 LB3BvCqHGiN7mqPFuCL+YGzYDbYSqzT+HLpKSOBxSKJky17WuVp6IqDidK9wObwwx+
+	 323DflnPy6vug4u1yGQXRfiIqvTZiDyUM73YM8UIYmNM6dXtuiZOD7Tq0mDsNbC85/
+	 Dgn/DUfKCCWxg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yu Kuai <yukuai3@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>,
+	Stanley Yang <Stanley.Yang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 22/32] block: warn once for each partition in bio_check_ro()
-Date: Mon,  4 Dec 2023 15:32:42 -0500
-Message-ID: <20231204203317.2092321-22-sashal@kernel.org>
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	lijo.lazar@amd.com,
+	le.ma@amd.com,
+	Felix.Kuehling@amd.com,
+	James.Zhu@amd.com,
+	tao.zhou1@amd.com,
+	asad.kamal@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.6 23/32] drm/amdgpu: Do not issue gpu reset from nbio v7_9 bif interrupt
+Date: Mon,  4 Dec 2023 15:32:43 -0500
+Message-ID: <20231204203317.2092321-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231204203317.2092321-1-sashal@kernel.org>
 References: <20231204203317.2092321-1-sashal@kernel.org>
@@ -57,62 +68,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.4
 Content-Transfer-Encoding: 8bit
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Hawking Zhang <Hawking.Zhang@amd.com>
 
-[ Upstream commit 67d995e069535c32829f5d368d919063492cec6e ]
+[ Upstream commit 884e9b0827e889a8742e203ccd052101fb0b945d ]
 
-Commit 1b0a151c10a6 ("blk-core: use pr_warn_ratelimited() in
-bio_check_ro()") fix message storm by limit the rate, however, there
-will still be lots of message in the long term. Fix it better by warn
-once for each partition.
+In nbio v7_9, host driver should not issu gpu reset
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231128123027.971610-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Stanley Yang <Stanley.Yang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c          | 14 +++++++++++---
- include/linux/blk_types.h |  1 +
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index fdf25b8d6e784..2eca76ccf4ee0 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -501,9 +501,17 @@ static inline void bio_check_ro(struct bio *bio)
- 	if (op_is_write(bio_op(bio)) && bdev_read_only(bio->bi_bdev)) {
- 		if (op_is_flush(bio->bi_opf) && !bio_sectors(bio))
- 			return;
--		pr_warn_ratelimited("Trying to write to read-only block-device %pg\n",
--				    bio->bi_bdev);
--		/* Older lvm-tools actually trigger this */
-+
-+		if (bio->bi_bdev->bd_ro_warned)
-+			return;
-+
-+		bio->bi_bdev->bd_ro_warned = true;
-+		/*
-+		 * Use ioctl to set underlying disk of raid/dm to read-only
-+		 * will trigger this.
-+		 */
-+		pr_warn("Trying to write to read-only block-device %pg\n",
-+			bio->bi_bdev);
+diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+index f85eec05d2181..ae45656eb8779 100644
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_9.c
+@@ -604,11 +604,6 @@ static void nbio_v7_9_handle_ras_controller_intr_no_bifring(struct amdgpu_device
+ 
+ 		dev_info(adev->dev, "RAS controller interrupt triggered "
+ 					"by NBIF error\n");
+-
+-		/* ras_controller_int is dedicated for nbif ras error,
+-		 * not the global interrupt for sync flood
+-		 */
+-		amdgpu_ras_reset_gpu(adev);
  	}
  }
  
-diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
-index d5c5e59ddbd25..92c8997b19381 100644
---- a/include/linux/blk_types.h
-+++ b/include/linux/blk_types.h
-@@ -69,6 +69,7 @@ struct block_device {
- #ifdef CONFIG_FAIL_MAKE_REQUEST
- 	bool			bd_make_it_fail;
- #endif
-+	bool			bd_ro_warned;
- 	/*
- 	 * keep this out-of-line as it's both big and not needed in the fast
- 	 * path
 -- 
 2.42.0
 
