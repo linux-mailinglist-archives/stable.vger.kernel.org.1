@@ -1,138 +1,142 @@
-Return-Path: <stable+bounces-3904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9F3803BDD
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 18:42:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97577803E16
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 20:07:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76045281091
-	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 17:42:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5313B2812D6
+	for <lists+stable@lfdr.de>; Mon,  4 Dec 2023 19:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578342E84B;
-	Mon,  4 Dec 2023 17:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A5AE31595;
+	Mon,  4 Dec 2023 19:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="hc1WA4TB"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 724F9DF
-	for <stable@vger.kernel.org>; Mon,  4 Dec 2023 09:42:06 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rACxI-0007A1-TU; Mon, 04 Dec 2023 18:42:04 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rACxF-00DZHx-E5; Mon, 04 Dec 2023 18:42:01 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rACxF-00ECAC-4n; Mon, 04 Dec 2023 18:42:01 +0100
-Date: Mon, 4 Dec 2023 18:42:00 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Saravana Kannan <saravanak@google.com>,
-	stable <stable@kernel.org>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	James Clark <james.clark@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>, kernel@pengutronix.de
-Subject: Re: [PATCH 5.15.y] driver core: Release all resources during unbind
- before updating device links
-Message-ID: <20231204174200.6gl3fqgg7adzqdgq@pengutronix.de>
-References: <2023112330-squealer-strife-0ecc@gregkh>
- <20231123132835.486026-1-u.kleine-koenig@pengutronix.de>
- <2023112401-willing-drove-581c@gregkh>
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 78497D5;
+	Mon,  4 Dec 2023 11:07:48 -0800 (PST)
+Received: from [192.168.178.49] (dynamic-adsl-84-220-28-122.clienti.tiscali.it [84.220.28.122])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 0451C20B74C0;
+	Mon,  4 Dec 2023 11:07:40 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0451C20B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1701716867;
+	bh=DhialEwGNDg3mrw6IMaHyyz1UwnTPP9nz7f6+UkxtYo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hc1WA4TBrCB1KkvAbyYjJyBppPtRTRbsfBKpT419aWpy2ztkcPxAb/s6f2G+exsrM
+	 Rra8BHMT2mlyE8abLbGIfD6tyWJEGywaPkcO1Wd2sC6gI6QxTOQq6/xq0vRw9wuGCe
+	 cqn9Wyx22UN4A4vtLznpkQS6Qe4uCaEiPin01ypA=
+Message-ID: <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
+Date: Mon, 4 Dec 2023 20:07:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="y5trw4asru3mx4v7"
-Content-Disposition: inline
-In-Reply-To: <2023112401-willing-drove-581c@gregkh>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
+ TDX init
+Content-Language: en-US
+To: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+ Michael Kelley <mhkelley58@gmail.com>, Nikolay Borisov
+ <nik.borisov@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>,
+ "Cui, Dexuan" <decui@microsoft.com>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "stefan.bader@canonical.com" <stefan.bader@canonical.com>,
+ "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
+ "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
+ "cascardo@canonical.com" <cascardo@canonical.com>,
+ "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "sashal@kernel.org" <sashal@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
+ <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 04/12/2023 10:17, Reshetova, Elena wrote:
+>> Check for additional CPUID bits to identify TDX guests running with Trust
+>> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
+>> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
+>>
+>> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is
+>> visible
+>> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
+>> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
+>> aware mechanisms for what's left. So currently such guests do not have
+>> X86_FEATURE_TDX_GUEST set.
+> 
+> Back to this concrete patch. Why cannot L1 VMM emulate the correct value of
+> the TDX_CPUID_LEAF_ID to L2 VM? It can do this per TDX partitioning arch.
+> How do you handle this and other CPUID calls call currently in L1? Per spec,
+> all CPUIDs calls from L2 will cause L2 --> L1 exit, so what do you do in L1?
+The disclaimer here is that I don't have access to the paravisor (L1) code. But
+to the best of my knowledge the L1 handles CPUID calls by calling into the TDX
+module, or synthesizing a response itself. TDX_CPUID_LEAF_ID is not provided to
+the L2 guest in order to discriminate a guest that is solely responsible for every
+TDX mechanism (running at L1) from one running at L2 that has to cooperate with L1.
+More below.
 
---y5trw4asru3mx4v7
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> 
+> Given that you do that simple emulation, you already end up with TDX guest
+> code being activated. Next you can check what features you wont be able to
+> provide in L1 and create simple emulation calls for the TDG calls that must be
+> supported and cannot return error. The biggest TDG call (TDVMCALL) is already
+> direct call into L0 VMM, so this part doesn’t require L1 VMM support. 
 
-Hello Greg,
+I don't see anything in the TD-partitioning spec that gives the TDX guest a way
+to detect if it's running at L2 or L1, or check whether TDVMCALLs go to L0/L1.
+So in any case this requires an extra cpuid call to establish the environment.
+Given that, exposing TDX_CPUID_LEAF_ID to the guest doesn't help.
 
-On Fri, Nov 24, 2023 at 04:44:08PM +0000, Greg Kroah-Hartman wrote:
-> On Thu, Nov 23, 2023 at 02:28:36PM +0100, Uwe Kleine-K=F6nig wrote:
-> > From: Saravana Kannan <saravanak@google.com>
-> >=20
-> > [ Upstream commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 ]
-> >=20
-> > This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
-> > dependencies tracking support") where the device link status was
-> > incorrectly updated in the driver unbind path before all the device's
-> > resources were released.
-> >=20
-> > Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking sup=
-port")
-> > Cc: stable <stable@kernel.org>
-> > Reported-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pen=
-gutronix.de/
-> > Signed-off-by: Saravana Kannan <saravanak@google.com>
-> > Cc: Thierry Reding <thierry.reding@gmail.com>
-> > Cc: Yang Yingliang <yangyingliang@huawei.com>
-> > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Cc: Mark Brown <broonie@kernel.org>
-> > Cc: Matti Vaittinen <mazziesaccount@gmail.com>
-> > Cc: James Clark <james.clark@arm.com>
-> > Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-> > Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@goog=
-le.com
-> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> > [...]
->=20
-> Thanks, I've queued this up now.
+I'll give some examples of where the idea of emulating a TDX environment
+without attempting L1-L2 cooperation breaks down.
 
-I see it landed in v5.15.140 (as
-947c9e12ddd6866603fd60000c0cca8981687dd3), but not in v5.10.x and the
-older stables. It should go there, too.
+hlt: if the guest issues a hlt TDVMCALL it goes to L0, but if it issues a classic hlt
+it traps to L1. The hlt should definitely go to L1 so that L1 has a chance to do
+housekeeping.
 
-947c9e12ddd6866603fd60000c0cca8981687dd3 can be cherry-picked without
-conflicts on top of v5.10.202, 5.4.262, 4.19.300 and 4.14.331.
+map gpa: say the guest uses MAP_GPA TDVMCALL. This goes to L0, not L1 which is the actual
+entity that needs to have a say in performing the conversion. L1 can't act on the request
+if L0 would forward it because of the CoCo threat model. So L1 and L2 get out of sync.
+The only safe approach is for L2 to use a different mechanism to trap to L1 explicitly.
 
-Best regards
-Uwe
+Having a paravisor is required to support a TPM and having TDVMCALLs go to L0 is
+required to make performance viable for real workloads.
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+> 
+> Until we really see what breaks with this approach, I don’t think it is worth to
+> take in the complexity to support different L1 hypervisors view on partitioning.
+> 
 
---y5trw4asru3mx4v7
-Content-Type: application/pgp-signature; name="signature.asc"
+I'm not asking to support different L1 hypervisors view on partitioning, I want to
+clean up the code (by fixing assumptions that no longer hold) for the model that I'm
+describing that: the kernel already supports, has an implementation that works and
+has actual users. This is also a model that Intel intentionally created the TD-partitioning
+spec to support.
 
------BEGIN PGP SIGNATURE-----
+So lets work together to make X86_FEATURE_TDX_GUEST match reality.
 
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmVuD2gACgkQj4D7WH0S
-/k7OZwf/QFu1P6Nw9kfgVpzJIb0i5W3JkhEryDvX+JQu1HG9t+eIqsdsZDo9yvTm
-3FfsC3psbNMJxtiNmsUHO2cbQi0VDJQipRfPo/uRMcY+IMg8uDVrXLD7SyZ3WfTx
-AgjcjOrpY4BLndGZGCkQl9hviSsBEb4aRMPQ7+ATxVP88oytKdtuKhyE5ma1ek4u
-XC4WH8gYRbg56IKnBxsPdjL22QZCd081caVDFPsEiWv99vWy4vf/GDzTjEnymNcn
-gKEHrLoVasM7IOEqiCirX/Y70T6c4MOLcCmkqM1OVdSeqPop4d+AVWb/IorB1QAU
-0kP4kTirKJ6IkjRUurdDyKMYmgyMbw==
-=37HW
------END PGP SIGNATURE-----
+Best regards,
+Jeremi
 
---y5trw4asru3mx4v7--
+> Best Regards,
+> Elena.
+> 
+> 
+
 
