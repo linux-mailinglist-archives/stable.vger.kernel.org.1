@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5F2804705
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F868047AE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49318281391
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAACA1F214BF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA879F2;
-	Tue,  5 Dec 2023 03:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E8A8F56;
+	Tue,  5 Dec 2023 03:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOGoGEc3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaE4rzg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB376FB1;
-	Tue,  5 Dec 2023 03:34:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53FEC433C7;
-	Tue,  5 Dec 2023 03:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4B379E3;
+	Tue,  5 Dec 2023 03:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC74C433C8;
+	Tue,  5 Dec 2023 03:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747240;
-	bh=+hNOsNlTIfQ53t/kEvYdb8MTo+8zauOKBQXF93s7hIs=;
+	s=korg; t=1701747667;
+	bh=zQQjns+iyEp2+vEgLtqaL6tlkK1S4lmu16uJvYEyJeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oOGoGEc3YpzSGAIH2PEeIKGXT0CxgTu0O/31Ra3lK9UxtCZ0xEsHNjzUAVgZmJbPl
-	 8UnVqrn/D107bDYdRHGwnH//CnzBr4DFkN+EADS3V4V8sPXXTbIdowxRR3hf4KgkCa
-	 ESwjQXU03mZY79Q75xKfpgQiplLwaJ7+63G0zA/E=
+	b=KaE4rzg8B2sXWXd5VvsO8pCXpk8LLqTDwcSMGLNfgAcTnc0iMtU3CNG5zYhTK9ImD
+	 5UJPXQvgptruAEaU1+SXVpK10/25ncR/PQYK/Nfz4x2DUkZpRkpSBElttdt0z+wpq+
+	 mgxWDhSsHVxYi5FsLT27bhe7OPhMn7Jfgo3OvgRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 093/107] iommu/vt-d: Disable PCI ATS in legacy passthrough mode
-Date: Tue,  5 Dec 2023 12:17:08 +0900
-Message-ID: <20231205031537.529943261@linuxfoundation.org>
+	Chris Toledanes <chris.toledanes@hp.com>,
+	Carl Ng <carl.ng@hp.com>,
+	Max Nguyen <maxwell.nguyen@hp.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 24/67] Input: xpad - add HyperX Clutch Gladiate Support
+Date: Tue,  5 Dec 2023 12:17:09 +0900
+Message-ID: <20231205031521.184727844@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +55,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Max Nguyen <maxwell.nguyen@hp.com>
 
-[ Upstream commit da37dddcf4caf015c400a930301d2ee27a7a15fb ]
+commit e28a0974d749e5105d77233c0a84d35c37da047e upstream.
 
-When IOMMU hardware operates in legacy mode, the TT field of the context
-entry determines the translation type, with three supported types (Section
-9.3 Context Entry):
+Add HyperX controller support to xpad_device and xpad_table.
 
-- DMA translation without device TLB support
-- DMA translation with device TLB support
-- Passthrough mode with translated and translation requests blocked
-
-Device TLB support is absent when hardware is configured in passthrough
-mode.
-
-Disable the PCI ATS feature when IOMMU is configured for passthrough
-translation type in legacy (non-scalable) mode.
-
-Fixes: 0faa19a1515f ("iommu/vt-d: Decouple PASID & PRI enabling from SVA")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20231114011036.70142-3-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
+Reviewed-by: Carl Ng <carl.ng@hp.com>
+Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Link: https://lore.kernel.org/r/20230906231514.4291-1-hphyperxdev@gmail.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index de76272d0fb02..807abf4707be7 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2517,7 +2517,8 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
- 		return ret;
- 	}
- 
--	iommu_enable_pci_caps(info);
-+	if (sm_supported(info->iommu) || !domain_type_is_si(info->domain))
-+		iommu_enable_pci_caps(info);
- 
- 	return 0;
- }
--- 
-2.42.0
-
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -120,6 +120,7 @@ static const struct xpad_device {
+ 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0x0f10, "Thrustmaster Modena GT Wheel", 0, XTYPE_XBOX },
+ 	{ 0x044f, 0xb326, "Thrustmaster Gamepad GP XID", 0, XTYPE_XBOX360 },
++	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
+ 	{ 0x045e, 0x0202, "Microsoft X-Box pad v1 (US)", 0, XTYPE_XBOX },
+ 	{ 0x045e, 0x0285, "Microsoft X-Box pad (Japan)", 0, XTYPE_XBOX },
+ 	{ 0x045e, 0x0287, "Microsoft Xbox Controller S", 0, XTYPE_XBOX },
+@@ -434,6 +435,7 @@ static const struct usb_device_id xpad_t
+ 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 Controller */
+ 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
+ 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster X-Box 360 controllers */
++	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One Controllers */
+ 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
+ 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft X-Box One controllers */
+ 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech X-Box 360 style controllers */
 
 
 
