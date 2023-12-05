@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B486804827
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D6D804790
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3F41F225A2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3266281684
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032018C05;
-	Tue,  5 Dec 2023 03:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923588F56;
+	Tue,  5 Dec 2023 03:40:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6MLbsEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N4mS2B6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FED6FB0;
-	Tue,  5 Dec 2023 03:46:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4F6C433C7;
-	Tue,  5 Dec 2023 03:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F186FB1;
+	Tue,  5 Dec 2023 03:40:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8ABFC433C7;
+	Tue,  5 Dec 2023 03:40:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747986;
-	bh=cRiF6CMst+Vz15SSsv7jYaLf/3/FxUOS1EyDMMXwoWA=;
+	s=korg; t=1701747606;
+	bh=Oc3P8aL2tkRiD0dG0IC+bDQT5m/VjIXGM2nO3dSVsC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E6MLbsENzzyruylsXqj4+fZ7rVnrx7l3JIHgsgzALrCiViF/oT5Gz5Rub6Z0yLdHj
-	 02GZ2o+XStQqJ4UwojD/P2+eMs/1bh33XY2CUW46HOpMtwd78lnK1POwme2hUeWWKj
-	 EgwGr2vQg0tT+pSLVnVS2T9A7llLq1pQ2P6DgTPc=
+	b=2N4mS2B6GzmAgk0f1T2VVZfwVvyiTV38bFtiwIJvmGhTAf0a4UnAPqm1p2wizPE1O
+	 Mjd7/RFUSdBrxDtZvCq9YT3t6WETplbNTFwjOCjgsgE6uEOZmWc/1DvkQ+YgBUxsU+
+	 iQz2gXqeskzq/p0NWFwiVbTAkO9EiTaLMi3tO13s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Ivan Ivanov <ivan.ivanov@suse.com>,
-	Andrea della Porta <andrea.porta@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.4 46/94] USB: dwc2: write HCINT with INTMASK applied
+	Kishon Vijay Abraham I <kishon@ti.com>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 113/135] misc: pci_endpoint_test: Add deviceID for AM64 and J7200
 Date: Tue,  5 Dec 2023 12:17:14 +0900
-Message-ID: <20231205031525.432932878@linuxfoundation.org>
+Message-ID: <20231205031537.937105148@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,85 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Kishon Vijay Abraham I <kishon@ti.com>
 
-commit 0583bc776ca5b5a3f5752869fc31cf7322df2b35 upstream.
+[ Upstream commit 7c52009d94ab561e70cb72e007a6076f20451f85 ]
 
-dwc2_hc_n_intr() writes back INTMASK as read but evaluates it
-with intmask applied. In stress testing this causes spurious
-interrupts like this:
-
-[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 7 - ChHltd set, but reason is unknown
-[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 0 - ChHltd set, but reason is unknown
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 4 - ChHltd set, but reason is unknown
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
-[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_update_urb_state_abn(): trimming xfer length
-
-Applying INTMASK prevents this. The issue exists in all versions of the
+Add device ID specific to AM64 and J7200 in pci_endpoint_test so that
+endpoints configured with those deviceIDs can use pci_endpoint_test
 driver.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Tested-by: Ivan Ivanov <ivan.ivanov@suse.com>
-Tested-by: Andrea della Porta <andrea.porta@suse.com>
-Link: https://lore.kernel.org/r/20231115144514.15248-1-oneukum@suse.com
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20210811123336.31357-6-kishon@ti.com
+Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Stable-dep-of: 8293703a492a ("misc: pci_endpoint_test: Add deviceID for J721S2 PCIe EP device support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/hcd_intr.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/misc/pci_endpoint_test.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/dwc2/hcd_intr.c
-+++ b/drivers/usb/dwc2/hcd_intr.c
-@@ -2045,15 +2045,17 @@ static void dwc2_hc_n_intr(struct dwc2_h
- {
- 	struct dwc2_qtd *qtd;
- 	struct dwc2_host_chan *chan;
--	u32 hcint, hcintmsk;
-+	u32 hcint, hcintraw, hcintmsk;
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index b4a07a166605a..9832c2966c110 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -70,6 +70,8 @@
  
- 	chan = hsotg->hc_ptr_array[chnum];
+ #define PCI_DEVICE_ID_TI_J721E			0xb00d
+ #define PCI_DEVICE_ID_TI_AM654			0xb00c
++#define PCI_DEVICE_ID_TI_J7200			0xb00f
++#define PCI_DEVICE_ID_TI_AM64			0xb010
+ #define PCI_DEVICE_ID_LS1088A			0x80c0
  
--	hcint = dwc2_readl(hsotg, HCINT(chnum));
-+	hcintraw = dwc2_readl(hsotg, HCINT(chnum));
- 	hcintmsk = dwc2_readl(hsotg, HCINTMSK(chnum));
-+	hcint = hcintraw & hcintmsk;
-+	dwc2_writel(hsotg, hcint, HCINT(chnum));
-+
- 	if (!chan) {
- 		dev_err(hsotg->dev, "## hc_ptr_array for channel is NULL ##\n");
--		dwc2_writel(hsotg, hcint, HCINT(chnum));
- 		return;
- 	}
- 
-@@ -2062,11 +2064,9 @@ static void dwc2_hc_n_intr(struct dwc2_h
- 			 chnum);
- 		dev_vdbg(hsotg->dev,
- 			 "  hcint 0x%08x, hcintmsk 0x%08x, hcint&hcintmsk 0x%08x\n",
--			 hcint, hcintmsk, hcint & hcintmsk);
-+			 hcintraw, hcintmsk, hcint);
- 	}
- 
--	dwc2_writel(hsotg, hcint, HCINT(chnum));
--
- 	/*
- 	 * If we got an interrupt after someone called
- 	 * dwc2_hcd_endpoint_disable() we don't want to crash below
-@@ -2076,8 +2076,7 @@ static void dwc2_hc_n_intr(struct dwc2_h
- 		return;
- 	}
- 
--	chan->hcint = hcint;
--	hcint &= hcintmsk;
-+	chan->hcint = hcintraw;
- 
- 	/*
- 	 * If the channel was halted due to a dequeue, the qtd list might
+ #define is_am654_pci_dev(pdev)		\
+@@ -1000,6 +1002,12 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
++	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J7200),
++	  .driver_data = (kernel_ulong_t)&j721e_data,
++	},
++	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM64),
++	  .driver_data = (kernel_ulong_t)&j721e_data,
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);
+-- 
+2.42.0
+
 
 
 
