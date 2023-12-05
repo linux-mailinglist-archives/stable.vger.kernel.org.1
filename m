@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F35B780460F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1919980473E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF0E2283476
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C732814E1
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C3486FB8;
-	Tue,  5 Dec 2023 03:24:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB7C79F2;
+	Tue,  5 Dec 2023 03:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbyIJlfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEV2ox1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E894C6FAF;
-	Tue,  5 Dec 2023 03:24:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D06FC433C7;
-	Tue,  5 Dec 2023 03:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8EE56FB1;
+	Tue,  5 Dec 2023 03:36:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FEC433C7;
+	Tue,  5 Dec 2023 03:36:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746654;
-	bh=4nry0Q3NU9qvhE7/kV3mw7SYFYOSz5eJ9FzgkhXjzqc=;
+	s=korg; t=1701747389;
+	bh=kCAm7f0DnPsG7fA9ihD4KlJxiAN/b58jSVOTW9kvc7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbyIJlfQL7MreWNcDbQ/aQGMjABRRVV13Gr6bjZ/6GVTwXF4UiZQo+BxYA80hv8H/
-	 UkMLb7wdwiYmYy3+E60gOKMiSus4pFCqYrx2ZIokRbYGZUpkL4VnZiBvAJNudJ5rK2
-	 SLYfuZ4C0G5FzIgPsExviAwfnWHrzRU1ggK8b4Iw=
+	b=VEV2ox1KxMg7maRMLtQGLWKf9ZgcK0ygYyPPtbaVZSfFHQULDQyJf4zIitRi373XH
+	 sAp0gUY4DR8dgeyigk89fpszJhM4b4n65tqjpLz082oP8jqVXyNadSBESJdB+vevId
+	 ZbHsS5Fht9+6K5aOHS51ut4fRYUBW8HczISP7sRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Shawn Guo <shawn.guo@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/134] ipv4: igmp: fix refcnt uaf issue when receiving igmp query packet
-Date: Tue,  5 Dec 2023 12:15:54 +0900
-Message-ID: <20231205031540.671558431@linuxfoundation.org>
+Subject: [PATCH 5.10 034/135] USB: dwc3: qcom: fix ACPI platform device leak
+Date: Tue,  5 Dec 2023 12:15:55 +0900
+Message-ID: <20231205031532.827087554@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,116 +54,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit e2b706c691905fe78468c361aaabc719d0a496f1 ]
+[ Upstream commit 9cf87666fc6e08572341fe08ecd909935998fbbd ]
 
-When I perform the following test operations:
-1.ip link add br0 type bridge
-2.brctl addif br0 eth0
-3.ip addr add 239.0.0.1/32 dev eth0
-4.ip addr add 239.0.0.1/32 dev br0
-5.ip addr add 224.0.0.1/32 dev br0
-6.while ((1))
-    do
-        ifconfig br0 up
-        ifconfig br0 down
-    done
-7.send IGMPv2 query packets to port eth0 continuously. For example,
-./mausezahn ethX -c 0 "01 00 5e 00 00 01 00 72 19 88 aa 02 08 00 45 00 00
-1c 00 01 00 00 01 02 0e 7f c0 a8 0a b7 e0 00 00 01 11 64 ee 9b 00 00 00 00"
+Make sure to free the "urs" platform device, which is created for some
+ACPI platforms, on probe errors and on driver unbind.
 
-The preceding tests may trigger the refcnt uaf issue of the mc list. The
-stack is as follows:
-	refcount_t: addition on 0; use-after-free.
-	WARNING: CPU: 21 PID: 144 at lib/refcount.c:25 refcount_warn_saturate (lib/refcount.c:25)
-	CPU: 21 PID: 144 Comm: ksoftirqd/21 Kdump: loaded Not tainted 6.7.0-rc1-next-20231117-dirty #80
-	Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-	RIP: 0010:refcount_warn_saturate (lib/refcount.c:25)
-	RSP: 0018:ffffb68f00657910 EFLAGS: 00010286
-	RAX: 0000000000000000 RBX: ffff8a00c3bf96c0 RCX: ffff8a07b6160908
-	RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffff8a07b6160900
-	RBP: ffff8a00cba36862 R08: 0000000000000000 R09: 00000000ffff7fff
-	R10: ffffb68f006577c0 R11: ffffffffb0fdcdc8 R12: ffff8a00c3bf9680
-	R13: ffff8a00c3bf96f0 R14: 0000000000000000 R15: ffff8a00d8766e00
-	FS:  0000000000000000(0000) GS:ffff8a07b6140000(0000) knlGS:0000000000000000
-	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-	CR2: 000055f10b520b28 CR3: 000000039741a000 CR4: 00000000000006f0
-	Call Trace:
-	<TASK>
-	igmp_heard_query (net/ipv4/igmp.c:1068)
-	igmp_rcv (net/ipv4/igmp.c:1132)
-	ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205)
-	ip_local_deliver_finish (net/ipv4/ip_input.c:234)
-	__netif_receive_skb_one_core (net/core/dev.c:5529)
-	netif_receive_skb_internal (net/core/dev.c:5729)
-	netif_receive_skb (net/core/dev.c:5788)
-	br_handle_frame_finish (net/bridge/br_input.c:216)
-	nf_hook_bridge_pre (net/bridge/br_input.c:294)
-	__netif_receive_skb_core (net/core/dev.c:5423)
-	__netif_receive_skb_list_core (net/core/dev.c:5606)
-	__netif_receive_skb_list (net/core/dev.c:5674)
-	netif_receive_skb_list_internal (net/core/dev.c:5764)
-	napi_gro_receive (net/core/gro.c:609)
-	e1000_clean_rx_irq (drivers/net/ethernet/intel/e1000/e1000_main.c:4467)
-	e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3805)
-	__napi_poll (net/core/dev.c:6533)
-	net_rx_action (net/core/dev.c:6735)
-	__do_softirq (kernel/softirq.c:554)
-	run_ksoftirqd (kernel/softirq.c:913)
-	smpboot_thread_fn (kernel/smpboot.c:164)
-	kthread (kernel/kthread.c:388)
-	ret_from_fork (arch/x86/kernel/process.c:153)
-	ret_from_fork_asm (arch/x86/entry/entry_64.S:250)
-	</TASK>
+Compile-tested only.
 
-The root causes are as follows:
-Thread A					Thread B
-...						netif_receive_skb
-br_dev_stop					...
-    br_multicast_leave_snoopers			...
-        __ip_mc_dec_group			...
-            __igmp_group_dropped		igmp_rcv
-                igmp_stop_timer			    igmp_heard_query         //ref = 1
-                ip_ma_put			        igmp_mod_timer
-                    refcount_dec_and_test	            igmp_start_timer //ref = 0
-			...                                     refcount_inc //ref increases from 0
-When the device receives an IGMPv2 Query message, it starts the timer
-immediately, regardless of whether the device is running. If the device is
-down and has left the multicast group, it will cause the mc list refcount
-uaf issue.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c25c210f590e ("usb: dwc3: qcom: add URS Host support for sdm845 ACPI boot")
+Cc: Shawn Guo <shawn.guo@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Andrew Halaney <ahalaney@redhat.com>
+Acked-by: Shawn Guo <shawn.guo@linaro.org>
+Link: https://lore.kernel.org/r/20231117173650.21161-4-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/igmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/dwc3-qcom.c | 37 +++++++++++++++++++++++++++++-------
+ 1 file changed, 30 insertions(+), 7 deletions(-)
 
-diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-index 418e5fb58fd3f..d515881d02a6f 100644
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -216,8 +216,10 @@ static void igmp_start_timer(struct ip_mc_list *im, int max_delay)
- 	int tv = get_random_u32_below(max_delay);
- 
- 	im->tm_running = 1;
--	if (!mod_timer(&im->timer, jiffies+tv+2))
--		refcount_inc(&im->refcnt);
-+	if (refcount_inc_not_zero(&im->refcnt)) {
-+		if (mod_timer(&im->timer, jiffies + tv + 2))
-+			ip_ma_put(im);
-+	}
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 0d11d282c0a2e..58d5169e8cab5 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -699,9 +699,9 @@ static int dwc3_qcom_of_register_core(struct platform_device *pdev)
+ 	return ret;
  }
  
- static void igmp_gq_start_timer(struct in_device *in_dev)
+-static struct platform_device *
+-dwc3_qcom_create_urs_usb_platdev(struct device *dev)
++static struct platform_device *dwc3_qcom_create_urs_usb_platdev(struct device *dev)
+ {
++	struct platform_device *urs_usb = NULL;
+ 	struct fwnode_handle *fwh;
+ 	struct acpi_device *adev;
+ 	char name[8];
+@@ -721,9 +721,26 @@ dwc3_qcom_create_urs_usb_platdev(struct device *dev)
+ 
+ 	adev = to_acpi_device_node(fwh);
+ 	if (!adev)
+-		return NULL;
++		goto err_put_handle;
++
++	urs_usb = acpi_create_platform_device(adev, NULL);
++	if (IS_ERR_OR_NULL(urs_usb))
++		goto err_put_handle;
++
++	return urs_usb;
+ 
+-	return acpi_create_platform_device(adev, NULL);
++err_put_handle:
++	fwnode_handle_put(fwh);
++
++	return urs_usb;
++}
++
++static void dwc3_qcom_destroy_urs_usb_platdev(struct platform_device *urs_usb)
++{
++	struct fwnode_handle *fwh = urs_usb->dev.fwnode;
++
++	platform_device_unregister(urs_usb);
++	fwnode_handle_put(fwh);
+ }
+ 
+ static int dwc3_qcom_probe(struct platform_device *pdev)
+@@ -808,13 +825,13 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	if (IS_ERR(qcom->qscratch_base)) {
+ 		dev_err(dev, "failed to map qscratch, err=%d\n", ret);
+ 		ret = PTR_ERR(qcom->qscratch_base);
+-		goto clk_disable;
++		goto free_urs;
+ 	}
+ 
+ 	ret = dwc3_qcom_setup_irq(pdev);
+ 	if (ret) {
+ 		dev_err(dev, "failed to setup IRQs, err=%d\n", ret);
+-		goto clk_disable;
++		goto free_urs;
+ 	}
+ 
+ 	/*
+@@ -833,7 +850,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 
+ 	if (ret) {
+ 		dev_err(dev, "failed to register DWC3 Core, err=%d\n", ret);
+-		goto clk_disable;
++		goto free_urs;
+ 	}
+ 
+ 	ret = dwc3_qcom_interconnect_init(qcom);
+@@ -867,6 +884,9 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	else
+ 		platform_device_del(qcom->dwc3);
+ 	platform_device_put(qcom->dwc3);
++free_urs:
++	if (qcom->urs_usb)
++		dwc3_qcom_destroy_urs_usb_platdev(qcom->urs_usb);
+ clk_disable:
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+@@ -891,6 +911,9 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+ 		platform_device_del(qcom->dwc3);
+ 	platform_device_put(qcom->dwc3);
+ 
++	if (qcom->urs_usb)
++		dwc3_qcom_destroy_urs_usb_platdev(qcom->urs_usb);
++
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+ 		clk_put(qcom->clks[i]);
 -- 
 2.42.0
 
