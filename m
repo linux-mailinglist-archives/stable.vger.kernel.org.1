@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-4426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D81804770
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A848046F3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 038221C20E30
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA49F1C20DDF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2CE8BF8;
-	Tue,  5 Dec 2023 03:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D9A8BF1;
+	Tue,  5 Dec 2023 03:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpjRQ5a6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDGWlF7Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0DC6FB1;
-	Tue,  5 Dec 2023 03:38:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D7DC433C8;
-	Tue,  5 Dec 2023 03:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B955C6FB1;
+	Tue,  5 Dec 2023 03:33:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B40C433C8;
+	Tue,  5 Dec 2023 03:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747512;
-	bh=9bDD3AWC2VAlFfjuuqDj94gFUGry0WmfoBNenGYUzwc=;
+	s=korg; t=1701747201;
+	bh=NBjilbU3J1igLDc3Q9XAB4aaps6dFXfyicAheDTZil8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mpjRQ5a6o7cXFm4vMpQ/+c9E6UsB7D/bUM4brnaGmnS1s3duGBGG6Mtx8rwJppZE0
-	 0IqJcOgMTw99xh/d8IFOD61TBuf46bkgkgxPExG0FIy6NJmYIoN4vcRRpYKLJi1nuV
-	 wr9bVLTlsQzvU9BpsbVlCZwypFpOlsrijrpX2hHw=
+	b=sDGWlF7ZD9A+NmHkHQjzta713hmXs4DpDOPB/JpmNu7X/g51VA7gc0FBOshWqUKsU
+	 AvkxdYPdG6c7siJvUyWlL9JCrfTuEpJ87d+O/tqzfvGAtVRplssZUN0945y/TuQnCd
+	 dwNDdZ3epNkcKgyIwnGgShi6Ld6+9kNtLyGfXUO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Marek Vasut <marex@denx.de>,
+	Fabio Estevam <festevam@denx.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/135] perf intel-pt: Adjust sample flags for VM-Exit
+Subject: [PATCH 6.1 089/107] cpufreq: imx6q: Dont disable 792 Mhz OPP unnecessarily
 Date: Tue,  5 Dec 2023 12:17:04 +0900
-Message-ID: <20231205031537.221270550@linuxfoundation.org>
+Message-ID: <20231205031537.236098485@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,56 +55,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-[ Upstream commit 695fc4510615f8db40ebaf7a2c011f0a594b5f77 ]
+[ Upstream commit 2e4e0984c7d696cc74cf2fd7e7f62997f0e9ebe6 ]
 
-Use the change of NR to detect whether an asynchronous branch is a VM-Exit.
+For a 900MHz i.MX6ULL CPU the 792MHz OPP is disabled. There is no
+convincing reason to disable this OPP. If a CPU can run at 900MHz,
+it should also be able to cope with 792MHz. Looking at the voltage
+level of 792MHz in [1] (page 24, table 10. "Operating Ranges") the
+current defined OPP is above the minimum. So the voltage level
+shouldn't be a problem. However in [2] (page 24, table 10.
+"Operating Ranges"), it is not mentioned that 792MHz OPP isn't
+allowed. Change it to only disable 792MHz OPP for i.MX6ULL types
+below 792 MHz.
 
-Note VM-Entry is determined from the vmlaunch or vmresume instruction,
-in which case, sample flags will show "VMentry" even if the VM-Entry fails.
+[1] https://www.nxp.com/docs/en/data-sheet/IMX6ULLIEC.pdf
+[2] https://www.nxp.com/docs/en/data-sheet/IMX6ULLCEC.pdf
 
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Andi Kleen <ak@linux.intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Link: https://lore.kernel.org/r/20210218095801.19576-10-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Stable-dep-of: f2d87895cbc4 ("perf intel-pt: Fix async branch flags")
+Fixes: 0aa9abd4c212 ("cpufreq: imx6q: check speed grades for i.MX6ULL")
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Fabio Estevam <festevam@denx.de>
+[ Viresh: Edited subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/intel-pt.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/cpufreq/imx6q-cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index 453773ce6f455..918da9a430c08 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -1137,13 +1137,16 @@ static void intel_pt_sample_flags(struct intel_pt_queue *ptq)
- 	if (ptq->state->flags & INTEL_PT_ABORT_TX) {
- 		ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_TX_ABORT;
- 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
--		if (ptq->state->to_ip)
-+		if (!ptq->state->to_ip)
-+			ptq->flags = PERF_IP_FLAG_BRANCH |
-+				     PERF_IP_FLAG_TRACE_END;
-+		else if (ptq->state->from_nr && !ptq->state->to_nr)
-+			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
-+				     PERF_IP_FLAG_VMEXIT;
-+		else
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
- 				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_INTERRUPT;
--		else
--			ptq->flags = PERF_IP_FLAG_BRANCH |
--				     PERF_IP_FLAG_TRACE_END;
- 		ptq->insn_len = 0;
- 	} else {
- 		if (ptq->state->from_ip)
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index ae834fb9bfbd5..925fc17eaacb2 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -327,7 +327,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 			imx6x_disable_freq_in_opp(dev, 696000000);
+ 
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+-		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
++		if (val < OCOTP_CFG3_6ULL_SPEED_792MHZ)
+ 			imx6x_disable_freq_in_opp(dev, 792000000);
+ 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
 -- 
 2.42.0
 
