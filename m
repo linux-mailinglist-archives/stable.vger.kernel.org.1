@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-4206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7ED4804682
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97078046E9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B03EB208A5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08D881C20DDF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB9179E3;
-	Tue,  5 Dec 2023 03:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F18E8BF2;
+	Tue,  5 Dec 2023 03:32:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npa7/jiW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eahI7L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8746FAF;
-	Tue,  5 Dec 2023 03:28:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EA2C433C8;
-	Tue,  5 Dec 2023 03:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E040D6FB1;
+	Tue,  5 Dec 2023 03:32:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF0CC433C7;
+	Tue,  5 Dec 2023 03:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746910;
-	bh=L6nsT5Wy/896KbcP4TrgQtT0Fr8NtWbQNW1DHDCsdNc=;
+	s=korg; t=1701747174;
+	bh=P1Cr/kp6UsfNSgJM0OriKXil0Qs6Dwc+X5MwIp8C0PY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npa7/jiWeg1DUpVVdFWtOPggv5II6OfTV6X+c8YyDf2eh1pAQqik43tMVSXhctlKW
-	 9eORWLJ9C9LhRDFw/HL4lCdG5G3ZyPf9w+weUNfMrx81epD4IPID69GHURRifCu25a
-	 xWE9U4eYCwwKxNi7QwE0T1PS612w/aNUqG6/3GMs=
+	b=2eahI7L1qiCI4T8+B4jIhMNxEgdyw+DnfyaPViShTA3AWO/kXhY6E8ijsTVZlLErM
+	 OtIEOAlFzn4+Ji9B8UEDVO9loyxEbfNhGQi2Cq+JkMahHMYrE28S/DqqYlqBkDFdei
+	 cCJFIlb0nioH/2iyAUq0t6lhtpMlgk7FZLgICKxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>,
-	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	"JinZe.Xu" <JinZe.Xu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 63/71] ovl: skip overlayfs superblocks at global sync
+Subject: [PATCH 6.1 086/107] drm/amd/display: Restore rptr/wptr for DMCUB as workaround
 Date: Tue,  5 Dec 2023 12:17:01 +0900
-Message-ID: <20231205031521.539334896@linuxfoundation.org>
+Message-ID: <20231205031537.011097570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,86 +56,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+From: JinZe.Xu <JinZe.Xu@amd.com>
 
-[ Upstream commit 32b1924b210a70dcacdf65abd687c5ef86a67541 ]
+[ Upstream commit 8f3589bb6fcea397775398cba4fbcc46829a60ed ]
 
-Stacked filesystems like overlayfs has no own writeback, but they have to
-forward syncfs() requests to backend for keeping data integrity.
+[Why]
+States may be desync after resume.
 
-During global sync() each overlayfs instance calls method ->sync_fs() for
-backend although it itself is in global list of superblocks too.  As a
-result one syscall sync() could write one superblock several times and send
-multiple disk barriers.
+[How]
+Sync sw state with hw state.
 
-This patch adds flag SB_I_SKIP_SYNC into sb->sb_iflags to avoid that.
-
-Reported-by: Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
-Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-Stable-dep-of: b836c4d29f27 ("ima: detect changes to the backing overlay file")
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Nicholas Kazlauskas <Nicholas.Kazlauskas@amd.com>
+Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: JinZe.Xu <JinZe.Xu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 1ffa8602e39b ("drm/amd/display: Guard against invalid RPTR/WPTR being set")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/overlayfs/super.c | 5 +++--
- fs/sync.c            | 3 ++-
- include/linux/fs.h   | 2 ++
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dmub/dmub_srv.h     | 14 ++++++++++++++
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn20.c   |  5 +++++
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn20.h   |  2 ++
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn31.c   |  5 +++++
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn31.h   |  2 ++
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn32.c   |  5 +++++
+ .../gpu/drm/amd/display/dmub/src/dmub_dcn32.h   |  2 ++
+ drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c | 17 +++++++++++++++++
+ 8 files changed, 52 insertions(+)
 
-diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
-index 1a7a1e2988855..1c1eb873e6ecc 100644
---- a/fs/overlayfs/super.c
-+++ b/fs/overlayfs/super.c
-@@ -268,8 +268,8 @@ static int ovl_sync_fs(struct super_block *sb, int wait)
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
+index a21fe7b037d1f..aaabaab49809d 100644
+--- a/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
++++ b/drivers/gpu/drm/amd/display/dmub/dmub_srv.h
+@@ -332,6 +332,8 @@ struct dmub_srv_hw_funcs {
+ 	void (*setup_mailbox)(struct dmub_srv *dmub,
+ 			      const struct dmub_region *inbox1);
  
- 	/*
--	 * If this is a sync(2) call or an emergency sync, all the super blocks
--	 * will be iterated, including upper_sb, so no need to do anything.
-+	 * Not called for sync(2) call or an emergency sync (SB_I_SKIP_SYNC).
-+	 * All the super blocks will be iterated, including upper_sb.
- 	 *
- 	 * If this is a syncfs(2) call, then we do need to call
- 	 * sync_filesystem() on upper_sb, but enough if we do it when being
-@@ -1664,6 +1664,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
- 	sb->s_xattr = ovl_xattr_handlers;
- 	sb->s_fs_info = ofs;
- 	sb->s_flags |= SB_POSIXACL;
-+	sb->s_iflags |= SB_I_SKIP_SYNC;
++	uint32_t (*get_inbox1_wptr)(struct dmub_srv *dmub);
++
+ 	uint32_t (*get_inbox1_rptr)(struct dmub_srv *dmub);
  
- 	err = -ENOMEM;
- 	root_dentry = d_make_root(ovl_new_inode(sb, S_IFDIR, 0));
-diff --git a/fs/sync.c b/fs/sync.c
-index b54e0541ad899..917ebd12c2515 100644
---- a/fs/sync.c
-+++ b/fs/sync.c
-@@ -76,7 +76,8 @@ static void sync_inodes_one_sb(struct super_block *sb, void *arg)
+ 	void (*set_inbox1_wptr)(struct dmub_srv *dmub, uint32_t wptr_offset);
+@@ -590,6 +592,18 @@ enum dmub_status dmub_srv_hw_init(struct dmub_srv *dmub,
+  */
+ enum dmub_status dmub_srv_hw_reset(struct dmub_srv *dmub);
  
- static void sync_fs_one_sb(struct super_block *sb, void *arg)
- {
--	if (!sb_rdonly(sb) && sb->s_op->sync_fs)
-+	if (!sb_rdonly(sb) && !(sb->s_iflags & SB_I_SKIP_SYNC) &&
-+	    sb->s_op->sync_fs)
- 		sb->s_op->sync_fs(sb, *(int *)arg);
++/**
++ * dmub_srv_sync_inbox1() - sync sw state with hw state
++ * @dmub: the dmub service
++ *
++ * Sync sw state with hw state when resume from S0i3
++ *
++ * Return:
++ *   DMUB_STATUS_OK - success
++ *   DMUB_STATUS_INVALID - unspecified error
++ */
++enum dmub_status dmub_srv_sync_inbox1(struct dmub_srv *dmub);
++
+ /**
+  * dmub_srv_cmd_queue() - queues a command to the DMUB
+  * @dmub: the dmub service
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.c
+index a6540e27044d2..98dad0d47e72c 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.c
+@@ -282,6 +282,11 @@ void dmub_dcn20_setup_mailbox(struct dmub_srv *dmub,
+ 	REG_WRITE(DMCUB_INBOX1_SIZE, inbox1->top - inbox1->base);
  }
  
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 95b8ef09b76cf..f89748aac8c32 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1351,6 +1351,8 @@ extern int send_sigurg(struct fown_struct *fown);
- #define SB_I_IMA_UNVERIFIABLE_SIGNATURE	0x00000020
- #define SB_I_UNTRUSTED_MOUNTER		0x00000040
- 
-+#define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
++uint32_t dmub_dcn20_get_inbox1_wptr(struct dmub_srv *dmub)
++{
++	return REG_READ(DMCUB_INBOX1_WPTR);
++}
 +
- /* Possible states of 'frozen' field */
- enum {
- 	SB_UNFROZEN = 0,		/* FS is unfrozen */
+ uint32_t dmub_dcn20_get_inbox1_rptr(struct dmub_srv *dmub)
+ {
+ 	return REG_READ(DMCUB_INBOX1_RPTR);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.h
+index c2e5831ac52cc..1df128e57ed3b 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.h
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn20.h
+@@ -202,6 +202,8 @@ void dmub_dcn20_setup_windows(struct dmub_srv *dmub,
+ void dmub_dcn20_setup_mailbox(struct dmub_srv *dmub,
+ 			      const struct dmub_region *inbox1);
+ 
++uint32_t dmub_dcn20_get_inbox1_wptr(struct dmub_srv *dmub);
++
+ uint32_t dmub_dcn20_get_inbox1_rptr(struct dmub_srv *dmub);
+ 
+ void dmub_dcn20_set_inbox1_wptr(struct dmub_srv *dmub, uint32_t wptr_offset);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
+index 89d24fb7024e2..5e952541e72d5 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.c
+@@ -242,6 +242,11 @@ void dmub_dcn31_setup_mailbox(struct dmub_srv *dmub,
+ 	REG_WRITE(DMCUB_INBOX1_SIZE, inbox1->top - inbox1->base);
+ }
+ 
++uint32_t dmub_dcn31_get_inbox1_wptr(struct dmub_srv *dmub)
++{
++	return REG_READ(DMCUB_INBOX1_WPTR);
++}
++
+ uint32_t dmub_dcn31_get_inbox1_rptr(struct dmub_srv *dmub)
+ {
+ 	return REG_READ(DMCUB_INBOX1_RPTR);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
+index eb62410941473..89c5a948b67d5 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn31.h
+@@ -204,6 +204,8 @@ void dmub_dcn31_setup_windows(struct dmub_srv *dmub,
+ void dmub_dcn31_setup_mailbox(struct dmub_srv *dmub,
+ 			      const struct dmub_region *inbox1);
+ 
++uint32_t dmub_dcn31_get_inbox1_wptr(struct dmub_srv *dmub);
++
+ uint32_t dmub_dcn31_get_inbox1_rptr(struct dmub_srv *dmub);
+ 
+ void dmub_dcn31_set_inbox1_wptr(struct dmub_srv *dmub, uint32_t wptr_offset);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
+index 9c20516be066c..d2f03f797279f 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.c
+@@ -266,6 +266,11 @@ void dmub_dcn32_setup_mailbox(struct dmub_srv *dmub,
+ 	REG_WRITE(DMCUB_INBOX1_SIZE, inbox1->top - inbox1->base);
+ }
+ 
++uint32_t dmub_dcn32_get_inbox1_wptr(struct dmub_srv *dmub)
++{
++	return REG_READ(DMCUB_INBOX1_WPTR);
++}
++
+ uint32_t dmub_dcn32_get_inbox1_rptr(struct dmub_srv *dmub)
+ {
+ 	return REG_READ(DMCUB_INBOX1_RPTR);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.h
+index 7d1a6eb4d6657..f15336b6e22be 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.h
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn32.h
+@@ -206,6 +206,8 @@ void dmub_dcn32_setup_windows(struct dmub_srv *dmub,
+ void dmub_dcn32_setup_mailbox(struct dmub_srv *dmub,
+ 			      const struct dmub_region *inbox1);
+ 
++uint32_t dmub_dcn32_get_inbox1_wptr(struct dmub_srv *dmub);
++
+ uint32_t dmub_dcn32_get_inbox1_rptr(struct dmub_srv *dmub);
+ 
+ void dmub_dcn32_set_inbox1_wptr(struct dmub_srv *dmub, uint32_t wptr_offset);
+diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+index f58803de37cb0..6b8bd556c872f 100644
+--- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
++++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
+@@ -167,6 +167,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
+ 		funcs->backdoor_load = dmub_dcn20_backdoor_load;
+ 		funcs->setup_windows = dmub_dcn20_setup_windows;
+ 		funcs->setup_mailbox = dmub_dcn20_setup_mailbox;
++		funcs->get_inbox1_wptr = dmub_dcn20_get_inbox1_wptr;
+ 		funcs->get_inbox1_rptr = dmub_dcn20_get_inbox1_rptr;
+ 		funcs->set_inbox1_wptr = dmub_dcn20_set_inbox1_wptr;
+ 		funcs->is_supported = dmub_dcn20_is_supported;
+@@ -243,6 +244,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
+ 		funcs->backdoor_load = dmub_dcn31_backdoor_load;
+ 		funcs->setup_windows = dmub_dcn31_setup_windows;
+ 		funcs->setup_mailbox = dmub_dcn31_setup_mailbox;
++		funcs->get_inbox1_wptr = dmub_dcn31_get_inbox1_wptr;
+ 		funcs->get_inbox1_rptr = dmub_dcn31_get_inbox1_rptr;
+ 		funcs->set_inbox1_wptr = dmub_dcn31_set_inbox1_wptr;
+ 		funcs->setup_out_mailbox = dmub_dcn31_setup_out_mailbox;
+@@ -281,6 +283,7 @@ static bool dmub_srv_hw_setup(struct dmub_srv *dmub, enum dmub_asic asic)
+ 		funcs->backdoor_load_zfb_mode = dmub_dcn32_backdoor_load_zfb_mode;
+ 		funcs->setup_windows = dmub_dcn32_setup_windows;
+ 		funcs->setup_mailbox = dmub_dcn32_setup_mailbox;
++		funcs->get_inbox1_wptr = dmub_dcn32_get_inbox1_wptr;
+ 		funcs->get_inbox1_rptr = dmub_dcn32_get_inbox1_rptr;
+ 		funcs->set_inbox1_wptr = dmub_dcn32_set_inbox1_wptr;
+ 		funcs->setup_out_mailbox = dmub_dcn32_setup_out_mailbox;
+@@ -666,6 +669,20 @@ enum dmub_status dmub_srv_hw_init(struct dmub_srv *dmub,
+ 	return DMUB_STATUS_OK;
+ }
+ 
++enum dmub_status dmub_srv_sync_inbox1(struct dmub_srv *dmub)
++{
++	if (!dmub->sw_init)
++		return DMUB_STATUS_INVALID;
++
++	if (dmub->hw_funcs.get_inbox1_rptr && dmub->hw_funcs.get_inbox1_wptr) {
++		dmub->inbox1_rb.rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
++		dmub->inbox1_rb.wrpt = dmub->hw_funcs.get_inbox1_wptr(dmub);
++		dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
++	}
++
++	return DMUB_STATUS_OK;
++}
++
+ enum dmub_status dmub_srv_hw_reset(struct dmub_srv *dmub)
+ {
+ 	if (!dmub->sw_init)
 -- 
 2.42.0
 
