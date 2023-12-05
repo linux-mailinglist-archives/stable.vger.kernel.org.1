@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 788D9804659
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A25A280475D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2447A1F21418
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5978B1F21474
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCEE8BF1;
-	Tue,  5 Dec 2023 03:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF8228BF1;
+	Tue,  5 Dec 2023 03:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoloGZ7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IH9FXu4D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBAF6FB1;
-	Tue,  5 Dec 2023 03:26:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00D5C433CA;
-	Tue,  5 Dec 2023 03:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6816FB1;
+	Tue,  5 Dec 2023 03:37:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D04AC433C9;
+	Tue,  5 Dec 2023 03:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746798;
-	bh=VLgoqY5UaIBzSdDlG1TXfOO1Lx2Y510GztrBb3RA1Uc=;
+	s=korg; t=1701747469;
+	bh=pKw8AhDN84ROstUDiO8ZRlGuAHd6v8T4JUVD7q3/ERc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FoloGZ7Yi3JRt0+qNyAIqoTzFeud2w+7zYMZP9ajZBCtMeFAOpFRjQbeQ+4d3nv9P
-	 On66nVeT+BbjgyUm4ZiX8LXmM3Z6t66nP9fPPUaGXyJPq/a9IvV0MCFs6q9pYlYSaf
-	 OhOif8l0Qcl4ESBr9nW5g46CC2RMYlzeY6RhRlJE=
+	b=IH9FXu4DSbAjS3zIJ0u7Wy1CeTaHnuM6zrm82oXVLmhGDu4z8KT7pAcvrh85POwUV
+	 /ifLHHoo0kIrS/OkHItFcTIWOgV7Gr92FjmzrXazERuQNC9v6GQqrDgrA+iLMqLCpj
+	 XMGuCGTuvUTiC2bTpcrvFlF7OaGQCwAIMGp6fzDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.19 25/71] bcache: check return value from btree_node_alloc_replacement()
-Date: Tue,  5 Dec 2023 12:16:23 +0900
-Message-ID: <20231205031519.322813520@linuxfoundation.org>
+	Puliang Lu <puliang.lu@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 063/135] USB: serial: option: fix FM101R-GL defines
+Date: Tue,  5 Dec 2023 12:16:24 +0900
+Message-ID: <20231205031534.369889913@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-commit 777967e7e9f6f5f3e153abffb562bffaf4430d26 upstream.
+commit a1092619dd28ac0fcf23016160a2fdccd98ef935 upstream.
 
-In btree_gc_rewrite_node(), pointer 'n' is not checked after it returns
-from btree_gc_rewrite_node(). There is potential possibility that 'n' is
-a non NULL ERR_PTR(), referencing such error code is not permitted in
-following code. Therefore a return value checking is necessary after 'n'
-is back from btree_node_alloc_replacement().
+Modify the definition of the two Fibocom FM101R-GL PID macros, which had
+their PIDs switched.
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231120052503.6122-3-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+The correct PIDs are:
+
+- VID:PID 413C:8213, FM101R-GL ESIM are laptop M.2 cards (with
+  MBIM interfaces for Linux)
+
+- VID:PID 413C:8215, FM101R-GL are laptop M.2 cards (with
+  MBIM interface for Linux)
+
+0x8213: mbim, tty
+0x8215: mbim, tty
+
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Fixes: 52480e1f1a25 ("USB: serial: option: add Fibocom to DELL custom modem FM101R-GL")
+Link: https://lore.kernel.org/lkml/TYZPR02MB508845BAD7936A62A105CE5D89DFA@TYZPR02MB5088.apcprd02.prod.outlook.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/option.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1543,6 +1543,8 @@ static int btree_gc_rewrite_node(struct
- 		return 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -203,8 +203,8 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
  
- 	n = btree_node_alloc_replacement(replace, NULL);
-+	if (IS_ERR(n))
-+		return 0;
+-#define DELL_PRODUCT_FM101R			0x8213
+-#define DELL_PRODUCT_FM101R_ESIM		0x8215
++#define DELL_PRODUCT_FM101R_ESIM		0x8213
++#define DELL_PRODUCT_FM101R			0x8215
  
- 	/* recheck reserve after allocating replacement node */
- 	if (btree_check_reserve(b, NULL)) {
+ #define KYOCERA_VENDOR_ID			0x0c88
+ #define KYOCERA_PRODUCT_KPC650			0x17da
 
 
 
