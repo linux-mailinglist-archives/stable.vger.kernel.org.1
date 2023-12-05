@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFAB8047F5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08FC8047A3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98EF91C20EA7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27374B20D61
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87B78BF8;
-	Tue,  5 Dec 2023 03:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F75C14B;
+	Tue,  5 Dec 2023 03:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YAmwvafp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWgMMrGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85415C8F4;
-	Tue,  5 Dec 2023 03:44:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94F5CC433CD;
-	Tue,  5 Dec 2023 03:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E8D79E3;
+	Tue,  5 Dec 2023 03:40:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2B4C433C8;
+	Tue,  5 Dec 2023 03:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747853;
-	bh=Zrq0+hzgxtzCPswBIEddcB/GdzKpDgmE+KpVhgkxP4o=;
+	s=korg; t=1701747641;
+	bh=rcvxd26hxtly61S770C54pf8dXhpvrua5Zf0+cvhbcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YAmwvafpfKhWMv69Gmv85grZT7RZq27/+RxwOp+ctl/zp7ji9xAW4QHteoCeEV0ts
-	 v6FxeTV55Mc/h0CY+Bc40Y8Z1PPiHYWNLp+NFljvY8zJlXg72YAugOJy8jZxnKZ/UV
-	 JShnaP5VRLVLxZZUARsbbU1ZQeJiiySNzf6u1i68=
+	b=vWgMMrGOQJtC5GreA3yO+Wgmtyol+jaIIHiHD3+Cq4Q5I+ZqwblHBLLCKnsSfq2xo
+	 YO7UAyUzi91HfpZKwa9ItPo0VJ1WRcNB/v+O1nnk0DuiN5/84WZj4yt3IFVRtD8iDP
+	 G1ZNAd1U6QMygIA94jHjyrkY/CRvtctBVTTi7hXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 23/94] ext4: add a new helper to check if es must be kept
+	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 06/67] mmc: cqhci: Fix task clearing in CQE error recovery
 Date: Tue,  5 Dec 2023 12:16:51 +0900
-Message-ID: <20231205031524.218064275@linuxfoundation.org>
+Message-ID: <20231205031520.203857669@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,118 +52,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 9649eb18c6288f514cacffdd699d5cd999c2f8f6 ]
+commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 upstream.
 
-In the extent status tree, we have extents which we can just drop without
-issues and extents we must not drop - this depends on the extent's status
-- currently ext4_es_is_delayed() extents must stay, others may be dropped.
+If a task completion notification (TCN) is received when there is no
+outstanding task, the cqhci driver issues a "spurious TCN" warning. This
+was observed to happen right after CQE error recovery.
 
-A helper function is added to help determine if the current extent can
-be dropped, although only ext4_es_is_delayed() extents cannot be dropped
-currently.
+When an error interrupt is received the driver runs recovery logic.
+It halts the controller, clears all pending tasks, and then re-enables
+it. On some platforms, like Intel Jasper Lake, a stale task completion
+event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This results in either:
+a) Spurious TC completion event for an empty slot.
+b) Corrupted data being passed up the stack, as a result of premature
+   completion for a newly added task.
+
+Rather than add a quirk for affected controllers, ensure tasks are cleared
+by toggling CQHCI_ENABLE, which would happen anyway if
+cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
+effective for all controllers.
+
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
+Cc: stable@vger.kernel.org
+Reported-by: Kornel Dulęba <korneld@chromium.org>
+Tested-by: Kornel Dulęba <korneld@chromium.org>
+Co-developed-by: Kornel Dulęba <korneld@chromium.org>
+Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c | 34 +++++++++++++++++++++-------------
- 1 file changed, 21 insertions(+), 13 deletions(-)
+ drivers/mmc/host/cqhci-core.c |   32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index cfd05e016f181..59812c5bbe1ba 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -439,6 +439,19 @@ static void ext4_es_list_del(struct inode *inode)
- 	spin_unlock(&sbi->s_es_lock);
- }
+--- a/drivers/mmc/host/cqhci-core.c
++++ b/drivers/mmc/host/cqhci-core.c
+@@ -1068,28 +1068,28 @@ static void cqhci_recovery_finish(struct
  
-+/*
-+ * Returns true if we cannot fail to allocate memory for this extent_status
-+ * entry and cannot reclaim it until its status changes.
-+ */
-+static inline bool ext4_es_must_keep(struct extent_status *es)
-+{
-+	/* fiemap, bigalloc, and seek_data/hole need to use it. */
-+	if (ext4_es_is_delayed(es))
-+		return true;
+ 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+ 
+-	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
+-		ok = false;
+-
+ 	/*
+ 	 * The specification contradicts itself, by saying that tasks cannot be
+ 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
+ 	 * be disabled/re-enabled, but not to disable before clearing tasks.
+ 	 * Have a go anyway.
+ 	 */
+-	if (!ok) {
+-		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
+-		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
+-		cqcfg &= ~CQHCI_ENABLE;
+-		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+-		cqcfg |= CQHCI_ENABLE;
+-		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+-		/* Be sure that there are no tasks */
+-		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+-		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
+-			ok = false;
+-		WARN_ON(!ok);
+-	}
++	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
++		ok = false;
 +
-+	return false;
-+}
++	/* Disable to make sure tasks really are cleared */
++	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
++	cqcfg &= ~CQHCI_ENABLE;
++	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
 +
- static struct extent_status *
- ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
- 		     ext4_fsblk_t pblk)
-@@ -451,10 +464,8 @@ ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
- 	es->es_len = len;
- 	es->es_pblk = pblk;
- 
--	/*
--	 * We don't count delayed extent because we never try to reclaim them
--	 */
--	if (!ext4_es_is_delayed(es)) {
-+	/* We never try to reclaim a must kept extent, so we don't count it. */
-+	if (!ext4_es_must_keep(es)) {
- 		if (!EXT4_I(inode)->i_es_shk_nr++)
- 			ext4_es_list_add(inode);
- 		percpu_counter_inc(&EXT4_SB(inode->i_sb)->
-@@ -472,8 +483,8 @@ static void ext4_es_free_extent(struct inode *inode, struct extent_status *es)
- 	EXT4_I(inode)->i_es_all_nr--;
- 	percpu_counter_dec(&EXT4_SB(inode->i_sb)->s_es_stats.es_stats_all_cnt);
- 
--	/* Decrease the shrink counter when this es is not delayed */
--	if (!ext4_es_is_delayed(es)) {
-+	/* Decrease the shrink counter when we can reclaim the extent. */
-+	if (!ext4_es_must_keep(es)) {
- 		BUG_ON(EXT4_I(inode)->i_es_shk_nr == 0);
- 		if (!--EXT4_I(inode)->i_es_shk_nr)
- 			ext4_es_list_del(inode);
-@@ -842,7 +853,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
- 					  128, EXT4_I(inode)))
- 		goto retry;
--	if (err == -ENOMEM && !ext4_es_is_delayed(&newes))
-+	if (err == -ENOMEM && !ext4_es_must_keep(&newes))
- 		err = 0;
- 
- 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
-@@ -1683,11 +1694,8 @@ static int es_do_reclaim_extents(struct ext4_inode_info *ei, ext4_lblk_t end,
- 
- 		(*nr_to_scan)--;
- 		node = rb_next(&es->rb_node);
--		/*
--		 * We can't reclaim delayed extent from status tree because
--		 * fiemap, bigallic, and seek_data/hole need to use it.
--		 */
--		if (ext4_es_is_delayed(es))
++	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
++	cqcfg |= CQHCI_ENABLE;
++	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
 +
-+		if (ext4_es_must_keep(es))
- 			goto next;
- 		if (ext4_es_is_referenced(es)) {
- 			ext4_es_clear_referenced(es);
-@@ -1751,7 +1759,7 @@ void ext4_clear_inode_es(struct inode *inode)
- 	while (node) {
- 		es = rb_entry(node, struct extent_status, rb_node);
- 		node = rb_next(node);
--		if (!ext4_es_is_delayed(es)) {
-+		if (!ext4_es_must_keep(es)) {
- 			rb_erase(&es->rb_node, &tree->root);
- 			ext4_es_free_extent(inode, es);
- 		}
--- 
-2.42.0
-
++	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
++
++	if (!ok)
++		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
+ 
+ 	cqhci_recover_mrqs(cq_host);
+ 
 
 
 
