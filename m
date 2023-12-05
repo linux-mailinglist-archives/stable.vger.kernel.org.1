@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5AE8047A6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B79A80470A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2980E1C20BF7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F091F2142A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E015A8C07;
-	Tue,  5 Dec 2023 03:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34718BF8;
+	Tue,  5 Dec 2023 03:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0Vwph+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBjmq6i1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1A76FB1;
-	Tue,  5 Dec 2023 03:40:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F782C433C8;
-	Tue,  5 Dec 2023 03:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8676FB1;
+	Tue,  5 Dec 2023 03:34:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC09AC433C7;
+	Tue,  5 Dec 2023 03:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747651;
-	bh=835BGh2chJ7gtgab/Lh/oMlpEUdxydD/ojXreNrvkOE=;
+	s=korg; t=1701747254;
+	bh=P/v9WpGZoBqLkekM1AV00coWIN0y/d7qfmAhh2T5G90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0Vwph+nezCGhRnHsrsJNcB66Oq1Y77AlJ8SlWUCiHLIP3cAJ6/c7/YaFQZihn2sr
-	 z7rpPZws+Sa1QxmVm093bTWZcafqRJMLraTd0QIuo0Zduo2htLmkzSPqziZQQxzjlA
-	 AMPDaGwRiQErRckoRdtPxyh8Ex6VAQ99S+yClNwg=
+	b=UBjmq6i1IndYkSjGcWplSV6nQxzApiWbHVxhDtqE87zXshQ4UKY9LLLx6XyX6y79V
+	 gI57FsZDarPABCH0ruvQNLKp9URnS4wpKyJDqTQLAUOmt1KIxDHTDg++rns5gpR/EE
+	 qIwrIHg4UqpxxVNeDlgmpjCk4P3/n7trEXjni3EI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Bruno Haible <bruno@clisp.org>
-Subject: [PATCH 5.15 18/67] parisc: Drop the HP-UX ENOSYM and EREMOTERELEASE error codes
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 088/107] cpufreq: imx6q: dont warn for disabling a non-existing frequency
 Date: Tue,  5 Dec 2023 12:17:03 +0900
-Message-ID: <20231205031520.831574017@linuxfoundation.org>
+Message-ID: <20231205031537.158328249@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,92 +53,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-commit e5f3e299a2b1e9c3ece24a38adfc089aef307e8a upstream.
+[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
 
-Those return codes are only defined for the parisc architecture and
-are leftovers from when we wanted to be HP-UX compatible.
+It is confusing if a warning is given for disabling a non-existent
+frequency of the operating performance points (OPP). In this case
+the function dev_pm_opp_disable() returns -ENODEV. Check the return
+value and avoid the output of a warning in this case. Avoid code
+duplication by using a separate function.
 
-They are not returned by any Linux kernel syscall but do trigger
-problems with the glibc strerrorname_np() and strerror() functions as
-reported in glibc issue #31080.
-
-There is no need to keep them, so simply remove them.
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: Bruno Haible <bruno@clisp.org>
-Closes: https://sourceware.org/bugzilla/show_bug.cgi?id=31080
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+[ Viresh : Updated commit subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/uapi/asm/errno.h       |    2 --
- lib/errname.c                              |    6 ------
- tools/arch/parisc/include/uapi/asm/errno.h |    2 --
- 3 files changed, 10 deletions(-)
+ drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/arch/parisc/include/uapi/asm/errno.h
-+++ b/arch/parisc/include/uapi/asm/errno.h
-@@ -75,7 +75,6 @@
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index ad4ce84931446..ae834fb9bfbd5 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -209,6 +209,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
+ 	.suspend = cpufreq_generic_suspend,
+ };
  
- /* We now return you to your regularly scheduled HPUX. */
++static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
++{
++	int ret = dev_pm_opp_disable(dev, freq);
++
++	if (ret < 0 && ret != -ENODEV)
++		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
++}
++
+ #define OCOTP_CFG3			0x440
+ #define OCOTP_CFG3_SPEED_SHIFT		16
+ #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
+@@ -254,17 +262,15 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
+ 	val &= 0x3;
  
--#define ENOSYM		215	/* symbol does not exist in executable */
- #define	ENOTSOCK	216	/* Socket operation on non-socket */
- #define	EDESTADDRREQ	217	/* Destination address required */
- #define	EMSGSIZE	218	/* Message too long */
-@@ -101,7 +100,6 @@
- #define	ETIMEDOUT	238	/* Connection timed out */
- #define	ECONNREFUSED	239	/* Connection refused */
- #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
--#define	EREMOTERELEASE	240	/* Remote peer released connection */
- #define	EHOSTDOWN	241	/* Host is down */
- #define	EHOSTUNREACH	242	/* No route to host */
+ 	if (val < OCOTP_CFG3_SPEED_996MHZ)
+-		if (dev_pm_opp_disable(dev, 996000000))
+-			dev_warn(dev, "failed to disable 996MHz OPP\n");
++		imx6x_disable_freq_in_opp(dev, 996000000);
  
---- a/lib/errname.c
-+++ b/lib/errname.c
-@@ -111,9 +111,6 @@ static const char *names_0[] = {
- 	E(ENOSPC),
- 	E(ENOSR),
- 	E(ENOSTR),
--#ifdef ENOSYM
--	E(ENOSYM),
--#endif
- 	E(ENOSYS),
- 	E(ENOTBLK),
- 	E(ENOTCONN),
-@@ -144,9 +141,6 @@ static const char *names_0[] = {
- #endif
- 	E(EREMOTE),
- 	E(EREMOTEIO),
--#ifdef EREMOTERELEASE
--	E(EREMOTERELEASE),
--#endif
- 	E(ERESTART),
- 	E(ERFKILL),
- 	E(EROFS),
---- a/tools/arch/parisc/include/uapi/asm/errno.h
-+++ b/tools/arch/parisc/include/uapi/asm/errno.h
-@@ -75,7 +75,6 @@
+ 	if (of_machine_is_compatible("fsl,imx6q") ||
+ 	    of_machine_is_compatible("fsl,imx6qp")) {
+ 		if (val != OCOTP_CFG3_SPEED_852MHZ)
+-			if (dev_pm_opp_disable(dev, 852000000))
+-				dev_warn(dev, "failed to disable 852MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 852000000);
++
+ 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
+-			if (dev_pm_opp_disable(dev, 1200000000))
+-				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 1200000000);
+ 	}
  
- /* We now return you to your regularly scheduled HPUX. */
+ 	return 0;
+@@ -316,20 +322,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 	val >>= OCOTP_CFG3_SPEED_SHIFT;
+ 	val &= 0x3;
  
--#define ENOSYM		215	/* symbol does not exist in executable */
- #define	ENOTSOCK	216	/* Socket operation on non-socket */
- #define	EDESTADDRREQ	217	/* Destination address required */
- #define	EMSGSIZE	218	/* Message too long */
-@@ -101,7 +100,6 @@
- #define	ETIMEDOUT	238	/* Connection timed out */
- #define	ECONNREFUSED	239	/* Connection refused */
- #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
--#define	EREMOTERELEASE	240	/* Remote peer released connection */
- #define	EHOSTDOWN	241	/* Host is down */
- #define	EHOSTUNREACH	242	/* No route to host */
+-	if (of_machine_is_compatible("fsl,imx6ul")) {
++	if (of_machine_is_compatible("fsl,imx6ul"))
+ 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
+-			if (dev_pm_opp_disable(dev, 696000000))
+-				dev_warn(dev, "failed to disable 696MHz OPP\n");
+-	}
++			imx6x_disable_freq_in_opp(dev, 696000000);
  
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
+-			if (dev_pm_opp_disable(dev, 792000000))
+-				dev_warn(dev, "failed to disable 792MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 792000000);
+ 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
+-			if (dev_pm_opp_disable(dev, 900000000))
+-				dev_warn(dev, "failed to disable 900MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 900000000);
+ 	}
+ 
+ 	return ret;
+-- 
+2.42.0
+
 
 
 
