@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4728047D9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3EC5804783
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353411F21625
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F234281592
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8811B6FB0;
-	Tue,  5 Dec 2023 03:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423498C03;
+	Tue,  5 Dec 2023 03:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybJrqAqb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbsbSpWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4523B6AC2;
-	Tue,  5 Dec 2023 03:42:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F1BC433C8;
-	Tue,  5 Dec 2023 03:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3A6FB1;
+	Tue,  5 Dec 2023 03:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27662C433C8;
+	Tue,  5 Dec 2023 03:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747778;
-	bh=e8cguoZjeW5boxxWi+VqSYuKW9456rE81vDDXgOGWsI=;
+	s=korg; t=1701747569;
+	bh=IB+9BXSL3eQWOoCd96TVHdfek8Gq2+nG24rzOE3Qg58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybJrqAqbrDjnpRd84Z2GlvF+ZdB7h13YZ52+TJJmMs5r4lt1OeY1kCHmGvpM+HvO8
-	 cKbU+KveL3oVUqovcHO7gdjlymUhZVZiAKOWEBymZ26Y62kwM7KQR/6kGwxM5tx54D
-	 IzBzWz6+l/crEf1831vXO7ADwHO/dHfvd/08/tJU=
+	b=FbsbSpWdiQD+jxh5AE5j0+vZoERhzxkoOkfGBMz1Hl5ke9vH3IR7CPSAAy47GpRUN
+	 WBOhy7oPWCWABfRbe0HacJ5UiLFr6b9kQNtszgLfcMaDGqJlLiHqpC+WfKt+s/Uhs6
+	 WUU+fdIo+kaFq0FzyLOqNqc6s5SAmFlPvnocPN6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/67] ravb: Fix races between ravb_tx_timeout_work() and net related ops
+Subject: [PATCH 5.10 124/135] cpufreq: imx6q: dont warn for disabling a non-existing frequency
 Date: Tue,  5 Dec 2023 12:17:25 +0900
-Message-ID: <20231205031522.155417580@linuxfoundation.org>
+Message-ID: <20231205031538.735933877@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +53,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
+[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
 
-Fix races between ravb_tx_timeout_work() and functions of net_device_ops
-and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
-since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
-ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
-may happen in ravb_tx_timeout_work() like below:
+It is confusing if a warning is given for disabling a non-existent
+frequency of the operating performance points (OPP). In this case
+the function dev_pm_opp_disable() returns -ENODEV. Check the return
+value and avoid the output of a warning in this case. Avoid code
+duplication by using a separate function.
 
-CPU0			CPU1
-			ravb_tx_timeout()
-			schedule_work()
-...
-__dev_close_many()
-// Under rtnl lock
-ravb_close()
-cancel_work_sync()
-// Waiting
-			ravb_tx_timeout_work()
-			rtnl_lock()
-			// This is possible to cause a deadlock
-
-If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+[ Viresh : Updated commit subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 19733c9a7c25e..b180e2225227c 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1504,6 +1504,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 	struct net_device *ndev = priv->ndev;
- 	int error;
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index 5bf5fc759881f..cc874d0c4395a 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -209,6 +209,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
+ 	.suspend = cpufreq_generic_suspend,
+ };
  
-+	if (!rtnl_trylock()) {
-+		usleep_range(1000, 2000);
-+		schedule_work(&priv->work);
-+		return;
-+	}
++static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
++{
++	int ret = dev_pm_opp_disable(dev, freq);
 +
- 	netif_tx_stop_all_queues(ndev);
++	if (ret < 0 && ret != -ENODEV)
++		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
++}
++
+ #define OCOTP_CFG3			0x440
+ #define OCOTP_CFG3_SPEED_SHIFT		16
+ #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
+@@ -254,17 +262,15 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
+ 	val &= 0x3;
  
- 	/* Stop PTP Clock driver */
-@@ -1536,7 +1542,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		 */
- 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
- 			   __func__, error);
--		return;
-+		goto out_unlock;
+ 	if (val < OCOTP_CFG3_SPEED_996MHZ)
+-		if (dev_pm_opp_disable(dev, 996000000))
+-			dev_warn(dev, "failed to disable 996MHz OPP\n");
++		imx6x_disable_freq_in_opp(dev, 996000000);
+ 
+ 	if (of_machine_is_compatible("fsl,imx6q") ||
+ 	    of_machine_is_compatible("fsl,imx6qp")) {
+ 		if (val != OCOTP_CFG3_SPEED_852MHZ)
+-			if (dev_pm_opp_disable(dev, 852000000))
+-				dev_warn(dev, "failed to disable 852MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 852000000);
++
+ 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
+-			if (dev_pm_opp_disable(dev, 1200000000))
+-				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 1200000000);
  	}
- 	ravb_emac_init(ndev);
  
-@@ -1546,6 +1552,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		ravb_ptp_init(ndev, priv->pdev);
+ 	return 0;
+@@ -316,20 +322,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 	val >>= OCOTP_CFG3_SPEED_SHIFT;
+ 	val &= 0x3;
  
- 	netif_tx_start_all_queues(ndev);
-+
-+out_unlock:
-+	rtnl_unlock();
- }
+-	if (of_machine_is_compatible("fsl,imx6ul")) {
++	if (of_machine_is_compatible("fsl,imx6ul"))
+ 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
+-			if (dev_pm_opp_disable(dev, 696000000))
+-				dev_warn(dev, "failed to disable 696MHz OPP\n");
+-	}
++			imx6x_disable_freq_in_opp(dev, 696000000);
  
- /* Packet transmit function for Ethernet AVB */
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
+-			if (dev_pm_opp_disable(dev, 792000000))
+-				dev_warn(dev, "failed to disable 792MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 792000000);
+ 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
+-			if (dev_pm_opp_disable(dev, 900000000))
+-				dev_warn(dev, "failed to disable 900MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 900000000);
+ 	}
+ 
+ 	return ret;
 -- 
 2.42.0
 
