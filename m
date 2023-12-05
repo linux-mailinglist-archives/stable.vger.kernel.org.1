@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866B38047AD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFC2804773
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B801E1C20E72
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E5A281665
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB628C07;
-	Tue,  5 Dec 2023 03:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F458C07;
+	Tue,  5 Dec 2023 03:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5EYsolf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pc0adegJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B6A79E3;
-	Tue,  5 Dec 2023 03:41:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBD4C433C8;
-	Tue,  5 Dec 2023 03:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB686FB1;
+	Tue,  5 Dec 2023 03:38:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02289C433C7;
+	Tue,  5 Dec 2023 03:38:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747665;
-	bh=WJTOLCVImfNewpeuLB91XOO9MM5sbMfkBZ32w35lh1U=;
+	s=korg; t=1701747523;
+	bh=XtiM4wFB4arNbEgf0AnXlltNRWxfWnNFTE4WsmmnCHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5EYsolfutXuXZckhKEzJmp3eSmZT0Lpkev3aJqWbnEnDqTRuRGhxXGm014MmKEB3
-	 ysR3Fvb/ejZMeM4Z5LTDbDI9BcdhFvNHRzAhGMycsTdafZfSPeSU9r2KTN4g8Tlg/y
-	 IVcmQBS/D+pmOQ25bCdAI0q61zOS+OYyA7Bu2Src=
+	b=pc0adegJlafCtxIz/EnGO08LfjhhW+JxAsUVZMD3MkMg5tp6BgOG8zXKTXMkEPuXl
+	 O/vfDlOKbs9RUUiDvp8HnOtkb2DU/ZXiZgMyeRBhDnGqcB5q1tQABRL0TZP/WLSJ4L
+	 zVCGBadM79SuDfx4+sbiGfxXSzvHVoP2snEUWtjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 23/67] btrfs: make error messages more clear when getting a chunk map
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 107/135] ASoC: SOF: sof-pci-dev: use community key on all Up boards
 Date: Tue,  5 Dec 2023 12:17:08 +0900
-Message-ID: <20231205031521.122214251@linuxfoundation.org>
+Message-ID: <20231205031537.506669657@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +53,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 7d410d5efe04e42a6cd959bfe6d59d559fdf8b25 upstream.
+[ Upstream commit 405e52f412b85b581899f5e1b82d25a7c8959d89 ]
 
-When getting a chunk map, at btrfs_get_chunk_map(), we do some sanity
-checks to verify we found a chunk map and that map found covers the
-logical address the caller passed in. However the messages aren't very
-clear in the sense that don't mention the issue is with a chunk map and
-one of them prints the 'length' argument as if it were the end offset of
-the requested range (while the in the string format we use %llu-%llu
-which suggests a range, and the second %llu-%llu is actually a range for
-the chunk map). So improve these two details in the error messages.
+There are already 3 versions of the Up boards with support for the SOF
+community key (ApolloLake, WhiskyLake, TigerLake). Rather than
+continue to add quirks for each version, let's add a wildcard.
 
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For WHL and TGL, the authentication supports both the SOF community
+key and the firmware signed with the Intel production key. Given two
+choices, the community key is the preferred option to allow developers
+to sign their own firmware. The firmware signed with production key
+can still be selected if needed with a kernel module
+option (snd-sof-pci.fw_path="intel/sof")
+
+Tested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20211119231327.211946-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/sof/sof-pci-dev.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3064,15 +3064,16 @@ struct extent_map *btrfs_get_chunk_map(s
- 	read_unlock(&em_tree->lock);
+diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
+index fe9feaab6a0ac..571dc679ff7c1 100644
+--- a/sound/soc/sof/sof-pci-dev.c
++++ b/sound/soc/sof/sof-pci-dev.c
+@@ -59,17 +59,9 @@ static const struct dmi_system_id sof_tplg_table[] = {
  
- 	if (!em) {
--		btrfs_crit(fs_info, "unable to find logical %llu length %llu",
-+		btrfs_crit(fs_info,
-+			   "unable to find chunk map for logical %llu length %llu",
- 			   logical, length);
- 		return ERR_PTR(-EINVAL);
- 	}
- 
- 	if (em->start > logical || em->start + em->len <= logical) {
- 		btrfs_crit(fs_info,
--			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
--			   logical, length, em->start, em->start + em->len);
-+			   "found a bad chunk map, wanted %llu-%llu, found %llu-%llu",
-+			   logical, logical + length, em->start, em->start + em->len);
- 		free_extent_map(em);
- 		return ERR_PTR(-EINVAL);
- 	}
+ static const struct dmi_system_id community_key_platforms[] = {
+ 	{
+-		.ident = "Up Squared",
++		.ident = "Up boards",
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
+-			DMI_MATCH(DMI_BOARD_NAME, "UP-APL01"),
+-		}
+-	},
+-	{
+-		.ident = "Up Extreme",
+-		.matches = {
+-			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
+-			DMI_MATCH(DMI_BOARD_NAME, "UP-WHL01"),
+ 		}
+ 	},
+ 	{
+-- 
+2.42.0
+
 
 
 
