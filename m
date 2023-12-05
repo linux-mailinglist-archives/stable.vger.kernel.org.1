@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7238047C0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C3F8046DF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5654B20CEC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B8428150F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EA4B6FB1;
-	Tue,  5 Dec 2023 03:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB898BF2;
+	Tue,  5 Dec 2023 03:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dMq24ixi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhzAJvxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8CA611E;
-	Tue,  5 Dec 2023 03:41:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A28EC433CA;
-	Tue,  5 Dec 2023 03:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389DD6FB1;
+	Tue,  5 Dec 2023 03:32:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597EC433C7;
+	Tue,  5 Dec 2023 03:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747713;
-	bh=Z246qch1AdasOXv66rIV58XY5+wtVF725r8/Cwenijg=;
+	s=korg; t=1701747148;
+	bh=HmXeeHZOQsrmxgPMMxZWKzM0U+5i/DU+6tVIihsXv/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dMq24ixiN9kB88/Jgg0qFRCYsg5uR4gqxuKKe7kUdue3gK1XoauXcw7dYMndf4Iaa
-	 qAo64ov/kOQ9LdpPsaNPD483vCUTbl52GP62WItxAMFRbsrsKOEq7P5KLN8V3aB6vI
-	 cILjiwe5qQR+fdjXmy6IPQPJyLAoZFPhBOMDLLZM=
+	b=HhzAJvxWK5cG3MafQChZFqstqSGnywCRTN9QUShXisjWcXcztROuprIzBMSpq3XeQ
+	 nqmTVGMTNN+b46ttlCw9213F2CUO6q4to5r5YLuj2cHBdDoQx5BaQu+q/bNVV9ueBr
+	 hgeevZ0t7iIv2EluncTLF2XeewDikYgCVhwQ0Zqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 07/67] mmc: block: Retry commands in CQE error recovery
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 077/107] net: ravb: Keep reverse order of operations in ravb_remove()
 Date: Tue,  5 Dec 2023 12:16:52 +0900
-Message-ID: <20231205031520.262386655@linuxfoundation.org>
+Message-ID: <20231205031536.332967162@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +54,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 8155d1fa3a747baad5caff5f8303321d68ddd48c upstream.
+[ Upstream commit edf9bc396e05081ca281ffb0cd41e44db478ff26 ]
 
-It is important that MMC_CMDQ_TASK_MGMT command to discard the queue is
-successful because otherwise a subsequent reset might fail to flush the
-cache first.  Retry it and the previous STOP command.
+On RZ/G3S SMARC Carrier II board having RGMII connections b/w Ethernet
+MACs and PHYs it has been discovered that doing unbind/bind for ravb
+driver in a loop leads to wrong speed and duplex for Ethernet links and
+broken connectivity (the connectivity cannot be restored even with
+bringing interface down/up). Before doing unbind/bind the Ethernet
+interfaces were configured though systemd. The sh instructions used to
+do unbind/bind were:
 
-Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-5-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ cd /sys/bus/platform/drivers/ravb/
+$ while :; do echo 11c30000.ethernet > unbind ; \
+  echo 11c30000.ethernet > bind; done
+
+It has been discovered that there is a race b/w IOCTLs initialized by
+systemd at the response of success binding and the
+"ravb_write(ndev, CCC_OPC_RESET, CCC)" call in ravb_remove() as
+follows:
+
+1/ as a result of bind success the user space open/configures the
+   interfaces tough an IOCTL; the following stack trace has been
+   identified on RZ/G3S:
+
+Call trace:
+dump_backtrace+0x9c/0x100
+show_stack+0x20/0x38
+dump_stack_lvl+0x48/0x60
+dump_stack+0x18/0x28
+ravb_open+0x70/0xa58
+__dev_open+0xf4/0x1e8
+__dev_change_flags+0x198/0x218
+dev_change_flags+0x2c/0x80
+devinet_ioctl+0x640/0x708
+inet_ioctl+0x1e4/0x200
+sock_do_ioctl+0x50/0x108
+sock_ioctl+0x240/0x358
+__arm64_sys_ioctl+0xb0/0x100
+invoke_syscall+0x50/0x128
+el0_svc_common.constprop.0+0xc8/0xf0
+do_el0_svc+0x24/0x38
+el0_svc+0x34/0xb8
+el0t_64_sync_handler+0xc0/0xc8
+el0t_64_sync+0x190/0x198
+
+2/ this call may execute concurrently with ravb_remove() as the
+   unbind/bind operation was executed in a loop
+3/ if the operation mode is changed to RESET (through
+   ravb_write(ndev, CCC_OPC_RESET, CCC) call in ravb_remove())
+   while the above ravb_open() is in progress it may lead to MAC
+   (or PHY, or MAC-PHY connection, the right point hasn't been identified
+   at the moment) to be broken, thus the Ethernet connectivity fails to
+   restore.
+
+The simple fix for this is to move ravb_write(ndev, CCC_OPC_RESET, CCC))
+after unregister_netdev() to avoid resetting the controller while the
+netdev interface is still registered.
+
+To avoid future issues in ravb_remove(), the patch follows the proper order
+of operations in ravb_remove(): reverse order compared with ravb_probe().
+This avoids described races as the IOCTLs as well as unregister_netdev()
+(called now at the beginning of ravb_remove()) calls rtnl_lock() before
+continuing and IOCTLs check (though devinet_ioctl()) if device is still
+registered just after taking the lock:
+
+int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+{
+	// ...
+
+        rtnl_lock();
+
+        ret = -ENODEV;
+        dev = __dev_get_by_name(net, ifr->ifr_name);
+        if (!dev)
+                goto done;
+
+	// ...
+done:
+        rtnl_unlock();
+out:
+        return ret;
+}
+
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/core.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -552,7 +552,7 @@ int mmc_cqe_recovery(struct mmc_host *ho
- 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
- 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
- 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
--	mmc_wait_for_cmd(host, &cmd, 0);
-+	mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index e1c4a0ca4493f..68cb5616ef991 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2919,22 +2919,26 @@ static int ravb_remove(struct platform_device *pdev)
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *info = priv->info;
  
- 	memset(&cmd, 0, sizeof(cmd));
- 	cmd.opcode       = MMC_CMDQ_TASK_MGMT;
-@@ -560,10 +560,13 @@ int mmc_cqe_recovery(struct mmc_host *ho
- 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
- 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
- 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
--	err = mmc_wait_for_cmd(host, &cmd, 0);
-+	err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
- 
- 	host->cqe_ops->cqe_recovery_finish(host);
- 
-+	if (err)
-+		err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
+-	/* Stop PTP Clock driver */
+-	if (info->ccc_gac)
+-		ravb_ptp_stop(ndev);
+-
+-	clk_disable_unprepare(priv->gptp_clk);
+-	clk_disable_unprepare(priv->refclk);
+-
+-	/* Set reset mode */
+-	ravb_write(ndev, CCC_OPC_RESET, CCC);
+ 	unregister_netdev(ndev);
+ 	if (info->nc_queues)
+ 		netif_napi_del(&priv->napi[RAVB_NC]);
+ 	netif_napi_del(&priv->napi[RAVB_BE]);
 +
- 	mmc_retune_release(host);
- 
- 	return err;
+ 	ravb_mdio_release(priv);
++
++	/* Stop PTP Clock driver */
++	if (info->ccc_gac)
++		ravb_ptp_stop(ndev);
++
+ 	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
+ 			  priv->desc_bat_dma);
++
++	/* Set reset mode */
++	ravb_write(ndev, CCC_OPC_RESET, CCC);
++
++	clk_disable_unprepare(priv->gptp_clk);
++	clk_disable_unprepare(priv->refclk);
++
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	reset_control_assert(priv->rstc);
+-- 
+2.42.0
+
 
 
 
