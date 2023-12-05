@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52D38046C9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC91380461A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66894B20C8E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77B09283429
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43B079F2;
-	Tue,  5 Dec 2023 03:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186846FB8;
+	Tue,  5 Dec 2023 03:24:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIaixxcI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXofBF/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F296FB1;
-	Tue,  5 Dec 2023 03:31:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633A4C433C8;
-	Tue,  5 Dec 2023 03:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC376FAF;
+	Tue,  5 Dec 2023 03:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F28FC433C8;
+	Tue,  5 Dec 2023 03:24:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747090;
-	bh=ruBkwq5cyO+2yrjFx+u7WTagxQ5U214yYfhwUpKWk/A=;
+	s=korg; t=1701746683;
+	bh=dmM//OIyfjfJiBLxi6eJEvF+tZKlfPhUcNtojNN3rZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DIaixxcIvt+izc/nV+aOS/lydIDwpd8VWV/cCJ7WjAnYBC+v4kR2vTI9U/RHmJ2xo
-	 uRyLgAG8CQm++iUNB2hmqFquXSuqXqsDKMHjdrQCbUERdCW7lfohrNrQfMx/X/jxDs
-	 PpPFbJWx2GVfPX98mVWhg0Fj9RiM72+oiOik/CBk=
+	b=UXofBF/lEet8M5nICRw/1MEt39uL1ken7Pk4EzyZI2N3GoG8UXNsyh5ymZCmesyoX
+	 mpClfRMj21GJhD9ctyOCY9BCjjUaaXjBfkr2laAUOUSL30lYIjyIKARTA5uk51+L4o
+	 EMfioysBmgv57vUQC6ypA5AFco/HvXIVWZvVju+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Stanley Chang <stanley_chang@realtek.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/107] USB: xhci-plat: fix legacy PHY double init
+Subject: [PATCH 6.6 118/134] iommu/vt-d: Disable PCI ATS in legacy passthrough mode
 Date: Tue,  5 Dec 2023 12:16:30 +0900
-Message-ID: <20231205031534.809645446@linuxfoundation.org>
+Message-ID: <20231205031542.956006931@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,94 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 16b7e0cccb243033de4406ffb4d892365041a1e7 ]
+[ Upstream commit da37dddcf4caf015c400a930301d2ee27a7a15fb ]
 
-Commits 7b8ef22ea547 ("usb: xhci: plat: Add USB phy support") and
-9134c1fd0503 ("usb: xhci: plat: Add USB 3.0 phy support") added support
-for looking up legacy PHYs from the sysdev devicetree node and
-initialising them.
+When IOMMU hardware operates in legacy mode, the TT field of the context
+entry determines the translation type, with three supported types (Section
+9.3 Context Entry):
 
-This broke drivers such as dwc3 which manages PHYs themself as the PHYs
-would now be initialised twice, something which specifically can lead to
-resources being left enabled during suspend (e.g. with the
-usb_phy_generic PHY driver).
+- DMA translation without device TLB support
+- DMA translation with device TLB support
+- Passthrough mode with translated and translation requests blocked
 
-As the dwc3 driver uses driver-name matching for the xhci platform
-device, fix this by only looking up and initialising PHYs for devices
-that have been matched using OF.
+Device TLB support is absent when hardware is configured in passthrough
+mode.
 
-Note that checking that the platform device has a devicetree node would
-currently be sufficient, but that could lead to subtle breakages in case
-anyone ever tries to reuse an ancestor's node.
+Disable the PCI ATS feature when IOMMU is configured for passthrough
+translation type in legacy (non-scalable) mode.
 
-Fixes: 7b8ef22ea547 ("usb: xhci: plat: Add USB phy support")
-Fixes: 9134c1fd0503 ("usb: xhci: plat: Add USB 3.0 phy support")
-Cc: stable@vger.kernel.org      # 4.1
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Stanley Chang <stanley_chang@realtek.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Tested-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Tested-by: Stanley Chang <stanley_chang@realtek.com>
-Link: https://lore.kernel.org/r/20231103164323.14294-1-johan+linaro@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0faa19a1515f ("iommu/vt-d: Decouple PASID & PRI enabling from SVA")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20231114011036.70142-3-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-plat.c | 29 ++++++++++++++++++-----------
- 1 file changed, 18 insertions(+), 11 deletions(-)
+ drivers/iommu/intel/iommu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
-index c9a101f0e8d01..c9438dc56f5fc 100644
---- a/drivers/usb/host/xhci-plat.c
-+++ b/drivers/usb/host/xhci-plat.c
-@@ -184,7 +184,7 @@ static int xhci_plat_probe(struct platform_device *pdev)
- 	int			ret;
- 	int			irq;
- 	struct xhci_plat_priv	*priv = NULL;
--
-+	bool			of_match;
- 
- 	if (usb_disabled())
- 		return -ENODEV;
-@@ -305,16 +305,23 @@ static int xhci_plat_probe(struct platform_device *pdev)
- 					 &xhci->imod_interval);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 8e878c3beec5c..18fa71aadc903 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -2487,7 +2487,8 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+ 		return ret;
  	}
  
--	hcd->usb_phy = devm_usb_get_phy_by_phandle(sysdev, "usb-phy", 0);
--	if (IS_ERR(hcd->usb_phy)) {
--		ret = PTR_ERR(hcd->usb_phy);
--		if (ret == -EPROBE_DEFER)
--			goto disable_clk;
--		hcd->usb_phy = NULL;
--	} else {
--		ret = usb_phy_init(hcd->usb_phy);
--		if (ret)
--			goto disable_clk;
-+	/*
-+	 * Drivers such as dwc3 manages PHYs themself (and rely on driver name
-+	 * matching for the xhci platform device).
-+	 */
-+	of_match = of_match_device(pdev->dev.driver->of_match_table, &pdev->dev);
-+	if (of_match) {
-+		hcd->usb_phy = devm_usb_get_phy_by_phandle(sysdev, "usb-phy", 0);
-+		if (IS_ERR(hcd->usb_phy)) {
-+			ret = PTR_ERR(hcd->usb_phy);
-+			if (ret == -EPROBE_DEFER)
-+				goto disable_clk;
-+			hcd->usb_phy = NULL;
-+		} else {
-+			ret = usb_phy_init(hcd->usb_phy);
-+			if (ret)
-+				goto disable_clk;
-+		}
- 	}
+-	iommu_enable_pci_caps(info);
++	if (sm_supported(info->iommu) || !domain_type_is_si(info->domain))
++		iommu_enable_pci_caps(info);
  
- 	hcd->tpl_support = of_usb_host_tpl_support(sysdev->of_node);
+ 	return 0;
+ }
 -- 
 2.42.0
 
