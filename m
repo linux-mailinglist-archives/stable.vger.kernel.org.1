@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC102804730
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D39804602
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32D331C20D51
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E24B2B20B8F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E5279F2;
-	Tue,  5 Dec 2023 03:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF4279F2;
+	Tue,  5 Dec 2023 03:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdE7RXL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Af1fDDir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D4B6FB1;
-	Tue,  5 Dec 2023 03:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F13BC433C8;
-	Tue,  5 Dec 2023 03:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737FF4437;
+	Tue,  5 Dec 2023 03:23:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0712C433C8;
+	Tue,  5 Dec 2023 03:23:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747352;
-	bh=w12/hN4qtFc4KCQWtNy/w+zMTBF5A89C474DUMM9yRE=;
+	s=korg; t=1701746617;
+	bh=SLm7pcU6EdPO6m1L3aRhoWGClHiMdMdAj2ay1hDqGCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdE7RXL5iflD9KR0cTh2JSHrzO1qziGH/r7EX1I1HgUTaIE/yI3xvFVIyKaS+cH+r
-	 pVI6JMnzMzmPPbL588W/4SxjFh3OLO9RQ1tEDE9U///12tw/rUUWkq88sW8ATda31f
-	 1F+N7ms6jI1NMwqrEb2slgYeH5aqj1gap8jqXfS4=
+	b=Af1fDDirSDgYieE6edqLnie4PSR/J9fu/Gk2U3rSXKpoPumKOTZgCuGCY459DtbPI
+	 2DjpUcWZ2u8SwuWPYTW3Rexi3EKcf7mcZT7LLhfc2dPVB2gHAwMOtJtqhTC6d8DEBI
+	 swtnP3WIu4bCsGaAJJNxzUpRGGFW6FmITCwNJwGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/135] ext4: using nofail preallocation in ext4_es_insert_extent()
+Subject: [PATCH 6.6 093/134] selftests/net: unix: fix unused variable compiler warning
 Date: Tue,  5 Dec 2023 12:16:05 +0900
-Message-ID: <20231205031533.351814540@linuxfoundation.org>
+Message-ID: <20231205031541.367919490@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,98 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 2a69c450083db164596c75c0f5b4d9c4c0e18eba ]
+[ Upstream commit 59fef379d453781f0dabfa1f1a1e86e78aee919a ]
 
-Similar to in ext4_es_insert_delayed_block(), we use preallocations that
-do not fail to avoid inconsistencies, but we do not care about es that are
-not must be kept, and we return 0 even if such es memory allocation fails.
+Remove an unused variable.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-9-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+    diag_uid.c:151:24:
+    error: unused variable 'udr'
+    [-Werror,-Wunused-variable]
+
+Fixes: ac011361bd4f ("af_unix: Add test for sock_diag and UDIAG_SHOW_UID.")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20231124171645.1011043-4-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 38 ++++++++++++++++++++++++++------------
- 1 file changed, 26 insertions(+), 12 deletions(-)
+ tools/testing/selftests/net/af_unix/diag_uid.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 4163a4801f969..1327cd9505db7 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -841,8 +841,11 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- {
- 	struct extent_status newes;
- 	ext4_lblk_t end = lblk + len - 1;
--	int err = 0;
-+	int err1 = 0;
-+	int err2 = 0;
- 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
-+	struct extent_status *es1 = NULL;
-+	struct extent_status *es2 = NULL;
+diff --git a/tools/testing/selftests/net/af_unix/diag_uid.c b/tools/testing/selftests/net/af_unix/diag_uid.c
+index 5b88f7129fea4..79a3dd75590e8 100644
+--- a/tools/testing/selftests/net/af_unix/diag_uid.c
++++ b/tools/testing/selftests/net/af_unix/diag_uid.c
+@@ -148,7 +148,6 @@ void receive_response(struct __test_metadata *_metadata,
+ 		.msg_iov = &iov,
+ 		.msg_iovlen = 1
+ 	};
+-	struct unix_diag_req *udr;
+ 	struct nlmsghdr *nlh;
+ 	int ret;
  
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return 0;
-@@ -870,29 +873,40 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 
- 	ext4_es_insert_extent_check(inode, &newes);
- 
-+retry:
-+	if (err1 && !es1)
-+		es1 = __es_alloc_extent(true);
-+	if ((err1 || err2) && !es2)
-+		es2 = __es_alloc_extent(true);
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, NULL, NULL);
--	if (err != 0)
-+
-+	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
-+	if (err1 != 0)
-+		goto error;
-+
-+	err2 = __es_insert_extent(inode, &newes, es2);
-+	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
-+		err2 = 0;
-+	if (err2 != 0)
- 		goto error;
--retry:
--	err = __es_insert_extent(inode, &newes, NULL);
--	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
--					  128, EXT4_I(inode)))
--		goto retry;
--	if (err == -ENOMEM && !ext4_es_must_keep(&newes))
--		err = 0;
- 
- 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
- 	    (status & EXTENT_STATUS_WRITTEN ||
- 	     status & EXTENT_STATUS_UNWRITTEN))
- 		__revise_pending(inode, lblk, len);
- 
-+	/* es is pre-allocated but not used, free it. */
-+	if (es1 && !es1->es_len)
-+		__es_free_extent(es1);
-+	if (es2 && !es2->es_len)
-+		__es_free_extent(es2);
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
-+	if (err1 || err2)
-+		goto retry;
- 
- 	ext4_es_print_tree(inode);
--
--	return err;
-+	return 0;
- }
- 
- /*
 -- 
 2.42.0
 
