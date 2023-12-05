@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 354A7804595
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C758047EB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E396128172F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29078B20D0A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7826FAF;
-	Tue,  5 Dec 2023 03:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5B779E3;
+	Tue,  5 Dec 2023 03:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc4myCHk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwFC3k4f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5576AA0;
-	Tue,  5 Dec 2023 03:19:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4AEC433CB;
-	Tue,  5 Dec 2023 03:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251826AC2;
+	Tue,  5 Dec 2023 03:43:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F4A6C433C7;
+	Tue,  5 Dec 2023 03:43:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746340;
-	bh=lEwfIKL9enWD6yPpPmoJZI21YutoWQfVcUxVzvbtXhA=;
+	s=korg; t=1701747828;
+	bh=WR6ST2i9gj/8dC6zIlkQ6wK/zyZnwphdOlV9MViKbWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mc4myCHkIezmBvI3OuB7nJrFtQnAHkAgj/Z1ZNIlsv5poArZBvZdoSOGs+OOSTTMs
-	 w10dujcIKPW4nrG7ROCK1it7DmIUrl+525pPULvqJfS/mRrprAN0vKHJ4dtb+Dq9P4
-	 ZK8AzNnTcPesvSRdChcykQa1Kr2xBxggLYOZit4g=
+	b=LwFC3k4fI7tnu+llTxm71iPUU+7jWQDgcnHbx2UwKP/rHQumGqfRuMWEVLfeJS0h6
+	 yob33ZfFUooPXdlfyteNZw5zGsC0TY9l7o5IN/BblHcuqApX1CURWD2UfdQH4T0rDI
+	 dgMkiOUgHnG4VfkA1Skm1jK6KXDTqytpLYep9UN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wu Bo <bo.wu@vivo.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 4.14 23/30] dm verity: dont perform FEC for failed readahead IO
-Date: Tue,  5 Dec 2023 12:16:30 +0900
-Message-ID: <20231205031512.867706368@linuxfoundation.org>
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 5.4 03/94] PCI: keystone: Drop __init from ks_pcie_add_pcie_{ep,port}()
+Date: Tue,  5 Dec 2023 12:16:31 +0900
+Message-ID: <20231205031523.046964241@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,90 +51,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wu Bo <bo.wu@vivo.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 0193e3966ceeeef69e235975918b287ab093082b upstream.
+This commit has no upstream equivalent.
 
-We found an issue under Android OTA scenario that many BIOs have to do
-FEC where the data under dm-verity is 100% complete and no corruption.
+After commit 012dba0ab814 ("PCI: keystone: Don't discard .probe()
+callback") in 5.4.262, there are two modpost warnings when building with
+clang:
 
-Android OTA has many dm-block layers, from upper to lower:
-dm-verity
-dm-snapshot
-dm-origin & dm-cow
-dm-linear
-ufs
+  WARNING: modpost: vmlinux.o(.text+0x5aa6dc): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_port()
+  The function ks_pcie_probe() references
+  the function __init ks_pcie_add_pcie_port().
+  This is often because ks_pcie_probe lacks a __init
+  annotation or the annotation of ks_pcie_add_pcie_port is wrong.
 
-DM tables have to change 2 times during Android OTA merging process.
-When doing table change, the dm-snapshot will be suspended for a while.
-During this interval, many readahead IOs are submitted to dm_verity
-from filesystem. Then the kverity works are busy doing FEC process
-which cost too much time to finish dm-verity IO. This causes needless
-delay which feels like system is hung.
+  WARNING: modpost: vmlinux.o(.text+0x5aa6f4): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_ep()
+  The function ks_pcie_probe() references
+  the function __init ks_pcie_add_pcie_ep().
+  This is often because ks_pcie_probe lacks a __init
+  annotation or the annotation of ks_pcie_add_pcie_ep is wrong.
 
-After adding debugging it was found that each readahead IO needed
-around 10s to finish when this situation occurred. This is due to IO
-amplification:
+ks_pcie_add_pcie_ep() was removed in upstream commit a0fd361db8e5 ("PCI:
+dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common
+code") and ks_pcie_add_pcie_port() was removed in upstream
+commit 60f5b73fa0f2 ("PCI: dwc: Remove unnecessary wrappers around
+dw_pcie_host_init()"), both of which happened before upstream
+commit 7994db905c0f ("PCI: keystone: Don't discard .probe() callback").
 
-dm-snapshot suspend
-erofs_readahead     // 300+ io is submitted
-	dm_submit_bio (dm_verity)
-		dm_submit_bio (dm_snapshot)
-		bio return EIO
-		bio got nothing, it's empty
-	verity_end_io
-	verity_verify_io
-	forloop range(0, io->n_blocks)    // each io->nblocks ~= 20
-		verity_fec_decode
-		fec_decode_rsb
-		fec_read_bufs
-		forloop range(0, v->fec->rsn) // v->fec->rsn = 253
-			new_read
-			submit_bio (dm_snapshot)
-		end loop
-	end loop
-dm-snapshot resume
+As neither of these removal changes are really suitable for stable, just
+remove __init from these functions in stable, as it is no longer a
+correct annotation after dropping __init from ks_pcie_probe().
 
-Readahead BIOs get nothing while dm-snapshot is suspended, so all of
-them will cause verity's FEC.
-Each readahead BIO needs to verify ~20 (io->nblocks) blocks.
-Each block needs to do FEC, and every block needs to do 253
-(v->fec->rsn) reads.
-So during the suspend interval(~200ms), 300 readahead BIOs trigger
-~1518000 (300*20*253) IOs to dm-snapshot.
-
-As readahead IO is not required by userspace, and to fix this issue,
-it is best to pass readahead errors to upper layer to handle it.
-
-Cc: stable@vger.kernel.org
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Signed-off-by: Wu Bo <bo.wu@vivo.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Fixes: 012dba0ab814 ("PCI: keystone: Don't discard .probe() callback")
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-verity-target.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pci-keystone.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -588,7 +588,9 @@ static void verity_end_io(struct bio *bi
- 	struct dm_verity_io *io = bio->bi_private;
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -861,8 +861,8 @@ static irqreturn_t ks_pcie_err_irq_handl
+ 	return ks_pcie_handle_error_irq(ks_pcie);
+ }
  
- 	if (bio->bi_status &&
--	    (!verity_fec_is_enabled(io->v) || verity_is_system_shutting_down())) {
-+	    (!verity_fec_is_enabled(io->v) ||
-+	     verity_is_system_shutting_down() ||
-+	     (bio->bi_opf & REQ_RAHEAD))) {
- 		verity_finish_io(io, bio->bi_status);
- 		return;
- 	}
+-static int __init ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
+-					struct platform_device *pdev)
++static int ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
++				 struct platform_device *pdev)
+ {
+ 	struct dw_pcie *pci = ks_pcie->pci;
+ 	struct pcie_port *pp = &pci->pp;
+@@ -992,8 +992,8 @@ static const struct dw_pcie_ep_ops ks_pc
+ 	.get_features = &ks_pcie_am654_get_features,
+ };
+ 
+-static int __init ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
+-				      struct platform_device *pdev)
++static int ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
++			       struct platform_device *pdev)
+ {
+ 	int ret;
+ 	struct dw_pcie_ep *ep;
 
 
 
