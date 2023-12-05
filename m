@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE791804612
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DDD804741
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A4C28344B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE4AC1C20D51
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3560B79E3;
-	Tue,  5 Dec 2023 03:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 402238BF2;
+	Tue,  5 Dec 2023 03:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RafQw1KR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiyAMgzf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26A66FAF;
-	Tue,  5 Dec 2023 03:24:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E1EC433C8;
-	Tue,  5 Dec 2023 03:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9C96FB1;
+	Tue,  5 Dec 2023 03:36:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD7BC433C8;
+	Tue,  5 Dec 2023 03:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746662;
-	bh=AnIDFACfSZ52881f4LcLv0oUGb2W3JJyZAt1EYFgBog=;
+	s=korg; t=1701747397;
+	bh=dn334ypWmjBXFAYhs7wpkPSL6cqWrcXBmQuvLTDLbzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RafQw1KRXPB+CWaey4WKBiuG3kTdVAqMHt9dQ99681c1uLEy7EFa5CeZrY47RtAA+
-	 VrXerZVc4gCj44I5yJRcj4m2FqmWsmYSBvnnJm1zPluxIkBZ5Bv/ng+Wol7vJLA7wW
-	 DLmQLzMWl4yFSWhzJYCELEAh5oBW116F0dXM/Plc=
+	b=HiyAMgzfnQ17DmsXBr1Z8E8rOidvslkcJpDugxQ/wXGISaabpiSP1Eq7QMJik52k/
+	 6d4fYQkuZlsLF4aWkCBUTwlm1rE0NTnnOLX+n5NohtPeG0CTH1KhAIxdxREbWq//nX
+	 ee3nEftKq3AVhhljc7g38JjbWWAXxOe4Ko1lYwtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Ungerer <gerg@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/134] net: dsa: mv88e6xxx: fix marvell 6350 switch probing
-Date: Tue,  5 Dec 2023 12:15:57 +0900
-Message-ID: <20231205031540.864496338@linuxfoundation.org>
+Subject: [PATCH 5.10 037/135] MIPS: KVM: Fix a build warning about variable set but not used
+Date: Tue,  5 Dec 2023 12:15:58 +0900
+Message-ID: <20231205031532.987647575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,103 +53,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Ungerer <gerg@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit b3f1a164c7f742503dc7159011f7ad6b092b660e ]
+[ Upstream commit 83767a67e7b6a0291cde5681ec7e3708f3f8f877 ]
 
-As of commit de5c9bf40c45 ("net: phylink: require supported_interfaces to
-be filled") Marvell 88e6350 switches fail to be probed:
+After commit 411740f5422a ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
+old_pte is no longer used in kvm_mips_map_page(). So remove it to fix a
+build warning about variable set but not used:
 
-    ...
-    mv88e6085 d0072004.mdio-mii:11: switch 0x3710 detected: Marvell 88E6350, revision 2
-    mv88e6085 d0072004.mdio-mii:11: phylink: error: empty supported_interfaces
-    error creating PHYLINK: -22
-    mv88e6085: probe of d0072004.mdio-mii:11 failed with error -22
-    ...
+   arch/mips/kvm/mmu.c: In function 'kvm_mips_map_page':
+>> arch/mips/kvm/mmu.c:701:29: warning: variable 'old_pte' set but not used [-Wunused-but-set-variable]
+     701 |         pte_t *ptep, entry, old_pte;
+         |                             ^~~~~~~
 
-The problem stems from the use of mv88e6185_phylink_get_caps() to get
-the device capabilities. Create a new dedicated phylink_get_caps for the
-6351 family (which the 6350 is one of) to properly support their set of
-capabilities.
-
-According to chip.h the 6351 switch family includes the 6171, 6175, 6350
-and 6351 switches, so update each of these to use the correct
-phylink_get_caps.
-
-Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Cc: stable@vger.kernel.org
+Fixes: 411740f5422a960 ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310070530.aARZCSfh-lkp@intel.com/
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ arch/mips/kvm/mmu.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index ab434a77b059a..6d7256ea477a1 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -577,6 +577,18 @@ static void mv88e6250_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
- 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
- }
+diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
+index 28c366d307e70..38a5be10a3dbc 100644
+--- a/arch/mips/kvm/mmu.c
++++ b/arch/mips/kvm/mmu.c
+@@ -667,7 +667,7 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
+ 	gfn_t gfn = gpa >> PAGE_SHIFT;
+ 	int srcu_idx, err;
+ 	kvm_pfn_t pfn;
+-	pte_t *ptep, entry, old_pte;
++	pte_t *ptep, entry;
+ 	bool writeable;
+ 	unsigned long prot_bits;
+ 	unsigned long mmu_seq;
+@@ -739,7 +739,6 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
+ 	entry = pfn_pte(pfn, __pgprot(prot_bits));
  
-+static void mv88e6351_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
-+				       struct phylink_config *config)
-+{
-+	unsigned long *supported = config->supported_interfaces;
-+
-+	/* Translate the default cmode */
-+	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
-+
-+	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100 |
-+				   MAC_1000FD;
-+}
-+
- static int mv88e6352_get_port4_serdes_cmode(struct mv88e6xxx_chip *chip)
- {
- 	u16 reg, val;
-@@ -4340,7 +4352,7 @@ static const struct mv88e6xxx_ops mv88e6171_ops = {
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.stu_getnext = mv88e6352_g1_stu_getnext,
- 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
--	.phylink_get_caps = mv88e6185_phylink_get_caps,
-+	.phylink_get_caps = mv88e6351_phylink_get_caps,
- };
+ 	/* Write the PTE */
+-	old_pte = *ptep;
+ 	set_pte(ptep, entry);
  
- static const struct mv88e6xxx_ops mv88e6172_ops = {
-@@ -4440,7 +4452,7 @@ static const struct mv88e6xxx_ops mv88e6175_ops = {
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.stu_getnext = mv88e6352_g1_stu_getnext,
- 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
--	.phylink_get_caps = mv88e6185_phylink_get_caps,
-+	.phylink_get_caps = mv88e6351_phylink_get_caps,
- };
- 
- static const struct mv88e6xxx_ops mv88e6176_ops = {
-@@ -5069,7 +5081,7 @@ static const struct mv88e6xxx_ops mv88e6350_ops = {
- 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
- 	.stu_getnext = mv88e6352_g1_stu_getnext,
- 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
--	.phylink_get_caps = mv88e6185_phylink_get_caps,
-+	.phylink_get_caps = mv88e6351_phylink_get_caps,
- };
- 
- static const struct mv88e6xxx_ops mv88e6351_ops = {
-@@ -5117,7 +5129,7 @@ static const struct mv88e6xxx_ops mv88e6351_ops = {
- 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
- 	.avb_ops = &mv88e6352_avb_ops,
- 	.ptp_ops = &mv88e6352_ptp_ops,
--	.phylink_get_caps = mv88e6185_phylink_get_caps,
-+	.phylink_get_caps = mv88e6351_phylink_get_caps,
- };
- 
- static const struct mv88e6xxx_ops mv88e6352_ops = {
+ 	err = 0;
 -- 
 2.42.0
 
