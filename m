@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-4320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3462A8046FE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C3FB8047D5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38A9281343
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB21F1F21574
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549108BF2;
-	Tue,  5 Dec 2023 03:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336E68BF8;
+	Tue,  5 Dec 2023 03:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogTMG7fg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sh5Fd4e7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D446FB1;
-	Tue,  5 Dec 2023 03:33:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF2DC433C8;
-	Tue,  5 Dec 2023 03:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2F46AC2;
+	Tue,  5 Dec 2023 03:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8254CC433C7;
+	Tue,  5 Dec 2023 03:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747225;
-	bh=Uih5b77dMlVtDoRZ7w9gFV3cl75tnJUnaBIpGrd+hf4=;
+	s=korg; t=1701747766;
+	bh=D0doY1GLqf6KH8fDKNezRtDZ/KyRiCid9LWtmRd4nnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogTMG7fgPzhMWXX9DjebCOduLbEhoqv+5aq3nRBYGfod2HuVCPf90tvz4AqQHmM7Y
-	 slF82YVhQ3f3ZtJ/j37Mb34090EZdUJtMjmdEOF837+nsxAh93LCJgQHiaMkK3JAF8
-	 weB3IAQGzVa75dSviZyI/Rjf0WIrbynPLvF7Fesw=
+	b=Sh5Fd4e7M1yzZH7+ANVj+GCeUXI2AqDWRo88b2d74vTjId5NTMB6oS1LBID9bKH0L
+	 SHC+a1cjRV6sbPfOQxcRsx2jtAtVKXjG4MmTRPLTvBuUjHjOtsS8SQkmRhRde9bkc5
+	 mCE8gyj28sgL2UOEO9oD7a6Psy4azZhAbOY6ZYes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.con>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/107] x86/xen: fix percpu vcpu_info allocation
+Subject: [PATCH 5.15 36/67] net: stmmac: xgmac: Disable FPE MMC interrupts
 Date: Tue,  5 Dec 2023 12:17:21 +0900
-Message-ID: <20231205031538.425386402@linuxfoundation.org>
+Message-ID: <20231205031521.899284569@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,72 +56,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit db2832309a82b9acc4b8cc33a1831d36507ec13e ]
+[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
 
-Today the percpu struct vcpu_info is allocated via DEFINE_PER_CPU(),
-meaning that it could cross a page boundary. In this case registering
-it with the hypervisor will fail, resulting in a panic().
+Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
+by default") tries to disable MMC interrupts to avoid a storm of
+unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
+interrupts enabled, FPE MMC interrupts can cause the same problem.
+Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
 
-This can easily be fixed by using DEFINE_PER_CPU_ALIGNED() instead,
-as struct vcpu_info is guaranteed to have a size of 64 bytes, matching
-the cache line size of x86 64-bit processors (Xen doesn't support
-32-bit processors).
-
-Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.con>
-Link: https://lore.kernel.org/r/20231124074852.25161-1-jgross@suse.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/enlighten.c | 6 +++++-
- arch/x86/xen/xen-ops.h   | 2 +-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index 0337392a31214..3c61bb98c10e2 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -33,9 +33,12 @@ EXPORT_SYMBOL_GPL(hypercall_page);
-  * and xen_vcpu_setup for details. By default it points to share_info->vcpu_info
-  * but during boot it is switched to point to xen_vcpu_info.
-  * The pointer is used in xen_evtchn_do_upcall to acknowledge pending events.
-+ * Make sure that xen_vcpu_info doesn't cross a page boundary by making it
-+ * cache-line aligned (the struct is guaranteed to have a size of 64 bytes,
-+ * which matches the cache line size of 64-bit x86 processors).
-  */
- DEFINE_PER_CPU(struct vcpu_info *, xen_vcpu);
--DEFINE_PER_CPU(struct vcpu_info, xen_vcpu_info);
-+DEFINE_PER_CPU_ALIGNED(struct vcpu_info, xen_vcpu_info);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+index a57b0fa815aba..a510bac0b825b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+@@ -177,8 +177,10 @@
+ #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
+ #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
  
- /* Linux <-> Xen vCPU id mapping */
- DEFINE_PER_CPU(uint32_t, xen_vcpu_id);
-@@ -160,6 +163,7 @@ void xen_vcpu_setup(int cpu)
- 	int err;
- 	struct vcpu_info *vcpup;
- 
-+	BUILD_BUG_ON(sizeof(*vcpup) > SMP_CACHE_BYTES);
- 	BUG_ON(HYPERVISOR_shared_info == &xen_dummy_shared_info);
- 
- 	/*
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index a10903785a338..b2b2f4315b78d 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -21,7 +21,7 @@ extern void *xen_initial_gdt;
- struct trap_info;
- void xen_copy_trap_info(struct trap_info *traps);
- 
--DECLARE_PER_CPU(struct vcpu_info, xen_vcpu_info);
-+DECLARE_PER_CPU_ALIGNED(struct vcpu_info, xen_vcpu_info);
- DECLARE_PER_CPU(unsigned long, xen_cr3);
- DECLARE_PER_CPU(unsigned long, xen_current_cr3);
++#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
+ #define MMC_XGMAC_TX_FPE_FRAG		0x208
+ #define MMC_XGMAC_TX_HOLD_REQ		0x20c
++#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
+ #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
+@@ -352,6 +354,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
+ {
+ 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
+ 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
+ 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
+ }
  
 -- 
 2.42.0
