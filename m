@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503F9804721
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E99A58045E9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA0A2815EC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E920B20BEB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948AF79E3;
-	Tue,  5 Dec 2023 03:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E966FB1;
+	Tue,  5 Dec 2023 03:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fma4I0rB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbR8A0+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F3A6FB1;
-	Tue,  5 Dec 2023 03:35:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4D1C433C8;
-	Tue,  5 Dec 2023 03:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1DB6AC2;
+	Tue,  5 Dec 2023 03:22:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49CABC433C8;
+	Tue,  5 Dec 2023 03:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747315;
-	bh=mQr3qnWFOl9r8y8bUxkhBGx55W0Ih/5MdA86gyTRNRg=;
+	s=korg; t=1701746563;
+	bh=nl0DBhYHO41Kee/+8mx9asWRbKlrVkN05NUuWW2eD90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fma4I0rB7M6uaLUGpr3FMllJUHOTy/7L2OWuvInXW51lcne0TaziZaS3jVj2Kccgs
-	 EWkDntKo8NLQp59v4AAyytq5jVYVkLjdBfw7nD31LgPwybK/Lxw9taEsyVVu49BjQ7
-	 k1fSU21O4h/7AW6IRWBRAoWufl4iLJ9/VmNKn3a8=
+	b=gbR8A0+O1srqNlVq/OCRAOkzUJqjYYDwduOjBhWmFAWVMZggeDcNFNOC0ZXtajhCp
+	 yukOHurPlKIJcRghkxczJWaN3W+jNbQhKI9MplcHqxVkpXpXdxfjll6oNaPW2n+GyB
+	 ehyJNCNaTHCi6Z4afFnJm5/jEBYgQJA29H3uJIQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Axel Lin <axel.lin@ingics.com>,
-	Boris Brezillon <boris.brezillon@free-electrons.com>,
-	Wolfram Sang <wsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 005/135] i2c: sun6i-p2wi: Prevent potential division by zero
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 054/134] KVM: PPC: Book3S HV: Fix KVM_RUN clobbering FP/VEC user registers
 Date: Tue,  5 Dec 2023 12:15:26 +0900
-Message-ID: <20231205031530.863290741@linuxfoundation.org>
+Message-ID: <20231205031538.991354086@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +52,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Axel Lin <axel.lin@ingics.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 5ac61d26b8baff5b2e5a9f3dc1ef63297e4b53e7 ]
+commit dc158d23b33df9033bcc8e7117e8591dd2f9d125 upstream.
 
-Make sure we don't OOPS in case clock-frequency is set to 0 in a DT. The
-variable set here is later used as a divisor.
+Before running a guest, the host process (e.g., QEMU) FP/VEC registers
+are saved if they were being used, similarly to when the kernel uses FP
+registers. The guest values are then loaded into regs, and the host
+process registers will be restored lazily when it uses FP/VEC.
 
-Signed-off-by: Axel Lin <axel.lin@ingics.com>
-Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+KVM HV has a bug here: the host process registers do get saved, but the
+user MSR bits remain enabled, which indicates the registers are valid
+for the process. After they are clobbered by running the guest, this
+valid indication causes the host process to take on the FP/VEC register
+values of the guest.
+
+Fixes: 34e119c96b2b ("KVM: PPC: Book3S HV P9: Reduce mtmsrd instructions required to save host SPRs")
+Cc: stable@vger.kernel.org # v5.17+
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231122025811.2973-1-npiggin@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-sun6i-p2wi.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/kernel/process.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-sun6i-p2wi.c b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-index 4f7a4f5a1150a..389ca6fddc1db 100644
---- a/drivers/i2c/busses/i2c-sun6i-p2wi.c
-+++ b/drivers/i2c/busses/i2c-sun6i-p2wi.c
-@@ -206,6 +206,11 @@ static int p2wi_probe(struct platform_device *pdev)
- 		return -EINVAL;
- 	}
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1198,11 +1198,11 @@ void kvmppc_save_user_regs(void)
  
-+	if (clk_freq == 0) {
-+		dev_err(dev, "clock-frequency is set to 0 in DT\n");
-+		return -EINVAL;
-+	}
-+
- 	if (of_get_child_count(np) > 1) {
- 		dev_err(dev, "P2WI only supports one slave device\n");
- 		return -EINVAL;
--- 
-2.42.0
-
+ 	usermsr = current->thread.regs->msr;
+ 
++	/* Caller has enabled FP/VEC/VSX/TM in MSR */
+ 	if (usermsr & MSR_FP)
+-		save_fpu(current);
+-
++		__giveup_fpu(current);
+ 	if (usermsr & MSR_VEC)
+-		save_altivec(current);
++		__giveup_altivec(current);
+ 
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	if (usermsr & MSR_TM) {
 
 
 
