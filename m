@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-4403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE51804755
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3878046EC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DB3F1C20DF4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0809E281591
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D250E8BF8;
-	Tue,  5 Dec 2023 03:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D648BF7;
+	Tue,  5 Dec 2023 03:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3AC904V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0XB8uhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FF36FB1;
-	Tue,  5 Dec 2023 03:37:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14634C433C7;
-	Tue,  5 Dec 2023 03:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA016FB1;
+	Tue,  5 Dec 2023 03:33:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FFBC433C8;
+	Tue,  5 Dec 2023 03:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747449;
-	bh=rzNAc5jMsHSwdW++0/Y71amW6UhMkHqcWSv4PHhmVy0=;
+	s=korg; t=1701747182;
+	bh=NFe6WQ5pvr5iBN2cU1o8LTqI9PW1+KlZkW769ONf/Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3AC904VX1bLi/vi5mK3xTIc242EQgy3PHeYtK155UFFvbE3mTAUD2DF766duJ/iG
-	 +6Fn8+686VZudy7J9ZYzbAQLb+wx1xkyExP2Y6MnIHVdAWeNNld0cbNyohrglY3QNd
-	 L3pRH+YjMbPO8i/xCrEDLe60jH+YcDQZaVzS9LQk=
+	b=Y0XB8uhupmHgm8kikGX6j3TP28jkp43DaWg4sUCqHyVTfFneLT+qU2yAslg+kRUbi
+	 naOeOEzm0+789CVjwp6UFjoETxfDeikUbdRbySwHAhx73sSmWCaqv89u9W8YpO/Cmx
+	 3G/4dUejgsYwYR/ozgnKBvBXT+Msil0DlDzkFuZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Abdul Halim, Mohd Syazwan" <mohd.syazwan.abdul.halim@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <jroedel@suse.de>,
-	Abdul@web.codeaurora.org, Halim@web.codeaurora.org
-Subject: [PATCH 5.10 080/135] iommu/vt-d: Add MTL to quirk list to skip TE disabling
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 066/107] net: stmmac: xgmac: Disable FPE MMC interrupts
 Date: Tue,  5 Dec 2023 12:16:41 +0900
-Message-ID: <20231205031535.539830151@linuxfoundation.org>
+Message-ID: <20231205031535.558446746@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
+From: Furong Xu <0x1207@gmail.com>
 
-commit 85b80fdffa867d75dfb9084a839e7949e29064e8 upstream.
+[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
 
-The VT-d spec requires (10.4.4 Global Command Register, TE field) that:
+Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
+by default") tries to disable MMC interrupts to avoid a storm of
+unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
+interrupts enabled, FPE MMC interrupts can cause the same problem.
+Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
 
-Hardware implementations supporting DMA draining must drain any in-flight
-DMA read/write requests queued within the Root-Complex before switching
-address translation on or off and reflecting the status of the command
-through the TES field in the Global Status register.
-
-Unfortunately, some integrated graphic devices fail to do so after some
-kind of power state transition. As the result, the system might stuck in
-iommu_disable_translation(), waiting for the completion of TE transition.
-
-Add MTL to the quirk list for those devices and skips TE disabling if the
-qurik hits.
-
-Fixes: b1012ca8dc4f ("iommu/vt-d: Skip TE disabling on quirky gfx dedicated iommu")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116022324.30120-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -6325,7 +6325,7 @@ static void quirk_igfx_skip_te_disable(s
- 	ver = (dev->device >> 8) & 0xff;
- 	if (ver != 0x45 && ver != 0x46 && ver != 0x4c &&
- 	    ver != 0x4e && ver != 0x8a && ver != 0x98 &&
--	    ver != 0x9a && ver != 0xa7)
-+	    ver != 0x9a && ver != 0xa7 && ver != 0x7d)
- 		return;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+index ea4910ae0921a..6a7c1d325c464 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+@@ -177,8 +177,10 @@
+ #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
+ #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
  
- 	if (risky_device(dev))
++#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
+ #define MMC_XGMAC_TX_FPE_FRAG		0x208
+ #define MMC_XGMAC_TX_HOLD_REQ		0x20c
++#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
+ #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
+@@ -352,6 +354,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
+ {
+ 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
+ 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
+ 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
+ }
+ 
+-- 
+2.42.0
+
 
 
 
