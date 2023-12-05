@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-3986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF0D2804585
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DA880463C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E17A2813DE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6E71F213F5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D266FB1;
-	Tue,  5 Dec 2023 03:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03318BF7;
+	Tue,  5 Dec 2023 03:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPfZw8Uo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2b6HT1I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533096AA0;
-	Tue,  5 Dec 2023 03:18:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58D9C433C9;
-	Tue,  5 Dec 2023 03:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5767B79F2;
+	Tue,  5 Dec 2023 03:26:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8753EC433CD;
+	Tue,  5 Dec 2023 03:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746305;
-	bh=HAs0sQDErHpzZPlI49SsXOahxqGsTMV0bgHy7AxBQBg=;
+	s=korg; t=1701746761;
+	bh=xGlRmgN6/9gObaJOSeF9H7qJKgLOqKhVEhx1KxVPUxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lPfZw8UoBhLubx3SjE7UmFIk2wbZ8haTpZF4j+fYvNd2odp9GjPRabwg3Gu0+8c5t
-	 cnYM8RfUBaJ10631rpZwmKoDEQdLm059orCGfRUHSt6prWfihAzNsygcvtsuMSK0jI
-	 5/ldwtD3Pn4F1aQdFFU3Mk/Ujjme9n2R2U7MCzWw=
+	b=K2b6HT1I1dlVxruaFH7qzOVpJskanbDZzMUwy5d2x+GhWblTncuAtPZ+VT4sURlks
+	 rK9jBjApH3juIc+28uvLAkrSkDvLWUyY+scHK8G/lsXHtwO/wtM5FXnspRg/cegXWE
+	 PrM5u60IJP9NAqys60+tskOvI/oDPjuQ3gUWWMSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 02/30] drm/panel: simple: Fix Innolux G101ICE-L01 timings
+Subject: [PATCH 4.19 11/71] amd-xgbe: handle corner-case during sfp hotplug
 Date: Tue,  5 Dec 2023 12:16:09 +0900
-Message-ID: <20231205031511.632251748@linuxfoundation.org>
+Message-ID: <20231205031518.509242069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,58 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 3f9a91b6c00e655d27bd785dcda1742dbdc31bda ]
+[ Upstream commit 676ec53844cbdf2f47e68a076cdff7f0ec6cbe3f ]
 
-The Innolux G101ICE-L01 datasheet [1] page 17 table
-6.1 INPUT SIGNAL TIMING SPECIFICATIONS
-indicates that maximum vertical blanking time is 40 lines.
-Currently the driver uses 29 lines.
+Force the mode change for SFI in Fixed PHY configurations. Fixed PHY
+configurations needs PLL to be enabled while doing mode set. When the
+SFP module isn't connected during boot, driver assumes AN is ON and
+attempts auto-negotiation. However, if the connected SFP comes up in
+Fixed PHY configuration the link will not come up as PLL isn't enabled
+while the initial mode set command is issued. So, force the mode change
+for SFI in Fixed PHY configuration to fix link issues.
 
-Fix it, and since this panel is a DE panel, adjust the timings
-to make them less hostile to controllers which cannot do 1 px
-HSA/VSA, distribute the delays evenly between all three parts.
-
-[1] https://www.data-modul.com/sites/default/files/products/G101ICE-L01-C2-specification-12042389.pdf
-
-Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231008223256.279196-1-marex@denx.de
+Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 8bee025c0622f..0b50213c0d258 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1062,13 +1062,13 @@ static const struct panel_desc innolux_at070tn92 = {
- static const struct display_timing innolux_g101ice_l01_timing = {
- 	.pixelclock = { 60400000, 71100000, 74700000 },
- 	.hactive = { 1280, 1280, 1280 },
--	.hfront_porch = { 41, 80, 100 },
--	.hback_porch = { 40, 79, 99 },
--	.hsync_len = { 1, 1, 1 },
-+	.hfront_porch = { 30, 60, 70 },
-+	.hback_porch = { 30, 60, 70 },
-+	.hsync_len = { 22, 40, 60 },
- 	.vactive = { 800, 800, 800 },
--	.vfront_porch = { 5, 11, 14 },
--	.vback_porch = { 4, 11, 14 },
--	.vsync_len = { 1, 1, 1 },
-+	.vfront_porch = { 3, 8, 14 },
-+	.vback_porch = { 3, 8, 14 },
-+	.vsync_len = { 4, 7, 12 },
- 	.flags = DISPLAY_FLAGS_DE_HIGH,
- };
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index d291976d8b761..0e552022e659a 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -1178,7 +1178,19 @@ static int xgbe_phy_config_fixed(struct xgbe_prv_data *pdata)
+ 	if (pdata->phy.duplex != DUPLEX_FULL)
+ 		return -EINVAL;
  
+-	xgbe_set_mode(pdata, mode);
++	/* Force the mode change for SFI in Fixed PHY config.
++	 * Fixed PHY configs needs PLL to be enabled while doing mode set.
++	 * When the SFP module isn't connected during boot, driver assumes
++	 * AN is ON and attempts autonegotiation. However, if the connected
++	 * SFP comes up in Fixed PHY config, the link will not come up as
++	 * PLL isn't enabled while the initial mode set command is issued.
++	 * So, force the mode change for SFI in Fixed PHY configuration to
++	 * fix link issues.
++	 */
++	if (mode == XGBE_MODE_SFI)
++		xgbe_change_mode(pdata, mode);
++	else
++		xgbe_set_mode(pdata, mode);
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
