@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B478047DF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DE33804830
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75BB6281766
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD2F02813C0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F7879F2;
-	Tue,  5 Dec 2023 03:43:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169B78F56;
+	Tue,  5 Dec 2023 03:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLSAuNgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbEU5oD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E806AC2;
-	Tue,  5 Dec 2023 03:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46489C433C7;
-	Tue,  5 Dec 2023 03:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCA96FB0;
+	Tue,  5 Dec 2023 03:46:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E923C433C7;
+	Tue,  5 Dec 2023 03:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747796;
-	bh=BYS0wcvmRNa8jOEzSxnQ2qvJvsNBrt18tOg8ZaZBduQ=;
+	s=korg; t=1701748010;
+	bh=037Ar+uHu7SJcB9FslGQu/NbFP0ahxha/W1jMEmeeBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLSAuNgd34au74ZboOojJ96WRPIssa2NUfSz7V+KP7mkM7Ezjkjz9gd56qLt0ccMw
-	 Cgm6hftqXHNGd/LFvNBINafM2cNarKb9si3iwtrnBEs5IiqHo5dPoPwTX3Qhmf3pr7
-	 lCYQXAzK1F8hXrOAqfimWde4QzSg/Bj/P/NMtewY=
+	b=cbEU5oD9Hs5rRutHeHdjzhgr1n2+mG0Z3C/88lWgTiAOf+kFib2N1F4GXoMWZqUr1
+	 7s88f0lBYjf4/mx6bdH6nYAzgurTlC8tk9nnLoxYe1ZIoYYfE/cnTPBgXeoqzKj1Za
+	 js4YNH/uDrvTTCTDkSJeJstEzaHe2Q7IoGjolnKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 63/67] iommu/vt-d: Make context clearing consistent with context mapping
+Subject: [PATCH 5.4 80/94] fbdev: stifb: Make the STI next font pointer a 32-bit signed offset
 Date: Tue,  5 Dec 2023 12:17:48 +0900
-Message-ID: <20231205031523.518229813@linuxfoundation.org>
+Message-ID: <20231205031527.273614310@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 9a16ab9d640274b20813d2d17475e18d3e99d834 ]
+[ Upstream commit 8a32aa17c1cd48df1ddaa78e45abcb8c7a2220d6 ]
 
-In the iommu probe_device path, domain_context_mapping() allows setting
-up the context entry for a non-PCI device. However, in the iommu
-release_device path, domain_context_clear() only clears context entries
-for PCI devices.
+The pointer to the next STI font is actually a signed 32-bit
+offset. With this change the 64-bit kernel will correctly subract
+the (signed 32-bit) offset instead of adding a (unsigned 32-bit)
+offset. It has no effect on 32-bit kernels.
 
-Make domain_context_clear() behave consistently with
-domain_context_mapping() by clearing context entries for both PCI and
-non-PCI devices.
+This fixes the stifb driver with a 64-bit kernel on qemu.
 
-Fixes: 579305f75d34 ("iommu/vt-d: Update to use PCI DMA aliases")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20231114011036.70142-4-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/sticore.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 51f008398c0cc..46b2751c3f003 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4465,8 +4465,8 @@ static int domain_context_clear_one_cb(struct pci_dev *pdev, u16 alias, void *op
-  */
- static void domain_context_clear(struct device_domain_info *info)
- {
--	if (!info->iommu || !info->dev || !dev_is_pci(info->dev))
--		return;
-+	if (!dev_is_pci(info->dev))
-+		domain_context_clear_one(info, info->bus, info->devfn);
- 
- 	pci_for_each_dma_alias(to_pci_dev(info->dev),
- 			       &domain_context_clear_one_cb, info);
+diff --git a/drivers/video/fbdev/sticore.h b/drivers/video/fbdev/sticore.h
+index fb8f58f9867a7..0416e2bc27d85 100644
+--- a/drivers/video/fbdev/sticore.h
++++ b/drivers/video/fbdev/sticore.h
+@@ -237,7 +237,7 @@ struct sti_rom_font {
+ 	 u8 height;
+ 	 u8 font_type;		/* language type */
+ 	 u8 bytes_per_char;
+-	u32 next_font;
++	s32 next_font;		/* note: signed int */
+ 	 u8 underline_height;
+ 	 u8 underline_pos;
+ 	 u8 res008[2];
 -- 
 2.42.0
 
