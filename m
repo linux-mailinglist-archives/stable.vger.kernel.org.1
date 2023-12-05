@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-4161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4081E804652
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE38880472F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20BD2814DE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98D6C281509
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E6D8C0F;
-	Tue,  5 Dec 2023 03:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2472B8BF7;
+	Tue,  5 Dec 2023 03:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/ZQlT0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBushY0Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4703879E3;
-	Tue,  5 Dec 2023 03:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E4EC433C7;
-	Tue,  5 Dec 2023 03:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89036FB1;
+	Tue,  5 Dec 2023 03:35:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B7BC433C7;
+	Tue,  5 Dec 2023 03:35:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746782;
-	bh=vjbYDlYL5MrYze1Oh2NadVd4uxO8CDSB4eKRy7qTFuw=;
+	s=korg; t=1701747349;
+	bh=7vl0iLyGp/jJ0qaToJvbS5Q3Voh+JpkXKddrngMVvY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/ZQlT0iW3qa1fTnXWSgVVuwAgEDOPSzKS204Cnpmrw5kB4Agwi2GwcIzG3WQSBC/
-	 9RhOBY3wEePZEHVTc09PDz8iDir5I2IeVB+5ZR6d9/tK4TZzmVaLjUumzv+fUQB0Kn
-	 m0TL2HZ6w8a2EN3PQL/nLhb/Io/PLxVdkYHIBZOE=
+	b=fBushY0ZLBkyqvlKolD8emS+WKL3ha1TrY/50TjX4NDOxGUnNuLFxA2T0HzjhCZjC
+	 GDpTEAXflBCm1+hRUB1RgkJ+aDVdnqeubK8wFf7bMbRG+M4f35WepVW5VDN4KDjpnN
+	 +6oDk7sQHRf8qmV8/UNHB+7WRdHnGavqVSbJytBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 06/71] HID: core: store the unique system identifier in hid_device
+Subject: [PATCH 5.10 043/135] ext4: using nofail preallocation in ext4_es_insert_delayed_block()
 Date: Tue,  5 Dec 2023 12:16:04 +0900
-Message-ID: <20231205031518.244565961@linuxfoundation.org>
+Message-ID: <20231205031533.290743851@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +54,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 1e839143d674603b0bbbc4c513bca35404967dbc ]
+[ Upstream commit 4a2d98447b37bcb68a7f06a1078edcb4f7e6ce7e ]
 
-This unique identifier is currently used only for ensuring uniqueness in
-sysfs. However, this could be handful for userspace to refer to a specific
-hid_device by this id.
+Similar to in ext4_es_remove_extent(), we use a no-fail preallocation
+to avoid inconsistencies, except that here we may have to preallocate
+two extent_status.
 
-2 use cases are in my mind: LEDs (and their naming convention), and
-HID-BPF.
-
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Link: https://lore.kernel.org/r/20220902132938.2409206-9-benjamin.tissoires@redhat.com
-Stable-dep-of: fc43e9c857b7 ("HID: fix HID device resource race between HID core and debugging support")
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-8-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 4 +++-
- include/linux/hid.h    | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/ext4/extents_status.c | 33 ++++++++++++++++++++++-----------
+ 1 file changed, 22 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index c8d687f795caa..99eb26bcb1dd3 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2259,10 +2259,12 @@ int hid_add_device(struct hid_device *hdev)
- 			hid_warn(hdev, "bad device descriptor (%d)\n", ret);
- 	}
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 4af825eb0cb45..4163a4801f969 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -2013,7 +2013,10 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 				 bool allocated)
+ {
+ 	struct extent_status newes;
+-	int err = 0;
++	int err1 = 0;
++	int err2 = 0;
++	struct extent_status *es1 = NULL;
++	struct extent_status *es2 = NULL;
  
-+	hdev->id = atomic_inc_return(&id);
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return 0;
+@@ -2028,29 +2031,37 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 
+ 	ext4_es_insert_extent_check(inode, &newes);
+ 
++retry:
++	if (err1 && !es1)
++		es1 = __es_alloc_extent(true);
++	if ((err1 || err2) && !es2)
++		es2 = __es_alloc_extent(true);
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 
+-	err = __es_remove_extent(inode, lblk, lblk, NULL, NULL);
+-	if (err != 0)
++	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
++	if (err1 != 0)
+ 		goto error;
+-retry:
+-	err = __es_insert_extent(inode, &newes, NULL);
+-	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
+-					  128, EXT4_I(inode)))
+-		goto retry;
+-	if (err != 0)
 +
- 	/* XXX hack, any other cleaner solution after the driver core
- 	 * is converted to allow more than 20 bytes as the device name? */
- 	dev_set_name(&hdev->dev, "%04X:%04X:%04X.%04X", hdev->bus,
--		     hdev->vendor, hdev->product, atomic_inc_return(&id));
-+		     hdev->vendor, hdev->product, hdev->id);
++	err2 = __es_insert_extent(inode, &newes, es2);
++	if (err2 != 0)
+ 		goto error;
  
- 	hid_debug_register(hdev, dev_name(&hdev->dev));
- 	ret = device_add(&hdev->dev);
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 79c6c3b4e0044..10b41b2b20857 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -625,6 +625,8 @@ struct hid_device {							/* device report descriptor */
- 	struct list_head debug_list;
- 	spinlock_t  debug_list_lock;
- 	wait_queue_head_t debug_wait;
-+
-+	unsigned int id;						/* system unique id */
- };
+ 	if (allocated)
+ 		__insert_pending(inode, lblk);
  
- #define to_hid_device(pdev) \
++	/* es is pre-allocated but not used, free it. */
++	if (es1 && !es1->es_len)
++		__es_free_extent(es1);
++	if (es2 && !es2->es_len)
++		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
++	if (err1 || err2)
++		goto retry;
+ 
+ 	ext4_es_print_tree(inode);
+ 	ext4_print_pending_tree(inode);
+-
+-	return err;
++	return 0;
+ }
+ 
+ /*
 -- 
 2.42.0
 
