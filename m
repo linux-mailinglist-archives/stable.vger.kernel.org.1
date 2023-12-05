@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6036E8047DB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85335804785
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 918F51C20E71
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 081A51F2149D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9408BF7;
-	Tue,  5 Dec 2023 03:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7948C03;
+	Tue,  5 Dec 2023 03:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1VYflhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcyYIq7i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989256AC2;
-	Tue,  5 Dec 2023 03:43:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE5EC433C7;
-	Tue,  5 Dec 2023 03:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203C66FB1;
+	Tue,  5 Dec 2023 03:39:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D254C433C8;
+	Tue,  5 Dec 2023 03:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747784;
-	bh=OIXocjn73WcYsbYoRsp/O3G/f+wx4P9Aqv84ON+hfyk=;
+	s=korg; t=1701747575;
+	bh=0h21m91AwlxJXVsMQpqlx0Euvpcegt7pCDkeibc4gLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1VYflhuTuisgGFY1vw2hvtnu10CXERGWidzH1WltixZx0XG0zDEgH+V5Iwvekbj9
-	 l1r4C2FXl1rF6aDwJptpD3CdHF1dygXFhDoD/7a9OGct/KU0KZWBSH4N3i9FtF5A0g
-	 A9yEj/9TS6Y6uF/5pIfed/UicZrczX/sACcaUWVs=
+	b=WcyYIq7i6CuZwmqJc10/FH0zxQz8WnvS/8hsDYsRizDXLdtsMfeo8V2XGkK3gKyAE
+	 zc5LuehqulJ92GT6o2dq3wXuMA0qjMvjVsOJTggacDbCIxOHN3cd8vtwNV25QP4j5C
+	 WwaNZOumSMVlWIMpawwZQwv0wsGND9NL0h8f9EmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 42/67] net: ravb: Use pm_runtime_resume_and_get()
+Subject: [PATCH 5.10 126/135] mmc: cqhci: Increase recovery halt timeout
 Date: Tue,  5 Dec 2023 12:17:27 +0900
-Message-ID: <20231205031522.266826099@linuxfoundation.org>
+Message-ID: <20231205031538.840823797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,50 +54,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
+[ Upstream commit b578d5d18e929aa7c007a98cce32657145dde219 ]
 
-pm_runtime_get_sync() may return an error. In case it returns with an error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+Failing to halt complicates the recovery. Additionally, unless the card or
+controller are stuck, which is expected to be very rare, then the halt
+should succeed, so it is better to wait. Set a large timeout.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-3-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/cqhci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 709c770b391c5..a556faa47f036 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2193,7 +2193,9 @@ static int ravb_probe(struct platform_device *pdev)
- 		goto out_free_netdev;
+diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
+index 7ba4f714106f9..a0a9cb6e2a150 100644
+--- a/drivers/mmc/host/cqhci.c
++++ b/drivers/mmc/host/cqhci.c
+@@ -932,10 +932,10 @@ static bool cqhci_halt(struct mmc_host *mmc, unsigned int timeout)
+ /*
+  * After halting we expect to be able to use the command line. We interpret the
+  * failure to halt to mean the data lines might still be in use (and the upper
+- * layers will need to send a STOP command), so we set the timeout based on a
+- * generous command timeout.
++ * layers will need to send a STOP command), however failing to halt complicates
++ * the recovery, so set a timeout that would reasonably allow I/O to complete.
+  */
+-#define CQHCI_START_HALT_TIMEOUT	5
++#define CQHCI_START_HALT_TIMEOUT	500
  
- 	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
-+	error = pm_runtime_resume_and_get(&pdev->dev);
-+	if (error < 0)
-+		goto out_rpm_disable;
- 
- 	if (info->multi_irqs)
- 		irq = platform_get_irq_byname(pdev, "ch22");
-@@ -2377,6 +2379,7 @@ static int ravb_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(priv->refclk);
- out_release:
- 	pm_runtime_put(&pdev->dev);
-+out_rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(rstc);
- out_free_netdev:
+ static void cqhci_recovery_start(struct mmc_host *mmc)
+ {
 -- 
 2.42.0
 
