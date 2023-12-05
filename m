@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1FF804680
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693298046E8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 758921F21412
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B38A1C20DCA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E628BEC;
-	Tue,  5 Dec 2023 03:28:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00A479F2;
+	Tue,  5 Dec 2023 03:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KG6xR6Ms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIE7+2w/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1F86FAF;
-	Tue,  5 Dec 2023 03:28:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E31EC433C8;
-	Tue,  5 Dec 2023 03:28:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF66FB1;
+	Tue,  5 Dec 2023 03:32:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27177C433C9;
+	Tue,  5 Dec 2023 03:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746907;
-	bh=VNIF8IvsapDcMcGBOLoQzBaKutUaJwaQU+WheKfZn8w=;
+	s=korg; t=1701747172;
+	bh=3Sic7slNYUXg2n9TRDQh3m6XLxR2p6ILNfYis2RiV6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KG6xR6MsFW/IUV5Bh6NS0i/Ton7l3h9wgjU+WDxlkUDDhBl4V+Zb2MQPfjSdRTOfY
-	 w0tjMAtJE3b/i6s8YqWciI+1ILHMdmlV0GLrAh3nUcvuYqb1ovIFatKh/TR5EcWeFz
-	 9x9jcVN5kMnMtd3+3iUEbdONhhirKa0BJ900Slnk=
+	b=YIE7+2w/MhBZbNvEzcGIkSEzyz+hnkP2R+MvYdwe+ONCTLAd/rR0WVh7tWLrSb+Gu
+	 kj6MacCnqO+pddZkhtCqLSCwqZAWTRFmzpU8DtanA/+mBsXb0U6DIDLW02YgaeyHHI
+	 pKEEEWSZ3AG3/AiVhqee04IUjpst0xgvBfeHMC5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Subject: [PATCH 4.19 62/71] ima: annotate iint mutex to avoid lockdep false positive warnings
+	Mark Hasemeyer <markhas@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
+	stable@kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 085/107] spi: Fix null dereference on suspend
 Date: Tue,  5 Dec 2023 12:17:00 +0900
-Message-ID: <20231205031521.477996507@linuxfoundation.org>
+Message-ID: <20231205031536.932311280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,119 +54,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Mark Hasemeyer <markhas@chromium.org>
 
-[ Upstream commit e044374a8a0a99e46f4e6d6751d3042b6d9cc12e ]
+[ Upstream commit bef4a48f4ef798c4feddf045d49e53c8a97d5e37 ]
 
-It is not clear that IMA should be nested at all, but as long is it
-measures files both on overlayfs and on underlying fs, we need to
-annotate the iint mutex to avoid lockdep false positives related to
-IMA + overlayfs, same as overlayfs annotates the inode mutex.
+A race condition exists where a synchronous (noqueue) transfer can be
+active during a system suspend. This can cause a null pointer
+dereference exception to occur when the system resumes.
 
-Reported-and-tested-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Example order of events leading to the exception:
+1. spi_sync() calls __spi_transfer_message_noqueue() which sets
+   ctlr->cur_msg
+2. Spi transfer begins via spi_transfer_one_message()
+3. System is suspended interrupting the transfer context
+4. System is resumed
+6. spi_controller_resume() calls spi_start_queue() which resets cur_msg
+   to NULL
+7. Spi transfer context resumes and spi_finalize_current_message() is
+   called which dereferences cur_msg (which is now NULL)
+
+Wait for synchronous transfers to complete before suspending by
+acquiring the bus mutex and setting/checking a suspend flag.
+
+Signed-off-by: Mark Hasemeyer <markhas@chromium.org>
+Link: https://lore.kernel.org/r/20231107144743.v1.1.I7987f05f61901f567f7661763646cb7d7919b528@changeid
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/iint.c | 48 ++++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ drivers/spi/spi.c       | 56 ++++++++++++++++++++++++++++-------------
+ include/linux/spi/spi.h |  1 +
+ 2 files changed, 40 insertions(+), 17 deletions(-)
 
-diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-index d5b9253ebd12b..7c751c23e7e63 100644
---- a/security/integrity/iint.c
-+++ b/security/integrity/iint.c
-@@ -69,9 +69,32 @@ struct integrity_iint_cache *integrity_iint_find(struct inode *inode)
- 	return iint;
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 151fef199c380..5d046be8b2dd5 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -3299,33 +3299,52 @@ void spi_unregister_controller(struct spi_controller *ctlr)
  }
+ EXPORT_SYMBOL_GPL(spi_unregister_controller);
  
--static void iint_free(struct integrity_iint_cache *iint)
-+#define IMA_MAX_NESTING (FILESYSTEM_MAX_STACK_DEPTH+1)
-+
-+/*
-+ * It is not clear that IMA should be nested at all, but as long is it measures
-+ * files both on overlayfs and on underlying fs, we need to annotate the iint
-+ * mutex to avoid lockdep false positives related to IMA + overlayfs.
-+ * See ovl_lockdep_annotate_inode_mutex_key() for more details.
-+ */
-+static inline void iint_lockdep_annotate(struct integrity_iint_cache *iint,
-+					 struct inode *inode)
++static inline int __spi_check_suspended(const struct spi_controller *ctlr)
 +{
-+#ifdef CONFIG_LOCKDEP
-+	static struct lock_class_key iint_mutex_key[IMA_MAX_NESTING];
-+
-+	int depth = inode->i_sb->s_stack_depth;
-+
-+	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
-+		depth = 0;
-+
-+	lockdep_set_class(&iint->mutex, &iint_mutex_key[depth]);
-+#endif
++	return ctlr->flags & SPI_CONTROLLER_SUSPENDED ? -ESHUTDOWN : 0;
 +}
 +
-+static void iint_init_always(struct integrity_iint_cache *iint,
-+			     struct inode *inode)
- {
--	kfree(iint->ima_hash);
- 	iint->ima_hash = NULL;
- 	iint->version = 0;
- 	iint->flags = 0UL;
-@@ -83,6 +106,14 @@ static void iint_free(struct integrity_iint_cache *iint)
- 	iint->ima_creds_status = INTEGRITY_UNKNOWN;
- 	iint->evm_status = INTEGRITY_UNKNOWN;
- 	iint->measured_pcrs = 0;
-+	mutex_init(&iint->mutex);
-+	iint_lockdep_annotate(iint, inode);
++static inline void __spi_mark_suspended(struct spi_controller *ctlr)
++{
++	mutex_lock(&ctlr->bus_lock_mutex);
++	ctlr->flags |= SPI_CONTROLLER_SUSPENDED;
++	mutex_unlock(&ctlr->bus_lock_mutex);
 +}
 +
-+static void iint_free(struct integrity_iint_cache *iint)
++static inline void __spi_mark_resumed(struct spi_controller *ctlr)
 +{
-+	kfree(iint->ima_hash);
-+	mutex_destroy(&iint->mutex);
- 	kmem_cache_free(iint_cache, iint);
- }
- 
-@@ -107,6 +138,8 @@ struct integrity_iint_cache *integrity_inode_get(struct inode *inode)
- 	if (!iint)
- 		return NULL;
- 
-+	iint_init_always(iint, inode);
++	mutex_lock(&ctlr->bus_lock_mutex);
++	ctlr->flags &= ~SPI_CONTROLLER_SUSPENDED;
++	mutex_unlock(&ctlr->bus_lock_mutex);
++}
 +
- 	write_lock(&integrity_iint_lock);
- 
- 	p = &integrity_iint_tree.rb_node;
-@@ -156,25 +189,18 @@ void integrity_inode_free(struct inode *inode)
- 	iint_free(iint);
- }
- 
--static void init_once(void *foo)
-+static void iint_init_once(void *foo)
+ int spi_controller_suspend(struct spi_controller *ctlr)
  {
- 	struct integrity_iint_cache *iint = foo;
+-	int ret;
++	int ret = 0;
  
- 	memset(iint, 0, sizeof(*iint));
--	iint->ima_file_status = INTEGRITY_UNKNOWN;
--	iint->ima_mmap_status = INTEGRITY_UNKNOWN;
--	iint->ima_bprm_status = INTEGRITY_UNKNOWN;
--	iint->ima_read_status = INTEGRITY_UNKNOWN;
--	iint->ima_creds_status = INTEGRITY_UNKNOWN;
--	iint->evm_status = INTEGRITY_UNKNOWN;
--	mutex_init(&iint->mutex);
+ 	/* Basically no-ops for non-queued controllers */
+-	if (!ctlr->queued)
+-		return 0;
+-
+-	ret = spi_stop_queue(ctlr);
+-	if (ret)
+-		dev_err(&ctlr->dev, "queue stop failed\n");
++	if (ctlr->queued) {
++		ret = spi_stop_queue(ctlr);
++		if (ret)
++			dev_err(&ctlr->dev, "queue stop failed\n");
++	}
+ 
++	__spi_mark_suspended(ctlr);
+ 	return ret;
  }
+ EXPORT_SYMBOL_GPL(spi_controller_suspend);
  
- static int __init integrity_iintcache_init(void)
+ int spi_controller_resume(struct spi_controller *ctlr)
  {
- 	iint_cache =
- 	    kmem_cache_create("iint_cache", sizeof(struct integrity_iint_cache),
--			      0, SLAB_PANIC, init_once);
-+			      0, SLAB_PANIC, iint_init_once);
- 	return 0;
+-	int ret;
+-
+-	if (!ctlr->queued)
+-		return 0;
++	int ret = 0;
+ 
+-	ret = spi_start_queue(ctlr);
+-	if (ret)
+-		dev_err(&ctlr->dev, "queue restart failed\n");
++	__spi_mark_resumed(ctlr);
+ 
++	if (ctlr->queued) {
++		ret = spi_start_queue(ctlr);
++		if (ret)
++			dev_err(&ctlr->dev, "queue restart failed\n");
++	}
+ 	return ret;
  }
- security_initcall(integrity_iintcache_init);
+ EXPORT_SYMBOL_GPL(spi_controller_resume);
+@@ -4050,8 +4069,7 @@ static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct s
+ 	ctlr->cur_msg = msg;
+ 	ret = __spi_pump_transfer_message(ctlr, msg, was_busy);
+ 	if (ret)
+-		goto out;
+-
++		dev_err(&ctlr->dev, "noqueue transfer failed\n");
+ 	ctlr->cur_msg = NULL;
+ 	ctlr->fallback = false;
+ 
+@@ -4067,7 +4085,6 @@ static void __spi_transfer_message_noqueue(struct spi_controller *ctlr, struct s
+ 		spi_idle_runtime_pm(ctlr);
+ 	}
+ 
+-out:
+ 	mutex_unlock(&ctlr->io_mutex);
+ }
+ 
+@@ -4090,6 +4107,11 @@ static int __spi_sync(struct spi_device *spi, struct spi_message *message)
+ 	int status;
+ 	struct spi_controller *ctlr = spi->controller;
+ 
++	if (__spi_check_suspended(ctlr)) {
++		dev_warn_once(&spi->dev, "Attempted to sync while suspend\n");
++		return -ESHUTDOWN;
++	}
++
+ 	status = __spi_validate(spi, message);
+ 	if (status != 0)
+ 		return status;
+diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
+index fbf8c0d95968e..877395e075afe 100644
+--- a/include/linux/spi/spi.h
++++ b/include/linux/spi/spi.h
+@@ -531,6 +531,7 @@ struct spi_controller {
+ #define SPI_CONTROLLER_MUST_TX		BIT(4)	/* Requires tx */
+ 
+ #define SPI_MASTER_GPIO_SS		BIT(5)	/* GPIO CS must select slave */
++#define SPI_CONTROLLER_SUSPENDED	BIT(6)	/* Currently suspended */
+ 
+ 	/* Flag indicating if the allocation of this struct is devres-managed */
+ 	bool			devm_allocated;
 -- 
 2.42.0
 
