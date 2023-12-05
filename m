@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-4217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC5E80468D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26362804674
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51DBB1C20D35
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D54D6280F09
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2E68BEC;
-	Tue,  5 Dec 2023 03:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5AAC79F2;
+	Tue,  5 Dec 2023 03:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iotn2fWE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgNrV7Fw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECE46FAF;
-	Tue,  5 Dec 2023 03:29:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE01C433C8;
-	Tue,  5 Dec 2023 03:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22C36FAF;
+	Tue,  5 Dec 2023 03:27:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F327C433C8;
+	Tue,  5 Dec 2023 03:27:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746942;
-	bh=htZVP0jZEsXVZz7Y2sxLJYDzRxVc+p8R87CBpKqZ/yk=;
+	s=korg; t=1701746872;
+	bh=8yMqmgwWMJ5cGNvXA2Goi44++eCKehhXedtGJLOj3YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iotn2fWEpeC2JpkXnymtG1/U1IzXlW5L2LU4ZkJmrvYBkI9lH8IxpBH0uKNfyXVzB
-	 IOxQenUsPC+dFXg2cYt8h555vqIAPo+TSptRvO9sWZ12V9hzmkQ5QjopQI5UXzROpg
-	 I3Lwgi2i9R+Rti+Bz+8tA+F7orB4s/mM2PGI2xec=
+	b=jgNrV7FwyGx0kL3BeICDB5Cm4ImNo9gYuz29bOXj1qpESMlCYncAtOCY1hjQc05eG
+	 eRolQOKBoCmLRPFUIwpRMQhKS75VX5AjH/f2ee4lCn3sr8BCodQgW9ElylOCcGabn/
+	 Euh7TJuQZ/PPLCpkOVB9LP2EOA/JADfvdQV9nvh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	Micah Veilleux <micah.veilleux@iba-group.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 50/71] perf intel-pt: Fix async branch flags
-Date: Tue,  5 Dec 2023 12:16:48 +0900
-Message-ID: <20231205031520.780330158@linuxfoundation.org>
+Subject: [PATCH 4.19 51/71] smb3: fix touch -h of symlink
+Date: Tue,  5 Dec 2023 12:16:49 +0900
+Message-ID: <20231205031520.835105563@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
 References: <20231205031517.859409664@linuxfoundation.org>
@@ -57,40 +58,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit f2d87895cbc4af80649850dcf5da36de6b2ed3dd ]
+[ Upstream commit 475efd9808a3094944a56240b2711349e433fb66 ]
 
-Ensure PERF_IP_FLAG_ASYNC is set always for asynchronous branches (i.e.
-interrupts etc).
+For example:
+      touch -h -t 02011200 testfile
+where testfile is a symlink would not change the timestamp, but
+      touch -t 02011200 testfile
+does work to change the timestamp of the target
 
-Fixes: 90e457f7be08 ("perf tools: Add Intel PT support")
+Suggested-by: David Howells <dhowells@redhat.com>
+Reported-by: Micah Veilleux <micah.veilleux@iba-group.com>
+Closes: https://bugzilla.samba.org/show_bug.cgi?id=14476
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20230928072953.19369-1-adrian.hunter@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/intel-pt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/cifs/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index e073c7108c6c9..92b9921568f5d 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -901,9 +901,11 @@ static void intel_pt_sample_flags(struct intel_pt_queue *ptq)
- 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
- 		if (!ptq->state->to_ip)
- 			ptq->flags = PERF_IP_FLAG_BRANCH |
-+				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_TRACE_END;
- 		else if (ptq->state->from_nr && !ptq->state->to_nr)
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
-+				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_VMEXIT;
- 		else
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index ef1a43f4bd663..7c9e5ed1644b0 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -970,6 +970,7 @@ const struct inode_operations cifs_file_inode_ops = {
+ 
+ const struct inode_operations cifs_symlink_inode_ops = {
+ 	.get_link = cifs_get_link,
++	.setattr = cifs_setattr,
+ 	.permission = cifs_permission,
+ 	.listxattr = cifs_listxattr,
+ };
 -- 
 2.42.0
 
