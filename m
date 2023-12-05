@@ -1,49 +1,45 @@
-Return-Path: <stable+bounces-4386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30CF804744
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FEEE8046D4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ACC21F21482
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF3DA1F213F9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702078BF1;
-	Tue,  5 Dec 2023 03:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12CC8BF1;
+	Tue,  5 Dec 2023 03:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PgL/bSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrbock0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B14E6FB1;
-	Tue,  5 Dec 2023 03:36:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A899FC433C8;
-	Tue,  5 Dec 2023 03:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7066FB1;
+	Tue,  5 Dec 2023 03:32:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26109C433C7;
+	Tue,  5 Dec 2023 03:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747405;
-	bh=rS8Bzry2R8CViC9ENfptVNd39UdwkMm5hC3t53Rj41c=;
+	s=korg; t=1701747121;
+	bh=kQEfQ87PE4KweR6kRqAOcFD1TJCf+HdW28krdgvCpvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1PgL/bSJejgSb1ECBXo4oNfHdbjt75o26egPOUIzBRoIMJl71iF1Cn+79879E0kNt
-	 i+WTpYBA0ATFHQaEsYVVhrVEVU9OybSqm9LjVhI8NqiF2uIWySiZaMtHZ/1FFd2FzR
-	 OGCn8CtmMs/+RdP8pSPhIiWyfxpqdsztaa0oVXlM=
+	b=wrbock0gPasxY2ipFhIxkRFx6fip/4Sb1j9GQL42bRN94u3+EIjseN2DFxIiF/6MH
+	 PWsbnzclrHcgeHb9QVgin5/iY8T7UW08Yd27WmYjTpms3c80sXZGXRuBOUjqRW1Fs1
+	 9knuvZTtOlnEYuJkxZw6d3rwwWHuXSRHX8DWltDE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 056/135] hv_netvsc: Mark VF as slave before exposing it to user-mode
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 042/107] parisc: Ensure 32-bit alignment on parisc unwind section
 Date: Tue,  5 Dec 2023 12:16:17 +0900
-Message-ID: <20231205031533.985121545@linuxfoundation.org>
+Message-ID: <20231205031534.015812069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,100 +51,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Helge Deller <deller@gmx.de>
 
-commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
+commit c9fcb2b65c2849e8ff3be23fd8828312fb68dc19 upstream.
 
-When a VF is being exposed form the kernel, it should be marked as "slave"
-before exposing to the user-mode. The VF is not usable without netvsc
-running as master. The user-mode should never see a VF without the "slave"
-flag.
+Make sure the .PARISC.unwind section will be 32-bit aligned.
 
-This commit moves the code of setting the slave flag to the time before
-VF is exposed to user-mode.
-
-Cc: stable@vger.kernel.org
-Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
-Signed-off-by: Long Li <longli@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org   # v6.0+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ arch/parisc/kernel/vmlinux.lds.S |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2217,9 +2217,6 @@ static int netvsc_vf_join(struct net_dev
- 		goto upper_link_failed;
- 	}
+--- a/arch/parisc/kernel/vmlinux.lds.S
++++ b/arch/parisc/kernel/vmlinux.lds.S
+@@ -131,6 +131,7 @@ SECTIONS
+ 	RO_DATA(8)
  
--	/* set slave flag before open to prevent IPv6 addrconf */
--	vf_netdev->flags |= IFF_SLAVE;
--
- 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
- 
- 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
-@@ -2317,16 +2314,18 @@ static struct net_device *get_netvsc_bys
- 			return hv_get_drvdata(ndev_ctx->device_ctx);
- 	}
- 
--	/* Fallback path to check synthetic vf with
--	 * help of mac addr
-+	/* Fallback path to check synthetic vf with help of mac addr.
-+	 * Because this function can be called before vf_netdev is
-+	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
-+	 * from dev_addr, also try to match to its dev_addr.
-+	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
-+	 * on a VF that matches to the MAC of a unrelated NETVSC device.
- 	 */
- 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
- 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
--		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
--			netdev_notice(vf_netdev,
--				      "falling back to mac addr based matching\n");
-+		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
-+		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
- 			return ndev;
--		}
- 	}
- 
- 	netdev_notice(vf_netdev,
-@@ -2334,6 +2333,19 @@ static struct net_device *get_netvsc_bys
- 	return NULL;
- }
- 
-+static int netvsc_prepare_bonding(struct net_device *vf_netdev)
-+{
-+	struct net_device *ndev;
-+
-+	ndev = get_netvsc_byslot(vf_netdev);
-+	if (!ndev)
-+		return NOTIFY_DONE;
-+
-+	/* set slave flag before open to prevent IPv6 addrconf */
-+	vf_netdev->flags |= IFF_SLAVE;
-+	return NOTIFY_DONE;
-+}
-+
- static int netvsc_register_vf(struct net_device *vf_netdev)
- {
- 	struct net_device_context *net_device_ctx;
-@@ -2737,6 +2749,8 @@ static int netvsc_netdev_event(struct no
- 		return NOTIFY_DONE;
- 
- 	switch (event) {
-+	case NETDEV_POST_INIT:
-+		return netvsc_prepare_bonding(event_dev);
- 	case NETDEV_REGISTER:
- 		return netvsc_register_vf(event_dev);
- 	case NETDEV_UNREGISTER:
+ 	/* unwind info */
++	. = ALIGN(4);
+ 	.PARISC.unwind : {
+ 		__start___unwind = .;
+ 		*(.PARISC.unwind)
 
 
 
