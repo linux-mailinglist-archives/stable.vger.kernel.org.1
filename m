@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10FC48047CC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F1A80483F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C020528173B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98BE71F22A09
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582AC79F2;
-	Tue,  5 Dec 2023 03:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8F88C05;
+	Tue,  5 Dec 2023 03:47:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTX8EH79"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLTHsCqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099726AC2;
-	Tue,  5 Dec 2023 03:42:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F4CC433C7;
-	Tue,  5 Dec 2023 03:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB216FB0;
+	Tue,  5 Dec 2023 03:47:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7B0C433C7;
+	Tue,  5 Dec 2023 03:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747741;
-	bh=tG/HTyT1HlmWXYY+pcXEeFzO8pxuLL6WwxF7GhfgmHE=;
+	s=korg; t=1701748051;
+	bh=TSgKRs2JP3c/RhwtGXws5iVBZENgD9nUIjeEYnBMJLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTX8EH791UEeuMh6b2T5xZplf3Od2XlXpOjvbsX/OiZOdUb5InFYvZF6TJZNJLCmW
-	 uJH+xxtLsy4ezgJQqWrvL5HgKDFoB5P/rCMJlQw0f5yam3jkBSvxXaZ6pFD2Fkm593
-	 U6cGpAetlAxbLt9PIyg/bLOYWrpWYk2SdcPtEx+M=
+	b=SLTHsCqPmVeymHAkth7W1fXKMApqP42Bv1/WwXSVssa4LNQu3boHVkQBhhdtFxUld
+	 WvwEl2Bd1ULJOhZPlSQjSpiYWQkOrO10Lunw1d+/oNUMkGjgmulFijCM6bH76VVKyI
+	 R5syaw1KXI02NL1C/9H8TzfRGy/wnXwUxrHkG5H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 52/67] ASoC: Intel: Move soc_intel_is_foo() helpers to a generic header
-Date: Tue,  5 Dec 2023 12:17:37 +0900
-Message-ID: <20231205031522.854460385@linuxfoundation.org>
+Subject: [PATCH 5.4 70/94] ravb: Fix races between ravb_tx_timeout_work() and net related ops
+Date: Tue,  5 Dec 2023 12:17:38 +0900
+Message-ID: <20231205031526.753318380@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,178 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit cd45c9bf8b43cd387e167cf166ae5c517f56d658 ]
+[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
 
-The soc_intel_is_foo() helpers from
-sound/soc/intel/common/soc-intel-quirks.h are useful outside of the
-sound subsystem too.
+Fix races between ravb_tx_timeout_work() and functions of net_device_ops
+and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
+since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
+ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
+may happen in ravb_tx_timeout_work() like below:
 
-Move these to include/linux/platform_data/x86/soc.h, so that
-other code can use them too.
+CPU0			CPU1
+			ravb_tx_timeout()
+			schedule_work()
+...
+__dev_close_many()
+// Under rtnl lock
+ravb_close()
+cancel_work_sync()
+// Waiting
+			ravb_tx_timeout_work()
+			rtnl_lock()
+			// This is possible to cause a deadlock
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20211018143324.296961-2-hdegoede@redhat.com
-Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
+If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
+
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/platform_data/x86/soc.h     | 65 +++++++++++++++++++++++
- sound/soc/intel/common/soc-intel-quirks.h | 51 ++----------------
- 2 files changed, 68 insertions(+), 48 deletions(-)
- create mode 100644 include/linux/platform_data/x86/soc.h
+ drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/platform_data/x86/soc.h b/include/linux/platform_data/x86/soc.h
-new file mode 100644
-index 0000000000000..da05f425587a0
---- /dev/null
-+++ b/include/linux/platform_data/x86/soc.h
-@@ -0,0 +1,65 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Helpers for Intel SoC model detection
-+ *
-+ * Copyright (c) 2019, Intel Corporation.
-+ */
-+
-+#ifndef __PLATFORM_DATA_X86_SOC_H
-+#define __PLATFORM_DATA_X86_SOC_H
-+
-+#if IS_ENABLED(CONFIG_X86)
-+
-+#include <asm/cpu_device_id.h>
-+#include <asm/intel-family.h>
-+
-+#define SOC_INTEL_IS_CPU(soc, type)				\
-+static inline bool soc_intel_is_##soc(void)			\
-+{								\
-+	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
-+		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
-+		{}						\
-+	};							\
-+	const struct x86_cpu_id *id;				\
-+								\
-+	id = x86_match_cpu(soc##_cpu_ids);			\
-+	if (id)							\
-+		return true;					\
-+	return false;						\
-+}
-+
-+SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
-+SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
-+SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
-+SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
-+SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
-+
-+#else /* IS_ENABLED(CONFIG_X86) */
-+
-+static inline bool soc_intel_is_byt(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_cht(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_apl(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_glk(void)
-+{
-+	return false;
-+}
-+
-+static inline bool soc_intel_is_cml(void)
-+{
-+	return false;
-+}
-+#endif /* IS_ENABLED(CONFIG_X86) */
-+
-+#endif /* __PLATFORM_DATA_X86_SOC_H */
-diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
-index a93987ab7f4d7..de4e550c5b34d 100644
---- a/sound/soc/intel/common/soc-intel-quirks.h
-+++ b/sound/soc/intel/common/soc-intel-quirks.h
-@@ -9,34 +9,13 @@
- #ifndef _SND_SOC_INTEL_QUIRKS_H
- #define _SND_SOC_INTEL_QUIRKS_H
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 367da05ddb1e7..765e55b489dbf 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1435,6 +1435,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 	struct net_device *ndev = priv->ndev;
+ 	int error;
  
-+#include <linux/platform_data/x86/soc.h>
++	if (!rtnl_trylock()) {
++		usleep_range(1000, 2000);
++		schedule_work(&priv->work);
++		return;
++	}
 +
- #if IS_ENABLED(CONFIG_X86)
+ 	netif_tx_stop_all_queues(ndev);
  
- #include <linux/dmi.h>
--#include <asm/cpu_device_id.h>
--#include <asm/intel-family.h>
- #include <asm/iosf_mbi.h>
+ 	/* Stop PTP Clock driver */
+@@ -1467,7 +1473,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		 */
+ 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
+ 			   __func__, error);
+-		return;
++		goto out_unlock;
+ 	}
+ 	ravb_emac_init(ndev);
  
--#define SOC_INTEL_IS_CPU(soc, type)				\
--static inline bool soc_intel_is_##soc(void)			\
--{								\
--	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
--		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
--		{}						\
--	};							\
--	const struct x86_cpu_id *id;				\
--								\
--	id = x86_match_cpu(soc##_cpu_ids);			\
--	if (id)							\
--		return true;					\
--	return false;						\
--}
--
--SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
--SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
--SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
--SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
--SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
--
- static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
- {
- 	/*
-@@ -114,30 +93,6 @@ static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
- 	return false;
+@@ -1477,6 +1483,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		ravb_ptp_init(ndev, priv->pdev);
+ 
+ 	netif_tx_start_all_queues(ndev);
++
++out_unlock:
++	rtnl_unlock();
  }
  
--static inline bool soc_intel_is_byt(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_cht(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_apl(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_glk(void)
--{
--	return false;
--}
--
--static inline bool soc_intel_is_cml(void)
--{
--	return false;
--}
- #endif
- 
-- #endif /* _SND_SOC_INTEL_QUIRKS_H */
-+#endif /* _SND_SOC_INTEL_QUIRKS_H */
+ /* Packet transmit function for Ethernet AVB */
 -- 
 2.42.0
 
