@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-4500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C678047C1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2A3804811
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0FE1F214CC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FAE41C20E15
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB8479F2;
-	Tue,  5 Dec 2023 03:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707F78C05;
+	Tue,  5 Dec 2023 03:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw1ipmJb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKAr+A8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8A46FB0;
-	Tue,  5 Dec 2023 03:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DB35C433C8;
-	Tue,  5 Dec 2023 03:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3D96FB0;
+	Tue,  5 Dec 2023 03:45:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B362BC433C8;
+	Tue,  5 Dec 2023 03:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747716;
-	bh=xqFIhCThst+/ofim+HZPWtqqJ+7DwltwBU8jfo2Q8ro=;
+	s=korg; t=1701747932;
+	bh=Bvq1RBshJQEkCTSQasIKkjiJm7tx36O6tBh3ptkWR+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qw1ipmJbbPnv8Kkl7o7rrFVY9w6CXdgO4OyosR/Sl6jaHnbGmVeCxg6bkFTuDe76T
-	 5O7UtLRuQP9ZO7V3pRDKbdGPtQpie6CY/1/uaTt7sDd4bz7vMptYqe3Faj0cxdVTTE
-	 YdtC1bRkh26Mnx0kpKyXcFD2x3PFUmCl3KVq5nqI=
+	b=fKAr+A8ywMtBju1FybZHcJvi05C1XGxP1zgZ8vlNq15p97sSMrDdqvimBwY5aepCK
+	 zf36d4Yx61PU/rKzI5m/9NsE2tQL5yo7kj7NCnI1cJWdiBT1q/JEkmh6Ks0JT9SGMo
+	 fDUIrxS4mNslfj+nmiHn+jdhQDraHmKT26cs09BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/67] selftests/net: ipsec: fix constant out of range
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Lieven Hey <lieven.hey@kdab.com>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 5.4 51/94] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
 Date: Tue,  5 Dec 2023 12:17:19 +0900
-Message-ID: <20231205031521.779621259@linuxfoundation.org>
+Message-ID: <20231205031525.706456490@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,61 +56,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 088559815477c6f623a5db5993491ddd7facbec7 ]
+commit 89b15d00527b7825ff19130ed83478e80e3fae99 upstream.
 
-Fix a small compiler warning.
+When a program header was added, it moved the text section but
+GEN_ELF_TEXT_OFFSET was not updated.
 
-nr_process must be a signed long: it is assigned a signed long by
-strtol() and is compared against LONG_MIN and LONG_MAX.
+Fix by adding the program header size and aligning.
 
-ipsec.c:2280:65:
-    error: result of comparison of constant -9223372036854775808
-    with expression of type 'unsigned int' is always false
-    [-Werror,-Wtautological-constant-out-of-range-compare]
-
-  if ((errno == ERANGE && (nr_process == LONG_MAX || nr_process == LONG_MIN))
-
-Fixes: bc2652b7ae1e ("selftest/net/xfrm: Add test for ipsec tunnel")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Link: https://lore.kernel.org/r/20231124171645.1011043-2-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Lieven Hey <lieven.hey@kdab.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/ipsec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/perf/util/genelf.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
-index 3d7dde2c321b3..c5be3f390849b 100644
---- a/tools/testing/selftests/net/ipsec.c
-+++ b/tools/testing/selftests/net/ipsec.c
-@@ -2278,7 +2278,7 @@ static int check_results(void)
+--- a/tools/perf/util/genelf.h
++++ b/tools/perf/util/genelf.h
+@@ -2,6 +2,8 @@
+ #ifndef __GENELF_H__
+ #define __GENELF_H__
  
- int main(int argc, char **argv)
- {
--	unsigned int nr_process = 1;
-+	long nr_process = 1;
- 	int route_sock = -1, ret = KSFT_SKIP;
- 	int test_desc_fd[2];
- 	uint32_t route_seq;
-@@ -2299,7 +2299,7 @@ int main(int argc, char **argv)
- 			exit_usage(argv);
- 		}
++#include <linux/math.h>
++
+ /* genelf.c */
+ int jit_write_elf(int fd, uint64_t code_addr, const char *sym,
+ 		  const void *code, int csize, void *debug, int nr_debug_entries,
+@@ -73,6 +75,6 @@ int jit_add_debug_info(Elf *e, uint64_t
+ #endif
  
--		if (nr_process > MAX_PROCESSES || !nr_process) {
-+		if (nr_process > MAX_PROCESSES || nr_process < 1) {
- 			printk("nr_process should be between [1; %u]",
- 					MAX_PROCESSES);
- 			exit_usage(argv);
--- 
-2.42.0
-
+ /* The .text section is directly after the ELF header */
+-#define GEN_ELF_TEXT_OFFSET sizeof(Elf_Ehdr)
++#define GEN_ELF_TEXT_OFFSET round_up(sizeof(Elf_Ehdr) + sizeof(Elf_Phdr), 16)
+ 
+ #endif
 
 
 
