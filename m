@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85798047AB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C0804693
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50DC5B20D52
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05831F213DE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8058C13;
-	Tue,  5 Dec 2023 03:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371E08BEC;
+	Tue,  5 Dec 2023 03:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2xRba/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfqknVvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DFD8BF8;
-	Tue,  5 Dec 2023 03:40:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FF6C433C8;
-	Tue,  5 Dec 2023 03:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E756FAF;
+	Tue,  5 Dec 2023 03:29:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616A1C433C7;
+	Tue,  5 Dec 2023 03:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747659;
-	bh=A6K9t6eI2SaV9sR/zJ/vTHqPePoWoVbm4dRbXuGLhyY=;
+	s=korg; t=1701746956;
+	bh=4cHWZBNgkxrsJ8pm7AfnWomjAjnJAJ38wIQuELOBipo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2xRba/UNI5bqWGxW6qbyxhgLcnq+KvKyg9U86t+RoOz3Vky0JaVSZCtybFo02Jep
-	 haWtETp8vq68w81duZ/yja4dfvA8mTa7/UiSt+9OimuK1YyctC6+TJftzZGwHRcU68
-	 +esnHHuW1bHKA7uK/lU/cgpOou7l/ztp0gS6e0eg=
+	b=QfqknVvmyDbJvODqOyt0JhuYO/E1Z56o/w11bMCA9eQ4zKoCAX9VwP0LFU3CtUnXA
+	 AW1N1mmxNDZ3xpsocQq+Jj0tUh8RQMlr247HHUqMgLay9r2ihigEQXhXWwrzOOKkNl
+	 OR6kxaxETKozZ7UZluVWuHlZVelgGnnZqBNk3g3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.15 21/67] btrfs: fix off-by-one when checking chunk map includes logical address
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 68/71] mmc: cqhci: Warn of halt or task clear failure
 Date: Tue,  5 Dec 2023 12:17:06 +0900
-Message-ID: <20231205031520.995864936@linuxfoundation.org>
+Message-ID: <20231205031521.812160249@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +54,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 5fba5a571858ce2d787fdaf55814e42725bfa895 upstream.
+[ Upstream commit 35597bdb04ec27ef3b1cea007dc69f8ff5df75a5 ]
 
-At btrfs_get_chunk_map() we get the extent map for the chunk that contains
-the given logical address stored in the 'logical' argument. Then we do
-sanity checks to verify the extent map contains the logical address. One
-of these checks verifies if the extent map covers a range with an end
-offset behind the target logical address - however this check has an
-off-by-one error since it will consider an extent map whose start offset
-plus its length matches the target logical address as inclusive, while
-the fact is that the last byte it covers is behind the target logical
-address (by 1).
+A correctly operating controller should successfully halt and clear tasks.
+Failure may result in errors elsewhere, so promote messages from debug to
+warnings.
 
-So fix this condition by using '<=' rather than '<' when comparing the
-extent map's "start + length" against the target logical address.
-
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-6-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/cqhci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3069,7 +3069,7 @@ struct extent_map *btrfs_get_chunk_map(s
- 		return ERR_PTR(-EINVAL);
- 	}
+diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
+index 773941a92649d..deae330441788 100644
+--- a/drivers/mmc/host/cqhci.c
++++ b/drivers/mmc/host/cqhci.c
+@@ -884,8 +884,8 @@ static bool cqhci_clear_all_tasks(struct mmc_host *mmc, unsigned int timeout)
+ 	ret = cqhci_tasks_cleared(cq_host);
  
--	if (em->start > logical || em->start + em->len < logical) {
-+	if (em->start > logical || em->start + em->len <= logical) {
- 		btrfs_crit(fs_info,
- 			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
- 			   logical, length, em->start, em->start + em->len);
+ 	if (!ret)
+-		pr_debug("%s: cqhci: Failed to clear tasks\n",
+-			 mmc_hostname(mmc));
++		pr_warn("%s: cqhci: Failed to clear tasks\n",
++			mmc_hostname(mmc));
+ 
+ 	return ret;
+ }
+@@ -918,7 +918,7 @@ static bool cqhci_halt(struct mmc_host *mmc, unsigned int timeout)
+ 	ret = cqhci_halted(cq_host);
+ 
+ 	if (!ret)
+-		pr_debug("%s: cqhci: Failed to halt\n", mmc_hostname(mmc));
++		pr_warn("%s: cqhci: Failed to halt\n", mmc_hostname(mmc));
+ 
+ 	return ret;
+ }
+-- 
+2.42.0
+
 
 
 
