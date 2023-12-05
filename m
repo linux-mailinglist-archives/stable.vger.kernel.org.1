@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41B8804689
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACA4E8046EF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6362814C5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 128F7B20C3F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1FB79F2;
-	Tue,  5 Dec 2023 03:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AACB8BEC;
+	Tue,  5 Dec 2023 03:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0V+2DyS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q86qShjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B66FAF;
-	Tue,  5 Dec 2023 03:28:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E9EC433C8;
-	Tue,  5 Dec 2023 03:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EAC6FB1;
+	Tue,  5 Dec 2023 03:33:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877B7C433C8;
+	Tue,  5 Dec 2023 03:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746930;
-	bh=+HpPVl/crOy7hcrQnCpcLR4rJMZec99VLbwhZut8Ipc=;
+	s=korg; t=1701747189;
+	bh=6pU5P/czxcdCYGR7YBfm3lc1KsPSqOypEN5C5bcPTkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P0V+2DyS8NLkA5x1EBVWWq19gRdoxKXG6o5Fn/iVZ1n3uxBpVIRlln7STZ42XXNrH
-	 wadr+c7329FszREe95LSyCdjqS+fI/1Z4U4HykTNCXxH7moS9SFORv9CKxyENydLEY
-	 7jvhWRqLb+8MWNIsjNE+e2qEbi7JAuxJsoX7BFEc=
+	b=q86qShjfkIhHnkowEad3aVoK+7RTUcC6UKi2mmoyeKn3igjqe7RB1YC704QvsYFQc
+	 eXfRxxcAENO4entgL7EFMrL5l1UO0Rq4Yo4Y9EtlA3C8AKHa+r2/vGiCmQLQPGw7NB
+	 bnAKbkOgLMEwMvHvM82+bjdG4TcA2QYBNZDb6vZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 46/71] ipv4: igmp: fix refcnt uaf issue when receiving igmp query packet
+Subject: [PATCH 6.1 069/107] octeontx2-pf: Restore TC ingress police rules when interface is up
 Date: Tue,  5 Dec 2023 12:16:44 +0900
-Message-ID: <20231205031520.522974499@linuxfoundation.org>
+Message-ID: <20231205031535.769125176@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,116 +53,265 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-[ Upstream commit e2b706c691905fe78468c361aaabc719d0a496f1 ]
+[ Upstream commit fd7f98b2e12a3d96a92bde6640657ec7116f4372 ]
 
-When I perform the following test operations:
-1.ip link add br0 type bridge
-2.brctl addif br0 eth0
-3.ip addr add 239.0.0.1/32 dev eth0
-4.ip addr add 239.0.0.1/32 dev br0
-5.ip addr add 224.0.0.1/32 dev br0
-6.while ((1))
-    do
-        ifconfig br0 up
-        ifconfig br0 down
-    done
-7.send IGMPv2 query packets to port eth0 continuously. For example,
-./mausezahn ethX -c 0 "01 00 5e 00 00 01 00 72 19 88 aa 02 08 00 45 00 00
-1c 00 01 00 00 01 02 0e 7f c0 a8 0a b7 e0 00 00 01 11 64 ee 9b 00 00 00 00"
+TC ingress policer rules depends on interface receive queue
+contexts since the bandwidth profiles are attached to RQ
+contexts. When an interface is brought down all the queue
+contexts are freed. This in turn frees bandwidth profiles in
+hardware causing ingress police rules non-functional after
+the interface is brought up. Fix this by applying all the ingress
+police rules config to hardware in otx2_open. Also allow
+adding ingress rules only when interface is running
+since no contexts exist for the interface when it is down.
 
-The preceding tests may trigger the refcnt uaf issue of the mc list. The
-stack is as follows:
-	refcount_t: addition on 0; use-after-free.
-	WARNING: CPU: 21 PID: 144 at lib/refcount.c:25 refcount_warn_saturate (lib/refcount.c:25)
-	CPU: 21 PID: 144 Comm: ksoftirqd/21 Kdump: loaded Not tainted 6.7.0-rc1-next-20231117-dirty #80
-	Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
-	RIP: 0010:refcount_warn_saturate (lib/refcount.c:25)
-	RSP: 0018:ffffb68f00657910 EFLAGS: 00010286
-	RAX: 0000000000000000 RBX: ffff8a00c3bf96c0 RCX: ffff8a07b6160908
-	RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffff8a07b6160900
-	RBP: ffff8a00cba36862 R08: 0000000000000000 R09: 00000000ffff7fff
-	R10: ffffb68f006577c0 R11: ffffffffb0fdcdc8 R12: ffff8a00c3bf9680
-	R13: ffff8a00c3bf96f0 R14: 0000000000000000 R15: ffff8a00d8766e00
-	FS:  0000000000000000(0000) GS:ffff8a07b6140000(0000) knlGS:0000000000000000
-	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-	CR2: 000055f10b520b28 CR3: 000000039741a000 CR4: 00000000000006f0
-	Call Trace:
-	<TASK>
-	igmp_heard_query (net/ipv4/igmp.c:1068)
-	igmp_rcv (net/ipv4/igmp.c:1132)
-	ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205)
-	ip_local_deliver_finish (net/ipv4/ip_input.c:234)
-	__netif_receive_skb_one_core (net/core/dev.c:5529)
-	netif_receive_skb_internal (net/core/dev.c:5729)
-	netif_receive_skb (net/core/dev.c:5788)
-	br_handle_frame_finish (net/bridge/br_input.c:216)
-	nf_hook_bridge_pre (net/bridge/br_input.c:294)
-	__netif_receive_skb_core (net/core/dev.c:5423)
-	__netif_receive_skb_list_core (net/core/dev.c:5606)
-	__netif_receive_skb_list (net/core/dev.c:5674)
-	netif_receive_skb_list_internal (net/core/dev.c:5764)
-	napi_gro_receive (net/core/gro.c:609)
-	e1000_clean_rx_irq (drivers/net/ethernet/intel/e1000/e1000_main.c:4467)
-	e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3805)
-	__napi_poll (net/core/dev.c:6533)
-	net_rx_action (net/core/dev.c:6735)
-	__do_softirq (kernel/softirq.c:554)
-	run_ksoftirqd (kernel/softirq.c:913)
-	smpboot_thread_fn (kernel/smpboot.c:164)
-	kthread (kernel/kthread.c:388)
-	ret_from_fork (arch/x86/kernel/process.c:153)
-	ret_from_fork_asm (arch/x86/entry/entry_64.S:250)
-	</TASK>
-
-The root causes are as follows:
-Thread A					Thread B
-...						netif_receive_skb
-br_dev_stop					...
-    br_multicast_leave_snoopers			...
-        __ip_mc_dec_group			...
-            __igmp_group_dropped		igmp_rcv
-                igmp_stop_timer			    igmp_heard_query         //ref = 1
-                ip_ma_put			        igmp_mod_timer
-                    refcount_dec_and_test	            igmp_start_timer //ref = 0
-			...                                     refcount_inc //ref increases from 0
-When the device receives an IGMPv2 Query message, it starts the timer
-immediately, regardless of whether the device is running. If the device is
-down and has left the multicast group, it will cause the mc list refcount
-uaf issue.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 68fbff68dbea ("octeontx2-pf: Add police action for TC flower")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/1700930217-5707-1-git-send-email-sbhatta@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/igmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/cn10k.c    |   3 +
+ .../marvell/octeontx2/nic/otx2_common.h       |   2 +
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   2 +
+ .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 120 ++++++++++++++----
+ 4 files changed, 102 insertions(+), 25 deletions(-)
 
-diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-index 7d82818b711ea..5edf426fa4143 100644
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -221,8 +221,10 @@ static void igmp_start_timer(struct ip_mc_list *im, int max_delay)
- 	int tv = prandom_u32() % max_delay;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+index 826f691de2595..59d8d1ba15c28 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+@@ -448,6 +448,9 @@ int cn10k_set_ipolicer_rate(struct otx2_nic *pfvf, u16 profile,
+ 	aq->prof.pebs_mantissa = 0;
+ 	aq->prof_mask.pebs_mantissa = 0xFF;
  
- 	im->tm_running = 1;
--	if (!mod_timer(&im->timer, jiffies+tv+2))
--		refcount_inc(&im->refcnt);
-+	if (refcount_inc_not_zero(&im->refcnt)) {
-+		if (mod_timer(&im->timer, jiffies + tv + 2))
-+			ip_ma_put(im);
-+	}
++	aq->prof.hl_en = 0;
++	aq->prof_mask.hl_en = 1;
++
+ 	/* Fill AQ info */
+ 	aq->qidx = profile;
+ 	aq->ctype = NIX_AQ_CTYPE_BANDPROF;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index a6f2632b44679..44950c2542bb7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -1018,6 +1018,8 @@ int otx2_init_tc(struct otx2_nic *nic);
+ void otx2_shutdown_tc(struct otx2_nic *nic);
+ int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 		  void *type_data);
++void otx2_tc_apply_ingress_police_rules(struct otx2_nic *nic);
++
+ /* CGX/RPM DMAC filters support */
+ int otx2_dmacflt_get_max_cnt(struct otx2_nic *pf);
+ int otx2_dmacflt_add(struct otx2_nic *pf, const u8 *mac, u32 bit_pos);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 42f2ff83b47f7..18c5d2b3f7f95 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1858,6 +1858,8 @@ int otx2_open(struct net_device *netdev)
+ 	if (pf->flags & OTX2_FLAG_DMACFLTR_SUPPORT)
+ 		otx2_dmacflt_reinstall_flows(pf);
+ 
++	otx2_tc_apply_ingress_police_rules(pf);
++
+ 	err = otx2_rxtx_enable(pf, true);
+ 	/* If a mbox communication error happens at this point then interface
+ 	 * will end up in a state such that it is in down state but hardware
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+index 3b169b1b12d98..8e67409af5372 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+@@ -59,6 +59,9 @@ struct otx2_tc_flow {
+ 	bool				is_act_police;
+ 	u32				prio;
+ 	struct npc_install_flow_req	req;
++	u64				rate;
++	u32				burst;
++	bool				is_pps;
+ };
+ 
+ static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
+@@ -299,21 +302,10 @@ static int otx2_tc_egress_matchall_delete(struct otx2_nic *nic,
+ 	return err;
  }
  
- static void igmp_gq_start_timer(struct in_device *in_dev)
+-static int otx2_tc_act_set_police(struct otx2_nic *nic,
+-				  struct otx2_tc_flow *node,
+-				  struct flow_cls_offload *f,
+-				  u64 rate, u32 burst, u32 mark,
+-				  struct npc_install_flow_req *req, bool pps)
++static int otx2_tc_act_set_hw_police(struct otx2_nic *nic,
++				     struct otx2_tc_flow *node)
+ {
+-	struct netlink_ext_ack *extack = f->common.extack;
+-	struct otx2_hw *hw = &nic->hw;
+-	int rq_idx, rc;
+-
+-	rq_idx = find_first_zero_bit(&nic->rq_bmap, hw->rx_queues);
+-	if (rq_idx >= hw->rx_queues) {
+-		NL_SET_ERR_MSG_MOD(extack, "Police action rules exceeded");
+-		return -EINVAL;
+-	}
++	int rc;
+ 
+ 	mutex_lock(&nic->mbox.lock);
+ 
+@@ -323,23 +315,17 @@ static int otx2_tc_act_set_police(struct otx2_nic *nic,
+ 		return rc;
+ 	}
+ 
+-	rc = cn10k_set_ipolicer_rate(nic, node->leaf_profile, burst, rate, pps);
++	rc = cn10k_set_ipolicer_rate(nic, node->leaf_profile,
++				     node->burst, node->rate, node->is_pps);
+ 	if (rc)
+ 		goto free_leaf;
+ 
+-	rc = cn10k_map_unmap_rq_policer(nic, rq_idx, node->leaf_profile, true);
++	rc = cn10k_map_unmap_rq_policer(nic, node->rq, node->leaf_profile, true);
+ 	if (rc)
+ 		goto free_leaf;
+ 
+ 	mutex_unlock(&nic->mbox.lock);
+ 
+-	req->match_id = mark & 0xFFFFULL;
+-	req->index = rq_idx;
+-	req->op = NIX_RX_ACTIONOP_UCAST;
+-	set_bit(rq_idx, &nic->rq_bmap);
+-	node->is_act_police = true;
+-	node->rq = rq_idx;
+-
+ 	return 0;
+ 
+ free_leaf:
+@@ -351,6 +337,39 @@ static int otx2_tc_act_set_police(struct otx2_nic *nic,
+ 	return rc;
+ }
+ 
++static int otx2_tc_act_set_police(struct otx2_nic *nic,
++				  struct otx2_tc_flow *node,
++				  struct flow_cls_offload *f,
++				  u64 rate, u32 burst, u32 mark,
++				  struct npc_install_flow_req *req, bool pps)
++{
++	struct netlink_ext_ack *extack = f->common.extack;
++	struct otx2_hw *hw = &nic->hw;
++	int rq_idx, rc;
++
++	rq_idx = find_first_zero_bit(&nic->rq_bmap, hw->rx_queues);
++	if (rq_idx >= hw->rx_queues) {
++		NL_SET_ERR_MSG_MOD(extack, "Police action rules exceeded");
++		return -EINVAL;
++	}
++
++	req->match_id = mark & 0xFFFFULL;
++	req->index = rq_idx;
++	req->op = NIX_RX_ACTIONOP_UCAST;
++
++	node->is_act_police = true;
++	node->rq = rq_idx;
++	node->burst = burst;
++	node->rate = rate;
++	node->is_pps = pps;
++
++	rc = otx2_tc_act_set_hw_police(nic, node);
++	if (!rc)
++		set_bit(rq_idx, &nic->rq_bmap);
++
++	return rc;
++}
++
+ static int otx2_tc_parse_actions(struct otx2_nic *nic,
+ 				 struct flow_action *flow_action,
+ 				 struct npc_install_flow_req *req,
+@@ -912,6 +931,11 @@ static int otx2_tc_del_flow(struct otx2_nic *nic,
+ 	}
+ 
+ 	if (flow_node->is_act_police) {
++		__clear_bit(flow_node->rq, &nic->rq_bmap);
++
++		if (nic->flags & OTX2_FLAG_INTF_DOWN)
++			goto free_mcam_flow;
++
+ 		mutex_lock(&nic->mbox.lock);
+ 
+ 		err = cn10k_map_unmap_rq_policer(nic, flow_node->rq,
+@@ -927,11 +951,10 @@ static int otx2_tc_del_flow(struct otx2_nic *nic,
+ 				   "Unable to free leaf bandwidth profile(%d)\n",
+ 				   flow_node->leaf_profile);
+ 
+-		__clear_bit(flow_node->rq, &nic->rq_bmap);
+-
+ 		mutex_unlock(&nic->mbox.lock);
+ 	}
+ 
++free_mcam_flow:
+ 	otx2_del_mcam_flow_entry(nic, flow_node->entry, NULL);
+ 	otx2_tc_update_mcam_table(nic, flow_cfg, flow_node, false);
+ 	kfree_rcu(flow_node, rcu);
+@@ -951,6 +974,11 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
+ 	if (!(nic->flags & OTX2_FLAG_TC_FLOWER_SUPPORT))
+ 		return -ENOMEM;
+ 
++	if (nic->flags & OTX2_FLAG_INTF_DOWN) {
++		NL_SET_ERR_MSG_MOD(extack, "Interface not initialized");
++		return -EINVAL;
++	}
++
+ 	if (flow_cfg->nr_flows == flow_cfg->max_flows) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "Free MCAM entry not available to add the flow");
+@@ -1308,3 +1336,45 @@ void otx2_shutdown_tc(struct otx2_nic *nic)
+ 	otx2_destroy_tc_flow_list(nic);
+ }
+ EXPORT_SYMBOL(otx2_shutdown_tc);
++
++static void otx2_tc_config_ingress_rule(struct otx2_nic *nic,
++					struct otx2_tc_flow *node)
++{
++	struct npc_install_flow_req *req;
++
++	if (otx2_tc_act_set_hw_police(nic, node))
++		return;
++
++	mutex_lock(&nic->mbox.lock);
++
++	req = otx2_mbox_alloc_msg_npc_install_flow(&nic->mbox);
++	if (!req)
++		goto err;
++
++	memcpy(req, &node->req, sizeof(struct npc_install_flow_req));
++
++	if (otx2_sync_mbox_msg(&nic->mbox))
++		netdev_err(nic->netdev,
++			   "Failed to install MCAM flow entry for ingress rule");
++err:
++	mutex_unlock(&nic->mbox.lock);
++}
++
++void otx2_tc_apply_ingress_police_rules(struct otx2_nic *nic)
++{
++	struct otx2_flow_config *flow_cfg = nic->flow_cfg;
++	struct otx2_tc_flow *node;
++
++	/* If any ingress policer rules exist for the interface then
++	 * apply those rules. Ingress policer rules depend on bandwidth
++	 * profiles linked to the receive queues. Since no receive queues
++	 * exist when interface is down, ingress policer rules are stored
++	 * and configured in hardware after all receive queues are allocated
++	 * in otx2_open.
++	 */
++	list_for_each_entry(node, &flow_cfg->flow_list_tc, list) {
++		if (node->is_act_police)
++			otx2_tc_config_ingress_rule(nic, node);
++	}
++}
++EXPORT_SYMBOL(otx2_tc_apply_ingress_police_rules);
 -- 
 2.42.0
 
