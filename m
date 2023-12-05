@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43D6D804790
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95D59804829
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3266281684
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36B4BB20D54
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923588F56;
-	Tue,  5 Dec 2023 03:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD698BE0;
+	Tue,  5 Dec 2023 03:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N4mS2B6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xFVMhk5c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F186FB1;
-	Tue,  5 Dec 2023 03:40:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8ABFC433C7;
-	Tue,  5 Dec 2023 03:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED2B6FB0;
+	Tue,  5 Dec 2023 03:46:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F78C433C8;
+	Tue,  5 Dec 2023 03:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747606;
-	bh=Oc3P8aL2tkRiD0dG0IC+bDQT5m/VjIXGM2nO3dSVsC4=;
+	s=korg; t=1701747989;
+	bh=K0ODbfonpLE/4cSvmAquzQ6Rgtg1OgjCvYRl6XLEkYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2N4mS2B6GzmAgk0f1T2VVZfwVvyiTV38bFtiwIJvmGhTAf0a4UnAPqm1p2wizPE1O
-	 Mjd7/RFUSdBrxDtZvCq9YT3t6WETplbNTFwjOCjgsgE6uEOZmWc/1DvkQ+YgBUxsU+
-	 iQz2gXqeskzq/p0NWFwiVbTAkO9EiTaLMi3tO13s=
+	b=xFVMhk5c7NTw07FlTdRCVfPkJWMxsreAC7XfiJ+Of7fC4kB2HhwQRdlonqVt4uMCO
+	 ceUTdg+XqON6M4OKXtlanijrC0U8uBsHfET0LVEMb30bd113FaDUS3QySGCjNsy8XY
+	 OPWM7YNdJl1n3Os5Hod8a0uzFXg/ue/iDv49gGdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 113/135] misc: pci_endpoint_test: Add deviceID for AM64 and J7200
-Date: Tue,  5 Dec 2023 12:17:14 +0900
-Message-ID: <20231205031537.937105148@linuxfoundation.org>
+	Zubin Mithra <zsm@chromium.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.4 47/94] usb: dwc3: set the dma max_seg_size
+Date: Tue,  5 Dec 2023 12:17:15 +0900
+Message-ID: <20231205031525.496618727@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kishon Vijay Abraham I <kishon@ti.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 7c52009d94ab561e70cb72e007a6076f20451f85 ]
+commit 8bbae288a85abed6a1cf7d185d8b9dc2f5dcb12c upstream.
 
-Add device ID specific to AM64 and J7200 in pci_endpoint_test so that
-endpoints configured with those deviceIDs can use pci_endpoint_test
-driver.
+Allow devices to have dma operations beyond 4K, and avoid warnings such
+as:
 
-Link: https://lore.kernel.org/r/20210811123336.31357-6-kishon@ti.com
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Stable-dep-of: 8293703a492a ("misc: pci_endpoint_test: Add deviceID for J721S2 PCIe EP device support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+DMA-API: dwc3 a600000.usb: mapping sg segment longer than device claims to support [len=86016] [max=65536]
+
+Cc: stable@vger.kernel.org
+Fixes: 72246da40f37 ("usb: Introduce DesignWare USB3 DRD Driver")
+Reported-by: Zubin Mithra <zsm@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231026-dwc3-v2-1-1d4fd5c3e067@chromium.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/pci_endpoint_test.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/usb/dwc3/core.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
-index b4a07a166605a..9832c2966c110 100644
---- a/drivers/misc/pci_endpoint_test.c
-+++ b/drivers/misc/pci_endpoint_test.c
-@@ -70,6 +70,8 @@
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1556,6 +1556,8 @@ static int dwc3_probe(struct platform_de
  
- #define PCI_DEVICE_ID_TI_J721E			0xb00d
- #define PCI_DEVICE_ID_TI_AM654			0xb00c
-+#define PCI_DEVICE_ID_TI_J7200			0xb00f
-+#define PCI_DEVICE_ID_TI_AM64			0xb010
- #define PCI_DEVICE_ID_LS1088A			0x80c0
+ 	pm_runtime_put(dev);
  
- #define is_am654_pci_dev(pdev)		\
-@@ -1000,6 +1002,12 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721E),
- 	  .driver_data = (kernel_ulong_t)&j721e_data,
- 	},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J7200),
-+	  .driver_data = (kernel_ulong_t)&j721e_data,
-+	},
-+	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM64),
-+	  .driver_data = (kernel_ulong_t)&j721e_data,
-+	},
- 	{ }
- };
- MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);
--- 
-2.42.0
-
++	dma_set_max_seg_size(dev, UINT_MAX);
++
+ 	return 0;
+ 
+ err5:
 
 
 
