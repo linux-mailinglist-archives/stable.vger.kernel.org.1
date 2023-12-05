@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB67804833
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46AB68047E2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173691C20EAC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBCB4B20C92
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA178C05;
-	Tue,  5 Dec 2023 03:46:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26C979E3;
+	Tue,  5 Dec 2023 03:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN8eFlB/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCtLGKCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2045C6FB0;
-	Tue,  5 Dec 2023 03:46:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C18C433C8;
-	Tue,  5 Dec 2023 03:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F156AC2;
+	Tue,  5 Dec 2023 03:43:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD45C433C7;
+	Tue,  5 Dec 2023 03:43:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748019;
-	bh=826GaVaP7pk/OUogj7AFHZxdGzsS9bSSg+7q8f0cr0g=;
+	s=korg; t=1701747805;
+	bh=2RIc/wPlmDifUl+IH/xvChhpLQBTxNANNu5Nugj0aOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TN8eFlB/Juaod3njpg8fs1zjzv7vlUWl26fZBn5kugkuWN6pmhwnQ/5y4NhhrcQtf
-	 ZTz7HBrGRiSe/wu0wMm7nxndhr39Z15POVLgOA8VU9KMH3OvCtF3nZT3NVBzEgJshX
-	 vDrFubUP5D3UQQhRjFUoeMaegwqPokPQuo0YdsII=
+	b=sCtLGKCdcPJA8a6SdvVHysG++dKnuzwSHh4eCfBQTjsfJ9TtnIjF78f5D8Ftc4Lwc
+	 gvVvigtlhtWWFCd52lotuvRcc5/rDHBLa4rQtU/PrDIGCvBVqSrTqAj9w18I+Gd3iV
+	 VUnCFDKSyTjFOSX8I/TV6lbk80x6ivbYK6qL0nQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 83/94] ima: detect changes to the backing overlay file
+Subject: [PATCH 5.15 66/67] r8169: disable ASPM in case of tx timeout
 Date: Tue,  5 Dec 2023 12:17:51 +0900
-Message-ID: <20231205031527.437612919@linuxfoundation.org>
+Message-ID: <20231205031523.690149197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,112 +54,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit b836c4d29f2744200b2af41e14bf50758dddc818 ]
+[ Upstream commit 80c0576ef179311f624bc450fede30a89afe9792 ]
 
-Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
-IMA") forced signature re-evaulation on every file access.
+There are still single reports of systems where ASPM incompatibilities
+cause tx timeouts. It's not clear whom to blame, so let's disable
+ASPM in case of a tx timeout.
 
-Instead of always re-evaluating the file's integrity, detect a change
-to the backing file, by comparing the cached file metadata with the
-backing file's metadata.  Verifying just the i_version has not changed
-is insufficient.  In addition save and compare the i_ino and s_dev
-as well.
+v2:
+- add one-time warning for informing the user
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
-Tested-by: Raul E Rangel <rrangel@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+Link: https://lore.kernel.org/r/92369a92-dc32-4529-0509-11459ba0e391@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 59d395ed606d ("r8169: fix deadlock on RTL8125 in jumbo mtu mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_api.c  |  5 +++++
- security/integrity/ima/ima_main.c | 16 +++++++++++++++-
- security/integrity/integrity.h    |  2 ++
- 3 files changed, 22 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
-index 610759fe63b8a..364979233a174 100644
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -209,6 +209,7 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 84fb739679298..c640896f7b7e2 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -588,6 +588,7 @@ struct rtl8169_tc_offsets {
+ enum rtl_flag {
+ 	RTL_FLAG_TASK_ENABLED = 0,
+ 	RTL_FLAG_TASK_RESET_PENDING,
++	RTL_FLAG_TASK_TX_TIMEOUT,
+ 	RTL_FLAG_MAX
+ };
+ 
+@@ -4029,7 +4030,7 @@ static void rtl8169_tx_timeout(struct net_device *dev, unsigned int txqueue)
  {
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
-+	struct inode *real_inode = d_real_inode(file_dentry(file));
- 	const char *filename = file->f_path.dentry->d_name.name;
- 	int result = 0;
- 	int length;
-@@ -259,6 +260,10 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- 	iint->ima_hash = tmpbuf;
- 	memcpy(iint->ima_hash, &hash, length);
- 	iint->version = i_version;
-+	if (real_inode != inode) {
-+		iint->real_ino = real_inode->i_ino;
-+		iint->real_dev = real_inode->i_sb->s_dev;
-+	}
+ 	struct rtl8169_private *tp = netdev_priv(dev);
  
- 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
- 	if (!result)
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 6a2377eee03d8..09b9c2b252944 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -27,6 +27,7 @@
- #include <linux/ima.h>
- #include <linux/iversion.h>
- #include <linux/fs.h>
-+#include <linux/iversion.h>
+-	rtl_schedule_task(tp, RTL_FLAG_TASK_RESET_PENDING);
++	rtl_schedule_task(tp, RTL_FLAG_TASK_TX_TIMEOUT);
+ }
  
- #include "ima.h"
- 
-@@ -193,7 +194,7 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 			       u32 secid, char *buf, loff_t size, int mask,
- 			       enum ima_hooks func)
+ static int rtl8169_tx_map(struct rtl8169_private *tp, const u32 *opts, u32 len,
+@@ -4624,6 +4625,7 @@ static void rtl_task(struct work_struct *work)
  {
--	struct inode *inode = file_inode(file);
-+	struct inode *backing_inode, *inode = file_inode(file);
- 	struct integrity_iint_cache *iint = NULL;
- 	struct ima_template_desc *template_desc = NULL;
- 	char *pathbuf = NULL;
-@@ -267,6 +268,19 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 		iint->measured_pcrs = 0;
- 	}
+ 	struct rtl8169_private *tp =
+ 		container_of(work, struct rtl8169_private, wk.work);
++	int ret;
  
-+	/* Detect and re-evaluate changes made to the backing file. */
-+	backing_inode = d_real_inode(file_dentry(file));
-+	if (backing_inode != inode &&
-+	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
-+		if (!IS_I_VERSION(backing_inode) ||
-+		    backing_inode->i_sb->s_dev != iint->real_dev ||
-+		    backing_inode->i_ino != iint->real_ino ||
-+		    !inode_eq_iversion(backing_inode, iint->version)) {
-+			iint->flags &= ~IMA_DONE_MASK;
-+			iint->measured_pcrs = 0;
-+		}
+ 	rtnl_lock();
+ 
+@@ -4631,7 +4633,17 @@ static void rtl_task(struct work_struct *work)
+ 	    !test_bit(RTL_FLAG_TASK_ENABLED, tp->wk.flags))
+ 		goto out_unlock;
+ 
++	if (test_and_clear_bit(RTL_FLAG_TASK_TX_TIMEOUT, tp->wk.flags)) {
++		/* ASPM compatibility issues are a typical reason for tx timeouts */
++		ret = pci_disable_link_state(tp->pci_dev, PCIE_LINK_STATE_L1 |
++							  PCIE_LINK_STATE_L0S);
++		if (!ret)
++			netdev_warn_once(tp->dev, "ASPM disabled on Tx timeout\n");
++		goto reset;
 +	}
 +
- 	/* Determine if already appraised/measured based on bitmask
- 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
- 	 *  IMA_AUDIT, IMA_AUDITED)
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index d9323d31a3a83..f63516ebec5db 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -124,6 +124,8 @@ struct integrity_iint_cache {
- 	unsigned long flags;
- 	unsigned long measured_pcrs;
- 	unsigned long atomic_flags;
-+	unsigned long real_ino;
-+	dev_t real_dev;
- 	enum integrity_status ima_file_status:4;
- 	enum integrity_status ima_mmap_status:4;
- 	enum integrity_status ima_bprm_status:4;
+ 	if (test_and_clear_bit(RTL_FLAG_TASK_RESET_PENDING, tp->wk.flags)) {
++reset:
+ 		rtl_reset_work(tp);
+ 		netif_wake_queue(tp->dev);
+ 	}
 -- 
 2.42.0
 
