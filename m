@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7968045FD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 762408046AA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEFEF2832F4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A73EA1C20C9F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8306FB1;
-	Tue,  5 Dec 2023 03:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F1779F2;
+	Tue,  5 Dec 2023 03:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YBmD1r5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjKMHa5N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438ED8F6C;
-	Tue,  5 Dec 2023 03:23:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C557CC433C7;
-	Tue,  5 Dec 2023 03:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380646FAF;
+	Tue,  5 Dec 2023 03:30:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A01C433C8;
+	Tue,  5 Dec 2023 03:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746607;
-	bh=0Le3UZWSYrAFajV33gcuv4SYuXr1wPvUGT5bF5E2z90=;
+	s=korg; t=1701747014;
+	bh=d3eo62pc3i9hZ+yzjO3OP/xNHGuBkb/n/MXQB09vteo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YBmD1r5TJZ/VpQWJR9e5oYw0DpiRf3U7Ewlp1OMjOLqr1cp4tS+s7IYn7eChtewT
-	 Y7cgTkNEZP4eaZvXoASbM9YBTsM0Aal4muSM7y1I5NUvGtui+3bh+PJIO9VE7i9L0V
-	 rHrIvNPLwriHAePHfNCHPuxV+epjlkeNlU6G0KzU=
+	b=yjKMHa5Nykb3SGbpeAyKSyvDMWTxgVZRuAYZMnK4sXBYtTcMPKJcRWC6MpENMldLX
+	 LeH11OSKN4ntVomycQZ+08cqHqRNdauUSurU1paJTTzKVzS2iCsJS88WVOdbhU7y2u
+	 i6gV4t/LG3+wnWTbplgObZBbG+6Azzwnf9maPUus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/134] bpf: Add missed allocation hint for bpf_mem_cache_alloc_flags()
-Date: Tue,  5 Dec 2023 12:16:01 +0900
-Message-ID: <20231205031541.082719903@linuxfoundation.org>
+	Wu Bo <bo.wu@vivo.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 027/107] dm verity: dont perform FEC for failed readahead IO
+Date: Tue,  5 Dec 2023 12:16:02 +0900
+Message-ID: <20231205031533.286023082@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +53,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Wu Bo <bo.wu@vivo.com>
 
-[ Upstream commit 75a442581d05edaee168222ffbe00d4389785636 ]
+commit 0193e3966ceeeef69e235975918b287ab093082b upstream.
 
-bpf_mem_cache_alloc_flags() may call __alloc() directly when there is no
-free object in free list, but it doesn't initialize the allocation hint
-for the returned pointer. It may lead to bad memory dereference when
-freeing the pointer, so fix it by initializing the allocation hint.
+We found an issue under Android OTA scenario that many BIOs have to do
+FEC where the data under dm-verity is 100% complete and no corruption.
 
-Fixes: 822fb26bdb55 ("bpf: Add a hint to allocated objects.")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20231111043821.2258513-1-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Android OTA has many dm-block layers, from upper to lower:
+dm-verity
+dm-snapshot
+dm-origin & dm-cow
+dm-linear
+ufs
+
+DM tables have to change 2 times during Android OTA merging process.
+When doing table change, the dm-snapshot will be suspended for a while.
+During this interval, many readahead IOs are submitted to dm_verity
+from filesystem. Then the kverity works are busy doing FEC process
+which cost too much time to finish dm-verity IO. This causes needless
+delay which feels like system is hung.
+
+After adding debugging it was found that each readahead IO needed
+around 10s to finish when this situation occurred. This is due to IO
+amplification:
+
+dm-snapshot suspend
+erofs_readahead     // 300+ io is submitted
+	dm_submit_bio (dm_verity)
+		dm_submit_bio (dm_snapshot)
+		bio return EIO
+		bio got nothing, it's empty
+	verity_end_io
+	verity_verify_io
+	forloop range(0, io->n_blocks)    // each io->nblocks ~= 20
+		verity_fec_decode
+		fec_decode_rsb
+		fec_read_bufs
+		forloop range(0, v->fec->rsn) // v->fec->rsn = 253
+			new_read
+			submit_bio (dm_snapshot)
+		end loop
+	end loop
+dm-snapshot resume
+
+Readahead BIOs get nothing while dm-snapshot is suspended, so all of
+them will cause verity's FEC.
+Each readahead BIO needs to verify ~20 (io->nblocks) blocks.
+Each block needs to do FEC, and every block needs to do 253
+(v->fec->rsn) reads.
+So during the suspend interval(~200ms), 300 readahead BIOs trigger
+~1518000 (300*20*253) IOs to dm-snapshot.
+
+As readahead IO is not required by userspace, and to fix this issue,
+it is best to pass readahead errors to upper layer to handle it.
+
+Cc: stable@vger.kernel.org
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Signed-off-by: Wu Bo <bo.wu@vivo.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/memalloc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-verity-target.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
-index d93ddac283d40..956f80ee6f5c5 100644
---- a/kernel/bpf/memalloc.c
-+++ b/kernel/bpf/memalloc.c
-@@ -958,6 +958,8 @@ void notrace *bpf_mem_cache_alloc_flags(struct bpf_mem_alloc *ma, gfp_t flags)
- 		memcg = get_memcg(c);
- 		old_memcg = set_active_memcg(memcg);
- 		ret = __alloc(c, NUMA_NO_NODE, GFP_KERNEL | __GFP_NOWARN | __GFP_ACCOUNT);
-+		if (ret)
-+			*(struct bpf_mem_cache **)ret = c;
- 		set_active_memcg(old_memcg);
- 		mem_cgroup_put(memcg);
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -656,7 +656,9 @@ static void verity_end_io(struct bio *bi
+ 	struct dm_verity_io *io = bio->bi_private;
+ 
+ 	if (bio->bi_status &&
+-	    (!verity_fec_is_enabled(io->v) || verity_is_system_shutting_down())) {
++	    (!verity_fec_is_enabled(io->v) ||
++	     verity_is_system_shutting_down() ||
++	     (bio->bi_opf & REQ_RAHEAD))) {
+ 		verity_finish_io(io, bio->bi_status);
+ 		return;
  	}
--- 
-2.42.0
-
 
 
 
