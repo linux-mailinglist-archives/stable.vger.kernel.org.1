@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3269F80480D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E4480467F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2A01F21FB2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF7932814A4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B258C05;
-	Tue,  5 Dec 2023 03:45:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED006FB8;
+	Tue,  5 Dec 2023 03:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7CxoPUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMmkrpKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E826FB0;
-	Tue,  5 Dec 2023 03:45:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABA0C433C9;
-	Tue,  5 Dec 2023 03:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064986FAF;
+	Tue,  5 Dec 2023 03:28:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BA22C433C7;
+	Tue,  5 Dec 2023 03:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747920;
-	bh=ayVCdF7N9TwfFq+9T4hSVJFAKJDqktbEgU5a8gImUEI=;
+	s=korg; t=1701746901;
+	bh=qfgP8ynnOQqzPRKuHCbuaZcQ1aA0gvWkwTiTogpSX34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7CxoPUhN+5ytVMA5uhMTq9DTjBmCmYukfndNihteRr1nZ+x72b4iQKPAjMpiVRt2
-	 b6Tb6dMeQBIz8ZfXouVWz2maf1r1t3Tt2tIRdUlU8ZckKuipMJ/UmVSFYuFjr0U4ms
-	 wO7Z8p0osq5/BuqQuJesZi+Fk3Nu46zc37kqNaXo=
+	b=gMmkrpKIesAH5jSpKLZhBDJuy/YlDRAswJHcQFSSsgFJin7jB6kQJRKHtyQV9q91F
+	 lVfHMNrTce2U1G4GKAjFaWrkx6i7xWPUD77wuXRbZHvHhukTnCMCvCMEPvpi+QRjxl
+	 eQax9DmtA4TGi1Wo7MVhi64bAykGogMZqyUczVaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Stabellini <stefano.stabellini@amd.com>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 13/94] arm/xen: fix xen_vcpu_info allocation alignment
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.19 43/71] btrfs: fix off-by-one when checking chunk map includes logical address
 Date: Tue,  5 Dec 2023 12:16:41 +0900
-Message-ID: <20231205031523.642263490@linuxfoundation.org>
+Message-ID: <20231205031520.340706328@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Stabellini <sstabellini@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 7bf9a6b46549852a37e6d07e52c601c3c706b562 ]
+commit 5fba5a571858ce2d787fdaf55814e42725bfa895 upstream.
 
-xen_vcpu_info is a percpu area than needs to be mapped by Xen.
-Currently, it could cross a page boundary resulting in Xen being unable
-to map it:
+At btrfs_get_chunk_map() we get the extent map for the chunk that contains
+the given logical address stored in the 'logical' argument. Then we do
+sanity checks to verify the extent map contains the logical address. One
+of these checks verifies if the extent map covers a range with an end
+offset behind the target logical address - however this check has an
+off-by-one error since it will consider an extent map whose start offset
+plus its length matches the target logical address as inclusive, while
+the fact is that the last byte it covers is behind the target logical
+address (by 1).
 
-[    0.567318] kernel BUG at arch/arm64/xen/../../arm/xen/enlighten.c:164!
-[    0.574002] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+So fix this condition by using '<=' rather than '<' when comparing the
+extent map's "start + length" against the target logical address.
 
-Fix the issue by using __alloc_percpu and requesting alignment for the
-memory allocation.
-
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-
-Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2311221501340.2053963@ubuntu-linux-20-04-desktop
-Fixes: 24d5373dda7c ("arm/xen: Use alloc_percpu rather than __alloc_percpu")
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/xen/enlighten.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/xen/enlighten.c b/arch/arm/xen/enlighten.c
-index 57dfc13b27529..c4d1cac0fe32d 100644
---- a/arch/arm/xen/enlighten.c
-+++ b/arch/arm/xen/enlighten.c
-@@ -354,7 +354,8 @@ static int __init xen_guest_init(void)
- 	 * for secondary CPUs as they are brought up.
- 	 * For uniformity we use VCPUOP_register_vcpu_info even on cpu0.
- 	 */
--	xen_vcpu_info = alloc_percpu(struct vcpu_info);
-+	xen_vcpu_info = __alloc_percpu(sizeof(struct vcpu_info),
-+				       1 << fls(sizeof(struct vcpu_info) - 1));
- 	if (xen_vcpu_info == NULL)
- 		return -ENOMEM;
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -2760,7 +2760,7 @@ static struct extent_map *get_chunk_map(
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
--- 
-2.42.0
-
+-	if (em->start > logical || em->start + em->len < logical) {
++	if (em->start > logical || em->start + em->len <= logical) {
+ 		btrfs_crit(fs_info,
+ 			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
+ 			   logical, length, em->start, em->start + em->len);
 
 
 
