@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9975880481E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0B4F8047C6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8431F22372
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B4291F21508
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7731E8C05;
-	Tue,  5 Dec 2023 03:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671CB8C13;
+	Tue,  5 Dec 2023 03:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+8lo3Co"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnHhBi4d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A106FB0;
-	Tue,  5 Dec 2023 03:46:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04C7C433C8;
-	Tue,  5 Dec 2023 03:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136EA6FB0;
+	Tue,  5 Dec 2023 03:42:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88451C433C7;
+	Tue,  5 Dec 2023 03:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747963;
-	bh=tNK0gOlORZxIckMb03UbHQeJ7toTh6kpv9zvnTr1xB8=;
+	s=korg; t=1701747726;
+	bh=OS+j+7vb9i02LQowL4PS1xFmhKuv/3PBh0mYZJ354Ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D+8lo3CoqyOWFz8ia4WGJq7BzKkAW8+IZpFogtDG3rZNd+0YXJzXFeBKUjiKBL4sA
-	 ycIazJJHdeWwOGzv81IileyQCPqoy8CaaShKmluZZR6DaMObzvIABktKNNRMWzPrP/
-	 uH2OfMSHrPx/y31qvc1eqALztBohpwvwsUWYDVBs=
+	b=AnHhBi4d3MHW/yW4RUcoD2A5OXlBVUpavRKHJRFffi/HAx2yUNs/ga8sNKuPrnOJj
+	 DXti6H+B0WFvJvaN6pEwz11QNtId8kwqAfMJs61djNvPv7e2K80ZFJRz5j4k3p15+E
+	 iPhBgTWWHeky7p4Kx60ImbMdPny5KXr5qe0g95bA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.4 62/94] powerpc: Dont clobber f0/vs0 during fp|altivec register save
-Date: Tue,  5 Dec 2023 12:17:30 +0900
-Message-ID: <20231205031526.299881923@linuxfoundation.org>
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 46/67] net: ravb: Stop DMA in case of failures on ravb_open()
+Date: Tue,  5 Dec 2023 12:17:31 +0900
+Message-ID: <20231205031522.477517069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,160 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timothy Pearson <tpearson@raptorengineering.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 5e1d824f9a283cbf90f25241b66d1f69adb3835b upstream.
+[ Upstream commit eac16a733427ba0de2449ffc7bd3da32ddb65cb7 ]
 
-During floating point and vector save to thread data f0/vs0 are
-clobbered by the FPSCR/VSCR store routine. This has been obvserved to
-lead to userspace register corruption and application data corruption
-with io-uring.
+In case ravb_phy_start() returns with error the settings applied in
+ravb_dmac_init() are not reverted (e.g. config mode). For this call
+ravb_stop_dma() on failure path of ravb_open().
 
-Fix it by restoring f0/vs0 after FPSCR/VSCR store has completed for
-all the FP, altivec, VMX register save paths.
-
-Tested under QEMU in kvm mode, running on a Talos II workstation with
-dual POWER9 DD2.2 CPUs.
-
-Additional detail (mpe):
-
-Typically save_fpu() is called from __giveup_fpu() which saves the FP
-regs and also *turns off FP* in the tasks MSR, meaning the kernel will
-reload the FP regs from the thread struct before letting the task use FP
-again. So in that case save_fpu() is free to clobber f0 because the FP
-regs no longer hold live values for the task.
-
-There is another case though, which is the path via:
-  sys_clone()
-    ...
-    copy_process()
-      dup_task_struct()
-        arch_dup_task_struct()
-          flush_all_to_thread()
-            save_all()
-
-That path saves the FP regs but leaves them live. That's meant as an
-optimisation for a process that's using FP/VSX and then calls fork(),
-leaving the regs live means the parent process doesn't have to take a
-fault after the fork to get its FP regs back. The optimisation was added
-in commit 8792468da5e1 ("powerpc: Add the ability to save FPU without
-giving it up").
-
-That path does clobber f0, but f0 is volatile across function calls,
-and typically programs reach copy_process() from userspace via a syscall
-wrapper function. So in normal usage f0 being clobbered across a
-syscall doesn't cause visible data corruption.
-
-But there is now a new path, because io-uring can call copy_process()
-via create_io_thread() from the signal handling path. That's OK if the
-signal is handled as part of syscall return, but it's not OK if the
-signal is handled due to some other interrupt.
-
-That path is:
-
-interrupt_return_srr_user()
-  interrupt_exit_user_prepare()
-    interrupt_exit_user_prepare_main()
-      do_notify_resume()
-        get_signal()
-          task_work_run()
-            create_worker_cb()
-              create_io_worker()
-                copy_process()
-                  dup_task_struct()
-                    arch_dup_task_struct()
-                      flush_all_to_thread()
-                        save_all()
-                          if (tsk->thread.regs->msr & MSR_FP)
-                            save_fpu()
-                            # f0 is clobbered and potentially live in userspace
-
-Note the above discussion applies equally to save_altivec().
-
-Fixes: 8792468da5e1 ("powerpc: Add the ability to save FPU without giving it up")
-Cc: stable@vger.kernel.org # v4.6+
-Closes: https://lore.kernel.org/all/480932026.45576726.1699374859845.JavaMail.zimbra@raptorengineeringinc.com/
-Closes: https://lore.kernel.org/linuxppc-dev/480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com/
-Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
-Tested-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
-[mpe: Reword change log to describe exact path of corruption & other minor tweaks]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0d2f20650e8 ("Renesas Ethernet AVB PTP clock driver")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/fpu.S    |   13 +++++++++++++
- arch/powerpc/kernel/vector.S |    2 ++
- 2 files changed, 15 insertions(+)
+ drivers/net/ethernet/renesas/ravb_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/kernel/fpu.S
-+++ b/arch/powerpc/kernel/fpu.S
-@@ -24,6 +24,15 @@
- #include <asm/feature-fixups.h>
- 
- #ifdef CONFIG_VSX
-+#define __REST_1FPVSR(n,c,base)						\
-+BEGIN_FTR_SECTION							\
-+	b	2f;							\
-+END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
-+	REST_FPR(n,base);						\
-+	b	3f;							\
-+2:	REST_VSR(n,c,base);						\
-+3:
-+
- #define __REST_32FPVSRS(n,c,base)					\
- BEGIN_FTR_SECTION							\
- 	b	2f;							\
-@@ -42,9 +51,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);
- 2:	SAVE_32VSRS(n,c,base);						\
- 3:
- #else
-+#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
- #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
- #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
- #endif
-+#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
- #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
- #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
- 
-@@ -68,6 +79,7 @@ _GLOBAL(store_fp_state)
- 	SAVE_32FPVSRS(0, R4, R3)
- 	mffs	fr0
- 	stfd	fr0,FPSTATE_FPSCR(r3)
-+	REST_1FPVSR(0, R4, R3)
- 	blr
- EXPORT_SYMBOL(store_fp_state)
- 
-@@ -132,6 +144,7 @@ _GLOBAL(save_fpu)
- 2:	SAVE_32FPVSRS(0, R4, R6)
- 	mffs	fr0
- 	stfd	fr0,FPSTATE_FPSCR(r6)
-+	REST_1FPVSR(0, R4, R6)
- 	blr
- 
- /*
---- a/arch/powerpc/kernel/vector.S
-+++ b/arch/powerpc/kernel/vector.S
-@@ -32,6 +32,7 @@ _GLOBAL(store_vr_state)
- 	mfvscr	v0
- 	li	r4, VRSTATE_VSCR
- 	stvx	v0, r4, r3
-+	lvx	v0, 0, r3
- 	blr
- EXPORT_SYMBOL(store_vr_state)
- 
-@@ -102,6 +103,7 @@ _GLOBAL(save_altivec)
- 	mfvscr	v0
- 	li	r4,VRSTATE_VSCR
- 	stvx	v0,r4,r7
-+	lvx	v0,0,r7
- 	blr
- 
- #ifdef CONFIG_VSX
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 5cdc7bc63e267..1212a9b4822b3 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1472,6 +1472,7 @@ static int ravb_open(struct net_device *ndev)
+ 	/* Stop PTP Clock driver */
+ 	if (info->gptp)
+ 		ravb_ptp_stop(ndev);
++	ravb_stop_dma(ndev);
+ out_free_irq_mgmta:
+ 	if (!info->multi_irqs)
+ 		goto out_free_irq;
+-- 
+2.42.0
+
 
 
 
