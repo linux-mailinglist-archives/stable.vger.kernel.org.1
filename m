@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8758047C7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D98804820
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0DA01C20DE8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666C31F223E5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C1A6FB0;
-	Tue,  5 Dec 2023 03:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74248F56;
+	Tue,  5 Dec 2023 03:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pa043cfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwlkFPg7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CB778F62;
-	Tue,  5 Dec 2023 03:42:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F48C433C9;
-	Tue,  5 Dec 2023 03:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726AE79E3;
+	Tue,  5 Dec 2023 03:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FCCC433C8;
+	Tue,  5 Dec 2023 03:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747729;
-	bh=fmXIySt2xnOhb+G3GXTokZB5I/SpmrDy08j+J9MHt5k=;
+	s=korg; t=1701747968;
+	bh=1tjJWqJ6o6y878x/aMxT5D48Ppx/eXn/bcK0rHziyRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pa043cfjwrB+n6tvpfLx3cOjHlpq2hti32NoD6lzxytDbwanQVxAuEzEWJK6q6wri
-	 aywpi2RV3IT+Vic02mRQfWdD7qCpsAmbRx4wNhHjcC4VdkgutVE7m84VtmxKE/Ewez
-	 SCNSMSkEqI6kRE/fEWaEBIfk6y1e4Xugr733xFZw=
+	b=uwlkFPg7I6hjBNfJPOq4JW5uCmjDPcOSSQqcJQ5v5Fxsk6tWeFJwLPqDKv9r+P9Md
+	 9t/0HgrruEzMTZM6hIxGZCBAu7Xs1z3EvvCUEsScACwLErL4it4YRNen2J/j3jClxl
+	 Z5+1WtjlYo5KhV9W+yxPdSM1MrPzQBdUhna8Ew1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 47/67] perf intel-pt: Fix async branch flags
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 64/94] btrfs: fix off-by-one when checking chunk map includes logical address
 Date: Tue,  5 Dec 2023 12:17:32 +0900
-Message-ID: <20231205031522.535920939@linuxfoundation.org>
+Message-ID: <20231205031526.419847464@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit f2d87895cbc4af80649850dcf5da36de6b2ed3dd ]
+commit 5fba5a571858ce2d787fdaf55814e42725bfa895 upstream.
 
-Ensure PERF_IP_FLAG_ASYNC is set always for asynchronous branches (i.e.
-interrupts etc).
+At btrfs_get_chunk_map() we get the extent map for the chunk that contains
+the given logical address stored in the 'logical' argument. Then we do
+sanity checks to verify the extent map contains the logical address. One
+of these checks verifies if the extent map covers a range with an end
+offset behind the target logical address - however this check has an
+off-by-one error since it will consider an extent map whose start offset
+plus its length matches the target logical address as inclusive, while
+the fact is that the last byte it covers is behind the target logical
+address (by 1).
 
-Fixes: 90e457f7be08 ("perf tools: Add Intel PT support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20230928072953.19369-1-adrian.hunter@intel.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So fix this condition by using '<=' rather than '<' when comparing the
+extent map's "start + length" against the target logical address.
+
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/intel-pt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/volumes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
-index 7a2ce387079e3..805bad9364e94 100644
---- a/tools/perf/util/intel-pt.c
-+++ b/tools/perf/util/intel-pt.c
-@@ -1346,9 +1346,11 @@ static void intel_pt_sample_flags(struct intel_pt_queue *ptq)
- 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
- 		if (!ptq->state->to_ip)
- 			ptq->flags = PERF_IP_FLAG_BRANCH |
-+				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_TRACE_END;
- 		else if (ptq->state->from_nr && !ptq->state->to_nr)
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
-+				     PERF_IP_FLAG_ASYNC |
- 				     PERF_IP_FLAG_VMEXIT;
- 		else
- 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
--- 
-2.42.0
-
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3095,7 +3095,7 @@ struct extent_map *btrfs_get_chunk_map(s
+ 		return ERR_PTR(-EINVAL);
+ 	}
+ 
+-	if (em->start > logical || em->start + em->len < logical) {
++	if (em->start > logical || em->start + em->len <= logical) {
+ 		btrfs_crit(fs_info,
+ 			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
+ 			   logical, length, em->start, em->start + em->len);
 
 
 
