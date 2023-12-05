@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7573F804821
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 837B28047C8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3025E2817B6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F591280BEF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAF38C05;
-	Tue,  5 Dec 2023 03:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33988BF7;
+	Tue,  5 Dec 2023 03:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGkYUBSA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYNWGyHW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671016FB1;
-	Tue,  5 Dec 2023 03:46:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB763C433C8;
-	Tue,  5 Dec 2023 03:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B5B6FB1;
+	Tue,  5 Dec 2023 03:42:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3E4C433C8;
+	Tue,  5 Dec 2023 03:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747972;
-	bh=lx6KNRpyi5pQZowc4EGw9rM2pLNyXCdhuchXJGiay5w=;
+	s=korg; t=1701747731;
+	bh=gUo2g4Wf+Y59ZiO/Vb4oUx8cIE7616wOT7aWoY2U45o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hGkYUBSAJaOf/8N2onCQBZEa2UoU0hzcg47LOpbr8UNv/XtAmHX3a4Jti+YjTdfTP
-	 pma+dAnEtPSSsLIicPNINXdvNN49UCw3aLY8CElXmFPVRVYdsqhU6OpN8QIcqXm9cm
-	 ow60UbVGwXxmAWaGNwBdAMR57RCsJ25qKD5S9X28=
+	b=tYNWGyHWfQOb9HBaPlKhHDzvxSjFCEy84vTq/NVIa9UlN9Nr2yaB4my636lkRrbQN
+	 qmZ79xjgVqvSW+MPAe5no7VfY3ZDMa8+NY4CZ2laBi8vXQO3d+INwPAfE9u5aRiDsq
+	 TYFHD1TQriijHQbxRh4p+QlQgIcGMWOIbKPv9XF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 65/94] btrfs: send: ensure send_fd is writable
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Fenghua Yu <fenghua.yu@intel.com>,
+	Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 48/67] selftests/resctrl: Add missing SPDX license to Makefile
 Date: Tue,  5 Dec 2023 12:17:33 +0900
-Message-ID: <20231205031526.485711136@linuxfoundation.org>
+Message-ID: <20231205031522.587221130@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +55,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
 
-commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
+[ Upstream commit 68c4844985d1f8c1b1a71dfcdbfacb5a30babc95 ]
 
-kernel_write() requires the caller to ensure that the file is writable.
-Let's do that directly after looking up the ->send_fd.
+Add the missing SPDX(SPDX-License-Identifier) license header to
+tools/testing/selftests/resctrl/Makefile.
 
-We don't need a separate bailout path because the "out" path already
-does fput() if ->send_filp is non-NULL.
-
-This has no security impact for two reasons:
-
- - the ioctl requires CAP_SYS_ADMIN
- - __kernel_write() bails out on read-only files - but only since 5.8,
-   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
-
-Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
-Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Reviewed-by: Fenghua Yu <fenghua.yu@intel.com>
+Signed-off-by: Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 3a1e4a91aa45 ("selftests/resctrl: Move _GNU_SOURCE define into Makefile")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -7381,7 +7381,7 @@ long btrfs_ioctl_send(struct file *mnt_f
- 	sctx->flags = arg->flags;
+diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
+index 9cc7e0108c8b0..5073dbc961258 100644
+--- a/tools/testing/selftests/resctrl/Makefile
++++ b/tools/testing/selftests/resctrl/Makefile
+@@ -1,3 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0
++
+ CFLAGS = -g -Wall -O2 -D_FORTIFY_SOURCE=2
+ CFLAGS += $(KHDR_INCLUDES)
  
- 	sctx->send_filp = fget(arg->send_fd);
--	if (!sctx->send_filp) {
-+	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
- 		ret = -EBADF;
- 		goto out;
- 	}
+-- 
+2.42.0
+
 
 
 
