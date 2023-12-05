@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-4272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232428046CB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7708047EA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1E831F21434
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A906F28175F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A65E8BEC;
-	Tue,  5 Dec 2023 03:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4466C79F2;
+	Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZ3a6UNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3rFQHn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C706E6FB1;
-	Tue,  5 Dec 2023 03:31:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17718C433C8;
-	Tue,  5 Dec 2023 03:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0380D6AC2;
+	Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F720C433C8;
+	Tue,  5 Dec 2023 03:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747096;
-	bh=NnEMmBb2rYSfYYmRsAT0Jgztvv9CtiG1C5iEJVcMAaw=;
+	s=korg; t=1701747830;
+	bh=z9pWUbwYU4Vu1rIjelc+T1c2KFAh05O9Y20FWGV4aqo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZ3a6UNWwQiJUNhE0TS1X6cQalh3DXejo5g0SMpU9XFeofnQebKeDZjFVQIj6Nnej
-	 DspT8oAIfvTyjZkQUGGz2tn766f1HFvq/9RbRm7O7xZR/Fme/+08lRNGuSqHvwSGVw
-	 O9lcQlZP7xjyKJ2/ifwY8ZSW/k3BgRQQ4rZpqS4A=
+	b=Y3rFQHn46JjrFialJr9YGWlgfSHq9c/11gHExF6lTj0OAWBSjHjAYWLRotEi1hu9/
+	 sqfDQHbSlJ7YLupnbeLKoPHPNX87ybAxShSeMxoSMVgmpgnm9/LXHUrSeb41xlgNY5
+	 aGesbiPU7Au6LYllWGiLyx3w9nedKlxZY9gIaRyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/107] usb: config: fix iteration issue in usb_get_bos_descriptor()
+Subject: [PATCH 5.4 04/94] afs: Make error on cell lookup failure consistent with OpenAFS
 Date: Tue,  5 Dec 2023 12:16:32 +0900
-Message-ID: <20231205031534.965612644@linuxfoundation.org>
+Message-ID: <20231205031523.103588046@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,59 +56,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 974bba5c118f4c2baf00de0356e3e4f7928b4cbc ]
+[ Upstream commit 2a4ca1b4b77850544408595e2433f5d7811a9daa ]
 
-The BOS descriptor defines a root descriptor and is the base descriptor for
-accessing a family of related descriptors.
+When kafs tries to look up a cell in the DNS or the local config, it will
+translate a lookup failure into EDESTADDRREQ whereas OpenAFS translates it
+into ENOENT.  Applications such as West expect the latter behaviour and
+fail if they see the former.
 
-Function 'usb_get_bos_descriptor()' encounters an iteration issue when
-skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
-the same descriptor being read repeatedly.
+This can be seen by trying to mount an unknown cell:
 
-To address this issue, a 'goto' statement is introduced to ensure that the
-pointer and the amount read is updated correctly. This ensures that the
-function iterates to the next descriptor instead of reading the same
-descriptor repeatedly.
+   # mount -t afs %example.com:cell.root /mnt
+   mount: /mnt: mount(2) system call failed: Destination address required.
 
-Cc: stable@vger.kernel.org
-Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231115121325.471454-1-niklas.neronin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d673da14533 ("afs: Support the AFS dynamic root")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/afs/dynroot.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
-index 725b8dbcfe5f0..d396ac8b9cedd 100644
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index f07e53ab808e3..45007d96a402d 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -38,8 +38,8 @@ static int afs_probe_cell_name(struct dentry *dentry)
  
- 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
- 			dev_notice(ddev, "descriptor type invalid, skip\n");
--			continue;
-+			goto skip_to_next_descriptor;
- 		}
+ 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
+ 			NULL, NULL, false);
+-	if (ret == -ENODATA)
+-		ret = -EDESTADDRREQ;
++	if (ret == -ENODATA || ret == -ENOKEY)
++		ret = -ENOENT;
+ 	return ret;
+ }
  
- 		switch (cap_type) {
-@@ -1081,6 +1081,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
- 			break;
- 		}
- 
-+skip_to_next_descriptor:
- 		total_len -= length;
- 		buffer += length;
- 	}
 -- 
 2.42.0
 
