@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-4494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8008047BB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830E0804766
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C9141C20DDD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2414AB20CE9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481988BF8;
-	Tue,  5 Dec 2023 03:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47538C07;
+	Tue,  5 Dec 2023 03:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZfl8doE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDRhHQ6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07ACC6AC2;
-	Tue,  5 Dec 2023 03:41:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88070C433C8;
-	Tue,  5 Dec 2023 03:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F60779E3;
+	Tue,  5 Dec 2023 03:38:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96D5C433C7;
+	Tue,  5 Dec 2023 03:38:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747699;
-	bh=mZdvCAy6IYVBjWQjY7v4pDlBNttwhvWupJq2TRJ8zDg=;
+	s=korg; t=1701747491;
+	bh=N5MGT5ICJZc0oEgnlnbzWwo9l5PnfGiWHaZR/db3UrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZfl8doEqVj/B5CsP07zTQo5bbYuTzrFE+BlosmHX7HkEo0ywJ4hKvYPRRjyNq2Kq
-	 k0Lo3czERn8tXCD1+44GJIRyKCtOFUIk3v1V1mflskhLPBNwUoh/8UJzHZyqnh1qDk
-	 zrTydim9qNeD/m5rfuC3skcrggKE0ef9Iq+mG4P8=
+	b=XDRhHQ6pvTL/XW+RlNU33fKcDgRjDK6ksPRlBPs0OkAM+NMlcJt4ou02w5Zd/dXnY
+	 J7A2e2pVb+CcgBNz4HJ3yoGxEJT7+Jqf3C6Q6qhHAk+czt87rnfFpmqMS5GYhZUcbg
+	 a5zqrVvlyeKp0pOJT11NWexz7/9KVZq/mShbLRwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 12/67] ALSA: hda/realtek: Add supported ALC257 for ChromeOS
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 096/135] net: stmmac: xgmac: Disable FPE MMC interrupts
 Date: Tue,  5 Dec 2023 12:16:57 +0900
-Message-ID: <20231205031520.533637903@linuxfoundation.org>
+Message-ID: <20231205031536.692077887@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Furong Xu <0x1207@gmail.com>
 
-commit cae2bdb579ecc9d4219c58a7d3fde1958118dc1d upstream.
+[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
 
-ChromeOS want to support ALC257.
-Add codec ID to some relation function.
+Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
+by default") tries to disable MMC interrupts to avoid a storm of
+unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
+interrupts enabled, FPE MMC interrupts can cause the same problem.
+Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/99a88a7dbdb045fd9d934abeb6cec15f@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3258,6 +3258,7 @@ static void alc_disable_headset_jack_key
- 	case 0x10ec0230:
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 		alc_write_coef_idx(codec, 0x48, 0x0);
- 		alc_update_coef_idx(codec, 0x49, 0x0045, 0x0);
-@@ -3287,6 +3288,7 @@ static void alc_enable_headset_jack_key(
- 	case 0x10ec0230:
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 		alc_write_coef_idx(codec, 0x48, 0xd011);
- 		alc_update_coef_idx(codec, 0x49, 0x007f, 0x0045);
-@@ -6481,6 +6483,7 @@ static void alc_combo_jack_hp_jd_restart
- 	case 0x10ec0236:
- 	case 0x10ec0255:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 		alc_update_coef_idx(codec, 0x1b, 0x8000, 1 << 15); /* Reset HP JD */
- 		alc_update_coef_idx(codec, 0x1b, 0x8000, 0 << 15);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+index a57b0fa815aba..a510bac0b825b 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+@@ -177,8 +177,10 @@
+ #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
+ #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
+ 
++#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
+ #define MMC_XGMAC_TX_FPE_FRAG		0x208
+ #define MMC_XGMAC_TX_HOLD_REQ		0x20c
++#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
+ #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
+@@ -352,6 +354,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
+ {
+ 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
+ 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
+ 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
+ }
+ 
+-- 
+2.42.0
+
 
 
 
