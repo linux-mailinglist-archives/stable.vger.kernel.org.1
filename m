@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-4218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D4DE80468E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD9B9804623
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299D72814C8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEB871C209B3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B746FB8;
-	Tue,  5 Dec 2023 03:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E82E88BE0;
+	Tue,  5 Dec 2023 03:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJRIBrGG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/pkPxfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750056FAF;
-	Tue,  5 Dec 2023 03:29:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E094CC433C7;
-	Tue,  5 Dec 2023 03:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65F86FAF;
+	Tue,  5 Dec 2023 03:25:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBC5C433C8;
+	Tue,  5 Dec 2023 03:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746945;
-	bh=HztmdKZbiamG3g75jCqMv6d5HmMq4Yp3XdaxiejWNjc=;
+	s=korg; t=1701746713;
+	bh=6uP7XktiQJXY5JqILQXJEIPv4l5g0kdnK9+B53VcHCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OJRIBrGGfg47PdtUC9Ma6P0zMBfUi+7HWvwS3Ci1kGSi8va203R+uLEq2uYwqVnfe
-	 J+ucsijnWTvlldzhA2Gv4ufsZrcvsaAZrNX6L358zMJ3q/sx3s+44KZa/HktGlV/D7
-	 m8YouioWMaRXegfSOA9jgEi5a0uKkCDrEhhiDhyc=
+	b=x/pkPxfAQGzqu0Vo9oMwjJvW1C55H3UEfY7k7vX3BPtTq9nhOngkRE8n35JrXgcIf
+	 XtyH/IxlFqRU77iWmnOwLdCmPEJkuLPKTtZ7ZIDp+kdBASNzXmvu58rMh+BUaba1Tc
+	 hkj2nROUXq03YGVA8XtObWKuCy7EFgj2J/54y95Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Coly Li <colyli@suse.de>,
-	Markus Weippert <markus@gekmihesg.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.19 41/71] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
+	Anthony Koo <anthony.koo@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Sherry Wang <yao.wang1@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 127/134] drm/amd/display: refactor ILR to make it work
 Date: Tue,  5 Dec 2023 12:16:39 +0900
-Message-ID: <20231205031520.219142846@linuxfoundation.org>
+Message-ID: <20231205031543.500288223@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,77 +56,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Weippert <markus@gekmihesg.de>
+From: Sherry Wang <yao.wang1@amd.com>
 
-commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
+[ Upstream commit 6ec876472ff7edeaf2a07bf6afbff74d7f1dfa35 ]
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
-NULL pointer dereference.
+[Why]
+Current ILR toggle is on/off as a part of panel
+config for new function, which breaks original
+ILR logic
 
-BUG: kernel NULL pointer dereference, address: 0000000000000080
-Call Trace:
- ? __die_body.cold+0x1a/0x1f
- ? page_fault_oops+0xd2/0x2b0
- ? exc_page_fault+0x70/0x170
- ? asm_exc_page_fault+0x22/0x30
- ? btree_node_free+0xf/0x160 [bcache]
- ? up_write+0x32/0x60
- btree_gc_coalesce+0x2aa/0x890 [bcache]
- ? bch_extent_bad+0x70/0x170 [bcache]
- btree_gc_recurse+0x130/0x390 [bcache]
- ? btree_gc_mark_node+0x72/0x230 [bcache]
- bch_btree_gc+0x5da/0x600 [bcache]
- ? cpuusage_read+0x10/0x10
- ? bch_btree_gc+0x600/0x600 [bcache]
- bch_gc_thread+0x135/0x180 [bcache]
+[How]
+Refactor ILR and take panel config into account
 
-The relevant code starts with:
-
-    new_nodes[0] = NULL;
-
-    for (i = 0; i < nodes; i++) {
-        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
-            goto out_nocoalesce;
-    // ...
-out_nocoalesce:
-    // ...
-    for (i = 0; i < nodes; i++)
-        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
-028ddcac477b
-            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
-            rw_unlock(true, new_nodes[i]);
-        }
-
-This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
-Cc: stable@vger.kernel.org
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Cc: Coly Li <colyli@suse.de>
-Signed-off-by: Markus Weippert <markus@gekmihesg.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Anthony Koo <anthony.koo@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Sherry Wang <yao.wang1@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: d9e865826c20 ("drm/amd/display: Simplify brightness initialization")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/btree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../drm/amd/display/dc/link/link_detection.c  |  6 ++++++
+ .../dc/link/protocols/link_dp_capability.c    | 14 ++++---------
+ .../link/protocols/link_edp_panel_control.c   | 21 +++++++++++++++++--
+ .../link/protocols/link_edp_panel_control.h   |  2 ++
+ 4 files changed, 31 insertions(+), 12 deletions(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1526,7 +1526,7 @@ out_nocoalesce:
- 			atomic_dec(&b->c->prio_blocked);
- 
- 	for (i = 0; i < nodes; i++)
--		if (!IS_ERR(new_nodes[i])) {
-+		if (!IS_ERR_OR_NULL(new_nodes[i])) {
- 			btree_node_free(new_nodes[i]);
- 			rw_unlock(true, new_nodes[i]);
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index e682d27e098f8..b3d3e46c466b3 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -1166,6 +1166,12 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 			dm_helpers_init_panel_settings(dc_ctx, &link->panel_config, sink);
+ 			// Override dc_panel_config if system has specific settings
+ 			dm_helpers_override_panel_settings(dc_ctx, &link->panel_config);
++
++			//sink only can use supported link rate table, we are foreced to enable it
++			if (link->reported_link_cap.link_rate == LINK_RATE_UNKNOWN)
++				link->panel_config.ilr.optimize_edp_link_rate = true;
++			if (edp_is_ilr_optimization_enabled(link))
++				link->reported_link_cap.link_rate = get_max_link_rate_from_ilr_table(link);
  		}
+ 
+ 	} else {
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 237e0ff955f3c..db87aa7b5c90f 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -707,8 +707,7 @@ bool edp_decide_link_settings(struct dc_link *link,
+ 	 * edp_supported_link_rates_count is only valid for eDP v1.4 or higher.
+ 	 * Per VESA eDP spec, "The DPCD revision for eDP v1.4 is 13h"
+ 	 */
+-	if (link->dpcd_caps.dpcd_rev.raw < DPCD_REV_13 ||
+-			link->dpcd_caps.edp_supported_link_rates_count == 0) {
++	if (!edp_is_ilr_optimization_enabled(link)) {
+ 		*link_setting = link->verified_link_cap;
+ 		return true;
+ 	}
+@@ -772,8 +771,7 @@ bool decide_edp_link_settings_with_dsc(struct dc_link *link,
+ 	 * edp_supported_link_rates_count is only valid for eDP v1.4 or higher.
+ 	 * Per VESA eDP spec, "The DPCD revision for eDP v1.4 is 13h"
+ 	 */
+-	if ((link->dpcd_caps.dpcd_rev.raw < DPCD_REV_13 ||
+-			link->dpcd_caps.edp_supported_link_rates_count == 0)) {
++	if (!edp_is_ilr_optimization_enabled(link)) {
+ 		/* for DSC enabled case, we search for minimum lane count */
+ 		memset(&initial_link_setting, 0, sizeof(initial_link_setting));
+ 		initial_link_setting.lane_count = LANE_COUNT_ONE;
+@@ -1938,9 +1936,7 @@ void detect_edp_sink_caps(struct dc_link *link)
+ 	 * edp_supported_link_rates_count is only valid for eDP v1.4 or higher.
+ 	 * Per VESA eDP spec, "The DPCD revision for eDP v1.4 is 13h"
+ 	 */
+-	if (link->dpcd_caps.dpcd_rev.raw >= DPCD_REV_13 &&
+-			(link->panel_config.ilr.optimize_edp_link_rate ||
+-			link->reported_link_cap.link_rate == LINK_RATE_UNKNOWN)) {
++	if (link->dpcd_caps.dpcd_rev.raw >= DPCD_REV_13) {
+ 		// Read DPCD 00010h - 0001Fh 16 bytes at one shot
+ 		core_link_read_dpcd(link, DP_SUPPORTED_LINK_RATES,
+ 							supported_link_rates, sizeof(supported_link_rates));
+@@ -1958,12 +1954,10 @@ void detect_edp_sink_caps(struct dc_link *link)
+ 				link_rate = linkRateInKHzToLinkRateMultiplier(link_rate_in_khz);
+ 				link->dpcd_caps.edp_supported_link_rates[link->dpcd_caps.edp_supported_link_rates_count] = link_rate;
+ 				link->dpcd_caps.edp_supported_link_rates_count++;
+-
+-				if (link->reported_link_cap.link_rate < link_rate)
+-					link->reported_link_cap.link_rate = link_rate;
+ 			}
+ 		}
+ 	}
++
+ 	core_link_read_dpcd(link, DP_EDP_BACKLIGHT_ADJUSTMENT_CAP,
+ 						&backlight_adj_cap, sizeof(backlight_adj_cap));
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+index 24b47fa82f93c..e1708c296b7df 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+@@ -300,6 +300,24 @@ bool set_cached_brightness_aux(struct dc_link *link)
+ 		return set_default_brightness_aux(link);
+ 	return false;
+ }
++bool edp_is_ilr_optimization_enabled(struct dc_link *link)
++{
++	if (link->dpcd_caps.edp_supported_link_rates_count == 0 || !link->panel_config.ilr.optimize_edp_link_rate)
++		return false;
++	return true;
++}
++
++enum dc_link_rate get_max_link_rate_from_ilr_table(struct dc_link *link)
++{
++	enum dc_link_rate link_rate = link->reported_link_cap.link_rate;
++
++	for (int i = 0; i < link->dpcd_caps.edp_supported_link_rates_count; i++) {
++		if (link_rate < link->dpcd_caps.edp_supported_link_rates[i])
++			link_rate = link->dpcd_caps.edp_supported_link_rates[i];
++	}
++
++	return link_rate;
++}
+ 
+ bool edp_is_ilr_optimization_required(struct dc_link *link,
+ 		struct dc_crtc_timing *crtc_timing)
+@@ -312,8 +330,7 @@ bool edp_is_ilr_optimization_required(struct dc_link *link,
+ 
+ 	ASSERT(link || crtc_timing); // invalid input
+ 
+-	if (link->dpcd_caps.edp_supported_link_rates_count == 0 ||
+-			!link->panel_config.ilr.optimize_edp_link_rate)
++	if (!edp_is_ilr_optimization_enabled(link))
+ 		return false;
+ 
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+index 20f91de852e30..ebf7deb63d136 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+@@ -64,6 +64,8 @@ bool edp_get_replay_state(const struct dc_link *link, uint64_t *state);
+ bool edp_wait_for_t12(struct dc_link *link);
+ bool edp_is_ilr_optimization_required(struct dc_link *link,
+        struct dc_crtc_timing *crtc_timing);
++bool edp_is_ilr_optimization_enabled(struct dc_link *link);
++enum dc_link_rate get_max_link_rate_from_ilr_table(struct dc_link *link);
+ bool edp_backlight_enable_aux(struct dc_link *link, bool enable);
+ void edp_add_delay_for_T9(struct dc_link *link);
+ bool edp_receiver_ready_T9(struct dc_link *link);
+-- 
+2.42.0
+
 
 
 
