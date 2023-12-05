@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DBE8046ED
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFA9804756
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 074A81C20DC7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B8681C20DDA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561D279F2;
-	Tue,  5 Dec 2023 03:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E738BF1;
+	Tue,  5 Dec 2023 03:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4XZBfRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9v46Ffu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160BE6FB1;
-	Tue,  5 Dec 2023 03:33:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EDDC433C8;
-	Tue,  5 Dec 2023 03:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA526FB1;
+	Tue,  5 Dec 2023 03:37:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD77AC433C7;
+	Tue,  5 Dec 2023 03:37:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747184;
-	bh=G1sXZxieN0wsKu83SWBKD3VymnZngEd7QRHhr8qa0gI=;
+	s=korg; t=1701747452;
+	bh=gAtsnVkvJmSlpVT0ZvZ5izFV7GBM1af1cHZhTtc80t4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4XZBfRBMLKTYv6SWjOzhVl+RZ6Py9c83Vx2HJ3BHImPbkOBEcehPdito4FDVmklI
-	 D8kCZ5xROL7zHYywg3ZW+CGfHZsSagTri1aPp+fZXVff1mF06mHb2oGEp8Nvs/Neyw
-	 X5TiTfDCEo19Qx7tRyWJbElzfYE+IyzS4pSE/AzE=
+	b=v9v46FfuayLuRJzSC4SAU2vR130RndZY6UnR/v9J4NDGawhyT0BOCm/nwIR5A4BG/
+	 mUhMyg91im2Qp9ZeI5hjG06ns8470xxW/UxKXYyQITGJFE9h5Ywg5om2BbExkv9R4r
+	 lH+mQS8/VxtRcFc3uCZY+PPFbMERzRf1nj14bO3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/107] octeontx2-pf: Fix adding mbox work queue entry when num_vfs > 64
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.10 081/135] powerpc: Dont clobber f0/vs0 during fp|altivec register save
 Date: Tue,  5 Dec 2023 12:16:42 +0900
-Message-ID: <20231205031535.628652846@linuxfoundation.org>
+Message-ID: <20231205031535.618517896@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +53,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 51597219e0cd5157401d4d0ccb5daa4d9961676f ]
+commit 5e1d824f9a283cbf90f25241b66d1f69adb3835b upstream.
 
-When more than 64 VFs are enabled for a PF then mbox communication
-between VF and PF is not working as mbox work queueing for few VFs
-are skipped due to wrong calculation of VF numbers.
+During floating point and vector save to thread data f0/vs0 are
+clobbered by the FPSCR/VSCR store routine. This has been obvserved to
+lead to userspace register corruption and application data corruption
+with io-uring.
 
-Fixes: d424b6c02415 ("octeontx2-pf: Enable SRIOV and added VF mbox handling")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://lore.kernel.org/r/1700930042-5400-1-git-send-email-sbhatta@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by restoring f0/vs0 after FPSCR/VSCR store has completed for
+all the FP, altivec, VMX register save paths.
+
+Tested under QEMU in kvm mode, running on a Talos II workstation with
+dual POWER9 DD2.2 CPUs.
+
+Additional detail (mpe):
+
+Typically save_fpu() is called from __giveup_fpu() which saves the FP
+regs and also *turns off FP* in the tasks MSR, meaning the kernel will
+reload the FP regs from the thread struct before letting the task use FP
+again. So in that case save_fpu() is free to clobber f0 because the FP
+regs no longer hold live values for the task.
+
+There is another case though, which is the path via:
+  sys_clone()
+    ...
+    copy_process()
+      dup_task_struct()
+        arch_dup_task_struct()
+          flush_all_to_thread()
+            save_all()
+
+That path saves the FP regs but leaves them live. That's meant as an
+optimisation for a process that's using FP/VSX and then calls fork(),
+leaving the regs live means the parent process doesn't have to take a
+fault after the fork to get its FP regs back. The optimisation was added
+in commit 8792468da5e1 ("powerpc: Add the ability to save FPU without
+giving it up").
+
+That path does clobber f0, but f0 is volatile across function calls,
+and typically programs reach copy_process() from userspace via a syscall
+wrapper function. So in normal usage f0 being clobbered across a
+syscall doesn't cause visible data corruption.
+
+But there is now a new path, because io-uring can call copy_process()
+via create_io_thread() from the signal handling path. That's OK if the
+signal is handled as part of syscall return, but it's not OK if the
+signal is handled due to some other interrupt.
+
+That path is:
+
+interrupt_return_srr_user()
+  interrupt_exit_user_prepare()
+    interrupt_exit_user_prepare_main()
+      do_notify_resume()
+        get_signal()
+          task_work_run()
+            create_worker_cb()
+              create_io_worker()
+                copy_process()
+                  dup_task_struct()
+                    arch_dup_task_struct()
+                      flush_all_to_thread()
+                        save_all()
+                          if (tsk->thread.regs->msr & MSR_FP)
+                            save_fpu()
+                            # f0 is clobbered and potentially live in userspace
+
+Note the above discussion applies equally to save_altivec().
+
+Fixes: 8792468da5e1 ("powerpc: Add the ability to save FPU without giving it up")
+Cc: stable@vger.kernel.org # v4.6+
+Closes: https://lore.kernel.org/all/480932026.45576726.1699374859845.JavaMail.zimbra@raptorengineeringinc.com/
+Closes: https://lore.kernel.org/linuxppc-dev/480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com/
+Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+[mpe: Reword change log to describe exact path of corruption & other minor tweaks]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/powerpc/kernel/fpu.S    |   13 +++++++++++++
+ arch/powerpc/kernel/vector.S |    2 ++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 1d2d72c60a12c..42f2ff83b47f7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -566,7 +566,9 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
- 		otx2_write64(pf, RVU_PF_VFPF_MBOX_INTX(1), intr);
- 		otx2_queue_work(mbox, pf->mbox_pfvf_wq, 64, vfs, intr,
- 				TYPE_PFVF);
--		vfs -= 64;
-+		if (intr)
-+			trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
-+		vfs = 64;
- 	}
+--- a/arch/powerpc/kernel/fpu.S
++++ b/arch/powerpc/kernel/fpu.S
+@@ -23,6 +23,15 @@
+ #include <asm/feature-fixups.h>
  
- 	intr = otx2_read64(pf, RVU_PF_VFPF_MBOX_INTX(0));
-@@ -574,7 +576,8 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
+ #ifdef CONFIG_VSX
++#define __REST_1FPVSR(n,c,base)						\
++BEGIN_FTR_SECTION							\
++	b	2f;							\
++END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
++	REST_FPR(n,base);						\
++	b	3f;							\
++2:	REST_VSR(n,c,base);						\
++3:
++
+ #define __REST_32FPVSRS(n,c,base)					\
+ BEGIN_FTR_SECTION							\
+ 	b	2f;							\
+@@ -41,9 +50,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);
+ 2:	SAVE_32VSRS(n,c,base);						\
+ 3:
+ #else
++#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
+ #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
+ #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
+ #endif
++#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
+ #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
+ #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
  
- 	otx2_queue_work(mbox, pf->mbox_pfvf_wq, 0, vfs, intr, TYPE_PFVF);
+@@ -67,6 +78,7 @@ _GLOBAL(store_fp_state)
+ 	SAVE_32FPVSRS(0, R4, R3)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r3)
++	REST_1FPVSR(0, R4, R3)
+ 	blr
+ EXPORT_SYMBOL(store_fp_state)
  
--	trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
-+	if (intr)
-+		trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
+@@ -132,4 +144,5 @@ _GLOBAL(save_fpu)
+ 2:	SAVE_32FPVSRS(0, R4, R6)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r6)
++	REST_1FPVSR(0, R4, R6)
+ 	blr
+--- a/arch/powerpc/kernel/vector.S
++++ b/arch/powerpc/kernel/vector.S
+@@ -32,6 +32,7 @@ _GLOBAL(store_vr_state)
+ 	mfvscr	v0
+ 	li	r4, VRSTATE_VSCR
+ 	stvx	v0, r4, r3
++	lvx	v0, 0, r3
+ 	blr
+ EXPORT_SYMBOL(store_vr_state)
  
- 	return IRQ_HANDLED;
- }
--- 
-2.42.0
-
+@@ -104,6 +105,7 @@ _GLOBAL(save_altivec)
+ 	mfvscr	v0
+ 	li	r4,VRSTATE_VSCR
+ 	stvx	v0,r4,r7
++	lvx	v0,0,r7
+ 	blr
+ 
+ #ifdef CONFIG_VSX
 
 
 
