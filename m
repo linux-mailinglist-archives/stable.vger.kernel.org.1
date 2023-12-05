@@ -1,304 +1,186 @@
-Return-Path: <stable+bounces-4685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C244805754
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:32:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B071805758
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:34:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39AB281CAE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 14:32:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 155A11F2163B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 14:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AC856B67;
-	Tue,  5 Dec 2023 14:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7089F5E0CC;
+	Tue,  5 Dec 2023 14:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="RHLgU2Pv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GVQWobUn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 021F8120
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 06:32:40 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6ce72730548so485548b3a.1
-        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 06:32:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701786760; x=1702391560; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=s/ynmwkSrUuOYPZmZ8b+C0ffwYKkIFtCkaLvEi3+MbM=;
-        b=RHLgU2PvCjYcp710MHDjcXNendlMR749QUqCz4UlNYy3UT2zgw9A7cpUDMPnxDVKEt
-         lKHF4F0cETmJlXl2hPMHJjbyT2u7+eBRmn5FOpjXQL4mp3aX5jOM9OHnjDPwFfR9suTL
-         WrgKf6QugXJcahaP5sqlWRf5zHbIXIl3/8JiTLSpcJWI/sUhP5GRy+aHYVVRhGnb9m1d
-         4pz1aFwZiy8p/0jgmBi0pcH06iw3dKfL8bAYOMjOYD37pdE+7Zfppjt2f1l1uuXyyaII
-         +t2qLLFRmzbaAFQCratniNz7tv7cXYqS7AO5CL2jGorIS9a7W89Bndfo9QnVPRMlxE0Q
-         uLRw==
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33964B9
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 06:34:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701786857;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t1oo9wYlZR3izMsicqmb+vabDeYW3Sk3a+FflIBcT0I=;
+	b=GVQWobUnwaS7ZwD/3+ejPfo79fa5G/kMUVLcvAjt/G7Hk44ZwzYUAeYOpiuaM+lB6PA1KX
+	WQJFPzj8MhJCOX77Tqw6IofFUYzwa66Koo5yxgivl9+2Cm0HnU0NMFo+e7xyIRMRImQBUB
+	hgwaFprS0VLDTP5YX1YT/QUPtzuyPE8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-421-Zt7zP6r8PAqu-3Z7vuGMhA-1; Tue, 05 Dec 2023 09:34:15 -0500
+X-MC-Unique: Zt7zP6r8PAqu-3Z7vuGMhA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-40a3d918dc1so11654445e9.0
+        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 06:34:15 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701786760; x=1702391560;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s/ynmwkSrUuOYPZmZ8b+C0ffwYKkIFtCkaLvEi3+MbM=;
-        b=tdE1mf3TckQDudTuP9a1WMQ07YknqmkNGnMmrhjrT453ojsjH+kXNjwQ42KUjca6a5
-         cEs0XwPnSLwDnXKaf4en73lGSk6wXYXhJYzDzvd/1yMOP4ApNdMoqUVKmkjnQ0G5fNLk
-         dN8PENK5Q6KdQCI3WU2t9vbr3mnQ1PUJM0X0hZQPxK67qnjD/qgFr6UcOhUBLi+P58R+
-         yNcsPooixZac9ruoTvsm8CTOD0IqIS4qoRgLkPbB5wHWa08TE58vgy6zplHYtqZPHnYm
-         6Q1XCtKptSx2lYuNB8xLMoDMj7HwhNKNKJ9YRK3Vcv76NorxoL3/SXfiauswAx/H2IA+
-         E9lg==
-X-Gm-Message-State: AOJu0YxVnHTchyC6SCPFoIkFXXAFO4yfpH7j/6MWw67vNRCefArla1b0
-	CCxe0H87mAOJu/Bcod9toR00qrfEVwn41A5Sd4LuLw==
-X-Google-Smtp-Source: AGHT+IFsPIftR/llwa2BHcjs0gLcIxwHfm0HculkMwT2xJoepwPJ0WWo2H9PY/BYEuUYYnG/gcXqPw==
-X-Received: by 2002:a05:6a00:8f06:b0:6ce:4a30:853 with SMTP id ji6-20020a056a008f0600b006ce4a300853mr1779914pfb.29.1701786759945;
-        Tue, 05 Dec 2023 06:32:39 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id r4-20020aa78b84000000b006cbb5985a4dsm5813553pfd.26.2023.12.05.06.32.39
+        d=1e100.net; s=20230601; t=1701786854; x=1702391654;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t1oo9wYlZR3izMsicqmb+vabDeYW3Sk3a+FflIBcT0I=;
+        b=K6n0iejbciPEYz5ksnhv/fc5XUTBOST7ke3jj3LMl837pjamTyYzuOriy+BqQKDVgn
+         +ZN6sqC3LjCSz7vczTbXM+Nbfl30Aix17n3rRbeVBCABY1XDDcfN8GV1h+DNw/bTzi4z
+         7U5fAFdICOQbO23smFZ7HDHsrZfZMz8Pt+1wQRu9cu920CB6x9FygNk5PDmmu5pTfQ29
+         lN++Io3A3lFJv+hZX2/TWMiKw5zCUGoC/kJBlIn8t4vVpv4LUvaMIpZMOaxA88tyP2Ve
+         iWyq0sRQBayn6rm5yOG0ctJPIwX65Xrf5UWSY8JXMd/XwEcVhYnHzF75NmZs9pUd2N3d
+         kSSw==
+X-Gm-Message-State: AOJu0Yx8r7RWmyAunf9OC0wDyANXzsSLOaV1mWyG+nmNvkbtW46/H6Ty
+	tbRniuEjn39m4bgBXx5ua6Dhnap6s5+DKB2rQI8Vbzl5shJzBv3FKpF3sPtkvrIuFTNso5bZCfm
+	f29snLIa+OgGy4NJm
+X-Received: by 2002:a05:600c:5024:b0:40a:771f:6a56 with SMTP id n36-20020a05600c502400b0040a771f6a56mr24476158wmr.4.1701786854234;
+        Tue, 05 Dec 2023 06:34:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEGPNdBwDu9dr6enHkkgXCOXz022qJVffHzVjL5DyqXAOhz0Bn+IqdhhmLHKvXQvWYQm8QVxw==
+X-Received: by 2002:a05:600c:5024:b0:40a:771f:6a56 with SMTP id n36-20020a05600c502400b0040a771f6a56mr24476128wmr.4.1701786853892;
+        Tue, 05 Dec 2023 06:34:13 -0800 (PST)
+Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id t17-20020a05600c451100b0040b379e8526sm22411354wmo.25.2023.12.05.06.34.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 06:32:39 -0800 (PST)
-Message-ID: <656f3487.a70a0220.b59fd.e6e9@mx.google.com>
-Date: Tue, 05 Dec 2023 06:32:39 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Tue, 05 Dec 2023 06:34:13 -0800 (PST)
+Message-ID: <8ec1ae92206c090c79a9ab9586bd17349798b08f.camel@redhat.com>
+Subject: Re: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
+From: Philipp Stanner <pstanner@redhat.com>
+To: kernel test robot <lkp@intel.com>, Bjorn Helgaas <helgaas@kernel.org>, 
+ Arnd Bergmann <arnd@arndb.de>, Hanjun Guo <guohanjun@huawei.com>, NeilBrown
+ <neilb@suse.de>,  Kent Overstreet <kmo@daterainc.com>, Jakub Kicinski
+ <kuba@kernel.org>, Niklas Schnelle <schnelle@linux.ibm.com>,  Uladzislau
+ Koshchanka <koshchanka@gmail.com>, John Sanpe <sanpeqf@gmail.com>, Dave
+ Jiang <dave.jiang@intel.com>, "Masami Hiramatsu (Google)"
+ <mhiramat@kernel.org>,  Kees Cook <keescook@chromium.org>, David Gow
+ <davidgow@google.com>, Herbert Xu <herbert@gondor.apana.org.au>, Shuah Khan
+ <skhan@linuxfoundation.org>,  "wuqiang.matt" <wuqiang.matt@bytedance.com>,
+ Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,  Andrew
+ Morton <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>,
+ dakr@redhat.com
+Cc: oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org,  linux-arch@vger.kernel.org,
+ stable@vger.kernel.org
+Date: Tue, 05 Dec 2023 15:34:12 +0100
+In-Reply-To: <202312051813.09WbvusW-lkp@intel.com>
+References: <20231204123834.29247-6-pstanner@redhat.com>
+	 <202312051813.09WbvusW-lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.4
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.262-93-gb944c3b7a9cb
-Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
- 26 warnings (v5.4.262-93-gb944c3b7a9cb)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
-4.262-93-gb944c3b7a9cb)
+Alright, so it seems that not all architectures provide ioport_unmap().
+So I'll provide yet another preprocessor guard in v4. Wohooo, we love
+them...
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
-/kernel/v5.4.262-93-gb944c3b7a9cb/
+P.
 
-Tree: stable-rc
-Branch: queue/5.4
-Git Describe: v5.4.262-93-gb944c3b7a9cb
-Git Commit: b944c3b7a9cb5f01e912c9e1f15bc51a7d20fcb3
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+On Tue, 2023-12-05 at 18:44 +0800, kernel test robot wrote:
+> Hi Philipp,
+>=20
+> kernel test robot noticed the following build errors:
+>=20
+> [auto build test ERROR on pci/next]
+> [also build test ERROR on pci/for-linus arnd-asm-generic/master
+> kees/for-next/pstore kees/for-next/kspp linus/master v6.7-rc4 next-
+> 20231205]
+> [If your patch is applied to the wrong git tree, kindly drop us a
+> note.
+> And when submitting patch, we suggest to use '--base' as documented
+> in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>=20
+> url:=C2=A0=C2=A0=C2=A0
+> https://github.com/intel-lab-lkp/linux/commits/Philipp-Stanner/lib-pci_io=
+map-c-fix-cleanup-bugs-in-pci_iounmap/20231204-204128
+> base:=C2=A0=C2=A0
+> https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git=C2=A0next
+> patch link:=C2=A0=C2=A0=C2=A0
+> https://lore.kernel.org/r/20231204123834.29247-6-pstanner%40redhat.com
+> patch subject: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
+> config: openrisc-virt_defconfig
+> (https://download.01.org/0day-ci/archive/20231205/202312051813.09Wbvu
+> sW-lkp@intel.com/config)
+> compiler: or1k-linux-gcc (GCC) 13.2.0
+> reproduce (this is a W=3D1 build):
+> (https://download.01.org/0day-ci/archive/20231205/202312051813.09Wbvu
+> sW-lkp@intel.com/reproduce)
+>=20
+> If you fix the issue in a separate patch/commit (i.e. not just a new
+> version of
+> the same patch/commit), kindly add following tags
+> > Reported-by: kernel test robot <lkp@intel.com>
+> > Closes:
+> > https://lore.kernel.org/oe-kbuild-all/202312051813.09WbvusW-lkp@intel.c=
+om/
+>=20
+> All errors (new ones prefixed by >>):
+>=20
+> =C2=A0=C2=A0 drivers/pci/iomap.c: In function 'pci_iounmap':
+> > > drivers/pci/iomap.c:155:17: error: implicit declaration of
+> > > function 'ioport_unmap'; did you mean 'devm_ioport_unmap'? [-
+> > > Werror=3Dimplicit-function-declaration]
+> =C2=A0=C2=A0=C2=A0=C2=A0 155 |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ioport_unmap(addr);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ ^~~~~~~~~~~~
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ devm_ioport_unmap
+> =C2=A0=C2=A0 cc1: some warnings being treated as errors
+>=20
+>=20
+> vim +155 drivers/pci/iomap.c
+>=20
+> =C2=A0=C2=A0 144=C2=A0=C2=A0
+> =C2=A0=C2=A0 145=C2=A0=C2=A0/**
+> =C2=A0=C2=A0 146=C2=A0=C2=A0 * pci_iounmap - Unmapp a mapping
+> =C2=A0=C2=A0 147=C2=A0=C2=A0 * @dev: PCI device the mapping belongs to
+> =C2=A0=C2=A0 148=C2=A0=C2=A0 * @addr: start address of the mapping
+> =C2=A0=C2=A0 149=C2=A0=C2=A0 *
+> =C2=A0=C2=A0 150=C2=A0=C2=A0 * Unmapp a PIO or MMIO mapping.
+> =C2=A0=C2=A0 151=C2=A0=C2=A0 */
+> =C2=A0=C2=A0 152=C2=A0=C2=A0void pci_iounmap(struct pci_dev *dev, void __=
+iomem *addr)
+> =C2=A0=C2=A0 153=C2=A0=C2=A0{
+> =C2=A0=C2=A0 154=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0if (iomem_is_ioport(addr)) {
+> =C2=A0> 155=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ioport_unmap(addr);
+> =C2=A0=C2=A0 156=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return;
+> =C2=A0=C2=A0 157=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0}
+> =C2=A0=C2=A0 158=C2=A0=C2=A0
+> =C2=A0=C2=A0 159=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0iounmap(addr);
+> =C2=A0=C2=A0 160=C2=A0=C2=A0}
+> =C2=A0=C2=A0 161=C2=A0=C2=A0EXPORT_SYMBOL(pci_iounmap);
+> =C2=A0=C2=A0 162=C2=A0=C2=A0
+>=20
 
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 2 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-board (gcc-10): 4 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
-nings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
