@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CEEE8045FA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60D938046BA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB7C283188
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1BE2817BA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CE48BEA;
-	Tue,  5 Dec 2023 03:23:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C43B8BF8;
+	Tue,  5 Dec 2023 03:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7xaK/Nn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n9Si/7Mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D84D6FB0;
-	Tue,  5 Dec 2023 03:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7643FC433C9;
-	Tue,  5 Dec 2023 03:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1855CA59;
+	Tue,  5 Dec 2023 03:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D4FC433C8;
+	Tue,  5 Dec 2023 03:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746601;
-	bh=JXtjOiipBcbhFyN/A9hbRTrbrYOERNA8ei9fdGFzk7s=;
+	s=korg; t=1701747052;
+	bh=xhlNzFLljCQMPDzzI6dmmmvT/prNJPHSrTwsUpNSEco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7xaK/Nn1sMe3TFJir4ne1N2wiBbfMxi7EJDSh4LOKKFwh6vXDcO0aleZyGieLRoV
-	 sBOR7kQs6X0BtmPe3J4KLsU3+5BVU2Hdts+xuMauMkK5kNyzZiN/9CmsonSxeMo/oO
-	 x74P9TOOovzFoqfRKELHwgvIcjdJsPou9t8lNNPY=
+	b=n9Si/7MmBvd+bZK9QsDHZyV1aLvhQl1NO3nPIGBDuonvHr8woN/MULBlE7yPa5k5I
+	 fgEaXAG1g3OWQbTy3bYmeTBMAzoNlPAI2NIqibcUahmCGg0NhkoCg5kjTuYeM+JTmO
+	 8zByYCSD7wXEyX7bi2nzY152URHlpjg1oiuPQbyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/134] net: rswitch: Fix type of ret in rswitch_start_xmit()
-Date: Tue,  5 Dec 2023 12:15:51 +0900
-Message-ID: <20231205031540.489749197@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <niklas.cassel@wdc.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 017/107] scsi: Change SCSI device boolean fields to single bit flags
+Date: Tue,  5 Dec 2023 12:15:52 +0900
+Message-ID: <20231205031532.726332545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +53,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 109b25d13e0054337860d44841b990d11b32d262 ]
+commit 6371be7aeb986905bb60ec73d002fc02343393b4 upstream.
 
-The type of ret in rswitch_start_xmit() should be netdev_tx_t. So,
-fix it.
+Commit 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop
+management") changed the single bit manage_start_stop flag into 2 boolean
+fields of the SCSI device structure. Commit 24eca2dce0f8 ("scsi: sd:
+Introduce manage_shutdown device flag") introduced the manage_shutdown
+boolean field for the same structure. Together, these 2 commits increase
+the size of struct scsi_device by 8 bytes by using booleans instead of
+defining the manage_xxx fields as single bit flags, similarly to other
+flags of this structure.
 
-Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Avoid this unnecessary structure size increase and be consistent with the
+definition of other flags by reverting the definitions of the manage_xxx
+fields as single bit flags.
+
+Fixes: 3cc2ffe5c16d ("scsi: sd: Differentiate system and runtime start/stop management")
+Fixes: 24eca2dce0f8 ("scsi: sd: Introduce manage_shutdown device flag")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20231120225631.37938-2-dlemoal@kernel.org
+Reviewed-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/libata-scsi.c  |    4 ++--
+ drivers/firewire/sbp2.c    |    6 +++---
+ include/scsi/scsi_device.h |    6 +++---
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index 0fc0b6bea7530..898f22aa796e2 100644
---- a/drivers/net/ethernet/renesas/rswitch.c
-+++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -1501,8 +1501,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- {
- 	struct rswitch_device *rdev = netdev_priv(ndev);
- 	struct rswitch_gwca_queue *gq = rdev->tx_queue;
-+	netdev_tx_t ret = NETDEV_TX_OK;
- 	struct rswitch_ext_desc *desc;
--	int ret = NETDEV_TX_OK;
- 	dma_addr_t dma_addr;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1087,8 +1087,8 @@ int ata_scsi_dev_config(struct scsi_devi
+ 		 * and resume and shutdown only. For system level suspend/resume,
+ 		 * devices power state is handled directly by libata EH.
+ 		 */
+-		sdev->manage_runtime_start_stop = true;
+-		sdev->manage_shutdown = true;
++		sdev->manage_runtime_start_stop = 1;
++		sdev->manage_shutdown = 1;
+ 	}
  
- 	if (rswitch_get_num_cur_queues(gq) >= gq->ring_size - 1) {
--- 
-2.42.0
-
+ 	/*
+--- a/drivers/firewire/sbp2.c
++++ b/drivers/firewire/sbp2.c
+@@ -1519,9 +1519,9 @@ static int sbp2_scsi_slave_configure(str
+ 	sdev->use_10_for_rw = 1;
+ 
+ 	if (sbp2_param_exclusive_login) {
+-		sdev->manage_system_start_stop = true;
+-		sdev->manage_runtime_start_stop = true;
+-		sdev->manage_shutdown = true;
++		sdev->manage_system_start_stop = 1;
++		sdev->manage_runtime_start_stop = 1;
++		sdev->manage_shutdown = 1;
+ 	}
+ 
+ 	if (sdev->type == TYPE_ROM)
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -167,19 +167,19 @@ struct scsi_device {
+ 	 * power state for system suspend/resume (suspend to RAM and
+ 	 * hibernation) operations.
+ 	 */
+-	bool manage_system_start_stop;
++	unsigned manage_system_start_stop:1;
+ 
+ 	/*
+ 	 * If true, let the high-level device driver (sd) manage the device
+ 	 * power state for runtime device suspand and resume operations.
+ 	 */
+-	bool manage_runtime_start_stop;
++	unsigned manage_runtime_start_stop:1;
+ 
+ 	/*
+ 	 * If true, let the high-level device driver (sd) manage the device
+ 	 * power state for system shutdown (power off) operations.
+ 	 */
+-	bool manage_shutdown;
++	unsigned manage_shutdown:1;
+ 
+ 	unsigned removable:1;
+ 	unsigned changed:1;	/* Data invalid due to media change */
 
 
 
