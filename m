@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DF288045FF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C4280472E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC9A428336D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2DF31F210AC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B91C48BF1;
-	Tue,  5 Dec 2023 03:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA0E8BF2;
+	Tue,  5 Dec 2023 03:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaLinGYq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj0ywqlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDFE8BEA;
-	Tue,  5 Dec 2023 03:23:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3E1C433C8;
-	Tue,  5 Dec 2023 03:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D036FB1;
+	Tue,  5 Dec 2023 03:35:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAB8C433C8;
+	Tue,  5 Dec 2023 03:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746612;
-	bh=MmMh8zL/6az6dD8s6GNWtp2ebuq6moGyk0b+5w6Vdck=;
+	s=korg; t=1701747346;
+	bh=O9dEsog5afVs6sk01wRPC+IdOBMSJ9X1yPlP7ce27j0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaLinGYqwozyp7rCiQs4MD60I62CWp58ptIDoUzxI+tLP6XyHEV5//Ep3gBYE4JqD
-	 WohtIolpKS6tE+MctA19eKu8bJipeRTWVhO5WFgMDsTeZWp48I0JsBbRFhf6o40l/k
-	 zTo/Bp3X7CLKD0WNKjS9sSv5TYLdJvl8h4uFBvmg=
+	b=lj0ywqlG8s+1QlWHVzWA5/3fdG+6zW36mhHC/pBEh0cwE9BEYxj8HuJT/wgvG88ye
+	 FzANEiV3biGXZAwaQpMbv75LY1CZjKK3KoUrg9F5dDZL9bD+zNEK3qUdGIPBVVre0Q
+	 TCwpRGd38/cfEM3f/PANwi4PE2CvpB9/pOb9kpUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/134] selftests/net: ipsec: fix constant out of range
+Subject: [PATCH 5.10 042/135] ext4: using nofail preallocation in ext4_es_remove_extent()
 Date: Tue,  5 Dec 2023 12:16:03 +0900
-Message-ID: <20231205031541.235789578@linuxfoundation.org>
+Message-ID: <20231205031533.242518140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,58 +54,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 088559815477c6f623a5db5993491ddd7facbec7 ]
+[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
 
-Fix a small compiler warning.
+If __es_remove_extent() returns an error it means that when splitting
+extent, allocating an extent that must be kept failed, where returning
+an error directly would cause the extent tree to be inconsistent. So we
+use GFP_NOFAIL to pre-allocate an extent_status and pass it to
+__es_remove_extent() to avoid this problem.
 
-nr_process must be a signed long: it is assigned a signed long by
-strtol() and is compared against LONG_MIN and LONG_MAX.
+In addition, since the allocated memory is outside the i_es_lock, the
+extent_status tree may change and the pre-allocated extent_status is
+no longer needed, so we release the pre-allocated extent_status when
+es->es_len is not initialized.
 
-ipsec.c:2280:65:
-    error: result of comparison of constant -9223372036854775808
-    with expression of type 'unsigned int' is always false
-    [-Werror,-Wtautological-constant-out-of-range-compare]
-
-  if ((errno == ERANGE && (nr_process == LONG_MAX || nr_process == LONG_MIN))
-
-Fixes: bc2652b7ae1e ("selftest/net/xfrm: Add test for ipsec tunnel")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Link: https://lore.kernel.org/r/20231124171645.1011043-2-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/ipsec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/extents_status.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
-index 9a8229abfa026..be4a30a0d02ae 100644
---- a/tools/testing/selftests/net/ipsec.c
-+++ b/tools/testing/selftests/net/ipsec.c
-@@ -2263,7 +2263,7 @@ static int check_results(void)
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 10550d62a6763..4af825eb0cb45 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -1457,6 +1457,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	ext4_lblk_t end;
+ 	int err = 0;
+ 	int reserved = 0;
++	struct extent_status *es = NULL;
  
- int main(int argc, char **argv)
- {
--	unsigned int nr_process = 1;
-+	long nr_process = 1;
- 	int route_sock = -1, ret = KSFT_SKIP;
- 	int test_desc_fd[2];
- 	uint32_t route_seq;
-@@ -2284,7 +2284,7 @@ int main(int argc, char **argv)
- 			exit_usage(argv);
- 		}
+ 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
+ 		return 0;
+@@ -1471,17 +1472,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	end = lblk + len - 1;
+ 	BUG_ON(end < lblk);
  
--		if (nr_process > MAX_PROCESSES || !nr_process) {
-+		if (nr_process > MAX_PROCESSES || nr_process < 1) {
- 			printk("nr_process should be between [1; %u]",
- 					MAX_PROCESSES);
- 			exit_usage(argv);
++retry:
++	if (err && !es)
++		es = __es_alloc_extent(true);
+ 	/*
+ 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
+ 	 * so that we are sure __es_shrink() is done with the inode before it
+ 	 * is reclaimed.
+ 	 */
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+-	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
++	err = __es_remove_extent(inode, lblk, end, &reserved, es);
++	if (es && !es->es_len)
++		__es_free_extent(es);
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
++	if (err)
++		goto retry;
++
+ 	ext4_es_print_tree(inode);
+ 	ext4_da_release_space(inode, reserved);
+-	return err;
++	return 0;
+ }
+ 
+ static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
 -- 
 2.42.0
 
