@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8460F80482E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45E4E8047E5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DD361F226F7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7758C1C20E9E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803788C13;
-	Tue,  5 Dec 2023 03:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA90979E3;
+	Tue,  5 Dec 2023 03:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqQqJbDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B1i73OmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5D56FB0;
-	Tue,  5 Dec 2023 03:46:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C516DC433C8;
-	Tue,  5 Dec 2023 03:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEE06AC2;
+	Tue,  5 Dec 2023 03:43:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFC84C433C8;
+	Tue,  5 Dec 2023 03:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748002;
-	bh=3/kDhxJDYH7X8RLj8urmtrr0fOdSIttTebvFLN4QNQo=;
+	s=korg; t=1701747811;
+	bh=k0ixwN+1mCeSbVL74Em1ZHXXVsA4CwWHwirVy0Jjbgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqQqJbDfgrwKHWmMW9J2aK3zxMfXzuEWy0hxkW6BX3K7U/6HA/NsfeFPhqRNCoVg9
-	 lQ95TcHHij4PxRw6t9A6m+0p7VdEKzJVIxWbsWg1iLhNQzr2jj4qhKLTpjgtGJ/nYx
-	 JB5/WII+imB2dmzOIAfXV/KWxt7CJcqDXZcgSwA8=
+	b=B1i73OmVyBcikSOyzadpdaeEQieUN4HVpN7nBwStdVKxcG8e1PujyVA2eHvTW8KWG
+	 ojVNJpkUqDuo7qgr0Mrt5sDo/HPDtZAVYpJCPWtg/dEy6JOvp0m0OyfivddrQ6jCOD
+	 nNjHUO9jiY+y+3D2AjH1k8WkMkmK7uRTk+nP4/Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 77/94] s390/cmma: fix detection of DAT pages
+Subject: [PATCH 5.15 60/67] cpufreq: imx6q: dont warn for disabling a non-existing frequency
 Date: Tue,  5 Dec 2023 12:17:45 +0900
-Message-ID: <20231205031527.117489238@linuxfoundation.org>
+Message-ID: <20231205031523.340768521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,69 +53,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-[ Upstream commit 44d93045247661acbd50b1629e62f415f2747577 ]
+[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
 
-If the cmma no-dat feature is available the kernel page tables are walked
-to identify and mark all pages which are used for address translation (all
-region, segment, and page tables). In a subsequent loop all other pages are
-marked as "no-dat" pages with the ESSA instruction.
+It is confusing if a warning is given for disabling a non-existent
+frequency of the operating performance points (OPP). In this case
+the function dev_pm_opp_disable() returns -ENODEV. Check the return
+value and avoid the output of a warning in this case. Avoid code
+duplication by using a separate function.
 
-This information is visible to the hypervisor, so that the hypervisor can
-optimize purging of guest TLB entries. The initial loop however is
-incorrect: only the first three of the four pages which belong to segment
-and region tables will be marked as being used for DAT. The last page is
-incorrectly marked as no-dat.
-
-This can result in incorrect guest TLB flushes.
-
-Fix this by simply marking all four pages.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+[ Viresh : Updated commit subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/page-states.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
-index 10d81deef330f..bef7e07da98ef 100644
---- a/arch/s390/mm/page-states.c
-+++ b/arch/s390/mm/page-states.c
-@@ -131,7 +131,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
- 			continue;
- 		if (!pud_folded(*pud)) {
- 			page = phys_to_page(pud_val(*pud));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_pmd(pud, addr, next);
-@@ -152,7 +152,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
- 			continue;
- 		if (!p4d_folded(*p4d)) {
- 			page = phys_to_page(p4d_val(*p4d));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_pud(p4d, addr, next);
-@@ -174,7 +174,7 @@ static void mark_kernel_pgd(void)
- 			continue;
- 		if (!pgd_folded(*pgd)) {
- 			page = phys_to_page(pgd_val(*pgd));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_p4d(pgd, addr, next);
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index 90beb26ed34e9..37d30fa2df5fa 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -209,6 +209,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
+ 	.suspend = cpufreq_generic_suspend,
+ };
+ 
++static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
++{
++	int ret = dev_pm_opp_disable(dev, freq);
++
++	if (ret < 0 && ret != -ENODEV)
++		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
++}
++
+ #define OCOTP_CFG3			0x440
+ #define OCOTP_CFG3_SPEED_SHIFT		16
+ #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
+@@ -254,17 +262,15 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
+ 	val &= 0x3;
+ 
+ 	if (val < OCOTP_CFG3_SPEED_996MHZ)
+-		if (dev_pm_opp_disable(dev, 996000000))
+-			dev_warn(dev, "failed to disable 996MHz OPP\n");
++		imx6x_disable_freq_in_opp(dev, 996000000);
+ 
+ 	if (of_machine_is_compatible("fsl,imx6q") ||
+ 	    of_machine_is_compatible("fsl,imx6qp")) {
+ 		if (val != OCOTP_CFG3_SPEED_852MHZ)
+-			if (dev_pm_opp_disable(dev, 852000000))
+-				dev_warn(dev, "failed to disable 852MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 852000000);
++
+ 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
+-			if (dev_pm_opp_disable(dev, 1200000000))
+-				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 1200000000);
+ 	}
+ 
+ 	return 0;
+@@ -316,20 +322,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 	val >>= OCOTP_CFG3_SPEED_SHIFT;
+ 	val &= 0x3;
+ 
+-	if (of_machine_is_compatible("fsl,imx6ul")) {
++	if (of_machine_is_compatible("fsl,imx6ul"))
+ 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
+-			if (dev_pm_opp_disable(dev, 696000000))
+-				dev_warn(dev, "failed to disable 696MHz OPP\n");
+-	}
++			imx6x_disable_freq_in_opp(dev, 696000000);
+ 
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
+-			if (dev_pm_opp_disable(dev, 792000000))
+-				dev_warn(dev, "failed to disable 792MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 792000000);
+ 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
+-			if (dev_pm_opp_disable(dev, 900000000))
+-				dev_warn(dev, "failed to disable 900MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 900000000);
+ 	}
+ 
+ 	return ret;
 -- 
 2.42.0
 
