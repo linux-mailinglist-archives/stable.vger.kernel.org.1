@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4014D8045E5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BF680469B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 729591C20C84
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D77A01F21404
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76716FB8;
-	Tue,  5 Dec 2023 03:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445F879F2;
+	Tue,  5 Dec 2023 03:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtuFlOmZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSpcyI/W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6897B6AA0;
-	Tue,  5 Dec 2023 03:22:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08D9C433C7;
-	Tue,  5 Dec 2023 03:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F177E6FAF;
+	Tue,  5 Dec 2023 03:29:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5259CC433C7;
+	Tue,  5 Dec 2023 03:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746556;
-	bh=wceJK5lDJsavwpUzH5ow/HxbNbwbckFhO3oRTrjByqg=;
+	s=korg; t=1701746975;
+	bh=b3+lmaKdP1hEN1sofGEGvBsbiByrQjP57+irO1ntGa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtuFlOmZQTjFTgwt9qNMkOx4A0dqJXLXlanDcOBcT46JiAMqm8+0CxCfu0zqwGlGo
-	 VROgNp+Thtxpmjebbc0ipVVIfM/NiLBJ0WwEw4R6vwKK/8mQ25R58gff+3MjIFd9vY
-	 N11h6Ucne21tSTny+M3HZm9hgRnSmmKUerkJ3MmA=
+	b=zSpcyI/WMo86ZgcVKQA2VpSMM38odQTZHCAYoa9rsJUqmbIsDMLDbD37rmik8swlm
+	 B6kiEVh60y2Wj8hsR0eR6Gz9ufNhqNM7iTr53hYZA4rksXzeJJRPQYJHvNtFrKZ9XC
+	 0qDEIKhsg9mVIB5DLHEnlJutbDUZXYkExIElbRBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 069/134] btrfs: free the allocated memory if btrfs_alloc_page_array() fails
+	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
+	Sven van Ashbrook <svenva@chromium.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 006/107] mmc: sdhci-pci-gli: Disable LPM during initialization
 Date: Tue,  5 Dec 2023 12:15:41 +0900
-Message-ID: <20231205031539.903813767@linuxfoundation.org>
+Message-ID: <20231205031531.912808171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,91 +52,120 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Kornel Dulęba <korneld@chromium.org>
 
-commit 94dbf7c0871f7ae6349ba4b0341ce8f5f98a071d upstream.
+commit d9ed644f58670865cf067351deb71010bd87a52f upstream.
 
-[BUG]
-If btrfs_alloc_page_array() fail to allocate all pages but part of the
-slots, then the partially allocated pages would be leaked in function
-btrfs_submit_compressed_read().
+To address IO performance commit f9e5b33934ce
+("mmc: host: Improve I/O read/write performance for GL9763E")
+limited LPM negotiation to runtime suspend state.
+The problem is that it only flips the switch in the runtime PM
+resume/suspend logic.
 
-[CAUSE]
-As explicitly stated, if btrfs_alloc_page_array() returned -ENOMEM,
-caller is responsible to free the partially allocated pages.
+Disable LPM negotiation in gl9763e_add_host.
+This helps in two ways:
+1. It was found that the LPM switch stays in the same position after
+   warm reboot. Having it set in init helps with consistency.
+2. Disabling LPM during the first runtime resume leaves us susceptible
+   to the performance issue in the time window between boot and the
+   first runtime suspend.
 
-For the existing call sites, most of them are fine:
-
-- btrfs_raid_bio::stripe_pages
-  Handled by free_raid_bio().
-
-- extent_buffer::pages[]
-  Handled btrfs_release_extent_buffer_pages().
-
-- scrub_stripe::pages[]
-  Handled by release_scrub_stripe().
-
-But there is one exception in btrfs_submit_compressed_read(), if
-btrfs_alloc_page_array() failed, we didn't cleanup the array and freed
-the array pointer directly.
-
-Initially there is still the error handling in commit dd137dd1f2d7
-("btrfs: factor out allocating an array of pages"), but later in commit
-544fe4a903ce ("btrfs: embed a btrfs_bio into struct compressed_bio"),
-the error handling is removed, leading to the possible memory leak.
-
-[FIX]
-This patch would add back the error handling first, then to prevent such
-situation from happening again, also
-Make btrfs_alloc_page_array() to free the allocated pages as a extra
-safety net, then we don't need to add the error handling to
-btrfs_submit_compressed_read().
-
-Fixes: 544fe4a903ce ("btrfs: embed a btrfs_bio into struct compressed_bio")
-CC: stable@vger.kernel.org # 6.4+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+Reviewed-by: Sven van Ashbrook <svenva@chromium.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20231114115516.1585361-1-korneld@chromium.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/extent_io.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |   54 ++++++++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 25 deletions(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -675,8 +675,8 @@ static void end_bio_extent_readpage(stru
-  * 		the array will be skipped
-  *
-  * Return: 0        if all pages were able to be allocated;
-- *         -ENOMEM  otherwise, and the caller is responsible for freeing all
-- *                  non-null page pointers in the array.
-+ *         -ENOMEM  otherwise, the partially allocated pages would be freed and
-+ *                  the array slots zeroed
-  */
- int btrfs_alloc_page_array(unsigned int nr_pages, struct page **page_array)
- {
-@@ -695,8 +695,13 @@ int btrfs_alloc_page_array(unsigned int
- 		 * though alloc_pages_bulk_array() falls back to alloc_page()
- 		 * if  it could not bulk-allocate. So we must be out of memory.
- 		 */
--		if (allocated == last)
-+		if (allocated == last) {
-+			for (int i = 0; i < allocated; i++) {
-+				__free_page(page_array[i]);
-+				page_array[i] = NULL;
-+			}
- 			return -ENOMEM;
-+		}
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -801,6 +801,32 @@ static void gl9763e_hs400_enhanced_strob
+ 	sdhci_writel(host, val, SDHCI_GLI_9763E_HS400_ES_REG);
+ }
  
- 		memalloc_retry_wait(GFP_NOFS);
- 	}
++static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot,
++					      bool enable)
++{
++	struct pci_dev *pdev = slot->chip->pdev;
++	u32 value;
++
++	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
++	value &= ~GLI_9763E_VHS_REV;
++	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_W);
++	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
++
++	pci_read_config_dword(pdev, PCIE_GLI_9763E_CFG, &value);
++
++	if (enable)
++		value &= ~GLI_9763E_CFG_LPSN_DIS;
++	else
++		value |= GLI_9763E_CFG_LPSN_DIS;
++
++	pci_write_config_dword(pdev, PCIE_GLI_9763E_CFG, value);
++
++	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
++	value &= ~GLI_9763E_VHS_REV;
++	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
++	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
++}
++
+ static void sdhci_set_gl9763e_signaling(struct sdhci_host *host,
+ 					unsigned int timing)
+ {
+@@ -909,6 +935,9 @@ static int gl9763e_add_host(struct sdhci
+ 	if (ret)
+ 		goto cleanup;
+ 
++	/* Disable LPM negotiation to avoid entering L1 state. */
++	gl9763e_set_low_power_negotiation(slot, false);
++
+ 	return 0;
+ 
+ cleanup:
+@@ -960,31 +989,6 @@ static void gli_set_gl9763e(struct sdhci
+ }
+ 
+ #ifdef CONFIG_PM
+-static void gl9763e_set_low_power_negotiation(struct sdhci_pci_slot *slot, bool enable)
+-{
+-	struct pci_dev *pdev = slot->chip->pdev;
+-	u32 value;
+-
+-	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+-	value &= ~GLI_9763E_VHS_REV;
+-	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_W);
+-	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+-
+-	pci_read_config_dword(pdev, PCIE_GLI_9763E_CFG, &value);
+-
+-	if (enable)
+-		value &= ~GLI_9763E_CFG_LPSN_DIS;
+-	else
+-		value |= GLI_9763E_CFG_LPSN_DIS;
+-
+-	pci_write_config_dword(pdev, PCIE_GLI_9763E_CFG, value);
+-
+-	pci_read_config_dword(pdev, PCIE_GLI_9763E_VHS, &value);
+-	value &= ~GLI_9763E_VHS_REV;
+-	value |= FIELD_PREP(GLI_9763E_VHS_REV, GLI_9763E_VHS_REV_R);
+-	pci_write_config_dword(pdev, PCIE_GLI_9763E_VHS, value);
+-}
+-
+ static int gl9763e_runtime_suspend(struct sdhci_pci_chip *chip)
+ {
+ 	struct sdhci_pci_slot *slot = chip->slots[0];
 
 
 
