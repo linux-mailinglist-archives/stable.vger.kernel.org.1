@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BD6804807
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE1F80476D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D234B2817AC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F11F1C20DE2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F48C03;
-	Tue,  5 Dec 2023 03:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B778BF7;
+	Tue,  5 Dec 2023 03:38:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW9HWzDr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gfsez5uk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A6A6FB0;
-	Tue,  5 Dec 2023 03:45:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCB7C433C8;
-	Tue,  5 Dec 2023 03:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9198F6FB1;
+	Tue,  5 Dec 2023 03:38:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2728DC433C7;
+	Tue,  5 Dec 2023 03:38:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747903;
-	bh=DLGMhxqAteBLkywi+bzVfdpiLHF2mf8rs2l9hFNERzo=;
+	s=korg; t=1701747507;
+	bh=AgGfTvR3dsNM8CeDPjXi9rdCdyAEuDxRfRaEsqicgbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wW9HWzDr7fax8vp2Km45FoB0l8zDAf+Bwm884UPj17EuK1PRQwkGHwwc4bmBXA7Dd
-	 B5NlKKyhhvwbkv1ponTUE9Ilp83YuUdE78GDGssV5RIwfcYnjj7LWCZhzdEXrQP+Jo
-	 Ku3HMF6MrkNvAXMuI2+s4XlRFVIKQ3sIai/pA35E=
+	b=Gfsez5ukipszncaVsG5o4giPZxfAWIyK0RFUmi8k/aKWMbAlmt2Gh77tAmfWs1CtR
+	 aLAsZ8ZNZ7DoBQxifTdwRNIt+KdtFTTdd03T76ZnBtyoFcoWYhya6ztvnTXuqYEkUa
+	 vHwJtDlEegwHkRV53DL07nFJ9Ba2EkswY7SwAu4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 17/94] net: axienet: Fix check for partial TX checksum
+	Bragatheswaran Manickavel <bragathemanick0908@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+d66de4cbf532749df35f@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 084/135] btrfs: ref-verify: fix memory leaks in btrfs_ref_tree_mod()
 Date: Tue,  5 Dec 2023 12:16:45 +0900
-Message-ID: <20231205031523.846360996@linuxfoundation.org>
+Message-ID: <20231205031535.838699785@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
 
-[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
+commit f91192cd68591c6b037da345bc9fcd5e50540358 upstream.
 
-Due to a typo, the code checked the RX checksum feature in the TX path.
+In btrfs_ref_tree_mod(), when !parent 're' was allocated through
+kmalloc(). In the following code, if an error occurs, the execution will
+be redirected to 'out' or 'out_unlock' and the function will be exited.
+However, on some of the paths, 're' are not deallocated and may lead to
+memory leaks.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example: lookup_block_entry() for 'be' returns NULL, the out label
+will be invoked. During that flow ref and 'ra' are freed but not 're',
+which can potentially lead to a memory leak.
+
+CC: stable@vger.kernel.org # 5.10+
+Reported-and-tested-by: syzbot+d66de4cbf532749df35f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d66de4cbf532749df35f
+Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/ref-verify.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 0ef806ea18327..bbc1cf288d25f 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -656,7 +656,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
- 			/* Tx Full Checksum Offload Enabled */
- 			cur_p->app0 |= 2;
--		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
-+		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
- 			csum_start_off = skb_transport_offset(skb);
- 			csum_index_off = csum_start_off + skb->csum_offset;
- 			/* Tx Partial Checksum Offload Enabled */
--- 
-2.42.0
-
+--- a/fs/btrfs/ref-verify.c
++++ b/fs/btrfs/ref-verify.c
+@@ -804,6 +804,7 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ 			dump_ref_action(fs_info, ra);
+ 			kfree(ref);
+ 			kfree(ra);
++			kfree(re);
+ 			goto out_unlock;
+ 		} else if (be->num_refs == 0) {
+ 			btrfs_err(fs_info,
+@@ -813,6 +814,7 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ 			dump_ref_action(fs_info, ra);
+ 			kfree(ref);
+ 			kfree(ra);
++			kfree(re);
+ 			goto out_unlock;
+ 		}
+ 
 
 
 
