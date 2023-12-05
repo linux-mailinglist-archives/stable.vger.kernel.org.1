@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-4378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B98B80473C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5B28046BC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7D4CB20C59
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FE04B209A6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508728BF1;
-	Tue,  5 Dec 2023 03:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417378BF2;
+	Tue,  5 Dec 2023 03:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bFRtiGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujmM+UUn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F23F6FB1;
-	Tue,  5 Dec 2023 03:36:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68660C433C8;
-	Tue,  5 Dec 2023 03:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB51C79F2;
+	Tue,  5 Dec 2023 03:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E49FC433C8;
+	Tue,  5 Dec 2023 03:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747384;
-	bh=2SSMwyx/Zsx8+bkV3iINd2sCDz9V5nG/7qUjqtTbZeU=;
+	s=korg; t=1701747055;
+	bh=SNiEg76vUvc8zRbYpkk1jDir3xkz+CvjcJk4AoHbeQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bFRtiGsvRl5SpChgSigDaHmiN71O0EQU6OFhvdtyumzHC9Rvo5znJ0+PdTadiqYY
-	 eqT6lyUuWaFaiwOXRtsGL/Tb9Be5l0epAtyXGVDE3AXdg39J9KZABjTLv1cfzq/pku
-	 xdfsN+RS26WD0KWL1ZA7uEPWr7kQUJe8+f686ekU=
+	b=ujmM+UUn8drWX29pKwaWYn9H9PPc4A1OHFE7lbiciEBv6ufuuOAUnKKD8EZJy/9YI
+	 8N9fVI7Wm0cpvF9+6X77Afl0gHjEODSVmZxY7qpFTLeW4X6Bd4qgBk9I0yfiqq4zZh
+	 9Ms+wJP+F5YzHaiCQHXMbqAPHHROhZLgYl+V4pSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alon Zahavi <zahavi.alon@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/135] nvmet: nul-terminate the NQNs passed in the connect command
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 018/107] scsi: sd: Fix system start for ATA devices
 Date: Tue,  5 Dec 2023 12:15:53 +0900
-Message-ID: <20231205031532.703095675@linuxfoundation.org>
+Message-ID: <20231205031532.774958069@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +52,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 1c22e0295a5eb571c27b53c7371f95699ef705ff ]
+commit b09d7f8fd50f6e93cbadd8d27fde178f745b42a1 upstream.
 
-The host and subsystem NQNs are passed in the connect command payload and
-interpreted as nul-terminated strings.  Ensure they actually are
-nul-terminated before using them.
+It is not always possible to keep a device in the runtime suspended state
+when a system level suspend/resume cycle is executed. E.g. for ATA devices
+connected to AHCI adapters, system resume resets the ATA ports, which
+causes connected devices to spin up. In such case, a runtime suspended disk
+will incorrectly be seen with a suspended runtime state because the device
+is not resumed by sd_resume_system(). The power state seen by the user is
+different than the actual device physical power state.
 
-Fixes: a07b4970f464 "nvmet: add a generic NVMe target")
-Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by introducing the struct scsi_device flag
+force_runtime_start_on_system_start. When set, this flag causes
+sd_resume_system() to request a runtime resume operation for runtime
+suspended devices. This results in the user seeing the device runtime_state
+as active after a system resume, thus correctly reflecting the device
+physical power state.
+
+Fixes: 9131bff6a9f1 ("scsi: core: pm: Only runtime resume if necessary")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20231120225631.37938-3-dlemoal@kernel.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fabrics-cmd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/ata/libata-scsi.c  |    5 +++++
+ drivers/scsi/sd.c          |    9 ++++++++-
+ include/scsi/scsi_device.h |    6 ++++++
+ 3 files changed, 19 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index 5baaace31c68c..fb4f62982cb7e 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -189,6 +189,8 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 		goto out;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1086,9 +1086,14 @@ int ata_scsi_dev_config(struct scsi_devi
+ 		 * Ask the sd driver to issue START STOP UNIT on runtime suspend
+ 		 * and resume and shutdown only. For system level suspend/resume,
+ 		 * devices power state is handled directly by libata EH.
++		 * Given that disks are always spun up on system resume, also
++		 * make sure that the sd driver forces runtime suspended disks
++		 * to be resumed to correctly reflect the power state of the
++		 * device.
+ 		 */
+ 		sdev->manage_runtime_start_stop = 1;
+ 		sdev->manage_shutdown = 1;
++		sdev->force_runtime_start_on_system_start = 1;
  	}
  
-+	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
-+	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
- 	status = nvmet_alloc_ctrl(d->subsysnqn, d->hostnqn, req,
- 				  le32_to_cpu(c->kato), &ctrl);
- 	if (status) {
-@@ -250,6 +252,8 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 		goto out;
- 	}
+ 	/*
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -3834,8 +3834,15 @@ static int sd_resume(struct device *dev,
  
-+	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
-+	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
- 	ctrl = nvmet_ctrl_find_get(d->subsysnqn, d->hostnqn,
- 				   le16_to_cpu(d->cntlid), req);
- 	if (!ctrl) {
--- 
-2.42.0
-
+ static int sd_resume_system(struct device *dev)
+ {
+-	if (pm_runtime_suspended(dev))
++	if (pm_runtime_suspended(dev)) {
++		struct scsi_disk *sdkp = dev_get_drvdata(dev);
++		struct scsi_device *sdp = sdkp ? sdkp->device : NULL;
++
++		if (sdp && sdp->force_runtime_start_on_system_start)
++			pm_request_resume(dev);
++
+ 		return 0;
++	}
+ 
+ 	return sd_resume(dev, false);
+ }
+--- a/include/scsi/scsi_device.h
++++ b/include/scsi/scsi_device.h
+@@ -181,6 +181,12 @@ struct scsi_device {
+ 	 */
+ 	unsigned manage_shutdown:1;
+ 
++	/*
++	 * If set and if the device is runtime suspended, ask the high-level
++	 * device driver (sd) to force a runtime resume of the device.
++	 */
++	unsigned force_runtime_start_on_system_start:1;
++
+ 	unsigned removable:1;
+ 	unsigned changed:1;	/* Data invalid due to media change */
+ 	unsigned busy:1;	/* Used to prevent races */
 
 
 
