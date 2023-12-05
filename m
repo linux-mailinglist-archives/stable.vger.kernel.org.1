@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-4033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A3D98045B8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:20:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F0F58045DC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CACB41C20C4F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:20:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70DE41C20C75
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1493A6FB1;
-	Tue,  5 Dec 2023 03:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56356FB1;
+	Tue,  5 Dec 2023 03:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGFUllPM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqhDPrfj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8CE6AA0;
-	Tue,  5 Dec 2023 03:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC17C433C7;
-	Tue,  5 Dec 2023 03:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530D76AA0;
+	Tue,  5 Dec 2023 03:22:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BB0C433C8;
+	Tue,  5 Dec 2023 03:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746442;
-	bh=qpcHbnJb6UWrKvrNp3whZqBb1mgHSbxYTdSX78TZSyA=;
+	s=korg; t=1701746534;
+	bh=/3DC3lcw2xo9aJ9q6KhSx7JDNb/0WpdErXGzb981nik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGFUllPMwDVGbehjKfW3Y0eeQo+A4OL1BZsQEewsn3lYbHYGNqoh6hdUuxqmJRDAE
-	 rGnprnDTb4nfUi6/VLi6nE3FgZv8aGlVF1kZgg71ZagE2JyNDRjnJew51yeVYMyoXA
-	 pZZIcxCh/1E+m10mH83No4bHfAHeEtrVWKw7+hrc=
+	b=vqhDPrfjhEpZHmkfp+rOq2JWbGpQk0JLHvCOP/FJVh2UYU3d1IFLQGURflrLL7JIM
+	 uyONj23ZnGv4wdI3Ota3mRzNIpB+zMbQIjtvGJi3x6XKYTpOBdbY/2ztyIhpsKPfnm
+	 I1mwfkrBIf2JBGMnpUohTeyYPZdu+xckBQ1aFOXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.6 025/134] scsi: ufs: core: Clear cmd if abort succeeds in MCQ mode
-Date: Tue,  5 Dec 2023 12:14:57 +0900
-Message-ID: <20231205031536.983448625@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 026/134] drm/amd: Enable PCIe PME from D3
+Date: Tue,  5 Dec 2023 12:14:58 +0900
+Message-ID: <20231205031537.060706958@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
 References: <20231205031535.163661217@linuxfoundation.org>
@@ -57,59 +56,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 93e6c0e19d5bb12b49534a411c85e21d333731fa upstream.
+commit 6967741d26c87300a51b5e50d4acd104bc1a9759 upstream.
 
-In MCQ mode, if cmd is pending in device and abort succeeds, response will
-not be returned by device. So we need clear the cmd, otherwise timeout will
-happen and next time we use same tag we will get a WARN_ON(lrbp->cmd).
+When dGPU is put into BOCO it may be in D3cold but still able send
+PME on display hotplug event. For this to work it must be enabled
+as wake source from D3.
 
-Below is error log:
+When runpm is enabled use pci_wake_from_d3() to mark wakeup as
+enabled by default.
 
-  <3>[ 2277.447611][T21376] ufshcd-mtk 112b0000.ufshci: ufshcd_try_to_abort_task: cmd pending in the device. tag = 7
-  <3>[ 2277.476954][T21376] ufshcd-mtk 112b0000.ufshci: Aborting tag 7 / CDB 0x2a succeeded
-  <6>[ 2307.551263][T30974] ufshcd-mtk 112b0000.ufshci: ufshcd_abort: Device abort task at tag 7
-  <4>[ 2307.623264][  T327] WARNING: CPU: 5 PID: 327 at source/drivers/ufs/core/ufshcd.c:3021 ufshcd_queuecommand+0x66c/0xe34
-
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Link: https://lore.kernel.org/r/20231115131024.15829-1-peter.wang@mediatek.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -6347,11 +6347,24 @@ static bool ufshcd_abort_one(struct requ
- 	struct scsi_device *sdev = cmd->device;
- 	struct Scsi_Host *shost = sdev->host;
- 	struct ufs_hba *hba = shost_priv(shost);
-+	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
-+	struct ufs_hw_queue *hwq;
-+	unsigned long flags;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2195,6 +2195,8 @@ retry_init:
+ 		pm_runtime_mark_last_busy(ddev->dev);
+ 		pm_runtime_put_autosuspend(ddev->dev);
  
- 	*ret = ufshcd_try_to_abort_task(hba, tag);
- 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
- 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
- 		*ret ? "failed" : "succeeded");
++		pci_wake_from_d3(pdev, TRUE);
 +
-+	/* Release cmd in MCQ mode if abort succeeds */
-+	if (is_mcq_enabled(hba) && (*ret == 0)) {
-+		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
-+		spin_lock_irqsave(&hwq->cq_lock, flags);
-+		if (ufshcd_cmd_inflight(lrbp->cmd))
-+			ufshcd_release_scsi_cmd(hba, lrbp);
-+		spin_unlock_irqrestore(&hwq->cq_lock, flags);
-+	}
-+
- 	return *ret == 0;
- }
- 
+ 		/*
+ 		 * For runpm implemented via BACO, PMFW will handle the
+ 		 * timing for BACO in and out:
 
 
 
