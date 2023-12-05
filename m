@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCCFC804728
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BA18045D4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E98A280FCC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA2F1F213A6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9E679E3;
-	Tue,  5 Dec 2023 03:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E866FB1;
+	Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ro1DiGmq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYdFNaie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A190B6FB1;
-	Tue,  5 Dec 2023 03:35:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E78C433C9;
-	Tue,  5 Dec 2023 03:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDBD6AA0;
+	Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452EBC433C8;
+	Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747333;
-	bh=8FIbPu8nE9/3RfqNvzuHVbn0UnagqtwlqKBrIaD/91c=;
+	s=korg; t=1701746513;
+	bh=JEiLvcFT2IcWk0VeSp/I/MOGfz32MZNjLcrV82C0Qsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ro1DiGmqshCX8tOgxU5AKuxdX7HsgSkkOZV280OuZDYBVjRCf5njMdYdytLJJ+6UP
-	 MwUPMu81q4dAQSd/+xsYPnmWgAZGUh4VRSZmx+QTbTUwVtLrQFGKqhpp8n8l0FiWRV
-	 AUTPrN3j/U72FNf6K1T9iJ/jkU7xLjhxcnEELMJs=
+	b=QYdFNaieIbsksTlkP0eWIcruiT92s5Aaqmh8P39dFbvS1X68eNoguqy+5Q8O5yKs2
+	 yohFrfLmdseBZx5spQB/zXVEl+n0IdFBSFskzCI2nvy4r/+EDvD3D6Dv/twpC8AmtP
+	 +eTekFTyRIuTrIIRYkCcgbR9UmcymojeTD3Zi3wA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 5.10 002/135] PCI: keystone: Drop __init from ks_pcie_add_pcie_{ep,port}()
+	Zheng Wang <zyytlz.wz@163.com>,
+	Coly Li <colyli@suse.de>,
+	Markus Weippert <markus@gekmihesg.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 051/134] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
 Date: Tue,  5 Dec 2023 12:15:23 +0900
-Message-ID: <20231205031530.693370434@linuxfoundation.org>
+Message-ID: <20231205031538.819010653@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,77 +52,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Markus Weippert <markus@gekmihesg.de>
 
-This commit has no upstream equivalent.
+commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
 
-After commit db5ebaeb8fda ("PCI: keystone: Don't discard .probe()
-callback") in 5.10.202, there are two modpost warnings when building with
-clang:
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
+NULL pointer dereference.
 
-  WARNING: modpost: vmlinux.o(.text+0x5aa6dc): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_port()
-  The function ks_pcie_probe() references
-  the function __init ks_pcie_add_pcie_port().
-  This is often because ks_pcie_probe lacks a __init
-  annotation or the annotation of ks_pcie_add_pcie_port is wrong.
+BUG: kernel NULL pointer dereference, address: 0000000000000080
+Call Trace:
+ ? __die_body.cold+0x1a/0x1f
+ ? page_fault_oops+0xd2/0x2b0
+ ? exc_page_fault+0x70/0x170
+ ? asm_exc_page_fault+0x22/0x30
+ ? btree_node_free+0xf/0x160 [bcache]
+ ? up_write+0x32/0x60
+ btree_gc_coalesce+0x2aa/0x890 [bcache]
+ ? bch_extent_bad+0x70/0x170 [bcache]
+ btree_gc_recurse+0x130/0x390 [bcache]
+ ? btree_gc_mark_node+0x72/0x230 [bcache]
+ bch_btree_gc+0x5da/0x600 [bcache]
+ ? cpuusage_read+0x10/0x10
+ ? bch_btree_gc+0x600/0x600 [bcache]
+ bch_gc_thread+0x135/0x180 [bcache]
 
-  WARNING: modpost: vmlinux.o(.text+0x5aa6f4): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_ep()
-  The function ks_pcie_probe() references
-  the function __init ks_pcie_add_pcie_ep().
-  This is often because ks_pcie_probe lacks a __init
-  annotation or the annotation of ks_pcie_add_pcie_ep is wrong.
+The relevant code starts with:
 
-ks_pcie_add_pcie_ep() was removed in upstream commit a0fd361db8e5 ("PCI:
-dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common
-code") and ks_pcie_add_pcie_port() was removed in upstream
-commit 60f5b73fa0f2 ("PCI: dwc: Remove unnecessary wrappers around
-dw_pcie_host_init()"), both of which happened before upstream
-commit 7994db905c0f ("PCI: keystone: Don't discard .probe() callback").
+    new_nodes[0] = NULL;
 
-As neither of these removal changes are really suitable for stable, just
-remove __init from these functions in stable, as it is no longer a
-correct annotation after dropping __init from ks_pcie_probe().
+    for (i = 0; i < nodes; i++) {
+        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
+            goto out_nocoalesce;
+    // ...
+out_nocoalesce:
+    // ...
+    for (i = 0; i < nodes; i++)
+        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
+028ddcac477b
+            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
+            rw_unlock(true, new_nodes[i]);
+        }
 
-Fixes: 012dba0ab814 ("PCI: keystone: Don't discard .probe() callback")
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Cc: Coly Li <colyli@suse.de>
+Signed-off-by: Markus Weippert <markus@gekmihesg.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/bcache/btree.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -865,8 +865,8 @@ static irqreturn_t ks_pcie_err_irq_handl
- 	return ks_pcie_handle_error_irq(ks_pcie);
- }
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1510,7 +1510,7 @@ out_nocoalesce:
+ 	bch_keylist_free(&keylist);
  
--static int __init ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
--					struct platform_device *pdev)
-+static int ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
-+				 struct platform_device *pdev)
- {
- 	struct dw_pcie *pci = ks_pcie->pci;
- 	struct pcie_port *pp = &pci->pp;
-@@ -978,8 +978,8 @@ static const struct dw_pcie_ep_ops ks_pc
- 	.get_features = &ks_pcie_am654_get_features,
- };
- 
--static int __init ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
--				      struct platform_device *pdev)
-+static int ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
-+			       struct platform_device *pdev)
- {
- 	int ret;
- 	struct dw_pcie_ep *ep;
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR(new_nodes[i])) {
++		if (!IS_ERR_OR_NULL(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
 
 
 
