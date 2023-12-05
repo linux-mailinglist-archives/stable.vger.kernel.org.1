@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A34F80462C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DC6E8046C2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21B4B20C2F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C919B1F213E5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303476FB8;
-	Tue,  5 Dec 2023 03:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3741E6FB1;
+	Tue,  5 Dec 2023 03:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="joUxOyND"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QF53grQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9A06110;
-	Tue,  5 Dec 2023 03:25:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B048C433C8;
-	Tue,  5 Dec 2023 03:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C7779E3;
+	Tue,  5 Dec 2023 03:31:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D8BC433C9;
+	Tue,  5 Dec 2023 03:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746735;
-	bh=9ThAObB+rIUo+5g8PwfoMw7nXaj/elt8EuFjnp8bc4s=;
+	s=korg; t=1701747072;
+	bh=ZbCoe+v8/EPTiUdxu0V0P/jFY/ZzZGrhSTxTn+QC90w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=joUxOyNDB4qk6HLvg6ZThRvEorBg89fk65Hiyfd5ljUeza/WC4Dt30UMnEGzZC3Ld
-	 iH5LXpAt7SGYv6TDdhHGFguLoWcwE8RmdU5SUyRyxwzrY5iKGtsTfejvcRoEgVSNxH
-	 qFFD3reAi/9Ji7ZKhuS1FXiR+UKQGp1DDOTA0yjM=
+	b=QF53grQwVZM32FqNGdicWLLDC7805/bGY8k1XK5iusUoEjDGVO+pIUHjbU8LpMcsE
+	 ruw/ptUQnjPWuGeSSPMjguVHEpUVgVueGb5IcRynLqctimME6oVccz4ZvqqJR3dBt2
+	 3lwcXrV+80blcixdsjkTyBmQnAIgIzeInj5UhIhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.vnet.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/134] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 049/107] btrfs: fix 64bit compat send ioctl arguments not initializing version member
 Date: Tue,  5 Dec 2023 12:16:24 +0900
-Message-ID: <20231205031542.569446352@linuxfoundation.org>
+Message-ID: <20231205031534.371336755@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,78 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
+commit 5de0434bc064606d6b7467ec3e5ad22963a18c04 upstream.
 
-When a device is initialized, the driver invokes dma_supported() twice -
-first for streaming mappings followed by coherent mappings. For an
-SR-IOV device, default window is deleted and DDW created. With vPMEM
-enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
-device.  There are no direct mappings.
+When the send protocol versioning was added in 5.16 e77fbf990316
+("btrfs: send: prepare for v2 protocol"), the 32/64bit compat code was
+not updated (added by 2351f431f727 ("btrfs: fix send ioctl on 32bit with
+64bit kernel")), missing the version struct member. The compat code is
+probably rarely used, nobody reported any bugs.
 
-First time when dma_supported() is called with 64 bit mask, DDW is created
-and marked as dynamic window. The second time dma_supported() is called,
-enable_ddw() finds existing window for the device and incorrectly returns
-it as "direct mapping".
+Found by tool https://github.com/jirislaby/clang-struct .
 
-This only happens when size of DDW is big enough to map max LPAR memory.
-
-This results in streaming TCEs to not get dynamically mapped, since code
-incorrently assumes these are already pre-mapped. The adapter initially
-comes up but goes down due to EEH.
-
-Fixes: 381ceda88c4c ("powerpc/pseries/iommu: Make use of DDW for indirect mapping")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231003030802.47914-1-gbatra@linux.vnet.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e77fbf990316 ("btrfs: send: prepare for v2 protocol")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/ioctl.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 16d93b580f61f..496e16c588aaa 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -914,7 +914,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
- 	return 0;
- }
- 
--static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
-+			      bool *direct_mapping)
- {
- 	struct dma_win *window;
- 	const struct dynamic_dma_window_prop *dma64;
-@@ -927,6 +928,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
- 			dma64 = window->prop;
- 			*dma_addr = be64_to_cpu(dma64->dma_base);
- 			*window_shift = be32_to_cpu(dma64->window_shift);
-+			*direct_mapping = window->direct;
- 			found = true;
- 			break;
- 		}
-@@ -1270,10 +1272,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- 	mutex_lock(&dma_win_init_mutex);
- 
--	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
--		direct_mapping = (len >= max_ram_len);
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping))
- 		goto out_unlock;
--	}
- 
- 	/*
- 	 * If we already went through this for a previous function of
--- 
-2.42.0
-
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -5236,6 +5236,7 @@ static int _btrfs_ioctl_send(struct inod
+ 		arg->clone_sources = compat_ptr(args32.clone_sources);
+ 		arg->parent_root = args32.parent_root;
+ 		arg->flags = args32.flags;
++		arg->version = args32.version;
+ 		memcpy(arg->reserved, args32.reserved,
+ 		       sizeof(args32.reserved));
+ #else
 
 
 
