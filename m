@@ -1,49 +1,45 @@
-Return-Path: <stable+bounces-4334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F73C80470F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 778D58045F8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF69B1F21447
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27ACF1F2135A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375EA8BF1;
-	Tue,  5 Dec 2023 03:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE0C6FB1;
+	Tue,  5 Dec 2023 03:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFtQxIoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1AN7QA4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2DE6FB1;
-	Tue,  5 Dec 2023 03:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66960C433C7;
-	Tue,  5 Dec 2023 03:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3BB8F4E;
+	Tue,  5 Dec 2023 03:23:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD80C433C9;
+	Tue,  5 Dec 2023 03:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747264;
-	bh=WC5aX8gNOzKuXlSQ1pGsk4ERwl1wAnY/6Fv4rcJ+fIM=;
+	s=korg; t=1701746596;
+	bh=FbsfmztPZPRjfZ/+e+3nWDD6H0Az4Zd5YgnCb/xKJB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fFtQxIoQanqPyJTKC473uQF6zAif/qOph980jRhmEWRQzheu0Ra4yNEEq6D+0+4AE
-	 CiPBQ958g6QgrsED3tOn2IBa/pF16YT6N9NZGxEP6TAH1EDTkWJlThqiYuhxqyk1nI
-	 OBIMN1IqWxWyxVGLvHvqO5MKIpzhH7yakaGt0Bt8=
+	b=1AN7QA4gWuzLd+cCacswIvpXllCba7AK1YzKeRbAeNvTpV92x+EA2/SgiQwlFGXja
+	 GSdEfHTTqKWHcVHN3+ED1i6B23aD84duaxJODwEGA15OI4MPYYQF1X/+hBsid1gE6u
+	 ISUOOTG509/qEhRryu8nuqhSRC5Dmso+vPLeaGBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuijing Li <shuijing.li@mediatek.com>,
-	Xinlei Lee <xinlei.lee@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 012/135] drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 061/134] parisc: Mark jump_table naturally aligned
 Date: Tue,  5 Dec 2023 12:15:33 +0900
-Message-ID: <20231205031531.265809312@linuxfoundation.org>
+Message-ID: <20231205031539.410844603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,63 +51,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuijing Li <shuijing.li@mediatek.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 812562b8d881ce6d33fed8052b3a10b718430fb5 ]
+commit 07eecff8ae78df7f28800484d31337e1f9bfca3a upstream.
 
-For "boe,tv105wum-nw0" this special panel, it is stipulated in
-the panel spec that MIPI needs to keep the LP11 state before
-the lcm_reset pin is pulled high.
+The jump_table stores two 32-bit words and one 32- (on 32-bit kernel)
+or one 64-bit word (on 64-bit kernel).
+Ensure that the last word is always 64-bit aligned on a 64-bit kernel
+by aligning the whole structure on sizeof(long).
 
-Signed-off-by: Shuijing Li <shuijing.li@mediatek.com>
-Signed-off-by: Xinlei Lee <xinlei.lee@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230515094955.15982-3-shuijing.li@mediatek.com
-Stable-dep-of: 6965809e5269 ("drm/panel: auo,b101uan08.3: Fine tune the panel power sequence")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org   # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/parisc/include/asm/jump_label.h |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index db9d0b86d5428..3229e5eabbd21 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -36,6 +36,7 @@ struct panel_desc {
- 	const struct panel_init_cmd *init_cmds;
- 	unsigned int lanes;
- 	bool discharge_on_disable;
-+	bool lp11_before_reset;
- };
+--- a/arch/parisc/include/asm/jump_label.h
++++ b/arch/parisc/include/asm/jump_label.h
+@@ -15,10 +15,12 @@ static __always_inline bool arch_static_
+ 	asm_volatile_goto("1:\n\t"
+ 		 "nop\n\t"
+ 		 ".pushsection __jump_table,  \"aw\"\n\t"
++		 ".align %1\n\t"
+ 		 ".word 1b - ., %l[l_yes] - .\n\t"
+ 		 __stringify(ASM_ULONG_INSN) " %c0 - .\n\t"
+ 		 ".popsection\n\t"
+-		 : :  "i" (&((char *)key)[branch]) :  : l_yes);
++		 : : "i" (&((char *)key)[branch]), "i" (sizeof(long))
++		 : : l_yes);
  
- struct boe_panel {
-@@ -551,6 +552,10 @@ static int boe_panel_prepare(struct drm_panel *panel)
+ 	return false;
+ l_yes:
+@@ -30,10 +32,12 @@ static __always_inline bool arch_static_
+ 	asm_volatile_goto("1:\n\t"
+ 		 "b,n %l[l_yes]\n\t"
+ 		 ".pushsection __jump_table,  \"aw\"\n\t"
++		 ".align %1\n\t"
+ 		 ".word 1b - ., %l[l_yes] - .\n\t"
+ 		 __stringify(ASM_ULONG_INSN) " %c0 - .\n\t"
+ 		 ".popsection\n\t"
+-		 : :  "i" (&((char *)key)[branch]) :  : l_yes);
++		 : : "i" (&((char *)key)[branch]), "i" (sizeof(long))
++		 : : l_yes);
  
- 	usleep_range(5000, 10000);
- 
-+	if (boe->desc->lp11_before_reset) {
-+		mipi_dsi_dcs_nop(boe->dsi);
-+		usleep_range(1000, 2000);
-+	}
- 	gpiod_set_value(boe->enable_gpio, 1);
- 	usleep_range(1000, 2000);
- 	gpiod_set_value(boe->enable_gpio, 0);
-@@ -719,6 +724,7 @@ static const struct panel_desc boe_tv105wum_nw0_desc = {
- 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
- 		      MIPI_DSI_MODE_LPM,
- 	.init_cmds = boe_init_cmd,
-+	.lp11_before_reset = true,
- };
- 
- static int boe_panel_get_modes(struct drm_panel *panel,
--- 
-2.42.0
-
+ 	return false;
+ l_yes:
 
 
 
