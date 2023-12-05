@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-4345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D57480471B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60BB08045E7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98EBA1F21434
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C540282B75
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E7C8BF1;
-	Tue,  5 Dec 2023 03:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE25A6FAF;
+	Tue,  5 Dec 2023 03:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/fk26uD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLtLcwq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8211A59;
-	Tue,  5 Dec 2023 03:34:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF43C433C7;
-	Tue,  5 Dec 2023 03:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7069B611E;
+	Tue,  5 Dec 2023 03:22:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC598C433C8;
+	Tue,  5 Dec 2023 03:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747295;
-	bh=QNEGD7omzRFrzGlmJfnOfMehQIzS/BEbCXXsM9QAxZU=;
+	s=korg; t=1701746561;
+	bh=Yr12GtE8xkSbq8noYz6mWJoAa7idNC3wfZHYY0dAzwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/fk26uDBhj/HEBLxYD1cUfSxqTMhHdN09UlET0NGyyM0tgA+CPZrHm7LwScRUC/I
-	 quYsK5V9MbXc2hUJYYUz5cT278ewgw16WmY5VE6ydAEP3eeAmEgvWxsV3MKbzMiLrb
-	 2FgwJqUmsh/U1fAIzWVx3VkodKfOVFe88xqAtBgg=
+	b=cLtLcwq51sShDsPurePQxtpGww3OmXn51E4B0j5WesX/xWei6GYiLD3k00JtK/LgQ
+	 uhcxgsRijbd+s/FNuNpISXqGVyLjUfkuBq9TCnG1uR3zpmlAQxYpe+xvZHAXT9PO+z
+	 LpPiiAUUrE/SkszNgkwNe1JYDBRtFr38HQOYi0gc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herb Wei <weihao.bj@ieisystem.com>,
-	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 022/135] net: usb: ax88179_178a: fix failed operations during ax88179_reset
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 071/134] io_uring: enable io_mem_alloc/free to be used in other parts
 Date: Tue,  5 Dec 2023 12:15:43 +0900
-Message-ID: <20231205031531.990636228@linuxfoundation.org>
+Message-ID: <20231205031540.008875217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,71 +51,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 0739af07d1d947af27c877f797cb82ceee702515 ]
+commit edecf1689768452ba1a64b7aaf3a47a817da651a upstream.
 
-Using generic ASIX Electronics Corp. AX88179 Gigabit Ethernet device,
-the following test cycle has been implemented:
-    - power on
-    - check logs
-    - shutdown
-    - after detecting the system shutdown, disconnect power
-    - after approximately 60 seconds of sleep, power is restored
-Running some cycles, sometimes error logs like this appear:
-    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to write reg index 0x0001: -19
-    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x0001: -19
-    ...
-These failed operation are happening during ax88179_reset execution, so
-the initialization could not be correct.
+In preparation for using these helpers, make them non-static and add
+them to our internal header.
 
-In order to avoid this, we need to increase the delay after reset and
-clock initial operations. By using these larger values, many cycles
-have been run and no failed operations appear.
-
-It would be better to check some status register to verify when the
-operation has finished, but I do not have found any available information
-(neither in the public datasheets nor in the manufacturer's driver). The
-only available information for the necessary delays is the maufacturer's
-driver (original values) but the proposed values are not enough for the
-tested devices.
-
-Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
-Reported-by: Herb Wei <weihao.bj@ieisystem.com>
-Tested-by: Herb Wei <weihao.bj@ieisystem.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-Link: https://lore.kernel.org/r/20231120120642.54334-1-jtornosm@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ax88179_178a.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |    4 ++--
+ io_uring/io_uring.h |    3 +++
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index 79a53fe245e5c..38cb863ccb911 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -1700,11 +1700,11 @@ static int ax88179_reset(struct usbnet *dev)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -2659,7 +2659,7 @@ static int io_cqring_wait(struct io_ring
+ 	return READ_ONCE(rings->cq.head) == READ_ONCE(rings->cq.tail) ? ret : 0;
+ }
  
- 	*tmp16 = AX_PHYPWR_RSTCTL_IPRL;
- 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, tmp16);
--	msleep(200);
-+	msleep(500);
+-static void io_mem_free(void *ptr)
++void io_mem_free(void *ptr)
+ {
+ 	if (!ptr)
+ 		return;
+@@ -2771,7 +2771,7 @@ static void io_rings_free(struct io_ring
+ 	}
+ }
  
- 	*tmp = AX_CLK_SELECT_ACS | AX_CLK_SELECT_BCS;
- 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_CLK_SELECT, 1, 1, tmp);
--	msleep(100);
-+	msleep(200);
+-static void *io_mem_alloc(size_t size)
++void *io_mem_alloc(size_t size)
+ {
+ 	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
+ 	void *ret;
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -86,6 +86,9 @@ bool __io_alloc_req_refill(struct io_rin
+ bool io_match_task_safe(struct io_kiocb *head, struct task_struct *task,
+ 			bool cancel_all);
  
- 	/* Ethernet PHY Auto Detach*/
- 	ax88179_auto_detach(dev, 0);
--- 
-2.42.0
-
++void *io_mem_alloc(size_t size);
++void io_mem_free(void *ptr);
++
+ #if defined(CONFIG_PROVE_LOCKING)
+ static inline void io_lockdep_assert_cq_locked(struct io_ring_ctx *ctx)
+ {
 
 
 
