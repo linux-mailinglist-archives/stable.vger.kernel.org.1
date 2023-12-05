@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-4496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E6D8047BD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A7F804768
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE48A1F21377
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6145C1F2148A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C9AE79E3;
-	Tue,  5 Dec 2023 03:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CD38C03;
+	Tue,  5 Dec 2023 03:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qScp/HXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do6Kev0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9196AC2;
-	Tue,  5 Dec 2023 03:41:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A34C433C8;
-	Tue,  5 Dec 2023 03:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DF4A59;
+	Tue,  5 Dec 2023 03:38:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C84C433C7;
+	Tue,  5 Dec 2023 03:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747704;
-	bh=Q/6cOEv8C+GSMlSOfMw3h07OG7qxm6KnnuetqsZeXfk=;
+	s=korg; t=1701747496;
+	bh=fysSgXQJbRmXrxSY8aQDmTwAwzXzfoHYsrcjWeVuiMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qScp/HXZdefHCoZxSHMuFd+gvADDnNGcv+Xzq5IWEw8YoHdl9iVGmNKLWzxqP+lHG
-	 rNlCLB+GkFxYnvP/K96jpLFBtKtDvuUCiXPwVybRlBXfdNUgLJgXksobe54xRjno41
-	 UUzW8wmFgmhqbgoPFVtjjHD1Jq/WLPwEN9nB2rSY=
+	b=Do6Kev0YL6OHFCmDgtbpMK3EKEw4/mj5SZOYcnqlJ6CK2UWCPE2Wa9yE6r8qDYvMN
+	 q7nuYNYQ2kKt0PzfIXvluw+jmgbvccZLIRNYzEKs7lKvQMsD+a0SWurEXnOWH/PXC2
+	 H3+tJeJASbrEdN1I4yemzMnG/cbhjhOFiPOCSe8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wu Bo <bo.wu@vivo.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 5.15 14/67] dm verity: dont perform FEC for failed readahead IO
+	Tejun Heo <tj@kernel.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 098/135] Revert "workqueue: remove unused cancel_work()"
 Date: Tue,  5 Dec 2023 12:16:59 +0900
-Message-ID: <20231205031520.645570840@linuxfoundation.org>
+Message-ID: <20231205031536.851621539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,90 +54,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wu Bo <bo.wu@vivo.com>
+From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
 
-commit 0193e3966ceeeef69e235975918b287ab093082b upstream.
+[ Upstream commit 73b4b53276a1d6290cd4f47dbbc885b6e6e59ac6 ]
 
-We found an issue under Android OTA scenario that many BIOs have to do
-FEC where the data under dm-verity is 100% complete and no corruption.
+This reverts commit 6417250d3f894e66a68ba1cd93676143f2376a6f.
 
-Android OTA has many dm-block layers, from upper to lower:
-dm-verity
-dm-snapshot
-dm-origin & dm-cow
-dm-linear
-ufs
+amdpgu need this function in order to prematurly stop pending
+reset works when another reset work already in progress.
 
-DM tables have to change 2 times during Android OTA merging process.
-When doing table change, the dm-snapshot will be suspended for a while.
-During this interval, many readahead IOs are submitted to dm_verity
-from filesystem. Then the kverity works are busy doing FEC process
-which cost too much time to finish dm-verity IO. This causes needless
-delay which feels like system is hung.
-
-After adding debugging it was found that each readahead IO needed
-around 10s to finish when this situation occurred. This is due to IO
-amplification:
-
-dm-snapshot suspend
-erofs_readahead     // 300+ io is submitted
-	dm_submit_bio (dm_verity)
-		dm_submit_bio (dm_snapshot)
-		bio return EIO
-		bio got nothing, it's empty
-	verity_end_io
-	verity_verify_io
-	forloop range(0, io->n_blocks)    // each io->nblocks ~= 20
-		verity_fec_decode
-		fec_decode_rsb
-		fec_read_bufs
-		forloop range(0, v->fec->rsn) // v->fec->rsn = 253
-			new_read
-			submit_bio (dm_snapshot)
-		end loop
-	end loop
-dm-snapshot resume
-
-Readahead BIOs get nothing while dm-snapshot is suspended, so all of
-them will cause verity's FEC.
-Each readahead BIO needs to verify ~20 (io->nblocks) blocks.
-Each block needs to do FEC, and every block needs to do 253
-(v->fec->rsn) reads.
-So during the suspend interval(~200ms), 300 readahead BIOs trigger
-~1518000 (300*20*253) IOs to dm-snapshot.
-
-As readahead IO is not required by userspace, and to fix this issue,
-it is best to pass readahead errors to upper layer to handle it.
-
-Cc: stable@vger.kernel.org
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Signed-off-by: Wu Bo <bo.wu@vivo.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Reviewed-by: Lai Jiangshan<jiangshanlai@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 91d3d149978b ("r8169: prevent potential deadlock in rtl8169_close")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-target.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/workqueue.h | 1 +
+ kernel/workqueue.c        | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -583,7 +583,9 @@ static void verity_end_io(struct bio *bi
- 	struct dm_verity_io *io = bio->bi_private;
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index 460c58fa011ae..0383fac637e19 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -460,6 +460,7 @@ extern int schedule_on_each_cpu(work_func_t func);
+ int execute_in_process_context(work_func_t fn, struct execute_work *);
  
- 	if (bio->bi_status &&
--	    (!verity_fec_is_enabled(io->v) || verity_is_system_shutting_down())) {
-+	    (!verity_fec_is_enabled(io->v) ||
-+	     verity_is_system_shutting_down() ||
-+	     (bio->bi_opf & REQ_RAHEAD))) {
- 		verity_finish_io(io, bio->bi_status);
- 		return;
- 	}
+ extern bool flush_work(struct work_struct *work);
++extern bool cancel_work(struct work_struct *work);
+ extern bool cancel_work_sync(struct work_struct *work);
+ 
+ extern bool flush_delayed_work(struct delayed_work *dwork);
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 37d01e44d4837..63140e4dd5dfc 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -3240,6 +3240,15 @@ static bool __cancel_work(struct work_struct *work, bool is_dwork)
+ 	return ret;
+ }
+ 
++/*
++ * See cancel_delayed_work()
++ */
++bool cancel_work(struct work_struct *work)
++{
++	return __cancel_work(work, false);
++}
++EXPORT_SYMBOL(cancel_work);
++
+ /**
+  * cancel_delayed_work - cancel a delayed work
+  * @dwork: delayed_work to cancel
+-- 
+2.42.0
+
 
 
 
