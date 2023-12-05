@@ -1,24 +1,24 @@
-Return-Path: <stable+bounces-4651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A9EF80503C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:35:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702228050B5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:39:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F562817D2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:35:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5938B20DCE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AFD4F1E1;
-	Tue,  5 Dec 2023 10:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1202C4D58F;
+	Tue,  5 Dec 2023 10:38:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F63F109;
-	Tue,  5 Dec 2023 02:35:29 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 296B310F4;
+	Tue,  5 Dec 2023 02:37:05 -0800 (PST)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 9C7FE1C007F; Tue,  5 Dec 2023 11:35:27 +0100 (CET)
-Date: Tue, 5 Dec 2023 11:35:27 +0100
+	id C150F1C007F; Tue,  5 Dec 2023 11:37:03 +0100 (CET)
+Date: Tue, 5 Dec 2023 11:37:03 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev,
@@ -28,9 +28,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	jonathanh@nvidia.com, f.fainelli@gmail.com,
 	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
 	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/107] 6.1.66-rc1 review
-Message-ID: <ZW78708vOccgxX1P@duo.ucw.cz>
-References: <20231205031531.426872356@linuxfoundation.org>
+Subject: Re: [PATCH 4.14 00/30] 4.14.332-rc1 review
+Message-ID: <ZW79TxIyjSU5iDtW@duo.ucw.cz>
+References: <20231205031511.476698159@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -38,82 +38,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="nNEJpFFVy8/6pjhj"
+	protocol="application/pgp-signature"; boundary="lYrZ3D5Uqtjt7xxa"
 Content-Disposition: inline
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
 
 
---nNEJpFFVy8/6pjhj
+--lYrZ3D5Uqtjt7xxa
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> This is the start of the stable review cycle for the 6.1.66 release.
-> There are 107 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 4.14.332 release.
+> There are 30 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-We see build failure on risc-v:
+CIP testing did not find any problems here:
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/568005=
-0135
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+4.14.y
 
-  AR      drivers/nvmem/built-in.a
-2686In file included from ./arch/riscv/include/asm/ptrace.h:10,
-2687                 from ./arch/riscv/include/uapi/asm/bpf_perf_event.h:5,
-2688                 from ./include/uapi/linux/bpf_perf_event.h:11,
-2689                 from ./include/linux/perf_event.h:18,
-2690                 from ./include/linux/perf/riscv_pmu.h:12,
-2691                 from drivers/perf/riscv_pmu_sbi.c:14:
-2692drivers/perf/riscv_pmu_sbi.c: In function 'pmu_sbi_ovf_handler':
-2693drivers/perf/riscv_pmu_sbi.c:582:40: error: 'riscv_pmu_irq_num' undecla=
-red (first use in this function); did you mean 'riscv_pmu_irq'?
-2694  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-2695      |                                        ^~~~~~~~~~~~~~~~~
-2696./arch/riscv/include/asm/csr.h:400:45: note: in definition of macro 'cs=
-r_clear'
-2697  400 |         unsigned long __v =3D (unsigned long)(val);            =
-   \
-2698      |                                             ^~~
-2699drivers/perf/riscv_pmu_sbi.c:582:36: note: in expansion of macro 'BIT'
-2700  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-2701      |                                    ^~~
-2702drivers/perf/riscv_pmu_sbi.c:582:40: note: each undeclared identifier i=
-s reported only once for each function it appears in
-2703  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-2704      |                                        ^~~~~~~~~~~~~~~~~
-2705./arch/riscv/include/asm/csr.h:400:45: note: in definition of macro 'cs=
-r_clear'
-2706  400 |         unsigned long __v =3D (unsigned long)(val);            =
-   \
-2707      |                                             ^~~
-2708drivers/perf/riscv_pmu_sbi.c:582:36: note: in expansion of macro 'BIT'
-2709  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
-2710      |                                    ^~~
-2711make[3]: *** [scripts/Makefile.build:250: drivers/perf/riscv_pmu_sbi.o]=
- Error 1
-2712make[2]: *** [scripts/Makefile.build:500: drivers/perf] Error 2
-2713make[2]: *** Waiting for unfinished jobs....
-2714  CC      drivers/firmware/efi/earlycon.o
-2715
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
 Best regards,
-								Pavel
+                                                                Pavel
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---nNEJpFFVy8/6pjhj
+--lYrZ3D5Uqtjt7xxa
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZW787wAKCRAw5/Bqldv6
-8gOWAJwL8heLPlMLxzxCyYJUolIZ/NkangCeOu/Wu+mI7zBIwEFY6TIEWSj+LYk=
-=vpMf
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZW79TwAKCRAw5/Bqldv6
+8gP+AJ9Tr7bg/j/zQZD4CiLgCp4bfl9nWgCgn9Cioj4e83WuKgSxg1feYuz8GqU=
+=5+Bk
 -----END PGP SIGNATURE-----
 
---nNEJpFFVy8/6pjhj--
+--lYrZ3D5Uqtjt7xxa--
 
