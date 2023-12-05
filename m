@@ -1,86 +1,106 @@
-Return-Path: <stable+bounces-4776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0BF80614A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 23:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BA13B806173
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 23:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2C271C20F65
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 22:04:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EACD31C20FBA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 22:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7AE6FCFA;
-	Tue,  5 Dec 2023 22:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDEE6AB9E;
+	Tue,  5 Dec 2023 22:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nT9L9bJx"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE4C91B8;
-	Tue,  5 Dec 2023 14:04:10 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 8EA931C006F; Tue,  5 Dec 2023 23:04:08 +0100 (CET)
-Date: Tue, 5 Dec 2023 23:04:08 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/105] 6.1.66-rc2 review
-Message-ID: <ZW+eWDG9e1KzUjgZ@duo.ucw.cz>
-References: <20231205183248.388576393@linuxfoundation.org>
+Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05CF31A5;
+	Tue,  5 Dec 2023 14:11:02 -0800 (PST)
+Received: by mail-qv1-xf34.google.com with SMTP id 6a1803df08f44-67ab41956f8so11195036d6.2;
+        Tue, 05 Dec 2023 14:11:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701814261; x=1702419061; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hiHYrWLVsQ4xi96qKilwHGdyOD8NQ+GmXlpe3R+oL10=;
+        b=nT9L9bJxuTmIJMhfXvrPipfexjRnhEQbFM3h13RuhdzJ+QdS2Y1P06sBrrrViM7+xT
+         ZrmezlSqmZPewvmfhF1cnLUcttTPMAd49sKU9iKMcMCME+SPk7E4cTtL6b4PdGI7hSx/
+         q2I++ay4VC14XapE6u7Qk7iZCb79JtiQv4/iTNbNFYk/HUp1QJSKV1syMnsODNL9RV99
+         oy3saqYtVNlzjfW6MvmdNawiyxg0UlRzuuwLnKdLolX2uAK4+hvJO9v2I1egSyuFmrwH
+         CDnZffA9mvHwzS7/gmqgMCCReruaZpAeGQDkaNgvyq0aUVxem6ScLCnp4W9SNvYnLPvN
+         1/ZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701814261; x=1702419061;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hiHYrWLVsQ4xi96qKilwHGdyOD8NQ+GmXlpe3R+oL10=;
+        b=eOEu3va0X8yruM2tQTkT4jnIt8+o7XWgFd3aBgUB+atTAgOy0IfcXMjBSQneKsx8+m
+         tdWwlCHdKkL07Up0RJs7a9AwIc5I9N/e9qkTSFMiK05IuyM+5/dLSzQwUfUor5otU68e
+         37/i5TOO+W0VILR72HEwVHRuv7MkLwXt9BUNS7SJoGLARSoZDffmjN4hQaXPxcQkl2TN
+         qvIXUHxfsGIH3omXfBIPZpfhPo4JrV5Z52rKTnS5xV3lci1sktu+7ufnigcq6C1V1yRq
+         njSujgHrhQrOzQxDtApMrae/rPD8HUNabg3Yj3d6T+1q4pJ+Y9BpSLDsvq6jVvHjqRXt
+         z/uA==
+X-Gm-Message-State: AOJu0YzZERPgWHtZEeTc1dr3u77WgwQO6DNrVzp/9tzRfoNEqDBqJvEs
+	EjIpVPZEfpOBQCPX9raHKFkH13noJe8=
+X-Google-Smtp-Source: AGHT+IF+mdfV+A5byHRDJyw7Fl1+njvyzE+4VwQsv0XG5ecPxbVjutByKhU53pJtzwDxC5jgIepBKQ==
+X-Received: by 2002:ad4:4090:0:b0:67a:a721:ec23 with SMTP id l16-20020ad44090000000b0067aa721ec23mr2012694qvp.103.1701814261044;
+        Tue, 05 Dec 2023 14:11:01 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id bv14-20020a05622a0a0e00b00425406b64a1sm3709864qtb.24.2023.12.05.14.10.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Dec 2023 14:11:00 -0800 (PST)
+Message-ID: <ee7deb44-a48d-4a91-a137-3c7d2ff95246@gmail.com>
+Date: Tue, 5 Dec 2023 14:10:55 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ynH96m5Bg2gM5syf"
-Content-Disposition: inline
-In-Reply-To: <20231205183248.388576393@linuxfoundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/64] 5.15.142-rc2 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20231205183238.954685317@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20231205183238.954685317@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-
---ynH96m5Bg2gM5syf
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi!
-
-> This is the start of the stable review cycle for the 6.1.66 release.
-> There are 105 patches in this series, all will be posted as a response
+On 12/5/23 11:22, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.142 release.
+> There are 64 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
+> 
+> Responses should be made by Thu, 07 Dec 2023 18:32:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.142-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-CIP testing did not find any problems here:
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-
-Linux 4.19.301-rc2 (58069964f7ae) and Linux 5.10.203-rc3
-(3e5897d7b363) are also passing our tests; as previous -rcs were
-already ok, I'll not send separate emails.
-
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---ynH96m5Bg2gM5syf
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZW+eWAAKCRAw5/Bqldv6
-8mrlAJwIO27d+i7ERhkdUwycfd5hGIFpVQCeJHw7Auzi7nYJregr6TdYtgj1akI=
-=FK9V
------END PGP SIGNATURE-----
-
---ynH96m5Bg2gM5syf--
 
