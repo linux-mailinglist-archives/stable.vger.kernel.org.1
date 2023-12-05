@@ -1,51 +1,48 @@
-Return-Path: <stable+bounces-4149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05718804632
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0898046F1
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 374D41C20CC4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC201C20DD6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822626FAF;
-	Tue,  5 Dec 2023 03:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C9F8BEC;
+	Tue,  5 Dec 2023 03:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6rz2l27"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+RrC/36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395416110;
-	Tue,  5 Dec 2023 03:25:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709AFC433C7;
-	Tue,  5 Dec 2023 03:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E176FB1;
+	Tue,  5 Dec 2023 03:33:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE61C433C8;
+	Tue,  5 Dec 2023 03:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746751;
-	bh=YfhqTc/8qe+XBrebp05O5/yFvqA+1pU8BQu5NUL6Pj0=;
+	s=korg; t=1701747196;
+	bh=48bQ6cW4teOZJJt50HhjIAYr/0jrF5DLLk4jy5A1Vew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6rz2l273EfT9aDEp5JtxDSZIZa2itKsqYH1lscv3JMu5+UR/ALUWaisH6K3pKGk7
-	 iPY4+Nm410EJlR9tyRJ5SyDfLIDuxERYxbrJ5rBBv3+GNFCDsXYR0Jou1uhISz2Qzn
-	 s1X1Mn+L05PDjj5rUADhp22OxpM7LUfNTS/aVZH4=
+	b=x+RrC/36/HJ5G5CTL2lEN/kynWjl657JvfY96a1qA+dWoEMgWDlAK4GI7R3Vuvqlm
+	 z8PC23lgrrjGV8IFnEN33C5JG+7rl4+9I6bjt37ykJk3iYEL2spTA66JS4abNQpS03
+	 gzAj+S+n146+hDPxD2TvJTnF3F1iTySJdJg4+sNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sean Christopherson <seanjc@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/134] vfio: Drop vfio_file_iommu_group() stub to fudge around a KVM wart
+Subject: [PATCH 6.1 071/107] ravb: Fix races between ravb_tx_timeout_work() and net related ops
 Date: Tue,  5 Dec 2023 12:16:46 +0900
-Message-ID: <20231205031543.944552356@linuxfoundation.org>
+Message-ID: <20231205031535.925504050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,96 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 4ea95c04fa6b9043a1a301240996aeebe3cb28ec ]
+[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
 
-Drop the vfio_file_iommu_group() stub and instead unconditionally declare
-the function to fudge around a KVM wart where KVM tries to do symbol_get()
-on vfio_file_iommu_group() (and other VFIO symbols) even if CONFIG_VFIO=n.
+Fix races between ravb_tx_timeout_work() and functions of net_device_ops
+and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
+since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
+ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
+may happen in ravb_tx_timeout_work() like below:
 
-Ensuring the symbol is always declared fixes a PPC build error when
-modules are also disabled, in which case symbol_get() simply points at the
-address of the symbol (with some attributes shenanigans).  Because KVM
-does symbol_get() instead of directly depending on VFIO, the lack of a
-fully defined symbol is not problematic (ugly, but "fine").
+CPU0			CPU1
+			ravb_tx_timeout()
+			schedule_work()
+...
+__dev_close_many()
+// Under rtnl lock
+ravb_close()
+cancel_work_sync()
+// Waiting
+			ravb_tx_timeout_work()
+			rtnl_lock()
+			// This is possible to cause a deadlock
 
-   arch/powerpc/kvm/../../../virt/kvm/vfio.c:89:7:
-   error: attribute declaration must precede definition [-Werror,-Wignored-attributes]
-           fn = symbol_get(vfio_file_iommu_group);
-                ^
-   include/linux/module.h:805:60: note: expanded from macro 'symbol_get'
-   #define symbol_get(x) ({ extern typeof(x) x __attribute__((weak,visibility("hidden"))); &(x); })
-                                                              ^
-   include/linux/vfio.h:294:35: note: previous definition is here
-   static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
-                                     ^
-   arch/powerpc/kvm/../../../virt/kvm/vfio.c:89:7:
-   error: attribute declaration must precede definition [-Werror,-Wignored-attributes]
-           fn = symbol_get(vfio_file_iommu_group);
-                ^
-   include/linux/module.h:805:65: note: expanded from macro 'symbol_get'
-   #define symbol_get(x) ({ extern typeof(x) x __attribute__((weak,visibility("hidden"))); &(x); })
-                                                                   ^
-   include/linux/vfio.h:294:35: note: previous definition is here
-   static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
-                                     ^
-   2 errors generated.
+If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
 
-Although KVM is firmly in the wrong (there is zero reason for KVM to build
-virt/kvm/vfio.c when VFIO is disabled), fudge around the error in VFIO as
-the stub is unnecessary and doesn't serve its intended purpose (KVM is the
-only external user of vfio_file_iommu_group()), and there is an in-flight
-series to clean up the entire KVM<->VFIO interaction, i.e. fixing this in
-KVM would result in more churn in the long run, and the stub needs to go
-away regardless.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308251949.5IiaV0sz-lkp@intel.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202309030741.82aLACDG-lkp@intel.com
-Closes: https://lore.kernel.org/oe-kbuild-all/202309110914.QLH0LU6L-lkp@intel.com
-Link: https://lore.kernel.org/all/0-v1-08396538817d+13c5-vfio_kvm_kconfig_jgg@nvidia.com
-Link: https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.com
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Tested-by: Michael Ellerman <mpe@ellerman.id.au>
-Fixes: c1cce6d079b8 ("vfio: Compile vfio_group infrastructure optionally")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20231130001000.543240-1-seanjc@google.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/vfio.h | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index 454e9295970c4..a65b2513f8cdc 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -289,16 +289,12 @@ void vfio_combine_iova_ranges(struct rb_root_cached *root, u32 cur_nodes,
- /*
-  * External user API
-  */
--#if IS_ENABLED(CONFIG_VFIO_GROUP)
- struct iommu_group *vfio_file_iommu_group(struct file *file);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 9a52283d77544..020edbd0a44a6 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1890,6 +1890,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 	struct net_device *ndev = priv->ndev;
+ 	int error;
+ 
++	if (!rtnl_trylock()) {
++		usleep_range(1000, 2000);
++		schedule_work(&priv->work);
++		return;
++	}
 +
-+#if IS_ENABLED(CONFIG_VFIO_GROUP)
- bool vfio_file_is_group(struct file *file);
- bool vfio_file_has_dev(struct file *file, struct vfio_device *device);
- #else
--static inline struct iommu_group *vfio_file_iommu_group(struct file *file)
--{
--	return NULL;
--}
--
- static inline bool vfio_file_is_group(struct file *file)
- {
- 	return false;
+ 	netif_tx_stop_all_queues(ndev);
+ 
+ 	/* Stop PTP Clock driver */
+@@ -1923,7 +1929,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		 */
+ 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
+ 			   __func__, error);
+-		return;
++		goto out_unlock;
+ 	}
+ 	ravb_emac_init(ndev);
+ 
+@@ -1933,6 +1939,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		ravb_ptp_init(ndev, priv->pdev);
+ 
+ 	netif_tx_start_all_queues(ndev);
++
++out_unlock:
++	rtnl_unlock();
+ }
+ 
+ /* Packet transmit function for Ethernet AVB */
 -- 
 2.42.0
 
