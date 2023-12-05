@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-4482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F868047AE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9198804795
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAACA1F214BF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2439B1C20E20
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E8A8F56;
-	Tue,  5 Dec 2023 03:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EB38C03;
+	Tue,  5 Dec 2023 03:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KaE4rzg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nwvdmezr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4B379E3;
-	Tue,  5 Dec 2023 03:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC74C433C8;
-	Tue,  5 Dec 2023 03:41:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECCB6FB1;
+	Tue,  5 Dec 2023 03:40:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6422C433C8;
+	Tue,  5 Dec 2023 03:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747667;
-	bh=zQQjns+iyEp2+vEgLtqaL6tlkK1S4lmu16uJvYEyJeU=;
+	s=korg; t=1701747621;
+	bh=gBNuvK7T8Zn8V1I2Ouc8tp5LgxACUoPua4b2f8vXWQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KaE4rzg8B2sXWXd5VvsO8pCXpk8LLqTDwcSMGLNfgAcTnc0iMtU3CNG5zYhTK9ImD
-	 5UJPXQvgptruAEaU1+SXVpK10/25ncR/PQYK/Nfz4x2DUkZpRkpSBElttdt0z+wpq+
-	 mgxWDhSsHVxYi5FsLT27bhe7OPhMn7Jfgo3OvgRo=
+	b=NwvdmezrFvs1xqhH0Y3OZEgFIbD61Q+kYIlJ3CAA3tGkZ1Hj48Y7sN7YuRLpcNodK
+	 oqLNOxAEu76p0X3OmLvqeTZvvK4mJ0g+Q1JME+wjaMhcylTREMP8kqYJx380U2Pqfv
+	 vH/U9nmi9Nk81AfyC6UGHpS7i//5hoUaIcDjQ31I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>,
-	Max Nguyen <maxwell.nguyen@hp.com>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.15 24/67] Input: xpad - add HyperX Clutch Gladiate Support
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Paul Olaru <paul.olaru@oss.nxp.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 108/135] ASoC: SOF: sof-pci-dev: add parameter to override topology filename
 Date: Tue,  5 Dec 2023 12:17:09 +0900
-Message-ID: <20231205031521.184727844@linuxfoundation.org>
+Message-ID: <20231205031537.569390695@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +55,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Nguyen <maxwell.nguyen@hp.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit e28a0974d749e5105d77233c0a84d35c37da047e upstream.
+[ Upstream commit 772627acfeb0e670ede534b7d5502dae9668d3ee ]
 
-Add HyperX controller support to xpad_device and xpad_table.
+The existing 'tplg_path' module parameter can be used to load
+alternate firmware files, be it for development or to handle
+OEM-specific or board-specific releases. However the topology filename
+is either hard-coded in machine descriptors or modified by specific
+DMI-quirks.
 
-Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Link: https://lore.kernel.org/r/20230906231514.4291-1-hphyperxdev@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For additional flexibility, this patch adds the 'tplg_filename' module
+parameter to override topology names.
+
+To avoid any confusion between DMI- and parameter-override, a variable
+rename is added.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20220414184817.362215-7-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/sof/sof-pci-dev.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -120,6 +120,7 @@ static const struct xpad_device {
- 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f10, "Thrustmaster Modena GT Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0xb326, "Thrustmaster Gamepad GP XID", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
- 	{ 0x045e, 0x0202, "Microsoft X-Box pad v1 (US)", 0, XTYPE_XBOX },
- 	{ 0x045e, 0x0285, "Microsoft X-Box pad (Japan)", 0, XTYPE_XBOX },
- 	{ 0x045e, 0x0287, "Microsoft Xbox Controller S", 0, XTYPE_XBOX },
-@@ -434,6 +435,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 Controller */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster X-Box 360 controllers */
-+	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One Controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft X-Box One controllers */
- 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech X-Box 360 style controllers */
+diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
+index 571dc679ff7c1..966bf28403475 100644
+--- a/sound/soc/sof/sof-pci-dev.c
++++ b/sound/soc/sof/sof-pci-dev.c
+@@ -31,17 +31,21 @@ static char *tplg_path;
+ module_param(tplg_path, charp, 0444);
+ MODULE_PARM_DESC(tplg_path, "alternate path for SOF topology.");
+ 
++static char *tplg_filename;
++module_param(tplg_filename, charp, 0444);
++MODULE_PARM_DESC(tplg_filename, "alternate filename for SOF topology.");
++
+ static int sof_pci_debug;
+ module_param_named(sof_pci_debug, sof_pci_debug, int, 0444);
+ MODULE_PARM_DESC(sof_pci_debug, "SOF PCI debug options (0x0 all off)");
+ 
+-static const char *sof_override_tplg_name;
++static const char *sof_dmi_override_tplg_name;
+ 
+ #define SOF_PCI_DISABLE_PM_RUNTIME BIT(0)
+ 
+ static int sof_tplg_cb(const struct dmi_system_id *id)
+ {
+-	sof_override_tplg_name = id->driver_data;
++	sof_dmi_override_tplg_name = id->driver_data;
+ 	return 1;
+ }
+ 
+@@ -391,9 +395,20 @@ static int sof_pci_probe(struct pci_dev *pci,
+ 		sof_pdata->tplg_filename_prefix =
+ 			sof_pdata->desc->default_tplg_path;
+ 
+-	dmi_check_system(sof_tplg_table);
+-	if (sof_override_tplg_name)
+-		sof_pdata->tplg_filename = sof_override_tplg_name;
++	/*
++	 * the topology filename will be provided in the machine descriptor, unless
++	 * it is overridden by a module parameter or DMI quirk.
++	 */
++	if (tplg_filename) {
++		sof_pdata->tplg_filename = tplg_filename;
++
++		dev_dbg(dev, "Module parameter used, changed tplg filename to %s\n",
++			sof_pdata->tplg_filename);
++	} else {
++		dmi_check_system(sof_tplg_table);
++		if (sof_dmi_override_tplg_name)
++			sof_pdata->tplg_filename = sof_dmi_override_tplg_name;
++	}
+ 
+ #if IS_ENABLED(CONFIG_SND_SOC_SOF_PROBE_WORK_QUEUE)
+ 	/* set callback to enable runtime_pm */
+-- 
+2.42.0
+
 
 
 
