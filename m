@@ -1,54 +1,48 @@
-Return-Path: <stable+bounces-4465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2529804796
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590708047CB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87AC91F214C5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F067AB20D3A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2B48C13;
-	Tue,  5 Dec 2023 03:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551F66FB1;
+	Tue,  5 Dec 2023 03:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLyw+wKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7uUHcVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B5279F2;
-	Tue,  5 Dec 2023 03:40:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DF5C433C8;
-	Tue,  5 Dec 2023 03:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165646AC2;
+	Tue,  5 Dec 2023 03:42:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA82C433C7;
+	Tue,  5 Dec 2023 03:42:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747623;
-	bh=n7ToIbmpFN9PedNxKgcYFQiWgYZnSnHexbSNqNe9+D8=;
+	s=korg; t=1701747738;
+	bh=gSEpqcpU+1GOtBFRA8AUoH/dcF588dfQ1pSm9Fws2QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLyw+wKl/TC0TdROfIt8nyFfxpRa5YKSmbVqFA+3+7Jq0JpMZAH3X7OLZGzLqvv9f
-	 wqpI76hghBqJZqPEr6dvpVp7aiacJ+pEeNZPR4a2WuaplJH2Zw5DvyqhUic9FPLR0t
-	 2+7NgV2eKFwc2ykQ1iB9Eg9B4d2bJkDyAEZGT8vI=
+	b=j7uUHcVZkBdqVnBdvqJLbNWjvBvQD11EFWfSNZUjgwJijhs40hcqEqg9XiqbBjSYv
+	 X3zswb8bfPQPZzSEPfRcHmrGSH47JvzfIUKr6C6CmI1IYOnRuNWqWXLHmEz3Vp0nDN
+	 8Jq08WspjqzjntZvB55mAamjfkSbuT1LnYZYVHXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Saravana Kannan <saravanak@google.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	James Clark <james.clark@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH 5.10 135/135] driver core: Release all resources during unbind before updating device links
+	David Howells <dhowells@redhat.com>,
+	Micah Veilleux <micah.veilleux@iba-group.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 51/67] smb3: fix touch -h of symlink
 Date: Tue,  5 Dec 2023 12:17:36 +0900
-Message-ID: <20231205031539.384519460@linuxfoundation.org>
+Message-ID: <20231205031522.783365729@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,63 +52,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 upstream.
+[ Upstream commit 475efd9808a3094944a56240b2711349e433fb66 ]
 
-This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
-dependencies tracking support") where the device link status was
-incorrectly updated in the driver unbind path before all the device's
-resources were released.
+For example:
+      touch -h -t 02011200 testfile
+where testfile is a symlink would not change the timestamp, but
+      touch -t 02011200 testfile
+does work to change the timestamp of the target
 
-Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking support")
-Cc: stable <stable@kernel.org>
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pengutronix.de/
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Yang Yingliang <yangyingliang@huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: James Clark <james.clark@arm.com>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@google.com
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Howells <dhowells@redhat.com>
+Reported-by: Micah Veilleux <micah.veilleux@iba-group.com>
+Closes: https://bugzilla.samba.org/show_bug.cgi?id=14476
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/dd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/cifs/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1187,8 +1187,6 @@ static void __device_release_driver(stru
- 		else if (drv->remove)
- 			drv->remove(dev);
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index b5ae209539ff1..af688e39f31ac 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -1127,6 +1127,7 @@ const struct inode_operations cifs_file_inode_ops = {
  
--		device_links_driver_cleanup(dev);
--
- 		devres_release_all(dev);
- 		arch_teardown_dma_ops(dev);
- 		kfree(dev->dma_range_map);
-@@ -1200,6 +1198,8 @@ static void __device_release_driver(stru
- 		pm_runtime_reinit(dev);
- 		dev_pm_set_driver_flags(dev, 0);
- 
-+		device_links_driver_cleanup(dev);
-+
- 		klist_remove(&dev->p->knode_driver);
- 		device_pm_check_callbacks(dev);
- 		if (dev->bus)
+ const struct inode_operations cifs_symlink_inode_ops = {
+ 	.get_link = cifs_get_link,
++	.setattr = cifs_setattr,
+ 	.permission = cifs_permission,
+ 	.listxattr = cifs_listxattr,
+ };
+-- 
+2.42.0
+
 
 
 
