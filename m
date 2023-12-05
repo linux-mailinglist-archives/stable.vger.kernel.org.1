@@ -1,78 +1,131 @@
-Return-Path: <stable+bounces-4725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D98805AD9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 18:10:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55C16805ADB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 18:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2B24281FA0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 17:10:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858931C214A0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 17:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821416929B;
-	Tue,  5 Dec 2023 17:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D27C269295;
+	Tue,  5 Dec 2023 17:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jc6Whyum"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B65DA1
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 09:10:28 -0800 (PST)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1rAYw9-000794-7P; Tue, 05 Dec 2023 18:10:21 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1rAYw8-00Dn2f-CA; Tue, 05 Dec 2023 18:10:20 +0100
-Received: from ore by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1rAYw8-005QXO-9O; Tue, 05 Dec 2023 18:10:20 +0100
-Date: Tue, 5 Dec 2023 18:10:20 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: xingwei lee <xrivendell7@gmail.com>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mkl@pengutronix.de, robin@protonic.nl,
-	socketcan@hartkopp.net, stable@vger.kernel.org,
-	syzbot+daa36413a5cedf799ae4@syzkaller.appspotmail.com
-Subject: Re: [PATCH v1] net: can: j1939: enhanced error handling for tightly
- received RTS messages in xtp_rx_rts_session_new
-Message-ID: <20231205171020.GM981228@pengutronix.de>
-References: <CABOYnLyMUdDvfUNcTS+1xQ+cVFjMO8jjzuTVjk7aoeje_Gw9Sw@mail.gmail.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED376928A;
+	Tue,  5 Dec 2023 17:10:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93551C433C8;
+	Tue,  5 Dec 2023 17:10:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701796244;
+	bh=GgzzhyH290H2q+P52NcGVfWo7s+qOx2fxx/N5ZUov8s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jc6WhyumGJ8yUjAgnrzz+u3QHRHqAHpcnP1+DFQObBSD7wMWaRh8zB05uxHvTM985
+	 xRaBhBr2Le95eY16lcUIf5WDg99rmEgKDpwRSLmCrzGrNvRwQX44bj2MnuFqRrmomH
+	 8mcp8FxPvB6Qce2mNLTkmg0aAGbyxpe49/LFd3uO3fkjEAg9Tja3nbO66/wbaCfUmX
+	 cAZ2E2UDOyBi7sqwb56vcmVDfKy6pjaGemMcO+npp93z7Xa7ciGPjlUPYIt/qloIDi
+	 GQ69VA0UrsE2cqKx0Svc9iMBpxSODcjC1mE4EdgbKdzpCWwKgNN8T2PyXIQPZaGo7Z
+	 fuJo6EhAdJATw==
+From: SeongJae Park <sj@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	damon@lists.linux.dev,
+	SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.6 000/134] 6.6.5-rc1 review
+Date: Tue,  5 Dec 2023 17:10:41 +0000
+Message-Id: <20231205171041.2242-1-sj@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CABOYnLyMUdDvfUNcTS+1xQ+cVFjMO8jjzuTVjk7aoeje_Gw9Sw@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Hello,
 
-On Mon, Dec 04, 2023 at 11:25:40PM +0800, xingwei lee wrote:
-> Hello, Oleksij.
-> I have reproduced this bug with repro.c
+On 2023-12-05T12:14:32+09:00 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-I assume, with this patch the reproduce will trigger only warning
-instead of backtrace. Correct?
+> This is the start of the stable review cycle for the 6.6.5 release.
+> There are 134 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
+
+Tested-by: SeongJae Park <sj@kernel.org>
+
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] b0b05ccdd77d ("Linux 6.6.5-rc1")
+
+Thanks,
+SJ
+
+[...]
+
+---
+
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: debugfs_rm_non_contexts.sh
+ok 8 selftests: damon: sysfs.sh
+ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
+ok 10 selftests: damon: reclaim.sh
+ok 11 selftests: damon: lru_sort.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_arm64.sh
+ok 12 selftests: damon-tests: build_i386_idle_flag.sh
+ok 13 selftests: damon-tests: build_i386_highpte.sh
+ok 14 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
 
