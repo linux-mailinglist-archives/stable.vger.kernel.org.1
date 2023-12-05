@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD5080461D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CCF804665
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AD0A28347A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A78A1C20C88
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCD76FB1;
-	Tue,  5 Dec 2023 03:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4966FB1;
+	Tue,  5 Dec 2023 03:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCm4IPq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwrh2bR1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FED6110;
-	Tue,  5 Dec 2023 03:24:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18F3C433C8;
-	Tue,  5 Dec 2023 03:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AC44437;
+	Tue,  5 Dec 2023 03:27:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F14C433C7;
+	Tue,  5 Dec 2023 03:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746692;
-	bh=CeOl36ZOAEJenHca22SHjeMIcuG6qezHJe/w38mHhws=;
+	s=korg; t=1701746830;
+	bh=EwKhN0IBsyB3ABwVEd6kiGCvr2gE3oVnB34UZngwtD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCm4IPq06TKCeglXfablkSkORBSmFblWD+oZFe3ig59NIvLqwP5If5Q7q1mUNe79b
-	 YxQjzw0OOtaw/cHnvsSMz7HzPfOKb3S6p+TDH5Ii4ChT1nd3a/EtM9TkWzkLxn4+04
-	 jTv1hXRWNHybLnYGUw/Ga0/pthv+UGnF9bLB7zQo=
+	b=vwrh2bR1YX8L5La4ekIQcUldn7Da46PGrU4Xnariaq8QVPqS6wA1HZDzT+sVgs+1x
+	 zjw0EKH/X53AgdJeYOXnCRQrbJyFZNupOhaw4NVzucHm0lYZG2uQmJVSHxcw86uBW4
+	 DjtYvoFoah2NZJ/r5QnU3r1sDk5utfr8SDmvKFaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xiazhengqiao <xiazhengqiao@huaqin.corp-partner.google.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/134] drm/panel: starry-2081101qfh032011-53g: Fine tune the panel power sequence
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 4.19 35/71] firewire: core: fix possible memory leak in create_units()
 Date: Tue,  5 Dec 2023 12:16:33 +0900
-Message-ID: <20231205031543.126018824@linuxfoundation.org>
+Message-ID: <20231205031519.884884218@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +52,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: xiazhengqiao <xiazhengqiao@huaqin.corp-partner.google.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit fc1ccc16271a0526518f19f460fed63d575a8a42 ]
+commit 891e0eab32a57fca4d36c5162628eb0bcb1f0edf upstream.
 
-For the "starry, 2081101qfh032011-53g" panel, it is stipulated in the
-panel spec that MIPI needs to keep the LP11 state before the
-lcm_reset pin is pulled high.
+If device_register() fails, the refcount of device is not 0, the name
+allocated in dev_set_name() is leaked. To fix this by calling put_device(),
+so that it will be freed in callback function kobject_cleanup().
 
-Fixes: 6069b66cd962 ("drm/panel: support for STARRY 2081101QFH032011-53G MIPI-DSI panel")
-Signed-off-by: xiazhengqiao <xiazhengqiao@huaqin.corp-partner.google.com>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://lore.kernel.org/r/20231129084115.7918-1-xiazhengqiao@huaqin.corp-partner.google.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231129084115.7918-1-xiazhengqiao@huaqin.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+unreferenced object 0xffff9d99035c7a90 (size 8):
+  comm "systemd-udevd", pid 168, jiffies 4294672386 (age 152.089s)
+  hex dump (first 8 bytes):
+    66 77 30 2e 30 00 ff ff                          fw0.0...
+  backtrace:
+    [<00000000e1d62bac>] __kmem_cache_alloc_node+0x1e9/0x360
+    [<00000000bbeaff31>] __kmalloc_node_track_caller+0x44/0x1a0
+    [<00000000491f2fb4>] kvasprintf+0x67/0xd0
+    [<000000005b960ddc>] kobject_set_name_vargs+0x1e/0x90
+    [<00000000427ac591>] dev_set_name+0x4e/0x70
+    [<000000003b4e447d>] create_units+0xc5/0x110
+
+fw_unit_release() will be called in the error path, move fw_device_get()
+before calling device_register() to keep balanced with fw_device_put() in
+fw_unit_release().
+
+Cc: stable@vger.kernel.org
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Fixes: a1f64819fe9f ("firewire: struct device - replace bus_id with dev_name(), dev_set_name()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firewire/core-device.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index d76a8ca9c40f8..29e63cdfb8954 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -2104,6 +2104,7 @@ static const struct panel_desc starry_qfh032011_53g_desc = {
- 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
- 		      MIPI_DSI_MODE_LPM,
- 	.init_cmds = starry_qfh032011_53g_init_cmd,
-+	.lp11_before_reset = true,
- };
+--- a/drivers/firewire/core-device.c
++++ b/drivers/firewire/core-device.c
+@@ -732,14 +732,11 @@ static void create_units(struct fw_devic
+ 					fw_unit_attributes,
+ 					&unit->attribute_group);
  
- static const struct drm_display_mode starry_himax83102_j02_default_mode = {
--- 
-2.42.0
-
+-		if (device_register(&unit->device) < 0)
+-			goto skip_unit;
+-
+ 		fw_device_get(device);
+-		continue;
+-
+-	skip_unit:
+-		kfree(unit);
++		if (device_register(&unit->device) < 0) {
++			put_device(&unit->device);
++			continue;
++		}
+ 	}
+ }
+ 
 
 
 
