@@ -1,52 +1,48 @@
-Return-Path: <stable+bounces-4224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C936804697
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B698C804714
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B34EE281544
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A10AB20CFA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907256FB8;
-	Tue,  5 Dec 2023 03:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9C78BF2;
+	Tue,  5 Dec 2023 03:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kG1Zg4zY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1f3qVOe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496DB8BEC;
-	Tue,  5 Dec 2023 03:29:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA68AC433C7;
-	Tue,  5 Dec 2023 03:29:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772AD6FB1;
+	Tue,  5 Dec 2023 03:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF70C433C8;
+	Tue,  5 Dec 2023 03:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746964;
-	bh=og+a53QuKge8Gc1TWbf2ss2U+eH+YKzJ7HF/FZ+u6zc=;
+	s=korg; t=1701747278;
+	bh=FuJKggLmB8kJq/RcB0VFmellRmBPxnAhvRJ2ZomjlV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kG1Zg4zYDFprCks3cSmOc1ZE+COYivkRi3c1lmueSQaHxzDtviEHT8jYZy4pZo8rG
-	 Myt/rS5Z5RUjodw40w87BPts8JMxY+XS9JauPwzTWdAXUTJ8xjMjEe3FJowK1u/px7
-	 gGWrg38dJvAabsLmwcUHeAbbHooLdBs+mP4VAKbA=
+	b=j1f3qVOev5DHhudvxhDy7rWThQo+HJN5xmM2fzJrJlCeCvT+pDd4gzQLzPaaGTRSM
+	 m9JpaKJJou9b+AZq3dopC9vFq6/N2Kjjm/+XVOE0nE2Bbot1kvwZfwkLLK9oq8sNwp
+	 WFqs6xoGnV5dSAj/IMAT07UhZGODZMMu/A9LZaes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	linux-mm@kvack.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 002/107] cifs: Fix FALLOC_FL_INSERT_RANGE by setting i_size after EOF moved
-Date: Tue,  5 Dec 2023 12:15:37 +0900
-Message-ID: <20231205031531.622164020@linuxfoundation.org>
+	Chen Ni <nichen@iscas.ac.cn>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 017/135] ata: pata_isapnp: Add missing error check for devm_ioport_map()
+Date: Tue,  5 Dec 2023 12:15:38 +0900
+Message-ID: <20231205031531.633701651@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,46 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 88010155f02b2c3b03c71609ba6ceeb457ece095 upstream.
+[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
 
-Fix the cifs filesystem implementations of FALLOC_FL_INSERT_RANGE, in
-smb3_insert_range(), to set i_size after extending the file on the server
-and before we do the copy to open the gap (as we don't clean up the EOF
-marker if the copy fails).
+Add missing error return check for devm_ioport_map() and return the
+error if this function call fails.
 
-Fixes: 7fe6fe95b936 ("cifs: add FALLOC_FL_INSERT_RANGE support")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0d5ff566779f ("libata: convert to iomap")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c |    3 +++
+ drivers/ata/pata_isapnp.c | 3 +++
  1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3858,6 +3858,9 @@ static long smb3_insert_range(struct fil
- 	if (rc < 0)
- 		goto out_2;
- 
-+	truncate_setsize(inode, old_eof + len);
-+	fscache_resize_cookie(cifs_inode_cookie(inode), i_size_read(inode));
+diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
+index 43bb224430d3c..8892931ea8676 100644
+--- a/drivers/ata/pata_isapnp.c
++++ b/drivers/ata/pata_isapnp.c
+@@ -82,6 +82,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
+ 	if (pnp_port_valid(idev, 1)) {
+ 		ctl_addr = devm_ioport_map(&idev->dev,
+ 					   pnp_port_start(idev, 1), 1);
++		if (!ctl_addr)
++			return -ENOMEM;
 +
- 	rc = smb2_copychunk_range(xid, cfile, cfile, off, count, off + len);
- 	if (rc < 0)
- 		goto out_2;
+ 		ap->ioaddr.altstatus_addr = ctl_addr;
+ 		ap->ioaddr.ctl_addr = ctl_addr;
+ 		ap->ops = &isapnp_port_ops;
+-- 
+2.42.0
+
 
 
 
