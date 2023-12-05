@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC91380461A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32DB8804749
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77B09283429
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 641EC1C20DAF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186846FB8;
-	Tue,  5 Dec 2023 03:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01858BF7;
+	Tue,  5 Dec 2023 03:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXofBF/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSMY+WAU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC376FAF;
-	Tue,  5 Dec 2023 03:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F28FC433C8;
-	Tue,  5 Dec 2023 03:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6946B6FB1;
+	Tue,  5 Dec 2023 03:36:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39EBC433C8;
+	Tue,  5 Dec 2023 03:36:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746683;
-	bh=dmM//OIyfjfJiBLxi6eJEvF+tZKlfPhUcNtojNN3rZg=;
+	s=korg; t=1701747417;
+	bh=su2IBED/KfxjWr0u67oCnOgD66cOFsGAr+xnmEbJKzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UXofBF/lEet8M5nICRw/1MEt39uL1ken7Pk4EzyZI2N3GoG8UXNsyh5ymZCmesyoX
-	 mpClfRMj21GJhD9ctyOCY9BCjjUaaXjBfkr2laAUOUSL30lYIjyIKARTA5uk51+L4o
-	 EMfioysBmgv57vUQC6ypA5AFco/HvXIVWZvVju+Q=
+	b=TSMY+WAUoyQVlW/CNSTxfVzRqJV5QaT5N+MfG6O4PiSxW8gHshqeXNvy2y4/YROxJ
+	 3UfzSuXQ7I7RSdlZaVC+2P3kg02JLX+CTluwA0wmsH8g9AnF3+5D7Mc5XrFf8o3VdT
+	 sEAwwTJAGC1AF8nfy28RoWDQhjWPaZc9NONiB3mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/134] iommu/vt-d: Disable PCI ATS in legacy passthrough mode
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 069/135] io_uring: fix off-by one bvec index
 Date: Tue,  5 Dec 2023 12:16:30 +0900
-Message-ID: <20231205031542.956006931@linuxfoundation.org>
+Message-ID: <20231205031534.804689098@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +52,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit da37dddcf4caf015c400a930301d2ee27a7a15fb ]
+commit d6fef34ee4d102be448146f24caf96d7b4a05401 upstream.
 
-When IOMMU hardware operates in legacy mode, the TT field of the context
-entry determines the translation type, with three supported types (Section
-9.3 Context Entry):
+If the offset equals the bv_len of the first registered bvec, then the
+request does not include any of that first bvec. Skip it so that drivers
+don't have to deal with a zero length bvec, which was observed to break
+NVMe's PRP list creation.
 
-- DMA translation without device TLB support
-- DMA translation with device TLB support
-- Passthrough mode with translated and translation requests blocked
-
-Device TLB support is absent when hardware is configured in passthrough
-mode.
-
-Disable the PCI ATS feature when IOMMU is configured for passthrough
-translation type in legacy (non-scalable) mode.
-
-Fixes: 0faa19a1515f ("iommu/vt-d: Decouple PASID & PRI enabling from SVA")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20231114011036.70142-3-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: bd11b3a391e3 ("io_uring: don't use iov_iter_advance() for fixed buffers")
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/20231120221831.2646460-1-kbusch@meta.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 8e878c3beec5c..18fa71aadc903 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -2487,7 +2487,8 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
- 		return ret;
- 	}
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3149,7 +3149,7 @@ static int __io_import_fixed(struct io_k
+ 		 */
+ 		const struct bio_vec *bvec = imu->bvec;
  
--	iommu_enable_pci_caps(info);
-+	if (sm_supported(info->iommu) || !domain_type_is_si(info->domain))
-+		iommu_enable_pci_caps(info);
- 
- 	return 0;
- }
--- 
-2.42.0
-
+-		if (offset <= bvec->bv_len) {
++		if (offset < bvec->bv_len) {
+ 			iov_iter_advance(iter, offset);
+ 		} else {
+ 			unsigned long seg_skip;
 
 
 
