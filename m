@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-4112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5629F80460C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3253580462F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C1981F213E4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8EC1F213DF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331976FB8;
-	Tue,  5 Dec 2023 03:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D0C8BEA;
+	Tue,  5 Dec 2023 03:25:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhjOi9Fm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7aLnvBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11816FAF;
-	Tue,  5 Dec 2023 03:24:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E97C433C7;
-	Tue,  5 Dec 2023 03:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E401C6110;
+	Tue,  5 Dec 2023 03:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BFCC433C7;
+	Tue,  5 Dec 2023 03:25:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746649;
-	bh=1ao1cm80mEc/y2aSm3hSW/Ew32LD6TUeVFkcuLxHYxw=;
+	s=korg; t=1701746742;
+	bh=AZgCpZoUF1niLHxq0NGAX4c7vUULGu0Xcl/e8k+Cweo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhjOi9Fm8Gxkj8/PpltB5DFUBcWQ/QW3W8ykQb7tdequI6j+GKnbzOGiAvF++9NrB
-	 lI4JFTl7EQC1QtYzqcmMUnuiUILCHxQFt+wi2nO0M4tNXjH/QUWjXj3WTa/ckL31Tf
-	 y27UlLK2u36//I2n2WG6BnIYQV0vIi+Ng+AxbHR4=
+	b=N7aLnvBapn0IPdpVaUU3L8oJGoRQuTQQkYjaQni27+JWuO3qU0LnjrbxVgovdz7fg
+	 tTmad6hPv38cAVZw2nm6OnJmya4hNSSlGKkIGUNRe64+0KOWBBy8cGmphiltnse0j0
+	 9WQ+Yw/B74RgDVTzxnI0bduWCfCGPeo5EmULcB+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
+	Dave Ertman <david.m.ertman@intel.com>,
+	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/134] bpf, sockmap: af_unix stream sockets need to hold ref for pair sock
-Date: Tue,  5 Dec 2023 12:16:16 +0900
-Message-ID: <20231205031542.015181008@linuxfoundation.org>
+Subject: [PATCH 6.6 105/134] ice: Fix VF Reset paths when interface in a failed over aggregate
+Date: Tue,  5 Dec 2023 12:16:17 +0900
+Message-ID: <20231205031542.092391697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
 References: <20231205031535.163661217@linuxfoundation.org>
@@ -58,137 +60,339 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Dave Ertman <david.m.ertman@intel.com>
 
-[ Upstream commit 8866730aed5100f06d3d965c22f1c61f74942541 ]
+[ Upstream commit 9f74a3dfcf83e11aedcb98250b8040dbc6d9659a ]
 
-AF_UNIX stream sockets are a paired socket. So sending on one of the pairs
-will lookup the paired socket as part of the send operation. It is possible
-however to put just one of the pairs in a BPF map. This currently increments
-the refcnt on the sock in the sockmap to ensure it is not free'd by the
-stack before sockmap cleans up its state and stops any skbs being sent/recv'd
-to that socket.
+There is an error when an interface has the following conditions:
+- PF is in an aggregate (bond)
+- PF has VFs created on it
+- bond is in a state where it is failed-over to the secondary interface
+- A VF reset is issued on one or more of those VFs
 
-But we missed a case. If the peer socket is closed it will be free'd by the
-stack. However, the paired socket can still be referenced from BPF sockmap
-side because we hold a reference there. Then if we are sending traffic through
-BPF sockmap to that socket it will try to dereference the free'd pair in its
-send logic creating a use after free. And following splat:
+The issue is generated by the originating PF trying to rebuild or
+reconfigure the VF resources.  Since the bond is failed over to the
+secondary interface the queue contexts are in a modified state.
 
-   [59.900375] BUG: KASAN: slab-use-after-free in sk_wake_async+0x31/0x1b0
-   [59.901211] Read of size 8 at addr ffff88811acbf060 by task kworker/1:2/954
-   [...]
-   [59.905468] Call Trace:
-   [59.905787]  <TASK>
-   [59.906066]  dump_stack_lvl+0x130/0x1d0
-   [59.908877]  print_report+0x16f/0x740
-   [59.910629]  kasan_report+0x118/0x160
-   [59.912576]  sk_wake_async+0x31/0x1b0
-   [59.913554]  sock_def_readable+0x156/0x2a0
-   [59.914060]  unix_stream_sendmsg+0x3f9/0x12a0
-   [59.916398]  sock_sendmsg+0x20e/0x250
-   [59.916854]  skb_send_sock+0x236/0xac0
-   [59.920527]  sk_psock_backlog+0x287/0xaa0
+To fix this issue, have the originating interface reclaim its resources
+prior to the tear-down and rebuild or reconfigure.  Then after the process
+is complete, move the resources back to the currently active interface.
 
-To fix let BPF sockmap hold a refcnt on both the socket in the sockmap and its
-paired socket. It wasn't obvious how to contain the fix to bpf_unix logic. The
-primarily problem with keeping this logic in bpf_unix was: In the sock close()
-we could handle the deref by having a close handler. But, when we are destroying
-the psock through a map delete operation we wouldn't have gotten any signal
-thorugh the proto struct other than it being replaced. If we do the deref from
-the proto replace its too early because we need to deref the sk_pair after the
-backlog worker has been stopped.
+There are multiple paths that can be used depending on what triggered the
+event, so create a helper function to move the queues and use paired calls
+to the helper (back to origin, process, then move back to active interface)
+under the same lag_mutex lock.
 
-Given all this it seems best to just cache it at the end of the psock and eat 8B
-for the af_unix and vsock users. Notice dgram sockets are OK because they handle
-locking already.
-
-Fixes: 94531cfcbe79 ("af_unix: Add unix_stream_proto for sockmap")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20231129012557.95371-2-john.fastabend@gmail.com
+Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
+Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
+Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://lore.kernel.org/r/20231127212340.1137657-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/skmsg.h | 1 +
- include/net/af_unix.h | 1 +
- net/core/skmsg.c      | 2 ++
- net/unix/af_unix.c    | 2 --
- net/unix/unix_bpf.c   | 5 +++++
- 5 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lag.c      | 122 +++++++++++-------
+ drivers/net/ethernet/intel/ice/ice_lag.h      |   1 +
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   |  20 +++
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  25 ++++
+ 4 files changed, 118 insertions(+), 50 deletions(-)
 
-diff --git a/include/linux/skmsg.h b/include/linux/skmsg.h
-index c1637515a8a41..c953b8c0d2f43 100644
---- a/include/linux/skmsg.h
-+++ b/include/linux/skmsg.h
-@@ -106,6 +106,7 @@ struct sk_psock {
- 	struct mutex			work_mutex;
- 	struct sk_psock_work_state	work_state;
- 	struct delayed_work		work;
-+	struct sock			*sk_pair;
- 	struct rcu_work			rwork;
- };
- 
-diff --git a/include/net/af_unix.h b/include/net/af_unix.h
-index 824c258143a3a..49c4640027d8a 100644
---- a/include/net/af_unix.h
-+++ b/include/net/af_unix.h
-@@ -75,6 +75,7 @@ struct unix_sock {
- };
- 
- #define unix_sk(ptr) container_of_const(ptr, struct unix_sock, sk)
-+#define unix_peer(sk) (unix_sk(sk)->peer)
- 
- #define peer_wait peer_wq.wait
- 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 6c31eefbd7778..93ecfceac1bc4 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -826,6 +826,8 @@ static void sk_psock_destroy(struct work_struct *work)
- 
- 	if (psock->sk_redir)
- 		sock_put(psock->sk_redir);
-+	if (psock->sk_pair)
-+		sock_put(psock->sk_pair);
- 	sock_put(psock->sk);
- 	kfree(psock);
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
+index fb40ad98e6aad..d86e2460b5a4d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.c
++++ b/drivers/net/ethernet/intel/ice/ice_lag.c
+@@ -536,6 +536,50 @@ ice_lag_move_vf_node_tc(struct ice_lag *lag, u8 oldport, u8 newport,
+ 		dev_dbg(dev, "Problem restarting traffic for LAG node move\n");
  }
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 3e6eeacb13aec..1e1a88bd4e688 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -212,8 +212,6 @@ static inline bool unix_secdata_eq(struct scm_cookie *scm, struct sk_buff *skb)
- }
- #endif /* CONFIG_SECURITY_NETWORK */
  
--#define unix_peer(sk) (unix_sk(sk)->peer)
--
- static inline int unix_our_peer(struct sock *sk, struct sock *osk)
- {
- 	return unix_peer(osk) == sk;
-diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
-index 2f9d8271c6ec7..7ea7c3a0d0d06 100644
---- a/net/unix/unix_bpf.c
-+++ b/net/unix/unix_bpf.c
-@@ -159,12 +159,17 @@ int unix_dgram_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool re
- 
- int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool restore)
- {
-+	struct sock *sk_pair;
++/**
++ * ice_lag_build_netdev_list - populate the lag struct's netdev list
++ * @lag: local lag struct
++ * @ndlist: pointer to netdev list to populate
++ */
++static void ice_lag_build_netdev_list(struct ice_lag *lag,
++				      struct ice_lag_netdev_list *ndlist)
++{
++	struct ice_lag_netdev_list *nl;
++	struct net_device *tmp_nd;
 +
- 	if (restore) {
- 		sk->sk_write_space = psock->saved_write_space;
- 		sock_replace_proto(sk, psock->sk_proto);
++	INIT_LIST_HEAD(&ndlist->node);
++	rcu_read_lock();
++	for_each_netdev_in_bond_rcu(lag->upper_netdev, tmp_nd) {
++		nl = kzalloc(sizeof(*nl), GFP_ATOMIC);
++		if (!nl)
++			break;
++
++		nl->netdev = tmp_nd;
++		list_add(&nl->node, &ndlist->node);
++	}
++	rcu_read_unlock();
++	lag->netdev_head = &ndlist->node;
++}
++
++/**
++ * ice_lag_destroy_netdev_list - free lag struct's netdev list
++ * @lag: pointer to local lag struct
++ * @ndlist: pointer to lag struct netdev list
++ */
++static void ice_lag_destroy_netdev_list(struct ice_lag *lag,
++					struct ice_lag_netdev_list *ndlist)
++{
++	struct ice_lag_netdev_list *entry, *n;
++
++	rcu_read_lock();
++	list_for_each_entry_safe(entry, n, &ndlist->node, node) {
++		list_del(&entry->node);
++		kfree(entry);
++	}
++	rcu_read_unlock();
++	lag->netdev_head = NULL;
++}
++
+ /**
+  * ice_lag_move_single_vf_nodes - Move Tx scheduling nodes for single VF
+  * @lag: primary interface LAG struct
+@@ -564,7 +608,6 @@ ice_lag_move_single_vf_nodes(struct ice_lag *lag, u8 oldport, u8 newport,
+ void ice_lag_move_new_vf_nodes(struct ice_vf *vf)
+ {
+ 	struct ice_lag_netdev_list ndlist;
+-	struct list_head *tmp, *n;
+ 	u8 pri_port, act_port;
+ 	struct ice_lag *lag;
+ 	struct ice_vsi *vsi;
+@@ -588,38 +631,15 @@ void ice_lag_move_new_vf_nodes(struct ice_vf *vf)
+ 	pri_port = pf->hw.port_info->lport;
+ 	act_port = lag->active_port;
+ 
+-	if (lag->upper_netdev) {
+-		struct ice_lag_netdev_list *nl;
+-		struct net_device *tmp_nd;
+-
+-		INIT_LIST_HEAD(&ndlist.node);
+-		rcu_read_lock();
+-		for_each_netdev_in_bond_rcu(lag->upper_netdev, tmp_nd) {
+-			nl = kzalloc(sizeof(*nl), GFP_ATOMIC);
+-			if (!nl)
+-				break;
+-
+-			nl->netdev = tmp_nd;
+-			list_add(&nl->node, &ndlist.node);
+-		}
+-		rcu_read_unlock();
+-	}
+-
+-	lag->netdev_head = &ndlist.node;
++	if (lag->upper_netdev)
++		ice_lag_build_netdev_list(lag, &ndlist);
+ 
+ 	if (ice_is_feature_supported(pf, ICE_F_SRIOV_LAG) &&
+ 	    lag->bonded && lag->primary && pri_port != act_port &&
+ 	    !list_empty(lag->netdev_head))
+ 		ice_lag_move_single_vf_nodes(lag, pri_port, act_port, vsi->idx);
+ 
+-	list_for_each_safe(tmp, n, &ndlist.node) {
+-		struct ice_lag_netdev_list *entry;
+-
+-		entry = list_entry(tmp, struct ice_lag_netdev_list, node);
+-		list_del(&entry->node);
+-		kfree(entry);
+-	}
+-	lag->netdev_head = NULL;
++	ice_lag_destroy_netdev_list(lag, &ndlist);
+ 
+ new_vf_unlock:
+ 	mutex_unlock(&pf->lag_mutex);
+@@ -646,6 +666,29 @@ static void ice_lag_move_vf_nodes(struct ice_lag *lag, u8 oldport, u8 newport)
+ 			ice_lag_move_single_vf_nodes(lag, oldport, newport, i);
+ }
+ 
++/**
++ * ice_lag_move_vf_nodes_cfg - move vf nodes outside LAG netdev event context
++ * @lag: local lag struct
++ * @src_prt: lport value for source port
++ * @dst_prt: lport value for destination port
++ *
++ * This function is used to move nodes during an out-of-netdev-event situation,
++ * primarily when the driver needs to reconfigure or recreate resources.
++ *
++ * Must be called while holding the lag_mutex to avoid lag events from
++ * processing while out-of-sync moves are happening.  Also, paired moves,
++ * such as used in a reset flow, should both be called under the same mutex
++ * lock to avoid changes between start of reset and end of reset.
++ */
++void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt)
++{
++	struct ice_lag_netdev_list ndlist;
++
++	ice_lag_build_netdev_list(lag, &ndlist);
++	ice_lag_move_vf_nodes(lag, src_prt, dst_prt);
++	ice_lag_destroy_netdev_list(lag, &ndlist);
++}
++
+ #define ICE_LAG_SRIOV_CP_RECIPE		10
+ #define ICE_LAG_SRIOV_TRAIN_PKT_LEN	16
+ 
+@@ -2022,7 +2065,6 @@ void ice_lag_rebuild(struct ice_pf *pf)
+ {
+ 	struct ice_lag_netdev_list ndlist;
+ 	struct ice_lag *lag, *prim_lag;
+-	struct list_head *tmp, *n;
+ 	u8 act_port, loc_port;
+ 
+ 	if (!pf->lag || !pf->lag->bonded)
+@@ -2034,21 +2076,7 @@ void ice_lag_rebuild(struct ice_pf *pf)
+ 	if (lag->primary) {
+ 		prim_lag = lag;
+ 	} else {
+-		struct ice_lag_netdev_list *nl;
+-		struct net_device *tmp_nd;
+-
+-		INIT_LIST_HEAD(&ndlist.node);
+-		rcu_read_lock();
+-		for_each_netdev_in_bond_rcu(lag->upper_netdev, tmp_nd) {
+-			nl = kzalloc(sizeof(*nl), GFP_ATOMIC);
+-			if (!nl)
+-				break;
+-
+-			nl->netdev = tmp_nd;
+-			list_add(&nl->node, &ndlist.node);
+-		}
+-		rcu_read_unlock();
+-		lag->netdev_head = &ndlist.node;
++		ice_lag_build_netdev_list(lag, &ndlist);
+ 		prim_lag = ice_lag_find_primary(lag);
+ 	}
+ 
+@@ -2078,13 +2106,7 @@ void ice_lag_rebuild(struct ice_pf *pf)
+ 
+ 	ice_clear_rdma_cap(pf);
+ lag_rebuild_out:
+-	list_for_each_safe(tmp, n, &ndlist.node) {
+-		struct ice_lag_netdev_list *entry;
+-
+-		entry = list_entry(tmp, struct ice_lag_netdev_list, node);
+-		list_del(&entry->node);
+-		kfree(entry);
+-	}
++	ice_lag_destroy_netdev_list(lag, &ndlist);
+ 	mutex_unlock(&pf->lag_mutex);
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_lag.h b/drivers/net/ethernet/intel/ice/ice_lag.h
+index facb6c894b6dd..7f22987675012 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lag.h
++++ b/drivers/net/ethernet/intel/ice/ice_lag.h
+@@ -63,4 +63,5 @@ int ice_init_lag(struct ice_pf *pf);
+ void ice_deinit_lag(struct ice_pf *pf);
+ void ice_lag_rebuild(struct ice_pf *pf);
+ bool ice_lag_is_switchdev_running(struct ice_pf *pf);
++void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt);
+ #endif /* _ICE_LAG_H_ */
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index 24e4f4d897b66..d488c7156d093 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -827,12 +827,16 @@ static void ice_notify_vf_reset(struct ice_vf *vf)
+ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ {
+ 	struct ice_pf *pf = vf->pf;
++	struct ice_lag *lag;
+ 	struct ice_vsi *vsi;
++	u8 act_prt, pri_prt;
+ 	struct device *dev;
+ 	int err = 0;
+ 	bool rsd;
+ 
+ 	dev = ice_pf_to_dev(pf);
++	act_prt = ICE_LAG_INVALID_PORT;
++	pri_prt = pf->hw.port_info->lport;
+ 
+ 	if (flags & ICE_VF_RESET_NOTIFY)
+ 		ice_notify_vf_reset(vf);
+@@ -843,6 +847,17 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
  		return 0;
  	}
  
-+	sk_pair = unix_peer(sk);
-+	sock_hold(sk_pair);
-+	psock->sk_pair = sk_pair;
- 	unix_stream_bpf_check_needs_rebuild(psock->sk_proto);
- 	sock_replace_proto(sk, &unix_stream_bpf_prot);
- 	return 0;
++	lag = pf->lag;
++	mutex_lock(&pf->lag_mutex);
++	if (lag && lag->bonded && lag->primary) {
++		act_prt = lag->active_port;
++		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT &&
++		    lag->upper_netdev)
++			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
++		else
++			act_prt = ICE_LAG_INVALID_PORT;
++	}
++
+ 	if (flags & ICE_VF_RESET_LOCK)
+ 		mutex_lock(&vf->cfg_lock);
+ 	else
+@@ -935,6 +950,11 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ 	if (flags & ICE_VF_RESET_LOCK)
+ 		mutex_unlock(&vf->cfg_lock);
+ 
++	if (lag && lag->bonded && lag->primary &&
++	    act_prt != ICE_LAG_INVALID_PORT)
++		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	mutex_unlock(&pf->lag_mutex);
++
+ 	return err;
+ }
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index db97353efd067..62337e6569b23 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -1600,9 +1600,24 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+ 	    (struct virtchnl_vsi_queue_config_info *)msg;
+ 	struct virtchnl_queue_pair_info *qpi;
+ 	struct ice_pf *pf = vf->pf;
++	struct ice_lag *lag;
+ 	struct ice_vsi *vsi;
++	u8 act_prt, pri_prt;
+ 	int i = -1, q_idx;
+ 
++	lag = pf->lag;
++	mutex_lock(&pf->lag_mutex);
++	act_prt = ICE_LAG_INVALID_PORT;
++	pri_prt = pf->hw.port_info->lport;
++	if (lag && lag->bonded && lag->primary) {
++		act_prt = lag->active_port;
++		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT &&
++		    lag->upper_netdev)
++			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
++		else
++			act_prt = ICE_LAG_INVALID_PORT;
++	}
++
+ 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states))
+ 		goto error_param;
+ 
+@@ -1710,6 +1725,11 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+ 		}
+ 	}
+ 
++	if (lag && lag->bonded && lag->primary &&
++	    act_prt != ICE_LAG_INVALID_PORT)
++		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	mutex_unlock(&pf->lag_mutex);
++
+ 	/* send the response to the VF */
+ 	return ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_CONFIG_VSI_QUEUES,
+ 				     VIRTCHNL_STATUS_SUCCESS, NULL, 0);
+@@ -1724,6 +1744,11 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
+ 				vf->vf_id, i);
+ 	}
+ 
++	if (lag && lag->bonded && lag->primary &&
++	    act_prt != ICE_LAG_INVALID_PORT)
++		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
++	mutex_unlock(&pf->lag_mutex);
++
+ 	ice_lag_move_new_vf_nodes(vf);
+ 
+ 	/* send the response to the VF */
 -- 
 2.42.0
 
