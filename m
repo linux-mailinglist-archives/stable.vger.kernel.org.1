@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 551C28045F9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA5BF80470E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11598283132
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59501B20D01
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FA879E3;
-	Tue,  5 Dec 2023 03:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A148BF2;
+	Tue,  5 Dec 2023 03:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQJnd8d2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdTPfPsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589596FB0;
-	Tue,  5 Dec 2023 03:23:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBB6C433C9;
-	Tue,  5 Dec 2023 03:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF8D6FB1;
+	Tue,  5 Dec 2023 03:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7A0C433C8;
+	Tue,  5 Dec 2023 03:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746599;
-	bh=6qXwnit/X4VIGKxPc+DP8ksO1hqPTulihiUVa2aaHx8=;
+	s=korg; t=1701747262;
+	bh=EOn6sZNLMuCXZ+ePECl6lnr0KIIQvr+n0HtyKP3ygr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQJnd8d276d+mYdaMhsG0khGI/ropGx3OJ7saXXPWNCEvA2KnVEKY4lDso3lDW9IZ
-	 G5ga8cUyVtLpAQrbbp4qRe+oYdQ+ngJLANJfI3KgjBbYqKs+w6Ioe6oKHPbHh2hg40
-	 l5HpEwOtn3/gLsj4hScGEzw9hF8KINfug7mQrDJA=
+	b=qdTPfPsr1BSAZgPDqXcQF91gIlRaprDpircw/2fSRIVzrPNB4XEnTuVR8N7WTSeEJ
+	 msKgaOlsvjsVGa97AFLt8CqtYDwIaeZJpFVSt1Y9BZKcYeXXh8lSzSpksRghZxa54v
+	 itT6IniOM8fUjYX7p/rldsW8FHSgBhUELSwN/5K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.6 052/134] ext2: Fix ki_pos update for DIO buffered-io fallback case
+	Patrick Thompson <ptf@google.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 003/135] net: r8169: Disable multicast filter for RTL8168H and RTL8107E
 Date: Tue,  5 Dec 2023 12:15:24 +0900
-Message-ID: <20231205031538.878687276@linuxfoundation.org>
+Message-ID: <20231205031530.757497977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +55,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Patrick Thompson <ptf@google.com>
 
-commit 8abc712ea4867a81c860853048f24e511bbc20f2 upstream.
+[ Upstream commit efa5f1311c4998e9e6317c52bc5ee93b3a0f36df ]
 
-Commit "filemap: update ki_pos in generic_perform_write", made updating
-of ki_pos into common code in generic_perform_write() function.
-This also causes generic/091 to fail.
-This happened due to an in-flight collision with:
-fb5de4358e1a ("ext2: Move direct-io to use iomap"). I have chosen fixes tag
-based on which commit got landed later to upstream kernel.
+RTL8168H and RTL8107E ethernet adapters erroneously filter unicast
+eapol packets unless allmulti is enabled. These devices correspond to
+RTL_GIGA_MAC_VER_46 and VER_48. Add an exception for VER_46 and VER_48
+in the same way that VER_35 has an exception.
 
-Fixes: 182c25e9c157 ("filemap: update ki_pos in generic_perform_write")
-Cc: stable@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <d595bee9f2475ed0e8a2e7fb94f7afc2c6ffc36a.1700643443.git.ritesh.list@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6e1d0b898818 ("r8169:add support for RTL8168H and RTL8107E")
+Signed-off-by: Patrick Thompson <ptf@google.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231030205031.177855-1-ptf@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext2/file.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext2/file.c b/fs/ext2/file.c
-index 1039e5bf90af..4ddc36f4dbd4 100644
---- a/fs/ext2/file.c
-+++ b/fs/ext2/file.c
-@@ -258,7 +258,6 @@ static ssize_t ext2_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
- 			goto out_unlock;
- 		}
- 
--		iocb->ki_pos += status;
- 		ret += status;
- 		endbyte = pos + status - 1;
- 		ret2 = filemap_write_and_wait_range(inode->i_mapping, pos,
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index ab6af1f1ad5bb..6e0fe77d1019c 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2581,7 +2581,9 @@ static void rtl_set_rx_mode(struct net_device *dev)
+ 		rx_mode &= ~AcceptMulticast;
+ 	} else if (netdev_mc_count(dev) > MC_FILTER_LIMIT ||
+ 		   dev->flags & IFF_ALLMULTI ||
+-		   tp->mac_version == RTL_GIGA_MAC_VER_35) {
++		   tp->mac_version == RTL_GIGA_MAC_VER_35 ||
++		   tp->mac_version == RTL_GIGA_MAC_VER_46 ||
++		   tp->mac_version == RTL_GIGA_MAC_VER_48) {
+ 		/* accept all multicasts */
+ 	} else if (netdev_mc_empty(dev)) {
+ 		rx_mode &= ~AcceptMulticast;
 -- 
-2.43.0
+2.42.0
 
 
 
