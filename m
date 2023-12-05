@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EC5804783
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30BE8804818
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F234281592
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9079128177A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423498C03;
-	Tue,  5 Dec 2023 03:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C938C05;
+	Tue,  5 Dec 2023 03:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbsbSpWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBAx1kEV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F3A6FB1;
-	Tue,  5 Dec 2023 03:39:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27662C433C8;
-	Tue,  5 Dec 2023 03:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572FE611E;
+	Tue,  5 Dec 2023 03:45:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29E4C433C8;
+	Tue,  5 Dec 2023 03:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747569;
-	bh=IB+9BXSL3eQWOoCd96TVHdfek8Gq2+nG24rzOE3Qg58=;
+	s=korg; t=1701747947;
+	bh=bX8ZVDaKfYc4nt2jcnSeZzUEIZ5A68H+jUaAMs7Cjic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbsbSpWdiQD+jxh5AE5j0+vZoERhzxkoOkfGBMz1Hl5ke9vH3IR7CPSAAy47GpRUN
-	 WBOhy7oPWCWABfRbe0HacJ5UiLFr6b9kQNtszgLfcMaDGqJlLiHqpC+WfKt+s/Uhs6
-	 WUU+fdIo+kaFq0FzyLOqNqc6s5SAmFlPvnocPN6Y=
+	b=nBAx1kEVorGinbA7rl0+uObv9OflhR0hEmvJSCFhvpm1OvjDyNHjMU9g9+FzTPUTe
+	 HONRqsCvSW0bmYQ9Yu9gA2P8ta93VuVT++rMEdqkxy4ic6Kvi1Ni2GNk48m2Uirlnf
+	 1ogYyW2AlMHL6rkoNmseBCX4t87z9Al+I4lQ5beE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 124/135] cpufreq: imx6q: dont warn for disabling a non-existing frequency
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 57/94] ALSA: hda/realtek: Headset Mic VREF to 100%
 Date: Tue,  5 Dec 2023 12:17:25 +0900
-Message-ID: <20231205031538.735933877@linuxfoundation.org>
+Message-ID: <20231205031526.023869797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,98 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
+commit baaacbff64d9f34b64f294431966d035aeadb81c upstream.
 
-It is confusing if a warning is given for disabling a non-existent
-frequency of the operating performance points (OPP). In this case
-the function dev_pm_opp_disable() returns -ENODEV. Check the return
-value and avoid the output of a warning in this case. Avoid code
-duplication by using a separate function.
+This platform need to set Mic VREF to 100%.
 
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-[ Viresh : Updated commit subject ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/0916af40f08a4348a3298a9a59e6967e@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ sound/pci/hda/patch_realtek.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index 5bf5fc759881f..cc874d0c4395a 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -209,6 +209,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
- 	.suspend = cpufreq_generic_suspend,
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -1935,6 +1935,7 @@ enum {
+ 	ALC887_FIXUP_ASUS_AUDIO,
+ 	ALC887_FIXUP_ASUS_HMIC,
+ 	ALCS1200A_FIXUP_MIC_VREF,
++	ALC888VD_FIXUP_MIC_100VREF,
  };
  
-+static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
-+{
-+	int ret = dev_pm_opp_disable(dev, freq);
-+
-+	if (ret < 0 && ret != -ENODEV)
-+		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
-+}
-+
- #define OCOTP_CFG3			0x440
- #define OCOTP_CFG3_SPEED_SHIFT		16
- #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
-@@ -254,17 +262,15 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
- 	val &= 0x3;
+ static void alc889_fixup_coef(struct hda_codec *codec,
+@@ -2488,6 +2489,13 @@ static const struct hda_fixup alc882_fix
+ 			{}
+ 		}
+ 	},
++	[ALC888VD_FIXUP_MIC_100VREF] = {
++		.type = HDA_FIXUP_PINCTLS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x18, PIN_VREF100 }, /* headset mic */
++			{}
++		}
++	},
+ };
  
- 	if (val < OCOTP_CFG3_SPEED_996MHZ)
--		if (dev_pm_opp_disable(dev, 996000000))
--			dev_warn(dev, "failed to disable 996MHz OPP\n");
-+		imx6x_disable_freq_in_opp(dev, 996000000);
+ static const struct snd_pci_quirk alc882_fixup_tbl[] = {
+@@ -2557,6 +2565,7 @@ static const struct snd_pci_quirk alc882
+ 	SND_PCI_QUIRK(0x106b, 0x4a00, "Macbook 5,2", ALC889_FIXUP_MBA11_VREF),
  
- 	if (of_machine_is_compatible("fsl,imx6q") ||
- 	    of_machine_is_compatible("fsl,imx6qp")) {
- 		if (val != OCOTP_CFG3_SPEED_852MHZ)
--			if (dev_pm_opp_disable(dev, 852000000))
--				dev_warn(dev, "failed to disable 852MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 852000000);
-+
- 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
--			if (dev_pm_opp_disable(dev, 1200000000))
--				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 1200000000);
- 	}
- 
- 	return 0;
-@@ -316,20 +322,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 	val >>= OCOTP_CFG3_SPEED_SHIFT;
- 	val &= 0x3;
- 
--	if (of_machine_is_compatible("fsl,imx6ul")) {
-+	if (of_machine_is_compatible("fsl,imx6ul"))
- 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
--			if (dev_pm_opp_disable(dev, 696000000))
--				dev_warn(dev, "failed to disable 696MHz OPP\n");
--	}
-+			imx6x_disable_freq_in_opp(dev, 696000000);
- 
- 	if (of_machine_is_compatible("fsl,imx6ull")) {
- 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
--			if (dev_pm_opp_disable(dev, 792000000))
--				dev_warn(dev, "failed to disable 792MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 792000000);
- 
- 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
--			if (dev_pm_opp_disable(dev, 900000000))
--				dev_warn(dev, "failed to disable 900MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 900000000);
- 	}
- 
- 	return ret;
--- 
-2.42.0
-
+ 	SND_PCI_QUIRK(0x1071, 0x8258, "Evesham Voyaeger", ALC882_FIXUP_EAPD),
++	SND_PCI_QUIRK(0x10ec, 0x12d8, "iBase Elo Touch", ALC888VD_FIXUP_MIC_100VREF),
+ 	SND_PCI_QUIRK(0x13fe, 0x1009, "Advantech MIT-W101", ALC886_FIXUP_EAPD),
+ 	SND_PCI_QUIRK(0x1458, 0xa002, "Gigabyte EP45-DS3/Z87X-UD3H", ALC889_FIXUP_FRONT_HP_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1458, 0xa0b8, "Gigabyte AZ370-Gaming", ALC1220_FIXUP_GB_DUAL_CODECS),
 
 
 
