@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB02F80467A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A0E8046E0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E201C20C79
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D9CA2814D7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4E779E3;
-	Tue,  5 Dec 2023 03:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F348BF1;
+	Tue,  5 Dec 2023 03:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQBSrWbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ymz/Hp8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269F86FAF;
-	Tue,  5 Dec 2023 03:28:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95908C433C7;
-	Tue,  5 Dec 2023 03:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 817976FB1;
+	Tue,  5 Dec 2023 03:32:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 030CEC433C7;
+	Tue,  5 Dec 2023 03:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746887;
-	bh=ge3ezNGkyCvnwKUYIsmlQB7nu1WErq+LsY8ZXXvl25k=;
+	s=korg; t=1701747153;
+	bh=jw0Q4P4JoOIUchNLTNRY5tNTFPYeYN3d229IIrzXwQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XQBSrWbmRW3kFA//4zyinw/VyaPnoTfwW5fot7bHXEA57cyQ8cqD4MZ0LESG3kjBf
-	 Tk5/RpWm8DpSoHAbx1qWFOCx50pX//LyYSedKUrNbBbLvpeuO/Rm9tdnaQ0Dc65Zwg
-	 hT6nLi0iu/u8+mp7GhuJe2M3Mk2amf3BK2oIAGz8=
+	b=Ymz/Hp8EVXKtjokbCxdIXS6tu7q+YSIZLB8ap9OkDD9icoHiY01Vl5AKl0G/8n1tm
+	 KkWTdxlr6bwlYmvFo6fdNnO8BEo5lSxgAGKrmDduSHeXcJ5ZZ0rijZKKpxffNQsxpT
+	 qMge6TsDQ3bhIjSHQ3+1lbOwuegywH5AZ/1M3cLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
+	Chad Schroeder <CSchroeder@sonifi.com>,
+	Lukas Wunner <lukas@wunner.de>,
 	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 56/71] Revert "PCI/ASPM: Disable only ASPM_STATE_L1 when driver, disables L1"
+Subject: [PATCH 6.1 079/107] PCI: Lengthen reset delay for VideoPropulsion Torrent QN16e card
 Date: Tue,  5 Dec 2023 12:16:54 +0900
-Message-ID: <20231205031521.132882208@linuxfoundation.org>
+Message-ID: <20231205031536.483834491@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,81 +54,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 3cb4f534bac010258b2688395c2f13459a932be9 ]
+[ Upstream commit c9260693aa0c1e029ed23693cfd4d7814eee6624 ]
 
-This reverts commit fb097dcd5a28c0a2325632405c76a66777a6bed9.
+Commit ac91e6980563 ("PCI: Unify delay handling for reset and resume")
+shortened an unconditional 1 sec delay after a Secondary Bus Reset to 100
+msec for PCIe (per PCIe r6.1 sec 6.6.1).  The 1 sec delay is only required
+for Conventional PCI.
 
-After fb097dcd5a28 ("PCI/ASPM: Disable only ASPM_STATE_L1 when driver
-disables L1"), disabling L1 via pci_disable_link_state(PCIE_LINK_STATE_L1),
-then enabling one substate, e.g., L1.1, via sysfs actually enables *all*
-the substates.
+But it turns out that there are PCIe devices which require a longer delay
+than prescribed before first config space access after reset recovery or
+resume from D3cold:
 
-For example, r8169 disables L1 because of hardware issues on a number of
-systems, which implicitly disables the L1.1 and L1.2 substates.
+Chad reports that a "VideoPropulsion Torrent QN16e" MPEG QAM Modulator
+"raises a PCI system error (PERR), as reported by the IPMI event log, and
+the hardware itself would suffer a catastrophic event, cycling the server"
+unless the longer delay is observed.
 
-On some systems, L1 and L1.1 work fine, but L1.2 causes missed rx packets.
-Enabling L1.1 via the sysfs "aspm_l1_1" attribute unexpectedly enables L1.2
-as well as L1.1.
+The card is specified to conform to PCIe r1.0 and indeed only supports Gen1
+speed (2.5 GT/s) according to lspci.  PCIe r1.0 sec 7.6 prescribes the same
+100 msec delay as PCIe r6.1 sec 6.6.1:
 
-After fb097dcd5a28, pci_disable_link_state(PCIE_LINK_STATE_L1) adds only
-ASPM_L1 (but not any of the L1.x substates) to the "aspm_disable" mask:
+  To allow components to perform internal initialization, system software
+  must wait for at least 100 ms from the end of a reset (cold/warm/hot)
+  before it is permitted to issue Configuration Requests
 
-  --- Before fb097dcd5a28
-  +++ After fb097dcd5a28
+The behavior of the Torrent QN16e card thus appears to be a quirk.  Treat
+it as such and lengthen the reset delay for this specific device.
 
-  # r8169 disables L1:
-    pci_disable_link_state(PCIE_LINK_STATE_L1)
-  -   disable |= ASPM_L1 | ASPM_L1_1 | ASPM_L1_2 | ...  # disable L1, L1.x
-  +   disable |= ASPM_L1                                # disable L1 only
-
-  # write "1" to sysfs "aspm_l1_1" attribute:
-    l1_1_aspm
-      aspm_attr_store_common(state = ASPM_L1_1)
-        disable &= ~ASPM_L1_1              # enable L1.1
-        if (state & (ASPM_L1_1 | ...))     # if enabling any substate
-          disable &= ~ASPM_L1              # enable L1
-
-  # final state:
-  - disable = ASPM_L1_2 | ...              # L1, L1.1 enabled; L1.2 disabled
-  + disable = 0                            # L1, L1.1, L1.2 all enabled
-
-Enabling an L1.x substate removes the substate and L1 from the
-"aspm_disable" mask.  After fb097dcd5a28, the substates were not added to
-the mask when disabling L1, so enabling one substate implicitly enables all
-of them.
-
-Revert fb097dcd5a28 so enabling one substate doesn't enable the others.
-
-Link: https://lore.kernel.org/r/c75931ac-7208-4200-9ca1-821629cf5e28@gmail.com
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-[bhelgaas: work through example in commit log]
+Fixes: ac91e6980563 ("PCI: Unify delay handling for reset and resume")
+Link: https://lore.kernel.org/r/47727e792c7f0282dc144e3ec8ce8eb6e713394e.1695304512.git.lukas@wunner.de
+Reported-by: Chad Schroeder <CSchroeder@sonifi.com>
+Closes: https://lore.kernel.org/linux-pci/DM6PR16MB2844903E34CAB910082DF019B1FAA@DM6PR16MB2844.namprd16.prod.outlook.com/
+Tested-by: Chad Schroeder <CSchroeder@sonifi.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
+Cc: stable@vger.kernel.org # v5.4+
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 8db6a9084a12a..8f934c88dcd76 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -1110,7 +1110,8 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
- 	if (state & PCIE_LINK_STATE_L0S)
- 		link->aspm_disable |= ASPM_STATE_L0S;
- 	if (state & PCIE_LINK_STATE_L1)
--		link->aspm_disable |= ASPM_STATE_L1;
-+		/* L1 PM substates require L1 */
-+		link->aspm_disable |= ASPM_STATE_L1 | ASPM_STATE_L1SS;
- 	if (state & PCIE_LINK_STATE_L1_1)
- 		link->aspm_disable |= ASPM_STATE_L1_1;
- 	if (state & PCIE_LINK_STATE_L1_2)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 48389785d9247..c132839d99dc8 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -6058,3 +6058,15 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2d, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a2f, dpc_log_size);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x9a31, dpc_log_size);
+ #endif
++
++/*
++ * Devices known to require a longer delay before first config space access
++ * after reset recovery or resume from D3cold:
++ *
++ * VideoPropulsion (aka Genroco) Torrent QN16e MPEG QAM Modulator
++ */
++static void pci_fixup_d3cold_delay_1sec(struct pci_dev *pdev)
++{
++	pdev->d3cold_delay = 1000;
++}
++DECLARE_PCI_FIXUP_FINAL(0x5555, 0x0004, pci_fixup_d3cold_delay_1sec);
 -- 
 2.42.0
 
