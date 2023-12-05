@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5E68047B5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5BE804791
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C80661F214F5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC6A1C20E25
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 031448BF8;
-	Tue,  5 Dec 2023 03:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDBE8BF7;
+	Tue,  5 Dec 2023 03:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mBrHNjg3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIPMJzck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FA36AC2;
-	Tue,  5 Dec 2023 03:41:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CBD4C433C8;
-	Tue,  5 Dec 2023 03:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AECA6FB1;
+	Tue,  5 Dec 2023 03:40:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2B8C433C8;
+	Tue,  5 Dec 2023 03:40:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747686;
-	bh=K0Bj7gSy2OZXNXLpXMDyWSye09oWSZv+XPuXeuXV4Bs=;
+	s=korg; t=1701747610;
+	bh=azviAzRvUiNvMNRMEv1Dfr12ZyEvhl02Lii8HyRrExY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mBrHNjg397ZHMWAwdgiSHEXoZ6yJMez/zRo0eZ+bAEuaJ3U+QECzjnZDnL+m/vx4X
-	 GPve6YE1aaMamcneEXnw14LxpQ3uLytZH8zaW3VIJr5DkOaBSM+6mLuoIFFR4gjfAx
-	 Y9sPHu1sOWGubttsjL9Fn3Moo9SBkAIU558fb1v4=
+	b=xIPMJzckYm2QV7I/IauiWWe65IvSSZKFtumLmzXFQbGUPt2ZWH2SycEfpQs7rqDsH
+	 /q1O3PTIV5418nAv24NJZCWDu/ko7Cz7BoUfEvfTlkUntMLxkq/fP222ADexx7Yy6m
+	 zujH+WVE8yA5NyreQuj6h6I9HIMaGXDCLYLByrG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	stable <stable@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/67] usb: config: fix iteration issue in usb_get_bos_descriptor()
+Subject: [PATCH 5.10 114/135] misc: pci_endpoint_test: Add deviceID for J721S2 PCIe EP device support
 Date: Tue,  5 Dec 2023 12:17:15 +0900
-Message-ID: <20231205031521.547421041@linuxfoundation.org>
+Message-ID: <20231205031538.014702674@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,59 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 974bba5c118f4c2baf00de0356e3e4f7928b4cbc ]
+[ Upstream commit 8293703a492ae97c86af27c75b76e6239ec86483 ]
 
-The BOS descriptor defines a root descriptor and is the base descriptor for
-accessing a family of related descriptors.
+Add DEVICE_ID for J721S2 and enable support for endpoints configured
+with this DEVICE_ID in the pci_endpoint_test driver.
 
-Function 'usb_get_bos_descriptor()' encounters an iteration issue when
-skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
-the same descriptor being read repeatedly.
-
-To address this issue, a 'goto' statement is introduced to ensure that the
-pointer and the amount read is updated correctly. This ensures that the
-function iterates to the next descriptor instead of reading the same
-descriptor repeatedly.
-
-Cc: stable@vger.kernel.org
-Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231115121325.471454-1-niklas.neronin@linux.intel.com
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231020120248.3168406-1-s-vadapalli@ti.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/misc/pci_endpoint_test.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
-index 34de57c8e72b3..5f190bfe88000 100644
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
+diff --git a/drivers/misc/pci_endpoint_test.c b/drivers/misc/pci_endpoint_test.c
+index 9832c2966c110..cdb9a55a2c706 100644
+--- a/drivers/misc/pci_endpoint_test.c
++++ b/drivers/misc/pci_endpoint_test.c
+@@ -72,6 +72,7 @@
+ #define PCI_DEVICE_ID_TI_AM654			0xb00c
+ #define PCI_DEVICE_ID_TI_J7200			0xb00f
+ #define PCI_DEVICE_ID_TI_AM64			0xb010
++#define PCI_DEVICE_ID_TI_J721S2		0xb013
+ #define PCI_DEVICE_ID_LS1088A			0x80c0
  
- 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
- 			dev_notice(ddev, "descriptor type invalid, skip\n");
--			continue;
-+			goto skip_to_next_descriptor;
- 		}
- 
- 		switch (cap_type) {
-@@ -1081,6 +1081,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
- 			break;
- 		}
- 
-+skip_to_next_descriptor:
- 		total_len -= length;
- 		buffer += length;
- 	}
+ #define is_am654_pci_dev(pdev)		\
+@@ -1008,6 +1009,9 @@ static const struct pci_device_id pci_endpoint_test_tbl[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM64),
+ 	  .driver_data = (kernel_ulong_t)&j721e_data,
+ 	},
++	{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_J721S2),
++	  .driver_data = (kernel_ulong_t)&j721e_data,
++	},
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(pci, pci_endpoint_test_tbl);
 -- 
 2.42.0
 
