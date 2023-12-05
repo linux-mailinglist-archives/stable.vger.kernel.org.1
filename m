@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-3985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B679804584
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B087A804636
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 285451F21358
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1F281C20D0C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10B26AC2;
-	Tue,  5 Dec 2023 03:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5A56110;
+	Tue,  5 Dec 2023 03:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="URT5lPTU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHKNMW54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B7F611E;
-	Tue,  5 Dec 2023 03:18:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26669C433C7;
-	Tue,  5 Dec 2023 03:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68128C07;
+	Tue,  5 Dec 2023 03:25:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1067DC433CA;
+	Tue,  5 Dec 2023 03:25:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746302;
-	bh=EDLpVzRrIf7boNLR1qFEoA3mSBPRxpxy69vbbdjWzrk=;
+	s=korg; t=1701746759;
+	bh=tJFKOl2GrWdrqkHtFgx6qgGT40pneiLtagFZ9Fbpv6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=URT5lPTU3ljBZXxADH2mVJTa3MlmsglG8PO1gDgBNjFbFy1O+fTOMON4P7l4Vqjoq
-	 vovDslzXd84gZI2UL6b7KTGLKCjtgqhn3XDPkLujKrvXuVsSq2DgXqUcbREV5E9taX
-	 vLv80/taaDbmBl66hMgqEHz1WhHey8avmX3FRQHE=
+	b=EHKNMW54JBpmeewbE7j67fJ/3RxLpjfvHCVzC54WU7CofogznhhBWj+4NpJta5It5
+	 8x/VRfN5MMbvs1xy14wWbRW+BZo8Md2RhlLeMxo6njWo2aGoQ7MBQx6H2UUgiIbj3S
+	 yhO0PbAmgEQlwAqaphBsQvO8bBMVeK2lMoc4+XtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christopher Bednarz <christopher.n.bednarz@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Leon Romanovsky <leon@kernel.org>
-Subject: [PATCH 4.14 01/30] RDMA/irdma: Prevent zero-length STAG registration
+	Stefano Stabellini <stefano.stabellini@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 10/71] arm/xen: fix xen_vcpu_info allocation alignment
 Date: Tue,  5 Dec 2023 12:16:08 +0900
-Message-ID: <20231205031511.571552355@linuxfoundation.org>
+Message-ID: <20231205031518.443051018@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,122 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christopher Bednarz <christopher.n.bednarz@intel.com>
+From: Stefano Stabellini <sstabellini@kernel.org>
 
-commit bb6d73d9add68ad270888db327514384dfa44958 upstream.
+[ Upstream commit 7bf9a6b46549852a37e6d07e52c601c3c706b562 ]
 
-Currently irdma allows zero-length STAGs to be programmed in HW during
-the kernel mode fast register flow. Zero-length MR or STAG registration
-disable HW memory length checks.
+xen_vcpu_info is a percpu area than needs to be mapped by Xen.
+Currently, it could cross a page boundary resulting in Xen being unable
+to map it:
 
-Improve gaps in bounds checking in irdma by preventing zero-length STAG or
-MR registrations except if the IB_PD_UNSAFE_GLOBAL_RKEY is set.
+[    0.567318] kernel BUG at arch/arm64/xen/../../arm/xen/enlighten.c:164!
+[    0.574002] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
 
-This addresses the disclosure CVE-2023-25775.
+Fix the issue by using __alloc_percpu and requesting alignment for the
+memory allocation.
 
-Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
-Signed-off-by: Christopher Bednarz <christopher.n.bednarz@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Link: https://lore.kernel.org/r/20230818144838.1758-1-shiraz.saleem@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+
+Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2311221501340.2053963@ubuntu-linux-20-04-desktop
+Fixes: 24d5373dda7c ("arm/xen: Use alloc_percpu rather than __alloc_percpu")
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/i40iw/i40iw_ctrl.c  |    6 ++++++
- drivers/infiniband/hw/i40iw/i40iw_type.h  |    2 ++
- drivers/infiniband/hw/i40iw/i40iw_verbs.c |   10 ++++++++--
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ arch/arm/xen/enlighten.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
-+++ b/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
-@@ -2853,6 +2853,9 @@ static enum i40iw_status_code i40iw_sc_a
- 	u64 header;
- 	enum i40iw_page_size page_size;
+diff --git a/arch/arm/xen/enlighten.c b/arch/arm/xen/enlighten.c
+index dd946c77e8015..1623bfab45131 100644
+--- a/arch/arm/xen/enlighten.c
++++ b/arch/arm/xen/enlighten.c
+@@ -388,7 +388,8 @@ static int __init xen_guest_init(void)
+ 	 * for secondary CPUs as they are brought up.
+ 	 * For uniformity we use VCPUOP_register_vcpu_info even on cpu0.
+ 	 */
+-	xen_vcpu_info = alloc_percpu(struct vcpu_info);
++	xen_vcpu_info = __alloc_percpu(sizeof(struct vcpu_info),
++				       1 << fls(sizeof(struct vcpu_info) - 1));
+ 	if (xen_vcpu_info == NULL)
+ 		return -ENOMEM;
  
-+	if (!info->total_len && !info->all_memory)
-+		return -EINVAL;
-+
- 	page_size = (info->page_size == 0x200000) ? I40IW_PAGE_SIZE_2M : I40IW_PAGE_SIZE_4K;
- 	cqp = dev->cqp;
- 	wqe = i40iw_sc_cqp_get_next_send_wqe(cqp, scratch);
-@@ -2911,6 +2914,9 @@ static enum i40iw_status_code i40iw_sc_m
- 	u8 addr_type;
- 	enum i40iw_page_size page_size;
- 
-+	if (!info->total_len && !info->all_memory)
-+		return -EINVAL;
-+
- 	page_size = (info->page_size == 0x200000) ? I40IW_PAGE_SIZE_2M : I40IW_PAGE_SIZE_4K;
- 	if (info->access_rights & (I40IW_ACCESS_FLAGS_REMOTEREAD_ONLY |
- 				   I40IW_ACCESS_FLAGS_REMOTEWRITE_ONLY))
---- a/drivers/infiniband/hw/i40iw/i40iw_type.h
-+++ b/drivers/infiniband/hw/i40iw/i40iw_type.h
-@@ -780,6 +780,7 @@ struct i40iw_allocate_stag_info {
- 	bool use_hmc_fcn_index;
- 	u8 hmc_fcn_index;
- 	bool use_pf_rid;
-+	bool all_memory;
- };
- 
- struct i40iw_reg_ns_stag_info {
-@@ -798,6 +799,7 @@ struct i40iw_reg_ns_stag_info {
- 	bool use_hmc_fcn_index;
- 	u8 hmc_fcn_index;
- 	bool use_pf_rid;
-+	bool all_memory;
- };
- 
- struct i40iw_fast_reg_stag_info {
---- a/drivers/infiniband/hw/i40iw/i40iw_verbs.c
-+++ b/drivers/infiniband/hw/i40iw/i40iw_verbs.c
-@@ -1579,7 +1579,8 @@ static int i40iw_handle_q_mem(struct i40
- static int i40iw_hw_alloc_stag(struct i40iw_device *iwdev, struct i40iw_mr *iwmr)
- {
- 	struct i40iw_allocate_stag_info *info;
--	struct i40iw_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
-+	struct ib_pd *pd = iwmr->ibmr.pd;
-+	struct i40iw_pd *iwpd = to_iwpd(pd);
- 	enum i40iw_status_code status;
- 	int err = 0;
- 	struct i40iw_cqp_request *cqp_request;
-@@ -1596,6 +1597,7 @@ static int i40iw_hw_alloc_stag(struct i4
- 	info->stag_idx = iwmr->stag >> I40IW_CQPSQ_STAG_IDX_SHIFT;
- 	info->pd_id = iwpd->sc_pd.pd_id;
- 	info->total_len = iwmr->length;
-+	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	info->remote_access = true;
- 	cqp_info->cqp_cmd = OP_ALLOC_STAG;
- 	cqp_info->post_sq = 1;
-@@ -1649,6 +1651,8 @@ static struct ib_mr *i40iw_alloc_mr(stru
- 	iwmr->type = IW_MEMREG_TYPE_MEM;
- 	palloc = &iwpbl->pble_alloc;
- 	iwmr->page_cnt = max_num_sg;
-+	/* Use system PAGE_SIZE as the sg page sizes are unknown at this point */
-+	iwmr->length = max_num_sg * PAGE_SIZE;
- 	mutex_lock(&iwdev->pbl_mutex);
- 	status = i40iw_get_pble(&iwdev->sc_dev, iwdev->pble_rsrc, palloc, iwmr->page_cnt);
- 	mutex_unlock(&iwdev->pbl_mutex);
-@@ -1745,7 +1749,8 @@ static int i40iw_hwreg_mr(struct i40iw_d
- {
- 	struct i40iw_pbl *iwpbl = &iwmr->iwpbl;
- 	struct i40iw_reg_ns_stag_info *stag_info;
--	struct i40iw_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
-+	struct ib_pd *pd = iwmr->ibmr.pd;
-+	struct i40iw_pd *iwpd = to_iwpd(pd);
- 	struct i40iw_pble_alloc *palloc = &iwpbl->pble_alloc;
- 	enum i40iw_status_code status;
- 	int err = 0;
-@@ -1765,6 +1770,7 @@ static int i40iw_hwreg_mr(struct i40iw_d
- 	stag_info->total_len = iwmr->length;
- 	stag_info->access_rights = access;
- 	stag_info->pd_id = iwpd->sc_pd.pd_id;
-+	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
- 	stag_info->addr_type = I40IW_ADDR_TYPE_VA_BASED;
- 	stag_info->page_size = iwmr->page_size;
- 
+-- 
+2.42.0
+
 
 
 
