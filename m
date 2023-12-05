@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D81804690
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD478047AC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D395C2814FF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841841F2147B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E8B79E3;
-	Tue,  5 Dec 2023 03:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB94B8BF7;
+	Tue,  5 Dec 2023 03:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6xWPHTH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZRBADce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201446FAF;
-	Tue,  5 Dec 2023 03:29:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907F5C433C7;
-	Tue,  5 Dec 2023 03:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A619CA43;
+	Tue,  5 Dec 2023 03:41:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6824C433C7;
+	Tue,  5 Dec 2023 03:41:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746948;
-	bh=lVf4k4AoAEgCLoJnikyg9T9ytLjCVyHbOSEtjG7OLa8=;
+	s=korg; t=1701747662;
+	bh=e+B5pFBIfIIliSXHoyXOS4rLLZQDvK0LG1SwZ0TgNrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U6xWPHTHG4RWjxzFX6kmxfEeVFej1YXc7Dc4twNmq7E/QbjQ2qCvgGk7wwUz4DnQd
-	 WHwGmLa7+ShZYe/dkLeByTcRjO17qUPs5E0TdtPzhwsrJD9Lxz/yax4P1EgJ4XAEgm
-	 SMkwVHJCl2Pu1D0fVu696dt86sqdaEDyUilhqaX8=
+	b=1ZRBADceqvkrYxYQi4Ayx+mkUZI3ml648foTiBwurKzf0gffNxinFcIMEKUM7Pb/x
+	 REzF6/jxJ5D90tG+ratUwyl5wbb+5BKpQ2ME+m6Epx4kKrCzdyZaQMVTqQdrCBU7SV
+	 CJGuH1iMVOs0Der6JVCZOYFMH/068ku4u4qGbw+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 69/71] mmc: cqhci: Fix task clearing in CQE error recovery
+	Jann Horn <jannh@google.com>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Subject: [PATCH 5.15 22/67] btrfs: send: ensure send_fd is writable
 Date: Tue,  5 Dec 2023 12:17:07 +0900
-Message-ID: <20231205031521.874088071@linuxfoundation.org>
+Message-ID: <20231205031521.061998850@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,103 +51,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 ]
+commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
 
-If a task completion notification (TCN) is received when there is no
-outstanding task, the cqhci driver issues a "spurious TCN" warning. This
-was observed to happen right after CQE error recovery.
+kernel_write() requires the caller to ensure that the file is writable.
+Let's do that directly after looking up the ->send_fd.
 
-When an error interrupt is received the driver runs recovery logic.
-It halts the controller, clears all pending tasks, and then re-enables
-it. On some platforms, like Intel Jasper Lake, a stale task completion
-event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
+We don't need a separate bailout path because the "out" path already
+does fput() if ->send_filp is non-NULL.
 
-This results in either:
-a) Spurious TC completion event for an empty slot.
-b) Corrupted data being passed up the stack, as a result of premature
-   completion for a newly added task.
+This has no security impact for two reasons:
 
-Rather than add a quirk for affected controllers, ensure tasks are cleared
-by toggling CQHCI_ENABLE, which would happen anyway if
-cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
-effective for all controllers.
+ - the ioctl requires CAP_SYS_ADMIN
+ - __kernel_write() bails out on read-only files - but only since 5.8,
+   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
 
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Reported-by: Kornel Dulęba <korneld@chromium.org>
-Tested-by: Kornel Dulęba <korneld@chromium.org>
-Co-developed-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/cqhci.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
-index deae330441788..a17b87fa26351 100644
---- a/drivers/mmc/host/cqhci.c
-+++ b/drivers/mmc/host/cqhci.c
-@@ -1017,28 +1017,28 @@ static void cqhci_recovery_finish(struct mmc_host *mmc)
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7576,7 +7576,7 @@ long btrfs_ioctl_send(struct file *mnt_f
+ 	sctx->flags = arg->flags;
  
- 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
- 
--	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--		ok = false;
--
- 	/*
- 	 * The specification contradicts itself, by saying that tasks cannot be
- 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
- 	 * be disabled/re-enabled, but not to disable before clearing tasks.
- 	 * Have a go anyway.
- 	 */
--	if (!ok) {
--		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
--		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
--		cqcfg &= ~CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		cqcfg |= CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		/* Be sure that there are no tasks */
--		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
--		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--			ok = false;
--		WARN_ON(!ok);
--	}
-+	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
-+		ok = false;
-+
-+	/* Disable to make sure tasks really are cleared */
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg &= ~CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg |= CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
-+
-+	if (!ok)
-+		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
- 
- 	cqhci_recover_mrqs(cq_host);
- 
--- 
-2.42.0
-
+ 	sctx->send_filp = fget(arg->send_fd);
+-	if (!sctx->send_filp) {
++	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
+ 		ret = -EBADF;
+ 		goto out;
+ 	}
 
 
 
