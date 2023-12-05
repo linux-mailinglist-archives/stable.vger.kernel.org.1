@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-4152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B087A804636
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76984804604
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1F281C20D0C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315D8283426
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D5A56110;
-	Tue,  5 Dec 2023 03:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22B579E3;
+	Tue,  5 Dec 2023 03:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHKNMW54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWKR+Vyh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68128C07;
-	Tue,  5 Dec 2023 03:25:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1067DC433CA;
-	Tue,  5 Dec 2023 03:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0F46FB1;
+	Tue,  5 Dec 2023 03:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20B1C433C8;
+	Tue,  5 Dec 2023 03:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746759;
-	bh=tJFKOl2GrWdrqkHtFgx6qgGT40pneiLtagFZ9Fbpv6U=;
+	s=korg; t=1701746625;
+	bh=KEusSJuiBavPGBBkYDFo53V8jOZ90L5GcYmWWLhdTKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHKNMW54JBpmeewbE7j67fJ/3RxLpjfvHCVzC54WU7CofogznhhBWj+4NpJta5It5
-	 8x/VRfN5MMbvs1xy14wWbRW+BZo8Md2RhlLeMxo6njWo2aGoQ7MBQx6H2UUgiIbj3S
-	 yhO0PbAmgEQlwAqaphBsQvO8bBMVeK2lMoc4+XtA=
+	b=vWKR+Vyh4JNB7JttpJ4jCJSooywt2MiYfUEDNsMOjNPhPxuYs2iJxlYPHzstG8gFo
+	 TXrjiI8K9SA5yxlyWTD+SdFt2TT3oCIw1JATGYQ2b6pSxxpBlqkydE4w4+EeQqZa0q
+	 M5pY9j8MesWGzv+TAKo6Ln6Xi3t1AukXta0e02Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Stabellini <stefano.stabellini@amd.com>,
-	Juergen Gross <jgross@suse.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Furong Xu <0x1207@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/71] arm/xen: fix xen_vcpu_info allocation alignment
+Subject: [PATCH 6.6 096/134] net: stmmac: xgmac: Disable FPE MMC interrupts
 Date: Tue,  5 Dec 2023 12:16:08 +0900
-Message-ID: <20231205031518.443051018@linuxfoundation.org>
+Message-ID: <20231205031541.552631682@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +56,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Stabellini <sstabellini@kernel.org>
+From: Furong Xu <0x1207@gmail.com>
 
-[ Upstream commit 7bf9a6b46549852a37e6d07e52c601c3c706b562 ]
+[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
 
-xen_vcpu_info is a percpu area than needs to be mapped by Xen.
-Currently, it could cross a page boundary resulting in Xen being unable
-to map it:
+Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
+by default") tries to disable MMC interrupts to avoid a storm of
+unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
+interrupts enabled, FPE MMC interrupts can cause the same problem.
+Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
 
-[    0.567318] kernel BUG at arch/arm64/xen/../../arm/xen/enlighten.c:164!
-[    0.574002] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
-
-Fix the issue by using __alloc_percpu and requesting alignment for the
-memory allocation.
-
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-
-Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2311221501340.2053963@ubuntu-linux-20-04-desktop
-Fixes: 24d5373dda7c ("arm/xen: Use alloc_percpu rather than __alloc_percpu")
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
+Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Signed-off-by: Furong Xu <0x1207@gmail.com>
+Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/xen/enlighten.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/xen/enlighten.c b/arch/arm/xen/enlighten.c
-index dd946c77e8015..1623bfab45131 100644
---- a/arch/arm/xen/enlighten.c
-+++ b/arch/arm/xen/enlighten.c
-@@ -388,7 +388,8 @@ static int __init xen_guest_init(void)
- 	 * for secondary CPUs as they are brought up.
- 	 * For uniformity we use VCPUOP_register_vcpu_info even on cpu0.
- 	 */
--	xen_vcpu_info = alloc_percpu(struct vcpu_info);
-+	xen_vcpu_info = __alloc_percpu(sizeof(struct vcpu_info),
-+				       1 << fls(sizeof(struct vcpu_info) - 1));
- 	if (xen_vcpu_info == NULL)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+index ea4910ae0921a..6a7c1d325c464 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
++++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
+@@ -177,8 +177,10 @@
+ #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
+ #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
+ 
++#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
+ #define MMC_XGMAC_TX_FPE_FRAG		0x208
+ #define MMC_XGMAC_TX_HOLD_REQ		0x20c
++#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
+ #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
+ #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
+@@ -352,6 +354,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
+ {
+ 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
+ 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
++	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
+ 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
+ }
  
 -- 
 2.42.0
