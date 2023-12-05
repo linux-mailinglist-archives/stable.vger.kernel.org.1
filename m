@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1421B804619
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84F1C8047E9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4660B1C20CEA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2637FB20D2F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806026110;
-	Tue,  5 Dec 2023 03:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A94B611E;
+	Tue,  5 Dec 2023 03:43:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k031xsUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB/EZSXM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4067F79E3;
-	Tue,  5 Dec 2023 03:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFAEC433C8;
-	Tue,  5 Dec 2023 03:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3066AC2;
+	Tue,  5 Dec 2023 03:43:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3D2C433C7;
+	Tue,  5 Dec 2023 03:43:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746681;
-	bh=0kGQjg7YQ6OZnlizW4x83/qk6X5jDs4oso9muJFnkBE=;
+	s=korg; t=1701747825;
+	bh=CENWtXeOOoyicgCivCjl2yqlAWwMxnu5kYvBRqMp/uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k031xsUGuR799TaPl7OXB5+5Skm5sZTif7Cwoy605ohKfQyeSYVCojnCNhnjtGiT0
-	 2r2wdG27Orei74Tsi23mWpFuHgW/yeLuhO0CVFRQlGhJCnqhWy4DFONq+MupZmzEGz
-	 m63UNPQMkdYpfxEbq8GaOfh5xInKCnMN/sO9bSXM=
+	b=LB/EZSXMFgEg8r/NNWfiUc7RrCm9dT4TDu5R/TYU4KLAoHleZfOm6VPUREJ8PaSr6
+	 wOjtN/kBE60saYldsbubwWdgHUbQxKx1boU6aNL2ii4o28LbzZM3II2RZq/I1vGjMw
+	 frPJAZE//IWtcFoZkL34eyl0Cb0MIsM4rvcRsd98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/134] iommu/vt-d: Omit devTLB invalidation requests when TES=0
-Date: Tue,  5 Dec 2023 12:16:29 +0900
-Message-ID: <20231205031542.899411539@linuxfoundation.org>
+	Christopher Bednarz <christopher.n.bednarz@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 5.4 02/94] RDMA/irdma: Prevent zero-length STAG registration
+Date: Tue,  5 Dec 2023 12:16:30 +0900
+Message-ID: <20231205031522.983727103@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +53,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Christopher Bednarz <christopher.n.bednarz@intel.com>
 
-[ Upstream commit 0f5432a9b839847dcfe9fa369d72e3d646102ddf ]
+commit bb6d73d9add68ad270888db327514384dfa44958 upstream.
 
-The latest VT-d spec indicates that when remapping hardware is disabled
-(TES=0 in Global Status Register), upstream ATS Invalidation Completion
-requests are treated as UR (Unsupported Request).
+Currently irdma allows zero-length STAGs to be programmed in HW during
+the kernel mode fast register flow. Zero-length MR or STAG registration
+disable HW memory length checks.
 
-Consequently, the spec recommends in section 4.3 Handling of Device-TLB
-Invalidations that software refrain from submitting any Device-TLB
-invalidation requests when address remapping hardware is disabled.
+Improve gaps in bounds checking in irdma by preventing zero-length STAG or
+MR registrations except if the IB_PD_UNSAFE_GLOBAL_RKEY is set.
 
-Verify address remapping hardware is enabled prior to submitting Device-
-TLB invalidation requests.
+This addresses the disclosure CVE-2023-25775.
 
-Fixes: 792fb43ce2c9 ("iommu/vt-d: Enable Intel IOMMU scalable mode by default")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20231114011036.70142-2-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Christopher Bednarz <christopher.n.bednarz@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Link: https://lore.kernel.org/r/20230818144838.1758-1-shiraz.saleem@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/dmar.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/infiniband/hw/i40iw/i40iw_ctrl.c  |    6 ++++++
+ drivers/infiniband/hw/i40iw/i40iw_type.h  |    2 ++
+ drivers/infiniband/hw/i40iw/i40iw_verbs.c |   10 ++++++++--
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index a3414afe11b07..23cb80d62a9ab 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1522,6 +1522,15 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
+--- a/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
++++ b/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
+@@ -2945,6 +2945,9 @@ static enum i40iw_status_code i40iw_sc_a
+ 	u64 header;
+ 	enum i40iw_page_size page_size;
+ 
++	if (!info->total_len && !info->all_memory)
++		return -EINVAL;
++
+ 	page_size = (info->page_size == 0x200000) ? I40IW_PAGE_SIZE_2M : I40IW_PAGE_SIZE_4K;
+ 	cqp = dev->cqp;
+ 	wqe = i40iw_sc_cqp_get_next_send_wqe(cqp, scratch);
+@@ -3003,6 +3006,9 @@ static enum i40iw_status_code i40iw_sc_m
+ 	u8 addr_type;
+ 	enum i40iw_page_size page_size;
+ 
++	if (!info->total_len && !info->all_memory)
++		return -EINVAL;
++
+ 	page_size = (info->page_size == 0x200000) ? I40IW_PAGE_SIZE_2M : I40IW_PAGE_SIZE_4K;
+ 	if (info->access_rights & (I40IW_ACCESS_FLAGS_REMOTEREAD_ONLY |
+ 				   I40IW_ACCESS_FLAGS_REMOTEWRITE_ONLY))
+--- a/drivers/infiniband/hw/i40iw/i40iw_type.h
++++ b/drivers/infiniband/hw/i40iw/i40iw_type.h
+@@ -779,6 +779,7 @@ struct i40iw_allocate_stag_info {
+ 	bool use_hmc_fcn_index;
+ 	u8 hmc_fcn_index;
+ 	bool use_pf_rid;
++	bool all_memory;
+ };
+ 
+ struct i40iw_reg_ns_stag_info {
+@@ -797,6 +798,7 @@ struct i40iw_reg_ns_stag_info {
+ 	bool use_hmc_fcn_index;
+ 	u8 hmc_fcn_index;
+ 	bool use_pf_rid;
++	bool all_memory;
+ };
+ 
+ struct i40iw_fast_reg_stag_info {
+--- a/drivers/infiniband/hw/i40iw/i40iw_verbs.c
++++ b/drivers/infiniband/hw/i40iw/i40iw_verbs.c
+@@ -1500,7 +1500,8 @@ static int i40iw_handle_q_mem(struct i40
+ static int i40iw_hw_alloc_stag(struct i40iw_device *iwdev, struct i40iw_mr *iwmr)
  {
- 	struct qi_desc desc;
+ 	struct i40iw_allocate_stag_info *info;
+-	struct i40iw_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
++	struct ib_pd *pd = iwmr->ibmr.pd;
++	struct i40iw_pd *iwpd = to_iwpd(pd);
+ 	enum i40iw_status_code status;
+ 	int err = 0;
+ 	struct i40iw_cqp_request *cqp_request;
+@@ -1517,6 +1518,7 @@ static int i40iw_hw_alloc_stag(struct i4
+ 	info->stag_idx = iwmr->stag >> I40IW_CQPSQ_STAG_IDX_SHIFT;
+ 	info->pd_id = iwpd->sc_pd.pd_id;
+ 	info->total_len = iwmr->length;
++	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	info->remote_access = true;
+ 	cqp_info->cqp_cmd = OP_ALLOC_STAG;
+ 	cqp_info->post_sq = 1;
+@@ -1570,6 +1572,8 @@ static struct ib_mr *i40iw_alloc_mr(stru
+ 	iwmr->type = IW_MEMREG_TYPE_MEM;
+ 	palloc = &iwpbl->pble_alloc;
+ 	iwmr->page_cnt = max_num_sg;
++	/* Use system PAGE_SIZE as the sg page sizes are unknown at this point */
++	iwmr->length = max_num_sg * PAGE_SIZE;
+ 	mutex_lock(&iwdev->pbl_mutex);
+ 	status = i40iw_get_pble(&iwdev->sc_dev, iwdev->pble_rsrc, palloc, iwmr->page_cnt);
+ 	mutex_unlock(&iwdev->pbl_mutex);
+@@ -1666,7 +1670,8 @@ static int i40iw_hwreg_mr(struct i40iw_d
+ {
+ 	struct i40iw_pbl *iwpbl = &iwmr->iwpbl;
+ 	struct i40iw_reg_ns_stag_info *stag_info;
+-	struct i40iw_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
++	struct ib_pd *pd = iwmr->ibmr.pd;
++	struct i40iw_pd *iwpd = to_iwpd(pd);
+ 	struct i40iw_pble_alloc *palloc = &iwpbl->pble_alloc;
+ 	enum i40iw_status_code status;
+ 	int err = 0;
+@@ -1686,6 +1691,7 @@ static int i40iw_hwreg_mr(struct i40iw_d
+ 	stag_info->total_len = iwmr->length;
+ 	stag_info->access_rights = access;
+ 	stag_info->pd_id = iwpd->sc_pd.pd_id;
++	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	stag_info->addr_type = I40IW_ADDR_TYPE_VA_BASED;
+ 	stag_info->page_size = iwmr->page_size;
  
-+	/*
-+	 * VT-d spec, section 4.3:
-+	 *
-+	 * Software is recommended to not submit any Device-TLB invalidation
-+	 * requests while address remapping hardware is disabled.
-+	 */
-+	if (!(iommu->gcmd & DMA_GCMD_TE))
-+		return;
-+
- 	if (mask) {
- 		addr |= (1ULL << (VTD_PAGE_SHIFT + mask - 1)) - 1;
- 		desc.qw1 = QI_DEV_IOTLB_ADDR(addr) | QI_DEV_IOTLB_SIZE;
-@@ -1587,6 +1596,15 @@ void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
- 	unsigned long mask = 1UL << (VTD_PAGE_SHIFT + size_order - 1);
- 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
- 
-+	/*
-+	 * VT-d spec, section 4.3:
-+	 *
-+	 * Software is recommended to not submit any Device-TLB invalidation
-+	 * requests while address remapping hardware is disabled.
-+	 */
-+	if (!(iommu->gcmd & DMA_GCMD_TE))
-+		return;
-+
- 	desc.qw0 = QI_DEV_EIOTLB_PASID(pasid) | QI_DEV_EIOTLB_SID(sid) |
- 		QI_DEV_EIOTLB_QDEP(qdep) | QI_DEIOTLB_TYPE |
- 		QI_DEV_IOTLB_PFSID(pfsid);
--- 
-2.42.0
-
 
 
 
