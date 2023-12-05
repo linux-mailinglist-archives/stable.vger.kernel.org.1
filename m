@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B661804769
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1E718046E6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D86BB20CF3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B9771F2141F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352D979E3;
-	Tue,  5 Dec 2023 03:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5248BEC;
+	Tue,  5 Dec 2023 03:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3Uu0JZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+YDdeco"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2758F62;
-	Tue,  5 Dec 2023 03:38:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74AD4C433C8;
-	Tue,  5 Dec 2023 03:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C73F6FB1;
+	Tue,  5 Dec 2023 03:32:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B03C433C8;
+	Tue,  5 Dec 2023 03:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747493;
-	bh=+p2+5eojcy8CvYvWw5FeeQVZ+1fr9mDL7Ve1TsAPYjk=;
+	s=korg; t=1701747170;
+	bh=PUS3968C3R7arfH73J1C0uR7y6rZKIM5+GWeHIqrLvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3Uu0JZaCoJyOdLKxN+S+ge5lZURaE6/uGFWA6GRM8gMCG8kSca5RHT1shmnzA46i
-	 epzikfgj8O9T+wz6q3TdiMk1RZnx6qmI9U9sxqWKwdMYm7kpOPYBT0xifpqTuLhVwj
-	 13YkSRVl77jCof9qx5861zZuddhFXrAqrrSFT4Yo=
+	b=L+YDdecouaPD9LS0YDbQrUS2e11bGbTlHBwB+TySrHHWZB0rDQyg/5E4iHDYZZ04d
+	 smO7f0R+rKXlNJZTgI8IlOctGB8APn1qSHCV2ECwMGK4tMAwiZCD2ClkMnYpC2fUEI
+	 MNqwPIhL9HwDuxyIt5rWXpXNEwNaVZ2E3jF0dVIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/135] octeontx2-pf: Fix adding mbox work queue entry when num_vfs > 64
-Date: Tue,  5 Dec 2023 12:16:58 +0900
-Message-ID: <20231205031536.772694055@linuxfoundation.org>
+Subject: [PATCH 6.1 084/107] drivers: perf: Check find_first_bit() return value
+Date: Tue,  5 Dec 2023 12:16:59 +0900
+Message-ID: <20231205031536.858427109@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 51597219e0cd5157401d4d0ccb5daa4d9961676f ]
+[ Upstream commit c6e316ac05532febb0c966fa9b55f5258ed037be ]
 
-When more than 64 VFs are enabled for a PF then mbox communication
-between VF and PF is not working as mbox work queueing for few VFs
-are skipped due to wrong calculation of VF numbers.
+We must check the return value of find_first_bit() before using the
+return value as an index array since it happens to overflow the array
+and then panic:
 
-Fixes: d424b6c02415 ("octeontx2-pf: Enable SRIOV and added VF mbox handling")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://lore.kernel.org/r/1700930042-5400-1-git-send-email-sbhatta@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[  107.318430] Kernel BUG [#1]
+[  107.319434] CPU: 3 PID: 1238 Comm: kill Tainted: G            E      6.6.0-rc6ubuntu-defconfig #2
+[  107.319465] Hardware name: riscv-virtio,qemu (DT)
+[  107.319551] epc : pmu_sbi_ovf_handler+0x3a4/0x3ae
+[  107.319840]  ra : pmu_sbi_ovf_handler+0x52/0x3ae
+[  107.319868] epc : ffffffff80a0a77c ra : ffffffff80a0a42a sp : ffffaf83fecda350
+[  107.319884]  gp : ffffffff823961a8 tp : ffffaf8083db1dc0 t0 : ffffaf83fecda480
+[  107.319899]  t1 : ffffffff80cafe62 t2 : 000000000000ff00 s0 : ffffaf83fecda520
+[  107.319921]  s1 : ffffaf83fecda380 a0 : 00000018fca29df0 a1 : ffffffffffffffff
+[  107.319936]  a2 : 0000000001073734 a3 : 0000000000000004 a4 : 0000000000000000
+[  107.319951]  a5 : 0000000000000040 a6 : 000000001d1c8774 a7 : 0000000000504d55
+[  107.319965]  s2 : ffffffff82451f10 s3 : ffffffff82724e70 s4 : 000000000000003f
+[  107.319980]  s5 : 0000000000000011 s6 : ffffaf8083db27c0 s7 : 0000000000000000
+[  107.319995]  s8 : 0000000000000001 s9 : 00007fffb45d6558 s10: 00007fffb45d81a0
+[  107.320009]  s11: ffffaf7ffff60000 t3 : 0000000000000004 t4 : 0000000000000000
+[  107.320023]  t5 : ffffaf7f80000000 t6 : ffffaf8000000000
+[  107.320037] status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
+[  107.320081] [<ffffffff80a0a77c>] pmu_sbi_ovf_handler+0x3a4/0x3ae
+[  107.320112] [<ffffffff800b42d0>] handle_percpu_devid_irq+0x9e/0x1a0
+[  107.320131] [<ffffffff800ad92c>] generic_handle_domain_irq+0x28/0x36
+[  107.320148] [<ffffffff8065f9f8>] riscv_intc_irq+0x36/0x4e
+[  107.320166] [<ffffffff80caf4a0>] handle_riscv_irq+0x54/0x86
+[  107.320189] [<ffffffff80cb0036>] do_irq+0x64/0x96
+[  107.320271] Code: 85a6 855e b097 ff7f 80e7 9220 b709 9002 4501 bbd9 (9002) 6097
+[  107.320585] ---[ end trace 0000000000000000 ]---
+[  107.320704] Kernel panic - not syncing: Fatal exception in interrupt
+[  107.320775] SMP: stopping secondary CPUs
+[  107.321219] Kernel Offset: 0x0 from 0xffffffff80000000
+[  107.333051] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
+
+Fixes: 4905ec2fb7e6 ("RISC-V: Add sscofpmf extension support")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231109082128.40777-1-alexghiti@rivosinc.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/perf/riscv_pmu_sbi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index 000dd89c4baff..d6f7a2a58aee8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -556,7 +556,9 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
- 		otx2_write64(pf, RVU_PF_VFPF_MBOX_INTX(1), intr);
- 		otx2_queue_work(mbox, pf->mbox_pfvf_wq, 64, vfs, intr,
- 				TYPE_PFVF);
--		vfs -= 64;
-+		if (intr)
-+			trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
-+		vfs = 64;
- 	}
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 382fe5ee6100b..e0a84046435b1 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -578,6 +578,11 @@ static irqreturn_t pmu_sbi_ovf_handler(int irq, void *dev)
  
- 	intr = otx2_read64(pf, RVU_PF_VFPF_MBOX_INTX(0));
-@@ -564,7 +566,8 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
- 
- 	otx2_queue_work(mbox, pf->mbox_pfvf_wq, 0, vfs, intr, TYPE_PFVF);
- 
--	trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
-+	if (intr)
-+		trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
- 
- 	return IRQ_HANDLED;
- }
+ 	/* Firmware counter don't support overflow yet */
+ 	fidx = find_first_bit(cpu_hw_evt->used_hw_ctrs, RISCV_MAX_COUNTERS);
++	if (fidx == RISCV_MAX_COUNTERS) {
++		csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
++		return IRQ_NONE;
++	}
++
+ 	event = cpu_hw_evt->events[fidx];
+ 	if (!event) {
+ 		csr_clear(CSR_SIP, SIP_LCOFIP);
 -- 
 2.42.0
 
