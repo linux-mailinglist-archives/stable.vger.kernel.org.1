@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74A480460D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4016D80458D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 518D1B208C5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719BF1C20B3C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C3579F2;
-	Tue,  5 Dec 2023 03:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041E26FB0;
+	Tue,  5 Dec 2023 03:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ml5H3yIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmnM+TPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11B126FAF;
-	Tue,  5 Dec 2023 03:24:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 866A1C433C7;
-	Tue,  5 Dec 2023 03:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A566AA0;
+	Tue,  5 Dec 2023 03:18:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13172C433C7;
+	Tue,  5 Dec 2023 03:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746646;
-	bh=G9+m6T0wFQLXLzIJar1OYgcC30rAJFJbv+9Gicczqb8=;
+	s=korg; t=1701746320;
+	bh=vCLpCNyGPiXqf+/flotcalaZWrPxlPXeloPDijjvkrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ml5H3yIWcqondR0j8KLVsHBSt7azaR/wsbiazscIZX5iji1LrpyDKlV7lw7W6tVVV
-	 jdbN7lVLcay7Fqmc7WpaRHBBc6bfu2Y4EdoySR/wBZssjutawKR0jmNummAjn1ujnG
-	 ozUZ2yaJIFrXF6NhpDdlASTBQ3OlLcJvJVfJd784=
+	b=vmnM+TPiRPiLDS7cEUuENPP1H7shsG521JSLVejO57sZb5Op3jS2deREF3gFmtz8h
+	 FZoLg/6Xn/8MPmC8HaTNXcDd20sLvETRstP6j07aVgoVwW8LpiDUFk4fqq7XcUN1mG
+	 i0YviwdzJGbBODoeh3OnF/cuhewMZV8c42Mm3gMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/134] ethtool: dont propagate EOPNOTSUPP from dumps
+Subject: [PATCH 4.14 08/30] amd-xgbe: handle corner-case during sfp hotplug
 Date: Tue,  5 Dec 2023 12:16:15 +0900
-Message-ID: <20231205031541.943172990@linuxfoundation.org>
+Message-ID: <20231205031511.968402880@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,44 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit cbeb989e41f4094f54bec2cecce993f26f547bea ]
+[ Upstream commit 676ec53844cbdf2f47e68a076cdff7f0ec6cbe3f ]
 
-The default dump handler needs to clear ret before returning.
-Otherwise if the last interface returns an inconsequential
-error this error will propagate to user space.
+Force the mode change for SFI in Fixed PHY configurations. Fixed PHY
+configurations needs PLL to be enabled while doing mode set. When the
+SFP module isn't connected during boot, driver assumes AN is ON and
+attempts auto-negotiation. However, if the connected SFP comes up in
+Fixed PHY configuration the link will not come up as PLL isn't enabled
+while the initial mode set command is issued. So, force the mode change
+for SFI in Fixed PHY configuration to fix link issues.
 
-This may confuse user space (ethtool CLI seems to ignore it,
-but YNL doesn't). It will also terminate the dump early
-for mutli-skb dump, because netlink core treats EOPNOTSUPP
-as a real error.
-
-Fixes: 728480f12442 ("ethtool: default handlers for GET requests")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20231126225806.2143528-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/netlink.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index 3bbd5afb7b31c..fe3553f60bf39 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -505,6 +505,7 @@ static int ethnl_default_dumpit(struct sk_buff *skb,
- 				ret = skb->len;
- 			break;
- 		}
-+		ret = 0;
- 	}
- 	rtnl_unlock();
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+index bbb93c2637f39..ef78ad84b0f43 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
+@@ -1192,7 +1192,19 @@ static int xgbe_phy_config_fixed(struct xgbe_prv_data *pdata)
+ 	if (pdata->phy.duplex != DUPLEX_FULL)
+ 		return -EINVAL;
  
+-	xgbe_set_mode(pdata, mode);
++	/* Force the mode change for SFI in Fixed PHY config.
++	 * Fixed PHY configs needs PLL to be enabled while doing mode set.
++	 * When the SFP module isn't connected during boot, driver assumes
++	 * AN is ON and attempts autonegotiation. However, if the connected
++	 * SFP comes up in Fixed PHY config, the link will not come up as
++	 * PLL isn't enabled while the initial mode set command is issued.
++	 * So, force the mode change for SFI in Fixed PHY configuration to
++	 * fix link issues.
++	 */
++	if (mode == XGBE_MODE_SFI)
++		xgbe_change_mode(pdata, mode);
++	else
++		xgbe_set_mode(pdata, mode);
+ 
+ 	return 0;
+ }
 -- 
 2.42.0
 
