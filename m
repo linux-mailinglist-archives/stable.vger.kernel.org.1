@@ -1,103 +1,119 @@
-Return-Path: <stable+bounces-4650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FC71804E2C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:43:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A9EF80503C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D51C8B20C02
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:43:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8F562817D2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD97041748;
-	Tue,  5 Dec 2023 09:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="BgvYMMd1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AFD4F1E1;
+	Tue,  5 Dec 2023 10:35:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 29841A9
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 01:42:57 -0800 (PST)
-Received: from pwmachine.localnet (85-170-33-133.rev.numericable.fr [85.170.33.133])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 2481920B74C0;
-	Tue,  5 Dec 2023 01:42:54 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2481920B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701769376;
-	bh=8ZmE98l/s85SLkrttawvYRT4wTeuwINXsDUXmzf+O0Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgvYMMd1E4x4ufJscSosuYjyfa/ozGJEUVPXg7iFTuR3t9u7kdta8VIYO0ndMt3Zd
-	 UMYSFRsw1Kd3ybapNEmeykeE4XhVhFeI8oN0TqM7OwHUEvABWTGYtnecf7SdZsjwES
-	 7sDmmrmo3ueVurxlBkmJeSAKLzZI9MaQRs/4NbPU=
-From: Francis Laniel <flaniel@linux.microsoft.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>, Jiri Olsa <jolsa@kernel.org>, Christoph Hellwig <hch@lst.de>, Alexei Starovoitov <ast@kernel.org>
-Subject: Re: [PATCH 5.15.y v1 1/2] kallsyms: Make kallsyms_on_each_symbol generally available
-Date: Tue, 05 Dec 2023 10:42:52 +0100
-Message-ID: <5996228.lOV4Wx5bFT@pwmachine>
-In-Reply-To: <2023120533-washtub-data-f661@gregkh>
-References: <20231201151957.682381-1-flaniel@linux.microsoft.com> <2709501.mvXUDI8C0e@pwmachine> <2023120533-washtub-data-f661@gregkh>
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F63F109;
+	Tue,  5 Dec 2023 02:35:29 -0800 (PST)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 9C7FE1C007F; Tue,  5 Dec 2023 11:35:27 +0100 (CET)
+Date: Tue, 5 Dec 2023 11:35:27 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/107] 6.1.66-rc1 review
+Message-ID: <ZW78708vOccgxX1P@duo.ucw.cz>
+References: <20231205031531.426872356@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="nNEJpFFVy8/6pjhj"
+Content-Disposition: inline
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+
+
+--nNEJpFFVy8/6pjhj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"
 
 Hi!
 
+> This is the start of the stable review cycle for the 6.1.66 release.
+> There are 107 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Le mardi 5 d=E9cembre 2023, 00:58:38 CET Greg KH a =E9crit :
-> On Mon, Dec 04, 2023 at 09:19:05AM +0100, Francis Laniel wrote:
-> > Hi!
-> >=20
-> > Le samedi 2 d=E9cembre 2023, 00:02:58 CET Greg KH a =E9crit :
-> > > On Fri, Dec 01, 2023 at 04:19:56PM +0100, Francis Laniel wrote:
-> > > > From: Jiri Olsa <jolsa@kernel.org>
-> > > >=20
-> > > > Making kallsyms_on_each_symbol generally available, so it can be
-> > > > used outside CONFIG_LIVEPATCH option in following changes.
-> > > >=20
-> > > > Rather than adding another ifdef option let's make the function
-> > > > generally available (when CONFIG_KALLSYMS option is defined).
-> > > >=20
-> > > > Cc: Christoph Hellwig <hch@lst.de>
-> > > > Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
-> > > > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> > > > Link:
-> > > > https://lore.kernel.org/r/20220510122616.2652285-2-jolsa@kernel.org
-> > > > Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> > > > ---
-> > > >=20
-> > > >  include/linux/kallsyms.h | 7 ++++++-
-> > > >  kernel/kallsyms.c        | 2 --
-> > > >  2 files changed, 6 insertions(+), 3 deletions(-)
-> > >=20
-> > > What is the git id of this commit in Linus's tree?
-> >=20
-> > Sorry, the commit ID is [1]:
-> > d721def7392a7348ffb9f3583b264239cbd3702c
->=20
-> Please send a new, updated series for all branches that you wish this
-> series to go on, and MOST IMPORTANTLY, some sort of proof that this
-> actually works this time...
->=20
-> In other words, you need to test-build this on all arches and somehow
-> run-time test it as well, good luck!
+We see build failure on risc-v:
 
-I will take a look at TuxMake to ease this process [1].
-But if someone has other tools to advise, feedback would be welcomed.
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/jobs/568005=
+0135
 
-> thanks,
->=20
-> greg k-h
+  AR      drivers/nvmem/built-in.a
+2686In file included from ./arch/riscv/include/asm/ptrace.h:10,
+2687                 from ./arch/riscv/include/uapi/asm/bpf_perf_event.h:5,
+2688                 from ./include/uapi/linux/bpf_perf_event.h:11,
+2689                 from ./include/linux/perf_event.h:18,
+2690                 from ./include/linux/perf/riscv_pmu.h:12,
+2691                 from drivers/perf/riscv_pmu_sbi.c:14:
+2692drivers/perf/riscv_pmu_sbi.c: In function 'pmu_sbi_ovf_handler':
+2693drivers/perf/riscv_pmu_sbi.c:582:40: error: 'riscv_pmu_irq_num' undecla=
+red (first use in this function); did you mean 'riscv_pmu_irq'?
+2694  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
+2695      |                                        ^~~~~~~~~~~~~~~~~
+2696./arch/riscv/include/asm/csr.h:400:45: note: in definition of macro 'cs=
+r_clear'
+2697  400 |         unsigned long __v =3D (unsigned long)(val);            =
+   \
+2698      |                                             ^~~
+2699drivers/perf/riscv_pmu_sbi.c:582:36: note: in expansion of macro 'BIT'
+2700  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
+2701      |                                    ^~~
+2702drivers/perf/riscv_pmu_sbi.c:582:40: note: each undeclared identifier i=
+s reported only once for each function it appears in
+2703  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
+2704      |                                        ^~~~~~~~~~~~~~~~~
+2705./arch/riscv/include/asm/csr.h:400:45: note: in definition of macro 'cs=
+r_clear'
+2706  400 |         unsigned long __v =3D (unsigned long)(val);            =
+   \
+2707      |                                             ^~~
+2708drivers/perf/riscv_pmu_sbi.c:582:36: note: in expansion of macro 'BIT'
+2709  582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
+2710      |                                    ^~~
+2711make[3]: *** [scripts/Makefile.build:250: drivers/perf/riscv_pmu_sbi.o]=
+ Error 1
+2712make[2]: *** [scripts/Makefile.build:500: drivers/perf] Error 2
+2713make[2]: *** Waiting for unfinished jobs....
+2714  CC      drivers/firmware/efi/earlycon.o
+2715
 
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Best regards.
-=2D--
-[1]: https://tuxmake.org/
+--nNEJpFFVy8/6pjhj
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZW787wAKCRAw5/Bqldv6
+8gOWAJwL8heLPlMLxzxCyYJUolIZ/NkangCeOu/Wu+mI7zBIwEFY6TIEWSj+LYk=
+=vpMf
+-----END PGP SIGNATURE-----
+
+--nNEJpFFVy8/6pjhj--
 
