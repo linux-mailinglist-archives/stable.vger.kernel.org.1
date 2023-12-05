@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B79A80470A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B25780476E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45F091F2142A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 322451F2146E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34718BF8;
-	Tue,  5 Dec 2023 03:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855B179F2;
+	Tue,  5 Dec 2023 03:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBjmq6i1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfJzqwFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8676FB1;
-	Tue,  5 Dec 2023 03:34:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC09AC433C7;
-	Tue,  5 Dec 2023 03:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462066FB1;
+	Tue,  5 Dec 2023 03:38:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AFEC433C9;
+	Tue,  5 Dec 2023 03:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747254;
-	bh=P/v9WpGZoBqLkekM1AV00coWIN0y/d7qfmAhh2T5G90=;
+	s=korg; t=1701747510;
+	bh=cp65O0IxhoY0CRf6N/U1NAhA4YFvMfdbTOat7cMLNR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBjmq6i1IndYkSjGcWplSV6nQxzApiWbHVxhDtqE87zXshQ4UKY9LLLx6XyX6y79V
-	 gI57FsZDarPABCH0ruvQNLKp9URnS4wpKyJDqTQLAUOmt1KIxDHTDg++rns5gpR/EE
-	 qIwrIHg4UqpxxVNeDlgmpjCk4P3/n7trEXjni3EI=
+	b=BfJzqwFFUYR4qgkPaeQDefxY6VooRfgyKD2TEDbRBxQR/emHIzO5YSjP9Lo0qEIB9
+	 rV2mL3Tj/7gK5uBtzzpVXGd6gcH+FhW4LWGPq3BZ0ueiiBnopSr58aqKvu347Ih/nX
+	 vZAGcU8fmYI89CvMGY2mVxWYPHsnrxrSbFg3Q3IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/107] cpufreq: imx6q: dont warn for disabling a non-existing frequency
+Subject: [PATCH 5.10 102/135] net: ravb: Start TX queues after HW initialization succeeded
 Date: Tue,  5 Dec 2023 12:17:03 +0900
-Message-ID: <20231205031537.158328249@linuxfoundation.org>
+Message-ID: <20231205031537.143244175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,95 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
+[ Upstream commit 6f32c086602050fc11157adeafaa1c1eb393f0af ]
 
-It is confusing if a warning is given for disabling a non-existent
-frequency of the operating performance points (OPP). In this case
-the function dev_pm_opp_disable() returns -ENODEV. Check the return
-value and avoid the output of a warning in this case. Avoid code
-duplication by using a separate function.
+ravb_phy_start() may fail. If that happens, the TX queues will remain
+started. Thus, move the netif_tx_start_all_queues() after PHY is
+successfully initialized.
 
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-[ Viresh : Updated commit subject ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index ad4ce84931446..ae834fb9bfbd5 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -209,6 +209,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
- 	.suspend = cpufreq_generic_suspend,
- };
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index a9cd390dedbd8..f092f468016bd 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1383,13 +1383,13 @@ static int ravb_open(struct net_device *ndev)
+ 	if (priv->chip_id == RCAR_GEN2)
+ 		ravb_ptp_init(ndev, priv->pdev);
  
-+static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
-+{
-+	int ret = dev_pm_opp_disable(dev, freq);
+-	netif_tx_start_all_queues(ndev);
+-
+ 	/* PHY control start */
+ 	error = ravb_phy_start(ndev);
+ 	if (error)
+ 		goto out_ptp_stop;
+ 
++	netif_tx_start_all_queues(ndev);
 +
-+	if (ret < 0 && ret != -ENODEV)
-+		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
-+}
-+
- #define OCOTP_CFG3			0x440
- #define OCOTP_CFG3_SPEED_SHIFT		16
- #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
-@@ -254,17 +262,15 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
- 	val &= 0x3;
- 
- 	if (val < OCOTP_CFG3_SPEED_996MHZ)
--		if (dev_pm_opp_disable(dev, 996000000))
--			dev_warn(dev, "failed to disable 996MHz OPP\n");
-+		imx6x_disable_freq_in_opp(dev, 996000000);
- 
- 	if (of_machine_is_compatible("fsl,imx6q") ||
- 	    of_machine_is_compatible("fsl,imx6qp")) {
- 		if (val != OCOTP_CFG3_SPEED_852MHZ)
--			if (dev_pm_opp_disable(dev, 852000000))
--				dev_warn(dev, "failed to disable 852MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 852000000);
-+
- 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
--			if (dev_pm_opp_disable(dev, 1200000000))
--				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 1200000000);
- 	}
- 
  	return 0;
-@@ -316,20 +322,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 	val >>= OCOTP_CFG3_SPEED_SHIFT;
- 	val &= 0x3;
  
--	if (of_machine_is_compatible("fsl,imx6ul")) {
-+	if (of_machine_is_compatible("fsl,imx6ul"))
- 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
--			if (dev_pm_opp_disable(dev, 696000000))
--				dev_warn(dev, "failed to disable 696MHz OPP\n");
--	}
-+			imx6x_disable_freq_in_opp(dev, 696000000);
- 
- 	if (of_machine_is_compatible("fsl,imx6ull")) {
- 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
--			if (dev_pm_opp_disable(dev, 792000000))
--				dev_warn(dev, "failed to disable 792MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 792000000);
- 
- 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
--			if (dev_pm_opp_disable(dev, 900000000))
--				dev_warn(dev, "failed to disable 900MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 900000000);
- 	}
- 
- 	return ret;
+ out_ptp_stop:
 -- 
 2.42.0
 
