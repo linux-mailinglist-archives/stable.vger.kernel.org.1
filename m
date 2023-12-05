@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08FC8047A3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8796B8046DE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27374B20D61
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAAB2B20CDB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F75C14B;
-	Tue,  5 Dec 2023 03:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457E38BEC;
+	Tue,  5 Dec 2023 03:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWgMMrGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vunXwOjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E8D79E3;
-	Tue,  5 Dec 2023 03:40:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2B4C433C8;
-	Tue,  5 Dec 2023 03:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6B86FB1;
+	Tue,  5 Dec 2023 03:32:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81901C433C8;
+	Tue,  5 Dec 2023 03:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747641;
-	bh=rcvxd26hxtly61S770C54pf8dXhpvrua5Zf0+cvhbcc=;
+	s=korg; t=1701747145;
+	bh=Bon1UHOfOuYWG+XxRf6ip3dAEQ5L9q/uip0FOYppV3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWgMMrGOQJtC5GreA3yO+Wgmtyol+jaIIHiHD3+Cq4Q5I+ZqwblHBLLCKnsSfq2xo
-	 YO7UAyUzi91HfpZKwa9ItPo0VJ1WRcNB/v+O1nnk0DuiN5/84WZj4yt3IFVRtD8iDP
-	 G1ZNAd1U6QMygIA94jHjyrkY/CRvtctBVTTi7hXU=
+	b=vunXwOjV0oHuGPLu52EkQzkKuvsVs9Jh0RKJXh7Dzuyfig69TOvuMuGGkfRuF0bne
+	 V5I+8P7TqQVgv3UphyX2RZOkC1SdKsof0F80NfPKYf6eDFuaWfybx+cD9EiUMfgR4J
+	 EnrgdXCQBq/Lk/GGy5IMvjE7c3vF+MKBdsFXxOMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 06/67] mmc: cqhci: Fix task clearing in CQE error recovery
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 076/107] net: ravb: Stop DMA in case of failures on ravb_open()
 Date: Tue,  5 Dec 2023 12:16:51 +0900
-Message-ID: <20231205031520.203857669@linuxfoundation.org>
+Message-ID: <20231205031536.263535839@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,98 +52,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 upstream.
+[ Upstream commit eac16a733427ba0de2449ffc7bd3da32ddb65cb7 ]
 
-If a task completion notification (TCN) is received when there is no
-outstanding task, the cqhci driver issues a "spurious TCN" warning. This
-was observed to happen right after CQE error recovery.
+In case ravb_phy_start() returns with error the settings applied in
+ravb_dmac_init() are not reverted (e.g. config mode). For this call
+ravb_stop_dma() on failure path of ravb_open().
 
-When an error interrupt is received the driver runs recovery logic.
-It halts the controller, clears all pending tasks, and then re-enables
-it. On some platforms, like Intel Jasper Lake, a stale task completion
-event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
-
-This results in either:
-a) Spurious TC completion event for an empty slot.
-b) Corrupted data being passed up the stack, as a result of premature
-   completion for a newly added task.
-
-Rather than add a quirk for affected controllers, ensure tasks are cleared
-by toggling CQHCI_ENABLE, which would happen anyway if
-cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
-effective for all controllers.
-
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Reported-by: Kornel Dulęba <korneld@chromium.org>
-Tested-by: Kornel Dulęba <korneld@chromium.org>
-Co-developed-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a0d2f20650e8 ("Renesas Ethernet AVB PTP clock driver")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/cqhci-core.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/cqhci-core.c
-+++ b/drivers/mmc/host/cqhci-core.c
-@@ -1068,28 +1068,28 @@ static void cqhci_recovery_finish(struct
- 
- 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
- 
--	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--		ok = false;
--
- 	/*
- 	 * The specification contradicts itself, by saying that tasks cannot be
- 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
- 	 * be disabled/re-enabled, but not to disable before clearing tasks.
- 	 * Have a go anyway.
- 	 */
--	if (!ok) {
--		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
--		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
--		cqcfg &= ~CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		cqcfg |= CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		/* Be sure that there are no tasks */
--		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
--		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--			ok = false;
--		WARN_ON(!ok);
--	}
-+	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
-+		ok = false;
-+
-+	/* Disable to make sure tasks really are cleared */
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg &= ~CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg |= CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
-+
-+	if (!ok)
-+		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
- 
- 	cqhci_recover_mrqs(cq_host);
- 
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 6d4c1b9f568ba..e1c4a0ca4493f 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1841,6 +1841,7 @@ static int ravb_open(struct net_device *ndev)
+ 	/* Stop PTP Clock driver */
+ 	if (info->gptp)
+ 		ravb_ptp_stop(ndev);
++	ravb_stop_dma(ndev);
+ out_free_irq_mgmta:
+ 	if (!info->multi_irqs)
+ 		goto out_free_irq;
+-- 
+2.42.0
+
 
 
 
