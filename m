@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DBD80478E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D602E8047B2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 577FFB20D07
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 772D7B20CB5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE518C03;
-	Tue,  5 Dec 2023 03:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B046F6AC2;
+	Tue,  5 Dec 2023 03:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM/0t5QR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ywp9EK8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDB86FB1;
-	Tue,  5 Dec 2023 03:40:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA418C433C7;
-	Tue,  5 Dec 2023 03:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B28379E3;
+	Tue,  5 Dec 2023 03:41:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB4AC433C7;
+	Tue,  5 Dec 2023 03:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747601;
-	bh=7lwvtJdIrvJuZGuNILldcQBQj1cNyW6K6qvqnui0Uzw=;
+	s=korg; t=1701747678;
+	bh=FhqlxS+QMm8YlJKjFQPAxc///Fg2W0w1OpF/Vk6LsVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IM/0t5QR0nbUMkVGYRWBbm40vT7dCXu4Tvo7aagcbLvJh6eYgN/z++p0h+C3SZpe0
-	 0vjDqAE+VmeKxNvccZF7o+CzdAuDJliWxZx5ZlfW/Ra/5cjdBZLiU1TURqoQBzN9DX
-	 N8qCXxNIZQM3roNjOOgWSsHy2k0qnzgh35yBIbGY=
+	b=Ywp9EK8ZNB/oanKt1QLnzplAr+hm4TZ5Gsqmwxhd23dVKXUBiLsTnZH0RHtCbuhoR
+	 sWQXYzISnHo/pNgcFOlBZumoYaBGvyiCqApzgPl5h1AxVTJS60MtSZS9B6ScczSg3E
+	 1d2rqP2uRgTcf/p6x8EP5S6WkN8efcjrx0KzXlx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/135] s390/mm: fix phys vs virt confusion in mark_kernel_pXd() functions family
+	Patrick Wang <patrick.wang.shcn@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+	Ronald Monthero <debug.penguin32@gmail.com>
+Subject: [PATCH 5.15 27/67] rcu: Avoid tracing a few functions executed in stop machine
 Date: Tue,  5 Dec 2023 12:17:12 +0900
-Message-ID: <20231205031537.774937610@linuxfoundation.org>
+Message-ID: <20231205031521.372154220@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +55,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Patrick Wang <patrick.wang.shcn@gmail.com>
 
-[ Upstream commit 3784231b1e091857bd129fd9658a8b3cedbdcd58 ]
+commit 48f8070f5dd8e13148ae4647780a452d53c457a2 upstream.
 
-Due to historical reasons mark_kernel_pXd() functions
-misuse the notion of physical vs virtual addresses
-difference.
+Stop-machine recently started calling additional functions while waiting:
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: 44d930452476 ("s390/cmma: fix detection of DAT pages")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+----------------------------------------------------------------
+Former stop machine wait loop:
+do {
+    cpu_relax(); => macro
+    ...
+} while (curstate != STOPMACHINE_EXIT);
+-----------------------------------------------------------------
+Current stop machine wait loop:
+do {
+    stop_machine_yield(cpumask); => function (notraced)
+    ...
+    touch_nmi_watchdog(); => function (notraced, inside calls also notraced)
+    ...
+    rcu_momentary_dyntick_idle(); => function (notraced, inside calls traced)
+} while (curstate != MULTI_STOP_EXIT);
+------------------------------------------------------------------
+
+These functions (and the functions that they call) must be marked
+notrace to prevent them from being updated while they are executing.
+The consequences of failing to mark these functions can be severe:
+
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: 	1-...!: (0 ticks this GP) idle=14f/1/0x4000000000000000 softirq=3397/3397 fqs=0
+  rcu: 	3-...!: (0 ticks this GP) idle=ee9/1/0x4000000000000000 softirq=5168/5168 fqs=0
+  	(detected by 0, t=8137 jiffies, g=5889, q=2 ncpus=4)
+  Task dump for CPU 1:
+  task:migration/1     state:R  running task     stack:    0 pid:   19 ppid:     2 flags:0x00000000
+  Stopper: multi_cpu_stop+0x0/0x18c <- stop_machine_cpuslocked+0x128/0x174
+  Call Trace:
+  Task dump for CPU 3:
+  task:migration/3     state:R  running task     stack:    0 pid:   29 ppid:     2 flags:0x00000000
+  Stopper: multi_cpu_stop+0x0/0x18c <- stop_machine_cpuslocked+0x128/0x174
+  Call Trace:
+  rcu: rcu_preempt kthread timer wakeup didn't happen for 8136 jiffies! g5889 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402
+  rcu: 	Possible timer handling issue on cpu=2 timer-softirq=594
+  rcu: rcu_preempt kthread starved for 8137 jiffies! g5889 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x402 ->cpu=2
+  rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
+  rcu: RCU grace-period kthread stack dump:
+  task:rcu_preempt     state:I stack:    0 pid:   14 ppid:     2 flags:0x00000000
+  Call Trace:
+    schedule+0x56/0xc2
+    schedule_timeout+0x82/0x184
+    rcu_gp_fqs_loop+0x19a/0x318
+    rcu_gp_kthread+0x11a/0x140
+    kthread+0xee/0x118
+    ret_from_exception+0x0/0x14
+  rcu: Stack dump where RCU GP kthread last ran:
+  Task dump for CPU 2:
+  task:migration/2     state:R  running task     stack:    0 pid:   24 ppid:     2 flags:0x00000000
+  Stopper: multi_cpu_stop+0x0/0x18c <- stop_machine_cpuslocked+0x128/0x174
+  Call Trace:
+
+This commit therefore marks these functions notrace:
+ rcu_preempt_deferred_qs()
+ rcu_preempt_need_deferred_qs()
+ rcu_preempt_deferred_qs_irqrestore()
+
+[ paulmck: Apply feedback from Neeraj Upadhyay. ]
+
+Signed-off-by: Patrick Wang <patrick.wang.shcn@gmail.com>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Neeraj Upadhyay <quic_neeraju@quicinc.com>
+Signed-off-by: Ronald Monthero <debug.penguin32@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/page-states.c | 8 ++++----
+ kernel/rcu/tree_plugin.h |    8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
-index 567c69f3069e7..7f0e154a470ad 100644
---- a/arch/s390/mm/page-states.c
-+++ b/arch/s390/mm/page-states.c
-@@ -112,7 +112,7 @@ static void mark_kernel_pmd(pud_t *pud, unsigned long addr, unsigned long end)
- 		next = pmd_addr_end(addr, end);
- 		if (pmd_none(*pmd) || pmd_large(*pmd))
- 			continue;
--		page = virt_to_page(pmd_val(*pmd));
-+		page = phys_to_page(pmd_val(*pmd));
- 		set_bit(PG_arch_1, &page->flags);
- 	} while (pmd++, addr = next, addr != end);
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -458,7 +458,7 @@ static bool rcu_preempt_has_tasks(struct
+  * be quite short, for example, in the case of the call from
+  * rcu_read_unlock_special().
+  */
+-static void
++static notrace void
+ rcu_preempt_deferred_qs_irqrestore(struct task_struct *t, unsigned long flags)
+ {
+ 	bool empty_exp;
+@@ -578,7 +578,7 @@ rcu_preempt_deferred_qs_irqrestore(struc
+  * is disabled.  This function cannot be expected to understand these
+  * nuances, so the caller must handle them.
+  */
+-static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
++static notrace bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ {
+ 	return (__this_cpu_read(rcu_data.exp_deferred_qs) ||
+ 		READ_ONCE(t->rcu_read_unlock_special.s)) &&
+@@ -592,7 +592,7 @@ static bool rcu_preempt_need_deferred_qs
+  * evaluate safety in terms of interrupt, softirq, and preemption
+  * disabling.
+  */
+-static void rcu_preempt_deferred_qs(struct task_struct *t)
++static notrace void rcu_preempt_deferred_qs(struct task_struct *t)
+ {
+ 	unsigned long flags;
+ 
+@@ -923,7 +923,7 @@ static bool rcu_preempt_has_tasks(struct
+  * Because there is no preemptible RCU, there can be no deferred quiescent
+  * states.
+  */
+-static bool rcu_preempt_need_deferred_qs(struct task_struct *t)
++static notrace bool rcu_preempt_need_deferred_qs(struct task_struct *t)
+ {
+ 	return false;
  }
-@@ -130,7 +130,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
- 		if (pud_none(*pud) || pud_large(*pud))
- 			continue;
- 		if (!pud_folded(*pud)) {
--			page = virt_to_page(pud_val(*pud));
-+			page = phys_to_page(pud_val(*pud));
- 			for (i = 0; i < 3; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
-@@ -151,7 +151,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
- 		if (p4d_none(*p4d))
- 			continue;
- 		if (!p4d_folded(*p4d)) {
--			page = virt_to_page(p4d_val(*p4d));
-+			page = phys_to_page(p4d_val(*p4d));
- 			for (i = 0; i < 3; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
-@@ -173,7 +173,7 @@ static void mark_kernel_pgd(void)
- 		if (pgd_none(*pgd))
- 			continue;
- 		if (!pgd_folded(*pgd)) {
--			page = virt_to_page(pgd_val(*pgd));
-+			page = phys_to_page(pgd_val(*pgd));
- 			for (i = 0; i < 3; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
--- 
-2.42.0
-
 
 
 
