@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68B1F80466D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4456D804616
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111651F21413
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 751C71C20C1A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EFD79E3;
-	Tue,  5 Dec 2023 03:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D23D6FB8;
+	Tue,  5 Dec 2023 03:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHChwbJB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koh5wYm0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBBF6FAF;
-	Tue,  5 Dec 2023 03:27:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEE1C433C8;
-	Tue,  5 Dec 2023 03:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD286FAF;
+	Tue,  5 Dec 2023 03:24:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84C3C433C7;
+	Tue,  5 Dec 2023 03:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746851;
-	bh=uQtblrI01nKQHYxeAWqRzMGXtWdD4ZhVgWHohs+VW1M=;
+	s=korg; t=1701746672;
+	bh=Aqb+xfPy+KINU4C+LMe4SeW2ZvmfCryZWn1vr6ugkFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHChwbJBDWziKYAx/+KwWwD7tC3XKHLwa32tjqcp+SK86/o7KiPFmM6auzkP1Q8nb
-	 E8ERTk274cwMnl2NLrvU2NvEJwd00DyYJnHjA8tdh1biH7hXLxZs9m0k0gqLuNK44B
-	 05STFm5QOanYnJk4A94E1nwAVyGYwCVrNrch097k=
+	b=koh5wYm0WkhyXAG5tIQgePCoeEVETv+jbDWG0bmQNTTHW70zC5EpQm7OCYEd481S5
+	 IfySY8RcpSpxo2aR9qmFSWVLBDvUXTVZKqLo8zlWH+m/jMTMPxzfRCuXAuVfCGPCAm
+	 3ILXqILpeIBhicsYdn+tZeYTxTWcjZKNkc7J3UVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Haberland <sth@linux.ibm.com>,
-	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.19 20/71] s390/dasd: protect device queue against concurrent access
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 106/134] net: ravb: Check return value of reset_control_deassert()
 Date: Tue,  5 Dec 2023 12:16:18 +0900
-Message-ID: <20231205031519.005117461@linuxfoundation.org>
+Message-ID: <20231205031542.168140899@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +53,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Höppner <hoeppner@linux.ibm.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
+[ Upstream commit d8eb6ea4b302e7ff78535c205510e359ac10a0bd ]
 
-In dasd_profile_start() the amount of requests on the device queue are
-counted. The access to the device queue is unprotected against
-concurrent access. With a lot of parallel I/O, especially with alias
-devices enabled, the device queue can change while dasd_profile_start()
-is accessing the queue. In the worst case this leads to a kernel panic
-due to incorrect pointer accesses.
+reset_control_deassert() could return an error. Some devices cannot work
+if reset signal de-assert operation fails. To avoid this check the return
+code of reset_control_deassert() in ravb_probe() and take proper action.
 
-Fix this by taking the device lock before accessing the queue and
-counting the requests. Additionally the check for a valid profile data
-pointer can be done earlier to avoid unnecessary locking in a hot path.
+Along with it, the free_netdev() call from the error path was moved after
+reset_control_assert() on its own label (out_free_netdev) to free
+netdev in case reset_control_deassert() fails.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0d13a1a464a0 ("ravb: Add reset support")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -725,18 +725,20 @@ static void dasd_profile_start(struct da
- 	 * we count each request only once.
- 	 */
- 	device = cqr->startdev;
--	if (device->profile.data) {
--		counter = 1; /* request is not yet queued on the start device */
--		list_for_each(l, &device->ccw_queue)
--			if (++counter >= 31)
--				break;
--	}
-+	if (!device->profile.data)
-+		return;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index de12c02c55cbc..f76ccb543838c 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2654,7 +2654,10 @@ static int ravb_probe(struct platform_device *pdev)
+ 	ndev->features = info->net_features;
+ 	ndev->hw_features = info->net_hw_features;
+ 
+-	reset_control_deassert(rstc);
++	error = reset_control_deassert(rstc);
++	if (error)
++		goto out_free_netdev;
 +
-+	spin_lock(get_ccwdev_lock(device->cdev));
-+	counter = 1; /* request is not yet queued on the start device */
-+	list_for_each(l, &device->ccw_queue)
-+		if (++counter >= 31)
-+			break;
-+	spin_unlock(get_ccwdev_lock(device->cdev));
-+
- 	spin_lock(&device->profile.lock);
--	if (device->profile.data) {
--		device->profile.data->dasd_io_nr_req[counter]++;
--		if (rq_data_dir(req) == READ)
--			device->profile.data->dasd_read_nr_req[counter]++;
--	}
-+	device->profile.data->dasd_io_nr_req[counter]++;
-+	if (rq_data_dir(req) == READ)
-+		device->profile.data->dasd_read_nr_req[counter]++;
- 	spin_unlock(&device->profile.lock);
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_get_sync(&pdev->dev);
+ 
+@@ -2881,11 +2884,11 @@ static int ravb_probe(struct platform_device *pdev)
+ out_disable_refclk:
+ 	clk_disable_unprepare(priv->refclk);
+ out_release:
+-	free_netdev(ndev);
+-
+ 	pm_runtime_put(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	reset_control_assert(rstc);
++out_free_netdev:
++	free_netdev(ndev);
+ 	return error;
  }
  
+-- 
+2.42.0
+
 
 
 
