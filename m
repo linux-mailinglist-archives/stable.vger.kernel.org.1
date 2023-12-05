@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B25780476E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC5CB804803
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 322451F2146E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15EFBB20D7F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855B179F2;
-	Tue,  5 Dec 2023 03:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F52079E3;
+	Tue,  5 Dec 2023 03:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfJzqwFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJACSyAw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 462066FB1;
-	Tue,  5 Dec 2023 03:38:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AFEC433C9;
-	Tue,  5 Dec 2023 03:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0B6FB0;
+	Tue,  5 Dec 2023 03:44:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B431C433C9;
+	Tue,  5 Dec 2023 03:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747510;
-	bh=cp65O0IxhoY0CRf6N/U1NAhA4YFvMfdbTOat7cMLNR0=;
+	s=korg; t=1701747889;
+	bh=a3pwqmKqWtKxZrtnHN7+U+M0ffdfWqpXuVLat8G/8jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BfJzqwFFUYR4qgkPaeQDefxY6VooRfgyKD2TEDbRBxQR/emHIzO5YSjP9Lo0qEIB9
-	 rV2mL3Tj/7gK5uBtzzpVXGd6gcH+FhW4LWGPq3BZ0ueiiBnopSr58aqKvu347Ih/nX
-	 vZAGcU8fmYI89CvMGY2mVxWYPHsnrxrSbFg3Q3IA=
+	b=gJACSyAwPriuAJAhUdTX/BRt7oBh/3HEhXdJd3Csaqp/sa7BgCrwG1MtvoTfDd9rM
+	 /5gJujJfZzTY1nmmB5UdLCUj/RsxvVTbljyklpwn+QgzNt9N7XlDRshEWh+TD/IAyX
+	 cB0706qrZ1JyY9FmxwGsUmPjRvE6qqX+NQzvfFUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 102/135] net: ravb: Start TX queues after HW initialization succeeded
+	Zheng Wang <zyytlz.wz@163.com>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.4 35/94] bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
 Date: Tue,  5 Dec 2023 12:17:03 +0900
-Message-ID: <20231205031537.143244175@linuxfoundation.org>
+Message-ID: <20231205031524.855320999@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit 6f32c086602050fc11157adeafaa1c1eb393f0af ]
+commit f72f4312d4388376fc8a1f6cf37cb21a0d41758b upstream.
 
-ravb_phy_start() may fail. If that happens, the TX queues will remain
-started. Thus, move the netif_tx_start_all_queues() after PHY is
-successfully initialized.
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") do the following change inside btree_gc_coalesce(),
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+31 @@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(
+32         memset(new_nodes, 0, sizeof(new_nodes));
+33         closure_init_stack(&cl);
+34
+35 -       while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
+36 +       while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
+37                 keys += r[nodes++].keys;
+38
+39         blocks = btree_default_blocks(b->c) * 2 / 3;
+
+At line 35 the original r[nodes].b is not always allocatored from
+__bch_btree_node_alloc(), and possibly initialized as NULL pointer by
+caller of btree_gc_coalesce(). Therefore the change at line 36 is not
+correct.
+
+This patch replaces the mistaken IS_ERR() by IS_ERR_OR_NULL() to avoid
+potential issue.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Cc:  <stable@vger.kernel.org> # 6.5+
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-9-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/bcache/btree.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index a9cd390dedbd8..f092f468016bd 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1383,13 +1383,13 @@ static int ravb_open(struct net_device *ndev)
- 	if (priv->chip_id == RCAR_GEN2)
- 		ravb_ptp_init(ndev, priv->pdev);
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1391,7 +1391,7 @@ static int btree_gc_coalesce(struct btre
+ 	memset(new_nodes, 0, sizeof(new_nodes));
+ 	closure_init_stack(&cl);
  
--	netif_tx_start_all_queues(ndev);
--
- 	/* PHY control start */
- 	error = ravb_phy_start(ndev);
- 	if (error)
- 		goto out_ptp_stop;
+-	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
++	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
+ 		keys += r[nodes++].keys;
  
-+	netif_tx_start_all_queues(ndev);
-+
- 	return 0;
- 
- out_ptp_stop:
--- 
-2.42.0
-
+ 	blocks = btree_default_blocks(b->c) * 2 / 3;
 
 
 
