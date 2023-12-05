@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-4577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2A3804811
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24F9D80477D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FAE41C20E15
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C44AE1F21480
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707F78C05;
-	Tue,  5 Dec 2023 03:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8238C03;
+	Tue,  5 Dec 2023 03:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKAr+A8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDT4Dic/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3D96FB0;
-	Tue,  5 Dec 2023 03:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B362BC433C8;
-	Tue,  5 Dec 2023 03:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30366FB1;
+	Tue,  5 Dec 2023 03:39:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF81C433C8;
+	Tue,  5 Dec 2023 03:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747932;
-	bh=Bvq1RBshJQEkCTSQasIKkjiJm7tx36O6tBh3ptkWR+k=;
+	s=korg; t=1701747552;
+	bh=BtvYX5YfIum5A4cr2xU6+oyDV2xsWyY5ixbfNWj1W1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKAr+A8ywMtBju1FybZHcJvi05C1XGxP1zgZ8vlNq15p97sSMrDdqvimBwY5aepCK
-	 zf36d4Yx61PU/rKzI5m/9NsE2tQL5yo7kj7NCnI1cJWdiBT1q/JEkmh6Ks0JT9SGMo
-	 fDUIrxS4mNslfj+nmiHn+jdhQDraHmKT26cs09BM=
+	b=XDT4Dic/4NzS56MuC0u1TKFItrtJapPBYAqZV76Cg0O0e+p1muROpkjqKBMKwV08i
+	 mYJp3ifA2yfMMeWZYILBJf22vrXEOR7Ah8f6esCq6uE7Gp7hrNq8HnHJU2QM9+528p
+	 LWhDpt11Z67Qg7sOTdDXUUWFWiVoX7KfhQb2eLqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Lieven Hey <lieven.hey@kdab.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 5.4 51/94] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 118/135] drm/amdgpu: dont use ATRM for external devices
 Date: Tue,  5 Dec 2023 12:17:19 +0900
-Message-ID: <20231205031525.706456490@linuxfoundation.org>
+Message-ID: <20231205031538.287865773@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,53 +53,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 89b15d00527b7825ff19130ed83478e80e3fae99 upstream.
+[ Upstream commit 432e664e7c98c243fab4c3c95bd463bea3aeed28 ]
 
-When a program header was added, it moved the text section but
-GEN_ELF_TEXT_OFFSET was not updated.
+The ATRM ACPI method is for fetching the dGPU vbios rom
+image on laptops and all-in-one systems.  It should not be
+used for external add in cards.  If the dGPU is thunderbolt
+connected, don't try ATRM.
 
-Fix by adding the program header size and aligning.
+v2: pci_is_thunderbolt_attached only works for Intel.  Use
+    pdev->external_facing instead.
+v3: dev_is_removable() seems to be what we want
 
-Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Lieven Hey <lieven.hey@kdab.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2925
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/genelf.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/tools/perf/util/genelf.h
-+++ b/tools/perf/util/genelf.h
-@@ -2,6 +2,8 @@
- #ifndef __GENELF_H__
- #define __GENELF_H__
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+index 4b568ee932435..02a73b9e08d7d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bios.c
+@@ -29,6 +29,7 @@
+ #include "amdgpu.h"
+ #include "atom.h"
  
-+#include <linux/math.h>
++#include <linux/device.h>
+ #include <linux/pci.h>
+ #include <linux/slab.h>
+ #include <linux/acpi.h>
+@@ -285,6 +286,10 @@ static bool amdgpu_atrm_get_bios(struct amdgpu_device *adev)
+ 	if (adev->flags & AMD_IS_APU)
+ 		return false;
+ 
++	/* ATRM is for on-platform devices only */
++	if (dev_is_removable(&adev->pdev->dev))
++		return false;
 +
- /* genelf.c */
- int jit_write_elf(int fd, uint64_t code_addr, const char *sym,
- 		  const void *code, int csize, void *debug, int nr_debug_entries,
-@@ -73,6 +75,6 @@ int jit_add_debug_info(Elf *e, uint64_t
- #endif
- 
- /* The .text section is directly after the ELF header */
--#define GEN_ELF_TEXT_OFFSET sizeof(Elf_Ehdr)
-+#define GEN_ELF_TEXT_OFFSET round_up(sizeof(Elf_Ehdr) + sizeof(Elf_Phdr), 16)
- 
- #endif
+ 	while ((pdev = pci_get_class(PCI_CLASS_DISPLAY_VGA << 8, pdev)) != NULL) {
+ 		dhandle = ACPI_HANDLE(&pdev->dev);
+ 		if (!dhandle)
+-- 
+2.42.0
+
 
 
 
