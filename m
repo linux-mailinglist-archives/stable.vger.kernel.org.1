@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-4441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE2980477E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B1D8047CD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED156281683
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F21F41F21509
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8458BF8;
-	Tue,  5 Dec 2023 03:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D69779E3;
+	Tue,  5 Dec 2023 03:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCJ6BAj/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tLWMw1Q1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6DF6FB1;
-	Tue,  5 Dec 2023 03:39:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9E4C433C7;
-	Tue,  5 Dec 2023 03:39:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC33B6AC2;
+	Tue,  5 Dec 2023 03:42:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27411C433C8;
+	Tue,  5 Dec 2023 03:42:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747555;
-	bh=iPVmbjbxR4ETHChRto/fI/T78ScrBUx3SoXT8lJ+8cE=;
+	s=korg; t=1701747744;
+	bh=Vrm/iJOnQtUA9LHP/W2tPIswOCoq0RFTnxSkuF6tB/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCJ6BAj/zoicKR8qEDI5oRTI+IJgLWGaqVsHwKm7+KLcWTYX6vifoL0v/PTnNyhB/
-	 dxqOTgbJDd/20vrXKr52nH7eCv1fpOD1uGJ0g0pcmmmG027vkNTWTLoCZp+mAk74aX
-	 zw1+gf6Ae45kArMhYXw+9tS7hAR9AKhaKuiSqWJA=
+	b=tLWMw1Q1bAMIB9BqYOo09aT+VGvsvSfPRUvDoYanURd8JTEcB2bIyJ3fJ+mfTevU4
+	 yMPuyiJIcV2hkYMJ9l0pt/ta6YYJubyJfvmI2+rRkxl6sidpQfnP+Jvgrm4SCjFfhE
+	 Sy6d7tUBBw9nfOaqG3/U18r/4WepQ2hQnNfIUY6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Elena Salomatkina <elena.salomatkina.cmc@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/135] fs: add ctime accessors infrastructure
+Subject: [PATCH 5.15 35/67] octeontx2-af: Fix possible buffer overflow
 Date: Tue,  5 Dec 2023 12:17:20 +0900
-Message-ID: <20231205031538.374906489@linuxfoundation.org>
+Message-ID: <20231205031521.831017013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,118 +55,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
 
-[ Upstream commit 9b6304c1d53745c300b86f202d0dcff395e2d2db ]
+[ Upstream commit ad31c629ca3c87f6d557488c1f9faaebfbcd203c ]
 
-struct timespec64 has unused bits in the tv_nsec field that can be used
-for other purposes. In future patches, we're going to change how the
-inode->i_ctime is accessed in certain inodes in order to make use of
-them. In order to do that safely though, we'll need to eradicate raw
-accesses of the inode->i_ctime field from the kernel.
+A loop in rvu_mbox_handler_nix_bandprof_free() contains
+a break if (idx == MAX_BANDPROF_PER_PFFUNC),
+but if idx may reach MAX_BANDPROF_PER_PFFUNC
+buffer '(*req->prof_idx)[layer]' overflow happens before that check.
 
-Add new accessor functions for the ctime that we use to replace them.
+The patch moves the break to the
+beginning of the loop.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Message-Id: <20230705185812.579118-2-jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: 5923d6686a10 ("smb3: fix caching of ctime on setxattr")
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: e8e095b3b370 ("octeontx2-af: cn10k: Bandwidth profiles config support").
+Signed-off-by: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/20231124210802.109763-1-elena.salomatkina.cmc@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/inode.c         | 16 ++++++++++++++++
- include/linux/fs.h | 45 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 60 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 311237e8d3595..5c7139aa2bda7 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -2392,6 +2392,22 @@ int vfs_ioc_fssetxattr_check(struct inode *inode, const struct fsxattr *old_fa,
- }
- EXPORT_SYMBOL(vfs_ioc_fssetxattr_check);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 1593efc4502b5..5f9f6da5c45bb 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -5045,6 +5045,8 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
  
-+/**
-+ * inode_set_ctime_current - set the ctime to current_time
-+ * @inode: inode
-+ *
-+ * Set the inode->i_ctime to the current value for the inode. Returns
-+ * the current value that was assigned to i_ctime.
-+ */
-+struct timespec64 inode_set_ctime_current(struct inode *inode)
-+{
-+	struct timespec64 now = current_time(inode);
-+
-+	inode_set_ctime(inode, now.tv_sec, now.tv_nsec);
-+	return now;
-+}
-+EXPORT_SYMBOL(inode_set_ctime_current);
-+
- /**
-  * in_group_or_capable - check whether caller is CAP_FSETID privileged
-  * @inode:	inode to check
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index f9e25d0a7b9c8..82316863c71fd 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -1580,7 +1580,50 @@ static inline void i_gid_write(struct inode *inode, gid_t gid)
- 	inode->i_gid = make_kgid(inode->i_sb->s_user_ns, gid);
- }
- 
--extern struct timespec64 current_time(struct inode *inode);
-+struct timespec64 current_time(struct inode *inode);
-+struct timespec64 inode_set_ctime_current(struct inode *inode);
-+
-+/**
-+ * inode_get_ctime - fetch the current ctime from the inode
-+ * @inode: inode from which to fetch ctime
-+ *
-+ * Grab the current ctime from the inode and return it.
-+ */
-+static inline struct timespec64 inode_get_ctime(const struct inode *inode)
-+{
-+	return inode->i_ctime;
-+}
-+
-+/**
-+ * inode_set_ctime_to_ts - set the ctime in the inode
-+ * @inode: inode in which to set the ctime
-+ * @ts: value to set in the ctime field
-+ *
-+ * Set the ctime in @inode to @ts
-+ */
-+static inline struct timespec64 inode_set_ctime_to_ts(struct inode *inode,
-+						      struct timespec64 ts)
-+{
-+	inode->i_ctime = ts;
-+	return ts;
-+}
-+
-+/**
-+ * inode_set_ctime - set the ctime in the inode
-+ * @inode: inode in which to set the ctime
-+ * @sec: tv_sec value to set
-+ * @nsec: tv_nsec value to set
-+ *
-+ * Set the ctime in @inode to { @sec, @nsec }
-+ */
-+static inline struct timespec64 inode_set_ctime(struct inode *inode,
-+						time64_t sec, long nsec)
-+{
-+	struct timespec64 ts = { .tv_sec  = sec,
-+				 .tv_nsec = nsec };
-+
-+	return inode_set_ctime_to_ts(inode, ts);
-+}
- 
- /*
-  * Snapshotting support.
+ 		ipolicer = &nix_hw->ipolicer[layer];
+ 		for (idx = 0; idx < req->prof_count[layer]; idx++) {
++			if (idx == MAX_BANDPROF_PER_PFFUNC)
++				break;
+ 			prof_idx = req->prof_idx[layer][idx];
+ 			if (prof_idx >= ipolicer->band_prof.max ||
+ 			    ipolicer->pfvf_map[prof_idx] != pcifunc)
+@@ -5058,8 +5060,6 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
+ 			ipolicer->pfvf_map[prof_idx] = 0x00;
+ 			ipolicer->match_id[prof_idx] = 0;
+ 			rvu_free_rsrc(&ipolicer->band_prof, prof_idx);
+-			if (idx == MAX_BANDPROF_PER_PFFUNC)
+-				break;
+ 		}
+ 	}
+ 	mutex_unlock(&rvu->rsrc_lock);
 -- 
 2.42.0
 
