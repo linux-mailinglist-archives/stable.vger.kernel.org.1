@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DEB38047A8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7E7804771
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC358B20D0C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE14D1C20E31
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510E38C05;
-	Tue,  5 Dec 2023 03:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D713A8BF8;
+	Tue,  5 Dec 2023 03:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ic+PcFeW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNBxbeVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE1C6FB1;
-	Tue,  5 Dec 2023 03:40:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9503FC433CB;
-	Tue,  5 Dec 2023 03:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4156FB1;
+	Tue,  5 Dec 2023 03:38:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284A6C433C9;
+	Tue,  5 Dec 2023 03:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747656;
-	bh=FEyueEP9TCLPi+ffm2JfBA1+Idg87C9lo5LFwSH8J4E=;
+	s=korg; t=1701747518;
+	bh=3OqhL9HCaJyMELEuXlzifuPheHyixgdAxpV47+NuMeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ic+PcFeWHewRfc4HOz43+wBqIbHnPXc++RvFHYBawlISL71TFo4bHAHpeCjcUg0cC
-	 XVS8NavXw3bpacOEhiPavZRO07iCHVnEbIcOSJvHEZNnW8Lk6IWR05JcCgma4NOhOP
-	 CSF7nwKWfuwmmavMpTAcHPKhrBZfJ3T4OBsIcvQU=
+	b=YNBxbeVxZSMtL1Y6oqndh2BCutUO3H8+0m4Y2gJ3IW13ay2PihClNFbq+czeCKjOG
+	 hlXTEn4phGZ97Txjaa0pJj2IDWX5gqLzWJdKT/YdSOZ3ai06ZmnfgDzMlLL/JB0tx3
+	 LvX7ZmHW8G5iM/KrJzdmsN7mvTbmkIF4Dk945vXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bragatheswaran Manickavel <bragathemanick0908@gmail.com>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+d66de4cbf532749df35f@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 20/67] btrfs: ref-verify: fix memory leaks in btrfs_ref_tree_mod()
-Date: Tue,  5 Dec 2023 12:17:05 +0900
-Message-ID: <20231205031520.934704996@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Micah Veilleux <micah.veilleux@iba-group.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 105/135] smb3: fix touch -h of symlink
+Date: Tue,  5 Dec 2023 12:17:06 +0900
+Message-ID: <20231205031537.361029879@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,53 +54,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit f91192cd68591c6b037da345bc9fcd5e50540358 upstream.
+[ Upstream commit 475efd9808a3094944a56240b2711349e433fb66 ]
 
-In btrfs_ref_tree_mod(), when !parent 're' was allocated through
-kmalloc(). In the following code, if an error occurs, the execution will
-be redirected to 'out' or 'out_unlock' and the function will be exited.
-However, on some of the paths, 're' are not deallocated and may lead to
-memory leaks.
+For example:
+      touch -h -t 02011200 testfile
+where testfile is a symlink would not change the timestamp, but
+      touch -t 02011200 testfile
+does work to change the timestamp of the target
 
-For example: lookup_block_entry() for 'be' returns NULL, the out label
-will be invoked. During that flow ref and 'ra' are freed but not 're',
-which can potentially lead to a memory leak.
-
-CC: stable@vger.kernel.org # 5.10+
-Reported-and-tested-by: syzbot+d66de4cbf532749df35f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d66de4cbf532749df35f
-Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: David Howells <dhowells@redhat.com>
+Reported-by: Micah Veilleux <micah.veilleux@iba-group.com>
+Closes: https://bugzilla.samba.org/show_bug.cgi?id=14476
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ref-verify.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/cifs/cifsfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/ref-verify.c
-+++ b/fs/btrfs/ref-verify.c
-@@ -788,6 +788,7 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
- 			dump_ref_action(fs_info, ra);
- 			kfree(ref);
- 			kfree(ra);
-+			kfree(re);
- 			goto out_unlock;
- 		} else if (be->num_refs == 0) {
- 			btrfs_err(fs_info,
-@@ -797,6 +798,7 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
- 			dump_ref_action(fs_info, ra);
- 			kfree(ref);
- 			kfree(ra);
-+			kfree(re);
- 			goto out_unlock;
- 		}
+diff --git a/fs/cifs/cifsfs.c b/fs/cifs/cifsfs.c
+index 0d8d7b57636f7..b87d6792b14ad 100644
+--- a/fs/cifs/cifsfs.c
++++ b/fs/cifs/cifsfs.c
+@@ -1076,6 +1076,7 @@ const struct inode_operations cifs_file_inode_ops = {
  
+ const struct inode_operations cifs_symlink_inode_ops = {
+ 	.get_link = cifs_get_link,
++	.setattr = cifs_setattr,
+ 	.permission = cifs_permission,
+ 	.listxattr = cifs_listxattr,
+ };
+-- 
+2.42.0
+
 
 
 
