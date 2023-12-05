@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF19A8047EF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DC98046CF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F7C7B20C94
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38052815BC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B55A8BF7;
-	Tue,  5 Dec 2023 03:44:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C098BF1;
+	Tue,  5 Dec 2023 03:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZKM/Mmt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTlEgiW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128486AC2;
-	Tue,  5 Dec 2023 03:44:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A7F0C433C8;
-	Tue,  5 Dec 2023 03:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0E66FB1;
+	Tue,  5 Dec 2023 03:31:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BFBC433C7;
+	Tue,  5 Dec 2023 03:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747840;
-	bh=Y7yIwFcYK9L3RhT/fml1ae5C92dayUY+MPzOxs+tXAE=;
+	s=korg; t=1701747107;
+	bh=tswMCRidaPb/E+4lnNmClmNc3suQZ8iea7jsFlytyss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZKM/Mmtyr4p5NM45R3lGGsiWWqJZJnU4AdNSUFShyVO3mEeHWQjnUXlItocaSmEZ
-	 pjjFUWf5yiYYa10reqiSuHsd/6eRTLvB2c9x4z8XvkXM1AdqkglUTQ+sJu/zRbStuc
-	 hjXSBlIDNSIU4hop3cxgOAxKiJT98y96qamrJPH8=
+	b=gTlEgiW31Evetc3fjGmX1eCGatpoFXsOR/L9VFr5Q1eIjcO3rMzUqLocalIDCELCE
+	 YEtSVA+BIT/260coiD5GRRrFoWjO0DvuuHDKs2MzXSusYVf32ZhwbOldyJVbT1+ITJ
+	 oSNfx1lZ2gMuVqHQpw7TCdkawm6uEkH8CK0XzxoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Christopher Obbard <chris.obbard@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Willem de Bruijn <willemb@google.com>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 08/94] drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+Subject: [PATCH 6.1 061/107] selftests/net: ipsec: fix constant out of range
 Date: Tue,  5 Dec 2023 12:16:36 +0900
-Message-ID: <20231205031523.329004714@linuxfoundation.org>
+Message-ID: <20231205031535.231908751@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,78 +54,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit bb0a05acd6121ff0e810b44fdc24dbdfaa46b642 ]
+[ Upstream commit 088559815477c6f623a5db5993491ddd7facbec7 ]
 
-Use of DRM_FORMAT_RGB888 and DRM_FORMAT_BGR888 on e.g. RK3288, RK3328
-and RK3399 result in wrong colors being displayed.
+Fix a small compiler warning.
 
-The issue can be observed using modetest:
+nr_process must be a signed long: it is assigned a signed long by
+strtol() and is compared against LONG_MIN and LONG_MAX.
 
-  modetest -s <connector_id>@<crtc_id>:1920x1080-60@RG24
-  modetest -s <connector_id>@<crtc_id>:1920x1080-60@BG24
+ipsec.c:2280:65:
+    error: result of comparison of constant -9223372036854775808
+    with expression of type 'unsigned int' is always false
+    [-Werror,-Wtautological-constant-out-of-range-compare]
 
-Vendor 4.4 kernel apply an inverted rb swap for these formats on VOP
-full framework (IP version 3.x) compared to VOP little framework (2.x).
+  if ((errno == ERANGE && (nr_process == LONG_MAX || nr_process == LONG_MIN))
 
-Fix colors by applying different rb swap for VOP full framework (3.x)
-and VOP little framework (2.x) similar to vendor 4.4 kernel.
-
-Fixes: 85a359f25388 ("drm/rockchip: Add BGR formats to VOP")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Reviewed-by: Christopher Obbard <chris.obbard@collabora.com>
-Tested-by: Christopher Obbard <chris.obbard@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231026191500.2994225-1-jonas@kwiboo.se
+Fixes: bc2652b7ae1e ("selftest/net/xfrm: Add test for ipsec tunnel")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Link: https://lore.kernel.org/r/20231124171645.1011043-2-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/ipsec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index 20aa93fe9e3f2..f2edb94214761 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -234,14 +234,22 @@ static inline void vop_cfg_done(struct vop *vop)
- 	VOP_REG_SET(vop, common, cfg_done, 1);
- }
+diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
+index 9a8229abfa026..be4a30a0d02ae 100644
+--- a/tools/testing/selftests/net/ipsec.c
++++ b/tools/testing/selftests/net/ipsec.c
+@@ -2263,7 +2263,7 @@ static int check_results(void)
  
--static bool has_rb_swapped(uint32_t format)
-+static bool has_rb_swapped(uint32_t version, uint32_t format)
+ int main(int argc, char **argv)
  {
- 	switch (format) {
- 	case DRM_FORMAT_XBGR8888:
- 	case DRM_FORMAT_ABGR8888:
--	case DRM_FORMAT_BGR888:
- 	case DRM_FORMAT_BGR565:
- 		return true;
-+	/*
-+	 * full framework (IP version 3.x) only need rb swapped for RGB888 and
-+	 * little framework (IP version 2.x) only need rb swapped for BGR888,
-+	 * check for 3.x to also only rb swap BGR888 for unknown vop version
-+	 */
-+	case DRM_FORMAT_RGB888:
-+		return VOP_MAJOR(version) == 3;
-+	case DRM_FORMAT_BGR888:
-+		return VOP_MAJOR(version) != 3;
- 	default:
- 		return false;
- 	}
-@@ -886,7 +894,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
- 	VOP_WIN_SET(vop, win, dsp_info, dsp_info);
- 	VOP_WIN_SET(vop, win, dsp_st, dsp_st);
+-	unsigned int nr_process = 1;
++	long nr_process = 1;
+ 	int route_sock = -1, ret = KSFT_SKIP;
+ 	int test_desc_fd[2];
+ 	uint32_t route_seq;
+@@ -2284,7 +2284,7 @@ int main(int argc, char **argv)
+ 			exit_usage(argv);
+ 		}
  
--	rb_swap = has_rb_swapped(fb->format->format);
-+	rb_swap = has_rb_swapped(vop->data->version, fb->format->format);
- 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
- 
- 	/*
+-		if (nr_process > MAX_PROCESSES || !nr_process) {
++		if (nr_process > MAX_PROCESSES || nr_process < 1) {
+ 			printk("nr_process should be between [1; %u]",
+ 					MAX_PROCESSES);
+ 			exit_usage(argv);
 -- 
 2.42.0
 
