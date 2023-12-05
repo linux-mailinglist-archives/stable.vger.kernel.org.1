@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381DD80480A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C401B80479F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2DAF1F21FA2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00DF81C20D72
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4342B8C05;
-	Tue,  5 Dec 2023 03:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9248C13;
+	Tue,  5 Dec 2023 03:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpcqrbVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR0dFs1Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFDBA6FB0;
-	Tue,  5 Dec 2023 03:45:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717E3C433C7;
-	Tue,  5 Dec 2023 03:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8C979E3;
+	Tue,  5 Dec 2023 03:40:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B1BC433C7;
+	Tue,  5 Dec 2023 03:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747914;
-	bh=r2Omb+yOna2xZMaDK6QbfSO5kFfVXJY8oTDfHhT/fm4=;
+	s=korg; t=1701747636;
+	bh=jPOU1Tw8nO/W4BhGZ1/rImwXWUQs2T8j7Yq5UokLHSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpcqrbVo/zC2vGDRwA2fSoNp6E+/0ETAu6oIkc3Jyj9nYWPiOhWczgHWz7JXlRIYS
-	 y8om5/1PVivfqpX5MW2INiKnM0PTfWWWOLycUsA8Cykak0N9Gzmbr6g+ghcSf71gI1
-	 LeR6i/WpBct01uWeFKIE1rlIs32GkwfmbK9JG+Xw=
+	b=rR0dFs1Z7fo0KTSp+/UNziax6dxIw7r6YkTWzAc1eExY/R6IL/TswnKljYyP47aKz
+	 ep1xRSrtLhMAVqjrxx2yakGO9aFEpjqqIR6FiAlIwVJKhSTgcRUXeousmc/aIXYKZf
+	 nutMmuByKO/PY8t2Cdk9Z0RQDkSy7fXQ5U8YB2Dc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alon Zahavi <zahavi.alon@gmail.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 21/94] nvmet: nul-terminate the NQNs passed in the connect command
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 04/67] mmc: cqhci: Increase recovery halt timeout
 Date: Tue,  5 Dec 2023 12:16:49 +0900
-Message-ID: <20231205031524.090834080@linuxfoundation.org>
+Message-ID: <20231205031520.106648769@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +53,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 1c22e0295a5eb571c27b53c7371f95699ef705ff ]
+commit b578d5d18e929aa7c007a98cce32657145dde219 upstream.
 
-The host and subsystem NQNs are passed in the connect command payload and
-interpreted as nul-terminated strings.  Ensure they actually are
-nul-terminated before using them.
+Failing to halt complicates the recovery. Additionally, unless the card or
+controller are stuck, which is expected to be very rare, then the halt
+should succeed, so it is better to wait. Set a large timeout.
 
-Fixes: a07b4970f464 "nvmet: add a generic NVMe target")
-Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-3-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/fabrics-cmd.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mmc/host/cqhci-core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
-index 58544f9bbc20c..d4036508f32a7 100644
---- a/drivers/nvme/target/fabrics-cmd.c
-+++ b/drivers/nvme/target/fabrics-cmd.c
-@@ -182,6 +182,8 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
- 		goto out;
- 	}
+--- a/drivers/mmc/host/cqhci-core.c
++++ b/drivers/mmc/host/cqhci-core.c
+@@ -977,10 +977,10 @@ static bool cqhci_halt(struct mmc_host *
+ /*
+  * After halting we expect to be able to use the command line. We interpret the
+  * failure to halt to mean the data lines might still be in use (and the upper
+- * layers will need to send a STOP command), so we set the timeout based on a
+- * generous command timeout.
++ * layers will need to send a STOP command), however failing to halt complicates
++ * the recovery, so set a timeout that would reasonably allow I/O to complete.
+  */
+-#define CQHCI_START_HALT_TIMEOUT	5
++#define CQHCI_START_HALT_TIMEOUT	500
  
-+	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
-+	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
- 	status = nvmet_alloc_ctrl(d->subsysnqn, d->hostnqn, req,
- 				  le32_to_cpu(c->kato), &ctrl);
- 	if (status) {
-@@ -237,6 +239,8 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
- 		goto out;
- 	}
- 
-+	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
-+	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
- 	ctrl = nvmet_ctrl_find_get(d->subsysnqn, d->hostnqn,
- 				   le16_to_cpu(d->cntlid), req);
- 	if (!ctrl) {
--- 
-2.42.0
-
+ static void cqhci_recovery_start(struct mmc_host *mmc)
+ {
 
 
 
