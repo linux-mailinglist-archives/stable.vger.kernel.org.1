@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4C9804763
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB02F80467A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D374FB20C43
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E201C20C79
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA458C07;
-	Tue,  5 Dec 2023 03:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4E779E3;
+	Tue,  5 Dec 2023 03:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eO/m8/fS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQBSrWbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768DF79E3;
-	Tue,  5 Dec 2023 03:38:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC92FC433C8;
-	Tue,  5 Dec 2023 03:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269F86FAF;
+	Tue,  5 Dec 2023 03:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95908C433C7;
+	Tue,  5 Dec 2023 03:28:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747483;
-	bh=4rCmb4wF6qnn2w3BzpiAiJPid/MnInn7vSE4pPT5YXc=;
+	s=korg; t=1701746887;
+	bh=ge3ezNGkyCvnwKUYIsmlQB7nu1WErq+LsY8ZXXvl25k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eO/m8/fS3/orshMtNYZwj78QYhomYwzfKfjgo6xmMEUJLSSTQuxTwvdehUPeE4K2z
-	 MLvnZ9EO+2OED1H8wMoLB76RVJJACChdxSxDo/LrTbXF7uaWj0tSKKbO/Ar1bD/7Fr
-	 q8hew49F4KrPuLdLGaRxkabStT/VEtxknsGsmYoM=
+	b=XQBSrWbmRW3kFA//4zyinw/VyaPnoTfwW5fot7bHXEA57cyQ8cqD4MZ0LESG3kjBf
+	 Tk5/RpWm8DpSoHAbx1qWFOCx50pX//LyYSedKUrNbBbLvpeuO/Rm9tdnaQ0Dc65Zwg
+	 hT6nLi0iu/u8+mp7GhuJe2M3Mk2amf3BK2oIAGz8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/135] dpaa2-eth: increase the needed headroom to account for alignment
+Subject: [PATCH 4.19 56/71] Revert "PCI/ASPM: Disable only ASPM_STATE_L1 when driver, disables L1"
 Date: Tue,  5 Dec 2023 12:16:54 +0900
-Message-ID: <20231205031536.502317503@linuxfoundation.org>
+Message-ID: <20231205031521.132882208@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +53,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit f422abe3f23d483cf01f386819f26fb3fe0dbb2b ]
+[ Upstream commit 3cb4f534bac010258b2688395c2f13459a932be9 ]
 
-Increase the needed headroom to account for a 64 byte alignment
-restriction which, with this patch, we make mandatory on the Tx path.
-The case in which the amount of headroom needed is not available is
-already handled by the driver which instead sends a S/G frame with the
-first buffer only holding the SW and HW annotation areas.
+This reverts commit fb097dcd5a28c0a2325632405c76a66777a6bed9.
 
-Without this patch, we can empirically see data corruption happening
-between Tx and Tx confirmation which sometimes leads to the SW
-annotation area being overwritten.
+After fb097dcd5a28 ("PCI/ASPM: Disable only ASPM_STATE_L1 when driver
+disables L1"), disabling L1 via pci_disable_link_state(PCIE_LINK_STATE_L1),
+then enabling one substate, e.g., L1.1, via sysfs actually enables *all*
+the substates.
 
-Since this is an old IP where the hardware team cannot help to
-understand the underlying behavior, we make the Tx alignment mandatory
-for all frames to avoid the crash on Tx conf. Also, remove the comment
-that suggested that this is just an optimization.
+For example, r8169 disables L1 because of hardware issues on a number of
+systems, which implicitly disables the L1.1 and L1.2 substates.
 
-This patch also sets the needed_headroom net device field to the usual
-value that the driver would need on the Tx path:
-	- 64 bytes for the software annotation area
-	- 64 bytes to account for a 64 byte aligned buffer address
+On some systems, L1 and L1.1 work fine, but L1.2 causes missed rx packets.
+Enabling L1.1 via the sysfs "aspm_l1_1" attribute unexpectedly enables L1.2
+as well as L1.1.
 
-Fixes: 6e2387e8f19e ("staging: fsl-dpaa2/eth: Add Freescale DPAA2 Ethernet driver")
-Closes: https://lore.kernel.org/netdev/aa784d0c-85eb-4e5d-968b-c8f74fa86be6@gin.de/
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+After fb097dcd5a28, pci_disable_link_state(PCIE_LINK_STATE_L1) adds only
+ASPM_L1 (but not any of the L1.x substates) to the "aspm_disable" mask:
+
+  --- Before fb097dcd5a28
+  +++ After fb097dcd5a28
+
+  # r8169 disables L1:
+    pci_disable_link_state(PCIE_LINK_STATE_L1)
+  -   disable |= ASPM_L1 | ASPM_L1_1 | ASPM_L1_2 | ...  # disable L1, L1.x
+  +   disable |= ASPM_L1                                # disable L1 only
+
+  # write "1" to sysfs "aspm_l1_1" attribute:
+    l1_1_aspm
+      aspm_attr_store_common(state = ASPM_L1_1)
+        disable &= ~ASPM_L1_1              # enable L1.1
+        if (state & (ASPM_L1_1 | ...))     # if enabling any substate
+          disable &= ~ASPM_L1              # enable L1
+
+  # final state:
+  - disable = ASPM_L1_2 | ...              # L1, L1.1 enabled; L1.2 disabled
+  + disable = 0                            # L1, L1.1, L1.2 all enabled
+
+Enabling an L1.x substate removes the substate and L1 from the
+"aspm_disable" mask.  After fb097dcd5a28, the substates were not added to
+the mask when disabling L1, so enabling one substate implicitly enables all
+of them.
+
+Revert fb097dcd5a28 so enabling one substate doesn't enable the others.
+
+Link: https://lore.kernel.org/r/c75931ac-7208-4200-9ca1-821629cf5e28@gmail.com
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+[bhelgaas: work through example in commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 8 ++++----
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/pci/pcie/aspm.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 35401202523ef..07ba0438f9655 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -928,14 +928,12 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
- 	dma_addr_t addr;
- 
- 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
--
--	/* If there's enough room to align the FD address, do it.
--	 * It will help hardware optimize accesses.
--	 */
- 	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
- 				  DPAA2_ETH_TX_BUF_ALIGN);
- 	if (aligned_start >= skb->head)
- 		buffer_start = aligned_start;
-+	else
-+		return -ENOMEM;
- 
- 	/* Store a backpointer to the skb at the beginning of the buffer
- 	 * (in the private data area) such that we can release it
-@@ -4337,6 +4335,8 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
- 	if (err)
- 		goto err_dl_port_add;
- 
-+	net_dev->needed_headroom = DPAA2_ETH_SWA_SIZE + DPAA2_ETH_TX_BUF_ALIGN;
-+
- 	err = register_netdev(net_dev);
- 	if (err < 0) {
- 		dev_err(dev, "register_netdev() failed\n");
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
-index d236b8695c39c..2825f53e7e9b1 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
-@@ -664,7 +664,7 @@ static inline bool dpaa2_eth_rx_pause_enabled(u64 link_options)
- 
- static inline unsigned int dpaa2_eth_needed_headroom(struct sk_buff *skb)
- {
--	unsigned int headroom = DPAA2_ETH_SWA_SIZE;
-+	unsigned int headroom = DPAA2_ETH_SWA_SIZE + DPAA2_ETH_TX_BUF_ALIGN;
- 
- 	/* If we don't have an skb (e.g. XDP buffer), we only need space for
- 	 * the software annotation area
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 8db6a9084a12a..8f934c88dcd76 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1110,7 +1110,8 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
+ 	if (state & PCIE_LINK_STATE_L0S)
+ 		link->aspm_disable |= ASPM_STATE_L0S;
+ 	if (state & PCIE_LINK_STATE_L1)
+-		link->aspm_disable |= ASPM_STATE_L1;
++		/* L1 PM substates require L1 */
++		link->aspm_disable |= ASPM_STATE_L1 | ASPM_STATE_L1SS;
+ 	if (state & PCIE_LINK_STATE_L1_1)
+ 		link->aspm_disable |= ASPM_STATE_L1_1;
+ 	if (state & PCIE_LINK_STATE_L1_2)
 -- 
 2.42.0
 
