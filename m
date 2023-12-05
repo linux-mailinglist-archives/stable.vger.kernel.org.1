@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E385A804746
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACC438046C5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD942815E0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6959828194D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9278BF1;
-	Tue,  5 Dec 2023 03:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036318BEC;
+	Tue,  5 Dec 2023 03:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZElqKYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyqfV1Qe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55C26FB1;
-	Tue,  5 Dec 2023 03:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638F5C433C8;
-	Tue,  5 Dec 2023 03:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11676FB1;
+	Tue,  5 Dec 2023 03:31:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CFCC433C8;
+	Tue,  5 Dec 2023 03:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747409;
-	bh=PL2+vVjEmu4hcQI/wxwuOhxZBv6Im0v9WPqn3IFOmIg=;
+	s=korg; t=1701747080;
+	bh=V7yPsAMubyTa4VMKhM4Y8LAKr2ObLcXWO1CxAJqwPP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZElqKYc1sMGpMko7Sr2BBoDlVF4OL1zoA6s8jLDo3oLEoRmuXd2cDWxrHFsYoUvg
-	 VcdE+7CEyWuLhx2Vxry6j42MP+CprSJbYGKc5fI46CJsWER+eWAekpa1s28wefcNqR
-	 e6Qlk62CGNqyysveO4/gPowxAagDmIAW/a8Vg9FI=
+	b=QyqfV1QevLai1GI+eY6WA8zxajpijVFfXcZsszKbHE1cyG6XrwIY0teBBnfY6W42X
+	 WiVBmr0xtjDMdLWrfQ/x2uTWL2rrfXCCTrEQQQ02ar7eHmhPOlLoyDCqkOlc3WSHc/
+	 gPX/9OFJUpFtEM1BdZEPsezZjNHL/tWypILK3NfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 066/135] usb: dwc3: Fix default mode initialization
+	Hui Wang <hui.wang@canonical.com>,
+	Hugo Villeneuve <hugo@hugovil.com>
+Subject: [PATCH 6.1 052/107] serial: sc16is7xx: Put IOControl register into regmap_volatile
 Date: Tue,  5 Dec 2023 12:16:27 +0900
-Message-ID: <20231205031534.578706297@linuxfoundation.org>
+Message-ID: <20231205031534.586077627@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +52,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Hui Wang <hui.wang@canonical.com>
 
-commit 10d510abd096d620b9fda2dd3e0047c5efc4ad2b upstream.
+commit 77a82cebf0eb023203b4cb2235cab75afc77cccf upstream.
 
-The default mode, configurable by DT, shall be set before usb role switch
-driver is registered. Otherwise there is a race between default mode
-and mode set by usb role switch driver.
+According to the IOControl register bits description in the page 31 of
+the product datasheet, we know the bit 3 of IOControl register is
+softreset, this bit will self-clearing once the reset finish.
 
-Fixes: 98ed256a4dbad ("usb: dwc3: Add support for role-switch-default-mode binding")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20231025095110.2405281-1-alexander.stein@ew.tq-group.com
+In the probe, the softreset bit is set, and when we read this register
+from debugfs/regmap interface, we found the softreset bit is still
+setting, this confused us for a while. Finally we found this register
+is cached, to read the real value from register, we could put it
+into the regmap_volatile().
+
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Link: https://lore.kernel.org/r/20230724034727.17335-1-hui.wang@canonical.com
+Cc: Hugo Villeneuve <hugo@hugovil.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/drd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sc16is7xx.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/drd.c
-+++ b/drivers/usb/dwc3/drd.c
-@@ -547,6 +547,7 @@ static int dwc3_setup_role_switch(struct
- 		dwc->role_switch_default_mode = USB_DR_MODE_PERIPHERAL;
- 		mode = DWC3_GCTL_PRTCAP_DEVICE;
- 	}
-+	dwc3_set_mode(dwc, mode);
- 
- 	dwc3_role_switch.fwnode = dev_fwnode(dwc->dev);
- 	dwc3_role_switch.set = dwc3_usb_role_switch_set;
-@@ -556,7 +557,6 @@ static int dwc3_setup_role_switch(struct
- 	if (IS_ERR(dwc->role_sw))
- 		return PTR_ERR(dwc->role_sw);
- 
--	dwc3_set_mode(dwc, mode);
- 	return 0;
- }
- #else
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -486,6 +486,7 @@ static bool sc16is7xx_regmap_volatile(st
+ 	case SC16IS7XX_TXLVL_REG:
+ 	case SC16IS7XX_RXLVL_REG:
+ 	case SC16IS7XX_IOSTATE_REG:
++	case SC16IS7XX_IOCONTROL_REG:
+ 		return true;
+ 	default:
+ 		break;
 
 
 
