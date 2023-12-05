@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C9A804788
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9975880481E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BE9F281641
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C8431F22372
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB848BF8;
-	Tue,  5 Dec 2023 03:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7731E8C05;
+	Tue,  5 Dec 2023 03:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2L57SrK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+8lo3Co"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6DE6FB1;
-	Tue,  5 Dec 2023 03:39:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E669C433C7;
-	Tue,  5 Dec 2023 03:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A106FB0;
+	Tue,  5 Dec 2023 03:46:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04C7C433C8;
+	Tue,  5 Dec 2023 03:46:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747586;
-	bh=FqN9kESAZHY5eg7PFVDpoSDkF4RyRln14l7p91TpHlI=;
+	s=korg; t=1701747963;
+	bh=tNK0gOlORZxIckMb03UbHQeJ7toTh6kpv9zvnTr1xB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2L57SrKtjU4lwPaTkrp+S4HUrYxHOLTpMpqU6Dwm91sEx+gNxI0i20eZcCE8R18L
-	 bHyVlywfTWrEdKNxuAkmYUQe8QTstKqroZ+Z3Hcob7HrP1ULjALfYibR4SB/WmzKet
-	 M+hIZFY8w0QjQv9ST4atIC/NXIiIQ5i5bx2b7Zzo=
+	b=D+8lo3CoqyOWFz8ia4WGJq7BzKkAW8+IZpFogtDG3rZNd+0YXJzXFeBKUjiKBL4sA
+	 ycIazJJHdeWwOGzv81IileyQCPqoy8CaaShKmluZZR6DaMObzvIABktKNNRMWzPrP/
+	 uH2OfMSHrPx/y31qvc1eqALztBohpwvwsUWYDVBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yongjun <zhengyongjun3@huawei.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/135] mmc: core: convert comma to semicolon
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.4 62/94] powerpc: Dont clobber f0/vs0 during fp|altivec register save
 Date: Tue,  5 Dec 2023 12:17:30 +0900
-Message-ID: <20231205031539.023480742@linuxfoundation.org>
+Message-ID: <20231205031526.299881923@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +53,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yongjun <zhengyongjun3@huawei.com>
+From: Timothy Pearson <tpearson@raptorengineering.com>
 
-[ Upstream commit 6b1dc6229aecbcb45e8901576684a8c09e25ad7b ]
+commit 5e1d824f9a283cbf90f25241b66d1f69adb3835b upstream.
 
-Replace a comma between expression statements by a semicolon.
+During floating point and vector save to thread data f0/vs0 are
+clobbered by the FPSCR/VSCR store routine. This has been obvserved to
+lead to userspace register corruption and application data corruption
+with io-uring.
 
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-Link: https://lore.kernel.org/r/20201216131737.14883-1-zhengyongjun3@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 8155d1fa3a74 ("mmc: block: Retry commands in CQE error recovery")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by restoring f0/vs0 after FPSCR/VSCR store has completed for
+all the FP, altivec, VMX register save paths.
+
+Tested under QEMU in kvm mode, running on a Talos II workstation with
+dual POWER9 DD2.2 CPUs.
+
+Additional detail (mpe):
+
+Typically save_fpu() is called from __giveup_fpu() which saves the FP
+regs and also *turns off FP* in the tasks MSR, meaning the kernel will
+reload the FP regs from the thread struct before letting the task use FP
+again. So in that case save_fpu() is free to clobber f0 because the FP
+regs no longer hold live values for the task.
+
+There is another case though, which is the path via:
+  sys_clone()
+    ...
+    copy_process()
+      dup_task_struct()
+        arch_dup_task_struct()
+          flush_all_to_thread()
+            save_all()
+
+That path saves the FP regs but leaves them live. That's meant as an
+optimisation for a process that's using FP/VSX and then calls fork(),
+leaving the regs live means the parent process doesn't have to take a
+fault after the fork to get its FP regs back. The optimisation was added
+in commit 8792468da5e1 ("powerpc: Add the ability to save FPU without
+giving it up").
+
+That path does clobber f0, but f0 is volatile across function calls,
+and typically programs reach copy_process() from userspace via a syscall
+wrapper function. So in normal usage f0 being clobbered across a
+syscall doesn't cause visible data corruption.
+
+But there is now a new path, because io-uring can call copy_process()
+via create_io_thread() from the signal handling path. That's OK if the
+signal is handled as part of syscall return, but it's not OK if the
+signal is handled due to some other interrupt.
+
+That path is:
+
+interrupt_return_srr_user()
+  interrupt_exit_user_prepare()
+    interrupt_exit_user_prepare_main()
+      do_notify_resume()
+        get_signal()
+          task_work_run()
+            create_worker_cb()
+              create_io_worker()
+                copy_process()
+                  dup_task_struct()
+                    arch_dup_task_struct()
+                      flush_all_to_thread()
+                        save_all()
+                          if (tsk->thread.regs->msr & MSR_FP)
+                            save_fpu()
+                            # f0 is clobbered and potentially live in userspace
+
+Note the above discussion applies equally to save_altivec().
+
+Fixes: 8792468da5e1 ("powerpc: Add the ability to save FPU without giving it up")
+Cc: stable@vger.kernel.org # v4.6+
+Closes: https://lore.kernel.org/all/480932026.45576726.1699374859845.JavaMail.zimbra@raptorengineeringinc.com/
+Closes: https://lore.kernel.org/linuxppc-dev/480221078.47953493.1700206777956.JavaMail.zimbra@raptorengineeringinc.com/
+Tested-by: Timothy Pearson <tpearson@raptorengineering.com>
+Tested-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Timothy Pearson <tpearson@raptorengineering.com>
+[mpe: Reword change log to describe exact path of corruption & other minor tweaks]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/1921539696.48534988.1700407082933.JavaMail.zimbra@raptorengineeringinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/powerpc/kernel/fpu.S    |   13 +++++++++++++
+ arch/powerpc/kernel/vector.S |    2 ++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 8f24653942536..9cc4e3a0bc9a8 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -547,10 +547,10 @@ int mmc_cqe_recovery(struct mmc_host *host)
- 	host->cqe_ops->cqe_recovery_start(host);
+--- a/arch/powerpc/kernel/fpu.S
++++ b/arch/powerpc/kernel/fpu.S
+@@ -24,6 +24,15 @@
+ #include <asm/feature-fixups.h>
  
- 	memset(&cmd, 0, sizeof(cmd));
--	cmd.opcode       = MMC_STOP_TRANSMISSION,
--	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC,
-+	cmd.opcode       = MMC_STOP_TRANSMISSION;
-+	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
- 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
--	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT,
-+	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
- 	mmc_wait_for_cmd(host, &cmd, 0);
+ #ifdef CONFIG_VSX
++#define __REST_1FPVSR(n,c,base)						\
++BEGIN_FTR_SECTION							\
++	b	2f;							\
++END_FTR_SECTION_IFSET(CPU_FTR_VSX);					\
++	REST_FPR(n,base);						\
++	b	3f;							\
++2:	REST_VSR(n,c,base);						\
++3:
++
+ #define __REST_32FPVSRS(n,c,base)					\
+ BEGIN_FTR_SECTION							\
+ 	b	2f;							\
+@@ -42,9 +51,11 @@ END_FTR_SECTION_IFSET(CPU_FTR_VSX);
+ 2:	SAVE_32VSRS(n,c,base);						\
+ 3:
+ #else
++#define __REST_1FPVSR(n,b,base)		REST_FPR(n, base)
+ #define __REST_32FPVSRS(n,b,base)	REST_32FPRS(n, base)
+ #define __SAVE_32FPVSRS(n,b,base)	SAVE_32FPRS(n, base)
+ #endif
++#define REST_1FPVSR(n,c,base)   __REST_1FPVSR(n,__REG_##c,__REG_##base)
+ #define REST_32FPVSRS(n,c,base) __REST_32FPVSRS(n,__REG_##c,__REG_##base)
+ #define SAVE_32FPVSRS(n,c,base) __SAVE_32FPVSRS(n,__REG_##c,__REG_##base)
  
- 	memset(&cmd, 0, sizeof(cmd));
-@@ -558,7 +558,7 @@ int mmc_cqe_recovery(struct mmc_host *host)
- 	cmd.arg          = 1; /* Discard entire queue */
- 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
- 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
--	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT,
-+	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
- 	err = mmc_wait_for_cmd(host, &cmd, 0);
+@@ -68,6 +79,7 @@ _GLOBAL(store_fp_state)
+ 	SAVE_32FPVSRS(0, R4, R3)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r3)
++	REST_1FPVSR(0, R4, R3)
+ 	blr
+ EXPORT_SYMBOL(store_fp_state)
  
- 	host->cqe_ops->cqe_recovery_finish(host);
--- 
-2.42.0
-
+@@ -132,6 +144,7 @@ _GLOBAL(save_fpu)
+ 2:	SAVE_32FPVSRS(0, R4, R6)
+ 	mffs	fr0
+ 	stfd	fr0,FPSTATE_FPSCR(r6)
++	REST_1FPVSR(0, R4, R6)
+ 	blr
+ 
+ /*
+--- a/arch/powerpc/kernel/vector.S
++++ b/arch/powerpc/kernel/vector.S
+@@ -32,6 +32,7 @@ _GLOBAL(store_vr_state)
+ 	mfvscr	v0
+ 	li	r4, VRSTATE_VSCR
+ 	stvx	v0, r4, r3
++	lvx	v0, 0, r3
+ 	blr
+ EXPORT_SYMBOL(store_vr_state)
+ 
+@@ -102,6 +103,7 @@ _GLOBAL(save_altivec)
+ 	mfvscr	v0
+ 	li	r4,VRSTATE_VSCR
+ 	stvx	v0,r4,r7
++	lvx	v0,0,r7
+ 	blr
+ 
+ #ifdef CONFIG_VSX
 
 
 
