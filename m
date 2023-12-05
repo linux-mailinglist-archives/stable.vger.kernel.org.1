@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9773B80479E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC5E80468D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E5C1C20DF4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51DBB1C20D35
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843BE8C03;
-	Tue,  5 Dec 2023 03:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC2E68BEC;
+	Tue,  5 Dec 2023 03:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YkvEfUxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iotn2fWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FCD79E3;
-	Tue,  5 Dec 2023 03:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1FDC433C8;
-	Tue,  5 Dec 2023 03:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ECE46FAF;
+	Tue,  5 Dec 2023 03:29:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE01C433C8;
+	Tue,  5 Dec 2023 03:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747633;
-	bh=zvcbzCEIbpEL/SovccFx9znEwRRTDaePiNC+KLX78PI=;
+	s=korg; t=1701746942;
+	bh=htZVP0jZEsXVZz7Y2sxLJYDzRxVc+p8R87CBpKqZ/yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YkvEfUxGgrgceAudybSQcMq966yyr3GovKjcASuWh9NnKbZX4te+jyVA/e/CfWPQJ
-	 KolT/LdZ+WAjPgX5PmsMAHa0jXkCoiLidAL5WTN+oJNs5ino8eL9+gBcVgw8JL9NRT
-	 cNBrQDZWlHlu8jbQ/ie9pMLeuUGFxcUExV9W+1OY=
+	b=iotn2fWEpeC2JpkXnymtG1/U1IzXlW5L2LU4ZkJmrvYBkI9lH8IxpBH0uKNfyXVzB
+	 IOxQenUsPC+dFXg2cYt8h555vqIAPo+TSptRvO9sWZ12V9hzmkQ5QjopQI5UXzROpg
+	 I3Lwgi2i9R+Rti+Bz+8tA+F7orB4s/mM2PGI2xec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 5.15 03/67] firewire: core: fix possible memory leak in create_units()
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 50/71] perf intel-pt: Fix async branch flags
 Date: Tue,  5 Dec 2023 12:16:48 +0900
-Message-ID: <20231205031520.055356566@linuxfoundation.org>
+Message-ID: <20231205031520.780330158@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +53,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 891e0eab32a57fca4d36c5162628eb0bcb1f0edf upstream.
+[ Upstream commit f2d87895cbc4af80649850dcf5da36de6b2ed3dd ]
 
-If device_register() fails, the refcount of device is not 0, the name
-allocated in dev_set_name() is leaked. To fix this by calling put_device(),
-so that it will be freed in callback function kobject_cleanup().
+Ensure PERF_IP_FLAG_ASYNC is set always for asynchronous branches (i.e.
+interrupts etc).
 
-unreferenced object 0xffff9d99035c7a90 (size 8):
-  comm "systemd-udevd", pid 168, jiffies 4294672386 (age 152.089s)
-  hex dump (first 8 bytes):
-    66 77 30 2e 30 00 ff ff                          fw0.0...
-  backtrace:
-    [<00000000e1d62bac>] __kmem_cache_alloc_node+0x1e9/0x360
-    [<00000000bbeaff31>] __kmalloc_node_track_caller+0x44/0x1a0
-    [<00000000491f2fb4>] kvasprintf+0x67/0xd0
-    [<000000005b960ddc>] kobject_set_name_vargs+0x1e/0x90
-    [<00000000427ac591>] dev_set_name+0x4e/0x70
-    [<000000003b4e447d>] create_units+0xc5/0x110
-
-fw_unit_release() will be called in the error path, move fw_device_get()
-before calling device_register() to keep balanced with fw_device_put() in
-fw_unit_release().
-
+Fixes: 90e457f7be08 ("perf tools: Add Intel PT support")
 Cc: stable@vger.kernel.org
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Fixes: a1f64819fe9f ("firewire: struct device - replace bus_id with dev_name(), dev_set_name()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20230928072953.19369-1-adrian.hunter@intel.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/core-device.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ tools/perf/util/intel-pt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -719,14 +719,11 @@ static void create_units(struct fw_devic
- 					fw_unit_attributes,
- 					&unit->attribute_group);
- 
--		if (device_register(&unit->device) < 0)
--			goto skip_unit;
--
- 		fw_device_get(device);
--		continue;
--
--	skip_unit:
--		kfree(unit);
-+		if (device_register(&unit->device) < 0) {
-+			put_device(&unit->device);
-+			continue;
-+		}
- 	}
- }
- 
+diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
+index e073c7108c6c9..92b9921568f5d 100644
+--- a/tools/perf/util/intel-pt.c
++++ b/tools/perf/util/intel-pt.c
+@@ -901,9 +901,11 @@ static void intel_pt_sample_flags(struct intel_pt_queue *ptq)
+ 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
+ 		if (!ptq->state->to_ip)
+ 			ptq->flags = PERF_IP_FLAG_BRANCH |
++				     PERF_IP_FLAG_ASYNC |
+ 				     PERF_IP_FLAG_TRACE_END;
+ 		else if (ptq->state->from_nr && !ptq->state->to_nr)
+ 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
++				     PERF_IP_FLAG_ASYNC |
+ 				     PERF_IP_FLAG_VMEXIT;
+ 		else
+ 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
+-- 
+2.42.0
+
 
 
 
