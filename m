@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B818045EF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C208F804720
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 046A7B20BE4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CA512815F6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D226FB0;
-	Tue,  5 Dec 2023 03:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DB78BF2;
+	Tue,  5 Dec 2023 03:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZAh6UYT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2FWz5ZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5346AC2;
-	Tue,  5 Dec 2023 03:22:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D96C433C7;
-	Tue,  5 Dec 2023 03:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF226FB1;
+	Tue,  5 Dec 2023 03:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 206E6C433C8;
+	Tue,  5 Dec 2023 03:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746578;
-	bh=1pAiB+LGTsjTMfc/x6eZQcvPl8PyfhaB6g6jzJ8h0eI=;
+	s=korg; t=1701747312;
+	bh=XtiKVDiMt8++QYCN6tPmDaxz85tWlwMAhyST/xBK2HA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZAh6UYT0MzZic9/+abcXPo24nmNkSJZTHWFUCUkyeaT8GAtVpcTfAw5D/1EFjrFg
-	 qatrEeNuZiAgA+wBULSNo1lupb3Mc36ijOvXVgJ5aP+WaZnYeM8KX/lt4JADSHTgot
-	 JWtRmyzWs+xDNMZUS2FeO0tQFfDVt4z4LUBoONQ0=
+	b=R2FWz5ZYM0O6ClvHffQZCofIuOM7Ny4dUW5w1alauQJ1ESXBVfv1OFRKZbQC3CDny
+	 gFO5XyUGS7tzZcuxXq82NgLON1diU5hx3L1TEGa0hM4L7gWNuvjkWglPxC9EKW+vox
+	 u5PwFVmA151EAF1f7HkicGR6fKxCZ9BxOwpSb2F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 077/134] media: v4l2-subdev: Fix a 64bit bug
+Subject: [PATCH 5.10 028/135] net: axienet: Fix check for partial TX checksum
 Date: Tue,  5 Dec 2023 12:15:49 +0900
-Message-ID: <20231205031540.367805187@linuxfoundation.org>
+Message-ID: <20231205031532.432929981@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +55,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit 5d33213fac5929a2e7766c88d78779fd443b0fe8 ]
+[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
 
-The problem is this line here from subdev_do_ioctl().
+Due to a typo, the code checked the RX checksum feature in the TX path.
 
-        client_cap->capabilities &= ~V4L2_SUBDEV_CLIENT_CAP_STREAMS;
-
-The "client_cap->capabilities" variable is a u64.  The AND operation
-is supposed to clear out the V4L2_SUBDEV_CLIENT_CAP_STREAMS flag.  But
-because it's a 32 bit variable it accidentally clears out the high 32
-bits as well.
-
-Currently we only use the first bit and none of the upper bits so this
-doesn't affect runtime behavior.
-
-Fixes: f57fa2959244 ("media: v4l2-subdev: Add new ioctl for client capabilities")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/v4l2-subdev.h | 2 +-
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/v4l2-subdev.h b/include/uapi/linux/v4l2-subdev.h
-index 4a195b68f28f6..b383c2fe0cf35 100644
---- a/include/uapi/linux/v4l2-subdev.h
-+++ b/include/uapi/linux/v4l2-subdev.h
-@@ -239,7 +239,7 @@ struct v4l2_subdev_routing {
-  * set (which is the default), the 'stream' fields will be forced to 0 by the
-  * kernel.
-  */
-- #define V4L2_SUBDEV_CLIENT_CAP_STREAMS		(1U << 0)
-+ #define V4L2_SUBDEV_CLIENT_CAP_STREAMS		(1ULL << 0)
- 
- /**
-  * struct v4l2_subdev_client_capability - Capabilities of the client accessing
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 9d362283196aa..2a5a3f8761c30 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -763,7 +763,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
+ 			/* Tx Full Checksum Offload Enabled */
+ 			cur_p->app0 |= 2;
+-		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
++		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
+ 			csum_start_off = skb_transport_offset(skb);
+ 			csum_index_off = csum_start_off + skb->csum_offset;
+ 			/* Tx Partial Checksum Offload Enabled */
 -- 
 2.42.0
 
