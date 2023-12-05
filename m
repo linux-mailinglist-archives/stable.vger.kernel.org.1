@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC7388046E2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E95138047F9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27D31F21417
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A31C5281783
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118178BEC;
-	Tue,  5 Dec 2023 03:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7BB8BF8;
+	Tue,  5 Dec 2023 03:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xafeXwzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xdo8ad/+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E9F6FB1;
-	Tue,  5 Dec 2023 03:32:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F138DC433C7;
-	Tue,  5 Dec 2023 03:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61BE6FB0;
+	Tue,  5 Dec 2023 03:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3422CC433C8;
+	Tue,  5 Dec 2023 03:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747156;
-	bh=OWMmLA8sLE0mvJ3e8K/pIJesV0LPjIy36Za9uNGSml0=;
+	s=korg; t=1701747864;
+	bh=A7A7P9VLqHNTYAsLfgS92fN6pMfzttd4X/CFQMH0t1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xafeXwzKbOge/lA/m4ArL27ZE4xawGyy7djkmPcVcLIuOX1ro4z5FOzKMDRM2w7K/
-	 37cch/xBf2kwQP8cRagXJSRaf+CzdRCKKCtR2JHMTLoH5stA2EhkNLQVnWTke2aOvz
-	 jHeGkg57lDd492Y8maDBAxutn1ytKb/YUMDShhk4=
+	b=Xdo8ad/+P/kCekxXmsVgtzsgWN5G8uxzXPfgDGN3p/FmdukB8RJE0DKCU2x9fcRV6
+	 xsebiw33RLVXsaqnEmrhqDHE8u2bRoF6MP3r6teW6p5Wopp1VmuTZ7hVwHzcXSnSDB
+	 vcqwq6DrpFxdUTirqCaT8edvabxH8CoKcrok7dNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaurav Batra <gbatra@linux.vnet.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/107] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
+Subject: [PATCH 5.4 27/94] ext4: using nofail preallocation in ext4_es_remove_extent()
 Date: Tue,  5 Dec 2023 12:16:55 +0900
-Message-ID: <20231205031536.554380972@linuxfoundation.org>
+Message-ID: <20231205031524.431670737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +54,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
+[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
 
-When a device is initialized, the driver invokes dma_supported() twice -
-first for streaming mappings followed by coherent mappings. For an
-SR-IOV device, default window is deleted and DDW created. With vPMEM
-enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
-device.  There are no direct mappings.
+If __es_remove_extent() returns an error it means that when splitting
+extent, allocating an extent that must be kept failed, where returning
+an error directly would cause the extent tree to be inconsistent. So we
+use GFP_NOFAIL to pre-allocate an extent_status and pass it to
+__es_remove_extent() to avoid this problem.
 
-First time when dma_supported() is called with 64 bit mask, DDW is created
-and marked as dynamic window. The second time dma_supported() is called,
-enable_ddw() finds existing window for the device and incorrectly returns
-it as "direct mapping".
+In addition, since the allocated memory is outside the i_es_lock, the
+extent_status tree may change and the pre-allocated extent_status is
+no longer needed, so we release the pre-allocated extent_status when
+es->es_len is not initialized.
 
-This only happens when size of DDW is big enough to map max LPAR memory.
-
-This results in streaming TCEs to not get dynamically mapped, since code
-incorrently assumes these are already pre-mapped. The adapter initially
-comes up but goes down due to EEH.
-
-Fixes: 381ceda88c4c ("powerpc/pseries/iommu: Make use of DDW for indirect mapping")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231003030802.47914-1-gbatra@linux.vnet.ibm.com
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/iommu.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/extents_status.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-index 97b026130c71b..ad089d3f2d7c1 100644
---- a/arch/powerpc/platforms/pseries/iommu.c
-+++ b/arch/powerpc/platforms/pseries/iommu.c
-@@ -909,7 +909,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
- 	return 0;
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index 1bfee9dff9c38..854d865e9bfa2 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -1439,6 +1439,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	ext4_lblk_t end;
+ 	int err = 0;
+ 	int reserved = 0;
++	struct extent_status *es = NULL;
+ 
+ 	trace_ext4_es_remove_extent(inode, lblk, len);
+ 	es_debug("remove [%u/%u) from extent status tree of inode %lu\n",
+@@ -1450,17 +1451,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	end = lblk + len - 1;
+ 	BUG_ON(end < lblk);
+ 
++retry:
++	if (err && !es)
++		es = __es_alloc_extent(true);
+ 	/*
+ 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
+ 	 * so that we are sure __es_shrink() is done with the inode before it
+ 	 * is reclaimed.
+ 	 */
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+-	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
++	err = __es_remove_extent(inode, lblk, end, &reserved, es);
++	if (es && !es->es_len)
++		__es_free_extent(es);
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
++	if (err)
++		goto retry;
++
+ 	ext4_es_print_tree(inode);
+ 	ext4_da_release_space(inode, reserved);
+-	return err;
++	return 0;
  }
  
--static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
-+static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
-+			      bool *direct_mapping)
- {
- 	struct dma_win *window;
- 	const struct dynamic_dma_window_prop *dma64;
-@@ -922,6 +923,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
- 			dma64 = window->prop;
- 			*dma_addr = be64_to_cpu(dma64->dma_base);
- 			*window_shift = be32_to_cpu(dma64->window_shift);
-+			*direct_mapping = window->direct;
- 			found = true;
- 			break;
- 		}
-@@ -1275,10 +1277,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
- 
- 	mutex_lock(&dma_win_init_mutex);
- 
--	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
--		direct_mapping = (len >= max_ram_len);
-+	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping))
- 		goto out_unlock;
--	}
- 
- 	/*
- 	 * If we already went through this for a previous function of
+ static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
 -- 
 2.42.0
 
