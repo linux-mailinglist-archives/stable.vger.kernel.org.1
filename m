@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-4541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED7708047EA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85079804664
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A906F28175F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 333E62814BE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4466C79F2;
-	Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6AD79E3;
+	Tue,  5 Dec 2023 03:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3rFQHn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diFp3gvg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0380D6AC2;
-	Tue,  5 Dec 2023 03:43:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F720C433C8;
-	Tue,  5 Dec 2023 03:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8543E6FAF;
+	Tue,  5 Dec 2023 03:27:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2866C433C7;
+	Tue,  5 Dec 2023 03:27:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747830;
-	bh=z9pWUbwYU4Vu1rIjelc+T1c2KFAh05O9Y20FWGV4aqo=;
+	s=korg; t=1701746824;
+	bh=dSfi7GgBV4xWBhbAuhGKq5XvMuSvO0/rrX7Fqe3ScNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y3rFQHn46JjrFialJr9YGWlgfSHq9c/11gHExF6lTj0OAWBSjHjAYWLRotEi1hu9/
-	 sqfDQHbSlJ7YLupnbeLKoPHPNX87ybAxShSeMxoSMVgmpgnm9/LXHUrSeb41xlgNY5
-	 aGesbiPU7Au6LYllWGiLyx3w9nedKlxZY9gIaRyk=
+	b=diFp3gvgTpVhGSwnTYM8ysv3JM4Jv8nxpvEcyWupUbMishLbQBhkHfoNfQt1nF9BC
+	 Nb6gimivWIMNEilAJoVOPOG4P4eC/+ABfp9spG3wZzvYHY3OjxG0rs8ZziGU1h/0KE
+	 zRoTQTh5dI/V2bFl28c0Y84zpzHGY5gFfboFIt2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 04/94] afs: Make error on cell lookup failure consistent with OpenAFS
+	Maria Yu <quic_aiquny@quicinc.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 4.19 34/71] pinctrl: avoid reload of p state in list iteration
 Date: Tue,  5 Dec 2023 12:16:32 +0900
-Message-ID: <20231205031523.103588046@linuxfoundation.org>
+Message-ID: <20231205031519.833667209@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,54 +52,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Maria Yu <quic_aiquny@quicinc.com>
 
-[ Upstream commit 2a4ca1b4b77850544408595e2433f5d7811a9daa ]
+commit 4198a9b571065978632276264e01d71d68000ac5 upstream.
 
-When kafs tries to look up a cell in the DNS or the local config, it will
-translate a lookup failure into EDESTADDRREQ whereas OpenAFS translates it
-into ENOENT.  Applications such as West expect the latter behaviour and
-fail if they see the former.
+When in the list_for_each_entry iteration, reload of p->state->settings
+with a local setting from old_state will turn the list iteration into an
+infinite loop.
 
-This can be seen by trying to mount an unknown cell:
+The typical symptom when the issue happens, will be a printk message like:
 
-   # mount -t afs %example.com:cell.root /mnt
-   mount: /mnt: mount(2) system call failed: Destination address required.
+  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
+already used for some other setting".
 
-Fixes: 4d673da14533 ("afs: Support the AFS dynamic root")
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is a compiler-dependent problem, one instance occurred using Clang
+version 10.0 on the arm64 architecture with linux version 4.19.
+
+Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
+Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+Cc:  <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231115102824.23727-1-quic_aiquny@quicinc.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/dynroot.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pinctrl/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
-index f07e53ab808e3..45007d96a402d 100644
---- a/fs/afs/dynroot.c
-+++ b/fs/afs/dynroot.c
-@@ -38,8 +38,8 @@ static int afs_probe_cell_name(struct dentry *dentry)
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1224,17 +1224,17 @@ EXPORT_SYMBOL_GPL(pinctrl_lookup_state);
+ static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
+ {
+ 	struct pinctrl_setting *setting, *setting2;
+-	struct pinctrl_state *old_state = p->state;
++	struct pinctrl_state *old_state = READ_ONCE(p->state);
+ 	int ret;
  
- 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
- 			NULL, NULL, false);
--	if (ret == -ENODATA)
--		ret = -EDESTADDRREQ;
-+	if (ret == -ENODATA || ret == -ENOKEY)
-+		ret = -ENOENT;
- 	return ret;
- }
- 
--- 
-2.42.0
-
+-	if (p->state) {
++	if (old_state) {
+ 		/*
+ 		 * For each pinmux setting in the old state, forget SW's record
+ 		 * of mux owner for that pingroup. Any pingroups which are
+ 		 * still owned by the new state will be re-acquired by the call
+ 		 * to pinmux_enable_setting() in the loop below.
+ 		 */
+-		list_for_each_entry(setting, &p->state->settings, node) {
++		list_for_each_entry(setting, &old_state->settings, node) {
+ 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
+ 				continue;
+ 			pinmux_disable_setting(setting);
 
 
 
