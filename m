@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-4467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9B780479C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1DEC804808
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A48B2815FC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519761F21F0F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0487D8F56;
-	Tue,  5 Dec 2023 03:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD808C07;
+	Tue,  5 Dec 2023 03:45:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZ6RGeeu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jm4eVsYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFEDCA5C;
-	Tue,  5 Dec 2023 03:40:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AF6C433C8;
-	Tue,  5 Dec 2023 03:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FED6FB0;
+	Tue,  5 Dec 2023 03:45:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E587CC433C7;
+	Tue,  5 Dec 2023 03:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747628;
-	bh=obpTu6KiHLJicRTgRbzW3o0eCw/CP5PoNP37h3yQDUQ=;
+	s=korg; t=1701747906;
+	bh=g/cuzjCv79PE/G3g1KQRdVexXLQ2zZnw8GxsHPRtJB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZ6RGeeuvDN47LF9RWzVfyfbQiFGBSB+DY8wj2WECf9TWsyIM4WSfqe8OFPmRCPxJ
-	 bACVXQOmjba6BcPV9W11+CwPrtS+qjMtjIK/5qVSURP5xyOEuDW6Z3e3J2NugNCBvp
-	 uqTQ6VHVGqYjWZz5NAm0HpE7QkvZFWCwtGzTKFoI=
+	b=jm4eVsYmmhEn3KBabSNCHmybUmedwXduNDaJSYJl2LTGqYkVt0M4qcg9c1+1kD7TQ
+	 to4LI6upEkdg/xhQn6/BSqxqrXXfmx1m2M/xuBlXFnHm8ZbXJjIWIpIhgfvS79SMt0
+	 01c7Gov7+O6pltGqH3hql7TRvMlc8VoSfsWYkQ6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Lieven Hey <lieven.hey@kdab.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 5.15 01/67] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 18/94] afs: Return ENOENT if no cell DNS record can be found
 Date: Tue,  5 Dec 2023 12:16:46 +0900
-Message-ID: <20231205031519.942251301@linuxfoundation.org>
+Message-ID: <20231205031523.911738381@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,53 +55,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 89b15d00527b7825ff19130ed83478e80e3fae99 upstream.
+[ Upstream commit 0167236e7d66c5e1e85d902a6abc2529b7544539 ]
 
-When a program header was added, it moved the text section but
-GEN_ELF_TEXT_OFFSET was not updated.
+Make AFS return error ENOENT if no cell SRV or AFSDB DNS record (or
+cellservdb config file record) can be found rather than returning
+EDESTADDRREQ.
 
-Fix by adding the program header size and aligning.
+Also add cell name lookup info to the cursor dump.
 
-Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Lieven Hey <lieven.hey@kdab.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d5c32c89b208 ("afs: Fix cell DNS lookup")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/genelf.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/afs/vl_rotate.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/tools/perf/util/genelf.h
-+++ b/tools/perf/util/genelf.h
-@@ -2,6 +2,8 @@
- #ifndef __GENELF_H__
- #define __GENELF_H__
+diff --git a/fs/afs/vl_rotate.c b/fs/afs/vl_rotate.c
+index 9a5ce9687779c..370c27cae2e67 100644
+--- a/fs/afs/vl_rotate.c
++++ b/fs/afs/vl_rotate.c
+@@ -58,6 +58,12 @@ static bool afs_start_vl_iteration(struct afs_vl_cursor *vc)
+ 		}
  
-+#include <linux/math.h>
+ 		/* Status load is ordered after lookup counter load */
++		if (cell->dns_status == DNS_LOOKUP_GOT_NOT_FOUND) {
++			pr_warn("No record of cell %s\n", cell->name);
++			vc->error = -ENOENT;
++			return false;
++		}
 +
- /* genelf.c */
- int jit_write_elf(int fd, uint64_t code_addr, const char *sym,
- 		  const void *code, int csize, void *debug, int nr_debug_entries,
-@@ -73,6 +75,6 @@ int jit_add_debug_info(Elf *e, uint64_t
- #endif
+ 		if (cell->dns_source == DNS_RECORD_UNAVAILABLE) {
+ 			vc->error = -EDESTADDRREQ;
+ 			return false;
+@@ -276,6 +282,7 @@ bool afs_select_vlserver(struct afs_vl_cursor *vc)
+  */
+ static void afs_vl_dump_edestaddrreq(const struct afs_vl_cursor *vc)
+ {
++	struct afs_cell *cell = vc->cell;
+ 	static int count;
+ 	int i;
  
- /* The .text section is directly after the ELF header */
--#define GEN_ELF_TEXT_OFFSET sizeof(Elf_Ehdr)
-+#define GEN_ELF_TEXT_OFFSET round_up(sizeof(Elf_Ehdr) + sizeof(Elf_Phdr), 16)
+@@ -285,6 +292,9 @@ static void afs_vl_dump_edestaddrreq(const struct afs_vl_cursor *vc)
  
- #endif
+ 	rcu_read_lock();
+ 	pr_notice("EDESTADDR occurred\n");
++	pr_notice("CELL: %s err=%d\n", cell->name, cell->error);
++	pr_notice("DNS: src=%u st=%u lc=%x\n",
++		  cell->dns_source, cell->dns_status, cell->dns_lookup_count);
+ 	pr_notice("VC: ut=%lx ix=%u ni=%hu fl=%hx err=%hd\n",
+ 		  vc->untried, vc->index, vc->nr_iterations, vc->flags, vc->error);
+ 
+-- 
+2.42.0
+
 
 
 
