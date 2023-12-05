@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-4252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637D08046B5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94450804743
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C2CA281639
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D63721F2145D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4328BF8;
-	Tue,  5 Dec 2023 03:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A708C03;
+	Tue,  5 Dec 2023 03:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hywyfdkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dS0Y3AIN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 564338BF1;
-	Tue,  5 Dec 2023 03:30:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DDEC433C8;
-	Tue,  5 Dec 2023 03:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B616FB1;
+	Tue,  5 Dec 2023 03:36:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72993C433C8;
+	Tue,  5 Dec 2023 03:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747045;
-	bh=hisTbNvmfObWzcs2erXb0jTwK+/byYKsyVl2OigjGk4=;
+	s=korg; t=1701747402;
+	bh=lDT9/jJf9ZxYNhzQsdmIInzEE2tfv6ca4ILtiMH3VI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hywyfdkvH0LRDXq7Ab6g5mdSvIUmkyyikOYe9tt06tGadvwkZQDu08Gq+SrWyE3Zl
-	 x+Y+WUM05NJE92ShjkKqadhM5btWhMmyKZJ0jAZLJUEMPFn2UrnuNzNfu5kmQJfFhR
-	 TsvNgPbvPR/5e2whHgwFs90SxrOQlcti9R+RvDrA=
+	b=dS0Y3AINUvCrJO0e9WrzrtORCgafv97tnOE9H3tdtQirjtBsruQzhirgASDQANxvR
+	 rq77zdr3S5X5aVjwZPHiSgP3OMk7g8TM7HHJL7ffHxUOnuKr4PWrEs7m6XXnwK0J9H
+	 WWmsV2/NHObCj5dl5ngBWDjbTS0mD4/RWDsehsdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 014/107] ALSA: hda/realtek: Headset Mic VREF to 100%
-Date: Tue,  5 Dec 2023 12:15:49 +0900
-Message-ID: <20231205031532.514198453@linuxfoundation.org>
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 029/135] afs: Return ENOENT if no cell DNS record can be found
+Date: Tue,  5 Dec 2023 12:15:50 +0900
+Message-ID: <20231205031532.500668739@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +55,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: David Howells <dhowells@redhat.com>
 
-commit baaacbff64d9f34b64f294431966d035aeadb81c upstream.
+[ Upstream commit 0167236e7d66c5e1e85d902a6abc2529b7544539 ]
 
-This platform need to set Mic VREF to 100%.
+Make AFS return error ENOENT if no cell SRV or AFSDB DNS record (or
+cellservdb config file record) can be found rather than returning
+EDESTADDRREQ.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/0916af40f08a4348a3298a9a59e6967e@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also add cell name lookup info to the cursor dump.
+
+Fixes: d5c32c89b208 ("afs: Fix cell DNS lookup")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/afs/vl_rotate.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -1986,6 +1986,7 @@ enum {
- 	ALC887_FIXUP_ASUS_AUDIO,
- 	ALC887_FIXUP_ASUS_HMIC,
- 	ALCS1200A_FIXUP_MIC_VREF,
-+	ALC888VD_FIXUP_MIC_100VREF,
- };
- 
- static void alc889_fixup_coef(struct hda_codec *codec,
-@@ -2539,6 +2540,13 @@ static const struct hda_fixup alc882_fix
- 			{}
+diff --git a/fs/afs/vl_rotate.c b/fs/afs/vl_rotate.c
+index 488e58490b16e..eb415ce563600 100644
+--- a/fs/afs/vl_rotate.c
++++ b/fs/afs/vl_rotate.c
+@@ -58,6 +58,12 @@ static bool afs_start_vl_iteration(struct afs_vl_cursor *vc)
  		}
- 	},
-+	[ALC888VD_FIXUP_MIC_100VREF] = {
-+		.type = HDA_FIXUP_PINCTLS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x18, PIN_VREF100 }, /* headset mic */
-+			{}
+ 
+ 		/* Status load is ordered after lookup counter load */
++		if (cell->dns_status == DNS_LOOKUP_GOT_NOT_FOUND) {
++			pr_warn("No record of cell %s\n", cell->name);
++			vc->error = -ENOENT;
++			return false;
 +		}
-+	},
- };
++
+ 		if (cell->dns_source == DNS_RECORD_UNAVAILABLE) {
+ 			vc->error = -EDESTADDRREQ;
+ 			return false;
+@@ -285,6 +291,7 @@ bool afs_select_vlserver(struct afs_vl_cursor *vc)
+  */
+ static void afs_vl_dump_edestaddrreq(const struct afs_vl_cursor *vc)
+ {
++	struct afs_cell *cell = vc->cell;
+ 	static int count;
+ 	int i;
  
- static const struct snd_pci_quirk alc882_fixup_tbl[] = {
-@@ -2608,6 +2616,7 @@ static const struct snd_pci_quirk alc882
- 	SND_PCI_QUIRK(0x106b, 0x4a00, "Macbook 5,2", ALC889_FIXUP_MBA11_VREF),
+@@ -294,6 +301,9 @@ static void afs_vl_dump_edestaddrreq(const struct afs_vl_cursor *vc)
  
- 	SND_PCI_QUIRK(0x1071, 0x8258, "Evesham Voyaeger", ALC882_FIXUP_EAPD),
-+	SND_PCI_QUIRK(0x10ec, 0x12d8, "iBase Elo Touch", ALC888VD_FIXUP_MIC_100VREF),
- 	SND_PCI_QUIRK(0x13fe, 0x1009, "Advantech MIT-W101", ALC886_FIXUP_EAPD),
- 	SND_PCI_QUIRK(0x1458, 0xa002, "Gigabyte EP45-DS3/Z87X-UD3H", ALC889_FIXUP_FRONT_HP_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1458, 0xa0b8, "Gigabyte AZ370-Gaming", ALC1220_FIXUP_GB_DUAL_CODECS),
+ 	rcu_read_lock();
+ 	pr_notice("EDESTADDR occurred\n");
++	pr_notice("CELL: %s err=%d\n", cell->name, cell->error);
++	pr_notice("DNS: src=%u st=%u lc=%x\n",
++		  cell->dns_source, cell->dns_status, cell->dns_lookup_count);
+ 	pr_notice("VC: ut=%lx ix=%u ni=%hu fl=%hx err=%hd\n",
+ 		  vc->untried, vc->index, vc->nr_iterations, vc->flags, vc->error);
+ 
+-- 
+2.42.0
+
 
 
 
