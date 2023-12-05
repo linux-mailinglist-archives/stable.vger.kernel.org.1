@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-4081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7A08045EB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0718046A0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA58C282C7C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33CC2B20CD4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373496FB8;
-	Tue,  5 Dec 2023 03:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1D98BEC;
+	Tue,  5 Dec 2023 03:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwOFlPbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH0UD5sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B4A6AA0;
-	Tue,  5 Dec 2023 03:22:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68ECBC433C7;
-	Tue,  5 Dec 2023 03:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFF96FAF;
+	Tue,  5 Dec 2023 03:29:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A9AC433C8;
+	Tue,  5 Dec 2023 03:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746568;
-	bh=ri4YeSWR7w/MLtUayKh5SPeIA56egAnBT10No+XStbM=;
+	s=korg; t=1701746987;
+	bh=ACFAEgFHd5dC7oLnArhUKyukTm0Ocbt6OH1xxVgr+4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cwOFlPbAdR4PlROxGhhzo9ZktZd2EEvjSing0clGqkso4R4PCybHJ271tGdmMbk6l
-	 ulSpJkkLx39MrrHM4TFTM7b/ecF/KgCC8nhQ/0PNaCK6t61ItfJC47IQkEZAC9vAZR
-	 1baQ5kD/pUHiEykCpiUVcB/dU/06vcs1LjnQKuh4=
+	b=WH0UD5skOLWb58Jqy88cwCxaI1+b2tITqX6kJhOKai84h+XQ8YLUc/MKVBb9hqDqA
+	 jIgC959Z/MalF2j5HtYhMjqWxTo8QGJ71F4++Ls8rUFoPO81unicQa3ImppF/9griz
+	 dzkrJaHS/6Osio2Pp7IRQHinwmJCXvJaVFk7Suag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 073/134] io_uring/kbuf: recycle freed mapped buffer ring entries
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 010/107] mmc: block: Retry commands in CQE error recovery
 Date: Tue,  5 Dec 2023 12:15:45 +0900
-Message-ID: <20231205031540.128968428@linuxfoundation.org>
+Message-ID: <20231205031532.201645645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,147 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit b10b73c102a2eab91e1cd62a03d6446f1dfecc64 upstream.
+commit 8155d1fa3a747baad5caff5f8303321d68ddd48c upstream.
 
-Right now we stash any potentially mmap'ed provided ring buffer range
-for freeing at release time, regardless of when they get unregistered.
-Since we're keeping track of these ranges anyway, keep track of their
-registration state as well, and use that to recycle ranges when
-appropriate rather than always allocate new ones.
+It is important that MMC_CMDQ_TASK_MGMT command to discard the queue is
+successful because otherwise a subsequent reset might fail to flush the
+cache first.  Retry it and the previous STOP command.
 
-The lookup is a basic scan of entries, checking for the best matching
-free entry.
-
-Fixes: c392cbecd8ec ("io_uring/kbuf: defer release of mapped buffer rings")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-5-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |   77 ++++++++++++++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 66 insertions(+), 11 deletions(-)
+ drivers/mmc/core/core.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -44,6 +44,8 @@ static struct io_buffer_list *__io_buffe
- struct io_buf_free {
- 	struct hlist_node		list;
- 	void				*mem;
-+	size_t				size;
-+	int				inuse;
- };
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -552,7 +552,7 @@ int mmc_cqe_recovery(struct mmc_host *ho
+ 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
+ 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
+ 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
+-	mmc_wait_for_cmd(host, &cmd, 0);
++	mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
  
- static inline struct io_buffer_list *io_buffer_get_list(struct io_ring_ctx *ctx,
-@@ -231,6 +233,24 @@ static __cold int io_init_bl_list(struct
- 	return 0;
- }
+ 	memset(&cmd, 0, sizeof(cmd));
+ 	cmd.opcode       = MMC_CMDQ_TASK_MGMT;
+@@ -560,10 +560,13 @@ int mmc_cqe_recovery(struct mmc_host *ho
+ 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
+ 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
+ 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
+-	err = mmc_wait_for_cmd(host, &cmd, 0);
++	err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
  
-+/*
-+ * Mark the given mapped range as free for reuse
-+ */
-+static void io_kbuf_mark_free(struct io_ring_ctx *ctx, struct io_buffer_list *bl)
-+{
-+	struct io_buf_free *ibf;
-+
-+	hlist_for_each_entry(ibf, &ctx->io_buf_list, list) {
-+		if (bl->buf_ring == ibf->mem) {
-+			ibf->inuse = 0;
-+			return;
-+		}
-+	}
-+
-+	/* can't happen... */
-+	WARN_ON_ONCE(1);
-+}
-+
- static int __io_remove_buffers(struct io_ring_ctx *ctx,
- 			       struct io_buffer_list *bl, unsigned nbufs)
- {
-@@ -247,6 +267,7 @@ static int __io_remove_buffers(struct io
- 			 * io_kbuf_list_free() will free the page(s) at
- 			 * ->release() time.
- 			 */
-+			io_kbuf_mark_free(ctx, bl);
- 			bl->buf_ring = NULL;
- 			bl->is_mmap = 0;
- 		} else if (bl->buf_nr_pages) {
-@@ -560,6 +581,34 @@ error_unpin:
- 	return -EINVAL;
- }
+ 	host->cqe_ops->cqe_recovery_finish(host);
  
-+/*
-+ * See if we have a suitable region that we can reuse, rather than allocate
-+ * both a new io_buf_free and mem region again. We leave it on the list as
-+ * even a reused entry will need freeing at ring release.
-+ */
-+static struct io_buf_free *io_lookup_buf_free_entry(struct io_ring_ctx *ctx,
-+						    size_t ring_size)
-+{
-+	struct io_buf_free *ibf, *best = NULL;
-+	size_t best_dist;
++	if (err)
++		err = mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
 +
-+	hlist_for_each_entry(ibf, &ctx->io_buf_list, list) {
-+		size_t dist;
-+
-+		if (ibf->inuse || ibf->size < ring_size)
-+			continue;
-+		dist = ibf->size - ring_size;
-+		if (!best || dist < best_dist) {
-+			best = ibf;
-+			if (!dist)
-+				break;
-+			best_dist = dist;
-+		}
-+	}
-+
-+	return best;
-+}
-+
- static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
- 			      struct io_uring_buf_reg *reg,
- 			      struct io_buffer_list *bl)
-@@ -569,20 +618,26 @@ static int io_alloc_pbuf_ring(struct io_
- 	void *ptr;
+ 	mmc_retune_release(host);
  
- 	ring_size = reg->ring_entries * sizeof(struct io_uring_buf_ring);
--	ptr = io_mem_alloc(ring_size);
--	if (!ptr)
--		return -ENOMEM;
- 
--	/* Allocate and store deferred free entry */
--	ibf = kmalloc(sizeof(*ibf), GFP_KERNEL_ACCOUNT);
-+	/* Reuse existing entry, if we can */
-+	ibf = io_lookup_buf_free_entry(ctx, ring_size);
- 	if (!ibf) {
--		io_mem_free(ptr);
--		return -ENOMEM;
-+		ptr = io_mem_alloc(ring_size);
-+		if (!ptr)
-+			return -ENOMEM;
-+
-+		/* Allocate and store deferred free entry */
-+		ibf = kmalloc(sizeof(*ibf), GFP_KERNEL_ACCOUNT);
-+		if (!ibf) {
-+			io_mem_free(ptr);
-+			return -ENOMEM;
-+		}
-+		ibf->mem = ptr;
-+		ibf->size = ring_size;
-+		hlist_add_head(&ibf->list, &ctx->io_buf_list);
- 	}
--	ibf->mem = ptr;
--	hlist_add_head(&ibf->list, &ctx->io_buf_list);
--
--	bl->buf_ring = ptr;
-+	ibf->inuse = 1;
-+	bl->buf_ring = ibf->mem;
- 	bl->is_mapped = 1;
- 	bl->is_mmap = 1;
- 	return 0;
+ 	return err;
 
 
 
