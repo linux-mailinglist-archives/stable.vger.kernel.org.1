@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C56A804814
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B7980477F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D55131F221EB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CBE41F21489
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BB08C03;
-	Tue,  5 Dec 2023 03:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967B38C03;
+	Tue,  5 Dec 2023 03:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZQMJ56m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anB00jrV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE7DCA4C;
-	Tue,  5 Dec 2023 03:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D82BBC433CA;
-	Tue,  5 Dec 2023 03:45:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B9A6FB1;
+	Tue,  5 Dec 2023 03:39:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77380C433C7;
+	Tue,  5 Dec 2023 03:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747937;
-	bh=u7oB92hKpW2TmB+DyQb+Pakipp77TSFSGgHEvpJ3JLg=;
+	s=korg; t=1701747557;
+	bh=ANNWzkHcUrd9P78B/b2qxqW4FIhTUsXOLl2GzwSkkeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZQMJ56m8q2ajQoYhlJRypkSG2r6+4kwTXQdL26DhH91NBLllOLyuFKg89PnvZJXo
-	 NYVDGmwhpHq5lXIJHafFTwj+0KsYRUNEXKgNGbEZ4CXHezvwXjPLvTZiBNBEB96I4q
-	 UYV8N5RiVRbZ3/YigiPjOrFSJFexGs3K0aAknBUw=
+	b=anB00jrVi+k7AiFASUZ7YUIAjIvY2K2OmlbgwxWUVtk5Lp/+kCewRrpDjYC3/OY4F
+	 XjED4zYIebMYWlDab/YyjNdTUgNVe4JT+L25ZsCYLOjR9eBVYL2x8Wcq6ePlcNX33C
+	 9mWjEvudNtJEnIP3IEox0sL+uop8yAKf39Vq+9LY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 5.4 53/94] firewire: core: fix possible memory leak in create_units()
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 120/135] smb3: fix caching of ctime on setxattr
 Date: Tue,  5 Dec 2023 12:17:21 +0900
-Message-ID: <20231205031525.812169398@linuxfoundation.org>
+Message-ID: <20231205031538.446463318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +52,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Steve French <stfrench@microsoft.com>
 
-commit 891e0eab32a57fca4d36c5162628eb0bcb1f0edf upstream.
+[ Upstream commit 5923d6686a100c2b4cabd4c2ca9d5a12579c7614 ]
 
-If device_register() fails, the refcount of device is not 0, the name
-allocated in dev_set_name() is leaked. To fix this by calling put_device(),
-so that it will be freed in callback function kobject_cleanup().
+Fixes xfstest generic/728 which had been failing due to incorrect
+ctime after setxattr and removexattr
 
-unreferenced object 0xffff9d99035c7a90 (size 8):
-  comm "systemd-udevd", pid 168, jiffies 4294672386 (age 152.089s)
-  hex dump (first 8 bytes):
-    66 77 30 2e 30 00 ff ff                          fw0.0...
-  backtrace:
-    [<00000000e1d62bac>] __kmem_cache_alloc_node+0x1e9/0x360
-    [<00000000bbeaff31>] __kmalloc_node_track_caller+0x44/0x1a0
-    [<00000000491f2fb4>] kvasprintf+0x67/0xd0
-    [<000000005b960ddc>] kobject_set_name_vargs+0x1e/0x90
-    [<00000000427ac591>] dev_set_name+0x4e/0x70
-    [<000000003b4e447d>] create_units+0xc5/0x110
-
-fw_unit_release() will be called in the error path, move fw_device_get()
-before calling device_register() to keep balanced with fw_device_put() in
-fw_unit_release().
+Update ctime on successful set of xattr
 
 Cc: stable@vger.kernel.org
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Fixes: a1f64819fe9f ("firewire: struct device - replace bus_id with dev_name(), dev_set_name()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/core-device.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ fs/cifs/xattr.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -719,14 +719,11 @@ static void create_units(struct fw_devic
- 					fw_unit_attributes,
- 					&unit->attribute_group);
+diff --git a/fs/cifs/xattr.c b/fs/cifs/xattr.c
+index b8299173ea7e3..c6931eab3f97e 100644
+--- a/fs/cifs/xattr.c
++++ b/fs/cifs/xattr.c
+@@ -157,10 +157,13 @@ static int cifs_xattr_set(const struct xattr_handler *handler,
+ 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_XATTR)
+ 			goto out;
  
--		if (device_register(&unit->device) < 0)
--			goto skip_unit;
--
- 		fw_device_get(device);
--		continue;
--
--	skip_unit:
--		kfree(unit);
-+		if (device_register(&unit->device) < 0) {
-+			put_device(&unit->device);
-+			continue;
+-		if (pTcon->ses->server->ops->set_EA)
++		if (pTcon->ses->server->ops->set_EA) {
+ 			rc = pTcon->ses->server->ops->set_EA(xid, pTcon,
+ 				full_path, name, value, (__u16)size,
+ 				cifs_sb->local_nls, cifs_sb);
++			if (rc == 0)
++				inode_set_ctime_current(inode);
 +		}
- 	}
- }
+ 		break;
  
+ 	case XATTR_CIFS_ACL:
+-- 
+2.42.0
+
 
 
 
