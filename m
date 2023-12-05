@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255EE804651
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 895108046AB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACA7AB20C70
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71A21C20D23
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23006FB1;
-	Tue,  5 Dec 2023 03:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2BB8BF1;
+	Tue,  5 Dec 2023 03:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDHGe0ds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgoeaLQn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CBA8F75;
-	Tue,  5 Dec 2023 03:26:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108EAC433C7;
-	Tue,  5 Dec 2023 03:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB696FAF;
+	Tue,  5 Dec 2023 03:30:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E16C433C8;
+	Tue,  5 Dec 2023 03:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746777;
-	bh=qKttgf5x1mb6hhLb3ENOs1N98b6xagPoqNYLVByALQg=;
+	s=korg; t=1701747018;
+	bh=+nes2HWEnWRxiryqUt0bAELRvgXKgkebvnfXWS1RmX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bDHGe0dsduS3eyAu6VE3YypWoD0KwVvFSfB6CsfZmpE74Z97D/X+xUjBN+APo2hst
-	 F3VZqNcL4HqyYtaDb4rKhI3UypYtlyJQQzjTKFbeJH45OVrqE8ouZ7RV9yBO5/orzZ
-	 rK+lqoExpvxRPjn691yCqwFcoaChZYPLWOGBoMWc=
+	b=BgoeaLQnHoU3BcIG3ETgkC9q/uDC1xfIJzr/JyK0JFYLygdpO1cZ8VsajR+JA5vKc
+	 vPxGQ6dAfcjdcrotCKxyCKiDqe3c4lMFu7q0BfWaVNfUAyjbghIVyGyy9Cou1qgNew
+	 tEm1+DTKknvAwnYBPcnJLEn2dLXhIqJi3pDdAoNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/71] ata: pata_isapnp: Add missing error check for devm_ioport_map()
-Date: Tue,  5 Dec 2023 12:16:02 +0900
-Message-ID: <20231205031518.130490262@linuxfoundation.org>
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Keith Busch <kbusch@kernel.org>
+Subject: [PATCH 6.1 028/107] nvme: check for valid nvme_identify_ns() before using it
+Date: Tue,  5 Dec 2023 12:16:03 +0900
+Message-ID: <20231205031533.329260009@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,43 +52,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Ewan D. Milne <emilne@redhat.com>
 
-[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
+commit d8b90d600aff181936457f032d116dbd8534db06 upstream.
 
-Add missing error return check for devm_ioport_map() and return the
-error if this function call fails.
+When scanning namespaces, it is possible to get valid data from the first
+call to nvme_identify_ns() in nvme_alloc_ns(), but not from the second
+call in nvme_update_ns_info_block().  In particular, if the NSID becomes
+inactive between the two commands, a storage device may return a buffer
+filled with zero as per 4.1.5.1.  In this case, we can get a kernel crash
+due to a divide-by-zero in blk_stack_limits() because ns->lba_shift will
+be set to zero.
 
-Fixes: 0d5ff566779f ("libata: convert to iomap")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+PID: 326      TASK: ffff95fec3cd8000  CPU: 29   COMMAND: "kworker/u98:10"
+ #0 [ffffad8f8702f9e0] machine_kexec at ffffffff91c76ec7
+ #1 [ffffad8f8702fa38] __crash_kexec at ffffffff91dea4fa
+ #2 [ffffad8f8702faf8] crash_kexec at ffffffff91deb788
+ #3 [ffffad8f8702fb00] oops_end at ffffffff91c2e4bb
+ #4 [ffffad8f8702fb20] do_trap at ffffffff91c2a4ce
+ #5 [ffffad8f8702fb70] do_error_trap at ffffffff91c2a595
+ #6 [ffffad8f8702fbb0] exc_divide_error at ffffffff928506e6
+ #7 [ffffad8f8702fbd0] asm_exc_divide_error at ffffffff92a00926
+    [exception RIP: blk_stack_limits+434]
+    RIP: ffffffff92191872  RSP: ffffad8f8702fc80  RFLAGS: 00010246
+    RAX: 0000000000000000  RBX: ffff95efa0c91800  RCX: 0000000000000001
+    RDX: 0000000000000000  RSI: 0000000000000001  RDI: 0000000000000001
+    RBP: 00000000ffffffff   R8: ffff95fec7df35a8   R9: 0000000000000000
+    R10: 0000000000000000  R11: 0000000000000001  R12: 0000000000000000
+    R13: 0000000000000000  R14: 0000000000000000  R15: ffff95fed33c09a8
+    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
+ #8 [ffffad8f8702fce0] nvme_update_ns_info_block at ffffffffc06d3533 [nvme_core]
+ #9 [ffffad8f8702fd18] nvme_scan_ns at ffffffffc06d6fa7 [nvme_core]
+
+This happened when the check for valid data was moved out of nvme_identify_ns()
+into one of the callers.  Fix this by checking in both callers.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218186
+Fixes: 0dd6fff2aad4 ("nvme: bring back auto-removal of deleted namespaces during sequential scan")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_isapnp.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/nvme/host/core.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
-index 994f168b54a80..4ffbc2a63f8f5 100644
---- a/drivers/ata/pata_isapnp.c
-+++ b/drivers/ata/pata_isapnp.c
-@@ -81,6 +81,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
- 	if (pnp_port_valid(idev, 1)) {
- 		ctl_addr = devm_ioport_map(&idev->dev,
- 					   pnp_port_start(idev, 1), 1);
-+		if (!ctl_addr)
-+			return -ENOMEM;
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2058,6 +2058,13 @@ static int nvme_update_ns_info_block(str
+ 	if (ret)
+ 		return ret;
+ 
++	if (id->ncap == 0) {
++		/* namespace not allocated or attached */
++		info->is_removed = true;
++		ret = -ENODEV;
++		goto error;
++	}
 +
- 		ap->ioaddr.altstatus_addr = ctl_addr;
- 		ap->ioaddr.ctl_addr = ctl_addr;
- 		ap->ops = &isapnp_port_ops;
--- 
-2.42.0
-
+ 	blk_mq_freeze_queue(ns->disk->queue);
+ 	lbaf = nvme_lbaf_index(id->flbas);
+ 	ns->lba_shift = id->lbaf[lbaf].ds;
+@@ -2107,6 +2114,8 @@ out:
+ 		set_bit(NVME_NS_READY, &ns->flags);
+ 		ret = 0;
+ 	}
++
++error:
+ 	kfree(id);
+ 	return ret;
+ }
 
 
 
