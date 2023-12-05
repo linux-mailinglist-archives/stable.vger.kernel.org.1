@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3178046A8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C9780464D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1661F21410
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9871F21414
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E665C8BEC;
-	Tue,  5 Dec 2023 03:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F5F8C05;
+	Tue,  5 Dec 2023 03:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3kqMEFI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jreZwtAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4606FAF;
-	Tue,  5 Dec 2023 03:30:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F8CC433C7;
-	Tue,  5 Dec 2023 03:30:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016F78BF1;
+	Tue,  5 Dec 2023 03:26:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CA2EC433C7;
+	Tue,  5 Dec 2023 03:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747008;
-	bh=TBm6jM/SnR2/yduG+DY6qNiVSj1N0TPyjj/Eu3t8LjE=;
+	s=korg; t=1701746772;
+	bh=hrEE8hpp+z2BHksGoldSSwMy+gMnG3ZlZOGwr3giEc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3kqMEFImGBWG0STVyFQo9K1CQhd5Pq28Knuc3239fluAfTLRpwcY97oYl0jZD0GO
-	 vylDl+1oyOoKCKu27+CEzOL+neVWrGas429sk0CbCbnX2NrpThFgOsrDHYFqiLfxy8
-	 lY31Gxh/Gs3U4gTCMfJRpKl9fHQL4rzZW4sstzIU=
+	b=jreZwtARIzKZEYQ7xUmz4FlbH91woCAVptS1TOlTqG4uQuQgUadYZOMm8qkGP6Ck3
+	 jjGvR4wKsnVAVVnz02+yyTMTKwT7EDJSMdCrC7JTyINZ2ysFJR6WkbsdRhKuP5TRKj
+	 SVz0Kz5nU/C0Jgl+5jSGXFLbN99x5Q6WeNFwTrt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 025/107] drm/amd/display: fix ABM disablement
+	Christopher Bednarz <christopher.n.bednarz@intel.com>,
+	Shiraz Saleem <shiraz.saleem@intel.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 4.19 02/71] RDMA/irdma: Prevent zero-length STAG registration
 Date: Tue,  5 Dec 2023 12:16:00 +0900
-Message-ID: <20231205031533.173128121@linuxfoundation.org>
+Message-ID: <20231205031518.012402394@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +53,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Christopher Bednarz <christopher.n.bednarz@intel.com>
 
-commit b9f46f0b98784e40288ee393f863f553fde062fa upstream.
+commit bb6d73d9add68ad270888db327514384dfa44958 upstream.
 
-On recent versions of DMUB firmware, if we want to completely disable
-ABM we have to pass ABM_LEVEL_IMMEDIATE_DISABLE as the requested ABM
-level to DMUB. Otherwise, LCD eDP displays are unable to reach their
-maximum brightness levels. So, to fix this whenever the user requests an
-ABM level of 0 pass ABM_LEVEL_IMMEDIATE_DISABLE to DMUB instead. Also,
-to keep the user's experience consistent map ABM_LEVEL_IMMEDIATE_DISABLE
-to 0 when a user tries to read the requested ABM level.
+Currently irdma allows zero-length STAGs to be programmed in HW during
+the kernel mode fast register flow. Zero-length MR or STAG registration
+disable HW memory length checks.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Improve gaps in bounds checking in irdma by preventing zero-length STAG or
+MR registrations except if the IB_PD_UNSAFE_GLOBAL_RKEY is set.
+
+This addresses the disclosure CVE-2023-25775.
+
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Christopher Bednarz <christopher.n.bednarz@intel.com>
+Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
+Link: https://lore.kernel.org/r/20230818144838.1758-1-shiraz.saleem@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/i40iw/i40iw_ctrl.c  |    6 ++++++
+ drivers/infiniband/hw/i40iw/i40iw_type.h  |    2 ++
+ drivers/infiniband/hw/i40iw/i40iw_verbs.c |   10 ++++++++--
+ 3 files changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6149,7 +6149,7 @@ int amdgpu_dm_connector_atomic_set_prope
- 		dm_new_state->underscan_enable = val;
- 		ret = 0;
- 	} else if (property == adev->mode_info.abm_level_property) {
--		dm_new_state->abm_level = val;
-+		dm_new_state->abm_level = val ?: ABM_LEVEL_IMMEDIATE_DISABLE;
- 		ret = 0;
- 	}
+--- a/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
++++ b/drivers/infiniband/hw/i40iw/i40iw_ctrl.c
+@@ -2945,6 +2945,9 @@ static enum i40iw_status_code i40iw_sc_a
+ 	u64 header;
+ 	enum i40iw_page_size page_size;
  
-@@ -6194,7 +6194,8 @@ int amdgpu_dm_connector_atomic_get_prope
- 		*val = dm_state->underscan_enable;
- 		ret = 0;
- 	} else if (property == adev->mode_info.abm_level_property) {
--		*val = dm_state->abm_level;
-+		*val = (dm_state->abm_level != ABM_LEVEL_IMMEDIATE_DISABLE) ?
-+			dm_state->abm_level : 0;
- 		ret = 0;
- 	}
++	if (!info->total_len && !info->all_memory)
++		return -EINVAL;
++
+ 	page_size = (info->page_size == 0x200000) ? I40IW_PAGE_SIZE_2M : I40IW_PAGE_SIZE_4K;
+ 	cqp = dev->cqp;
+ 	wqe = i40iw_sc_cqp_get_next_send_wqe(cqp, scratch);
+@@ -3003,6 +3006,9 @@ static enum i40iw_status_code i40iw_sc_m
+ 	u8 addr_type;
+ 	enum i40iw_page_size page_size;
  
-@@ -6274,7 +6275,8 @@ void amdgpu_dm_connector_funcs_reset(str
- 		state->pbn = 0;
++	if (!info->total_len && !info->all_memory)
++		return -EINVAL;
++
+ 	page_size = (info->page_size == 0x200000) ? I40IW_PAGE_SIZE_2M : I40IW_PAGE_SIZE_4K;
+ 	if (info->access_rights & (I40IW_ACCESS_FLAGS_REMOTEREAD_ONLY |
+ 				   I40IW_ACCESS_FLAGS_REMOTEWRITE_ONLY))
+--- a/drivers/infiniband/hw/i40iw/i40iw_type.h
++++ b/drivers/infiniband/hw/i40iw/i40iw_type.h
+@@ -779,6 +779,7 @@ struct i40iw_allocate_stag_info {
+ 	bool use_hmc_fcn_index;
+ 	u8 hmc_fcn_index;
+ 	bool use_pf_rid;
++	bool all_memory;
+ };
  
- 		if (connector->connector_type == DRM_MODE_CONNECTOR_eDP)
--			state->abm_level = amdgpu_dm_abm_level;
-+			state->abm_level = amdgpu_dm_abm_level ?:
-+				ABM_LEVEL_IMMEDIATE_DISABLE;
+ struct i40iw_reg_ns_stag_info {
+@@ -797,6 +798,7 @@ struct i40iw_reg_ns_stag_info {
+ 	bool use_hmc_fcn_index;
+ 	u8 hmc_fcn_index;
+ 	bool use_pf_rid;
++	bool all_memory;
+ };
  
- 		__drm_atomic_helper_connector_reset(connector, &state->base);
- 	}
+ struct i40iw_fast_reg_stag_info {
+--- a/drivers/infiniband/hw/i40iw/i40iw_verbs.c
++++ b/drivers/infiniband/hw/i40iw/i40iw_verbs.c
+@@ -1581,7 +1581,8 @@ static int i40iw_handle_q_mem(struct i40
+ static int i40iw_hw_alloc_stag(struct i40iw_device *iwdev, struct i40iw_mr *iwmr)
+ {
+ 	struct i40iw_allocate_stag_info *info;
+-	struct i40iw_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
++	struct ib_pd *pd = iwmr->ibmr.pd;
++	struct i40iw_pd *iwpd = to_iwpd(pd);
+ 	enum i40iw_status_code status;
+ 	int err = 0;
+ 	struct i40iw_cqp_request *cqp_request;
+@@ -1598,6 +1599,7 @@ static int i40iw_hw_alloc_stag(struct i4
+ 	info->stag_idx = iwmr->stag >> I40IW_CQPSQ_STAG_IDX_SHIFT;
+ 	info->pd_id = iwpd->sc_pd.pd_id;
+ 	info->total_len = iwmr->length;
++	info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	info->remote_access = true;
+ 	cqp_info->cqp_cmd = OP_ALLOC_STAG;
+ 	cqp_info->post_sq = 1;
+@@ -1651,6 +1653,8 @@ static struct ib_mr *i40iw_alloc_mr(stru
+ 	iwmr->type = IW_MEMREG_TYPE_MEM;
+ 	palloc = &iwpbl->pble_alloc;
+ 	iwmr->page_cnt = max_num_sg;
++	/* Use system PAGE_SIZE as the sg page sizes are unknown at this point */
++	iwmr->length = max_num_sg * PAGE_SIZE;
+ 	mutex_lock(&iwdev->pbl_mutex);
+ 	status = i40iw_get_pble(&iwdev->sc_dev, iwdev->pble_rsrc, palloc, iwmr->page_cnt);
+ 	mutex_unlock(&iwdev->pbl_mutex);
+@@ -1747,7 +1751,8 @@ static int i40iw_hwreg_mr(struct i40iw_d
+ {
+ 	struct i40iw_pbl *iwpbl = &iwmr->iwpbl;
+ 	struct i40iw_reg_ns_stag_info *stag_info;
+-	struct i40iw_pd *iwpd = to_iwpd(iwmr->ibmr.pd);
++	struct ib_pd *pd = iwmr->ibmr.pd;
++	struct i40iw_pd *iwpd = to_iwpd(pd);
+ 	struct i40iw_pble_alloc *palloc = &iwpbl->pble_alloc;
+ 	enum i40iw_status_code status;
+ 	int err = 0;
+@@ -1767,6 +1772,7 @@ static int i40iw_hwreg_mr(struct i40iw_d
+ 	stag_info->total_len = iwmr->length;
+ 	stag_info->access_rights = access;
+ 	stag_info->pd_id = iwpd->sc_pd.pd_id;
++	stag_info->all_memory = pd->flags & IB_PD_UNSAFE_GLOBAL_RKEY;
+ 	stag_info->addr_type = I40IW_ADDR_TYPE_VA_BASED;
+ 	stag_info->page_size = iwmr->page_size;
+ 
 
 
 
