@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-4146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3253580462F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BA6A80466C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB8EC1F213DF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC78C281391
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D0C8BEA;
-	Tue,  5 Dec 2023 03:25:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8606FB1;
+	Tue,  5 Dec 2023 03:27:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7aLnvBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgIb4+UV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E401C6110;
-	Tue,  5 Dec 2023 03:25:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BFCC433C7;
-	Tue,  5 Dec 2023 03:25:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9076FAF;
+	Tue,  5 Dec 2023 03:27:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580A9C433C8;
+	Tue,  5 Dec 2023 03:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746742;
-	bh=AZgCpZoUF1niLHxq0NGAX4c7vUULGu0Xcl/e8k+Cweo=;
+	s=korg; t=1701746848;
+	bh=hXYlJBagf39G3N7LFm+MLU/GL/ou50yUugRt7V+M/Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7aLnvBapn0IPdpVaUU3L8oJGoRQuTQQkYjaQni27+JWuO3qU0LnjrbxVgovdz7fg
-	 tTmad6hPv38cAVZw2nm6OnJmya4hNSSlGKkIGUNRe64+0KOWBBy8cGmphiltnse0j0
-	 9WQ+Yw/B74RgDVTzxnI0bduWCfCGPeo5EmULcB+w=
+	b=jgIb4+UV2/cpAUqaZCUIqM47supUNBY1ZCdWhdPzir/Br0hSJKTPCtHdQ4wr3F9gQ
+	 sb4khfI+q8nvV7mZ1nKzTjxcAkrvYpWuiyU1GihhpJyV1w/xyAmGekV+HUDalO3own
+	 vEztyNGtP2FsPK/Nmg1HZG+ZytILDUfNzJntPq2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Ertman <david.m.ertman@intel.com>,
-	Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/134] ice: Fix VF Reset paths when interface in a failed over aggregate
+	Zheng Wang <zyytlz.wz@163.com>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 19/71] bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
 Date: Tue,  5 Dec 2023 12:16:17 +0900
-Message-ID: <20231205031542.092391697@linuxfoundation.org>
+Message-ID: <20231205031518.942838323@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,346 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Ertman <david.m.ertman@intel.com>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit 9f74a3dfcf83e11aedcb98250b8040dbc6d9659a ]
+commit f72f4312d4388376fc8a1f6cf37cb21a0d41758b upstream.
 
-There is an error when an interface has the following conditions:
-- PF is in an aggregate (bond)
-- PF has VFs created on it
-- bond is in a state where it is failed-over to the secondary interface
-- A VF reset is issued on one or more of those VFs
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") do the following change inside btree_gc_coalesce(),
 
-The issue is generated by the originating PF trying to rebuild or
-reconfigure the VF resources.  Since the bond is failed over to the
-secondary interface the queue contexts are in a modified state.
+31 @@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(
+32         memset(new_nodes, 0, sizeof(new_nodes));
+33         closure_init_stack(&cl);
+34
+35 -       while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
+36 +       while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
+37                 keys += r[nodes++].keys;
+38
+39         blocks = btree_default_blocks(b->c) * 2 / 3;
 
-To fix this issue, have the originating interface reclaim its resources
-prior to the tear-down and rebuild or reconfigure.  Then after the process
-is complete, move the resources back to the currently active interface.
+At line 35 the original r[nodes].b is not always allocatored from
+__bch_btree_node_alloc(), and possibly initialized as NULL pointer by
+caller of btree_gc_coalesce(). Therefore the change at line 36 is not
+correct.
 
-There are multiple paths that can be used depending on what triggered the
-event, so create a helper function to move the queues and use paired calls
-to the helper (back to origin, process, then move back to active interface)
-under the same lag_mutex lock.
+This patch replaces the mistaken IS_ERR() by IS_ERR_OR_NULL() to avoid
+potential issue.
 
-Fixes: 1e0f9881ef79 ("ice: Flesh out implementation of support for SRIOV on bonded interface")
-Signed-off-by: Dave Ertman <david.m.ertman@intel.com>
-Tested-by: Sujai Buvaneswaran <sujai.buvaneswaran@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://lore.kernel.org/r/20231127212340.1137657-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Cc:  <stable@vger.kernel.org> # 6.5+
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-9-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lag.c      | 122 +++++++++++-------
- drivers/net/ethernet/intel/ice/ice_lag.h      |   1 +
- drivers/net/ethernet/intel/ice/ice_vf_lib.c   |  20 +++
- drivers/net/ethernet/intel/ice/ice_virtchnl.c |  25 ++++
- 4 files changed, 118 insertions(+), 50 deletions(-)
+ drivers/md/bcache/btree.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.c b/drivers/net/ethernet/intel/ice/ice_lag.c
-index fb40ad98e6aad..d86e2460b5a4d 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.c
-@@ -536,6 +536,50 @@ ice_lag_move_vf_node_tc(struct ice_lag *lag, u8 oldport, u8 newport,
- 		dev_dbg(dev, "Problem restarting traffic for LAG node move\n");
- }
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1379,7 +1379,7 @@ static int btree_gc_coalesce(struct btre
+ 	memset(new_nodes, 0, sizeof(new_nodes));
+ 	closure_init_stack(&cl);
  
-+/**
-+ * ice_lag_build_netdev_list - populate the lag struct's netdev list
-+ * @lag: local lag struct
-+ * @ndlist: pointer to netdev list to populate
-+ */
-+static void ice_lag_build_netdev_list(struct ice_lag *lag,
-+				      struct ice_lag_netdev_list *ndlist)
-+{
-+	struct ice_lag_netdev_list *nl;
-+	struct net_device *tmp_nd;
-+
-+	INIT_LIST_HEAD(&ndlist->node);
-+	rcu_read_lock();
-+	for_each_netdev_in_bond_rcu(lag->upper_netdev, tmp_nd) {
-+		nl = kzalloc(sizeof(*nl), GFP_ATOMIC);
-+		if (!nl)
-+			break;
-+
-+		nl->netdev = tmp_nd;
-+		list_add(&nl->node, &ndlist->node);
-+	}
-+	rcu_read_unlock();
-+	lag->netdev_head = &ndlist->node;
-+}
-+
-+/**
-+ * ice_lag_destroy_netdev_list - free lag struct's netdev list
-+ * @lag: pointer to local lag struct
-+ * @ndlist: pointer to lag struct netdev list
-+ */
-+static void ice_lag_destroy_netdev_list(struct ice_lag *lag,
-+					struct ice_lag_netdev_list *ndlist)
-+{
-+	struct ice_lag_netdev_list *entry, *n;
-+
-+	rcu_read_lock();
-+	list_for_each_entry_safe(entry, n, &ndlist->node, node) {
-+		list_del(&entry->node);
-+		kfree(entry);
-+	}
-+	rcu_read_unlock();
-+	lag->netdev_head = NULL;
-+}
-+
- /**
-  * ice_lag_move_single_vf_nodes - Move Tx scheduling nodes for single VF
-  * @lag: primary interface LAG struct
-@@ -564,7 +608,6 @@ ice_lag_move_single_vf_nodes(struct ice_lag *lag, u8 oldport, u8 newport,
- void ice_lag_move_new_vf_nodes(struct ice_vf *vf)
- {
- 	struct ice_lag_netdev_list ndlist;
--	struct list_head *tmp, *n;
- 	u8 pri_port, act_port;
- 	struct ice_lag *lag;
- 	struct ice_vsi *vsi;
-@@ -588,38 +631,15 @@ void ice_lag_move_new_vf_nodes(struct ice_vf *vf)
- 	pri_port = pf->hw.port_info->lport;
- 	act_port = lag->active_port;
+-	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
++	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
+ 		keys += r[nodes++].keys;
  
--	if (lag->upper_netdev) {
--		struct ice_lag_netdev_list *nl;
--		struct net_device *tmp_nd;
--
--		INIT_LIST_HEAD(&ndlist.node);
--		rcu_read_lock();
--		for_each_netdev_in_bond_rcu(lag->upper_netdev, tmp_nd) {
--			nl = kzalloc(sizeof(*nl), GFP_ATOMIC);
--			if (!nl)
--				break;
--
--			nl->netdev = tmp_nd;
--			list_add(&nl->node, &ndlist.node);
--		}
--		rcu_read_unlock();
--	}
--
--	lag->netdev_head = &ndlist.node;
-+	if (lag->upper_netdev)
-+		ice_lag_build_netdev_list(lag, &ndlist);
- 
- 	if (ice_is_feature_supported(pf, ICE_F_SRIOV_LAG) &&
- 	    lag->bonded && lag->primary && pri_port != act_port &&
- 	    !list_empty(lag->netdev_head))
- 		ice_lag_move_single_vf_nodes(lag, pri_port, act_port, vsi->idx);
- 
--	list_for_each_safe(tmp, n, &ndlist.node) {
--		struct ice_lag_netdev_list *entry;
--
--		entry = list_entry(tmp, struct ice_lag_netdev_list, node);
--		list_del(&entry->node);
--		kfree(entry);
--	}
--	lag->netdev_head = NULL;
-+	ice_lag_destroy_netdev_list(lag, &ndlist);
- 
- new_vf_unlock:
- 	mutex_unlock(&pf->lag_mutex);
-@@ -646,6 +666,29 @@ static void ice_lag_move_vf_nodes(struct ice_lag *lag, u8 oldport, u8 newport)
- 			ice_lag_move_single_vf_nodes(lag, oldport, newport, i);
- }
- 
-+/**
-+ * ice_lag_move_vf_nodes_cfg - move vf nodes outside LAG netdev event context
-+ * @lag: local lag struct
-+ * @src_prt: lport value for source port
-+ * @dst_prt: lport value for destination port
-+ *
-+ * This function is used to move nodes during an out-of-netdev-event situation,
-+ * primarily when the driver needs to reconfigure or recreate resources.
-+ *
-+ * Must be called while holding the lag_mutex to avoid lag events from
-+ * processing while out-of-sync moves are happening.  Also, paired moves,
-+ * such as used in a reset flow, should both be called under the same mutex
-+ * lock to avoid changes between start of reset and end of reset.
-+ */
-+void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt)
-+{
-+	struct ice_lag_netdev_list ndlist;
-+
-+	ice_lag_build_netdev_list(lag, &ndlist);
-+	ice_lag_move_vf_nodes(lag, src_prt, dst_prt);
-+	ice_lag_destroy_netdev_list(lag, &ndlist);
-+}
-+
- #define ICE_LAG_SRIOV_CP_RECIPE		10
- #define ICE_LAG_SRIOV_TRAIN_PKT_LEN	16
- 
-@@ -2022,7 +2065,6 @@ void ice_lag_rebuild(struct ice_pf *pf)
- {
- 	struct ice_lag_netdev_list ndlist;
- 	struct ice_lag *lag, *prim_lag;
--	struct list_head *tmp, *n;
- 	u8 act_port, loc_port;
- 
- 	if (!pf->lag || !pf->lag->bonded)
-@@ -2034,21 +2076,7 @@ void ice_lag_rebuild(struct ice_pf *pf)
- 	if (lag->primary) {
- 		prim_lag = lag;
- 	} else {
--		struct ice_lag_netdev_list *nl;
--		struct net_device *tmp_nd;
--
--		INIT_LIST_HEAD(&ndlist.node);
--		rcu_read_lock();
--		for_each_netdev_in_bond_rcu(lag->upper_netdev, tmp_nd) {
--			nl = kzalloc(sizeof(*nl), GFP_ATOMIC);
--			if (!nl)
--				break;
--
--			nl->netdev = tmp_nd;
--			list_add(&nl->node, &ndlist.node);
--		}
--		rcu_read_unlock();
--		lag->netdev_head = &ndlist.node;
-+		ice_lag_build_netdev_list(lag, &ndlist);
- 		prim_lag = ice_lag_find_primary(lag);
- 	}
- 
-@@ -2078,13 +2106,7 @@ void ice_lag_rebuild(struct ice_pf *pf)
- 
- 	ice_clear_rdma_cap(pf);
- lag_rebuild_out:
--	list_for_each_safe(tmp, n, &ndlist.node) {
--		struct ice_lag_netdev_list *entry;
--
--		entry = list_entry(tmp, struct ice_lag_netdev_list, node);
--		list_del(&entry->node);
--		kfree(entry);
--	}
-+	ice_lag_destroy_netdev_list(lag, &ndlist);
- 	mutex_unlock(&pf->lag_mutex);
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lag.h b/drivers/net/ethernet/intel/ice/ice_lag.h
-index facb6c894b6dd..7f22987675012 100644
---- a/drivers/net/ethernet/intel/ice/ice_lag.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lag.h
-@@ -63,4 +63,5 @@ int ice_init_lag(struct ice_pf *pf);
- void ice_deinit_lag(struct ice_pf *pf);
- void ice_lag_rebuild(struct ice_pf *pf);
- bool ice_lag_is_switchdev_running(struct ice_pf *pf);
-+void ice_lag_move_vf_nodes_cfg(struct ice_lag *lag, u8 src_prt, u8 dst_prt);
- #endif /* _ICE_LAG_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 24e4f4d897b66..d488c7156d093 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -827,12 +827,16 @@ static void ice_notify_vf_reset(struct ice_vf *vf)
- int ice_reset_vf(struct ice_vf *vf, u32 flags)
- {
- 	struct ice_pf *pf = vf->pf;
-+	struct ice_lag *lag;
- 	struct ice_vsi *vsi;
-+	u8 act_prt, pri_prt;
- 	struct device *dev;
- 	int err = 0;
- 	bool rsd;
- 
- 	dev = ice_pf_to_dev(pf);
-+	act_prt = ICE_LAG_INVALID_PORT;
-+	pri_prt = pf->hw.port_info->lport;
- 
- 	if (flags & ICE_VF_RESET_NOTIFY)
- 		ice_notify_vf_reset(vf);
-@@ -843,6 +847,17 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
- 		return 0;
- 	}
- 
-+	lag = pf->lag;
-+	mutex_lock(&pf->lag_mutex);
-+	if (lag && lag->bonded && lag->primary) {
-+		act_prt = lag->active_port;
-+		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT &&
-+		    lag->upper_netdev)
-+			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
-+		else
-+			act_prt = ICE_LAG_INVALID_PORT;
-+	}
-+
- 	if (flags & ICE_VF_RESET_LOCK)
- 		mutex_lock(&vf->cfg_lock);
- 	else
-@@ -935,6 +950,11 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
- 	if (flags & ICE_VF_RESET_LOCK)
- 		mutex_unlock(&vf->cfg_lock);
- 
-+	if (lag && lag->bonded && lag->primary &&
-+	    act_prt != ICE_LAG_INVALID_PORT)
-+		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
-+	mutex_unlock(&pf->lag_mutex);
-+
- 	return err;
- }
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-index db97353efd067..62337e6569b23 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
-@@ -1600,9 +1600,24 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 	    (struct virtchnl_vsi_queue_config_info *)msg;
- 	struct virtchnl_queue_pair_info *qpi;
- 	struct ice_pf *pf = vf->pf;
-+	struct ice_lag *lag;
- 	struct ice_vsi *vsi;
-+	u8 act_prt, pri_prt;
- 	int i = -1, q_idx;
- 
-+	lag = pf->lag;
-+	mutex_lock(&pf->lag_mutex);
-+	act_prt = ICE_LAG_INVALID_PORT;
-+	pri_prt = pf->hw.port_info->lport;
-+	if (lag && lag->bonded && lag->primary) {
-+		act_prt = lag->active_port;
-+		if (act_prt != pri_prt && act_prt != ICE_LAG_INVALID_PORT &&
-+		    lag->upper_netdev)
-+			ice_lag_move_vf_nodes_cfg(lag, act_prt, pri_prt);
-+		else
-+			act_prt = ICE_LAG_INVALID_PORT;
-+	}
-+
- 	if (!test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states))
- 		goto error_param;
- 
-@@ -1710,6 +1725,11 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 		}
- 	}
- 
-+	if (lag && lag->bonded && lag->primary &&
-+	    act_prt != ICE_LAG_INVALID_PORT)
-+		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
-+	mutex_unlock(&pf->lag_mutex);
-+
- 	/* send the response to the VF */
- 	return ice_vc_send_msg_to_vf(vf, VIRTCHNL_OP_CONFIG_VSI_QUEUES,
- 				     VIRTCHNL_STATUS_SUCCESS, NULL, 0);
-@@ -1724,6 +1744,11 @@ static int ice_vc_cfg_qs_msg(struct ice_vf *vf, u8 *msg)
- 				vf->vf_id, i);
- 	}
- 
-+	if (lag && lag->bonded && lag->primary &&
-+	    act_prt != ICE_LAG_INVALID_PORT)
-+		ice_lag_move_vf_nodes_cfg(lag, pri_prt, act_prt);
-+	mutex_unlock(&pf->lag_mutex);
-+
- 	ice_lag_move_new_vf_nodes(vf);
- 
- 	/* send the response to the VF */
--- 
-2.42.0
-
+ 	blocks = btree_default_blocks(b->c) * 2 / 3;
 
 
 
