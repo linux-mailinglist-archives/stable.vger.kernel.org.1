@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-4243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DD0B8046AC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A1C8045EC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF0BD1C20D8B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E413282CBA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2E579F2;
-	Tue,  5 Dec 2023 03:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37566FB0;
+	Tue,  5 Dec 2023 03:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsmGTcIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pehiq8IR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E85F8C13;
-	Tue,  5 Dec 2023 03:30:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79894C433C7;
-	Tue,  5 Dec 2023 03:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E86D6AA0;
+	Tue,  5 Dec 2023 03:22:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5414C433C8;
+	Tue,  5 Dec 2023 03:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747020;
-	bh=2enEgm/JqbtNuZA2beX6VVYFIoiXv8VBB0HCa06ImPo=;
+	s=korg; t=1701746571;
+	bh=EIrEGwjW9CvhSIU1xPlQQe0ajt2XIGzwdoWYDOYbnfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QsmGTcIQr8iBFMr0EX7BJiOQm8oU7cPeR5571yDXGn6gMmzNj5wQr+H2w7tvd3MGl
-	 f7cEtKN868nOuRgL+nVkHj3VjKK/puWZ41YGqT8Gg39SNkyJIp5E6zHXCIt5dXFG6R
-	 8fxfw/wIDSrkpQ9DrkcelAPMfUF9Y6iwxRBTOjEo=
+	b=pehiq8IRZfBp3GGM6K17xPCdNKowt80jelksPIgI9eriBfQkWnZ8iU1b5PE1raItf
+	 Ts+ll1I6P7hxUEl3INvEBL7r7bV8Nk+2xQ6YLYE9mVu1KpDWwXWFl5FHZztNyZKOAM
+	 FVQsYsOCAx/t7PSMph4FOchPz0VRQxwBrpT2fK7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 011/107] mmc: block: Do not lose cache flush during CQE error recovery
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 074/134] wifi: cfg80211: fix CQM for non-range use
 Date: Tue,  5 Dec 2023 12:15:46 +0900
-Message-ID: <20231205031532.280544756@linuxfoundation.org>
+Message-ID: <20231205031540.189275884@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +51,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 174925d340aac55296318e43fd96c0e1d196e105 upstream.
+commit 7e7efdda6adb385fbdfd6f819d76bc68c923c394 upstream.
 
-During CQE error recovery, error-free data commands get requeued if there
-is any data left to transfer, but non-data commands are completed even
-though they have not been processed.  Requeue them instead.
+My prior race fix here broke CQM when ranges aren't used, as
+the reporting worker now requires the cqm_config to be set in
+the wdev, but isn't set when there's no range configured.
 
-Note the only non-data command is cache flush, which would have resulted in
-a cache flush being lost if it was queued at the time of CQE recovery.
+Rather than continuing to special-case the range version, set
+the cqm_config always and configure accordingly, also tracking
+if range was used or not to be able to clear the configuration
+appropriately with the same API, which was actually not right
+if both were implemented by a driver for some reason, as is
+the case with mac80211 (though there the implementations are
+equivalent so it doesn't matter.)
 
-Fixes: 1e8e55b67030 ("mmc: block: Add CQE support")
+Also, the original multiple-RSSI commit lost checking for the
+callback, so might have potentially crashed if a driver had
+neither implementation, and userspace tried to use it despite
+not being advertised as supported.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-2-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/wireless/core.h    |    1 
+ net/wireless/nl80211.c |   50 ++++++++++++++++++++++++++++++-------------------
+ 2 files changed, 32 insertions(+), 19 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1505,6 +1505,8 @@ static void mmc_blk_cqe_complete_rq(stru
- 			blk_mq_requeue_request(req, true);
- 		else
- 			__blk_mq_end_request(req, BLK_STS_OK);
-+	} else if (mq->in_recovery) {
-+		blk_mq_requeue_request(req, true);
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -299,6 +299,7 @@ struct cfg80211_cqm_config {
+ 	u32 rssi_hyst;
+ 	s32 last_rssi_event_value;
+ 	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
++	bool use_range_api;
+ 	int n_rssi_thresholds;
+ 	s32 rssi_thresholds[] __counted_by(n_rssi_thresholds);
+ };
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12824,10 +12824,6 @@ static int cfg80211_cqm_rssi_update(stru
+ 	int i, n, low_index;
+ 	int err;
+ 
+-	/* RSSI reporting disabled? */
+-	if (!cqm_config)
+-		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
+-
+ 	/*
+ 	 * Obtain current RSSI value if possible, if not and no RSSI threshold
+ 	 * event has been received yet, we should receive an event after a
+@@ -12902,18 +12898,6 @@ static int nl80211_set_cqm_rssi(struct g
+ 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
+ 		return -EOPNOTSUPP;
+ 
+-	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
+-		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
+-			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
+-
+-		return rdev_set_cqm_rssi_config(rdev, dev,
+-						thresholds[0], hysteresis);
+-	}
+-
+-	if (!wiphy_ext_feature_isset(&rdev->wiphy,
+-				     NL80211_EXT_FEATURE_CQM_RSSI_LIST))
+-		return -EOPNOTSUPP;
+-
+ 	if (n_thresholds == 1 && thresholds[0] == 0) /* Disabling */
+ 		n_thresholds = 0;
+ 
+@@ -12921,6 +12905,20 @@ static int nl80211_set_cqm_rssi(struct g
+ 	old = rcu_dereference_protected(wdev->cqm_config,
+ 					lockdep_is_held(&wdev->mtx));
+ 
++	/* if already disabled just succeed */
++	if (!n_thresholds && !old)
++		return 0;
++
++	if (n_thresholds > 1) {
++		if (!wiphy_ext_feature_isset(&rdev->wiphy,
++					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
++		    !rdev->ops->set_cqm_rssi_range_config)
++			return -EOPNOTSUPP;
++	} else {
++		if (!rdev->ops->set_cqm_rssi_config)
++			return -EOPNOTSUPP;
++	}
++
+ 	if (n_thresholds) {
+ 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
+ 						 n_thresholds),
+@@ -12935,13 +12933,26 @@ static int nl80211_set_cqm_rssi(struct g
+ 		memcpy(cqm_config->rssi_thresholds, thresholds,
+ 		       flex_array_size(cqm_config, rssi_thresholds,
+ 				       n_thresholds));
++		cqm_config->use_range_api = n_thresholds > 1 ||
++					    !rdev->ops->set_cqm_rssi_config;
+ 
+ 		rcu_assign_pointer(wdev->cqm_config, cqm_config);
++
++		if (cqm_config->use_range_api)
++			err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev,
++						       thresholds[0],
++						       hysteresis);
  	} else {
- 		blk_mq_end_request(req, BLK_STS_OK);
+ 		RCU_INIT_POINTER(wdev->cqm_config, NULL);
++		/* if enabled as range also disable via range */
++		if (old->use_range_api)
++			err = rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
++		else
++			err = rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
  	}
+ 
+-	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
+ 	if (err) {
+ 		rcu_assign_pointer(wdev->cqm_config, old);
+ 		kfree_rcu(cqm_config, rcu_head);
+@@ -19131,10 +19142,11 @@ void cfg80211_cqm_rssi_notify_work(struc
+ 	wdev_lock(wdev);
+ 	cqm_config = rcu_dereference_protected(wdev->cqm_config,
+ 					       lockdep_is_held(&wdev->mtx));
+-	if (!wdev->cqm_config)
++	if (!cqm_config)
+ 		goto unlock;
+ 
+-	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
++	if (cqm_config->use_range_api)
++		cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
+ 
+ 	rssi_level = cqm_config->last_rssi_event_value;
+ 	rssi_event = cqm_config->last_rssi_event_type;
 
 
 
