@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-4004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287C580459A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96266804667
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6AA1C20C1A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CEF281178
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B27C6FB1;
-	Tue,  5 Dec 2023 03:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AC36FB8;
+	Tue,  5 Dec 2023 03:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kM8doIrx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf17h2Mq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273326AA0;
-	Tue,  5 Dec 2023 03:19:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635BAC433C8;
-	Tue,  5 Dec 2023 03:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65A36FAF;
+	Tue,  5 Dec 2023 03:27:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E26DC433C7;
+	Tue,  5 Dec 2023 03:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746356;
-	bh=dl4tGQZHeHw/NDgSP7t+OMYS1qLgZHjYAMPLl8ZWbNo=;
+	s=korg; t=1701746835;
+	bh=PBxoe4FQcv/AFLSDZYTAJxDIj5CrMHmVmBZvdVAuZKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kM8doIrxYT1uBIK7yB9W256P4ramkTHsEX3YFLLhvMi/TOo7dcWdh05LvneDLFQ+x
-	 m32Lneawsvq2WFYyZ2X1heBDpn3zT3OkKT8oxlOvDHHyhZJELSTf6ZeljObcIDtA7i
-	 Fob1cxu8imO1ADYiX7munSv+OLoEOJgvhWjJWfsE=
+	b=xf17h2MqrBAMb2MR2aqKOHDFGkbobfaIqFXzuYX1dpb7mx6dp002u7npqZb5fbVVw
+	 v1x98ePnTI5j5BOdJ3HRWHGvL/EQh5K8wWMfyqAQpWLxbcpqLX+LVOg5u2ujyfwK4r
+	 /vFYvhW1WTZ801IOc7i+85rWOzJBVeBO2nRjp/lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 28/30] ravb: Fix races between ravb_tx_timeout_work() and net related ops
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 37/71] ALSA: hda: Disable power-save on KONTRON SinglePC
 Date: Tue,  5 Dec 2023 12:16:35 +0900
-Message-ID: <20231205031513.160565562@linuxfoundation.org>
+Message-ID: <20231205031520.005079482@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,84 +51,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
+commit a337c355719c42a6c5b67e985ad753590ed844fb upstream.
 
-Fix races between ravb_tx_timeout_work() and functions of net_device_ops
-and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
-since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
-ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
-may happen in ravb_tx_timeout_work() like below:
+It's been reported that the runtime PM on KONTRON SinglePC (PCI SSID
+1734:1232) caused a stall of playback after a bunch of invocations.
+(FWIW, this looks like an timing issue, and the stall happens rather
+on the controller side.)
 
-CPU0			CPU1
-			ravb_tx_timeout()
-			schedule_work()
-...
-__dev_close_many()
-// Under rtnl lock
-ravb_close()
-cancel_work_sync()
-// Waiting
-			ravb_tx_timeout_work()
-			rtnl_lock()
-			// This is possible to cause a deadlock
+As a workaround, disable the default power-save on this platform.
 
-If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231130151321.9813-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 4acea1ab60008..4db3495ef3370 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1484,6 +1484,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 	struct net_device *ndev = priv->ndev;
- 	int error;
- 
-+	if (!rtnl_trylock()) {
-+		usleep_range(1000, 2000);
-+		schedule_work(&priv->work);
-+		return;
-+	}
-+
- 	netif_tx_stop_all_queues(ndev);
- 
- 	/* Stop PTP Clock driver */
-@@ -1516,7 +1522,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		 */
- 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
- 			   __func__, error);
--		return;
-+		goto out_unlock;
- 	}
- 	ravb_emac_init(ndev);
- 
-@@ -1526,6 +1532,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		ravb_ptp_init(ndev, priv->pdev);
- 
- 	netif_tx_start_all_queues(ndev);
-+
-+out_unlock:
-+	rtnl_unlock();
- }
- 
- /* Packet transmit function for Ethernet AVB */
--- 
-2.42.0
-
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2371,6 +2371,8 @@ static struct snd_pci_quirk power_save_b
+ 	SND_PCI_QUIRK(0x17aa, 0x36a7, "Lenovo C50 All in one", 0),
+ 	/* https://bugs.launchpad.net/bugs/1821663 */
+ 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
++	/* KONTRON SinglePC may cause a stall at runtime resume */
++	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
+ 	{}
+ };
+ #endif /* CONFIG_PM */
 
 
 
