@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADB5804691
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5F2804705
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE87B20C87
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49318281391
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA036FB8;
-	Tue,  5 Dec 2023 03:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2FA879F2;
+	Tue,  5 Dec 2023 03:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmXriL0e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oOGoGEc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1666FAF;
-	Tue,  5 Dec 2023 03:29:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B30AC433CB;
-	Tue,  5 Dec 2023 03:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB376FB1;
+	Tue,  5 Dec 2023 03:34:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B53FEC433C7;
+	Tue,  5 Dec 2023 03:33:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746950;
-	bh=vh8EYCRSAG1mcqPOWWWodiYvMQlKoK0CffwLxoQgjBA=;
+	s=korg; t=1701747240;
+	bh=+hNOsNlTIfQ53t/kEvYdb8MTo+8zauOKBQXF93s7hIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QmXriL0eXaWpCBpQ9IbOPMrObOX1Kvhc6zdF8BtWJyxRVEh0m+svskPmmODaRb6fo
-	 ANMwhdruPDWEsRcnVEEFkylZNDwza1w8216+l/oA1HrsSmKQGiliy2oyiRqVsaVDn+
-	 UAbqnnlTfRa4Udp6KU9Idtu+TZWMpgx/4AclFpNg=
+	b=oOGoGEc3YpzSGAIH2PEeIKGXT0CxgTu0O/31Ra3lK9UxtCZ0xEsHNjzUAVgZmJbPl
+	 8UnVqrn/D107bDYdRHGwnH//CnzBr4DFkN+EADS3V4V8sPXXTbIdowxRR3hf4KgkCa
+	 ESwjQXU03mZY79Q75xKfpgQiplLwaJ7+63G0zA/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yongjun <zhengyongjun3@huawei.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 70/71] mmc: core: convert comma to semicolon
+Subject: [PATCH 6.1 093/107] iommu/vt-d: Disable PCI ATS in legacy passthrough mode
 Date: Tue,  5 Dec 2023 12:17:08 +0900
-Message-ID: <20231205031521.917456938@linuxfoundation.org>
+Message-ID: <20231205031537.529943261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yongjun <zhengyongjun3@huawei.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 6b1dc6229aecbcb45e8901576684a8c09e25ad7b ]
+[ Upstream commit da37dddcf4caf015c400a930301d2ee27a7a15fb ]
 
-Replace a comma between expression statements by a semicolon.
+When IOMMU hardware operates in legacy mode, the TT field of the context
+entry determines the translation type, with three supported types (Section
+9.3 Context Entry):
 
-Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
-Link: https://lore.kernel.org/r/20201216131737.14883-1-zhengyongjun3@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 8155d1fa3a74 ("mmc: block: Retry commands in CQE error recovery")
+- DMA translation without device TLB support
+- DMA translation with device TLB support
+- Passthrough mode with translated and translation requests blocked
+
+Device TLB support is absent when hardware is configured in passthrough
+mode.
+
+Disable the PCI ATS feature when IOMMU is configured for passthrough
+translation type in legacy (non-scalable) mode.
+
+Fixes: 0faa19a1515f ("iommu/vt-d: Decouple PASID & PRI enabling from SVA")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20231114011036.70142-3-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iommu/intel/iommu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
-index 6937f39fe6575..d76184e4377ef 100644
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -567,10 +567,10 @@ int mmc_cqe_recovery(struct mmc_host *host)
- 	host->cqe_ops->cqe_recovery_start(host);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index de76272d0fb02..807abf4707be7 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -2517,7 +2517,8 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
+ 		return ret;
+ 	}
  
- 	memset(&cmd, 0, sizeof(cmd));
--	cmd.opcode       = MMC_STOP_TRANSMISSION,
--	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC,
-+	cmd.opcode       = MMC_STOP_TRANSMISSION;
-+	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
- 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
--	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT,
-+	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
- 	mmc_wait_for_cmd(host, &cmd, 0);
+-	iommu_enable_pci_caps(info);
++	if (sm_supported(info->iommu) || !domain_type_is_si(info->domain))
++		iommu_enable_pci_caps(info);
  
- 	memset(&cmd, 0, sizeof(cmd));
-@@ -578,7 +578,7 @@ int mmc_cqe_recovery(struct mmc_host *host)
- 	cmd.arg          = 1; /* Discard entire queue */
- 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
- 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
--	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT,
-+	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
- 	err = mmc_wait_for_cmd(host, &cmd, 0);
- 
- 	host->cqe_ops->cqe_recovery_finish(host);
+ 	return 0;
+ }
 -- 
 2.42.0
 
