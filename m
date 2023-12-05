@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A3C8046BB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD5F80471A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 927FC28178A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F5B01C20DF2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45B179F2;
-	Tue,  5 Dec 2023 03:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4008BF2;
+	Tue,  5 Dec 2023 03:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s814t1VN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnmjqUGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD926FB1;
-	Tue,  5 Dec 2023 03:30:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5710C433C8;
-	Tue,  5 Dec 2023 03:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048C6FB1;
+	Tue,  5 Dec 2023 03:34:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5749C433C7;
+	Tue,  5 Dec 2023 03:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747058;
-	bh=wOyAdh+KIi95PX04PQxrcDqLBHbHETr0dSCrXznoonY=;
+	s=korg; t=1701747298;
+	bh=vWmXTUEjshkIIwau3PIITHYSxwpxcqEzrB1Lr2AR2Ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s814t1VNlZNu0FVfIXpbt1esdoOcrDvMjd7NTms1QnZXSlg3ygdoYqoJUUtPlA98F
-	 yD9pk0b6n+EQ2BI31Of/H1NQVOb/5sC086iDit7wLt+ccxVWX6lO3hoYNaqgkpikrr
-	 WFQn/ycKyg4pGSvTLbKWDgAKaCwJNKrLB6am0P1A=
+	b=WnmjqUGxLuu15flBwDMoQhVskOOKGsQVb4j0UNVgVtwKrR3Afud9iUarHAXGcSzrY
+	 uv2v6k0ESVnfxW3R0bA4RkL9+6UH5yTAdfl6od2VymDEch4WX/ia+2BAlYH6ViIThl
+	 QfJ8VOYvLHY3j6qBoRLXc7R6RYT2EEzi6IhptCVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 009/107] mmc: cqhci: Fix task clearing in CQE error recovery
+	"D. Wythe" <alibuda@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 023/135] net/smc: avoid data corruption caused by decline
 Date: Tue,  5 Dec 2023 12:15:44 +0900
-Message-ID: <20231205031532.131212208@linuxfoundation.org>
+Message-ID: <20231205031532.061875583@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,95 +56,97 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: D. Wythe <alibuda@linux.alibaba.com>
 
-commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 upstream.
+[ Upstream commit e6d71b437abc2f249e3b6a1ae1a7228e09c6e563 ]
 
-If a task completion notification (TCN) is received when there is no
-outstanding task, the cqhci driver issues a "spurious TCN" warning. This
-was observed to happen right after CQE error recovery.
+We found a data corruption issue during testing of SMC-R on Redis
+applications.
 
-When an error interrupt is received the driver runs recovery logic.
-It halts the controller, clears all pending tasks, and then re-enables
-it. On some platforms, like Intel Jasper Lake, a stale task completion
-event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
+The benchmark has a low probability of reporting a strange error as
+shown below.
 
-This results in either:
-a) Spurious TC completion event for an empty slot.
-b) Corrupted data being passed up the stack, as a result of premature
-   completion for a newly added task.
+"Error: Protocol error, got "\xe2" as reply type byte"
 
-Rather than add a quirk for affected controllers, ensure tasks are cleared
-by toggling CQHCI_ENABLE, which would happen anyway if
-cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
-effective for all controllers.
+Finally, we found that the retrieved error data was as follows:
 
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Reported-by: Kornel Dulęba <korneld@chromium.org>
-Tested-by: Kornel Dulęba <korneld@chromium.org>
-Co-developed-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+0xE2 0xD4 0xC3 0xD9 0x04 0x00 0x2C 0x20 0xA6 0x56 0x00 0x16 0x3E 0x0C
+0xCB 0x04 0x02 0x01 0x00 0x00 0x20 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0xE2
+
+It is quite obvious that this is a SMC DECLINE message, which means that
+the applications received SMC protocol message.
+We found that this was caused by the following situations:
+
+client                  server
+        ¦  clc proposal
+        ------------->
+        ¦  clc accept
+        <-------------
+        ¦  clc confirm
+        ------------->
+wait llc confirm
+			send llc confirm
+        ¦failed llc confirm
+        ¦   x------
+(after 2s)timeout
+                        wait llc confirm rsp
+
+wait decline
+
+(after 1s) timeout
+                        (after 2s) timeout
+        ¦   decline
+        -------------->
+        ¦   decline
+        <--------------
+
+As a result, a decline message was sent in the implementation, and this
+message was read from TCP by the already-fallback connection.
+
+This patch double the client timeout as 2x of the server value,
+With this simple change, the Decline messages should never cross or
+collide (during Confirm link timeout).
+
+This issue requires an immediate solution, since the protocol updates
+involve a more long-term solution.
+
+Fixes: 0fb0b02bd6fd ("net/smc: adapt SMC client code to use the LLC flow")
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
+Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/cqhci-core.c |   32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ net/smc/af_smc.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/cqhci-core.c
-+++ b/drivers/mmc/host/cqhci-core.c
-@@ -1075,28 +1075,28 @@ static void cqhci_recovery_finish(struct
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 9fc47292b68d8..664ddf5641dea 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -396,8 +396,12 @@ static int smcr_clnt_conf_first_link(struct smc_sock *smc)
+ 	struct smc_llc_qentry *qentry;
+ 	int rc;
  
- 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
- 
--	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--		ok = false;
--
- 	/*
- 	 * The specification contradicts itself, by saying that tasks cannot be
- 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
- 	 * be disabled/re-enabled, but not to disable before clearing tasks.
- 	 * Have a go anyway.
- 	 */
--	if (!ok) {
--		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
--		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
--		cqcfg &= ~CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		cqcfg |= CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		/* Be sure that there are no tasks */
--		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
--		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--			ok = false;
--		WARN_ON(!ok);
--	}
-+	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
-+		ok = false;
-+
-+	/* Disable to make sure tasks really are cleared */
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg &= ~CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg |= CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
-+
-+	if (!ok)
-+		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
- 
- 	cqhci_recover_mrqs(cq_host);
- 
+-	/* receive CONFIRM LINK request from server over RoCE fabric */
+-	qentry = smc_llc_wait(link->lgr, NULL, SMC_LLC_WAIT_TIME,
++	/* Receive CONFIRM LINK request from server over RoCE fabric.
++	 * Increasing the client's timeout by twice as much as the server's
++	 * timeout by default can temporarily avoid decline messages of
++	 * both sides crossing or colliding
++	 */
++	qentry = smc_llc_wait(link->lgr, NULL, 2 * SMC_LLC_WAIT_TIME,
+ 			      SMC_LLC_CONFIRM_LINK);
+ 	if (!qentry) {
+ 		struct smc_clc_msg_decline dclc;
+-- 
+2.42.0
+
 
 
 
