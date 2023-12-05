@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2C3E8046C4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A69480465C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FECE1C20D6E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B99551F20172
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9728BF1;
-	Tue,  5 Dec 2023 03:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE42679F2;
+	Tue,  5 Dec 2023 03:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s29C82f8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAEeC13E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EBE6FB1;
-	Tue,  5 Dec 2023 03:31:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856D7C433C7;
-	Tue,  5 Dec 2023 03:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20C86FAF;
+	Tue,  5 Dec 2023 03:26:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3C2C433C9;
+	Tue,  5 Dec 2023 03:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747077;
-	bh=Xstxk+IDDB/GiQ+Iu/lXeOs9aVoruyhHQbBybfJyXw4=;
+	s=korg; t=1701746806;
+	bh=09IhV/ImS6pFdW5yG4qQ57sPmajMpCRn5Wudd6MN4to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s29C82f8r27qfiOarezKZQIKhQApqD3H+8DdSK4Wx29bHK4uhLbH06en/B4Z2npgX
-	 tDBzNorUzE4HtdlPsqbxDYL/gbHtjOGJpN6NfxIOwhUXUxu+mn9nADHA/70gN94iz+
-	 H/YnQkML1HmVmtKurFhpY0/uuzTp3+eSZd2HX2Hk=
+	b=JAEeC13E7FXW4nO/hmZquowmgZ3pcFNGO4n0mtJhSoiCD8nY7lnw4+i+hQyQv19+M
+	 JqeRCn/lb/34hj3fOzsJ0RJ8esWt3Vrb/BZ2u/yyMSGz9b8JXJZ46FY3CcbJbJznAN
+	 Y5fvwDGRvMKjzBlO4JETVro86QFfzSYnckt0airo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	David Reaver <me@davidreaver.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.1 051/107] auxdisplay: hd44780: move cursor home after clear display command
+	Puliang Lu <puliang.lu@fibocom.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 28/71] USB: serial: option: fix FM101R-GL defines
 Date: Tue,  5 Dec 2023 12:16:26 +0900
-Message-ID: <20231205031534.517148119@linuxfoundation.org>
+Message-ID: <20231205031519.486526639@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,61 +52,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Puliang Lu <puliang.lu@fibocom.com>
 
-commit 35b464e32c8bccef435e415db955787ead4ab44c upstream.
+commit a1092619dd28ac0fcf23016160a2fdccd98ef935 upstream.
 
-The DISPLAY_CLEAR command on the NewHaven NHD-0220DZW-AG5 display
-does NOT change the DDRAM address to 00h (home position) like the
-standard Hitachi HD44780 controller. As a consequence, the starting
-position of the initial string LCD_INIT_TEXT is not guaranteed to be
-at 0,0 depending on where the cursor was before the DISPLAY_CLEAR
-command.
+Modify the definition of the two Fibocom FM101R-GL PID macros, which had
+their PIDs switched.
 
-Extract of DISPLAY_CLEAR command from datasheets of:
+The correct PIDs are:
 
-    Hitachi HD44780:
-        ... It then sets DDRAM address 0 into the address counter...
+- VID:PID 413C:8213, FM101R-GL ESIM are laptop M.2 cards (with
+  MBIM interfaces for Linux)
 
-    NewHaven NHD-0220DZW-AG5 datasheet:
-	... This instruction does not change the DDRAM Address
+- VID:PID 413C:8215, FM101R-GL are laptop M.2 cards (with
+  MBIM interface for Linux)
 
-Move the cursor home after sending DISPLAY_CLEAR command to support
-non-standard LCDs.
+0x8213: mbim, tty
+0x8215: mbim, tty
 
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: David Reaver <me@davidreaver.com>
-Link: https://lore.kernel.org/r/20230722180925.1408885-1-hugo@hugovil.com
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
+Fixes: 52480e1f1a25 ("USB: serial: option: add Fibocom to DELL custom modem FM101R-GL")
+Link: https://lore.kernel.org/lkml/TYZPR02MB508845BAD7936A62A105CE5D89DFA@TYZPR02MB5088.apcprd02.prod.outlook.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/auxdisplay/hd44780_common.c |   10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/serial/option.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/auxdisplay/hd44780_common.c
-+++ b/drivers/auxdisplay/hd44780_common.c
-@@ -82,7 +82,15 @@ int hd44780_common_clear_display(struct
- 	hdc->write_cmd(hdc, LCD_CMD_DISPLAY_CLEAR);
- 	/* datasheet says to wait 1,64 milliseconds */
- 	long_sleep(2);
--	return 0;
-+
-+	/*
-+	 * The Hitachi HD44780 controller (and compatible ones) reset the DDRAM
-+	 * address when executing the DISPLAY_CLEAR command, thus the
-+	 * following call is not required. However, other controllers do not
-+	 * (e.g. NewHaven NHD-0220DZW-AG5), thus move the cursor to home
-+	 * unconditionally to support both.
-+	 */
-+	return hd44780_common_home(lcd);
- }
- EXPORT_SYMBOL_GPL(hd44780_common_clear_display);
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -203,8 +203,8 @@ static void option_instat_callback(struc
+ #define DELL_PRODUCT_5829E_ESIM			0x81e4
+ #define DELL_PRODUCT_5829E			0x81e6
  
+-#define DELL_PRODUCT_FM101R			0x8213
+-#define DELL_PRODUCT_FM101R_ESIM		0x8215
++#define DELL_PRODUCT_FM101R_ESIM		0x8213
++#define DELL_PRODUCT_FM101R			0x8215
+ 
+ #define KYOCERA_VENDOR_ID			0x0c88
+ #define KYOCERA_PRODUCT_KPC650			0x17da
 
 
 
