@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-4304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3878046EC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C9E804626
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0809E281591
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E4EC28348C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99D648BF7;
-	Tue,  5 Dec 2023 03:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BF66FAF;
+	Tue,  5 Dec 2023 03:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0XB8uhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIpDRzbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA016FB1;
-	Tue,  5 Dec 2023 03:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FFBC433C8;
-	Tue,  5 Dec 2023 03:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA07A6110;
+	Tue,  5 Dec 2023 03:25:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A39CC433C7;
+	Tue,  5 Dec 2023 03:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747182;
-	bh=NFe6WQ5pvr5iBN2cU1o8LTqI9PW1+KlZkW769ONf/Z0=;
+	s=korg; t=1701746718;
+	bh=0zr5adyHfOLCOqhSQtK5dDldKL5pkE5cZhIu8N2uFwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0XB8uhupmHgm8kikGX6j3TP28jkp43DaWg4sUCqHyVTfFneLT+qU2yAslg+kRUbi
-	 naOeOEzm0+789CVjwp6UFjoETxfDeikUbdRbySwHAhx73sSmWCaqv89u9W8YpO/Cmx
-	 3G/4dUejgsYwYR/ozgnKBvBXT+Msil0DlDzkFuZU=
+	b=kIpDRzbDg75nINOkghFQh2/b+73lzLKHdeoQciWA5QHYEQhbFh5ZyoOKE0itnobuK
+	 BE1kzleSa8+EBLDfJXjXleMBhQrnPaqhbGPUprAP0emJtaZmU8+Wm8FfvKMQOI+BRs
+	 k3SpqzkMIPxwwjvKEXcYWqHUM7urbsIGA8hGuojY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Krunoslav Kovac <krunoslav.kovac@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Camille Cho <camille.cho@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/107] net: stmmac: xgmac: Disable FPE MMC interrupts
+Subject: [PATCH 6.6 129/134] drm/amd/display: Simplify brightness initialization
 Date: Tue,  5 Dec 2023 12:16:41 +0900
-Message-ID: <20231205031535.558446746@linuxfoundation.org>
+Message-ID: <20231205031543.619901240@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,56 +55,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Camille Cho <camille.cho@amd.com>
 
-[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
+[ Upstream commit d9e865826c202b262f9ee3f17a03cc4ac5d44ced ]
 
-Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
-by default") tries to disable MMC interrupts to avoid a storm of
-unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
-interrupts enabled, FPE MMC interrupts can cause the same problem.
-Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
+[Why]
+Remove the brightness cache in DC. It uses a single value to represent
+the brightness for both SDR and HDR mode. This leads to flash in HDR
+on/off. It also unconditionally programs brightness as in HDR mode. This
+may introduce garbage on SDR mode in miniLED panel.
 
-Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[How]
+Simplify the initialization flow by removing the DC cache and taking
+what panel has as default. Expand the mechanism for PWM to DPCD Aux to
+restore cached brightness value generally.
+
+Cc: stable@vger.kernel.org # 6.1+
+Reviewed-by: Krunoslav Kovac <krunoslav.kovac@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Camille Cho <camille.cho@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dc.h              |  1 -
+ drivers/gpu/drm/amd/display/dc/dc_types.h        |  4 ----
+ .../gpu/drm/amd/display/dc/link/link_detection.c |  2 +-
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c  |  3 +--
+ .../dc/link/protocols/link_edp_panel_control.c   | 16 +++-------------
+ .../dc/link/protocols/link_edp_panel_control.h   |  1 -
+ 6 files changed, 5 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-index ea4910ae0921a..6a7c1d325c464 100644
---- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-@@ -177,8 +177,10 @@
- #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
- #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index dd7bf31ef6b04..3f33740e2f659 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -1538,7 +1538,6 @@ struct dc_link {
+ 	enum edp_revision edp_revision;
+ 	union dpcd_sink_ext_caps dpcd_sink_ext_caps;
  
-+#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
- #define MMC_XGMAC_TX_FPE_FRAG		0x208
- #define MMC_XGMAC_TX_HOLD_REQ		0x20c
-+#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
- #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
- #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
- #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
-@@ -352,6 +354,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
- {
- 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
- 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
-+	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
-+	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
- 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
+-	struct backlight_settings backlight_settings;
+ 	struct psr_settings psr_settings;
+ 
+ 	struct replay_settings replay_settings;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index ba900b0a62a82..accffba5a6834 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -1003,10 +1003,6 @@ struct link_mst_stream_allocation_table {
+ 	struct link_mst_stream_allocation stream_allocations[MAX_CONTROLLER_NUM];
+ };
+ 
+-struct backlight_settings {
+-	uint32_t backlight_millinits;
+-};
+-
+ /* PSR feature flags */
+ struct psr_settings {
+ 	bool psr_feature_enabled;		// PSR is supported by sink
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_detection.c b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+index b3d3e46c466b3..c7a9e286a5d4d 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_detection.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_detection.c
+@@ -876,7 +876,7 @@ static bool detect_link_and_local_sink(struct dc_link *link,
+ 			(link->dpcd_sink_ext_caps.bits.oled == 1)) {
+ 			dpcd_set_source_specific_data(link);
+ 			msleep(post_oui_delay);
+-			set_cached_brightness_aux(link);
++			set_default_brightness_aux(link);
+ 		}
+ 
+ 		return true;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index a17a06eb7762b..35d087cf1980f 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -2140,8 +2140,7 @@ static enum dc_status enable_link_dp(struct dc_state *state,
+ 	if (link->dpcd_sink_ext_caps.bits.oled == 1 ||
+ 		link->dpcd_sink_ext_caps.bits.sdr_aux_backlight_control == 1 ||
+ 		link->dpcd_sink_ext_caps.bits.hdr_aux_backlight_control == 1) {
+-		set_cached_brightness_aux(link);
+-
++		set_default_brightness_aux(link);
+ 		if (link->dpcd_sink_ext_caps.bits.oled == 1)
+ 			msleep(bl_oled_enable_delay);
+ 		edp_backlight_enable_aux(link, true);
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+index a602202610e09..fe74d4252a510 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+@@ -168,7 +168,6 @@ bool edp_set_backlight_level_nits(struct dc_link *link,
+ 	*(uint32_t *)&dpcd_backlight_set.backlight_level_millinits = backlight_millinits;
+ 	*(uint16_t *)&dpcd_backlight_set.backlight_transition_time_ms = (uint16_t)transition_time_in_ms;
+ 
+-	link->backlight_settings.backlight_millinits = backlight_millinits;
+ 
+ 	if (!link->dpcd_caps.panel_luminance_control) {
+ 		if (core_link_write_dpcd(link, DP_SOURCE_BACKLIGHT_LEVEL,
+@@ -281,9 +280,9 @@ bool set_default_brightness_aux(struct dc_link *link)
+ 	if (link && link->dpcd_sink_ext_caps.bits.oled == 1) {
+ 		if (!read_default_bl_aux(link, &default_backlight))
+ 			default_backlight = 150000;
+-		// if < 1 nits or > 5000, it might be wrong readback
+-		if (default_backlight < 1000 || default_backlight > 5000000)
+-			default_backlight = 150000; //
++		// if > 5000, it might be wrong readback
++		if (default_backlight > 5000000)
++			default_backlight = 150000;
+ 
+ 		return edp_set_backlight_level_nits(link, true,
+ 				default_backlight, 0);
+@@ -291,15 +290,6 @@ bool set_default_brightness_aux(struct dc_link *link)
+ 	return false;
  }
  
+-bool set_cached_brightness_aux(struct dc_link *link)
+-{
+-	if (link->backlight_settings.backlight_millinits)
+-		return edp_set_backlight_level_nits(link, true,
+-						    link->backlight_settings.backlight_millinits, 0);
+-	else
+-		return set_default_brightness_aux(link);
+-	return false;
+-}
+ bool edp_is_ilr_optimization_enabled(struct dc_link *link)
+ {
+ 	if (link->dpcd_caps.edp_supported_link_rates_count == 0 || !link->panel_config.ilr.optimize_edp_link_rate)
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+index ebf7deb63d136..a034288ad75d4 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.h
+@@ -30,7 +30,6 @@
+ enum dp_panel_mode dp_get_panel_mode(struct dc_link *link);
+ void dp_set_panel_mode(struct dc_link *link, enum dp_panel_mode panel_mode);
+ bool set_default_brightness_aux(struct dc_link *link);
+-bool set_cached_brightness_aux(struct dc_link *link);
+ void edp_panel_backlight_power_on(struct dc_link *link, bool wait_for_hpd);
+ int edp_get_backlight_level(const struct dc_link *link);
+ bool edp_get_backlight_level_nits(struct dc_link *link,
 -- 
 2.42.0
 
