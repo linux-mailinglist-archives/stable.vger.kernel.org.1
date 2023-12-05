@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-4120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C48804615
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FC948046B9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78D731C20CBC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396F21C20DA0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A9179F2;
-	Tue,  5 Dec 2023 03:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04FA79E3;
+	Tue,  5 Dec 2023 03:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOpgYnng"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0pRmBNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DF06FAF;
-	Tue,  5 Dec 2023 03:24:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A5AC433C7;
-	Tue,  5 Dec 2023 03:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DCDC14B;
+	Tue,  5 Dec 2023 03:30:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCEDC433C7;
+	Tue,  5 Dec 2023 03:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746670;
-	bh=58/xryAtwbf82pTdTrEKD2oGKL+4o+47VM71PTpCkvw=;
+	s=korg; t=1701747050;
+	bh=lRLVYU+3DMafOcXVt0rckCYKPQ4zDvM58/w78IiVFiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOpgYnngeEbRdDUePfXdZfuL+yvgTCfWts1luC60mt6ps+48nnaqZyS/6pCnb2jWm
-	 qUrOg/Wiyj7roKGbubzSnmqCBkWkCORuma3JHVbCTtsVg7WM61GmQVbJovPUQcaq/i
-	 4sY9zqlIheB7MCKAIHqGd9ycNhp6q2vAAfqwKt50=
+	b=m0pRmBNULs0/JhAXwqJnv+2UjM2d3r8DbhMFbvIn2WwUlCIwh97xhb1bco0TeBjdg
+	 wKNQ0kHR/JhOPSOjMexjDDApE+21iIcJ66tcNGc+aAge9+A94LWZJF2WUfzH1ZrXg6
+	 dsu0tePke+WY6JhJ5JnOx6H4vGbXVfPHaHEA/NXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+44c2416196b7c607f226@syzkaller.appspotmail.com,
-	Stanislav Fomichev <sdf@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Dipendra Khadka <kdipendra88@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/134] netdevsim: Dont accept device bound programs
-Date: Tue,  5 Dec 2023 12:15:50 +0900
-Message-ID: <20231205031540.428169053@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.1 016/107] dm-verity: align struct dm_verity_fec_io properly
+Date: Tue,  5 Dec 2023 12:15:51 +0900
+Message-ID: <20231205031532.651675509@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,60 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislav Fomichev <sdf@google.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit c0c6bde586c7dce82719b4ff32a2db6af9ee3d65 ]
+commit 38bc1ab135db87577695816b190e7d6d8ec75879 upstream.
 
-Commit 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs") introduced
-device-bound programs by largely reusing existing offloading infrastructure.
-This changed the semantics of 'prog->aux->offload' a bit. Now, it's non-NULL
-for both offloaded and device-bound programs.
+dm_verity_fec_io is placed after the end of two hash digests. If the hash
+digest has unaligned length, struct dm_verity_fec_io could be unaligned.
 
-Instead of looking at 'prog->aux->offload' let's call bpf_prog_is_offloaded
-which should be true iff the program is offloaded and not merely device-bound.
+This commit fixes the placement of struct dm_verity_fec_io, so that it's
+aligned.
 
-Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
-Reported-by: syzbot+44c2416196b7c607f226@syzkaller.appspotmail.com
-Signed-off-by: Stanislav Fomichev <sdf@google.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Cc: Dipendra Khadka <kdipendra88@gmail.com>
-Link: https://lore.kernel.org/bpf/20231114045453.1816995-2-sdf@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netdevsim/bpf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-verity-fec.c |    3 ++-
+ drivers/md/dm-verity.h     |    6 ------
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/netdevsim/bpf.c b/drivers/net/netdevsim/bpf.c
-index f60eb97e3a627..608953d4f98da 100644
---- a/drivers/net/netdevsim/bpf.c
-+++ b/drivers/net/netdevsim/bpf.c
-@@ -93,7 +93,7 @@ static void nsim_prog_set_loaded(struct bpf_prog *prog, bool loaded)
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -24,7 +24,8 @@ bool verity_fec_is_enabled(struct dm_ver
+  */
+ static inline struct dm_verity_fec_io *fec_io(struct dm_verity_io *io)
  {
- 	struct nsim_bpf_bound_prog *state;
+-	return (struct dm_verity_fec_io *) verity_io_digest_end(io->v, io);
++	return (struct dm_verity_fec_io *)
++		((char *)io + io->v->ti->per_io_data_size - sizeof(struct dm_verity_fec_io));
+ }
  
--	if (!prog || !prog->aux->offload)
-+	if (!prog || !bpf_prog_is_offloaded(prog->aux))
- 		return;
+ /*
+--- a/drivers/md/dm-verity.h
++++ b/drivers/md/dm-verity.h
+@@ -115,12 +115,6 @@ static inline u8 *verity_io_want_digest(
+ 	return (u8 *)(io + 1) + v->ahash_reqsize + v->digest_size;
+ }
  
- 	state = prog->aux->offload->dev_priv;
-@@ -311,7 +311,7 @@ nsim_setup_prog_hw_checks(struct netdevsim *ns, struct netdev_bpf *bpf)
- 	if (!bpf->prog)
- 		return 0;
- 
--	if (!bpf->prog->aux->offload) {
-+	if (!bpf_prog_is_offloaded(bpf->prog->aux)) {
- 		NSIM_EA(bpf->extack, "xdpoffload of non-bound program");
- 		return -EINVAL;
- 	}
--- 
-2.42.0
-
+-static inline u8 *verity_io_digest_end(struct dm_verity *v,
+-				       struct dm_verity_io *io)
+-{
+-	return verity_io_want_digest(v, io) + v->digest_size;
+-}
+-
+ extern int verity_for_bv_block(struct dm_verity *v, struct dm_verity_io *io,
+ 			       struct bvec_iter *iter,
+ 			       int (*process)(struct dm_verity *v,
 
 
 
