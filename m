@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFB180460E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B98B80473C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7168C1C20CC6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7D4CB20C59
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9B779E3;
-	Tue,  5 Dec 2023 03:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508728BF1;
+	Tue,  5 Dec 2023 03:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aL8qWE0j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bFRtiGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796F879F2;
-	Tue,  5 Dec 2023 03:24:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB935C433C7;
-	Tue,  5 Dec 2023 03:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F23F6FB1;
+	Tue,  5 Dec 2023 03:36:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68660C433C8;
+	Tue,  5 Dec 2023 03:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746652;
-	bh=s34zcpHh/y/duxlwENANycMnpQvSr9o4CzwiEeCkz+I=;
+	s=korg; t=1701747384;
+	bh=2SSMwyx/Zsx8+bkV3iINd2sCDz9V5nG/7qUjqtTbZeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aL8qWE0jw2McQ4VNovCqyavqgHFjcM8sm1tMAXW1k93jk9WddmN992w3VjFBxAZHV
-	 1wyOwvtoXYtYzfrDU+qdRlFofqneWwnkvbITNLtPHf1lGn8NGiFfJY82RZ7eX5eJQ4
-	 HEBmHnSriYm1/OVgMVLdfQXk2Ju0wOlMvpPn9DAA=
+	b=0bFRtiGsvRl5SpChgSigDaHmiN71O0EQU6OFhvdtyumzHC9Rvo5znJ0+PdTadiqYY
+	 eqT6lyUuWaFaiwOXRtsGL/Tb9Be5l0epAtyXGVDE3AXdg39J9KZABjTLv1cfzq/pku
+	 xdfsN+RS26WD0KWL1ZA7uEPWr7kQUJe8+f686ekU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alon Zahavi <zahavi.alon@gmail.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/134] net: rswitch: Fix missing dev_kfree_skb_any() in error path
+Subject: [PATCH 5.10 032/135] nvmet: nul-terminate the NQNs passed in the connect command
 Date: Tue,  5 Dec 2023 12:15:53 +0900
-Message-ID: <20231205031540.604892731@linuxfoundation.org>
+Message-ID: <20231205031532.703095675@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,71 +55,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 782486af9b5b76493012711413c141509ac45dec ]
+[ Upstream commit 1c22e0295a5eb571c27b53c7371f95699ef705ff ]
 
-Before returning the rswitch_start_xmit() in the error path,
-dev_kfree_skb_any() should be called. So, fix it.
+The host and subsystem NQNs are passed in the connect command payload and
+interpreted as nul-terminated strings.  Ensure they actually are
+nul-terminated before using them.
 
-Fixes: 33f5d733b589 ("net: renesas: rswitch: Improve TX timestamp accuracy")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: a07b4970f464 "nvmet: add a generic NVMe target")
+Reported-by: Alon Zahavi <zahavi.alon@gmail.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/rswitch.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/nvme/target/fabrics-cmd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
-index 3ccf93184c9b2..ae9d8722b76f7 100644
---- a/drivers/net/ethernet/renesas/rswitch.c
-+++ b/drivers/net/ethernet/renesas/rswitch.c
-@@ -1514,10 +1514,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 		return ret;
+diff --git a/drivers/nvme/target/fabrics-cmd.c b/drivers/nvme/target/fabrics-cmd.c
+index 5baaace31c68c..fb4f62982cb7e 100644
+--- a/drivers/nvme/target/fabrics-cmd.c
++++ b/drivers/nvme/target/fabrics-cmd.c
+@@ -189,6 +189,8 @@ static void nvmet_execute_admin_connect(struct nvmet_req *req)
+ 		goto out;
+ 	}
  
- 	dma_addr = dma_map_single(ndev->dev.parent, skb->data, skb->len, DMA_TO_DEVICE);
--	if (dma_mapping_error(ndev->dev.parent, dma_addr)) {
--		dev_kfree_skb_any(skb);
--		return ret;
--	}
-+	if (dma_mapping_error(ndev->dev.parent, dma_addr))
-+		goto err_kfree;
++	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
++	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
+ 	status = nvmet_alloc_ctrl(d->subsysnqn, d->hostnqn, req,
+ 				  le32_to_cpu(c->kato), &ctrl);
+ 	if (status) {
+@@ -250,6 +252,8 @@ static void nvmet_execute_io_connect(struct nvmet_req *req)
+ 		goto out;
+ 	}
  
- 	gq->skbs[gq->cur] = skb;
- 	desc = &gq->tx_ring[gq->cur];
-@@ -1530,10 +1528,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 		struct rswitch_gwca_ts_info *ts_info;
- 
- 		ts_info = kzalloc(sizeof(*ts_info), GFP_ATOMIC);
--		if (!ts_info) {
--			dma_unmap_single(ndev->dev.parent, dma_addr, skb->len, DMA_TO_DEVICE);
--			return ret;
--		}
-+		if (!ts_info)
-+			goto err_unmap;
- 
- 		skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
- 		rdev->ts_tag++;
-@@ -1555,6 +1551,14 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	gq->cur = rswitch_next_queue_index(gq, true, 1);
- 	rswitch_modify(rdev->addr, GWTRC(gq->index), 0, BIT(gq->index % 32));
- 
-+	return ret;
-+
-+err_unmap:
-+	dma_unmap_single(ndev->dev.parent, dma_addr, skb->len, DMA_TO_DEVICE);
-+
-+err_kfree:
-+	dev_kfree_skb_any(skb);
-+
- 	return ret;
- }
- 
++	d->subsysnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
++	d->hostnqn[NVMF_NQN_FIELD_LEN - 1] = '\0';
+ 	ctrl = nvmet_ctrl_find_get(d->subsysnqn, d->hostnqn,
+ 				   le16_to_cpu(d->cntlid), req);
+ 	if (!ctrl) {
 -- 
 2.42.0
 
