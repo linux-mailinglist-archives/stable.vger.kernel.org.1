@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B5D804826
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2068580478F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0274EB209A5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8483B20D25
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46C818BE0;
-	Tue,  5 Dec 2023 03:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1355A8C07;
+	Tue,  5 Dec 2023 03:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbiU5di3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkYu8BsO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01ADF6FB0;
-	Tue,  5 Dec 2023 03:46:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF21C433C7;
-	Tue,  5 Dec 2023 03:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42B86FB1;
+	Tue,  5 Dec 2023 03:40:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52551C433C8;
+	Tue,  5 Dec 2023 03:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747983;
-	bh=Mg8euKKs4eUbyABoY7NQuwUn5rU4NkWpZV68nJIt564=;
+	s=korg; t=1701747603;
+	bh=wloOl2J0S/8gvQ78a1gAMhJXjMwMAOncWmXByyBFoPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pbiU5di3AEb6G4R0LdPDpYnn4XLaLmAQrSeBIyCWvIwQtu6dI60+RIsvEfZAmtjU7
-	 Of7lS4IAeMSq/dRvAtORr0wGzhqckWoXLhhra8sarvnIVpnjVqAzot9T34TOsmvskp
-	 ds1Ev7P41YegwMErSiyMXGtC2xE3fqAOc1EgXxXU=
+	b=wkYu8BsO8ZNoXnxn7edIc4OC+gSdf6CCeJ3+2f0ReIZa14RFVLt5UxCyy90aM+f7b
+	 X6uMjJfCBeSBTH8Th2gKL87x6tXK2pqPg6b9PjWwegzW5cVjxw/ADbx40kjluyeESX
+	 h0nRwwwRLZux+KzNrPfimDfnVMA1cFiB+zyQOvqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 45/94] USB: serial: option: dont claim interface 4 for ZTE MF290
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 112/135] s390/cmma: fix detection of DAT pages
 Date: Tue,  5 Dec 2023 12:17:13 +0900
-Message-ID: <20231205031525.381045380@linuxfoundation.org>
+Message-ID: <20231205031537.851384624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +52,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 8771127e25d6c20d458ad27cf32f7fcfc1755e05 upstream.
+[ Upstream commit 44d93045247661acbd50b1629e62f415f2747577 ]
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Free the interface up, to rebind it to
-qmi_wwan driver.
-The proper configuration is:
+If the cmma no-dat feature is available the kernel page tables are walked
+to identify and mark all pages which are used for address translation (all
+region, segment, and page tables). In a subsequent loop all other pages are
+marked as "no-dat" pages with the ESSA instruction.
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
+This information is visible to the hypervisor, so that the hypervisor can
+optimize purging of guest TLB entries. The initial loop however is
+incorrect: only the first three of the four pages which belong to segment
+and region tables will be marked as being used for DAT. The last page is
+incorrectly marked as no-dat.
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+This can result in incorrect guest TLB flushes.
 
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by simply marking all four pages.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/s390/mm/page-states.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1548,7 +1548,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0165, 0xff, 0xff, 0xff) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0167, 0xff, 0xff, 0xff),
- 	  .driver_info = RSVD(4) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff),
-+	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0191, 0xff, 0xff, 0xff), /* ZTE EuFi890 */
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0196, 0xff, 0xff, 0xff) },
+diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
+index 7f0e154a470ad..4e5312fa2c539 100644
+--- a/arch/s390/mm/page-states.c
++++ b/arch/s390/mm/page-states.c
+@@ -131,7 +131,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
+ 			continue;
+ 		if (!pud_folded(*pud)) {
+ 			page = phys_to_page(pud_val(*pud));
+-			for (i = 0; i < 3; i++)
++			for (i = 0; i < 4; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+ 		mark_kernel_pmd(pud, addr, next);
+@@ -152,7 +152,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
+ 			continue;
+ 		if (!p4d_folded(*p4d)) {
+ 			page = phys_to_page(p4d_val(*p4d));
+-			for (i = 0; i < 3; i++)
++			for (i = 0; i < 4; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+ 		mark_kernel_pud(p4d, addr, next);
+@@ -174,7 +174,7 @@ static void mark_kernel_pgd(void)
+ 			continue;
+ 		if (!pgd_folded(*pgd)) {
+ 			page = phys_to_page(pgd_val(*pgd));
+-			for (i = 0; i < 3; i++)
++			for (i = 0; i < 4; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+ 		mark_kernel_p4d(pgd, addr, next);
+-- 
+2.42.0
+
 
 
 
