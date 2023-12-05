@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62400804739
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD18F80460A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 931F31C20CCE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B2C1F211B9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68038BF2;
-	Tue,  5 Dec 2023 03:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8CC79E3;
+	Tue,  5 Dec 2023 03:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSDZHiMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIOuhxvE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D576FB1;
-	Tue,  5 Dec 2023 03:36:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB148C433C8;
-	Tue,  5 Dec 2023 03:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA06FAF;
+	Tue,  5 Dec 2023 03:24:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3764FC433C7;
+	Tue,  5 Dec 2023 03:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747377;
-	bh=l9Jzy+HYIOG7dlzVdCvlwelfa3WApHPtJiWYnjO/wdc=;
+	s=korg; t=1701746641;
+	bh=ZgL+YSbBuQQggjJ4OnS68qQHGHhttgnX94mRfetqnbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSDZHiMi1ftjhwO+S3mhOKdHp9yPtPFExrIxn6O37FJXS7HxTwiDAony5BJRT7Rif
-	 v21IYUPNDEC66mU5AnRKf2SGhnKDt7BEWUeZPoc/MRs/Q58jMVLG5/15+aqXNvCcfy
-	 DpsEsze+4QqqhKy2S+aEfn77n9sY2WlkCtvzcGIs=
+	b=hIOuhxvEurlJzjgyHnN2Iu9F6ICLh5MC5PdzdV1782es/Y44KUjQxxXviPbChewtE
+	 Yr8ANfwVllIz2w1Qc6ybfEmBk1MCv7EUD9z5UrNpFAYYEdSBcXeIL5i2muHjWpriw4
+	 IHvOdsTTElMce5/z15eSud8Wu+DgrfOfioabQRpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 052/135] bcache: fixup multi-threaded bch_sectors_dirty_init() wake-up race
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 101/134] r8169: prevent potential deadlock in rtl8169_close
 Date: Tue,  5 Dec 2023 12:16:13 +0900
-Message-ID: <20231205031533.763721282@linuxfoundation.org>
+Message-ID: <20231205031541.823152811@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,129 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 2faac25d7958c4761bb8cec54adb79f806783ad6 upstream.
+[ Upstream commit 91d3d149978ba7b238198dd80e4b823756aa7cfa ]
 
-We get a kernel crash about "unable to handle kernel paging request":
+ndo_stop() is RTNL-protected by net core, and the worker function takes
+RTNL as well. Therefore we will deadlock when trying to execute a
+pending work synchronously. To fix this execute any pending work
+asynchronously. This will do no harm because netif_running() is false
+in ndo_stop(), and therefore the work function is effectively a no-op.
+However we have to ensure that no task is running or pending after
+rtl_remove_one(), therefore add a call to cancel_work_sync().
 
-```dmesg
-[368033.032005] BUG: unable to handle kernel paging request at ffffffffad9ae4b5
-[368033.032007] PGD fc3a0d067 P4D fc3a0d067 PUD fc3a0e063 PMD 8000000fc38000e1
-[368033.032012] Oops: 0003 [#1] SMP PTI
-[368033.032015] CPU: 23 PID: 55090 Comm: bch_dirtcnt[0] Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-147.5.1.es8_24.x86_64 #1
-[368033.032017] Hardware name: Tsinghua Tongfang THTF Chaoqiang Server/072T6D, BIOS 2.4.3 01/17/2017
-[368033.032027] RIP: 0010:native_queued_spin_lock_slowpath+0x183/0x1d0
-[368033.032029] Code: 8b 02 48 85 c0 74 f6 48 89 c1 eb d0 c1 e9 12 83 e0
-03 83 e9 01 48 c1 e0 05 48 63 c9 48 05 c0 3d 02 00 48 03 04 cd 60 68 93
-ad <48> 89 10 8b 42 08 85 c0 75 09 f3 90 8b 42 08 85 c0 74 f7 48 8b 02
-[368033.032031] RSP: 0018:ffffbb48852abe00 EFLAGS: 00010082
-[368033.032032] RAX: ffffffffad9ae4b5 RBX: 0000000000000246 RCX: 0000000000003bf3
-[368033.032033] RDX: ffff97b0ff8e3dc0 RSI: 0000000000600000 RDI: ffffbb4884743c68
-[368033.032034] RBP: 0000000000000001 R08: 0000000000000000 R09: 000007ffffffffff
-[368033.032035] R10: ffffbb486bb01000 R11: 0000000000000001 R12: ffffffffc068da70
-[368033.032036] R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
-[368033.032038] FS:  0000000000000000(0000) GS:ffff97b0ff8c0000(0000) knlGS:0000000000000000
-[368033.032039] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[368033.032040] CR2: ffffffffad9ae4b5 CR3: 0000000fc3a0a002 CR4: 00000000003626e0
-[368033.032042] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[368033.032043] bcache: bch_cached_dev_attach() Caching rbd479 as bcache462 on set 8cff3c36-4a76-4242-afaa-7630206bc70b
-[368033.032045] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[368033.032046] Call Trace:
-[368033.032054]  _raw_spin_lock_irqsave+0x32/0x40
-[368033.032061]  __wake_up_common_lock+0x63/0xc0
-[368033.032073]  ? bch_ptr_invalid+0x10/0x10 [bcache]
-[368033.033502]  bch_dirty_init_thread+0x14c/0x160 [bcache]
-[368033.033511]  ? read_dirty_submit+0x60/0x60 [bcache]
-[368033.033516]  kthread+0x112/0x130
-[368033.033520]  ? kthread_flush_work_fn+0x10/0x10
-[368033.034505]  ret_from_fork+0x35/0x40
-```
-
-The crash occurred when call wake_up(&state->wait), and then we want
-to look at the value in the state. However, bch_sectors_dirty_init()
-is not found in the stack of any task. Since state is allocated on
-the stack, we guess that bch_sectors_dirty_init() has exited, causing
-bch_dirty_init_thread() to be unable to handle kernel paging request.
-
-In order to verify this idea, we added some printing information during
-wake_up(&state->wait). We find that "wake up" is printed twice, however
-we only expect the last thread to wake up once.
-
-```dmesg
-[  994.641004] alcache: bch_dirty_init_thread() wake up
-[  994.641018] alcache: bch_dirty_init_thread() wake up
-[  994.641523] alcache: bch_sectors_dirty_init() init exit
-```
-
-There is a race. If bch_sectors_dirty_init() exits after the first wake
-up, the second wake up will trigger this bug("unable to handle kernel
-paging request").
-
-Proceed as follows:
-
-bch_sectors_dirty_init
-    kthread_run ==============> bch_dirty_init_thread(bch_dirtcnt[0])
-            ...                         ...
-    atomic_inc(&state.started)          ...
-            ...                         ...
-    atomic_read(&state.enough)          ...
-            ...                 atomic_set(&state->enough, 1)
-    kthread_run ======================================================> bch_dirty_init_thread(bch_dirtcnt[1])
-            ...                 atomic_dec_and_test(&state->started)            ...
-    atomic_inc(&state.started)          ...                                     ...
-            ...                 wake_up(&state->wait)                           ...
-    atomic_read(&state.enough)                                          atomic_dec_and_test(&state->started)
-            ...                                                                 ...
-    wait_event(state.wait, atomic_read(&state.started) == 0)                    ...
-    return                                                                      ...
-                                                                        wake_up(&state->wait)
-
-We believe it is very common to wake up twice if there is no dirty, but
-crash is an extremely low probability event. It's hard for us to reproduce
-this issue. We attached and detached continuously for a week, with a total
-of more than one million attaches and only one crash.
-
-Putting atomic_inc(&state.started) before kthread_run() can avoid waking
-up twice.
-
-Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-8-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: abe5fc42f9ce ("r8169: use RTNL to protect critical sections")
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/12395867-1d17-4cac-aa7d-c691938fcddf@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/writeback.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/md/bcache/writeback.c
-+++ b/drivers/md/bcache/writeback.c
-@@ -958,17 +958,18 @@ void bch_sectors_dirty_init(struct bcach
- 		if (atomic_read(&state.enough))
- 			break;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index a43e33e4b25e6..62cabeeb842a1 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4694,7 +4694,7 @@ static int rtl8169_close(struct net_device *dev)
+ 	rtl8169_down(tp);
+ 	rtl8169_rx_clear(tp);
  
-+		atomic_inc(&state.started);
- 		state.infos[i].state = &state;
- 		state.infos[i].thread =
- 			kthread_run(bch_dirty_init_thread, &state.infos[i],
- 				    "bch_dirtcnt[%d]", i);
- 		if (IS_ERR(state.infos[i].thread)) {
- 			pr_err("fails to run thread bch_dirty_init[%d]\n", i);
-+			atomic_dec(&state.started);
- 			for (--i; i >= 0; i--)
- 				kthread_stop(state.infos[i].thread);
- 			goto out;
- 		}
--		atomic_inc(&state.started);
- 	}
+-	cancel_work_sync(&tp->wk.work);
++	cancel_work(&tp->wk.work);
  
- out:
+ 	free_irq(tp->irq, tp);
+ 
+@@ -4928,6 +4928,8 @@ static void rtl_remove_one(struct pci_dev *pdev)
+ 	if (pci_dev_run_wake(pdev))
+ 		pm_runtime_get_noresume(&pdev->dev);
+ 
++	cancel_work_sync(&tp->wk.work);
++
+ 	unregister_netdev(tp->dev);
+ 
+ 	if (tp->dash_type != RTL_DASH_NONE)
+-- 
+2.42.0
+
 
 
 
