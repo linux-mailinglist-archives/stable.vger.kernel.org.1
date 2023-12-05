@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E2C8046A9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938C780464F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC29AB20C99
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4927528155F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EB06FB8;
-	Tue,  5 Dec 2023 03:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93DC579F2;
+	Tue,  5 Dec 2023 03:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wif4Utfm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duhfVy9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09496FAF;
-	Tue,  5 Dec 2023 03:30:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1401BC433C8;
-	Tue,  5 Dec 2023 03:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525778F6C;
+	Tue,  5 Dec 2023 03:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFD2C433C7;
+	Tue,  5 Dec 2023 03:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747011;
-	bh=45b+mT60Si3a/ccbqbaRFVK1PCEgrKSkjVWodhVIb7A=;
+	s=korg; t=1701746774;
+	bh=2pTBKZFJ8BKLbDK+56URAmaXuuMPUF39C6U4fsc8/hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wif4UtfmnqiTYv/k2DjFEzEYpT0+lxsOddhyu9sEW9AVtQuXnU30/RmnmmVsoP18L
-	 6J9s3cmrZs+kfE4oYirz/pzL8XKH+a2UuPVzxx0IMBnA7+glcxKtodY/YGFiBnMh5z
-	 gN157BSdll+PftGzZX8quIU4REJ1DHiPF76KDWtw=
+	b=duhfVy9D0f/bH6sm7g945h4oceCFjh4NK/SCBlsVczwsGAXNNEIFkb9bM+kcmZoCb
+	 RisTNL9brXyB8Eg9Y8jqaoY/7szztpe6xfyuhL7u1OfHlp9m8hT661oHpUbxE6/p+P
+	 EzB8ChBpu22zALbyXTdWWX9ry/vKviMzjyDbjBn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wu Bo <bo.wu@vivo.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 026/107] dm verity: initialize fec io before freeing it
+	Marek Vasut <marex@denx.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 03/71] drm/panel: simple: Fix Innolux G101ICE-L01 timings
 Date: Tue,  5 Dec 2023 12:16:01 +0900
-Message-ID: <20231205031533.238593545@linuxfoundation.org>
+Message-ID: <20231205031518.076429523@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +53,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wu Bo <bo.wu@vivo.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 7be05bdfb4efc1396f7692562c7161e2b9f595f1 upstream.
+[ Upstream commit 3f9a91b6c00e655d27bd785dcda1742dbdc31bda ]
 
-If BIO error, verity_end_io() can call verity_finish_io() before
-verity_fec_init_io(). Therefore, fec_io->rs is not initialized and
-may crash when doing memory freeing in verity_fec_finish_io().
+The Innolux G101ICE-L01 datasheet [1] page 17 table
+6.1 INPUT SIGNAL TIMING SPECIFICATIONS
+indicates that maximum vertical blanking time is 40 lines.
+Currently the driver uses 29 lines.
 
-Crash call stack:
- die+0x90/0x2b8
- __do_kernel_fault+0x260/0x298
- do_bad_area+0x2c/0xdc
- do_translation_fault+0x3c/0x54
- do_mem_abort+0x54/0x118
- el1_abort+0x38/0x5c
- el1h_64_sync_handler+0x50/0x90
- el1h_64_sync+0x64/0x6c
- free_rs+0x18/0xac
- fec_rs_free+0x10/0x24
- mempool_free+0x58/0x148
- verity_fec_finish_io+0x4c/0xb0
- verity_end_io+0xb8/0x150
+Fix it, and since this panel is a DE panel, adjust the timings
+to make them less hostile to controllers which cannot do 1 px
+HSA/VSA, distribute the delays evenly between all three parts.
 
-Cc: stable@vger.kernel.org      # v6.0+
-Fixes: 5721d4e5a9cd ("dm verity: Add optional "try_verify_in_tasklet" feature")
-Signed-off-by: Wu Bo <bo.wu@vivo.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://www.data-modul.com/sites/default/files/products/G101ICE-L01-C2-specification-12042389.pdf
+
+Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231008223256.279196-1-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-target.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -631,7 +631,6 @@ static void verity_work(struct work_stru
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 35771e0e69fa6..eb7717eb26147 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1261,13 +1261,13 @@ static const struct panel_desc innolux_g070y2_l01 = {
+ static const struct display_timing innolux_g101ice_l01_timing = {
+ 	.pixelclock = { 60400000, 71100000, 74700000 },
+ 	.hactive = { 1280, 1280, 1280 },
+-	.hfront_porch = { 41, 80, 100 },
+-	.hback_porch = { 40, 79, 99 },
+-	.hsync_len = { 1, 1, 1 },
++	.hfront_porch = { 30, 60, 70 },
++	.hback_porch = { 30, 60, 70 },
++	.hsync_len = { 22, 40, 60 },
+ 	.vactive = { 800, 800, 800 },
+-	.vfront_porch = { 5, 11, 14 },
+-	.vback_porch = { 4, 11, 14 },
+-	.vsync_len = { 1, 1, 1 },
++	.vfront_porch = { 3, 8, 14 },
++	.vback_porch = { 3, 8, 14 },
++	.vsync_len = { 4, 7, 12 },
+ 	.flags = DISPLAY_FLAGS_DE_HIGH,
+ };
  
- 	io->in_tasklet = false;
- 
--	verity_fec_init_io(io);
- 	verity_finish_io(io, errno_to_blk_status(verity_verify_io(io)));
- }
- 
-@@ -779,6 +778,8 @@ static int verity_map(struct dm_target *
- 	bio->bi_private = io;
- 	io->iter = bio->bi_iter;
- 
-+	verity_fec_init_io(io);
-+
- 	verity_submit_prefetch(v, io);
- 
- 	submit_bio_noacct(bio);
+-- 
+2.42.0
+
 
 
 
