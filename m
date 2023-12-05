@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-4268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56728046C7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD449804748
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 809022819A1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97738281586
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C05A59;
-	Tue,  5 Dec 2023 03:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355918BF1;
+	Tue,  5 Dec 2023 03:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SK0YempZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hr/HEod2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA176FB1;
-	Tue,  5 Dec 2023 03:31:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BBAC433C7;
-	Tue,  5 Dec 2023 03:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711B6FB1;
+	Tue,  5 Dec 2023 03:36:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C66C433C8;
+	Tue,  5 Dec 2023 03:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747085;
-	bh=8Z5ybYsUxr3h1cGV3fHHROKZjTlZXJWK8NOivwq2vco=;
+	s=korg; t=1701747414;
+	bh=/lZL6EGW7SqVb9s70SWXIaqNzvIdCRjXBxZJ0Ik788c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SK0YempZy/70Z7Px5YU40HMb+b1NKqJ/hS/lA7n6CfDOT3N95pNEBUMFthPDeLzNb
-	 /ZBLGNEUbukCpM9B8/M1mkro7zHOXesivMOp556DZBrKR2PuSvU50U+fxP4IXwTIdJ
-	 ubAIiuTZclVxHySmJu7QSKuvdRjh5cnjzyoBTTMs=
+	b=hr/HEod22lnpdIbhGOfwhn4Ss5cApXnjTYBzqHaiK6g/p1KR7QqRMyKrOT28Nkq0L
+	 6/CDoEBOH9ghnd7+7rnzxe3BZ4ZMn6wslk7GV8MOG853xYLe7ajDka/di4f3s2Ue3G
+	 kXpRRvJ0J6eEKfzgIEKvadddsmDFiv4rzCdWY/Zc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 054/107] wifi: cfg80211: fix CQM for non-range use
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 5.10 068/135] USB: dwc3: qcom: fix wakeup after probe deferral
 Date: Tue,  5 Dec 2023 12:16:29 +0900
-Message-ID: <20231205031534.727119128@linuxfoundation.org>
+Message-ID: <20231205031534.731040752@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,146 +52,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit 7e7efdda6adb385fbdfd6f819d76bc68c923c394 upstream.
+commit 41f5a0973259db9e4e3c9963d36505f80107d1a0 upstream.
 
-My prior race fix here broke CQM when ranges aren't used, as
-the reporting worker now requires the cqm_config to be set in
-the wdev, but isn't set when there's no range configured.
+The Qualcomm glue driver is overriding the interrupt trigger types
+defined by firmware when requesting the wakeup interrupts during probe.
 
-Rather than continuing to special-case the range version, set
-the cqm_config always and configure accordingly, also tracking
-if range was used or not to be able to clear the configuration
-appropriately with the same API, which was actually not right
-if both were implemented by a driver for some reason, as is
-the case with mac80211 (though there the implementations are
-equivalent so it doesn't matter.)
+This can lead to a failure to map the DP/DM wakeup interrupts after a
+probe deferral as the firmware defined trigger types do not match the
+type used for the initial mapping:
 
-Also, the original multiple-RSSI commit lost checking for the
-callback, so might have potentially crashed if a driver had
-neither implementation, and userspace tried to use it despite
-not being advertised as supported.
+	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
 
-Cc: stable@vger.kernel.org
-Fixes: 4a4b8169501b ("cfg80211: Accept multiple RSSI thresholds for CQM")
-Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this by not overriding the firmware provided trigger types when
+requesting the wakeup interrupts.
+
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231120161607.7405-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.h    |    1 
- net/wireless/nl80211.c |   50 ++++++++++++++++++++++++++++++-------------------
- 2 files changed, 32 insertions(+), 19 deletions(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -297,6 +297,7 @@ struct cfg80211_cqm_config {
- 	u32 rssi_hyst;
- 	s32 last_rssi_event_value;
- 	enum nl80211_cqm_rssi_threshold_event last_rssi_event_type;
-+	bool use_range_api;
- 	int n_rssi_thresholds;
- 	s32 rssi_thresholds[];
- };
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12574,10 +12574,6 @@ static int cfg80211_cqm_rssi_update(stru
- 	int i, n, low_index;
- 	int err;
- 
--	/* RSSI reporting disabled? */
--	if (!cqm_config)
--		return rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
--
- 	/*
- 	 * Obtain current RSSI value if possible, if not and no RSSI threshold
- 	 * event has been received yet, we should receive an event after a
-@@ -12652,18 +12648,6 @@ static int nl80211_set_cqm_rssi(struct g
- 	    wdev->iftype != NL80211_IFTYPE_P2P_CLIENT)
- 		return -EOPNOTSUPP;
- 
--	if (n_thresholds <= 1 && rdev->ops->set_cqm_rssi_config) {
--		if (n_thresholds == 0 || thresholds[0] == 0) /* Disabling */
--			return rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
--
--		return rdev_set_cqm_rssi_config(rdev, dev,
--						thresholds[0], hysteresis);
--	}
--
--	if (!wiphy_ext_feature_isset(&rdev->wiphy,
--				     NL80211_EXT_FEATURE_CQM_RSSI_LIST))
--		return -EOPNOTSUPP;
--
- 	if (n_thresholds == 1 && thresholds[0] == 0) /* Disabling */
- 		n_thresholds = 0;
- 
-@@ -12671,6 +12655,20 @@ static int nl80211_set_cqm_rssi(struct g
- 	old = rcu_dereference_protected(wdev->cqm_config,
- 					lockdep_is_held(&wdev->mtx));
- 
-+	/* if already disabled just succeed */
-+	if (!n_thresholds && !old)
-+		return 0;
-+
-+	if (n_thresholds > 1) {
-+		if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
-+		    !rdev->ops->set_cqm_rssi_range_config)
-+			return -EOPNOTSUPP;
-+	} else {
-+		if (!rdev->ops->set_cqm_rssi_config)
-+			return -EOPNOTSUPP;
-+	}
-+
- 	if (n_thresholds) {
- 		cqm_config = kzalloc(struct_size(cqm_config, rssi_thresholds,
- 						 n_thresholds),
-@@ -12685,13 +12683,26 @@ static int nl80211_set_cqm_rssi(struct g
- 		memcpy(cqm_config->rssi_thresholds, thresholds,
- 		       flex_array_size(cqm_config, rssi_thresholds,
- 				       n_thresholds));
-+		cqm_config->use_range_api = n_thresholds > 1 ||
-+					    !rdev->ops->set_cqm_rssi_config;
- 
- 		rcu_assign_pointer(wdev->cqm_config, cqm_config);
-+
-+		if (cqm_config->use_range_api)
-+			err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
-+		else
-+			err = rdev_set_cqm_rssi_config(rdev, dev,
-+						       thresholds[0],
-+						       hysteresis);
- 	} else {
- 		RCU_INIT_POINTER(wdev->cqm_config, NULL);
-+		/* if enabled as range also disable via range */
-+		if (old->use_range_api)
-+			err = rdev_set_cqm_rssi_range_config(rdev, dev, 0, 0);
-+		else
-+			err = rdev_set_cqm_rssi_config(rdev, dev, 0, 0);
- 	}
- 
--	err = cfg80211_cqm_rssi_update(rdev, dev, cqm_config);
- 	if (err) {
- 		rcu_assign_pointer(wdev->cqm_config, old);
- 		kfree_rcu(cqm_config, rcu_head);
-@@ -18758,10 +18769,11 @@ void cfg80211_cqm_rssi_notify_work(struc
- 	wdev_lock(wdev);
- 	cqm_config = rcu_dereference_protected(wdev->cqm_config,
- 					       lockdep_is_held(&wdev->mtx));
--	if (!wdev->cqm_config)
-+	if (!cqm_config)
- 		goto unlock;
- 
--	cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
-+	if (cqm_config->use_range_api)
-+		cfg80211_cqm_rssi_update(rdev, wdev->netdev, cqm_config);
- 
- 	rssi_level = cqm_config->last_rssi_event_value;
- 	rssi_event = cqm_config->last_rssi_event_type;
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -492,7 +492,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
+@@ -507,7 +507,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DP_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
+@@ -522,7 +522,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DM_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
+@@ -537,7 +537,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 SS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
 
 
 
