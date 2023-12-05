@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C93E28045A1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 788D9804659
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 244BEB20AD4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2447A1F21418
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FFAE6FB8;
-	Tue,  5 Dec 2023 03:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCEE8BF1;
+	Tue,  5 Dec 2023 03:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMxpmoX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FoloGZ7Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258FA6AC2;
-	Tue,  5 Dec 2023 03:19:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941CAC433C7;
-	Tue,  5 Dec 2023 03:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BBAF6FB1;
+	Tue,  5 Dec 2023 03:26:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00D5C433CA;
+	Tue,  5 Dec 2023 03:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746377;
-	bh=5GX1XRD9ZY0HRVS/mGiveQT4SqzeJUgZiQlTsX4JvjE=;
+	s=korg; t=1701746798;
+	bh=VLgoqY5UaIBzSdDlG1TXfOO1Lx2Y510GztrBb3RA1Uc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMxpmoX1smG5cNZBSLnsJnZSdjj+8GCYvgGjZNYSf+qW6wUG+NG0/lBUcGSR3Y3Jj
-	 0bnNfbkCzGTpXWa/ivcCYrKQHsLbxkNyI0JllSbRf0X6rUtSHnejZ22afz36XmBrg6
-	 uK/q8ftAYhhDRKupAV7bKwql+Jrt1f5GfDfXaMoM=
+	b=FoloGZ7Yi3JRt0+qNyAIqoTzFeud2w+7zYMZP9ajZBCtMeFAOpFRjQbeQ+4d3nv9P
+	 On66nVeT+BbjgyUm4ZiX8LXmM3Z6t66nP9fPPUaGXyJPq/a9IvV0MCFs6q9pYlYSaf
+	 OhOif8l0Qcl4ESBr9nW5g46CC2RMYlzeY6RhRlJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Fragoso <victorffs@hotmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 16/30] USB: serial: option: add Fibocom L7xx modules
+	Coly Li <colyli@suse.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 25/71] bcache: check return value from btree_node_alloc_replacement()
 Date: Tue,  5 Dec 2023 12:16:23 +0900
-Message-ID: <20231205031512.451532641@linuxfoundation.org>
+Message-ID: <20231205031519.322813520@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Fragoso <victorffs@hotmail.com>
+From: Coly Li <colyli@suse.de>
 
-commit e389fe8b68137344562fb6e4d53d8a89ef6212dd upstream.
+commit 777967e7e9f6f5f3e153abffb562bffaf4430d26 upstream.
 
-Add support for Fibocom L716-EU module series.
+In btree_gc_rewrite_node(), pointer 'n' is not checked after it returns
+from btree_gc_rewrite_node(). There is potential possibility that 'n' is
+a non NULL ERR_PTR(), referencing such error code is not permitted in
+following code. Therefore a return value checking is necessary after 'n'
+is back from btree_node_alloc_replacement().
 
-L716-EU is a Fibocom module based on ZTE's V3E/V3T chipset.
-
-Device creates multiple interfaces when connected to PC as follows:
- - Network Interface: ECM or RNDIS (set by FW or AT Command)
- - ttyUSB0: AT port
- - ttyUSB1: Modem port
- - ttyUSB2: AT2 port
- - ttyUSB3: Trace port for log information
- - ADB: ADB port for debugging. ("Driver=usbfs" when ADB server enabled)
-
-Here are the outputs of lsusb and usb-devices:
-$ ls /dev/ttyUSB*
-/dev/ttyUSB0  /dev/ttyUSB1  /dev/ttyUSB2  /dev/ttyUSB3
-
-usb-devices:
-L716-EU (ECM mode):
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 51 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
-S:  Manufacturer=Fibocom,Incorporated
-S:  Product=Fibocom Mobile Boardband
-S:  SerialNumber=1234567890ABCDEF
-C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-L716-EU (RNDIS mode):
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 49 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
-S:  Manufacturer=Fibocom,Incorporated
-S:  Product=Fibocom Mobile Boardband
-S:  SerialNumber=1234567890ABCDEF
-C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=87(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Victor Fragoso <victorffs@hotmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc:  <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231120052503.6122-3-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/bcache/btree.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2253,6 +2253,7 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1782, 0x4d11, 0xff) },			/* Fibocom L610 (ECM/RNDIS mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0001, 0xff, 0xff, 0xff) },	/* Fibocom L716-EU (ECM/RNDIS mode) */
- 	{ USB_DEVICE(0x2cb7, 0x0104),						/* Fibocom NL678 series */
- 	  .driver_info = RSVD(4) | RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0105, 0xff),			/* Fibocom NL678 series */
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1543,6 +1543,8 @@ static int btree_gc_rewrite_node(struct
+ 		return 0;
+ 
+ 	n = btree_node_alloc_replacement(replace, NULL);
++	if (IS_ERR(n))
++		return 0;
+ 
+ 	/* recheck reserve after allocating replacement node */
+ 	if (btree_check_reserve(b, NULL)) {
 
 
 
