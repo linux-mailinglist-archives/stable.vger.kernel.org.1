@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB088046A5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE791804612
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F8DB20CEA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98A4C28344B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEDB79E3;
-	Tue,  5 Dec 2023 03:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3560B79E3;
+	Tue,  5 Dec 2023 03:24:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3ixYReA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RafQw1KR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B96FAF;
-	Tue,  5 Dec 2023 03:29:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614B9C433C7;
-	Tue,  5 Dec 2023 03:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26A66FAF;
+	Tue,  5 Dec 2023 03:24:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E1EC433C8;
+	Tue,  5 Dec 2023 03:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746999;
-	bh=4XbSE23RpOL+fwXBx+ia6LeSIh3PgYuA8ysyHBEn93Q=;
+	s=korg; t=1701746662;
+	bh=AnIDFACfSZ52881f4LcLv0oUGb2W3JJyZAt1EYFgBog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3ixYReA90q6RmYc/X6uDPxXSxuhlqxe6hqizlevulSiF6VCoFRq7gUgdGECjOOGY
-	 VUsSa6+QBBkmbqX0HztUMAVY8vxBD6RetPre2bDkOzyZEKhGrVsTtJhthYSET015sY
-	 lWtSBygdztfHMvz150iz3w9GRfdFiaMJiEChIBtk=
+	b=RafQw1KRXPB+CWaey4WKBiuG3kTdVAqMHt9dQ99681c1uLEy7EFa5CeZrY47RtAA+
+	 VrXerZVc4gCj44I5yJRcj4m2FqmWsmYSBvnnJm1zPluxIkBZ5Bv/ng+Wol7vJLA7wW
+	 DLmQLzMWl4yFSWhzJYCELEAh5oBW116F0dXM/Plc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Syed Hassan <syed.hassan@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 022/107] drm/amd/display: Remove min_dst_y_next_start check for Z8
+	Greg Ungerer <gerg@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 085/134] net: dsa: mv88e6xxx: fix marvell 6350 switch probing
 Date: Tue,  5 Dec 2023 12:15:57 +0900
-Message-ID: <20231205031532.999490950@linuxfoundation.org>
+Message-ID: <20231205031540.864496338@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,75 +54,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Greg Ungerer <gerg@kernel.org>
 
-commit 08448812acb2ab701cd5ff7e1a1dc97f7f10260c upstream.
+[ Upstream commit b3f1a164c7f742503dc7159011f7ad6b092b660e ]
 
-[Why]
-Flickering occurs on DRR supported panels when engaged in DRR due to
-min_dst_y_next becoming larger than the frame size itself.
+As of commit de5c9bf40c45 ("net: phylink: require supported_interfaces to
+be filled") Marvell 88e6350 switches fail to be probed:
 
-[How]
-In general, we should be able to enter Z8 when this is engaged but it
-might be a net power loss even if the calculation wasn't bugged.
+    ...
+    mv88e6085 d0072004.mdio-mii:11: switch 0x3710 detected: Marvell 88E6350, revision 2
+    mv88e6085 d0072004.mdio-mii:11: phylink: error: empty supported_interfaces
+    error creating PHYLINK: -22
+    mv88e6085: probe of d0072004.mdio-mii:11 failed with error -22
+    ...
 
-Don't support enabling Z8 during the DRR region.
+The problem stems from the use of mv88e6185_phylink_get_caps() to get
+the device capabilities. Create a new dedicated phylink_get_caps for the
+6351 family (which the 6350 is one of) to properly support their set of
+capabilities.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+According to chip.h the 6351 switch family includes the 6171, 6175, 6350
+and 6351 switches, so update each of these to use the correct
+phylink_get_caps.
+
+Fixes: de5c9bf40c45 ("net: phylink: require supported_interfaces to be filled")
+Signed-off-by: Greg Ungerer <gerg@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c |   15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+ drivers/net/dsa/mv88e6xxx/chip.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -948,10 +948,8 @@ static enum dcn_zstate_support_state  de
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index ab434a77b059a..6d7256ea477a1 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -577,6 +577,18 @@ static void mv88e6250_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
+ 	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100;
+ }
+ 
++static void mv88e6351_phylink_get_caps(struct mv88e6xxx_chip *chip, int port,
++				       struct phylink_config *config)
++{
++	unsigned long *supported = config->supported_interfaces;
++
++	/* Translate the default cmode */
++	mv88e6xxx_translate_cmode(chip->ports[port].cmode, supported);
++
++	config->mac_capabilities = MAC_SYM_PAUSE | MAC_10 | MAC_100 |
++				   MAC_1000FD;
++}
++
+ static int mv88e6352_get_port4_serdes_cmode(struct mv88e6xxx_chip *chip)
  {
- 	int plane_count;
- 	int i;
--	unsigned int min_dst_y_next_start_us;
+ 	u16 reg, val;
+@@ -4340,7 +4352,7 @@ static const struct mv88e6xxx_ops mv88e6171_ops = {
+ 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
+ 	.stu_getnext = mv88e6352_g1_stu_getnext,
+ 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e6351_phylink_get_caps,
+ };
  
- 	plane_count = 0;
--	min_dst_y_next_start_us = 0;
- 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
- 		if (context->res_ctx.pipe_ctx[i].plane_state)
- 			plane_count++;
-@@ -973,26 +971,15 @@ static enum dcn_zstate_support_state  de
- 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
- 		struct dc_link *link = context->streams[0]->sink->link;
- 		struct dc_stream_status *stream_status = &context->stream_status[0];
--		struct dc_stream_state *current_stream = context->streams[0];
- 		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
- 		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
- 		bool is_pwrseq0 = link->link_index == 0;
--		bool isFreesyncVideo;
--
--		isFreesyncVideo = current_stream->adjust.v_total_min == current_stream->adjust.v_total_max;
--		isFreesyncVideo = isFreesyncVideo && current_stream->timing.v_total < current_stream->adjust.v_total_min;
--		for (i = 0; i < dc->res_pool->pipe_count; i++) {
--			if (context->res_ctx.pipe_ctx[i].stream == current_stream && isFreesyncVideo) {
--				min_dst_y_next_start_us = context->res_ctx.pipe_ctx[i].dlg_regs.min_dst_y_next_start_us;
--				break;
--			}
--		}
+ static const struct mv88e6xxx_ops mv88e6172_ops = {
+@@ -4440,7 +4452,7 @@ static const struct mv88e6xxx_ops mv88e6175_ops = {
+ 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
+ 	.stu_getnext = mv88e6352_g1_stu_getnext,
+ 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e6351_phylink_get_caps,
+ };
  
- 		/* Don't support multi-plane configurations */
- 		if (stream_status->plane_count > 1)
- 			return DCN_ZSTATE_SUPPORT_DISALLOW;
+ static const struct mv88e6xxx_ops mv88e6176_ops = {
+@@ -5069,7 +5081,7 @@ static const struct mv88e6xxx_ops mv88e6350_ops = {
+ 	.vtu_loadpurge = mv88e6352_g1_vtu_loadpurge,
+ 	.stu_getnext = mv88e6352_g1_stu_getnext,
+ 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e6351_phylink_get_caps,
+ };
  
--		if (is_pwrseq0 && (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || min_dst_y_next_start_us > 5000))
-+		if (is_pwrseq0 && context->bw_ctx.dml.vba.StutterPeriod > 5000.0)
- 			return DCN_ZSTATE_SUPPORT_ALLOW;
- 		else if (is_pwrseq0 && link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
- 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_Z10_ONLY : DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY;
+ static const struct mv88e6xxx_ops mv88e6351_ops = {
+@@ -5117,7 +5129,7 @@ static const struct mv88e6xxx_ops mv88e6351_ops = {
+ 	.stu_loadpurge = mv88e6352_g1_stu_loadpurge,
+ 	.avb_ops = &mv88e6352_avb_ops,
+ 	.ptp_ops = &mv88e6352_ptp_ops,
+-	.phylink_get_caps = mv88e6185_phylink_get_caps,
++	.phylink_get_caps = mv88e6351_phylink_get_caps,
+ };
+ 
+ static const struct mv88e6xxx_ops mv88e6352_ops = {
+-- 
+2.42.0
+
 
 
 
