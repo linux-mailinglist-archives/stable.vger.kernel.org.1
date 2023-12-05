@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A848046F3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3FE3804802
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA49F1C20DDF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA1928178B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D9A8BF1;
-	Tue,  5 Dec 2023 03:33:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229668C03;
+	Tue,  5 Dec 2023 03:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDGWlF7Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVD0xTA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B955C6FB1;
-	Tue,  5 Dec 2023 03:33:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54B40C433C8;
-	Tue,  5 Dec 2023 03:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D5E6FB0;
+	Tue,  5 Dec 2023 03:44:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC2C433C7;
+	Tue,  5 Dec 2023 03:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747201;
-	bh=NBjilbU3J1igLDc3Q9XAB4aaps6dFXfyicAheDTZil8=;
+	s=korg; t=1701747892;
+	bh=lVa4rA/SEAl0ggfEqQAxZpfJahXkjMhsvQ+zOM0El8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sDGWlF7ZD9A+NmHkHQjzta713hmXs4DpDOPB/JpmNu7X/g51VA7gc0FBOshWqUKsU
-	 AvkxdYPdG6c7siJvUyWlL9JCrfTuEpJ87d+O/tqzfvGAtVRplssZUN0945y/TuQnCd
-	 dwNDdZ3epNkcKgyIwnGgShi6Ld6+9kNtLyGfXUO0=
+	b=IVD0xTA9Q6r9hRPqnnTa8ycQJnJU2exuh4Uym+rQ6kCyJ015RnytjZXqBZZJ4GeRS
+	 PHLKBOLTSEFwHOi+xYAnyrwDC1/oWOWhD+vL6PRHu0diVrRRK9Rt1xj4C2K2F2uAD7
+	 978/kAI0Wu9O+vs8wfn4xNzkafMe5y9kOz5y6gqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Marek Vasut <marex@denx.de>,
-	Fabio Estevam <festevam@denx.de>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/107] cpufreq: imx6q: Dont disable 792 Mhz OPP unnecessarily
+	Stefan Haberland <sth@linux.ibm.com>,
+	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.4 36/94] s390/dasd: protect device queue against concurrent access
 Date: Tue,  5 Dec 2023 12:17:04 +0900
-Message-ID: <20231205031537.236098485@linuxfoundation.org>
+Message-ID: <20231205031524.910053737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +51,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Jan Höppner <hoeppner@linux.ibm.com>
 
-[ Upstream commit 2e4e0984c7d696cc74cf2fd7e7f62997f0e9ebe6 ]
+commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
 
-For a 900MHz i.MX6ULL CPU the 792MHz OPP is disabled. There is no
-convincing reason to disable this OPP. If a CPU can run at 900MHz,
-it should also be able to cope with 792MHz. Looking at the voltage
-level of 792MHz in [1] (page 24, table 10. "Operating Ranges") the
-current defined OPP is above the minimum. So the voltage level
-shouldn't be a problem. However in [2] (page 24, table 10.
-"Operating Ranges"), it is not mentioned that 792MHz OPP isn't
-allowed. Change it to only disable 792MHz OPP for i.MX6ULL types
-below 792 MHz.
+In dasd_profile_start() the amount of requests on the device queue are
+counted. The access to the device queue is unprotected against
+concurrent access. With a lot of parallel I/O, especially with alias
+devices enabled, the device queue can change while dasd_profile_start()
+is accessing the queue. In the worst case this leads to a kernel panic
+due to incorrect pointer accesses.
 
-[1] https://www.nxp.com/docs/en/data-sheet/IMX6ULLIEC.pdf
-[2] https://www.nxp.com/docs/en/data-sheet/IMX6ULLCEC.pdf
+Fix this by taking the device lock before accessing the queue and
+counting the requests. Additionally the check for a valid profile data
+pointer can be done earlier to avoid unnecessary locking in a hot path.
 
-Fixes: 0aa9abd4c212 ("cpufreq: imx6q: check speed grades for i.MX6ULL")
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Fabio Estevam <festevam@denx.de>
-[ Viresh: Edited subject ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/imx6q-cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/block/dasd.c |   24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index ae834fb9bfbd5..925fc17eaacb2 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -327,7 +327,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 			imx6x_disable_freq_in_opp(dev, 696000000);
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -737,18 +737,20 @@ static void dasd_profile_start(struct da
+ 	 * we count each request only once.
+ 	 */
+ 	device = cqr->startdev;
+-	if (device->profile.data) {
+-		counter = 1; /* request is not yet queued on the start device */
+-		list_for_each(l, &device->ccw_queue)
+-			if (++counter >= 31)
+-				break;
+-	}
++	if (!device->profile.data)
++		return;
++
++	spin_lock(get_ccwdev_lock(device->cdev));
++	counter = 1; /* request is not yet queued on the start device */
++	list_for_each(l, &device->ccw_queue)
++		if (++counter >= 31)
++			break;
++	spin_unlock(get_ccwdev_lock(device->cdev));
++
+ 	spin_lock(&device->profile.lock);
+-	if (device->profile.data) {
+-		device->profile.data->dasd_io_nr_req[counter]++;
+-		if (rq_data_dir(req) == READ)
+-			device->profile.data->dasd_read_nr_req[counter]++;
+-	}
++	device->profile.data->dasd_io_nr_req[counter]++;
++	if (rq_data_dir(req) == READ)
++		device->profile.data->dasd_read_nr_req[counter]++;
+ 	spin_unlock(&device->profile.lock);
+ }
  
- 	if (of_machine_is_compatible("fsl,imx6ull")) {
--		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
-+		if (val < OCOTP_CFG3_6ULL_SPEED_792MHZ)
- 			imx6x_disable_freq_in_opp(dev, 792000000);
- 
- 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
--- 
-2.42.0
-
 
 
 
