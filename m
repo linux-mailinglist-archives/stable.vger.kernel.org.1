@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-4109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD18F80460A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EABB8046D0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56B2C1F211B9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82455B20C75
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8CC79E3;
-	Tue,  5 Dec 2023 03:24:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1708A59;
+	Tue,  5 Dec 2023 03:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIOuhxvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JX2kH57p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA06FAF;
-	Tue,  5 Dec 2023 03:24:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3764FC433C7;
-	Tue,  5 Dec 2023 03:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AB46FB1;
+	Tue,  5 Dec 2023 03:31:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C11D3C433C7;
+	Tue,  5 Dec 2023 03:31:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746641;
-	bh=ZgL+YSbBuQQggjJ4OnS68qQHGHhttgnX94mRfetqnbs=;
+	s=korg; t=1701747110;
+	bh=2PHNkkB/AecQOvty3x82+68bKGKZe5/+HshK2Y3znpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hIOuhxvEurlJzjgyHnN2Iu9F6ICLh5MC5PdzdV1782es/Y44KUjQxxXviPbChewtE
-	 Yr8ANfwVllIz2w1Qc6ybfEmBk1MCv7EUD9z5UrNpFAYYEdSBcXeIL5i2muHjWpriw4
-	 IHvOdsTTElMce5/z15eSud8Wu+DgrfOfioabQRpY=
+	b=JX2kH57pJvHCvmKENuOxnUcDNdRX0OLtKsv+jEh5dSsDrevDvP8Qbtroi+/fgXzG/
+	 +wEA2gNvONceRA78fJXPFZ89i+SIM8t5SxcQYyP39D8LAfMwbPcHxOydeAGt60FvWr
+	 GbZ2Sa3OVcjLaYnYCfUjpdXg/pzvkgNYe2gZ7muc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/134] r8169: prevent potential deadlock in rtl8169_close
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 038/107] parisc: Use natural CPU alignment for bug_table
 Date: Tue,  5 Dec 2023 12:16:13 +0900
-Message-ID: <20231205031541.823152811@linuxfoundation.org>
+Message-ID: <20231205031533.824542180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +51,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 91d3d149978ba7b238198dd80e4b823756aa7cfa ]
+commit fe76a1349f235969381832c83d703bc911021eb6 upstream.
 
-ndo_stop() is RTNL-protected by net core, and the worker function takes
-RTNL as well. Therefore we will deadlock when trying to execute a
-pending work synchronously. To fix this execute any pending work
-asynchronously. This will do no harm because netif_running() is false
-in ndo_stop(), and therefore the work function is effectively a no-op.
-However we have to ensure that no task is running or pending after
-rtl_remove_one(), therefore add a call to cancel_work_sync().
+Make sure that the __bug_table section gets 32- or 64-bit aligned,
+depending if a 32- or 64-bit kernel is being built.
+Mark it non-writeable and use .blockz instead of the .org assembler
+directive to pad the struct.
 
-Fixes: abe5fc42f9ce ("r8169: use RTNL to protect critical sections")
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/12395867-1d17-4cac-aa7d-c691938fcddf@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org   # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/parisc/include/asm/bug.h | 30 ++++++++++++++++++------------
+ 1 file changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index a43e33e4b25e6..62cabeeb842a1 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -4694,7 +4694,7 @@ static int rtl8169_close(struct net_device *dev)
- 	rtl8169_down(tp);
- 	rtl8169_rx_clear(tp);
+diff --git a/arch/parisc/include/asm/bug.h b/arch/parisc/include/asm/bug.h
+index 4b6d60b94124..b9cad0bb4461 100644
+--- a/arch/parisc/include/asm/bug.h
++++ b/arch/parisc/include/asm/bug.h
+@@ -28,13 +28,15 @@
+ 	do {								\
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+-			     "\t.pushsection __bug_table,\"aw\"\n"	\
++			     "\t.pushsection __bug_table,\"a\"\n"	\
++			     "\t.align %4\n"				\
+ 			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
+-			     "\t.short %c1, %c2\n"			\
+-			     "\t.org 2b+%c3\n"				\
++			     "\t.short %1, %2\n"			\
++			     "\t.blockz %3-2*%4-2*2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (__FILE__), "i" (__LINE__),	\
+-			     "i" (0), "i" (sizeof(struct bug_entry)) ); \
++			     "i" (0), "i" (sizeof(struct bug_entry)),	\
++			     "i" (sizeof(long)) );			\
+ 		unreachable();						\
+ 	} while(0)
  
--	cancel_work_sync(&tp->wk.work);
-+	cancel_work(&tp->wk.work);
+@@ -51,27 +53,31 @@
+ 	do {								\
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+-			     "\t.pushsection __bug_table,\"aw\"\n"	\
++			     "\t.pushsection __bug_table,\"a\"\n"	\
++			     "\t.align %4\n"				\
+ 			     "2:\t" ASM_WORD_INSN "1b, %c0\n"		\
+-			     "\t.short %c1, %c2\n"			\
+-			     "\t.org 2b+%c3\n"				\
++			     "\t.short %1, %2\n"			\
++			     "\t.blockz %3-2*%4-2*2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (__FILE__), "i" (__LINE__),	\
+ 			     "i" (BUGFLAG_WARNING|(flags)),		\
+-			     "i" (sizeof(struct bug_entry)) );		\
++			     "i" (sizeof(struct bug_entry)),		\
++			     "i" (sizeof(long)) );			\
+ 	} while(0)
+ #else
+ #define __WARN_FLAGS(flags)						\
+ 	do {								\
+ 		asm volatile("\n"					\
+ 			     "1:\t" PARISC_BUG_BREAK_ASM "\n"		\
+-			     "\t.pushsection __bug_table,\"aw\"\n"	\
++			     "\t.pushsection __bug_table,\"a\"\n"	\
++			     "\t.align %2\n"				\
+ 			     "2:\t" ASM_WORD_INSN "1b\n"		\
+-			     "\t.short %c0\n"				\
+-			     "\t.org 2b+%c1\n"				\
++			     "\t.short %0\n"				\
++			     "\t.blockz %1-%2-2\n"			\
+ 			     "\t.popsection"				\
+ 			     : : "i" (BUGFLAG_WARNING|(flags)),		\
+-			     "i" (sizeof(struct bug_entry)) );		\
++			     "i" (sizeof(struct bug_entry)),		\
++			     "i" (sizeof(long)) );			\
+ 	} while(0)
+ #endif
  
- 	free_irq(tp->irq, tp);
- 
-@@ -4928,6 +4928,8 @@ static void rtl_remove_one(struct pci_dev *pdev)
- 	if (pci_dev_run_wake(pdev))
- 		pm_runtime_get_noresume(&pdev->dev);
- 
-+	cancel_work_sync(&tp->wk.work);
-+
- 	unregister_netdev(tp->dev);
- 
- 	if (tp->dash_type != RTL_DASH_NONE)
 -- 
-2.42.0
+2.43.0
 
 
 
