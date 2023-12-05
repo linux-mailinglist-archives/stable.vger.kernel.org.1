@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33193804672
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62400804739
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B31F4B20C31
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 931F31C20CCE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251D06FB1;
-	Tue,  5 Dec 2023 03:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68038BF2;
+	Tue,  5 Dec 2023 03:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPqOlJCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSDZHiMi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90AC6FAF;
-	Tue,  5 Dec 2023 03:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA80C433C7;
-	Tue,  5 Dec 2023 03:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D576FB1;
+	Tue,  5 Dec 2023 03:36:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB148C433C8;
+	Tue,  5 Dec 2023 03:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746866;
-	bh=Sn4jvkafj6J4GRjAOi17u/wpxHjSxCpecMr4ywwKXSc=;
+	s=korg; t=1701747377;
+	bh=l9Jzy+HYIOG7dlzVdCvlwelfa3WApHPtJiWYnjO/wdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPqOlJCd+hORq7D0q0gwGtt89bTAoJJnMJKXScZEeMgxh/IHmh2cKJDFAZNXHjlNz
-	 FNthygJofzw49smCO1HR+OGeB6HWg/8OzRcK4tGrvcdZg8jicTN95KzCHQqXGariJD
-	 WBHajX1N3BwkMJsGAY7/YWXv9pZUSq6jMMb4O4xs=
+	b=sSDZHiMi1ftjhwO+S3mhOKdHp9yPtPFExrIxn6O37FJXS7HxTwiDAony5BJRT7Rif
+	 v21IYUPNDEC66mU5AnRKf2SGhnKDt7BEWUeZPoc/MRs/Q58jMVLG5/15+aqXNvCcfy
+	 DpsEsze+4QqqhKy2S+aEfn77n9sY2WlkCtvzcGIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 15/71] MIPS: KVM: Fix a build warning about variable set but not used
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 052/135] bcache: fixup multi-threaded bch_sectors_dirty_init() wake-up race
 Date: Tue,  5 Dec 2023 12:16:13 +0900
-Message-ID: <20231205031518.734268249@linuxfoundation.org>
+Message-ID: <20231205031533.763721282@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +51,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Mingzhe Zou <mingzhe.zou@easystack.cn>
 
-[ Upstream commit 83767a67e7b6a0291cde5681ec7e3708f3f8f877 ]
+commit 2faac25d7958c4761bb8cec54adb79f806783ad6 upstream.
 
-After commit 411740f5422a ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
-old_pte is no longer used in kvm_mips_map_page(). So remove it to fix a
-build warning about variable set but not used:
+We get a kernel crash about "unable to handle kernel paging request":
 
-   arch/mips/kvm/mmu.c: In function 'kvm_mips_map_page':
->> arch/mips/kvm/mmu.c:701:29: warning: variable 'old_pte' set but not used [-Wunused-but-set-variable]
-     701 |         pte_t *ptep, entry, old_pte;
-         |                             ^~~~~~~
+```dmesg
+[368033.032005] BUG: unable to handle kernel paging request at ffffffffad9ae4b5
+[368033.032007] PGD fc3a0d067 P4D fc3a0d067 PUD fc3a0e063 PMD 8000000fc38000e1
+[368033.032012] Oops: 0003 [#1] SMP PTI
+[368033.032015] CPU: 23 PID: 55090 Comm: bch_dirtcnt[0] Kdump: loaded Tainted: G           OE    --------- -  - 4.18.0-147.5.1.es8_24.x86_64 #1
+[368033.032017] Hardware name: Tsinghua Tongfang THTF Chaoqiang Server/072T6D, BIOS 2.4.3 01/17/2017
+[368033.032027] RIP: 0010:native_queued_spin_lock_slowpath+0x183/0x1d0
+[368033.032029] Code: 8b 02 48 85 c0 74 f6 48 89 c1 eb d0 c1 e9 12 83 e0
+03 83 e9 01 48 c1 e0 05 48 63 c9 48 05 c0 3d 02 00 48 03 04 cd 60 68 93
+ad <48> 89 10 8b 42 08 85 c0 75 09 f3 90 8b 42 08 85 c0 74 f7 48 8b 02
+[368033.032031] RSP: 0018:ffffbb48852abe00 EFLAGS: 00010082
+[368033.032032] RAX: ffffffffad9ae4b5 RBX: 0000000000000246 RCX: 0000000000003bf3
+[368033.032033] RDX: ffff97b0ff8e3dc0 RSI: 0000000000600000 RDI: ffffbb4884743c68
+[368033.032034] RBP: 0000000000000001 R08: 0000000000000000 R09: 000007ffffffffff
+[368033.032035] R10: ffffbb486bb01000 R11: 0000000000000001 R12: ffffffffc068da70
+[368033.032036] R13: 0000000000000003 R14: 0000000000000000 R15: 0000000000000000
+[368033.032038] FS:  0000000000000000(0000) GS:ffff97b0ff8c0000(0000) knlGS:0000000000000000
+[368033.032039] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[368033.032040] CR2: ffffffffad9ae4b5 CR3: 0000000fc3a0a002 CR4: 00000000003626e0
+[368033.032042] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[368033.032043] bcache: bch_cached_dev_attach() Caching rbd479 as bcache462 on set 8cff3c36-4a76-4242-afaa-7630206bc70b
+[368033.032045] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[368033.032046] Call Trace:
+[368033.032054]  _raw_spin_lock_irqsave+0x32/0x40
+[368033.032061]  __wake_up_common_lock+0x63/0xc0
+[368033.032073]  ? bch_ptr_invalid+0x10/0x10 [bcache]
+[368033.033502]  bch_dirty_init_thread+0x14c/0x160 [bcache]
+[368033.033511]  ? read_dirty_submit+0x60/0x60 [bcache]
+[368033.033516]  kthread+0x112/0x130
+[368033.033520]  ? kthread_flush_work_fn+0x10/0x10
+[368033.034505]  ret_from_fork+0x35/0x40
+```
 
-Cc: stable@vger.kernel.org
-Fixes: 411740f5422a960 ("KVM: MIPS/MMU: Implement KVM_CAP_SYNC_MMU")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310070530.aARZCSfh-lkp@intel.com/
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The crash occurred when call wake_up(&state->wait), and then we want
+to look at the value in the state. However, bch_sectors_dirty_init()
+is not found in the stack of any task. Since state is allocated on
+the stack, we guess that bch_sectors_dirty_init() has exited, causing
+bch_dirty_init_thread() to be unable to handle kernel paging request.
+
+In order to verify this idea, we added some printing information during
+wake_up(&state->wait). We find that "wake up" is printed twice, however
+we only expect the last thread to wake up once.
+
+```dmesg
+[  994.641004] alcache: bch_dirty_init_thread() wake up
+[  994.641018] alcache: bch_dirty_init_thread() wake up
+[  994.641523] alcache: bch_sectors_dirty_init() init exit
+```
+
+There is a race. If bch_sectors_dirty_init() exits after the first wake
+up, the second wake up will trigger this bug("unable to handle kernel
+paging request").
+
+Proceed as follows:
+
+bch_sectors_dirty_init
+    kthread_run ==============> bch_dirty_init_thread(bch_dirtcnt[0])
+            ...                         ...
+    atomic_inc(&state.started)          ...
+            ...                         ...
+    atomic_read(&state.enough)          ...
+            ...                 atomic_set(&state->enough, 1)
+    kthread_run ======================================================> bch_dirty_init_thread(bch_dirtcnt[1])
+            ...                 atomic_dec_and_test(&state->started)            ...
+    atomic_inc(&state.started)          ...                                     ...
+            ...                 wake_up(&state->wait)                           ...
+    atomic_read(&state.enough)                                          atomic_dec_and_test(&state->started)
+            ...                                                                 ...
+    wait_event(state.wait, atomic_read(&state.started) == 0)                    ...
+    return                                                                      ...
+                                                                        wake_up(&state->wait)
+
+We believe it is very common to wake up twice if there is no dirty, but
+crash is an extremely low probability event. It's hard for us to reproduce
+this issue. We attached and detached continuously for a week, with a total
+of more than one million attaches and only one crash.
+
+Putting atomic_inc(&state.started) before kthread_run() can avoid waking
+up twice.
+
+Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-8-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kvm/mmu.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/md/bcache/writeback.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kvm/mmu.c b/arch/mips/kvm/mmu.c
-index 098a7afd4d384..8c466d6d4736f 100644
---- a/arch/mips/kvm/mmu.c
-+++ b/arch/mips/kvm/mmu.c
-@@ -692,7 +692,7 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
- 	gfn_t gfn = gpa >> PAGE_SHIFT;
- 	int srcu_idx, err;
- 	kvm_pfn_t pfn;
--	pte_t *ptep, entry, old_pte;
-+	pte_t *ptep, entry;
- 	bool writeable;
- 	unsigned long prot_bits;
- 	unsigned long mmu_seq;
-@@ -765,7 +765,6 @@ static int kvm_mips_map_page(struct kvm_vcpu *vcpu, unsigned long gpa,
- 	entry = pfn_pte(pfn, __pgprot(prot_bits));
+--- a/drivers/md/bcache/writeback.c
++++ b/drivers/md/bcache/writeback.c
+@@ -958,17 +958,18 @@ void bch_sectors_dirty_init(struct bcach
+ 		if (atomic_read(&state.enough))
+ 			break;
  
- 	/* Write the PTE */
--	old_pte = *ptep;
- 	set_pte(ptep, entry);
++		atomic_inc(&state.started);
+ 		state.infos[i].state = &state;
+ 		state.infos[i].thread =
+ 			kthread_run(bch_dirty_init_thread, &state.infos[i],
+ 				    "bch_dirtcnt[%d]", i);
+ 		if (IS_ERR(state.infos[i].thread)) {
+ 			pr_err("fails to run thread bch_dirty_init[%d]\n", i);
++			atomic_dec(&state.started);
+ 			for (--i; i >= 0; i--)
+ 				kthread_stop(state.infos[i].thread);
+ 			goto out;
+ 		}
+-		atomic_inc(&state.started);
+ 	}
  
- 	err = 0;
--- 
-2.42.0
-
+ out:
 
 
 
