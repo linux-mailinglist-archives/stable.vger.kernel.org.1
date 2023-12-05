@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCE3804779
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3346804679
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6861C20E3F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4D61F213CF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3D38C05;
-	Tue,  5 Dec 2023 03:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E1D6FB8;
+	Tue,  5 Dec 2023 03:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNOZ1VpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9dbueIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3598BF8;
-	Tue,  5 Dec 2023 03:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83774C433C8;
-	Tue,  5 Dec 2023 03:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536AD6FAF;
+	Tue,  5 Dec 2023 03:28:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B75C433C7;
+	Tue,  5 Dec 2023 03:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747544;
-	bh=4tmy0UcTiu7RhmAbr3mUxvfKPfBq46XvPtwxd5kQVFE=;
+	s=korg; t=1701746884;
+	bh=OLMcxAH3F3oxeZY7ftIBC5Fg1EbOhVgSn0jbdH6Y6sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aNOZ1VpJtbjFZ8vJzLXIhotgaF9oBC4jV7E4fkB03Sqdd+BLHvTjhf2VxWRER4o8m
-	 P8DYk2wl1TBRINcTYtniBXv7qeNdAI3eQabXzTYcZD6zHcYb2TIUjvC0uBXL9RDpiU
-	 vsa0qgbBUjgWh10sC3+Pjxq9ZcQ2PBx3RO6Fpn6A=
+	b=P9dbueIcE+weQ/KuE/b8boTWrGjPeXedAsgnX+hLg/bxiIZROn5GcFPeUQ/asbWZm
+	 pC5zLHaBKWAYpVunfX51G/tUSnqndsKP/hO71smf1Dz0We7lnERHz3G6OwgklSKZUF
+	 UWBwoCPkdedLIgJflCsfaFif9/0dqpAfb3zdnqRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/135] usb: config: fix iteration issue in usb_get_bos_descriptor()
-Date: Tue,  5 Dec 2023 12:16:52 +0900
-Message-ID: <20231205031536.356287376@linuxfoundation.org>
+Subject: [PATCH 4.19 55/71] PCI/ASPM: Disable only ASPM_STATE_L1 when driver disables L1
+Date: Tue,  5 Dec 2023 12:16:53 +0900
+Message-ID: <20231205031521.083189312@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,59 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Ajay Agarwal <ajayagarwal@google.com>
 
-[ Upstream commit 974bba5c118f4c2baf00de0356e3e4f7928b4cbc ]
+[ Upstream commit fb097dcd5a28c0a2325632405c76a66777a6bed9 ]
 
-The BOS descriptor defines a root descriptor and is the base descriptor for
-accessing a family of related descriptors.
+Previously pci_disable_link_state(PCIE_LINK_STATE_L1) disabled L1SS as well
+as L1.  This is unnecessary since pcie_config_aspm_link() takes care that
+L1SS is not enabled if L1 is disabled.
 
-Function 'usb_get_bos_descriptor()' encounters an iteration issue when
-skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
-the same descriptor being read repeatedly.
+Disable only ASPM_STATE_L1 when the caller disables L1.  No functional
+changes intended.
 
-To address this issue, a 'goto' statement is introduced to ensure that the
-pointer and the amount read is updated correctly. This ensures that the
-function iterates to the next descriptor instead of reading the same
-descriptor repeatedly.
+This is consistent with aspm_attr_store_common(), which disables only L1,
+not L1SS, when L1 is disabled via the sysfs "l1_aspm" file.
 
-Cc: stable@vger.kernel.org
-Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20231115121325.471454-1-niklas.neronin@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[bhelgaas: commit log]
+Link: https://lore.kernel.org/r/20230504111301.229358-2-ajayagarwal@google.com
+Signed-off-by: Ajay Agarwal <ajayagarwal@google.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Stable-dep-of: 3cb4f534bac0 ("Revert "PCI/ASPM: Disable only ASPM_STATE_L1 when driver, disables L1"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/config.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pcie/aspm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
-index 1e40e63d301bd..2f8a1225b6976 100644
---- a/drivers/usb/core/config.c
-+++ b/drivers/usb/core/config.c
-@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
- 
- 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
- 			dev_notice(ddev, "descriptor type invalid, skip\n");
--			continue;
-+			goto skip_to_next_descriptor;
- 		}
- 
- 		switch (cap_type) {
-@@ -1080,6 +1080,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
- 			break;
- 		}
- 
-+skip_to_next_descriptor:
- 		total_len -= length;
- 		buffer += length;
- 	}
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 8f934c88dcd76..8db6a9084a12a 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1110,8 +1110,7 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
+ 	if (state & PCIE_LINK_STATE_L0S)
+ 		link->aspm_disable |= ASPM_STATE_L0S;
+ 	if (state & PCIE_LINK_STATE_L1)
+-		/* L1 PM substates require L1 */
+-		link->aspm_disable |= ASPM_STATE_L1 | ASPM_STATE_L1SS;
++		link->aspm_disable |= ASPM_STATE_L1;
+ 	if (state & PCIE_LINK_STATE_L1_1)
+ 		link->aspm_disable |= ASPM_STATE_L1_1;
+ 	if (state & PCIE_LINK_STATE_L1_2)
 -- 
 2.42.0
 
