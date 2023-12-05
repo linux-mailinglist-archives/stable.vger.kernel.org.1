@@ -1,50 +1,49 @@
-Return-Path: <stable+bounces-4487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6E48047B4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 946B68046F4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE435281582
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BC7B281575
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE8879E3;
-	Tue,  5 Dec 2023 03:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FAC79F2;
+	Tue,  5 Dec 2023 03:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEET2EzM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1gHuVCd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B086611E;
-	Tue,  5 Dec 2023 03:41:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE7CC433C8;
-	Tue,  5 Dec 2023 03:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24896FB1;
+	Tue,  5 Dec 2023 03:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A91C433C7;
+	Tue,  5 Dec 2023 03:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747681;
-	bh=qSBGk3ze9wlxeRTxXTz2c0VrSwLYNAw9rE8hkjH3gJc=;
+	s=korg; t=1701747204;
+	bh=kaubL3Dk1MLbvM811/eE6u9Yrev94IpB6XGr5LYGAuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FEET2EzMPQkGHKWdfa96mRmrFYMOylifvxrrYeFY+8B2D6CST18z0AOcXu0IJQ0NL
-	 tUfBhzv1QOICGX6BDe6J/oMVGbXyjNMRlEqTZh+wwGyw8kN7KRaDe4vMfyIiUES5d1
-	 /DdmST7eprZ2ymqxVFn4eKaYwmYmIT6wjp3KVPTE=
+	b=b1gHuVCdOSSp6q1mQDg37NiSeZhsnu+fYLj2m+uFvR3UmPCHMBQlf3Iy/2Nd6sz0g
+	 05OKNrE7a1cebh43PRNtl7AU0bBOysWiKnMdPsnAhF/5xwbTW5QTFG9LDvrNbBpfRa
+	 sk2Q7q1wMXOg/379YEeyR/YOs7nm7YNa1Tmm7jkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mark Broadworth <mark.broadworth@amd.com>,
+	Aurabindo Pillai <Aurabindo.Pillai@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/67] hv_netvsc: fix race of netvsc and VF register_netdevice
+Subject: [PATCH 6.1 098/107] drm/amd/display: Expand kernel doc for DC
 Date: Tue,  5 Dec 2023 12:17:13 +0900
-Message-ID: <20231205031521.426283901@linuxfoundation.org>
+Message-ID: <20231205031537.867389597@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,91 +55,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit d30fb712e52964f2cf9a9c14cf67078394044837 ]
+[ Upstream commit 1682bd1a6b5fb094e914d9b73b711821fd84dcbd ]
 
-The rtnl lock also needs to be held before rndis_filter_device_add()
-which advertises nvsp_2_vsc_capability / sriov bit, and triggers
-VF NIC offering and registering. If VF NIC finished register_netdev()
-earlier it may cause name based config failure.
+This commit adds extra documentation for elements related to FAMs.
 
-To fix this issue, move the call to rtnl_lock() before
-rndis_filter_device_add(), so VF will be registered later than netvsc
-/ synthetic NIC, and gets a name numbered (ethX) after netvsc.
-
-Cc: stable@vger.kernel.org
-Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
-Reported-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Tested-by: Mark Broadworth <mark.broadworth@amd.com>
+Reviewed-by: Aurabindo Pillai <Aurabindo.Pillai@amd.com>
+Acked-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 67e38874b85b ("drm/amd/display: Increase num voltage states to 40")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dc.h           | 19 +++++++++++---
+ drivers/gpu/drm/amd/display/dc/dc_stream.h    | 11 ++++++++
+ .../gpu/drm/amd/display/dc/dml/dc_features.h  |  7 ++++++
+ .../amd/display/dc/dml/display_mode_enums.h   | 25 +++++++++++++++++++
+ .../drm/amd/display/dc/dml/display_mode_vba.h |  9 +++++++
+ .../gpu/drm/amd/display/dc/inc/core_types.h   |  7 ++++++
+ .../gpu/drm/amd/display/dc/inc/hw/hw_shared.h |  7 ++++++
+ 7 files changed, 82 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
-index ce1b299c89f53..c3a8ac244a08e 100644
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2563,15 +2563,6 @@ static int netvsc_probe(struct hv_device *dev,
- 		goto devinfo_failed;
- 	}
- 
--	nvdev = rndis_filter_device_add(dev, device_info);
--	if (IS_ERR(nvdev)) {
--		ret = PTR_ERR(nvdev);
--		netdev_err(net, "unable to add netvsc device (ret %d)\n", ret);
--		goto rndis_failed;
--	}
--
--	memcpy(net->dev_addr, device_info->mac_adr, ETH_ALEN);
--
- 	/* We must get rtnl lock before scheduling nvdev->subchan_work,
- 	 * otherwise netvsc_subchan_work() can get rtnl lock first and wait
- 	 * all subchannels to show up, but that may not happen because
-@@ -2579,9 +2570,23 @@ static int netvsc_probe(struct hv_device *dev,
- 	 * -> ... -> device_add() -> ... -> __device_attach() can't get
- 	 * the device lock, so all the subchannels can't be processed --
- 	 * finally netvsc_subchan_work() hangs forever.
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index f773a467fef54..7e775cec06927 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -499,9 +499,12 @@ enum dcn_zstate_support_state {
+ 	DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY,
+ 	DCN_ZSTATE_SUPPORT_DISALLOW,
+ };
+-/*
+- * For any clocks that may differ per pipe
+- * only the max is stored in this structure
++
++/**
++ * dc_clocks - DC pipe clocks
++ *
++ * For any clocks that may differ per pipe only the max is stored in this
++ * structure
+  */
+ struct dc_clocks {
+ 	int dispclk_khz;
+@@ -528,6 +531,16 @@ struct dc_clocks {
+ 	bool prev_p_state_change_support;
+ 	bool fclk_prev_p_state_change_support;
+ 	int num_ways;
++
++	/**
++	 * @fw_based_mclk_switching
 +	 *
-+	 * The rtnl lock also needs to be held before rndis_filter_device_add()
-+	 * which advertises nvsp_2_vsc_capability / sriov bit, and triggers
-+	 * VF NIC offering and registering. If VF NIC finished register_netdev()
-+	 * earlier it may cause name based config failure.
- 	 */
- 	rtnl_lock();
++	 * DC has a mechanism that leverage the variable refresh rate to switch
++	 * memory clock in cases that we have a large latency to achieve the
++	 * memory clock change and a short vblank window. DC has some
++	 * requirements to enable this feature, and this field describes if the
++	 * system support or not such a feature.
++	 */
+ 	bool fw_based_mclk_switching;
+ 	bool fw_based_mclk_switching_shut_down;
+ 	int prev_num_ways;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_stream.h b/drivers/gpu/drm/amd/display/dc/dc_stream.h
+index 364ff913527d8..31c6a80c216ff 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_stream.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_stream.h
+@@ -202,7 +202,18 @@ struct dc_stream_state {
+ 	bool use_vsc_sdp_for_colorimetry;
+ 	bool ignore_msa_timing_param;
  
-+	nvdev = rndis_filter_device_add(dev, device_info);
-+	if (IS_ERR(nvdev)) {
-+		ret = PTR_ERR(nvdev);
-+		netdev_err(net, "unable to add netvsc device (ret %d)\n", ret);
-+		goto rndis_failed;
-+	}
++	/**
++	 * @allow_freesync:
++	 *
++	 * It say if Freesync is enabled or not.
++	 */
+ 	bool allow_freesync;
 +
-+	memcpy(net->dev_addr, device_info->mac_adr, ETH_ALEN);
++	/**
++	 * @vrr_active_variable:
++	 *
++	 * It describes if VRR is in use.
++	 */
+ 	bool vrr_active_variable;
+ 	bool freesync_on_desktop;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dc_features.h b/drivers/gpu/drm/amd/display/dc/dml/dc_features.h
+index 74e86732e3010..2cbdd75429ffd 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dc_features.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/dc_features.h
+@@ -29,6 +29,13 @@
+ #define DC__PRESENT 1
+ #define DC__PRESENT__1 1
+ #define DC__NUM_DPP 4
 +
- 	if (nvdev->num_chn > 1)
- 		schedule_work(&nvdev->subchan_work);
++/**
++ * @DC__VOLTAGE_STATES:
++ *
++ * Define the maximum amount of states supported by the ASIC. Every ASIC has a
++ * specific number of states; this macro defines the maximum number of states.
++ */
+ #define DC__VOLTAGE_STATES 20
+ #define DC__NUM_DPP__4 1
+ #define DC__NUM_DPP__0_PRESENT 1
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/display_mode_enums.h b/drivers/gpu/drm/amd/display/dc/dml/display_mode_enums.h
+index f394b3f3922a8..0bffae95f3a29 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/display_mode_enums.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/display_mode_enums.h
+@@ -105,14 +105,39 @@ enum source_macro_tile_size {
+ enum cursor_bpp {
+ 	dm_cur_2bit = 0, dm_cur_32bit = 1, dm_cur_64bit = 2
+ };
++
++/**
++ * @enum clock_change_support - It represents possible reasons to change the DRAM clock.
++ *
++ * DC may change the DRAM clock during its execution, and this enum tracks all
++ * the available methods. Note that every ASIC has their specific way to deal
++ * with these clock switch.
++ */
+ enum clock_change_support {
++	/**
++	 * @dm_dram_clock_change_uninitialized: If you see this, we might have
++	 * a code initialization issue
++	 */
+ 	dm_dram_clock_change_uninitialized = 0,
++
++	/**
++	 * @dm_dram_clock_change_vactive: Support DRAM switch in VActive
++	 */
+ 	dm_dram_clock_change_vactive,
++
++	/**
++	 * @dm_dram_clock_change_vblank: Support DRAM switch in VBlank
++	 */
+ 	dm_dram_clock_change_vblank,
++
+ 	dm_dram_clock_change_vactive_w_mall_full_frame,
+ 	dm_dram_clock_change_vactive_w_mall_sub_vp,
+ 	dm_dram_clock_change_vblank_w_mall_full_frame,
+ 	dm_dram_clock_change_vblank_w_mall_sub_vp,
++
++	/**
++	 * @dm_dram_clock_change_unsupported: Do not support DRAM switch
++	 */
+ 	dm_dram_clock_change_unsupported
+ };
  
-@@ -2615,9 +2620,9 @@ static int netvsc_probe(struct hv_device *dev,
- 	return 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.h b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.h
+index 2b34b02dbd459..81e53e67cd0b0 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.h
++++ b/drivers/gpu/drm/amd/display/dc/dml/display_mode_vba.h
+@@ -419,6 +419,15 @@ struct vba_vars_st {
+ 	double MinPixelChunkSizeBytes;
+ 	unsigned int DCCMetaBufferSizeBytes;
+ 	// Pipe/Plane Parameters
++
++	/** @VoltageLevel:
++	 * Every ASIC has a fixed number of DPM states, and some devices might
++	 * have some particular voltage configuration that does not map
++	 * directly to the DPM states. This field tells how many states the
++	 * target device supports; even though this field combines the DPM and
++	 * special SOC voltages, it mostly matches the total number of DPM
++	 * states.
++	 */
+ 	int VoltageLevel;
+ 	double FabricClock;
+ 	double DRAMSpeed;
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/core_types.h b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+index 5fa7c4772af4f..d2b9e3f83fc3b 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/core_types.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/core_types.h
+@@ -115,6 +115,13 @@ struct resource_funcs {
+ 				int vlevel);
+ 	void (*update_soc_for_wm_a)(
+ 				struct dc *dc, struct dc_state *context);
++
++	/**
++	 * @populate_dml_pipes - Populate pipe data struct
++	 *
++	 * Returns:
++	 * Total of pipes available in the specific ASIC.
++	 */
+ 	int (*populate_dml_pipes)(
+ 		struct dc *dc,
+ 		struct dc_state *context,
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h b/drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h
+index cd2be729846b4..a819f0f97c5f3 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/hw_shared.h
+@@ -35,6 +35,13 @@
+  ******************************************************************************/
  
- register_failed:
--	rtnl_unlock();
- 	rndis_filter_device_remove(dev, nvdev);
- rndis_failed:
-+	rtnl_unlock();
- 	netvsc_devinfo_put(device_info);
- devinfo_failed:
- 	free_percpu(net_device_ctx->vf_stats);
+ #define MAX_AUDIOS 7
++
++/**
++ * @MAX_PIPES:
++ *
++ * Every ASIC support a fixed number of pipes; MAX_PIPES defines a large number
++ * to be used inside loops and for determining array sizes.
++ */
+ #define MAX_PIPES 6
+ #define MAX_DIG_LINK_ENCODERS 7
+ #define MAX_DWB_PIPES	1
 -- 
 2.42.0
 
