@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9627A804621
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DE3A804757
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7D591C20CDD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6102815CD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173996FB1;
-	Tue,  5 Dec 2023 03:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A0C8BF2;
+	Tue,  5 Dec 2023 03:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JokQIeQv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdAU+wBf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89996110;
-	Tue,  5 Dec 2023 03:25:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A85C433C8;
-	Tue,  5 Dec 2023 03:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D86FB1;
+	Tue,  5 Dec 2023 03:37:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44B3C433C7;
+	Tue,  5 Dec 2023 03:37:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746704;
-	bh=Y5S1/hE6TBPe0EnCJy+Xn5TYv8wwDBGo/OnCfiv2bFk=;
+	s=korg; t=1701747454;
+	bh=ckAc4kizIOiwaVBKu2Se9JfmL1Go4gGcvc30iMWvxxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JokQIeQvwyzzdUkdMA6fb38z+PK5xd5oAB3nrKavnCcxEzpFeBkLWm5C5GZ8JMFNO
-	 /zhSJ8mjUIPr2D1+SDPjzaijSO04YJc5pP+eaiLy4rjENElDOV0hTCGTX0/WgifUNB
-	 Dk6526nWkCTZ8WewZ9IDGVd8q7Z2r1sEpT2bgToM=
+	b=RdAU+wBfNDPLJ6advWh6GRn04VnNtKDwNTQ0xumOn5Be2RKNrCMqEkf2fisaRZTf1
+	 Nc0BYtMPNN3cDz6oZzPlnokPM6Lvd7DXkjxsBwdmu13+xR5GmAAK0hALmcw83dD/nj
+	 7scmkqjmckv9xiaAR0hr0a/5jSgrXGjPj8T0KNwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/134] net: ravb: Use pm_runtime_resume_and_get()
+	Coly Li <colyli@suse.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 058/135] bcache: check return value from btree_node_alloc_replacement()
 Date: Tue,  5 Dec 2023 12:16:19 +0900
-Message-ID: <20231205031542.238479709@linuxfoundation.org>
+Message-ID: <20231205031534.102278741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Coly Li <colyli@suse.de>
 
-[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
+commit 777967e7e9f6f5f3e153abffb562bffaf4430d26 upstream.
 
-pm_runtime_get_sync() may return an error. In case it returns with an error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+In btree_gc_rewrite_node(), pointer 'n' is not checked after it returns
+from btree_gc_rewrite_node(). There is potential possibility that 'n' is
+a non NULL ERR_PTR(), referencing such error code is not permitted in
+following code. Therefore a return value checking is necessary after 'n'
+is back from btree_node_alloc_replacement().
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc:  <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231120052503.6122-3-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/md/bcache/btree.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index f76ccb543838c..cdcac7d1f93a0 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2659,7 +2659,9 @@ static int ravb_probe(struct platform_device *pdev)
- 		goto out_free_netdev;
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1506,6 +1506,8 @@ static int btree_gc_rewrite_node(struct
+ 		return 0;
  
- 	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
-+	error = pm_runtime_resume_and_get(&pdev->dev);
-+	if (error < 0)
-+		goto out_rpm_disable;
+ 	n = btree_node_alloc_replacement(replace, NULL);
++	if (IS_ERR(n))
++		return 0;
  
- 	if (info->multi_irqs) {
- 		if (info->err_mgmt_irqs)
-@@ -2885,6 +2887,7 @@ static int ravb_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(priv->refclk);
- out_release:
- 	pm_runtime_put(&pdev->dev);
-+out_rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(rstc);
- out_free_netdev:
--- 
-2.42.0
-
+ 	/* recheck reserve after allocating replacement node */
+ 	if (btree_check_reserve(b, NULL)) {
 
 
 
