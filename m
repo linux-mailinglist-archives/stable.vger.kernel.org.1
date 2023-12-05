@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEF0B804734
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3C2804607
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4548028157C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C8D6B20BED
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0758BF1;
-	Tue,  5 Dec 2023 03:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3266FB8;
+	Tue,  5 Dec 2023 03:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZo0o+Fz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oyCjXy3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8F56FB1;
-	Tue,  5 Dec 2023 03:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20929C433C8;
-	Tue,  5 Dec 2023 03:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE5B6FAF;
+	Tue,  5 Dec 2023 03:23:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35416C433C8;
+	Tue,  5 Dec 2023 03:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747363;
-	bh=v5tVg6Wvifuypj2rFkp6if/0e2OsoJzD/W1IjwslOEo=;
+	s=korg; t=1701746633;
+	bh=L0jyfc7eur149RI3FGj/3VgO1+++HJnpblpCtw7Fnc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZo0o+FzjR6kKJGWSVWzjl4x+mPFAaJ3cKeOVNx3GZQzg7zAoCiVX39jbgUiwqlRE
-	 KHe5l+Dm9/7XXtMkMwd3oJofE8DRKBEjLHQLOX8CcKhFbvQcvHTlIwNScFLN8w88cl
-	 PEyiIxwS23+q5iLgO+hODNmE+ljZ7ZhsXsmzIuy4=
+	b=oyCjXy3qk3mZ+b9vkB0SIEaPN8eyNY6BQDN9r0U66/R9/NKaBk5+sN47zW2RMIpId
+	 yMQcJ7NLbKxbk/mzFiuqOaldzgN4MT7ETWoguLuJF9lplg3EXuZfpTsYxhIrEFWSNV
+	 DnbMdq5n7O+2vozpS4ted0guJON2kvcCI4xi45PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 048/135] ASoC: simple-card: fixup asoc_simple_probe() error handling
-Date: Tue,  5 Dec 2023 12:16:09 +0900
-Message-ID: <20231205031533.540139110@linuxfoundation.org>
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 098/134] octeontx2-pf: Restore TC ingress police rules when interface is up
+Date: Tue,  5 Dec 2023 12:16:10 +0900
+Message-ID: <20231205031541.672908413@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,85 +53,268 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit 41bae58df411f9accf01ea660730649b2fab1dab upstream.
+[ Upstream commit fd7f98b2e12a3d96a92bde6640657ec7116f4372 ]
 
-asoc_simple_probe() is used for both "DT probe" (A) and "platform probe"
-(B). It uses "goto err" when error case, but it is not needed for
-"platform probe" case (B). Thus it is using "return" directly there.
+TC ingress policer rules depends on interface receive queue
+contexts since the bandwidth profiles are attached to RQ
+contexts. When an interface is brought down all the queue
+contexts are freed. This in turn frees bandwidth profiles in
+hardware causing ingress police rules non-functional after
+the interface is brought up. Fix this by applying all the ingress
+police rules config to hardware in otx2_open. Also allow
+adding ingress rules only when interface is running
+since no contexts exist for the interface when it is down.
 
-	static int asoc_simple_probe(...)
-	{
- ^		if (...) {
- |			...
-(A)			if (ret < 0)
- |				goto err;
- v		} else {
- ^			...
- |			if (ret < 0)
-(B)				return -Exxx;
- v		}
-
-		...
- ^		if (ret < 0)
-(C)			goto err;
- v		...
-
-	err:
-(D)		simple_util_clean_reference(card);
-
-		return ret;
-	}
-
-Both case are using (C) part, and it calls (D) when err case.
-But (D) will do nothing for (B) case.
-Because of these behavior, current code itself is not wrong,
-but is confusable, and more, static analyzing tool will warning on
-(B) part (should use goto err).
-
-To avoid static analyzing tool warning, this patch uses "goto err"
-on (B) part.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
-Link: https://lore.kernel.org/r/87o7hy7mlh.wl-kuninori.morimoto.gx@renesas.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68fbff68dbea ("octeontx2-pf: Add police action for TC flower")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/1700930217-5707-1-git-send-email-sbhatta@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/generic/simple-card.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../ethernet/marvell/octeontx2/nic/cn10k.c    |   3 +
+ .../marvell/octeontx2/nic/otx2_common.h       |   2 +
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   2 +
+ .../ethernet/marvell/octeontx2/nic/otx2_tc.c  | 120 ++++++++++++++----
+ 4 files changed, 102 insertions(+), 25 deletions(-)
 
---- a/sound/soc/generic/simple-card.c
-+++ b/sound/soc/generic/simple-card.c
-@@ -634,10 +634,12 @@ static int asoc_simple_probe(struct plat
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+index a4a258da8dd59..c1c99d7054f87 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
+@@ -450,6 +450,9 @@ int cn10k_set_ipolicer_rate(struct otx2_nic *pfvf, u16 profile,
+ 	aq->prof.pebs_mantissa = 0;
+ 	aq->prof_mask.pebs_mantissa = 0xFF;
  
- 		int dai_idx = 0;
- 
-+		ret = -EINVAL;
++	aq->prof.hl_en = 0;
++	aq->prof_mask.hl_en = 1;
 +
- 		cinfo = dev->platform_data;
- 		if (!cinfo) {
- 			dev_err(dev, "no info for asoc-simple-card\n");
--			return -EINVAL;
-+			goto err;
- 		}
+ 	/* Fill AQ info */
+ 	aq->qidx = profile;
+ 	aq->ctype = NIX_AQ_CTYPE_BANDPROF;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+index e7c69b57147e0..06910307085ef 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
+@@ -1070,6 +1070,8 @@ int otx2_init_tc(struct otx2_nic *nic);
+ void otx2_shutdown_tc(struct otx2_nic *nic);
+ int otx2_setup_tc(struct net_device *netdev, enum tc_setup_type type,
+ 		  void *type_data);
++void otx2_tc_apply_ingress_police_rules(struct otx2_nic *nic);
++
+ /* CGX/RPM DMAC filters support */
+ int otx2_dmacflt_get_max_cnt(struct otx2_nic *pf);
+ int otx2_dmacflt_add(struct otx2_nic *pf, const u8 *mac, u32 bit_pos);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 6d56fc1918455..532e324bdcc8e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1873,6 +1873,8 @@ int otx2_open(struct net_device *netdev)
+ 	if (pf->flags & OTX2_FLAG_DMACFLTR_SUPPORT)
+ 		otx2_dmacflt_reinstall_flows(pf);
  
- 		if (!cinfo->name ||
-@@ -646,7 +648,7 @@ static int asoc_simple_probe(struct plat
- 		    !cinfo->platform ||
- 		    !cinfo->cpu_dai.name) {
- 			dev_err(dev, "insufficient asoc_simple_card_info settings\n");
--			return -EINVAL;
-+			goto err;
- 		}
++	otx2_tc_apply_ingress_police_rules(pf);
++
+ 	err = otx2_rxtx_enable(pf, true);
+ 	/* If a mbox communication error happens at this point then interface
+ 	 * will end up in a state such that it is in down state but hardware
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+index fab9d85bfb371..423ce54eaea69 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+@@ -45,6 +45,9 @@ struct otx2_tc_flow {
+ 	bool				is_act_police;
+ 	u32				prio;
+ 	struct npc_install_flow_req	req;
++	u64				rate;
++	u32				burst;
++	bool				is_pps;
+ };
  
- 		dai_props->cpu_dai	= &priv->dais[dai_idx++];
+ static void otx2_get_egress_burst_cfg(struct otx2_nic *nic, u32 burst,
+@@ -282,21 +285,10 @@ static int otx2_tc_egress_matchall_delete(struct otx2_nic *nic,
+ 	return err;
+ }
+ 
+-static int otx2_tc_act_set_police(struct otx2_nic *nic,
+-				  struct otx2_tc_flow *node,
+-				  struct flow_cls_offload *f,
+-				  u64 rate, u32 burst, u32 mark,
+-				  struct npc_install_flow_req *req, bool pps)
++static int otx2_tc_act_set_hw_police(struct otx2_nic *nic,
++				     struct otx2_tc_flow *node)
+ {
+-	struct netlink_ext_ack *extack = f->common.extack;
+-	struct otx2_hw *hw = &nic->hw;
+-	int rq_idx, rc;
+-
+-	rq_idx = find_first_zero_bit(&nic->rq_bmap, hw->rx_queues);
+-	if (rq_idx >= hw->rx_queues) {
+-		NL_SET_ERR_MSG_MOD(extack, "Police action rules exceeded");
+-		return -EINVAL;
+-	}
++	int rc;
+ 
+ 	mutex_lock(&nic->mbox.lock);
+ 
+@@ -306,23 +298,17 @@ static int otx2_tc_act_set_police(struct otx2_nic *nic,
+ 		return rc;
+ 	}
+ 
+-	rc = cn10k_set_ipolicer_rate(nic, node->leaf_profile, burst, rate, pps);
++	rc = cn10k_set_ipolicer_rate(nic, node->leaf_profile,
++				     node->burst, node->rate, node->is_pps);
+ 	if (rc)
+ 		goto free_leaf;
+ 
+-	rc = cn10k_map_unmap_rq_policer(nic, rq_idx, node->leaf_profile, true);
++	rc = cn10k_map_unmap_rq_policer(nic, node->rq, node->leaf_profile, true);
+ 	if (rc)
+ 		goto free_leaf;
+ 
+ 	mutex_unlock(&nic->mbox.lock);
+ 
+-	req->match_id = mark & 0xFFFFULL;
+-	req->index = rq_idx;
+-	req->op = NIX_RX_ACTIONOP_UCAST;
+-	set_bit(rq_idx, &nic->rq_bmap);
+-	node->is_act_police = true;
+-	node->rq = rq_idx;
+-
+ 	return 0;
+ 
+ free_leaf:
+@@ -334,6 +320,39 @@ static int otx2_tc_act_set_police(struct otx2_nic *nic,
+ 	return rc;
+ }
+ 
++static int otx2_tc_act_set_police(struct otx2_nic *nic,
++				  struct otx2_tc_flow *node,
++				  struct flow_cls_offload *f,
++				  u64 rate, u32 burst, u32 mark,
++				  struct npc_install_flow_req *req, bool pps)
++{
++	struct netlink_ext_ack *extack = f->common.extack;
++	struct otx2_hw *hw = &nic->hw;
++	int rq_idx, rc;
++
++	rq_idx = find_first_zero_bit(&nic->rq_bmap, hw->rx_queues);
++	if (rq_idx >= hw->rx_queues) {
++		NL_SET_ERR_MSG_MOD(extack, "Police action rules exceeded");
++		return -EINVAL;
++	}
++
++	req->match_id = mark & 0xFFFFULL;
++	req->index = rq_idx;
++	req->op = NIX_RX_ACTIONOP_UCAST;
++
++	node->is_act_police = true;
++	node->rq = rq_idx;
++	node->burst = burst;
++	node->rate = rate;
++	node->is_pps = pps;
++
++	rc = otx2_tc_act_set_hw_police(nic, node);
++	if (!rc)
++		set_bit(rq_idx, &nic->rq_bmap);
++
++	return rc;
++}
++
+ static int otx2_tc_parse_actions(struct otx2_nic *nic,
+ 				 struct flow_action *flow_action,
+ 				 struct npc_install_flow_req *req,
+@@ -986,6 +1005,11 @@ static int otx2_tc_del_flow(struct otx2_nic *nic,
+ 	}
+ 
+ 	if (flow_node->is_act_police) {
++		__clear_bit(flow_node->rq, &nic->rq_bmap);
++
++		if (nic->flags & OTX2_FLAG_INTF_DOWN)
++			goto free_mcam_flow;
++
+ 		mutex_lock(&nic->mbox.lock);
+ 
+ 		err = cn10k_map_unmap_rq_policer(nic, flow_node->rq,
+@@ -1001,11 +1025,10 @@ static int otx2_tc_del_flow(struct otx2_nic *nic,
+ 				   "Unable to free leaf bandwidth profile(%d)\n",
+ 				   flow_node->leaf_profile);
+ 
+-		__clear_bit(flow_node->rq, &nic->rq_bmap);
+-
+ 		mutex_unlock(&nic->mbox.lock);
+ 	}
+ 
++free_mcam_flow:
+ 	otx2_del_mcam_flow_entry(nic, flow_node->entry, NULL);
+ 	otx2_tc_update_mcam_table(nic, flow_cfg, flow_node, false);
+ 	kfree_rcu(flow_node, rcu);
+@@ -1025,6 +1048,11 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
+ 	if (!(nic->flags & OTX2_FLAG_TC_FLOWER_SUPPORT))
+ 		return -ENOMEM;
+ 
++	if (nic->flags & OTX2_FLAG_INTF_DOWN) {
++		NL_SET_ERR_MSG_MOD(extack, "Interface not initialized");
++		return -EINVAL;
++	}
++
+ 	if (flow_cfg->nr_flows == flow_cfg->max_flows) {
+ 		NL_SET_ERR_MSG_MOD(extack,
+ 				   "Free MCAM entry not available to add the flow");
+@@ -1384,3 +1412,45 @@ void otx2_shutdown_tc(struct otx2_nic *nic)
+ 	otx2_destroy_tc_flow_list(nic);
+ }
+ EXPORT_SYMBOL(otx2_shutdown_tc);
++
++static void otx2_tc_config_ingress_rule(struct otx2_nic *nic,
++					struct otx2_tc_flow *node)
++{
++	struct npc_install_flow_req *req;
++
++	if (otx2_tc_act_set_hw_police(nic, node))
++		return;
++
++	mutex_lock(&nic->mbox.lock);
++
++	req = otx2_mbox_alloc_msg_npc_install_flow(&nic->mbox);
++	if (!req)
++		goto err;
++
++	memcpy(req, &node->req, sizeof(struct npc_install_flow_req));
++
++	if (otx2_sync_mbox_msg(&nic->mbox))
++		netdev_err(nic->netdev,
++			   "Failed to install MCAM flow entry for ingress rule");
++err:
++	mutex_unlock(&nic->mbox.lock);
++}
++
++void otx2_tc_apply_ingress_police_rules(struct otx2_nic *nic)
++{
++	struct otx2_flow_config *flow_cfg = nic->flow_cfg;
++	struct otx2_tc_flow *node;
++
++	/* If any ingress policer rules exist for the interface then
++	 * apply those rules. Ingress policer rules depend on bandwidth
++	 * profiles linked to the receive queues. Since no receive queues
++	 * exist when interface is down, ingress policer rules are stored
++	 * and configured in hardware after all receive queues are allocated
++	 * in otx2_open.
++	 */
++	list_for_each_entry(node, &flow_cfg->flow_list_tc, list) {
++		if (node->is_act_police)
++			otx2_tc_config_ingress_rule(nic, node);
++	}
++}
++EXPORT_SYMBOL(otx2_tc_apply_ingress_police_rules);
+-- 
+2.42.0
+
 
 
 
