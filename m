@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4456D804616
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8412C8046D7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 751C71C20C1A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B7661F2142E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D23D6FB8;
-	Tue,  5 Dec 2023 03:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E288BF1;
+	Tue,  5 Dec 2023 03:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koh5wYm0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aonJuQE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD286FAF;
-	Tue,  5 Dec 2023 03:24:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84C3C433C7;
-	Tue,  5 Dec 2023 03:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5221D6FB1;
+	Tue,  5 Dec 2023 03:32:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36EEC433C8;
+	Tue,  5 Dec 2023 03:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746672;
-	bh=Aqb+xfPy+KINU4C+LMe4SeW2ZvmfCryZWn1vr6ugkFM=;
+	s=korg; t=1701747127;
+	bh=l1JDRvcnfdQXLFQNfp8iwmtJOTXg0mWh08sfDn1FyFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koh5wYm0WkhyXAG5tIQgePCoeEVETv+jbDWG0bmQNTTHW70zC5EpQm7OCYEd481S5
-	 IfySY8RcpSpxo2aR9qmFSWVLBDvUXTVZKqLo8zlWH+m/jMTMPxzfRCuXAuVfCGPCAm
-	 3ILXqILpeIBhicsYdn+tZeYTxTWcjZKNkc7J3UVA=
+	b=aonJuQE296HYaf4+2G+6znqpjQVRcCdRZThFd/3F39bmEuu0Rr0RkzeXY1QNmE6wO
+	 kYKEgWfxCn1anauLvx9FVXH9lEnIYNQJag/UvKUFlTR0v8uv9kM9D11gs5H2paSHip
+	 aGYM4Y7biMn2RhDngzgwmGLTgavCu9rpA9Kw20yo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 106/134] net: ravb: Check return value of reset_control_deassert()
-Date: Tue,  5 Dec 2023 12:16:18 +0900
-Message-ID: <20231205031542.168140899@linuxfoundation.org>
+	Anand Jain <anand.jain@oracle.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 044/107] btrfs: add dmesg output for first mount and last unmount of a filesystem
+Date: Tue,  5 Dec 2023 12:16:19 +0900
+Message-ID: <20231205031534.114817398@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +53,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit d8eb6ea4b302e7ff78535c205510e359ac10a0bd ]
+commit 2db313205f8b96eea467691917138d646bb50aef upstream.
 
-reset_control_deassert() could return an error. Some devices cannot work
-if reset signal de-assert operation fails. To avoid this check the return
-code of reset_control_deassert() in ravb_probe() and take proper action.
+There is a feature request to add dmesg output when unmounting a btrfs.
+There are several alternative methods to do the same thing, but with
+their own problems:
 
-Along with it, the free_netdev() call from the error path was moved after
-reset_control_assert() on its own label (out_free_netdev) to free
-netdev in case reset_control_deassert() fails.
+- Use eBPF to watch btrfs_put_super()/open_ctree()
+  Not end user friendly, they have to dip their head into the source
+  code.
 
-Fixes: 0d13a1a464a0 ("ravb: Add reset support")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Watch for directory /sys/fs/<uuid>/
+  This is way more simple, but still requires some simple device -> uuid
+  lookups.  And a script needs to use inotify to watch /sys/fs/.
+
+Compared to all these, directly outputting the information into dmesg
+would be the most simple one, with both device and UUID included.
+
+And since we're here, also add the output when mounting a filesystem for
+the first time for parity. A more fine grained monitoring of subvolume
+mounts should be done by another layer, like audit.
+
+Now mounting a btrfs with all default mkfs options would look like this:
+
+  [81.906566] BTRFS info (device dm-8): first mount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
+  [81.907494] BTRFS info (device dm-8): using crc32c (crc32c-intel) checksum algorithm
+  [81.908258] BTRFS info (device dm-8): using free space tree
+  [81.912644] BTRFS info (device dm-8): auto enabling async discard
+  [81.913277] BTRFS info (device dm-8): checking UUID tree
+  [91.668256] BTRFS info (device dm-8): last unmount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
+
+CC: stable@vger.kernel.org # 5.4+
+Link: https://github.com/kdave/btrfs-progs/issues/689
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ update changelog ]
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/disk-io.c |    1 +
+ fs/btrfs/super.c   |    5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index de12c02c55cbc..f76ccb543838c 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2654,7 +2654,10 @@ static int ravb_probe(struct platform_device *pdev)
- 	ndev->features = info->net_features;
- 	ndev->hw_features = info->net_hw_features;
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3493,6 +3493,7 @@ int __cold open_ctree(struct super_block
+ 		goto fail_alloc;
+ 	}
  
--	reset_control_deassert(rstc);
-+	error = reset_control_deassert(rstc);
-+	if (error)
-+		goto out_free_netdev;
++	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
+ 	/*
+ 	 * Verify the type first, if that or the checksum value are
+ 	 * corrupted, we'll find out
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -391,7 +391,10 @@ void __btrfs_panic(struct btrfs_fs_info
+ 
+ static void btrfs_put_super(struct super_block *sb)
+ {
+-	close_ctree(btrfs_sb(sb));
++	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
 +
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_sync(&pdev->dev);
- 
-@@ -2881,11 +2884,11 @@ static int ravb_probe(struct platform_device *pdev)
- out_disable_refclk:
- 	clk_disable_unprepare(priv->refclk);
- out_release:
--	free_netdev(ndev);
--
- 	pm_runtime_put(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(rstc);
-+out_free_netdev:
-+	free_netdev(ndev);
- 	return error;
++	btrfs_info(fs_info, "last unmount of filesystem %pU", fs_info->fs_devices->fsid);
++	close_ctree(fs_info);
  }
  
--- 
-2.42.0
-
+ enum {
 
 
 
