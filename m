@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECC9804784
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6036E8047DB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890741F214B7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 918F51C20E71
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7CE8BF7;
-	Tue,  5 Dec 2023 03:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9408BF7;
+	Tue,  5 Dec 2023 03:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqxaZV7a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1VYflhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8826A6FB1;
-	Tue,  5 Dec 2023 03:39:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D0DC433C8;
-	Tue,  5 Dec 2023 03:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989256AC2;
+	Tue,  5 Dec 2023 03:43:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE5EC433C7;
+	Tue,  5 Dec 2023 03:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747572;
-	bh=jxIekVJqdBf+DfodXQFledhsdAmu+qnk640N4xnk6Zs=;
+	s=korg; t=1701747784;
+	bh=OIXocjn73WcYsbYoRsp/O3G/f+wx4P9Aqv84ON+hfyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqxaZV7aPwTcie+dn1+/g8MZs5exOoxpAsUsvGYp1bgevreXsY1Z6JclTl2LKqTQ+
-	 N3wrvitn4rTcMWBVep12FOk78dAr36M4MbYYWlvsQZyKrsy7e9HTz3qeHGH7kVqfpp
-	 T3YV3XJbPw9Ag8YbF/F1zSeqg9FVritysI1vsmA4=
+	b=e1VYflhuTuisgGFY1vw2hvtnu10CXERGWidzH1WltixZx0XG0zDEgH+V5Iwvekbj9
+	 l1r4C2FXl1rF6aDwJptpD3CdHF1dygXFhDoD/7a9OGct/KU0KZWBSH4N3i9FtF5A0g
+	 A9yEj/9TS6Y6uF/5pIfed/UicZrczX/sACcaUWVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Marek Vasut <marex@denx.de>,
-	Fabio Estevam <festevam@denx.de>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/135] cpufreq: imx6q: Dont disable 792 Mhz OPP unnecessarily
-Date: Tue,  5 Dec 2023 12:17:26 +0900
-Message-ID: <20231205031538.791131591@linuxfoundation.org>
+Subject: [PATCH 5.15 42/67] net: ravb: Use pm_runtime_resume_and_get()
+Date: Tue,  5 Dec 2023 12:17:27 +0900
+Message-ID: <20231205031522.266826099@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 2e4e0984c7d696cc74cf2fd7e7f62997f0e9ebe6 ]
+[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
 
-For a 900MHz i.MX6ULL CPU the 792MHz OPP is disabled. There is no
-convincing reason to disable this OPP. If a CPU can run at 900MHz,
-it should also be able to cope with 792MHz. Looking at the voltage
-level of 792MHz in [1] (page 24, table 10. "Operating Ranges") the
-current defined OPP is above the minimum. So the voltage level
-shouldn't be a problem. However in [2] (page 24, table 10.
-"Operating Ranges"), it is not mentioned that 792MHz OPP isn't
-allowed. Change it to only disable 792MHz OPP for i.MX6ULL types
-below 792 MHz.
+pm_runtime_get_sync() may return an error. In case it returns with an error
+dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
+takes care of this. Thus use it.
 
-[1] https://www.nxp.com/docs/en/data-sheet/IMX6ULLIEC.pdf
-[2] https://www.nxp.com/docs/en/data-sheet/IMX6ULLCEC.pdf
-
-Fixes: 0aa9abd4c212 ("cpufreq: imx6q: check speed grades for i.MX6ULL")
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Fabio Estevam <festevam@denx.de>
-[ Viresh: Edited subject ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/imx6q-cpufreq.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index cc874d0c4395a..00f7ad7466680 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -327,7 +327,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 			imx6x_disable_freq_in_opp(dev, 696000000);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 709c770b391c5..a556faa47f036 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2193,7 +2193,9 @@ static int ravb_probe(struct platform_device *pdev)
+ 		goto out_free_netdev;
  
- 	if (of_machine_is_compatible("fsl,imx6ull")) {
--		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
-+		if (val < OCOTP_CFG3_6ULL_SPEED_792MHZ)
- 			imx6x_disable_freq_in_opp(dev, 792000000);
+ 	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(&pdev->dev);
++	error = pm_runtime_resume_and_get(&pdev->dev);
++	if (error < 0)
++		goto out_rpm_disable;
  
- 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
+ 	if (info->multi_irqs)
+ 		irq = platform_get_irq_byname(pdev, "ch22");
+@@ -2377,6 +2379,7 @@ static int ravb_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(priv->refclk);
+ out_release:
+ 	pm_runtime_put(&pdev->dev);
++out_rpm_disable:
+ 	pm_runtime_disable(&pdev->dev);
+ 	reset_control_assert(rstc);
+ out_free_netdev:
 -- 
 2.42.0
 
