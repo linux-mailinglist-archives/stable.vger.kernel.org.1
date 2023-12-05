@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9482780474F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A0D804590
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 49CC01F21433
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4C4B1C209A8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868DE79F2;
-	Tue,  5 Dec 2023 03:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C001B6AC2;
+	Tue,  5 Dec 2023 03:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViXCkg+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfixkvGj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474876FB1;
-	Tue,  5 Dec 2023 03:37:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8C16C433C8;
-	Tue,  5 Dec 2023 03:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B24D8BEC;
+	Tue,  5 Dec 2023 03:18:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC8BC433C8;
+	Tue,  5 Dec 2023 03:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747433;
-	bh=gS/h23jMkNPLVEfaK2oKtgDrhiSyDGW5KxzrhjAzvs4=;
+	s=korg; t=1701746328;
+	bh=FuHwLO+sE+JD3yP/FpiIsfPvqUHNdSq9H0qX74xstnY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ViXCkg+acnblxVh/OAgkNgtmJ8EsRaWSk1zmDoRLvKugCfzFixB7PeMGQgKJK9SBW
-	 Rivst6wBFONJqVJ40tZ8JHjZzfJIDerNoaDhZaKf6ehDRLhYYMLujo1vdi1vPQLKtW
-	 RO9LQxaywzyX/0dHrooLxSN/58onJ9E9V8cZB+hg=
+	b=UfixkvGjnxmsjnFllnbjMs2HIqqTMNyoOlbDKEnoeInTZ2f7YjCmMSkC0GSDUAhVj
+	 dk+pA96ooC7DbdnUU9Dc2TcjcJZEDapjClSZoXAYMMIw4M9eMQ7fCfNIaU8XCKGNQF
+	 89tlrBCUC8ompCbPMMqhcUHSIScBKt+/JnVzq8uA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/135] dm-delay: fix a race between delay_presuspend and delay_bio
+	Claire Lin <claire.lin@broadcom.com>,
+	Ray Jui <ray.jui@broadcom.com>,
+	Kamal Dasu <kdasu.kdev@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Yuta Hayama <hayama@lineo.co.jp>
+Subject: [PATCH 4.14 11/30] mtd: rawnand: brcmnand: Fix ecc chunk calculation for erased page bitfips
 Date: Tue,  5 Dec 2023 12:16:18 +0900
-Message-ID: <20231205031534.047599261@linuxfoundation.org>
+Message-ID: <20231205031512.153069003@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,103 +55,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Claire Lin <claire.lin@broadcom.com>
 
-[ Upstream commit 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656 ]
+commit 7f852cc1579297fd763789f8cd370639d0c654b6 upstream.
 
-In delay_presuspend, we set the atomic variable may_delay and then stop
-the timer and flush pending bios. The intention here is to prevent the
-delay target from re-arming the timer again.
+In brcmstb_nand_verify_erased_page(), the ECC chunk pointer calculation
+while correcting erased page bitflips is wrong, fix it.
 
-However, this test is racy. Suppose that one thread goes to delay_bio,
-sees that dc->may_delay is one and proceeds; now, another thread executes
-delay_presuspend, it sets dc->may_delay to zero, deletes the timer and
-flushes pending bios. Then, the first thread continues and adds the bio to
-delayed->list despite the fact that dc->may_delay is false.
-
-Fix this bug by changing may_delay's type from atomic_t to bool and
-only access it while holding the delayed_bios_lock mutex. Note that we
-don't have to grab the mutex in delay_resume because there are no bios
-in flight at this point.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 02b88eea9f9c ("mtd: brcmnand: Add check for erased page bitflips")
+Signed-off-by: Claire Lin <claire.lin@broadcom.com>
+Reviewed-by: Ray Jui <ray.jui@broadcom.com>
+Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-delay.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/brcmnand/brcmnand.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-delay.c b/drivers/md/dm-delay.c
-index 2628a832787b0..d58b9ae6f2870 100644
---- a/drivers/md/dm-delay.c
-+++ b/drivers/md/dm-delay.c
-@@ -30,7 +30,7 @@ struct delay_c {
- 	struct workqueue_struct *kdelayd_wq;
- 	struct work_struct flush_expired_bios;
- 	struct list_head delayed_bios;
--	atomic_t may_delay;
-+	bool may_delay;
+--- a/drivers/mtd/nand/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/brcmnand/brcmnand.c
+@@ -1753,6 +1753,7 @@ static int brcmstb_nand_verify_erased_pa
+ 	int bitflips = 0;
+ 	int page = addr >> chip->page_shift;
+ 	int ret;
++	void *ecc_chunk;
  
- 	struct delay_class read;
- 	struct delay_class write;
-@@ -191,7 +191,7 @@ static int delay_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	INIT_WORK(&dc->flush_expired_bios, flush_expired_bios);
- 	INIT_LIST_HEAD(&dc->delayed_bios);
- 	mutex_init(&dc->timer_lock);
--	atomic_set(&dc->may_delay, 1);
-+	dc->may_delay = true;
- 	dc->argc = argc;
+ 	if (!buf) {
+ 		buf = chip->buffers->databuf;
+@@ -1769,7 +1770,9 @@ static int brcmstb_nand_verify_erased_pa
+ 		return ret;
  
- 	ret = delay_class_ctr(ti, &dc->read, argv);
-@@ -245,7 +245,7 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
- 	struct dm_delay_info *delayed;
- 	unsigned long expires = 0;
- 
--	if (!c->delay || !atomic_read(&dc->may_delay))
-+	if (!c->delay)
- 		return DM_MAPIO_REMAPPED;
- 
- 	delayed = dm_per_bio_data(bio, sizeof(struct dm_delay_info));
-@@ -254,6 +254,10 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
- 	delayed->expires = expires = jiffies + msecs_to_jiffies(c->delay);
- 
- 	mutex_lock(&delayed_bios_lock);
-+	if (unlikely(!dc->may_delay)) {
-+		mutex_unlock(&delayed_bios_lock);
-+		return DM_MAPIO_REMAPPED;
-+	}
- 	c->ops++;
- 	list_add_tail(&delayed->list, &dc->delayed_bios);
- 	mutex_unlock(&delayed_bios_lock);
-@@ -267,7 +271,10 @@ static void delay_presuspend(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
- 
--	atomic_set(&dc->may_delay, 0);
-+	mutex_lock(&delayed_bios_lock);
-+	dc->may_delay = false;
-+	mutex_unlock(&delayed_bios_lock);
-+
- 	del_timer_sync(&dc->delay_timer);
- 	flush_bios(flush_delayed_bios(dc, 1));
- }
-@@ -276,7 +283,7 @@ static void delay_resume(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
- 
--	atomic_set(&dc->may_delay, 1);
-+	dc->may_delay = true;
- }
- 
- static int delay_map(struct dm_target *ti, struct bio *bio)
--- 
-2.42.0
-
+ 	for (i = 0; i < chip->ecc.steps; i++, oob += sas) {
+-		ret = nand_check_erased_ecc_chunk(buf, chip->ecc.size,
++		ecc_chunk = buf + chip->ecc.size * i;
++		ret = nand_check_erased_ecc_chunk(ecc_chunk,
++						  chip->ecc.size,
+ 						  oob, sas, NULL, 0,
+ 						  chip->ecc.strength);
+ 		if (ret < 0)
 
 
 
