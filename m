@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1398804727
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F73C80470F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BF261F2144D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF69B1F21447
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFE98BF1;
-	Tue,  5 Dec 2023 03:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375EA8BF1;
+	Tue,  5 Dec 2023 03:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLKK+osh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFtQxIoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D346FB1;
-	Tue,  5 Dec 2023 03:35:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC925C433C7;
-	Tue,  5 Dec 2023 03:35:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2DE6FB1;
+	Tue,  5 Dec 2023 03:34:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66960C433C7;
+	Tue,  5 Dec 2023 03:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747331;
-	bh=0FdNwuaX86swm5esS+jJjI1pe84PCdErXX3okgeEPps=;
+	s=korg; t=1701747264;
+	bh=WC5aX8gNOzKuXlSQ1pGsk4ERwl1wAnY/6Fv4rcJ+fIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLKK+oshJsUqzwSQDl9X9KMiRLazE4AhPds3mNh29joHwebUlwxfhPaNUXeaSc1Hs
-	 pZURn0MhK/q8M8/lgjzu34p0XXbNdBbtgoeJmlRCdKoudIcWruuwjJFveBaNAkeulv
-	 Th8zwVieHtUOwAj9Rnmi/aqIaxUZUKZGXQXfVeJw=
+	b=fFtQxIoQanqPyJTKC473uQF6zAif/qOph980jRhmEWRQzheu0Ra4yNEEq6D+0+4AE
+	 CiPBQ958g6QgrsED3tOn2IBa/pF16YT6N9NZGxEP6TAH1EDTkWJlThqiYuhxqyk1nI
+	 OBIMN1IqWxWyxVGLvHvqO5MKIpzhH7yakaGt0Bt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Shuijing Li <shuijing.li@mediatek.com>,
+	Xinlei Lee <xinlei.lee@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/135] afs: Make error on cell lookup failure consistent with OpenAFS
-Date: Tue,  5 Dec 2023 12:15:32 +0900
-Message-ID: <20231205031531.202387875@linuxfoundation.org>
+Subject: [PATCH 5.10 012/135] drm/panel: boe-tv101wum-nl6: Fine tune the panel power sequence
+Date: Tue,  5 Dec 2023 12:15:33 +0900
+Message-ID: <20231205031531.265809312@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
 References: <20231205031530.557782248@linuxfoundation.org>
@@ -60,47 +59,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Shuijing Li <shuijing.li@mediatek.com>
 
-[ Upstream commit 2a4ca1b4b77850544408595e2433f5d7811a9daa ]
+[ Upstream commit 812562b8d881ce6d33fed8052b3a10b718430fb5 ]
 
-When kafs tries to look up a cell in the DNS or the local config, it will
-translate a lookup failure into EDESTADDRREQ whereas OpenAFS translates it
-into ENOENT.  Applications such as West expect the latter behaviour and
-fail if they see the former.
+For "boe,tv105wum-nw0" this special panel, it is stipulated in
+the panel spec that MIPI needs to keep the LP11 state before
+the lcm_reset pin is pulled high.
 
-This can be seen by trying to mount an unknown cell:
-
-   # mount -t afs %example.com:cell.root /mnt
-   mount: /mnt: mount(2) system call failed: Destination address required.
-
-Fixes: 4d673da14533 ("afs: Support the AFS dynamic root")
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Signed-off-by: Shuijing Li <shuijing.li@mediatek.com>
+Signed-off-by: Xinlei Lee <xinlei.lee@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230515094955.15982-3-shuijing.li@mediatek.com
+Stable-dep-of: 6965809e5269 ("drm/panel: auo,b101uan08.3: Fine tune the panel power sequence")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/dynroot.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
-index db832cc931c87..b35c6081dbfe1 100644
---- a/fs/afs/dynroot.c
-+++ b/fs/afs/dynroot.c
-@@ -131,8 +131,8 @@ static int afs_probe_cell_name(struct dentry *dentry)
+diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+index db9d0b86d5428..3229e5eabbd21 100644
+--- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
++++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
+@@ -36,6 +36,7 @@ struct panel_desc {
+ 	const struct panel_init_cmd *init_cmds;
+ 	unsigned int lanes;
+ 	bool discharge_on_disable;
++	bool lp11_before_reset;
+ };
  
- 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
- 			NULL, NULL, false);
--	if (ret == -ENODATA)
--		ret = -EDESTADDRREQ;
-+	if (ret == -ENODATA || ret == -ENOKEY)
-+		ret = -ENOENT;
- 	return ret;
- }
+ struct boe_panel {
+@@ -551,6 +552,10 @@ static int boe_panel_prepare(struct drm_panel *panel)
  
+ 	usleep_range(5000, 10000);
+ 
++	if (boe->desc->lp11_before_reset) {
++		mipi_dsi_dcs_nop(boe->dsi);
++		usleep_range(1000, 2000);
++	}
+ 	gpiod_set_value(boe->enable_gpio, 1);
+ 	usleep_range(1000, 2000);
+ 	gpiod_set_value(boe->enable_gpio, 0);
+@@ -719,6 +724,7 @@ static const struct panel_desc boe_tv105wum_nw0_desc = {
+ 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+ 		      MIPI_DSI_MODE_LPM,
+ 	.init_cmds = boe_init_cmd,
++	.lp11_before_reset = true,
+ };
+ 
+ static int boe_panel_get_modes(struct drm_panel *panel,
 -- 
 2.42.0
 
