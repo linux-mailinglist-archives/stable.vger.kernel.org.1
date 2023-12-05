@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB73804740
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FB088046A5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 959611F213B4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03F8DB20CEA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB1B79F2;
-	Tue,  5 Dec 2023 03:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEDB79E3;
+	Tue,  5 Dec 2023 03:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENIlVLh2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3ixYReA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C75C6FB1;
-	Tue,  5 Dec 2023 03:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C77C433C8;
-	Tue,  5 Dec 2023 03:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B96FAF;
+	Tue,  5 Dec 2023 03:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614B9C433C7;
+	Tue,  5 Dec 2023 03:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747395;
-	bh=apGH0I7MaO7YgpMIzVhpflHcdfWXmxjqqu4l1bQsAiM=;
+	s=korg; t=1701746999;
+	bh=4XbSE23RpOL+fwXBx+ia6LeSIh3PgYuA8ysyHBEn93Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENIlVLh23rb3OuFNNLbbnIFTnwpZ+ptVMb8hMKLlaZxSaFgea5zndE6/YD4zE9ZWz
-	 V24PdNiJhoiy3dD0ClQoeYW32cjoi4/wFdz2vMdbgeacgXbAr4IpnypV21mW3y7NRS
-	 Ncx9KNCciXAyPq/p/NpKdTDGbF1aJN1cd0ZtmZWk=
+	b=I3ixYReA90q6RmYc/X6uDPxXSxuhlqxe6hqizlevulSiF6VCoFRq7gUgdGECjOOGY
+	 VUsSa6+QBBkmbqX0HztUMAVY8vxBD6RetPre2bDkOzyZEKhGrVsTtJhthYSET015sY
+	 lWtSBygdztfHMvz150iz3w9GRfdFiaMJiEChIBtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/135] media: ccs: Correctly initialise try compose rectangle
+	Syed Hassan <syed.hassan@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 022/107] drm/amd/display: Remove min_dst_y_next_start check for Z8
 Date: Tue,  5 Dec 2023 12:15:57 +0900
-Message-ID: <20231205031532.932933930@linuxfoundation.org>
+Message-ID: <20231205031532.999490950@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,40 +54,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit 724ff68e968b19d786870d333f9952bdd6b119cb ]
+commit 08448812acb2ab701cd5ff7e1a1dc97f7f10260c upstream.
 
-Initialise the try sink compose rectangle size to the sink compose
-rectangle for binner and scaler sub-devices. This was missed due to the
-faulty condition that lead to the compose rectangles to be initialised for
-the pixel array sub-device where it is not relevant.
+[Why]
+Flickering occurs on DRR supported panels when engaged in DRR due to
+min_dst_y_next becoming larger than the frame size itself.
 
-Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[How]
+In general, we should be able to enter Z8 when this is engaged but it
+might be a net power loss even if the calculation wasn't bugged.
+
+Don't support enabling Z8 during the DRR region.
+
+Cc: stable@vger.kernel.org # 6.1+
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/smiapp/smiapp-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c |   15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
---- a/drivers/media/i2c/smiapp/smiapp-core.c
-+++ b/drivers/media/i2c/smiapp/smiapp-core.c
-@@ -2647,7 +2647,7 @@ static int smiapp_open(struct v4l2_subde
- 		try_fmt->code = sensor->internal_csi_format->code;
- 		try_fmt->field = V4L2_FIELD_NONE;
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -948,10 +948,8 @@ static enum dcn_zstate_support_state  de
+ {
+ 	int plane_count;
+ 	int i;
+-	unsigned int min_dst_y_next_start_us;
  
--		if (ssd != sensor->pixel_array)
-+		if (ssd == sensor->pixel_array)
- 			continue;
+ 	plane_count = 0;
+-	min_dst_y_next_start_us = 0;
+ 	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+ 		if (context->res_ctx.pipe_ctx[i].plane_state)
+ 			plane_count++;
+@@ -973,26 +971,15 @@ static enum dcn_zstate_support_state  de
+ 	else if (context->stream_count == 1 &&  context->streams[0]->signal == SIGNAL_TYPE_EDP) {
+ 		struct dc_link *link = context->streams[0]->sink->link;
+ 		struct dc_stream_status *stream_status = &context->stream_status[0];
+-		struct dc_stream_state *current_stream = context->streams[0];
+ 		int minmum_z8_residency = dc->debug.minimum_z8_residency_time > 0 ? dc->debug.minimum_z8_residency_time : 1000;
+ 		bool allow_z8 = context->bw_ctx.dml.vba.StutterPeriod > (double)minmum_z8_residency;
+ 		bool is_pwrseq0 = link->link_index == 0;
+-		bool isFreesyncVideo;
+-
+-		isFreesyncVideo = current_stream->adjust.v_total_min == current_stream->adjust.v_total_max;
+-		isFreesyncVideo = isFreesyncVideo && current_stream->timing.v_total < current_stream->adjust.v_total_min;
+-		for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-			if (context->res_ctx.pipe_ctx[i].stream == current_stream && isFreesyncVideo) {
+-				min_dst_y_next_start_us = context->res_ctx.pipe_ctx[i].dlg_regs.min_dst_y_next_start_us;
+-				break;
+-			}
+-		}
  
- 		try_comp = v4l2_subdev_get_try_compose(sd, fh->pad, i);
+ 		/* Don't support multi-plane configurations */
+ 		if (stream_status->plane_count > 1)
+ 			return DCN_ZSTATE_SUPPORT_DISALLOW;
+ 
+-		if (is_pwrseq0 && (context->bw_ctx.dml.vba.StutterPeriod > 5000.0 || min_dst_y_next_start_us > 5000))
++		if (is_pwrseq0 && context->bw_ctx.dml.vba.StutterPeriod > 5000.0)
+ 			return DCN_ZSTATE_SUPPORT_ALLOW;
+ 		else if (is_pwrseq0 && link->psr_settings.psr_version == DC_PSR_VERSION_1 && !link->panel_config.psr.disable_psr)
+ 			return allow_z8 ? DCN_ZSTATE_SUPPORT_ALLOW_Z8_Z10_ONLY : DCN_ZSTATE_SUPPORT_ALLOW_Z10_ONLY;
 
 
 
