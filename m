@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C1C804793
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C2880480F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B547281682
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA69E1F2205B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197B08C03;
-	Tue,  5 Dec 2023 03:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F59B8C03;
+	Tue,  5 Dec 2023 03:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqgcIDIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17E6zUjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88D36FB1;
-	Tue,  5 Dec 2023 03:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54883C433C8;
-	Tue,  5 Dec 2023 03:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589A36FB0;
+	Tue,  5 Dec 2023 03:45:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B92C433C8;
+	Tue,  5 Dec 2023 03:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747615;
-	bh=w6bMPTVT9IQGLR8iPmCoZeOf/pWRPagCJXyImU81W0M=;
+	s=korg; t=1701747926;
+	bh=FmPj6coFaOCT1uWlbrsFWIYCRaF+XKBjxQmpPHdOJv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqgcIDIuAH3CvHhF5fJ6JlPPHewEGfMF/b6psaUk0h6Fi8ADS1YCWdzrzexKBdvby
-	 qljqx1ks3k+eCeX2YAyhLAG+63HeDDhlyKX6Ha/30Wav13puwAuJmnJBNV7U7FH2kC
-	 5Du0UrZ8PaN5H7ZB8A4BvzFop/y24vhjVCrFyqcg=
+	b=17E6zUjo26+dVPApnzz1P0DmFlDkZuijCyZXELstekpUmuekR+OqdjWCeqZtmMU2o
+	 wpnD4PC9GMuB7JLgsbYdVgewbaJIL16AKcFxysjO2axbTdbEQ2q1gUi/NsNobkWAz7
+	 f0E22Ul3/1nkNxWeWdff5R00FFOIYF+TBSIZTMck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 116/135] ima: annotate iint mutex to avoid lockdep false positive warnings
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 5.4 49/94] USB: dwc3: qcom: fix wakeup after probe deferral
 Date: Tue,  5 Dec 2023 12:17:17 +0900
-Message-ID: <20231205031538.145403336@linuxfoundation.org>
+Message-ID: <20231205031525.608238492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,122 +52,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit e044374a8a0a99e46f4e6d6751d3042b6d9cc12e ]
+commit 41f5a0973259db9e4e3c9963d36505f80107d1a0 upstream.
 
-It is not clear that IMA should be nested at all, but as long is it
-measures files both on overlayfs and on underlying fs, we need to
-annotate the iint mutex to avoid lockdep false positives related to
-IMA + overlayfs, same as overlayfs annotates the inode mutex.
+The Qualcomm glue driver is overriding the interrupt trigger types
+defined by firmware when requesting the wakeup interrupts during probe.
 
-Reported-and-tested-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This can lead to a failure to map the DP/DM wakeup interrupts after a
+probe deferral as the firmware defined trigger types do not match the
+type used for the initial mapping:
+
+	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+
+Fix this by not overriding the firmware provided trigger types when
+requesting the wakeup interrupts.
+
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231120161607.7405-3-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/iint.c | 48 ++++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-index 9ed2d5bfbed5e..b6e33ac70aef5 100644
---- a/security/integrity/iint.c
-+++ b/security/integrity/iint.c
-@@ -66,9 +66,32 @@ struct integrity_iint_cache *integrity_iint_find(struct inode *inode)
- 	return iint;
- }
- 
--static void iint_free(struct integrity_iint_cache *iint)
-+#define IMA_MAX_NESTING (FILESYSTEM_MAX_STACK_DEPTH+1)
-+
-+/*
-+ * It is not clear that IMA should be nested at all, but as long is it measures
-+ * files both on overlayfs and on underlying fs, we need to annotate the iint
-+ * mutex to avoid lockdep false positives related to IMA + overlayfs.
-+ * See ovl_lockdep_annotate_inode_mutex_key() for more details.
-+ */
-+static inline void iint_lockdep_annotate(struct integrity_iint_cache *iint,
-+					 struct inode *inode)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	static struct lock_class_key iint_mutex_key[IMA_MAX_NESTING];
-+
-+	int depth = inode->i_sb->s_stack_depth;
-+
-+	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
-+		depth = 0;
-+
-+	lockdep_set_class(&iint->mutex, &iint_mutex_key[depth]);
-+#endif
-+}
-+
-+static void iint_init_always(struct integrity_iint_cache *iint,
-+			     struct inode *inode)
- {
--	kfree(iint->ima_hash);
- 	iint->ima_hash = NULL;
- 	iint->version = 0;
- 	iint->flags = 0UL;
-@@ -80,6 +103,14 @@ static void iint_free(struct integrity_iint_cache *iint)
- 	iint->ima_creds_status = INTEGRITY_UNKNOWN;
- 	iint->evm_status = INTEGRITY_UNKNOWN;
- 	iint->measured_pcrs = 0;
-+	mutex_init(&iint->mutex);
-+	iint_lockdep_annotate(iint, inode);
-+}
-+
-+static void iint_free(struct integrity_iint_cache *iint)
-+{
-+	kfree(iint->ima_hash);
-+	mutex_destroy(&iint->mutex);
- 	kmem_cache_free(iint_cache, iint);
- }
- 
-@@ -112,6 +143,8 @@ struct integrity_iint_cache *integrity_inode_get(struct inode *inode)
- 	if (!iint)
- 		return NULL;
- 
-+	iint_init_always(iint, inode);
-+
- 	write_lock(&integrity_iint_lock);
- 
- 	p = &integrity_iint_tree.rb_node;
-@@ -161,25 +194,18 @@ void integrity_inode_free(struct inode *inode)
- 	iint_free(iint);
- }
- 
--static void init_once(void *foo)
-+static void iint_init_once(void *foo)
- {
- 	struct integrity_iint_cache *iint = foo;
- 
- 	memset(iint, 0, sizeof(*iint));
--	iint->ima_file_status = INTEGRITY_UNKNOWN;
--	iint->ima_mmap_status = INTEGRITY_UNKNOWN;
--	iint->ima_bprm_status = INTEGRITY_UNKNOWN;
--	iint->ima_read_status = INTEGRITY_UNKNOWN;
--	iint->ima_creds_status = INTEGRITY_UNKNOWN;
--	iint->evm_status = INTEGRITY_UNKNOWN;
--	mutex_init(&iint->mutex);
- }
- 
- static int __init integrity_iintcache_init(void)
- {
- 	iint_cache =
- 	    kmem_cache_create("iint_cache", sizeof(struct integrity_iint_cache),
--			      0, SLAB_PANIC, init_once);
-+			      0, SLAB_PANIC, iint_init_once);
- 	return 0;
- }
- DEFINE_LSM(integrity) = {
--- 
-2.42.0
-
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -361,7 +361,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
+@@ -376,7 +376,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DP_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
+@@ -391,7 +391,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DM_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
+@@ -406,7 +406,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 SS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
 
 
 
