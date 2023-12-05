@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC5CB804803
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37869804685
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15EFBB20D7F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D67531F2140D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F52079E3;
-	Tue,  5 Dec 2023 03:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3597B79E3;
+	Tue,  5 Dec 2023 03:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJACSyAw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSX6sYHG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D0B6FB0;
-	Tue,  5 Dec 2023 03:44:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B431C433C9;
-	Tue,  5 Dec 2023 03:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E141F6FAF;
+	Tue,  5 Dec 2023 03:28:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2D8C433C8;
+	Tue,  5 Dec 2023 03:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747889;
-	bh=a3pwqmKqWtKxZrtnHN7+U+M0ffdfWqpXuVLat8G/8jk=;
+	s=korg; t=1701746915;
+	bh=07xEdSCAk/KBvjED6N9UfhZlS5rXTbvNb4gAE145kDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJACSyAwPriuAJAhUdTX/BRt7oBh/3HEhXdJd3Csaqp/sa7BgCrwG1MtvoTfDd9rM
-	 /5gJujJfZzTY1nmmB5UdLCUj/RsxvVTbljyklpwn+QgzNt9N7XlDRshEWh+TD/IAyX
-	 cB0706qrZ1JyY9FmxwGsUmPjRvE6qqX+NQzvfFUg=
+	b=kSX6sYHGdNLDhFDmeeqp40rWO7ne0AVldNRPNAM75jT/P3TXK9abeJyCQSLaoGQkO
+	 nESocBeKQKP88k1NFiF3wmZtnOLdzN5ducjwgUahIKgUsBnEK2xkfvecEg9RjkyhG5
+	 FoQWWIuVCeGcN4SISEOXSZ2rMlaGSf/hpCK9/yJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 35/94] bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 65/71] cpufreq: imx6q: dont warn for disabling a non-existing frequency
 Date: Tue,  5 Dec 2023 12:17:03 +0900
-Message-ID: <20231205031524.855320999@linuxfoundation.org>
+Message-ID: <20231205031521.657159602@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-commit f72f4312d4388376fc8a1f6cf37cb21a0d41758b upstream.
+[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") do the following change inside btree_gc_coalesce(),
+It is confusing if a warning is given for disabling a non-existent
+frequency of the operating performance points (OPP). In this case
+the function dev_pm_opp_disable() returns -ENODEV. Check the return
+value and avoid the output of a warning in this case. Avoid code
+duplication by using a separate function.
 
-31 @@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(
-32         memset(new_nodes, 0, sizeof(new_nodes));
-33         closure_init_stack(&cl);
-34
-35 -       while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
-36 +       while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
-37                 keys += r[nodes++].keys;
-38
-39         blocks = btree_default_blocks(b->c) * 2 / 3;
-
-At line 35 the original r[nodes].b is not always allocatored from
-__bch_btree_node_alloc(), and possibly initialized as NULL pointer by
-caller of btree_gc_coalesce(). Therefore the change at line 36 is not
-correct.
-
-This patch replaces the mistaken IS_ERR() by IS_ERR_OR_NULL() to avoid
-potential issue.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Cc:  <stable@vger.kernel.org> # 6.5+
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-9-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+[ Viresh : Updated commit subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/btree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1391,7 +1391,7 @@ static int btree_gc_coalesce(struct btre
- 	memset(new_nodes, 0, sizeof(new_nodes));
- 	closure_init_stack(&cl);
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index a0cbbdfc77359..1a4ea82e4c172 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -240,6 +240,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
+ 	.suspend = cpufreq_generic_suspend,
+ };
  
--	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
-+	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
- 		keys += r[nodes++].keys;
++static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
++{
++	int ret = dev_pm_opp_disable(dev, freq);
++
++	if (ret < 0 && ret != -ENODEV)
++		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
++}
++
+ #define OCOTP_CFG3			0x440
+ #define OCOTP_CFG3_SPEED_SHIFT		16
+ #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
+@@ -275,17 +283,15 @@ static void imx6q_opp_check_speed_grading(struct device *dev)
+ 	val &= 0x3;
  
- 	blocks = btree_default_blocks(b->c) * 2 / 3;
+ 	if (val < OCOTP_CFG3_SPEED_996MHZ)
+-		if (dev_pm_opp_disable(dev, 996000000))
+-			dev_warn(dev, "failed to disable 996MHz OPP\n");
++		imx6x_disable_freq_in_opp(dev, 996000000);
+ 
+ 	if (of_machine_is_compatible("fsl,imx6q") ||
+ 	    of_machine_is_compatible("fsl,imx6qp")) {
+ 		if (val != OCOTP_CFG3_SPEED_852MHZ)
+-			if (dev_pm_opp_disable(dev, 852000000))
+-				dev_warn(dev, "failed to disable 852MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 852000000);
++
+ 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
+-			if (dev_pm_opp_disable(dev, 1200000000))
+-				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 1200000000);
+ 	}
+ 	iounmap(base);
+ put_node:
+@@ -338,20 +344,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 	val >>= OCOTP_CFG3_SPEED_SHIFT;
+ 	val &= 0x3;
+ 
+-	if (of_machine_is_compatible("fsl,imx6ul")) {
++	if (of_machine_is_compatible("fsl,imx6ul"))
+ 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
+-			if (dev_pm_opp_disable(dev, 696000000))
+-				dev_warn(dev, "failed to disable 696MHz OPP\n");
+-	}
++			imx6x_disable_freq_in_opp(dev, 696000000);
+ 
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
+-			if (dev_pm_opp_disable(dev, 792000000))
+-				dev_warn(dev, "failed to disable 792MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 792000000);
+ 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
+-			if (dev_pm_opp_disable(dev, 900000000))
+-				dev_warn(dev, "failed to disable 900MHz OPP\n");
++			imx6x_disable_freq_in_opp(dev, 900000000);
+ 	}
+ 
+ 	return ret;
+-- 
+2.42.0
+
 
 
 
