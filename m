@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDB34804774
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E75804809
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A9D51F21400
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D169A1F21F3A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930AD79F2;
-	Tue,  5 Dec 2023 03:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307958C05;
+	Tue,  5 Dec 2023 03:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXj/XUdl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSgG0/xt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516B66FB1;
-	Tue,  5 Dec 2023 03:38:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF52C433C7;
-	Tue,  5 Dec 2023 03:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54986FB0;
+	Tue,  5 Dec 2023 03:45:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F8BC433C7;
+	Tue,  5 Dec 2023 03:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747527;
-	bh=rg/N7uddibuBV99XCogmri7GTj+Kr+jAr3e43OwGcH0=;
+	s=korg; t=1701747908;
+	bh=q+tGmGCMMJgw9NhItmZIjJWmEAH/fp5qtgFdjvRqJsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXj/XUdlzfnJHLQ9ctMIrG4UsIaorBzVty9g8muxut9wEfDYa6qIo2bOEEkOiwkBC
-	 Uk6JCa1a7HXw9U3p6GorlFLseDXWrJrDllC0JsR60LDaixGD9+wL9IloersNCsWUpX
-	 jnX3bv8ns7yeu3vspxakCLhh1Uy5AuxmL8xudH5s=
+	b=nSgG0/xtybfjFhOXz/h/O5iV9noOBxia31mcMtk63zAFXzgyhinInkPJoRFC0e/E1
+	 5DLIv8Ix8qzA9FrpHSGnWTH+rH/jm3vYGkgdkOrJOUjkxeowCeEt5tbux3iU2LOxXy
+	 XeUNU+cqCfabZN5VPKOGiQCWUYAevPIt/vB8ilrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 085/135] btrfs: fix off-by-one when checking chunk map includes logical address
-Date: Tue,  5 Dec 2023 12:16:46 +0900
-Message-ID: <20231205031535.921435126@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 19/94] afs: Fix file locking on R/O volumes to operate in local mode
+Date: Tue,  5 Dec 2023 12:16:47 +0900
+Message-ID: <20231205031523.973840052@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 5fba5a571858ce2d787fdaf55814e42725bfa895 upstream.
+[ Upstream commit b590eb41be766c5a63acc7e8896a042f7a4e8293 ]
 
-At btrfs_get_chunk_map() we get the extent map for the chunk that contains
-the given logical address stored in the 'logical' argument. Then we do
-sanity checks to verify the extent map contains the logical address. One
-of these checks verifies if the extent map covers a range with an end
-offset behind the target logical address - however this check has an
-off-by-one error since it will consider an extent map whose start offset
-plus its length matches the target logical address as inclusive, while
-the fact is that the last byte it covers is behind the target logical
-address (by 1).
+AFS doesn't really do locking on R/O volumes as fileservers don't maintain
+state with each other and thus a lock on a R/O volume file on one
+fileserver will not be be visible to someone looking at the same file on
+another fileserver.
 
-So fix this condition by using '<=' rather than '<' when comparing the
-extent map's "start + length" against the target logical address.
+Further, the server may return an error if you try it.
 
-CC: stable@vger.kernel.org # 4.14+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by doing what other AFS clients do and handle filelocking on R/O
+volume files entirely within the client and don't touch the server.
+
+Fixes: 6c6c1d63c243 ("afs: Provide mount-time configurable byte-range file locking emulation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/afs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -2998,7 +2998,7 @@ struct extent_map *btrfs_get_chunk_map(s
- 		return ERR_PTR(-EINVAL);
+diff --git a/fs/afs/super.c b/fs/afs/super.c
+index eb04dcc543289..554119068ea44 100644
+--- a/fs/afs/super.c
++++ b/fs/afs/super.c
+@@ -391,6 +391,8 @@ static int afs_validate_fc(struct fs_context *fc)
+ 			return PTR_ERR(volume);
+ 
+ 		ctx->volume = volume;
++		if (volume->type != AFSVL_RWVOL)
++			ctx->flock_mode = afs_flock_mode_local;
  	}
  
--	if (em->start > logical || em->start + em->len < logical) {
-+	if (em->start > logical || em->start + em->len <= logical) {
- 		btrfs_crit(fs_info,
- 			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
- 			   logical, length, em->start, em->start + em->len);
+ 	return 0;
+-- 
+2.42.0
+
 
 
 
