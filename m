@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F1B804627
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DBE8046ED
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9B15283482
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 074A81C20DC7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B85879E3;
-	Tue,  5 Dec 2023 03:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 561D279F2;
+	Tue,  5 Dec 2023 03:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYlv0QgN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4XZBfRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178BE6110;
-	Tue,  5 Dec 2023 03:25:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A55C433C8;
-	Tue,  5 Dec 2023 03:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160BE6FB1;
+	Tue,  5 Dec 2023 03:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EDDC433C8;
+	Tue,  5 Dec 2023 03:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746720;
-	bh=Ix6gzbEjmQ8TFQVSVIx2Au5VlqJfKkDMpWZenjAPXr0=;
+	s=korg; t=1701747184;
+	bh=G1sXZxieN0wsKu83SWBKD3VymnZngEd7QRHhr8qa0gI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYlv0QgN28kVvW9EQ8LRao4p+HdTP1IPN0NMo93ArUEC0SGQGcgWiXKw8+TmO2ENt
-	 RTDUxzHHmI7pQywuLEfV7Rt9FP6w6icMOfig0EQlrX8Mp+OQguX0PEm3g2X9/f95eC
-	 iHOqaoES2HFO2h5GYQqyttk57OMqYr7sBdtsMBOk=
+	b=C4XZBfRBMLKTYv6SWjOzhVl+RZ6Py9c83Vx2HJ3BHImPbkOBEcehPdito4FDVmklI
+	 D8kCZ5xROL7zHYywg3ZW+CGfHZsSagTri1aPp+fZXVff1mF06mHb2oGEp8Nvs/Neyw
+	 X5TiTfDCEo19Qx7tRyWJbElzfYE+IyzS4pSE/AzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krunoslav Kovac <krunoslav.kovac@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Ilya Bakoulin <ilya.bakoulin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/134] drm/amd/display: Fix MPCC 1DLUT programming
+Subject: [PATCH 6.1 067/107] octeontx2-pf: Fix adding mbox work queue entry when num_vfs > 64
 Date: Tue,  5 Dec 2023 12:16:42 +0900
-Message-ID: <20231205031543.680134329@linuxfoundation.org>
+Message-ID: <20231205031535.628652846@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,55 +54,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 6f395cebdd8927fbffdc3a55a14fcacf93634359 ]
+[ Upstream commit 51597219e0cd5157401d4d0ccb5daa4d9961676f ]
 
-[Why]
-Wrong function is used to translate LUT values to HW format, leading to
-visible artifacting in some cases.
+When more than 64 VFs are enabled for a PF then mbox communication
+between VF and PF is not working as mbox work queueing for few VFs
+are skipped due to wrong calculation of VF numbers.
 
-[How]
-Use the correct cm3_helper function.
-
-Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Krunoslav Kovac <krunoslav.kovac@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d424b6c02415 ("octeontx2-pf: Enable SRIOV and added VF mbox handling")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/1700930042-5400-1-git-send-email-sbhatta@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-index c9140b50c3454..650e1598bddcb 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn32/dcn32_hwseq.c
-@@ -486,8 +486,7 @@ bool dcn32_set_mcm_luts(
- 		if (plane_state->blend_tf->type == TF_TYPE_HWPWL)
- 			lut_params = &plane_state->blend_tf->pwl;
- 		else if (plane_state->blend_tf->type == TF_TYPE_DISTRIBUTED_POINTS) {
--			cm_helper_translate_curve_to_hw_format(plane_state->ctx,
--					plane_state->blend_tf,
-+			cm3_helper_translate_curve_to_hw_format(plane_state->blend_tf,
- 					&dpp_base->regamma_params, false);
- 			lut_params = &dpp_base->regamma_params;
- 		}
-@@ -501,8 +500,7 @@ bool dcn32_set_mcm_luts(
- 		else if (plane_state->in_shaper_func->type == TF_TYPE_DISTRIBUTED_POINTS) {
- 			// TODO: dpp_base replace
- 			ASSERT(false);
--			cm_helper_translate_curve_to_hw_format(plane_state->ctx,
--					plane_state->in_shaper_func,
-+			cm3_helper_translate_curve_to_hw_format(plane_state->in_shaper_func,
- 					&dpp_base->shaper_params, true);
- 			lut_params = &dpp_base->shaper_params;
- 		}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index 1d2d72c60a12c..42f2ff83b47f7 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -566,7 +566,9 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
+ 		otx2_write64(pf, RVU_PF_VFPF_MBOX_INTX(1), intr);
+ 		otx2_queue_work(mbox, pf->mbox_pfvf_wq, 64, vfs, intr,
+ 				TYPE_PFVF);
+-		vfs -= 64;
++		if (intr)
++			trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
++		vfs = 64;
+ 	}
+ 
+ 	intr = otx2_read64(pf, RVU_PF_VFPF_MBOX_INTX(0));
+@@ -574,7 +576,8 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
+ 
+ 	otx2_queue_work(mbox, pf->mbox_pfvf_wq, 0, vfs, intr, TYPE_PFVF);
+ 
+-	trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
++	if (intr)
++		trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
+ 
+ 	return IRQ_HANDLED;
+ }
 -- 
 2.42.0
 
