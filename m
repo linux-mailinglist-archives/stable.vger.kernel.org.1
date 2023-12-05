@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-4136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DA2804625
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 878CD804754
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1FFDB20C2F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 310DE1F21447
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D086FB1;
-	Tue,  5 Dec 2023 03:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549348BF2;
+	Tue,  5 Dec 2023 03:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N71ZXjfA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8ew/fYX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087AB6110;
-	Tue,  5 Dec 2023 03:25:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FD80C433C7;
-	Tue,  5 Dec 2023 03:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BA16FB1;
+	Tue,  5 Dec 2023 03:37:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E314C433C8;
+	Tue,  5 Dec 2023 03:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746715;
-	bh=nM0n2/qtk8FlXqQ0XatNqjqg4manBbpHR50SHnMHFH8=;
+	s=korg; t=1701747446;
+	bh=TiyZJa+5PHN9OtxvUTqahX/ZqI2bozq21NOp4UJ4bTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N71ZXjfATsiyzeN6iOMt+mlb71bQ5b5YGwgnYr7V40JGSf3B71P7xYgRcNqZInGbr
-	 330LPKIhnHZ+TltmhhnByVzHGImZrIfCW4v8kuj89BQYz04unhOVj89+BIEFPigP7W
-	 2nkZxP7IxNgEHjYA8j18ADvq2PDhsLdv+xPwpKGc=
+	b=V8ew/fYXgnE7Py+tzoexHUZ1yLWYGHFc+eTPY6rydtPHNJb5xrTLALRbHeWqYUKlk
+	 FjVts8LW/GKZ9rgOoHlaFVUAglb+zl4vvD6wQPC8JChVnNYdv4qj1+e6bJwjbycHK+
+	 e3ziOTrznhcwx3dO4kKrZM2ImRijxZFU6dn9tbQ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agustin Gutierrez <agustin.gutierrez@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/134] drm/amd/display: Reduce default backlight min from 5 nits to 1 nits
+	Zheng Wang <zyytlz.wz@163.com>,
+	Coly Li <colyli@suse.de>,
+	Markus Weippert <markus@gekmihesg.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 079/135] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
 Date: Tue,  5 Dec 2023 12:16:40 +0900
-Message-ID: <20231205031543.563083819@linuxfoundation.org>
+Message-ID: <20231205031535.473041491@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,48 +54,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Patel <swapnil.patel@amd.com>
+From: Markus Weippert <markus@gekmihesg.de>
 
-[ Upstream commit 5edb7cdff85af8f8c5fda5b88310535ab823f663 ]
+commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
 
-[Why & How]
-Currently set_default_brightness_aux function uses 5 nits as lower limit
-to check for valid default_backlight setting. However some newer panels
-can support even lower default settings
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
+NULL pointer dereference.
 
-Reviewed-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Swapnil Patel <swapnil.patel@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: d9e865826c20 ("drm/amd/display: Simplify brightness initialization")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000080
+Call Trace:
+ ? __die_body.cold+0x1a/0x1f
+ ? page_fault_oops+0xd2/0x2b0
+ ? exc_page_fault+0x70/0x170
+ ? asm_exc_page_fault+0x22/0x30
+ ? btree_node_free+0xf/0x160 [bcache]
+ ? up_write+0x32/0x60
+ btree_gc_coalesce+0x2aa/0x890 [bcache]
+ ? bch_extent_bad+0x70/0x170 [bcache]
+ btree_gc_recurse+0x130/0x390 [bcache]
+ ? btree_gc_mark_node+0x72/0x230 [bcache]
+ bch_btree_gc+0x5da/0x600 [bcache]
+ ? cpuusage_read+0x10/0x10
+ ? bch_btree_gc+0x600/0x600 [bcache]
+ bch_gc_thread+0x135/0x180 [bcache]
+
+The relevant code starts with:
+
+    new_nodes[0] = NULL;
+
+    for (i = 0; i < nodes; i++) {
+        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
+            goto out_nocoalesce;
+    // ...
+out_nocoalesce:
+    // ...
+    for (i = 0; i < nodes; i++)
+        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
+028ddcac477b
+            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
+            rw_unlock(true, new_nodes[i]);
+        }
+
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Cc: Coly Li <colyli@suse.de>
+Signed-off-by: Markus Weippert <markus@gekmihesg.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../amd/display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/bcache/btree.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-index e1708c296b7df..a602202610e09 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
-@@ -281,8 +281,8 @@ bool set_default_brightness_aux(struct dc_link *link)
- 	if (link && link->dpcd_sink_ext_caps.bits.oled == 1) {
- 		if (!read_default_bl_aux(link, &default_backlight))
- 			default_backlight = 150000;
--		// if < 5 nits or > 5000, it might be wrong readback
--		if (default_backlight < 5000 || default_backlight > 5000000)
-+		// if < 1 nits or > 5000, it might be wrong readback
-+		if (default_backlight < 1000 || default_backlight > 5000000)
- 			default_backlight = 150000; //
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1489,7 +1489,7 @@ out_nocoalesce:
+ 	bch_keylist_free(&keylist);
  
- 		return edp_set_backlight_level_nits(link, true,
--- 
-2.42.0
-
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR(new_nodes[i])) {
++		if (!IS_ERR_OR_NULL(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
 
 
 
