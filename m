@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30D7804823
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB71380477C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B72841C20ECB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BEB1B20D07
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3546FB1;
-	Tue,  5 Dec 2023 03:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1B98BF7;
+	Tue,  5 Dec 2023 03:39:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEi8tsIQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT6Y8Lpf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917BAC2EB;
-	Tue,  5 Dec 2023 03:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CD5C433C7;
-	Tue,  5 Dec 2023 03:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537316FB1;
+	Tue,  5 Dec 2023 03:39:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B34C433C7;
+	Tue,  5 Dec 2023 03:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747976;
-	bh=2tTNiOP9uTwG+o9vX9oWn6Kf0nGFur6zwYWjaSoCQBc=;
+	s=korg; t=1701747550;
+	bh=NSJynTGYBDVgPg2NjgP1YnVxp0SuiURav8nacd4RRFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EEi8tsIQMjA3+rt0sk9U7HzBhrHBZKpO8lQF1jkqjQUqv3efMu310awwZSbU0O85W
-	 p9eHa1ztotXb8B4DgvdmAvYL4dOqRSTdZUiBIaYo7ru7HXrUf8+VuS0/ciNV/f24o9
-	 pBhrY1KGIGxS9TxXA6j5987K0PottXYvEssS0DlI=
+	b=jT6Y8LpfcvoRK/cP+kyyR0SFFqIy0VtO66aBk/qjftOiZiMRRPwh+9qY+vNfaDtG3
+	 N+K3PXeHKiflAj+5EG2XdBxgWDnCg3N9Fr/ROI26ZP43QMFYwin68PsjyusRVo88gY
+	 7zKND07Np9tRS8LSe8C1qfdeud5qduJEGvu3JaKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 42/94] bcache: prevent potential division by zero error
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 109/135] ASoC: SOF: sof-pci-dev: dont use the community key on APL Chromebooks
 Date: Tue,  5 Dec 2023 12:17:10 +0900
-Message-ID: <20231205031525.234647801@linuxfoundation.org>
+Message-ID: <20231205031537.652853940@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,58 +55,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-commit 2c7f497ac274a14330208b18f6f734000868ebf9 upstream.
+[ Upstream commit d81e4ba5ef1c1033b6c720b22fc99feeb71e71a0 ]
 
-In SHOW(), the variable 'n' is of type 'size_t.' While there is a
-conditional check to verify that 'n' is not equal to zero before
-executing the 'do_div' macro, concerns arise regarding potential
-division by zero error in 64-bit environments.
+As suggested by MrChromebox, the SOF driver can be used with the SOF
+firmware binary signed with the production key. This patch adds an
+additional check for the ApolloLake SoC before modifying the default
+firmware path.
 
-The concern arises when 'n' is 64 bits in size, greater than zero, and
-the lower 32 bits of it are zeros. In such cases, the conditional check
-passes because 'n' is non-zero, but the 'do_div' macro casts 'n' to
-'uint32_t,' effectively truncating it to its lower 32 bits.
-Consequently, the 'n' value becomes zero.
+Note that ApolloLake Chromebooks officially ship with the Skylake
+driver, so to use SOF the users have to explicitly opt-in with
+'options intel-dspcfg dsp_driver=3'. There is no plan to change the
+default selection.
 
-To fix this potential division by zero error and ensure precise
-division handling, this commit replaces the 'do_div' macro with
-div64_u64(). div64_u64() is designed to work with 64-bit operands,
-guaranteeing that division is performed correctly.
-
-This change enhances the robustness of the code, ensuring that division
-operations yield accurate results in all scenarios, eliminating the
-possibility of division by zero, and improving compatibility across
-different 64-bit environments.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-5-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20220421163358.319489-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/sysfs.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/sof-pci-dev.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/drivers/md/bcache/sysfs.c
-+++ b/drivers/md/bcache/sysfs.c
-@@ -1057,7 +1057,7 @@ SHOW(__bch_cache)
- 			sum += INITIAL_PRIO - cached[i];
+diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
+index 966bf28403475..42e1a62789bc6 100644
+--- a/sound/soc/sof/sof-pci-dev.c
++++ b/sound/soc/sof/sof-pci-dev.c
+@@ -12,6 +12,7 @@
+ #include <linux/dmi.h>
+ #include <linux/module.h>
+ #include <linux/pci.h>
++#include <linux/platform_data/x86/soc.h>
+ #include <linux/pm_runtime.h>
+ #include <sound/intel-dsp-config.h>
+ #include <sound/soc-acpi.h>
+@@ -40,6 +41,7 @@ module_param_named(sof_pci_debug, sof_pci_debug, int, 0444);
+ MODULE_PARM_DESC(sof_pci_debug, "SOF PCI debug options (0x0 all off)");
  
- 		if (n)
--			do_div(sum, n);
-+			sum = div64_u64(sum, n);
+ static const char *sof_dmi_override_tplg_name;
++static bool sof_dmi_use_community_key;
  
- 		for (i = 0; i < ARRAY_SIZE(q); i++)
- 			q[i] = INITIAL_PRIO - cached[n * (i + 1) /
+ #define SOF_PCI_DISABLE_PM_RUNTIME BIT(0)
+ 
+@@ -61,15 +63,35 @@ static const struct dmi_system_id sof_tplg_table[] = {
+ 	{}
+ };
+ 
++/* all Up boards use the community key */
++static int up_use_community_key(const struct dmi_system_id *id)
++{
++	sof_dmi_use_community_key = true;
++	return 1;
++}
++
++/*
++ * For ApolloLake Chromebooks we want to force the use of the Intel production key.
++ * All newer platforms use the community key
++ */
++static int chromebook_use_community_key(const struct dmi_system_id *id)
++{
++	if (!soc_intel_is_apl())
++		sof_dmi_use_community_key = true;
++	return 1;
++}
++
+ static const struct dmi_system_id community_key_platforms[] = {
+ 	{
+ 		.ident = "Up boards",
++		.callback = up_use_community_key,
+ 		.matches = {
+ 			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
+ 		}
+ 	},
+ 	{
+ 		.ident = "Google Chromebooks",
++		.callback = chromebook_use_community_key,
+ 		.matches = {
+ 			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
+ 		}
+@@ -375,7 +397,7 @@ static int sof_pci_probe(struct pci_dev *pci,
+ 			"Module parameter used, changed fw path to %s\n",
+ 			sof_pdata->fw_filename_prefix);
+ 
+-	} else if (dmi_check_system(community_key_platforms)) {
++	} else if (dmi_check_system(community_key_platforms) && sof_dmi_use_community_key) {
+ 		sof_pdata->fw_filename_prefix =
+ 			devm_kasprintf(dev, GFP_KERNEL, "%s/%s",
+ 				       sof_pdata->desc->default_fw_path,
+-- 
+2.42.0
+
 
 
 
