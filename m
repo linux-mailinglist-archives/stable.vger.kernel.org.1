@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E017280472D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64B8A8045FE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E6511C20D68
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA9F1F213D8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3D679F2;
-	Tue,  5 Dec 2023 03:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833DF79F2;
+	Tue,  5 Dec 2023 03:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWP0/jW+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+SGvYWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C096FB1;
-	Tue,  5 Dec 2023 03:35:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEA78C433C8;
-	Tue,  5 Dec 2023 03:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4C46FAF;
+	Tue,  5 Dec 2023 03:23:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E85CC433C8;
+	Tue,  5 Dec 2023 03:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747344;
-	bh=UkVWgqjukf7uZvf5yvm7BJEqef0qCMscUqUfjwp5Jow=;
+	s=korg; t=1701746609;
+	bh=tzgfKl/DcFVAUrqG/LrzbQL3yneTGRA7Uz4bFt62qzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWP0/jW+xDOJK9yUbYiXzl9l5cncCLndGXQIDbWhfHEJXEJW9QU1/0G4q8LqpubiY
-	 Hg35eoNYkUsMbhxVCOiXtHXxho1D31mgugQgXDtJgeEPiA048yaDCdks7bUjfS3t6+
-	 RymL7r6hbcsYaZ3RH9ffld3B87551E7tFsn+ucmg=
+	b=o+SGvYWKvLnQdMKyfxbs3JH2KhKE/l/ge7DmijCX/TWcRCKenO2DOp6ESLsrP7d0q
+	 wKvZ572e2oUJExNkHttQxLvehyLo+KZrQptNYl5FgEbEHp3KHl8Zc9RHVXrD4/iprF
+	 lFioN4w0m7vUaDGejDVjzmIBEJMV8AgjnvQoLLSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	kernel test robot <lkp@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/135] ext4: use pre-allocated es in __es_remove_extent()
+Subject: [PATCH 6.6 090/134] uapi: propagate __struct_group() attributes to the container union
 Date: Tue,  5 Dec 2023 12:16:02 +0900
-Message-ID: <20231205031533.193530024@linuxfoundation.org>
+Message-ID: <20231205031541.153920591@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,129 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit bda3efaf774fb687c2b7a555aaec3006b14a8857 ]
+[ Upstream commit 4e86f32a13af1970d21be94f659cae56bbe487ee ]
 
-When splitting extent, if the second extent can not be dropped, we return
--ENOMEM and use GFP_NOFAIL to preallocate an extent_status outside of
-i_es_lock and pass it to __es_remove_extent() to be used as the second
-extent. This ensures that __es_remove_extent() is executed successfully,
-thus ensuring consistency in the extent status tree. If the second extent
-is not undroppable, we simply drop it and return 0. Then retry is no longer
-necessary, remove it.
+Recently the kernel test robot has reported an ARM-specific BUILD_BUG_ON()
+in an old and unmaintained wil6210 wireless driver. The problem comes from
+the structure packing rules of old ARM ABI ('-mabi=apcs-gnu'). For example,
+the following structure is packed to 18 bytes instead of 16:
 
-Now, __es_remove_extent() will always remove what it should, maybe more.
+struct poorly_packed {
+        unsigned int a;
+        unsigned int b;
+        unsigned short c;
+        union {
+                struct {
+                        unsigned short d;
+                        unsigned int e;
+                } __attribute__((packed));
+                struct {
+                        unsigned short d;
+                        unsigned int e;
+                } __attribute__((packed)) inner;
+        };
+} __attribute__((packed));
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-6-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+To fit it into 16 bytes, it's required to add packed attribute to the
+container union as well:
+
+struct poorly_packed {
+        unsigned int a;
+        unsigned int b;
+        unsigned short c;
+        union {
+                struct {
+                        unsigned short d;
+                        unsigned int e;
+                } __attribute__((packed));
+                struct {
+                        unsigned short d;
+                        unsigned int e;
+                } __attribute__((packed)) inner;
+        } __attribute__((packed));
+} __attribute__((packed));
+
+Thanks to Andrew Pinski of GCC team for sorting the things out at
+https://gcc.gnu.org/pipermail/gcc/2023-November/242888.html.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311150821.cI4yciFE-lkp@intel.com
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://lore.kernel.org/r/20231120110607.98956-1-dmantipov@yandex.ru
+Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ include/uapi/linux/stddef.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 0d810ce7580d1..10550d62a6763 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -147,7 +147,8 @@ static struct kmem_cache *ext4_pending_cachep;
- static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
- 			      struct extent_status *prealloc);
- static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
--			      ext4_lblk_t end, int *reserved);
-+			      ext4_lblk_t end, int *reserved,
-+			      struct extent_status *prealloc);
- static int es_reclaim_extents(struct ext4_inode_info *ei, int *nr_to_scan);
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
- 		       struct ext4_inode_info *locked_ei);
-@@ -870,7 +871,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 	ext4_es_insert_extent_check(inode, &newes);
+diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
+index 5c6c4269f7efe..2ec6f35cda32e 100644
+--- a/include/uapi/linux/stddef.h
++++ b/include/uapi/linux/stddef.h
+@@ -27,7 +27,7 @@
+ 	union { \
+ 		struct { MEMBERS } ATTRS; \
+ 		struct TAG { MEMBERS } ATTRS NAME; \
+-	}
++	} ATTRS
  
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, NULL);
-+	err = __es_remove_extent(inode, lblk, end, NULL, NULL);
- 	if (err != 0)
- 		goto error;
- retry:
-@@ -1314,6 +1315,7 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
-  * @lblk - first block in range
-  * @end - last block in range
-  * @reserved - number of cluster reservations released
-+ * @prealloc - pre-allocated es to avoid memory allocation failures
-  *
-  * If @reserved is not NULL and delayed allocation is enabled, counts
-  * block/cluster reservations freed by removing range and if bigalloc
-@@ -1321,7 +1323,8 @@ static unsigned int get_rsvd(struct inode *inode, ext4_lblk_t end,
-  * error code on failure.
-  */
- static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
--			      ext4_lblk_t end, int *reserved)
-+			      ext4_lblk_t end, int *reserved,
-+			      struct extent_status *prealloc)
- {
- 	struct ext4_es_tree *tree = &EXT4_I(inode)->i_es_tree;
- 	struct rb_node *node;
-@@ -1329,14 +1332,12 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	struct extent_status orig_es;
- 	ext4_lblk_t len1, len2;
- 	ext4_fsblk_t block;
--	int err;
-+	int err = 0;
- 	bool count_reserved = true;
- 	struct rsvd_count rc;
- 
- 	if (reserved == NULL || !test_opt(inode->i_sb, DELALLOC))
- 		count_reserved = false;
--retry:
--	err = 0;
- 
- 	es = __es_tree_search(&tree->root, lblk);
- 	if (!es)
-@@ -1370,14 +1371,13 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 					orig_es.es_len - len2;
- 			ext4_es_store_pblock_status(&newes, block,
- 						    ext4_es_status(&orig_es));
--			err = __es_insert_extent(inode, &newes, NULL);
-+			err = __es_insert_extent(inode, &newes, prealloc);
- 			if (err) {
-+				if (!ext4_es_must_keep(&newes))
-+					return 0;
-+
- 				es->es_lblk = orig_es.es_lblk;
- 				es->es_len = orig_es.es_len;
--				if ((err == -ENOMEM) &&
--				    __es_shrink(EXT4_SB(inode->i_sb),
--							128, EXT4_I(inode)))
--					goto retry;
- 				goto out;
- 			}
- 		} else {
-@@ -1477,7 +1477,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	 * is reclaimed.
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, &reserved);
-+	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	ext4_es_print_tree(inode);
- 	ext4_da_release_space(inode, reserved);
-@@ -2021,7 +2021,7 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
- 
- 	write_lock(&EXT4_I(inode)->i_es_lock);
- 
--	err = __es_remove_extent(inode, lblk, lblk, NULL);
-+	err = __es_remove_extent(inode, lblk, lblk, NULL, NULL);
- 	if (err != 0)
- 		goto error;
- retry:
+ #ifdef __cplusplus
+ /* sizeof(struct{}) is 1 in C++, not 0, can't use C version of the macro. */
 -- 
 2.42.0
 
