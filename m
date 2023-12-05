@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB71380477C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586818047AF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BEB1B20D07
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E6EE1F2149F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1B98BF7;
-	Tue,  5 Dec 2023 03:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2F8F6C;
+	Tue,  5 Dec 2023 03:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jT6Y8Lpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zA9OzBzi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537316FB1;
-	Tue,  5 Dec 2023 03:39:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B34C433C7;
-	Tue,  5 Dec 2023 03:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1568BF8;
+	Tue,  5 Dec 2023 03:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0CEC433C8;
+	Tue,  5 Dec 2023 03:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747550;
-	bh=NSJynTGYBDVgPg2NjgP1YnVxp0SuiURav8nacd4RRFE=;
+	s=korg; t=1701747670;
+	bh=bzPUwTFNLv9O0uDSPloC+E+TNp3YeSNnQ63SGgXBpBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jT6Y8LpfcvoRK/cP+kyyR0SFFqIy0VtO66aBk/qjftOiZiMRRPwh+9qY+vNfaDtG3
-	 N+K3PXeHKiflAj+5EG2XdBxgWDnCg3N9Fr/ROI26ZP43QMFYwin68PsjyusRVo88gY
-	 7zKND07Np9tRS8LSe8C1qfdeud5qduJEGvu3JaKY=
+	b=zA9OzBzisFnRqvhU3zh3oExFwwMuTjXFNuxYs8bNEGIdVRI5ApQsLYxNaeJslOkIA
+	 v0ZvGJgi5NxwqRDsGcxhhqcPNHbd3RhKx2G4DUVxEMyefGLZjrVZq7bWDC3PXJUGSQ
+	 H5ngbIAeYJhir8IR9Gz9OwdX5+Qr8hgzH+Sosoxc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/135] ASoC: SOF: sof-pci-dev: dont use the community key on APL Chromebooks
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Olivier Matz <olivier.matz@6wind.com>
+Subject: [PATCH 5.15 25/67] vlan: introduce vlan_dev_free_egress_priority
 Date: Tue,  5 Dec 2023 12:17:10 +0900
-Message-ID: <20231205031537.652853940@linuxfoundation.org>
+Message-ID: <20231205031521.240733406@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,103 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit d81e4ba5ef1c1033b6c720b22fc99feeb71e71a0 ]
+commit 37aa50c539bcbcc01767e515bd170787fcfc0f33 upstream.
 
-As suggested by MrChromebox, the SOF driver can be used with the SOF
-firmware binary signed with the production key. This patch adds an
-additional check for the ApolloLake SoC before modifying the default
-firmware path.
+This patch is to introduce vlan_dev_free_egress_priority() to
+free egress priority for vlan dev, and keep vlan_dev_uninit()
+static as .ndo_uninit. It makes the code more clear and safer
+when adding new code in vlan_dev_uninit() in the future.
 
-Note that ApolloLake Chromebooks officially ship with the Skylake
-driver, so to use SOF the users have to explicitly opt-in with
-'options intel-dspcfg dsp_driver=3'. There is no plan to change the
-default selection.
-
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20220421163358.319489-2-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/sof-pci-dev.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ net/8021q/vlan.h         |    2 +-
+ net/8021q/vlan_dev.c     |    7 ++++++-
+ net/8021q/vlan_netlink.c |    7 ++++---
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
-index 966bf28403475..42e1a62789bc6 100644
---- a/sound/soc/sof/sof-pci-dev.c
-+++ b/sound/soc/sof/sof-pci-dev.c
-@@ -12,6 +12,7 @@
- #include <linux/dmi.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/platform_data/x86/soc.h>
- #include <linux/pm_runtime.h>
- #include <sound/intel-dsp-config.h>
- #include <sound/soc-acpi.h>
-@@ -40,6 +41,7 @@ module_param_named(sof_pci_debug, sof_pci_debug, int, 0444);
- MODULE_PARM_DESC(sof_pci_debug, "SOF PCI debug options (0x0 all off)");
+--- a/net/8021q/vlan.h
++++ b/net/8021q/vlan.h
+@@ -129,6 +129,7 @@ void vlan_dev_set_ingress_priority(const
+ 				   u32 skb_prio, u16 vlan_prio);
+ int vlan_dev_set_egress_priority(const struct net_device *dev,
+ 				 u32 skb_prio, u16 vlan_prio);
++void vlan_dev_free_egress_priority(const struct net_device *dev);
+ int vlan_dev_change_flags(const struct net_device *dev, u32 flag, u32 mask);
+ void vlan_dev_get_realdev_name(const struct net_device *dev, char *result,
+ 			       size_t size);
+@@ -139,7 +140,6 @@ int vlan_check_real_dev(struct net_devic
+ void vlan_setup(struct net_device *dev);
+ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack);
+ void unregister_vlan_dev(struct net_device *dev, struct list_head *head);
+-void vlan_dev_uninit(struct net_device *dev);
+ bool vlan_dev_inherit_address(struct net_device *dev,
+ 			      struct net_device *real_dev);
  
- static const char *sof_dmi_override_tplg_name;
-+static bool sof_dmi_use_community_key;
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -622,7 +622,7 @@ static int vlan_dev_init(struct net_devi
+ }
  
- #define SOF_PCI_DISABLE_PM_RUNTIME BIT(0)
+ /* Note: this function might be called multiple times for the same device. */
+-void vlan_dev_uninit(struct net_device *dev)
++void vlan_dev_free_egress_priority(const struct net_device *dev)
+ {
+ 	struct vlan_priority_tci_mapping *pm;
+ 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
+@@ -636,6 +636,11 @@ void vlan_dev_uninit(struct net_device *
+ 	}
+ }
  
-@@ -61,15 +63,35 @@ static const struct dmi_system_id sof_tplg_table[] = {
- 	{}
- };
- 
-+/* all Up boards use the community key */
-+static int up_use_community_key(const struct dmi_system_id *id)
++static void vlan_dev_uninit(struct net_device *dev)
 +{
-+	sof_dmi_use_community_key = true;
-+	return 1;
++	vlan_dev_free_egress_priority(dev);
 +}
 +
-+/*
-+ * For ApolloLake Chromebooks we want to force the use of the Intel production key.
-+ * All newer platforms use the community key
-+ */
-+static int chromebook_use_community_key(const struct dmi_system_id *id)
-+{
-+	if (!soc_intel_is_apl())
-+		sof_dmi_use_community_key = true;
-+	return 1;
-+}
-+
- static const struct dmi_system_id community_key_platforms[] = {
- 	{
- 		.ident = "Up boards",
-+		.callback = up_use_community_key,
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
- 		}
- 	},
- 	{
- 		.ident = "Google Chromebooks",
-+		.callback = chromebook_use_community_key,
- 		.matches = {
- 			DMI_MATCH(DMI_PRODUCT_FAMILY, "Google"),
- 		}
-@@ -375,7 +397,7 @@ static int sof_pci_probe(struct pci_dev *pci,
- 			"Module parameter used, changed fw path to %s\n",
- 			sof_pdata->fw_filename_prefix);
+ static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
+ 	netdev_features_t features)
+ {
+--- a/net/8021q/vlan_netlink.c
++++ b/net/8021q/vlan_netlink.c
+@@ -183,10 +183,11 @@ static int vlan_newlink(struct net *src_
+ 		return -EINVAL;
  
--	} else if (dmi_check_system(community_key_platforms)) {
-+	} else if (dmi_check_system(community_key_platforms) && sof_dmi_use_community_key) {
- 		sof_pdata->fw_filename_prefix =
- 			devm_kasprintf(dev, GFP_KERNEL, "%s/%s",
- 				       sof_pdata->desc->default_fw_path,
--- 
-2.42.0
-
+ 	err = vlan_changelink(dev, tb, data, extack);
+-	if (!err)
+-		err = register_vlan_dev(dev, extack);
+ 	if (err)
+-		vlan_dev_uninit(dev);
++		return err;
++	err = register_vlan_dev(dev, extack);
++	if (err)
++		vlan_dev_free_egress_priority(dev);
+ 	return err;
+ }
+ 
 
 
 
