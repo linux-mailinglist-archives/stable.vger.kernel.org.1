@@ -1,106 +1,123 @@
-Return-Path: <stable+bounces-4771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35E4806107
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 22:48:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C77A80612E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 22:59:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89B74B2116F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 21:48:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB617281E27
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 21:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791786FCCA;
-	Tue,  5 Dec 2023 21:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Jw2x+qDG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FCA6FCEF;
+	Tue,  5 Dec 2023 21:59:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3603D3;
-	Tue,  5 Dec 2023 13:48:46 -0800 (PST)
-Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-423ec1b2982so868741cf.2;
-        Tue, 05 Dec 2023 13:48:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701812926; x=1702417726; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=K7362aGWQn9YaOD7TDTBsEv+KjpS1wXfDy+Pen8Y6TM=;
-        b=Jw2x+qDG1MSrV2arz/aXYLqECe9X7MPjDqeW2/VTYBAg8RRY1kVOLEA+dPFXj/2Tnn
-         xAhOlUdpmkFwRrFUkzwL9sf4bAIN90QOu+bA2kqSqL86s/j5sybStsbdlfMo0/nKjGor
-         GH7/5QQpJhngO+SCtRP3CX8azDFmUEJ+eDEU+kf0b2xL0i9duiKrT2GIjcwqnJiVRYuS
-         aqAnFdwQhHFjyVK7xWdzrmAi5EKv7ZRO5rFqEpZEb8tQ9Q3/iprDgEN10KnFs7WPoHR9
-         vn+E3GECptj+UkpBwtrdOfkXwCJa131YtHJvauItuHSiuEy7Nw0fvJ6142ei7nZvBN+H
-         9Dbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701812926; x=1702417726;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K7362aGWQn9YaOD7TDTBsEv+KjpS1wXfDy+Pen8Y6TM=;
-        b=ZOw28sHNyeoJggvZ7xPUMGw2xPeB/JBKNDtVyPME6+jWUPN707rAsnqVw0JM7duRt1
-         NslrKH5uznSVZDO3eNiEq8unSCF0GMCAcaP/Tk5kSFyykIkG4t/Sg6vIJXoEz/JW6N+Y
-         mD4qnd68i7hLKu1QWMu7/AxyacN3MobTjcBldvldiF718nffnpLoszOxmzHqHYS+Tuv1
-         aZfocZR5l1p/jvJiflZrZNDipc/YOhKkSO7FlHjWPGPvctyC2xXOVC+1XJ/YYxxjJvEW
-         FQb1lVyscMC8GXFuoB2ohkHkFVnnj8j+UBOfsT0g8eF9nTtMWZCZw63zITRl69NUIXAl
-         JgQQ==
-X-Gm-Message-State: AOJu0Yw6NFIF4kzn7QzCLPq9toNXc2WR/UYB3Hq6lzsIaptgQIQCAEdz
-	TqYmqvlZTYqvBWX9Io1NfAYpJebX8nc=
-X-Google-Smtp-Source: AGHT+IHgqtM436SM+/NJ+YT957+k+SdVt9/DktYuKz5Ig7PZNhFVMMRwYCWRVMDK17LdiR3jtfFaLA==
-X-Received: by 2002:a05:622a:287:b0:425:4043:7660 with SMTP id z7-20020a05622a028700b0042540437660mr2024910qtw.136.1701812925823;
-        Tue, 05 Dec 2023 13:48:45 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id w3-20020ac86b03000000b003f6ac526568sm5467981qts.39.2023.12.05.13.48.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Dec 2023 13:48:45 -0800 (PST)
-Message-ID: <12cf2948-fe16-477d-bae2-39b5cdac527f@gmail.com>
-Date: Tue, 5 Dec 2023 13:48:40 -0800
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406086FCDA;
+	Tue,  5 Dec 2023 21:59:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE052C433CA;
+	Tue,  5 Dec 2023 21:59:43 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.97)
+	(envelope-from <rostedt@goodmis.org>)
+	id 1rAdSc-00000000POI-2qad;
+	Tue, 05 Dec 2023 17:00:10 -0500
+Message-ID: <20231205220010.454662151@goodmis.org>
+User-Agent: quilt/0.67
+Date: Tue, 05 Dec 2023 16:52:09 -0500
+From: Steven Rostedt <rostedt@goodmis.org>
+To: linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org
+Subject: [PATCH v2 1/3] tracing: Always update snapshot buffer size
+References: <20231205215208.195443981@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 00/90] 5.4.263-rc3 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20231205183241.636315882@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20231205183241.636315882@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
 
-On 12/5/23 11:22, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.263 release.
-> There are 90 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 07 Dec 2023 18:32:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.263-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). The update of the ring buffer
+size would check if the instance was the top level and if so, it would
+also update the snapshot buffer as it needs to be the same as the main
+buffer.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Now that lower level instances also has a snapshot buffer, they too need
+to update their snapshot buffer sizes when the main buffer is changed,
+otherwise the following can be triggered:
+
+ # cd /sys/kernel/tracing
+ # echo 1500 > buffer_size_kb
+ # mkdir instances/foo
+ # echo irqsoff > instances/foo/current_tracer
+ # echo 1000 > instances/foo/buffer_size_kb
+
+Produces:
+
+ WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+
+Which is:
+
+	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+
+	if (ret == -EBUSY) {
+		[..]
+	}
+
+	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
+
+That's because ring_buffer_swap_cpu() has:
+
+	int ret = -EINVAL;
+
+	[..]
+
+	/* At least make sure the two buffers are somewhat the same */
+	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
+		goto out;
+
+	[..]
+ out:
+	return ret;
+ }
+
+Instead, update all instances' snapshot buffer sizes when their main
+buffer size is updated.
+
+Cc: stable@vger.kernel.org
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+---
+ kernel/trace/trace.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 9aebf904ff97..231c173ec04f 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6392,8 +6392,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ 		return ret;
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
+-	    !tr->current_trace->use_max_tr)
++	if (!tr->current_trace->use_max_tr)
+ 		goto out;
+ 
+ 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 -- 
-Florian
+2.42.0
+
 
 
