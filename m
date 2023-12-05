@@ -1,118 +1,117 @@
-Return-Path: <stable+bounces-4642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D13804C6B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:31:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D3F804D2A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:04:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F25F1B20D25
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 08:31:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4D271F21517
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A7E3C493;
-	Tue,  5 Dec 2023 08:31:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QK0mMsEz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197463D975;
+	Tue,  5 Dec 2023 09:04:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::223])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 866CB18D;
-	Tue,  5 Dec 2023 00:31:07 -0800 (PST)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 39A1E6000D;
-	Tue,  5 Dec 2023 08:31:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701765066;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FYWMV4zrEtZnbrExDx0nqD3HDOe9zXAaFMqIEbZCOCo=;
-	b=QK0mMsEzWUW1JKqu6XipwK9zZcjEkQ0tWwgw5EsAf/Ggs4sBg3pRztf1EuY0+cA62EQmVv
-	ZX+kjNuD7X8WBUOXcfCG3Ovid8QnaCISpkLjkZEHL5FS9Hdb+cZXhchGtR2Nggj/61GaFO
-	ZV682MPmuNjiaE+7hpucQczgX+Ij40u/eqNtal4XAOgy8ouW81tcMLaIN1wRmPAFmcRHQw
-	12c26I9B8hcV9WoM9wTcnqKYAy2dN3QoXO2t8tsuksl+d2anSkkZSW6rkFGOASn49lF/9Y
-	AVatn5K3Fu9GVdzmKwHhyAZ3SBE6EuPm8hhzA9Q3280bn3vFeHtguQOk9x3Rxg==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Mark Brown <broonie@kernel.org>,
-	<linux-spi@vger.kernel.org>
-Cc: Richard Weinberger <richard@nod.at>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Ryan Wanner <ryan.wanner@microchip.com>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	<linux-arm-kernel@lists.infradead.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] spi: atmel: Prevent spi transfers from being killed
-Date: Tue,  5 Dec 2023 09:31:02 +0100
-Message-Id: <20231205083102.16946-1-miquel.raynal@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16580138
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 01:04:49 -0800 (PST)
+Received: from [192.168.1.104] (178.176.74.217) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 5 Dec
+ 2023 12:04:38 +0300
+Subject: Re: [PATCH 5.15 44/67] ravb: Separate handling of irq enable/disable
+ regs into feature
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, Phil Edworthy <phil.edworthy@renesas.com>, Biju
+ Das <biju.das.jz@bp.renesas.com>, "David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+References: <20231205031519.853779502@linuxfoundation.org>
+ <20231205031522.365127466@linuxfoundation.org>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <d33f2fef-4623-1f74-0765-6998c2a65999@omp.ru>
+Date: Tue, 5 Dec 2023 12:04:37 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: miquel.raynal@bootlin.com
+In-Reply-To: <20231205031522.365127466@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.0.0, Database issued on: 12/05/2023 08:44:32
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 181841 [Dec 05 2023]
+X-KSE-AntiSpam-Info: Version: 6.0.0.2
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.217 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.217 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info:
+	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;178.176.74.217:7.1.2
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.217
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 12/05/2023 08:50:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 12/5/2023 6:02:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-Upstream commit e0205d6203c2 ("spi: atmel: Prevent false timeouts on
-long transfers") has tried to mitigate the problem of getting spi
-transfers canceled because they were lasting too long. On slow buses,
-transfers in the MiB range can take more than one second and thus a
-calculation was added to progressively increment the timeout value. In
-order to not be too problematic from a user point of view (waiting dozen
-of seconds or even minutes), the wait call was turned interruptible.
+On 12/5/23 6:17 AM, Greg Kroah-Hartman wrote:
 
-Turning the wait interruptible was a mistake as what we really wanted to
-do was to be able to kill a transfer. Any signal interrupting our
-transfer would not be suitable at all so a second attempt was made at
-turning the wait killable instead.
+> 5.15-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Phil Edworthy <phil.edworthy@renesas.com>
+> 
+> [ Upstream commit cb99badde146c327f150773921ffe080abe1eb44 ]
+> 
+> Currently, when the HW has a single interrupt, the driver uses the
+> GIC, TIC, RIC0 registers to enable and disable interrupts.
+> When the HW has multiple interrupts, it uses the GIE, GID, TIE, TID,
+> RIE0, RID0 registers.
+> 
+> However, other devices, e.g. RZ/V2M, have multiple irqs and only have
+> the GIC, TIC, RIC0 registers.
+> Therefore, split this into a separate feature.
+> 
+> Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+> Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> Signed-off-by: David S. Miller <davem@davemloft.net>
+> Stable-dep-of: eac16a733427 ("net: ravb: Stop DMA in case of failures on ravb_open()")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+[...]
 
-Link: https://lore.kernel.org/linux-spi/20231127095842.389631-1-miquel.raynal@bootlin.com/
+   This and the following patch shouldn't be necessary If you have troubles
+backporting the actual fix to 5.15, please ask me to look at it instead...
 
-All being well, it was reported that JFFS2 was showing a splat when
-interrupting a transfer. After some more debate about whether JFFS2
-should be fixed and how, it was also pointed out that the whole
-consistency of the filesystem in case of parallel I/O would be
-compromised. Changing JFFS2 behavior would in theory be possible but
-nobody has the energy and time and knowledge to do this now, so better
-prevent spi transfers to be interrupted by the user.
-
-Partially revert the blamed commit to no longer use the interruptible
-nor the killable variant of wait_for_completion().
-
-Fixes: e0205d6203c2 ("spi: atmel: Prevent false timeouts on long transfers")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
- drivers/spi/spi-atmel.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-index 0197c25f5029..54277de30161 100644
---- a/drivers/spi/spi-atmel.c
-+++ b/drivers/spi/spi-atmel.c
-@@ -1333,12 +1333,10 @@ static int atmel_spi_one_transfer(struct spi_controller *host,
- 		}
- 
- 		dma_timeout = msecs_to_jiffies(spi_controller_xfer_timeout(host, xfer));
--		ret_timeout = wait_for_completion_killable_timeout(&as->xfer_completion,
--								   dma_timeout);
--		if (ret_timeout <= 0) {
--			dev_err(&spi->dev, "spi transfer %s\n",
--				!ret_timeout ? "timeout" : "canceled");
--			as->done_status = ret_timeout < 0 ? ret_timeout : -EIO;
-+		ret_timeout = wait_for_completion_timeout(&as->xfer_completion, dma_timeout);
-+		if (!ret_timeout) {
-+			dev_err(&spi->dev, "spi transfer timeout\n");
-+			as->done_status = -EIO;
- 		}
- 
- 		if (as->done_status)
--- 
-2.34.1
-
+MBR, Sergey
 
