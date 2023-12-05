@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 770D680467C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B41B08047BA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18FCDB20C81
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70970281645
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B37379E3;
-	Tue,  5 Dec 2023 03:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CCF79E3;
+	Tue,  5 Dec 2023 03:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1djPmNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sX2tnLFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB376FAF;
-	Tue,  5 Dec 2023 03:28:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927C4C433C7;
-	Tue,  5 Dec 2023 03:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79556FB0;
+	Tue,  5 Dec 2023 03:41:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9C9C433C7;
+	Tue,  5 Dec 2023 03:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746893;
-	bh=iN81n4EYAf+XDld7LAKr2aLAw11j7GvFlXEVLxgULgI=;
+	s=korg; t=1701747697;
+	bh=2J8WHGa9HNWWBWccJi7KoL0EqU2xH+TUXcwDCC40Nzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1djPmNSmO5Bnw6r/RrhXkHStLhD894nXgSt4b/XFJyBvb/EiVfwxBuVX2sAw25My
-	 MsCDLoQeqgJvDzh3n8QAu/mvNfPcfX3B2ZPoqdK1oZOdl5IMH3BZQ9qEqlI9Tma9a5
-	 BrHnquUZi+21hFjbuwn+nQalSKPqyYnxiZvj2FoI=
+	b=sX2tnLFbIGGVo9OihIibqlYXJEOUnuRtzF8qgGAObOBlFX+/HEki/j4hxh/F58FT5
+	 QEObC9cDgK8U53biO90ZnHwW7NkTfkCqhsqp6RA6mu6zeiO6ED9OEO9Hinqd68spzr
+	 tATqS1TFlWGFswybJ5mZCqbLKfGt32VL6qSkQU8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 58/71] s390/cmma: fix detection of DAT pages
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 11/67] ALSA: hda/realtek: Headset Mic VREF to 100%
 Date: Tue,  5 Dec 2023 12:16:56 +0900
-Message-ID: <20231205031521.241311076@linuxfoundation.org>
+Message-ID: <20231205031520.476651430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 44d93045247661acbd50b1629e62f415f2747577 ]
+commit baaacbff64d9f34b64f294431966d035aeadb81c upstream.
 
-If the cmma no-dat feature is available the kernel page tables are walked
-to identify and mark all pages which are used for address translation (all
-region, segment, and page tables). In a subsequent loop all other pages are
-marked as "no-dat" pages with the ESSA instruction.
+This platform need to set Mic VREF to 100%.
 
-This information is visible to the hypervisor, so that the hypervisor can
-optimize purging of guest TLB entries. The initial loop however is
-incorrect: only the first three of the four pages which belong to segment
-and region tables will be marked as being used for DAT. The last page is
-incorrectly marked as no-dat.
-
-This can result in incorrect guest TLB flushes.
-
-Fix this by simply marking all four pages.
-
+Signed-off-by: Kailang Yang <kailang@realtek.com>
 Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/0916af40f08a4348a3298a9a59e6967e@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/mm/page-states.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
-index 5a0460b0fd6ae..182240411211c 100644
---- a/arch/s390/mm/page-states.c
-+++ b/arch/s390/mm/page-states.c
-@@ -137,7 +137,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
- 			continue;
- 		if (!pud_folded(*pud)) {
- 			page = phys_to_page(pud_val(*pud));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -1980,6 +1980,7 @@ enum {
+ 	ALC887_FIXUP_ASUS_AUDIO,
+ 	ALC887_FIXUP_ASUS_HMIC,
+ 	ALCS1200A_FIXUP_MIC_VREF,
++	ALC888VD_FIXUP_MIC_100VREF,
+ };
+ 
+ static void alc889_fixup_coef(struct hda_codec *codec,
+@@ -2533,6 +2534,13 @@ static const struct hda_fixup alc882_fix
+ 			{}
  		}
- 		mark_kernel_pmd(pud, addr, next);
-@@ -158,7 +158,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
- 			continue;
- 		if (!p4d_folded(*p4d)) {
- 			page = phys_to_page(p4d_val(*p4d));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_pud(p4d, addr, next);
-@@ -180,7 +180,7 @@ static void mark_kernel_pgd(void)
- 			continue;
- 		if (!pgd_folded(*pgd)) {
- 			page = phys_to_page(pgd_val(*pgd));
--			for (i = 0; i < 3; i++)
-+			for (i = 0; i < 4; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
- 		mark_kernel_p4d(pgd, addr, next);
--- 
-2.42.0
-
+ 	},
++	[ALC888VD_FIXUP_MIC_100VREF] = {
++		.type = HDA_FIXUP_PINCTLS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x18, PIN_VREF100 }, /* headset mic */
++			{}
++		}
++	},
+ };
+ 
+ static const struct snd_pci_quirk alc882_fixup_tbl[] = {
+@@ -2602,6 +2610,7 @@ static const struct snd_pci_quirk alc882
+ 	SND_PCI_QUIRK(0x106b, 0x4a00, "Macbook 5,2", ALC889_FIXUP_MBA11_VREF),
+ 
+ 	SND_PCI_QUIRK(0x1071, 0x8258, "Evesham Voyaeger", ALC882_FIXUP_EAPD),
++	SND_PCI_QUIRK(0x10ec, 0x12d8, "iBase Elo Touch", ALC888VD_FIXUP_MIC_100VREF),
+ 	SND_PCI_QUIRK(0x13fe, 0x1009, "Advantech MIT-W101", ALC886_FIXUP_EAPD),
+ 	SND_PCI_QUIRK(0x1458, 0xa002, "Gigabyte EP45-DS3/Z87X-UD3H", ALC889_FIXUP_FRONT_HP_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1458, 0xa0b8, "Gigabyte AZ370-Gaming", ALC1220_FIXUP_GB_DUAL_CODECS),
 
 
 
