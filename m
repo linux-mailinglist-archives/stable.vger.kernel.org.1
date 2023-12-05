@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-4451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F85804789
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1D18047C4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C0D7B20CE8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3F91C20E64
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042068C05;
-	Tue,  5 Dec 2023 03:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B455079E3;
+	Tue,  5 Dec 2023 03:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYNosbwT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15WpDxLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21DF6FB1;
-	Tue,  5 Dec 2023 03:39:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5BEC433C7;
-	Tue,  5 Dec 2023 03:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EAD79F2;
+	Tue,  5 Dec 2023 03:42:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F36C433C7;
+	Tue,  5 Dec 2023 03:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747583;
-	bh=/s8BTSrsKzbeqUQnI+t31GXydqUB6FJHpylQ1kAzM1w=;
+	s=korg; t=1701747724;
+	bh=hdXgerfsnr0Mzpy3nCt5wR5+DgVNPYDrhmMrAnqYAuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aYNosbwTiRo+LLz8xJkqDMLqP6IN9GfD+ab31M4Q15iurLbEN834hxr/MeCWaNie8
-	 +JI3mwm2pQg+xcYEfwk0A47TVkvx34x96MvyALref0kM45ghkCbQKywp1c0xyyZ9ag
-	 cl9sFs9zCAmWHS5ZagTADqEmBwBR2ryudmyipDdY=
+	b=15WpDxLB403yyVJRcAThI8e6u2eDcAqMv85tRgOKX9nk7gV9PSYxVQIKE++t/azn7
+	 0vZ6mdKp6IJl13qJU8WekZXs3GY21k37MyiXnjtcQFp9+d0saFPucWss2rXLZ6qIBP
+	 JUwu6akY2AZWunvf8xcTgDllVqLgTxIFWUR+IWLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Phil Edworthy <phil.edworthy@renesas.com>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 128/135] mmc: cqhci: Fix task clearing in CQE error recovery
-Date: Tue,  5 Dec 2023 12:17:29 +0900
-Message-ID: <20231205031538.960838315@linuxfoundation.org>
+Subject: [PATCH 5.15 45/67] ravb: Support separate Line0 (Desc), Line1 (Err) and Line2 (Mgmt) irqs
+Date: Tue,  5 Dec 2023 12:17:30 +0900
+Message-ID: <20231205031522.422083009@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,100 +53,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Phil Edworthy <phil.edworthy@renesas.com>
 
-[ Upstream commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 ]
+[ Upstream commit b0265dcba3d6c1689e6ce315bed09192fb587403 ]
 
-If a task completion notification (TCN) is received when there is no
-outstanding task, the cqhci driver issues a "spurious TCN" warning. This
-was observed to happen right after CQE error recovery.
+R-Car has a combined interrupt line, ch22 = Line0_DiA | Line1_A | Line2_A.
+RZ/V2M has separate interrupt lines for each of these, so add a feature
+that allows the driver to get these interrupts and call the common handler.
 
-When an error interrupt is received the driver runs recovery logic.
-It halts the controller, clears all pending tasks, and then re-enables
-it. On some platforms, like Intel Jasper Lake, a stale task completion
-event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
-
-This results in either:
-a) Spurious TC completion event for an empty slot.
-b) Corrupted data being passed up the stack, as a result of premature
-   completion for a newly added task.
-
-Rather than add a quirk for affected controllers, ensure tasks are cleared
-by toggling CQHCI_ENABLE, which would happen anyway if
-cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
-effective for all controllers.
-
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Reported-by: Kornel Dulęba <korneld@chromium.org>
-Tested-by: Kornel Dulęba <korneld@chromium.org>
-Co-developed-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Kornel Dulęba <korneld@chromium.org>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: eac16a733427 ("net: ravb: Stop DMA in case of failures on ravb_open()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/cqhci.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/renesas/ravb.h      |  3 ++
+ drivers/net/ethernet/renesas/ravb_main.c | 56 +++++++++++++++++++++---
+ 2 files changed, 53 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
-index 7bccd6494cd93..23cf7912c1ba3 100644
---- a/drivers/mmc/host/cqhci.c
-+++ b/drivers/mmc/host/cqhci.c
-@@ -1023,28 +1023,28 @@ static void cqhci_recovery_finish(struct mmc_host *mmc)
+diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
+index a3cd09c7003bf..29df692ebaaa2 100644
+--- a/drivers/net/ethernet/renesas/ravb.h
++++ b/drivers/net/ethernet/renesas/ravb.h
+@@ -1001,6 +1001,7 @@ struct ravb_hw_info {
+ 	unsigned tx_counters:1;		/* E-MAC has TX counters */
+ 	unsigned multi_irqs:1;		/* AVB-DMAC and E-MAC has multiple irqs */
+ 	unsigned irq_en_dis:1;		/* Has separate irq enable and disable regs */
++	unsigned err_mgmt_irqs:1;	/* Line1 (Err) and Line2 (Mgmt) irqs are separate */
+ 	unsigned gptp:1;		/* AVB-DMAC has gPTP support */
+ 	unsigned ccc_gac:1;		/* AVB-DMAC has gPTP support active in config mode */
+ };
+@@ -1046,6 +1047,8 @@ struct ravb_private {
+ 	int msg_enable;
+ 	int speed;
+ 	int emac_irq;
++	int erra_irq;
++	int mgmta_irq;
+ 	int rx_irqs[NUM_RX_QUEUE];
+ 	int tx_irqs[NUM_TX_QUEUE];
  
- 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 57215c834188c..5cdc7bc63e267 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1436,12 +1436,23 @@ static int ravb_open(struct net_device *ndev)
+ 				      ndev, dev, "ch19:tx_nc");
+ 		if (error)
+ 			goto out_free_irq_nc_rx;
++
++		if (info->err_mgmt_irqs) {
++			error = ravb_hook_irq(priv->erra_irq, ravb_multi_interrupt,
++					      ndev, dev, "err_a");
++			if (error)
++				goto out_free_irq_nc_tx;
++			error = ravb_hook_irq(priv->mgmta_irq, ravb_multi_interrupt,
++					      ndev, dev, "mgmt_a");
++			if (error)
++				goto out_free_irq_erra;
++		}
+ 	}
  
--	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--		ok = false;
--
- 	/*
- 	 * The specification contradicts itself, by saying that tasks cannot be
- 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
- 	 * be disabled/re-enabled, but not to disable before clearing tasks.
- 	 * Have a go anyway.
- 	 */
--	if (!ok) {
--		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
--		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
--		cqcfg &= ~CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		cqcfg |= CQHCI_ENABLE;
--		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
--		/* Be sure that there are no tasks */
--		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
--		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
--			ok = false;
--		WARN_ON(!ok);
--	}
-+	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
-+		ok = false;
-+
-+	/* Disable to make sure tasks really are cleared */
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg &= ~CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
-+	cqcfg |= CQHCI_ENABLE;
-+	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
-+
-+	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
-+
-+	if (!ok)
-+		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
+ 	/* Device init */
+ 	error = ravb_dmac_init(ndev);
+ 	if (error)
+-		goto out_free_irq_nc_tx;
++		goto out_free_irq_mgmta;
+ 	ravb_emac_init(ndev);
  
- 	cqhci_recover_mrqs(cq_host);
+ 	/* Initialise PTP Clock driver */
+@@ -1461,9 +1472,15 @@ static int ravb_open(struct net_device *ndev)
+ 	/* Stop PTP Clock driver */
+ 	if (info->gptp)
+ 		ravb_ptp_stop(ndev);
+-out_free_irq_nc_tx:
++out_free_irq_mgmta:
+ 	if (!info->multi_irqs)
+ 		goto out_free_irq;
++	if (info->err_mgmt_irqs)
++		free_irq(priv->mgmta_irq, ndev);
++out_free_irq_erra:
++	if (info->err_mgmt_irqs)
++		free_irq(priv->erra_irq, ndev);
++out_free_irq_nc_tx:
+ 	free_irq(priv->tx_irqs[RAVB_NC], ndev);
+ out_free_irq_nc_rx:
+ 	free_irq(priv->rx_irqs[RAVB_NC], ndev);
+@@ -1791,6 +1808,10 @@ static int ravb_close(struct net_device *ndev)
+ 		free_irq(priv->tx_irqs[RAVB_BE], ndev);
+ 		free_irq(priv->rx_irqs[RAVB_BE], ndev);
+ 		free_irq(priv->emac_irq, ndev);
++		if (info->err_mgmt_irqs) {
++			free_irq(priv->erra_irq, ndev);
++			free_irq(priv->mgmta_irq, ndev);
++		}
+ 	}
+ 	free_irq(ndev->irq, ndev);
  
+@@ -2198,10 +2219,14 @@ static int ravb_probe(struct platform_device *pdev)
+ 	if (error < 0)
+ 		goto out_rpm_disable;
+ 
+-	if (info->multi_irqs)
+-		irq = platform_get_irq_byname(pdev, "ch22");
+-	else
++	if (info->multi_irqs) {
++		if (info->err_mgmt_irqs)
++			irq = platform_get_irq_byname(pdev, "dia");
++		else
++			irq = platform_get_irq_byname(pdev, "ch22");
++	} else {
+ 		irq = platform_get_irq(pdev, 0);
++	}
+ 	if (irq < 0) {
+ 		error = irq;
+ 		goto out_release;
+@@ -2240,7 +2265,10 @@ static int ravb_probe(struct platform_device *pdev)
+ 		of_property_read_bool(np, "renesas,ether-link-active-low");
+ 
+ 	if (info->multi_irqs) {
+-		irq = platform_get_irq_byname(pdev, "ch24");
++		if (info->err_mgmt_irqs)
++			irq = platform_get_irq_byname(pdev, "line3");
++		else
++			irq = platform_get_irq_byname(pdev, "ch24");
+ 		if (irq < 0) {
+ 			error = irq;
+ 			goto out_release;
+@@ -2262,6 +2290,22 @@ static int ravb_probe(struct platform_device *pdev)
+ 			}
+ 			priv->tx_irqs[i] = irq;
+ 		}
++
++		if (info->err_mgmt_irqs) {
++			irq = platform_get_irq_byname(pdev, "err_a");
++			if (irq < 0) {
++				error = irq;
++				goto out_release;
++			}
++			priv->erra_irq = irq;
++
++			irq = platform_get_irq_byname(pdev, "mgmt_a");
++			if (irq < 0) {
++				error = irq;
++				goto out_release;
++			}
++			priv->mgmta_irq = irq;
++		}
+ 	}
+ 
+ 	priv->clk = devm_clk_get(&pdev->dev, NULL);
 -- 
 2.42.0
 
