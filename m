@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E88C58045FC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D3178046A8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 934D01F213F7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC1661F21410
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7788BF8;
-	Tue,  5 Dec 2023 03:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E665C8BEC;
+	Tue,  5 Dec 2023 03:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV+8A9Ff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3kqMEFI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 754496FB1;
-	Tue,  5 Dec 2023 03:23:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35B8C433C8;
-	Tue,  5 Dec 2023 03:23:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4606FAF;
+	Tue,  5 Dec 2023 03:30:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F8CC433C7;
+	Tue,  5 Dec 2023 03:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746604;
-	bh=0AagSZOtqiX6HY3uJFNduHEFXa5IC+rVPRi3pwkKAqI=;
+	s=korg; t=1701747008;
+	bh=TBm6jM/SnR2/yduG+DY6qNiVSj1N0TPyjj/Eu3t8LjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TV+8A9Ffo45zz7RrkV3dHlptzWXGamAFor2Kw4T63UQPYFW+ZN1bb02pQ/RxNduzT
-	 y7vda+jSjgPfo9SoTUdjAtI7ywoPpNkLLnXXfuFU1B+9DqnEVH52poyDeBSzwxWaWv
-	 dSjKd/a9Ic+VrjxFf33l2wzF9idTnc05YFOwXOqQ=
+	b=S3kqMEFImGBWG0STVyFQo9K1CQhd5Pq28Knuc3239fluAfTLRpwcY97oYl0jZD0GO
+	 vylDl+1oyOoKCKu27+CEzOL+neVWrGas429sk0CbCbnX2NrpThFgOsrDHYFqiLfxy8
+	 lY31Gxh/Gs3U4gTCMfJRpKl9fHQL4rzZW4sstzIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/134] dpaa2-eth: recycle the RX buffer only after all processing done
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 025/107] drm/amd/display: fix ABM disablement
 Date: Tue,  5 Dec 2023 12:16:00 +0900
-Message-ID: <20231205031541.017874574@linuxfoundation.org>
+Message-ID: <20231205031533.173128121@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +53,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit beb1930f966d1517921488bd5d64147f58f79abf ]
+commit b9f46f0b98784e40288ee393f863f553fde062fa upstream.
 
-The blamed commit added support for Rx copybreak. This meant that for
-certain frame sizes, a new skb was allocated and the initial data buffer
-was recycled. Instead of waiting to recycle the Rx buffer only after all
-processing was done on it (like accessing the parse results or timestamp
-information), the code path just went ahead and re-used the buffer right
-away.
+On recent versions of DMUB firmware, if we want to completely disable
+ABM we have to pass ABM_LEVEL_IMMEDIATE_DISABLE as the requested ABM
+level to DMUB. Otherwise, LCD eDP displays are unable to reach their
+maximum brightness levels. So, to fix this whenever the user requests an
+ABM level of 0 pass ABM_LEVEL_IMMEDIATE_DISABLE to DMUB instead. Also,
+to keep the user's experience consistent map ABM_LEVEL_IMMEDIATE_DISABLE
+to 0 when a user tries to read the requested ABM level.
 
-This sometimes lead to corrupted HW and SW annotation areas.
-Fix this by delaying the moment when the buffer is recycled.
-
-Fixes: 50f826999a80 ("dpaa2-eth: add rx copybreak support")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-index 774377db0b4bd..888509cf1f210 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
-@@ -516,8 +516,6 @@ struct sk_buff *dpaa2_eth_alloc_skb(struct dpaa2_eth_priv *priv,
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6149,7 +6149,7 @@ int amdgpu_dm_connector_atomic_set_prope
+ 		dm_new_state->underscan_enable = val;
+ 		ret = 0;
+ 	} else if (property == adev->mode_info.abm_level_property) {
+-		dm_new_state->abm_level = val;
++		dm_new_state->abm_level = val ?: ABM_LEVEL_IMMEDIATE_DISABLE;
+ 		ret = 0;
+ 	}
  
- 	memcpy(skb->data, fd_vaddr + fd_offset, fd_length);
+@@ -6194,7 +6194,8 @@ int amdgpu_dm_connector_atomic_get_prope
+ 		*val = dm_state->underscan_enable;
+ 		ret = 0;
+ 	} else if (property == adev->mode_info.abm_level_property) {
+-		*val = dm_state->abm_level;
++		*val = (dm_state->abm_level != ABM_LEVEL_IMMEDIATE_DISABLE) ?
++			dm_state->abm_level : 0;
+ 		ret = 0;
+ 	}
  
--	dpaa2_eth_recycle_buf(priv, ch, dpaa2_fd_get_addr(fd));
--
- 	return skb;
- }
+@@ -6274,7 +6275,8 @@ void amdgpu_dm_connector_funcs_reset(str
+ 		state->pbn = 0;
  
-@@ -589,6 +587,7 @@ void dpaa2_eth_rx(struct dpaa2_eth_priv *priv,
- 	struct rtnl_link_stats64 *percpu_stats;
- 	struct dpaa2_eth_drv_stats *percpu_extras;
- 	struct device *dev = priv->net_dev->dev.parent;
-+	bool recycle_rx_buf = false;
- 	void *buf_data;
- 	u32 xdp_act;
+ 		if (connector->connector_type == DRM_MODE_CONNECTOR_eDP)
+-			state->abm_level = amdgpu_dm_abm_level;
++			state->abm_level = amdgpu_dm_abm_level ?:
++				ABM_LEVEL_IMMEDIATE_DISABLE;
  
-@@ -618,6 +617,8 @@ void dpaa2_eth_rx(struct dpaa2_eth_priv *priv,
- 			dma_unmap_page(dev, addr, priv->rx_buf_size,
- 				       DMA_BIDIRECTIONAL);
- 			skb = dpaa2_eth_build_linear_skb(ch, fd, vaddr);
-+		} else {
-+			recycle_rx_buf = true;
- 		}
- 	} else if (fd_format == dpaa2_fd_sg) {
- 		WARN_ON(priv->xdp_prog);
-@@ -637,6 +638,9 @@ void dpaa2_eth_rx(struct dpaa2_eth_priv *priv,
- 		goto err_build_skb;
- 
- 	dpaa2_eth_receive_skb(priv, ch, fd, vaddr, fq, percpu_stats, skb);
-+
-+	if (recycle_rx_buf)
-+		dpaa2_eth_recycle_buf(priv, ch, dpaa2_fd_get_addr(fd));
- 	return;
- 
- err_build_skb:
--- 
-2.42.0
-
+ 		__drm_atomic_helper_connector_reset(connector, &state->base);
+ 	}
 
 
 
