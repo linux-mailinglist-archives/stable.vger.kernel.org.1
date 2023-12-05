@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC93080469C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4A68045E6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78852281171
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A63401F213CB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB3B8BEC;
-	Tue,  5 Dec 2023 03:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0332C6FB1;
+	Tue,  5 Dec 2023 03:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTMdQGHa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qK59rnS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1B46FAF;
-	Tue,  5 Dec 2023 03:29:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 009A9C433C9;
-	Tue,  5 Dec 2023 03:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFC86AA0;
+	Tue,  5 Dec 2023 03:22:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52373C433C7;
+	Tue,  5 Dec 2023 03:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746978;
-	bh=gG2BdIuva8n2oPni+k4KoQZhJ0ORCcqmL+IXTmsQ/oo=;
+	s=korg; t=1701746558;
+	bh=QHfxNrTDbzlSsC3tOtofhqw4eba+DsC3W/AA4FEmKss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTMdQGHaReBco602Yueh8jGELzLU6vGcTO0xrLZIySYy6KpnVznWRvYmfHqCJL3wW
-	 cf+1O5B+302zMFzYcBu0BeAcZVlG3kko4hEV/JSRKewglCYiPSKB6uMKHqtGawMyQD
-	 u0Lsfxfwf9BWYdm0a+GlBfB0KUbBscC69g708dxw=
+	b=qK59rnS06TugQbDcg1qMd2KP2cgA9ivHobaKJINglI6EuJDs/kxd5sTdt3jYK0H8j
+	 8qN+hx3Y37pVPXsYTnydxFYenHTaOT6oytI9jxeDPlGhPAub0LvavXl6NKo7M53U3W
+	 sDp0ZdYSHnpnMD+Ru9dKr2rNcVljj0+z8KlgpSwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 007/107] mmc: cqhci: Increase recovery halt timeout
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 070/134] btrfs: fix 64bit compat send ioctl arguments not initializing version member
 Date: Tue,  5 Dec 2023 12:15:42 +0900
-Message-ID: <20231205031531.979334810@linuxfoundation.org>
+Message-ID: <20231205031539.954619160@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: David Sterba <dsterba@suse.com>
 
-commit b578d5d18e929aa7c007a98cce32657145dde219 upstream.
+commit 5de0434bc064606d6b7467ec3e5ad22963a18c04 upstream.
 
-Failing to halt complicates the recovery. Additionally, unless the card or
-controller are stuck, which is expected to be very rare, then the halt
-should succeed, so it is better to wait. Set a large timeout.
+When the send protocol versioning was added in 5.16 e77fbf990316
+("btrfs: send: prepare for v2 protocol"), the 32/64bit compat code was
+not updated (added by 2351f431f727 ("btrfs: fix send ioctl on 32bit with
+64bit kernel")), missing the version struct member. The compat code is
+probably rarely used, nobody reported any bugs.
 
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-3-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Found by tool https://github.com/jirislaby/clang-struct .
+
+Fixes: e77fbf990316 ("btrfs: send: prepare for v2 protocol")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/cqhci-core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/ioctl.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/mmc/host/cqhci-core.c
-+++ b/drivers/mmc/host/cqhci-core.c
-@@ -984,10 +984,10 @@ static bool cqhci_halt(struct mmc_host *
- /*
-  * After halting we expect to be able to use the command line. We interpret the
-  * failure to halt to mean the data lines might still be in use (and the upper
-- * layers will need to send a STOP command), so we set the timeout based on a
-- * generous command timeout.
-+ * layers will need to send a STOP command), however failing to halt complicates
-+ * the recovery, so set a timeout that would reasonably allow I/O to complete.
-  */
--#define CQHCI_START_HALT_TIMEOUT	5
-+#define CQHCI_START_HALT_TIMEOUT	500
- 
- static void cqhci_recovery_start(struct mmc_host *mmc)
- {
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4351,6 +4351,7 @@ static int _btrfs_ioctl_send(struct inod
+ 		arg->clone_sources = compat_ptr(args32.clone_sources);
+ 		arg->parent_root = args32.parent_root;
+ 		arg->flags = args32.flags;
++		arg->version = args32.version;
+ 		memcpy(arg->reserved, args32.reserved,
+ 		       sizeof(args32.reserved));
+ #else
 
 
 
