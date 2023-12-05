@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C56480482D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8C28047DE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4511C20ED3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDC6B1C20D9B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E2479E3;
-	Tue,  5 Dec 2023 03:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3319579E3;
+	Tue,  5 Dec 2023 03:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2szcuUV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uApzNuWi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C026F6FB0;
-	Tue,  5 Dec 2023 03:46:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F7AC433C8;
-	Tue,  5 Dec 2023 03:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B3E6AC2;
+	Tue,  5 Dec 2023 03:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C06C433C7;
+	Tue,  5 Dec 2023 03:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748004;
-	bh=lekGiE/gapQG01GMk0Yyl8Q8hRzQcbgjEfWRet+M2qg=;
+	s=korg; t=1701747793;
+	bh=FfWmnJnV+K1qHr23ptaRO4YaEC+kzSoDakg2CASZTDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2szcuUV6lFrmEsAoPWw+76t05UoFejGcZvMbvBLOHqlLpnoDyU18AqNvFfmSH6u7S
-	 MARB92ivuwnbXcobwHKicC7w16fRZ+uBsf2wwAIsi97zu9AV+eGFzh+k3KFnfohQRd
-	 Rp17cCjjB97NJK6oZAcQSz8iyjhqdMoYLgEM2MKs=
+	b=uApzNuWiee5TX16MqwpLy/JdGFZrX1jLYIJJir4g4lCTmKX/s944ugtLNpcdnYRzK
+	 HphKgdHzoEBpcTGq3R3FfwNSxLR1hq3R4DlTvtfc9cRfk9QFmJTkKj6zAuCuKwUIFH
+	 Qx+PgVkVM2E1zt/58u6ArYGaq1dGxBW0pczeJ6R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 78/94] mtd: cfi_cmdset_0001: Support the absence of protection registers
-Date: Tue,  5 Dec 2023 12:17:46 +0900
-Message-ID: <20231205031527.169129248@linuxfoundation.org>
+Subject: [PATCH 5.15 62/67] iommu/vt-d: Omit devTLB invalidation requests when TES=0
+Date: Tue,  5 Dec 2023 12:17:47 +0900
+Message-ID: <20231205031523.459972890@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,82 +52,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit b359ed5184aebf9d987e54abc5dae7ac03ed29ae ]
+[ Upstream commit 0f5432a9b839847dcfe9fa369d72e3d646102ddf ]
 
-The flash controller implemented by the Arm Base platform behaves like
-the Intel StrataFlash J3 device, but omits several features. In
-particular it doesn't implement a protection register, so "Number of
-Protection register fields" in the Primary Vendor-Specific Extended
-Query, is 0.
+The latest VT-d spec indicates that when remapping hardware is disabled
+(TES=0 in Global Status Register), upstream ATS Invalidation Completion
+requests are treated as UR (Unsupported Request).
 
-The Intel StrataFlash J3 datasheet only lists 1 as a valid value for
-NumProtectionFields. It describes the field as:
+Consequently, the spec recommends in section 4.3 Handling of Device-TLB
+Invalidations that software refrain from submitting any Device-TLB
+invalidation requests when address remapping hardware is disabled.
 
-	"Number of Protection register fields in JEDEC ID space.
-	“00h,” indicates that 256 protection bytes are available"
+Verify address remapping hardware is enabled prior to submitting Device-
+TLB invalidation requests.
 
-While a value of 0 may arguably not be architecturally valid, the
-driver's current behavior is certainly wrong: if NumProtectionFields is
-0, read_pri_intelext() adds a negative value to the unsigned extra_size,
-and ends up in an infinite loop.
-
-Fix it by ignoring a NumProtectionFields of 0.
-
-Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Stable-dep-of: 565fe150624e ("mtd: cfi_cmdset_0001: Byte swap OTP info")
+Fixes: 792fb43ce2c9 ("iommu/vt-d: Enable Intel IOMMU scalable mode by default")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20231114011036.70142-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/chips/cfi_cmdset_0001.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/iommu/intel/dmar.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
-index 79a53cb8507b6..1d77687b67169 100644
---- a/drivers/mtd/chips/cfi_cmdset_0001.c
-+++ b/drivers/mtd/chips/cfi_cmdset_0001.c
-@@ -420,8 +420,9 @@ read_pri_intelext(struct map_info *map, __u16 adr)
- 		extra_size = 0;
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index 7c20083d4a798..0ad33d8d99d1f 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1518,6 +1518,15 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
+ {
+ 	struct qi_desc desc;
  
- 		/* Protection Register info */
--		extra_size += (extp->NumProtectionFields - 1) *
--			      sizeof(struct cfi_intelext_otpinfo);
-+		if (extp->NumProtectionFields)
-+			extra_size += (extp->NumProtectionFields - 1) *
-+				      sizeof(struct cfi_intelext_otpinfo);
- 	}
++	/*
++	 * VT-d spec, section 4.3:
++	 *
++	 * Software is recommended to not submit any Device-TLB invalidation
++	 * requests while address remapping hardware is disabled.
++	 */
++	if (!(iommu->gcmd & DMA_GCMD_TE))
++		return;
++
+ 	if (mask) {
+ 		addr |= (1ULL << (VTD_PAGE_SHIFT + mask - 1)) - 1;
+ 		desc.qw1 = QI_DEV_IOTLB_ADDR(addr) | QI_DEV_IOTLB_SIZE;
+@@ -1583,6 +1592,15 @@ void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
+ 	unsigned long mask = 1UL << (VTD_PAGE_SHIFT + size_order - 1);
+ 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
  
- 	if (extp->MinorVersion >= '1') {
-@@ -695,14 +696,16 @@ static int cfi_intelext_partition_fixup(struct mtd_info *mtd,
- 	 */
- 	if (extp && extp->MajorVersion == '1' && extp->MinorVersion >= '3'
- 	    && extp->FeatureSupport & (1 << 9)) {
-+		int offs = 0;
- 		struct cfi_private *newcfi;
- 		struct flchip *chip;
- 		struct flchip_shared *shared;
--		int offs, numregions, numparts, partshift, numvirtchips, i, j;
-+		int numregions, numparts, partshift, numvirtchips, i, j;
- 
- 		/* Protection Register info */
--		offs = (extp->NumProtectionFields - 1) *
--		       sizeof(struct cfi_intelext_otpinfo);
-+		if (extp->NumProtectionFields)
-+			offs = (extp->NumProtectionFields - 1) *
-+			       sizeof(struct cfi_intelext_otpinfo);
- 
- 		/* Burst Read info */
- 		offs += extp->extra[offs+1]+2;
++	/*
++	 * VT-d spec, section 4.3:
++	 *
++	 * Software is recommended to not submit any Device-TLB invalidation
++	 * requests while address remapping hardware is disabled.
++	 */
++	if (!(iommu->gcmd & DMA_GCMD_TE))
++		return;
++
+ 	desc.qw0 = QI_DEV_EIOTLB_PASID(pasid) | QI_DEV_EIOTLB_SID(sid) |
+ 		QI_DEV_EIOTLB_QDEP(qdep) | QI_DEIOTLB_TYPE |
+ 		QI_DEV_IOTLB_PFSID(pfsid);
 -- 
 2.42.0
 
