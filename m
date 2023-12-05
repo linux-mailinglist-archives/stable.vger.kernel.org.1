@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 475A2804761
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C408A804806
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 034952814D9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 00F1D1C20EA8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C1579F2;
-	Tue,  5 Dec 2023 03:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EDA8F56;
+	Tue,  5 Dec 2023 03:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pETi0Pwh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sv7B4sZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809F86FB1;
-	Tue,  5 Dec 2023 03:37:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2081C433C7;
-	Tue,  5 Dec 2023 03:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7566FB0;
+	Tue,  5 Dec 2023 03:45:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A276C433C8;
+	Tue,  5 Dec 2023 03:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747477;
-	bh=rfunqlQNTEclCpCjlf2CYB6Oo1lGWy4XGWkwfzurkUM=;
+	s=korg; t=1701747900;
+	bh=L6cNEjVuvHdmzdLOFRxWIjc5O/O+jDuQhybQEtQj3iI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pETi0Pwhe+WzBLyQt4c8SpPSGKqRBOba5UTET4D39wfoFJb0CEvEHSHAQ1H0Xi9WV
-	 fXvh4ZISmmsLCmjnSwH20JO2FznCu37MNXRi/qOcY8VA3MIbMmhuuxO8Pc7jwHMrBw
-	 zBR+vf6b6/ZpM3Wm4+ldraxY2CFpFaAEVjGJAPts=
+	b=Sv7B4sZEDDPVLYpjPNcXP5DHm5M84sJZMZpw9etEdj9gRydJjN/INRdxSMPJDs0z0
+	 sbhYwqiDg4UuycOoT9f/umqiGEWcbiuExu711m8xH7/B+v6F0eFhMAUTeqq7FdLRgf
+	 h4ErkuO/WLJB+HUyYRbXsIp5xZ9mAM8XbmZSgwAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 083/135] btrfs: add dmesg output for first mount and last unmount of a filesystem
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 16/94] amd-xgbe: propagate the correct speed and duplex status
 Date: Tue,  5 Dec 2023 12:16:44 +0900
-Message-ID: <20231205031535.753420088@linuxfoundation.org>
+Message-ID: <20231205031523.796367309@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +55,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit 2db313205f8b96eea467691917138d646bb50aef upstream.
+[ Upstream commit 7a2323ac24a50311f64a3a9b54ed5bef5821ecae ]
 
-There is a feature request to add dmesg output when unmounting a btrfs.
-There are several alternative methods to do the same thing, but with
-their own problems:
+xgbe_get_link_ksettings() does not propagate correct speed and duplex
+information to ethtool during cable unplug. Due to which ethtool reports
+incorrect values for speed and duplex.
 
-- Use eBPF to watch btrfs_put_super()/open_ctree()
-  Not end user friendly, they have to dip their head into the source
-  code.
+Address this by propagating correct information.
 
-- Watch for directory /sys/fs/<uuid>/
-  This is way more simple, but still requires some simple device -> uuid
-  lookups.  And a script needs to use inotify to watch /sys/fs/.
-
-Compared to all these, directly outputting the information into dmesg
-would be the most simple one, with both device and UUID included.
-
-And since we're here, also add the output when mounting a filesystem for
-the first time for parity. A more fine grained monitoring of subvolume
-mounts should be done by another layer, like audit.
-
-Now mounting a btrfs with all default mkfs options would look like this:
-
-  [81.906566] BTRFS info (device dm-8): first mount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
-  [81.907494] BTRFS info (device dm-8): using crc32c (crc32c-intel) checksum algorithm
-  [81.908258] BTRFS info (device dm-8): using free space tree
-  [81.912644] BTRFS info (device dm-8): auto enabling async discard
-  [81.913277] BTRFS info (device dm-8): checking UUID tree
-  [91.668256] BTRFS info (device dm-8): last unmount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
-
-CC: stable@vger.kernel.org # 5.4+
-Link: https://github.com/kdave/btrfs-progs/issues/689
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ update changelog ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7c12aa08779c ("amd-xgbe: Move the PHY support into amd-xgbe")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c |    1 +
- fs/btrfs/super.c   |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2972,6 +2972,7 @@ int __cold open_ctree(struct super_block
- 		goto fail_alloc;
- 	}
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
+index a880f10e3e703..d74f45ce06864 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
+@@ -314,10 +314,15 @@ static int xgbe_get_link_ksettings(struct net_device *netdev,
  
-+	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
- 	/*
- 	 * Verify the type first, if that or the checksum value are
- 	 * corrupted, we'll find out
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -318,7 +318,10 @@ void __btrfs_panic(struct btrfs_fs_info
+ 	cmd->base.phy_address = pdata->phy.address;
  
- static void btrfs_put_super(struct super_block *sb)
- {
--	close_ctree(btrfs_sb(sb));
-+	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
-+
-+	btrfs_info(fs_info, "last unmount of filesystem %pU", fs_info->fs_devices->fsid);
-+	close_ctree(fs_info);
- }
+-	cmd->base.autoneg = pdata->phy.autoneg;
+-	cmd->base.speed = pdata->phy.speed;
+-	cmd->base.duplex = pdata->phy.duplex;
++	if (netif_carrier_ok(netdev)) {
++		cmd->base.speed = pdata->phy.speed;
++		cmd->base.duplex = pdata->phy.duplex;
++	} else {
++		cmd->base.speed = SPEED_UNKNOWN;
++		cmd->base.duplex = DUPLEX_UNKNOWN;
++	}
  
- enum {
++	cmd->base.autoneg = pdata->phy.autoneg;
+ 	cmd->base.port = PORT_NONE;
+ 
+ 	XGBE_LM_COPY(cmd, supported, lks, supported);
+-- 
+2.42.0
+
 
 
 
