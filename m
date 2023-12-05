@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D17A804709
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DBD80478E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB961C20DD6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 577FFB20D07
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898178BF2;
-	Tue,  5 Dec 2023 03:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE518C03;
+	Tue,  5 Dec 2023 03:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgX3dsG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM/0t5QR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BFF6FB1;
-	Tue,  5 Dec 2023 03:34:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC17C433C7;
-	Tue,  5 Dec 2023 03:34:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CDB86FB1;
+	Tue,  5 Dec 2023 03:40:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA418C433C7;
+	Tue,  5 Dec 2023 03:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747251;
-	bh=uSIZwh+42UAB2baMFJUBj8T+3afM5j56dN4eDGiY/Vc=;
+	s=korg; t=1701747601;
+	bh=7lwvtJdIrvJuZGuNILldcQBQj1cNyW6K6qvqnui0Uzw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cgX3dsG0FYDUcuuzMHhvrkGlA3HDkh7/75DdqcmMHJBSWlpXptFLUTav7ui5Vl8ln
-	 Ws8GLq0jChWmWhwKkHS/eePtsV+vczT8Nj2dikG9rRi0ttAWx0dq+JGb11B6JjDEZg
-	 JXI0zmMKhl1TKuQ5H1UJu2zrggM7Ll538paQEyBg=
+	b=IM/0t5QR0nbUMkVGYRWBbm40vT7dCXu4Tvo7aagcbLvJh6eYgN/z++p0h+C3SZpe0
+	 0vjDqAE+VmeKxNvccZF7o+CzdAuDJliWxZx5ZlfW/Ra/5cjdBZLiU1TURqoQBzN9DX
+	 N8qCXxNIZQM3roNjOOgWSsHy2k0qnzgh35yBIbGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenchao Chen <wenchao.chen@unisoc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/107] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled
+Subject: [PATCH 5.10 111/135] s390/mm: fix phys vs virt confusion in mark_kernel_pXd() functions family
 Date: Tue,  5 Dec 2023 12:17:12 +0900
-Message-ID: <20231205031537.799372491@linuxfoundation.org>
+Message-ID: <20231205031537.774937610@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,95 +53,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenchao Chen <wenchao.chen@unisoc.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit 477865af60b2117ceaa1d558e03559108c15c78c ]
+[ Upstream commit 3784231b1e091857bd129fd9658a8b3cedbdcd58 ]
 
-With cat regulator_summary, we found that vqmmc was not shutting
-down after the card was pulled.
+Due to historical reasons mark_kernel_pXd() functions
+misuse the notion of physical vs virtual addresses
+difference.
 
-cat /sys/kernel/debug/regulator/regulator_summary
-1.before fix
-1)Insert SD card
- vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
-
-2)Pull out the SD card
- vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
-
-2.after fix
-1)Insert SD cardt
- vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
-
-2)Pull out the SD card
- vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
-
-Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
-Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Stable-dep-of: 44d930452476 ("s390/cmma: fix detection of DAT pages")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-sprd.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ arch/s390/mm/page-states.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index 525f979e2a974..2101b6e794c0e 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -405,12 +405,33 @@ static void sdhci_sprd_request_done(struct sdhci_host *host,
- 	mmc_request_done(host->mmc, mrq);
+diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
+index 567c69f3069e7..7f0e154a470ad 100644
+--- a/arch/s390/mm/page-states.c
++++ b/arch/s390/mm/page-states.c
+@@ -112,7 +112,7 @@ static void mark_kernel_pmd(pud_t *pud, unsigned long addr, unsigned long end)
+ 		next = pmd_addr_end(addr, end);
+ 		if (pmd_none(*pmd) || pmd_large(*pmd))
+ 			continue;
+-		page = virt_to_page(pmd_val(*pmd));
++		page = phys_to_page(pmd_val(*pmd));
+ 		set_bit(PG_arch_1, &page->flags);
+ 	} while (pmd++, addr = next, addr != end);
  }
- 
-+static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
-+				 unsigned short vdd)
-+{
-+	struct mmc_host *mmc = host->mmc;
-+
-+	switch (mode) {
-+	case MMC_POWER_OFF:
-+		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
-+
-+		mmc_regulator_disable_vqmmc(mmc);
-+		break;
-+	case MMC_POWER_ON:
-+		mmc_regulator_enable_vqmmc(mmc);
-+		break;
-+	case MMC_POWER_UP:
-+		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
-+		break;
-+	}
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
- 	.write_w = sdhci_sprd_writew,
- 	.write_b = sdhci_sprd_writeb,
- 	.set_clock = sdhci_sprd_set_clock,
-+	.set_power = sdhci_sprd_set_power,
- 	.get_max_clock = sdhci_sprd_get_max_clock,
- 	.get_min_clock = sdhci_sprd_get_min_clock,
- 	.set_bus_width = sdhci_set_bus_width,
-@@ -676,6 +697,10 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
- 			 SDHCI_SUPPORT_DDR50);
- 
-+	ret = mmc_regulator_get_supply(host->mmc);
-+	if (ret)
-+		goto pm_runtime_disable;
-+
- 	ret = sdhci_setup_host(host);
- 	if (ret)
- 		goto pm_runtime_disable;
+@@ -130,7 +130,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
+ 		if (pud_none(*pud) || pud_large(*pud))
+ 			continue;
+ 		if (!pud_folded(*pud)) {
+-			page = virt_to_page(pud_val(*pud));
++			page = phys_to_page(pud_val(*pud));
+ 			for (i = 0; i < 3; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+@@ -151,7 +151,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
+ 		if (p4d_none(*p4d))
+ 			continue;
+ 		if (!p4d_folded(*p4d)) {
+-			page = virt_to_page(p4d_val(*p4d));
++			page = phys_to_page(p4d_val(*p4d));
+ 			for (i = 0; i < 3; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+@@ -173,7 +173,7 @@ static void mark_kernel_pgd(void)
+ 		if (pgd_none(*pgd))
+ 			continue;
+ 		if (!pgd_folded(*pgd)) {
+-			page = virt_to_page(pgd_val(*pgd));
++			page = phys_to_page(pgd_val(*pgd));
+ 			for (i = 0; i < 3; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
 -- 
 2.42.0
 
