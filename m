@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-4321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC658046FF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45538047D7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9D61281572
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65641B20D2C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C00579E3;
-	Tue,  5 Dec 2023 03:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC1479F2;
+	Tue,  5 Dec 2023 03:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0L7TcrUO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRmXMwRr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4C179F2;
-	Tue,  5 Dec 2023 03:33:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B25C433C7;
-	Tue,  5 Dec 2023 03:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED926AC2;
+	Tue,  5 Dec 2023 03:42:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC6CC433C8;
+	Tue,  5 Dec 2023 03:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747228;
-	bh=4scH1hXB4A3J5AuiA2otUnJoZaxR+TUA3HLZfj6DqdA=;
+	s=korg; t=1701747772;
+	bh=O94ghMHhdccr3JLfRxULUy38emkdU7VgphL76WjikOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0L7TcrUOu4RyFA1v1CmBkxjES/SOg68cPQMKQV+1MN2wJi9Xx79oev6iOt0uB3XUA
-	 oFVidIScSACods+sJYhJwWd8EzuEfI18kCzZ49QWWRiNxhDsleUCj6MjkFwMEukMNW
-	 n3SCuSO7jCKPursZ540bXRZEZfRsiGNAnTvKyJ6k=
+	b=kRmXMwRrvhofOLRQlSR8BjSatkp3EpBig87HdJDCCApiUe7ZjOuLv0a4VC1NXSnM1
+	 wJ3aTp8lmiLpSN56rzuQMzMlHeu0iQVEFkohEfzXGDl0K2B5LoHiQcf7cdwdsVGdEX
+	 CTyytAHOdnMBlanFlI4RamrXvwzjt1Qds5B5c5JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Koichiro Den <den@valinux.co.jp>
-Subject: [PATCH 6.1 107/107] x86/apic/msi: Fix misconfigured non-maskable MSI quirk
-Date: Tue,  5 Dec 2023 12:17:22 +0900
-Message-ID: <20231205031538.489495377@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 38/67] Revert "workqueue: remove unused cancel_work()"
+Date: Tue,  5 Dec 2023 12:17:23 +0900
+Message-ID: <20231205031522.013585645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,180 +54,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
 
-commit b56ebe7c896dc78b5865ec2c4b1dae3c93537517 upstream.
+[ Upstream commit 73b4b53276a1d6290cd4f47dbbc885b6e6e59ac6 ]
 
-commit ef8dd01538ea ("genirq/msi: Make interrupt allocation less
-convoluted"), reworked the code so that the x86 specific quirk for affinity
-setting of non-maskable PCI/MSI interrupts is not longer activated if
-necessary.
+This reverts commit 6417250d3f894e66a68ba1cd93676143f2376a6f.
 
-This could be solved by restoring the original logic in the core MSI code,
-but after a deeper analysis it turned out that the quirk flag is not
-required at all.
+amdpgu need this function in order to prematurly stop pending
+reset works when another reset work already in progress.
 
-The quirk is only required when the PCI/MSI device cannot mask the MSI
-interrupts, which in turn also prevents reservation mode from being enabled
-for the affected interrupt.
-
-This allows ot remove the NOMASK quirk bit completely as msi_set_affinity()
-can instead check whether reservation mode is enabled for the interrupt,
-which gives exactly the same answer.
-
-Even in the momentary non-existing case that the reservation mode would be
-not set for a maskable MSI interrupt this would not cause any harm as it
-just would cause msi_set_affinity() to go needlessly through the
-functionaly equivalent slow path, which works perfectly fine with maskable
-interrupts as well.
-
-Rework msi_set_affinity() to query the reservation mode and remove all
-NOMASK quirk logic from the core code.
-
-[ tglx: Massaged changelog ]
-
-Fixes: ef8dd01538ea ("genirq/msi: Make interrupt allocation less convoluted")
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231026032036.2462428-1-den@valinux.co.jp
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+Reviewed-by: Lai Jiangshan<jiangshanlai@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 91d3d149978b ("r8169: prevent potential deadlock in rtl8169_close")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/msi.c |    8 +++-----
- include/linux/irq.h        |   24 +++---------------------
- kernel/irq/debugfs.c       |    1 -
- kernel/irq/msi.c           |   12 +-----------
- 4 files changed, 7 insertions(+), 38 deletions(-)
+ include/linux/workqueue.h | 1 +
+ kernel/workqueue.c        | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
---- a/arch/x86/kernel/apic/msi.c
-+++ b/arch/x86/kernel/apic/msi.c
-@@ -55,14 +55,14 @@ msi_set_affinity(struct irq_data *irqd,
- 	 * caused by the non-atomic update of the address/data pair.
- 	 *
- 	 * Direct update is possible when:
--	 * - The MSI is maskable (remapped MSI does not use this code path)).
--	 *   The quirk bit is not set in this case.
-+	 * - The MSI is maskable (remapped MSI does not use this code path).
-+	 *   The reservation mode bit is set in this case.
- 	 * - The new vector is the same as the old vector
- 	 * - The old vector is MANAGED_IRQ_SHUTDOWN_VECTOR (interrupt starts up)
- 	 * - The interrupt is not yet started up
- 	 * - The new destination CPU is the same as the old destination CPU
- 	 */
--	if (!irqd_msi_nomask_quirk(irqd) ||
-+	if (!irqd_can_reserve(irqd) ||
- 	    cfg->vector == old_cfg.vector ||
- 	    old_cfg.vector == MANAGED_IRQ_SHUTDOWN_VECTOR ||
- 	    !irqd_is_started(irqd) ||
-@@ -202,8 +202,6 @@ struct irq_domain * __init native_create
- 	if (!d) {
- 		irq_domain_free_fwnode(fn);
- 		pr_warn("Failed to initialize PCI-MSI irqdomain.\n");
--	} else {
--		d->flags |= IRQ_DOMAIN_MSI_NOMASK_QUIRK;
- 	}
- 	return d;
- }
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -215,8 +215,6 @@ struct irq_data {
-  * IRQD_SINGLE_TARGET		- IRQ allows only a single affinity target
-  * IRQD_DEFAULT_TRIGGER_SET	- Expected trigger already been set
-  * IRQD_CAN_RESERVE		- Can use reservation mode
-- * IRQD_MSI_NOMASK_QUIRK	- Non-maskable MSI quirk for affinity change
-- *				  required
-  * IRQD_HANDLE_ENFORCE_IRQCTX	- Enforce that handle_irq_*() is only invoked
-  *				  from actual interrupt context.
-  * IRQD_AFFINITY_ON_ACTIVATE	- Affinity is set on activation. Don't call
-@@ -245,10 +243,9 @@ enum {
- 	IRQD_SINGLE_TARGET		= (1 << 24),
- 	IRQD_DEFAULT_TRIGGER_SET	= (1 << 25),
- 	IRQD_CAN_RESERVE		= (1 << 26),
--	IRQD_MSI_NOMASK_QUIRK		= (1 << 27),
--	IRQD_HANDLE_ENFORCE_IRQCTX	= (1 << 28),
--	IRQD_AFFINITY_ON_ACTIVATE	= (1 << 29),
--	IRQD_IRQ_ENABLED_ON_SUSPEND	= (1 << 30),
-+	IRQD_HANDLE_ENFORCE_IRQCTX	= (1 << 27),
-+	IRQD_AFFINITY_ON_ACTIVATE	= (1 << 28),
-+	IRQD_IRQ_ENABLED_ON_SUSPEND	= (1 << 29),
- };
+diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
+index 1e96680f50230..5f2e531d0a80d 100644
+--- a/include/linux/workqueue.h
++++ b/include/linux/workqueue.h
+@@ -462,6 +462,7 @@ extern int schedule_on_each_cpu(work_func_t func);
+ int execute_in_process_context(work_func_t fn, struct execute_work *);
  
- #define __irqd_to_state(d) ACCESS_PRIVATE((d)->common, state_use_accessors)
-@@ -423,21 +420,6 @@ static inline bool irqd_can_reserve(stru
- 	return __irqd_to_state(d) & IRQD_CAN_RESERVE;
+ extern bool flush_work(struct work_struct *work);
++extern bool cancel_work(struct work_struct *work);
+ extern bool cancel_work_sync(struct work_struct *work);
+ 
+ extern bool flush_delayed_work(struct delayed_work *dwork);
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 962ee27ec7d70..d5f30b610217e 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -3277,6 +3277,15 @@ static bool __cancel_work(struct work_struct *work, bool is_dwork)
+ 	return ret;
  }
  
--static inline void irqd_set_msi_nomask_quirk(struct irq_data *d)
--{
--	__irqd_to_state(d) |= IRQD_MSI_NOMASK_QUIRK;
--}
--
--static inline void irqd_clr_msi_nomask_quirk(struct irq_data *d)
--{
--	__irqd_to_state(d) &= ~IRQD_MSI_NOMASK_QUIRK;
--}
--
--static inline bool irqd_msi_nomask_quirk(struct irq_data *d)
--{
--	return __irqd_to_state(d) & IRQD_MSI_NOMASK_QUIRK;
--}
--
- static inline void irqd_set_affinity_on_activate(struct irq_data *d)
- {
- 	__irqd_to_state(d) |= IRQD_AFFINITY_ON_ACTIVATE;
---- a/kernel/irq/debugfs.c
-+++ b/kernel/irq/debugfs.c
-@@ -121,7 +121,6 @@ static const struct irq_bit_descr irqdat
- 	BIT_MASK_DESCR(IRQD_AFFINITY_ON_ACTIVATE),
- 	BIT_MASK_DESCR(IRQD_MANAGED_SHUTDOWN),
- 	BIT_MASK_DESCR(IRQD_CAN_RESERVE),
--	BIT_MASK_DESCR(IRQD_MSI_NOMASK_QUIRK),
- 
- 	BIT_MASK_DESCR(IRQD_FORWARDED_TO_VCPU),
- 
---- a/kernel/irq/msi.c
-+++ b/kernel/irq/msi.c
-@@ -807,7 +807,6 @@ static int msi_handle_pci_fail(struct ir
- 
- #define VIRQ_CAN_RESERVE	0x01
- #define VIRQ_ACTIVATE		0x02
--#define VIRQ_NOMASK_QUIRK	0x04
- 
- static int msi_init_virq(struct irq_domain *domain, int virq, unsigned int vflags)
- {
-@@ -816,8 +815,6 @@ static int msi_init_virq(struct irq_doma
- 
- 	if (!(vflags & VIRQ_CAN_RESERVE)) {
- 		irqd_clr_can_reserve(irqd);
--		if (vflags & VIRQ_NOMASK_QUIRK)
--			irqd_set_msi_nomask_quirk(irqd);
- 
- 		/*
- 		 * If the interrupt is managed but no CPU is available to
-@@ -877,15 +874,8 @@ int __msi_domain_alloc_irqs(struct irq_d
- 	 * Interrupt can use a reserved vector and will not occupy
- 	 * a real device vector until the interrupt is requested.
- 	 */
--	if (msi_check_reservation_mode(domain, info, dev)) {
-+	if (msi_check_reservation_mode(domain, info, dev))
- 		vflags |= VIRQ_CAN_RESERVE;
--		/*
--		 * MSI affinity setting requires a special quirk (X86) when
--		 * reservation mode is active.
--		 */
--		if (domain->flags & IRQ_DOMAIN_MSI_NOMASK_QUIRK)
--			vflags |= VIRQ_NOMASK_QUIRK;
--	}
- 
- 	msi_for_each_desc(desc, dev, MSI_DESC_NOTASSOCIATED) {
- 		ops->set_desc(&arg, desc);
++/*
++ * See cancel_delayed_work()
++ */
++bool cancel_work(struct work_struct *work)
++{
++	return __cancel_work(work, false);
++}
++EXPORT_SYMBOL(cancel_work);
++
+ /**
+  * cancel_delayed_work - cancel a delayed work
+  * @dwork: delayed_work to cancel
+-- 
+2.42.0
+
 
 
 
