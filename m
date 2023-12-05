@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-4524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AD468047DA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DECC9804784
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5624728175B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890741F214B7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE2C79E3;
-	Tue,  5 Dec 2023 03:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7CE8BF7;
+	Tue,  5 Dec 2023 03:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wxfshfdY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqxaZV7a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F39C6AC2;
-	Tue,  5 Dec 2023 03:43:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F0FC433C8;
-	Tue,  5 Dec 2023 03:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8826A6FB1;
+	Tue,  5 Dec 2023 03:39:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D0DC433C8;
+	Tue,  5 Dec 2023 03:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747781;
-	bh=Dqo1q/FMCq58QvnMgSy7cHIbqe0E3CARPB9f1kslVoY=;
+	s=korg; t=1701747572;
+	bh=jxIekVJqdBf+DfodXQFledhsdAmu+qnk640N4xnk6Zs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wxfshfdY8IYTvsgoIC4432HXxCj8tD6C9LttEwKdI2VrjGHuMbXEh32wUzaH8f5HG
-	 WKX2+odMbyBzGXm2hvKKILnp8SHwOckDxiUtXW0G6tpCRd3fJjdG+4zpdLHIn8fEzY
-	 XM26og4G18iQd8AgDoBr5gTE4pqWMaIsmTnRGzEw=
+	b=WqxaZV7aPwTcie+dn1+/g8MZs5exOoxpAsUsvGYp1bgevreXsY1Z6JclTl2LKqTQ+
+	 N3wrvitn4rTcMWBVep12FOk78dAr36M4MbYYWlvsQZyKrsy7e9HTz3qeHGH7kVqfpp
+	 T3YV3XJbPw9Ag8YbF/F1zSeqg9FVritysI1vsmA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Marek Vasut <marex@denx.de>,
+	Fabio Estevam <festevam@denx.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 41/67] net: ravb: Check return value of reset_control_deassert()
+Subject: [PATCH 5.10 125/135] cpufreq: imx6q: Dont disable 792 Mhz OPP unnecessarily
 Date: Tue,  5 Dec 2023 12:17:26 +0900
-Message-ID: <20231205031522.218867536@linuxfoundation.org>
+Message-ID: <20231205031538.791131591@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +55,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-[ Upstream commit d8eb6ea4b302e7ff78535c205510e359ac10a0bd ]
+[ Upstream commit 2e4e0984c7d696cc74cf2fd7e7f62997f0e9ebe6 ]
 
-reset_control_deassert() could return an error. Some devices cannot work
-if reset signal de-assert operation fails. To avoid this check the return
-code of reset_control_deassert() in ravb_probe() and take proper action.
+For a 900MHz i.MX6ULL CPU the 792MHz OPP is disabled. There is no
+convincing reason to disable this OPP. If a CPU can run at 900MHz,
+it should also be able to cope with 792MHz. Looking at the voltage
+level of 792MHz in [1] (page 24, table 10. "Operating Ranges") the
+current defined OPP is above the minimum. So the voltage level
+shouldn't be a problem. However in [2] (page 24, table 10.
+"Operating Ranges"), it is not mentioned that 792MHz OPP isn't
+allowed. Change it to only disable 792MHz OPP for i.MX6ULL types
+below 792 MHz.
 
-Along with it, the free_netdev() call from the error path was moved after
-reset_control_assert() on its own label (out_free_netdev) to free
-netdev in case reset_control_deassert() fails.
+[1] https://www.nxp.com/docs/en/data-sheet/IMX6ULLIEC.pdf
+[2] https://www.nxp.com/docs/en/data-sheet/IMX6ULLCEC.pdf
 
-Fixes: 0d13a1a464a0 ("ravb: Add reset support")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 0aa9abd4c212 ("cpufreq: imx6q: check speed grades for i.MX6ULL")
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Fabio Estevam <festevam@denx.de>
+[ Viresh: Edited subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/cpufreq/imx6q-cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index b180e2225227c..709c770b391c5 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2188,7 +2188,10 @@ static int ravb_probe(struct platform_device *pdev)
- 	ndev->features = info->net_features;
- 	ndev->hw_features = info->net_hw_features;
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index cc874d0c4395a..00f7ad7466680 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -327,7 +327,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 			imx6x_disable_freq_in_opp(dev, 696000000);
  
--	reset_control_deassert(rstc);
-+	error = reset_control_deassert(rstc);
-+	if (error)
-+		goto out_free_netdev;
-+
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_sync(&pdev->dev);
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+-		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
++		if (val < OCOTP_CFG3_6ULL_SPEED_792MHZ)
+ 			imx6x_disable_freq_in_opp(dev, 792000000);
  
-@@ -2373,11 +2376,11 @@ static int ravb_probe(struct platform_device *pdev)
- out_disable_refclk:
- 	clk_disable_unprepare(priv->refclk);
- out_release:
--	free_netdev(ndev);
--
- 	pm_runtime_put(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(rstc);
-+out_free_netdev:
-+	free_netdev(ndev);
- 	return error;
- }
- 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
 -- 
 2.42.0
 
