@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-4090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7E08045F4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C9B804726
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C4E51C20CBE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77C31F2144A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4BE6FB8;
-	Tue,  5 Dec 2023 03:23:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDEF18BF2;
+	Tue,  5 Dec 2023 03:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBu7RHui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRC8UQtx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9A66AA0;
-	Tue,  5 Dec 2023 03:23:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88546C433C9;
-	Tue,  5 Dec 2023 03:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECB56FB1;
+	Tue,  5 Dec 2023 03:35:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E54C433C7;
+	Tue,  5 Dec 2023 03:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746591;
-	bh=mrX7JmEYRkjG1hAkGlcX0YOCSU8WKJOEg/yDR+r86QY=;
+	s=korg; t=1701747328;
+	bh=ELeAC9dwp0fn0NV0EHzawrqEeAncT3IHQk8JnYBSCYg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBu7RHuiiXI+rWXd1H3JnphKgKBIFcm9YCZ3pmTYQ7pkB4HjXQD/Ou7nV+cUzYOdH
-	 IYa6omINgqL6+2nhJojG860+wLDBw1JRRZoOpUFHd7HZ5zsHMdxK6mex+jgxeRKaXc
-	 q8P+Y1Tv5daswwEpwfpXjF/42vi2vu6Fy/mvNhLg=
+	b=CRC8UQtxmaHEXajkdvrmsKoFiYhoRqmuc05Pt1iSPjyIltGNa71Zh3MyjLSN/9zaj
+	 h/LsePrJhfFwPc4HPZHxakdDt8rofRIe5d5VpfNDgzwAIiRFtw9xow2Sgwb0UXvweJ
+	 DFvYkjgoMCZvVfABKR71lj34zM6HX6uUM9W31MPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 059/134] parisc: Mark lock_aligned variables 16-byte aligned on SMP
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 010/135] afs: Fix afs_server_list to be cleaned up with RCU
 Date: Tue,  5 Dec 2023 12:15:31 +0900
-Message-ID: <20231205031539.263147985@linuxfoundation.org>
+Message-ID: <20231205031531.135587971@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,37 +54,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: David Howells <dhowells@redhat.com>
 
-commit b28fc0d8739c03e7b6c44914a9d00d4c6dddc0ea upstream.
+[ Upstream commit e6bace7313d61e31f2b16fa3d774fd8cb3cb869e ]
 
-On parisc we need 16-byte alignment for variables which are used for
-locking. Mark the __lock_aligned attribute acordingly so that the
-.data..lock_aligned section will get that alignment in the generated
-object files.
+afs_server_list is accessed with the rcu_read_lock() held from
+volume->servers, so it needs to be cleaned up correctly.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org   # v6.0+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using kfree_rcu() instead of kfree().
+
+Fixes: 8a070a964877 ("afs: Detect cell aliases 1 - Cells with root volumes")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/asm/ldcw.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/afs/internal.h    | 1 +
+ fs/afs/server_list.c | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/include/asm/ldcw.h
-+++ b/arch/parisc/include/asm/ldcw.h
-@@ -55,7 +55,7 @@
- })
+diff --git a/fs/afs/internal.h b/fs/afs/internal.h
+index 637cbe549397c..31c7a562147c2 100644
+--- a/fs/afs/internal.h
++++ b/fs/afs/internal.h
+@@ -546,6 +546,7 @@ struct afs_server_entry {
+ };
  
- #ifdef CONFIG_SMP
--# define __lock_aligned __section(".data..lock_aligned")
-+# define __lock_aligned __section(".data..lock_aligned") __aligned(16)
- #endif
+ struct afs_server_list {
++	struct rcu_head		rcu;
+ 	afs_volid_t		vids[AFS_MAXTYPES]; /* Volume IDs */
+ 	refcount_t		usage;
+ 	unsigned char		nr_servers;
+diff --git a/fs/afs/server_list.c b/fs/afs/server_list.c
+index ed9056703505f..b59896b1de0af 100644
+--- a/fs/afs/server_list.c
++++ b/fs/afs/server_list.c
+@@ -17,7 +17,7 @@ void afs_put_serverlist(struct afs_net *net, struct afs_server_list *slist)
+ 		for (i = 0; i < slist->nr_servers; i++)
+ 			afs_unuse_server(net, slist->servers[i].server,
+ 					 afs_server_trace_put_slist);
+-		kfree(slist);
++		kfree_rcu(slist, rcu);
+ 	}
+ }
  
- #endif /* __PARISC_LDCW_H */
+-- 
+2.42.0
+
 
 
 
