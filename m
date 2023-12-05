@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3346804679
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E21898047F7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4D61F213CF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11ABC1C20EAE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E1D6FB8;
-	Tue,  5 Dec 2023 03:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CFB8F62;
+	Tue,  5 Dec 2023 03:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9dbueIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgSlxwc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 536AD6FAF;
-	Tue,  5 Dec 2023 03:28:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B75C433C7;
-	Tue,  5 Dec 2023 03:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D6B6FB0;
+	Tue,  5 Dec 2023 03:44:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB782C433C8;
+	Tue,  5 Dec 2023 03:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746884;
-	bh=OLMcxAH3F3oxeZY7ftIBC5Fg1EbOhVgSn0jbdH6Y6sM=;
+	s=korg; t=1701747859;
+	bh=glTfsYsICF5C0pdt2IC7hb5guoBzbrdwPiHdxRzrF24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9dbueIcE+weQ/KuE/b8boTWrGjPeXedAsgnX+hLg/bxiIZROn5GcFPeUQ/asbWZm
-	 pC5zLHaBKWAYpVunfX51G/tUSnqndsKP/hO71smf1Dz0We7lnERHz3G6OwgklSKZUF
-	 UWBwoCPkdedLIgJflCsfaFif9/0dqpAfb3zdnqRM=
+	b=fgSlxwc5X9nNxhmqad2dF2q6P+DGHGfm9y4Q3uE+13mZaf6bXqPZ3LNX73kKY1LaQ
+	 bSkG0nvbnwg/UW31Bi+EjR5Je0LfouGQjru3eiNNM6zoTzK3BiBqceMhT9pmnBnd25
+	 R7sb1oGFNcbeuNoo8zjLUz3dtlKptx1k27rXdq5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ajay Agarwal <ajayagarwal@google.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 55/71] PCI/ASPM: Disable only ASPM_STATE_L1 when driver disables L1
+Subject: [PATCH 5.4 25/94] ext4: use pre-allocated es in __es_insert_extent()
 Date: Tue,  5 Dec 2023 12:16:53 +0900
-Message-ID: <20231205031521.083189312@linuxfoundation.org>
+Message-ID: <20231205031524.314383403@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +54,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ajay Agarwal <ajayagarwal@google.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit fb097dcd5a28c0a2325632405c76a66777a6bed9 ]
+[ Upstream commit 95f0b320339a977cf69872eac107122bf536775d ]
 
-Previously pci_disable_link_state(PCIE_LINK_STATE_L1) disabled L1SS as well
-as L1.  This is unnecessary since pcie_config_aspm_link() takes care that
-L1SS is not enabled if L1 is disabled.
+Pass a extent_status pointer prealloc to __es_insert_extent(). If the
+pointer is non-null, it is used directly when a new extent_status is
+needed to avoid memory allocation failures.
 
-Disable only ASPM_STATE_L1 when the caller disables L1.  No functional
-changes intended.
-
-This is consistent with aspm_attr_store_common(), which disables only L1,
-not L1SS, when L1 is disabled via the sysfs "l1_aspm" file.
-
-[bhelgaas: commit log]
-Link: https://lore.kernel.org/r/20230504111301.229358-2-ajayagarwal@google.com
-Signed-off-by: Ajay Agarwal <ajayagarwal@google.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Stable-dep-of: 3cb4f534bac0 ("Revert "PCI/ASPM: Disable only ASPM_STATE_L1 when driver, disables L1"")
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230424033846.4732-5-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pcie/aspm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ext4/extents_status.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-index 8f934c88dcd76..8db6a9084a12a 100644
---- a/drivers/pci/pcie/aspm.c
-+++ b/drivers/pci/pcie/aspm.c
-@@ -1110,8 +1110,7 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
- 	if (state & PCIE_LINK_STATE_L0S)
- 		link->aspm_disable |= ASPM_STATE_L0S;
- 	if (state & PCIE_LINK_STATE_L1)
--		/* L1 PM substates require L1 */
--		link->aspm_disable |= ASPM_STATE_L1 | ASPM_STATE_L1SS;
-+		link->aspm_disable |= ASPM_STATE_L1;
- 	if (state & PCIE_LINK_STATE_L1_1)
- 		link->aspm_disable |= ASPM_STATE_L1_1;
- 	if (state & PCIE_LINK_STATE_L1_2)
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index dfabb15afd3dd..eef9f2dc99daa 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -144,7 +144,8 @@
+ static struct kmem_cache *ext4_es_cachep;
+ static struct kmem_cache *ext4_pending_cachep;
+ 
+-static int __es_insert_extent(struct inode *inode, struct extent_status *newes);
++static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
++			      struct extent_status *prealloc);
+ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 			      ext4_lblk_t end, int *reserved);
+ static int es_reclaim_extents(struct ext4_inode_info *ei, int *nr_to_scan);
+@@ -760,7 +761,8 @@ static inline void ext4_es_insert_extent_check(struct inode *inode,
+ }
+ #endif
+ 
+-static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
++static int __es_insert_extent(struct inode *inode, struct extent_status *newes,
++			      struct extent_status *prealloc)
+ {
+ 	struct ext4_es_tree *tree = &EXT4_I(inode)->i_es_tree;
+ 	struct rb_node **p = &tree->root.rb_node;
+@@ -800,7 +802,10 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
+ 		}
+ 	}
+ 
+-	es = __es_alloc_extent(false);
++	if (prealloc)
++		es = prealloc;
++	else
++		es = __es_alloc_extent(false);
+ 	if (!es)
+ 		return -ENOMEM;
+ 	ext4_es_init_extent(inode, es, newes->es_lblk, newes->es_len,
+@@ -857,7 +862,7 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	if (err != 0)
+ 		goto error;
+ retry:
+-	err = __es_insert_extent(inode, &newes);
++	err = __es_insert_extent(inode, &newes, NULL);
+ 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
+ 					  128, EXT4_I(inode)))
+ 		goto retry;
+@@ -904,7 +909,7 @@ void ext4_es_cache_extent(struct inode *inode, ext4_lblk_t lblk,
+ 
+ 	es = __es_tree_search(&EXT4_I(inode)->i_es_tree.root, lblk);
+ 	if (!es || es->es_lblk > end)
+-		__es_insert_extent(inode, &newes);
++		__es_insert_extent(inode, &newes, NULL);
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ }
+ 
+@@ -1347,7 +1352,7 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 					orig_es.es_len - len2;
+ 			ext4_es_store_pblock_status(&newes, block,
+ 						    ext4_es_status(&orig_es));
+-			err = __es_insert_extent(inode, &newes);
++			err = __es_insert_extent(inode, &newes, NULL);
+ 			if (err) {
+ 				es->es_lblk = orig_es.es_lblk;
+ 				es->es_len = orig_es.es_len;
+@@ -1996,7 +2001,7 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 	if (err != 0)
+ 		goto error;
+ retry:
+-	err = __es_insert_extent(inode, &newes);
++	err = __es_insert_extent(inode, &newes, NULL);
+ 	if (err == -ENOMEM && __es_shrink(EXT4_SB(inode->i_sb),
+ 					  128, EXT4_I(inode)))
+ 		goto retry;
 -- 
 2.42.0
 
