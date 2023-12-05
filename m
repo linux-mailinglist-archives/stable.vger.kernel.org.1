@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-4266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC438046C5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED52880465F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6959828194D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91620B20C5C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036318BEC;
-	Tue,  5 Dec 2023 03:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BFC6FAF;
+	Tue,  5 Dec 2023 03:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyqfV1Qe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwjZvARt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11676FB1;
-	Tue,  5 Dec 2023 03:31:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CFCC433C8;
-	Tue,  5 Dec 2023 03:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81956FB8;
+	Tue,  5 Dec 2023 03:26:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E52DC433C8;
+	Tue,  5 Dec 2023 03:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747080;
-	bh=V7yPsAMubyTa4VMKhM4Y8LAKr2ObLcXWO1CxAJqwPP4=;
+	s=korg; t=1701746812;
+	bh=n+wx1ZyJIcLPndo7k7agml+vjpHmpZQ2A3XgiI1u3NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyqfV1QevLai1GI+eY6WA8zxajpijVFfXcZsszKbHE1cyG6XrwIY0teBBnfY6W42X
-	 WiVBmr0xtjDMdLWrfQ/x2uTWL2rrfXCCTrEQQQ02ar7eHmhPOlLoyDCqkOlc3WSHc/
-	 gPX/9OFJUpFtEM1BdZEPsezZjNHL/tWypILK3NfQ=
+	b=UwjZvARtP6QOMeILZrbA/WVnWl3mE/PaTFt9KdcXauo97GJ4TL6qZLOvmiPJ1QFPW
+	 JUsobVzYJ2lH9uRj/6ww5cJMzXZzVNaW5b7gjVi2kXEtnVXyHk7C6eatRSRrm0mOBv
+	 KWvk1j83vfGx7Kj85I4gXlsDwZQjGE6zxdtFI86A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Wang <hui.wang@canonical.com>,
-	Hugo Villeneuve <hugo@hugovil.com>
-Subject: [PATCH 6.1 052/107] serial: sc16is7xx: Put IOControl register into regmap_volatile
-Date: Tue,  5 Dec 2023 12:16:27 +0900
-Message-ID: <20231205031534.586077627@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Ivan Ivanov <ivan.ivanov@suse.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 4.19 30/71] USB: dwc2: write HCINT with INTMASK applied
+Date: Tue,  5 Dec 2023 12:16:28 +0900
+Message-ID: <20231205031519.606056604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 77a82cebf0eb023203b4cb2235cab75afc77cccf upstream.
+commit 0583bc776ca5b5a3f5752869fc31cf7322df2b35 upstream.
 
-According to the IOControl register bits description in the page 31 of
-the product datasheet, we know the bit 3 of IOControl register is
-softreset, this bit will self-clearing once the reset finish.
+dwc2_hc_n_intr() writes back INTMASK as read but evaluates it
+with intmask applied. In stress testing this causes spurious
+interrupts like this:
 
-In the probe, the softreset bit is set, and when we read this register
-from debugfs/regmap interface, we found the softreset bit is still
-setting, this confused us for a while. Finally we found this register
-is cached, to read the real value from register, we could put it
-into the regmap_volatile().
+[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 7 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 0 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 4 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_update_urb_state_abn(): trimming xfer length
 
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Link: https://lore.kernel.org/r/20230724034727.17335-1-hui.wang@canonical.com
-Cc: Hugo Villeneuve <hugo@hugovil.com>
+Applying INTMASK prevents this. The issue exists in all versions of the
+driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Tested-by: Ivan Ivanov <ivan.ivanov@suse.com>
+Tested-by: Andrea della Porta <andrea.porta@suse.com>
+Link: https://lore.kernel.org/r/20231115144514.15248-1-oneukum@suse.com
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc2/hcd_intr.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -486,6 +486,7 @@ static bool sc16is7xx_regmap_volatile(st
- 	case SC16IS7XX_TXLVL_REG:
- 	case SC16IS7XX_RXLVL_REG:
- 	case SC16IS7XX_IOSTATE_REG:
-+	case SC16IS7XX_IOCONTROL_REG:
- 		return true;
- 	default:
- 		break;
+--- a/drivers/usb/dwc2/hcd_intr.c
++++ b/drivers/usb/dwc2/hcd_intr.c
+@@ -2045,15 +2045,17 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ {
+ 	struct dwc2_qtd *qtd;
+ 	struct dwc2_host_chan *chan;
+-	u32 hcint, hcintmsk;
++	u32 hcint, hcintraw, hcintmsk;
+ 
+ 	chan = hsotg->hc_ptr_array[chnum];
+ 
+-	hcint = dwc2_readl(hsotg, HCINT(chnum));
++	hcintraw = dwc2_readl(hsotg, HCINT(chnum));
+ 	hcintmsk = dwc2_readl(hsotg, HCINTMSK(chnum));
++	hcint = hcintraw & hcintmsk;
++	dwc2_writel(hsotg, hcint, HCINT(chnum));
++
+ 	if (!chan) {
+ 		dev_err(hsotg->dev, "## hc_ptr_array for channel is NULL ##\n");
+-		dwc2_writel(hsotg, hcint, HCINT(chnum));
+ 		return;
+ 	}
+ 
+@@ -2062,11 +2064,9 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ 			 chnum);
+ 		dev_vdbg(hsotg->dev,
+ 			 "  hcint 0x%08x, hcintmsk 0x%08x, hcint&hcintmsk 0x%08x\n",
+-			 hcint, hcintmsk, hcint & hcintmsk);
++			 hcintraw, hcintmsk, hcint);
+ 	}
+ 
+-	dwc2_writel(hsotg, hcint, HCINT(chnum));
+-
+ 	/*
+ 	 * If we got an interrupt after someone called
+ 	 * dwc2_hcd_endpoint_disable() we don't want to crash below
+@@ -2076,8 +2076,7 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ 		return;
+ 	}
+ 
+-	chan->hcint = hcint;
+-	hcint &= hcintmsk;
++	chan->hcint = hcintraw;
+ 
+ 	/*
+ 	 * If the channel was halted due to a dequeue, the qtd list might
 
 
 
