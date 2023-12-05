@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48972804611
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB73804740
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03D4E28348D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 959611F213B4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985E26FB8;
-	Tue,  5 Dec 2023 03:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB1B79F2;
+	Tue,  5 Dec 2023 03:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NxjDDZTf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ENIlVLh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4AD6FAF;
-	Tue,  5 Dec 2023 03:24:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C050AC433C8;
-	Tue,  5 Dec 2023 03:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C75C6FB1;
+	Tue,  5 Dec 2023 03:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C77C433C8;
+	Tue,  5 Dec 2023 03:36:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746660;
-	bh=pyzOfYHgxIaiUNglYHa1hu0nv8OYQS6A1kNnOw7j9TI=;
+	s=korg; t=1701747395;
+	bh=apGH0I7MaO7YgpMIzVhpflHcdfWXmxjqqu4l1bQsAiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NxjDDZTfqoAKV2tHQ41Jubsso0cN7F6giqM2gGhH7ehYSQWCS0WB497zmFDmL50TD
-	 2q9Ig6Fou+kHXupEy3jOcBkyLqjt9a4dSIjfhOwd0he3Y2kQB4AFvounWafElBDH5w
-	 klVFoLxE1AwZDG/5HB2GyGa2bFsN5+AcvlHSaWp4=
+	b=ENIlVLh23rb3OuFNNLbbnIFTnwpZ+ptVMb8hMKLlaZxSaFgea5zndE6/YD4zE9ZWz
+	 V24PdNiJhoiy3dD0ClQoeYW32cjoi4/wFdz2vMdbgeacgXbAr4IpnypV21mW3y7NRS
+	 Ncx9KNCciXAyPq/p/NpKdTDGbF1aJN1cd0ZtmZWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Demin <rockdrilla@gmail.com>,
-	Koen Vandeputte <koen.vandeputte@citymesh.com>,
-	=?UTF-8?q?Old=C5=99ich=20Jedli=C4=8Dka?= <oldium.pro@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/134] wifi: mac80211: do not pass AP_VLAN vif pointer to drivers during flush
-Date: Tue,  5 Dec 2023 12:15:56 +0900
-Message-ID: <20231205031540.804407147@linuxfoundation.org>
+Subject: [PATCH 5.10 036/135] media: ccs: Correctly initialise try compose rectangle
+Date: Tue,  5 Dec 2023 12:15:57 +0900
+Message-ID: <20231205031532.932933930@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,75 +52,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oldřich Jedlička <oldium.pro@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 3e3a2b645c043f7e3e488d5011478cefb69bbe8b ]
+[ Upstream commit 724ff68e968b19d786870d333f9952bdd6b119cb ]
 
-This fixes WARN_ONs when using AP_VLANs after station removal. The flush
-call passed AP_VLAN vif to driver, but because these vifs are virtual and
-not registered with drivers, we need to translate to the correct AP vif
-first.
+Initialise the try sink compose rectangle size to the sink compose
+rectangle for binner and scaler sub-devices. This was missed due to the
+faulty condition that lead to the compose rectangles to be initialised for
+the pixel array sub-device where it is not relevant.
 
-Closes: https://github.com/openwrt/openwrt/issues/12420
-Fixes: 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
-Fixes: d00800a289c9 ("wifi: mac80211: add flush_sta method")
-Tested-by: Konstantin Demin <rockdrilla@gmail.com>
-Tested-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
-Signed-off-by: Oldřich Jedlička <oldium.pro@gmail.com>
-Link: https://lore.kernel.org/r/20231104141333.3710-1-oldium.pro@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: ccfc97bdb5ae ("[media] smiapp: Add driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/driver-ops.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/media/i2c/smiapp/smiapp-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index c4505593ba7a6..2bc2fbe58f944 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -23,7 +23,7 @@
- static inline struct ieee80211_sub_if_data *
- get_bss_sdata(struct ieee80211_sub_if_data *sdata)
- {
--	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
-+	if (sdata && sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		sdata = container_of(sdata->bss, struct ieee80211_sub_if_data,
- 				     u.ap);
+--- a/drivers/media/i2c/smiapp/smiapp-core.c
++++ b/drivers/media/i2c/smiapp/smiapp-core.c
+@@ -2647,7 +2647,7 @@ static int smiapp_open(struct v4l2_subde
+ 		try_fmt->code = sensor->internal_csi_format->code;
+ 		try_fmt->field = V4L2_FIELD_NONE;
  
-@@ -638,10 +638,13 @@ static inline void drv_flush(struct ieee80211_local *local,
- 			     struct ieee80211_sub_if_data *sdata,
- 			     u32 queues, bool drop)
- {
--	struct ieee80211_vif *vif = sdata ? &sdata->vif : NULL;
-+	struct ieee80211_vif *vif;
+-		if (ssd != sensor->pixel_array)
++		if (ssd == sensor->pixel_array)
+ 			continue;
  
- 	might_sleep();
- 
-+	sdata = get_bss_sdata(sdata);
-+	vif = sdata ? &sdata->vif : NULL;
-+
- 	if (sdata && !check_sdata_in_driver(sdata))
- 		return;
- 
-@@ -657,6 +660,8 @@ static inline void drv_flush_sta(struct ieee80211_local *local,
- {
- 	might_sleep();
- 
-+	sdata = get_bss_sdata(sdata);
-+
- 	if (sdata && !check_sdata_in_driver(sdata))
- 		return;
- 
--- 
-2.42.0
-
+ 		try_comp = v4l2_subdev_get_try_compose(sd, fh->pad, i);
 
 
 
