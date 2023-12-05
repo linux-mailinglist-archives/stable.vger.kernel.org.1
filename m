@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FFC2804773
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6E080480E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49E5A281665
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24DDC1F22026
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F458C07;
-	Tue,  5 Dec 2023 03:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415E68C03;
+	Tue,  5 Dec 2023 03:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pc0adegJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow7GSmbG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB686FB1;
-	Tue,  5 Dec 2023 03:38:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02289C433C7;
-	Tue,  5 Dec 2023 03:38:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014D06FB0;
+	Tue,  5 Dec 2023 03:45:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D86C433C7;
+	Tue,  5 Dec 2023 03:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747523;
-	bh=XtiM4wFB4arNbEgf0AnXlltNRWxfWnNFTE4WsmmnCHo=;
+	s=korg; t=1701747923;
+	bh=VhYsoqb2HILVVJqW2uPmqzIDf9Jfc9iPKrR/tW3yzY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pc0adegJlafCtxIz/EnGO08LfjhhW+JxAsUVZMD3MkMg5tp6BgOG8zXKTXMkEPuXl
-	 O/vfDlOKbs9RUUiDvp8HnOtkb2DU/ZXiZgMyeRBhDnGqcB5q1tQABRL0TZP/WLSJ4L
-	 zVCGBadM79SuDfx4+sbiGfxXSzvHVoP2snEUWtjY=
+	b=Ow7GSmbG2LtzUZ9tQYHjCaPLPfsTiizyskiXkAfHn0TXWwxFRhbw/HQHNwdHuSKCG
+	 jFmhhcmx2w9sY20SN0Uk3jAtwH7xxcuTDTNt6qfnT3v3nADgtBJALutNc8wJmsyKdE
+	 yKeuLsD1j0qNUL4+AbjVFOblftXNcU5SZIQPBXBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 107/135] ASoC: SOF: sof-pci-dev: use community key on all Up boards
+Subject: [PATCH 5.4 40/94] dm-delay: fix a race between delay_presuspend and delay_bio
 Date: Tue,  5 Dec 2023 12:17:08 +0900
-Message-ID: <20231205031537.506669657@linuxfoundation.org>
+Message-ID: <20231205031525.131354964@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +51,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 405e52f412b85b581899f5e1b82d25a7c8959d89 ]
+[ Upstream commit 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656 ]
 
-There are already 3 versions of the Up boards with support for the SOF
-community key (ApolloLake, WhiskyLake, TigerLake). Rather than
-continue to add quirks for each version, let's add a wildcard.
+In delay_presuspend, we set the atomic variable may_delay and then stop
+the timer and flush pending bios. The intention here is to prevent the
+delay target from re-arming the timer again.
 
-For WHL and TGL, the authentication supports both the SOF community
-key and the firmware signed with the Intel production key. Given two
-choices, the community key is the preferred option to allow developers
-to sign their own firmware. The firmware signed with production key
-can still be selected if needed with a kernel module
-option (snd-sof-pci.fw_path="intel/sof")
+However, this test is racy. Suppose that one thread goes to delay_bio,
+sees that dc->may_delay is one and proceeds; now, another thread executes
+delay_presuspend, it sets dc->may_delay to zero, deletes the timer and
+flushes pending bios. Then, the first thread continues and adds the bio to
+delayed->list despite the fact that dc->may_delay is false.
 
-Tested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20211119231327.211946-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
+Fix this bug by changing may_delay's type from atomic_t to bool and
+only access it while holding the delayed_bios_lock mutex. Note that we
+don't have to grab the mutex in delay_resume because there are no bios
+in flight at this point.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/sof-pci-dev.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/md/dm-delay.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
-index fe9feaab6a0ac..571dc679ff7c1 100644
---- a/sound/soc/sof/sof-pci-dev.c
-+++ b/sound/soc/sof/sof-pci-dev.c
-@@ -59,17 +59,9 @@ static const struct dmi_system_id sof_tplg_table[] = {
+diff --git a/drivers/md/dm-delay.c b/drivers/md/dm-delay.c
+index f496213f8b675..7c0e7c662e07f 100644
+--- a/drivers/md/dm-delay.c
++++ b/drivers/md/dm-delay.c
+@@ -30,7 +30,7 @@ struct delay_c {
+ 	struct workqueue_struct *kdelayd_wq;
+ 	struct work_struct flush_expired_bios;
+ 	struct list_head delayed_bios;
+-	atomic_t may_delay;
++	bool may_delay;
  
- static const struct dmi_system_id community_key_platforms[] = {
- 	{
--		.ident = "Up Squared",
-+		.ident = "Up boards",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
--			DMI_MATCH(DMI_BOARD_NAME, "UP-APL01"),
--		}
--	},
--	{
--		.ident = "Up Extreme",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
--			DMI_MATCH(DMI_BOARD_NAME, "UP-WHL01"),
- 		}
- 	},
- 	{
+ 	struct delay_class read;
+ 	struct delay_class write;
+@@ -191,7 +191,7 @@ static int delay_ctr(struct dm_target *ti, unsigned int argc, char **argv)
+ 	INIT_WORK(&dc->flush_expired_bios, flush_expired_bios);
+ 	INIT_LIST_HEAD(&dc->delayed_bios);
+ 	mutex_init(&dc->timer_lock);
+-	atomic_set(&dc->may_delay, 1);
++	dc->may_delay = true;
+ 	dc->argc = argc;
+ 
+ 	ret = delay_class_ctr(ti, &dc->read, argv);
+@@ -245,7 +245,7 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
+ 	struct dm_delay_info *delayed;
+ 	unsigned long expires = 0;
+ 
+-	if (!c->delay || !atomic_read(&dc->may_delay))
++	if (!c->delay)
+ 		return DM_MAPIO_REMAPPED;
+ 
+ 	delayed = dm_per_bio_data(bio, sizeof(struct dm_delay_info));
+@@ -254,6 +254,10 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
+ 	delayed->expires = expires = jiffies + msecs_to_jiffies(c->delay);
+ 
+ 	mutex_lock(&delayed_bios_lock);
++	if (unlikely(!dc->may_delay)) {
++		mutex_unlock(&delayed_bios_lock);
++		return DM_MAPIO_REMAPPED;
++	}
+ 	c->ops++;
+ 	list_add_tail(&delayed->list, &dc->delayed_bios);
+ 	mutex_unlock(&delayed_bios_lock);
+@@ -267,7 +271,10 @@ static void delay_presuspend(struct dm_target *ti)
+ {
+ 	struct delay_c *dc = ti->private;
+ 
+-	atomic_set(&dc->may_delay, 0);
++	mutex_lock(&delayed_bios_lock);
++	dc->may_delay = false;
++	mutex_unlock(&delayed_bios_lock);
++
+ 	del_timer_sync(&dc->delay_timer);
+ 	flush_bios(flush_delayed_bios(dc, 1));
+ }
+@@ -276,7 +283,7 @@ static void delay_resume(struct dm_target *ti)
+ {
+ 	struct delay_c *dc = ti->private;
+ 
+-	atomic_set(&dc->may_delay, 1);
++	dc->may_delay = true;
+ }
+ 
+ static int delay_map(struct dm_target *ti, struct bio *bio)
 -- 
 2.42.0
 
