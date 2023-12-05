@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62DA880463C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99F7804606
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D6E71F213F5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A081F213DE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03318BF7;
-	Tue,  5 Dec 2023 03:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC506FB8;
+	Tue,  5 Dec 2023 03:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2b6HT1I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPUJRssM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5767B79F2;
-	Tue,  5 Dec 2023 03:26:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8753EC433CD;
-	Tue,  5 Dec 2023 03:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685616FAF;
+	Tue,  5 Dec 2023 03:23:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40B2C433C8;
+	Tue,  5 Dec 2023 03:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746761;
-	bh=xGlRmgN6/9gObaJOSeF9H7qJKgLOqKhVEhx1KxVPUxU=;
+	s=korg; t=1701746628;
+	bh=6Vs5FjlH3s/NovAXaicJvyf2H8XmyEwIxJSzS8HiCw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2b6HT1I1dlVxruaFH7qzOVpJskanbDZzMUwy5d2x+GhWblTncuAtPZ+VT4sURlks
-	 rK9jBjApH3juIc+28uvLAkrSkDvLWUyY+scHK8G/lsXHtwO/wtM5FXnspRg/cegXWE
-	 PrM5u60IJP9NAqys60+tskOvI/oDPjuQ3gUWWMSg=
+	b=jPUJRssM44vIwViGTjSTR820wMGooD7u9EuUTTSLZ8FyDXHXZsiAvrY8yeHOzNFt+
+	 910xhj5bvcpbKlvLic0EGw/I8vFON1Nqu7XRNPFcCi7I4mOeY1kJdQE1GnLpTsbE06
+	 kNsTnHD3hFDopxIQH60FWalWGeTbiPuEBSgeAmw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Geetha sowjanya <gakula@marvell.com>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 11/71] amd-xgbe: handle corner-case during sfp hotplug
+Subject: [PATCH 6.6 097/134] octeontx2-pf: Fix adding mbox work queue entry when num_vfs > 64
 Date: Tue,  5 Dec 2023 12:16:09 +0900
-Message-ID: <20231205031518.509242069@linuxfoundation.org>
+Message-ID: <20231205031541.605383302@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,56 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Geetha sowjanya <gakula@marvell.com>
 
-[ Upstream commit 676ec53844cbdf2f47e68a076cdff7f0ec6cbe3f ]
+[ Upstream commit 51597219e0cd5157401d4d0ccb5daa4d9961676f ]
 
-Force the mode change for SFI in Fixed PHY configurations. Fixed PHY
-configurations needs PLL to be enabled while doing mode set. When the
-SFP module isn't connected during boot, driver assumes AN is ON and
-attempts auto-negotiation. However, if the connected SFP comes up in
-Fixed PHY configuration the link will not come up as PLL isn't enabled
-while the initial mode set command is issued. So, force the mode change
-for SFI in Fixed PHY configuration to fix link issues.
+When more than 64 VFs are enabled for a PF then mbox communication
+between VF and PF is not working as mbox work queueing for few VFs
+are skipped due to wrong calculation of VF numbers.
 
-Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Fixes: d424b6c02415 ("octeontx2-pf: Enable SRIOV and added VF mbox handling")
+Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/1700930042-5400-1-git-send-email-sbhatta@marvell.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index d291976d8b761..0e552022e659a 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1178,7 +1178,19 @@ static int xgbe_phy_config_fixed(struct xgbe_prv_data *pdata)
- 	if (pdata->phy.duplex != DUPLEX_FULL)
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index ba95ac9132746..6d56fc1918455 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -566,7 +566,9 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
+ 		otx2_write64(pf, RVU_PF_VFPF_MBOX_INTX(1), intr);
+ 		otx2_queue_work(mbox, pf->mbox_pfvf_wq, 64, vfs, intr,
+ 				TYPE_PFVF);
+-		vfs -= 64;
++		if (intr)
++			trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
++		vfs = 64;
+ 	}
  
--	xgbe_set_mode(pdata, mode);
-+	/* Force the mode change for SFI in Fixed PHY config.
-+	 * Fixed PHY configs needs PLL to be enabled while doing mode set.
-+	 * When the SFP module isn't connected during boot, driver assumes
-+	 * AN is ON and attempts autonegotiation. However, if the connected
-+	 * SFP comes up in Fixed PHY config, the link will not come up as
-+	 * PLL isn't enabled while the initial mode set command is issued.
-+	 * So, force the mode change for SFI in Fixed PHY configuration to
-+	 * fix link issues.
-+	 */
-+	if (mode == XGBE_MODE_SFI)
-+		xgbe_change_mode(pdata, mode);
-+	else
-+		xgbe_set_mode(pdata, mode);
+ 	intr = otx2_read64(pf, RVU_PF_VFPF_MBOX_INTX(0));
+@@ -574,7 +576,8 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
  
- 	return 0;
+ 	otx2_queue_work(mbox, pf->mbox_pfvf_wq, 0, vfs, intr, TYPE_PFVF);
+ 
+-	trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
++	if (intr)
++		trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
+ 
+ 	return IRQ_HANDLED;
  }
 -- 
 2.42.0
