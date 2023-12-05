@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-4582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E0C804816
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77FA78047D8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C9B1F2227F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02860B20CDA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28487C2EB;
-	Tue,  5 Dec 2023 03:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64ED879E3;
+	Tue,  5 Dec 2023 03:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VA3XoASQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pYL6bae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91108BF7;
-	Tue,  5 Dec 2023 03:45:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B732C433C7;
-	Tue,  5 Dec 2023 03:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FBB06AC2;
+	Tue,  5 Dec 2023 03:42:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1AC9C433C7;
+	Tue,  5 Dec 2023 03:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747944;
-	bh=a8qb4UiF7KrFSe4csrppqhx5ondRkWCiiTxiNZ5aRvA=;
+	s=korg; t=1701747775;
+	bh=S+iqyH9VtEDat5sZSroRjlX902Kbc9y4iaMhPtRbYZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VA3XoASQ8p65X+NUDzaIQjxHpWadS2Rg4uMRABw+uY71mZHVyFTQFm0T+KOIula+s
-	 eVQtfOBi9i7+W1YfBGNKP2g2Q16bKtSI/U8RK9U1MFn4U4t4RZNeoUGUX8QVe5hpdj
-	 UAqmGR8ffI+yL0LY9zUezdX+sz5TUHeU/hVwu63E=
+	b=0pYL6baeoXlNxRzFfyM+ITcQQhPd5Zi3BDg1Z5PRgqACE4W0olkdWfkBkhnWHQQqk
+	 J7YB4c2n+sKOH8GoC/JF8kDHdHjMMzqGLtM/77/TryRBWZt/V82upocbFCDJgFXwIa
+	 i6ziQCqNUkgoJqPxJa3IC8a7K0L/JO1UPDkXaTMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 56/94] ALSA: hda: Disable power-save on KONTRON SinglePC
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 39/67] r8169: prevent potential deadlock in rtl8169_close
 Date: Tue,  5 Dec 2023 12:17:24 +0900
-Message-ID: <20231205031525.966018604@linuxfoundation.org>
+Message-ID: <20231205031522.075500900@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit a337c355719c42a6c5b67e985ad753590ed844fb upstream.
+[ Upstream commit 91d3d149978ba7b238198dd80e4b823756aa7cfa ]
 
-It's been reported that the runtime PM on KONTRON SinglePC (PCI SSID
-1734:1232) caused a stall of playback after a bunch of invocations.
-(FWIW, this looks like an timing issue, and the stall happens rather
-on the controller side.)
+ndo_stop() is RTNL-protected by net core, and the worker function takes
+RTNL as well. Therefore we will deadlock when trying to execute a
+pending work synchronously. To fix this execute any pending work
+asynchronously. This will do no harm because netif_running() is false
+in ndo_stop(), and therefore the work function is effectively a no-op.
+However we have to ensure that no task is running or pending after
+rtl_remove_one(), therefore add a call to cancel_work_sync().
 
-As a workaround, disable the default power-save on this platform.
-
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231130151321.9813-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: abe5fc42f9ce ("r8169: use RTNL to protect critical sections")
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/12395867-1d17-4cac-aa7d-c691938fcddf@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2244,6 +2244,8 @@ static struct snd_pci_quirk power_save_b
- 	SND_PCI_QUIRK(0x17aa, 0x36a7, "Lenovo C50 All in one", 0),
- 	/* https://bugs.launchpad.net/bugs/1821663 */
- 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
-+	/* KONTRON SinglePC may cause a stall at runtime resume */
-+	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index d4de5ec690e50..84fb739679298 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4744,7 +4744,7 @@ static int rtl8169_close(struct net_device *dev)
+ 	rtl8169_down(tp);
+ 	rtl8169_rx_clear(tp);
+ 
+-	cancel_work_sync(&tp->wk.work);
++	cancel_work(&tp->wk.work);
+ 
+ 	free_irq(pci_irq_vector(pdev, 0), tp);
+ 
+@@ -5000,6 +5000,8 @@ static void rtl_remove_one(struct pci_dev *pdev)
+ 	if (pci_dev_run_wake(pdev))
+ 		pm_runtime_get_noresume(&pdev->dev);
+ 
++	cancel_work_sync(&tp->wk.work);
++
+ 	unregister_netdev(tp->dev);
+ 
+ 	if (tp->dash_type != RTL_DASH_NONE)
+-- 
+2.42.0
+
 
 
 
