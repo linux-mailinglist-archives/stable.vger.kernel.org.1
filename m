@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742E08047ED
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AC4280461E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 183A7B20D37
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E9028348C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8CA79F2;
-	Tue,  5 Dec 2023 03:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAE86FB8;
+	Tue,  5 Dec 2023 03:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd/k5HRt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHY0PmMH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262DB6AC2;
-	Tue,  5 Dec 2023 03:43:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A4C6C433C8;
-	Tue,  5 Dec 2023 03:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9BD6FAF;
+	Tue,  5 Dec 2023 03:24:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEDDC433C8;
+	Tue,  5 Dec 2023 03:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747836;
-	bh=za8bCmGyZellGYpb7qbNNR1BXMlcqnal4XsfKQqgj+o=;
+	s=korg; t=1701746695;
+	bh=njU3GXIGQ5ja2b28MDazjM9qFvk/k9pOb/zLcWpqtv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd/k5HRtdPnze4n7oEG1jtPGDEPjCBg+eNSyIuaVsYmHA3MlXLF5ee6SZNlKtHVkL
-	 YAc/OSXfLZ07Ro9W+03MulpOr4dMk8w/ArjhEtMijhzljEBQeYCU4+vQNOyA4Uicwm
-	 vB+BjEokAFAaG/TGtxEiAeBKjJ8A/B48ueAl2iv0=
+	b=GHY0PmMHQfMiK5LnAeRpulNPnbVDa+C6SUalxWpAEJbyAYlV5BVRE9ct2653jsArV
+	 +MhL1oBCvVBJOC+4jys40/dXDNssrAdPwdMGqfHQY6NXm2wWxrG7kpWN0iwttnQjnm
+	 PRRJCiYm4aw4gvFb9DQR1LsfnLtJIyBhzvYnE+9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
+	Yang Yingliang <yangyingliang@huawei.com>,
 	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/94] drm/panel: simple: Fix Innolux G101ICE-L01 timings
+Subject: [PATCH 6.6 122/134] drm/panel: nt36523: fix return value check in nt36523_probe()
 Date: Tue,  5 Dec 2023 12:16:34 +0900
-Message-ID: <20231205031523.230536747@linuxfoundation.org>
+Message-ID: <20231205031543.192100653@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +53,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 3f9a91b6c00e655d27bd785dcda1742dbdc31bda ]
+[ Upstream commit fb18fe0fdf22a2f4512a8b644bb5ea1473829cda ]
 
-The Innolux G101ICE-L01 datasheet [1] page 17 table
-6.1 INPUT SIGNAL TIMING SPECIFICATIONS
-indicates that maximum vertical blanking time is 40 lines.
-Currently the driver uses 29 lines.
+mipi_dsi_device_register_full() never returns NULL pointer, it
+will return ERR_PTR() when it fails, so replace the check with
+IS_ERR().
 
-Fix it, and since this panel is a DE panel, adjust the timings
-to make them less hostile to controllers which cannot do 1 px
-HSA/VSA, distribute the delays evenly between all three parts.
-
-[1] https://www.data-modul.com/sites/default/files/products/G101ICE-L01-C2-specification-12042389.pdf
-
-Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
-Signed-off-by: Marek Vasut <marex@denx.de>
+Fixes: 0993234a0045 ("drm/panel: Add driver for Novatek NT36523")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
 Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231008223256.279196-1-marex@denx.de
+Link: https://lore.kernel.org/r/20231129090715.856263-1-yangyingliang@huaweicloud.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231129090715.856263-1-yangyingliang@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/panel/panel-novatek-nt36523.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 5c3cc8bec2311..fd8b16dcf13e7 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1647,13 +1647,13 @@ static const struct panel_desc innolux_g070y2_l01 = {
- static const struct display_timing innolux_g101ice_l01_timing = {
- 	.pixelclock = { 60400000, 71100000, 74700000 },
- 	.hactive = { 1280, 1280, 1280 },
--	.hfront_porch = { 41, 80, 100 },
--	.hback_porch = { 40, 79, 99 },
--	.hsync_len = { 1, 1, 1 },
-+	.hfront_porch = { 30, 60, 70 },
-+	.hback_porch = { 30, 60, 70 },
-+	.hsync_len = { 22, 40, 60 },
- 	.vactive = { 800, 800, 800 },
--	.vfront_porch = { 5, 11, 14 },
--	.vback_porch = { 4, 11, 14 },
--	.vsync_len = { 1, 1, 1 },
-+	.vfront_porch = { 3, 8, 14 },
-+	.vback_porch = { 3, 8, 14 },
-+	.vsync_len = { 4, 7, 12 },
- 	.flags = DISPLAY_FLAGS_DE_HIGH,
- };
+diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36523.c b/drivers/gpu/drm/panel/panel-novatek-nt36523.c
+index 9632b9e95b715..c4a804c5d6aac 100644
+--- a/drivers/gpu/drm/panel/panel-novatek-nt36523.c
++++ b/drivers/gpu/drm/panel/panel-novatek-nt36523.c
+@@ -1266,9 +1266,9 @@ static int nt36523_probe(struct mipi_dsi_device *dsi)
+ 			return dev_err_probe(dev, -EPROBE_DEFER, "cannot get secondary DSI host\n");
+ 
+ 		pinfo->dsi[1] = mipi_dsi_device_register_full(dsi1_host, info);
+-		if (!pinfo->dsi[1]) {
++		if (IS_ERR(pinfo->dsi[1])) {
+ 			dev_err(dev, "cannot get secondary DSI device\n");
+-			return -ENODEV;
++			return PTR_ERR(pinfo->dsi[1]);
+ 		}
+ 	}
  
 -- 
 2.42.0
