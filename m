@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7DC8046EB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5117F8047E8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBC251C20DB5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F03661F2190B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2248B79F2;
-	Tue,  5 Dec 2023 03:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565B179F2;
+	Tue,  5 Dec 2023 03:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idRyJ0xl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nk8GKkJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23AA6FB1;
-	Tue,  5 Dec 2023 03:32:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC06C433C8;
-	Tue,  5 Dec 2023 03:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105A36AC2;
+	Tue,  5 Dec 2023 03:43:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D747C433C7;
+	Tue,  5 Dec 2023 03:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747179;
-	bh=dyUMmz/M8qtWfQ0zQYBpej61bAsoR+SxzNmdQgnYufY=;
+	s=korg; t=1701747821;
+	bh=hDWfAfk7rYx6swDAda+kMYWzM+SjeTJg0UE02X4NTc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idRyJ0xlA2WJvdId6CFcLjKTcvxPPoGFA33Sivf0SKMSUZ+SA9SKiifqNBr4zEf2f
-	 0y0u16bxTrQwz5dRIJhbe4brKJE+k2Gk8ZJTBWNKHWNEyhV5pt9Ur51irKlrBpb5fU
-	 mabSXKSoG8UE+AhDuaO/Gsvmnm/39kL1f41EkNcE=
+	b=Nk8GKkJWmS+bQJ3HV3pmAyTt6dzwFxazIkcUdBwIG7576xEzZ2HO0j/5b7UUPUrYC
+	 eJPHNYdQ9TT6zM+E5lDqAeBrBYgk6vDkIRzhNh/kErqgSZ1K0GFYNP7iLzjBboUIiB
+	 JYJ8+7mrvvdfWwJGFsVpQ1VaTwxBj5fcT+vhueDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Salomatkina <elena.salomatkina.cmc@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Herb Wei <weihao.bj@ieisystem.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/107] octeontx2-af: Fix possible buffer overflow
+Subject: [PATCH 5.4 12/94] net: usb: ax88179_178a: fix failed operations during ax88179_reset
 Date: Tue,  5 Dec 2023 12:16:40 +0900
-Message-ID: <20231205031535.498012569@linuxfoundation.org>
+Message-ID: <20231205031523.589258314@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,57 +54,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit ad31c629ca3c87f6d557488c1f9faaebfbcd203c ]
+[ Upstream commit 0739af07d1d947af27c877f797cb82ceee702515 ]
 
-A loop in rvu_mbox_handler_nix_bandprof_free() contains
-a break if (idx == MAX_BANDPROF_PER_PFFUNC),
-but if idx may reach MAX_BANDPROF_PER_PFFUNC
-buffer '(*req->prof_idx)[layer]' overflow happens before that check.
+Using generic ASIX Electronics Corp. AX88179 Gigabit Ethernet device,
+the following test cycle has been implemented:
+    - power on
+    - check logs
+    - shutdown
+    - after detecting the system shutdown, disconnect power
+    - after approximately 60 seconds of sleep, power is restored
+Running some cycles, sometimes error logs like this appear:
+    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to write reg index 0x0001: -19
+    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x0001: -19
+    ...
+These failed operation are happening during ax88179_reset execution, so
+the initialization could not be correct.
 
-The patch moves the break to the
-beginning of the loop.
+In order to avoid this, we need to increase the delay after reset and
+clock initial operations. By using these larger values, many cycles
+have been run and no failed operations appear.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+It would be better to check some status register to verify when the
+operation has finished, but I do not have found any available information
+(neither in the public datasheets nor in the manufacturer's driver). The
+only available information for the necessary delays is the maufacturer's
+driver (original values) but the proposed values are not enough for the
+tested devices.
 
-Fixes: e8e095b3b370 ("octeontx2-af: cn10k: Bandwidth profiles config support").
-Signed-off-by: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://lore.kernel.org/r/20231124210802.109763-1-elena.salomatkina.cmc@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+Reported-by: Herb Wei <weihao.bj@ieisystem.com>
+Tested-by: Herb Wei <weihao.bj@ieisystem.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20231120120642.54334-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
+ drivers/net/usb/ax88179_178a.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 1f3a8cf42765e..7310047136986 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -5236,6 +5236,8 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index ea9c8361bf464..84dc9fb2b1f3f 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1594,11 +1594,11 @@ static int ax88179_reset(struct usbnet *dev)
  
- 		ipolicer = &nix_hw->ipolicer[layer];
- 		for (idx = 0; idx < req->prof_count[layer]; idx++) {
-+			if (idx == MAX_BANDPROF_PER_PFFUNC)
-+				break;
- 			prof_idx = req->prof_idx[layer][idx];
- 			if (prof_idx >= ipolicer->band_prof.max ||
- 			    ipolicer->pfvf_map[prof_idx] != pcifunc)
-@@ -5249,8 +5251,6 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
- 			ipolicer->pfvf_map[prof_idx] = 0x00;
- 			ipolicer->match_id[prof_idx] = 0;
- 			rvu_free_rsrc(&ipolicer->band_prof, prof_idx);
--			if (idx == MAX_BANDPROF_PER_PFFUNC)
--				break;
- 		}
- 	}
- 	mutex_unlock(&rvu->rsrc_lock);
+ 	*tmp16 = AX_PHYPWR_RSTCTL_IPRL;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, tmp16);
+-	msleep(200);
++	msleep(500);
+ 
+ 	*tmp = AX_CLK_SELECT_ACS | AX_CLK_SELECT_BCS;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_CLK_SELECT, 1, 1, tmp);
+-	msleep(100);
++	msleep(200);
+ 
+ 	/* Ethernet PHY Auto Detach*/
+ 	ax88179_auto_detach(dev, 0);
 -- 
 2.42.0
 
