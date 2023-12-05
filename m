@@ -1,83 +1,100 @@
-Return-Path: <stable+bounces-4700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E8E58058F4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 16:39:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0A0E8058FC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 16:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC3701F21783
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:39:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86197281DBA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCE25F1E8;
-	Tue,  5 Dec 2023 15:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9605A5F1EF;
+	Tue,  5 Dec 2023 15:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UhJVfC0R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBJ0YZ0Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C1D210C2
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 07:39:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701790781; x=1733326781;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=pDMlfjIK+FXlrFwXf3T6Y7ndgKfj5NZon/tI/R9KD4c=;
-  b=UhJVfC0RDMZalLf1mLrt77aeLF3AfOgjGlZEM1veMTe0dQi5Zr+kNQ5U
-   D+1aD2z2eRfLBGx6ylbVy3xs8xMNwTcP9Q1sP7gP411fYIG+9nrIvln3L
-   /j72vwpaLuEjmZT9NzSD0ORDX1bP20Rn5yWvDtJ2+GE7c0W8FHrz0+AXj
-   tKVzyatEmO/Dg03g1xxIuWARd/CSsmJ/Yj/najUod2ADqAXybdj1V8Th7
-   XEjZSl9snJoPhukO+wTVLT9rmLk2GiP9e415qVakp7FBkiq2ID2F333F1
-   AG+DseJt7fJVB4J8L4AS/tg4iOsz0mILgVWrMQ9oJLTPHElW49AmjmHUX
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="460396643"
-X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
-   d="scan'208";a="460396643"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 07:39:41 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10915"; a="770959778"
-X-IronPort-AV: E=Sophos;i="6.04,252,1695711600"; 
-   d="scan'208";a="770959778"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by orsmga002.jf.intel.com with ESMTP; 05 Dec 2023 07:39:40 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rAXWL-0009Fe-2F;
-	Tue, 05 Dec 2023 15:39:37 +0000
-Date: Tue, 5 Dec 2023 23:39:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v4 4/5] pci: move devres code from pci.c to devres.c
-Message-ID: <ZW9EKm9W2tbRfHfg@5b683c117983>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EAE5F1EB;
+	Tue,  5 Dec 2023 15:41:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC09C433C8;
+	Tue,  5 Dec 2023 15:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701790885;
+	bh=pVtMVHdsKsdy3G3SCoMfkdUIfJsu3xD8KndVjlc18c4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=cBJ0YZ0Ygp1KLJOema0kjtJukrhA5+jXvVT0k2cH8NsWJlGvY57jpI4i8xKnY775/
+	 TzM+O9QFb1teVWPPxXIQ4M/GMQrx1/iyDXcYK9bwTBRQ2UILQetVNl8JlIdzuDOIM2
+	 AC30yuEr2c9t7IPeJsQzT6LGniBPumkEjsvDQ/fSkvc1IZlXCwqQaFIyGczxVp0ZrI
+	 pjjJ3CaqQeLS3JFgJfJXpKiRdxDN49kpYEFpP8el59V74Vz1D59IVuQHuPL9ADu0Fd
+	 /VAVNkrT5TDfWVLhr+pICqPOxaQcU4JLfAaFPjdVduqAwVpeaC8e+ge52yVsW52VUu
+	 2KKIHcsq5CUsA==
+From: Mark Brown <broonie@kernel.org>
+To: linux-spi@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: Richard Weinberger <richard@nod.at>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Ryan Wanner <ryan.wanner@microchip.com>, 
+ Ronald Wahl <ronald.wahl@raritan.com>, 
+ David Laight <David.Laight@ACULAB.COM>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+In-Reply-To: <20231205083102.16946-1-miquel.raynal@bootlin.com>
+References: <20231205083102.16946-1-miquel.raynal@bootlin.com>
+Subject: Re: [PATCH] spi: atmel: Prevent spi transfers from being killed
+Message-Id: <170179088280.846111.402175605685351431.b4-ty@kernel.org>
+Date: Tue, 05 Dec 2023 15:41:22 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205153629.26020-6-pstanner@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-5c066
 
-Hi,
+On Tue, 05 Dec 2023 09:31:02 +0100, Miquel Raynal wrote:
+> Upstream commit e0205d6203c2 ("spi: atmel: Prevent false timeouts on
+> long transfers") has tried to mitigate the problem of getting spi
+> transfers canceled because they were lasting too long. On slow buses,
+> transfers in the MiB range can take more than one second and thus a
+> calculation was added to progressively increment the timeout value. In
+> order to not be too problematic from a user point of view (waiting dozen
+> of seconds or even minutes), the wait call was turned interruptible.
+> 
+> [...]
 
-Thanks for your patch.
+Applied to
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+Thanks!
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v4 4/5] pci: move devres code from pci.c to devres.c
-Link: https://lore.kernel.org/stable/20231205153629.26020-6-pstanner%40redhat.com
+[1/1] spi: atmel: Prevent spi transfers from being killed
+      commit: 890188d2d7e4ac6c131ba166ca116cb315e752ee
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
