@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A42D8047CE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AF2804840
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 441E128171C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF2C2817C6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40908BF7;
-	Tue,  5 Dec 2023 03:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC238F56;
+	Tue,  5 Dec 2023 03:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2gxRoEC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4W/UEiL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D0F6AC2;
-	Tue,  5 Dec 2023 03:42:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6BBC433C7;
-	Tue,  5 Dec 2023 03:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A71F6FB1;
+	Tue,  5 Dec 2023 03:47:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBCAC433C7;
+	Tue,  5 Dec 2023 03:47:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747747;
-	bh=Uwufbe2ELrcvHV3Q9D0OgKzxlbkxNglPJSFLqWbmztI=;
+	s=korg; t=1701748053;
+	bh=L0x3kZVd6o94CKzf7OiJEszIasFPz1shsDqagSiXbTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2gxRoECJEUR8hi6vgsacEX5/3hFuM599wv/VyC+E5UN3q+SZWOAwB8ed9Ax1KzYw
-	 m3BwFCmG+nbx8vwTTfbEno8CAqxzVNEOSyUL1T4qiR18fyaLRKOXwPPMU1yY41DS/7
-	 ArKZLyU18fP2HeOPWeF030ZGSiae4dsDh6maiPTU=
+	b=q4W/UEiLAO+LkcWRQqvh+Jpx9M76tm7e57YXJPNidsBmVrflPitwtTvfI0iWNIOC9
+	 Ut04nFVKtaMzmAGm/Mm5XxhYoTJkbEM2Js3t+3gJy81v2LeLpSFtjXUnXlUTKgaKI2
+	 C6nNpXmnUcWzWMZbama+Owv2CtQTqA6A+uB4HoCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 53/67] ASoC: SOF: sof-pci-dev: use community key on all Up boards
-Date: Tue,  5 Dec 2023 12:17:38 +0900
-Message-ID: <20231205031522.919009133@linuxfoundation.org>
+Subject: [PATCH 5.4 71/94] net: ravb: Use pm_runtime_resume_and_get()
+Date: Tue,  5 Dec 2023 12:17:39 +0900
+Message-ID: <20231205031526.799195414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,63 +52,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 405e52f412b85b581899f5e1b82d25a7c8959d89 ]
+[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
 
-There are already 3 versions of the Up boards with support for the SOF
-community key (ApolloLake, WhiskyLake, TigerLake). Rather than
-continue to add quirks for each version, let's add a wildcard.
+pm_runtime_get_sync() may return an error. In case it returns with an error
+dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
+takes care of this. Thus use it.
 
-For WHL and TGL, the authentication supports both the SOF community
-key and the firmware signed with the Intel production key. Given two
-choices, the community key is the preferred option to allow developers
-to sign their own firmware. The firmware signed with production key
-can still be selected if needed with a kernel module
-option (snd-sof-pci.fw_path="intel/sof")
-
-Tested-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20211119231327.211946-1-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/sof-pci-dev.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
-index 3b4c011e02834..c1cd156996b43 100644
---- a/sound/soc/sof/sof-pci-dev.c
-+++ b/sound/soc/sof/sof-pci-dev.c
-@@ -64,17 +64,9 @@ static const struct dmi_system_id sof_tplg_table[] = {
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 765e55b489dbf..815aa18782165 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2039,7 +2039,9 @@ static int ravb_probe(struct platform_device *pdev)
+ 	ndev->hw_features = NETIF_F_RXCSUM;
  
- static const struct dmi_system_id community_key_platforms[] = {
- 	{
--		.ident = "Up Squared",
-+		.ident = "Up boards",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
--			DMI_MATCH(DMI_BOARD_NAME, "UP-APL01"),
--		}
--	},
--	{
--		.ident = "Up Extreme",
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "AAEON"),
--			DMI_MATCH(DMI_BOARD_NAME, "UP-WHL01"),
- 		}
- 	},
- 	{
+ 	pm_runtime_enable(&pdev->dev);
+-	pm_runtime_get_sync(&pdev->dev);
++	error = pm_runtime_resume_and_get(&pdev->dev);
++	if (error < 0)
++		goto out_rpm_disable;
+ 
+ 	/* The Ether-specific entries in the device structure. */
+ 	ndev->base_addr = res->start;
+@@ -2210,6 +2212,7 @@ static int ravb_probe(struct platform_device *pdev)
+ 	free_netdev(ndev);
+ 
+ 	pm_runtime_put(&pdev->dev);
++out_rpm_disable:
+ 	pm_runtime_disable(&pdev->dev);
+ 	return error;
+ }
 -- 
 2.42.0
 
