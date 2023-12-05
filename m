@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A279B8047EC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 890B080474C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4B681C20E2D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 440A728160A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE2779E3;
-	Tue,  5 Dec 2023 03:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD0679F2;
+	Tue,  5 Dec 2023 03:37:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGSa55JK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8xVCCS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB836AC2;
-	Tue,  5 Dec 2023 03:43:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44849C433C8;
-	Tue,  5 Dec 2023 03:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8406A6FB1;
+	Tue,  5 Dec 2023 03:37:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D9FC433C7;
+	Tue,  5 Dec 2023 03:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747833;
-	bh=q2T3jjL8Lw56Q8tLe2f+ha9hOt/nOCwFesZohBQtgGU=;
+	s=korg; t=1701747424;
+	bh=DLllJyi/9SboYch37H9v68hUqzl1yPw2qD5wSBNby7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGSa55JK3lLOgOo4ICHwYHrEAbhk5NaAoaOPcJIAkgvjv5ZIyCzQkfYpZx47gXiN9
-	 UZwy0YwUvI0thmNacekV9OGHFMxBxXND+qF3zX5gAEAvAsSLUhM/lEXoib8lkhQeyY
-	 NRjGnCgaHw9bgyX+iI9jZSuKZxEq9uKn7e3Ev9gw=
+	b=c8xVCCS7oUxLkkCvP2o8pW+Amb2d95PLBLwSg5ReUhMZ82JK+pd2gX7O3ePiRKJfU
+	 L7wFye0ghHn5s1VEZCXeO9ijHl7RdIQwjbdQwxF9UbE4+EwjaD2LH3znUuX5NmlYnu
+	 61dgGwPaWn42/5qz3+izKxeDlbCOQSAdiXWwoVr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 05/94] drm/panel: simple: Fix Innolux G101ICE-L01 bus flags
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 5.10 072/135] firewire: core: fix possible memory leak in create_units()
 Date: Tue,  5 Dec 2023 12:16:33 +0900
-Message-ID: <20231205031523.164076571@linuxfoundation.org>
+Message-ID: <20231205031535.030175722@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +52,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 06fc41b09cfbc02977acd9189473593a37d82d9b ]
+commit 891e0eab32a57fca4d36c5162628eb0bcb1f0edf upstream.
 
-Add missing .bus_flags = DRM_BUS_FLAG_DE_HIGH to this panel description,
-ones which match both the datasheet and the panel display_timing flags .
+If device_register() fails, the refcount of device is not 0, the name
+allocated in dev_set_name() is leaked. To fix this by calling put_device(),
+so that it will be freed in callback function kobject_cleanup().
 
-Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231008223315.279215-1-marex@denx.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+unreferenced object 0xffff9d99035c7a90 (size 8):
+  comm "systemd-udevd", pid 168, jiffies 4294672386 (age 152.089s)
+  hex dump (first 8 bytes):
+    66 77 30 2e 30 00 ff ff                          fw0.0...
+  backtrace:
+    [<00000000e1d62bac>] __kmem_cache_alloc_node+0x1e9/0x360
+    [<00000000bbeaff31>] __kmalloc_node_track_caller+0x44/0x1a0
+    [<00000000491f2fb4>] kvasprintf+0x67/0xd0
+    [<000000005b960ddc>] kobject_set_name_vargs+0x1e/0x90
+    [<00000000427ac591>] dev_set_name+0x4e/0x70
+    [<000000003b4e447d>] create_units+0xc5/0x110
+
+fw_unit_release() will be called in the error path, move fw_device_get()
+before calling device_register() to keep balanced with fw_device_put() in
+fw_unit_release().
+
+Cc: stable@vger.kernel.org
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Fixes: a1f64819fe9f ("firewire: struct device - replace bus_id with dev_name(), dev_set_name()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firewire/core-device.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 63d17607ef89c..5c3cc8bec2311 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1670,6 +1670,7 @@ static const struct panel_desc innolux_g101ice_l01 = {
- 		.disable = 200,
- 	},
- 	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
-+	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
- 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
- };
+--- a/drivers/firewire/core-device.c
++++ b/drivers/firewire/core-device.c
+@@ -719,14 +719,11 @@ static void create_units(struct fw_devic
+ 					fw_unit_attributes,
+ 					&unit->attribute_group);
  
--- 
-2.42.0
-
+-		if (device_register(&unit->device) < 0)
+-			goto skip_unit;
+-
+ 		fw_device_get(device);
+-		continue;
+-
+-	skip_unit:
+-		kfree(unit);
++		if (device_register(&unit->device) < 0) {
++			put_device(&unit->device);
++			continue;
++		}
+ 	}
+ }
+ 
 
 
 
