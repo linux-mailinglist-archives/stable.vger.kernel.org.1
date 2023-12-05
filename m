@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA3E804703
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 866B38047AD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABC82814A9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B801E1C20E72
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6718BF7;
-	Tue,  5 Dec 2023 03:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AB628C07;
+	Tue,  5 Dec 2023 03:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Giahgqky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5EYsolf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689F2A59;
-	Tue,  5 Dec 2023 03:33:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DD1C433C7;
-	Tue,  5 Dec 2023 03:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B6A79E3;
+	Tue,  5 Dec 2023 03:41:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DBD4C433C8;
+	Tue,  5 Dec 2023 03:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747237;
-	bh=OX2CFc6Rr92CXjiTGYN0G3iLXo9x0HtQhZshxTs0rl0=;
+	s=korg; t=1701747665;
+	bh=WJTOLCVImfNewpeuLB91XOO9MM5sbMfkBZ32w35lh1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GiahgqkycKiMn0VK22SD96rmo88Lw1vO0/ThU0fpmCk+pIKSkpvo+1ZN7amp+A0ic
-	 gWwroFSX1UpYo5kgM9VpWu8Rsz5nYsxyT9IHfdBNNilvo5nQ9PwGf0qRNMfoxyeV0n
-	 p4NHKiHrFDwwpdKa1CxckpOiLddzAxE1VoebS9ig=
+	b=B5EYsolfutXuXZckhKEzJmp3eSmZT0Lpkev3aJqWbnEnDqTRuRGhxXGm014MmKEB3
+	 ysR3Fvb/ejZMeM4Z5LTDbDI9BcdhFvNHRzAhGMycsTdafZfSPeSU9r2KTN4g8Tlg/y
+	 IVcmQBS/D+pmOQ25bCdAI0q61zOS+OYyA7Bu2Src=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/107] iommu/vt-d: Add device_block_translation() helper
-Date: Tue,  5 Dec 2023 12:17:07 +0900
-Message-ID: <20231205031537.467953261@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 23/67] btrfs: make error messages more clear when getting a chunk map
+Date: Tue,  5 Dec 2023 12:17:08 +0900
+Message-ID: <20231205031521.122214251@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,137 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit c7be17c2903d4acbf9aa372bfb6e2a418387fce0 ]
+commit 7d410d5efe04e42a6cd959bfe6d59d559fdf8b25 upstream.
 
-If domain attaching to device fails, the IOMMU driver should bring the
-device to blocking DMA state. The upper layer is expected to recover it
-by attaching a new domain. Use device_block_translation() in the error
-path of dev_attach to make the behavior specific.
+When getting a chunk map, at btrfs_get_chunk_map(), we do some sanity
+checks to verify we found a chunk map and that map found covers the
+logical address the caller passed in. However the messages aren't very
+clear in the sense that don't mention the issue is with a chunk map and
+one of them prints the 'length' argument as if it were the end offset of
+the requested range (while the in the string format we use %llu-%llu
+which suggests a range, and the second %llu-%llu is actually a range for
+the chunk map). So improve these two details in the error messages.
 
-The difference between device_block_translation() and the previous
-dmar_remove_one_dev_info() is that, in the scalable mode, it is the
-RID2PASID entry instead of context entry being cleared. As a result,
-enabling PCI capabilities is moved up.
-
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20221118132451.114406-3-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: da37dddcf4ca ("iommu/vt-d: Disable PCI ATS in legacy passthrough mode")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/iommu.c | 44 ++++++++++++++++++++++++++++++++-----
- 1 file changed, 38 insertions(+), 6 deletions(-)
+ fs/btrfs/volumes.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 3dbf86c61f073..de76272d0fb02 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -277,7 +277,7 @@ static LIST_HEAD(dmar_satc_units);
- #define for_each_rmrr_units(rmrr) \
- 	list_for_each_entry(rmrr, &dmar_rmrr_units, list)
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3064,15 +3064,16 @@ struct extent_map *btrfs_get_chunk_map(s
+ 	read_unlock(&em_tree->lock);
  
--static void dmar_remove_one_dev_info(struct device *dev);
-+static void device_block_translation(struct device *dev);
- 
- int dmar_disabled = !IS_ENABLED(CONFIG_INTEL_IOMMU_DEFAULT_ON);
- int intel_iommu_sm = IS_ENABLED(CONFIG_INTEL_IOMMU_SCALABLE_MODE_DEFAULT_ON);
-@@ -1418,7 +1418,7 @@ static void iommu_enable_pci_caps(struct device_domain_info *info)
- {
- 	struct pci_dev *pdev;
- 
--	if (!info || !dev_is_pci(info->dev))
-+	if (!dev_is_pci(info->dev))
- 		return;
- 
- 	pdev = to_pci_dev(info->dev);
-@@ -2064,7 +2064,6 @@ static int domain_context_mapping_one(struct dmar_domain *domain,
- 	} else {
- 		iommu_flush_write_buffer(iommu);
- 	}
--	iommu_enable_pci_caps(info);
- 
- 	ret = 0;
- 
-@@ -2506,7 +2505,7 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
- 					dev, PASID_RID2PASID);
- 		if (ret) {
- 			dev_err(dev, "Setup RID2PASID failed\n");
--			dmar_remove_one_dev_info(dev);
-+			device_block_translation(dev);
- 			return ret;
- 		}
- 	}
-@@ -2514,10 +2513,12 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
- 	ret = domain_context_mapping(domain, dev);
- 	if (ret) {
- 		dev_err(dev, "Domain context map failed\n");
--		dmar_remove_one_dev_info(dev);
-+		device_block_translation(dev);
- 		return ret;
+ 	if (!em) {
+-		btrfs_crit(fs_info, "unable to find logical %llu length %llu",
++		btrfs_crit(fs_info,
++			   "unable to find chunk map for logical %llu length %llu",
+ 			   logical, length);
+ 		return ERR_PTR(-EINVAL);
  	}
  
-+	iommu_enable_pci_caps(info);
-+
- 	return 0;
- }
- 
-@@ -4115,6 +4116,37 @@ static void dmar_remove_one_dev_info(struct device *dev)
- 	info->domain = NULL;
- }
- 
-+/*
-+ * Clear the page table pointer in context or pasid table entries so that
-+ * all DMA requests without PASID from the device are blocked. If the page
-+ * table has been set, clean up the data structures.
-+ */
-+static void device_block_translation(struct device *dev)
-+{
-+	struct device_domain_info *info = dev_iommu_priv_get(dev);
-+	struct intel_iommu *iommu = info->iommu;
-+	unsigned long flags;
-+
-+	iommu_disable_dev_iotlb(info);
-+	if (!dev_is_real_dma_subdevice(dev)) {
-+		if (sm_supported(iommu))
-+			intel_pasid_tear_down_entry(iommu, dev,
-+						    PASID_RID2PASID, false);
-+		else
-+			domain_context_clear(info);
-+	}
-+
-+	if (!info->domain)
-+		return;
-+
-+	spin_lock_irqsave(&info->domain->lock, flags);
-+	list_del(&info->link);
-+	spin_unlock_irqrestore(&info->domain->lock, flags);
-+
-+	domain_detach_iommu(info->domain, iommu);
-+	info->domain = NULL;
-+}
-+
- static int md_domain_init(struct dmar_domain *domain, int guest_width)
- {
- 	int adjust_width;
-@@ -4238,7 +4270,7 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
- 		struct device_domain_info *info = dev_iommu_priv_get(dev);
- 
- 		if (info->domain)
--			dmar_remove_one_dev_info(dev);
-+			device_block_translation(dev);
+ 	if (em->start > logical || em->start + em->len <= logical) {
+ 		btrfs_crit(fs_info,
+-			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
+-			   logical, length, em->start, em->start + em->len);
++			   "found a bad chunk map, wanted %llu-%llu, found %llu-%llu",
++			   logical, logical + length, em->start, em->start + em->len);
+ 		free_extent_map(em);
+ 		return ERR_PTR(-EINVAL);
  	}
- 
- 	ret = prepare_domain_attach_device(domain, dev);
--- 
-2.42.0
-
 
 
 
