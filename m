@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988258045D3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCCFC804728
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39AAFB20BD9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E98A280FCC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7343E6FB0;
-	Tue,  5 Dec 2023 03:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9E679E3;
+	Tue,  5 Dec 2023 03:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a46isaff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ro1DiGmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3496E6AA0;
-	Tue,  5 Dec 2023 03:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09B5C433C8;
-	Tue,  5 Dec 2023 03:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A190B6FB1;
+	Tue,  5 Dec 2023 03:35:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19E78C433C9;
+	Tue,  5 Dec 2023 03:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746511;
-	bh=IOn5S2+esgj68eUzP5LohglH1XXeeTosEfzfs1686Go=;
+	s=korg; t=1701747333;
+	bh=8FIbPu8nE9/3RfqNvzuHVbn0UnagqtwlqKBrIaD/91c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a46isaffNnpPsU4dPia0UptIG8Cv96o13R5/9S78NAF4x9cBoGBs9LxAL1+szMSns
-	 j2DKg0eF7V6xA9OxEcOitzCend9KzPz+pnTMEjb4vBMvMqi4LVnsK/1Ml+uZ7DgO2S
-	 YwQpWgSoFmnJ4R/em+lrMh/YJGxbQBvxNHNndUfw=
+	b=ro1DiGmqshCX8tOgxU5AKuxdX7HsgSkkOZV280OuZDYBVjRCf5njMdYdytLJJ+6UP
+	 MwUPMu81q4dAQSd/+xsYPnmWgAZGUh4VRSZmx+QTbTUwVtLrQFGKqhpp8n8l0FiWRV
+	 AUTPrN3j/U72FNf6K1T9iJ/jkU7xLjhxcnEELMJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.6 050/134] iommu: Avoid more races around device probe
-Date: Tue,  5 Dec 2023 12:15:22 +0900
-Message-ID: <20231205031538.762433009@linuxfoundation.org>
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 5.10 002/135] PCI: keystone: Drop __init from ks_pcie_add_pcie_{ep,port}()
+Date: Tue,  5 Dec 2023 12:15:23 +0900
+Message-ID: <20231205031530.693370434@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,185 +54,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit a2e7e59a94269484a83386972ca07c22fd188854 upstream.
+This commit has no upstream equivalent.
 
-It turns out there are more subtle races beyond just the main part of
-__iommu_probe_device() itself running in parallel - the dev_iommu_free()
-on the way out of an unsuccessful probe can still manage to trip up
-concurrent accesses to a device's fwspec. Thus, extend the scope of
-iommu_probe_device_lock() to also serialise fwspec creation and initial
-retrieval.
+After commit db5ebaeb8fda ("PCI: keystone: Don't discard .probe()
+callback") in 5.10.202, there are two modpost warnings when building with
+clang:
 
-Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Link: https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@quicinc.com/
-Fixes: 01657bc14a39 ("iommu: Avoid races around device probe")
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: André Draszik <andre.draszik@linaro.org>
-Tested-by: André Draszik <andre.draszik@linaro.org>
-Link: https://lore.kernel.org/r/16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+  WARNING: modpost: vmlinux.o(.text+0x5aa6dc): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_port()
+  The function ks_pcie_probe() references
+  the function __init ks_pcie_add_pcie_port().
+  This is often because ks_pcie_probe lacks a __init
+  annotation or the annotation of ks_pcie_add_pcie_port is wrong.
+
+  WARNING: modpost: vmlinux.o(.text+0x5aa6f4): Section mismatch in reference from the function ks_pcie_probe() to the function .init.text:ks_pcie_add_pcie_ep()
+  The function ks_pcie_probe() references
+  the function __init ks_pcie_add_pcie_ep().
+  This is often because ks_pcie_probe lacks a __init
+  annotation or the annotation of ks_pcie_add_pcie_ep is wrong.
+
+ks_pcie_add_pcie_ep() was removed in upstream commit a0fd361db8e5 ("PCI:
+dwc: Move "dbi", "dbi2", and "addr_space" resource setup into common
+code") and ks_pcie_add_pcie_port() was removed in upstream
+commit 60f5b73fa0f2 ("PCI: dwc: Remove unnecessary wrappers around
+dw_pcie_host_init()"), both of which happened before upstream
+commit 7994db905c0f ("PCI: keystone: Don't discard .probe() callback").
+
+As neither of these removal changes are really suitable for stable, just
+remove __init from these functions in stable, as it is no longer a
+correct annotation after dropping __init from ks_pcie_probe().
+
+Fixes: 012dba0ab814 ("PCI: keystone: Don't discard .probe() callback")
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/scan.c      |    7 ++++++-
- drivers/iommu/iommu.c    |   20 ++++++++++----------
- drivers/iommu/of_iommu.c |   12 +++++++++---
- include/linux/iommu.h    |    1 +
- 4 files changed, 26 insertions(+), 14 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -1568,17 +1568,22 @@ static const struct iommu_ops *acpi_iomm
- 	int err;
- 	const struct iommu_ops *ops;
- 
-+	/* Serialise to make dev->iommu stable under our potential fwspec */
-+	mutex_lock(&iommu_probe_device_lock);
- 	/*
- 	 * If we already translated the fwspec there is nothing left to do,
- 	 * return the iommu_ops.
- 	 */
- 	ops = acpi_iommu_fwspec_ops(dev);
--	if (ops)
-+	if (ops) {
-+		mutex_unlock(&iommu_probe_device_lock);
- 		return ops;
-+	}
- 
- 	err = iort_iommu_configure_id(dev, id_in);
- 	if (err && err != -EPROBE_DEFER)
- 		err = viot_iommu_configure(dev);
-+	mutex_unlock(&iommu_probe_device_lock);
- 
- 	/*
- 	 * If we have reason to believe the IOMMU driver missed the initial
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -479,11 +479,12 @@ static void iommu_deinit_device(struct d
- 	dev_iommu_free(dev);
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -865,8 +865,8 @@ static irqreturn_t ks_pcie_err_irq_handl
+ 	return ks_pcie_handle_error_irq(ks_pcie);
  }
  
-+DEFINE_MUTEX(iommu_probe_device_lock);
-+
- static int __iommu_probe_device(struct device *dev, struct list_head *group_list)
+-static int __init ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
+-					struct platform_device *pdev)
++static int ks_pcie_add_pcie_port(struct keystone_pcie *ks_pcie,
++				 struct platform_device *pdev)
  {
- 	const struct iommu_ops *ops = dev->bus->iommu_ops;
- 	struct iommu_group *group;
--	static DEFINE_MUTEX(iommu_probe_device_lock);
- 	struct group_device *gdev;
- 	int ret;
+ 	struct dw_pcie *pci = ks_pcie->pci;
+ 	struct pcie_port *pp = &pci->pp;
+@@ -978,8 +978,8 @@ static const struct dw_pcie_ep_ops ks_pc
+ 	.get_features = &ks_pcie_am654_get_features,
+ };
  
-@@ -496,17 +497,15 @@ static int __iommu_probe_device(struct d
- 	 * probably be able to use device_lock() here to minimise the scope,
- 	 * but for now enforcing a simple global ordering is fine.
- 	 */
--	mutex_lock(&iommu_probe_device_lock);
-+	lockdep_assert_held(&iommu_probe_device_lock);
- 
- 	/* Device is probed already if in a group */
--	if (dev->iommu_group) {
--		ret = 0;
--		goto out_unlock;
--	}
-+	if (dev->iommu_group)
-+		return 0;
- 
- 	ret = iommu_init_device(dev, ops);
- 	if (ret)
--		goto out_unlock;
-+		return ret;
- 
- 	group = dev->iommu_group;
- 	gdev = iommu_group_alloc_device(group, dev);
-@@ -542,7 +541,6 @@ static int __iommu_probe_device(struct d
- 			list_add_tail(&group->entry, group_list);
- 	}
- 	mutex_unlock(&group->mutex);
--	mutex_unlock(&iommu_probe_device_lock);
- 
- 	if (dev_is_pci(dev))
- 		iommu_dma_set_pci_32bit_workaround(dev);
-@@ -556,8 +554,6 @@ err_put_group:
- 	iommu_deinit_device(dev);
- 	mutex_unlock(&group->mutex);
- 	iommu_group_put(group);
--out_unlock:
--	mutex_unlock(&iommu_probe_device_lock);
- 
- 	return ret;
- }
-@@ -567,7 +563,9 @@ int iommu_probe_device(struct device *de
- 	const struct iommu_ops *ops;
- 	int ret;
- 
-+	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, NULL);
-+	mutex_unlock(&iommu_probe_device_lock);
- 	if (ret)
- 		return ret;
- 
-@@ -1783,7 +1781,9 @@ static int probe_iommu_group(struct devi
- 	struct list_head *group_list = data;
- 	int ret;
- 
-+	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, group_list);
-+	mutex_unlock(&iommu_probe_device_lock);
- 	if (ret == -ENODEV)
- 		ret = 0;
- 
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -112,16 +112,20 @@ const struct iommu_ops *of_iommu_configu
- 					   const u32 *id)
+-static int __init ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
+-				      struct platform_device *pdev)
++static int ks_pcie_add_pcie_ep(struct keystone_pcie *ks_pcie,
++			       struct platform_device *pdev)
  {
- 	const struct iommu_ops *ops = NULL;
--	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
-+	struct iommu_fwspec *fwspec;
- 	int err = NO_IOMMU;
- 
- 	if (!master_np)
- 		return NULL;
- 
-+	/* Serialise to make dev->iommu stable under our potential fwspec */
-+	mutex_lock(&iommu_probe_device_lock);
-+	fwspec = dev_iommu_fwspec_get(dev);
- 	if (fwspec) {
--		if (fwspec->ops)
-+		if (fwspec->ops) {
-+			mutex_unlock(&iommu_probe_device_lock);
- 			return fwspec->ops;
--
-+		}
- 		/* In the deferred case, start again from scratch */
- 		iommu_fwspec_free(dev);
- 	}
-@@ -155,6 +159,8 @@ const struct iommu_ops *of_iommu_configu
- 		fwspec = dev_iommu_fwspec_get(dev);
- 		ops    = fwspec->ops;
- 	}
-+	mutex_unlock(&iommu_probe_device_lock);
-+
- 	/*
- 	 * If we have reason to believe the IOMMU driver missed the initial
- 	 * probe for dev, replay it to get things in order.
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -703,6 +703,7 @@ static inline void dev_iommu_priv_set(st
- 	dev->iommu->priv = priv;
- }
- 
-+extern struct mutex iommu_probe_device_lock;
- int iommu_probe_device(struct device *dev);
- 
- int iommu_dev_enable_feature(struct device *dev, enum iommu_dev_features f);
+ 	int ret;
+ 	struct dw_pcie_ep *ep;
 
 
 
