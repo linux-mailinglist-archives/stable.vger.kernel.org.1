@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-4177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F05D804662
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A61F8046D2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEABF28142D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0311C20D97
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9006FAF;
-	Tue,  5 Dec 2023 03:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E273679E3;
+	Tue,  5 Dec 2023 03:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3Qp3MGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NnqEeD5b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8046FB1;
-	Tue,  5 Dec 2023 03:27:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EE5C433C8;
-	Tue,  5 Dec 2023 03:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9466FB1;
+	Tue,  5 Dec 2023 03:31:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C88FC433C8;
+	Tue,  5 Dec 2023 03:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746827;
-	bh=EGoNz0dKKtitVKc9t+Jr7HV3iPyaAMgNKsHPWpiqpTs=;
+	s=korg; t=1701747115;
+	bh=MywIHm9OjIUThFKu/d7EKfsYN3VU1VMfipWoko+k+yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3Qp3MGccv4GuIYCTx6gH7lLyiRkQXJuOEKxemKIiiWEkW5b8mAAXNa+sIrZ7K317
-	 tg8elSEAjbglj56LVJGcuXxAzk3+F55qfjbEoBoU8ANZ6qeYlK2kHWEADwOxu1R9xg
-	 WYuDQv8ns9/AePwPZIHcTEENCHVg4PDBUkjbfkj0=
+	b=NnqEeD5bEJS8i6y3IZyT4UUBg+UjNMyeqPxIA76VN4jnMCz4N9QbJhy+asfztEaa1
+	 fMllKwgdycKl/p7lVGBmTMXxCbjNls6e3DoCzhZxkpNAUxd6p+OgaeYGlMhAbFyQOK
+	 Wbx4KZUXno9HAg+5azF5AjwS80llBTl1+BMgLxZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Murray <andrew.murray@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 4.19 17/71] KVM: arm64: limit PMU version to PMUv3 for ARMv8.1
+	Helge Deller <deller@gmx.de>,
+	Bruno Haible <bruno@clisp.org>
+Subject: [PATCH 6.1 040/107] parisc: Drop the HP-UX ENOSYM and EREMOTERELEASE error codes
 Date: Tue,  5 Dec 2023 12:16:15 +0900
-Message-ID: <20231205031518.837972807@linuxfoundation.org>
+Message-ID: <20231205031533.924389833@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,80 +52,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Murray <andrew.murray@arm.com>
+From: Helge Deller <deller@gmx.de>
 
-commit c854188ea01062f5a5fd7f05658feb1863774eaa upstream.
+commit e5f3e299a2b1e9c3ece24a38adfc089aef307e8a upstream.
 
-We currently expose the PMU version of the host to the guest via
-emulation of the DFR0_EL1 and AA64DFR0_EL1 debug feature registers.
-However many of the features offered beyond PMUv3 for 8.1 are not
-supported in KVM. Examples of this include support for the PMMIR
-registers (added in PMUv3 for ARMv8.4) and 64-bit event counters
-added in (PMUv3 for ARMv8.5).
+Those return codes are only defined for the parisc architecture and
+are leftovers from when we wanted to be HP-UX compatible.
 
-Let's trap the Debug Feature Registers in order to limit
-PMUVer/PerfMon in the Debug Feature Registers to PMUv3 for ARMv8.1
-to avoid unexpected behaviour.
+They are not returned by any Linux kernel syscall but do trigger
+problems with the glibc strerrorname_np() and strerror() functions as
+reported in glibc issue #31080.
 
-Both ID_AA64DFR0.PMUVer and ID_DFR0.PerfMon follow the "Alternative ID
-scheme used for the Performance Monitors Extension version" where 0xF
-means an IMPLEMENTATION DEFINED PMU is implemented, and values 0x0-0xE
-are treated as with an unsigned field (with 0x0 meaning no PMU is
-present). As we don't expect to expose an IMPLEMENTATION DEFINED PMU,
-and our cap is below 0xF, we can treat these fields as unsigned when
-applying the cap.
+There is no need to keep them, so simply remove them.
 
-Signed-off-by: Andrew Murray <andrew.murray@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-[Mark: make field names consistent, use perfmon cap]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-[yuzenghui@huawei.com: adjust the context in read_id_reg()]
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Bruno Haible <bruno@clisp.org>
+Closes: https://sourceware.org/bugzilla/show_bug.cgi?id=31080
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/sysreg.h |    6 ++++++
- arch/arm64/kvm/sys_regs.c       |   10 ++++++++++
- 2 files changed, 16 insertions(+)
+ arch/parisc/include/uapi/asm/errno.h       |    2 --
+ lib/errname.c                              |    6 ------
+ tools/arch/parisc/include/uapi/asm/errno.h |    2 --
+ 3 files changed, 10 deletions(-)
 
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -622,6 +622,12 @@
- #define ID_AA64DFR0_TRACEVER_SHIFT	4
- #define ID_AA64DFR0_DEBUGVER_SHIFT	0
+--- a/arch/parisc/include/uapi/asm/errno.h
++++ b/arch/parisc/include/uapi/asm/errno.h
+@@ -75,7 +75,6 @@
  
-+#define ID_AA64DFR0_PMUVER_8_1		0x4
-+
-+#define ID_DFR0_PERFMON_SHIFT		24
-+
-+#define ID_DFR0_PERFMON_8_1		0x4
-+
- #define ID_ISAR5_RDM_SHIFT		24
- #define ID_ISAR5_CRC32_SHIFT		16
- #define ID_ISAR5_SHA2_SHIFT		12
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1049,6 +1049,16 @@ static u64 read_id_reg(struct sys_reg_de
- 			kvm_debug("LORegions unsupported for guests, suppressing\n");
+ /* We now return you to your regularly scheduled HPUX. */
  
- 		val &= ~(0xfUL << ID_AA64MMFR1_LOR_SHIFT);
-+	} else if (id == SYS_ID_AA64DFR0_EL1) {
-+		/* Limit guests to PMUv3 for ARMv8.1 */
-+		val = cpuid_feature_cap_perfmon_field(val,
-+						ID_AA64DFR0_PMUVER_SHIFT,
-+						ID_AA64DFR0_PMUVER_8_1);
-+	} else if (id == SYS_ID_DFR0_EL1) {
-+		/* Limit guests to PMUv3 for ARMv8.1 */
-+		val = cpuid_feature_cap_perfmon_field(val,
-+						ID_DFR0_PERFMON_SHIFT,
-+						ID_DFR0_PERFMON_8_1);
- 	}
+-#define ENOSYM		215	/* symbol does not exist in executable */
+ #define	ENOTSOCK	216	/* Socket operation on non-socket */
+ #define	EDESTADDRREQ	217	/* Destination address required */
+ #define	EMSGSIZE	218	/* Message too long */
+@@ -101,7 +100,6 @@
+ #define	ETIMEDOUT	238	/* Connection timed out */
+ #define	ECONNREFUSED	239	/* Connection refused */
+ #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
+-#define	EREMOTERELEASE	240	/* Remote peer released connection */
+ #define	EHOSTDOWN	241	/* Host is down */
+ #define	EHOSTUNREACH	242	/* No route to host */
  
- 	return val;
+--- a/lib/errname.c
++++ b/lib/errname.c
+@@ -111,9 +111,6 @@ static const char *names_0[] = {
+ 	E(ENOSPC),
+ 	E(ENOSR),
+ 	E(ENOSTR),
+-#ifdef ENOSYM
+-	E(ENOSYM),
+-#endif
+ 	E(ENOSYS),
+ 	E(ENOTBLK),
+ 	E(ENOTCONN),
+@@ -144,9 +141,6 @@ static const char *names_0[] = {
+ #endif
+ 	E(EREMOTE),
+ 	E(EREMOTEIO),
+-#ifdef EREMOTERELEASE
+-	E(EREMOTERELEASE),
+-#endif
+ 	E(ERESTART),
+ 	E(ERFKILL),
+ 	E(EROFS),
+--- a/tools/arch/parisc/include/uapi/asm/errno.h
++++ b/tools/arch/parisc/include/uapi/asm/errno.h
+@@ -75,7 +75,6 @@
+ 
+ /* We now return you to your regularly scheduled HPUX. */
+ 
+-#define ENOSYM		215	/* symbol does not exist in executable */
+ #define	ENOTSOCK	216	/* Socket operation on non-socket */
+ #define	EDESTADDRREQ	217	/* Destination address required */
+ #define	EMSGSIZE	218	/* Message too long */
+@@ -101,7 +100,6 @@
+ #define	ETIMEDOUT	238	/* Connection timed out */
+ #define	ECONNREFUSED	239	/* Connection refused */
+ #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
+-#define	EREMOTERELEASE	240	/* Remote peer released connection */
+ #define	EHOSTDOWN	241	/* Host is down */
+ #define	EHOSTUNREACH	242	/* No route to host */
+ 
 
 
 
