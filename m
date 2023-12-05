@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B178046AD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4081E804652
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144761C20D85
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20BD2814DE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BE78BF2;
-	Tue,  5 Dec 2023 03:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E6D8C0F;
+	Tue,  5 Dec 2023 03:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npxo0r6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/ZQlT0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E4C6FB1;
-	Tue,  5 Dec 2023 03:30:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CA8C433C7;
-	Tue,  5 Dec 2023 03:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4703879E3;
+	Tue,  5 Dec 2023 03:26:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E4EC433C7;
+	Tue,  5 Dec 2023 03:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747023;
-	bh=GLFi/dU/nxldp6qBf4QPDbkbQXmjz+88neuL9QnFX38=;
+	s=korg; t=1701746782;
+	bh=vjbYDlYL5MrYze1Oh2NadVd4uxO8CDSB4eKRy7qTFuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Npxo0r6fjKszhhMlJjSmjkRs6ObsBSWk9gFXYhqbWbgeP9Ax5fL1+zqOMLjLgaRI6
-	 7J1lLnQsz3uoacqbau9TLLi5K/ANKwQYINurxp7NEpQlZ5/ps83rONWl5cNn8/CMwp
-	 kAeA+g7MmyP+nKZO2BArGFZr7LBJMvDjVDi61HeM=
+	b=p/ZQlT0iW3qa1fTnXWSgVVuwAgEDOPSzKS204Cnpmrw5kB4Agwi2GwcIzG3WQSBC/
+	 9RhOBY3wEePZEHVTc09PDz8iDir5I2IeVB+5ZR6d9/tK4TZzmVaLjUumzv+fUQB0Kn
+	 m0TL2HZ6w8a2EN3PQL/nLhb/Io/PLxVdkYHIBZOE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 029/107] powercap: DTPM: Fix unneeded conversions to micro-Watts
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 06/71] HID: core: store the unique system identifier in hid_device
 Date: Tue,  5 Dec 2023 12:16:04 +0900
-Message-ID: <20231205031533.379093657@linuxfoundation.org>
+Message-ID: <20231205031518.244565961@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,116 +52,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Luba <lukasz.luba@arm.com>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 
-commit b817f1488fca548fe50e2654d84a1956a16a1a8a upstream.
+[ Upstream commit 1e839143d674603b0bbbc4c513bca35404967dbc ]
 
-The power values coming from the Energy Model are already in uW.
+This unique identifier is currently used only for ensuring uniqueness in
+sysfs. However, this could be handful for userspace to refer to a specific
+hid_device by this id.
 
-The PowerCap and DTPM frameworks operate on uW, so all places should
-just use the values from the EM.
+2 use cases are in my mind: LEDs (and their naming convention), and
+HID-BPF.
 
-Fix the code by removing all of the conversion to uW still present in it.
-
-Fixes: ae6ccaa65038 (PM: EM: convert power field to micro-Watts precision and align drivers)
-Cc: 5.19+ <stable@vger.kernel.org> # v5.19+
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Link: https://lore.kernel.org/r/20220902132938.2409206-9-benjamin.tissoires@redhat.com
+Stable-dep-of: fc43e9c857b7 ("HID: fix HID device resource race between HID core and debugging support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/dtpm_cpu.c     |  6 +-----
- drivers/powercap/dtpm_devfreq.c | 11 +++--------
- 2 files changed, 4 insertions(+), 13 deletions(-)
+ drivers/hid/hid-core.c | 4 +++-
+ include/linux/hid.h    | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
-index 2ff7717530bf..8a2f18fa3faf 100644
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -24,7 +24,6 @@
- #include <linux/of.h>
- #include <linux/pm_qos.h>
- #include <linux/slab.h>
--#include <linux/units.h>
- 
- struct dtpm_cpu {
- 	struct dtpm dtpm;
-@@ -104,8 +103,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 		if (pd->table[i].frequency < freq)
- 			continue;
- 
--		return scale_pd_power_uw(pd_mask, pd->table[i].power *
--					 MICROWATT_PER_MILLIWATT);
-+		return scale_pd_power_uw(pd_mask, pd->table[i].power);
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index c8d687f795caa..99eb26bcb1dd3 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2259,10 +2259,12 @@ int hid_add_device(struct hid_device *hdev)
+ 			hid_warn(hdev, "bad device descriptor (%d)\n", ret);
  	}
  
- 	return 0;
-@@ -122,11 +120,9 @@ static int update_pd_power_uw(struct dtpm *dtpm)
- 	nr_cpus = cpumask_weight(&cpus);
++	hdev->id = atomic_inc_return(&id);
++
+ 	/* XXX hack, any other cleaner solution after the driver core
+ 	 * is converted to allow more than 20 bytes as the device name? */
+ 	dev_set_name(&hdev->dev, "%04X:%04X:%04X.%04X", hdev->bus,
+-		     hdev->vendor, hdev->product, atomic_inc_return(&id));
++		     hdev->vendor, hdev->product, hdev->id);
  
- 	dtpm->power_min = em->table[0].power;
--	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
- 	dtpm->power_min *= nr_cpus;
+ 	hid_debug_register(hdev, dev_name(&hdev->dev));
+ 	ret = device_add(&hdev->dev);
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 79c6c3b4e0044..10b41b2b20857 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -625,6 +625,8 @@ struct hid_device {							/* device report descriptor */
+ 	struct list_head debug_list;
+ 	spinlock_t  debug_list_lock;
+ 	wait_queue_head_t debug_wait;
++
++	unsigned int id;						/* system unique id */
+ };
  
- 	dtpm->power_max = em->table[em->nr_perf_states - 1].power;
--	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
- 	dtpm->power_max *= nr_cpus;
- 
- 	return 0;
-diff --git a/drivers/powercap/dtpm_devfreq.c b/drivers/powercap/dtpm_devfreq.c
-index 91276761a31d..612c3b59dd5b 100644
---- a/drivers/powercap/dtpm_devfreq.c
-+++ b/drivers/powercap/dtpm_devfreq.c
-@@ -39,10 +39,8 @@ static int update_pd_power_uw(struct dtpm *dtpm)
- 	struct em_perf_domain *pd = em_pd_get(dev);
- 
- 	dtpm->power_min = pd->table[0].power;
--	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
- 
- 	dtpm->power_max = pd->table[pd->nr_perf_states - 1].power;
--	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
- 
- 	return 0;
- }
-@@ -54,13 +52,10 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 power_limit)
- 	struct device *dev = devfreq->dev.parent;
- 	struct em_perf_domain *pd = em_pd_get(dev);
- 	unsigned long freq;
--	u64 power;
- 	int i;
- 
- 	for (i = 0; i < pd->nr_perf_states; i++) {
--
--		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
--		if (power > power_limit)
-+		if (pd->table[i].power > power_limit)
- 			break;
- 	}
- 
-@@ -68,7 +63,7 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 power_limit)
- 
- 	dev_pm_qos_update_request(&dtpm_devfreq->qos_req, freq);
- 
--	power_limit = pd->table[i - 1].power * MICROWATT_PER_MILLIWATT;
-+	power_limit = pd->table[i - 1].power;
- 
- 	return power_limit;
- }
-@@ -110,7 +105,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
- 		if (pd->table[i].frequency < freq)
- 			continue;
- 
--		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
-+		power = pd->table[i].power;
- 		power *= status.busy_time;
- 		power >>= 10;
- 
+ #define to_hid_device(pdev) \
 -- 
-2.43.0
+2.42.0
 
 
 
