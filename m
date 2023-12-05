@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-4367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95323804731
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F069B8046AF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B90CD1C20D29
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5C981F21431
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D422D8BF2;
-	Tue,  5 Dec 2023 03:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5FF28BF1;
+	Tue,  5 Dec 2023 03:30:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hTGZf/KV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7DzanuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94BF96FB1;
-	Tue,  5 Dec 2023 03:35:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F283FC433C8;
-	Tue,  5 Dec 2023 03:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46C36FB1;
+	Tue,  5 Dec 2023 03:30:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B02BC433C8;
+	Tue,  5 Dec 2023 03:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747355;
-	bh=UYeeU+nPtovdCSlSG8fO3CkO6eRdkZlNTj+/QIhDNSE=;
+	s=korg; t=1701747029;
+	bh=LxkT4d9NAZBPaIzwXl57dSzGKJ0T4TxQEwqtzJqZHBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hTGZf/KVhoC6MB9Wrf2Mnr3F9Co0/tkQrCRy1QDJNHTQiRiilFuBtoKi27GWpDJko
-	 wrK+1j7y3XNTLN6fj5vR7EEDrk1QZTKPZH7ZB70veaEZLGetZVkEu/uE7mmky7kiVR
-	 4vucxAxhmC/CEGHc916msDGTZLqbYi6+gCpCfGe0=
+	b=J7DzanuQFsAhiAZiEuuB3PrZhzrnTzW5TqUVW7uucdYYov+DVn3oC0+faC9H8D+C+
+	 mJx+ZRrqLX8Sj5Lm9Nh3bCfyPoBd6wH+/aNthHkoa2MpEfWK86N35hUI4l0mLGMVuA
+	 3G9GyQx8fpmFAvVhkZBzWkYU1QNuBBKM+IeIa3tM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yikebaer Aizezi <yikebaer61@gmail.com>,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/135] ext4: fix slab-use-after-free in ext4_es_insert_extent()
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.1 031/107] dma-buf: fix check in dma_resv_add_fence
 Date: Tue,  5 Dec 2023 12:16:06 +0900
-Message-ID: <20231205031533.399091940@linuxfoundation.org>
+Message-ID: <20231205031533.490997130@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,189 +50,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Christian König <christian.koenig@amd.com>
 
-[ Upstream commit 768d612f79822d30a1e7d132a4d4b05337ce42ec ]
+commit 95ba893c9f4feb836ddce627efd0bb6af6667031 upstream.
 
-Yikebaer reported an issue:
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_es_insert_extent+0xc68/0xcb0
-fs/ext4/extents_status.c:894
-Read of size 4 at addr ffff888112ecc1a4 by task syz-executor/8438
+It's valid to add the same fence multiple times to a dma-resv object and
+we shouldn't need one extra slot for each.
 
-CPU: 1 PID: 8438 Comm: syz-executor Not tainted 6.5.0-rc5 #1
-Call Trace:
- [...]
- kasan_report+0xba/0xf0 mm/kasan/report.c:588
- ext4_es_insert_extent+0xc68/0xcb0 fs/ext4/extents_status.c:894
- ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
- ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
- ext4_zero_range fs/ext4/extents.c:4622 [inline]
- ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
- [...]
-
-Allocated by task 8438:
- [...]
- kmem_cache_zalloc include/linux/slab.h:693 [inline]
- __es_alloc_extent fs/ext4/extents_status.c:469 [inline]
- ext4_es_insert_extent+0x672/0xcb0 fs/ext4/extents_status.c:873
- ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
- ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
- ext4_zero_range fs/ext4/extents.c:4622 [inline]
- ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
- [...]
-
-Freed by task 8438:
- [...]
- kmem_cache_free+0xec/0x490 mm/slub.c:3823
- ext4_es_try_to_merge_right fs/ext4/extents_status.c:593 [inline]
- __es_insert_extent+0x9f4/0x1440 fs/ext4/extents_status.c:802
- ext4_es_insert_extent+0x2ca/0xcb0 fs/ext4/extents_status.c:882
- ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
- ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
- ext4_zero_range fs/ext4/extents.c:4622 [inline]
- ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
- [...]
-==================================================================
-
-The flow of issue triggering is as follows:
-1. remove es
-      raw es               es  removed  es1
-|-------------------| -> |----|.......|------|
-
-2. insert es
-  es   insert   es1      merge with es  es1     merge with es and free es1
-|----|.......|------| -> |------------|------| -> |-------------------|
-
-es merges with newes, then merges with es1, frees es1, then determines
-if es1->es_len is 0 and triggers a UAF.
-
-The code flow is as follows:
-ext4_es_insert_extent
-  es1 = __es_alloc_extent(true);
-  es2 = __es_alloc_extent(true);
-  __es_remove_extent(inode, lblk, end, NULL, es1)
-    __es_insert_extent(inode, &newes, es1) ---> insert es1 to es tree
-  __es_insert_extent(inode, &newes, es2)
-    ext4_es_try_to_merge_right
-      ext4_es_free_extent(inode, es1) --->  es1 is freed
-  if (es1 && !es1->es_len)
-    // Trigger UAF by determining if es1 is used.
-
-We determine whether es1 or es2 is used immediately after calling
-__es_remove_extent() or __es_insert_extent() to avoid triggering a
-UAF if es1 or es2 is freed.
-
-Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
-Closes: https://lore.kernel.org/lkml/CALcu4raD4h9coiyEBL4Bm0zjDwxC2CyPiTwsP3zFuhot6y9Beg@mail.gmail.com
-Fixes: 2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230815070808.3377171-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Fixes: a3f7c10a269d5 ("dma-buf/dma-resv: check if the new fence is really later")
+Cc: stable@vger.kernel.org # v5.19+
+Link: https://patchwork.freedesktop.org/patch/msgid/20231115093035.1889-1-christian.koenig@amd.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c | 44 +++++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 14 deletions(-)
+ drivers/dma-buf/dma-resv.c |    2 +-
+ include/linux/dma-fence.h  |   15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 1327cd9505db7..6c55ab427e650 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -883,23 +883,29 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
- 	if (err1 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es1) {
-+		if (!es1->es_len)
-+			__es_free_extent(es1);
-+		es1 = NULL;
-+	}
+--- a/drivers/dma-buf/dma-resv.c
++++ b/drivers/dma-buf/dma-resv.c
+@@ -296,7 +296,7 @@ void dma_resv_add_fence(struct dma_resv
  
- 	err2 = __es_insert_extent(inode, &newes, es2);
- 	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
- 		err2 = 0;
- 	if (err2 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es2) {
-+		if (!es2->es_len)
-+			__es_free_extent(es2);
-+		es2 = NULL;
-+	}
+ 		dma_resv_list_entry(fobj, i, obj, &old, &old_usage);
+ 		if ((old->context == fence->context && old_usage >= usage &&
+-		     dma_fence_is_later(fence, old)) ||
++		     dma_fence_is_later_or_same(fence, old)) ||
+ 		    dma_fence_is_signaled(old)) {
+ 			dma_resv_list_set(fobj, i, fence, usage);
+ 			dma_fence_put(old);
+--- a/include/linux/dma-fence.h
++++ b/include/linux/dma-fence.h
+@@ -479,6 +479,21 @@ static inline bool dma_fence_is_later(st
+ }
  
- 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
- 	    (status & EXTENT_STATUS_WRITTEN ||
- 	     status & EXTENT_STATUS_UNWRITTEN))
- 		__revise_pending(inode, lblk, len);
--
--	/* es is pre-allocated but not used, free it. */
--	if (es1 && !es1->es_len)
--		__es_free_extent(es1);
--	if (es2 && !es2->es_len)
--		__es_free_extent(es2);
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	if (err1 || err2)
-@@ -1496,8 +1502,12 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
- 	err = __es_remove_extent(inode, lblk, end, &reserved, es);
--	if (es && !es->es_len)
--		__es_free_extent(es);
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es) {
-+		if (!es->es_len)
-+			__es_free_extent(es);
-+		es = NULL;
-+	}
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	if (err)
- 		goto retry;
-@@ -2055,19 +2065,25 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
- 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
- 	if (err1 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es1) {
-+		if (!es1->es_len)
-+			__es_free_extent(es1);
-+		es1 = NULL;
-+	}
- 
- 	err2 = __es_insert_extent(inode, &newes, es2);
- 	if (err2 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es2) {
-+		if (!es2->es_len)
-+			__es_free_extent(es2);
-+		es2 = NULL;
-+	}
- 
- 	if (allocated)
- 		__insert_pending(inode, lblk);
--
--	/* es is pre-allocated but not used, free it. */
--	if (es1 && !es1->es_len)
--		__es_free_extent(es1);
--	if (es2 && !es2->es_len)
--		__es_free_extent(es2);
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	if (err1 || err2)
--- 
-2.42.0
-
+ /**
++ * dma_fence_is_later_or_same - return true if f1 is later or same as f2
++ * @f1: the first fence from the same context
++ * @f2: the second fence from the same context
++ *
++ * Returns true if f1 is chronologically later than f2 or the same fence. Both
++ * fences must be from the same context, since a seqno is not re-used across
++ * contexts.
++ */
++static inline bool dma_fence_is_later_or_same(struct dma_fence *f1,
++					      struct dma_fence *f2)
++{
++	return f1 == f2 || dma_fence_is_later(f1, f2);
++}
++
++/**
+  * dma_fence_later - return the chronologically later fence
+  * @f1:	the first fence from the same context
+  * @f2:	the second fence from the same context
 
 
 
