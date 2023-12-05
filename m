@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E14804660
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 354A7804595
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CAE1F213E3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E396128172F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB44779E3;
-	Tue,  5 Dec 2023 03:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7826FAF;
+	Tue,  5 Dec 2023 03:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBMQfGAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mc4myCHk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1976FAF;
-	Tue,  5 Dec 2023 03:26:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851F1C433C7;
-	Tue,  5 Dec 2023 03:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5576AA0;
+	Tue,  5 Dec 2023 03:19:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4AEC433CB;
+	Tue,  5 Dec 2023 03:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746818;
-	bh=aPR0z7yZGHVqBlc0FS2Q2j95J1p4FMHZs+MWlLO0eF4=;
+	s=korg; t=1701746340;
+	bh=lEwfIKL9enWD6yPpPmoJZI21YutoWQfVcUxVzvbtXhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBMQfGAfeY0x9mQ1+BaVieFfa03ZhzI7KLXRVLIJnZC89MWq1g9x5FcgPjEIxfmX7
-	 dS7XLMAtUDusSigIfF+5E7H3qqEud7l+A8TMjgEOkmKwZQQMhtWXz7Fl39m2bZcxli
-	 VnSIXGFb0LOJiMuVVxNQVfVu5D+Q1MJBaqZ77Ud4=
+	b=Mc4myCHkIezmBvI3OuB7nJrFtQnAHkAgj/Z1ZNIlsv5poArZBvZdoSOGs+OOSTTMs
+	 w10dujcIKPW4nrG7ROCK1it7DmIUrl+525pPULvqJfS/mRrprAN0vKHJ4dtb+Dq9P4
+	 ZK8AzNnTcPesvSRdChcykQa1Kr2xBxggLYOZit4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Andrew Halaney <ahalaney@redhat.com>
-Subject: [PATCH 4.19 32/71] USB: dwc3: qcom: fix wakeup after probe deferral
+	Wu Bo <bo.wu@vivo.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 4.14 23/30] dm verity: dont perform FEC for failed readahead IO
 Date: Tue,  5 Dec 2023 12:16:30 +0900
-Message-ID: <20231205031519.697803784@linuxfoundation.org>
+Message-ID: <20231205031512.867706368@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,75 +53,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Wu Bo <bo.wu@vivo.com>
 
-commit 41f5a0973259db9e4e3c9963d36505f80107d1a0 upstream.
+commit 0193e3966ceeeef69e235975918b287ab093082b upstream.
 
-The Qualcomm glue driver is overriding the interrupt trigger types
-defined by firmware when requesting the wakeup interrupts during probe.
+We found an issue under Android OTA scenario that many BIOs have to do
+FEC where the data under dm-verity is 100% complete and no corruption.
 
-This can lead to a failure to map the DP/DM wakeup interrupts after a
-probe deferral as the firmware defined trigger types do not match the
-type used for the initial mapping:
+Android OTA has many dm-block layers, from upper to lower:
+dm-verity
+dm-snapshot
+dm-origin & dm-cow
+dm-linear
+ufs
 
-	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
-	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+DM tables have to change 2 times during Android OTA merging process.
+When doing table change, the dm-snapshot will be suspended for a while.
+During this interval, many readahead IOs are submitted to dm_verity
+from filesystem. Then the kverity works are busy doing FEC process
+which cost too much time to finish dm-verity IO. This causes needless
+delay which feels like system is hung.
 
-Fix this by not overriding the firmware provided trigger types when
-requesting the wakeup interrupts.
+After adding debugging it was found that each readahead IO needed
+around 10s to finish when this situation occurred. This is due to IO
+amplification:
 
-Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
-Cc: stable@vger.kernel.org      # 4.18
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
-Link: https://lore.kernel.org/r/20231120161607.7405-3-johan+linaro@kernel.org
+dm-snapshot suspend
+erofs_readahead     // 300+ io is submitted
+	dm_submit_bio (dm_verity)
+		dm_submit_bio (dm_snapshot)
+		bio return EIO
+		bio got nothing, it's empty
+	verity_end_io
+	verity_verify_io
+	forloop range(0, io->n_blocks)    // each io->nblocks ~= 20
+		verity_fec_decode
+		fec_decode_rsb
+		fec_read_bufs
+		forloop range(0, v->fec->rsn) // v->fec->rsn = 253
+			new_read
+			submit_bio (dm_snapshot)
+		end loop
+	end loop
+dm-snapshot resume
+
+Readahead BIOs get nothing while dm-snapshot is suspended, so all of
+them will cause verity's FEC.
+Each readahead BIO needs to verify ~20 (io->nblocks) blocks.
+Each block needs to do FEC, and every block needs to do 253
+(v->fec->rsn) reads.
+So during the suspend interval(~200ms), 300 readahead BIOs trigger
+~1518000 (300*20*253) IOs to dm-snapshot.
+
+As readahead IO is not required by userspace, and to fix this issue,
+it is best to pass readahead errors to upper layer to handle it.
+
+Cc: stable@vger.kernel.org
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Signed-off-by: Wu Bo <bo.wu@vivo.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-qcom.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/md/dm-verity-target.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-qcom.c
-+++ b/drivers/usb/dwc3/dwc3-qcom.c
-@@ -329,7 +329,7 @@ static int dwc3_qcom_setup_irq(struct pl
- 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
- 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
- 					qcom_dwc3_resume_irq,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					IRQF_ONESHOT,
- 					"qcom_dwc3 HS", qcom);
- 		if (ret) {
- 			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
-@@ -343,7 +343,7 @@ static int dwc3_qcom_setup_irq(struct pl
- 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
- 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
- 					qcom_dwc3_resume_irq,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					IRQF_ONESHOT,
- 					"qcom_dwc3 DP_HS", qcom);
- 		if (ret) {
- 			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
-@@ -357,7 +357,7 @@ static int dwc3_qcom_setup_irq(struct pl
- 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
- 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
- 					qcom_dwc3_resume_irq,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					IRQF_ONESHOT,
- 					"qcom_dwc3 DM_HS", qcom);
- 		if (ret) {
- 			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
-@@ -371,7 +371,7 @@ static int dwc3_qcom_setup_irq(struct pl
- 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
- 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
- 					qcom_dwc3_resume_irq,
--					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
-+					IRQF_ONESHOT,
- 					"qcom_dwc3 SS", qcom);
- 		if (ret) {
- 			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -588,7 +588,9 @@ static void verity_end_io(struct bio *bi
+ 	struct dm_verity_io *io = bio->bi_private;
+ 
+ 	if (bio->bi_status &&
+-	    (!verity_fec_is_enabled(io->v) || verity_is_system_shutting_down())) {
++	    (!verity_fec_is_enabled(io->v) ||
++	     verity_is_system_shutting_down() ||
++	     (bio->bi_opf & REQ_RAHEAD))) {
+ 		verity_finish_io(io, bio->bi_status);
+ 		return;
+ 	}
 
 
 
