@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD478047AC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA3E804703
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841841F2147B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABC82814A9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB94B8BF7;
-	Tue,  5 Dec 2023 03:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6718BF7;
+	Tue,  5 Dec 2023 03:33:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZRBADce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Giahgqky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A619CA43;
-	Tue,  5 Dec 2023 03:41:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6824C433C7;
-	Tue,  5 Dec 2023 03:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689F2A59;
+	Tue,  5 Dec 2023 03:33:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DD1C433C7;
+	Tue,  5 Dec 2023 03:33:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747662;
-	bh=e+B5pFBIfIIliSXHoyXOS4rLLZQDvK0LG1SwZ0TgNrA=;
+	s=korg; t=1701747237;
+	bh=OX2CFc6Rr92CXjiTGYN0G3iLXo9x0HtQhZshxTs0rl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ZRBADceqvkrYxYQi4Ayx+mkUZI3ml648foTiBwurKzf0gffNxinFcIMEKUM7Pb/x
-	 REzF6/jxJ5D90tG+ratUwyl5wbb+5BKpQ2ME+m6Epx4kKrCzdyZaQMVTqQdrCBU7SV
-	 CJGuH1iMVOs0Der6JVCZOYFMH/068ku4u4qGbw+A=
+	b=GiahgqkycKiMn0VK22SD96rmo88Lw1vO0/ThU0fpmCk+pIKSkpvo+1ZN7amp+A0ic
+	 gWwroFSX1UpYo5kgM9VpWu8Rsz5nYsxyT9IHfdBNNilvo5nQ9PwGf0qRNMfoxyeV0n
+	 p4NHKiHrFDwwpdKa1CxckpOiLddzAxE1VoebS9ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 22/67] btrfs: send: ensure send_fd is writable
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 092/107] iommu/vt-d: Add device_block_translation() helper
 Date: Tue,  5 Dec 2023 12:17:07 +0900
-Message-ID: <20231205031521.061998850@linuxfoundation.org>
+Message-ID: <20231205031537.467953261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +54,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
+[ Upstream commit c7be17c2903d4acbf9aa372bfb6e2a418387fce0 ]
 
-kernel_write() requires the caller to ensure that the file is writable.
-Let's do that directly after looking up the ->send_fd.
+If domain attaching to device fails, the IOMMU driver should bring the
+device to blocking DMA state. The upper layer is expected to recover it
+by attaching a new domain. Use device_block_translation() in the error
+path of dev_attach to make the behavior specific.
 
-We don't need a separate bailout path because the "out" path already
-does fput() if ->send_filp is non-NULL.
+The difference between device_block_translation() and the previous
+dmar_remove_one_dev_info() is that, in the scalable mode, it is the
+RID2PASID entry instead of context entry being cleared. As a result,
+enabling PCI capabilities is moved up.
 
-This has no security impact for two reasons:
-
- - the ioctl requires CAP_SYS_ADMIN
- - __kernel_write() bails out on read-only files - but only since 5.8,
-   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
-
-Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
-Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20221118132451.114406-3-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: da37dddcf4ca ("iommu/vt-d: Disable PCI ATS in legacy passthrough mode")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/intel/iommu.c | 44 ++++++++++++++++++++++++++++++++-----
+ 1 file changed, 38 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -7576,7 +7576,7 @@ long btrfs_ioctl_send(struct file *mnt_f
- 	sctx->flags = arg->flags;
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index 3dbf86c61f073..de76272d0fb02 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -277,7 +277,7 @@ static LIST_HEAD(dmar_satc_units);
+ #define for_each_rmrr_units(rmrr) \
+ 	list_for_each_entry(rmrr, &dmar_rmrr_units, list)
  
- 	sctx->send_filp = fget(arg->send_fd);
--	if (!sctx->send_filp) {
-+	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
- 		ret = -EBADF;
- 		goto out;
+-static void dmar_remove_one_dev_info(struct device *dev);
++static void device_block_translation(struct device *dev);
+ 
+ int dmar_disabled = !IS_ENABLED(CONFIG_INTEL_IOMMU_DEFAULT_ON);
+ int intel_iommu_sm = IS_ENABLED(CONFIG_INTEL_IOMMU_SCALABLE_MODE_DEFAULT_ON);
+@@ -1418,7 +1418,7 @@ static void iommu_enable_pci_caps(struct device_domain_info *info)
+ {
+ 	struct pci_dev *pdev;
+ 
+-	if (!info || !dev_is_pci(info->dev))
++	if (!dev_is_pci(info->dev))
+ 		return;
+ 
+ 	pdev = to_pci_dev(info->dev);
+@@ -2064,7 +2064,6 @@ static int domain_context_mapping_one(struct dmar_domain *domain,
+ 	} else {
+ 		iommu_flush_write_buffer(iommu);
  	}
+-	iommu_enable_pci_caps(info);
+ 
+ 	ret = 0;
+ 
+@@ -2506,7 +2505,7 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
+ 					dev, PASID_RID2PASID);
+ 		if (ret) {
+ 			dev_err(dev, "Setup RID2PASID failed\n");
+-			dmar_remove_one_dev_info(dev);
++			device_block_translation(dev);
+ 			return ret;
+ 		}
+ 	}
+@@ -2514,10 +2513,12 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
+ 	ret = domain_context_mapping(domain, dev);
+ 	if (ret) {
+ 		dev_err(dev, "Domain context map failed\n");
+-		dmar_remove_one_dev_info(dev);
++		device_block_translation(dev);
+ 		return ret;
+ 	}
+ 
++	iommu_enable_pci_caps(info);
++
+ 	return 0;
+ }
+ 
+@@ -4115,6 +4116,37 @@ static void dmar_remove_one_dev_info(struct device *dev)
+ 	info->domain = NULL;
+ }
+ 
++/*
++ * Clear the page table pointer in context or pasid table entries so that
++ * all DMA requests without PASID from the device are blocked. If the page
++ * table has been set, clean up the data structures.
++ */
++static void device_block_translation(struct device *dev)
++{
++	struct device_domain_info *info = dev_iommu_priv_get(dev);
++	struct intel_iommu *iommu = info->iommu;
++	unsigned long flags;
++
++	iommu_disable_dev_iotlb(info);
++	if (!dev_is_real_dma_subdevice(dev)) {
++		if (sm_supported(iommu))
++			intel_pasid_tear_down_entry(iommu, dev,
++						    PASID_RID2PASID, false);
++		else
++			domain_context_clear(info);
++	}
++
++	if (!info->domain)
++		return;
++
++	spin_lock_irqsave(&info->domain->lock, flags);
++	list_del(&info->link);
++	spin_unlock_irqrestore(&info->domain->lock, flags);
++
++	domain_detach_iommu(info->domain, iommu);
++	info->domain = NULL;
++}
++
+ static int md_domain_init(struct dmar_domain *domain, int guest_width)
+ {
+ 	int adjust_width;
+@@ -4238,7 +4270,7 @@ static int intel_iommu_attach_device(struct iommu_domain *domain,
+ 		struct device_domain_info *info = dev_iommu_priv_get(dev);
+ 
+ 		if (info->domain)
+-			dmar_remove_one_dev_info(dev);
++			device_block_translation(dev);
+ 	}
+ 
+ 	ret = prepare_domain_attach_device(domain, dev);
+-- 
+2.42.0
+
 
 
 
