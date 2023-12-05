@@ -1,46 +1,51 @@
-Return-Path: <stable+bounces-4253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C26F88046B7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46C48804615
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79D0E1F21423
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78D731C20CBC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F14D79F2;
-	Tue,  5 Dec 2023 03:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A9179F2;
+	Tue,  5 Dec 2023 03:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAOabRaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOpgYnng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2B8C0F;
-	Tue,  5 Dec 2023 03:30:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52848C433C7;
-	Tue,  5 Dec 2023 03:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87DF06FAF;
+	Tue,  5 Dec 2023 03:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22A5AC433C7;
+	Tue,  5 Dec 2023 03:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747047;
-	bh=1KbZgqMG4fnoyRRtN0v8YEtKleKh67kXSxGtNi3c5AI=;
+	s=korg; t=1701746670;
+	bh=58/xryAtwbf82pTdTrEKD2oGKL+4o+47VM71PTpCkvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KAOabRaMQOvwP7eAzWYF5LAN+g/RMp7xYnemynvvtsVZukmQ1DXgH9iLiklI9aia9
-	 mrdvyW7dbmNcWfzt7pBDb6Z5h/1TR25Sd6ylTPBS3shTPk7ABQ51fqscXBr/KsFrXk
-	 YiQlwIMnLL2EipJTWunBoxtnzbgJ6VJMH+IDHYks=
+	b=uOpgYnngeEbRdDUePfXdZfuL+yvgTCfWts1luC60mt6ps+48nnaqZyS/6pCnb2jWm
+	 qUrOg/Wiyj7roKGbubzSnmqCBkWkCORuma3JHVbCTtsVg7WM61GmQVbJovPUQcaq/i
+	 4sY9zqlIheB7MCKAIHqGd9ycNhp6q2vAAfqwKt50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 015/107] ALSA: hda/realtek: Add supported ALC257 for ChromeOS
+	syzbot+44c2416196b7c607f226@syzkaller.appspotmail.com,
+	Stanislav Fomichev <sdf@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Dipendra Khadka <kdipendra88@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 078/134] netdevsim: Dont accept device bound programs
 Date: Tue,  5 Dec 2023 12:15:50 +0900
-Message-ID: <20231205031532.582101180@linuxfoundation.org>
+Message-ID: <20231205031540.428169053@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +57,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Stanislav Fomichev <sdf@google.com>
 
-commit cae2bdb579ecc9d4219c58a7d3fde1958118dc1d upstream.
+[ Upstream commit c0c6bde586c7dce82719b4ff32a2db6af9ee3d65 ]
 
-ChromeOS want to support ALC257.
-Add codec ID to some relation function.
+Commit 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs") introduced
+device-bound programs by largely reusing existing offloading infrastructure.
+This changed the semantics of 'prog->aux->offload' a bit. Now, it's non-NULL
+for both offloaded and device-bound programs.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/99a88a7dbdb045fd9d934abeb6cec15f@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead of looking at 'prog->aux->offload' let's call bpf_prog_is_offloaded
+which should be true iff the program is offloaded and not merely device-bound.
+
+Fixes: 2b3486bc2d23 ("bpf: Introduce device-bound XDP programs")
+Reported-by: syzbot+44c2416196b7c607f226@syzkaller.appspotmail.com
+Signed-off-by: Stanislav Fomichev <sdf@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Cc: Dipendra Khadka <kdipendra88@gmail.com>
+Link: https://lore.kernel.org/bpf/20231114045453.1816995-2-sdf@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/netdevsim/bpf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -3264,6 +3264,7 @@ static void alc_disable_headset_jack_key
- 	case 0x10ec0230:
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 		alc_write_coef_idx(codec, 0x48, 0x0);
- 		alc_update_coef_idx(codec, 0x49, 0x0045, 0x0);
-@@ -3293,6 +3294,7 @@ static void alc_enable_headset_jack_key(
- 	case 0x10ec0230:
- 	case 0x10ec0236:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 		alc_write_coef_idx(codec, 0x48, 0xd011);
- 		alc_update_coef_idx(codec, 0x49, 0x007f, 0x0045);
-@@ -6504,6 +6506,7 @@ static void alc_combo_jack_hp_jd_restart
- 	case 0x10ec0236:
- 	case 0x10ec0255:
- 	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x19e58326:
- 		alc_update_coef_idx(codec, 0x1b, 0x8000, 1 << 15); /* Reset HP JD */
- 		alc_update_coef_idx(codec, 0x1b, 0x8000, 0 << 15);
+diff --git a/drivers/net/netdevsim/bpf.c b/drivers/net/netdevsim/bpf.c
+index f60eb97e3a627..608953d4f98da 100644
+--- a/drivers/net/netdevsim/bpf.c
++++ b/drivers/net/netdevsim/bpf.c
+@@ -93,7 +93,7 @@ static void nsim_prog_set_loaded(struct bpf_prog *prog, bool loaded)
+ {
+ 	struct nsim_bpf_bound_prog *state;
+ 
+-	if (!prog || !prog->aux->offload)
++	if (!prog || !bpf_prog_is_offloaded(prog->aux))
+ 		return;
+ 
+ 	state = prog->aux->offload->dev_priv;
+@@ -311,7 +311,7 @@ nsim_setup_prog_hw_checks(struct netdevsim *ns, struct netdev_bpf *bpf)
+ 	if (!bpf->prog)
+ 		return 0;
+ 
+-	if (!bpf->prog->aux->offload) {
++	if (!bpf_prog_is_offloaded(bpf->prog->aux)) {
+ 		NSIM_EA(bpf->extack, "xdpoffload of non-bound program");
+ 		return -EINVAL;
+ 	}
+-- 
+2.42.0
+
 
 
 
