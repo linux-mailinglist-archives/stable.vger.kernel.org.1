@@ -1,117 +1,226 @@
-Return-Path: <stable+bounces-4687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70AE28057AB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C97BF80580F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:59:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29140282663
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 14:44:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DEC9281B99
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 14:59:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4029665EA2;
-	Tue,  5 Dec 2023 14:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3835867E73;
+	Tue,  5 Dec 2023 14:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="u1IX5t1r";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FcbZZZvk"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z21uFAYj"
 X-Original-To: stable@vger.kernel.org
-Received: from new1-smtp.messagingengine.com (new1-smtp.messagingengine.com [66.111.4.221])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2B671BE;
-	Tue,  5 Dec 2023 06:44:02 -0800 (PST)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 442705809BA;
-	Tue,  5 Dec 2023 09:43:59 -0500 (EST)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Tue, 05 Dec 2023 09:43:59 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:sender
-	:subject:subject:to:to; s=fm3; t=1701787439; x=1701794639; bh=BS
-	Hv0HRg2s93B8FPGN2syxnLQruwc1c3RDbBmnf0NEA=; b=u1IX5t1rodixlie6Mp
-	rRUGBkq+57oNX93kpP2WS0tc+JxK4MUExGO2BGRuFejA6BmZqnSeaTZiRIxRStDL
-	PQkXiXRkw9/hqC390WBM1S7CAdB4ZeuRU3fCqjtLTsAzg0iBX74PNC9gWve7FDcT
-	66Sxd5Ux/KhUHR2sJxHlUdfImBvKyrF1ZoNHQH8Ist/eIHOWwVxqHRD0QDhH9OgY
-	ui1N18qdxTUktEgpWUHksybaxQwrY/oUHRWVZAobZzqMzb2sqZaA2pT+SuyK2mSg
-	d3OVMe+wvWkw9pbnjOPUkws4CeWlZ4kICoKVv29QlJ4H9UZvFrq3ECN/JBDhQTRK
-	umxA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:sender:subject
-	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm1; t=1701787439; x=1701794639; bh=BSHv0HRg2s93B
-	8FPGN2syxnLQruwc1c3RDbBmnf0NEA=; b=FcbZZZvkeXMfqqU2ugxqiRbdUcPJ5
-	ymo1akoaXYdzDU7GzGTPnxzpiOwGl1wu0hJn3v0TqLY7lnrLXpWf8QMm0jsxivaj
-	gBJ3SV+YQz+K9y7x+StZJUm16xqa+k+WorwzZB3lHp3AmYm9bh/IxV1JT5ByY7i9
-	7sF8GdI5s+08I881coqR/RCg28ZLyeWQWjGLeEWqUIbbYcbEIGm2wFDTNltjQ6pO
-	eRwc6Tzva5UXZ5WVl5FDzUBd0pn4qK8hKXfjmqC9DpQHRh/gzz/LrX0IJo4xnxLc
-	fbSd44UIKgcoYIMwTBr+YpQ4732fj6MYbgUKgJ3Q+ZYU6x0nTnoQqsILQ==
-X-ME-Sender: <xms:LTdvZcvpIl9nji2P3RiYHhphpt4DMzJCaVK7AM6KPg_fib2z3zkSjw>
-    <xme:LTdvZZcJBLnEh0eNjavNkg8VpxX6P5xZMCA-cNlYioqXWr8EL-riDvKk3ORlRLH0M
-    n8g_wVvZ7eDYd9ZxCY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudejkedgieekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:LTdvZXwX6ic-mqqBUJj0sx9IOyb_C9LkwN7Rju0hMc-z8fVrcaHYvA>
-    <xmx:LTdvZfPT-MJD9NhJI2meGxhrspJheC3U1AuuYVZRyKx6Xy4U6vP6Zg>
-    <xmx:LTdvZc9Upuw5ikljwzjowtCfY3LyBnMiIgy8KK43C7jSDCcwCh7QiQ>
-    <xmx:LzdvZWFPSNTis7SBLJWDFNa-ISdel0cTumosQ1q3sWkadBr4KCpGGA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 66E5AB60089; Tue,  5 Dec 2023 09:43:57 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-1178-geeaf0069a7-fm-20231114.001-geeaf0069
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5AFA9
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 06:59:13 -0800 (PST)
+Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7c45fa55391so1771042241.2
+        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 06:59:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1701788353; x=1702393153; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O8ly4PRrtbFhpvmMcAd/IAQqDN3hBgIZ/cSCffSAAOY=;
+        b=Z21uFAYjL+KwqZAuLXvVpOHNQzTa0t8vqVVPApwNND7HOT2NIg1mReB/keeWBgM4o7
+         dDrntGKFs9Tq3kd9aEwX5wmhuxrg1cXLmD0drMXwWzaFAM9LTMi0ZhbRHa3juFbxM+/C
+         bL6t73/Ut13kCWdROzOY0ukApLWgk15Vyrca2YIBzXySwgMi+Cl79mV3/M4yFVYP0DvP
+         T3sP47bJ/VKwqB+/mi/ZLYozSXWLXB0AL8MWU2flW2iZvU9tO3qKZRiSTO0W4HNZabqe
+         HytE9+hxMguHm0cdgXpaEcJPH+/4Gowwv+6SvkthQCpM/C6BcmyQkIWgVwmRjbPn+IKq
+         LvEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701788353; x=1702393153;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=O8ly4PRrtbFhpvmMcAd/IAQqDN3hBgIZ/cSCffSAAOY=;
+        b=eCVGm8MoRiQWM+a7iW2DgdYJZZCQqOzLkZPFoG/rjHHFomBR+82i9h58KBT5CqmJFR
+         Da1+jrWA7dlUVvOIvheve8ODO7TYSIXudFviCgrg1R/XYRwSB48AHnC8wPhegyD9+khv
+         VJQGokAFz0M+mDki9ymCfwb+7n8+iAlqknyND8gpw56ubK01fw0RkKu5QjhYC422w7mx
+         c+kt/oE1MaMGobBl6ATtlsC8ie2e0gbFFZckjz31d75keRdPDTX2QVD1P+zkCcJhqEq6
+         +2EhtRz55SvgALyBtQRFYooC2IX6MI9dFgqiZQ6LbiStMooPyEzlE9QalpBfWek3VHg4
+         Eivg==
+X-Gm-Message-State: AOJu0Yx3FQjwiddkRgtNp3E0xpYBMod5luqcp2V0gHg/yq7vpp84UCaY
+	y4Mjvm63sl5AfWWpwMY6yaBihnEoul6tXjQA/MrQYQ==
+X-Google-Smtp-Source: AGHT+IFFmj78JXPJcEQrLiGMwcKHkteXoPlhwfKxlDXUl0UR6JNMJeAsSWdEyzJb9Pm+DqpCXBVKKSuv9pY1Kfvwxjs=
+X-Received: by 2002:a67:af0b:0:b0:464:7b6d:2efc with SMTP id
+ v11-20020a67af0b000000b004647b6d2efcmr3614145vsl.34.1701788352287; Tue, 05
+ Dec 2023 06:59:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <cdb1188d-7379-45e2-b2ce-ffdfb21b644a@app.fastmail.com>
-In-Reply-To: <8ec1ae92206c090c79a9ab9586bd17349798b08f.camel@redhat.com>
-References: <20231204123834.29247-6-pstanner@redhat.com>
- <202312051813.09WbvusW-lkp@intel.com>
- <8ec1ae92206c090c79a9ab9586bd17349798b08f.camel@redhat.com>
-Date: Tue, 05 Dec 2023 15:43:36 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Philipp Stanner" <pstanner@redhat.com>,
- "kernel test robot" <lkp@intel.com>, "Bjorn Helgaas" <helgaas@kernel.org>,
- "Hanjun Guo" <guohanjun@huawei.com>, "Neil Brown" <neilb@suse.de>,
- "Kent Overstreet" <kmo@daterainc.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Niklas Schnelle" <schnelle@linux.ibm.com>,
- "Uladzislau Koshchanka" <koshchanka@gmail.com>,
- "John Sanpe" <sanpeqf@gmail.com>, "Dave Jiang" <dave.jiang@intel.com>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Kees Cook" <keescook@chromium.org>, "David Gow" <davidgow@google.com>,
- "Herbert Xu" <herbert@gondor.apana.org.au>,
- "Shuah Khan" <skhan@linuxfoundation.org>,
- "wuqiang.matt" <wuqiang.matt@bytedance.com>,
- "Yury Norov" <yury.norov@gmail.com>, "Jason Baron" <jbaron@akamai.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Ben Dooks" <ben.dooks@codethink.co.uk>, "Danilo Krummrich" <dakr@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev,
- "Linux Memory Management List" <linux-mm@kvack.org>,
- linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
- Linux-Arch <linux-arch@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
-Content-Type: text/plain
+References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 5 Dec 2023 20:29:00 +0530
+Message-ID: <CA+G9fYvZH1HhsznP1KxiBRoP7SbN-veMWKavdSoT4mGQ2_-2Kw@mail.gmail.com>
+Subject: Re: [PATCH 4.19 00/71] 4.19.301-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Dec 5, 2023, at 15:34, Philipp Stanner wrote:
-> Alright, so it seems that not all architectures provide ioport_unmap().
-> So I'll provide yet another preprocessor guard in v4. Wohooo, we love
-> them...
+On Tue, 5 Dec 2023 at 08:56, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 4.19.301 release.
+> There are 71 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.19.301-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Right, I think CONFIG_HAS_IOPORT_MAP is the symbol you
-need to check here. There are a few targets that have inb/outb
-but can't map them to __iomem pointers for some reason, 
-as well as more that have neither CONFIG_HAS_IOPORT nor
-CONFIG_HAS_IOPORT_MAP.
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-     Arnd
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+## Build
+* kernel: 4.19.301-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.19.y
+* git commit: 82300ecbea435bee3c53b97f701e530cac79b81e
+* git describe: v4.19.300-72-g82300ecbea43
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
+.300-72-g82300ecbea43
+
+## Test Regressions (compared to v4.19.300)
+
+## Metric Regressions (compared to v4.19.300)
+
+## Test Fixes (compared to v4.19.300)
+
+## Metric Fixes (compared to v4.19.300)
+
+## Test result summary
+total: 54948, pass: 46304, fail: 1597, skip: 7016, xfail: 31
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 111 total, 105 passed, 6 failed
+* arm64: 37 total, 32 passed, 5 failed
+* i386: 21 total, 18 passed, 3 failed
+* mips: 20 total, 20 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 24 total, 24 passed, 0 failed
+* s390: 6 total, 6 passed, 0 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 31 total, 26 passed, 5 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-user
+* kselftest-vm
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
