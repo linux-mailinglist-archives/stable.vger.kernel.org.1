@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-4175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C88804661
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B17980461C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 433FBB20BD9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CB9C1C20CC7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FA06FB8;
-	Tue,  5 Dec 2023 03:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67F16FB8;
+	Tue,  5 Dec 2023 03:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kR8sLSEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OxdHWtRn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6995A6FAF;
-	Tue,  5 Dec 2023 03:27:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF45AC433C8;
-	Tue,  5 Dec 2023 03:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724CA6FAF;
+	Tue,  5 Dec 2023 03:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D11C433C8;
+	Tue,  5 Dec 2023 03:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746821;
-	bh=5ozOGlWVcqI8AYDIK91UIYRKiTqcF6KOnt00lubBFHY=;
+	s=korg; t=1701746689;
+	bh=ul/emZVqheaehR4hmy0VgBgSwEBGaOS9HD6fIyLhBfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kR8sLSElT7GNnx4ZPvtLLNbK5kf68C017TRTlcDlY4DkGpLWBdy7/fC0qWx9JFnoy
-	 VWQjZoH/dy2YPPQ6sHMXvA8aQ0TVV8qOgR1c7lFOO4PaDtuK63uWGpBxPSMU0i03EX
-	 v4jsDAalyDCSi3auFLMgYHzebj2U6i7u3XG2muZA=
+	b=OxdHWtRnEWU5Ap6yyAzwrxYfBrMCitzyPmgRTTpduxmj1fY9sQzJGwV1u7QuSwgG5
+	 FJSuNeK+VP5T7yw3daRMNUKSgVJiz6ObLB9JBo7yVdYa6Xlt3L/eiBWTXlmrfRTmjA
+	 5vc1N2jlBqpvhAlIsRkIOi2MExvjRC/fOpofvgQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Lieven Hey <lieven.hey@kdab.com>,
-	Namhyung Kim <namhyung@kernel.org>
-Subject: [PATCH 4.19 33/71] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
-Date: Tue,  5 Dec 2023 12:16:31 +0900
-Message-ID: <20231205031519.762941309@linuxfoundation.org>
+	Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Alan Previn <alan.previn.teres.alexis@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 120/134] drm/i915/gsc: Mark internal GSC engine with reserved uabi class
+Date: Tue,  5 Dec 2023 12:16:32 +0900
+Message-ID: <20231205031543.071408679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,53 +56,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 
-commit 89b15d00527b7825ff19130ed83478e80e3fae99 upstream.
+[ Upstream commit 503579448db93f9fbcc93cd99a1f2d5aa4b2cda6 ]
 
-When a program header was added, it moved the text section but
-GEN_ELF_TEXT_OFFSET was not updated.
+The GSC CS is not exposed to the user, so we skipped assigning a uabi
+class number for it. However, the trace logs use the uabi class and
+instance to identify the engine, so leaving uabi class unset makes the
+GSC CS show up as the RCS in those logs.
 
-Fix by adding the program header size and aligning.
+Given that the engine is not exposed to the user, we can't add a new
+case in the uabi enum, so we insted internally define a kernel
+internal class as -1.
 
-Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Lieven Hey <lieven.hey@kdab.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+At the same time remove special handling for the name and complete
+the uabi_classes array so internal class is automatically correctly
+assigned.
+
+Engine will show as 65535:0 other0 in the logs/traces which should
+be unique enough.
+
+v2:
+ * Fix uabi class u8 vs u16 type confusion.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Fixes: 194babe26bdc ("drm/i915/mtl: don't expose GSC command streamer to the user")
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231116084456.291533-1-tvrtko.ursulin@linux.intel.com
+(cherry picked from commit dfed6b58d54f3a5d7e6bc1fb060e2c936330eba2)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/genelf.h |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/intel_engine_user.c | 39 ++++++++++++---------
+ 1 file changed, 22 insertions(+), 17 deletions(-)
 
---- a/tools/perf/util/genelf.h
-+++ b/tools/perf/util/genelf.h
-@@ -2,6 +2,8 @@
- #ifndef __GENELF_H__
- #define __GENELF_H__
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_user.c b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+index dcedff41a825f..d304e0a948f0d 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_user.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_user.c
+@@ -42,12 +42,15 @@ void intel_engine_add_user(struct intel_engine_cs *engine)
+ 		  (struct llist_head *)&engine->i915->uabi_engines);
+ }
  
-+#include <linux/math.h>
+-static const u8 uabi_classes[] = {
++#define I915_NO_UABI_CLASS ((u16)(-1))
 +
- /* genelf.c */
- int jit_write_elf(int fd, uint64_t code_addr, const char *sym,
- 		  const void *code, int csize, void *debug, int nr_debug_entries,
-@@ -64,6 +66,6 @@ int jit_add_debug_info(Elf *e, uint64_t
- #endif
++static const u16 uabi_classes[] = {
+ 	[RENDER_CLASS] = I915_ENGINE_CLASS_RENDER,
+ 	[COPY_ENGINE_CLASS] = I915_ENGINE_CLASS_COPY,
+ 	[VIDEO_DECODE_CLASS] = I915_ENGINE_CLASS_VIDEO,
+ 	[VIDEO_ENHANCEMENT_CLASS] = I915_ENGINE_CLASS_VIDEO_ENHANCE,
+ 	[COMPUTE_CLASS] = I915_ENGINE_CLASS_COMPUTE,
++	[OTHER_CLASS] = I915_NO_UABI_CLASS, /* Not exposed to users, no uabi class. */
+ };
  
- /* The .text section is directly after the ELF header */
--#define GEN_ELF_TEXT_OFFSET sizeof(Elf_Ehdr)
-+#define GEN_ELF_TEXT_OFFSET round_up(sizeof(Elf_Ehdr) + sizeof(Elf_Phdr), 16)
+ static int engine_cmp(void *priv, const struct list_head *A,
+@@ -202,6 +205,7 @@ static void engine_rename(struct intel_engine_cs *engine, const char *name, u16
  
- #endif
+ void intel_engines_driver_register(struct drm_i915_private *i915)
+ {
++	u16 name_instance, other_instance = 0;
+ 	struct legacy_ring ring = {};
+ 	struct list_head *it, *next;
+ 	struct rb_node **p, *prev;
+@@ -219,27 +223,28 @@ void intel_engines_driver_register(struct drm_i915_private *i915)
+ 		if (intel_gt_has_unrecoverable_error(engine->gt))
+ 			continue; /* ignore incomplete engines */
+ 
+-		/*
+-		 * We don't want to expose the GSC engine to the users, but we
+-		 * still rename it so it is easier to identify in the debug logs
+-		 */
+-		if (engine->id == GSC0) {
+-			engine_rename(engine, "gsc", 0);
+-			continue;
+-		}
+-
+ 		GEM_BUG_ON(engine->class >= ARRAY_SIZE(uabi_classes));
+ 		engine->uabi_class = uabi_classes[engine->class];
++		if (engine->uabi_class == I915_NO_UABI_CLASS) {
++			name_instance = other_instance++;
++		} else {
++			GEM_BUG_ON(engine->uabi_class >=
++				   ARRAY_SIZE(i915->engine_uabi_class_count));
++			name_instance =
++				i915->engine_uabi_class_count[engine->uabi_class]++;
++		}
++		engine->uabi_instance = name_instance;
+ 
+-		GEM_BUG_ON(engine->uabi_class >=
+-			   ARRAY_SIZE(i915->engine_uabi_class_count));
+-		engine->uabi_instance =
+-			i915->engine_uabi_class_count[engine->uabi_class]++;
+-
+-		/* Replace the internal name with the final user facing name */
++		/*
++		 * Replace the internal name with the final user and log facing
++		 * name.
++		 */
+ 		engine_rename(engine,
+ 			      intel_engine_class_repr(engine->class),
+-			      engine->uabi_instance);
++			      name_instance);
++
++		if (engine->uabi_class == I915_NO_UABI_CLASS)
++			continue;
+ 
+ 		rb_link_node(&engine->uabi_node, prev, p);
+ 		rb_insert_color(&engine->uabi_node, &i915->uabi_engines);
+-- 
+2.42.0
+
 
 
 
