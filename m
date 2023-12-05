@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E4A80475C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E32CD80462B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CF001F21447
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EB3C283483
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA5A8BF2;
-	Tue,  5 Dec 2023 03:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3316FB1;
+	Tue,  5 Dec 2023 03:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rm30FERu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hLHNQzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9FD6FB1;
-	Tue,  5 Dec 2023 03:37:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE61C433C7;
-	Tue,  5 Dec 2023 03:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15DB6110;
+	Tue,  5 Dec 2023 03:25:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A13EC433C7;
+	Tue,  5 Dec 2023 03:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747466;
-	bh=SKWzxhslpkLqs3iSNlDdaNb1GuVrU/A0YJ8a6WNK2KU=;
+	s=korg; t=1701746732;
+	bh=iAcHTpIb8p5X5IamhzL4ZGGuv6UJTSiw4y6EQlU3eVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rm30FERuVP5Ed1KKPCRqBpl3mXoGMZRhjL10xiUfVonMQideNbTQsT4MkXxPMUsEz
-	 G8/KNr9ET3sM0TTEV7vnsnRlY4bU2ypo9UA4cCsw6+u1BI0EJ1afM94ElQyEwCL1AJ
-	 hMixsTXs/JqYjSQT+WAEFdLlXRuMy9gb9IV6SfNY=
+	b=2hLHNQzCa0ccFhU6z3u4WM5pJjOh2gykpA7Fwm030kEcGXBS10i6o1558s/FYLI0x
+	 3DJ6OYMyH0mRZXfCl6ZLNaoLLCmzX1SaQwqF8BYBHD3i4vMoihcKeeEQHDan6q6+gB
+	 IhAWtmKTXg4deqXZZGlk8sCsZOq5MNbhgHXDomM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Victor Fragoso <victorffs@hotmail.com>,
-	Lars Melin <larsm17@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 062/135] USB: serial: option: add Fibocom L7xx modules
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 111/134] net: ravb: Keep reverse order of operations in ravb_remove()
 Date: Tue,  5 Dec 2023 12:16:23 +0900
-Message-ID: <20231205031534.321995016@linuxfoundation.org>
+Message-ID: <20231205031542.505173262@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +54,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Fragoso <victorffs@hotmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit e389fe8b68137344562fb6e4d53d8a89ef6212dd upstream.
+[ Upstream commit edf9bc396e05081ca281ffb0cd41e44db478ff26 ]
 
-Add support for Fibocom L716-EU module series.
+On RZ/G3S SMARC Carrier II board having RGMII connections b/w Ethernet
+MACs and PHYs it has been discovered that doing unbind/bind for ravb
+driver in a loop leads to wrong speed and duplex for Ethernet links and
+broken connectivity (the connectivity cannot be restored even with
+bringing interface down/up). Before doing unbind/bind the Ethernet
+interfaces were configured though systemd. The sh instructions used to
+do unbind/bind were:
 
-L716-EU is a Fibocom module based on ZTE's V3E/V3T chipset.
+$ cd /sys/bus/platform/drivers/ravb/
+$ while :; do echo 11c30000.ethernet > unbind ; \
+  echo 11c30000.ethernet > bind; done
 
-Device creates multiple interfaces when connected to PC as follows:
- - Network Interface: ECM or RNDIS (set by FW or AT Command)
- - ttyUSB0: AT port
- - ttyUSB1: Modem port
- - ttyUSB2: AT2 port
- - ttyUSB3: Trace port for log information
- - ADB: ADB port for debugging. ("Driver=usbfs" when ADB server enabled)
+It has been discovered that there is a race b/w IOCTLs initialized by
+systemd at the response of success binding and the
+"ravb_write(ndev, CCC_OPC_RESET, CCC)" call in ravb_remove() as
+follows:
 
-Here are the outputs of lsusb and usb-devices:
-$ ls /dev/ttyUSB*
-/dev/ttyUSB0  /dev/ttyUSB1  /dev/ttyUSB2  /dev/ttyUSB3
+1/ as a result of bind success the user space open/configures the
+   interfaces tough an IOCTL; the following stack trace has been
+   identified on RZ/G3S:
 
-usb-devices:
-L716-EU (ECM mode):
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 51 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
-S:  Manufacturer=Fibocom,Incorporated
-S:  Product=Fibocom Mobile Boardband
-S:  SerialNumber=1234567890ABCDEF
-C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Call trace:
+dump_backtrace+0x9c/0x100
+show_stack+0x20/0x38
+dump_stack_lvl+0x48/0x60
+dump_stack+0x18/0x28
+ravb_open+0x70/0xa58
+__dev_open+0xf4/0x1e8
+__dev_change_flags+0x198/0x218
+dev_change_flags+0x2c/0x80
+devinet_ioctl+0x640/0x708
+inet_ioctl+0x1e4/0x200
+sock_do_ioctl+0x50/0x108
+sock_ioctl+0x240/0x358
+__arm64_sys_ioctl+0xb0/0x100
+invoke_syscall+0x50/0x128
+el0_svc_common.constprop.0+0xc8/0xf0
+do_el0_svc+0x24/0x38
+el0_svc+0x34/0xb8
+el0t_64_sync_handler+0xc0/0xc8
+el0t_64_sync+0x190/0x198
 
-L716-EU (RNDIS mode):
-T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 49 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
-S:  Manufacturer=Fibocom,Incorporated
-S:  Product=Fibocom Mobile Boardband
-S:  SerialNumber=1234567890ABCDEF
-C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
-E:  Ad=87(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+2/ this call may execute concurrently with ravb_remove() as the
+   unbind/bind operation was executed in a loop
+3/ if the operation mode is changed to RESET (through
+   ravb_write(ndev, CCC_OPC_RESET, CCC) call in ravb_remove())
+   while the above ravb_open() is in progress it may lead to MAC
+   (or PHY, or MAC-PHY connection, the right point hasn't been identified
+   at the moment) to be broken, thus the Ethernet connectivity fails to
+   restore.
 
-Signed-off-by: Victor Fragoso <victorffs@hotmail.com>
-Reviewed-by: Lars Melin <larsm17@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The simple fix for this is to move ravb_write(ndev, CCC_OPC_RESET, CCC))
+after unregister_netdev() to avoid resetting the controller while the
+netdev interface is still registered.
+
+To avoid future issues in ravb_remove(), the patch follows the proper order
+of operations in ravb_remove(): reverse order compared with ravb_probe().
+This avoids described races as the IOCTLs as well as unregister_netdev()
+(called now at the beginning of ravb_remove()) calls rtnl_lock() before
+continuing and IOCTLs check (though devinet_ioctl()) if device is still
+registered just after taking the lock:
+
+int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+{
+	// ...
+
+        rtnl_lock();
+
+        ret = -ENODEV;
+        dev = __dev_get_by_name(net, ifr->ifr_name);
+        if (!dev)
+                goto done;
+
+	// ...
+done:
+        rtnl_unlock();
+out:
+        return ret;
+}
+
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/renesas/ravb_main.c | 22 +++++++++++++---------
+ 1 file changed, 13 insertions(+), 9 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2251,6 +2251,7 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
- 	{ USB_DEVICE_INTERFACE_CLASS(0x1782, 0x4d11, 0xff) },			/* Fibocom L610 (ECM/RNDIS mode) */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0001, 0xff, 0xff, 0xff) },	/* Fibocom L716-EU (ECM/RNDIS mode) */
- 	{ USB_DEVICE(0x2cb7, 0x0104),						/* Fibocom NL678 series */
- 	  .driver_info = RSVD(4) | RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0105, 0xff),			/* Fibocom NL678 series */
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 0b8af7be20fab..bb56cf4090423 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2903,22 +2903,26 @@ static int ravb_remove(struct platform_device *pdev)
+ 	struct ravb_private *priv = netdev_priv(ndev);
+ 	const struct ravb_hw_info *info = priv->info;
+ 
+-	/* Stop PTP Clock driver */
+-	if (info->ccc_gac)
+-		ravb_ptp_stop(ndev);
+-
+-	clk_disable_unprepare(priv->gptp_clk);
+-	clk_disable_unprepare(priv->refclk);
+-
+-	/* Set reset mode */
+-	ravb_write(ndev, CCC_OPC_RESET, CCC);
+ 	unregister_netdev(ndev);
+ 	if (info->nc_queues)
+ 		netif_napi_del(&priv->napi[RAVB_NC]);
+ 	netif_napi_del(&priv->napi[RAVB_BE]);
++
+ 	ravb_mdio_release(priv);
++
++	/* Stop PTP Clock driver */
++	if (info->ccc_gac)
++		ravb_ptp_stop(ndev);
++
+ 	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
+ 			  priv->desc_bat_dma);
++
++	/* Set reset mode */
++	ravb_write(ndev, CCC_OPC_RESET, CCC);
++
++	clk_disable_unprepare(priv->gptp_clk);
++	clk_disable_unprepare(priv->refclk);
++
+ 	pm_runtime_put_sync(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	reset_control_assert(priv->rstc);
+-- 
+2.42.0
+
 
 
 
