@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32095804598
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A32D804666
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D141E1F213B2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE4A281341
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE9E6FB8;
-	Tue,  5 Dec 2023 03:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B6A79E3;
+	Tue,  5 Dec 2023 03:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhZJiGRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2GzJSdXx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018436AA0;
-	Tue,  5 Dec 2023 03:19:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFE2C433C8;
-	Tue,  5 Dec 2023 03:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197FD6FB8;
+	Tue,  5 Dec 2023 03:27:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FB9C433C8;
+	Tue,  5 Dec 2023 03:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746349;
-	bh=VF1banDeuWTzpr6eKSRXyWqILQh3coWM0QoL0mcbL8Q=;
+	s=korg; t=1701746832;
+	bh=1PHphhekzihOm1FNRbC+kxSHvpI4HuUneoaHvZ3cDsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VhZJiGRUETvUoOiatf5qVOSP7/ngXAKhZBG7CDBE615fae2H2WvkrK7h+9Oa3Cr8K
-	 A7jq6FU7A5wQo/EPt3NBapJYTrAV4Wc93Obtf72qsDXqZRf5UEqI87pwQjRfftQ4Dx
-	 tXhgfVA9vK/R/FwGQAZpoi20zERzG9EjXT//9Ecw=
+	b=2GzJSdXxNKpVJWQjo7d0X4EoUSKzy+0fb+n7GFYeUiq6I/3P+xNdRpzY0P08JGCm3
+	 weX3wbKbg3DdvqXEEBXjKwtqIEE+vfpmkK09N3f1y4yNTHj/G4Jco8Pb5Eqk/BgOuL
+	 pSDsfa0XKmqQe1XSAXjNA4qQhVc3+rFNu9w2wiP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Subject: [PATCH 4.14 26/30] btrfs: send: ensure send_fd is writable
-Date: Tue,  5 Dec 2023 12:16:33 +0900
-Message-ID: <20231205031513.033747960@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 36/71] mmc: block: Do not lose cache flush during CQE error recovery
+Date: Tue,  5 Dec 2023 12:16:34 +0900
+Message-ID: <20231205031519.946620920@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +53,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
+commit 174925d340aac55296318e43fd96c0e1d196e105 upstream.
 
-kernel_write() requires the caller to ensure that the file is writable.
-Let's do that directly after looking up the ->send_fd.
+During CQE error recovery, error-free data commands get requeued if there
+is any data left to transfer, but non-data commands are completed even
+though they have not been processed.  Requeue them instead.
 
-We don't need a separate bailout path because the "out" path already
-does fput() if ->send_filp is non-NULL.
+Note the only non-data command is cache flush, which would have resulted in
+a cache flush being lost if it was queued at the time of CQE recovery.
 
-This has no security impact for two reasons:
-
- - the ioctl requires CAP_SYS_ADMIN
- - __kernel_write() bails out on read-only files - but only since 5.8,
-   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
-
-Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
-Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 1e8e55b67030 ("mmc: block: Add CQE support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-2-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/core/block.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -6680,7 +6680,7 @@ long btrfs_ioctl_send(struct file *mnt_f
- 	sctx->flags = arg->flags;
- 
- 	sctx->send_filp = fget(arg->send_fd);
--	if (!sctx->send_filp) {
-+	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
- 		ret = -EBADF;
- 		goto out;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1470,6 +1470,8 @@ static void mmc_blk_cqe_complete_rq(stru
+ 			blk_mq_requeue_request(req, true);
+ 		else
+ 			__blk_mq_end_request(req, BLK_STS_OK);
++	} else if (mq->in_recovery) {
++		blk_mq_requeue_request(req, true);
+ 	} else {
+ 		blk_mq_end_request(req, BLK_STS_OK);
  	}
 
 
