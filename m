@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72451804780
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F0E804817
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E3B7281678
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 714DFB20B20
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B279E8C03;
-	Tue,  5 Dec 2023 03:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0DA68F6B;
+	Tue,  5 Dec 2023 03:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gouKTrve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NNnC3RO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700CB6FB1;
-	Tue,  5 Dec 2023 03:39:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB66C433CA;
-	Tue,  5 Dec 2023 03:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC379E3;
+	Tue,  5 Dec 2023 03:45:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E943CC433C7;
+	Tue,  5 Dec 2023 03:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747563;
-	bh=KLm21gRqYh66R6g9xls2W9fwx/+R54qhhFEaiiwcG2c=;
+	s=korg; t=1701747942;
+	bh=Lpnik3MAEgbYN436/GX02SuRfNcmFdUGj5RZ0RlbkMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gouKTrve+5bMQ5GuQxuSMcH33DU/6o161UOJYl8d6POw5aUtA/xdBxE2e7ftfPhh4
-	 4dkDLZtMUMGUDH21NoBzRLFbPewo86fNhw0zPmV48cLAxSVfQiGs6Zk0TehK+W3sL2
-	 LBOkRYRVkUk95NCzmvBdBxH+ASz1EkAIRedOS1JA=
+	b=1NNnC3ROpMxLX3OrIQvY+GSgvT8onSSSiBTEy7H/Sgl77xWv/0+fygcelg70YjGM9
+	 vm2EX2HDPJxT0halzKBZTeyC8YkOGVMkiSrwLmvekdkNthrEtW6rMzFoyjhQ1KIgAf
+	 6Kr+hz+/dagfWyXCMd9qKwDRmezqQk86/uM4SHyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 122/135] scsi: qla2xxx: Use scsi_cmd_to_rq() instead of scsi_cmnd.request
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 55/94] mmc: block: Do not lose cache flush during CQE error recovery
 Date: Tue,  5 Dec 2023 12:17:23 +0900
-Message-ID: <20231205031538.585539706@linuxfoundation.org>
+Message-ID: <20231205031525.918515431@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit c7d6b2c2cd5656b05849afb0de3f422da1742d0f ]
+commit 174925d340aac55296318e43fd96c0e1d196e105 upstream.
 
-Prepare for removal of the request pointer by using scsi_cmd_to_rq()
-instead. This patch does not change any functionality.
+During CQE error recovery, error-free data commands get requeued if there
+is any data left to transfer, but non-data commands are completed even
+though they have not been processed.  Requeue them instead.
 
-Link: https://lore.kernel.org/r/20210809230355.8186-39-bvanassche@acm.org
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 19597cad64d6 ("scsi: qla2xxx: Fix system crash due to bad pointer access")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note the only non-data command is cache flush, which would have resulted in
+a cache flush being lost if it was queued at the time of CQE recovery.
+
+Fixes: 1e8e55b67030 ("mmc: block: Add CQE support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-2-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_os.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/core/block.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
-index 8d199deaf3b12..136522a1c7281 100644
---- a/drivers/scsi/qla2xxx/qla_os.c
-+++ b/drivers/scsi/qla2xxx/qla_os.c
-@@ -839,7 +839,7 @@ qla2xxx_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
- 		uint16_t hwq;
- 		struct qla_qpair *qpair = NULL;
- 
--		tag = blk_mq_unique_tag(cmd->request);
-+		tag = blk_mq_unique_tag(scsi_cmd_to_rq(cmd));
- 		hwq = blk_mq_unique_tag_to_hwq(tag);
- 		qpair = ha->queue_pair_map[hwq];
- 
-@@ -1714,7 +1714,7 @@ static void qla2x00_abort_srb(struct qla_qpair *qp, srb_t *sp, const int res,
- 		}
- 
- 		spin_lock_irqsave(qp->qp_lock_ptr, *flags);
--		if (ret_cmd && blk_mq_request_started(cmd->request))
-+		if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
- 			sp->done(sp, res);
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1463,6 +1463,8 @@ static void mmc_blk_cqe_complete_rq(stru
+ 			blk_mq_requeue_request(req, true);
+ 		else
+ 			__blk_mq_end_request(req, BLK_STS_OK);
++	} else if (mq->in_recovery) {
++		blk_mq_requeue_request(req, true);
  	} else {
- 		sp->done(sp, res);
--- 
-2.42.0
-
+ 		blk_mq_end_request(req, BLK_STS_OK);
+ 	}
 
 
 
