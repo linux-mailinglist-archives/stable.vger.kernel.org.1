@@ -1,45 +1,49 @@
-Return-Path: <stable+bounces-4180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96266804667
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 213D6804620
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50CEF281178
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF7541F213D4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AC36FB8;
-	Tue,  5 Dec 2023 03:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2143D6FB8;
+	Tue,  5 Dec 2023 03:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xf17h2Mq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErIDDgVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65A36FAF;
-	Tue,  5 Dec 2023 03:27:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E26DC433C7;
-	Tue,  5 Dec 2023 03:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43746FAF;
+	Tue,  5 Dec 2023 03:25:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0ECC433C7;
+	Tue,  5 Dec 2023 03:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746835;
-	bh=PBxoe4FQcv/AFLSDZYTAJxDIj5CrMHmVmBZvdVAuZKE=;
+	s=korg; t=1701746701;
+	bh=+m3T8h7cGCUevYURK73UrdYHDGfnR+L/qIkYe2x8fb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xf17h2MqrBAMb2MR2aqKOHDFGkbobfaIqFXzuYX1dpb7mx6dp002u7npqZb5fbVVw
-	 v1x98ePnTI5j5BOdJ3HRWHGvL/EQh5K8wWMfyqAQpWLxbcpqLX+LVOg5u2ujyfwK4r
-	 /vFYvhW1WTZ801IOc7i+85rWOzJBVeBO2nRjp/lc=
+	b=ErIDDgVDrk/3SV8p3MJ4uWK8Y9Ieg1FJ5g9adhBT0llbQw/k68ZYKvekXbBz3r7ou
+	 zcoEf+/l8iWHWtDWqN11LpnOvujC/jjXSPzN+Q9d4IeBpcOGiJ42eE7yoQISnwFaC0
+	 WYxLV2IMJzfEufWaooHvdCJjIRjgaxEz0xoTVa7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 37/71] ALSA: hda: Disable power-save on KONTRON SinglePC
-Date: Tue,  5 Dec 2023 12:16:35 +0900
-Message-ID: <20231205031520.005079482@linuxfoundation.org>
+	Wyes Karny <wyes.karny@amd.com>,
+	Ayush Jain <ayush.jain3@amd.com>,
+	Huang Rui <ray.huang@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/134] cpufreq/amd-pstate: Only print supported EPP values for performance governor
+Date: Tue,  5 Dec 2023 12:16:36 +0900
+Message-ID: <20231205031543.307235753@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +55,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ayush Jain <ayush.jain3@amd.com>
 
-commit a337c355719c42a6c5b67e985ad753590ed844fb upstream.
+[ Upstream commit 142c169b31beb364ef39385b4e88735bd51d37fe ]
 
-It's been reported that the runtime PM on KONTRON SinglePC (PCI SSID
-1734:1232) caused a stall of playback after a bunch of invocations.
-(FWIW, this looks like an timing issue, and the stall happens rather
-on the controller side.)
+show_energy_performance_available_preferences() to show only supported
+values which is performance in performance governor policy.
 
-As a workaround, disable the default power-save on this platform.
+-------Before--------
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_driver
+amd-pstate-epp
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+performance
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_preference
+performance
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_available_preferences
+default performance balance_performance balance_power power
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231130151321.9813-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+-------After--------
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_driver
+amd-pstate-epp
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
+performance
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_preference
+performance
+$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_available_preferences
+performance
+
+Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
+Suggested-by: Wyes Karny <wyes.karny@amd.com>
+Signed-off-by: Ayush Jain <ayush.jain3@amd.com>
+Reviewed-by: Wyes Karny <wyes.karny@amd.com>
+Acked-by: Huang Rui <ray.huang@amd.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpufreq/amd-pstate.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2371,6 +2371,8 @@ static struct snd_pci_quirk power_save_b
- 	SND_PCI_QUIRK(0x17aa, 0x36a7, "Lenovo C50 All in one", 0),
- 	/* https://bugs.launchpad.net/bugs/1821663 */
- 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
-+	/* KONTRON SinglePC may cause a stall at runtime resume */
-+	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 3313d1d2c6ddf..1f6186475715e 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -882,11 +882,16 @@ static ssize_t show_energy_performance_available_preferences(
+ {
+ 	int i = 0;
+ 	int offset = 0;
++	struct amd_cpudata *cpudata = policy->driver_data;
++
++	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE)
++		return sysfs_emit_at(buf, offset, "%s\n",
++				energy_perf_strings[EPP_INDEX_PERFORMANCE]);
+ 
+ 	while (energy_perf_strings[i] != NULL)
+ 		offset += sysfs_emit_at(buf, offset, "%s ", energy_perf_strings[i++]);
+ 
+-	sysfs_emit_at(buf, offset, "\n");
++	offset += sysfs_emit_at(buf, offset, "\n");
+ 
+ 	return offset;
+ }
+-- 
+2.42.0
+
 
 
 
