@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE3A804757
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09C0F80466E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE6102815CD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F526B20BCA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A0C8BF2;
-	Tue,  5 Dec 2023 03:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F48BF1;
+	Tue,  5 Dec 2023 03:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdAU+wBf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDfVNR6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2D86FB1;
-	Tue,  5 Dec 2023 03:37:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44B3C433C7;
-	Tue,  5 Dec 2023 03:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11666FAF;
+	Tue,  5 Dec 2023 03:27:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30375C433C8;
+	Tue,  5 Dec 2023 03:27:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747454;
-	bh=ckAc4kizIOiwaVBKu2Se9JfmL1Go4gGcvc30iMWvxxE=;
+	s=korg; t=1701746854;
+	bh=PGBun6jRKE4I9JcRo5TeAy6tDezD+HuNkrv1X4Ozz/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdAU+wBfNDPLJ6advWh6GRn04VnNtKDwNTQ0xumOn5Be2RKNrCMqEkf2fisaRZTf1
-	 Nc0BYtMPNN3cDz6oZzPlnokPM6Lvd7DXkjxsBwdmu13+xR5GmAAK0hALmcw83dD/nj
-	 7scmkqjmckv9xiaAR0hr0a/5jSgrXGjPj8T0KNwI=
+	b=VDfVNR6m6QRbEM4tx4P4uyOZxK8zoQj5hIhflyZrNQ8U9ml7FTyhVL6ONxf3VKl0G
+	 G5Xbrt3vSBeDyqLSs5pXZ4WoG/eaBJdw7KtI7erMz8P5+9WNMIZ+VFTHTyQ2c+3pmL
+	 LLd7AMaj4rmQEWvkJHD/henoDsPm5Vq9+7Qb49fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Coly Li <colyli@suse.de>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 058/135] bcache: check return value from btree_node_alloc_replacement()
+	Yangyu Chen <cyy@cyyself.name>,
+	Asuna Yang <SpriteOvO@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 21/71] USB: serial: option: add Luat Air72*U series products
 Date: Tue,  5 Dec 2023 12:16:19 +0900
-Message-ID: <20231205031534.102278741@linuxfoundation.org>
+Message-ID: <20231205031519.074605140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,41 +53,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Asuna Yang <spriteovo@gmail.com>
 
-commit 777967e7e9f6f5f3e153abffb562bffaf4430d26 upstream.
+commit da90e45d5afc4da2de7cd3ea7943d0f1baa47cc2 upstream.
 
-In btree_gc_rewrite_node(), pointer 'n' is not checked after it returns
-from btree_gc_rewrite_node(). There is potential possibility that 'n' is
-a non NULL ERR_PTR(), referencing such error code is not permitted in
-following code. Therefore a return value checking is necessary after 'n'
-is back from btree_node_alloc_replacement().
+Update the USB serial option driver support for Luat Air72*U series
+products.
 
-Signed-off-by: Coly Li <colyli@suse.de>
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231120052503.6122-3-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+ID 1782:4e00 Spreadtrum Communications Inc. UNISOC-8910
+
+T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
+D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
+P: Vendor=1782 ProdID=4e00 Rev=00.00
+S: Manufacturer=UNISOC
+S: Product=UNISOC-8910
+C: #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=400mA
+I: If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
+E: Ad=82(I) Atr=03(Int.) MxPS= 8 Ivl=4096ms
+I: If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+If#= 2: AT
+If#= 3: PPP + AT
+If#= 4: Debug
+
+Co-developed-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Yangyu Chen <cyy@cyyself.name>
+Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1506,6 +1506,8 @@ static int btree_gc_rewrite_node(struct
- 		return 0;
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -609,6 +609,8 @@ static void option_instat_callback(struc
+ #define UNISOC_VENDOR_ID			0x1782
+ /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
+ #define TOZED_PRODUCT_LT70C			0x4055
++/* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
++#define LUAT_PRODUCT_AIR720U			0x4e00
  
- 	n = btree_node_alloc_replacement(replace, NULL);
-+	if (IS_ERR(n))
-+		return 0;
+ /* Device flags */
  
- 	/* recheck reserve after allocating replacement node */
- 	if (btree_check_reserve(b, NULL)) {
+@@ -2271,6 +2273,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
