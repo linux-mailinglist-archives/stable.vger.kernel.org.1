@@ -1,45 +1,49 @@
-Return-Path: <stable+bounces-4251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B651C8046B4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85BB380471F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E84A81C20D48
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F2EB1F21427
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333CA8BEC;
-	Tue,  5 Dec 2023 03:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868DD79E3;
+	Tue,  5 Dec 2023 03:35:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2V0JlWV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkLzucqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E603E6FB1;
-	Tue,  5 Dec 2023 03:30:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4C7C433C8;
-	Tue,  5 Dec 2023 03:30:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F7D6FB1;
+	Tue,  5 Dec 2023 03:35:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF75DC433C7;
+	Tue,  5 Dec 2023 03:35:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747042;
-	bh=sDa17mk0IBF4vOqplpiwO3Y2Z2MPBEVNtOhBIXs5uTY=;
+	s=korg; t=1701747310;
+	bh=kxDAObiAMRJQYj9EnoC4fqjc1PwCRCKFH0af/LidByE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2V0JlWVB7Mlz85KmI/hhkAXt3MbuOh9WKRrKch1ynUhdLgz80ta7WJP2REecbw3I
-	 tMDFWz87HBiE8CA4yZLztMMpoxt1/JKaifBzlkIiqYO9A5hRcNpMqRNJE6V/gFqGlj
-	 ruW3ecjU5a70fwcpJSQxMLIL56WjAf/yq991A/9U=
+	b=fkLzucqoysO0uZW86gAEBUBFm3EsCjD/cEeqP/iDA/CXQLnZwYeLY9adRtL6+6g8u
+	 +8572jRgBM8Sc7Hz5C6Un3yX9Zfoq+L1puL6Jh+PcilM9w27eISstw7nRi+krbYzRY
+	 YzEOyznESGFTnSiqSuJyNIT4KzQP0zSHle5qX21s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 013/107] ALSA: hda: Disable power-save on KONTRON SinglePC
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 027/135] amd-xgbe: propagate the correct speed and duplex status
 Date: Tue,  5 Dec 2023 12:15:48 +0900
-Message-ID: <20231205031532.436242824@linuxfoundation.org>
+Message-ID: <20231205031532.352956670@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +55,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit a337c355719c42a6c5b67e985ad753590ed844fb upstream.
+[ Upstream commit 7a2323ac24a50311f64a3a9b54ed5bef5821ecae ]
 
-It's been reported that the runtime PM on KONTRON SinglePC (PCI SSID
-1734:1232) caused a stall of playback after a bunch of invocations.
-(FWIW, this looks like an timing issue, and the stall happens rather
-on the controller side.)
+xgbe_get_link_ksettings() does not propagate correct speed and duplex
+information to ethtool during cable unplug. Due to which ethtool reports
+incorrect values for speed and duplex.
 
-As a workaround, disable the default power-save on this platform.
+Address this by propagating correct information.
 
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231130151321.9813-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7c12aa08779c ("amd-xgbe: Move the PHY support into amd-xgbe")
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2215,6 +2215,8 @@ static const struct snd_pci_quirk power_
- 	SND_PCI_QUIRK(0x17aa, 0x36a7, "Lenovo C50 All in one", 0),
- 	/* https://bugs.launchpad.net/bugs/1821663 */
- 	SND_PCI_QUIRK(0x1631, 0xe017, "Packard Bell NEC IMEDIA 5204", 0),
-+	/* KONTRON SinglePC may cause a stall at runtime resume */
-+	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
+index 61f39a0e04f95..64aebf922dda9 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
+@@ -314,10 +314,15 @@ static int xgbe_get_link_ksettings(struct net_device *netdev,
+ 
+ 	cmd->base.phy_address = pdata->phy.address;
+ 
+-	cmd->base.autoneg = pdata->phy.autoneg;
+-	cmd->base.speed = pdata->phy.speed;
+-	cmd->base.duplex = pdata->phy.duplex;
++	if (netif_carrier_ok(netdev)) {
++		cmd->base.speed = pdata->phy.speed;
++		cmd->base.duplex = pdata->phy.duplex;
++	} else {
++		cmd->base.speed = SPEED_UNKNOWN;
++		cmd->base.duplex = DUPLEX_UNKNOWN;
++	}
+ 
++	cmd->base.autoneg = pdata->phy.autoneg;
+ 	cmd->base.port = PORT_NONE;
+ 
+ 	XGBE_LM_COPY(cmd, supported, lks, supported);
+-- 
+2.42.0
+
 
 
 
