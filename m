@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CCF804665
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32095804598
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A78A1C20C88
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D141E1F213B2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC4966FB1;
-	Tue,  5 Dec 2023 03:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE9E6FB8;
+	Tue,  5 Dec 2023 03:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwrh2bR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VhZJiGRU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AC44437;
-	Tue,  5 Dec 2023 03:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F14C433C7;
-	Tue,  5 Dec 2023 03:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018436AA0;
+	Tue,  5 Dec 2023 03:19:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DFE2C433C8;
+	Tue,  5 Dec 2023 03:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746830;
-	bh=EwKhN0IBsyB3ABwVEd6kiGCvr2gE3oVnB34UZngwtD0=;
+	s=korg; t=1701746349;
+	bh=VF1banDeuWTzpr6eKSRXyWqILQh3coWM0QoL0mcbL8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwrh2bR1YX8L5La4ekIQcUldn7Da46PGrU4Xnariaq8QVPqS6wA1HZDzT+sVgs+1x
-	 zjw0EKH/X53AgdJeYOXnCRQrbJyFZNupOhaw4NVzucHm0lYZG2uQmJVSHxcw86uBW4
-	 DjtYvoFoah2NZJ/r5QnU3r1sDk5utfr8SDmvKFaY=
+	b=VhZJiGRUETvUoOiatf5qVOSP7/ngXAKhZBG7CDBE615fae2H2WvkrK7h+9Oa3Cr8K
+	 A7jq6FU7A5wQo/EPt3NBapJYTrAV4Wc93Obtf72qsDXqZRf5UEqI87pwQjRfftQ4Dx
+	 tXhgfVA9vK/R/FwGQAZpoi20zERzG9EjXT//9Ecw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 4.19 35/71] firewire: core: fix possible memory leak in create_units()
+	Jann Horn <jannh@google.com>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Subject: [PATCH 4.14 26/30] btrfs: send: ensure send_fd is writable
 Date: Tue,  5 Dec 2023 12:16:33 +0900
-Message-ID: <20231205031519.884884218@linuxfoundation.org>
+Message-ID: <20231205031513.033747960@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +53,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Jann Horn <jannh@google.com>
 
-commit 891e0eab32a57fca4d36c5162628eb0bcb1f0edf upstream.
+commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
 
-If device_register() fails, the refcount of device is not 0, the name
-allocated in dev_set_name() is leaked. To fix this by calling put_device(),
-so that it will be freed in callback function kobject_cleanup().
+kernel_write() requires the caller to ensure that the file is writable.
+Let's do that directly after looking up the ->send_fd.
 
-unreferenced object 0xffff9d99035c7a90 (size 8):
-  comm "systemd-udevd", pid 168, jiffies 4294672386 (age 152.089s)
-  hex dump (first 8 bytes):
-    66 77 30 2e 30 00 ff ff                          fw0.0...
-  backtrace:
-    [<00000000e1d62bac>] __kmem_cache_alloc_node+0x1e9/0x360
-    [<00000000bbeaff31>] __kmalloc_node_track_caller+0x44/0x1a0
-    [<00000000491f2fb4>] kvasprintf+0x67/0xd0
-    [<000000005b960ddc>] kobject_set_name_vargs+0x1e/0x90
-    [<00000000427ac591>] dev_set_name+0x4e/0x70
-    [<000000003b4e447d>] create_units+0xc5/0x110
+We don't need a separate bailout path because the "out" path already
+does fput() if ->send_filp is non-NULL.
 
-fw_unit_release() will be called in the error path, move fw_device_get()
-before calling device_register() to keep balanced with fw_device_put() in
-fw_unit_release().
+This has no security impact for two reasons:
 
-Cc: stable@vger.kernel.org
-Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
-Fixes: a1f64819fe9f ("firewire: struct device - replace bus_id with dev_name(), dev_set_name()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+ - the ioctl requires CAP_SYS_ADMIN
+ - __kernel_write() bails out on read-only files - but only since 5.8,
+   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
+
+Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/core-device.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firewire/core-device.c
-+++ b/drivers/firewire/core-device.c
-@@ -732,14 +732,11 @@ static void create_units(struct fw_devic
- 					fw_unit_attributes,
- 					&unit->attribute_group);
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -6680,7 +6680,7 @@ long btrfs_ioctl_send(struct file *mnt_f
+ 	sctx->flags = arg->flags;
  
--		if (device_register(&unit->device) < 0)
--			goto skip_unit;
--
- 		fw_device_get(device);
--		continue;
--
--	skip_unit:
--		kfree(unit);
-+		if (device_register(&unit->device) < 0) {
-+			put_device(&unit->device);
-+			continue;
-+		}
+ 	sctx->send_filp = fget(arg->send_fd);
+-	if (!sctx->send_filp) {
++	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
+ 		ret = -EBADF;
+ 		goto out;
  	}
- }
- 
 
 
 
