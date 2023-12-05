@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B8A8045FE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 255EE804651
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BA9F1F213D8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACA7AB20C70
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833DF79F2;
-	Tue,  5 Dec 2023 03:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23006FB1;
+	Tue,  5 Dec 2023 03:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+SGvYWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDHGe0ds"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4C46FAF;
-	Tue,  5 Dec 2023 03:23:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E85CC433C8;
-	Tue,  5 Dec 2023 03:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96CBA8F75;
+	Tue,  5 Dec 2023 03:26:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 108EAC433C7;
+	Tue,  5 Dec 2023 03:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746609;
-	bh=tzgfKl/DcFVAUrqG/LrzbQL3yneTGRA7Uz4bFt62qzI=;
+	s=korg; t=1701746777;
+	bh=qKttgf5x1mb6hhLb3ENOs1N98b6xagPoqNYLVByALQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+SGvYWKvLnQdMKyfxbs3JH2KhKE/l/ge7DmijCX/TWcRCKenO2DOp6ESLsrP7d0q
-	 wKvZ572e2oUJExNkHttQxLvehyLo+KZrQptNYl5FgEbEHp3KHl8Zc9RHVXrD4/iprF
-	 lFioN4w0m7vUaDGejDVjzmIBEJMV8AgjnvQoLLSo=
+	b=bDHGe0dsduS3eyAu6VE3YypWoD0KwVvFSfB6CsfZmpE74Z97D/X+xUjBN+APo2hst
+	 F3VZqNcL4HqyYtaDb4rKhI3UypYtlyJQQzjTKFbeJH45OVrqE8ouZ7RV9yBO5/orzZ
+	 rK+lqoExpvxRPjn691yCqwFcoaChZYPLWOGBoMWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <keescook@chromium.org>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/134] uapi: propagate __struct_group() attributes to the container union
+Subject: [PATCH 4.19 04/71] ata: pata_isapnp: Add missing error check for devm_ioport_map()
 Date: Tue,  5 Dec 2023 12:16:02 +0900
-Message-ID: <20231205031541.153920591@linuxfoundation.org>
+Message-ID: <20231205031518.130490262@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +54,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 4e86f32a13af1970d21be94f659cae56bbe487ee ]
+[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
 
-Recently the kernel test robot has reported an ARM-specific BUILD_BUG_ON()
-in an old and unmaintained wil6210 wireless driver. The problem comes from
-the structure packing rules of old ARM ABI ('-mabi=apcs-gnu'). For example,
-the following structure is packed to 18 bytes instead of 16:
+Add missing error return check for devm_ioport_map() and return the
+error if this function call fails.
 
-struct poorly_packed {
-        unsigned int a;
-        unsigned int b;
-        unsigned short c;
-        union {
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed));
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed)) inner;
-        };
-} __attribute__((packed));
-
-To fit it into 16 bytes, it's required to add packed attribute to the
-container union as well:
-
-struct poorly_packed {
-        unsigned int a;
-        unsigned int b;
-        unsigned short c;
-        union {
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed));
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed)) inner;
-        } __attribute__((packed));
-} __attribute__((packed));
-
-Thanks to Andrew Pinski of GCC team for sorting the things out at
-https://gcc.gnu.org/pipermail/gcc/2023-November/242888.html.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311150821.cI4yciFE-lkp@intel.com
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20231120110607.98956-1-dmantipov@yandex.ru
-Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: 0d5ff566779f ("libata: convert to iomap")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/stddef.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ata/pata_isapnp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index 5c6c4269f7efe..2ec6f35cda32e 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -27,7 +27,7 @@
- 	union { \
- 		struct { MEMBERS } ATTRS; \
- 		struct TAG { MEMBERS } ATTRS NAME; \
--	}
-+	} ATTRS
- 
- #ifdef __cplusplus
- /* sizeof(struct{}) is 1 in C++, not 0, can't use C version of the macro. */
+diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
+index 994f168b54a80..4ffbc2a63f8f5 100644
+--- a/drivers/ata/pata_isapnp.c
++++ b/drivers/ata/pata_isapnp.c
+@@ -81,6 +81,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
+ 	if (pnp_port_valid(idev, 1)) {
+ 		ctl_addr = devm_ioport_map(&idev->dev,
+ 					   pnp_port_start(idev, 1), 1);
++		if (!ctl_addr)
++			return -ENOMEM;
++
+ 		ap->ioaddr.altstatus_addr = ctl_addr;
+ 		ap->ioaddr.ctl_addr = ctl_addr;
+ 		ap->ops = &isapnp_port_ops;
 -- 
 2.42.0
 
