@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D518046F2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8FF68047F0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77B741F21407
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54FD31F21A97
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD178BF2;
-	Tue,  5 Dec 2023 03:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804E7611E;
+	Tue,  5 Dec 2023 03:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i26BjfPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBMj4R+T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A41B6FB1;
-	Tue,  5 Dec 2023 03:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36EFC433C8;
-	Tue,  5 Dec 2023 03:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF006FB0;
+	Tue,  5 Dec 2023 03:44:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ED7C433C7;
+	Tue,  5 Dec 2023 03:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747199;
-	bh=NojsTa3hzw5AxRBOCIkiF0/lzb9itN6tMhz4yrblD5Q=;
+	s=korg; t=1701747844;
+	bh=auPS1porM2TiLvrtdrMJRjbnJizvYvV51HVfU5xQqME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i26BjfPkW0urcWNQ6X1tC2n7JyghKXtmzbwunkqBcpY8n6zM1BfNXPH8PWh0ZhoxE
-	 fibtJrrnZWn3sqifv2+fUJn3VmdftGRFhGE9RpDV0hVBFOZ/bBN6wB5/NxXbCAy8YS
-	 7LU8WrBZz/nGCVF2CK8d3/EVQ05pPsJz3y/qs0OU=
+	b=XBMj4R+TQvPcCqYlR/l5E0zC+o37Aj7GR32Sl5DKVsWIlrA9GzODTqme3wDZhSmEp
+	 g9XLJrAVZtUj/BJI5/jw2jN7cqHxFF1FMA0Qe2MBuBa+zmAeIDyfbGVXMryqh0zAOt
+	 cB0afBNDB845IPF/d0hiP7mL29v90kcAgfsgRqr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/107] selftests/net: fix a char signedness issue
+Subject: [PATCH 5.4 09/94] HID: core: store the unique system identifier in hid_device
 Date: Tue,  5 Dec 2023 12:16:37 +0900
-Message-ID: <20231205031535.287764230@linuxfoundation.org>
+Message-ID: <20231205031523.399996863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +52,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
 
-[ Upstream commit 7b29828c5af6841bdeb9fafa32fdfeff7ab9c407 ]
+[ Upstream commit 1e839143d674603b0bbbc4c513bca35404967dbc ]
 
-Signedness of char is signed on x86_64, but unsigned on arm64.
+This unique identifier is currently used only for ensuring uniqueness in
+sysfs. However, this could be handful for userspace to refer to a specific
+hid_device by this id.
 
-Fix the warning building cmsg_sender.c on signed platforms or
-forced with -fsigned-char:
+2 use cases are in my mind: LEDs (and their naming convention), and
+HID-BPF.
 
-    msg_sender.c:455:12:
-    error: implicit conversion from 'int' to 'char'
-    changes value from 128 to -128
-    [-Werror,-Wconstant-conversion]
-        buf[0] = ICMPV6_ECHO_REQUEST;
-
-constant ICMPV6_ECHO_REQUEST is 128.
-
-Link: https://lwn.net/Articles/911914
-Fixes: de17e305a810 ("selftests: net: cmsg_sender: support icmp and raw sockets")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20231124171645.1011043-3-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+Link: https://lore.kernel.org/r/20220902132938.2409206-9-benjamin.tissoires@redhat.com
+Stable-dep-of: fc43e9c857b7 ("HID: fix HID device resource race between HID core and debugging support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/cmsg_sender.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-core.c | 4 +++-
+ include/linux/hid.h    | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/cmsg_sender.c b/tools/testing/selftests/net/cmsg_sender.c
-index 24b21b15ed3fb..6ff3e732f449f 100644
---- a/tools/testing/selftests/net/cmsg_sender.c
-+++ b/tools/testing/selftests/net/cmsg_sender.c
-@@ -416,9 +416,9 @@ int main(int argc, char *argv[])
- {
- 	struct addrinfo hints, *ai;
- 	struct iovec iov[1];
-+	unsigned char *buf;
- 	struct msghdr msg;
- 	char cbuf[1024];
--	char *buf;
- 	int err;
- 	int fd;
+diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
+index 8248cdc30e1d3..af1e1922e1ae0 100644
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -2437,10 +2437,12 @@ int hid_add_device(struct hid_device *hdev)
+ 			hid_warn(hdev, "bad device descriptor (%d)\n", ret);
+ 	}
  
++	hdev->id = atomic_inc_return(&id);
++
+ 	/* XXX hack, any other cleaner solution after the driver core
+ 	 * is converted to allow more than 20 bytes as the device name? */
+ 	dev_set_name(&hdev->dev, "%04X:%04X:%04X.%04X", hdev->bus,
+-		     hdev->vendor, hdev->product, atomic_inc_return(&id));
++		     hdev->vendor, hdev->product, hdev->id);
+ 
+ 	hid_debug_register(hdev, dev_name(&hdev->dev));
+ 	ret = device_add(&hdev->dev);
+diff --git a/include/linux/hid.h b/include/linux/hid.h
+index 20266127cf666..3fc4241cffbe2 100644
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -622,6 +622,8 @@ struct hid_device {							/* device report descriptor */
+ 	struct list_head debug_list;
+ 	spinlock_t  debug_list_lock;
+ 	wait_queue_head_t debug_wait;
++
++	unsigned int id;						/* system unique id */
+ };
+ 
+ #define to_hid_device(pdev) \
 -- 
 2.42.0
 
