@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-4223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174BA804694
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A03B804712
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B672C1F20F49
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E27AB20CED
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0C08BF1;
-	Tue,  5 Dec 2023 03:29:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861CC8BF2;
+	Tue,  5 Dec 2023 03:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7q3p06Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4vJumMh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2776FAF;
-	Tue,  5 Dec 2023 03:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C9CC433C7;
-	Tue,  5 Dec 2023 03:29:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B826FB1;
+	Tue,  5 Dec 2023 03:34:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F57C433C7;
+	Tue,  5 Dec 2023 03:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746959;
-	bh=P/yPtLFfG6fs/aJ7nb2UKZ6poXbdL+X+6dXFbKCCxI0=;
+	s=korg; t=1701747273;
+	bh=Wd/fF6/R4JNiA+rfwGWFm59pidSlVy/jOqUPn1+TptI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R7q3p06YPmPIuY3Ycw/tuV7uJiOeogQYe9PRu1UAu3lGveNs/J3uxMMYrzG0SM/h5
-	 zwQoHfmbFddIpucn52gIOfNn4IH5VKlvUtYdWKcpfoGC5S0zjTXLsyRFCR0ANaayAG
-	 GdoBbT2ezaEM2U/00dNv18GZP6k5DE4C8nePZIK8=
+	b=N4vJumMhjaaipnPEPS+hCIoH21XwuGTdlR/C+cDvfH6QIP2a2WE7yNaPV2nULUXdo
+	 BWyr9inRfUy3hJUBjWPu/AbcCP3HCCdomBohl6atnzg0uhLc3LggAUhhc2/SUTBTuP
+	 Uuf7dQ7b6tVc48Vh596S4DE8vXecJCD65I3p/+3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	linux-mm@kvack.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 001/107] cifs: Fix FALLOC_FL_ZERO_RANGE by setting i_size if EOF moved
+	Marek Vasut <marex@denx.de>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 015/135] drm/panel: simple: Fix Innolux G101ICE-L01 timings
 Date: Tue,  5 Dec 2023 12:15:36 +0900
-Message-ID: <20231205031531.545150790@linuxfoundation.org>
+Message-ID: <20231205031531.491898085@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,60 +53,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 83d5518b124dfd605f10a68128482c839a239f9d upstream.
+[ Upstream commit 3f9a91b6c00e655d27bd785dcda1742dbdc31bda ]
 
-Fix the cifs filesystem implementations of FALLOC_FL_ZERO_RANGE, in
-smb3_zero_range(), to set i_size after extending the file on the server.
+The Innolux G101ICE-L01 datasheet [1] page 17 table
+6.1 INPUT SIGNAL TIMING SPECIFICATIONS
+indicates that maximum vertical blanking time is 40 lines.
+Currently the driver uses 29 lines.
 
-Fixes: 72c419d9b073 ("cifs: fix smb3_zero_range so it can expand the file-size when required")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Howells <dhowells@redhat.com>
-Acked-by: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it, and since this panel is a DE panel, adjust the timings
+to make them less hostile to controllers which cannot do 1 px
+HSA/VSA, distribute the delays evenly between all three parts.
+
+[1] https://www.data-modul.com/sites/default/files/products/G101ICE-L01-C2-specification-12042389.pdf
+
+Fixes: 1e29b840af9f ("drm/panel: simple: Add Innolux G101ICE-L01 panel")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231008223256.279196-1-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3424,6 +3424,7 @@ static long smb3_zero_range(struct file
- 	struct inode *inode = file_inode(file);
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifsFileInfo *cfile = file->private_data;
-+	unsigned long long new_size;
- 	long rc;
- 	unsigned int xid;
- 	__le64 eof;
-@@ -3454,10 +3455,15 @@ static long smb3_zero_range(struct file
- 	/*
- 	 * do we also need to change the size of the file?
- 	 */
--	if (keep_size == false && i_size_read(inode) < offset + len) {
--		eof = cpu_to_le64(offset + len);
-+	new_size = offset + len;
-+	if (keep_size == false && (unsigned long long)i_size_read(inode) < new_size) {
-+		eof = cpu_to_le64(new_size);
- 		rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
- 				  cfile->fid.volatile_fid, cfile->pid, &eof);
-+		if (rc >= 0) {
-+			truncate_setsize(inode, new_size);
-+			fscache_resize_cookie(cifs_inode_cookie(inode), new_size);
-+		}
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 7c470b4763cb4..ee01b61a6bafa 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -2154,13 +2154,13 @@ static const struct panel_desc innolux_g070y2_l01 = {
+ static const struct display_timing innolux_g101ice_l01_timing = {
+ 	.pixelclock = { 60400000, 71100000, 74700000 },
+ 	.hactive = { 1280, 1280, 1280 },
+-	.hfront_porch = { 41, 80, 100 },
+-	.hback_porch = { 40, 79, 99 },
+-	.hsync_len = { 1, 1, 1 },
++	.hfront_porch = { 30, 60, 70 },
++	.hback_porch = { 30, 60, 70 },
++	.hsync_len = { 22, 40, 60 },
+ 	.vactive = { 800, 800, 800 },
+-	.vfront_porch = { 5, 11, 14 },
+-	.vback_porch = { 4, 11, 14 },
+-	.vsync_len = { 1, 1, 1 },
++	.vfront_porch = { 3, 8, 14 },
++	.vback_porch = { 3, 8, 14 },
++	.vsync_len = { 4, 7, 12 },
+ 	.flags = DISPLAY_FLAGS_DE_HIGH,
+ };
  
-  zero_range_exit:
+-- 
+2.42.0
+
 
 
 
