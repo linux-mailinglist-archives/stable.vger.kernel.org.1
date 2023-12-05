@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-4242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 895108046AB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC18804650
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71A21C20D23
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7B382814FA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2BB8BF1;
-	Tue,  5 Dec 2023 03:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72978F6C;
+	Tue,  5 Dec 2023 03:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgoeaLQn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4IX64r8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB696FAF;
-	Tue,  5 Dec 2023 03:30:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2E16C433C8;
-	Tue,  5 Dec 2023 03:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6501A79E3;
+	Tue,  5 Dec 2023 03:26:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C34C433C8;
+	Tue,  5 Dec 2023 03:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747018;
-	bh=+nes2HWEnWRxiryqUt0bAELRvgXKgkebvnfXWS1RmX0=;
+	s=korg; t=1701746779;
+	bh=4nNz/cCVX5IbK8RYQ8zbhkdEG/pkYxHP5J93ejlsjcA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgoeaLQnHoU3BcIG3ETgkC9q/uDC1xfIJzr/JyK0JFYLygdpO1cZ8VsajR+JA5vKc
-	 vPxGQ6dAfcjdcrotCKxyCKiDqe3c4lMFu7q0BfWaVNfUAyjbghIVyGyy9Cou1qgNew
-	 tEm1+DTKknvAwnYBPcnJLEn2dLXhIqJi3pDdAoNg=
+	b=v4IX64r8FKDuUwjKn7olrLOpAefVRE6YFRYeMDZPLcF6iEglUuygVOCKIS6eYdozl
+	 JnklJyy2WUHvJ8d5BR3Ds9Un7ZVaKcReP5vJCvFUF2hsy3z3ShIdEBXT5QfEHZmT/3
+	 tQTk1akWWNAre0TcQfSuLuo7wy2dy88qiFgrxFo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 6.1 028/107] nvme: check for valid nvme_identify_ns() before using it
+	Jonas Karlman <jonas@kwiboo.se>,
+	Diederik de Haas <didi.debian@cknow.org>,
+	Christopher Obbard <chris.obbard@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 05/71] drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
 Date: Tue,  5 Dec 2023 12:16:03 +0900
-Message-ID: <20231205031533.329260009@linuxfoundation.org>
+Message-ID: <20231205031518.189444349@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,80 +55,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ewan D. Milne <emilne@redhat.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-commit d8b90d600aff181936457f032d116dbd8534db06 upstream.
+[ Upstream commit bb0a05acd6121ff0e810b44fdc24dbdfaa46b642 ]
 
-When scanning namespaces, it is possible to get valid data from the first
-call to nvme_identify_ns() in nvme_alloc_ns(), but not from the second
-call in nvme_update_ns_info_block().  In particular, if the NSID becomes
-inactive between the two commands, a storage device may return a buffer
-filled with zero as per 4.1.5.1.  In this case, we can get a kernel crash
-due to a divide-by-zero in blk_stack_limits() because ns->lba_shift will
-be set to zero.
+Use of DRM_FORMAT_RGB888 and DRM_FORMAT_BGR888 on e.g. RK3288, RK3328
+and RK3399 result in wrong colors being displayed.
 
-PID: 326      TASK: ffff95fec3cd8000  CPU: 29   COMMAND: "kworker/u98:10"
- #0 [ffffad8f8702f9e0] machine_kexec at ffffffff91c76ec7
- #1 [ffffad8f8702fa38] __crash_kexec at ffffffff91dea4fa
- #2 [ffffad8f8702faf8] crash_kexec at ffffffff91deb788
- #3 [ffffad8f8702fb00] oops_end at ffffffff91c2e4bb
- #4 [ffffad8f8702fb20] do_trap at ffffffff91c2a4ce
- #5 [ffffad8f8702fb70] do_error_trap at ffffffff91c2a595
- #6 [ffffad8f8702fbb0] exc_divide_error at ffffffff928506e6
- #7 [ffffad8f8702fbd0] asm_exc_divide_error at ffffffff92a00926
-    [exception RIP: blk_stack_limits+434]
-    RIP: ffffffff92191872  RSP: ffffad8f8702fc80  RFLAGS: 00010246
-    RAX: 0000000000000000  RBX: ffff95efa0c91800  RCX: 0000000000000001
-    RDX: 0000000000000000  RSI: 0000000000000001  RDI: 0000000000000001
-    RBP: 00000000ffffffff   R8: ffff95fec7df35a8   R9: 0000000000000000
-    R10: 0000000000000000  R11: 0000000000000001  R12: 0000000000000000
-    R13: 0000000000000000  R14: 0000000000000000  R15: ffff95fed33c09a8
-    ORIG_RAX: ffffffffffffffff  CS: 0010  SS: 0018
- #8 [ffffad8f8702fce0] nvme_update_ns_info_block at ffffffffc06d3533 [nvme_core]
- #9 [ffffad8f8702fd18] nvme_scan_ns at ffffffffc06d6fa7 [nvme_core]
+The issue can be observed using modetest:
 
-This happened when the check for valid data was moved out of nvme_identify_ns()
-into one of the callers.  Fix this by checking in both callers.
+  modetest -s <connector_id>@<crtc_id>:1920x1080-60@RG24
+  modetest -s <connector_id>@<crtc_id>:1920x1080-60@BG24
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218186
-Fixes: 0dd6fff2aad4 ("nvme: bring back auto-removal of deleted namespaces during sequential scan")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Vendor 4.4 kernel apply an inverted rb swap for these formats on VOP
+full framework (IP version 3.x) compared to VOP little framework (2.x).
+
+Fix colors by applying different rb swap for VOP full framework (3.x)
+and VOP little framework (2.x) similar to vendor 4.4 kernel.
+
+Fixes: 85a359f25388 ("drm/rockchip: Add BGR formats to VOP")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Tested-by: Diederik de Haas <didi.debian@cknow.org>
+Reviewed-by: Christopher Obbard <chris.obbard@collabora.com>
+Tested-by: Christopher Obbard <chris.obbard@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231026191500.2994225-1-jonas@kwiboo.se
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2058,6 +2058,13 @@ static int nvme_update_ns_info_block(str
- 	if (ret)
- 		return ret;
- 
-+	if (id->ncap == 0) {
-+		/* namespace not allocated or attached */
-+		info->is_removed = true;
-+		ret = -ENODEV;
-+		goto error;
-+	}
-+
- 	blk_mq_freeze_queue(ns->disk->queue);
- 	lbaf = nvme_lbaf_index(id->flbas);
- 	ns->lba_shift = id->lbaf[lbaf].ds;
-@@ -2107,6 +2114,8 @@ out:
- 		set_bit(NVME_NS_READY, &ns->flags);
- 		ret = 0;
- 	}
-+
-+error:
- 	kfree(id);
- 	return ret;
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+index ea692046be614..c502d24b8253e 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
+@@ -204,14 +204,22 @@ static inline void vop_cfg_done(struct vop *vop)
+ 	VOP_REG_SET(vop, common, cfg_done, 1);
  }
+ 
+-static bool has_rb_swapped(uint32_t format)
++static bool has_rb_swapped(uint32_t version, uint32_t format)
+ {
+ 	switch (format) {
+ 	case DRM_FORMAT_XBGR8888:
+ 	case DRM_FORMAT_ABGR8888:
+-	case DRM_FORMAT_BGR888:
+ 	case DRM_FORMAT_BGR565:
+ 		return true;
++	/*
++	 * full framework (IP version 3.x) only need rb swapped for RGB888 and
++	 * little framework (IP version 2.x) only need rb swapped for BGR888,
++	 * check for 3.x to also only rb swap BGR888 for unknown vop version
++	 */
++	case DRM_FORMAT_RGB888:
++		return VOP_MAJOR(version) == 3;
++	case DRM_FORMAT_BGR888:
++		return VOP_MAJOR(version) != 3;
+ 	default:
+ 		return false;
+ 	}
+@@ -798,7 +806,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
+ 	VOP_WIN_SET(vop, win, dsp_info, dsp_info);
+ 	VOP_WIN_SET(vop, win, dsp_st, dsp_st);
+ 
+-	rb_swap = has_rb_swapped(fb->format->format);
++	rb_swap = has_rb_swapped(vop->data->version, fb->format->format);
+ 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
+ 
+ 	/*
+-- 
+2.42.0
+
 
 
 
