@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-4556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F548047FC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4659180467E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C6FC1F21CFA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5B2C1F213D2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACE08C07;
-	Tue,  5 Dec 2023 03:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7EB79F2;
+	Tue,  5 Dec 2023 03:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRxB/xTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZpH+OXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969476FB0;
-	Tue,  5 Dec 2023 03:44:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146BDC433C7;
-	Tue,  5 Dec 2023 03:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDB06FAF;
+	Tue,  5 Dec 2023 03:28:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826A0C433C7;
+	Tue,  5 Dec 2023 03:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747873;
-	bh=hJqMYENUksTumeizJgFoffImWAYCXsfV+mz39vrcYik=;
+	s=korg; t=1701746898;
+	bh=2Sfp8WbUvgHTy+g7OGz3mIFzBRcc7zPWJAJg7AFIWkA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRxB/xTW5EbL0Nc1fzXGiI9TfaSjSYHNwu02jJaH5kBk1pWNe8tXKEf4QRns9nZi9
-	 XfhsAw/AiteCBOjS2QEvqOuNVULpVbFktsBHjaf97P424+dSInBep2pkoVOKtx0gxR
-	 z0Mth5oRuHGmV2eG1cMdr7XyewY0XAcgElPVg+G0=
+	b=mZpH+OXvRgfXffh16BbjjoIN8n/OY6nZdoPmyeTzhMGSlEd/f1yWDsueWFXiDAgaN
+	 ex93aGo1I4ba5NbFMN+hUwRbiCBcxNLCmRQRTTknlb208IVO16B5CTzHztDDOpoqZl
+	 U15k4Cu1xbklPZZCifELUPg6aXhoDDtdor/O8G08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yikebaer Aizezi <yikebaer61@gmail.com>,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Nicolas Pitre <nico@fluxnic.net>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 30/94] ext4: fix slab-use-after-free in ext4_es_insert_extent()
+Subject: [PATCH 4.19 60/71] mtd: cfi_cmdset_0001: Byte swap OTP info
 Date: Tue,  5 Dec 2023 12:16:58 +0900
-Message-ID: <20231205031524.582571653@linuxfoundation.org>
+Message-ID: <20231205031521.362292677@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,184 +54,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 768d612f79822d30a1e7d132a4d4b05337ce42ec ]
+[ Upstream commit 565fe150624ee77dc63a735cc1b3bff5101f38a3 ]
 
-Yikebaer reported an issue:
-==================================================================
-BUG: KASAN: slab-use-after-free in ext4_es_insert_extent+0xc68/0xcb0
-fs/ext4/extents_status.c:894
-Read of size 4 at addr ffff888112ecc1a4 by task syz-executor/8438
+Currently the offset into the device when looking for OTP
+bits can go outside of the address of the MTD NOR devices,
+and if that memory isn't readable, bad things happen
+on the IXP4xx (added prints that illustrate the problem before
+the crash):
 
-CPU: 1 PID: 8438 Comm: syz-executor Not tainted 6.5.0-rc5 #1
-Call Trace:
- [...]
- kasan_report+0xba/0xf0 mm/kasan/report.c:588
- ext4_es_insert_extent+0xc68/0xcb0 fs/ext4/extents_status.c:894
- ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
- ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
- ext4_zero_range fs/ext4/extents.c:4622 [inline]
- ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
- [...]
+cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x00000100
+ixp4xx_copy_from copy from 0x00000100 to 0xc880dd78
+cfi_intelext_otp_walk walk OTP on chip 0 start at reg_prot_offset 0x12000000
+ixp4xx_copy_from copy from 0x12000000 to 0xc880dd78
+8<--- cut here ---
+Unable to handle kernel paging request at virtual address db000000
+[db000000] *pgd=00000000
+(...)
 
-Allocated by task 8438:
- [...]
- kmem_cache_zalloc include/linux/slab.h:693 [inline]
- __es_alloc_extent fs/ext4/extents_status.c:469 [inline]
- ext4_es_insert_extent+0x672/0xcb0 fs/ext4/extents_status.c:873
- ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
- ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
- ext4_zero_range fs/ext4/extents.c:4622 [inline]
- ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
- [...]
+This happens in this case because the IXP4xx is big endian and
+the 32- and 16-bit fields in the struct cfi_intelext_otpinfo are not
+properly byteswapped. Compare to how the code in read_pri_intelext()
+byteswaps the fields in struct cfi_pri_intelext.
 
-Freed by task 8438:
- [...]
- kmem_cache_free+0xec/0x490 mm/slub.c:3823
- ext4_es_try_to_merge_right fs/ext4/extents_status.c:593 [inline]
- __es_insert_extent+0x9f4/0x1440 fs/ext4/extents_status.c:802
- ext4_es_insert_extent+0x2ca/0xcb0 fs/ext4/extents_status.c:882
- ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
- ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
- ext4_zero_range fs/ext4/extents.c:4622 [inline]
- ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
- [...]
-==================================================================
+Adding a small byte swapping loop for the OTP in read_pri_intelext()
+and the crash goes away.
 
-The flow of issue triggering is as follows:
-1. remove es
-      raw es               es  removed  es1
-|-------------------| -> |----|.......|------|
+The problem went unnoticed for many years until I enabled
+CONFIG_MTD_OTP on the IXP4xx as well, triggering the bug.
 
-2. insert es
-  es   insert   es1      merge with es  es1     merge with es and free es1
-|----|.......|------| -> |------------|------| -> |-------------------|
-
-es merges with newes, then merges with es1, frees es1, then determines
-if es1->es_len is 0 and triggers a UAF.
-
-The code flow is as follows:
-ext4_es_insert_extent
-  es1 = __es_alloc_extent(true);
-  es2 = __es_alloc_extent(true);
-  __es_remove_extent(inode, lblk, end, NULL, es1)
-    __es_insert_extent(inode, &newes, es1) ---> insert es1 to es tree
-  __es_insert_extent(inode, &newes, es2)
-    ext4_es_try_to_merge_right
-      ext4_es_free_extent(inode, es1) --->  es1 is freed
-  if (es1 && !es1->es_len)
-    // Trigger UAF by determining if es1 is used.
-
-We determine whether es1 or es2 is used immediately after calling
-__es_remove_extent() or __es_insert_extent() to avoid triggering a
-UAF if es1 or es2 is freed.
-
-Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
-Closes: https://lore.kernel.org/lkml/CALcu4raD4h9coiyEBL4Bm0zjDwxC2CyPiTwsP3zFuhot6y9Beg@mail.gmail.com
-Fixes: 2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230815070808.3377171-1-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Cc: stable@vger.kernel.org
+Reviewed-by: Nicolas Pitre <nico@fluxnic.net>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231020-mtd-otp-byteswap-v4-1-0d132c06aa9d@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 44 +++++++++++++++++++++++++++-------------
- 1 file changed, 30 insertions(+), 14 deletions(-)
+ drivers/mtd/chips/cfi_cmdset_0001.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index c4922b8c9d333..4b47bccc3834a 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -871,23 +871,29 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
- 	if (err1 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es1) {
-+		if (!es1->es_len)
-+			__es_free_extent(es1);
-+		es1 = NULL;
-+	}
+diff --git a/drivers/mtd/chips/cfi_cmdset_0001.c b/drivers/mtd/chips/cfi_cmdset_0001.c
+index e5cf4911a714a..3bd812435f1b9 100644
+--- a/drivers/mtd/chips/cfi_cmdset_0001.c
++++ b/drivers/mtd/chips/cfi_cmdset_0001.c
+@@ -420,9 +420,25 @@ read_pri_intelext(struct map_info *map, __u16 adr)
+ 		extra_size = 0;
  
- 	err2 = __es_insert_extent(inode, &newes, es2);
- 	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
- 		err2 = 0;
- 	if (err2 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es2) {
-+		if (!es2->es_len)
-+			__es_free_extent(es2);
-+		es2 = NULL;
-+	}
+ 		/* Protection Register info */
+-		if (extp->NumProtectionFields)
++		if (extp->NumProtectionFields) {
++			struct cfi_intelext_otpinfo *otp =
++				(struct cfi_intelext_otpinfo *)&extp->extra[0];
++
+ 			extra_size += (extp->NumProtectionFields - 1) *
+-				      sizeof(struct cfi_intelext_otpinfo);
++				sizeof(struct cfi_intelext_otpinfo);
++
++			if (extp_size >= sizeof(*extp) + extra_size) {
++				int i;
++
++				/* Do some byteswapping if necessary */
++				for (i = 0; i < extp->NumProtectionFields - 1; i++) {
++					otp->ProtRegAddr = le32_to_cpu(otp->ProtRegAddr);
++					otp->FactGroups = le16_to_cpu(otp->FactGroups);
++					otp->UserGroups = le16_to_cpu(otp->UserGroups);
++					otp++;
++				}
++			}
++		}
+ 	}
  
- 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
- 	    (status & EXTENT_STATUS_WRITTEN ||
- 	     status & EXTENT_STATUS_UNWRITTEN))
- 		__revise_pending(inode, lblk, len);
--
--	/* es is pre-allocated but not used, free it. */
--	if (es1 && !es1->es_len)
--		__es_free_extent(es1);
--	if (es2 && !es2->es_len)
--		__es_free_extent(es2);
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	if (err1 || err2)
-@@ -1475,8 +1481,12 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
- 	err = __es_remove_extent(inode, lblk, end, &reserved, es);
--	if (es && !es->es_len)
--		__es_free_extent(es);
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es) {
-+		if (!es->es_len)
-+			__es_free_extent(es);
-+		es = NULL;
-+	}
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	if (err)
- 		goto retry;
-@@ -2031,19 +2041,25 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
- 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
- 	if (err1 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es1) {
-+		if (!es1->es_len)
-+			__es_free_extent(es1);
-+		es1 = NULL;
-+	}
- 
- 	err2 = __es_insert_extent(inode, &newes, es2);
- 	if (err2 != 0)
- 		goto error;
-+	/* Free preallocated extent if it didn't get used. */
-+	if (es2) {
-+		if (!es2->es_len)
-+			__es_free_extent(es2);
-+		es2 = NULL;
-+	}
- 
- 	if (allocated)
- 		__insert_pending(inode, lblk);
--
--	/* es is pre-allocated but not used, free it. */
--	if (es1 && !es1->es_len)
--		__es_free_extent(es1);
--	if (es2 && !es2->es_len)
--		__es_free_extent(es2);
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
- 	if (err1 || err2)
+ 	if (extp->MinorVersion >= '1') {
 -- 
 2.42.0
 
