@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99F7804606
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEF0B804734
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63A081F213DE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4548028157C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC506FB8;
-	Tue,  5 Dec 2023 03:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0758BF1;
+	Tue,  5 Dec 2023 03:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPUJRssM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZo0o+Fz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685616FAF;
-	Tue,  5 Dec 2023 03:23:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40B2C433C8;
-	Tue,  5 Dec 2023 03:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8F56FB1;
+	Tue,  5 Dec 2023 03:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20929C433C8;
+	Tue,  5 Dec 2023 03:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746628;
-	bh=6Vs5FjlH3s/NovAXaicJvyf2H8XmyEwIxJSzS8HiCw8=;
+	s=korg; t=1701747363;
+	bh=v5tVg6Wvifuypj2rFkp6if/0e2OsoJzD/W1IjwslOEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPUJRssM44vIwViGTjSTR820wMGooD7u9EuUTTSLZ8FyDXHXZsiAvrY8yeHOzNFt+
-	 910xhj5bvcpbKlvLic0EGw/I8vFON1Nqu7XRNPFcCi7I4mOeY1kJdQE1GnLpTsbE06
-	 kNsTnHD3hFDopxIQH60FWalWGeTbiPuEBSgeAmw0=
+	b=oZo0o+FzjR6kKJGWSVWzjl4x+mPFAaJ3cKeOVNx3GZQzg7zAoCiVX39jbgUiwqlRE
+	 KHe5l+Dm9/7XXtMkMwd3oJofE8DRKBEjLHQLOX8CcKhFbvQcvHTlIwNScFLN8w88cl
+	 PEyiIxwS23+q5iLgO+hODNmE+ljZ7ZhsXsmzIuy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/134] octeontx2-pf: Fix adding mbox work queue entry when num_vfs > 64
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 048/135] ASoC: simple-card: fixup asoc_simple_probe() error handling
 Date: Tue,  5 Dec 2023 12:16:09 +0900
-Message-ID: <20231205031541.605383302@linuxfoundation.org>
+Message-ID: <20231205031533.540139110@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,56 +54,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 51597219e0cd5157401d4d0ccb5daa4d9961676f ]
+commit 41bae58df411f9accf01ea660730649b2fab1dab upstream.
 
-When more than 64 VFs are enabled for a PF then mbox communication
-between VF and PF is not working as mbox work queueing for few VFs
-are skipped due to wrong calculation of VF numbers.
+asoc_simple_probe() is used for both "DT probe" (A) and "platform probe"
+(B). It uses "goto err" when error case, but it is not needed for
+"platform probe" case (B). Thus it is using "return" directly there.
 
-Fixes: d424b6c02415 ("octeontx2-pf: Enable SRIOV and added VF mbox handling")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://lore.kernel.org/r/1700930042-5400-1-git-send-email-sbhatta@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	static int asoc_simple_probe(...)
+	{
+ ^		if (...) {
+ |			...
+(A)			if (ret < 0)
+ |				goto err;
+ v		} else {
+ ^			...
+ |			if (ret < 0)
+(B)				return -Exxx;
+ v		}
+
+		...
+ ^		if (ret < 0)
+(C)			goto err;
+ v		...
+
+	err:
+(D)		simple_util_clean_reference(card);
+
+		return ret;
+	}
+
+Both case are using (C) part, and it calls (D) when err case.
+But (D) will do nothing for (B) case.
+Because of these behavior, current code itself is not wrong,
+but is confusable, and more, static analyzing tool will warning on
+(B) part (should use goto err).
+
+To avoid static analyzing tool warning, this patch uses "goto err"
+on (B) part.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://lore.kernel.org/r/87o7hy7mlh.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/generic/simple-card.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index ba95ac9132746..6d56fc1918455 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -566,7 +566,9 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
- 		otx2_write64(pf, RVU_PF_VFPF_MBOX_INTX(1), intr);
- 		otx2_queue_work(mbox, pf->mbox_pfvf_wq, 64, vfs, intr,
- 				TYPE_PFVF);
--		vfs -= 64;
-+		if (intr)
-+			trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
-+		vfs = 64;
- 	}
+--- a/sound/soc/generic/simple-card.c
++++ b/sound/soc/generic/simple-card.c
+@@ -634,10 +634,12 @@ static int asoc_simple_probe(struct plat
  
- 	intr = otx2_read64(pf, RVU_PF_VFPF_MBOX_INTX(0));
-@@ -574,7 +576,8 @@ static irqreturn_t otx2_pfvf_mbox_intr_handler(int irq, void *pf_irq)
+ 		int dai_idx = 0;
  
- 	otx2_queue_work(mbox, pf->mbox_pfvf_wq, 0, vfs, intr, TYPE_PFVF);
++		ret = -EINVAL;
++
+ 		cinfo = dev->platform_data;
+ 		if (!cinfo) {
+ 			dev_err(dev, "no info for asoc-simple-card\n");
+-			return -EINVAL;
++			goto err;
+ 		}
  
--	trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
-+	if (intr)
-+		trace_otx2_msg_interrupt(mbox->mbox.pdev, "VF(s) to PF", intr);
+ 		if (!cinfo->name ||
+@@ -646,7 +648,7 @@ static int asoc_simple_probe(struct plat
+ 		    !cinfo->platform ||
+ 		    !cinfo->cpu_dai.name) {
+ 			dev_err(dev, "insufficient asoc_simple_card_info settings\n");
+-			return -EINVAL;
++			goto err;
+ 		}
  
- 	return IRQ_HANDLED;
- }
--- 
-2.42.0
-
+ 		dai_props->cpu_dai	= &priv->dais[dai_idx++];
 
 
 
