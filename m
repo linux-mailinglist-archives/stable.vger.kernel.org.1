@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B7980477F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A710804815
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CBE41F21489
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2081F1F221F1
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967B38C03;
-	Tue,  5 Dec 2023 03:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184588C07;
+	Tue,  5 Dec 2023 03:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anB00jrV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qScxTQwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B9A6FB1;
-	Tue,  5 Dec 2023 03:39:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77380C433C7;
-	Tue,  5 Dec 2023 03:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC13D79E3;
+	Tue,  5 Dec 2023 03:45:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632E4C433C7;
+	Tue,  5 Dec 2023 03:45:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747557;
-	bh=ANNWzkHcUrd9P78B/b2qxqW4FIhTUsXOLl2GzwSkkeo=;
+	s=korg; t=1701747939;
+	bh=mV/Jj9ZC2BbKT1GZE93R8cNr6hihU91MqWnIr6Ou7Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=anB00jrVi+k7AiFASUZ7YUIAjIvY2K2OmlbgwxWUVtk5Lp/+kCewRrpDjYC3/OY4F
-	 XjED4zYIebMYWlDab/YyjNdTUgNVe4JT+L25ZsCYLOjR9eBVYL2x8Wcq6ePlcNX33C
-	 9mWjEvudNtJEnIP3IEox0sL+uop8yAKf39Vq+9LY=
+	b=qScxTQwlU5YkcRTIm6aPr31LQ7ZyvAPz4k0kV6G5h3gG13hPS9EUqIoSVe0ynXpPk
+	 HOOZdLlm9BXoWOnf8mYGl9leBp1rO8165jnmW+XBadN5y6IoUbqY8clPzJ5IO7rw7k
+	 85qPod6dDPsmT3Gx7u1ieRnO5qQ2u8dfQqm/EPWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/135] smb3: fix caching of ctime on setxattr
-Date: Tue,  5 Dec 2023 12:17:21 +0900
-Message-ID: <20231205031538.446463318@linuxfoundation.org>
+	Wenchao Chen <wenchao.chen@unisoc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 54/94] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled
+Date: Tue,  5 Dec 2023 12:17:22 +0900
+Message-ID: <20231205031525.865585105@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,48 +52,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Wenchao Chen <wenchao.chen@unisoc.com>
 
-[ Upstream commit 5923d6686a100c2b4cabd4c2ca9d5a12579c7614 ]
+commit 477865af60b2117ceaa1d558e03559108c15c78c upstream.
 
-Fixes xfstest generic/728 which had been failing due to incorrect
-ctime after setxattr and removexattr
+With cat regulator_summary, we found that vqmmc was not shutting
+down after the card was pulled.
 
-Update ctime on successful set of xattr
+cat /sys/kernel/debug/regulator/regulator_summary
+1.before fix
+1)Insert SD card
+ vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
 
+2)Pull out the SD card
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2.after fix
+1)Insert SD cardt
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+
+2)Pull out the SD card
+ vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
+
+Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/xattr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-sprd.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/fs/cifs/xattr.c b/fs/cifs/xattr.c
-index b8299173ea7e3..c6931eab3f97e 100644
---- a/fs/cifs/xattr.c
-+++ b/fs/cifs/xattr.c
-@@ -157,10 +157,13 @@ static int cifs_xattr_set(const struct xattr_handler *handler,
- 		if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_XATTR)
- 			goto out;
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -381,12 +381,33 @@ static unsigned int sdhci_sprd_get_ro(st
+ 	return 0;
+ }
  
--		if (pTcon->ses->server->ops->set_EA)
-+		if (pTcon->ses->server->ops->set_EA) {
- 			rc = pTcon->ses->server->ops->set_EA(xid, pTcon,
- 				full_path, name, value, (__u16)size,
- 				cifs_sb->local_nls, cifs_sb);
-+			if (rc == 0)
-+				inode_set_ctime_current(inode);
-+		}
- 		break;
++static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
++				 unsigned short vdd)
++{
++	struct mmc_host *mmc = host->mmc;
++
++	switch (mode) {
++	case MMC_POWER_OFF:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
++
++		mmc_regulator_disable_vqmmc(mmc);
++		break;
++	case MMC_POWER_ON:
++		mmc_regulator_enable_vqmmc(mmc);
++		break;
++	case MMC_POWER_UP:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
++		break;
++	}
++}
++
+ static struct sdhci_ops sdhci_sprd_ops = {
+ 	.read_l = sdhci_sprd_readl,
+ 	.write_l = sdhci_sprd_writel,
+ 	.write_w = sdhci_sprd_writew,
+ 	.write_b = sdhci_sprd_writeb,
+ 	.set_clock = sdhci_sprd_set_clock,
++	.set_power = sdhci_sprd_set_power,
+ 	.get_max_clock = sdhci_sprd_get_max_clock,
+ 	.get_min_clock = sdhci_sprd_get_min_clock,
+ 	.set_bus_width = sdhci_set_bus_width,
+@@ -630,6 +651,10 @@ static int sdhci_sprd_probe(struct platf
+ 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
+ 			 SDHCI_SUPPORT_DDR50);
  
- 	case XATTR_CIFS_ACL:
--- 
-2.42.0
-
++	ret = mmc_regulator_get_supply(host->mmc);
++	if (ret)
++		goto pm_runtime_disable;
++
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
+ 		goto pm_runtime_disable;
 
 
 
