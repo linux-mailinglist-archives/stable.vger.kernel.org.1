@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3991-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13A55804658
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EE6D80458C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4FDD281507
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 705DC1C20C70
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B876FB8;
-	Tue,  5 Dec 2023 03:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE476AC2;
+	Tue,  5 Dec 2023 03:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r760eZn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJugf6mC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593026FB1;
-	Tue,  5 Dec 2023 03:26:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D025AC433C7;
-	Tue,  5 Dec 2023 03:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D608C07;
+	Tue,  5 Dec 2023 03:18:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B90C433C8;
+	Tue,  5 Dec 2023 03:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746795;
-	bh=ByLF+/5k4Lyr4ZH++oTrEweJjrejth+DiweBzCjgO9w=;
+	s=korg; t=1701746317;
+	bh=dlds8l92xHrlWC2MQ067Ddo7+BcttbQ74jtdEoJwhlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r760eZn4G8q4MMvb10OdDTsv+8bIhZT85r0/hCihL4jJ8iIW67dZZhZVFDXxgIiC5
-	 7jpALy3uOJvy/7OnBKhfCzyaf1bFk0LXx/xjeana1rEh9eUDCPBVSlHedGMvLH4yfP
-	 jAwTiVI1iR9hXpTB/Q+8UUoIyp9BNADimM1kXa7Q=
+	b=YJugf6mCFA3HLFwDT7H0IETUhckxMg3nHzTSu5Wcfp9pQY2vgi02mosZTX3o37sqm
+	 WwbcSOqAMR1od3aDn7p9hhoKM4tOa+P6oGWSraeBDEJ4Er2JoKS9tFSR9OO+VdG59c
+	 bfE5uIOjzFdQb/5MQNTcmay8DtHmII35SySyzqzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Murray <andrew.murray@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 4.19 16/71] arm64: cpufeature: Extract capped perfmon fields
+	Stefano Stabellini <stefano.stabellini@amd.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 07/30] arm/xen: fix xen_vcpu_info allocation alignment
 Date: Tue,  5 Dec 2023 12:16:14 +0900
-Message-ID: <20231205031518.788339849@linuxfoundation.org>
+Message-ID: <20231205031511.911790242@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,72 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Murray <andrew.murray@arm.com>
+From: Stefano Stabellini <sstabellini@kernel.org>
 
-commit 8e35aa642ee4dab01b16cc4b2df59d1936f3b3c2 upstream.
+[ Upstream commit 7bf9a6b46549852a37e6d07e52c601c3c706b562 ]
 
-When emulating ID registers there is often a need to cap the version
-bits of a feature such that the guest will not use features that the
-host is not aware of. For example, when KVM mediates access to the PMU
-by emulating register accesses.
+xen_vcpu_info is a percpu area than needs to be mapped by Xen.
+Currently, it could cross a page boundary resulting in Xen being unable
+to map it:
 
-Let's add a helper that extracts a performance monitors ID field and
-caps the version to a given value.
+[    0.567318] kernel BUG at arch/arm64/xen/../../arm/xen/enlighten.c:164!
+[    0.574002] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
 
-Fields that identify the version of the Performance Monitors Extension
-do not follow the standard ID scheme, and instead follow the scheme
-described in ARM DDI 0487E.a page D13-2825 "Alternative ID scheme used
-for the Performance Monitors Extension version". The value 0xF means an
-IMPLEMENTATION DEFINED PMU is present, and values 0x0-OxE can be treated
-the same as an unsigned field with 0x0 meaning no PMU is present.
+Fix the issue by using __alloc_percpu and requesting alignment for the
+memory allocation.
 
-Signed-off-by: Andrew Murray <andrew.murray@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-[Mark: rework to handle perfmon fields]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+
+Link: https://lore.kernel.org/r/alpine.DEB.2.22.394.2311221501340.2053963@ubuntu-linux-20-04-desktop
+Fixes: 24d5373dda7c ("arm/xen: Use alloc_percpu rather than __alloc_percpu")
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cpufeature.h |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ arch/arm/xen/enlighten.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -422,6 +422,29 @@ cpuid_feature_extract_unsigned_field(u64
- 	return cpuid_feature_extract_unsigned_field_width(features, field, 4);
- }
+diff --git a/arch/arm/xen/enlighten.c b/arch/arm/xen/enlighten.c
+index 32aa108b2b7cd..7a18bdf32ecc2 100644
+--- a/arch/arm/xen/enlighten.c
++++ b/arch/arm/xen/enlighten.c
+@@ -376,7 +376,8 @@ static int __init xen_guest_init(void)
+ 	 * for secondary CPUs as they are brought up.
+ 	 * For uniformity we use VCPUOP_register_vcpu_info even on cpu0.
+ 	 */
+-	xen_vcpu_info = alloc_percpu(struct vcpu_info);
++	xen_vcpu_info = __alloc_percpu(sizeof(struct vcpu_info),
++				       1 << fls(sizeof(struct vcpu_info) - 1));
+ 	if (xen_vcpu_info == NULL)
+ 		return -ENOMEM;
  
-+/*
-+ * Fields that identify the version of the Performance Monitors Extension do
-+ * not follow the standard ID scheme. See ARM DDI 0487E.a page D13-2825,
-+ * "Alternative ID scheme used for the Performance Monitors Extension version".
-+ */
-+static inline u64 __attribute_const__
-+cpuid_feature_cap_perfmon_field(u64 features, int field, u64 cap)
-+{
-+	u64 val = cpuid_feature_extract_unsigned_field(features, field);
-+	u64 mask = GENMASK_ULL(field + 3, field);
-+
-+	/* Treat IMPLEMENTATION DEFINED functionality as unimplemented */
-+	if (val == 0xf)
-+		val = 0;
-+
-+	if (val > cap) {
-+		features &= ~mask;
-+		features |= (cap << field) & mask;
-+	}
-+
-+	return features;
-+}
-+
- static inline u64 arm64_ftr_mask(const struct arm64_ftr_bits *ftrp)
- {
- 	return (u64)GENMASK(ftrp->shift + ftrp->width - 1, ftrp->shift);
+-- 
+2.42.0
+
 
 
 
