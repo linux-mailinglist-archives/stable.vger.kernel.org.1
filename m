@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B59280476C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38B8F804801
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16DE3281632
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89A028175D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C30279F2;
-	Tue,  5 Dec 2023 03:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8950C8C03;
+	Tue,  5 Dec 2023 03:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNk6MKNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXIeQrwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CE9F6FB1;
-	Tue,  5 Dec 2023 03:38:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B8EC433C8;
-	Tue,  5 Dec 2023 03:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436326FB0;
+	Tue,  5 Dec 2023 03:44:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DDBC433C8;
+	Tue,  5 Dec 2023 03:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747505;
-	bh=xS80tae4Mg12m0PDB2cKc32qoYWlH5vek1zsBIlvS2Q=;
+	s=korg; t=1701747887;
+	bh=fU4uQrJPkIS8oSWs0sPcSaQ2f0yMRwVL+wsNdDW+fYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNk6MKNU0LY24+noKe0DvhvFyti1odmc+3RH8KkI6ScQnKogzDBRYxYuuu4BKMUkk
-	 AB5Nut0G0x+FMT6+JZX0YZXegat6TUSeXCREk9zlggg/GVSmdek3XnO3CJ/1siy0yO
-	 P0cqPUVwR76O4vj3IAfei+TbPQvLArC716GWmw1o=
+	b=eXIeQrwrec5Ml1FtXqgiJ/qLutN9KralqNXmgv6j8E0EXFrp0NQVReUXy/RvvXHbV
+	 ghJCLxmQykeylz+YXcPNZs+fJYsREHRyAJtCXzqUJLScSBmrzXxba+oYv4poAJbtbO
+	 NNk8WGXzwRroAfXl/X73g80zVxq2QcNBvNgRTO98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/135] net: ravb: Use pm_runtime_resume_and_get()
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.4 34/94] ACPI: resource: Skip IRQ override on ASUS ExpertBook B1402CVA
 Date: Tue,  5 Dec 2023 12:17:02 +0900
-Message-ID: <20231205031537.070309696@linuxfoundation.org>
+Message-ID: <20231205031524.807293979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +52,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
+commit bd911485294a6f0596e4592ed442438015cffc8a upstream.
 
-pm_runtime_get_sync() may return an error. In case it returns with an error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+Like various other ASUS ExpertBook-s, the ASUS ExpertBook B1402CVA
+has an ACPI DSDT table that describes IRQ 1 as ActiveLow while
+the kernel overrides it to EdgeHigh.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This prevents the keyboard from working. To fix this issue, add this laptop
+to the skip_override_table so that the kernel does not override IRQ 1.
+
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218114
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 9d4a35f006c68..a9cd390dedbd8 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2072,7 +2072,9 @@ static int ravb_probe(struct platform_device *pdev)
- 	ndev->hw_features = NETIF_F_RXCSUM;
- 
- 	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
-+	error = pm_runtime_resume_and_get(&pdev->dev);
-+	if (error < 0)
-+		goto out_rpm_disable;
- 
- 	/* The Ether-specific entries in the device structure. */
- 	ndev->base_addr = res->start;
-@@ -2247,6 +2249,7 @@ static int ravb_probe(struct platform_device *pdev)
- 	free_netdev(ndev);
- 
- 	pm_runtime_put(&pdev->dev);
-+out_rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	return error;
- }
--- 
-2.42.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -449,6 +449,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* Asus ExpertBook B1402CVA */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "B1402CVA"),
++		},
++	},
++	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
 
 
 
