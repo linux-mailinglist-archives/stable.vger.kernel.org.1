@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FF68047F0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F370804624
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54FD31F21A97
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C00F7B20B58
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804E7611E;
-	Tue,  5 Dec 2023 03:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120486110;
+	Tue,  5 Dec 2023 03:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBMj4R+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuOU/QkO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF006FB0;
-	Tue,  5 Dec 2023 03:44:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91ED7C433C7;
-	Tue,  5 Dec 2023 03:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4EF46FAF;
+	Tue,  5 Dec 2023 03:25:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40619C433C8;
+	Tue,  5 Dec 2023 03:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747844;
-	bh=auPS1porM2TiLvrtdrMJRjbnJizvYvV51HVfU5xQqME=;
+	s=korg; t=1701746708;
+	bh=kcA94ayysY8townp3v6izyintuJDqZnK7y7RUJUbHRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XBMj4R+TQvPcCqYlR/l5E0zC+o37Aj7GR32Sl5DKVsWIlrA9GzODTqme3wDZhSmEp
-	 g9XLJrAVZtUj/BJI5/jw2jN7cqHxFF1FMA0Qe2MBuBa+zmAeIDyfbGVXMryqh0zAOt
-	 cB0afBNDB845IPF/d0hiP7mL29v90kcAgfsgRqr8=
+	b=kuOU/QkO39kyXAWjE2KaAFd7O3PXjASnHBwF15n/v6DD/jf0eAXXkJoh0AUTXNQ7N
+	 bKNerdzyhSiGcuTjeD4j8rTRbo+WZfa0oiaE+xz+6F4nC8IH5TjovapvGn0Lu1K9Gt
+	 u5VbSmf1MX2B+As8fJyi0iEXwtJ4m6HPJmBw0YvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 09/94] HID: core: store the unique system identifier in hid_device
+Subject: [PATCH 6.6 125/134] drm/amd/pm: fix a memleak in aldebaran_tables_init
 Date: Tue,  5 Dec 2023 12:16:37 +0900
-Message-ID: <20231205031523.399996863@linuxfoundation.org>
+Message-ID: <20231205031543.370308648@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +53,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 1e839143d674603b0bbbc4c513bca35404967dbc ]
+[ Upstream commit 7a88f23e768491bae653b444a96091d2aaeb0818 ]
 
-This unique identifier is currently used only for ensuring uniqueness in
-sysfs. However, this could be handful for userspace to refer to a specific
-hid_device by this id.
+When kzalloc() for smu_table->ecc_table fails, we should free
+the previously allocated resources to prevent memleak.
 
-2 use cases are in my mind: LEDs (and their naming convention), and
-HID-BPF.
-
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Link: https://lore.kernel.org/r/20220902132938.2409206-9-benjamin.tissoires@redhat.com
-Stable-dep-of: fc43e9c857b7 ("HID: fix HID device resource race between HID core and debugging support")
+Fixes: edd794208555 ("drm/amd/pm: add message smu to get ecc_table v2")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-core.c | 4 +++-
- include/linux/hid.h    | 2 ++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-core.c b/drivers/hid/hid-core.c
-index 8248cdc30e1d3..af1e1922e1ae0 100644
---- a/drivers/hid/hid-core.c
-+++ b/drivers/hid/hid-core.c
-@@ -2437,10 +2437,12 @@ int hid_add_device(struct hid_device *hdev)
- 			hid_warn(hdev, "bad device descriptor (%d)\n", ret);
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+index cc3169400c9b0..08fff9600bd29 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/aldebaran_ppt.c
+@@ -257,8 +257,11 @@ static int aldebaran_tables_init(struct smu_context *smu)
  	}
  
-+	hdev->id = atomic_inc_return(&id);
-+
- 	/* XXX hack, any other cleaner solution after the driver core
- 	 * is converted to allow more than 20 bytes as the device name? */
- 	dev_set_name(&hdev->dev, "%04X:%04X:%04X.%04X", hdev->bus,
--		     hdev->vendor, hdev->product, atomic_inc_return(&id));
-+		     hdev->vendor, hdev->product, hdev->id);
+ 	smu_table->ecc_table = kzalloc(tables[SMU_TABLE_ECCINFO].size, GFP_KERNEL);
+-	if (!smu_table->ecc_table)
++	if (!smu_table->ecc_table) {
++		kfree(smu_table->metrics_table);
++		kfree(smu_table->gpu_metrics_table);
+ 		return -ENOMEM;
++	}
  
- 	hid_debug_register(hdev, dev_name(&hdev->dev));
- 	ret = device_add(&hdev->dev);
-diff --git a/include/linux/hid.h b/include/linux/hid.h
-index 20266127cf666..3fc4241cffbe2 100644
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -622,6 +622,8 @@ struct hid_device {							/* device report descriptor */
- 	struct list_head debug_list;
- 	spinlock_t  debug_list_lock;
- 	wait_queue_head_t debug_wait;
-+
-+	unsigned int id;						/* system unique id */
- };
- 
- #define to_hid_device(pdev) \
+ 	return 0;
+ }
 -- 
 2.42.0
 
