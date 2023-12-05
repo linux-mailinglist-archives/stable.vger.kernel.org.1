@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-4131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213D6804620
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DB4180459B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF7541F213D4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA722818AC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2143D6FB8;
-	Tue,  5 Dec 2023 03:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2486AC2;
+	Tue,  5 Dec 2023 03:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErIDDgVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOxaVWPS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43746FAF;
-	Tue,  5 Dec 2023 03:25:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E0ECC433C7;
-	Tue,  5 Dec 2023 03:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DF456AA0;
+	Tue,  5 Dec 2023 03:19:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2386C433C7;
+	Tue,  5 Dec 2023 03:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746701;
-	bh=+m3T8h7cGCUevYURK73UrdYHDGfnR+L/qIkYe2x8fb0=;
+	s=korg; t=1701746359;
+	bh=XFhKlrkfatVzLLrdD0ewoCq0dWSsxsWN6peNyipuQBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ErIDDgVDrk/3SV8p3MJ4uWK8Y9Ieg1FJ5g9adhBT0llbQw/k68ZYKvekXbBz3r7ou
-	 zcoEf+/l8iWHWtDWqN11LpnOvujC/jjXSPzN+Q9d4IeBpcOGiJ42eE7yoQISnwFaC0
-	 WYxLV2IMJzfEufWaooHvdCJjIRjgaxEz0xoTVa7w=
+	b=OOxaVWPSOGBUxBmfLS0W2vk1BSXjU6Lh9/Gg9Kjv1UehOMhJN3n/GjptZwKeesUaf
+	 OK/KokAPpp1McpXhxxVPbGd1o34J99lrXkvvt511GMgCWjvL/kpMa6i4uDmHrHbbt0
+	 BQm3d8qnrddV9E1er3EEL89shO/+53rCt/W4M4sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wyes Karny <wyes.karny@amd.com>,
-	Ayush Jain <ayush.jain3@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/134] cpufreq/amd-pstate: Only print supported EPP values for performance governor
+Subject: [PATCH 4.14 29/30] net: ravb: Start TX queues after HW initialization succeeded
 Date: Tue,  5 Dec 2023 12:16:36 +0900
-Message-ID: <20231205031543.307235753@linuxfoundation.org>
+Message-ID: <20231205031513.229516979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,70 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayush Jain <ayush.jain3@amd.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 142c169b31beb364ef39385b4e88735bd51d37fe ]
+[ Upstream commit 6f32c086602050fc11157adeafaa1c1eb393f0af ]
 
-show_energy_performance_available_preferences() to show only supported
-values which is performance in performance governor policy.
+ravb_phy_start() may fail. If that happens, the TX queues will remain
+started. Thus, move the netif_tx_start_all_queues() after PHY is
+successfully initialized.
 
--------Before--------
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_driver
-amd-pstate-epp
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-performance
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_preference
-performance
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_available_preferences
-default performance balance_performance balance_power power
-
--------After--------
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_driver
-amd-pstate-epp
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
-performance
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_preference
-performance
-$ cat /sys/devices/system/cpu/cpu1/cpufreq/energy_performance_available_preferences
-performance
-
-Fixes: ffa5096a7c33 ("cpufreq: amd-pstate: implement Pstate EPP support for the AMD processors")
-Suggested-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Ayush Jain <ayush.jain3@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Acked-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-index 3313d1d2c6ddf..1f6186475715e 100644
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -882,11 +882,16 @@ static ssize_t show_energy_performance_available_preferences(
- {
- 	int i = 0;
- 	int offset = 0;
-+	struct amd_cpudata *cpudata = policy->driver_data;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 4db3495ef3370..b97d450214dfd 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1429,13 +1429,13 @@ static int ravb_open(struct net_device *ndev)
+ 	if (priv->chip_id == RCAR_GEN2)
+ 		ravb_ptp_init(ndev, priv->pdev);
+ 
+-	netif_tx_start_all_queues(ndev);
+-
+ 	/* PHY control start */
+ 	error = ravb_phy_start(ndev);
+ 	if (error)
+ 		goto out_ptp_stop;
+ 
++	netif_tx_start_all_queues(ndev);
 +
-+	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE)
-+		return sysfs_emit_at(buf, offset, "%s\n",
-+				energy_perf_strings[EPP_INDEX_PERFORMANCE]);
+ 	return 0;
  
- 	while (energy_perf_strings[i] != NULL)
- 		offset += sysfs_emit_at(buf, offset, "%s ", energy_perf_strings[i++]);
- 
--	sysfs_emit_at(buf, offset, "\n");
-+	offset += sysfs_emit_at(buf, offset, "\n");
- 
- 	return offset;
- }
+ out_ptp_stop:
 -- 
 2.42.0
 
