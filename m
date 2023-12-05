@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-4066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0498045DB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E858045C4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C948428283C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D8CE282240
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DA16FB0;
-	Tue,  5 Dec 2023 03:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C576FAF;
+	Tue,  5 Dec 2023 03:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kx7irS/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UimgKPSM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CEC76AA0;
-	Tue,  5 Dec 2023 03:22:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64229C433C7;
-	Tue,  5 Dec 2023 03:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9479B6AA0;
+	Tue,  5 Dec 2023 03:21:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194A7C433C7;
+	Tue,  5 Dec 2023 03:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746531;
-	bh=we1IrnzDe3llUQHHph+qBYmTogOuKz/MohnWXZu+wZU=;
+	s=korg; t=1701746473;
+	bh=e26Iqwi2oMrhAuX8N0ilSZ7lcaCWuRCxiMzdRVjyz6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kx7irS/fwLvi2ZYPgmW4XENHWvByxPLL8PY4FtiGt7UCImp1s3jfuAwA6JAtGsFqV
-	 5oYNowGwJyxgtaW/tRfUFotu7DMuu9oUUYCQrRxUxmsD+R2MCU+po7RhTdjKO51K8H
-	 sgdvDGpkiWfb/0ChysaOoA83UxM0KSTXIDVLLbrU=
+	b=UimgKPSMdnriq+a0G2W3lyajSP0kHC1zOo72WuXDYRIwkI5uovWOZ+uTdOLnW0l4f
+	 RKa4UqZe533nvbBalenUiwQqiPEcPzENYFfDiE7f1ttkqpHTjMzygPiFW6zzFIk262
+	 X08r6FIQi2565rzNWlQxr5qLML6ZgHfdITa5PjrA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
+	Michael Strauss <michael.strauss@amd.com>,
 	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Zhongwei <zhongwei.zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 035/134] drm/amd/display: fix ABM disablement
-Date: Tue,  5 Dec 2023 12:15:07 +0900
-Message-ID: <20231205031537.711194059@linuxfoundation.org>
+Subject: [PATCH 6.6 036/134] drm/amd/display: force toggle rate wa for first link training for a retimer
+Date: Tue,  5 Dec 2023 12:15:08 +0900
+Message-ID: <20231205031537.777745704@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
 References: <20231205031535.163661217@linuxfoundation.org>
@@ -57,58 +58,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Zhongwei <zhongwei.zhang@amd.com>
 
-commit b9f46f0b98784e40288ee393f863f553fde062fa upstream.
+commit eb28018943fed7639dfea1c9ec9c756ec692b99a upstream.
 
-On recent versions of DMUB firmware, if we want to completely disable
-ABM we have to pass ABM_LEVEL_IMMEDIATE_DISABLE as the requested ABM
-level to DMUB. Otherwise, LCD eDP displays are unable to reach their
-maximum brightness levels. So, to fix this whenever the user requests an
-ABM level of 0 pass ABM_LEVEL_IMMEDIATE_DISABLE to DMUB instead. Also,
-to keep the user's experience consistent map ABM_LEVEL_IMMEDIATE_DISABLE
-to 0 when a user tries to read the requested ABM level.
+[WHY]
+Handover from DMUB to driver does not perform link rate toggle.
+It might cause link training failure for boot up.
+
+[HOW]
+Force toggle rate wa for first link train.
+link->vendor_specific_lttpr_link_rate_wa should be zero then.
 
 Cc: stable@vger.kernel.org # 6.1+
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Reviewed-by: Michael Strauss <michael.strauss@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Zhongwei <zhongwei.zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6236,7 +6236,7 @@ int amdgpu_dm_connector_atomic_set_prope
- 		dm_new_state->underscan_enable = val;
- 		ret = 0;
- 	} else if (property == adev->mode_info.abm_level_property) {
--		dm_new_state->abm_level = val;
-+		dm_new_state->abm_level = val ?: ABM_LEVEL_IMMEDIATE_DISABLE;
- 		ret = 0;
- 	}
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_fixed_vs_pe_retimer.c
+@@ -115,7 +115,7 @@ static enum link_training_result perform
+ 		lt_settings->cr_pattern_time = 16000;
  
-@@ -6281,7 +6281,8 @@ int amdgpu_dm_connector_atomic_get_prope
- 		*val = dm_state->underscan_enable;
- 		ret = 0;
- 	} else if (property == adev->mode_info.abm_level_property) {
--		*val = dm_state->abm_level;
-+		*val = (dm_state->abm_level != ABM_LEVEL_IMMEDIATE_DISABLE) ?
-+			dm_state->abm_level : 0;
- 		ret = 0;
- 	}
+ 	/* Fixed VS/PE specific: Toggle link rate */
+-	apply_toggle_rate_wa = (link->vendor_specific_lttpr_link_rate_wa == target_rate);
++	apply_toggle_rate_wa = ((link->vendor_specific_lttpr_link_rate_wa == target_rate) || (link->vendor_specific_lttpr_link_rate_wa == 0));
+ 	target_rate = get_dpcd_link_rate(&lt_settings->link_settings);
+ 	toggle_rate = (target_rate == 0x6) ? 0xA : 0x6;
  
-@@ -6354,7 +6355,8 @@ void amdgpu_dm_connector_funcs_reset(str
- 		state->pbn = 0;
+@@ -271,7 +271,7 @@ enum link_training_result dp_perform_fix
+ 	/* Vendor specific: Toggle link rate */
+ 	toggle_rate = (rate == 0x6) ? 0xA : 0x6;
  
- 		if (connector->connector_type == DRM_MODE_CONNECTOR_eDP)
--			state->abm_level = amdgpu_dm_abm_level;
-+			state->abm_level = amdgpu_dm_abm_level ?:
-+				ABM_LEVEL_IMMEDIATE_DISABLE;
+-	if (link->vendor_specific_lttpr_link_rate_wa == rate) {
++	if (link->vendor_specific_lttpr_link_rate_wa == rate || link->vendor_specific_lttpr_link_rate_wa == 0) {
+ 		core_link_write_dpcd(
+ 				link,
+ 				DP_LINK_BW_SET,
+@@ -617,7 +617,7 @@ enum link_training_result dp_perform_fix
+ 	/* Vendor specific: Toggle link rate */
+ 	toggle_rate = (rate == 0x6) ? 0xA : 0x6;
  
- 		__drm_atomic_helper_connector_reset(connector, &state->base);
- 	}
+-	if (link->vendor_specific_lttpr_link_rate_wa == rate) {
++	if (link->vendor_specific_lttpr_link_rate_wa == rate || link->vendor_specific_lttpr_link_rate_wa == 0) {
+ 		core_link_write_dpcd(
+ 				link,
+ 				DP_LINK_BW_SET,
 
 
 
