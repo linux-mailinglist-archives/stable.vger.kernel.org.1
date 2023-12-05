@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D898046E1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DDC8047A2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5589281595
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABC071C20E55
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7938BEC;
-	Tue,  5 Dec 2023 03:32:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4BB88F79;
+	Tue,  5 Dec 2023 03:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAU0buOT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dK5x52hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105426FB1;
-	Tue,  5 Dec 2023 03:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2CCC433C7;
-	Tue,  5 Dec 2023 03:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648F06FB1;
+	Tue,  5 Dec 2023 03:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0700C433C8;
+	Tue,  5 Dec 2023 03:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747150;
-	bh=bUs2yl1M0i/THoQs5l2tF82p/MRzJKl0JzfuLo7Lx8Y=;
+	s=korg; t=1701747646;
+	bh=StYV/eO8uDhM4EvBeh/vzY0Mc28+t+7G0iPrJOg/tEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GAU0buOTuL2lBzWBujrl05iMQW5Ve3gfCW9mZC10k2mHT1M4my9OMQXLJfOT1ebsR
-	 jYY21nZG2qc/cpc89D1BpKwiF80vEB7bOVl4NV3+idae8milKYwTKqeQjdWE5/2gwO
-	 DhQU2K8DoaDy37a75qZAI27aU/Vodz7/dJtX8BhM=
+	b=dK5x52hXica2w3IhZcbo2+VN7toUSWKxRpyrwn5tx2RczhwuyWaI/biVD4TFD+Xvu
+	 qB5o/SjlUr4bNuqZx3AyhmyHU0Y6YYaBYdxlpacZ75QYkMXqfGwIgi2Wu+UCa9hDFT
+	 7AY3e8O/D1ND/MjzsM6ibH0FGv7UL6Ag6CBL3AiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Haitao Shan <hshan@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 078/107] KVM: x86: Fix lapic timer interrupt lost after loading a snapshot.
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 08/67] mmc: block: Do not lose cache flush during CQE error recovery
 Date: Tue,  5 Dec 2023 12:16:53 +0900
-Message-ID: <20231205031536.401909337@linuxfoundation.org>
+Message-ID: <20231205031520.308307080@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,133 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haitao Shan <hshan@google.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2 ]
+commit 174925d340aac55296318e43fd96c0e1d196e105 upstream.
 
-When running android emulator (which is based on QEMU 2.12) on
-certain Intel hosts with kernel version 6.3-rc1 or above, guest
-will freeze after loading a snapshot. This is almost 100%
-reproducible. By default, the android emulator will use snapshot
-to speed up the next launching of the same android guest. So
-this breaks the android emulator badly.
+During CQE error recovery, error-free data commands get requeued if there
+is any data left to transfer, but non-data commands are completed even
+though they have not been processed.  Requeue them instead.
 
-I tested QEMU 8.0.4 from Debian 12 with an Ubuntu 22.04 guest by
-running command "loadvm" after "savevm". The same issue is
-observed. At the same time, none of our AMD platforms is impacted.
-More experiments show that loading the KVM module with
-"enable_apicv=false" can workaround it.
+Note the only non-data command is cache flush, which would have resulted in
+a cache flush being lost if it was queued at the time of CQE recovery.
 
-The issue started to show up after commit 8e6ed96cdd50 ("KVM: x86:
-fire timer when it is migrated and expired, and in oneshot mode").
-However, as is pointed out by Sean Christopherson, it is introduced
-by commit 967235d32032 ("KVM: vmx: clear pending interrupts on
-KVM_SET_LAPIC"). commit 8e6ed96cdd50 ("KVM: x86: fire timer when
-it is migrated and expired, and in oneshot mode") just makes it
-easier to hit the issue.
-
-Having both commits, the oneshot lapic timer gets fired immediately
-inside the KVM_SET_LAPIC call when loading the snapshot. On Intel
-platforms with APIC virtualization and posted interrupt processing,
-this eventually leads to setting the corresponding PIR bit. However,
-the whole PIR bits get cleared later in the same KVM_SET_LAPIC call
-by apicv_post_state_restore. This leads to timer interrupt lost.
-
-The fix is to move vmx_apicv_post_state_restore to the beginning of
-the KVM_SET_LAPIC call and rename to vmx_apicv_pre_state_restore.
-What vmx_apicv_post_state_restore does is actually clearing any
-former apicv state and this behavior is more suitable to carry out
-in the beginning.
-
-Fixes: 967235d32032 ("KVM: vmx: clear pending interrupts on KVM_SET_LAPIC")
+Fixes: 1e8e55b67030 ("mmc: block: Add CQE support")
 Cc: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Haitao Shan <hshan@google.com>
-Link: https://lore.kernel.org/r/20230913000215.478387-1-hshan@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-2-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm-x86-ops.h | 1 +
- arch/x86/include/asm/kvm_host.h    | 1 +
- arch/x86/kvm/lapic.c               | 4 ++++
- arch/x86/kvm/vmx/vmx.c             | 4 ++--
- 4 files changed, 8 insertions(+), 2 deletions(-)
+ drivers/mmc/core/block.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 2c6698aa218b1..abc07d0045897 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -106,6 +106,7 @@ KVM_X86_OP_OPTIONAL(vcpu_blocking)
- KVM_X86_OP_OPTIONAL(vcpu_unblocking)
- KVM_X86_OP_OPTIONAL(pi_update_irte)
- KVM_X86_OP_OPTIONAL(pi_start_assignment)
-+KVM_X86_OP_OPTIONAL(apicv_pre_state_restore)
- KVM_X86_OP_OPTIONAL(apicv_post_state_restore)
- KVM_X86_OP_OPTIONAL_RET0(dy_apicv_has_pending_interrupt)
- KVM_X86_OP_OPTIONAL(set_hv_timer)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index c1dcaa3d2d6eb..dfcdcafe3a2cd 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1603,6 +1603,7 @@ struct kvm_x86_ops {
- 	int (*pi_update_irte)(struct kvm *kvm, unsigned int host_irq,
- 			      uint32_t guest_irq, bool set);
- 	void (*pi_start_assignment)(struct kvm *kvm);
-+	void (*apicv_pre_state_restore)(struct kvm_vcpu *vcpu);
- 	void (*apicv_post_state_restore)(struct kvm_vcpu *vcpu);
- 	bool (*dy_apicv_has_pending_interrupt)(struct kvm_vcpu *vcpu);
- 
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 4dba0a84ba2f3..edcf45e312b99 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2446,6 +2446,8 @@ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event)
- 	u64 msr_val;
- 	int i;
- 
-+	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
-+
- 	if (!init_event) {
- 		msr_val = APIC_DEFAULT_PHYS_BASE | MSR_IA32_APICBASE_ENABLE;
- 		if (kvm_vcpu_is_reset_bsp(vcpu))
-@@ -2757,6 +2759,8 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state *s)
- 	struct kvm_lapic *apic = vcpu->arch.apic;
- 	int r;
- 
-+	static_call_cond(kvm_x86_apicv_pre_state_restore)(vcpu);
-+
- 	kvm_lapic_set_base(vcpu, vcpu->arch.apic_base);
- 	/* set SPIV separately to get count of SW disabled APICs right */
- 	apic_set_spiv(apic, *((u32 *)(s->regs + APIC_SPIV)));
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 31a10d774df6d..98d732b9418f1 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6799,7 +6799,7 @@ static void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap)
- 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
- }
- 
--static void vmx_apicv_post_state_restore(struct kvm_vcpu *vcpu)
-+static void vmx_apicv_pre_state_restore(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 
-@@ -8172,7 +8172,7 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
- 	.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,
- 	.load_eoi_exitmap = vmx_load_eoi_exitmap,
--	.apicv_post_state_restore = vmx_apicv_post_state_restore,
-+	.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
- 	.check_apicv_inhibit_reasons = vmx_check_apicv_inhibit_reasons,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
--- 
-2.42.0
-
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1465,6 +1465,8 @@ static void mmc_blk_cqe_complete_rq(stru
+ 			blk_mq_requeue_request(req, true);
+ 		else
+ 			__blk_mq_end_request(req, BLK_STS_OK);
++	} else if (mq->in_recovery) {
++		blk_mq_requeue_request(req, true);
+ 	} else {
+ 		blk_mq_end_request(req, BLK_STS_OK);
+ 	}
 
 
 
