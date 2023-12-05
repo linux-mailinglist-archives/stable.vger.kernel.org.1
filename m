@@ -1,82 +1,142 @@
-Return-Path: <stable+bounces-4654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07578050B6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:39:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AA48050F7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:45:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C09BB20F16
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:39:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0E41C20BA7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:45:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A015787D;
-	Tue,  5 Dec 2023 10:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B7E446C5;
+	Tue,  5 Dec 2023 10:45:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B/Pzv3q3"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C3B4D50;
-	Tue,  5 Dec 2023 02:38:41 -0800 (PST)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 5EE4D1C007F; Tue,  5 Dec 2023 11:38:40 +0100 (CET)
-Date: Tue, 5 Dec 2023 11:38:39 +0100
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 5.10 000/134] 5.10.203-rc2 review
-Message-ID: <ZW79ryqsbsvYylD6@duo.ucw.cz>
-References: <20231205043610.004070706@linuxfoundation.org>
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 687D1FA;
+	Tue,  5 Dec 2023 02:45:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701773112; x=1733309112;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=SOLccH3Xzc++EaBQ0v6eolcJHqG0ji0sa1DvQVydOv4=;
+  b=B/Pzv3q33kt8RpyZTy/nN4u42ZFajAZmXfsTKeD8tjpYhp42/TC16GYj
+   ojRlnTUVc9MaTnwB5XaNZdyJ+S+4fXb9RIkXpNhebVWMY4TCCSVmOs4cM
+   lmc8UhjjpDBe6/1nBV8/M/p+8wbozHlFSnQ968ASyoPMjFZWJVZly3MCC
+   j2BlG9RBsmSRn1vBh/CZa59BePhRPgvWrqDd1vwO9DHsh8Gatu8scdG0V
+   e3aC/gFjpJwoiHvAz4T9jn8yJMlYpSa9ZrVT9gpqzrg2afvNzBSegEG2w
+   oDHjqn8i1CkdgEz4SR/l+x2gUKGeYQwgY7YRvSYM1HaqUapCYOLUDtg5m
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="393609836"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
+   d="scan'208";a="393609836"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 02:45:11 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="914758875"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
+   d="scan'208";a="914758875"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga001.fm.intel.com with ESMTP; 05 Dec 2023 02:45:05 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rASus-0008na-2J;
+	Tue, 05 Dec 2023 10:45:03 +0000
+Date: Tue, 5 Dec 2023 18:44:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Philipp Stanner <pstanner@redhat.com>,
+	Bjorn Helgaas <helgaas@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Hanjun Guo <guohanjun@huawei.com>, NeilBrown <neilb@suse.de>,
+	Kent Overstreet <kmo@daterainc.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Uladzislau Koshchanka <koshchanka@gmail.com>,
+	John Sanpe <sanpeqf@gmail.com>, Dave Jiang <dave.jiang@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Kees Cook <keescook@chromium.org>, David Gow <davidgow@google.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
+	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arch@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
+Message-ID: <202312051813.09WbvusW-lkp@intel.com>
+References: <20231204123834.29247-6-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="Ff6ud3cGW+958NtS"
-Content-Disposition: inline
-In-Reply-To: <20231205043610.004070706@linuxfoundation.org>
-
-
---Ff6ud3cGW+958NtS
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20231204123834.29247-6-pstanner@redhat.com>
 
-Hi!
+Hi Philipp,
 
-> This is the start of the stable review cycle for the 5.10.203 release.
-> There are 134 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+kernel test robot noticed the following build errors:
 
-CIP testing did not find any problems here:
+[auto build test ERROR on pci/next]
+[also build test ERROR on pci/for-linus arnd-asm-generic/master kees/for-next/pstore kees/for-next/kspp linus/master v6.7-rc4 next-20231205]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.10.y
+url:    https://github.com/intel-lab-lkp/linux/commits/Philipp-Stanner/lib-pci_iomap-c-fix-cleanup-bugs-in-pci_iounmap/20231204-204128
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pci/pci.git next
+patch link:    https://lore.kernel.org/r/20231204123834.29247-6-pstanner%40redhat.com
+patch subject: [PATCH v3 5/5] lib, pci: unify generic pci_iounmap()
+config: openrisc-virt_defconfig (https://download.01.org/0day-ci/archive/20231205/202312051813.09WbvusW-lkp@intel.com/config)
+compiler: or1k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231205/202312051813.09WbvusW-lkp@intel.com/reproduce)
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312051813.09WbvusW-lkp@intel.com/
 
-Best regards,
-                                                                Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+All errors (new ones prefixed by >>):
 
---Ff6ud3cGW+958NtS
-Content-Type: application/pgp-signature; name="signature.asc"
+   drivers/pci/iomap.c: In function 'pci_iounmap':
+>> drivers/pci/iomap.c:155:17: error: implicit declaration of function 'ioport_unmap'; did you mean 'devm_ioport_unmap'? [-Werror=implicit-function-declaration]
+     155 |                 ioport_unmap(addr);
+         |                 ^~~~~~~~~~~~
+         |                 devm_ioport_unmap
+   cc1: some warnings being treated as errors
 
------BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZW79rwAKCRAw5/Bqldv6
-8vZOAJ0S1h8tRq9Lb1bzMzHQOjXjDRzXjQCcDf9H3FNWWOiCZ7cMJFe/qOYsrXQ=
-=ylix
------END PGP SIGNATURE-----
+vim +155 drivers/pci/iomap.c
 
---Ff6ud3cGW+958NtS--
+   144	
+   145	/**
+   146	 * pci_iounmap - Unmapp a mapping
+   147	 * @dev: PCI device the mapping belongs to
+   148	 * @addr: start address of the mapping
+   149	 *
+   150	 * Unmapp a PIO or MMIO mapping.
+   151	 */
+   152	void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
+   153	{
+   154		if (iomem_is_ioport(addr)) {
+ > 155			ioport_unmap(addr);
+   156			return;
+   157		}
+   158	
+   159		iounmap(addr);
+   160	}
+   161	EXPORT_SYMBOL(pci_iounmap);
+   162	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
