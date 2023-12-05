@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-4053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73B0C8045CE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34AD58045D5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A52DB1C20C73
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6598B1C20C8B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CD76FB0;
-	Tue,  5 Dec 2023 03:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47AE6FB0;
+	Tue,  5 Dec 2023 03:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjLSt8bI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTB3eSII"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 957D36AA0;
-	Tue,  5 Dec 2023 03:21:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EDF2C433C8;
-	Tue,  5 Dec 2023 03:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6111E6AA0;
+	Tue,  5 Dec 2023 03:21:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAED1C433C7;
+	Tue,  5 Dec 2023 03:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746499;
-	bh=oFCEMIhSfMizectqlBb1XTmZwX7OQikOgYmjMN20yE4=;
+	s=korg; t=1701746516;
+	bh=Gvg7rFOfJsBjaJpFhK7sMYJPYT5R6VCjlKDoeZmgM+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjLSt8bIuTKr5gBQkylf73cU223BJrw84pIIaEMPwLQCIvozmRPc74v5HEt+HfUkJ
-	 zP2CXZKt2AzC3bXWsUDZpsQj9jcFfgK+L+Lt9ziQvX/IC2mOW8egIvOjlZIzwWc7WG
-	 DN5ND6THdQU4+83FmW4h+ClsFeIwjh9JMg8kfZgA=
+	b=XTB3eSII2U2jEOKkSYb+3m1mIh3aK/Jqp+HPhBYlgYu6cp1t2avDBLYgCZysR1Cu0
+	 CSBZipkiYv7LBGv9F5i08l6ATKJyjmQmNzz87VlIHJsTNIGg7wYWaCKXZDvAfdcCUD
+	 V/+zayFBoD1IC6oUgsKz2dEWQ6eXhrU2npjxsp00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Sierra <alex.sierra@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>
-Subject: [PATCH 6.6 028/134] drm/amdgpu: Force order between a read and write to the same address
-Date: Tue,  5 Dec 2023 12:15:00 +0900
-Message-ID: <20231205031537.210246980@linuxfoundation.org>
+	Tim Huang <Tim.Huang@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 029/134] drm/amdgpu: fix memory overflow in the IB test
+Date: Tue,  5 Dec 2023 12:15:01 +0900
+Message-ID: <20231205031537.282009771@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
 References: <20231205031535.163661217@linuxfoundation.org>
@@ -51,65 +52,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Sierra <alex.sierra@amd.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit 4b27a33c3b173bef1d19ba89e0b9b812b4fddd25 upstream.
+commit 6b0b7789a7a5f3e69185449f891beea58e563f9b upstream.
 
-Setting register to force ordering to prevent read/write or write/read
-hazards for un-cached modes.
+Fix a memory overflow issue in the gfx IB test
+for some ASICs. At least 20 bytes are needed for
+the IB test packet.
 
-Signed-off-by: Alex Sierra <alex.sierra@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+v2: correct code indentation errors. (Christian)
+
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org # 6.1.x
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c                     |    8 ++++++++
- drivers/gpu/drm/amd/include/asic_reg/gc/gc_11_0_0_offset.h |    2 ++
- 2 files changed, 10 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c  |    2 +-
+ drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c   |    4 ++--
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c   |    4 ++--
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c |    4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
 --- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
 +++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -83,6 +83,10 @@ MODULE_FIRMWARE("amdgpu/gc_11_0_4_me.bin
- MODULE_FIRMWARE("amdgpu/gc_11_0_4_mec.bin");
- MODULE_FIRMWARE("amdgpu/gc_11_0_4_rlc.bin");
+@@ -398,7 +398,7 @@ static int gfx_v11_0_ring_test_ib(struct
+ 		adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 		cpu_ptr = &adev->wb.wb[index];
  
-+static const struct soc15_reg_golden golden_settings_gc_11_0[] = {
-+	SOC15_REG_GOLDEN_VALUE(GC, 0, regTCP_CNTL, 0x20000000, 0x20000000)
-+};
+-		r = amdgpu_ib_get(adev, NULL, 16, AMDGPU_IB_POOL_DIRECT, &ib);
++		r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 		if (r) {
+ 			DRM_ERROR("amdgpu: failed to get ib (%ld).\n", r);
+ 			goto err1;
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+@@ -883,8 +883,8 @@ static int gfx_v8_0_ring_test_ib(struct
+ 	gpu_addr = adev->wb.gpu_addr + (index * 4);
+ 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 	memset(&ib, 0, sizeof(ib));
+-	r = amdgpu_ib_get(adev, NULL, 16,
+-					AMDGPU_IB_POOL_DIRECT, &ib);
 +
- static const struct soc15_reg_golden golden_settings_gc_11_0_1[] =
- {
- 	SOC15_REG_GOLDEN_VALUE(GC, 0, regCGTT_GS_NGG_CLK_CTRL, 0x9fff8fff, 0x00000010),
-@@ -275,6 +279,10 @@ static void gfx_v11_0_init_golden_regist
- 	default:
- 		break;
- 	}
-+	soc15_program_register_sequence(adev,
-+					golden_settings_gc_11_0,
-+					(const u32)ARRAY_SIZE(golden_settings_gc_11_0));
-+
- }
++	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 	if (r)
+ 		goto err1;
  
- static void gfx_v11_0_write_data_to_reg(struct amdgpu_ring *ring, int eng_sel,
---- a/drivers/gpu/drm/amd/include/asic_reg/gc/gc_11_0_0_offset.h
-+++ b/drivers/gpu/drm/amd/include/asic_reg/gc/gc_11_0_0_offset.h
-@@ -6369,6 +6369,8 @@
- #define regTCP_INVALIDATE_BASE_IDX                                                                      1
- #define regTCP_STATUS                                                                                   0x19a1
- #define regTCP_STATUS_BASE_IDX                                                                          1
-+#define regTCP_CNTL                                                                                     0x19a2
-+#define regTCP_CNTL_BASE_IDX                                                                            1
- #define regTCP_CNTL2                                                                                    0x19a3
- #define regTCP_CNTL2_BASE_IDX                                                                           1
- #define regTCP_DEBUG_INDEX                                                                              0x19a5
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -1039,8 +1039,8 @@ static int gfx_v9_0_ring_test_ib(struct
+ 	gpu_addr = adev->wb.gpu_addr + (index * 4);
+ 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 	memset(&ib, 0, sizeof(ib));
+-	r = amdgpu_ib_get(adev, NULL, 16,
+-					AMDGPU_IB_POOL_DIRECT, &ib);
++
++	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 	if (r)
+ 		goto err1;
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_4_3.c
+@@ -296,8 +296,8 @@ static int gfx_v9_4_3_ring_test_ib(struc
+ 	gpu_addr = adev->wb.gpu_addr + (index * 4);
+ 	adev->wb.wb[index] = cpu_to_le32(0xCAFEDEAD);
+ 	memset(&ib, 0, sizeof(ib));
+-	r = amdgpu_ib_get(adev, NULL, 16,
+-			  AMDGPU_IB_POOL_DIRECT, &ib);
++
++	r = amdgpu_ib_get(adev, NULL, 20, AMDGPU_IB_POOL_DIRECT, &ib);
+ 	if (r)
+ 		goto err1;
+ 
 
 
 
