@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB353804812
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3462A8046FE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8565A281341
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E38A9281343
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237588F6B;
-	Tue,  5 Dec 2023 03:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549108BF2;
+	Tue,  5 Dec 2023 03:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iKmUzSyi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogTMG7fg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C3579E3;
-	Tue,  5 Dec 2023 03:45:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE41C433C7;
-	Tue,  5 Dec 2023 03:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D446FB1;
+	Tue,  5 Dec 2023 03:33:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF2DC433C8;
+	Tue,  5 Dec 2023 03:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747934;
-	bh=z1gl2Fb9T7C3HgCxaHA6F4DIBuWulSLeXSh7gPQUabA=;
+	s=korg; t=1701747225;
+	bh=Uih5b77dMlVtDoRZ7w9gFV3cl75tnJUnaBIpGrd+hf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iKmUzSyii56V5DFt8INjaGm42tpMBwQI4Q8GF+It8tALbDkIleR3wfS8buB/zo3vb
-	 Gv82S/fG6pVJiXr8TfFTK2CwCbAxKH9gQXtiHnowq9L4QVLg8KRQ90ltn8wtsKAKz7
-	 6Ne4BVOsOHYlFoZ3bTDYRZ+pl9EHndRpmA7FnBN0=
+	b=ogTMG7fgPzhMWXX9DjebCOduLbEhoqv+5aq3nRBYGfod2HuVCPf90tvz4AqQHmM7Y
+	 slF82YVhQ3f3ZtJ/j37Mb34090EZdUJtMjmdEOF837+nsxAh93LCJgQHiaMkK3JAF8
+	 weB3IAQGzVa75dSviZyI/Rjf0WIrbynPLvF7Fesw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maria Yu <quic_aiquny@quicinc.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 52/94] pinctrl: avoid reload of p state in list iteration
-Date: Tue,  5 Dec 2023 12:17:20 +0900
-Message-ID: <20231205031525.754083766@linuxfoundation.org>
+	Juergen Gross <jgross@suse.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.con>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/107] x86/xen: fix percpu vcpu_info allocation
+Date: Tue,  5 Dec 2023 12:17:21 +0900
+Message-ID: <20231205031538.425386402@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +53,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maria Yu <quic_aiquny@quicinc.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit 4198a9b571065978632276264e01d71d68000ac5 upstream.
+[ Upstream commit db2832309a82b9acc4b8cc33a1831d36507ec13e ]
 
-When in the list_for_each_entry iteration, reload of p->state->settings
-with a local setting from old_state will turn the list iteration into an
-infinite loop.
+Today the percpu struct vcpu_info is allocated via DEFINE_PER_CPU(),
+meaning that it could cross a page boundary. In this case registering
+it with the hypervisor will fail, resulting in a panic().
 
-The typical symptom when the issue happens, will be a printk message like:
+This can easily be fixed by using DEFINE_PER_CPU_ALIGNED() instead,
+as struct vcpu_info is guaranteed to have a size of 64 bytes, matching
+the cache line size of x86 64-bit processors (Xen doesn't support
+32-bit processors).
 
-  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
-already used for some other setting".
-
-This is a compiler-dependent problem, one instance occurred using Clang
-version 10.0 on the arm64 architecture with linux version 4.19.
-
-Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231115102824.23727-1-quic_aiquny@quicinc.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.con>
+Link: https://lore.kernel.org/r/20231124074852.25161-1-jgross@suse.com
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/xen/enlighten.c | 6 +++++-
+ arch/x86/xen/xen-ops.h   | 2 +-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1237,17 +1237,17 @@ static void pinctrl_link_add(struct pinc
- static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
- {
- 	struct pinctrl_setting *setting, *setting2;
--	struct pinctrl_state *old_state = p->state;
-+	struct pinctrl_state *old_state = READ_ONCE(p->state);
- 	int ret;
+diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+index 0337392a31214..3c61bb98c10e2 100644
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -33,9 +33,12 @@ EXPORT_SYMBOL_GPL(hypercall_page);
+  * and xen_vcpu_setup for details. By default it points to share_info->vcpu_info
+  * but during boot it is switched to point to xen_vcpu_info.
+  * The pointer is used in xen_evtchn_do_upcall to acknowledge pending events.
++ * Make sure that xen_vcpu_info doesn't cross a page boundary by making it
++ * cache-line aligned (the struct is guaranteed to have a size of 64 bytes,
++ * which matches the cache line size of 64-bit x86 processors).
+  */
+ DEFINE_PER_CPU(struct vcpu_info *, xen_vcpu);
+-DEFINE_PER_CPU(struct vcpu_info, xen_vcpu_info);
++DEFINE_PER_CPU_ALIGNED(struct vcpu_info, xen_vcpu_info);
  
--	if (p->state) {
-+	if (old_state) {
- 		/*
- 		 * For each pinmux setting in the old state, forget SW's record
- 		 * of mux owner for that pingroup. Any pingroups which are
- 		 * still owned by the new state will be re-acquired by the call
- 		 * to pinmux_enable_setting() in the loop below.
- 		 */
--		list_for_each_entry(setting, &p->state->settings, node) {
-+		list_for_each_entry(setting, &old_state->settings, node) {
- 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
- 				continue;
- 			pinmux_disable_setting(setting);
+ /* Linux <-> Xen vCPU id mapping */
+ DEFINE_PER_CPU(uint32_t, xen_vcpu_id);
+@@ -160,6 +163,7 @@ void xen_vcpu_setup(int cpu)
+ 	int err;
+ 	struct vcpu_info *vcpup;
+ 
++	BUILD_BUG_ON(sizeof(*vcpup) > SMP_CACHE_BYTES);
+ 	BUG_ON(HYPERVISOR_shared_info == &xen_dummy_shared_info);
+ 
+ 	/*
+diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
+index a10903785a338..b2b2f4315b78d 100644
+--- a/arch/x86/xen/xen-ops.h
++++ b/arch/x86/xen/xen-ops.h
+@@ -21,7 +21,7 @@ extern void *xen_initial_gdt;
+ struct trap_info;
+ void xen_copy_trap_info(struct trap_info *traps);
+ 
+-DECLARE_PER_CPU(struct vcpu_info, xen_vcpu_info);
++DECLARE_PER_CPU_ALIGNED(struct vcpu_info, xen_vcpu_info);
+ DECLARE_PER_CPU(unsigned long, xen_cr3);
+ DECLARE_PER_CPU(unsigned long, xen_current_cr3);
+ 
+-- 
+2.42.0
+
 
 
 
