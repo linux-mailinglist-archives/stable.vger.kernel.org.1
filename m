@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-4122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CE5804617
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C748580465D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F2828344C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B47DB20BF0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE71D8BE0;
-	Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC92B6FB1;
+	Tue,  5 Dec 2023 03:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSaArJsZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFlx+Dv9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A287A6FB1;
-	Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FEDC433C7;
-	Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E50E6FAF;
+	Tue,  5 Dec 2023 03:26:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE10C433C7;
+	Tue,  5 Dec 2023 03:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746675;
-	bh=9v6+D6gmnJgN0YWm+Q9LtqLz+RkRwnEEWTytvr2b17g=;
+	s=korg; t=1701746809;
+	bh=bgq/90WBjnPA+ezBznGLCJrtPimZi6YtgBDoc8FqbzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSaArJsZAaUgabg0JMkXjfyLQe7zyHbYwfWkFn+oYgXofgTZl34XhKfMfkCb3VokL
-	 oHx9CHNNC3IEeK054zaHj41mW3ebJ+ZhIKZdTfvZatji3JncEE0YrsDzC8DnlHEDwc
-	 LvS2sBb+m8G/O+mucGs91Cxm6+1xsceqSI8rHPhw=
+	b=TFlx+Dv9q+IteQa5rh3KuMjFihPje928Jemp6L3KWcQmqxNGUFE9eGVHcmtOcjTBd
+	 PyaEIAg5Ow1V0cB3vNaLrx/U5CO/7MP/fSkgSi5Qy7Ov0jk0Gsmrz+37DJzR37XF4q
+	 69+c7RU7XDXs6urwgPWMsiLVpc5++K0TPnwfTa9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Agustin Gutierrez <agustin.gutierrez@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/134] drm/amd/display: Remove power sequencing check
+	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
+	Lech Perczak <lech.perczak@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.19 29/71] USB: serial: option: dont claim interface 4 for ZTE MF290
 Date: Tue,  5 Dec 2023 12:16:27 +0900
-Message-ID: <20231205031542.775971687@linuxfoundation.org>
+Message-ID: <20231205031519.549584076@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +51,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Agustin Gutierrez <agustin.gutierrez@amd.com>
+From: Lech Perczak <lech.perczak@gmail.com>
 
-[ Upstream commit b0399e22ada096435de3e3e73899aa8bc026820d ]
+commit 8771127e25d6c20d458ad27cf32f7fcfc1755e05 upstream.
 
-[Why]
-	Some ASICs keep backlight powered on after dpms off
-	command has been issued.
+Interface 4 is used by for QMI interface in stock firmware of MF28D, the
+router which uses MF290 modem. Free the interface up, to rebind it to
+qmi_wwan driver.
+The proper configuration is:
 
-[How]
-	The check for no edp power sequencing was never going to pass.
-	The value is never changed from what it is set by design.
+Interface mapping is:
+0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
 
-Cc: stable@vger.kernel.org # 6.1+
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
-Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
-Acked-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=19d2 ProdID=0189 Rev= 0.00
+S:  Manufacturer=ZTE, Incorporated
+S:  Product=ZTE LTE Technologies MSM
+C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
+E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+
+Cc: Bjørn Mork <bjorn@mork.no>
+Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-index 28cb1f5a504d1..a17a06eb7762b 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
-@@ -1930,8 +1930,7 @@ static void disable_link_dp(struct dc_link *link,
- 	dp_disable_link_phy(link, link_res, signal);
- 
- 	if (link->connector_signal == SIGNAL_TYPE_EDP) {
--		if (!link->dc->config.edp_no_power_sequencing &&
--			!link->skip_implict_edp_power_control)
-+		if (!link->skip_implict_edp_power_control)
- 			link->dc->hwss.edp_power_control(link, false);
- 	}
- 
--- 
-2.42.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1548,7 +1548,8 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0165, 0xff, 0xff, 0xff) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0167, 0xff, 0xff, 0xff),
+ 	  .driver_info = RSVD(4) },
+-	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff),
++	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0191, 0xff, 0xff, 0xff), /* ZTE EuFi890 */
+ 	  .driver_info = RSVD(4) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0196, 0xff, 0xff, 0xff) },
 
 
 
