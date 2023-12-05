@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FE3804802
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2299E80476F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EA1928178B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B5F81F21476
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 229668C03;
-	Tue,  5 Dec 2023 03:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35CE8BF7;
+	Tue,  5 Dec 2023 03:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVD0xTA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdIKCS87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D5E6FB0;
-	Tue,  5 Dec 2023 03:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57AC2C433C7;
-	Tue,  5 Dec 2023 03:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0796FB1;
+	Tue,  5 Dec 2023 03:38:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ECECC433C8;
+	Tue,  5 Dec 2023 03:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747892;
-	bh=lVa4rA/SEAl0ggfEqQAxZpfJahXkjMhsvQ+zOM0El8w=;
+	s=korg; t=1701747515;
+	bh=JbCEGzp5QXt9kgPYUng5/q+2V4AmD5NtfrD4Ue8jLsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IVD0xTA9Q6r9hRPqnnTa8ycQJnJU2exuh4Uym+rQ6kCyJ015RnytjZXqBZZJ4GeRS
-	 PHLKBOLTSEFwHOi+xYAnyrwDC1/oWOWhD+vL6PRHu0diVrRRK9Rt1xj4C2K2F2uAD7
-	 978/kAI0Wu9O+vs8wfn4xNzkafMe5y9kOz5y6gqg=
+	b=zdIKCS87PWgoQAlth25sRQAKdDD0KK2IfDw9OPUondu3xYYb/Fa0Gst9ghQgacujw
+	 tED9km6PLalzS2NUjhiztq7LNKJ+5oblQwOiTzvXnT1jfM8Jh59PLhum+bqZBulk6Y
+	 XFu7is9D95xN7adONrgs999Kq3R9FxvjDaHG8HIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Haberland <sth@linux.ibm.com>,
-	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 36/94] s390/dasd: protect device queue against concurrent access
-Date: Tue,  5 Dec 2023 12:17:04 +0900
-Message-ID: <20231205031524.910053737@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 104/135] perf intel-pt: Fix async branch flags
+Date: Tue,  5 Dec 2023 12:17:05 +0900
+Message-ID: <20231205031537.289141335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,74 +51,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Höppner <hoeppner@linux.ibm.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
+[ Upstream commit f2d87895cbc4af80649850dcf5da36de6b2ed3dd ]
 
-In dasd_profile_start() the amount of requests on the device queue are
-counted. The access to the device queue is unprotected against
-concurrent access. With a lot of parallel I/O, especially with alias
-devices enabled, the device queue can change while dasd_profile_start()
-is accessing the queue. In the worst case this leads to a kernel panic
-due to incorrect pointer accesses.
+Ensure PERF_IP_FLAG_ASYNC is set always for asynchronous branches (i.e.
+interrupts etc).
 
-Fix this by taking the device lock before accessing the queue and
-counting the requests. Additionally the check for a valid profile data
-pointer can be done earlier to avoid unnecessary locking in a hot path.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 90e457f7be08 ("perf tools: Add Intel PT support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20230928072953.19369-1-adrian.hunter@intel.com
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ tools/perf/util/intel-pt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -737,18 +737,20 @@ static void dasd_profile_start(struct da
- 	 * we count each request only once.
- 	 */
- 	device = cqr->startdev;
--	if (device->profile.data) {
--		counter = 1; /* request is not yet queued on the start device */
--		list_for_each(l, &device->ccw_queue)
--			if (++counter >= 31)
--				break;
--	}
-+	if (!device->profile.data)
-+		return;
-+
-+	spin_lock(get_ccwdev_lock(device->cdev));
-+	counter = 1; /* request is not yet queued on the start device */
-+	list_for_each(l, &device->ccw_queue)
-+		if (++counter >= 31)
-+			break;
-+	spin_unlock(get_ccwdev_lock(device->cdev));
-+
- 	spin_lock(&device->profile.lock);
--	if (device->profile.data) {
--		device->profile.data->dasd_io_nr_req[counter]++;
--		if (rq_data_dir(req) == READ)
--			device->profile.data->dasd_read_nr_req[counter]++;
--	}
-+	device->profile.data->dasd_io_nr_req[counter]++;
-+	if (rq_data_dir(req) == READ)
-+		device->profile.data->dasd_read_nr_req[counter]++;
- 	spin_unlock(&device->profile.lock);
- }
- 
+diff --git a/tools/perf/util/intel-pt.c b/tools/perf/util/intel-pt.c
+index 918da9a430c08..a4ea962e28d18 100644
+--- a/tools/perf/util/intel-pt.c
++++ b/tools/perf/util/intel-pt.c
+@@ -1139,9 +1139,11 @@ static void intel_pt_sample_flags(struct intel_pt_queue *ptq)
+ 	} else if (ptq->state->flags & INTEL_PT_ASYNC) {
+ 		if (!ptq->state->to_ip)
+ 			ptq->flags = PERF_IP_FLAG_BRANCH |
++				     PERF_IP_FLAG_ASYNC |
+ 				     PERF_IP_FLAG_TRACE_END;
+ 		else if (ptq->state->from_nr && !ptq->state->to_nr)
+ 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
++				     PERF_IP_FLAG_ASYNC |
+ 				     PERF_IP_FLAG_VMEXIT;
+ 		else
+ 			ptq->flags = PERF_IP_FLAG_BRANCH | PERF_IP_FLAG_CALL |
+-- 
+2.42.0
+
 
 
 
