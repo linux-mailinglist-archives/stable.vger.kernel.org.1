@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2513804729
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEEE8045FA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68C861F21449
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECB7C283188
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98F08C07;
-	Tue,  5 Dec 2023 03:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CE48BEA;
+	Tue,  5 Dec 2023 03:23:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdJn7OqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7xaK/Nn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2938BF7;
-	Tue,  5 Dec 2023 03:35:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90C8C433C7;
-	Tue,  5 Dec 2023 03:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D84D6FB0;
+	Tue,  5 Dec 2023 03:23:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7643FC433C9;
+	Tue,  5 Dec 2023 03:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747336;
-	bh=tQ/tMCla90fQnqLOZZ06erXaytHHo8hGB2rCqHeafro=;
+	s=korg; t=1701746601;
+	bh=JXtjOiipBcbhFyN/A9hbRTrbrYOERNA8ei9fdGFzk7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdJn7OqDAOC+8oMomFwVMCj2pld82QzxTl25kvthFbM1nfrpwpguUwmY6Yh30keab
-	 UB7sZjEOGyL2YcE5LZ7dyTCGtPb4cwoRdjjBJ2+LhlDa3h+e853Mc4tdaeEWstnIE0
-	 x7gGjIkLBWBFMIne6/4KzgscTa4KXzhmyCTORID0=
+	b=e7xaK/Nn1sMe3TFJir4ne1N2wiBbfMxi7EJDSh4LOKKFwh6vXDcO0aleZyGieLRoV
+	 sBOR7kQs6X0BtmPe3J4KLsU3+5BVU2Hdts+xuMauMkK5kNyzZiN/9CmsonSxeMo/oO
+	 x74P9TOOovzFoqfRKELHwgvIcjdJsPou9t8lNNPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/135] afs: Fix file locking on R/O volumes to operate in local mode
+Subject: [PATCH 6.6 079/134] net: rswitch: Fix type of ret in rswitch_start_xmit()
 Date: Tue,  5 Dec 2023 12:15:51 +0900
-Message-ID: <20231205031532.569207164@linuxfoundation.org>
+Message-ID: <20231205031540.489749197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,46 +54,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit b590eb41be766c5a63acc7e8896a042f7a4e8293 ]
+[ Upstream commit 109b25d13e0054337860d44841b990d11b32d262 ]
 
-AFS doesn't really do locking on R/O volumes as fileservers don't maintain
-state with each other and thus a lock on a R/O volume file on one
-fileserver will not be be visible to someone looking at the same file on
-another fileserver.
+The type of ret in rswitch_start_xmit() should be netdev_tx_t. So,
+fix it.
 
-Further, the server may return an error if you try it.
-
-Fix this by doing what other AFS clients do and handle filelocking on R/O
-volume files entirely within the client and don't touch the server.
-
-Fixes: 6c6c1d63c243 ("afs: Provide mount-time configurable byte-range file locking emulation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
+Fixes: 3590918b5d07 ("net: ethernet: renesas: Add support for "Ethernet Switch"")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/renesas/rswitch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/super.c b/fs/afs/super.c
-index e38bb1e7a4d22..1b62a99b36731 100644
---- a/fs/afs/super.c
-+++ b/fs/afs/super.c
-@@ -406,6 +406,8 @@ static int afs_validate_fc(struct fs_context *fc)
- 			return PTR_ERR(volume);
+diff --git a/drivers/net/ethernet/renesas/rswitch.c b/drivers/net/ethernet/renesas/rswitch.c
+index 0fc0b6bea7530..898f22aa796e2 100644
+--- a/drivers/net/ethernet/renesas/rswitch.c
++++ b/drivers/net/ethernet/renesas/rswitch.c
+@@ -1501,8 +1501,8 @@ static netdev_tx_t rswitch_start_xmit(struct sk_buff *skb, struct net_device *nd
+ {
+ 	struct rswitch_device *rdev = netdev_priv(ndev);
+ 	struct rswitch_gwca_queue *gq = rdev->tx_queue;
++	netdev_tx_t ret = NETDEV_TX_OK;
+ 	struct rswitch_ext_desc *desc;
+-	int ret = NETDEV_TX_OK;
+ 	dma_addr_t dma_addr;
  
- 		ctx->volume = volume;
-+		if (volume->type != AFSVL_RWVOL)
-+			ctx->flock_mode = afs_flock_mode_local;
- 	}
- 
- 	return 0;
+ 	if (rswitch_get_num_cur_queues(gq) >= gq->ring_size - 1) {
 -- 
 2.42.0
 
