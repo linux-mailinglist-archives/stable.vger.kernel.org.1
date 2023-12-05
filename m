@@ -1,152 +1,105 @@
-Return-Path: <stable+bounces-4631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AEEF804851
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:53:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC80804885
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 05:25:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 262C01F214E9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E5061F213FD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FDC8F56;
-	Tue,  5 Dec 2023 03:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6D6CA5F;
+	Tue,  5 Dec 2023 04:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XuRrX+3q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQ4stgLp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7466AC6;
-	Mon,  4 Dec 2023 19:53:29 -0800 (PST)
-Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-58e28e0461bso1723893eaf.1;
-        Mon, 04 Dec 2023 19:53:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701748409; x=1702353209; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=yMlipu20UYvgghTH7yK/DQyqHGpCso8cXNl7YDlvHV4=;
-        b=XuRrX+3qK4t3tsqm2W5a3uayy1o83YWRIhBqNqZkWFWFhxEBAFthbCVcvLKevCGBTh
-         Zh1TJaxYu0Ez4MQP3x+MowpSWTKtzVjRVHHxPMKsZKo+swd5aaZvZokVnT4yN3hS/11n
-         z1ysGAwhfIJdLp+0rpZivU2+DgDNAsHdVy1nswYcsWACtrWm30p5Vbf+/AFmD12DlvXp
-         XDCY6z1nrxTVw+o7sZ4ybgzAXEvnXa6LcGbsAyp8jB1ESM8j42KBuOL+ntKrrz3Mpc9q
-         32w8An1fXDXhwc1+nATwxU1e/DbRMVY6am8riFIyiG30gk4sRMarQ9EBSDAc0gwG1QDV
-         kdiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701748409; x=1702353209;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yMlipu20UYvgghTH7yK/DQyqHGpCso8cXNl7YDlvHV4=;
-        b=Rn6EMByPIb7pNn5sZYeuUjGnyKDNOlFCccN0MFhK9v1GtNvkKeujDLApEfLVUTHLtJ
-         DVXNZKP0xpXJFEnaD5zD+q9l7paFrSr8+iYzIO5vdHgGxO4ix0ws/lqTdX8pdo06t1Ak
-         vUPWyu+d7PH/Wl1gwFcqLuU1bv1hgoHZWqgmV8QuRiNG98cK5HE1aU2UhGsPL3G5u3j0
-         C8bwhT6XIMY0v5WarOnzUHxc+9MY/rX4J/ojW7zX/jjoMVHeJqAlPltx1eB+9ZX0aD7p
-         NZ/cWDCelAjoqC10/k6+44nSS/AtESAcT3NltQzliwQIpSzejC6gwKgiy2X3MRO7btcb
-         1QDA==
-X-Gm-Message-State: AOJu0YzyYj6dJDqNrea47TPh3MNobFlSATBUi/4oNbJlEMgeb+PtrQ0E
-	aWZL4+n1DxoQqVaCWm8f4AM=
-X-Google-Smtp-Source: AGHT+IHU6n/h4gPzeKgRihvC/XsoaUJ238XyaynjfYs3PCK4g+2uVE7ZX15hbO0e9OJ+hevG6s8Fxw==
-X-Received: by 2002:a05:6870:1d09:b0:1fb:75a:6d44 with SMTP id pa9-20020a0568701d0900b001fb075a6d44mr5995704oab.107.1701748408675;
-        Mon, 04 Dec 2023 19:53:28 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id hl19-20020a0568701b1300b001fb1e7ec1besm1935723oab.39.2023.12.04.19.53.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 19:53:28 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <7ac20588-3816-4e53-be31-8cc4c0de7caa@roeck-us.net>
-Date: Mon, 4 Dec 2023 19:53:26 -0800
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CC9D260
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 04:25:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A695BC433C7;
+	Tue,  5 Dec 2023 04:25:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701750311;
+	bh=Jsp797QrY43cmAXZZXSoXO4WVJz03OTlJ4dLJhsYhJY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qQ4stgLpuvhbi+r5OKcn/+9iC63lI8H9UbpuHugQ/JarTchazINrKbpvg3ZEnJjRe
+	 CRxaSRlRZql2gN9RAgSZ8xrL7Ob3hIMtMfUnifXPWyfFZc1jZMvtuMl27v5MvonY3Y
+	 R1VCOFC32toDb6UM17K6774opzmDbvpMDNSMrdBeXHzxO0SeGVxcfcEWTilkbqA5N9
+	 0a9bjS3CY+ubwQodOpG/aFv47I8bHBFq2ebX91gIu8f3AQqgbdAZzpe6IJv1pPCZbz
+	 JGhRIKovbAZ9pnmn5QmUG4BXIIwuDCNI8dRLGzaIJkhR61K5u+ed0ChFW2KMvyyahN
+	 2eL9WmvzTIrdw==
+Date: Mon, 4 Dec 2023 23:25:08 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH AUTOSEL 6.6 15/32] debugfs: annotate debugfs handlers vs.
+ removal with lockdep
+Message-ID: <ZW6mJFCFIvEdrnoW@sashalap>
+References: <20231204203317.2092321-1-sashal@kernel.org>
+ <20231204203317.2092321-15-sashal@kernel.org>
+ <1a7a8caa3fe9b4e3271239b86ebd24a41464b79f.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 00/94] 5.4.263-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20231205031522.815119918@linuxfoundation.org>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <1a7a8caa3fe9b4e3271239b86ebd24a41464b79f.camel@sipsolutions.net>
 
-On 12/4/23 19:16, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.263 release.
-> There are 94 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> Anything received after that time might be too late.
-> 
+On Mon, Dec 04, 2023 at 09:45:55PM +0100, Johannes Berg wrote:
+>On Mon, 2023-12-04 at 20:32 +0000, Sasha Levin wrote:
+>> From: Johannes Berg <johannes.berg@intel.com>
+>>
+>> [ Upstream commit f4acfcd4deb158b96595250cc332901b282d15b0 ]
+>>
+>> When you take a lock in a debugfs handler but also try
+>> to remove the debugfs file under that lock, things can
+>> deadlock since the removal has to wait for all users
+>> to finish.
+>>
+>> Add lockdep annotations in debugfs_file_get()/_put()
+>> to catch such issues.
+>>
+>
+>This (and the previous patch) probably got picked up as dependencies for
+>the locking things, but ... we reverted this.
+>
+>For 6.6, _maybe_ it's worth backporting this including the revert, but
+>then I'd do that only when the revert landed to have them together. But
+>then you should apply all the six patches listed below _and_ the revert,
+>the set as here doesn't do anything useful.
+>
+>However ... given that debugfs is root-only, and you have to be
+>reading/writing a file _while_ disconnecting and the file is removed,
+>perhaps the whole thing isn't worth backporting at all.
+>
+>
+>
+>For 6.1 and earlier, I believe it's not needed at all, so please drop
+>from there all of these:
+>
+> - debugfs: fix automount d_fsdata usage
+> - debugfs: annotate debugfs handlers vs. removal with lockdep
+> - debugfs: add API to allow debugfs operations cancellation
+> - wifi: cfg80211: add locked debugfs wrappers
+> - wifi: mac80211: use wiphy locked debugfs helpers for agg_status
+> - wifi: mac80211: use wiphy locked debugfs for sdata/link
+>
+>
+>I'd kind of think just dropping all of these completely makes more
+>sense.
 
-Building arm64:allmodconfig ... failed
---------------
-Error log:
-drivers/mmc/host/sdhci-sprd.c: In function 'sdhci_sprd_set_power':
-drivers/mmc/host/sdhci-sprd.c:393:17: error: implicit declaration of function 'mmc_regulator_disable_vqmmc'; did you mean 'mmc_regulator_set_vqmmc'? [-Werror=implicit-function-declaration]
-   393 |                 mmc_regulator_disable_vqmmc(mmc);
-       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-       |                 mmc_regulator_set_vqmmc
-drivers/mmc/host/sdhci-sprd.c:396:17: error: implicit declaration of function 'mmc_regulator_enable_vqmmc'; did you mean 'mmc_regulator_set_vqmmc'? [-Werror=implicit-function-declaration]
-   396 |                 mmc_regulator_enable_vqmmc(mmc);
-       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
-       |                 mmc_regulator_set_vqmmc
+Will do, thanks!
 
-Commit 2b11e5bd4ac0 ("mmc: sdhci-sprd: Fix vqmmc not shutting down after
-the card was pulled") calls those functions without introducing them.
-
-Guenter
-
+-- 
+Thanks,
+Sasha
 
