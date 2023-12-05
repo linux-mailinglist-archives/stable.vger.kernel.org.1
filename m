@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-4286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00908046DA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71EA780479D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CC90B20BE0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A39AE1C20E51
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1108BEC;
-	Tue,  5 Dec 2023 03:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD441CA5F;
+	Tue,  5 Dec 2023 03:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/Esl9kO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2glOLGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A86B6FB1;
-	Tue,  5 Dec 2023 03:32:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DAC433C8;
-	Tue,  5 Dec 2023 03:32:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC9179E3;
+	Tue,  5 Dec 2023 03:40:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039EDC433C7;
+	Tue,  5 Dec 2023 03:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747135;
-	bh=c2+0LNB2WBoPzT4qKhfw6x42gYhmncTy0vhibWs43Y0=;
+	s=korg; t=1701747631;
+	bh=UgH3R8ptZoX8NiCw9VXBTSKUkHjwm0wpt+mPOO51ddc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/Esl9kO0KsShhSrQOETiHZFi7JTglFXrkdHiObJruHuPdR+Ibl/sfVPIqQZXXm61
-	 bBX82JIfCSAgr9M7M89vEv6q2ZnyXJQBTwXRTxV8sv3QUaPe//7OlKwqvY31PJOaaf
-	 TSdxvIOxC2pIjIkYLEjBPt3ForFCwOFp6ymdVw1U=
+	b=R2glOLGffKGZl48rUF+RwLukymyNbNdNCpzEP9oMDS2IBLKYK64tj8g7Gd0ifuz53
+	 61t5g0I6JCAZaLg2yzpIWr2W+zAU3tv3ARZ3t/GTSXubf2g62EUy032BzPxjgwh6u6
+	 TyCu4xmgk3O8VuR7QJfKPzHcg2FWoYqQxHV4Ot58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/107] net: ravb: Check return value of reset_control_deassert()
+	Maria Yu <quic_aiquny@quicinc.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 02/67] pinctrl: avoid reload of p state in list iteration
 Date: Tue,  5 Dec 2023 12:16:47 +0900
-Message-ID: <20231205031535.990727915@linuxfoundation.org>
+Message-ID: <20231205031519.988852583@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +52,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Maria Yu <quic_aiquny@quicinc.com>
 
-[ Upstream commit d8eb6ea4b302e7ff78535c205510e359ac10a0bd ]
+commit 4198a9b571065978632276264e01d71d68000ac5 upstream.
 
-reset_control_deassert() could return an error. Some devices cannot work
-if reset signal de-assert operation fails. To avoid this check the return
-code of reset_control_deassert() in ravb_probe() and take proper action.
+When in the list_for_each_entry iteration, reload of p->state->settings
+with a local setting from old_state will turn the list iteration into an
+infinite loop.
 
-Along with it, the free_netdev() call from the error path was moved after
-reset_control_assert() on its own label (out_free_netdev) to free
-netdev in case reset_control_deassert() fails.
+The typical symptom when the issue happens, will be a printk message like:
 
-Fixes: 0d13a1a464a0 ("ravb: Add reset support")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
+already used for some other setting".
+
+This is a compiler-dependent problem, one instance occurred using Clang
+version 10.0 on the arm64 architecture with linux version 4.19.
+
+Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
+Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
+Cc:  <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231115102824.23727-1-quic_aiquny@quicinc.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/pinctrl/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 020edbd0a44a6..2bcea9fdd2653 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2670,7 +2670,10 @@ static int ravb_probe(struct platform_device *pdev)
- 	ndev->features = info->net_features;
- 	ndev->hw_features = info->net_hw_features;
+--- a/drivers/pinctrl/core.c
++++ b/drivers/pinctrl/core.c
+@@ -1239,17 +1239,17 @@ static void pinctrl_link_add(struct pinc
+ static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
+ {
+ 	struct pinctrl_setting *setting, *setting2;
+-	struct pinctrl_state *old_state = p->state;
++	struct pinctrl_state *old_state = READ_ONCE(p->state);
+ 	int ret;
  
--	reset_control_deassert(rstc);
-+	error = reset_control_deassert(rstc);
-+	if (error)
-+		goto out_free_netdev;
-+
- 	pm_runtime_enable(&pdev->dev);
- 	pm_runtime_get_sync(&pdev->dev);
- 
-@@ -2897,11 +2900,11 @@ static int ravb_probe(struct platform_device *pdev)
- out_disable_refclk:
- 	clk_disable_unprepare(priv->refclk);
- out_release:
--	free_netdev(ndev);
--
- 	pm_runtime_put(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(rstc);
-+out_free_netdev:
-+	free_netdev(ndev);
- 	return error;
- }
- 
--- 
-2.42.0
-
+-	if (p->state) {
++	if (old_state) {
+ 		/*
+ 		 * For each pinmux setting in the old state, forget SW's record
+ 		 * of mux owner for that pingroup. Any pingroups which are
+ 		 * still owned by the new state will be re-acquired by the call
+ 		 * to pinmux_enable_setting() in the loop below.
+ 		 */
+-		list_for_each_entry(setting, &p->state->settings, node) {
++		list_for_each_entry(setting, &old_state->settings, node) {
+ 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
+ 				continue;
+ 			pinmux_disable_setting(setting);
 
 
 
