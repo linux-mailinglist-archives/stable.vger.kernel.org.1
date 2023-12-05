@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4A480459E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:33 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BECA804758
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D00B82818BD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF69FB20C43
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9D76FB1;
-	Tue,  5 Dec 2023 03:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C468BF1;
+	Tue,  5 Dec 2023 03:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrZJzXJH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgHGFhZw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883DC6AA0;
-	Tue,  5 Dec 2023 03:19:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB983C433C7;
-	Tue,  5 Dec 2023 03:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A0D6FB1;
+	Tue,  5 Dec 2023 03:37:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AA6C433C8;
+	Tue,  5 Dec 2023 03:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746368;
-	bh=CvvTKmTR3AvjnNA/X5fh7m4ByBq1++oAdO2eFJrK9x0=;
+	s=korg; t=1701747457;
+	bh=tfUbMcPM7B8uZtUUHBIEBWHVkrH8LKCceTeAU1os+g8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrZJzXJH9n0fVQRbUyEJUMQ4AOpngeaA32I7HUxIFTmeIYe6dBY4ifyhMgTgMBzml
-	 UaZNVsFQRX38VPT3g7K+cypaUOT0YaxQuAh+ggbhG4/NaVf/uYobNqjUSiFXJ1yGjO
-	 8z0JMrHxJiOf2YUz/9TlvlRwQnZDqU/sCqdgFPNg=
+	b=HgHGFhZw+e13wUxVTj+V9/pHvfKtJM4rZARNc8X65rd0pnFAiCfbIqhGiW3+kuUUz
+	 bpoDfgSllV1byuenx8wIFg0YNJ2+oVf+ohHMwrTEVKH85MaBGwb5MUhBOMKk9cjycX
+	 J3siIt/PleVLygRveXU/aCEJ2OjnM8gaj3Yn3rhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yangyu Chen <cyy@cyyself.name>,
-	Asuna Yang <SpriteOvO@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 13/30] USB: serial: option: add Luat Air72*U series products
+	Rand Deeb <rand.sec96@gmail.com>,
+	Coly Li <colyli@suse.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 059/135] bcache: prevent potential division by zero error
 Date: Tue,  5 Dec 2023 12:16:20 +0900
-Message-ID: <20231205031512.280850958@linuxfoundation.org>
+Message-ID: <20231205031534.161861259@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +53,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asuna Yang <spriteovo@gmail.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit da90e45d5afc4da2de7cd3ea7943d0f1baa47cc2 upstream.
+commit 2c7f497ac274a14330208b18f6f734000868ebf9 upstream.
 
-Update the USB serial option driver support for Luat Air72*U series
-products.
+In SHOW(), the variable 'n' is of type 'size_t.' While there is a
+conditional check to verify that 'n' is not equal to zero before
+executing the 'do_div' macro, concerns arise regarding potential
+division by zero error in 64-bit environments.
 
-ID 1782:4e00 Spreadtrum Communications Inc. UNISOC-8910
+The concern arises when 'n' is 64 bits in size, greater than zero, and
+the lower 32 bits of it are zeros. In such cases, the conditional check
+passes because 'n' is non-zero, but the 'do_div' macro casts 'n' to
+'uint32_t,' effectively truncating it to its lower 32 bits.
+Consequently, the 'n' value becomes zero.
 
-T: Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#= 13 Spd=480 MxCh= 0
-D: Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs= 1
-P: Vendor=1782 ProdID=4e00 Rev=00.00
-S: Manufacturer=UNISOC
-S: Product=UNISOC-8910
-C: #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=400mA
-I: If#= 0 Alt= 0 #EPs= 1 Cls=e0(wlcon) Sub=01 Prot=03 Driver=rndis_host
-E: Ad=82(I) Atr=03(Int.) MxPS= 8 Ivl=4096ms
-I: If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
-E: Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I: If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E: Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E: Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+To fix this potential division by zero error and ensure precise
+division handling, this commit replaces the 'do_div' macro with
+div64_u64(). div64_u64() is designed to work with 64-bit operands,
+guaranteeing that division is performed correctly.
 
-If#= 2: AT
-If#= 3: PPP + AT
-If#= 4: Debug
+This change enhances the robustness of the code, ensuring that division
+operations yield accurate results in all scenarios, eliminating the
+possibility of division by zero, and improving compatibility across
+different 64-bit environments.
 
-Co-developed-by: Yangyu Chen <cyy@cyyself.name>
-Signed-off-by: Yangyu Chen <cyy@cyyself.name>
-Signed-off-by: Asuna Yang <SpriteOvO@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Coly Li <colyli@suse.de>
+Link: https://lore.kernel.org/r/20231120052503.6122-5-colyli@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/md/bcache/sysfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -612,6 +612,8 @@ static void option_instat_callback(struc
- #define UNISOC_VENDOR_ID			0x1782
- /* TOZED LT70-C based on UNISOC SL8563 uses UNISOC's vendor ID */
- #define TOZED_PRODUCT_LT70C			0x4055
-+/* Luat Air72*U series based on UNISOC UIS8910 uses UNISOC's vendor ID */
-+#define LUAT_PRODUCT_AIR720U			0x4e00
+--- a/drivers/md/bcache/sysfs.c
++++ b/drivers/md/bcache/sysfs.c
+@@ -1078,7 +1078,7 @@ SHOW(__bch_cache)
+ 			sum += INITIAL_PRIO - cached[i];
  
- /* Device flags */
+ 		if (n)
+-			do_div(sum, n);
++			sum = div64_u64(sum, n);
  
-@@ -2273,6 +2275,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0xff, 0x40) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(SIERRA_VENDOR_ID, SIERRA_PRODUCT_EM9191, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+ 		for (i = 0; i < ARRAY_SIZE(q); i++)
+ 			q[i] = INITIAL_PRIO - cached[n * (i + 1) /
 
 
 
