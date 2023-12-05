@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E95138047F9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC85080467B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A31C5281783
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DB5AB20C8D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7BB8BF8;
-	Tue,  5 Dec 2023 03:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2276FB1;
+	Tue,  5 Dec 2023 03:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xdo8ad/+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5BLNqQU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61BE6FB0;
-	Tue,  5 Dec 2023 03:44:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3422CC433C8;
-	Tue,  5 Dec 2023 03:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E5E6FAF;
+	Tue,  5 Dec 2023 03:28:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA9DC433C8;
+	Tue,  5 Dec 2023 03:28:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747864;
-	bh=A7A7P9VLqHNTYAsLfgS92fN6pMfzttd4X/CFQMH0t1Y=;
+	s=korg; t=1701746890;
+	bh=KYYO21fgxx3h7TXyPuk5q/7TOj/mShQm4cv2BAmXchQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xdo8ad/+P/kCekxXmsVgtzsgWN5G8uxzXPfgDGN3p/FmdukB8RJE0DKCU2x9fcRV6
-	 xsebiw33RLVXsaqnEmrhqDHE8u2bRoF6MP3r6teW6p5Wopp1VmuTZ7hVwHzcXSnSDB
-	 vcqwq6DrpFxdUTirqCaT8edvabxH8CoKcrok7dNw=
+	b=Z5BLNqQU572JkIHldom6+KGfEhohZWXaeSjYJlQjSNl+tlU2wqI6wDtNR6EAuOd7l
+	 PnHha8/nzYjM4y6yQx3BHyL/ZvEUZ/Q2I/yyLn+D6+OJTxegURySNXfFlpzENHTEv4
+	 Bu7mnfQWV5uwp+4aDDKTzC9youvmG3K8vDk1sD0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 27/94] ext4: using nofail preallocation in ext4_es_remove_extent()
+Subject: [PATCH 4.19 57/71] s390/mm: fix phys vs virt confusion in mark_kernel_pXd() functions family
 Date: Tue,  5 Dec 2023 12:16:55 +0900
-Message-ID: <20231205031524.431670737@linuxfoundation.org>
+Message-ID: <20231205031521.181116325@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,76 +53,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
+[ Upstream commit 3784231b1e091857bd129fd9658a8b3cedbdcd58 ]
 
-If __es_remove_extent() returns an error it means that when splitting
-extent, allocating an extent that must be kept failed, where returning
-an error directly would cause the extent tree to be inconsistent. So we
-use GFP_NOFAIL to pre-allocate an extent_status and pass it to
-__es_remove_extent() to avoid this problem.
+Due to historical reasons mark_kernel_pXd() functions
+misuse the notion of physical vs virtual addresses
+difference.
 
-In addition, since the allocated memory is outside the i_es_lock, the
-extent_status tree may change and the pre-allocated extent_status is
-no longer needed, so we release the pre-allocated extent_status when
-es->es_len is not initialized.
-
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Stable-dep-of: 44d930452476 ("s390/cmma: fix detection of DAT pages")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/s390/mm/page-states.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 1bfee9dff9c38..854d865e9bfa2 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1439,6 +1439,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	ext4_lblk_t end;
- 	int err = 0;
- 	int reserved = 0;
-+	struct extent_status *es = NULL;
- 
- 	trace_ext4_es_remove_extent(inode, lblk, len);
- 	es_debug("remove [%u/%u) from extent status tree of inode %lu\n",
-@@ -1450,17 +1451,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	end = lblk + len - 1;
- 	BUG_ON(end < lblk);
- 
-+retry:
-+	if (err && !es)
-+		es = __es_alloc_extent(true);
- 	/*
- 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
- 	 * so that we are sure __es_shrink() is done with the inode before it
- 	 * is reclaimed.
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
-+	err = __es_remove_extent(inode, lblk, end, &reserved, es);
-+	if (es && !es->es_len)
-+		__es_free_extent(es);
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
-+	if (err)
-+		goto retry;
-+
- 	ext4_es_print_tree(inode);
- 	ext4_da_release_space(inode, reserved);
--	return err;
-+	return 0;
+diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
+index dc3cede7f2ec9..5a0460b0fd6ae 100644
+--- a/arch/s390/mm/page-states.c
++++ b/arch/s390/mm/page-states.c
+@@ -118,7 +118,7 @@ static void mark_kernel_pmd(pud_t *pud, unsigned long addr, unsigned long end)
+ 		next = pmd_addr_end(addr, end);
+ 		if (pmd_none(*pmd) || pmd_large(*pmd))
+ 			continue;
+-		page = virt_to_page(pmd_val(*pmd));
++		page = phys_to_page(pmd_val(*pmd));
+ 		set_bit(PG_arch_1, &page->flags);
+ 	} while (pmd++, addr = next, addr != end);
  }
- 
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
+@@ -136,7 +136,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
+ 		if (pud_none(*pud) || pud_large(*pud))
+ 			continue;
+ 		if (!pud_folded(*pud)) {
+-			page = virt_to_page(pud_val(*pud));
++			page = phys_to_page(pud_val(*pud));
+ 			for (i = 0; i < 3; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+@@ -157,7 +157,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
+ 		if (p4d_none(*p4d))
+ 			continue;
+ 		if (!p4d_folded(*p4d)) {
+-			page = virt_to_page(p4d_val(*p4d));
++			page = phys_to_page(p4d_val(*p4d));
+ 			for (i = 0; i < 3; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
+@@ -179,7 +179,7 @@ static void mark_kernel_pgd(void)
+ 		if (pgd_none(*pgd))
+ 			continue;
+ 		if (!pgd_folded(*pgd)) {
+-			page = virt_to_page(pgd_val(*pgd));
++			page = phys_to_page(pgd_val(*pgd));
+ 			for (i = 0; i < 3; i++)
+ 				set_bit(PG_arch_1, &page[i].flags);
+ 		}
 -- 
 2.42.0
 
