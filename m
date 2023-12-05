@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D5A804708
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36B958047B0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57E001C20DB0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7144281645
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFF68BF1;
-	Tue,  5 Dec 2023 03:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886CF8BF8;
+	Tue,  5 Dec 2023 03:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IatYkKFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8mj8QtU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DAB6FB1;
-	Tue,  5 Dec 2023 03:34:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8443C433C7;
-	Tue,  5 Dec 2023 03:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C8379F2;
+	Tue,  5 Dec 2023 03:41:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF0EC433C7;
+	Tue,  5 Dec 2023 03:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747248;
-	bh=WKXaYeNiVjYTxSWyPPf/a+eNHoGP2n8373tdzR0rM3c=;
+	s=korg; t=1701747673;
+	bh=Jd8pz4VSHjIewZv9Gha4slNuXD1WFx5XVcCIaJ+U3vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IatYkKFPN3cMteiIJ8linQThOFq0Sr3zUzcGamOUJUjhNAJMU3AOwpYF/p6BwZ24U
-	 l1xQA4hOU67y5/qb4bunMg2RYzo0JSBdjmmUX2tNoJB4ZdC2mtKFW1VMFrEqi3c4lh
-	 B0KDMY0whfEot7Prm72fj4nKHQ6GHk19ewuoSgjI=
+	b=P8mj8QtU2tLbJTJkkMAF971Klt5APp9N2TojGZkCT0eTKpBJzoOo/cG0/BsgDMhol
+	 0LTHSaIougQE141Dct8Dls2nGV32IYIt6sakhnGkI8MZ9baR6AjbZljoIUdfHmBCm/
+	 C7W/smNrdj134gP7nI322nVsO1801qNGyPgCDs1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/107] mmc: core: add helpers mmc_regulator_enable/disable_vqmmc
+	Shuang Li <shuali@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Olivier Matz <olivier.matz@6wind.com>
+Subject: [PATCH 5.15 26/67] vlan: move dev_put into vlan_dev_uninit
 Date: Tue,  5 Dec 2023 12:17:11 +0900
-Message-ID: <20231205031537.731316037@linuxfoundation.org>
+Message-ID: <20231205031521.311405664@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,105 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 8d91f3f8ae57e6292142ca89f322e90fa0d6ac02 ]
+commit d6ff94afd90b0ce8d1715f8ef77d4347d7a7f2c0 upstream.
 
-There's a number of drivers (e.g. dw_mmc, meson-gx, mmci, sunxi) using
-the same mechanism and a private flag vqmmc_enabled to deal with
-enabling/disabling the vqmmc regulator.
+Shuang Li reported an QinQ issue by simply doing:
 
-Move this to the core and create new helpers mmc_regulator_enable_vqmmc
-and mmc_regulator_disable_vqmmc.
+  # ip link add dummy0 type dummy
+  # ip link add link dummy0 name dummy0.1 type vlan id 1
+  # ip link add link dummy0.1 name dummy0.1.2 type vlan id 2
+  # rmmod 8021q
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://lore.kernel.org/r/71586432-360f-9b92-17f6-b05a8a971bc2@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 477865af60b2 ("mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ unregister_netdevice: waiting for dummy0.1 to become free. Usage count = 1
+
+When rmmods 8021q, all vlan devs are deleted from their real_dev's vlan grp
+and added into list_kill by unregister_vlan_dev(). dummy0.1 is unregistered
+before dummy0.1.2, as it's using for_each_netdev() in __rtnl_kill_links().
+
+When unregisters dummy0.1, dummy0.1.2 is not unregistered in the event of
+NETDEV_UNREGISTER, as it's been deleted from dummy0.1's vlan grp. However,
+due to dummy0.1.2 still holding dummy0.1, dummy0.1 will keep waiting in
+netdev_wait_allrefs(), while dummy0.1.2 will never get unregistered and
+release dummy0.1, as it delays dev_put until calling dev->priv_destructor,
+vlan_dev_free().
+
+This issue was introduced by Commit 563bcbae3ba2 ("net: vlan: fix a UAF in
+vlan_dev_real_dev()"), and this patch is to fix it by moving dev_put() into
+vlan_dev_uninit(), which is called after NETDEV_UNREGISTER event but before
+netdev_wait_allrefs().
+
+Fixes: 563bcbae3ba2 ("net: vlan: fix a UAF in vlan_dev_real_dev()")
+Reported-by: Shuang Li <shuali@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/regulator.c | 41 ++++++++++++++++++++++++++++++++++++
- include/linux/mmc/host.h     |  3 +++
- 2 files changed, 44 insertions(+)
+ net/8021q/vlan_dev.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mmc/core/regulator.c b/drivers/mmc/core/regulator.c
-index 609201a467ef9..4dcbc2281d2b5 100644
---- a/drivers/mmc/core/regulator.c
-+++ b/drivers/mmc/core/regulator.c
-@@ -271,3 +271,44 @@ int mmc_regulator_get_supply(struct mmc_host *mmc)
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(mmc_regulator_get_supply);
-+
-+/**
-+ * mmc_regulator_enable_vqmmc - enable VQMMC regulator for a host
-+ * @mmc: the host to regulate
-+ *
-+ * Returns 0 or errno. Enables the regulator for vqmmc.
-+ * Keeps track of the enable status for ensuring that calls to
-+ * regulator_enable/disable are balanced.
-+ */
-+int mmc_regulator_enable_vqmmc(struct mmc_host *mmc)
-+{
-+	int ret = 0;
-+
-+	if (!IS_ERR(mmc->supply.vqmmc) && !mmc->vqmmc_enabled) {
-+		ret = regulator_enable(mmc->supply.vqmmc);
-+		if (ret < 0)
-+			dev_err(mmc_dev(mmc), "enabling vqmmc regulator failed\n");
-+		else
-+			mmc->vqmmc_enabled = true;
-+	}
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(mmc_regulator_enable_vqmmc);
-+
-+/**
-+ * mmc_regulator_disable_vqmmc - disable VQMMC regulator for a host
-+ * @mmc: the host to regulate
-+ *
-+ * Returns 0 or errno. Disables the regulator for vqmmc.
-+ * Keeps track of the enable status for ensuring that calls to
-+ * regulator_enable/disable are balanced.
-+ */
-+void mmc_regulator_disable_vqmmc(struct mmc_host *mmc)
-+{
-+	if (!IS_ERR(mmc->supply.vqmmc) && mmc->vqmmc_enabled) {
-+		regulator_disable(mmc->supply.vqmmc);
-+		mmc->vqmmc_enabled = false;
-+	}
-+}
-+EXPORT_SYMBOL_GPL(mmc_regulator_disable_vqmmc);
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 8fdd3cf971a30..8f918f9a1228d 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -450,6 +450,7 @@ struct mmc_host {
- 	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
- 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
- 	unsigned int		can_dma_map_merge:1; /* merging can be used */
-+	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+--- a/net/8021q/vlan_dev.c
++++ b/net/8021q/vlan_dev.c
+@@ -638,7 +638,12 @@ void vlan_dev_free_egress_priority(const
  
- 	int			rescan_disable;	/* disable card detection */
- 	int			rescan_entered;	/* used with nonremovable devices */
-@@ -597,6 +598,8 @@ static inline int mmc_regulator_set_vqmmc(struct mmc_host *mmc,
- #endif
- 
- int mmc_regulator_get_supply(struct mmc_host *mmc);
-+int mmc_regulator_enable_vqmmc(struct mmc_host *mmc);
-+void mmc_regulator_disable_vqmmc(struct mmc_host *mmc);
- 
- static inline int mmc_card_is_removable(struct mmc_host *host)
+ static void vlan_dev_uninit(struct net_device *dev)
  {
--- 
-2.42.0
-
++	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
++
+ 	vlan_dev_free_egress_priority(dev);
++
++	/* Get rid of the vlan's reference to real_dev */
++	dev_put(vlan->real_dev);
+ }
+ 
+ static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
+@@ -851,9 +856,6 @@ static void vlan_dev_free(struct net_dev
+ 
+ 	free_percpu(vlan->vlan_pcpu_stats);
+ 	vlan->vlan_pcpu_stats = NULL;
+-
+-	/* Get rid of the vlan's reference to real_dev */
+-	dev_put(vlan->real_dev);
+ }
+ 
+ void vlan_setup(struct net_device *dev)
 
 
 
