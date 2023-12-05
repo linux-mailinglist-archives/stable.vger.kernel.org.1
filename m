@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-4147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F739804631
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41B8804689
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2BACB20C41
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6362814C5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282426110;
-	Tue,  5 Dec 2023 03:25:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1FB79F2;
+	Tue,  5 Dec 2023 03:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4nWXUIU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0V+2DyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69B26FAF;
-	Tue,  5 Dec 2023 03:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD5AC433C8;
-	Tue,  5 Dec 2023 03:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1B66FAF;
+	Tue,  5 Dec 2023 03:28:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E9EC433C8;
+	Tue,  5 Dec 2023 03:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746745;
-	bh=uNd18zdkX9fUPXboyloMw6Uu2c1fLUglSeFsrN/T4dA=;
+	s=korg; t=1701746930;
+	bh=+HpPVl/crOy7hcrQnCpcLR4rJMZec99VLbwhZut8Ipc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4nWXUIU1E2k6F/bZNPwm0uqMPK8LCap5ZxpGqdd1kVG3BdCwzyMkQcD/CO26ags4
-	 cCCWVk1ndUD0GWNl9PnApBNuxFPmNPOPfZpUHDLO6BLbA/Dt0mBmwW+9UUiFLm7op4
-	 V274XX4evNDE0EEOKcFsyGhRzN0ixVz6AeznNp2g=
+	b=P0V+2DyS8NLkA5x1EBVWWq19gRdoxKXG6o5Fn/iVZ1n3uxBpVIRlln7STZ42XXNrH
+	 wadr+c7329FszREe95LSyCdjqS+fI/1Z4U4HykTNCXxH7moS9SFORv9CKxyENydLEY
+	 7jvhWRqLb+8MWNIsjNE+e2qEbi7JAuxJsoX7BFEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/134] vfio/pds: Fix possible sleep while in atomic context
+Subject: [PATCH 4.19 46/71] ipv4: igmp: fix refcnt uaf issue when receiving igmp query packet
 Date: Tue,  5 Dec 2023 12:16:44 +0900
-Message-ID: <20231205031543.810960039@linuxfoundation.org>
+Message-ID: <20231205031520.522974499@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,153 +55,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit ae2667cd8a479bb5abd6e24c12fcc9ef5bc06d75 ]
+[ Upstream commit e2b706c691905fe78468c361aaabc719d0a496f1 ]
 
-The driver could possibly sleep while in atomic context resulting
-in the following call trace while CONFIG_DEBUG_ATOMIC_SLEEP=y is
-set:
+When I perform the following test operations:
+1.ip link add br0 type bridge
+2.brctl addif br0 eth0
+3.ip addr add 239.0.0.1/32 dev eth0
+4.ip addr add 239.0.0.1/32 dev br0
+5.ip addr add 224.0.0.1/32 dev br0
+6.while ((1))
+    do
+        ifconfig br0 up
+        ifconfig br0 down
+    done
+7.send IGMPv2 query packets to port eth0 continuously. For example,
+./mausezahn ethX -c 0 "01 00 5e 00 00 01 00 72 19 88 aa 02 08 00 45 00 00
+1c 00 01 00 00 01 02 0e 7f c0 a8 0a b7 e0 00 00 01 11 64 ee 9b 00 00 00 00"
 
-BUG: sleeping function called from invalid context at kernel/locking/mutex.c:283
-in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 2817, name: bash
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-Call Trace:
- <TASK>
- dump_stack_lvl+0x36/0x50
- __might_resched+0x123/0x170
- mutex_lock+0x1e/0x50
- pds_vfio_put_lm_file+0x1e/0xa0 [pds_vfio_pci]
- pds_vfio_put_save_file+0x19/0x30 [pds_vfio_pci]
- pds_vfio_state_mutex_unlock+0x2e/0x80 [pds_vfio_pci]
- pci_reset_function+0x4b/0x70
- reset_store+0x5b/0xa0
- kernfs_fop_write_iter+0x137/0x1d0
- vfs_write+0x2de/0x410
- ksys_write+0x5d/0xd0
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+The preceding tests may trigger the refcnt uaf issue of the mc list. The
+stack is as follows:
+	refcount_t: addition on 0; use-after-free.
+	WARNING: CPU: 21 PID: 144 at lib/refcount.c:25 refcount_warn_saturate (lib/refcount.c:25)
+	CPU: 21 PID: 144 Comm: ksoftirqd/21 Kdump: loaded Not tainted 6.7.0-rc1-next-20231117-dirty #80
+	Hardware name: Red Hat KVM, BIOS 0.5.1 01/01/2011
+	RIP: 0010:refcount_warn_saturate (lib/refcount.c:25)
+	RSP: 0018:ffffb68f00657910 EFLAGS: 00010286
+	RAX: 0000000000000000 RBX: ffff8a00c3bf96c0 RCX: ffff8a07b6160908
+	RDX: 00000000ffffffd8 RSI: 0000000000000027 RDI: ffff8a07b6160900
+	RBP: ffff8a00cba36862 R08: 0000000000000000 R09: 00000000ffff7fff
+	R10: ffffb68f006577c0 R11: ffffffffb0fdcdc8 R12: ffff8a00c3bf9680
+	R13: ffff8a00c3bf96f0 R14: 0000000000000000 R15: ffff8a00d8766e00
+	FS:  0000000000000000(0000) GS:ffff8a07b6140000(0000) knlGS:0000000000000000
+	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+	CR2: 000055f10b520b28 CR3: 000000039741a000 CR4: 00000000000006f0
+	Call Trace:
+	<TASK>
+	igmp_heard_query (net/ipv4/igmp.c:1068)
+	igmp_rcv (net/ipv4/igmp.c:1132)
+	ip_protocol_deliver_rcu (net/ipv4/ip_input.c:205)
+	ip_local_deliver_finish (net/ipv4/ip_input.c:234)
+	__netif_receive_skb_one_core (net/core/dev.c:5529)
+	netif_receive_skb_internal (net/core/dev.c:5729)
+	netif_receive_skb (net/core/dev.c:5788)
+	br_handle_frame_finish (net/bridge/br_input.c:216)
+	nf_hook_bridge_pre (net/bridge/br_input.c:294)
+	__netif_receive_skb_core (net/core/dev.c:5423)
+	__netif_receive_skb_list_core (net/core/dev.c:5606)
+	__netif_receive_skb_list (net/core/dev.c:5674)
+	netif_receive_skb_list_internal (net/core/dev.c:5764)
+	napi_gro_receive (net/core/gro.c:609)
+	e1000_clean_rx_irq (drivers/net/ethernet/intel/e1000/e1000_main.c:4467)
+	e1000_clean (drivers/net/ethernet/intel/e1000/e1000_main.c:3805)
+	__napi_poll (net/core/dev.c:6533)
+	net_rx_action (net/core/dev.c:6735)
+	__do_softirq (kernel/softirq.c:554)
+	run_ksoftirqd (kernel/softirq.c:913)
+	smpboot_thread_fn (kernel/smpboot.c:164)
+	kthread (kernel/kthread.c:388)
+	ret_from_fork (arch/x86/kernel/process.c:153)
+	ret_from_fork_asm (arch/x86/entry/entry_64.S:250)
+	</TASK>
 
-This can happen if pds_vfio_put_restore_file() and/or
-pds_vfio_put_save_file() grab the mutex_lock(&lm_file->lock)
-while the spin_lock(&pds_vfio->reset_lock) is held, which can
-happen during while calling pds_vfio_state_mutex_unlock().
+The root causes are as follows:
+Thread A					Thread B
+...						netif_receive_skb
+br_dev_stop					...
+    br_multicast_leave_snoopers			...
+        __ip_mc_dec_group			...
+            __igmp_group_dropped		igmp_rcv
+                igmp_stop_timer			    igmp_heard_query         //ref = 1
+                ip_ma_put			        igmp_mod_timer
+                    refcount_dec_and_test	            igmp_start_timer //ref = 0
+			...                                     refcount_inc //ref increases from 0
+When the device receives an IGMPv2 Query message, it starts the timer
+immediately, regardless of whether the device is running. If the device is
+down and has left the multicast group, it will cause the mc list refcount
+uaf issue.
 
-Fix this by changing the reset_lock to reset_mutex so there are no such
-conerns. Also, make sure to destroy the reset_mutex in the driver specific
-VFIO device release function.
-
-This also fixes a spinlock bad magic BUG that was caused
-by not calling spinlock_init() on the reset_lock. Since, the lock is
-being changed to a mutex, make sure to call mutex_init() on it.
-
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/kvm/1f9bc27b-3de9-4891-9687-ba2820c1b390@moroto.mountain/
-Fixes: bb500dbe2ac6 ("vfio/pds: Add VFIO live migration support")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20231122192532.25791-3-brett.creeley@amd.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/pds/pci_drv.c  |  4 ++--
- drivers/vfio/pci/pds/vfio_dev.c | 14 ++++++++------
- drivers/vfio/pci/pds/vfio_dev.h |  2 +-
- 3 files changed, 11 insertions(+), 9 deletions(-)
+ net/ipv4/igmp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/vfio/pci/pds/pci_drv.c b/drivers/vfio/pci/pds/pci_drv.c
-index ab4b5958e4131..caffa1a2cf591 100644
---- a/drivers/vfio/pci/pds/pci_drv.c
-+++ b/drivers/vfio/pci/pds/pci_drv.c
-@@ -55,10 +55,10 @@ static void pds_vfio_recovery(struct pds_vfio_pci_device *pds_vfio)
- 	 * VFIO_DEVICE_STATE_RUNNING.
- 	 */
- 	if (deferred_reset_needed) {
--		spin_lock(&pds_vfio->reset_lock);
-+		mutex_lock(&pds_vfio->reset_mutex);
- 		pds_vfio->deferred_reset = true;
- 		pds_vfio->deferred_reset_state = VFIO_DEVICE_STATE_ERROR;
--		spin_unlock(&pds_vfio->reset_lock);
-+		mutex_unlock(&pds_vfio->reset_mutex);
- 	}
+diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
+index 7d82818b711ea..5edf426fa4143 100644
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -221,8 +221,10 @@ static void igmp_start_timer(struct ip_mc_list *im, int max_delay)
+ 	int tv = prandom_u32() % max_delay;
+ 
+ 	im->tm_running = 1;
+-	if (!mod_timer(&im->timer, jiffies+tv+2))
+-		refcount_inc(&im->refcnt);
++	if (refcount_inc_not_zero(&im->refcnt)) {
++		if (mod_timer(&im->timer, jiffies + tv + 2))
++			ip_ma_put(im);
++	}
  }
  
-diff --git a/drivers/vfio/pci/pds/vfio_dev.c b/drivers/vfio/pci/pds/vfio_dev.c
-index 8c9fb87b13e1d..4c351c59d05a9 100644
---- a/drivers/vfio/pci/pds/vfio_dev.c
-+++ b/drivers/vfio/pci/pds/vfio_dev.c
-@@ -29,7 +29,7 @@ struct pds_vfio_pci_device *pds_vfio_pci_drvdata(struct pci_dev *pdev)
- void pds_vfio_state_mutex_unlock(struct pds_vfio_pci_device *pds_vfio)
- {
- again:
--	spin_lock(&pds_vfio->reset_lock);
-+	mutex_lock(&pds_vfio->reset_mutex);
- 	if (pds_vfio->deferred_reset) {
- 		pds_vfio->deferred_reset = false;
- 		if (pds_vfio->state == VFIO_DEVICE_STATE_ERROR) {
-@@ -39,23 +39,23 @@ void pds_vfio_state_mutex_unlock(struct pds_vfio_pci_device *pds_vfio)
- 		}
- 		pds_vfio->state = pds_vfio->deferred_reset_state;
- 		pds_vfio->deferred_reset_state = VFIO_DEVICE_STATE_RUNNING;
--		spin_unlock(&pds_vfio->reset_lock);
-+		mutex_unlock(&pds_vfio->reset_mutex);
- 		goto again;
- 	}
- 	mutex_unlock(&pds_vfio->state_mutex);
--	spin_unlock(&pds_vfio->reset_lock);
-+	mutex_unlock(&pds_vfio->reset_mutex);
- }
- 
- void pds_vfio_reset(struct pds_vfio_pci_device *pds_vfio)
- {
--	spin_lock(&pds_vfio->reset_lock);
-+	mutex_lock(&pds_vfio->reset_mutex);
- 	pds_vfio->deferred_reset = true;
- 	pds_vfio->deferred_reset_state = VFIO_DEVICE_STATE_RUNNING;
- 	if (!mutex_trylock(&pds_vfio->state_mutex)) {
--		spin_unlock(&pds_vfio->reset_lock);
-+		mutex_unlock(&pds_vfio->reset_mutex);
- 		return;
- 	}
--	spin_unlock(&pds_vfio->reset_lock);
-+	mutex_unlock(&pds_vfio->reset_mutex);
- 	pds_vfio_state_mutex_unlock(pds_vfio);
- }
- 
-@@ -156,6 +156,7 @@ static int pds_vfio_init_device(struct vfio_device *vdev)
- 	pds_vfio->vf_id = vf_id;
- 
- 	mutex_init(&pds_vfio->state_mutex);
-+	mutex_init(&pds_vfio->reset_mutex);
- 
- 	vdev->migration_flags = VFIO_MIGRATION_STOP_COPY | VFIO_MIGRATION_P2P;
- 	vdev->mig_ops = &pds_vfio_lm_ops;
-@@ -177,6 +178,7 @@ static void pds_vfio_release_device(struct vfio_device *vdev)
- 			     vfio_coredev.vdev);
- 
- 	mutex_destroy(&pds_vfio->state_mutex);
-+	mutex_destroy(&pds_vfio->reset_mutex);
- 	vfio_pci_core_release_dev(vdev);
- }
- 
-diff --git a/drivers/vfio/pci/pds/vfio_dev.h b/drivers/vfio/pci/pds/vfio_dev.h
-index b8f2d667608f3..e7b01080a1ec3 100644
---- a/drivers/vfio/pci/pds/vfio_dev.h
-+++ b/drivers/vfio/pci/pds/vfio_dev.h
-@@ -18,7 +18,7 @@ struct pds_vfio_pci_device {
- 	struct pds_vfio_dirty dirty;
- 	struct mutex state_mutex; /* protect migration state */
- 	enum vfio_device_mig_state state;
--	spinlock_t reset_lock; /* protect reset_done flow */
-+	struct mutex reset_mutex; /* protect reset_done flow */
- 	u8 deferred_reset;
- 	enum vfio_device_mig_state deferred_reset_state;
- 	struct notifier_block nb;
+ static void igmp_gq_start_timer(struct in_device *in_dev)
 -- 
 2.42.0
 
