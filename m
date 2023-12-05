@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E75804809
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CC8804775
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D169A1F21F3A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E83DC2815E0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307958C05;
-	Tue,  5 Dec 2023 03:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4A28BF8;
+	Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSgG0/xt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsbq7qa8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54986FB0;
-	Tue,  5 Dec 2023 03:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F8BC433C7;
-	Tue,  5 Dec 2023 03:45:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE2D6FB1;
+	Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829B1C433C7;
+	Tue,  5 Dec 2023 03:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747908;
-	bh=q+tGmGCMMJgw9NhItmZIjJWmEAH/fp5qtgFdjvRqJsw=;
+	s=korg; t=1701747529;
+	bh=1bZ2VwnX+igZLa9HjXtPP2OJBKHOLx0dE/oBA/WbY2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nSgG0/xtybfjFhOXz/h/O5iV9noOBxia31mcMtk63zAFXzgyhinInkPJoRFC0e/E1
-	 5DLIv8Ix8qzA9FrpHSGnWTH+rH/jm3vYGkgdkOrJOUjkxeowCeEt5tbux3iU2LOxXy
-	 XeUNU+cqCfabZN5VPKOGiQCWUYAevPIt/vB8ilrw=
+	b=lsbq7qa8SrnXomN+4Ovb/x6L22CUeJy0g2Mcj3rjrbN5Zip8NViN1rGakHsBELo/e
+	 NohvwUx7rQMSgosH4Pq1ZENPFH5JsSgBKXUiKavISjS/uF6S3pIUZhXbQCSWY9XgKd
+	 1BrQykVlv1gFo67sa0vi/bFxEUaxJjvITBmFko8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 19/94] afs: Fix file locking on R/O volumes to operate in local mode
+	Jann Horn <jannh@google.com>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 086/135] btrfs: send: ensure send_fd is writable
 Date: Tue,  5 Dec 2023 12:16:47 +0900
-Message-ID: <20231205031523.973840052@linuxfoundation.org>
+Message-ID: <20231205031535.985214191@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,49 +53,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit b590eb41be766c5a63acc7e8896a042f7a4e8293 ]
+commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
 
-AFS doesn't really do locking on R/O volumes as fileservers don't maintain
-state with each other and thus a lock on a R/O volume file on one
-fileserver will not be be visible to someone looking at the same file on
-another fileserver.
+kernel_write() requires the caller to ensure that the file is writable.
+Let's do that directly after looking up the ->send_fd.
 
-Further, the server may return an error if you try it.
+We don't need a separate bailout path because the "out" path already
+does fput() if ->send_filp is non-NULL.
 
-Fix this by doing what other AFS clients do and handle filelocking on R/O
-volume files entirely within the client and don't touch the server.
+This has no security impact for two reasons:
 
-Fixes: 6c6c1d63c243 ("afs: Provide mount-time configurable byte-range file locking emulation")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ - the ioctl requires CAP_SYS_ADMIN
+ - __kernel_write() bails out on read-only files - but only since 5.8,
+   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
+
+Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/super.c b/fs/afs/super.c
-index eb04dcc543289..554119068ea44 100644
---- a/fs/afs/super.c
-+++ b/fs/afs/super.c
-@@ -391,6 +391,8 @@ static int afs_validate_fc(struct fs_context *fc)
- 			return PTR_ERR(volume);
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -7303,7 +7303,7 @@ long btrfs_ioctl_send(struct file *mnt_f
+ 	sctx->flags = arg->flags;
  
- 		ctx->volume = volume;
-+		if (volume->type != AFSVL_RWVOL)
-+			ctx->flock_mode = afs_flock_mode_local;
+ 	sctx->send_filp = fget(arg->send_fd);
+-	if (!sctx->send_filp) {
++	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
+ 		ret = -EBADF;
+ 		goto out;
  	}
- 
- 	return 0;
--- 
-2.42.0
-
 
 
 
