@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34C3F8046DF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9B5804677
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B8428150F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 513681F213E2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EB898BF2;
-	Tue,  5 Dec 2023 03:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A514C79E3;
+	Tue,  5 Dec 2023 03:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhzAJvxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HH7vY1Qa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389DD6FB1;
-	Tue,  5 Dec 2023 03:32:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C597EC433C7;
-	Tue,  5 Dec 2023 03:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624036FAF;
+	Tue,  5 Dec 2023 03:28:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE852C433C9;
+	Tue,  5 Dec 2023 03:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747148;
-	bh=HmXeeHZOQsrmxgPMMxZWKzM0U+5i/DU+6tVIihsXv/A=;
+	s=korg; t=1701746881;
+	bh=oc3qm+uW1uBgYRbni2up2HvGclD6Jp10aDJWRIBCRis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HhzAJvxWK5cG3MafQChZFqstqSGnywCRTN9QUShXisjWcXcztROuprIzBMSpq3XeQ
-	 nqmTVGMTNN+b46ttlCw9213F2CUO6q4to5r5YLuj2cHBdDoQx5BaQu+q/bNVV9ueBr
-	 hgeevZ0t7iIv2EluncTLF2XeewDikYgCVhwQ0Zqw=
+	b=HH7vY1QaewxLJA5JEYCpm1Q4ZdwpwUeSxaiZimpGXEdPhxMuk+tXyrO5GRNtsnr0p
+	 P0XfQtbsR25NpXrSEJBDas4Z6FOhLY/hs7vM0VvwXF9h4WfdUjW556MJOJVdO4pAU2
+	 Pjo+xuy3bRGyslEkz9UccEZ9ig7DCxaji7vH8RBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/107] net: ravb: Keep reverse order of operations in ravb_remove()
+Subject: [PATCH 4.19 54/71] PCI/ASPM: Add L1 PM substate support to pci_disable_link_state()
 Date: Tue,  5 Dec 2023 12:16:52 +0900
-Message-ID: <20231205031536.332967162@linuxfoundation.org>
+Message-ID: <20231205031521.014788245@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,143 +53,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit edf9bc396e05081ca281ffb0cd41e44db478ff26 ]
+[ Upstream commit aff5d0552da4055da3faa27ee4252e48bb1f5821 ]
 
-On RZ/G3S SMARC Carrier II board having RGMII connections b/w Ethernet
-MACs and PHYs it has been discovered that doing unbind/bind for ravb
-driver in a loop leads to wrong speed and duplex for Ethernet links and
-broken connectivity (the connectivity cannot be restored even with
-bringing interface down/up). Before doing unbind/bind the Ethernet
-interfaces were configured though systemd. The sh instructions used to
-do unbind/bind were:
+Add support for disabling states L1.1 and L1.2 to pci_disable_link_state().
+Allow separate control of ASPM and PCI PM L1 substates.
 
-$ cd /sys/bus/platform/drivers/ravb/
-$ while :; do echo 11c30000.ethernet > unbind ; \
-  echo 11c30000.ethernet > bind; done
-
-It has been discovered that there is a race b/w IOCTLs initialized by
-systemd at the response of success binding and the
-"ravb_write(ndev, CCC_OPC_RESET, CCC)" call in ravb_remove() as
-follows:
-
-1/ as a result of bind success the user space open/configures the
-   interfaces tough an IOCTL; the following stack trace has been
-   identified on RZ/G3S:
-
-Call trace:
-dump_backtrace+0x9c/0x100
-show_stack+0x20/0x38
-dump_stack_lvl+0x48/0x60
-dump_stack+0x18/0x28
-ravb_open+0x70/0xa58
-__dev_open+0xf4/0x1e8
-__dev_change_flags+0x198/0x218
-dev_change_flags+0x2c/0x80
-devinet_ioctl+0x640/0x708
-inet_ioctl+0x1e4/0x200
-sock_do_ioctl+0x50/0x108
-sock_ioctl+0x240/0x358
-__arm64_sys_ioctl+0xb0/0x100
-invoke_syscall+0x50/0x128
-el0_svc_common.constprop.0+0xc8/0xf0
-do_el0_svc+0x24/0x38
-el0_svc+0x34/0xb8
-el0t_64_sync_handler+0xc0/0xc8
-el0t_64_sync+0x190/0x198
-
-2/ this call may execute concurrently with ravb_remove() as the
-   unbind/bind operation was executed in a loop
-3/ if the operation mode is changed to RESET (through
-   ravb_write(ndev, CCC_OPC_RESET, CCC) call in ravb_remove())
-   while the above ravb_open() is in progress it may lead to MAC
-   (or PHY, or MAC-PHY connection, the right point hasn't been identified
-   at the moment) to be broken, thus the Ethernet connectivity fails to
-   restore.
-
-The simple fix for this is to move ravb_write(ndev, CCC_OPC_RESET, CCC))
-after unregister_netdev() to avoid resetting the controller while the
-netdev interface is still registered.
-
-To avoid future issues in ravb_remove(), the patch follows the proper order
-of operations in ravb_remove(): reverse order compared with ravb_probe().
-This avoids described races as the IOCTLs as well as unregister_netdev()
-(called now at the beginning of ravb_remove()) calls rtnl_lock() before
-continuing and IOCTLs check (though devinet_ioctl()) if device is still
-registered just after taking the lock:
-
-int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
-{
-	// ...
-
-        rtnl_lock();
-
-        ret = -ENODEV;
-        dev = __dev_get_by_name(net, ifr->ifr_name);
-        if (!dev)
-                goto done;
-
-	// ...
-done:
-        rtnl_unlock();
-out:
-        return ret;
-}
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/d81f8036-c236-6463-48e7-ebcdcda85bba@gmail.com
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Stable-dep-of: 3cb4f534bac0 ("Revert "PCI/ASPM: Disable only ASPM_STATE_L1 when driver, disables L1"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/pci/pcie/aspm.c | 11 ++++++++++-
+ include/linux/pci.h     | 10 +++++++---
+ 2 files changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index e1c4a0ca4493f..68cb5616ef991 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2919,22 +2919,26 @@ static int ravb_remove(struct platform_device *pdev)
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *info = priv->info;
+diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
+index 1f9e89c2c10d3..8f934c88dcd76 100644
+--- a/drivers/pci/pcie/aspm.c
++++ b/drivers/pci/pcie/aspm.c
+@@ -1110,7 +1110,16 @@ static int __pci_disable_link_state(struct pci_dev *pdev, int state, bool sem)
+ 	if (state & PCIE_LINK_STATE_L0S)
+ 		link->aspm_disable |= ASPM_STATE_L0S;
+ 	if (state & PCIE_LINK_STATE_L1)
+-		link->aspm_disable |= ASPM_STATE_L1;
++		/* L1 PM substates require L1 */
++		link->aspm_disable |= ASPM_STATE_L1 | ASPM_STATE_L1SS;
++	if (state & PCIE_LINK_STATE_L1_1)
++		link->aspm_disable |= ASPM_STATE_L1_1;
++	if (state & PCIE_LINK_STATE_L1_2)
++		link->aspm_disable |= ASPM_STATE_L1_2;
++	if (state & PCIE_LINK_STATE_L1_1_PCIPM)
++		link->aspm_disable |= ASPM_STATE_L1_1_PCIPM;
++	if (state & PCIE_LINK_STATE_L1_2_PCIPM)
++		link->aspm_disable |= ASPM_STATE_L1_2_PCIPM;
+ 	pcie_config_aspm_link(link, policy_to_aspm_state(link));
  
--	/* Stop PTP Clock driver */
--	if (info->ccc_gac)
--		ravb_ptp_stop(ndev);
--
--	clk_disable_unprepare(priv->gptp_clk);
--	clk_disable_unprepare(priv->refclk);
--
--	/* Set reset mode */
--	ravb_write(ndev, CCC_OPC_RESET, CCC);
- 	unregister_netdev(ndev);
- 	if (info->nc_queues)
- 		netif_napi_del(&priv->napi[RAVB_NC]);
- 	netif_napi_del(&priv->napi[RAVB_BE]);
-+
- 	ravb_mdio_release(priv);
-+
-+	/* Stop PTP Clock driver */
-+	if (info->ccc_gac)
-+		ravb_ptp_stop(ndev);
-+
- 	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
- 			  priv->desc_bat_dma);
-+
-+	/* Set reset mode */
-+	ravb_write(ndev, CCC_OPC_RESET, CCC);
-+
-+	clk_disable_unprepare(priv->gptp_clk);
-+	clk_disable_unprepare(priv->refclk);
-+
- 	pm_runtime_put_sync(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(priv->rstc);
+ 	if (state & PCIE_LINK_STATE_CLKPM)
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index f8036acf2c12b..5e21876341c62 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1496,9 +1496,13 @@ extern bool pcie_ports_native;
+ #define pcie_ports_native	false
+ #endif
+ 
+-#define PCIE_LINK_STATE_L0S	1
+-#define PCIE_LINK_STATE_L1	2
+-#define PCIE_LINK_STATE_CLKPM	4
++#define PCIE_LINK_STATE_L0S		BIT(0)
++#define PCIE_LINK_STATE_L1		BIT(1)
++#define PCIE_LINK_STATE_CLKPM		BIT(2)
++#define PCIE_LINK_STATE_L1_1		BIT(3)
++#define PCIE_LINK_STATE_L1_2		BIT(4)
++#define PCIE_LINK_STATE_L1_1_PCIPM	BIT(5)
++#define PCIE_LINK_STATE_L1_2_PCIPM	BIT(6)
+ 
+ #ifdef CONFIG_PCIEASPM
+ int pci_disable_link_state(struct pci_dev *pdev, int state);
 -- 
 2.42.0
 
