@@ -1,49 +1,45 @@
-Return-Path: <stable+bounces-3988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9981E804587
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 451AC8046BE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 516461F2139A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A53B3B20C9C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFF206FB0;
-	Tue,  5 Dec 2023 03:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08998BF2;
+	Tue,  5 Dec 2023 03:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7frYhh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1C8i6bUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0E76AC2;
-	Tue,  5 Dec 2023 03:18:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CC6C433C7;
-	Tue,  5 Dec 2023 03:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8937A6FB1;
+	Tue,  5 Dec 2023 03:31:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16484C433C7;
+	Tue,  5 Dec 2023 03:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746309;
-	bh=aB6wAR4Ot6F+a0DHgTe5AvzifXwzJZrk7ujd/DJgekc=;
+	s=korg; t=1701747060;
+	bh=CH8k+C5Ck+GT2anpNvk2VRpx3A3MVI8AwVKgPnXPBN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7frYhh3CgrdxzTLOdi2WJSuJnkQMV4gu0AwqtHoMpyC8aVEvddpYao0Q6qFi3FXK
-	 ULk1vnbU7rldrE/YI0TMLbvqDNLB1NHAV1wsezpG7mKja1hRsPeaR2SPqYauSgHl2m
-	 x6fu3X4TlIBQWlejLL2K9nDKUyL1Q74M0SMTxlto=
+	b=1C8i6bUeW9Vv/aix9KD7iav/EmdPbbbvq+M4E9G/EB2O15cIJ7Cl4llM/uo+4RGzL
+	 8aO9F/Gi/Py9I1A6D5wJh3qLGFKeTW48waHbOctoBzpcd4u3fkdyavKrnyVAsxT7vX
+	 34CEV8QDATZqYXBgKcTlBbridxZiZ3QroX+2yTB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Christopher Obbard <chris.obbard@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 04/30] drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 036/107] parisc: Mark ex_table entries 32-bit aligned in assembly.h
 Date: Tue,  5 Dec 2023 12:16:11 +0900
-Message-ID: <20231205031511.756970896@linuxfoundation.org>
+Message-ID: <20231205031533.734596646@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,80 +51,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit bb0a05acd6121ff0e810b44fdc24dbdfaa46b642 ]
+commit e11d4cccd094a7cd4696c8c42e672c76c092dad5 upstream.
 
-Use of DRM_FORMAT_RGB888 and DRM_FORMAT_BGR888 on e.g. RK3288, RK3328
-and RK3399 result in wrong colors being displayed.
+Add an align statement to tell the linker that all ex_table entries and as
+such the whole ex_table section should be 32-bit aligned in vmlinux and modules.
 
-The issue can be observed using modetest:
-
-  modetest -s <connector_id>@<crtc_id>:1920x1080-60@RG24
-  modetest -s <connector_id>@<crtc_id>:1920x1080-60@BG24
-
-Vendor 4.4 kernel apply an inverted rb swap for these formats on VOP
-full framework (IP version 3.x) compared to VOP little framework (2.x).
-
-Fix colors by applying different rb swap for VOP full framework (3.x)
-and VOP little framework (2.x) similar to vendor 4.4 kernel.
-
-Fixes: 85a359f25388 ("drm/rockchip: Add BGR formats to VOP")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Tested-by: Diederik de Haas <didi.debian@cknow.org>
-Reviewed-by: Christopher Obbard <chris.obbard@collabora.com>
-Tested-by: Christopher Obbard <chris.obbard@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231026191500.2994225-1-jonas@kwiboo.se
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org   # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ arch/parisc/include/asm/assembly.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-index 3f32be1a682e5..9302233b55035 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop.c
-@@ -202,14 +202,22 @@ static inline void vop_cfg_done(struct vop *vop)
- 	VOP_REG_SET(vop, common, cfg_done, 1);
- }
+diff --git a/arch/parisc/include/asm/assembly.h b/arch/parisc/include/asm/assembly.h
+index 75677b526b2b..74d17d7e759d 100644
+--- a/arch/parisc/include/asm/assembly.h
++++ b/arch/parisc/include/asm/assembly.h
+@@ -574,6 +574,7 @@
+ 	 */
+ #define ASM_EXCEPTIONTABLE_ENTRY(fault_addr, except_addr)	\
+ 	.section __ex_table,"aw"			!	\
++	.align 4					!	\
+ 	.word (fault_addr - .), (except_addr - .)	!	\
+ 	.previous
  
--static bool has_rb_swapped(uint32_t format)
-+static bool has_rb_swapped(uint32_t version, uint32_t format)
- {
- 	switch (format) {
- 	case DRM_FORMAT_XBGR8888:
- 	case DRM_FORMAT_ABGR8888:
--	case DRM_FORMAT_BGR888:
- 	case DRM_FORMAT_BGR565:
- 		return true;
-+	/*
-+	 * full framework (IP version 3.x) only need rb swapped for RGB888 and
-+	 * little framework (IP version 2.x) only need rb swapped for BGR888,
-+	 * check for 3.x to also only rb swap BGR888 for unknown vop version
-+	 */
-+	case DRM_FORMAT_RGB888:
-+		return VOP_MAJOR(version) == 3;
-+	case DRM_FORMAT_BGR888:
-+		return VOP_MAJOR(version) != 3;
- 	default:
- 		return false;
- 	}
-@@ -786,7 +794,7 @@ static void vop_plane_atomic_update(struct drm_plane *plane,
- 	VOP_WIN_SET(vop, win, dsp_info, dsp_info);
- 	VOP_WIN_SET(vop, win, dsp_st, dsp_st);
- 
--	rb_swap = has_rb_swapped(fb->format->format);
-+	rb_swap = has_rb_swapped(vop->data->version, fb->format->format);
- 	VOP_WIN_SET(vop, win, rb_swap, rb_swap);
- 
- 	if (is_alpha_support(fb->format->format)) {
 -- 
-2.42.0
+2.43.0
 
 
 
