@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-4077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4A68045E6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA3D804717
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A63401F213CB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C1FC2815A3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0332C6FB1;
-	Tue,  5 Dec 2023 03:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E788BF1;
+	Tue,  5 Dec 2023 03:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qK59rnS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+enl3g7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFC86AA0;
-	Tue,  5 Dec 2023 03:22:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52373C433C7;
-	Tue,  5 Dec 2023 03:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E534F6FB1;
+	Tue,  5 Dec 2023 03:34:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632E8C433C8;
+	Tue,  5 Dec 2023 03:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746558;
-	bh=QHfxNrTDbzlSsC3tOtofhqw4eba+DsC3W/AA4FEmKss=;
+	s=korg; t=1701747289;
+	bh=S5AhQf2WjqEvCFBRRfvy7c2fkx6Q0A0hRnkbOnpHKhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qK59rnS06TugQbDcg1qMd2KP2cgA9ivHobaKJINglI6EuJDs/kxd5sTdt3jYK0H8j
-	 8qN+hx3Y37pVPXsYTnydxFYenHTaOT6oytI9jxeDPlGhPAub0LvavXl6NKo7M53U3W
-	 sDp0ZdYSHnpnMD+Ru9dKr2rNcVljj0+z8KlgpSwE=
+	b=T+enl3g7Y9AI9WWtqkLmt1Frs3oHJqff87l7MA8kLdMYZGCHgGenqeFCq3L4Br306
+	 naeiUUdB/jMNJSChPnmxkHnfJV2pL/KcTYEg+fUkdTs+qu+6WWjJBI0OxB1ZBp85OC
+	 JafcJ7M55Hm78ND2g0lU5ypDK/Z+2alysXFIKwBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 070/134] btrfs: fix 64bit compat send ioctl arguments not initializing version member
+	Eric Dumazet <edumazet@google.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 021/135] ipv4: Correct/silence an endian warning in __ip_do_redirect
 Date: Tue,  5 Dec 2023 12:15:42 +0900
-Message-ID: <20231205031539.954619160@linuxfoundation.org>
+Message-ID: <20231205031531.910296149@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +54,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit 5de0434bc064606d6b7467ec3e5ad22963a18c04 upstream.
+[ Upstream commit c0e2926266af3b5acf28df0a8fc6e4d90effe0bb ]
 
-When the send protocol versioning was added in 5.16 e77fbf990316
-("btrfs: send: prepare for v2 protocol"), the 32/64bit compat code was
-not updated (added by 2351f431f727 ("btrfs: fix send ioctl on 32bit with
-64bit kernel")), missing the version struct member. The compat code is
-probably rarely used, nobody reported any bugs.
+net/ipv4/route.c:783:46: warning: incorrect type in argument 2 (different base types)
+net/ipv4/route.c:783:46:    expected unsigned int [usertype] key
+net/ipv4/route.c:783:46:    got restricted __be32 [usertype] new_gw
 
-Found by tool https://github.com/jirislaby/clang-struct .
-
-Fixes: e77fbf990316 ("btrfs: send: prepare for v2 protocol")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 969447f226b4 ("ipv4: use new_gw for redirect neigh lookup")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20231119141759.420477-1-chentao@kylinos.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ioctl.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -4351,6 +4351,7 @@ static int _btrfs_ioctl_send(struct inod
- 		arg->clone_sources = compat_ptr(args32.clone_sources);
- 		arg->parent_root = args32.parent_root;
- 		arg->flags = args32.flags;
-+		arg->version = args32.version;
- 		memcpy(arg->reserved, args32.reserved,
- 		       sizeof(args32.reserved));
- #else
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 445b1a2966d79..d360c7d70e8a2 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -808,7 +808,7 @@ static void __ip_do_redirect(struct rtable *rt, struct sk_buff *skb, struct flow
+ 			goto reject_redirect;
+ 	}
+ 
+-	n = __ipv4_neigh_lookup(rt->dst.dev, new_gw);
++	n = __ipv4_neigh_lookup(rt->dst.dev, (__force u32)new_gw);
+ 	if (!n)
+ 		n = neigh_create(&arp_tbl, &new_gw, rt->dst.dev);
+ 	if (!IS_ERR(n)) {
+-- 
+2.42.0
+
 
 
 
