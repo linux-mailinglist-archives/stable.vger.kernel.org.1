@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B101080469A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8CC8045E4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B476B20CFA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59449282AB6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AFA18BF8;
-	Tue,  5 Dec 2023 03:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CB96FB0;
+	Tue,  5 Dec 2023 03:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvI/tu2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2esgzZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0977A6FAF;
-	Tue,  5 Dec 2023 03:29:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79796C433C7;
-	Tue,  5 Dec 2023 03:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984426AA0;
+	Tue,  5 Dec 2023 03:22:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C59C433C8;
+	Tue,  5 Dec 2023 03:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746969;
-	bh=+MVP08TKzeTLR91yVtYsRtxdcNyYJBJxbnPfhXEHfgs=;
+	s=korg; t=1701746551;
+	bh=M/MISQuw37/8AwtX3im/lVngS7cMq0V8Lp45i6b8WjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvI/tu2BMuzBrE8AYMAoEolxVvXprlY0LPP7/BuQYo5Sj5X3Ku1tcLdrGtXEItdpN
-	 HsH3yZgKs3k0yo9ECP3ERjFN7NU44mcfLGQLNaNsd0SsqZU33E/7WEvHj8oiYeLfx7
-	 EBrD8JjIDtK28+HmyahPdRZokQzzGR+AsiTcNBK4=
+	b=t2esgzZuIxV1VKix/sBSW/QmicQCkbLPYYKdvXE6LxdswcA6nmQ66L5ZyEqIcvIVM
+	 Bdda12T8Y8xwcM8LMEQbm9sec3/+3I2opMDWqBBjfmYTuIecgft3CK0q/tX0Vw+KOR
+	 G+e/M5Cag5N0EDsV/hcBfyRxgOQgEQltSOmuvhko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maria Yu <quic_aiquny@quicinc.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 004/107] pinctrl: avoid reload of p state in list iteration
+	Jann Horn <jannh@google.com>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 067/134] btrfs: send: ensure send_fd is writable
 Date: Tue,  5 Dec 2023 12:15:39 +0900
-Message-ID: <20231205031531.765822427@linuxfoundation.org>
+Message-ID: <20231205031539.782569512@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +53,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maria Yu <quic_aiquny@quicinc.com>
+From: Jann Horn <jannh@google.com>
 
-commit 4198a9b571065978632276264e01d71d68000ac5 upstream.
+commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
 
-When in the list_for_each_entry iteration, reload of p->state->settings
-with a local setting from old_state will turn the list iteration into an
-infinite loop.
+kernel_write() requires the caller to ensure that the file is writable.
+Let's do that directly after looking up the ->send_fd.
 
-The typical symptom when the issue happens, will be a printk message like:
+We don't need a separate bailout path because the "out" path already
+does fput() if ->send_filp is non-NULL.
 
-  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
-already used for some other setting".
+This has no security impact for two reasons:
 
-This is a compiler-dependent problem, one instance occurred using Clang
-version 10.0 on the arm64 architecture with linux version 4.19.
+ - the ioctl requires CAP_SYS_ADMIN
+ - __kernel_write() bails out on read-only files - but only since 5.8,
+   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
 
-Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231115102824.23727-1-quic_aiquny@quicinc.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
+Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
+CC: stable@vger.kernel.org # 4.14+
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/send.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1239,17 +1239,17 @@ static void pinctrl_link_add(struct pinc
- static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
- {
- 	struct pinctrl_setting *setting, *setting2;
--	struct pinctrl_state *old_state = p->state;
-+	struct pinctrl_state *old_state = READ_ONCE(p->state);
- 	int ret;
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -8158,7 +8158,7 @@ long btrfs_ioctl_send(struct inode *inod
+ 	}
  
--	if (p->state) {
-+	if (old_state) {
- 		/*
- 		 * For each pinmux setting in the old state, forget SW's record
- 		 * of mux owner for that pingroup. Any pingroups which are
- 		 * still owned by the new state will be re-acquired by the call
- 		 * to pinmux_enable_setting() in the loop below.
- 		 */
--		list_for_each_entry(setting, &p->state->settings, node) {
-+		list_for_each_entry(setting, &old_state->settings, node) {
- 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
- 				continue;
- 			pinmux_disable_setting(setting);
+ 	sctx->send_filp = fget(arg->send_fd);
+-	if (!sctx->send_filp) {
++	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
+ 		ret = -EBADF;
+ 		goto out;
+ 	}
 
 
 
