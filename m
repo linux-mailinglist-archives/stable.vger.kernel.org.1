@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDAF6804800
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B41B80476B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97D431F21DB3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 164BB281665
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E63748C07;
-	Tue,  5 Dec 2023 03:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48AE8C03;
+	Tue,  5 Dec 2023 03:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXWO+mnD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObYgYyg9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50916FB0;
-	Tue,  5 Dec 2023 03:44:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A32C433C8;
-	Tue,  5 Dec 2023 03:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682CE79E3;
+	Tue,  5 Dec 2023 03:38:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ABEC433CA;
+	Tue,  5 Dec 2023 03:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747884;
-	bh=Q9Lti7OJnIYE+Q+A1jJPnFFwp7C4C3CxNdQsLRzyFKQ=;
+	s=korg; t=1701747502;
+	bh=jrQ8Py1dE1CRgdn8EHJWLYA83Oq6OPSo/nmvA+JNRUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oXWO+mnDAukl/rvJiC4kSp48ebr07gvSTl4wiNKX5w+mf6oUcX4YJ5XF1Fhxe8Mpu
-	 ibXfHwHtlVApgmWddZXpmsY7VE7GLJaHe9Wx9A3a+gqBJdelTQc8BsFqyUmvyCct1x
-	 C0PKGpfiE83xynr74H6rSIWZZAKu05OSJi6PvdBw=
+	b=ObYgYyg9F+CPmahnuU5M723+Mnvf0m6H5ZY5Utw+c6EzVAtgBtILeT0PxgFo8F24x
+	 alPpypeK9osGeIh5+efbILgKRM8VpmIxho2+YIZ3oxE5VfJXaTodssb0+cxE4I3Lk0
+	 bZm1k1eweSvEMc5x/ioEejEK/t4tlbO1IyDua1Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Murray <andrew.murray@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Zenghui Yu <yuzenghui@huawei.com>
-Subject: [PATCH 5.4 33/94] KVM: arm64: limit PMU version to PMUv3 for ARMv8.1
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 100/135] ravb: Fix races between ravb_tx_timeout_work() and net related ops
 Date: Tue,  5 Dec 2023 12:17:01 +0900
-Message-ID: <20231205031524.756126004@linuxfoundation.org>
+Message-ID: <20231205031536.989740390@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,79 +54,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Murray <andrew.murray@arm.com>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-commit c854188ea01062f5a5fd7f05658feb1863774eaa upstream.
+[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
 
-We currently expose the PMU version of the host to the guest via
-emulation of the DFR0_EL1 and AA64DFR0_EL1 debug feature registers.
-However many of the features offered beyond PMUv3 for 8.1 are not
-supported in KVM. Examples of this include support for the PMMIR
-registers (added in PMUv3 for ARMv8.4) and 64-bit event counters
-added in (PMUv3 for ARMv8.5).
+Fix races between ravb_tx_timeout_work() and functions of net_device_ops
+and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
+since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
+ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
+may happen in ravb_tx_timeout_work() like below:
 
-Let's trap the Debug Feature Registers in order to limit
-PMUVer/PerfMon in the Debug Feature Registers to PMUv3 for ARMv8.1
-to avoid unexpected behaviour.
+CPU0			CPU1
+			ravb_tx_timeout()
+			schedule_work()
+...
+__dev_close_many()
+// Under rtnl lock
+ravb_close()
+cancel_work_sync()
+// Waiting
+			ravb_tx_timeout_work()
+			rtnl_lock()
+			// This is possible to cause a deadlock
 
-Both ID_AA64DFR0.PMUVer and ID_DFR0.PerfMon follow the "Alternative ID
-scheme used for the Performance Monitors Extension version" where 0xF
-means an IMPLEMENTATION DEFINED PMU is implemented, and values 0x0-0xE
-are treated as with an unsigned field (with 0x0 meaning no PMU is
-present). As we don't expect to expose an IMPLEMENTATION DEFINED PMU,
-and our cap is below 0xF, we can treat these fields as unsigned when
-applying the cap.
+If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
 
-Signed-off-by: Andrew Murray <andrew.murray@arm.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-[Mark: make field names consistent, use perfmon cap]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/sysreg.h |    6 ++++++
- arch/arm64/kvm/sys_regs.c       |   10 ++++++++++
- 2 files changed, 16 insertions(+)
+ drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/sysreg.h
-+++ b/arch/arm64/include/asm/sysreg.h
-@@ -697,6 +697,12 @@
- #define ID_AA64DFR0_TRACEVER_SHIFT	4
- #define ID_AA64DFR0_DEBUGVER_SHIFT	0
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index f218bacec0013..9d4a35f006c68 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1438,6 +1438,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 	struct net_device *ndev = priv->ndev;
+ 	int error;
  
-+#define ID_AA64DFR0_PMUVER_8_1		0x4
++	if (!rtnl_trylock()) {
++		usleep_range(1000, 2000);
++		schedule_work(&priv->work);
++		return;
++	}
 +
-+#define ID_DFR0_PERFMON_SHIFT		24
-+
-+#define ID_DFR0_PERFMON_8_1		0x4
-+
- #define ID_ISAR5_RDM_SHIFT		24
- #define ID_ISAR5_CRC32_SHIFT		16
- #define ID_ISAR5_SHA2_SHIFT		12
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -1089,6 +1089,16 @@ static u64 read_id_reg(const struct kvm_
- 			 (0xfUL << ID_AA64ISAR1_API_SHIFT) |
- 			 (0xfUL << ID_AA64ISAR1_GPA_SHIFT) |
- 			 (0xfUL << ID_AA64ISAR1_GPI_SHIFT));
-+	} else if (id == SYS_ID_AA64DFR0_EL1) {
-+		/* Limit guests to PMUv3 for ARMv8.1 */
-+		val = cpuid_feature_cap_perfmon_field(val,
-+						ID_AA64DFR0_PMUVER_SHIFT,
-+						ID_AA64DFR0_PMUVER_8_1);
-+	} else if (id == SYS_ID_DFR0_EL1) {
-+		/* Limit guests to PMUv3 for ARMv8.1 */
-+		val = cpuid_feature_cap_perfmon_field(val,
-+						ID_DFR0_PERFMON_SHIFT,
-+						ID_DFR0_PERFMON_8_1);
+ 	netif_tx_stop_all_queues(ndev);
+ 
+ 	/* Stop PTP Clock driver */
+@@ -1470,7 +1476,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		 */
+ 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
+ 			   __func__, error);
+-		return;
++		goto out_unlock;
  	}
+ 	ravb_emac_init(ndev);
  
- 	return val;
+@@ -1480,6 +1486,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		ravb_ptp_init(ndev, priv->pdev);
+ 
+ 	netif_tx_start_all_queues(ndev);
++
++out_unlock:
++	rtnl_unlock();
+ }
+ 
+ /* Packet transmit function for Ethernet AVB */
+-- 
+2.42.0
+
 
 
 
