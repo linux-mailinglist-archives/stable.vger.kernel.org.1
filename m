@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-4091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9868045F6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1398804727
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29A8A282F15
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BF261F2144D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B751C8BF2;
-	Tue,  5 Dec 2023 03:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFE98BF1;
+	Tue,  5 Dec 2023 03:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwEMKTcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLKK+osh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7763A8BEA;
-	Tue,  5 Dec 2023 03:23:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10233C433C9;
-	Tue,  5 Dec 2023 03:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D346FB1;
+	Tue,  5 Dec 2023 03:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC925C433C7;
+	Tue,  5 Dec 2023 03:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746594;
-	bh=irV3VRf29Vi/bza9aU7qQ0GrHVALOIGLSDLV/lFHoV0=;
+	s=korg; t=1701747331;
+	bh=0FdNwuaX86swm5esS+jJjI1pe84PCdErXX3okgeEPps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwEMKTcvR8nP94/pe2yfOzJQjqnMpzi9RZ77qcWASjXa8OKHjBcirxoT0eMkJtLyo
-	 Z4TVIqPkjdW2DiFuTrFAKYK5DwUPOWwrf+tGjqpj+mNAKkCXOI0uLvZ+E1/CIuh/d0
-	 Wt0kZYtJvwY2X4p46y/kOBGpZ1yTtgdNDVIUjycU=
+	b=DLKK+oshJsUqzwSQDl9X9KMiRLazE4AhPds3mNh29joHwebUlwxfhPaNUXeaSc1Hs
+	 pZURn0MhK/q8M8/lgjzu34p0XXbNdBbtgoeJmlRCdKoudIcWruuwjJFveBaNAkeulv
+	 Th8zwVieHtUOwAj9Rnmi/aqIaxUZUKZGXQXfVeJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Bruno Haible <bruno@clisp.org>
-Subject: [PATCH 6.6 060/134] parisc: Drop the HP-UX ENOSYM and EREMOTERELEASE error codes
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 011/135] afs: Make error on cell lookup failure consistent with OpenAFS
 Date: Tue,  5 Dec 2023 12:15:32 +0900
-Message-ID: <20231205031539.338390820@linuxfoundation.org>
+Message-ID: <20231205031531.202387875@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,92 +56,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: David Howells <dhowells@redhat.com>
 
-commit e5f3e299a2b1e9c3ece24a38adfc089aef307e8a upstream.
+[ Upstream commit 2a4ca1b4b77850544408595e2433f5d7811a9daa ]
 
-Those return codes are only defined for the parisc architecture and
-are leftovers from when we wanted to be HP-UX compatible.
+When kafs tries to look up a cell in the DNS or the local config, it will
+translate a lookup failure into EDESTADDRREQ whereas OpenAFS translates it
+into ENOENT.  Applications such as West expect the latter behaviour and
+fail if they see the former.
 
-They are not returned by any Linux kernel syscall but do trigger
-problems with the glibc strerrorname_np() and strerror() functions as
-reported in glibc issue #31080.
+This can be seen by trying to mount an unknown cell:
 
-There is no need to keep them, so simply remove them.
+   # mount -t afs %example.com:cell.root /mnt
+   mount: /mnt: mount(2) system call failed: Destination address required.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Reported-by: Bruno Haible <bruno@clisp.org>
-Closes: https://sourceware.org/bugzilla/show_bug.cgi?id=31080
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d673da14533 ("afs: Support the AFS dynamic root")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/uapi/asm/errno.h       |    2 --
- lib/errname.c                              |    6 ------
- tools/arch/parisc/include/uapi/asm/errno.h |    2 --
- 3 files changed, 10 deletions(-)
+ fs/afs/dynroot.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/parisc/include/uapi/asm/errno.h
-+++ b/arch/parisc/include/uapi/asm/errno.h
-@@ -75,7 +75,6 @@
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index db832cc931c87..b35c6081dbfe1 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -131,8 +131,8 @@ static int afs_probe_cell_name(struct dentry *dentry)
  
- /* We now return you to your regularly scheduled HPUX. */
+ 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
+ 			NULL, NULL, false);
+-	if (ret == -ENODATA)
+-		ret = -EDESTADDRREQ;
++	if (ret == -ENODATA || ret == -ENOKEY)
++		ret = -ENOENT;
+ 	return ret;
+ }
  
--#define ENOSYM		215	/* symbol does not exist in executable */
- #define	ENOTSOCK	216	/* Socket operation on non-socket */
- #define	EDESTADDRREQ	217	/* Destination address required */
- #define	EMSGSIZE	218	/* Message too long */
-@@ -101,7 +100,6 @@
- #define	ETIMEDOUT	238	/* Connection timed out */
- #define	ECONNREFUSED	239	/* Connection refused */
- #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
--#define	EREMOTERELEASE	240	/* Remote peer released connection */
- #define	EHOSTDOWN	241	/* Host is down */
- #define	EHOSTUNREACH	242	/* No route to host */
- 
---- a/lib/errname.c
-+++ b/lib/errname.c
-@@ -111,9 +111,6 @@ static const char *names_0[] = {
- 	E(ENOSPC),
- 	E(ENOSR),
- 	E(ENOSTR),
--#ifdef ENOSYM
--	E(ENOSYM),
--#endif
- 	E(ENOSYS),
- 	E(ENOTBLK),
- 	E(ENOTCONN),
-@@ -144,9 +141,6 @@ static const char *names_0[] = {
- #endif
- 	E(EREMOTE),
- 	E(EREMOTEIO),
--#ifdef EREMOTERELEASE
--	E(EREMOTERELEASE),
--#endif
- 	E(ERESTART),
- 	E(ERFKILL),
- 	E(EROFS),
---- a/tools/arch/parisc/include/uapi/asm/errno.h
-+++ b/tools/arch/parisc/include/uapi/asm/errno.h
-@@ -75,7 +75,6 @@
- 
- /* We now return you to your regularly scheduled HPUX. */
- 
--#define ENOSYM		215	/* symbol does not exist in executable */
- #define	ENOTSOCK	216	/* Socket operation on non-socket */
- #define	EDESTADDRREQ	217	/* Destination address required */
- #define	EMSGSIZE	218	/* Message too long */
-@@ -101,7 +100,6 @@
- #define	ETIMEDOUT	238	/* Connection timed out */
- #define	ECONNREFUSED	239	/* Connection refused */
- #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
--#define	EREMOTERELEASE	240	/* Remote peer released connection */
- #define	EHOSTDOWN	241	/* Host is down */
- #define	EHOSTUNREACH	242	/* No route to host */
- 
+-- 
+2.42.0
+
 
 
 
