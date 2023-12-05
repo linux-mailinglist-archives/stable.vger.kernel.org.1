@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029CC804701
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61D1F804686
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2AAF2815B0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF0A7B20C8E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040378C07;
-	Tue,  5 Dec 2023 03:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEEB79E3;
+	Tue,  5 Dec 2023 03:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrZKbFbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtMN/SpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA3FA59;
-	Tue,  5 Dec 2023 03:33:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20798C433C7;
-	Tue,  5 Dec 2023 03:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05CD6FAF;
+	Tue,  5 Dec 2023 03:28:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42057C433C7;
+	Tue,  5 Dec 2023 03:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747231;
-	bh=GywkC+3gS4Hc5v0rX3xmg/GwIwh3eaex4SwGmscHsAk=;
+	s=korg; t=1701746921;
+	bh=qGxUxpE9rqJ1OcIDe2JkOEoGH3Aq9Bznd2dRRkRBrGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrZKbFbrhfF6dfgYahq3lQ2xub6gmwwvi84NxghrOPi22+ny5d2Cb50qhRB6pve66
-	 hlLz+XM/aKIuHufr+JExp5MZaETQ1msbLo3V0vQuF8z2ARVd54XpyztnCn2oOmfDIa
-	 yFKm0q+KTRmKbIY5NwRe7SucK5eKOYxVAI2iD9po=
+	b=qtMN/SpPV9U+1GZqg/WXiqok31jCebMqC50uxnUwfo3oidQ5ozEsthy5h8U0N+C2+
+	 HVX6qmgfDf9ZM76Y6YrfrbRXFXCuifolbcWltRnvePXyKmRY+HGxT/0WCX73Tbd4VP
+	 3v61AZvBvGVaiSCejIiYX7zl/FXoVjJoiWqYcfnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/107] iommu/vt-d: Omit devTLB invalidation requests when TES=0
+Subject: [PATCH 4.19 67/71] mmc: cqhci: Increase recovery halt timeout
 Date: Tue,  5 Dec 2023 12:17:05 +0900
-Message-ID: <20231205031537.305799153@linuxfoundation.org>
+Message-ID: <20231205031521.765687826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,71 +54,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 0f5432a9b839847dcfe9fa369d72e3d646102ddf ]
+[ Upstream commit b578d5d18e929aa7c007a98cce32657145dde219 ]
 
-The latest VT-d spec indicates that when remapping hardware is disabled
-(TES=0 in Global Status Register), upstream ATS Invalidation Completion
-requests are treated as UR (Unsupported Request).
+Failing to halt complicates the recovery. Additionally, unless the card or
+controller are stuck, which is expected to be very rare, then the halt
+should succeed, so it is better to wait. Set a large timeout.
 
-Consequently, the spec recommends in section 4.3 Handling of Device-TLB
-Invalidations that software refrain from submitting any Device-TLB
-invalidation requests when address remapping hardware is disabled.
-
-Verify address remapping hardware is enabled prior to submitting Device-
-TLB invalidation requests.
-
-Fixes: 792fb43ce2c9 ("iommu/vt-d: Enable Intel IOMMU scalable mode by default")
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20231114011036.70142-2-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
+Cc: stable@vger.kernel.org
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-3-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/dmar.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/mmc/host/cqhci.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index f800989ea0462..418af1db0192d 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1495,6 +1495,15 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
+diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
+index 495a09b5a8e78..773941a92649d 100644
+--- a/drivers/mmc/host/cqhci.c
++++ b/drivers/mmc/host/cqhci.c
+@@ -926,10 +926,10 @@ static bool cqhci_halt(struct mmc_host *mmc, unsigned int timeout)
+ /*
+  * After halting we expect to be able to use the command line. We interpret the
+  * failure to halt to mean the data lines might still be in use (and the upper
+- * layers will need to send a STOP command), so we set the timeout based on a
+- * generous command timeout.
++ * layers will need to send a STOP command), however failing to halt complicates
++ * the recovery, so set a timeout that would reasonably allow I/O to complete.
+  */
+-#define CQHCI_START_HALT_TIMEOUT	5
++#define CQHCI_START_HALT_TIMEOUT	500
+ 
+ static void cqhci_recovery_start(struct mmc_host *mmc)
  {
- 	struct qi_desc desc;
- 
-+	/*
-+	 * VT-d spec, section 4.3:
-+	 *
-+	 * Software is recommended to not submit any Device-TLB invalidation
-+	 * requests while address remapping hardware is disabled.
-+	 */
-+	if (!(iommu->gcmd & DMA_GCMD_TE))
-+		return;
-+
- 	if (mask) {
- 		addr |= (1ULL << (VTD_PAGE_SHIFT + mask - 1)) - 1;
- 		desc.qw1 = QI_DEV_IOTLB_ADDR(addr) | QI_DEV_IOTLB_SIZE;
-@@ -1560,6 +1569,15 @@ void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
- 	unsigned long mask = 1UL << (VTD_PAGE_SHIFT + size_order - 1);
- 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
- 
-+	/*
-+	 * VT-d spec, section 4.3:
-+	 *
-+	 * Software is recommended to not submit any Device-TLB invalidation
-+	 * requests while address remapping hardware is disabled.
-+	 */
-+	if (!(iommu->gcmd & DMA_GCMD_TE))
-+		return;
-+
- 	desc.qw0 = QI_DEV_EIOTLB_PASID(pasid) | QI_DEV_EIOTLB_SID(sid) |
- 		QI_DEV_EIOTLB_QDEP(qdep) | QI_DEIOTLB_TYPE |
- 		QI_DEV_IOTLB_PFSID(pfsid);
 -- 
 2.42.0
 
