@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC4280461E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 726498046CD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46E9028348C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28A141F2143C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEAE86FB8;
-	Tue,  5 Dec 2023 03:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E34C8BF2;
+	Tue,  5 Dec 2023 03:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHY0PmMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEgBAWjA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9BD6FAF;
-	Tue,  5 Dec 2023 03:24:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEDDC433C8;
-	Tue,  5 Dec 2023 03:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283866FB1;
+	Tue,  5 Dec 2023 03:31:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD4AC433C8;
+	Tue,  5 Dec 2023 03:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746695;
-	bh=njU3GXIGQ5ja2b28MDazjM9qFvk/k9pOb/zLcWpqtv0=;
+	s=korg; t=1701747102;
+	bh=K8UmIvZOTDjyURQqFRMRkAkNJ5QltREIqSsOCOWQFRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHY0PmMHQfMiK5LnAeRpulNPnbVDa+C6SUalxWpAEJbyAYlV5BVRE9ct2653jsArV
-	 +MhL1oBCvVBJOC+4jys40/dXDNssrAdPwdMGqfHQY6NXm2wWxrG7kpWN0iwttnQjnm
-	 PRRJCiYm4aw4gvFb9DQR1LsfnLtJIyBhzvYnE+9k=
+	b=IEgBAWjAXcAlffci4sJceU9e3ag8wCYNU+XgFupEqLmzxNHZCLMB3gUCCV/WkPwMX
+	 e2pbEZwSWFhGB5yVVWHtGZk6SYYZRHlMSb5OdkdwVJ9ZeQKjw4bWDfABi2a+MgODc9
+	 iYMc4q1JBYoLw3yKma7SAGno/Loi9rT2iMuMMNfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/134] drm/panel: nt36523: fix return value check in nt36523_probe()
+Subject: [PATCH 6.1 059/107] dpaa2-eth: increase the needed headroom to account for alignment
 Date: Tue,  5 Dec 2023 12:16:34 +0900
-Message-ID: <20231205031543.192100653@linuxfoundation.org>
+Message-ID: <20231205031535.118370530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit fb18fe0fdf22a2f4512a8b644bb5ea1473829cda ]
+[ Upstream commit f422abe3f23d483cf01f386819f26fb3fe0dbb2b ]
 
-mipi_dsi_device_register_full() never returns NULL pointer, it
-will return ERR_PTR() when it fails, so replace the check with
-IS_ERR().
+Increase the needed headroom to account for a 64 byte alignment
+restriction which, with this patch, we make mandatory on the Tx path.
+The case in which the amount of headroom needed is not available is
+already handled by the driver which instead sends a S/G frame with the
+first buffer only holding the SW and HW annotation areas.
 
-Fixes: 0993234a0045 ("drm/panel: Add driver for Novatek NT36523")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20231129090715.856263-1-yangyingliang@huaweicloud.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231129090715.856263-1-yangyingliang@huaweicloud.com
+Without this patch, we can empirically see data corruption happening
+between Tx and Tx confirmation which sometimes leads to the SW
+annotation area being overwritten.
+
+Since this is an old IP where the hardware team cannot help to
+understand the underlying behavior, we make the Tx alignment mandatory
+for all frames to avoid the crash on Tx conf. Also, remove the comment
+that suggested that this is just an optimization.
+
+This patch also sets the needed_headroom net device field to the usual
+value that the driver would need on the Tx path:
+	- 64 bytes for the software annotation area
+	- 64 bytes to account for a 64 byte aligned buffer address
+
+Fixes: 6e2387e8f19e ("staging: fsl-dpaa2/eth: Add Freescale DPAA2 Ethernet driver")
+Closes: https://lore.kernel.org/netdev/aa784d0c-85eb-4e5d-968b-c8f74fa86be6@gin.de/
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-novatek-nt36523.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c | 8 ++++----
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-novatek-nt36523.c b/drivers/gpu/drm/panel/panel-novatek-nt36523.c
-index 9632b9e95b715..c4a804c5d6aac 100644
---- a/drivers/gpu/drm/panel/panel-novatek-nt36523.c
-+++ b/drivers/gpu/drm/panel/panel-novatek-nt36523.c
-@@ -1266,9 +1266,9 @@ static int nt36523_probe(struct mipi_dsi_device *dsi)
- 			return dev_err_probe(dev, -EPROBE_DEFER, "cannot get secondary DSI host\n");
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+index 6383d9805dac9..b58162ce81d87 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.c
+@@ -1043,14 +1043,12 @@ static int dpaa2_eth_build_single_fd(struct dpaa2_eth_priv *priv,
+ 	dma_addr_t addr;
  
- 		pinfo->dsi[1] = mipi_dsi_device_register_full(dsi1_host, info);
--		if (!pinfo->dsi[1]) {
-+		if (IS_ERR(pinfo->dsi[1])) {
- 			dev_err(dev, "cannot get secondary DSI device\n");
--			return -ENODEV;
-+			return PTR_ERR(pinfo->dsi[1]);
- 		}
- 	}
+ 	buffer_start = skb->data - dpaa2_eth_needed_headroom(skb);
+-
+-	/* If there's enough room to align the FD address, do it.
+-	 * It will help hardware optimize accesses.
+-	 */
+ 	aligned_start = PTR_ALIGN(buffer_start - DPAA2_ETH_TX_BUF_ALIGN,
+ 				  DPAA2_ETH_TX_BUF_ALIGN);
+ 	if (aligned_start >= skb->head)
+ 		buffer_start = aligned_start;
++	else
++		return -ENOMEM;
  
+ 	/* Store a backpointer to the skb at the beginning of the buffer
+ 	 * (in the private data area) such that we can release it
+@@ -4738,6 +4736,8 @@ static int dpaa2_eth_probe(struct fsl_mc_device *dpni_dev)
+ 	if (err)
+ 		goto err_dl_port_add;
+ 
++	net_dev->needed_headroom = DPAA2_ETH_SWA_SIZE + DPAA2_ETH_TX_BUF_ALIGN;
++
+ 	err = register_netdev(net_dev);
+ 	if (err < 0) {
+ 		dev_err(dev, "register_netdev() failed\n");
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
+index 447718483ef47..e703846adc9f0 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
+@@ -702,7 +702,7 @@ static inline bool dpaa2_eth_rx_pause_enabled(u64 link_options)
+ 
+ static inline unsigned int dpaa2_eth_needed_headroom(struct sk_buff *skb)
+ {
+-	unsigned int headroom = DPAA2_ETH_SWA_SIZE;
++	unsigned int headroom = DPAA2_ETH_SWA_SIZE + DPAA2_ETH_TX_BUF_ALIGN;
+ 
+ 	/* If we don't have an skb (e.g. XDP buffer), we only need space for
+ 	 * the software annotation area
 -- 
 2.42.0
 
