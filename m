@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-4495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A6808047BC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F548047FC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C8561C20E53
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C6FC1F21CFA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F06D8C03;
-	Tue,  5 Dec 2023 03:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACE08C07;
+	Tue,  5 Dec 2023 03:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXbY6bfQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRxB/xTW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3BA6AC2;
-	Tue,  5 Dec 2023 03:41:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4033C433C8;
-	Tue,  5 Dec 2023 03:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969476FB0;
+	Tue,  5 Dec 2023 03:44:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 146BDC433C7;
+	Tue,  5 Dec 2023 03:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747702;
-	bh=/pUahSGz6ONSq9nI8tVfWIuwj/E42KzZ2gWxZnrygqw=;
+	s=korg; t=1701747873;
+	bh=hJqMYENUksTumeizJgFoffImWAYCXsfV+mz39vrcYik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hXbY6bfQtHl3lH/OXrdj3Cwm46uPyZ2LUgfOnthCt8HOB0pdKwLn+2X1rA2i/+v9r
-	 MyJoAGLY4dCAIWhQUJXvthxQL3ivm3VgX5atWbfw70yLbzFQzMwhQea4uvSf7sraFW
-	 c2ziP9HZ1DI07CT5ZZ4/4vTcVbUhFDOd315fA5dU=
+	b=jRxB/xTW5EbL0Nc1fzXGiI9TfaSjSYHNwu02jJaH5kBk1pWNe8tXKEf4QRns9nZi9
+	 XfhsAw/AiteCBOjS2QEvqOuNVULpVbFktsBHjaf97P424+dSInBep2pkoVOKtx0gxR
+	 z0Mth5oRuHGmV2eG1cMdr7XyewY0XAcgElPVg+G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 5.15 13/67] dm-verity: align struct dm_verity_fec_io properly
+	Yikebaer Aizezi <yikebaer61@gmail.com>,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 30/94] ext4: fix slab-use-after-free in ext4_es_insert_extent()
 Date: Tue,  5 Dec 2023 12:16:58 +0900
-Message-ID: <20231205031520.592579561@linuxfoundation.org>
+Message-ID: <20231205031524.582571653@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +56,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit 38bc1ab135db87577695816b190e7d6d8ec75879 upstream.
+[ Upstream commit 768d612f79822d30a1e7d132a4d4b05337ce42ec ]
 
-dm_verity_fec_io is placed after the end of two hash digests. If the hash
-digest has unaligned length, struct dm_verity_fec_io could be unaligned.
+Yikebaer reported an issue:
+==================================================================
+BUG: KASAN: slab-use-after-free in ext4_es_insert_extent+0xc68/0xcb0
+fs/ext4/extents_status.c:894
+Read of size 4 at addr ffff888112ecc1a4 by task syz-executor/8438
 
-This commit fixes the placement of struct dm_verity_fec_io, so that it's
-aligned.
+CPU: 1 PID: 8438 Comm: syz-executor Not tainted 6.5.0-rc5 #1
+Call Trace:
+ [...]
+ kasan_report+0xba/0xf0 mm/kasan/report.c:588
+ ext4_es_insert_extent+0xc68/0xcb0 fs/ext4/extents_status.c:894
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allocated by task 8438:
+ [...]
+ kmem_cache_zalloc include/linux/slab.h:693 [inline]
+ __es_alloc_extent fs/ext4/extents_status.c:469 [inline]
+ ext4_es_insert_extent+0x672/0xcb0 fs/ext4/extents_status.c:873
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
+
+Freed by task 8438:
+ [...]
+ kmem_cache_free+0xec/0x490 mm/slub.c:3823
+ ext4_es_try_to_merge_right fs/ext4/extents_status.c:593 [inline]
+ __es_insert_extent+0x9f4/0x1440 fs/ext4/extents_status.c:802
+ ext4_es_insert_extent+0x2ca/0xcb0 fs/ext4/extents_status.c:882
+ ext4_map_blocks+0x92a/0x16f0 fs/ext4/inode.c:680
+ ext4_alloc_file_blocks.isra.0+0x2df/0xb70 fs/ext4/extents.c:4462
+ ext4_zero_range fs/ext4/extents.c:4622 [inline]
+ ext4_fallocate+0x251c/0x3ce0 fs/ext4/extents.c:4721
+ [...]
+==================================================================
+
+The flow of issue triggering is as follows:
+1. remove es
+      raw es               es  removed  es1
+|-------------------| -> |----|.......|------|
+
+2. insert es
+  es   insert   es1      merge with es  es1     merge with es and free es1
+|----|.......|------| -> |------------|------| -> |-------------------|
+
+es merges with newes, then merges with es1, frees es1, then determines
+if es1->es_len is 0 and triggers a UAF.
+
+The code flow is as follows:
+ext4_es_insert_extent
+  es1 = __es_alloc_extent(true);
+  es2 = __es_alloc_extent(true);
+  __es_remove_extent(inode, lblk, end, NULL, es1)
+    __es_insert_extent(inode, &newes, es1) ---> insert es1 to es tree
+  __es_insert_extent(inode, &newes, es2)
+    ext4_es_try_to_merge_right
+      ext4_es_free_extent(inode, es1) --->  es1 is freed
+  if (es1 && !es1->es_len)
+    // Trigger UAF by determining if es1 is used.
+
+We determine whether es1 or es2 is used immediately after calling
+__es_remove_extent() or __es_insert_extent() to avoid triggering a
+UAF if es1 or es2 is freed.
+
+Reported-by: Yikebaer Aizezi <yikebaer61@gmail.com>
+Closes: https://lore.kernel.org/lkml/CALcu4raD4h9coiyEBL4Bm0zjDwxC2CyPiTwsP3zFuhot6y9Beg@mail.gmail.com
+Fixes: 2a69c450083d ("ext4: using nofail preallocation in ext4_es_insert_extent()")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230815070808.3377171-1-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-fec.c |    3 ++-
- drivers/md/dm-verity.h     |    6 ------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ fs/ext4/extents_status.c | 44 +++++++++++++++++++++++++++-------------
+ 1 file changed, 30 insertions(+), 14 deletions(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -24,7 +24,8 @@ bool verity_fec_is_enabled(struct dm_ver
-  */
- static inline struct dm_verity_fec_io *fec_io(struct dm_verity_io *io)
- {
--	return (struct dm_verity_fec_io *) verity_io_digest_end(io->v, io);
-+	return (struct dm_verity_fec_io *)
-+		((char *)io + io->v->ti->per_io_data_size - sizeof(struct dm_verity_fec_io));
- }
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index c4922b8c9d333..4b47bccc3834a 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -871,23 +871,29 @@ int ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
  
- /*
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -111,12 +111,6 @@ static inline u8 *verity_io_want_digest(
- 	return (u8 *)(io + 1) + v->ahash_reqsize + v->digest_size;
- }
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 == -ENOMEM && !ext4_es_must_keep(&newes))
+ 		err2 = 0;
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
  
--static inline u8 *verity_io_digest_end(struct dm_verity *v,
--				       struct dm_verity_io *io)
--{
--	return verity_io_want_digest(v, io) + v->digest_size;
--}
+ 	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
+ 	    (status & EXTENT_STATUS_WRITTEN ||
+ 	     status & EXTENT_STATUS_UNWRITTEN))
+ 		__revise_pending(inode, lblk, len);
 -
- extern int verity_for_bv_block(struct dm_verity *v, struct dm_verity_io *io,
- 			       struct bvec_iter *iter,
- 			       int (*process)(struct dm_verity *v,
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
+@@ -1475,8 +1481,12 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
+ 	 */
+ 	write_lock(&EXT4_I(inode)->i_es_lock);
+ 	err = __es_remove_extent(inode, lblk, end, &reserved, es);
+-	if (es && !es->es_len)
+-		__es_free_extent(es);
++	/* Free preallocated extent if it didn't get used. */
++	if (es) {
++		if (!es->es_len)
++			__es_free_extent(es);
++		es = NULL;
++	}
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err)
+ 		goto retry;
+@@ -2031,19 +2041,25 @@ int ext4_es_insert_delayed_block(struct inode *inode, ext4_lblk_t lblk,
+ 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
+ 	if (err1 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es1) {
++		if (!es1->es_len)
++			__es_free_extent(es1);
++		es1 = NULL;
++	}
+ 
+ 	err2 = __es_insert_extent(inode, &newes, es2);
+ 	if (err2 != 0)
+ 		goto error;
++	/* Free preallocated extent if it didn't get used. */
++	if (es2) {
++		if (!es2->es_len)
++			__es_free_extent(es2);
++		es2 = NULL;
++	}
+ 
+ 	if (allocated)
+ 		__insert_pending(inode, lblk);
+-
+-	/* es is pre-allocated but not used, free it. */
+-	if (es1 && !es1->es_len)
+-		__es_free_extent(es1);
+-	if (es2 && !es2->es_len)
+-		__es_free_extent(es2);
+ error:
+ 	write_unlock(&EXT4_I(inode)->i_es_lock);
+ 	if (err1 || err2)
+-- 
+2.42.0
+
 
 
 
