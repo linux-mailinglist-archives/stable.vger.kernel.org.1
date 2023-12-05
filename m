@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488B98046FA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1C1C804793
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F14631F21447
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B547281682
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCBC8BF2;
-	Tue,  5 Dec 2023 03:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197B08C03;
+	Tue,  5 Dec 2023 03:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvAGKb8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqgcIDIu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3316FB1;
-	Tue,  5 Dec 2023 03:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA95BC433C9;
-	Tue,  5 Dec 2023 03:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88D36FB1;
+	Tue,  5 Dec 2023 03:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54883C433C8;
+	Tue,  5 Dec 2023 03:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747215;
-	bh=AwUJDkZM/KdQq/mPiBTL/mtSy0ODIb+En9D04ZVhX3s=;
+	s=korg; t=1701747615;
+	bh=w6bMPTVT9IQGLR8iPmCoZeOf/pWRPagCJXyImU81W0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nvAGKb8gHFMCtaX/XGehTuMiOXZl0JjyvSLvdD5/QpAS55kIMCJaPKdJmujqqRhds
-	 tSM9/xajXzeQeMFmegraiZnIGsvVX/kkN7TBoR8nq0T0IHD7R9d/lPVIfD0UHu/oqa
-	 8KVUz/DtUfIL2p+YS5C+QrodQmkD8ClNv+3UOvic=
+	b=VqgcIDIuAH3CvHhF5fJ6JlPPHewEGfMF/b6psaUk0h6Fi8ADS1YCWdzrzexKBdvby
+	 qljqx1ks3k+eCeX2YAyhLAG+63HeDDhlyKX6Ha/30Wav13puwAuJmnJBNV7U7FH2kC
+	 5Du0UrZ8PaN5H7ZB8A4BvzFop/y24vhjVCrFyqcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexander Duyck <alexanderduyck@fb.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/107] r8169: disable ASPM in case of tx timeout
+	Amir Goldstein <amir73il@gmail.com>,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 116/135] ima: annotate iint mutex to avoid lockdep false positive warnings
 Date: Tue,  5 Dec 2023 12:17:17 +0900
-Message-ID: <20231205031538.133827871@linuxfoundation.org>
+Message-ID: <20231205031538.145403336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,78 +54,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 80c0576ef179311f624bc450fede30a89afe9792 ]
+[ Upstream commit e044374a8a0a99e46f4e6d6751d3042b6d9cc12e ]
 
-There are still single reports of systems where ASPM incompatibilities
-cause tx timeouts. It's not clear whom to blame, so let's disable
-ASPM in case of a tx timeout.
+It is not clear that IMA should be nested at all, but as long is it
+measures files both on overlayfs and on underlying fs, we need to
+annotate the iint mutex to avoid lockdep false positives related to
+IMA + overlayfs, same as overlayfs annotates the inode mutex.
 
-v2:
-- add one-time warning for informing the user
-
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
-Link: https://lore.kernel.org/r/92369a92-dc32-4529-0509-11459ba0e391@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 59d395ed606d ("r8169: fix deadlock on RTL8125 in jumbo mtu mode")
+Reported-and-tested-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ security/integrity/iint.c | 48 ++++++++++++++++++++++++++++++---------
+ 1 file changed, 37 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index d293c996252cd..7cb09ba14533c 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -576,6 +576,7 @@ struct rtl8169_tc_offsets {
- enum rtl_flag {
- 	RTL_FLAG_TASK_ENABLED = 0,
- 	RTL_FLAG_TASK_RESET_PENDING,
-+	RTL_FLAG_TASK_TX_TIMEOUT,
- 	RTL_FLAG_MAX
- };
- 
-@@ -3943,7 +3944,7 @@ static void rtl8169_tx_timeout(struct net_device *dev, unsigned int txqueue)
- {
- 	struct rtl8169_private *tp = netdev_priv(dev);
- 
--	rtl_schedule_task(tp, RTL_FLAG_TASK_RESET_PENDING);
-+	rtl_schedule_task(tp, RTL_FLAG_TASK_TX_TIMEOUT);
+diff --git a/security/integrity/iint.c b/security/integrity/iint.c
+index 9ed2d5bfbed5e..b6e33ac70aef5 100644
+--- a/security/integrity/iint.c
++++ b/security/integrity/iint.c
+@@ -66,9 +66,32 @@ struct integrity_iint_cache *integrity_iint_find(struct inode *inode)
+ 	return iint;
  }
  
- static int rtl8169_tx_map(struct rtl8169_private *tp, const u32 *opts, u32 len,
-@@ -4537,6 +4538,7 @@ static void rtl_task(struct work_struct *work)
- {
- 	struct rtl8169_private *tp =
- 		container_of(work, struct rtl8169_private, wk.work);
-+	int ret;
- 
- 	rtnl_lock();
- 
-@@ -4544,7 +4546,17 @@ static void rtl_task(struct work_struct *work)
- 	    !test_bit(RTL_FLAG_TASK_ENABLED, tp->wk.flags))
- 		goto out_unlock;
- 
-+	if (test_and_clear_bit(RTL_FLAG_TASK_TX_TIMEOUT, tp->wk.flags)) {
-+		/* ASPM compatibility issues are a typical reason for tx timeouts */
-+		ret = pci_disable_link_state(tp->pci_dev, PCIE_LINK_STATE_L1 |
-+							  PCIE_LINK_STATE_L0S);
-+		if (!ret)
-+			netdev_warn_once(tp->dev, "ASPM disabled on Tx timeout\n");
-+		goto reset;
-+	}
+-static void iint_free(struct integrity_iint_cache *iint)
++#define IMA_MAX_NESTING (FILESYSTEM_MAX_STACK_DEPTH+1)
 +
- 	if (test_and_clear_bit(RTL_FLAG_TASK_RESET_PENDING, tp->wk.flags)) {
-+reset:
- 		rtl_reset_work(tp);
- 		netif_wake_queue(tp->dev);
- 	}
++/*
++ * It is not clear that IMA should be nested at all, but as long is it measures
++ * files both on overlayfs and on underlying fs, we need to annotate the iint
++ * mutex to avoid lockdep false positives related to IMA + overlayfs.
++ * See ovl_lockdep_annotate_inode_mutex_key() for more details.
++ */
++static inline void iint_lockdep_annotate(struct integrity_iint_cache *iint,
++					 struct inode *inode)
++{
++#ifdef CONFIG_LOCKDEP
++	static struct lock_class_key iint_mutex_key[IMA_MAX_NESTING];
++
++	int depth = inode->i_sb->s_stack_depth;
++
++	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
++		depth = 0;
++
++	lockdep_set_class(&iint->mutex, &iint_mutex_key[depth]);
++#endif
++}
++
++static void iint_init_always(struct integrity_iint_cache *iint,
++			     struct inode *inode)
+ {
+-	kfree(iint->ima_hash);
+ 	iint->ima_hash = NULL;
+ 	iint->version = 0;
+ 	iint->flags = 0UL;
+@@ -80,6 +103,14 @@ static void iint_free(struct integrity_iint_cache *iint)
+ 	iint->ima_creds_status = INTEGRITY_UNKNOWN;
+ 	iint->evm_status = INTEGRITY_UNKNOWN;
+ 	iint->measured_pcrs = 0;
++	mutex_init(&iint->mutex);
++	iint_lockdep_annotate(iint, inode);
++}
++
++static void iint_free(struct integrity_iint_cache *iint)
++{
++	kfree(iint->ima_hash);
++	mutex_destroy(&iint->mutex);
+ 	kmem_cache_free(iint_cache, iint);
+ }
+ 
+@@ -112,6 +143,8 @@ struct integrity_iint_cache *integrity_inode_get(struct inode *inode)
+ 	if (!iint)
+ 		return NULL;
+ 
++	iint_init_always(iint, inode);
++
+ 	write_lock(&integrity_iint_lock);
+ 
+ 	p = &integrity_iint_tree.rb_node;
+@@ -161,25 +194,18 @@ void integrity_inode_free(struct inode *inode)
+ 	iint_free(iint);
+ }
+ 
+-static void init_once(void *foo)
++static void iint_init_once(void *foo)
+ {
+ 	struct integrity_iint_cache *iint = foo;
+ 
+ 	memset(iint, 0, sizeof(*iint));
+-	iint->ima_file_status = INTEGRITY_UNKNOWN;
+-	iint->ima_mmap_status = INTEGRITY_UNKNOWN;
+-	iint->ima_bprm_status = INTEGRITY_UNKNOWN;
+-	iint->ima_read_status = INTEGRITY_UNKNOWN;
+-	iint->ima_creds_status = INTEGRITY_UNKNOWN;
+-	iint->evm_status = INTEGRITY_UNKNOWN;
+-	mutex_init(&iint->mutex);
+ }
+ 
+ static int __init integrity_iintcache_init(void)
+ {
+ 	iint_cache =
+ 	    kmem_cache_create("iint_cache", sizeof(struct integrity_iint_cache),
+-			      0, SLAB_PANIC, init_once);
++			      0, SLAB_PANIC, iint_init_once);
+ 	return 0;
+ }
+ DEFINE_LSM(integrity) = {
 -- 
 2.42.0
 
