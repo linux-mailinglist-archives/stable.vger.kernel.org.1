@@ -1,50 +1,48 @@
-Return-Path: <stable+bounces-4619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8FC80483E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10FC48047CC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D3FC1C20EE9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C020528173B
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7608F56;
-	Tue,  5 Dec 2023 03:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582AC79F2;
+	Tue,  5 Dec 2023 03:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKBQjzLx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTX8EH79"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F7BC8D2;
-	Tue,  5 Dec 2023 03:47:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17256C433C8;
-	Tue,  5 Dec 2023 03:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 099726AC2;
+	Tue,  5 Dec 2023 03:42:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F4CC433C7;
+	Tue,  5 Dec 2023 03:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748048;
-	bh=r5lq4aqLbOFhTAO9bYgGwr0SOmvCCAKg1ZcShSaqPoI=;
+	s=korg; t=1701747741;
+	bh=tG/HTyT1HlmWXYY+pcXEeFzO8pxuLL6WwxF7GhfgmHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKBQjzLxNug8RmB+AzMFY4CvO70Dx5hmCSkguhA4DXMYFkM7mkz9TI9uMB0uG8SbF
-	 Z/ziXBWryVV4QN1CkINcJ6VYB3e0TR1HuSPwx+B2Pnx/Wyd0ZeBpbXrK4bWkEXJqxD
-	 5iXOYMoQzpMuDs6yyK+A56wgy/5m/sfm8n6zYs3g=
+	b=UTX8EH791UEeuMh6b2T5xZplf3Od2XlXpOjvbsX/OiZOdUb5InFYvZF6TJZNJLCmW
+	 uJH+xxtLsy4ezgJQqWrvL5HgKDFoB5P/rCMJlQw0f5yam3jkBSvxXaZ6pFD2Fkm593
+	 U6cGpAetlAxbLt9PIyg/bLOYWrpWYk2SdcPtEx+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 69/94] net: stmmac: xgmac: Disable FPE MMC interrupts
+Subject: [PATCH 5.15 52/67] ASoC: Intel: Move soc_intel_is_foo() helpers to a generic header
 Date: Tue,  5 Dec 2023 12:17:37 +0900
-Message-ID: <20231205031526.703895162@linuxfoundation.org>
+Message-ID: <20231205031522.854460385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,56 +54,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
+[ Upstream commit cd45c9bf8b43cd387e167cf166ae5c517f56d658 ]
 
-Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
-by default") tries to disable MMC interrupts to avoid a storm of
-unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
-interrupts enabled, FPE MMC interrupts can cause the same problem.
-Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
+The soc_intel_is_foo() helpers from
+sound/soc/intel/common/soc-intel-quirks.h are useful outside of the
+sound subsystem too.
 
-Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Move these to include/linux/platform_data/x86/soc.h, so that
+other code can use them too.
+
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20211018143324.296961-2-hdegoede@redhat.com
+Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/platform_data/x86/soc.h     | 65 +++++++++++++++++++++++
+ sound/soc/intel/common/soc-intel-quirks.h | 51 ++----------------
+ 2 files changed, 68 insertions(+), 48 deletions(-)
+ create mode 100644 include/linux/platform_data/x86/soc.h
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-index 252cf48c58166..5b9f344fdd32a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-@@ -170,8 +170,10 @@
- #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
- #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
+diff --git a/include/linux/platform_data/x86/soc.h b/include/linux/platform_data/x86/soc.h
+new file mode 100644
+index 0000000000000..da05f425587a0
+--- /dev/null
++++ b/include/linux/platform_data/x86/soc.h
+@@ -0,0 +1,65 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Helpers for Intel SoC model detection
++ *
++ * Copyright (c) 2019, Intel Corporation.
++ */
++
++#ifndef __PLATFORM_DATA_X86_SOC_H
++#define __PLATFORM_DATA_X86_SOC_H
++
++#if IS_ENABLED(CONFIG_X86)
++
++#include <asm/cpu_device_id.h>
++#include <asm/intel-family.h>
++
++#define SOC_INTEL_IS_CPU(soc, type)				\
++static inline bool soc_intel_is_##soc(void)			\
++{								\
++	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
++		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
++		{}						\
++	};							\
++	const struct x86_cpu_id *id;				\
++								\
++	id = x86_match_cpu(soc##_cpu_ids);			\
++	if (id)							\
++		return true;					\
++	return false;						\
++}
++
++SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
++SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
++SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
++SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
++SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
++
++#else /* IS_ENABLED(CONFIG_X86) */
++
++static inline bool soc_intel_is_byt(void)
++{
++	return false;
++}
++
++static inline bool soc_intel_is_cht(void)
++{
++	return false;
++}
++
++static inline bool soc_intel_is_apl(void)
++{
++	return false;
++}
++
++static inline bool soc_intel_is_glk(void)
++{
++	return false;
++}
++
++static inline bool soc_intel_is_cml(void)
++{
++	return false;
++}
++#endif /* IS_ENABLED(CONFIG_X86) */
++
++#endif /* __PLATFORM_DATA_X86_SOC_H */
+diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
+index a93987ab7f4d7..de4e550c5b34d 100644
+--- a/sound/soc/intel/common/soc-intel-quirks.h
++++ b/sound/soc/intel/common/soc-intel-quirks.h
+@@ -9,34 +9,13 @@
+ #ifndef _SND_SOC_INTEL_QUIRKS_H
+ #define _SND_SOC_INTEL_QUIRKS_H
  
-+#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
- #define MMC_XGMAC_TX_FPE_FRAG		0x208
- #define MMC_XGMAC_TX_HOLD_REQ		0x20c
-+#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
- #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
- #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
- #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
-@@ -336,6 +338,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
++#include <linux/platform_data/x86/soc.h>
++
+ #if IS_ENABLED(CONFIG_X86)
+ 
+ #include <linux/dmi.h>
+-#include <asm/cpu_device_id.h>
+-#include <asm/intel-family.h>
+ #include <asm/iosf_mbi.h>
+ 
+-#define SOC_INTEL_IS_CPU(soc, type)				\
+-static inline bool soc_intel_is_##soc(void)			\
+-{								\
+-	static const struct x86_cpu_id soc##_cpu_ids[] = {	\
+-		X86_MATCH_INTEL_FAM6_MODEL(type, NULL),		\
+-		{}						\
+-	};							\
+-	const struct x86_cpu_id *id;				\
+-								\
+-	id = x86_match_cpu(soc##_cpu_ids);			\
+-	if (id)							\
+-		return true;					\
+-	return false;						\
+-}
+-
+-SOC_INTEL_IS_CPU(byt, ATOM_SILVERMONT);
+-SOC_INTEL_IS_CPU(cht, ATOM_AIRMONT);
+-SOC_INTEL_IS_CPU(apl, ATOM_GOLDMONT);
+-SOC_INTEL_IS_CPU(glk, ATOM_GOLDMONT_PLUS);
+-SOC_INTEL_IS_CPU(cml, KABYLAKE_L);
+-
+ static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
  {
- 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
- 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
-+	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
-+	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
- 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
+ 	/*
+@@ -114,30 +93,6 @@ static inline bool soc_intel_is_byt_cr(struct platform_device *pdev)
+ 	return false;
  }
  
+-static inline bool soc_intel_is_byt(void)
+-{
+-	return false;
+-}
+-
+-static inline bool soc_intel_is_cht(void)
+-{
+-	return false;
+-}
+-
+-static inline bool soc_intel_is_apl(void)
+-{
+-	return false;
+-}
+-
+-static inline bool soc_intel_is_glk(void)
+-{
+-	return false;
+-}
+-
+-static inline bool soc_intel_is_cml(void)
+-{
+-	return false;
+-}
+ #endif
+ 
+- #endif /* _SND_SOC_INTEL_QUIRKS_H */
++#endif /* _SND_SOC_INTEL_QUIRKS_H */
 -- 
 2.42.0
 
