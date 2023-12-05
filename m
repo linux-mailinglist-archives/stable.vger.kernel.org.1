@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4864A8046DB
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD42804776
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3BF61F2143E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3666B20CA8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A738BF1;
-	Tue,  5 Dec 2023 03:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E3079F2;
+	Tue,  5 Dec 2023 03:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po58sfqC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaBqTkKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB4B6FB1;
-	Tue,  5 Dec 2023 03:32:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F04C433C8;
-	Tue,  5 Dec 2023 03:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC7F6FB1;
+	Tue,  5 Dec 2023 03:38:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FAD7C433C8;
+	Tue,  5 Dec 2023 03:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747137;
-	bh=ASpfUdOp36bFHQjLm6DW1Nse0opxtfBbkl2oxJNYgOk=;
+	s=korg; t=1701747532;
+	bh=lFyRpa1U/1mckhIeyZutMEgg9zsnhBIJVrVF5a0viN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=po58sfqCh655ZUDUOsSGortkJuilHd8D4CdbsAlj+xIA3NJVuA24AemByJJxJaOBD
-	 v74ZHyQsLWm5p/VP770vclzUc+viIpZG+vIeX1NB3ziZetYaEtacFRwaZFCNnLWAWu
-	 FxAoVMebZ3CEJLMZPpVzFROYlFk/cvF5EdNz53Og=
+	b=JaBqTkKykctZppMrKD6M8Af/kdEPFb5H7TGTon2bTGhckrqBKVcr5dS8y8ZEn4bfx
+	 VHi+vPCZJ42PLV2Dj+vu30v1T5IjLrxNVBy+FCDgKpUDWjPptOHGumGp+tDfteTcBo
+	 rffgFAn5q8tRgYmQbvcLJZRHtqrVglrwtMQtwoXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/107] net: ravb: Use pm_runtime_resume_and_get()
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 087/135] btrfs: make error messages more clear when getting a chunk map
 Date: Tue,  5 Dec 2023 12:16:48 +0900
-Message-ID: <20231205031536.057015150@linuxfoundation.org>
+Message-ID: <20231205031536.057591129@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,53 +53,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
+commit 7d410d5efe04e42a6cd959bfe6d59d559fdf8b25 upstream.
 
-pm_runtime_get_sync() may return an error. In case it returns with an error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+When getting a chunk map, at btrfs_get_chunk_map(), we do some sanity
+checks to verify we found a chunk map and that map found covers the
+logical address the caller passed in. However the messages aren't very
+clear in the sense that don't mention the issue is with a chunk map and
+one of them prints the 'length' argument as if it were the end offset of
+the requested range (while the in the string format we use %llu-%llu
+which suggests a range, and the second %llu-%llu is actually a range for
+the chunk map). So improve these two details in the error messages.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/volumes.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 2bcea9fdd2653..0cfa1d09c92e8 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2675,7 +2675,9 @@ static int ravb_probe(struct platform_device *pdev)
- 		goto out_free_netdev;
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -2993,15 +2993,16 @@ struct extent_map *btrfs_get_chunk_map(s
+ 	read_unlock(&em_tree->lock);
  
- 	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
-+	error = pm_runtime_resume_and_get(&pdev->dev);
-+	if (error < 0)
-+		goto out_rpm_disable;
+ 	if (!em) {
+-		btrfs_crit(fs_info, "unable to find logical %llu length %llu",
++		btrfs_crit(fs_info,
++			   "unable to find chunk map for logical %llu length %llu",
+ 			   logical, length);
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
- 	if (info->multi_irqs) {
- 		if (info->err_mgmt_irqs)
-@@ -2901,6 +2903,7 @@ static int ravb_probe(struct platform_device *pdev)
- 	clk_disable_unprepare(priv->refclk);
- out_release:
- 	pm_runtime_put(&pdev->dev);
-+out_rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	reset_control_assert(rstc);
- out_free_netdev:
--- 
-2.42.0
-
+ 	if (em->start > logical || em->start + em->len <= logical) {
+ 		btrfs_crit(fs_info,
+-			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
+-			   logical, length, em->start, em->start + em->len);
++			   "found a bad chunk map, wanted %llu-%llu, found %llu-%llu",
++			   logical, logical + length, em->start, em->start + em->len);
+ 		free_extent_map(em);
+ 		return ERR_PTR(-EINVAL);
+ 	}
 
 
 
