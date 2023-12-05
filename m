@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-4346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD5F80471A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 357438045E8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F5B01C20DF2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F37C1C20CEF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4008BF2;
-	Tue,  5 Dec 2023 03:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866938BE0;
+	Tue,  5 Dec 2023 03:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnmjqUGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wwZSmBDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5048C6FB1;
-	Tue,  5 Dec 2023 03:34:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5749C433C7;
-	Tue,  5 Dec 2023 03:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4679379F2;
+	Tue,  5 Dec 2023 03:22:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDABC433CB;
+	Tue,  5 Dec 2023 03:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747298;
-	bh=vWmXTUEjshkIIwau3PIITHYSxwpxcqEzrB1Lr2AR2Ds=;
+	s=korg; t=1701746566;
+	bh=td8Yo0i+GTMDURFDXLnjYU6CvPqlCDVrz/S7Kh1BlQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnmjqUGxLuu15flBwDMoQhVskOOKGsQVb4j0UNVgVtwKrR3Afud9iUarHAXGcSzrY
-	 uv2v6k0ESVnfxW3R0bA4RkL9+6UH5yTAdfl6od2VymDEch4WX/ia+2BAlYH6ViIThl
-	 QfJ8VOYvLHY3j6qBoRLXc7R6RYT2EEzi6IhptCVY=
+	b=wwZSmBDjbHBV3H0ZAuZkINDggFJWDQdFHfyBlxQADRJrnwbL84WV0VVqNWXHq+FaN
+	 fA1HkfLfZBUrWEzLHtxtfYfcPg6UHQsgAjzrDqYic3Hy9WObmuweyrLSnWu154ktC+
+	 eArxbu7+ziFQo3FtITYq1FxHiEephAKnfPJMJ5c8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"D. Wythe" <alibuda@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/135] net/smc: avoid data corruption caused by decline
+	Jann Horn <jannh@google.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 072/134] io_uring/kbuf: defer release of mapped buffer rings
 Date: Tue,  5 Dec 2023 12:15:44 +0900
-Message-ID: <20231205031532.061875583@linuxfoundation.org>
+Message-ID: <20231205031540.069815766@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,100 +50,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: D. Wythe <alibuda@linux.alibaba.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit e6d71b437abc2f249e3b6a1ae1a7228e09c6e563 ]
+commit c392cbecd8eca4c53f2bf508731257d9d0a21c2d upstream.
 
-We found a data corruption issue during testing of SMC-R on Redis
-applications.
+If a provided buffer ring is setup with IOU_PBUF_RING_MMAP, then the
+kernel allocates the memory for it and the application is expected to
+mmap(2) this memory. However, io_uring uses remap_pfn_range() for this
+operation, so we cannot rely on normal munmap/release on freeing them
+for us.
 
-The benchmark has a low probability of reporting a strange error as
-shown below.
+Stash an io_buf_free entry away for each of these, if any, and provide
+a helper to free them post ->release().
 
-"Error: Protocol error, got "\xe2" as reply type byte"
-
-Finally, we found that the retrieved error data was as follows:
-
-0xE2 0xD4 0xC3 0xD9 0x04 0x00 0x2C 0x20 0xA6 0x56 0x00 0x16 0x3E 0x0C
-0xCB 0x04 0x02 0x01 0x00 0x00 0x20 0x00 0x00 0x00 0x00 0x00 0x00 0x00
-0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00 0xE2
-
-It is quite obvious that this is a SMC DECLINE message, which means that
-the applications received SMC protocol message.
-We found that this was caused by the following situations:
-
-client                  server
-        ¦  clc proposal
-        ------------->
-        ¦  clc accept
-        <-------------
-        ¦  clc confirm
-        ------------->
-wait llc confirm
-			send llc confirm
-        ¦failed llc confirm
-        ¦   x------
-(after 2s)timeout
-                        wait llc confirm rsp
-
-wait decline
-
-(after 1s) timeout
-                        (after 2s) timeout
-        ¦   decline
-        -------------->
-        ¦   decline
-        <--------------
-
-As a result, a decline message was sent in the implementation, and this
-message was read from TCP by the already-fallback connection.
-
-This patch double the client timeout as 2x of the server value,
-With this simple change, the Decline messages should never cross or
-collide (during Confirm link timeout).
-
-This issue requires an immediate solution, since the protocol updates
-involve a more long-term solution.
-
-Fixes: 0fb0b02bd6fd ("net/smc: adapt SMC client code to use the LLC flow")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Wen Gu <guwen@linux.alibaba.com>
-Reviewed-by: Wenjia Zhang <wenjia@linux.ibm.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c56e022c0a27 ("io_uring: add support for user mapped provided buffer ring")
+Reported-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ include/linux/io_uring_types.h |    3 ++
+ io_uring/io_uring.c            |    2 +
+ io_uring/kbuf.c                |   44 ++++++++++++++++++++++++++++++++++++-----
+ io_uring/kbuf.h                |    2 +
+ 4 files changed, 46 insertions(+), 5 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 9fc47292b68d8..664ddf5641dea 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -396,8 +396,12 @@ static int smcr_clnt_conf_first_link(struct smc_sock *smc)
- 	struct smc_llc_qentry *qentry;
- 	int rc;
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -327,6 +327,9 @@ struct io_ring_ctx {
  
--	/* receive CONFIRM LINK request from server over RoCE fabric */
--	qentry = smc_llc_wait(link->lgr, NULL, SMC_LLC_WAIT_TIME,
-+	/* Receive CONFIRM LINK request from server over RoCE fabric.
-+	 * Increasing the client's timeout by twice as much as the server's
-+	 * timeout by default can temporarily avoid decline messages of
-+	 * both sides crossing or colliding
-+	 */
-+	qentry = smc_llc_wait(link->lgr, NULL, 2 * SMC_LLC_WAIT_TIME,
- 			      SMC_LLC_CONFIRM_LINK);
- 	if (!qentry) {
- 		struct smc_clc_msg_decline dclc;
--- 
-2.42.0
-
+ 	struct list_head	io_buffers_cache;
+ 
++	/* deferred free list, protected by ->uring_lock */
++	struct hlist_head	io_buf_list;
++
+ 	/* Keep this last, we don't need it for the fast path */
+ 	struct wait_queue_head		poll_wq;
+ 	struct io_restriction		restrictions;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -323,6 +323,7 @@ static __cold struct io_ring_ctx *io_rin
+ 	INIT_LIST_HEAD(&ctx->sqd_list);
+ 	INIT_LIST_HEAD(&ctx->cq_overflow_list);
+ 	INIT_LIST_HEAD(&ctx->io_buffers_cache);
++	INIT_HLIST_HEAD(&ctx->io_buf_list);
+ 	io_alloc_cache_init(&ctx->rsrc_node_cache, IO_NODE_ALLOC_CACHE_MAX,
+ 			    sizeof(struct io_rsrc_node));
+ 	io_alloc_cache_init(&ctx->apoll_cache, IO_ALLOC_CACHE_MAX,
+@@ -2942,6 +2943,7 @@ static __cold void io_ring_ctx_free(stru
+ 		ctx->mm_account = NULL;
+ 	}
+ 	io_rings_free(ctx);
++	io_kbuf_mmap_list_free(ctx);
+ 
+ 	percpu_ref_exit(&ctx->refs);
+ 	free_uid(ctx->user);
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -41,6 +41,11 @@ static struct io_buffer_list *__io_buffe
+ 	return xa_load(&ctx->io_bl_xa, bgid);
+ }
+ 
++struct io_buf_free {
++	struct hlist_node		list;
++	void				*mem;
++};
++
+ static inline struct io_buffer_list *io_buffer_get_list(struct io_ring_ctx *ctx,
+ 							unsigned int bgid)
+ {
+@@ -238,7 +243,10 @@ static int __io_remove_buffers(struct io
+ 	if (bl->is_mapped) {
+ 		i = bl->buf_ring->tail - bl->head;
+ 		if (bl->is_mmap) {
+-			folio_put(virt_to_folio(bl->buf_ring));
++			/*
++			 * io_kbuf_list_free() will free the page(s) at
++			 * ->release() time.
++			 */
+ 			bl->buf_ring = NULL;
+ 			bl->is_mmap = 0;
+ 		} else if (bl->buf_nr_pages) {
+@@ -552,18 +560,28 @@ error_unpin:
+ 	return -EINVAL;
+ }
+ 
+-static int io_alloc_pbuf_ring(struct io_uring_buf_reg *reg,
++static int io_alloc_pbuf_ring(struct io_ring_ctx *ctx,
++			      struct io_uring_buf_reg *reg,
+ 			      struct io_buffer_list *bl)
+ {
+-	gfp_t gfp = GFP_KERNEL_ACCOUNT | __GFP_ZERO | __GFP_NOWARN | __GFP_COMP;
++	struct io_buf_free *ibf;
+ 	size_t ring_size;
+ 	void *ptr;
+ 
+ 	ring_size = reg->ring_entries * sizeof(struct io_uring_buf_ring);
+-	ptr = (void *) __get_free_pages(gfp, get_order(ring_size));
++	ptr = io_mem_alloc(ring_size);
+ 	if (!ptr)
+ 		return -ENOMEM;
+ 
++	/* Allocate and store deferred free entry */
++	ibf = kmalloc(sizeof(*ibf), GFP_KERNEL_ACCOUNT);
++	if (!ibf) {
++		io_mem_free(ptr);
++		return -ENOMEM;
++	}
++	ibf->mem = ptr;
++	hlist_add_head(&ibf->list, &ctx->io_buf_list);
++
+ 	bl->buf_ring = ptr;
+ 	bl->is_mapped = 1;
+ 	bl->is_mmap = 1;
+@@ -622,7 +640,7 @@ int io_register_pbuf_ring(struct io_ring
+ 	if (!(reg.flags & IOU_PBUF_RING_MMAP))
+ 		ret = io_pin_pbuf_ring(&reg, bl);
+ 	else
+-		ret = io_alloc_pbuf_ring(&reg, bl);
++		ret = io_alloc_pbuf_ring(ctx, &reg, bl);
+ 
+ 	if (!ret) {
+ 		bl->nr_entries = reg.ring_entries;
+@@ -682,3 +700,19 @@ void *io_pbuf_get_address(struct io_ring
+ 
+ 	return bl->buf_ring;
+ }
++
++/*
++ * Called at or after ->release(), free the mmap'ed buffers that we used
++ * for memory mapped provided buffer rings.
++ */
++void io_kbuf_mmap_list_free(struct io_ring_ctx *ctx)
++{
++	struct io_buf_free *ibf;
++	struct hlist_node *tmp;
++
++	hlist_for_each_entry_safe(ibf, tmp, &ctx->io_buf_list, list) {
++		hlist_del(&ibf->list);
++		io_mem_free(ibf->mem);
++		kfree(ibf);
++	}
++}
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -54,6 +54,8 @@ int io_provide_buffers(struct io_kiocb *
+ int io_register_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg);
+ int io_unregister_pbuf_ring(struct io_ring_ctx *ctx, void __user *arg);
+ 
++void io_kbuf_mmap_list_free(struct io_ring_ctx *ctx);
++
+ unsigned int __io_put_kbuf(struct io_kiocb *req, unsigned issue_flags);
+ 
+ void io_kbuf_recycle_legacy(struct io_kiocb *req, unsigned issue_flags);
 
 
 
