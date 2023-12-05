@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E62D1804831
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C19CA8047E0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A173C2817D7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7CD7F281759
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D697D8C05;
-	Tue,  5 Dec 2023 03:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8CC79E3;
+	Tue,  5 Dec 2023 03:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jibMkaNa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARAhM+Sn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941876FB0;
-	Tue,  5 Dec 2023 03:46:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12736C433C8;
-	Tue,  5 Dec 2023 03:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03AF6AC2;
+	Tue,  5 Dec 2023 03:43:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E11AC433C8;
+	Tue,  5 Dec 2023 03:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748013;
-	bh=PTYrBH26WmS4RHxmSi9jEBvmMWR4MD5ghVdt4aVgPwI=;
+	s=korg; t=1701747799;
+	bh=fj/AMNMgmpPd4ADukrdhB/KDaUgLQuGGS3ySwf0Vxz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jibMkaNabT1m/dfLEA8B8/YMR4+0QX2Hmc8T80BZw40rjNs1Leq4sm4mrIah741Vr
-	 i4pXkVA7X2bnhwInN6b7osnmwrwKGikCW4qLPyiEmBT7tNbUwHAS5lGcQ8ZBljqDuj
-	 w9e1CA4M4wtNOsd1HoQZS6/+UTumpOIb001RDwds=
+	b=ARAhM+SnqKRd47i5PLj/Mw38ZwCC3DRCIQCQhjazCu6tr6C2GpeU6r/2tgWiQ9Fzh
+	 DO+j/Lj0U44yIFZjhpLng436Mtr58HNrOyZQnvQZSpNfs6EhpSK2dOEgi+OLpDEsr4
+	 TVurrUe5HGVK7d/7GO6MX/wtGkaTtfX9cjaDdHFU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 81/94] ima: annotate iint mutex to avoid lockdep false positive warnings
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 64/67] mmc: core: add helpers mmc_regulator_enable/disable_vqmmc
 Date: Tue,  5 Dec 2023 12:17:49 +0900
-Message-ID: <20231205031527.319281277@linuxfoundation.org>
+Message-ID: <20231205031523.567691435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,119 +54,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit e044374a8a0a99e46f4e6d6751d3042b6d9cc12e ]
+[ Upstream commit 8d91f3f8ae57e6292142ca89f322e90fa0d6ac02 ]
 
-It is not clear that IMA should be nested at all, but as long is it
-measures files both on overlayfs and on underlying fs, we need to
-annotate the iint mutex to avoid lockdep false positives related to
-IMA + overlayfs, same as overlayfs annotates the inode mutex.
+There's a number of drivers (e.g. dw_mmc, meson-gx, mmci, sunxi) using
+the same mechanism and a private flag vqmmc_enabled to deal with
+enabling/disabling the vqmmc regulator.
 
-Reported-and-tested-by: syzbot+b42fe626038981fb7bfa@syzkaller.appspotmail.com
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Move this to the core and create new helpers mmc_regulator_enable_vqmmc
+and mmc_regulator_disable_vqmmc.
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/71586432-360f-9b92-17f6-b05a8a971bc2@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 477865af60b2 ("mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/iint.c | 48 ++++++++++++++++++++++++++++++---------
- 1 file changed, 37 insertions(+), 11 deletions(-)
+ drivers/mmc/core/regulator.c | 41 ++++++++++++++++++++++++++++++++++++
+ include/linux/mmc/host.h     |  3 +++
+ 2 files changed, 44 insertions(+)
 
-diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-index ff37143000b4c..ffdc3ca1e9c16 100644
---- a/security/integrity/iint.c
-+++ b/security/integrity/iint.c
-@@ -66,9 +66,32 @@ struct integrity_iint_cache *integrity_iint_find(struct inode *inode)
- 	return iint;
- }
- 
--static void iint_free(struct integrity_iint_cache *iint)
-+#define IMA_MAX_NESTING (FILESYSTEM_MAX_STACK_DEPTH+1)
-+
-+/*
-+ * It is not clear that IMA should be nested at all, but as long is it measures
-+ * files both on overlayfs and on underlying fs, we need to annotate the iint
-+ * mutex to avoid lockdep false positives related to IMA + overlayfs.
-+ * See ovl_lockdep_annotate_inode_mutex_key() for more details.
-+ */
-+static inline void iint_lockdep_annotate(struct integrity_iint_cache *iint,
-+					 struct inode *inode)
-+{
-+#ifdef CONFIG_LOCKDEP
-+	static struct lock_class_key iint_mutex_key[IMA_MAX_NESTING];
-+
-+	int depth = inode->i_sb->s_stack_depth;
-+
-+	if (WARN_ON_ONCE(depth < 0 || depth >= IMA_MAX_NESTING))
-+		depth = 0;
-+
-+	lockdep_set_class(&iint->mutex, &iint_mutex_key[depth]);
-+#endif
-+}
-+
-+static void iint_init_always(struct integrity_iint_cache *iint,
-+			     struct inode *inode)
- {
--	kfree(iint->ima_hash);
- 	iint->ima_hash = NULL;
- 	iint->version = 0;
- 	iint->flags = 0UL;
-@@ -80,6 +103,14 @@ static void iint_free(struct integrity_iint_cache *iint)
- 	iint->ima_creds_status = INTEGRITY_UNKNOWN;
- 	iint->evm_status = INTEGRITY_UNKNOWN;
- 	iint->measured_pcrs = 0;
-+	mutex_init(&iint->mutex);
-+	iint_lockdep_annotate(iint, inode);
-+}
-+
-+static void iint_free(struct integrity_iint_cache *iint)
-+{
-+	kfree(iint->ima_hash);
-+	mutex_destroy(&iint->mutex);
- 	kmem_cache_free(iint_cache, iint);
- }
- 
-@@ -112,6 +143,8 @@ struct integrity_iint_cache *integrity_inode_get(struct inode *inode)
- 	if (!iint)
- 		return NULL;
- 
-+	iint_init_always(iint, inode);
-+
- 	write_lock(&integrity_iint_lock);
- 
- 	p = &integrity_iint_tree.rb_node;
-@@ -161,25 +194,18 @@ void integrity_inode_free(struct inode *inode)
- 	iint_free(iint);
- }
- 
--static void init_once(void *foo)
-+static void iint_init_once(void *foo)
- {
- 	struct integrity_iint_cache *iint = foo;
- 
- 	memset(iint, 0, sizeof(*iint));
--	iint->ima_file_status = INTEGRITY_UNKNOWN;
--	iint->ima_mmap_status = INTEGRITY_UNKNOWN;
--	iint->ima_bprm_status = INTEGRITY_UNKNOWN;
--	iint->ima_read_status = INTEGRITY_UNKNOWN;
--	iint->ima_creds_status = INTEGRITY_UNKNOWN;
--	iint->evm_status = INTEGRITY_UNKNOWN;
--	mutex_init(&iint->mutex);
- }
- 
- static int __init integrity_iintcache_init(void)
- {
- 	iint_cache =
- 	    kmem_cache_create("iint_cache", sizeof(struct integrity_iint_cache),
--			      0, SLAB_PANIC, init_once);
-+			      0, SLAB_PANIC, iint_init_once);
+diff --git a/drivers/mmc/core/regulator.c b/drivers/mmc/core/regulator.c
+index 609201a467ef9..4dcbc2281d2b5 100644
+--- a/drivers/mmc/core/regulator.c
++++ b/drivers/mmc/core/regulator.c
+@@ -271,3 +271,44 @@ int mmc_regulator_get_supply(struct mmc_host *mmc)
  	return 0;
  }
- DEFINE_LSM(integrity) = {
+ EXPORT_SYMBOL_GPL(mmc_regulator_get_supply);
++
++/**
++ * mmc_regulator_enable_vqmmc - enable VQMMC regulator for a host
++ * @mmc: the host to regulate
++ *
++ * Returns 0 or errno. Enables the regulator for vqmmc.
++ * Keeps track of the enable status for ensuring that calls to
++ * regulator_enable/disable are balanced.
++ */
++int mmc_regulator_enable_vqmmc(struct mmc_host *mmc)
++{
++	int ret = 0;
++
++	if (!IS_ERR(mmc->supply.vqmmc) && !mmc->vqmmc_enabled) {
++		ret = regulator_enable(mmc->supply.vqmmc);
++		if (ret < 0)
++			dev_err(mmc_dev(mmc), "enabling vqmmc regulator failed\n");
++		else
++			mmc->vqmmc_enabled = true;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mmc_regulator_enable_vqmmc);
++
++/**
++ * mmc_regulator_disable_vqmmc - disable VQMMC regulator for a host
++ * @mmc: the host to regulate
++ *
++ * Returns 0 or errno. Disables the regulator for vqmmc.
++ * Keeps track of the enable status for ensuring that calls to
++ * regulator_enable/disable are balanced.
++ */
++void mmc_regulator_disable_vqmmc(struct mmc_host *mmc)
++{
++	if (!IS_ERR(mmc->supply.vqmmc) && mmc->vqmmc_enabled) {
++		regulator_disable(mmc->supply.vqmmc);
++		mmc->vqmmc_enabled = false;
++	}
++}
++EXPORT_SYMBOL_GPL(mmc_regulator_disable_vqmmc);
+diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
+index 0c0c9a0fdf578..a4ec7269b6295 100644
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -428,6 +428,7 @@ struct mmc_host {
+ 	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
+ 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+ 	unsigned int		can_dma_map_merge:1; /* merging can be used */
++	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+ 
+ 	int			rescan_disable;	/* disable card detection */
+ 	int			rescan_entered;	/* used with nonremovable devices */
+@@ -574,6 +575,8 @@ static inline int mmc_regulator_set_vqmmc(struct mmc_host *mmc,
+ #endif
+ 
+ int mmc_regulator_get_supply(struct mmc_host *mmc);
++int mmc_regulator_enable_vqmmc(struct mmc_host *mmc);
++void mmc_regulator_disable_vqmmc(struct mmc_host *mmc);
+ 
+ static inline int mmc_card_is_removable(struct mmc_host *host)
+ {
 -- 
 2.42.0
 
