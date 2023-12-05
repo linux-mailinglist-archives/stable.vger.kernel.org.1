@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E19B8045DD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503F9804721
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71A91F2136B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA0A2815EC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1463D79F2;
-	Tue,  5 Dec 2023 03:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 948AF79E3;
+	Tue,  5 Dec 2023 03:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5/ETQ5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fma4I0rB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04DB6AA0;
-	Tue,  5 Dec 2023 03:22:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D3BAC433C7;
-	Tue,  5 Dec 2023 03:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F3A6FB1;
+	Tue,  5 Dec 2023 03:35:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4D1C433C8;
+	Tue,  5 Dec 2023 03:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746536;
-	bh=ue939wFuREFevqnr9x3S4yHmHgoV7lEWeEV5zitJiJY=;
+	s=korg; t=1701747315;
+	bh=mQr3qnWFOl9r8y8bUxkhBGx55W0Ih/5MdA86gyTRNRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5/ETQ5jT0KeK/GZ8SPA/+6zpR9tCC75kBoKy/5WAvob5p1WB6/tRHzTuJYaRJj4f
-	 tUW4hV28JD9P7S6NuEjydf1cmHfKsLsUui82nEAGcY9GPLZcALcqPmXpJKzPbwW1iS
-	 u3Tn9Fd+GYwhhz4a7cUv1Jg64+glw58uLabx3Enc=
+	b=Fma4I0rB7M6uaLUGpr3FMllJUHOTy/7L2OWuvInXW51lcne0TaziZaS3jVj2Kccgs
+	 EWkDntKo8NLQp59v4AAyytq5jVYVkLjdBfw7nD31LgPwybK/Lxw9taEsyVVu49BjQ7
+	 k1fSU21O4h/7AW6IRWBRAoWufl4iLJ9/VmNKn3a8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Abdul Halim, Mohd Syazwan" <mohd.syazwan.abdul.halim@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <jroedel@suse.de>,
-	Abdul@web.codeaurora.org, Halim@web.codeaurora.org
-Subject: [PATCH 6.6 053/134] iommu/vt-d: Add MTL to quirk list to skip TE disabling
-Date: Tue,  5 Dec 2023 12:15:25 +0900
-Message-ID: <20231205031538.926753683@linuxfoundation.org>
+	Axel Lin <axel.lin@ingics.com>,
+	Boris Brezillon <boris.brezillon@free-electrons.com>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 005/135] i2c: sun6i-p2wi: Prevent potential division by zero
+Date: Tue,  5 Dec 2023 12:15:26 +0900
+Message-ID: <20231205031530.863290741@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +54,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
+From: Axel Lin <axel.lin@ingics.com>
 
-commit 85b80fdffa867d75dfb9084a839e7949e29064e8 upstream.
+[ Upstream commit 5ac61d26b8baff5b2e5a9f3dc1ef63297e4b53e7 ]
 
-The VT-d spec requires (10.4.4 Global Command Register, TE field) that:
+Make sure we don't OOPS in case clock-frequency is set to 0 in a DT. The
+variable set here is later used as a divisor.
 
-Hardware implementations supporting DMA draining must drain any in-flight
-DMA read/write requests queued within the Root-Complex before switching
-address translation on or off and reflecting the status of the command
-through the TES field in the Global Status register.
-
-Unfortunately, some integrated graphic devices fail to do so after some
-kind of power state transition. As the result, the system might stuck in
-iommu_disable_translation(), waiting for the completion of TE transition.
-
-Add MTL to the quirk list for those devices and skips TE disabling if the
-qurik hits.
-
-Fixes: b1012ca8dc4f ("iommu/vt-d: Skip TE disabling on quirky gfx dedicated iommu")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116022324.30120-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Axel Lin <axel.lin@ingics.com>
+Acked-by: Boris Brezillon <boris.brezillon@free-electrons.com>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-sun6i-p2wi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4928,7 +4928,7 @@ static void quirk_igfx_skip_te_disable(s
- 	ver = (dev->device >> 8) & 0xff;
- 	if (ver != 0x45 && ver != 0x46 && ver != 0x4c &&
- 	    ver != 0x4e && ver != 0x8a && ver != 0x98 &&
--	    ver != 0x9a && ver != 0xa7)
-+	    ver != 0x9a && ver != 0xa7 && ver != 0x7d)
- 		return;
+diff --git a/drivers/i2c/busses/i2c-sun6i-p2wi.c b/drivers/i2c/busses/i2c-sun6i-p2wi.c
+index 4f7a4f5a1150a..389ca6fddc1db 100644
+--- a/drivers/i2c/busses/i2c-sun6i-p2wi.c
++++ b/drivers/i2c/busses/i2c-sun6i-p2wi.c
+@@ -206,6 +206,11 @@ static int p2wi_probe(struct platform_device *pdev)
+ 		return -EINVAL;
+ 	}
  
- 	if (risky_device(dev))
++	if (clk_freq == 0) {
++		dev_err(dev, "clock-frequency is set to 0 in DT\n");
++		return -EINVAL;
++	}
++
+ 	if (of_get_child_count(np) > 1) {
+ 		dev_err(dev, "P2WI only supports one slave device\n");
+ 		return -EINVAL;
+-- 
+2.42.0
+
 
 
 
