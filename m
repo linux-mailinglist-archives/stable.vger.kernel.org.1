@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD488046E7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6808047BC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95CEDB20CCC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C8561C20E53
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078298BF1;
-	Tue,  5 Dec 2023 03:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F06D8C03;
+	Tue,  5 Dec 2023 03:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BuF15fG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hXbY6bfQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9066FB1;
-	Tue,  5 Dec 2023 03:32:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AED0C433C8;
-	Tue,  5 Dec 2023 03:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3BA6AC2;
+	Tue,  5 Dec 2023 03:41:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4033C433C8;
+	Tue,  5 Dec 2023 03:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747167;
-	bh=sCXJAr1/mnbX2lkPET7MWD53PFkSm2i2L/xQhEgS/nQ=;
+	s=korg; t=1701747702;
+	bh=/pUahSGz6ONSq9nI8tVfWIuwj/E42KzZ2gWxZnrygqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BuF15fG8iMI7fVjVpr0E26hlMBaRzk1ZbHzo+ksvW2nOcfemj+TfDtWyhcLvyAs9W
-	 w/GokoLodB408Q3BmAVqRiA/2unFss2O6U0yroTM01M5AC+bbnFE7C5WKxuypzsEZB
-	 X3mSZ/3e6JGG2NJDIF+ugYayvWIyDUOQJmYVMnEg=
+	b=hXbY6bfQtHl3lH/OXrdj3Cwm46uPyZ2LUgfOnthCt8HOB0pdKwLn+2X1rA2i/+v9r
+	 MyJoAGLY4dCAIWhQUJXvthxQL3ivm3VgX5atWbfw70yLbzFQzMwhQea4uvSf7sraFW
+	 c2ziP9HZ1DI07CT5ZZ4/4vTcVbUhFDOd315fA5dU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/107] fbdev: stifb: Make the STI next font pointer a 32-bit signed offset
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 5.15 13/67] dm-verity: align struct dm_verity_fec_io properly
 Date: Tue,  5 Dec 2023 12:16:58 +0900
-Message-ID: <20231205031536.775708373@linuxfoundation.org>
+Message-ID: <20231205031520.592579561@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +52,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 8a32aa17c1cd48df1ddaa78e45abcb8c7a2220d6 ]
+commit 38bc1ab135db87577695816b190e7d6d8ec75879 upstream.
 
-The pointer to the next STI font is actually a signed 32-bit
-offset. With this change the 64-bit kernel will correctly subract
-the (signed 32-bit) offset instead of adding a (unsigned 32-bit)
-offset. It has no effect on 32-bit kernels.
+dm_verity_fec_io is placed after the end of two hash digests. If the hash
+digest has unaligned length, struct dm_verity_fec_io could be unaligned.
 
-This fixes the stifb driver with a 64-bit kernel on qemu.
+This commit fixes the placement of struct dm_verity_fec_io, so that it's
+aligned.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/sticore.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-verity-fec.c |    3 ++-
+ drivers/md/dm-verity.h     |    6 ------
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/fbdev/sticore.h b/drivers/video/fbdev/sticore.h
-index 0ebdd28a0b813..d83ab3ded5f3d 100644
---- a/drivers/video/fbdev/sticore.h
-+++ b/drivers/video/fbdev/sticore.h
-@@ -231,7 +231,7 @@ struct sti_rom_font {
- 	 u8 height;
- 	 u8 font_type;		/* language type */
- 	 u8 bytes_per_char;
--	u32 next_font;
-+	s32 next_font;		/* note: signed int */
- 	 u8 underline_height;
- 	 u8 underline_pos;
- 	 u8 res008[2];
--- 
-2.42.0
-
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -24,7 +24,8 @@ bool verity_fec_is_enabled(struct dm_ver
+  */
+ static inline struct dm_verity_fec_io *fec_io(struct dm_verity_io *io)
+ {
+-	return (struct dm_verity_fec_io *) verity_io_digest_end(io->v, io);
++	return (struct dm_verity_fec_io *)
++		((char *)io + io->v->ti->per_io_data_size - sizeof(struct dm_verity_fec_io));
+ }
+ 
+ /*
+--- a/drivers/md/dm-verity.h
++++ b/drivers/md/dm-verity.h
+@@ -111,12 +111,6 @@ static inline u8 *verity_io_want_digest(
+ 	return (u8 *)(io + 1) + v->ahash_reqsize + v->digest_size;
+ }
+ 
+-static inline u8 *verity_io_digest_end(struct dm_verity *v,
+-				       struct dm_verity_io *io)
+-{
+-	return verity_io_want_digest(v, io) + v->digest_size;
+-}
+-
+ extern int verity_for_bv_block(struct dm_verity *v, struct dm_verity_io *io,
+ 			       struct bvec_iter *iter,
+ 			       int (*process)(struct dm_verity *v,
 
 
 
