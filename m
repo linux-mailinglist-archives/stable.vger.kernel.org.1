@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644B6804732
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB23804656
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BF1F2814FF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 486F6281510
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF0D579F2;
-	Tue,  5 Dec 2023 03:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899CF8F62;
+	Tue,  5 Dec 2023 03:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClU2ITX1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ox34UxHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DBA6FB1;
-	Tue,  5 Dec 2023 03:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1BA1C433C7;
-	Tue,  5 Dec 2023 03:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F2F4437;
+	Tue,  5 Dec 2023 03:26:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3302C433C8;
+	Tue,  5 Dec 2023 03:26:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747358;
-	bh=GonkF7JYjGVZW+ABbGfAMLXWU4XMtKIjZVe+xOeb1tI=;
+	s=korg; t=1701746790;
+	bh=PxUMNyiXh+4hF/pg1Vk1nxSibDjwkh+n+e+IoOynDnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ClU2ITX1/dD02shWYeFPB4zq7OvLmw2iTWBtaSTXwx+PdzD7x4SOWxl6WZvnh94nQ
-	 zh16cJ8DfMRdl0COduQaqOmJ4O5tyOTRTfuy2sMmIYRIrXCz/GPJYLiDDvLS/YZREE
-	 JJ7CbxBLRgPvc20JiXEnryDS8/+ta4a9usdSIBSE=
+	b=Ox34UxHjXhAE6Ab2wglPln5EC10IydRF57bzEFALD8gl3dJO5g2wfeV5yn1fC3atU
+	 XTgmByDr6HBPVOWWegLlqVlSljHu+WZC/n9GZrausAyvrx3jgDgoH0oV28QYG7nccl
+	 BIaa40+4JwsnMLCtOp6GwurkhhR5LUP4Vc4NHPN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	stable@kernel.org,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Herb Wei <weihao.bj@ieisystem.com>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/135] ext4: make sure allocate pending entry not fail
+Subject: [PATCH 4.19 09/71] net: usb: ax88179_178a: fix failed operations during ax88179_reset
 Date: Tue,  5 Dec 2023 12:16:07 +0900
-Message-ID: <20231205031533.446200392@linuxfoundation.org>
+Message-ID: <20231205031518.397690603@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,305 +54,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
 
-[ Upstream commit 8e387c89e96b9543a339f84043cf9df15fed2632 ]
+[ Upstream commit 0739af07d1d947af27c877f797cb82ceee702515 ]
 
-__insert_pending() allocate memory in atomic context, so the allocation
-could fail, but we are not handling that failure now. It could lead
-ext4_es_remove_extent() to get wrong reserved clusters, and the global
-data blocks reservation count will be incorrect. The same to
-extents_status entry preallocation, preallocate pending entry out of the
-i_es_lock with __GFP_NOFAIL, make sure __insert_pending() and
-__revise_pending() always succeeds.
+Using generic ASIX Electronics Corp. AX88179 Gigabit Ethernet device,
+the following test cycle has been implemented:
+    - power on
+    - check logs
+    - shutdown
+    - after detecting the system shutdown, disconnect power
+    - after approximately 60 seconds of sleep, power is restored
+Running some cycles, sometimes error logs like this appear:
+    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to write reg index 0x0001: -19
+    kernel: ax88179_178a 2-9:1.0 (unnamed net_device) (uninitialized): Failed to read reg index 0x0001: -19
+    ...
+These failed operation are happening during ax88179_reset execution, so
+the initialization could not be correct.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/r/20230824092619.1327976-3-yi.zhang@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+In order to avoid this, we need to increase the delay after reset and
+clock initial operations. By using these larger values, many cycles
+have been run and no failed operations appear.
+
+It would be better to check some status register to verify when the
+operation has finished, but I do not have found any available information
+(neither in the public datasheets nor in the manufacturer's driver). The
+only available information for the necessary delays is the maufacturer's
+driver (original values) but the proposed values are not enough for the
+tested devices.
+
+Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+Reported-by: Herb Wei <weihao.bj@ieisystem.com>
+Tested-by: Herb Wei <weihao.bj@ieisystem.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Link: https://lore.kernel.org/r/20231120120642.54334-1-jtornosm@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c |  123 ++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 89 insertions(+), 34 deletions(-)
+ drivers/net/usb/ax88179_178a.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -152,8 +152,9 @@ static int __es_remove_extent(struct ino
- static int es_reclaim_extents(struct ext4_inode_info *ei, int *nr_to_scan);
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
- 		       struct ext4_inode_info *locked_ei);
--static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
--			     ext4_lblk_t len);
-+static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
-+			    ext4_lblk_t len,
-+			    struct pending_reservation **prealloc);
+diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+index cf6ff8732fb2c..3df203feb09c5 100644
+--- a/drivers/net/usb/ax88179_178a.c
++++ b/drivers/net/usb/ax88179_178a.c
+@@ -1610,11 +1610,11 @@ static int ax88179_reset(struct usbnet *dev)
  
- int __init ext4_init_es(void)
- {
-@@ -450,6 +451,19 @@ static void ext4_es_list_del(struct inod
- 	spin_unlock(&sbi->s_es_lock);
- }
+ 	*tmp16 = AX_PHYPWR_RSTCTL_IPRL;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_PHYPWR_RSTCTL, 2, 2, tmp16);
+-	msleep(200);
++	msleep(500);
  
-+static inline struct pending_reservation *__alloc_pending(bool nofail)
-+{
-+	if (!nofail)
-+		return kmem_cache_alloc(ext4_pending_cachep, GFP_ATOMIC);
-+
-+	return kmem_cache_zalloc(ext4_pending_cachep, GFP_KERNEL | __GFP_NOFAIL);
-+}
-+
-+static inline void __free_pending(struct pending_reservation *pr)
-+{
-+	kmem_cache_free(ext4_pending_cachep, pr);
-+}
-+
- /*
-  * Returns true if we cannot fail to allocate memory for this extent_status
-  * entry and cannot reclaim it until its status changes.
-@@ -841,11 +855,12 @@ int ext4_es_insert_extent(struct inode *
- {
- 	struct extent_status newes;
- 	ext4_lblk_t end = lblk + len - 1;
--	int err1 = 0;
--	int err2 = 0;
-+	int err1 = 0, err2 = 0, err3 = 0;
- 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	struct extent_status *es1 = NULL;
- 	struct extent_status *es2 = NULL;
-+	struct pending_reservation *pr = NULL;
-+	bool revise_pending = false;
+ 	*tmp = AX_CLK_SELECT_ACS | AX_CLK_SELECT_BCS;
+ 	ax88179_write_cmd(dev, AX_ACCESS_MAC, AX_CLK_SELECT, 1, 1, tmp);
+-	msleep(100);
++	msleep(200);
  
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return 0;
-@@ -873,11 +888,17 @@ int ext4_es_insert_extent(struct inode *
- 
- 	ext4_es_insert_extent_check(inode, &newes);
- 
-+	revise_pending = sbi->s_cluster_ratio > 1 &&
-+			 test_opt(inode->i_sb, DELALLOC) &&
-+			 (status & (EXTENT_STATUS_WRITTEN |
-+				    EXTENT_STATUS_UNWRITTEN));
- retry:
- 	if (err1 && !es1)
- 		es1 = __es_alloc_extent(true);
- 	if ((err1 || err2) && !es2)
- 		es2 = __es_alloc_extent(true);
-+	if ((err1 || err2 || err3) && revise_pending && !pr)
-+		pr = __alloc_pending(true);
- 	write_lock(&EXT4_I(inode)->i_es_lock);
- 
- 	err1 = __es_remove_extent(inode, lblk, end, NULL, es1);
-@@ -902,13 +923,18 @@ retry:
- 		es2 = NULL;
- 	}
- 
--	if (sbi->s_cluster_ratio > 1 && test_opt(inode->i_sb, DELALLOC) &&
--	    (status & EXTENT_STATUS_WRITTEN ||
--	     status & EXTENT_STATUS_UNWRITTEN))
--		__revise_pending(inode, lblk, len);
-+	if (revise_pending) {
-+		err3 = __revise_pending(inode, lblk, len, &pr);
-+		if (err3 != 0)
-+			goto error;
-+		if (pr) {
-+			__free_pending(pr);
-+			pr = NULL;
-+		}
-+	}
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
--	if (err1 || err2)
-+	if (err1 || err2 || err3)
- 		goto retry;
- 
- 	ext4_es_print_tree(inode);
-@@ -1316,7 +1342,7 @@ static unsigned int get_rsvd(struct inod
- 				rc->ndelonly--;
- 				node = rb_next(&pr->rb_node);
- 				rb_erase(&pr->rb_node, &tree->root);
--				kmem_cache_free(ext4_pending_cachep, pr);
-+				__free_pending(pr);
- 				if (!node)
- 					break;
- 				pr = rb_entry(node, struct pending_reservation,
-@@ -1913,11 +1939,13 @@ static struct pending_reservation *__get
-  *
-  * @inode - file containing the cluster
-  * @lblk - logical block in the cluster to be added
-+ * @prealloc - preallocated pending entry
-  *
-  * Returns 0 on successful insertion and -ENOMEM on failure.  If the
-  * pending reservation is already in the set, returns successfully.
-  */
--static int __insert_pending(struct inode *inode, ext4_lblk_t lblk)
-+static int __insert_pending(struct inode *inode, ext4_lblk_t lblk,
-+			    struct pending_reservation **prealloc)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	struct ext4_pending_tree *tree = &EXT4_I(inode)->i_pending_tree;
-@@ -1943,10 +1971,15 @@ static int __insert_pending(struct inode
- 		}
- 	}
- 
--	pr = kmem_cache_alloc(ext4_pending_cachep, GFP_ATOMIC);
--	if (pr == NULL) {
--		ret = -ENOMEM;
--		goto out;
-+	if (likely(*prealloc == NULL)) {
-+		pr = __alloc_pending(false);
-+		if (!pr) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+	} else {
-+		pr = *prealloc;
-+		*prealloc = NULL;
- 	}
- 	pr->lclu = lclu;
- 
-@@ -1976,7 +2009,7 @@ static void __remove_pending(struct inod
- 	if (pr != NULL) {
- 		tree = &EXT4_I(inode)->i_pending_tree;
- 		rb_erase(&pr->rb_node, &tree->root);
--		kmem_cache_free(ext4_pending_cachep, pr);
-+		__free_pending(pr);
- 	}
- }
- 
-@@ -2037,10 +2070,10 @@ int ext4_es_insert_delayed_block(struct
- 				 bool allocated)
- {
- 	struct extent_status newes;
--	int err1 = 0;
--	int err2 = 0;
-+	int err1 = 0, err2 = 0, err3 = 0;
- 	struct extent_status *es1 = NULL;
- 	struct extent_status *es2 = NULL;
-+	struct pending_reservation *pr = NULL;
- 
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return 0;
-@@ -2060,6 +2093,8 @@ retry:
- 		es1 = __es_alloc_extent(true);
- 	if ((err1 || err2) && !es2)
- 		es2 = __es_alloc_extent(true);
-+	if ((err1 || err2 || err3) && allocated && !pr)
-+		pr = __alloc_pending(true);
- 	write_lock(&EXT4_I(inode)->i_es_lock);
- 
- 	err1 = __es_remove_extent(inode, lblk, lblk, NULL, es1);
-@@ -2082,11 +2117,18 @@ retry:
- 		es2 = NULL;
- 	}
- 
--	if (allocated)
--		__insert_pending(inode, lblk);
-+	if (allocated) {
-+		err3 = __insert_pending(inode, lblk, &pr);
-+		if (err3 != 0)
-+			goto error;
-+		if (pr) {
-+			__free_pending(pr);
-+			pr = NULL;
-+		}
-+	}
- error:
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
--	if (err1 || err2)
-+	if (err1 || err2 || err3)
- 		goto retry;
- 
- 	ext4_es_print_tree(inode);
-@@ -2192,21 +2234,24 @@ unsigned int ext4_es_delayed_clu(struct
-  * @inode - file containing the range
-  * @lblk - logical block defining the start of range
-  * @len  - length of range in blocks
-+ * @prealloc - preallocated pending entry
-  *
-  * Used after a newly allocated extent is added to the extents status tree.
-  * Requires that the extents in the range have either written or unwritten
-  * status.  Must be called while holding i_es_lock.
-  */
--static void __revise_pending(struct inode *inode, ext4_lblk_t lblk,
--			     ext4_lblk_t len)
-+static int __revise_pending(struct inode *inode, ext4_lblk_t lblk,
-+			    ext4_lblk_t len,
-+			    struct pending_reservation **prealloc)
- {
- 	struct ext4_sb_info *sbi = EXT4_SB(inode->i_sb);
- 	ext4_lblk_t end = lblk + len - 1;
- 	ext4_lblk_t first, last;
- 	bool f_del = false, l_del = false;
-+	int ret = 0;
- 
- 	if (len == 0)
--		return;
-+		return 0;
- 
- 	/*
- 	 * Two cases - block range within single cluster and block range
-@@ -2227,7 +2272,9 @@ static void __revise_pending(struct inod
- 			f_del = __es_scan_range(inode, &ext4_es_is_delonly,
- 						first, lblk - 1);
- 		if (f_del) {
--			__insert_pending(inode, first);
-+			ret = __insert_pending(inode, first, prealloc);
-+			if (ret < 0)
-+				goto out;
- 		} else {
- 			last = EXT4_LBLK_CMASK(sbi, end) +
- 			       sbi->s_cluster_ratio - 1;
-@@ -2235,9 +2282,11 @@ static void __revise_pending(struct inod
- 				l_del = __es_scan_range(inode,
- 							&ext4_es_is_delonly,
- 							end + 1, last);
--			if (l_del)
--				__insert_pending(inode, last);
--			else
-+			if (l_del) {
-+				ret = __insert_pending(inode, last, prealloc);
-+				if (ret < 0)
-+					goto out;
-+			} else
- 				__remove_pending(inode, last);
- 		}
- 	} else {
-@@ -2245,18 +2294,24 @@ static void __revise_pending(struct inod
- 		if (first != lblk)
- 			f_del = __es_scan_range(inode, &ext4_es_is_delonly,
- 						first, lblk - 1);
--		if (f_del)
--			__insert_pending(inode, first);
--		else
-+		if (f_del) {
-+			ret = __insert_pending(inode, first, prealloc);
-+			if (ret < 0)
-+				goto out;
-+		} else
- 			__remove_pending(inode, first);
- 
- 		last = EXT4_LBLK_CMASK(sbi, end) + sbi->s_cluster_ratio - 1;
- 		if (last != end)
- 			l_del = __es_scan_range(inode, &ext4_es_is_delonly,
- 						end + 1, last);
--		if (l_del)
--			__insert_pending(inode, last);
--		else
-+		if (l_del) {
-+			ret = __insert_pending(inode, last, prealloc);
-+			if (ret < 0)
-+				goto out;
-+		} else
- 			__remove_pending(inode, last);
- 	}
-+out:
-+	return ret;
- }
+ 	/* Ethernet PHY Auto Detach*/
+ 	ax88179_auto_detach(dev, 0);
+-- 
+2.42.0
+
 
 
 
