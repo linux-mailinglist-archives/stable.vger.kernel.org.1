@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-4302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 075538046EA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9CF804683
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397911C20DA0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BA731C20C25
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 800908BF1;
-	Tue,  5 Dec 2023 03:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507A879F2;
+	Tue,  5 Dec 2023 03:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCRd/CYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obnK+leX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441BF6FB1;
-	Tue,  5 Dec 2023 03:32:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDFC6C433C8;
-	Tue,  5 Dec 2023 03:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9486FAF;
+	Tue,  5 Dec 2023 03:28:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7754AC433C7;
+	Tue,  5 Dec 2023 03:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747177;
-	bh=n6A2sVOz/BD6Squ1sOHyg10NCNQQwCmyx8aBzme4E2Y=;
+	s=korg; t=1701746912;
+	bh=eJlbayiKgH0b/mFNiRyMRaoycGm9TscYurrbR6Kgqhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCRd/CYGwT3oyPjrk2qSatkAPaEcj6h4PryHGKLUnUnTlXbfRHPAzh7fyYIo5GUQa
-	 TKx2pIF37Tis0J/U6ymgIsiEVkv5ZoBwMtI0DZ4BRyAO7gwOn0nB1n4lINWKoaLc1y
-	 hUaD/sYY1OmsxhahzNAqX4oceh3oeGakBow5m3SQ=
+	b=obnK+leX6NV1jLU6h32x8kZCz6IwsPue983DZwSQZqXSj5O7TzsuJANESyk4KFzuS
+	 Y8JN2anl4RhUJ/D5moarFuLU1II62OS1/v49kLOn7XlbXT5G6O5SB2uMeYrz+Uk2JE
+	 QMk+8IF9MkqFlh8L5bbATs7r8o9likR38oXIg6oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Hansen Dsouza <hansen.dsouza@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/107] drm/amd/display: Guard against invalid RPTR/WPTR being set
+Subject: [PATCH 4.19 64/71] ima: detect changes to the backing overlay file
 Date: Tue,  5 Dec 2023 12:17:02 +0900
-Message-ID: <20231205031537.082682487@linuxfoundation.org>
+Message-ID: <20231205031521.601376006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,70 +55,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Mimi Zohar <zohar@linux.ibm.com>
 
-[ Upstream commit 1ffa8602e39b89469dc703ebab7a7e44c33da0f7 ]
+[ Upstream commit b836c4d29f2744200b2af41e14bf50758dddc818 ]
 
-[WHY]
-HW can return invalid values on register read, guard against these being
-set and causing us to access memory out of range and page fault.
+Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
+IMA") forced signature re-evaulation on every file access.
 
-[HOW]
-Guard at sync_inbox1 and guard at pushing commands.
+Instead of always re-evaluating the file's integrity, detect a change
+to the backing file, by comparing the cached file metadata with the
+backing file's metadata.  Verifying just the i_version has not changed
+is insufficient.  In addition save and compare the i_ino and s_dev
+as well.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
+Tested-by: Raul E Rangel <rrangel@chromium.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
-Acked-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/dmub/src/dmub_srv.c    | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ security/integrity/ima/ima_api.c  |  5 +++++
+ security/integrity/ima/ima_main.c | 16 +++++++++++++++-
+ security/integrity/integrity.h    |  2 ++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-index 6b8bd556c872f..e951fd837aa27 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_srv.c
-@@ -675,9 +675,16 @@ enum dmub_status dmub_srv_sync_inbox1(struct dmub_srv *dmub)
- 		return DMUB_STATUS_INVALID;
+diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
+index a02c5acfd403b..377a6f7cd3c76 100644
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -201,6 +201,7 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
+ {
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
++	struct inode *real_inode = d_real_inode(file_dentry(file));
+ 	const char *filename = file->f_path.dentry->d_name.name;
+ 	int result = 0;
+ 	int length;
+@@ -243,6 +244,10 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
+ 	iint->ima_hash = tmpbuf;
+ 	memcpy(iint->ima_hash, &hash, length);
+ 	iint->version = i_version;
++	if (real_inode != inode) {
++		iint->real_ino = real_inode->i_ino;
++		iint->real_dev = real_inode->i_sb->s_dev;
++	}
  
- 	if (dmub->hw_funcs.get_inbox1_rptr && dmub->hw_funcs.get_inbox1_wptr) {
--		dmub->inbox1_rb.rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
--		dmub->inbox1_rb.wrpt = dmub->hw_funcs.get_inbox1_wptr(dmub);
--		dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
-+		uint32_t rptr = dmub->hw_funcs.get_inbox1_rptr(dmub);
-+		uint32_t wptr = dmub->hw_funcs.get_inbox1_wptr(dmub);
-+
-+		if (rptr > dmub->inbox1_rb.capacity || wptr > dmub->inbox1_rb.capacity) {
-+			return DMUB_STATUS_HW_FAILURE;
-+		} else {
-+			dmub->inbox1_rb.rptr = rptr;
-+			dmub->inbox1_rb.wrpt = wptr;
-+			dmub->inbox1_last_wptr = dmub->inbox1_rb.wrpt;
-+		}
+ 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
+ 	if (!result)
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index c85aab3bd398b..d9a33d433b9fa 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -29,6 +29,7 @@
+ #include <linux/ima.h>
+ #include <linux/iversion.h>
+ #include <linux/fs.h>
++#include <linux/iversion.h>
+ 
+ #include "ima.h"
+ 
+@@ -170,7 +171,7 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 			       u32 secid, char *buf, loff_t size, int mask,
+ 			       enum ima_hooks func)
+ {
+-	struct inode *inode = file_inode(file);
++	struct inode *backing_inode, *inode = file_inode(file);
+ 	struct integrity_iint_cache *iint = NULL;
+ 	struct ima_template_desc *template_desc;
+ 	char *pathbuf = NULL;
+@@ -242,6 +243,19 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 		iint->measured_pcrs = 0;
  	}
  
- 	return DMUB_STATUS_OK;
-@@ -711,6 +718,11 @@ enum dmub_status dmub_srv_cmd_queue(struct dmub_srv *dmub,
- 	if (!dmub->hw_init)
- 		return DMUB_STATUS_INVALID;
- 
-+	if (dmub->inbox1_rb.rptr > dmub->inbox1_rb.capacity ||
-+	    dmub->inbox1_rb.wrpt > dmub->inbox1_rb.capacity) {
-+		return DMUB_STATUS_HW_FAILURE;
++	/* Detect and re-evaluate changes made to the backing file. */
++	backing_inode = d_real_inode(file_dentry(file));
++	if (backing_inode != inode &&
++	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
++		if (!IS_I_VERSION(backing_inode) ||
++		    backing_inode->i_sb->s_dev != iint->real_dev ||
++		    backing_inode->i_ino != iint->real_ino ||
++		    !inode_eq_iversion(backing_inode, iint->version)) {
++			iint->flags &= ~IMA_DONE_MASK;
++			iint->measured_pcrs = 0;
++		}
 +	}
 +
- 	if (dmub_rb_push_front(&dmub->inbox1_rb, cmd))
- 		return DMUB_STATUS_OK;
- 
+ 	/* Determine if already appraised/measured based on bitmask
+ 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
+ 	 *  IMA_AUDIT, IMA_AUDITED)
+diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
+index e60473b13a8d2..b0264ba45ddd1 100644
+--- a/security/integrity/integrity.h
++++ b/security/integrity/integrity.h
+@@ -122,6 +122,8 @@ struct integrity_iint_cache {
+ 	unsigned long flags;
+ 	unsigned long measured_pcrs;
+ 	unsigned long atomic_flags;
++	unsigned long real_ino;
++	dev_t real_dev;
+ 	enum integrity_status ima_file_status:4;
+ 	enum integrity_status ima_mmap_status:4;
+ 	enum integrity_status ima_bprm_status:4;
 -- 
 2.42.0
 
