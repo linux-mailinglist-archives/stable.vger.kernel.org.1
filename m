@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BA6A80466C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD9B8045A5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC78C281391
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FCC51C20BAE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8606FB1;
-	Tue,  5 Dec 2023 03:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ABA6FB0;
+	Tue,  5 Dec 2023 03:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgIb4+UV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKXdXQwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9076FAF;
-	Tue,  5 Dec 2023 03:27:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580A9C433C8;
-	Tue,  5 Dec 2023 03:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AD96AA0;
+	Tue,  5 Dec 2023 03:19:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279E5C433C7;
+	Tue,  5 Dec 2023 03:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746848;
-	bh=hXYlJBagf39G3N7LFm+MLU/GL/ou50yUugRt7V+M/Qk=;
+	s=korg; t=1701746390;
+	bh=vG+JAOUAMS92G/6B0eqlCwXKxVV9S1Yzv758nPMJ7wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgIb4+UV2/cpAUqaZCUIqM47supUNBY1ZCdWhdPzir/Br0hSJKTPCtHdQ4wr3F9gQ
-	 sb4khfI+q8nvV7mZ1nKzTjxcAkrvYpWuiyU1GihhpJyV1w/xyAmGekV+HUDalO3own
-	 vEztyNGtP2FsPK/Nmg1HZG+ZytILDUfNzJntPq2M=
+	b=fKXdXQwczeICBS6Qv8LddVhUhgPaLE5+KU4F2YbMIfmmD7+dxy7gkLvrFmIqRr/j5
+	 DRMJT8By8iGxMJl3kbP3IZlD5U1JpTEtc8U2Hps9ed1g1j3KLVdEBMfJKgfXbAhhdK
+	 C5xjrGN2JOG3srcvRQoO7qR3GzBrjQEdfe+JXkkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Coly Li <colyli@suse.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 4.19 19/71] bcache: replace a mistaken IS_ERR() by IS_ERR_OR_NULL() in btree_gc_coalesce()
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 10/30] net: axienet: Fix check for partial TX checksum
 Date: Tue,  5 Dec 2023 12:16:17 +0900
-Message-ID: <20231205031518.942838323@linuxfoundation.org>
+Message-ID: <20231205031512.085731097@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +55,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Coly Li <colyli@suse.de>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-commit f72f4312d4388376fc8a1f6cf37cb21a0d41758b upstream.
+[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") do the following change inside btree_gc_coalesce(),
+Due to a typo, the code checked the RX checksum feature in the TX path.
 
-31 @@ -1340,7 +1340,7 @@ static int btree_gc_coalesce(
-32         memset(new_nodes, 0, sizeof(new_nodes));
-33         closure_init_stack(&cl);
-34
-35 -       while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
-36 +       while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
-37                 keys += r[nodes++].keys;
-38
-39         blocks = btree_default_blocks(b->c) * 2 / 3;
-
-At line 35 the original r[nodes].b is not always allocatored from
-__bch_btree_node_alloc(), and possibly initialized as NULL pointer by
-caller of btree_gc_coalesce(). Therefore the change at line 36 is not
-correct.
-
-This patch replaces the mistaken IS_ERR() by IS_ERR_OR_NULL() to avoid
-potential issue.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Cc:  <stable@vger.kernel.org> # 6.5+
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Coly Li <colyli@suse.de>
-Link: https://lore.kernel.org/r/20231120052503.6122-9-colyli@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/btree.c |    2 +-
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1379,7 +1379,7 @@ static int btree_gc_coalesce(struct btre
- 	memset(new_nodes, 0, sizeof(new_nodes));
- 	closure_init_stack(&cl);
- 
--	while (nodes < GC_MERGE_NODES && !IS_ERR(r[nodes].b))
-+	while (nodes < GC_MERGE_NODES && !IS_ERR_OR_NULL(r[nodes].b))
- 		keys += r[nodes++].keys;
- 
- 	blocks = btree_default_blocks(b->c) * 2 / 3;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 7876e56a5b5db..c88fed98d8c39 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -692,7 +692,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
+ 			/* Tx Full Checksum Offload Enabled */
+ 			cur_p->app0 |= 2;
+-		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
++		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
+ 			csum_start_off = skb_transport_offset(skb);
+ 			csum_index_off = csum_start_off + skb->csum_offset;
+ 			/* Tx Partial Checksum Offload Enabled */
+-- 
+2.42.0
+
 
 
 
