@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-4318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97738046FC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE2980477E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAE881C20D7E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED156281683
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62E68BF1;
-	Tue,  5 Dec 2023 03:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8458BF8;
+	Tue,  5 Dec 2023 03:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pz4l4h9N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCJ6BAj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943D66FB1;
-	Tue,  5 Dec 2023 03:33:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EA6DC433C8;
-	Tue,  5 Dec 2023 03:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6DF6FB1;
+	Tue,  5 Dec 2023 03:39:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9E4C433C7;
+	Tue,  5 Dec 2023 03:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747220;
-	bh=7aZqJopJDDcroIyECQnZxjtunXP4pM4M8I7q4ujqswI=;
+	s=korg; t=1701747555;
+	bh=iPVmbjbxR4ETHChRto/fI/T78ScrBUx3SoXT8lJ+8cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pz4l4h9N7RtebcQysibMCdipk/A/a5SxbVS6vOhTysJ4yeuO6DSpk8Zk9iTL2NnkU
-	 79ZLPsHoiNB/tISr0IbPiz5chYn77u6AH3nLgQASdELqgm+PSfhBsnwRN2ZCViYZRK
-	 IUYuceDvNfUHAImdgVg6q93TUmfPOTVCAzBiuunQ=
+	b=TCJ6BAj/zoicKR8qEDI5oRTI+IJgLWGaqVsHwKm7+KLcWTYX6vifoL0v/PTnNyhB/
+	 dxqOTgbJDd/20vrXKr52nH7eCv1fpOD1uGJ0g0pcmmmG027vkNTWTLoCZp+mAk74aX
+	 zw1+gf6Ae45kArMhYXw+9tS7hAR9AKhaKuiSqWJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Juergen Gross <jgross@suse.com>,
+	Jan Kara <jack@suse.cz>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 104/107] xen: Allow platform PCI interrupt to be shared
-Date: Tue,  5 Dec 2023 12:17:19 +0900
-Message-ID: <20231205031538.283030123@linuxfoundation.org>
+Subject: [PATCH 5.10 119/135] fs: add ctime accessors infrastructure
+Date: Tue,  5 Dec 2023 12:17:20 +0900
+Message-ID: <20231205031538.374906489@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,114 +56,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 3e8cd711c3da6c3d724076048038cd666bdbb2b5 ]
+[ Upstream commit 9b6304c1d53745c300b86f202d0dcff395e2d2db ]
 
-When we don't use the per-CPU vector callback, we ask Xen to deliver event
-channel interrupts as INTx on the PCI platform device. As such, it can be
-shared with INTx on other PCI devices.
+struct timespec64 has unused bits in the tv_nsec field that can be used
+for other purposes. In future patches, we're going to change how the
+inode->i_ctime is accessed in certain inodes in order to make use of
+them. In order to do that safely though, we'll need to eradicate raw
+accesses of the inode->i_ctime field from the kernel.
 
-Set IRQF_SHARED, and make it return IRQ_HANDLED or IRQ_NONE according to
-whether the evtchn_upcall_pending flag was actually set. Now I can share
-the interrupt:
+Add new accessor functions for the ctime that we use to replace them.
 
- 11:         82          0   IO-APIC  11-fasteoi   xen-platform-pci, ens4
-
-Drop the IRQF_TRIGGER_RISING. It has no effect when the IRQ is shared,
-and besides, the only effect it was having even beforehand was to trigger
-a debug message in both I/OAPIC and legacy PIC cases:
-
-[    0.915441] genirq: No set_type function for IRQ 11 (IO-APIC)
-[    0.951939] genirq: No set_type function for IRQ 11 (XT-PIC)
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Link: https://lore.kernel.org/r/f9a29a68d05668a3636dd09acd94d970269eaec6.camel@infradead.org
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: db2832309a82 ("x86/xen: fix percpu vcpu_info allocation")
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Message-Id: <20230705185812.579118-2-jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 5923d6686a10 ("smb3: fix caching of ctime on setxattr")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/events/events_base.c | 9 ++++++---
- drivers/xen/platform-pci.c       | 5 ++---
- include/xen/events.h             | 2 +-
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ fs/inode.c         | 16 ++++++++++++++++
+ include/linux/fs.h | 45 ++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/xen/events/events_base.c b/drivers/xen/events/events_base.c
-index af9115d648092..014a83d016f59 100644
---- a/drivers/xen/events/events_base.c
-+++ b/drivers/xen/events/events_base.c
-@@ -1710,9 +1710,10 @@ void handle_irq_for_port(evtchn_port_t port, struct evtchn_loop_ctrl *ctrl)
- 	generic_handle_irq(irq);
+diff --git a/fs/inode.c b/fs/inode.c
+index 311237e8d3595..5c7139aa2bda7 100644
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -2392,6 +2392,22 @@ int vfs_ioc_fssetxattr_check(struct inode *inode, const struct fsxattr *old_fa,
  }
+ EXPORT_SYMBOL(vfs_ioc_fssetxattr_check);
  
--static void __xen_evtchn_do_upcall(void)
-+static int __xen_evtchn_do_upcall(void)
- {
- 	struct vcpu_info *vcpu_info = __this_cpu_read(xen_vcpu);
-+	int ret = vcpu_info->evtchn_upcall_pending ? IRQ_HANDLED : IRQ_NONE;
- 	int cpu = smp_processor_id();
- 	struct evtchn_loop_ctrl ctrl = { 0 };
- 
-@@ -1744,6 +1745,8 @@ static void __xen_evtchn_do_upcall(void)
- 	 * above.
- 	 */
- 	__this_cpu_inc(irq_epoch);
++/**
++ * inode_set_ctime_current - set the ctime to current_time
++ * @inode: inode
++ *
++ * Set the inode->i_ctime to the current value for the inode. Returns
++ * the current value that was assigned to i_ctime.
++ */
++struct timespec64 inode_set_ctime_current(struct inode *inode)
++{
++	struct timespec64 now = current_time(inode);
 +
-+	return ret;
++	inode_set_ctime(inode, now.tv_sec, now.tv_nsec);
++	return now;
++}
++EXPORT_SYMBOL(inode_set_ctime_current);
++
+ /**
+  * in_group_or_capable - check whether caller is CAP_FSETID privileged
+  * @inode:	inode to check
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index f9e25d0a7b9c8..82316863c71fd 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1580,7 +1580,50 @@ static inline void i_gid_write(struct inode *inode, gid_t gid)
+ 	inode->i_gid = make_kgid(inode->i_sb->s_user_ns, gid);
  }
  
- void xen_evtchn_do_upcall(struct pt_regs *regs)
-@@ -1758,9 +1761,9 @@ void xen_evtchn_do_upcall(struct pt_regs *regs)
- 	set_irq_regs(old_regs);
- }
+-extern struct timespec64 current_time(struct inode *inode);
++struct timespec64 current_time(struct inode *inode);
++struct timespec64 inode_set_ctime_current(struct inode *inode);
++
++/**
++ * inode_get_ctime - fetch the current ctime from the inode
++ * @inode: inode from which to fetch ctime
++ *
++ * Grab the current ctime from the inode and return it.
++ */
++static inline struct timespec64 inode_get_ctime(const struct inode *inode)
++{
++	return inode->i_ctime;
++}
++
++/**
++ * inode_set_ctime_to_ts - set the ctime in the inode
++ * @inode: inode in which to set the ctime
++ * @ts: value to set in the ctime field
++ *
++ * Set the ctime in @inode to @ts
++ */
++static inline struct timespec64 inode_set_ctime_to_ts(struct inode *inode,
++						      struct timespec64 ts)
++{
++	inode->i_ctime = ts;
++	return ts;
++}
++
++/**
++ * inode_set_ctime - set the ctime in the inode
++ * @inode: inode in which to set the ctime
++ * @sec: tv_sec value to set
++ * @nsec: tv_nsec value to set
++ *
++ * Set the ctime in @inode to { @sec, @nsec }
++ */
++static inline struct timespec64 inode_set_ctime(struct inode *inode,
++						time64_t sec, long nsec)
++{
++	struct timespec64 ts = { .tv_sec  = sec,
++				 .tv_nsec = nsec };
++
++	return inode_set_ctime_to_ts(inode, ts);
++}
  
--void xen_hvm_evtchn_do_upcall(void)
-+int xen_hvm_evtchn_do_upcall(void)
- {
--	__xen_evtchn_do_upcall();
-+	return __xen_evtchn_do_upcall();
- }
- EXPORT_SYMBOL_GPL(xen_hvm_evtchn_do_upcall);
- 
-diff --git a/drivers/xen/platform-pci.c b/drivers/xen/platform-pci.c
-index cd07e3fed0faf..fcc8191315723 100644
---- a/drivers/xen/platform-pci.c
-+++ b/drivers/xen/platform-pci.c
-@@ -64,14 +64,13 @@ static uint64_t get_callback_via(struct pci_dev *pdev)
- 
- static irqreturn_t do_hvm_evtchn_intr(int irq, void *dev_id)
- {
--	xen_hvm_evtchn_do_upcall();
--	return IRQ_HANDLED;
-+	return xen_hvm_evtchn_do_upcall();
- }
- 
- static int xen_allocate_irq(struct pci_dev *pdev)
- {
- 	return request_irq(pdev->irq, do_hvm_evtchn_intr,
--			IRQF_NOBALANCING | IRQF_TRIGGER_RISING,
-+			IRQF_NOBALANCING | IRQF_SHARED,
- 			"xen-platform-pci", pdev);
- }
- 
-diff --git a/include/xen/events.h b/include/xen/events.h
-index 344081e71584b..44c2855c76d1f 100644
---- a/include/xen/events.h
-+++ b/include/xen/events.h
-@@ -107,7 +107,7 @@ evtchn_port_t evtchn_from_irq(unsigned irq);
- 
- int xen_set_callback_via(uint64_t via);
- void xen_evtchn_do_upcall(struct pt_regs *regs);
--void xen_hvm_evtchn_do_upcall(void);
-+int xen_hvm_evtchn_do_upcall(void);
- 
- /* Bind a pirq for a physical interrupt to an irq. */
- int xen_bind_pirq_gsi_to_irq(unsigned gsi,
+ /*
+  * Snapshotting support.
 -- 
 2.42.0
 
