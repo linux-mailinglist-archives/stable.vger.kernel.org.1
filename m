@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54FA804733
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB488046B1
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B3F1F21423
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF54BB20BD5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72ED28BF8;
-	Tue,  5 Dec 2023 03:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495B58BF2;
+	Tue,  5 Dec 2023 03:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAFgPoEm"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ikqeMaBZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333B86FB1;
-	Tue,  5 Dec 2023 03:36:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CD4C433C7;
-	Tue,  5 Dec 2023 03:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B716FB1;
+	Tue,  5 Dec 2023 03:30:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82873C433C8;
+	Tue,  5 Dec 2023 03:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747361;
-	bh=hx3gRY8//gMNjOq3OpAUxKG69NC8ubHeRgnZbI0oP/8=;
+	s=korg; t=1701747034;
+	bh=QvwDhS3diZmnOZeBTtJVb6HTEyCsdftyn2qnisQ00lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SAFgPoEm7RelPuH9JK+Dns4zd3dTDryZMlElgdquEvIbuueMtydusyK7xaLRKO4zN
-	 Ng3nnVnK25bogPprREkGJEpvzEVAeeEXf3dYyLgzr/YaM3AHtgG+yMmpsUyxvqnW02
-	 gg7TYIxhRorBNyBoP+ccxibTNVmulec5Ab4q9Kgk=
+	b=ikqeMaBZ/sattaBOh/NEpYsceZz0cN2x3NASbILviPeP6jG5ouogo4+M/Auf3P3B7
+	 5NhpPKA1qx1MAywyhQqdCUfm5yKJn8TmOKfggsgoGSL1gTnmXAG8eGtAPNpn1MkNNP
+	 9Xi8R+1zQ1DIog+NQC81SOvJ7BDRB89VQbS0GY7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 5.10 047/135] nfsd: lock_rename() needs both directories to live on the same fs
+	"Abdul Halim, Mohd Syazwan" <mohd.syazwan.abdul.halim@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <jroedel@suse.de>,
+	Abdul@web.codeaurora.org, Halim@web.codeaurora.org
+Subject: [PATCH 6.1 033/107] iommu/vt-d: Add MTL to quirk list to skip TE disabling
 Date: Tue,  5 Dec 2023 12:16:08 +0900
-Message-ID: <20231205031533.491617244@linuxfoundation.org>
+Message-ID: <20231205031533.593523273@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,56 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
 
-commit 1aee9158bc978f91701c5992e395efbc6da2de3c upstream.
+commit 85b80fdffa867d75dfb9084a839e7949e29064e8 upstream.
 
-... checking that after lock_rename() is too late.  Incidentally,
-NFSv2 had no nfserr_xdev...
+The VT-d spec requires (10.4.4 Global Command Register, TE field) that:
 
-Fixes: aa387d6ce153 "nfsd: fix EXDEV checking in rename"
-Cc: stable@vger.kernel.org # v3.9+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Acked-by: Chuck Lever <chuck.lever@oracle.com>
-Tested-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Hardware implementations supporting DMA draining must drain any in-flight
+DMA read/write requests queued within the Root-Complex before switching
+address translation on or off and reflecting the status of the command
+through the TES field in the Global Status register.
+
+Unfortunately, some integrated graphic devices fail to do so after some
+kind of power state transition. As the result, the system might stuck in
+iommu_disable_translation(), waiting for the completion of TE transition.
+
+Add MTL to the quirk list for those devices and skips TE disabling if the
+qurik hits.
+
+Fixes: b1012ca8dc4f ("iommu/vt-d: Skip TE disabling on quirky gfx dedicated iommu")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdul Halim, Mohd Syazwan <mohd.syazwan.abdul.halim@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116022324.30120-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/vfs.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/iommu/intel/iommu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1758,6 +1758,12 @@ nfsd_rename(struct svc_rqst *rqstp, stru
- 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
- 		goto out;
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4872,7 +4872,7 @@ static void quirk_igfx_skip_te_disable(s
+ 	ver = (dev->device >> 8) & 0xff;
+ 	if (ver != 0x45 && ver != 0x46 && ver != 0x4c &&
+ 	    ver != 0x4e && ver != 0x8a && ver != 0x98 &&
+-	    ver != 0x9a && ver != 0xa7)
++	    ver != 0x9a && ver != 0xa7 && ver != 0x7d)
+ 		return;
  
-+	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
-+	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
-+		goto out;
-+	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
-+		goto out;
-+
- retry:
- 	host_err = fh_want_write(ffhp);
- 	if (host_err) {
-@@ -1792,12 +1798,6 @@ retry:
- 	if (ndentry == trap)
- 		goto out_dput_new;
- 
--	host_err = -EXDEV;
--	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
--		goto out_dput_new;
--	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
--		goto out_dput_new;
--
- 	if (nfsd_has_cached_files(ndentry)) {
- 		has_cached = true;
- 		goto out_dput_old;
+ 	if (risky_device(dev))
 
 
 
