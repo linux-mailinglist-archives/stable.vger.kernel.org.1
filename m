@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EA38047E7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4DE80468E
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79C12B20CEC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 299D72814C8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4D379E3;
-	Tue,  5 Dec 2023 03:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4B746FB8;
+	Tue,  5 Dec 2023 03:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjnP0S86"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJRIBrGG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944126AC2;
-	Tue,  5 Dec 2023 03:43:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FA3C433C8;
-	Tue,  5 Dec 2023 03:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750056FAF;
+	Tue,  5 Dec 2023 03:29:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E094CC433C7;
+	Tue,  5 Dec 2023 03:29:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747819;
-	bh=BbyWiPX7lO8Wnnmfm1lKkE/BH4c9v+q4GBJFyXecQGI=;
+	s=korg; t=1701746945;
+	bh=HztmdKZbiamG3g75jCqMv6d5HmMq4Yp3XdaxiejWNjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjnP0S86EL1d+5MQRS0tmvls/U3f/lwkUdOuvv912CMzzjTVaHHjpERsKVeEp86AE
-	 HTVPKxuKDfL38czADWA7v6IhEGzT+FBcXkFv7LRdyLN8SBws0uZkvsL3nigGsGTzPs
-	 Wjk7xC4+m/csHJQYDlTUilUDZ6TAmckWwX0jG5Sc=
+	b=OJRIBrGGfg47PdtUC9Ma6P0zMBfUi+7HWvwS3Ci1kGSi8va203R+uLEq2uYwqVnfe
+	 J+ucsijnWTvlldzhA2Gv4ufsZrcvsaAZrNX6L358zMJ3q/sx3s+44KZa/HktGlV/D7
+	 m8YouioWMaRXegfSOA9jgEi5a0uKkCDrEhhiDhyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 11/94] ipv4: Correct/silence an endian warning in __ip_do_redirect
+	Zheng Wang <zyytlz.wz@163.com>,
+	Coly Li <colyli@suse.de>,
+	Markus Weippert <markus@gekmihesg.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 41/71] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
 Date: Tue,  5 Dec 2023 12:16:39 +0900
-Message-ID: <20231205031523.529870282@linuxfoundation.org>
+Message-ID: <20231205031520.219142846@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,44 +54,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Markus Weippert <markus@gekmihesg.de>
 
-[ Upstream commit c0e2926266af3b5acf28df0a8fc6e4d90effe0bb ]
+commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
 
-net/ipv4/route.c:783:46: warning: incorrect type in argument 2 (different base types)
-net/ipv4/route.c:783:46:    expected unsigned int [usertype] key
-net/ipv4/route.c:783:46:    got restricted __be32 [usertype] new_gw
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
+NULL pointer dereference.
 
-Fixes: 969447f226b4 ("ipv4: use new_gw for redirect neigh lookup")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20231119141759.420477-1-chentao@kylinos.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000080
+Call Trace:
+ ? __die_body.cold+0x1a/0x1f
+ ? page_fault_oops+0xd2/0x2b0
+ ? exc_page_fault+0x70/0x170
+ ? asm_exc_page_fault+0x22/0x30
+ ? btree_node_free+0xf/0x160 [bcache]
+ ? up_write+0x32/0x60
+ btree_gc_coalesce+0x2aa/0x890 [bcache]
+ ? bch_extent_bad+0x70/0x170 [bcache]
+ btree_gc_recurse+0x130/0x390 [bcache]
+ ? btree_gc_mark_node+0x72/0x230 [bcache]
+ bch_btree_gc+0x5da/0x600 [bcache]
+ ? cpuusage_read+0x10/0x10
+ ? bch_btree_gc+0x600/0x600 [bcache]
+ bch_gc_thread+0x135/0x180 [bcache]
+
+The relevant code starts with:
+
+    new_nodes[0] = NULL;
+
+    for (i = 0; i < nodes; i++) {
+        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
+            goto out_nocoalesce;
+    // ...
+out_nocoalesce:
+    // ...
+    for (i = 0; i < nodes; i++)
+        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
+028ddcac477b
+            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
+            rw_unlock(true, new_nodes[i]);
+        }
+
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Cc: Coly Li <colyli@suse.de>
+Signed-off-by: Markus Weippert <markus@gekmihesg.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 2 +-
+ drivers/md/bcache/btree.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index f82d456afd0ed..902296ef3e5aa 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -799,7 +799,7 @@ static void __ip_do_redirect(struct rtable *rt, struct sk_buff *skb, struct flow
- 			goto reject_redirect;
- 	}
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1526,7 +1526,7 @@ out_nocoalesce:
+ 			atomic_dec(&b->c->prio_blocked);
  
--	n = __ipv4_neigh_lookup(rt->dst.dev, new_gw);
-+	n = __ipv4_neigh_lookup(rt->dst.dev, (__force u32)new_gw);
- 	if (!n)
- 		n = neigh_create(&arp_tbl, &new_gw, rt->dst.dev);
- 	if (!IS_ERR(n)) {
--- 
-2.42.0
-
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR(new_nodes[i])) {
++		if (!IS_ERR_OR_NULL(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
+ 		}
 
 
 
