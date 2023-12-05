@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 586818047AF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7822F804824
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E6EE1F2149F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E2FD1F224A9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B2F8F6C;
-	Tue,  5 Dec 2023 03:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 548F58F62;
+	Tue,  5 Dec 2023 03:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zA9OzBzi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeqfAeej"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1568BF8;
-	Tue,  5 Dec 2023 03:41:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C0CEC433C8;
-	Tue,  5 Dec 2023 03:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C5479E3;
+	Tue,  5 Dec 2023 03:46:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40792C433C8;
+	Tue,  5 Dec 2023 03:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747670;
-	bh=bzPUwTFNLv9O0uDSPloC+E+TNp3YeSNnQ63SGgXBpBA=;
+	s=korg; t=1701747978;
+	bh=TBY6F0YkSnGrHkdaIpAzczyAeL/pSIx7IOQDBcSxFuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zA9OzBzisFnRqvhU3zh3oExFwwMuTjXFNuxYs8bNEGIdVRI5ApQsLYxNaeJslOkIA
-	 v0ZvGJgi5NxwqRDsGcxhhqcPNHbd3RhKx2G4DUVxEMyefGLZjrVZq7bWDC3PXJUGSQ
-	 H5ngbIAeYJhir8IR9Gz9OwdX5+Qr8hgzH+Sosoxc=
+	b=oeqfAeejL1lsD+n57pARoZEXj6c18WANTyIHnxUsy9UE9zFy0d1OEJsJLGnoHaEH3
+	 q6sfCJgxiuXuqRMnyk1AvJeHZGoDskZKfyqp3mCDyuAZumZXe0SyQges2Ss5cwkzd9
+	 Zqe5cC/cXY9MzuZmSFBSE2YbkHceY+1wxwHBYu1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Olivier Matz <olivier.matz@6wind.com>
-Subject: [PATCH 5.15 25/67] vlan: introduce vlan_dev_free_egress_priority
-Date: Tue,  5 Dec 2023 12:17:10 +0900
-Message-ID: <20231205031521.240733406@linuxfoundation.org>
+	Victor Fragoso <victorffs@hotmail.com>,
+	Lars Melin <larsm17@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.4 43/94] USB: serial: option: add Fibocom L7xx modules
+Date: Tue,  5 Dec 2023 12:17:11 +0900
+Message-ID: <20231205031525.281594738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,87 +53,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Victor Fragoso <victorffs@hotmail.com>
 
-commit 37aa50c539bcbcc01767e515bd170787fcfc0f33 upstream.
+commit e389fe8b68137344562fb6e4d53d8a89ef6212dd upstream.
 
-This patch is to introduce vlan_dev_free_egress_priority() to
-free egress priority for vlan dev, and keep vlan_dev_uninit()
-static as .ndo_uninit. It makes the code more clear and safer
-when adding new code in vlan_dev_uninit() in the future.
+Add support for Fibocom L716-EU module series.
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
+L716-EU is a Fibocom module based on ZTE's V3E/V3T chipset.
+
+Device creates multiple interfaces when connected to PC as follows:
+ - Network Interface: ECM or RNDIS (set by FW or AT Command)
+ - ttyUSB0: AT port
+ - ttyUSB1: Modem port
+ - ttyUSB2: AT2 port
+ - ttyUSB3: Trace port for log information
+ - ADB: ADB port for debugging. ("Driver=usbfs" when ADB server enabled)
+
+Here are the outputs of lsusb and usb-devices:
+$ ls /dev/ttyUSB*
+/dev/ttyUSB0  /dev/ttyUSB1  /dev/ttyUSB2  /dev/ttyUSB3
+
+usb-devices:
+L716-EU (ECM mode):
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 51 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
+S:  Manufacturer=Fibocom,Incorporated
+S:  Product=Fibocom Mobile Boardband
+S:  SerialNumber=1234567890ABCDEF
+C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
+E:  Ad=87(I) Atr=03(Int.) MxPS=  16 Ivl=32ms
+I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+L716-EU (RNDIS mode):
+T:  Bus=03 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#= 49 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
+P:  Vendor=2cb7 ProdID=0001 Rev= 1.00
+S:  Manufacturer=Fibocom,Incorporated
+S:  Product=Fibocom Mobile Boardband
+S:  SerialNumber=1234567890ABCDEF
+C:* #Ifs= 7 Cfg#= 1 Atr=e0 MxPwr=500mA
+A:  FirstIf#= 0 IfCount= 2 Cls=e0(wlcon) Sub=01 Prot=03
+I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=02 Prot=ff Driver=rndis_host
+E:  Ad=87(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=rndis_host
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 6 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=usbfs
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=06(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+
+Signed-off-by: Victor Fragoso <victorffs@hotmail.com>
+Reviewed-by: Lars Melin <larsm17@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/8021q/vlan.h         |    2 +-
- net/8021q/vlan_dev.c     |    7 ++++++-
- net/8021q/vlan_netlink.c |    7 ++++---
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/8021q/vlan.h
-+++ b/net/8021q/vlan.h
-@@ -129,6 +129,7 @@ void vlan_dev_set_ingress_priority(const
- 				   u32 skb_prio, u16 vlan_prio);
- int vlan_dev_set_egress_priority(const struct net_device *dev,
- 				 u32 skb_prio, u16 vlan_prio);
-+void vlan_dev_free_egress_priority(const struct net_device *dev);
- int vlan_dev_change_flags(const struct net_device *dev, u32 flag, u32 mask);
- void vlan_dev_get_realdev_name(const struct net_device *dev, char *result,
- 			       size_t size);
-@@ -139,7 +140,6 @@ int vlan_check_real_dev(struct net_devic
- void vlan_setup(struct net_device *dev);
- int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack);
- void unregister_vlan_dev(struct net_device *dev, struct list_head *head);
--void vlan_dev_uninit(struct net_device *dev);
- bool vlan_dev_inherit_address(struct net_device *dev,
- 			      struct net_device *real_dev);
- 
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -622,7 +622,7 @@ static int vlan_dev_init(struct net_devi
- }
- 
- /* Note: this function might be called multiple times for the same device. */
--void vlan_dev_uninit(struct net_device *dev)
-+void vlan_dev_free_egress_priority(const struct net_device *dev)
- {
- 	struct vlan_priority_tci_mapping *pm;
- 	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-@@ -636,6 +636,11 @@ void vlan_dev_uninit(struct net_device *
- 	}
- }
- 
-+static void vlan_dev_uninit(struct net_device *dev)
-+{
-+	vlan_dev_free_egress_priority(dev);
-+}
-+
- static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
- 	netdev_features_t features)
- {
---- a/net/8021q/vlan_netlink.c
-+++ b/net/8021q/vlan_netlink.c
-@@ -183,10 +183,11 @@ static int vlan_newlink(struct net *src_
- 		return -EINVAL;
- 
- 	err = vlan_changelink(dev, tb, data, extack);
--	if (!err)
--		err = register_vlan_dev(dev, extack);
- 	if (err)
--		vlan_dev_uninit(dev);
-+		return err;
-+	err = register_vlan_dev(dev, extack);
-+	if (err)
-+		vlan_dev_free_egress_priority(dev);
- 	return err;
- }
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2251,6 +2251,7 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x1782, 0x4d11, 0xff) },			/* Fibocom L610 (ECM/RNDIS mode) */
++	{ USB_DEVICE_AND_INTERFACE_INFO(0x2cb7, 0x0001, 0xff, 0xff, 0xff) },	/* Fibocom L716-EU (ECM/RNDIS mode) */
+ 	{ USB_DEVICE(0x2cb7, 0x0104),						/* Fibocom NL678 series */
+ 	  .driver_info = RSVD(4) | RSVD(5) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x2cb7, 0x0105, 0xff),			/* Fibocom NL678 series */
 
 
 
