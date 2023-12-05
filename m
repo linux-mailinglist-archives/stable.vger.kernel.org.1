@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-4015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD9B8045A5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A30CF804744
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FCC51C20BAE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ACC21F21482
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8ABA6FB0;
-	Tue,  5 Dec 2023 03:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702078BF1;
+	Tue,  5 Dec 2023 03:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKXdXQwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PgL/bSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AD96AA0;
-	Tue,  5 Dec 2023 03:19:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279E5C433C7;
-	Tue,  5 Dec 2023 03:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B14E6FB1;
+	Tue,  5 Dec 2023 03:36:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A899FC433C8;
+	Tue,  5 Dec 2023 03:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746390;
-	bh=vG+JAOUAMS92G/6B0eqlCwXKxVV9S1Yzv758nPMJ7wo=;
+	s=korg; t=1701747405;
+	bh=rS8Bzry2R8CViC9ENfptVNd39UdwkMm5hC3t53Rj41c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKXdXQwczeICBS6Qv8LddVhUhgPaLE5+KU4F2YbMIfmmD7+dxy7gkLvrFmIqRr/j5
-	 DRMJT8By8iGxMJl3kbP3IZlD5U1JpTEtc8U2Hps9ed1g1j3KLVdEBMfJKgfXbAhhdK
-	 C5xjrGN2JOG3srcvRQoO7qR3GzBrjQEdfe+JXkkQ=
+	b=1PgL/bSJejgSb1ECBXo4oNfHdbjt75o26egPOUIzBRoIMJl71iF1Cn+79879E0kNt
+	 i+WTpYBA0ATFHQaEsYVVhrVEVU9OybSqm9LjVhI8NqiF2uIWySiZaMtHZ/1FFd2FzR
+	 OGCn8CtmMs/+RdP8pSPhIiWyfxpqdsztaa0oVXlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 10/30] net: axienet: Fix check for partial TX checksum
+	Long Li <longli@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 056/135] hv_netvsc: Mark VF as slave before exposing it to user-mode
 Date: Tue,  5 Dec 2023 12:16:17 +0900
-Message-ID: <20231205031512.085731097@linuxfoundation.org>
+Message-ID: <20231205031533.985121545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +55,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
+commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
 
-Due to a typo, the code checked the RX checksum feature in the TX path.
+When a VF is being exposed form the kernel, it should be marked as "slave"
+before exposing to the user-mode. The VF is not usable without netvsc
+running as master. The user-mode should never see a VF without the "slave"
+flag.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit moves the code of setting the slave flag to the time before
+VF is exposed to user-mode.
+
+Cc: stable@vger.kernel.org
+Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
+Signed-off-by: Long Li <longli@microsoft.com>
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Acked-by: Stephen Hemminger <stephen@networkplumber.org>
+Acked-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
+ 1 file changed, 23 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 7876e56a5b5db..c88fed98d8c39 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -692,7 +692,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
- 			/* Tx Full Checksum Offload Enabled */
- 			cur_p->app0 |= 2;
--		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
-+		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
- 			csum_start_off = skb_transport_offset(skb);
- 			csum_index_off = csum_start_off + skb->csum_offset;
- 			/* Tx Partial Checksum Offload Enabled */
--- 
-2.42.0
-
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2217,9 +2217,6 @@ static int netvsc_vf_join(struct net_dev
+ 		goto upper_link_failed;
+ 	}
+ 
+-	/* set slave flag before open to prevent IPv6 addrconf */
+-	vf_netdev->flags |= IFF_SLAVE;
+-
+ 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
+ 
+ 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
+@@ -2317,16 +2314,18 @@ static struct net_device *get_netvsc_bys
+ 			return hv_get_drvdata(ndev_ctx->device_ctx);
+ 	}
+ 
+-	/* Fallback path to check synthetic vf with
+-	 * help of mac addr
++	/* Fallback path to check synthetic vf with help of mac addr.
++	 * Because this function can be called before vf_netdev is
++	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
++	 * from dev_addr, also try to match to its dev_addr.
++	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
++	 * on a VF that matches to the MAC of a unrelated NETVSC device.
+ 	 */
+ 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
+ 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
+-		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
+-			netdev_notice(vf_netdev,
+-				      "falling back to mac addr based matching\n");
++		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
++		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
+ 			return ndev;
+-		}
+ 	}
+ 
+ 	netdev_notice(vf_netdev,
+@@ -2334,6 +2333,19 @@ static struct net_device *get_netvsc_bys
+ 	return NULL;
+ }
+ 
++static int netvsc_prepare_bonding(struct net_device *vf_netdev)
++{
++	struct net_device *ndev;
++
++	ndev = get_netvsc_byslot(vf_netdev);
++	if (!ndev)
++		return NOTIFY_DONE;
++
++	/* set slave flag before open to prevent IPv6 addrconf */
++	vf_netdev->flags |= IFF_SLAVE;
++	return NOTIFY_DONE;
++}
++
+ static int netvsc_register_vf(struct net_device *vf_netdev)
+ {
+ 	struct net_device_context *net_device_ctx;
+@@ -2737,6 +2749,8 @@ static int netvsc_netdev_event(struct no
+ 		return NOTIFY_DONE;
+ 
+ 	switch (event) {
++	case NETDEV_POST_INIT:
++		return netvsc_prepare_bonding(event_dev);
+ 	case NETDEV_REGISTER:
+ 		return netvsc_register_vf(event_dev);
+ 	case NETDEV_UNREGISTER:
 
 
 
