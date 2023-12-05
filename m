@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-4461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D0A2804792
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5927804828
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB810281647
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D1DEC1C20EAC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F16B79E3;
-	Tue,  5 Dec 2023 03:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA4A8C13;
+	Tue,  5 Dec 2023 03:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyM3VjG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1aAOZsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7B46FB1;
-	Tue,  5 Dec 2023 03:40:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E77EC433C8;
-	Tue,  5 Dec 2023 03:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF5B6FB0;
+	Tue,  5 Dec 2023 03:46:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E43FC433C7;
+	Tue,  5 Dec 2023 03:46:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747612;
-	bh=yL2qm+2G0YeA9eJdGLFwBUbEDuR+dyFq1qb55Wn6smw=;
+	s=korg; t=1701747991;
+	bh=K6LOPZgOjHkdV6u/esMsuKV54Lk6LfNBB0yuDhYVrXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GyM3VjG7kQc6J8ZmVSqe7u609YjMl9/rcGSVdJgEdlSuxRpIKXtCMtWIc8KL//tXg
-	 UMTDQKq9iCrlf8/kaUmhTLuLHjaxrdNMm/mdZYl45xb0ggLWWvsJDwwsOjNZz2RPF2
-	 9V/9U9QCKEby6vhkmcKJIpaJKdnzyGvznDs8EzN4=
+	b=V1aAOZsFtq/7USfSZF8w1uxTepCiskFlhL8B19NqyM501weU9GvMahB0f6Pb+wRrW
+	 4ce0GOCSSTK08SvrOiuiCEHl3bHBXRA1cRX/+1de8/OX52QeEQEHT1rDreHLDcdp75
+	 Gvtna9xiu15d6GF46euWJ+wtExXDT5/PtrFs6Mwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/135] fbdev: stifb: Make the STI next font pointer a 32-bit signed offset
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Lee Jones <lee@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 5.4 48/94] USB: dwc3: qcom: fix resource leaks on probe deferral
 Date: Tue,  5 Dec 2023 12:17:16 +0900
-Message-ID: <20231205031538.086992377@linuxfoundation.org>
+Message-ID: <20231205031525.556100786@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +54,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 8a32aa17c1cd48df1ddaa78e45abcb8c7a2220d6 ]
+commit 51392a1879ff06dc21b68aef4825f6ef68a7be42 upstream.
 
-The pointer to the next STI font is actually a signed 32-bit
-offset. With this change the 64-bit kernel will correctly subract
-the (signed 32-bit) offset instead of adding a (unsigned 32-bit)
-offset. It has no effect on 32-bit kernels.
+The driver needs to deregister and free the newly allocated dwc3 core
+platform device on ACPI probe errors (e.g. probe deferral) and on driver
+unbind but instead it leaked those resources while erroneously dropping
+a reference to the parent platform device which is still in use.
 
-This fixes the stifb driver with a 64-bit kernel on qemu.
+For OF probing the driver takes a reference to the dwc3 core platform
+device which has also always been leaked.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the broken ACPI tear down and make sure to drop the dwc3 core
+reference for both OF and ACPI.
+
+Fixes: 8fd95da2cfb5 ("usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()")
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Lee Jones <lee@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231117173650.21161-2-johan+linaro@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/sticore.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/sticore.h b/drivers/video/fbdev/sticore.h
-index 0ebdd28a0b813..d83ab3ded5f3d 100644
---- a/drivers/video/fbdev/sticore.h
-+++ b/drivers/video/fbdev/sticore.h
-@@ -231,7 +231,7 @@ struct sti_rom_font {
- 	 u8 height;
- 	 u8 font_type;		/* language type */
- 	 u8 bytes_per_char;
--	u32 next_font;
-+	s32 next_font;		/* note: signed int */
- 	 u8 underline_height;
- 	 u8 underline_pos;
- 	 u8 res008[2];
--- 
-2.42.0
-
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -553,6 +553,7 @@ static int dwc3_qcom_of_register_core(st
+ 	if (!qcom->dwc3) {
+ 		ret = -ENODEV;
+ 		dev_err(dev, "failed to get dwc3 platform device\n");
++		of_platform_depopulate(dev);
+ 	}
+ 
+ node_put:
+@@ -666,7 +667,7 @@ static int dwc3_qcom_probe(struct platfo
+ 
+ 	if (ret) {
+ 		dev_err(dev, "failed to register DWC3 Core, err=%d\n", ret);
+-		goto depopulate;
++		goto clk_disable;
+ 	}
+ 
+ 	qcom->mode = usb_get_dr_mode(&qcom->dwc3->dev);
+@@ -692,7 +693,8 @@ depopulate:
+ 	if (np)
+ 		of_platform_depopulate(&pdev->dev);
+ 	else
+-		platform_device_put(pdev);
++		platform_device_del(qcom->dwc3);
++	platform_device_put(qcom->dwc3);
+ clk_disable:
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+@@ -714,7 +716,8 @@ static int dwc3_qcom_remove(struct platf
+ 	if (np)
+ 		of_platform_depopulate(&pdev->dev);
+ 	else
+-		platform_device_put(pdev);
++		platform_device_del(qcom->dwc3);
++	platform_device_put(qcom->dwc3);
+ 
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
 
 
 
