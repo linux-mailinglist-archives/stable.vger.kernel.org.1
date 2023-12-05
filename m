@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD46804805
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85798047AB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40B511F21E7C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50DC5B20D52
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937E88C03;
-	Tue,  5 Dec 2023 03:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8058C13;
+	Tue,  5 Dec 2023 03:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w0jujFNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2xRba/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521BA6FB0;
-	Tue,  5 Dec 2023 03:44:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B90CC433C8;
-	Tue,  5 Dec 2023 03:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DFD8BF8;
+	Tue,  5 Dec 2023 03:40:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46FF6C433C8;
+	Tue,  5 Dec 2023 03:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747897;
-	bh=QkPh4cB8bIThR758c67QVkm2syfqc6eeVWJ5XHYVXok=;
+	s=korg; t=1701747659;
+	bh=A6K9t6eI2SaV9sR/zJ/vTHqPePoWoVbm4dRbXuGLhyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w0jujFNNNAsh2uWJjL8gXOwVOttlKD1vwYha8Zkknn2CjQR1XE1EPfG7Qi/2R5Ir4
-	 p4Y9SaAm1JkF8wraERqNV98Xj/AuHyi4zhp5tPtZSxFhSTZReOdyGQod5rvKS+z1qo
-	 /Du+TUhinh+1lcilEWdxROiIS12b0THdFIDGDEYg=
+	b=K2xRba/UNI5bqWGxW6qbyxhgLcnq+KvKyg9U86t+RoOz3Vky0JaVSZCtybFo02Jep
+	 haWtETp8vq68w81duZ/yja4dfvA8mTa7/UiSt+9OimuK1YyctC6+TJftzZGwHRcU68
+	 +esnHHuW1bHKA7uK/lU/cgpOou7l/ztp0gS6e0eg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dexuan Cui <decui@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 38/94] hv_netvsc: Fix race of register_netdevice_notifier and VF register
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 21/67] btrfs: fix off-by-one when checking chunk map includes logical address
 Date: Tue,  5 Dec 2023 12:17:06 +0900
-Message-ID: <20231205031525.017376267@linuxfoundation.org>
+Message-ID: <20231205031520.995864936@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 85520856466ed6bc3b1ccb013cddac70ceb437db upstream.
+commit 5fba5a571858ce2d787fdaf55814e42725bfa895 upstream.
 
-If VF NIC is registered earlier, NETDEV_REGISTER event is replayed,
-but NETDEV_POST_INIT is not.
+At btrfs_get_chunk_map() we get the extent map for the chunk that contains
+the given logical address stored in the 'logical' argument. Then we do
+sanity checks to verify the extent map contains the logical address. One
+of these checks verifies if the extent map covers a range with an end
+offset behind the target logical address - however this check has an
+off-by-one error since it will consider an extent map whose start offset
+plus its length matches the target logical address as inclusive, while
+the fact is that the last byte it covers is behind the target logical
+address (by 1).
 
-Move register_netdevice_notifier() earlier, so the call back
-function is set before probing.
+So fix this condition by using '<=' rather than '<' when comparing the
+extent map's "start + length" against the target logical address.
 
-Cc: stable@vger.kernel.org
-Fixes: e04e7a7bbd4b ("hv_netvsc: Fix a deadlock by getting rtnl lock earlier in netvsc_probe()")
-Reported-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ fs/btrfs/volumes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2528,12 +2528,17 @@ static int __init netvsc_drv_init(void)
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -3069,7 +3069,7 @@ struct extent_map *btrfs_get_chunk_map(s
+ 		return ERR_PTR(-EINVAL);
  	}
- 	netvsc_ring_bytes = ring_size * PAGE_SIZE;
  
-+	register_netdevice_notifier(&netvsc_netdev_notifier);
-+
- 	ret = vmbus_driver_register(&netvsc_drv);
- 	if (ret)
--		return ret;
-+		goto err_vmbus_reg;
- 
--	register_netdevice_notifier(&netvsc_netdev_notifier);
- 	return 0;
-+
-+err_vmbus_reg:
-+	unregister_netdevice_notifier(&netvsc_netdev_notifier);
-+	return ret;
- }
- 
- MODULE_LICENSE("GPL");
+-	if (em->start > logical || em->start + em->len < logical) {
++	if (em->start > logical || em->start + em->len <= logical) {
+ 		btrfs_crit(fs_info,
+ 			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
+ 			   logical, length, em->start, em->start + em->len);
 
 
 
