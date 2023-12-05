@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-4484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B958047B0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:41:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D17A804709
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7144281645
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:41:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EB961C20DD6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 886CF8BF8;
-	Tue,  5 Dec 2023 03:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898178BF2;
+	Tue,  5 Dec 2023 03:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8mj8QtU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgX3dsG0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C8379F2;
-	Tue,  5 Dec 2023 03:41:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF0EC433C7;
-	Tue,  5 Dec 2023 03:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BFF6FB1;
+	Tue,  5 Dec 2023 03:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FC17C433C7;
+	Tue,  5 Dec 2023 03:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747673;
-	bh=Jd8pz4VSHjIewZv9Gha4slNuXD1WFx5XVcCIaJ+U3vw=;
+	s=korg; t=1701747251;
+	bh=uSIZwh+42UAB2baMFJUBj8T+3afM5j56dN4eDGiY/Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P8mj8QtU2tLbJTJkkMAF971Klt5APp9N2TojGZkCT0eTKpBJzoOo/cG0/BsgDMhol
-	 0LTHSaIougQE141Dct8Dls2nGV32IYIt6sakhnGkI8MZ9baR6AjbZljoIUdfHmBCm/
-	 C7W/smNrdj134gP7nI322nVsO1801qNGyPgCDs1g=
+	b=cgX3dsG0FYDUcuuzMHhvrkGlA3HDkh7/75DdqcmMHJBSWlpXptFLUTav7ui5Vl8ln
+	 Ws8GLq0jChWmWhwKkHS/eePtsV+vczT8Nj2dikG9rRi0ttAWx0dq+JGb11B6JjDEZg
+	 JXI0zmMKhl1TKuQ5H1UJu2zrggM7Ll538paQEyBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuang Li <shuali@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Olivier Matz <olivier.matz@6wind.com>
-Subject: [PATCH 5.15 26/67] vlan: move dev_put into vlan_dev_uninit
-Date: Tue,  5 Dec 2023 12:17:11 +0900
-Message-ID: <20231205031521.311405664@linuxfoundation.org>
+	Wenchao Chen <wenchao.chen@unisoc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 097/107] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled
+Date: Tue,  5 Dec 2023 12:17:12 +0900
+Message-ID: <20231205031537.799372491@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +53,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Wenchao Chen <wenchao.chen@unisoc.com>
 
-commit d6ff94afd90b0ce8d1715f8ef77d4347d7a7f2c0 upstream.
+[ Upstream commit 477865af60b2117ceaa1d558e03559108c15c78c ]
 
-Shuang Li reported an QinQ issue by simply doing:
+With cat regulator_summary, we found that vqmmc was not shutting
+down after the card was pulled.
 
-  # ip link add dummy0 type dummy
-  # ip link add link dummy0 name dummy0.1 type vlan id 1
-  # ip link add link dummy0.1 name dummy0.1.2 type vlan id 2
-  # rmmod 8021q
+cat /sys/kernel/debug/regulator/regulator_summary
+1.before fix
+1)Insert SD card
+ vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
 
- unregister_netdevice: waiting for dummy0.1 to become free. Usage count = 1
+2)Pull out the SD card
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
 
-When rmmods 8021q, all vlan devs are deleted from their real_dev's vlan grp
-and added into list_kill by unregister_vlan_dev(). dummy0.1 is unregistered
-before dummy0.1.2, as it's using for_each_netdev() in __rtnl_kill_links().
+2.after fix
+1)Insert SD cardt
+ vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
 
-When unregisters dummy0.1, dummy0.1.2 is not unregistered in the event of
-NETDEV_UNREGISTER, as it's been deleted from dummy0.1's vlan grp. However,
-due to dummy0.1.2 still holding dummy0.1, dummy0.1 will keep waiting in
-netdev_wait_allrefs(), while dummy0.1.2 will never get unregistered and
-release dummy0.1, as it delays dev_put until calling dev->priv_destructor,
-vlan_dev_free().
+2)Pull out the SD card
+ vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
+    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
 
-This issue was introduced by Commit 563bcbae3ba2 ("net: vlan: fix a UAF in
-vlan_dev_real_dev()"), and this patch is to fix it by moving dev_put() into
-vlan_dev_uninit(), which is called after NETDEV_UNREGISTER event but before
-netdev_wait_allrefs().
-
-Fixes: 563bcbae3ba2 ("net: vlan: fix a UAF in vlan_dev_real_dev()")
-Reported-by: Shuang Li <shuali@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Olivier Matz <olivier.matz@6wind.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
+Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/8021q/vlan_dev.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/mmc/host/sdhci-sprd.c | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/net/8021q/vlan_dev.c
-+++ b/net/8021q/vlan_dev.c
-@@ -638,7 +638,12 @@ void vlan_dev_free_egress_priority(const
- 
- static void vlan_dev_uninit(struct net_device *dev)
- {
-+	struct vlan_dev_priv *vlan = vlan_dev_priv(dev);
-+
- 	vlan_dev_free_egress_priority(dev);
-+
-+	/* Get rid of the vlan's reference to real_dev */
-+	dev_put(vlan->real_dev);
+diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
+index 525f979e2a974..2101b6e794c0e 100644
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -405,12 +405,33 @@ static void sdhci_sprd_request_done(struct sdhci_host *host,
+ 	mmc_request_done(host->mmc, mrq);
  }
  
- static netdev_features_t vlan_dev_fix_features(struct net_device *dev,
-@@ -851,9 +856,6 @@ static void vlan_dev_free(struct net_dev
++static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
++				 unsigned short vdd)
++{
++	struct mmc_host *mmc = host->mmc;
++
++	switch (mode) {
++	case MMC_POWER_OFF:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
++
++		mmc_regulator_disable_vqmmc(mmc);
++		break;
++	case MMC_POWER_ON:
++		mmc_regulator_enable_vqmmc(mmc);
++		break;
++	case MMC_POWER_UP:
++		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
++		break;
++	}
++}
++
+ static struct sdhci_ops sdhci_sprd_ops = {
+ 	.read_l = sdhci_sprd_readl,
+ 	.write_l = sdhci_sprd_writel,
+ 	.write_w = sdhci_sprd_writew,
+ 	.write_b = sdhci_sprd_writeb,
+ 	.set_clock = sdhci_sprd_set_clock,
++	.set_power = sdhci_sprd_set_power,
+ 	.get_max_clock = sdhci_sprd_get_max_clock,
+ 	.get_min_clock = sdhci_sprd_get_min_clock,
+ 	.set_bus_width = sdhci_set_bus_width,
+@@ -676,6 +697,10 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
+ 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
+ 			 SDHCI_SUPPORT_DDR50);
  
- 	free_percpu(vlan->vlan_pcpu_stats);
- 	vlan->vlan_pcpu_stats = NULL;
--
--	/* Get rid of the vlan's reference to real_dev */
--	dev_put(vlan->real_dev);
- }
- 
- void vlan_setup(struct net_device *dev)
++	ret = mmc_regulator_get_supply(host->mmc);
++	if (ret)
++		goto pm_runtime_disable;
++
+ 	ret = sdhci_setup_host(host);
+ 	if (ret)
+ 		goto pm_runtime_disable;
+-- 
+2.42.0
+
 
 
 
