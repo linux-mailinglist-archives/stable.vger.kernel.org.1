@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022DC804630
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:25:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22BD6804807
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792CC1F213D1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D234B2817AC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D214F6FB8;
-	Tue,  5 Dec 2023 03:25:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 622F48C03;
+	Tue,  5 Dec 2023 03:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qGCGkKmI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wW9HWzDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89703A59;
-	Tue,  5 Dec 2023 03:25:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0515EC433C7;
-	Tue,  5 Dec 2023 03:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A6A6FB0;
+	Tue,  5 Dec 2023 03:45:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FCB7C433C8;
+	Tue,  5 Dec 2023 03:45:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746748;
-	bh=w6ZTjOJPTZQXuoAWwyMtc/znKfNcGC1p6oeGUvZK6ww=;
+	s=korg; t=1701747903;
+	bh=DLGMhxqAteBLkywi+bzVfdpiLHF2mf8rs2l9hFNERzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qGCGkKmIvbeF/cFXL5KSC+CfuHdJZLaAtxex5eDa4yfUJWzpNi5VSiftUIR+sBM8W
-	 /E/oXVW9R0TT40I9KD/G9oOOzwjsvSZge7JlaYpWf6IRf2NlOVst/WJeBUDvRM+DOS
-	 ZRb800CvUyzA3Z80w33Rzs0f64AbygCc7KST0VoI=
+	b=wW9HWzDr7fax8vp2Km45FoB0l8zDAf+Bwm884UPj17EuK1PRQwkGHwwc4bmBXA7Dd
+	 B5NlKKyhhvwbkv1ponTUE9Ilp83YuUdE78GDGssV5RIwfcYnjj7LWCZhzdEXrQP+Jo
+	 Ku3HMF6MrkNvAXMuI2+s4XlRFVIKQ3sIai/pA35E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.con>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/134] x86/xen: fix percpu vcpu_info allocation
+Subject: [PATCH 5.4 17/94] net: axienet: Fix check for partial TX checksum
 Date: Tue,  5 Dec 2023 12:16:45 +0900
-Message-ID: <20231205031543.874411485@linuxfoundation.org>
+Message-ID: <20231205031523.846360996@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +55,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Samuel Holland <samuel.holland@sifive.com>
 
-[ Upstream commit db2832309a82b9acc4b8cc33a1831d36507ec13e ]
+[ Upstream commit fd0413bbf8b11f56e8aa842783b0deda0dfe2926 ]
 
-Today the percpu struct vcpu_info is allocated via DEFINE_PER_CPU(),
-meaning that it could cross a page boundary. In this case registering
-it with the hypervisor will fail, resulting in a panic().
+Due to a typo, the code checked the RX checksum feature in the TX path.
 
-This can easily be fixed by using DEFINE_PER_CPU_ALIGNED() instead,
-as struct vcpu_info is guaranteed to have a size of 64 bytes, matching
-the cache line size of x86 64-bit processors (Xen doesn't support
-32-bit processors).
-
-Fixes: 5ead97c84fa7 ("xen: Core Xen implementation")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.con>
-Link: https://lore.kernel.org/r/20231124074852.25161-1-jgross@suse.com
-Signed-off-by: Juergen Gross <jgross@suse.com>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/20231122004219.3504219-1-samuel.holland@sifive.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/enlighten.c | 6 +++++-
- arch/x86/xen/xen-ops.h   | 2 +-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index 0337392a31214..3c61bb98c10e2 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -33,9 +33,12 @@ EXPORT_SYMBOL_GPL(hypercall_page);
-  * and xen_vcpu_setup for details. By default it points to share_info->vcpu_info
-  * but during boot it is switched to point to xen_vcpu_info.
-  * The pointer is used in xen_evtchn_do_upcall to acknowledge pending events.
-+ * Make sure that xen_vcpu_info doesn't cross a page boundary by making it
-+ * cache-line aligned (the struct is guaranteed to have a size of 64 bytes,
-+ * which matches the cache line size of 64-bit x86 processors).
-  */
- DEFINE_PER_CPU(struct vcpu_info *, xen_vcpu);
--DEFINE_PER_CPU(struct vcpu_info, xen_vcpu_info);
-+DEFINE_PER_CPU_ALIGNED(struct vcpu_info, xen_vcpu_info);
- 
- /* Linux <-> Xen vCPU id mapping */
- DEFINE_PER_CPU(uint32_t, xen_vcpu_id);
-@@ -160,6 +163,7 @@ void xen_vcpu_setup(int cpu)
- 	int err;
- 	struct vcpu_info *vcpup;
- 
-+	BUILD_BUG_ON(sizeof(*vcpup) > SMP_CACHE_BYTES);
- 	BUG_ON(HYPERVISOR_shared_info == &xen_dummy_shared_info);
- 
- 	/*
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index 408a2aa66c692..a87ab36889e76 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -21,7 +21,7 @@ extern void *xen_initial_gdt;
- struct trap_info;
- void xen_copy_trap_info(struct trap_info *traps);
- 
--DECLARE_PER_CPU(struct vcpu_info, xen_vcpu_info);
-+DECLARE_PER_CPU_ALIGNED(struct vcpu_info, xen_vcpu_info);
- DECLARE_PER_CPU(unsigned long, xen_cr3);
- DECLARE_PER_CPU(unsigned long, xen_current_cr3);
- 
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 0ef806ea18327..bbc1cf288d25f 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -656,7 +656,7 @@ axienet_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 		if (lp->features & XAE_FEATURE_FULL_TX_CSUM) {
+ 			/* Tx Full Checksum Offload Enabled */
+ 			cur_p->app0 |= 2;
+-		} else if (lp->features & XAE_FEATURE_PARTIAL_RX_CSUM) {
++		} else if (lp->features & XAE_FEATURE_PARTIAL_TX_CSUM) {
+ 			csum_start_off = skb_transport_offset(skb);
+ 			csum_index_off = csum_start_off + skb->csum_offset;
+ 			/* Tx Partial Checksum Offload Enabled */
 -- 
 2.42.0
 
