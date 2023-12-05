@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1299A8047F6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCE3804779
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B67EB1F21C05
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:44:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6861C20E3F
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C078C13;
-	Tue,  5 Dec 2023 03:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3D38C05;
+	Tue,  5 Dec 2023 03:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GU4phIkL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aNOZ1VpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F6E6FB0;
-	Tue,  5 Dec 2023 03:44:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74C64C433C7;
-	Tue,  5 Dec 2023 03:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3598BF8;
+	Tue,  5 Dec 2023 03:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83774C433C8;
+	Tue,  5 Dec 2023 03:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747855;
-	bh=5QlOjaIoWRyJ0lKNtdI45DZO/gRNgbf03+w2yCwThYY=;
+	s=korg; t=1701747544;
+	bh=4tmy0UcTiu7RhmAbr3mUxvfKPfBq46XvPtwxd5kQVFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GU4phIkLKaD+d6T+7Cn21ONDGsnUFovUIb4FtC+hrPbYkbBXOX7cjg9KN4B1A8y6g
-	 dk74Cu0mnVIJUWT/MTc+nfJhaA8dhuakoX3jK9WUDLGCFRa9QvvjO7jq4fDGo/bHRW
-	 tWCeyl4BiYWnaDmrgk78f+aax8MQIImycYHuqg9A=
+	b=aNOZ1VpJtbjFZ8vJzLXIhotgaF9oBC4jV7E4fkB03Sqdd+BLHvTjhf2VxWRER4o8m
+	 P8DYk2wl1TBRINcTYtniBXv7qeNdAI3eQabXzTYcZD6zHcYb2TIUjvC0uBXL9RDpiU
+	 vsa0qgbBUjgWh10sC3+Pjxq9ZcQ2PBx3RO6Fpn6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 24/94] ext4: factor out __es_alloc_extent() and __es_free_extent()
+Subject: [PATCH 5.10 091/135] usb: config: fix iteration issue in usb_get_bos_descriptor()
 Date: Tue,  5 Dec 2023 12:16:52 +0900
-Message-ID: <20231205031524.265497504@linuxfoundation.org>
+Message-ID: <20231205031536.356287376@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,102 +54,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit 73a2f033656be11298912201ad50615307b4477a ]
+[ Upstream commit 974bba5c118f4c2baf00de0356e3e4f7928b4cbc ]
 
-Factor out __es_alloc_extent() and __es_free_extent(), which only allocate
-and free extent_status in these two helpers.
+The BOS descriptor defines a root descriptor and is the base descriptor for
+accessing a family of related descriptors.
 
-The ext4_es_alloc_extent() function is split into __es_alloc_extent()
-and ext4_es_init_extent(). In __es_alloc_extent() we allocate memory using
-GFP_KERNEL | __GFP_NOFAIL | __GFP_ZERO if the memory allocation cannot
-fail, otherwise we use GFP_ATOMIC. and the ext4_es_init_extent() is used to
-initialize extent_status and update related variables after a successful
-allocation.
+Function 'usb_get_bos_descriptor()' encounters an iteration issue when
+skipping the 'USB_DT_DEVICE_CAPABILITY' descriptor type. This results in
+the same descriptor being read repeatedly.
 
-This is to prepare for the use of pre-allocated extent_status later.
+To address this issue, a 'goto' statement is introduced to ensure that the
+pointer and the amount read is updated correctly. This ensures that the
+function iterates to the next descriptor instead of reading the same
+descriptor repeatedly.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-4-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
+Cc: stable@vger.kernel.org
+Fixes: 3dd550a2d365 ("USB: usbcore: Fix slab-out-of-bounds bug during device reset")
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Acked-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20231115121325.471454-1-niklas.neronin@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents_status.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ drivers/usb/core/config.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 59812c5bbe1ba..dfabb15afd3dd 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -452,14 +452,17 @@ static inline bool ext4_es_must_keep(struct extent_status *es)
- 	return false;
- }
+diff --git a/drivers/usb/core/config.c b/drivers/usb/core/config.c
+index 1e40e63d301bd..2f8a1225b6976 100644
+--- a/drivers/usb/core/config.c
++++ b/drivers/usb/core/config.c
+@@ -1047,7 +1047,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
  
--static struct extent_status *
--ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
--		     ext4_fsblk_t pblk)
-+static inline struct extent_status *__es_alloc_extent(bool nofail)
-+{
-+	if (!nofail)
-+		return kmem_cache_alloc(ext4_es_cachep, GFP_ATOMIC);
-+
-+	return kmem_cache_zalloc(ext4_es_cachep, GFP_KERNEL | __GFP_NOFAIL);
-+}
-+
-+static void ext4_es_init_extent(struct inode *inode, struct extent_status *es,
-+		ext4_lblk_t lblk, ext4_lblk_t len, ext4_fsblk_t pblk)
- {
--	struct extent_status *es;
--	es = kmem_cache_alloc(ext4_es_cachep, GFP_ATOMIC);
--	if (es == NULL)
--		return NULL;
- 	es->es_lblk = lblk;
- 	es->es_len = len;
- 	es->es_pblk = pblk;
-@@ -474,8 +477,11 @@ ext4_es_alloc_extent(struct inode *inode, ext4_lblk_t lblk, ext4_lblk_t len,
- 
- 	EXT4_I(inode)->i_es_all_nr++;
- 	percpu_counter_inc(&EXT4_SB(inode->i_sb)->s_es_stats.es_stats_all_cnt);
-+}
- 
--	return es;
-+static inline void __es_free_extent(struct extent_status *es)
-+{
-+	kmem_cache_free(ext4_es_cachep, es);
- }
- 
- static void ext4_es_free_extent(struct inode *inode, struct extent_status *es)
-@@ -492,7 +498,7 @@ static void ext4_es_free_extent(struct inode *inode, struct extent_status *es)
- 					s_es_stats.es_stats_shk_cnt);
- 	}
- 
--	kmem_cache_free(ext4_es_cachep, es);
-+	__es_free_extent(es);
- }
- 
- /*
-@@ -794,10 +800,12 @@ static int __es_insert_extent(struct inode *inode, struct extent_status *newes)
+ 		if (cap->bDescriptorType != USB_DT_DEVICE_CAPABILITY) {
+ 			dev_notice(ddev, "descriptor type invalid, skip\n");
+-			continue;
++			goto skip_to_next_descriptor;
  		}
+ 
+ 		switch (cap_type) {
+@@ -1080,6 +1080,7 @@ int usb_get_bos_descriptor(struct usb_device *dev)
+ 			break;
+ 		}
+ 
++skip_to_next_descriptor:
+ 		total_len -= length;
+ 		buffer += length;
  	}
- 
--	es = ext4_es_alloc_extent(inode, newes->es_lblk, newes->es_len,
--				  newes->es_pblk);
-+	es = __es_alloc_extent(false);
- 	if (!es)
- 		return -ENOMEM;
-+	ext4_es_init_extent(inode, es, newes->es_lblk, newes->es_len,
-+			    newes->es_pblk);
-+
- 	rb_link_node(&es->rb_node, parent, p);
- 	rb_insert_color(&es->rb_node, &tree->root);
- 
 -- 
 2.42.0
 
