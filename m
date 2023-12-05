@@ -1,72 +1,65 @@
-Return-Path: <stable+bounces-4647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68AD804DB7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA55804DC3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45B31B20B9D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:23:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253C01F214C4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831313E485;
-	Tue,  5 Dec 2023 09:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E55C3F8CE;
+	Tue,  5 Dec 2023 09:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=grpleg.onmicrosoft.com header.i=@grpleg.onmicrosoft.com header.b="dv8WL+en"
+	dkim=pass (1024-bit key) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.b="W9cEHt8s"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2133.outbound.protection.outlook.com [40.107.8.133])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AB74194;
-	Tue,  5 Dec 2023 01:23:26 -0800 (PST)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2100.outbound.protection.outlook.com [40.107.236.100])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB9929B;
+	Tue,  5 Dec 2023 01:26:50 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dfEboF0+T8CDGPuESpUCXN0edPQaUbsIOEvxmvSGx3GxXorOeHV+2oc97N/PxnreuZ4tjSW8ftAqd1nvlM0TcLgOG9+sovq+APA5UtYzCPCeHeEzPGjnIQI/s9Vk1w857jjkq3JDIOUpbWPnsXyIwRi6BXmYj/OiHSd0m6W0nNek7l1qJtN0N7AfcWPaab71P6FW2eTm1/Wu4jcSfalfFd0XCBrbDzald6mSfqr2EMJUsRPkRDHu3XoD+p8/Dg58/C/TWRCoj7qPn4bOIVyuWcQmuk3wPG/8f69eR1NOIG+BBZMtPuc4cOe8nQQdXsItWv1Ti5sQJk+NqEecpBV6rQ==
+ b=hWZz6YuGiBv64Qi7qj/V04CXbY8nkYfqF3GhjpVK5zVHDlYamKLHHg5b6ALmtNgxTQq+tLPiP/+tkUrjNim1bSS6lAxOYiRg3burSTBPKg6c7s8ukSR3rvBDrsIFJ+sqz7IVz8XDxkR6A7Uq5DuItX8ebAdyGbqpFzyMAIO4DO/xt5SqUNcC8fVp8BFM5/ZxAI7avoRK99+3vATatgk7xkHg5svn1EhOkrtH4c7cuXayj7hNYIWnfjnR50pNVHnqZ/w2d5GlYfwGsz5XQh/5/jBRnQE0qnYC+0wkMXbVwZkAts7S0nvNRXTLsXqecrr7wpOa/0N1t4bWsybC1SbpHA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vqMQ8ir5jYTffo81eeZESSaHo7J1wK/lWvEeFg21PbE=;
- b=TQ8pha0oDur7i4zBN+sAbbE4Yy+2oux4N4tWy8eBLJifAXMuqUHdCjcZoi/8EibtycY1DTlakyMqEAlBD1qbSaTK1hNh+KzGnAEvCOBzNSkyoREh+zmS9hmj+DvyiYtDxkzNNtkw391Nobqq8HFy4KgLiHyIDk2Vlcd1i4Lr4Vo8DKRMbP7stVhnuUCvY/WO8IFT1TYCFXoTwC0L+WriX7SLn3kUWgewgExoq/2MKTxtBxwHup5FXefoIXB3Tkjuhba52m/tmdK1D6mr1600voGioIgalQ4DLHE0B8JBOSDgUyjFydqxGRWh1/r6Bzn/vWsXFnGGQeb7VPY3H18mFw==
+ bh=hh/c4zDWCo2LFkRQjLlHRBGyKUIDFJSOkBUwQRI079k=;
+ b=h2gRzDjoPdTi7gN7oohtxyRl/6AvUF2S/S17OUaQXId970UGWMPR8rT3VWqS0vpn9+kIJ4fqn2K+nhp55wg4kC0lbzgxSyrw/R01eu6P7qV0P+niIGER+EaoZms8vJfRuxwpTXszTo8onlmZv2NxPIreeUnbWXAWfMMs+zsfuHcRyZUr935WuPqNWtZ9B/dPQHcjstnU7OTDPbX53zpUfaeYbqmKINUMFCBUCkLJJnLFwbJuXS01YJpZjLoWAWLZZcAiyCejXECNx6Rsha9sLTeGxC6LrO9+Lkm8/DtrjfokOh9QJGGwtwyBKC+oU5vdjw/sNYPIZ6wPo/l+rzkF8Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=raritan.com; dmarc=pass action=none header.from=raritan.com;
- dkim=pass header.d=raritan.com; arc=none
+ smtp.mailfrom=corigine.com; dmarc=pass action=none header.from=corigine.com;
+ dkim=pass header.d=corigine.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=grpleg.onmicrosoft.com; s=selector1-grpleg-onmicrosoft-com;
+ d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vqMQ8ir5jYTffo81eeZESSaHo7J1wK/lWvEeFg21PbE=;
- b=dv8WL+enYeBHmI/4QmFR9YAIhR6bRJU8GQLatHG2iYRHjfd+wr/gdqocTJCvXf6XPPXXJbkzs1JzG70BtMAQYgnFSR/qLhti/jvEOmhjXBIdQOxJeB+O3Ztc+oi2twGimgYPu0ygdBDbpAAv7vzx3RW6GGY4FdgwGyT8q+F1iGY=
+ bh=hh/c4zDWCo2LFkRQjLlHRBGyKUIDFJSOkBUwQRI079k=;
+ b=W9cEHt8s64n4tV0EeI9jutJYn4d5TfKufc7XdGcDoXCbfErER7PSo2HMqBMxde8JT423COjGN5B1tix8sdJ8+pRkws2x8hCFuBVRodOIdC6eeUScCqqhb57NrN/+sV6PDnPorEetpoDIs43wpd+NOVFy+IECVjRMPy4UfpGTsSE=
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=raritan.com;
-Received: from DB8PR06MB6539.eurprd06.prod.outlook.com (2603:10a6:10:12f::23)
- by AM9PR06MB8036.eurprd06.prod.outlook.com (2603:10a6:20b:3a3::12) with
+ header.d=none;dmarc=none action=none header.from=corigine.com;
+Received: from BL0PR13MB4403.namprd13.prod.outlook.com (2603:10b6:208:1c4::8)
+ by BY3PR13MB4772.namprd13.prod.outlook.com (2603:10b6:a03:36b::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Tue, 5 Dec
- 2023 09:23:23 +0000
-Received: from DB8PR06MB6539.eurprd06.prod.outlook.com
- ([fe80::98dd:e9db:b7d8:9001]) by DB8PR06MB6539.eurprd06.prod.outlook.com
- ([fe80::98dd:e9db:b7d8:9001%3]) with mapi id 15.20.7046.028; Tue, 5 Dec 2023
- 09:23:21 +0000
-Message-ID: <011847b9-fa03-4361-837b-155d58bf0729@raritan.com>
-Date: Tue, 5 Dec 2023 10:23:19 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: atmel: Prevent spi transfers from being killed
-Content-Language: en-US
-To: Miquel Raynal <miquel.raynal@bootlin.com>, Mark Brown
- <broonie@kernel.org>, linux-spi@vger.kernel.org
-Cc: Richard Weinberger <richard@nod.at>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Ryan Wanner <ryan.wanner@microchip.com>,
- David Laight <David.Laight@ACULAB.COM>,
- Nicolas Ferre <nicolas.ferre@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20231205083102.16946-1-miquel.raynal@bootlin.com>
-From: Ronald Wahl <ronald.wahl@raritan.com>
-In-Reply-To: <20231205083102.16946-1-miquel.raynal@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: FR0P281CA0256.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::9) To DB8PR06MB6539.eurprd06.prod.outlook.com
- (2603:10a6:10:12f::23)
+ 2023 09:26:47 +0000
+Received: from BL0PR13MB4403.namprd13.prod.outlook.com
+ ([fe80::d3c0:fa39:cb9e:a536]) by BL0PR13MB4403.namprd13.prod.outlook.com
+ ([fe80::d3c0:fa39:cb9e:a536%7]) with mapi id 15.20.7046.034; Tue, 5 Dec 2023
+ 09:26:47 +0000
+From: Louis Peens <louis.peens@corigine.com>
+To: David Miller <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Hui Zhou <hui.zhou@corigine.com>,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	oss-drivers@corigine.com
+Subject: [PATCH net] nfp: flower: fix for take a mutex lock in soft irq context and rcu lock
+Date: Tue,  5 Dec 2023 11:26:25 +0200
+Message-Id: <20231205092625.18197-1-louis.peens@corigine.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: JN2P275CA0048.ZAFP275.PROD.OUTLOOK.COM (2603:1086:0:2::36)
+ To BL0PR13MB4403.namprd13.prod.outlook.com (2603:10b6:208:1c4::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,150 +67,295 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB8PR06MB6539:EE_|AM9PR06MB8036:EE_
-X-MS-Office365-Filtering-Correlation-Id: b95e514a-1f82-4c0b-56dd-08dbf573d2d9
+X-MS-TrafficTypeDiagnostic: BL0PR13MB4403:EE_|BY3PR13MB4772:EE_
+X-MS-Office365-Filtering-Correlation-Id: f457f86a-c0e4-4c40-0d14-08dbf5744dad
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	od7VrpUTWFTgqCFFxst2I185iRxzP7NWM8Ur+zJJF/VEnQuH9t3GYuTfZOHcnZ50+dpx95HF8GzBwMz3H+4+6SaoxRaqPQSSb5GyHpAsCnfqMWk8axpWkd9pYa33BjWGYHz6zjdaPfkSsQ2DxVNDOS9jY6nYgEQYKYSEWWhvtwk0TG8/iqX7Y/wvS3LWHFYr42lWdSBAbcMXRilP351oonJIPqCyH/8LCTs7uV1K6QH4tTNVubpeihwJpiRHJVCJOY0Pem7WAeSGUTBZz4/xcYpmwMYhrVthqgXfyeh/NLwgp8f+ag0n1GG7TX0Gy1v8kRntH/Ou2K1DLLs0XGq7rHkilOnn53MfPHsmszJe+SpZh5+K1wcorX21q6h1Zha3lxQSmsfoj0ZUPCIXJf4NwRjGLSIjIXN3SX9EIlhSkSTVkUlz6dEld8IExALP+gyMasqAlm3BKLUib4hboVhc1b3HdzRyv8z8n98o/lknmrOdSFmlx0uz1mJYLX+AIFIJhy9Qg1f87O5SuH4d48gI6lKTb5w6PkbXQZarHIg+vaX/V/nPCz+M+iTNjlOx+Q5wTfeaoVJG90Tq79DtXPsAs2zmQVTxNkLWa1+ujEzbd6UYvQnHVq9Sk2G/T87Vh1sx
+	eX7HbOmnVsGLl/r3CX8G2xCCzhB1adoAI1955vrbKWje+aWs4GVKEU+FM+xE+E+yjVblDwyQcAP80RagmYPd1N5q7o60Ubm48gMHD0xwkqCF2KOTd0Ncrb1adq6OT9hxb28v1LjC26WX0k8ezGOF/TAemKv9xAbU6kU+CulpnclA2PL9K3+ADx60NwmY7R/ZuDzhNgfJTL48qxGEbcH45WFQgQuEp27M99SvVhR7JBL7IEQbGnnvzfM2h5oXk1nkBArYNpG2vmWCt+odvWLRU5u1B6ruBg9xUQcX81ph9N8C6S/Gf60EmjYo2Ggz49qVLjSzB01kHmi6Xu7UOkGMtzMCB8W6sTjZ3bK/zCDf6NI3JKGgc0VwpPmLS/yuK1I7pLiJKMgupxf1G2Wxa9IpHtSw7IXOObR7kMTWY1jh0vqrpnOkuJplmKXPmxP7RY/weLrKros3iB+bOIPz4Hb2bETYpuCoP15PxGTtAoynsSotE1mDS3roN/QduKY+gLNHeYELR/1x/oRaQvES8g+jjwQInLRxOYaj2cjpemo9/ip/MQpFK3bqoVtpfyMG8Os85PsDage2GgWhvW5l0IFf14JHZyAq+ueuUt+KsfdzPn7QhGaExMct7Y5SP6R9KJtaSCY+arZCzN+C9miBwoXafZbp71E2X1yjtp6Ej4xiytE=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR06MB6539.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(396003)(346002)(136003)(366004)(39860400002)(230922051799003)(451199024)(64100799003)(1800799012)(186009)(6512007)(26005)(38100700002)(83380400001)(66574015)(31686004)(6506007)(2616005)(53546011)(6486002)(478600001)(966005)(66946007)(66556008)(66476007)(54906003)(110136005)(316002)(8676002)(8936002)(4326008)(2906002)(41300700001)(36756003)(44832011)(86362001)(31696002)(7416002)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR13MB4403.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(396003)(366004)(39840400004)(136003)(230922051799003)(1800799012)(186009)(64100799003)(451199024)(107886003)(1076003)(2616005)(4326008)(8936002)(8676002)(6512007)(6506007)(55236004)(52116002)(83380400001)(26005)(6486002)(478600001)(6666004)(66556008)(66946007)(110136005)(66476007)(38100700002)(316002)(2906002)(38350700005)(41300700001)(36756003)(44832011)(86362001)(5660300002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aG1qYU5uQXV3dnlTSmNZWXZNRlJuQm10NTZGNlQ1alFZZ0p1NGNiejFYdEo5?=
- =?utf-8?B?VTArdmI2NXBJQ1VjLzlhclpsb0szWFFFbG1hNXA3eFVKQm0ycXpJVGtZVW8w?=
- =?utf-8?B?bmw4RlhYd0xpM2pzbEV2UFNWRmdLejdRMmIvRUxKa1dZaW1xL01WcVluM2VM?=
- =?utf-8?B?dE90amJ2WSsyc1VRSzBGd0dId3grQzkyM1IyY0hGbFh5Z20yOFp6aTV0eldI?=
- =?utf-8?B?YlF6cUx5azNmMzM3cTIrZEFXRmpXV1ZTNHZnYVc4cHMxMmE1N0w0emZ5QWlD?=
- =?utf-8?B?dTBPS2pWOWx6R2VKbzUzTEpqL2UxOEN6YVVPaWFHMktoUWZOOHVoQjRQMVdE?=
- =?utf-8?B?Q0tOcDlybTFkeVNLb3RmS3d4dEkvZG5meWZBYkNqYjloY1ZwUXBYZHdOUGRH?=
- =?utf-8?B?MG5VYTdkdys3NWhFMUhyUSsyOTBTYW9JbXRmTGh3K0gyNm1UNElPRjM3OHFJ?=
- =?utf-8?B?L0tFKzBrYng4S2R4NHpqYlg1Y0VzUWxwWGs3aEp2RGVTOG1tL0RmN09yY1gx?=
- =?utf-8?B?ZTdESVkwVEZvT2dVUnBhaFhmR2twRmRCSGdBcW1GTTQvUlRSVmRiKzZKT1pn?=
- =?utf-8?B?eW1sUzVZM3NuQXo3Z1ZiUHNDWWR0QTZMSGJndnkrQVBMQ0NTaEJvUFJtZzNJ?=
- =?utf-8?B?QkR4TGFOamRRS3NUS2dvZ0NYS0hnK2RDdDAxZEplcFhQWHZDVml2eHZFWTVk?=
- =?utf-8?B?aDhOOHMxS2xlVU9CVWREa1k0dVJkbmk0MnZDc2djSTBWUDFWWnBMMnlQbnNa?=
- =?utf-8?B?SFFUbklwV3RFdDIwMWkzQWlFT3dhb2VhejdvY1lqWmY5YXVTODJ4U1F1N3JO?=
- =?utf-8?B?QW1PRHJrbXBCQjM3WEFoc2hKS2pUNVIrZWV1dVBZcitqSHc3c21KUFMwR3hj?=
- =?utf-8?B?eDdtdE81M2xoK0c3VlNXZDRINFFsUEhVUkNyMDJ3VmQ5YTZMeld4Z0QrZXRV?=
- =?utf-8?B?NzRRWWR5dGJYK3c0clV1TUI2YlNWWEZZQWFONlJkenFhSE1vQ2t5cm9KM1VV?=
- =?utf-8?B?Qld2Q29JdEN3YjU1QWJZWDloTWZnSEdtbE8rR0VJckk4MzhFbE5lbzJqdDhw?=
- =?utf-8?B?ckYwaW1RZGNJenM3blB6NEp5UE1INTBleGxPREt3eThVWng5R3dzVnJTekV6?=
- =?utf-8?B?Vjl5ZldYUmFHQzB3Q2xWRWt5Y29BV2N5RHNCbG5reDBCVE9IM1FnVWVoWlBs?=
- =?utf-8?B?TmkyY3kxb2lEekhtcHExbnh2bm9JMnFMT2xFbjNUcHR3bENNS2N0R2dGby9s?=
- =?utf-8?B?V2pmR3hqV0c0VjE5OEtLYmtyUlFDelhGaHR2U3YvY2V3NUlSSERJdkZ0OHE3?=
- =?utf-8?B?L1ZVeWljTUxJREsvQWl0SThuV005bGFmQTEvOFFtN0l1a3hDZ0thVDRiVFdy?=
- =?utf-8?B?cnZFdmRhZ1BPKy9aRm94N05uRWJHaENrUnV1UldpWFlCWTdBd09QZG42MWJR?=
- =?utf-8?B?VmpCS2tsRURzK2lUdXhRTmZ2aWRGR1QvOEhaT2F6bW5BbkxhejZrSFVwN1Zv?=
- =?utf-8?B?d2N5Mmg3STlBdzg1RjRFOVQ2RnVYdThzNlJwVmxTTHpGSXV2R21lYWtmb0Jq?=
- =?utf-8?B?cVVHVzVmT2Zhb05EaWZ0R2ttSWI1aTI4UlR0cU1BVU9GMno5MDQ2MUlvMytm?=
- =?utf-8?B?ZGRzeEZwTEgxRm5zT05XNFNHTEtSQUgvcTlHMGRzb1NwUDRWSEwwUnFOa2Zj?=
- =?utf-8?B?RmlVWWJHbTJGdmJZQVl5RndXQ3hQcTd0Wm05bU1IZXZCYXhOVzlPaXZYTFYx?=
- =?utf-8?B?QXh5OWtkN0RYVnRHdUlyV1lYR3hqQng4Q2dHT1hTb0M2OXBweUZpOWlVeGZa?=
- =?utf-8?B?TGVNZHhEamhjaTUrMWpEV1VqVncrM0JDUFFjY0VHd2dpeFJNMGpQTmRDSFVz?=
- =?utf-8?B?QTErcDk4enlnMEhWWnB2Y1FMdkdVRWdMMm1WUGpFai85UkV0ZjBXdHEvdTRt?=
- =?utf-8?B?SVVqVG8vaFBQTWZxVW1LZkdvdmVhYnMrRjhlcEMxbkltOEtocm9LVXdqRHQ2?=
- =?utf-8?B?ZytFWlVyUE84Sno2MUljSk4vTmhqbVQwY3BobzRRTDdwYUQ5aHBKMUVxcFJi?=
- =?utf-8?B?L2FNeXI2a0taelo5ak5iOXVPVlJWYmtFVk5NL0NValE5b0RVUzNodTg5RFVa?=
- =?utf-8?B?bkJvN3FpOUd1b29LMXZCaEVMc3VROTV4YzFvcDErQzFmd3VjMVVEZ3V1N3lt?=
- =?utf-8?B?OEE9PQ==?=
-X-OriginatorOrg: raritan.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b95e514a-1f82-4c0b-56dd-08dbf573d2d9
-X-MS-Exchange-CrossTenant-AuthSource: DB8PR06MB6539.eurprd06.prod.outlook.com
+	=?us-ascii?Q?+nsUz3TURydUS1Wzs4LB7h70XTs9GMUDtGKz3JTkT5Qw5pcX4AHZkvYoYuH6?=
+ =?us-ascii?Q?eDA5csj7JNPHGN/+i0HljVG663we6yVuvcMyekLXakqGR25KWNWU5AXlt7EM?=
+ =?us-ascii?Q?GBV++tgDOygeNY4KPdSiQjRm/00ZI8reM7eM5fqmLIHeouMqe5V3pVZPx6Cw?=
+ =?us-ascii?Q?L6EGUi/nfXzmKtzf6vjYoAHXQgd8E/AMHlbek3NBj8J/e5QLB+kX/IluNgup?=
+ =?us-ascii?Q?wvzbXthYq0/j50GwNXC9PmsugP60COrTsn0sB7gUvzorcOMdHMR58uUDAqCB?=
+ =?us-ascii?Q?v17DUdvfZmjzACM9TmLmqYrC8j7GXWBXXePYzX+32NBb3B8n/NOsK8cdZEmu?=
+ =?us-ascii?Q?KbyBPllfEhaDd/SqjvQ0EJSZHGMdm2nJgVXqmJKh8vliYCE4XmXkL/XY4Jtz?=
+ =?us-ascii?Q?xd+RtL6uZwaL2aqVcY+AIG9oxxcBK6NUIWNK3PbY2HsCCYx4JxlJ7jDAVmDr?=
+ =?us-ascii?Q?Wg6FzfkeK3AuJesuikse+sG2giLrL/En4EVVGCQzyOREHUHcP0wMN0RKOcFa?=
+ =?us-ascii?Q?a/G8HtwjILX20T7yRwOGx26orUGifopqJznn3SMg7DH0JN7dNmbij/MhPaCw?=
+ =?us-ascii?Q?F1XTaREE0PonlimPcrO0F80/kkwTXEmHwyDlttGR0KfUuMRqMTupzjfXesm5?=
+ =?us-ascii?Q?oUsVZmLdLmCCK/uj7UZFwcQp15JHzja6ATpYQHuu8NQG3qhH3W9TFSS6Ysl3?=
+ =?us-ascii?Q?D/eCoNapzgtMWH4qRwxi+hVBaAV5jMF4FiyEUAJvVa7Qj6CRpNMLj09nbjOM?=
+ =?us-ascii?Q?Kso1Wez+tmq3pheHpfNMF7fg5CtSdh08D9gPqfrWKlsFTQhYMv1VoGCHvfDn?=
+ =?us-ascii?Q?Y6cF3OngjGJ+cZ2dFscbg+pqPm1e9deRFEP0Vy06/iJHfOPigbJottYoAOem?=
+ =?us-ascii?Q?cIlHFfcGd9ZzQDFFsinYYiJGFcANyQqHonCdqOUmkgRHnQ8RiCycs21TJr8S?=
+ =?us-ascii?Q?xH5XbADPEZcGDFcKy7PwU5qF6my1gZzavqQ5MjIjBFvbPO02nWoW1QJsqwiF?=
+ =?us-ascii?Q?8LwkfsLAcTw5W7CtkwQuAC1+iUVJbrbv7+U6RY/gVy+dr0JsA3ad2lDkZm0e?=
+ =?us-ascii?Q?DC3lvpWDTFYn3JJZBOv1DDtZW2L2TLOadISiNdI7pUs6pxfp0rPdXiFTTF0k?=
+ =?us-ascii?Q?NHZrj2q8O2zfJUIRfS6/97wMVHJReJ3L7Lltxdvttpvz3Vq/qwRy9Adti7nc?=
+ =?us-ascii?Q?SYxQFoi32A6+6SH39LTdSUFm06+NYJ2maN9aqH2yWfmAGHOXVtQGAteLaUB/?=
+ =?us-ascii?Q?+vnwHZ1gpa2hz//Y57Hn86YlxTeHsCHOV1YsscsdUfy8T3QikJz6xPRECDQL?=
+ =?us-ascii?Q?gOOD86sIHhZaNkQm235cwa5oAUFbmde8APYEI2I5qsWV31vj+LndHohrPox/?=
+ =?us-ascii?Q?R/bbf6uShtKeMid4S1RydfVBAprZEF6KJHcixanVHUCQduvLDsz8L4isXlof?=
+ =?us-ascii?Q?HxKm54NtUS27DAbrgln6YzrJJEE7H2nOFE4kUG/Lf2PmdkzbrRlXQWZgrWXq?=
+ =?us-ascii?Q?cS2VItWEkKWtVgZCsNl5m6XdktdVOXaW10doq1LVVCUQLi+ubXCdjtTj5s2J?=
+ =?us-ascii?Q?sRqhunxcU7prPyWyICvFmpS0uDxurBGGFIYxfZjXkXPg5zvzuGFaw24VIhUO?=
+ =?us-ascii?Q?9w=3D=3D?=
+X-OriginatorOrg: corigine.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f457f86a-c0e4-4c40-0d14-08dbf5744dad
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR13MB4403.namprd13.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 09:23:21.4135
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 09:26:47.2468
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 199686b5-bef4-4960-8786-7a6b1888fee3
+X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DL5W/+GT7u+DmNbPPlwrfH263+Qn+CFQvrzLnx/P78l9mdsfLqRRI/rV0UELMYEHJl5GDmsS7jPMB6NuomGqnw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR06MB8036
+X-MS-Exchange-CrossTenant-UserPrincipalName: CS6ZoT69jF4u4GgC+I6BactgzETynjdMCI0olrwWPa4LhUMcDG5yohKmPo8xxeNeJdDVykdv90eb+RrIHagzWgwQJ/btFzfz7kyb2ktfnDM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY3PR13MB4772
 
-On 05.12.23 09:31, Miquel Raynal wrote:
-> Upstream commit e0205d6203c2 ("spi: atmel: Prevent false timeouts on
-> long transfers") has tried to mitigate the problem of getting spi
-> transfers canceled because they were lasting too long. On slow buses,
-> transfers in the MiB range can take more than one second and thus a
-> calculation was added to progressively increment the timeout value. In
-> order to not be too problematic from a user point of view (waiting dozen
-> of seconds or even minutes), the wait call was turned interruptible.
->
-> Turning the wait interruptible was a mistake as what we really wanted to
-> do was to be able to kill a transfer. Any signal interrupting our
-> transfer would not be suitable at all so a second attempt was made at
-> turning the wait killable instead.
->
-> Link: https://lore.kernel.org/linux-spi/20231127095842.389631-1-miquel.ra=
-ynal@bootlin.com/
->
-> All being well, it was reported that JFFS2 was showing a splat when
-> interrupting a transfer. After some more debate about whether JFFS2
-> should be fixed and how, it was also pointed out that the whole
-> consistency of the filesystem in case of parallel I/O would be
-> compromised. Changing JFFS2 behavior would in theory be possible but
-> nobody has the energy and time and knowledge to do this now, so better
-> prevent spi transfers to be interrupted by the user.
->
-> Partially revert the blamed commit to no longer use the interruptible
-> nor the killable variant of wait_for_completion().
->
-> Fixes: e0205d6203c2 ("spi: atmel: Prevent false timeouts on long transfer=
-s")
-> Cc: stable@vger.kernel.org
+From: Hui Zhou <hui.zhou@corigine.com>
 
-Tested-by: Ronald Wahl <ronald.wahl@raritan.com>
+The neighbour event callback call the function nfp_tun_write_neigh,
+this function will take a mutex lock and it is in soft irq context,
+change the work queue to process the neighbour event.
 
-> Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-> ---
->   drivers/spi/spi-atmel.c | 10 ++++------
->   1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/spi/spi-atmel.c b/drivers/spi/spi-atmel.c
-> index 0197c25f5029..54277de30161 100644
-> --- a/drivers/spi/spi-atmel.c
-> +++ b/drivers/spi/spi-atmel.c
-> @@ -1333,12 +1333,10 @@ static int atmel_spi_one_transfer(struct spi_cont=
-roller *host,
->               }
->
->               dma_timeout =3D msecs_to_jiffies(spi_controller_xfer_timeou=
-t(host, xfer));
-> -             ret_timeout =3D wait_for_completion_killable_timeout(&as->x=
-fer_completion,
-> -                                                                dma_time=
-out);
-> -             if (ret_timeout <=3D 0) {
-> -                     dev_err(&spi->dev, "spi transfer %s\n",
-> -                             !ret_timeout ? "timeout" : "canceled");
-> -                     as->done_status =3D ret_timeout < 0 ? ret_timeout :=
- -EIO;
-> +             ret_timeout =3D wait_for_completion_timeout(&as->xfer_compl=
-etion, dma_timeout);
-> +             if (!ret_timeout) {
-> +                     dev_err(&spi->dev, "spi transfer timeout\n");
-> +                     as->done_status =3D -EIO;
->               }
->
->               if (as->done_status)
+Move the nfp_tun_write_neigh function out of range rcu_read_lock/unlock()
+in function nfp_tunnel_request_route_v4 and nfp_tunnel_request_route_v6.
 
+Fixes: abc210952af7 ("nfp: flower: tunnel neigh support bond offload")
+CC: stable@vger.kernel.org # 6.2+
+Signed-off-by: Hui Zhou <hui.zhou@corigine.com>
+Signed-off-by: Louis Peens <louis.peens@corigine.com>
+---
+ .../netronome/nfp/flower/tunnel_conf.c        | 127 +++++++++++++-----
+ 1 file changed, 95 insertions(+), 32 deletions(-)
 
-________________________________
+diff --git a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+index 060a77f2265d..e522845c7c21 100644
+--- a/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
++++ b/drivers/net/ethernet/netronome/nfp/flower/tunnel_conf.c
+@@ -160,6 +160,18 @@ struct nfp_tun_mac_addr_offload {
+ 	u8 addr[ETH_ALEN];
+ };
+ 
++/**
++ * struct nfp_neigh_update_work - update neighbour information to nfp
++ * @work:	Work queue for writing neigh to the nfp
++ * @n:		neighbour entry
++ * @app:	Back pointer to app
++ */
++struct nfp_neigh_update_work {
++	struct work_struct work;
++	struct neighbour *n;
++	struct nfp_app *app;
++};
++
+ enum nfp_flower_mac_offload_cmd {
+ 	NFP_TUNNEL_MAC_OFFLOAD_ADD =		0,
+ 	NFP_TUNNEL_MAC_OFFLOAD_DEL =		1,
+@@ -607,38 +619,30 @@ nfp_tun_write_neigh(struct net_device *netdev, struct nfp_app *app,
+ 	nfp_flower_cmsg_warn(app, "Neighbour configuration failed.\n");
+ }
+ 
+-static int
+-nfp_tun_neigh_event_handler(struct notifier_block *nb, unsigned long event,
+-			    void *ptr)
++static void
++nfp_tun_release_neigh_update_work(struct nfp_neigh_update_work *update_work)
+ {
+-	struct nfp_flower_priv *app_priv;
+-	struct netevent_redirect *redir;
+-	struct neighbour *n;
++	neigh_release(update_work->n);
++	kfree(update_work);
++}
++
++static void nfp_tun_neigh_update(struct work_struct *work)
++{
++	struct nfp_neigh_update_work *update_work;
+ 	struct nfp_app *app;
++	struct neighbour *n;
+ 	bool neigh_invalid;
+ 	int err;
+ 
+-	switch (event) {
+-	case NETEVENT_REDIRECT:
+-		redir = (struct netevent_redirect *)ptr;
+-		n = redir->neigh;
+-		break;
+-	case NETEVENT_NEIGH_UPDATE:
+-		n = (struct neighbour *)ptr;
+-		break;
+-	default:
+-		return NOTIFY_DONE;
+-	}
+-
+-	neigh_invalid = !(n->nud_state & NUD_VALID) || n->dead;
+-
+-	app_priv = container_of(nb, struct nfp_flower_priv, tun.neigh_nb);
+-	app = app_priv->app;
++	update_work = container_of(work, struct nfp_neigh_update_work, work);
++	app = update_work->app;
++	n = update_work->n;
+ 
+ 	if (!nfp_flower_get_port_id_from_netdev(app, n->dev))
+-		return NOTIFY_DONE;
++		goto out;
+ 
+ #if IS_ENABLED(CONFIG_INET)
++	neigh_invalid = !(n->nud_state & NUD_VALID) || n->dead;
+ 	if (n->tbl->family == AF_INET6) {
+ #if IS_ENABLED(CONFIG_IPV6)
+ 		struct flowi6 flow6 = {};
+@@ -655,13 +659,11 @@ nfp_tun_neigh_event_handler(struct notifier_block *nb, unsigned long event,
+ 			dst = ip6_dst_lookup_flow(dev_net(n->dev), NULL,
+ 						  &flow6, NULL);
+ 			if (IS_ERR(dst))
+-				return NOTIFY_DONE;
++				goto out;
+ 
+ 			dst_release(dst);
+ 		}
+ 		nfp_tun_write_neigh(n->dev, app, &flow6, n, true, false);
+-#else
+-		return NOTIFY_DONE;
+ #endif /* CONFIG_IPV6 */
+ 	} else {
+ 		struct flowi4 flow4 = {};
+@@ -678,17 +680,71 @@ nfp_tun_neigh_event_handler(struct notifier_block *nb, unsigned long event,
+ 			rt = ip_route_output_key(dev_net(n->dev), &flow4);
+ 			err = PTR_ERR_OR_ZERO(rt);
+ 			if (err)
+-				return NOTIFY_DONE;
++				goto out;
+ 
+ 			ip_rt_put(rt);
+ 		}
+ 		nfp_tun_write_neigh(n->dev, app, &flow4, n, false, false);
+ 	}
+-#else
+-	return NOTIFY_DONE;
+ #endif /* CONFIG_INET */
++out:
++	nfp_tun_release_neigh_update_work(update_work);
++}
+ 
+-	return NOTIFY_OK;
++static struct nfp_neigh_update_work *
++nfp_tun_alloc_neigh_update_work(struct nfp_app *app, struct neighbour *n)
++{
++	struct nfp_neigh_update_work *update_work;
++
++	update_work = kzalloc(sizeof(*update_work), GFP_ATOMIC);
++	if (!update_work)
++		return NULL;
++
++	INIT_WORK(&update_work->work, nfp_tun_neigh_update);
++	neigh_hold(n);
++	update_work->n = n;
++	update_work->app = app;
++
++	return update_work;
++}
++
++static int
++nfp_tun_neigh_event_handler(struct notifier_block *nb, unsigned long event,
++			    void *ptr)
++{
++	struct nfp_neigh_update_work *update_work;
++	struct nfp_flower_priv *app_priv;
++	struct netevent_redirect *redir;
++	struct neighbour *n;
++	struct nfp_app *app;
++
++	switch (event) {
++	case NETEVENT_REDIRECT:
++		redir = (struct netevent_redirect *)ptr;
++		n = redir->neigh;
++		break;
++	case NETEVENT_NEIGH_UPDATE:
++		n = (struct neighbour *)ptr;
++		break;
++	default:
++		return NOTIFY_DONE;
++	}
++#if IS_ENABLED(CONFIG_IPV6)
++	if (n->tbl != ipv6_stub->nd_tbl && n->tbl != &arp_tbl)
++#else
++	if (n->tbl != &arp_tbl)
++#endif
++		return NOTIFY_DONE;
++
++	app_priv = container_of(nb, struct nfp_flower_priv, tun.neigh_nb);
++	app = app_priv->app;
++	update_work = nfp_tun_alloc_neigh_update_work(app, n);
++	if (!update_work)
++		return NOTIFY_DONE;
++
++	queue_work(system_highpri_wq, &update_work->work);
++
++	return NOTIFY_DONE;
+ }
+ 
+ void nfp_tunnel_request_route_v4(struct nfp_app *app, struct sk_buff *skb)
+@@ -706,6 +762,7 @@ void nfp_tunnel_request_route_v4(struct nfp_app *app, struct sk_buff *skb)
+ 	netdev = nfp_app_dev_get(app, be32_to_cpu(payload->ingress_port), NULL);
+ 	if (!netdev)
+ 		goto fail_rcu_unlock;
++	dev_hold(netdev);
+ 
+ 	flow.daddr = payload->ipv4_addr;
+ 	flow.flowi4_proto = IPPROTO_UDP;
+@@ -725,13 +782,16 @@ void nfp_tunnel_request_route_v4(struct nfp_app *app, struct sk_buff *skb)
+ 	ip_rt_put(rt);
+ 	if (!n)
+ 		goto fail_rcu_unlock;
++	rcu_read_unlock();
++
+ 	nfp_tun_write_neigh(n->dev, app, &flow, n, false, true);
+ 	neigh_release(n);
+-	rcu_read_unlock();
++	dev_put(netdev);
+ 	return;
+ 
+ fail_rcu_unlock:
+ 	rcu_read_unlock();
++	dev_put(netdev);
+ 	nfp_flower_cmsg_warn(app, "Requested route not found.\n");
+ }
+ 
+@@ -749,6 +809,7 @@ void nfp_tunnel_request_route_v6(struct nfp_app *app, struct sk_buff *skb)
+ 	netdev = nfp_app_dev_get(app, be32_to_cpu(payload->ingress_port), NULL);
+ 	if (!netdev)
+ 		goto fail_rcu_unlock;
++	dev_hold(netdev);
+ 
+ 	flow.daddr = payload->ipv6_addr;
+ 	flow.flowi6_proto = IPPROTO_UDP;
+@@ -766,14 +827,16 @@ void nfp_tunnel_request_route_v6(struct nfp_app *app, struct sk_buff *skb)
+ 	dst_release(dst);
+ 	if (!n)
+ 		goto fail_rcu_unlock;
++	rcu_read_unlock();
+ 
+ 	nfp_tun_write_neigh(n->dev, app, &flow, n, true, true);
+ 	neigh_release(n);
+-	rcu_read_unlock();
++	dev_put(netdev);
+ 	return;
+ 
+ fail_rcu_unlock:
+ 	rcu_read_unlock();
++	dev_put(netdev);
+ 	nfp_flower_cmsg_warn(app, "Requested IPv6 route not found.\n");
+ }
+ 
+-- 
+2.34.1
 
-Ce message, ainsi que tous les fichiers joints =C3=A0 ce message, peuvent c=
-ontenir des informations sensibles et/ ou confidentielles ne devant pas =C3=
-=AAtre divulgu=C3=A9es. Si vous n'=C3=AAtes pas le destinataire de ce messa=
-ge (ou que vous recevez ce message par erreur), nous vous remercions de le =
-notifier imm=C3=A9diatement =C3=A0 son exp=C3=A9diteur, et de d=C3=A9truire=
- ce message. Toute copie, divulgation, modification, utilisation ou diffusi=
-on, non autoris=C3=A9e, directe ou indirecte, de tout ou partie de ce messa=
-ge, est strictement interdite.
-
-
-This e-mail, and any document attached hereby, may contain confidential and=
-/or privileged information. If you are not the intended recipient (or have =
-received this e-mail in error) please notify the sender immediately and des=
-troy this e-mail. Any unauthorized, direct or indirect, copying, disclosure=
-, distribution or other use of the material or parts thereof is strictly fo=
-rbidden.
 
