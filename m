@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B48258047E1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB67804833
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61861C20E87
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 173691C20EAC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9D08BF7;
-	Tue,  5 Dec 2023 03:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA178C05;
+	Tue,  5 Dec 2023 03:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhXx86YM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN8eFlB/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF2926AC2;
-	Tue,  5 Dec 2023 03:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5041DC433C8;
-	Tue,  5 Dec 2023 03:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2045C6FB0;
+	Tue,  5 Dec 2023 03:46:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C18C433C8;
+	Tue,  5 Dec 2023 03:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747802;
-	bh=xxJm6GRlvIndVHZGL8uOcLFs8NuUk1BsSTHwI4RcWn4=;
+	s=korg; t=1701748019;
+	bh=826GaVaP7pk/OUogj7AFHZxdGzsS9bSSg+7q8f0cr0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UhXx86YMKhaB2B+mdNDINRZ9c+2aeRDVqHOlRRs0/KXkkAS90NjLHCdium7zsymBJ
-	 GgLKXkg9GlvpcD6eRHr5Q0dkU3q5Da+lVMAVDgfmO3Rqt0SeBXWL2BTuSwskcD3TUy
-	 YyNCek8ayp4OvczPZXLt6w/wDoi57I3Szwj14Zs8=
+	b=TN8eFlB/Juaod3njpg8fs1zjzv7vlUWl26fZBn5kugkuWN6pmhwnQ/5y4NhhrcQtf
+	 ZTz7HBrGRiSe/wu0wMm7nxndhr39Z15POVLgOA8VU9KMH3OvCtF3nZT3NVBzEgJshX
+	 vDrFubUP5D3UQQhRjFUoeMaegwqPokPQuo0YdsII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenchao Chen <wenchao.chen@unisoc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Eric Snowberg <eric.snowberg@oracle.com>,
+	Raul E Rangel <rrangel@chromium.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 65/67] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled
-Date: Tue,  5 Dec 2023 12:17:50 +0900
-Message-ID: <20231205031523.619176518@linuxfoundation.org>
+Subject: [PATCH 5.4 83/94] ima: detect changes to the backing overlay file
+Date: Tue,  5 Dec 2023 12:17:51 +0900
+Message-ID: <20231205031527.437612919@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,95 +55,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenchao Chen <wenchao.chen@unisoc.com>
+From: Mimi Zohar <zohar@linux.ibm.com>
 
-[ Upstream commit 477865af60b2117ceaa1d558e03559108c15c78c ]
+[ Upstream commit b836c4d29f2744200b2af41e14bf50758dddc818 ]
 
-With cat regulator_summary, we found that vqmmc was not shutting
-down after the card was pulled.
+Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
+IMA") forced signature re-evaulation on every file access.
 
-cat /sys/kernel/debug/regulator/regulator_summary
-1.before fix
-1)Insert SD card
- vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+Instead of always re-evaluating the file's integrity, detect a change
+to the backing file, by comparing the cached file metadata with the
+backing file's metadata.  Verifying just the i_version has not changed
+is insufficient.  In addition save and compare the i_ino and s_dev
+as well.
 
-2)Pull out the SD card
- vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
-
-2.after fix
-1)Insert SD cardt
- vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
-
-2)Pull out the SD card
- vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
-
-Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
-Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
+Tested-by: Raul E Rangel <rrangel@chromium.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-sprd.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ security/integrity/ima/ima_api.c  |  5 +++++
+ security/integrity/ima/ima_main.c | 16 +++++++++++++++-
+ security/integrity/integrity.h    |  2 ++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci-sprd.c b/drivers/mmc/host/sdhci-sprd.c
-index 256260339f692..1cfc1aed44528 100644
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -392,12 +392,33 @@ static void sdhci_sprd_request_done(struct sdhci_host *host,
- 	mmc_request_done(host->mmc, mrq);
- }
- 
-+static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
-+				 unsigned short vdd)
-+{
-+	struct mmc_host *mmc = host->mmc;
-+
-+	switch (mode) {
-+	case MMC_POWER_OFF:
-+		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
-+
-+		mmc_regulator_disable_vqmmc(mmc);
-+		break;
-+	case MMC_POWER_ON:
-+		mmc_regulator_enable_vqmmc(mmc);
-+		break;
-+	case MMC_POWER_UP:
-+		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
-+		break;
+diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
+index 610759fe63b8a..364979233a174 100644
+--- a/security/integrity/ima/ima_api.c
++++ b/security/integrity/ima/ima_api.c
+@@ -209,6 +209,7 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
+ {
+ 	const char *audit_cause = "failed";
+ 	struct inode *inode = file_inode(file);
++	struct inode *real_inode = d_real_inode(file_dentry(file));
+ 	const char *filename = file->f_path.dentry->d_name.name;
+ 	int result = 0;
+ 	int length;
+@@ -259,6 +260,10 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
+ 	iint->ima_hash = tmpbuf;
+ 	memcpy(iint->ima_hash, &hash, length);
+ 	iint->version = i_version;
++	if (real_inode != inode) {
++		iint->real_ino = real_inode->i_ino;
++		iint->real_dev = real_inode->i_sb->s_dev;
 +	}
-+}
-+
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
- 	.write_w = sdhci_sprd_writew,
- 	.write_b = sdhci_sprd_writeb,
- 	.set_clock = sdhci_sprd_set_clock,
-+	.set_power = sdhci_sprd_set_power,
- 	.get_max_clock = sdhci_sprd_get_max_clock,
- 	.get_min_clock = sdhci_sprd_get_min_clock,
- 	.set_bus_width = sdhci_set_bus_width,
-@@ -663,6 +684,10 @@ static int sdhci_sprd_probe(struct platform_device *pdev)
- 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
- 			 SDHCI_SUPPORT_DDR50);
  
-+	ret = mmc_regulator_get_supply(host->mmc);
-+	if (ret)
-+		goto pm_runtime_disable;
+ 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
+ 	if (!result)
+diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+index 6a2377eee03d8..09b9c2b252944 100644
+--- a/security/integrity/ima/ima_main.c
++++ b/security/integrity/ima/ima_main.c
+@@ -27,6 +27,7 @@
+ #include <linux/ima.h>
+ #include <linux/iversion.h>
+ #include <linux/fs.h>
++#include <linux/iversion.h>
+ 
+ #include "ima.h"
+ 
+@@ -193,7 +194,7 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 			       u32 secid, char *buf, loff_t size, int mask,
+ 			       enum ima_hooks func)
+ {
+-	struct inode *inode = file_inode(file);
++	struct inode *backing_inode, *inode = file_inode(file);
+ 	struct integrity_iint_cache *iint = NULL;
+ 	struct ima_template_desc *template_desc = NULL;
+ 	char *pathbuf = NULL;
+@@ -267,6 +268,19 @@ static int process_measurement(struct file *file, const struct cred *cred,
+ 		iint->measured_pcrs = 0;
+ 	}
+ 
++	/* Detect and re-evaluate changes made to the backing file. */
++	backing_inode = d_real_inode(file_dentry(file));
++	if (backing_inode != inode &&
++	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
++		if (!IS_I_VERSION(backing_inode) ||
++		    backing_inode->i_sb->s_dev != iint->real_dev ||
++		    backing_inode->i_ino != iint->real_ino ||
++		    !inode_eq_iversion(backing_inode, iint->version)) {
++			iint->flags &= ~IMA_DONE_MASK;
++			iint->measured_pcrs = 0;
++		}
++	}
 +
- 	ret = sdhci_setup_host(host);
- 	if (ret)
- 		goto pm_runtime_disable;
+ 	/* Determine if already appraised/measured based on bitmask
+ 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
+ 	 *  IMA_AUDIT, IMA_AUDITED)
+diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
+index d9323d31a3a83..f63516ebec5db 100644
+--- a/security/integrity/integrity.h
++++ b/security/integrity/integrity.h
+@@ -124,6 +124,8 @@ struct integrity_iint_cache {
+ 	unsigned long flags;
+ 	unsigned long measured_pcrs;
+ 	unsigned long atomic_flags;
++	unsigned long real_ino;
++	dev_t real_dev;
+ 	enum integrity_status ima_file_status:4;
+ 	enum integrity_status ima_mmap_status:4;
+ 	enum integrity_status ima_bprm_status:4;
 -- 
 2.42.0
 
