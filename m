@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-4075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2939C8045E3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2C1804699
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D45B11F2138A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC1B21C20D35
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D33B79E3;
-	Tue,  5 Dec 2023 03:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 418406FB8;
+	Tue,  5 Dec 2023 03:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8p1cA2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bL4GHLYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E06546AA0;
-	Tue,  5 Dec 2023 03:22:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE5CC433C8;
-	Tue,  5 Dec 2023 03:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FE16FAF;
+	Tue,  5 Dec 2023 03:29:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774A3C433C9;
+	Tue,  5 Dec 2023 03:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746553;
-	bh=rHOlzD0/qyoxjajWJ3Mb9bn1cQymlxJhBJnOn+Aqq4Q=;
+	s=korg; t=1701746972;
+	bh=Pik5cJ7EV1AkENSPsh/Ev9YqZahugYR7PhbbOhFXKaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8p1cA2Bb2FGTjwAGDsE3xdPL57KppE9br8ErDGwJ0mWsFpZUhLLFgHtMuPw+LJGG
-	 x+TkpSfOq+Mn3tkGe4sxjxMS22HtEVb11ovuJ0zk0oK7quaO5Y184z3im0I4Ypxd/P
-	 PZnmk76Ej7A6ZTJW24/Q+YiRcYGjedYonD5VWLv0=
+	b=bL4GHLYQM1MvNAS2L+2HNblg00e1E1DiSbFSnTjA0sgM6ylAbXxZ7u2eUIP1T9axY
+	 XteCbyc1suSWV+d4ihSYz7ns1E5zZo26QGU2nByWGlYRCk5ZrHm1+iU5PHUmOo45cz
+	 utIdXIlmho7ppzfl0UF/RqRzclYF2qFBB0pyqSTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 068/134] btrfs: make error messages more clear when getting a chunk map
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 6.1 005/107] firewire: core: fix possible memory leak in create_units()
 Date: Tue,  5 Dec 2023 12:15:40 +0900
-Message-ID: <20231205031539.854606842@linuxfoundation.org>
+Message-ID: <20231205031531.844422182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,55 +52,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-commit 7d410d5efe04e42a6cd959bfe6d59d559fdf8b25 upstream.
+commit 891e0eab32a57fca4d36c5162628eb0bcb1f0edf upstream.
 
-When getting a chunk map, at btrfs_get_chunk_map(), we do some sanity
-checks to verify we found a chunk map and that map found covers the
-logical address the caller passed in. However the messages aren't very
-clear in the sense that don't mention the issue is with a chunk map and
-one of them prints the 'length' argument as if it were the end offset of
-the requested range (while the in the string format we use %llu-%llu
-which suggests a range, and the second %llu-%llu is actually a range for
-the chunk map). So improve these two details in the error messages.
+If device_register() fails, the refcount of device is not 0, the name
+allocated in dev_set_name() is leaked. To fix this by calling put_device(),
+so that it will be freed in callback function kobject_cleanup().
 
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+unreferenced object 0xffff9d99035c7a90 (size 8):
+  comm "systemd-udevd", pid 168, jiffies 4294672386 (age 152.089s)
+  hex dump (first 8 bytes):
+    66 77 30 2e 30 00 ff ff                          fw0.0...
+  backtrace:
+    [<00000000e1d62bac>] __kmem_cache_alloc_node+0x1e9/0x360
+    [<00000000bbeaff31>] __kmalloc_node_track_caller+0x44/0x1a0
+    [<00000000491f2fb4>] kvasprintf+0x67/0xd0
+    [<000000005b960ddc>] kobject_set_name_vargs+0x1e/0x90
+    [<00000000427ac591>] dev_set_name+0x4e/0x70
+    [<000000003b4e447d>] create_units+0xc5/0x110
+
+fw_unit_release() will be called in the error path, move fw_device_get()
+before calling device_register() to keep balanced with fw_device_put() in
+fw_unit_release().
+
+Cc: stable@vger.kernel.org
+Fixes: 1fa5ae857bb1 ("driver core: get rid of struct device's bus_id string array")
+Fixes: a1f64819fe9f ("firewire: struct device - replace bus_id with dev_name(), dev_set_name()")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/firewire/core-device.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -3045,15 +3045,16 @@ struct extent_map *btrfs_get_chunk_map(s
- 	read_unlock(&em_tree->lock);
+--- a/drivers/firewire/core-device.c
++++ b/drivers/firewire/core-device.c
+@@ -717,14 +717,11 @@ static void create_units(struct fw_devic
+ 					fw_unit_attributes,
+ 					&unit->attribute_group);
  
- 	if (!em) {
--		btrfs_crit(fs_info, "unable to find logical %llu length %llu",
-+		btrfs_crit(fs_info,
-+			   "unable to find chunk map for logical %llu length %llu",
- 			   logical, length);
- 		return ERR_PTR(-EINVAL);
+-		if (device_register(&unit->device) < 0)
+-			goto skip_unit;
+-
+ 		fw_device_get(device);
+-		continue;
+-
+-	skip_unit:
+-		kfree(unit);
++		if (device_register(&unit->device) < 0) {
++			put_device(&unit->device);
++			continue;
++		}
  	}
+ }
  
- 	if (em->start > logical || em->start + em->len <= logical) {
- 		btrfs_crit(fs_info,
--			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
--			   logical, length, em->start, em->start + em->len);
-+			   "found a bad chunk map, wanted %llu-%llu, found %llu-%llu",
-+			   logical, logical + length, em->start, em->start + em->len);
- 		free_extent_map(em);
- 		return ERR_PTR(-EINVAL);
- 	}
 
 
 
