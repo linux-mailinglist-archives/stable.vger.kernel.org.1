@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA688046CE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287C580459A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9F48B20C27
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6AA1C20C1A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D44879F2;
-	Tue,  5 Dec 2023 03:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B27C6FB1;
+	Tue,  5 Dec 2023 03:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgeXHlPx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kM8doIrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E49676FB1;
-	Tue,  5 Dec 2023 03:31:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738A3C433C7;
-	Tue,  5 Dec 2023 03:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273326AA0;
+	Tue,  5 Dec 2023 03:19:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635BAC433C8;
+	Tue,  5 Dec 2023 03:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747104;
-	bh=rRNO5Kf/ZTueeQ0gGXs9PuYhXmE9f2dQ0a4OnBuQNvo=;
+	s=korg; t=1701746356;
+	bh=dl4tGQZHeHw/NDgSP7t+OMYS1qLgZHjYAMPLl8ZWbNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgeXHlPxiCN08ICjg98qECV6i4S3tnUavpVSY+AdFttE7sTm0VUQyfIEY1d+XXCte
-	 fyMFqRA6B2eek5HXF2VnCOMDYZwmtjD4A969t0iQsBDpeRPzVxjup/RvYECvxsElFh
-	 jnRwrfghRyE4IvgY1+p7InpAP/7RU8DVvsbpK++0=
+	b=kM8doIrxYT1uBIK7yB9W256P4ramkTHsEX3YFLLhvMi/TOo7dcWdh05LvneDLFQ+x
+	 m32Lneawsvq2WFYyZ2X1heBDpn3zT3OkKT8oxlOvDHHyhZJELSTf6ZeljObcIDtA7i
+	 Fob1cxu8imO1ADYiX7munSv+OLoEOJgvhWjJWfsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Kees Cook <keescook@chromium.org>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/107] uapi: propagate __struct_group() attributes to the container union
+Subject: [PATCH 4.14 28/30] ravb: Fix races between ravb_tx_timeout_work() and net related ops
 Date: Tue,  5 Dec 2023 12:16:35 +0900
-Message-ID: <20231205031535.169941786@linuxfoundation.org>
+Message-ID: <20231205031513.160565562@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +54,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
 
-[ Upstream commit 4e86f32a13af1970d21be94f659cae56bbe487ee ]
+[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
 
-Recently the kernel test robot has reported an ARM-specific BUILD_BUG_ON()
-in an old and unmaintained wil6210 wireless driver. The problem comes from
-the structure packing rules of old ARM ABI ('-mabi=apcs-gnu'). For example,
-the following structure is packed to 18 bytes instead of 16:
+Fix races between ravb_tx_timeout_work() and functions of net_device_ops
+and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
+since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
+ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
+may happen in ravb_tx_timeout_work() like below:
 
-struct poorly_packed {
-        unsigned int a;
-        unsigned int b;
-        unsigned short c;
-        union {
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed));
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed)) inner;
-        };
-} __attribute__((packed));
+CPU0			CPU1
+			ravb_tx_timeout()
+			schedule_work()
+...
+__dev_close_many()
+// Under rtnl lock
+ravb_close()
+cancel_work_sync()
+// Waiting
+			ravb_tx_timeout_work()
+			rtnl_lock()
+			// This is possible to cause a deadlock
 
-To fit it into 16 bytes, it's required to add packed attribute to the
-container union as well:
+If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
 
-struct poorly_packed {
-        unsigned int a;
-        unsigned int b;
-        unsigned short c;
-        union {
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed));
-                struct {
-                        unsigned short d;
-                        unsigned int e;
-                } __attribute__((packed)) inner;
-        } __attribute__((packed));
-} __attribute__((packed));
-
-Thanks to Andrew Pinski of GCC team for sorting the things out at
-https://gcc.gnu.org/pipermail/gcc/2023-November/242888.html.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311150821.cI4yciFE-lkp@intel.com
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20231120110607.98956-1-dmantipov@yandex.ru
-Fixes: 50d7bd38c3aa ("stddef: Introduce struct_group() helper macro")
-Signed-off-by: Kees Cook <keescook@chromium.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/stddef.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/stddef.h b/include/uapi/linux/stddef.h
-index 7837ba4fe7289..dcd50fb2164a1 100644
---- a/include/uapi/linux/stddef.h
-+++ b/include/uapi/linux/stddef.h
-@@ -27,7 +27,7 @@
- 	union { \
- 		struct { MEMBERS } ATTRS; \
- 		struct TAG { MEMBERS } ATTRS NAME; \
--	}
-+	} ATTRS
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 4acea1ab60008..4db3495ef3370 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1484,6 +1484,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 	struct net_device *ndev = priv->ndev;
+ 	int error;
  
- /**
-  * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
++	if (!rtnl_trylock()) {
++		usleep_range(1000, 2000);
++		schedule_work(&priv->work);
++		return;
++	}
++
+ 	netif_tx_stop_all_queues(ndev);
+ 
+ 	/* Stop PTP Clock driver */
+@@ -1516,7 +1522,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		 */
+ 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
+ 			   __func__, error);
+-		return;
++		goto out_unlock;
+ 	}
+ 	ravb_emac_init(ndev);
+ 
+@@ -1526,6 +1532,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+ 		ravb_ptp_init(ndev, priv->pdev);
+ 
+ 	netif_tx_start_all_queues(ndev);
++
++out_unlock:
++	rtnl_unlock();
+ }
+ 
+ /* Packet transmit function for Ethernet AVB */
 -- 
 2.42.0
 
