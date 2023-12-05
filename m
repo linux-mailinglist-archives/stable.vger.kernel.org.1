@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-3996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F807804592
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E385A804746
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC07F281636
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD942815E0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82356FAF;
-	Tue,  5 Dec 2023 03:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9278BF1;
+	Tue,  5 Dec 2023 03:36:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FeNsrrI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZElqKYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757D06AA0;
-	Tue,  5 Dec 2023 03:18:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEA1DC433C7;
-	Tue,  5 Dec 2023 03:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55C26FB1;
+	Tue,  5 Dec 2023 03:36:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638F5C433C8;
+	Tue,  5 Dec 2023 03:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746331;
-	bh=clu4CmfS6jqWwGgvEodECocQ8kp98kwwufxSxDELAoE=;
+	s=korg; t=1701747409;
+	bh=PL2+vVjEmu4hcQI/wxwuOhxZBv6Im0v9WPqn3IFOmIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FeNsrrIqPNIpJLDSJaenCWomIy9w0L38kzg3eEIetmWvD2OFIM3RURBBp7eXwhTb
-	 YlAZp06RWgdWNbB5j2n38f4Cs4E2gAQ4+YmJrDTQJPONPocrmkXCqoNWNoOyQa29hT
-	 Z9HFAZ7xpSU3hh0nw5uz3BRFn6zVl292n1KsL3IU=
+	b=cZElqKYc1sMGpMko7Sr2BBoDlVF4OL1zoA6s8jLDo3oLEoRmuXd2cDWxrHFsYoUvg
+	 VcdE+7CEyWuLhx2Vxry6j42MP+CprSJbYGKc5fI46CJsWER+eWAekpa1s28wefcNqR
+	 e6Qlk62CGNqyysveO4/gPowxAagDmIAW/a8Vg9FI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maria Yu <quic_aiquny@quicinc.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 4.14 20/30] pinctrl: avoid reload of p state in list iteration
+	stable <stable@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 066/135] usb: dwc3: Fix default mode initialization
 Date: Tue,  5 Dec 2023 12:16:27 +0900
-Message-ID: <20231205031512.683951580@linuxfoundation.org>
+Message-ID: <20231205031534.578706297@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +53,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maria Yu <quic_aiquny@quicinc.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 4198a9b571065978632276264e01d71d68000ac5 upstream.
+commit 10d510abd096d620b9fda2dd3e0047c5efc4ad2b upstream.
 
-When in the list_for_each_entry iteration, reload of p->state->settings
-with a local setting from old_state will turn the list iteration into an
-infinite loop.
+The default mode, configurable by DT, shall be set before usb role switch
+driver is registered. Otherwise there is a race between default mode
+and mode set by usb role switch driver.
 
-The typical symptom when the issue happens, will be a printk message like:
-
-  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
-already used for some other setting".
-
-This is a compiler-dependent problem, one instance occurred using Clang
-version 10.0 on the arm64 architecture with linux version 4.19.
-
-Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231115102824.23727-1-quic_aiquny@quicinc.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 98ed256a4dbad ("usb: dwc3: Add support for role-switch-default-mode binding")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231025095110.2405281-1-alexander.stein@ew.tq-group.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/dwc3/drd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1196,17 +1196,17 @@ EXPORT_SYMBOL_GPL(pinctrl_lookup_state);
- static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
- {
- 	struct pinctrl_setting *setting, *setting2;
--	struct pinctrl_state *old_state = p->state;
-+	struct pinctrl_state *old_state = READ_ONCE(p->state);
- 	int ret;
+--- a/drivers/usb/dwc3/drd.c
++++ b/drivers/usb/dwc3/drd.c
+@@ -547,6 +547,7 @@ static int dwc3_setup_role_switch(struct
+ 		dwc->role_switch_default_mode = USB_DR_MODE_PERIPHERAL;
+ 		mode = DWC3_GCTL_PRTCAP_DEVICE;
+ 	}
++	dwc3_set_mode(dwc, mode);
  
--	if (p->state) {
-+	if (old_state) {
- 		/*
- 		 * For each pinmux setting in the old state, forget SW's record
- 		 * of mux owner for that pingroup. Any pingroups which are
- 		 * still owned by the new state will be re-acquired by the call
- 		 * to pinmux_enable_setting() in the loop below.
- 		 */
--		list_for_each_entry(setting, &p->state->settings, node) {
-+		list_for_each_entry(setting, &old_state->settings, node) {
- 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
- 				continue;
- 			pinmux_disable_setting(setting);
+ 	dwc3_role_switch.fwnode = dev_fwnode(dwc->dev);
+ 	dwc3_role_switch.set = dwc3_usb_role_switch_set;
+@@ -556,7 +557,6 @@ static int dwc3_setup_role_switch(struct
+ 	if (IS_ERR(dwc->role_sw))
+ 		return PTR_ERR(dwc->role_sw);
+ 
+-	dwc3_set_mode(dwc, mode);
+ 	return 0;
+ }
+ #else
 
 
 
