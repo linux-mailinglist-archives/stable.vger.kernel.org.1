@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733808045A3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82064804745
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A44A81C20BCA
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E6A72815EC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F042F6FB0;
-	Tue,  5 Dec 2023 03:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDCA8BF7;
+	Tue,  5 Dec 2023 03:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axHNo5WT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+n6QI2F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3E56AA0;
-	Tue,  5 Dec 2023 03:19:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B646CC433C7;
-	Tue,  5 Dec 2023 03:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAA66FB1;
+	Tue,  5 Dec 2023 03:36:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBF4C433C8;
+	Tue,  5 Dec 2023 03:36:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746383;
-	bh=rkMhZh7/ezvTa8L8aJEuHP/VL6v0cGgnMVEqWUl8hDk=;
+	s=korg; t=1701747407;
+	bh=Jfap9Zzq+so1EuvlPXBtH2zdwSjplDONaf8cPvR9Jew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axHNo5WTRI29wI4k8zPy1W0od0/qwCL0cAYGAivngezJ0T5M4tIyK6V90a9n6RwYt
-	 6ww9a8aQsL+dhziggfskuyu4g/kbmzABTJ4qH8tDrJlYxdObqrOaJrxb8RfGFtFgbp
-	 Z92jTVn/o3dWhOGQI3NSOhOMIrtyYsID6qOqHedg=
+	b=I+n6QI2FLKp+40OgWPufn2piAxz1qOi0WoFpdGK/Ga+nJSr8fu8Rn4pD7SSXgya7F
+	 2UtnrRr2aJLWB5ZMNeYTQjGYkovbprfweeOglrrVJ0nrwnxVNDAX5uAsVfo3KFuEwF
+	 V4k2zplbnzJwJXHq9S5sY1ZKNIAoqO+KkfzHdOnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>,
-	Lech Perczak <lech.perczak@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 18/30] USB: serial: option: dont claim interface 4 for ZTE MF290
-Date: Tue,  5 Dec 2023 12:16:25 +0900
-Message-ID: <20231205031512.571078082@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>,
+	Ivan Ivanov <ivan.ivanov@suse.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 065/135] USB: dwc2: write HCINT with INTMASK applied
+Date: Tue,  5 Dec 2023 12:16:26 +0900
+Message-ID: <20231205031534.509267063@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,70 +52,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lech Perczak <lech.perczak@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 8771127e25d6c20d458ad27cf32f7fcfc1755e05 upstream.
+commit 0583bc776ca5b5a3f5752869fc31cf7322df2b35 upstream.
 
-Interface 4 is used by for QMI interface in stock firmware of MF28D, the
-router which uses MF290 modem. Free the interface up, to rebind it to
-qmi_wwan driver.
-The proper configuration is:
+dwc2_hc_n_intr() writes back INTMASK as read but evaluates it
+with intmask applied. In stress testing this causes spurious
+interrupts like this:
 
-Interface mapping is:
-0: QCDM, 1: (unknown), 2: AT (PCUI), 2: AT (Modem), 4: QMI
+[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 7 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 0 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 4 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_update_urb_state_abn(): trimming xfer length
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS=64 #Cfgs=  1
-P:  Vendor=19d2 ProdID=0189 Rev= 0.00
-S:  Manufacturer=ZTE, Incorporated
-S:  Product=ZTE LTE Technologies MSM
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=84(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=85(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=86(I) Atr=03(Int.) MxPS=  64 Ivl=2ms
-E:  Ad=87(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=4ms
+Applying INTMASK prevents this. The issue exists in all versions of the
+driver.
 
-Cc: Bjørn Mork <bjorn@mork.no>
-Signed-off-by: Lech Perczak <lech.perczak@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Tested-by: Ivan Ivanov <ivan.ivanov@suse.com>
+Tested-by: Andrea della Porta <andrea.porta@suse.com>
+Link: https://lore.kernel.org/r/20231115144514.15248-1-oneukum@suse.com
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc2/hcd_intr.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -1551,7 +1551,8 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0165, 0xff, 0xff, 0xff) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0167, 0xff, 0xff, 0xff),
- 	  .driver_info = RSVD(4) },
--	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0189, 0xff, 0xff, 0xff),
-+	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0191, 0xff, 0xff, 0xff), /* ZTE EuFi890 */
- 	  .driver_info = RSVD(4) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(ZTE_VENDOR_ID, 0x0196, 0xff, 0xff, 0xff) },
+--- a/drivers/usb/dwc2/hcd_intr.c
++++ b/drivers/usb/dwc2/hcd_intr.c
+@@ -2045,15 +2045,17 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ {
+ 	struct dwc2_qtd *qtd;
+ 	struct dwc2_host_chan *chan;
+-	u32 hcint, hcintmsk;
++	u32 hcint, hcintraw, hcintmsk;
+ 
+ 	chan = hsotg->hc_ptr_array[chnum];
+ 
+-	hcint = dwc2_readl(hsotg, HCINT(chnum));
++	hcintraw = dwc2_readl(hsotg, HCINT(chnum));
+ 	hcintmsk = dwc2_readl(hsotg, HCINTMSK(chnum));
++	hcint = hcintraw & hcintmsk;
++	dwc2_writel(hsotg, hcint, HCINT(chnum));
++
+ 	if (!chan) {
+ 		dev_err(hsotg->dev, "## hc_ptr_array for channel is NULL ##\n");
+-		dwc2_writel(hsotg, hcint, HCINT(chnum));
+ 		return;
+ 	}
+ 
+@@ -2062,11 +2064,9 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ 			 chnum);
+ 		dev_vdbg(hsotg->dev,
+ 			 "  hcint 0x%08x, hcintmsk 0x%08x, hcint&hcintmsk 0x%08x\n",
+-			 hcint, hcintmsk, hcint & hcintmsk);
++			 hcintraw, hcintmsk, hcint);
+ 	}
+ 
+-	dwc2_writel(hsotg, hcint, HCINT(chnum));
+-
+ 	/*
+ 	 * If we got an interrupt after someone called
+ 	 * dwc2_hcd_endpoint_disable() we don't want to crash below
+@@ -2076,8 +2076,7 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ 		return;
+ 	}
+ 
+-	chan->hcint = hcint;
+-	hcint &= hcintmsk;
++	chan->hcint = hcintraw;
+ 
+ 	/*
+ 	 * If the channel was halted due to a dequeue, the qtd list might
 
 
 
