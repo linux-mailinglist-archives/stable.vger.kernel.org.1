@@ -1,48 +1,51 @@
-Return-Path: <stable+bounces-4621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4AF2804840
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 894738047CF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BF2C2817C6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FEF8B20CEC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC238F56;
-	Tue,  5 Dec 2023 03:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628EC611E;
+	Tue,  5 Dec 2023 03:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4W/UEiL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nK6zglP0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A71F6FB1;
-	Tue,  5 Dec 2023 03:47:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBCAC433C7;
-	Tue,  5 Dec 2023 03:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BAE96AC2;
+	Tue,  5 Dec 2023 03:42:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 990A8C433C7;
+	Tue,  5 Dec 2023 03:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748053;
-	bh=L0x3kZVd6o94CKzf7OiJEszIasFPz1shsDqagSiXbTk=;
+	s=korg; t=1701747749;
+	bh=GA7uZVKAZnGzT0GqLcUQdIUYKMcsAyL5IQngLzft78c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q4W/UEiLAO+LkcWRQqvh+Jpx9M76tm7e57YXJPNidsBmVrflPitwtTvfI0iWNIOC9
-	 Ut04nFVKtaMzmAGm/Mm5XxhYoTJkbEM2Js3t+3gJy81v2LeLpSFtjXUnXlUTKgaKI2
-	 C6nNpXmnUcWzWMZbama+Owv2CtQTqA6A+uB4HoCQ=
+	b=nK6zglP0UHPOOtaMDOvJ6Cc5N4NakBgD5KJu8xo19zMK8eczfHm779h33YAGe94aN
+	 W8sYYzrCE0VI4Qh50OokqwZls9ZrstHxyYHd9uMPWR08pah4LZfi/huty7Luh9zoT3
+	 p5RLr09pS2Mtc4vK8OXWywCHm8y6eM2ljHBsJS48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Paul Olaru <paul.olaru@oss.nxp.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 71/94] net: ravb: Use pm_runtime_resume_and_get()
+Subject: [PATCH 5.15 54/67] ASoC: SOF: sof-pci-dev: add parameter to override topology filename
 Date: Tue,  5 Dec 2023 12:17:39 +0900
-Message-ID: <20231205031526.799195414@linuxfoundation.org>
+Message-ID: <20231205031522.988901442@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +55,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 88b74831faaee455c2af380382d979fc38e79270 ]
+[ Upstream commit 772627acfeb0e670ede534b7d5502dae9668d3ee ]
 
-pm_runtime_get_sync() may return an error. In case it returns with an error
-dev->power.usage_count needs to be decremented. pm_runtime_resume_and_get()
-takes care of this. Thus use it.
+The existing 'tplg_path' module parameter can be used to load
+alternate firmware files, be it for development or to handle
+OEM-specific or board-specific releases. However the topology filename
+is either hard-coded in machine descriptors or modified by specific
+DMI-quirks.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+For additional flexibility, this patch adds the 'tplg_filename' module
+parameter to override topology names.
+
+To avoid any confusion between DMI- and parameter-override, a variable
+rename is added.
+
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Reviewed-by: Paul Olaru <paul.olaru@oss.nxp.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20220414184817.362215-7-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 7dd692217b86 ("ASoC: SOF: sof-pci-dev: Fix community key quirk detection")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/sof/sof-pci-dev.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 765e55b489dbf..815aa18782165 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -2039,7 +2039,9 @@ static int ravb_probe(struct platform_device *pdev)
- 	ndev->hw_features = NETIF_F_RXCSUM;
+diff --git a/sound/soc/sof/sof-pci-dev.c b/sound/soc/sof/sof-pci-dev.c
+index c1cd156996b43..6b103118cfd1b 100644
+--- a/sound/soc/sof/sof-pci-dev.c
++++ b/sound/soc/sof/sof-pci-dev.c
+@@ -27,17 +27,21 @@ static char *tplg_path;
+ module_param(tplg_path, charp, 0444);
+ MODULE_PARM_DESC(tplg_path, "alternate path for SOF topology.");
  
- 	pm_runtime_enable(&pdev->dev);
--	pm_runtime_get_sync(&pdev->dev);
-+	error = pm_runtime_resume_and_get(&pdev->dev);
-+	if (error < 0)
-+		goto out_rpm_disable;
++static char *tplg_filename;
++module_param(tplg_filename, charp, 0444);
++MODULE_PARM_DESC(tplg_filename, "alternate filename for SOF topology.");
++
+ static int sof_pci_debug;
+ module_param_named(sof_pci_debug, sof_pci_debug, int, 0444);
+ MODULE_PARM_DESC(sof_pci_debug, "SOF PCI debug options (0x0 all off)");
  
- 	/* The Ether-specific entries in the device structure. */
- 	ndev->base_addr = res->start;
-@@ -2210,6 +2212,7 @@ static int ravb_probe(struct platform_device *pdev)
- 	free_netdev(ndev);
+-static const char *sof_override_tplg_name;
++static const char *sof_dmi_override_tplg_name;
  
- 	pm_runtime_put(&pdev->dev);
-+out_rpm_disable:
- 	pm_runtime_disable(&pdev->dev);
- 	return error;
+ #define SOF_PCI_DISABLE_PM_RUNTIME BIT(0)
+ 
+ static int sof_tplg_cb(const struct dmi_system_id *id)
+ {
+-	sof_override_tplg_name = id->driver_data;
++	sof_dmi_override_tplg_name = id->driver_data;
+ 	return 1;
  }
+ 
+@@ -183,9 +187,20 @@ int sof_pci_probe(struct pci_dev *pci, const struct pci_device_id *pci_id)
+ 		sof_pdata->tplg_filename_prefix =
+ 			sof_pdata->desc->default_tplg_path;
+ 
+-	dmi_check_system(sof_tplg_table);
+-	if (sof_override_tplg_name)
+-		sof_pdata->tplg_filename = sof_override_tplg_name;
++	/*
++	 * the topology filename will be provided in the machine descriptor, unless
++	 * it is overridden by a module parameter or DMI quirk.
++	 */
++	if (tplg_filename) {
++		sof_pdata->tplg_filename = tplg_filename;
++
++		dev_dbg(dev, "Module parameter used, changed tplg filename to %s\n",
++			sof_pdata->tplg_filename);
++	} else {
++		dmi_check_system(sof_tplg_table);
++		if (sof_dmi_override_tplg_name)
++			sof_pdata->tplg_filename = sof_dmi_override_tplg_name;
++	}
+ 
+ 	/* set callback to be called on successful device probe to enable runtime_pm */
+ 	sof_pdata->sof_probe_complete = sof_pci_probe_complete;
 -- 
 2.42.0
 
