@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-4432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CC8804775
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E00908046DA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E83DC2815E0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CC90B20BE0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4A28BF8;
-	Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1108BEC;
+	Tue,  5 Dec 2023 03:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lsbq7qa8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/Esl9kO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE2D6FB1;
-	Tue,  5 Dec 2023 03:38:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829B1C433C7;
-	Tue,  5 Dec 2023 03:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A86B6FB1;
+	Tue,  5 Dec 2023 03:32:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DAC433C8;
+	Tue,  5 Dec 2023 03:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747529;
-	bh=1bZ2VwnX+igZLa9HjXtPP2OJBKHOLx0dE/oBA/WbY2A=;
+	s=korg; t=1701747135;
+	bh=c2+0LNB2WBoPzT4qKhfw6x42gYhmncTy0vhibWs43Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lsbq7qa8SrnXomN+4Ovb/x6L22CUeJy0g2Mcj3rjrbN5Zip8NViN1rGakHsBELo/e
-	 NohvwUx7rQMSgosH4Pq1ZENPFH5JsSgBKXUiKavISjS/uF6S3pIUZhXbQCSWY9XgKd
-	 1BrQykVlv1gFo67sa0vi/bFxEUaxJjvITBmFko8I=
+	b=K/Esl9kO0KsShhSrQOETiHZFi7JTglFXrkdHiObJruHuPdR+Ibl/sfVPIqQZXXm61
+	 bBX82JIfCSAgr9M7M89vEv6q2ZnyXJQBTwXRTxV8sv3QUaPe//7OlKwqvY31PJOaaf
+	 TSdxvIOxC2pIjIkYLEjBPt3ForFCwOFp6ymdVw1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	David Sterba <dsterba@suse.com>,
-	syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 086/135] btrfs: send: ensure send_fd is writable
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 072/107] net: ravb: Check return value of reset_control_deassert()
 Date: Tue,  5 Dec 2023 12:16:47 +0900
-Message-ID: <20231205031535.985214191@linuxfoundation.org>
+Message-ID: <20231205031535.990727915@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +55,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 0ac1d13a55eb37d398b63e6ff6db4a09a2c9128c upstream.
+[ Upstream commit d8eb6ea4b302e7ff78535c205510e359ac10a0bd ]
 
-kernel_write() requires the caller to ensure that the file is writable.
-Let's do that directly after looking up the ->send_fd.
+reset_control_deassert() could return an error. Some devices cannot work
+if reset signal de-assert operation fails. To avoid this check the return
+code of reset_control_deassert() in ravb_probe() and take proper action.
 
-We don't need a separate bailout path because the "out" path already
-does fput() if ->send_filp is non-NULL.
+Along with it, the free_netdev() call from the error path was moved after
+reset_control_assert() on its own label (out_free_netdev) to free
+netdev in case reset_control_deassert() fails.
 
-This has no security impact for two reasons:
-
- - the ioctl requires CAP_SYS_ADMIN
- - __kernel_write() bails out on read-only files - but only since 5.8,
-   see commit a01ac27be472 ("fs: check FMODE_WRITE in __kernel_write")
-
-Reported-and-tested-by: syzbot+12e098239d20385264d3@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=12e098239d20385264d3
-Fixes: 31db9f7c23fb ("Btrfs: introduce BTRFS_IOC_SEND for btrfs send/receive")
-CC: stable@vger.kernel.org # 4.14+
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0d13a1a464a0 ("ravb: Add reset support")
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/renesas/ravb_main.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -7303,7 +7303,7 @@ long btrfs_ioctl_send(struct file *mnt_f
- 	sctx->flags = arg->flags;
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 020edbd0a44a6..2bcea9fdd2653 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -2670,7 +2670,10 @@ static int ravb_probe(struct platform_device *pdev)
+ 	ndev->features = info->net_features;
+ 	ndev->hw_features = info->net_hw_features;
  
- 	sctx->send_filp = fget(arg->send_fd);
--	if (!sctx->send_filp) {
-+	if (!sctx->send_filp || !(sctx->send_filp->f_mode & FMODE_WRITE)) {
- 		ret = -EBADF;
- 		goto out;
- 	}
+-	reset_control_deassert(rstc);
++	error = reset_control_deassert(rstc);
++	if (error)
++		goto out_free_netdev;
++
+ 	pm_runtime_enable(&pdev->dev);
+ 	pm_runtime_get_sync(&pdev->dev);
+ 
+@@ -2897,11 +2900,11 @@ static int ravb_probe(struct platform_device *pdev)
+ out_disable_refclk:
+ 	clk_disable_unprepare(priv->refclk);
+ out_release:
+-	free_netdev(ndev);
+-
+ 	pm_runtime_put(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	reset_control_assert(rstc);
++out_free_netdev:
++	free_netdev(ndev);
+ 	return error;
+ }
+ 
+-- 
+2.42.0
+
 
 
 
