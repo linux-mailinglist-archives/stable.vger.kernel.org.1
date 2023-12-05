@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC85080467B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33C0C8046E3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DB5AB20C8D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65CCD1C20DCD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2276FB1;
-	Tue,  5 Dec 2023 03:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDBB8BF7;
+	Tue,  5 Dec 2023 03:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5BLNqQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbK5kf5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E5E6FAF;
-	Tue,  5 Dec 2023 03:28:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA9DC433C8;
-	Tue,  5 Dec 2023 03:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFC96FB1;
+	Tue,  5 Dec 2023 03:32:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817A1C433C8;
+	Tue,  5 Dec 2023 03:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746890;
-	bh=KYYO21fgxx3h7TXyPuk5q/7TOj/mShQm4cv2BAmXchQ=;
+	s=korg; t=1701747158;
+	bh=vrG2zGNgXxjTfhCb//FsdCphoArlt3fYooaUAQSrFdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5BLNqQU572JkIHldom6+KGfEhohZWXaeSjYJlQjSNl+tlU2wqI6wDtNR6EAuOd7l
-	 PnHha8/nzYjM4y6yQx3BHyL/ZvEUZ/Q2I/yyLn+D6+OJTxegURySNXfFlpzENHTEv4
-	 Bu7mnfQWV5uwp+4aDDKTzC9youvmG3K8vDk1sD0A=
+	b=DbK5kf5Bs82lDMX/e/pcW662rgLbv3DlWUYEMdr2vpSwyLqry/XgjXf+1xuDsVs+b
+	 wcXZmfnT1WWj7Qnggjo2fq0GzMZ0VsOLliiTM45mT1D4TNfapLOCWrnaNoinzGf79Z
+	 3rnT6HziaoOv1oClG4GMm6C4Q1k1mNMM/SGHP0/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 57/71] s390/mm: fix phys vs virt confusion in mark_kernel_pXd() functions family
-Date: Tue,  5 Dec 2023 12:16:55 +0900
-Message-ID: <20231205031521.181116325@linuxfoundation.org>
+Subject: [PATCH 6.1 081/107] s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
+Date: Tue,  5 Dec 2023 12:16:56 +0900
+Message-ID: <20231205031536.617307577@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,66 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 3784231b1e091857bd129fd9658a8b3cedbdcd58 ]
+[ Upstream commit 84bb41d5df48868055d159d9247b80927f1f70f9 ]
 
-Due to historical reasons mark_kernel_pXd() functions
-misuse the notion of physical vs virtual addresses
-difference.
+If the cmma no-dat feature is available the kernel page tables are walked
+to identify and mark all pages which are used for address translation (all
+region, segment, and page tables). In a subsequent loop all other pages are
+marked as "no-dat" pages with the ESSA instruction.
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+This information is visible to the hypervisor, so that the hypervisor can
+optimize purging of guest TLB entries. All pages used for swapper_pg_dir
+and invalid_pg_dir are incorrectly marked as no-dat, which in turn can
+result in incorrect guest TLB flushes.
+
+Fix this by marking those pages correctly as being used for DAT.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: 44d930452476 ("s390/cmma: fix detection of DAT pages")
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/page-states.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/mm/page-states.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/arch/s390/mm/page-states.c b/arch/s390/mm/page-states.c
-index dc3cede7f2ec9..5a0460b0fd6ae 100644
+index 7bea3be8b8280..c112762e38015 100644
 --- a/arch/s390/mm/page-states.c
 +++ b/arch/s390/mm/page-states.c
-@@ -118,7 +118,7 @@ static void mark_kernel_pmd(pud_t *pud, unsigned long addr, unsigned long end)
- 		next = pmd_addr_end(addr, end);
- 		if (pmd_none(*pmd) || pmd_large(*pmd))
- 			continue;
--		page = virt_to_page(pmd_val(*pmd));
-+		page = phys_to_page(pmd_val(*pmd));
- 		set_bit(PG_arch_1, &page->flags);
- 	} while (pmd++, addr = next, addr != end);
- }
-@@ -136,7 +136,7 @@ static void mark_kernel_pud(p4d_t *p4d, unsigned long addr, unsigned long end)
- 		if (pud_none(*pud) || pud_large(*pud))
- 			continue;
- 		if (!pud_folded(*pud)) {
--			page = virt_to_page(pud_val(*pud));
-+			page = phys_to_page(pud_val(*pud));
- 			for (i = 0; i < 3; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
-@@ -157,7 +157,7 @@ static void mark_kernel_p4d(pgd_t *pgd, unsigned long addr, unsigned long end)
- 		if (p4d_none(*p4d))
- 			continue;
- 		if (!p4d_folded(*p4d)) {
--			page = virt_to_page(p4d_val(*p4d));
-+			page = phys_to_page(p4d_val(*p4d));
- 			for (i = 0; i < 3; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
-@@ -179,7 +179,7 @@ static void mark_kernel_pgd(void)
- 		if (pgd_none(*pgd))
- 			continue;
- 		if (!pgd_folded(*pgd)) {
--			page = virt_to_page(pgd_val(*pgd));
-+			page = phys_to_page(pgd_val(*pgd));
- 			for (i = 0; i < 3; i++)
- 				set_bit(PG_arch_1, &page[i].flags);
- 		}
+@@ -192,6 +192,12 @@ void __init cmma_init_nodat(void)
+ 		return;
+ 	/* Mark pages used in kernel page tables */
+ 	mark_kernel_pgd();
++	page = virt_to_page(&swapper_pg_dir);
++	for (i = 0; i < 4; i++)
++		set_bit(PG_arch_1, &page[i].flags);
++	page = virt_to_page(&invalid_pg_dir);
++	for (i = 0; i < 4; i++)
++		set_bit(PG_arch_1, &page[i].flags);
+ 
+ 	/* Set all kernel pages not used for page tables to stable/no-dat */
+ 	for_each_mem_pfn_range(i, MAX_NUMNODES, &start, &end, NULL) {
 -- 
 2.42.0
 
