@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE70A804613
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B2048046A4
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78A401F213BD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CED41C20D71
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8BD96FB8;
-	Tue,  5 Dec 2023 03:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873C98BEC;
+	Tue,  5 Dec 2023 03:30:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9L7uhYC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zG5r24QE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A396FAF;
-	Tue,  5 Dec 2023 03:24:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00F8C433C8;
-	Tue,  5 Dec 2023 03:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B1E6FAF;
+	Tue,  5 Dec 2023 03:30:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBF9EC433C7;
+	Tue,  5 Dec 2023 03:30:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746665;
-	bh=kGJ/+iLwMamoXF196i58rfUizj0vRppOtVceG85amr0=;
+	s=korg; t=1701747002;
+	bh=HT5Z33ryCMxFOmyfMXQU1KRXw7msm1uVhl/3ydDbVGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9L7uhYCVJbisSgqpKiGIrAue1N9fBRVP8N8P+C2UrJ6wxTzheVruWrYahchnwCCt
-	 OfT9FUcEdV7UX6PNI0L57s+xF4IvmlhjEugnaTUPGvhMHuv1L3H7xNi16UejOA/A7t
-	 mbMLoGJt8FldB1GiUP48y8rcBzYBKLgpeObP0aEg=
+	b=zG5r24QEjZgMfHo1KdA4sZQdRCbpOeO1WVF6Zb5SFmb+DK1uzQFll/sPa50ICER+6
+	 9VBfDRLZqdZ/LLi/WRGihk08m9C/hDltOnL8srqYG3dxivdt4R6UaqRKBX7M/pvn6E
+	 RyXmAK//5JXjVBO7ojLJX1VSnZNi4N1QYV4H14yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Greg Ungerer <gerg@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/134] net: dsa: mv88e6xxx: fix marvell 6350 probe crash
+	Samson Tam <samson.tam@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 023/107] drm/amd/display: Use DRAM speed from validation for dummy p-state
 Date: Tue,  5 Dec 2023 12:15:58 +0900
-Message-ID: <20231205031540.912575429@linuxfoundation.org>
+Message-ID: <20231205031533.049326735@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,82 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Ungerer <gerg@kernel.org>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-[ Upstream commit a524eabcd72d28425d9db242cf375d0389d74eba ]
+commit 9be601135ba8ac69880c01606c82140f2dde105e upstream.
 
-As of commit b92143d4420f ("net: dsa: mv88e6xxx: add infrastructure for
-phylink_pcs") probing of a Marvell 88e6350 switch causes a NULL pointer
-de-reference like this example:
+[Description]
+When choosing which dummy p-state latency to use, we
+need to use the DRAM speed from validation. The DRAMSpeed
+DML variable can change because we use different input
+params to DML when populating watermarks set B.
 
-    ...
-    mv88e6085 d0072004.mdio-mii:11: switch 0x3710 detected: Marvell 88E6350, revision 2
-    8<--- cut here ---
-    Unable to handle kernel NULL pointer dereference at virtual address 00000000 when read
-    [00000000] *pgd=00000000
-    Internal error: Oops: 5 [#1] ARM
-    Modules linked in:
-    CPU: 0 PID: 8 Comm: kworker/u2:0 Not tainted 6.7.0-rc2-dirty #26
-    Hardware name: Marvell Armada 370/XP (Device Tree)
-    Workqueue: events_unbound deferred_probe_work_func
-    PC is at mv88e6xxx_port_setup+0x1c/0x44
-    LR is at dsa_port_devlink_setup+0x74/0x154
-    pc : [<c057ea24>]    lr : [<c0819598>]    psr: a0000013
-    sp : c184fce0  ip : c542b8f4  fp : 00000000
-    r10: 00000001  r9 : c542a540  r8 : c542bc00
-    r7 : c542b838  r6 : c5244580  r5 : 00000005  r4 : c5244580
-    r3 : 00000000  r2 : c542b840  r1 : 00000005  r0 : c1a02040
-    ...
-
-The Marvell 6350 switch has no SERDES interface and so has no
-corresponding pcs_ops defined for it. But during probing a call is made
-to mv88e6xxx_port_setup() which unconditionally expects pcs_ops to exist -
-though the presence of the pcs_ops->pcs_init function is optional.
-
-Modify code to check for pcs_ops first, before checking for and calling
-pcs_ops->pcs_init. Modify checking and use of pcs_ops->pcs_teardown
-which may potentially suffer the same problem.
-
-Fixes: b92143d4420f ("net: dsa: mv88e6xxx: add infrastructure for phylink_pcs")
-Signed-off-by: Greg Ungerer <gerg@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Reviewed-by: Samson Tam <samson.tam@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 6d7256ea477a1..dc7f9b99f409f 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -3892,7 +3892,8 @@ static int mv88e6xxx_port_setup(struct dsa_switch *ds, int port)
- 	struct mv88e6xxx_chip *chip = ds->priv;
- 	int err;
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn32/dcn32_fpu.c
+@@ -1788,6 +1788,7 @@ void dcn32_calculate_wm_and_dlg_fpu(stru
+ 	int i, pipe_idx, vlevel_temp = 0;
+ 	double dcfclk = dcn3_2_soc.clock_limits[0].dcfclk_mhz;
+ 	double dcfclk_from_validation = context->bw_ctx.dml.vba.DCFCLKState[vlevel][context->bw_ctx.dml.vba.maxMpcComb];
++	double dram_speed_from_validation = context->bw_ctx.dml.vba.DRAMSpeed;
+ 	double dcfclk_from_fw_based_mclk_switching = dcfclk_from_validation;
+ 	bool pstate_en = context->bw_ctx.dml.vba.DRAMClockChangeSupport[vlevel][context->bw_ctx.dml.vba.maxMpcComb] !=
+ 			dm_dram_clock_change_unsupported;
+@@ -1921,7 +1922,7 @@ void dcn32_calculate_wm_and_dlg_fpu(stru
+ 	}
  
--	if (chip->info->ops->pcs_ops->pcs_init) {
-+	if (chip->info->ops->pcs_ops &&
-+	    chip->info->ops->pcs_ops->pcs_init) {
- 		err = chip->info->ops->pcs_ops->pcs_init(chip, port);
- 		if (err)
- 			return err;
-@@ -3907,7 +3908,8 @@ static void mv88e6xxx_port_teardown(struct dsa_switch *ds, int port)
+ 	if (dc->clk_mgr->bw_params->wm_table.nv_entries[WM_C].valid) {
+-		min_dram_speed_mts = context->bw_ctx.dml.vba.DRAMSpeed;
++		min_dram_speed_mts = dram_speed_from_validation;
+ 		min_dram_speed_mts_margin = 160;
  
- 	mv88e6xxx_teardown_devlink_regions_port(ds, port);
- 
--	if (chip->info->ops->pcs_ops->pcs_teardown)
-+	if (chip->info->ops->pcs_ops &&
-+	    chip->info->ops->pcs_ops->pcs_teardown)
- 		chip->info->ops->pcs_ops->pcs_teardown(chip, port);
- }
- 
--- 
-2.42.0
-
+ 		context->bw_ctx.dml.soc.dram_clock_change_latency_us =
 
 
 
