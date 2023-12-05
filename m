@@ -1,121 +1,119 @@
-Return-Path: <stable+bounces-4742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97750805D51
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 19:26:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A872805D57
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 19:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A2361F216D0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 18:26:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3413B21057
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 18:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9110C68B9B;
-	Tue,  5 Dec 2023 18:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92E5068B8C;
+	Tue,  5 Dec 2023 18:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eq5ubZJb"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="QaHQ2U1K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B7B68B93;
-	Tue,  5 Dec 2023 18:26:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22905C433C8;
-	Tue,  5 Dec 2023 18:26:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701800810;
-	bh=2mfKanFkogJhg5GS7uiih9vRq6rMLvZxLLzKfDwTSOo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Eq5ubZJbG/oYLlDsgWMVhqwLT4MqfFyl2rhcyPFp8R4r5HlFMWb4FplGLSbxUaZYF
-	 8cOCvV/yeseq8r9qtQiCtVztE2UqpaKTWFylx0H/0m9u9EUiy/IA1CAQlM5M6EzyLx
-	 jFuZuQ/JnhO44O94KKn2R0OlQM28Rie5EwS6fnZg=
-Date: Wed, 6 Dec 2023 03:26:47 +0900
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 000/107] 6.1.66-rc1 review
-Message-ID: <2023120628-reprint-coronary-ba73@gregkh>
-References: <20231205031531.426872356@linuxfoundation.org>
- <CA+G9fYt4DSUQA-zcuZUxVnoSx+DUo0ZB1sX=d2SSwBaD0s_a+w@mail.gmail.com>
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76281D4E
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 10:28:39 -0800 (PST)
+Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
+	by cmsmtp with ESMTPS
+	id AT4qr26lJWcCIAa9urkZS8; Tue, 05 Dec 2023 18:28:38 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id Aa9srjnmHqmEoAa9trc7VC; Tue, 05 Dec 2023 18:28:37 +0000
+X-Authority-Analysis: v=2.4 cv=P+8pOwMu c=1 sm=1 tr=0 ts=656f6bd5
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=e2cXIFwxEfEA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=cnMIdwp9oRGx1QiOs1YA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WirMNepvgvMFX+7ic0238BbFn5/m95ZdzsjLMvCiRAU=; b=QaHQ2U1KRUC1LfdonQA495mvq6
+	r/8ThYjsjRUtI0UWcf8waN8w8JMFPAHJh2zw6r/ix9/KNDg5leqrp7w9f9tFgkkeHEUxTQjEPeusg
+	+XnBKsbpplzs5ClL/qt1hkUxVhZjFAAagX1Wgzqou/bhYpW0CdP3RsZRSMBqnyulT4dt6BgQaiUOu
+	IiG5fA5r3dI82r6jnL60ycMU4EY9tavhkeBsGnJYenhfhfM+9/jEY9MqdZyfbQErGhQ2cWzk7EPme
+	xDFT6plAGVo7GMyRuMOctJPMF6GMxsW58jSiev5ewY2JL/yg7DPNNFPz11a0tpVEqMWLri2wB6FB4
+	Gtw9+B9Q==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:58448 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rAa9q-004ASe-1Q;
+	Tue, 05 Dec 2023 11:28:34 -0700
+Subject: Re: [PATCH 6.6 000/134] 6.6.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <d15cd3a8-5a09-aacc-7738-9e9032d70167@w6rz.net>
+Date: Tue, 5 Dec 2023 10:28:31 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+G9fYt4DSUQA-zcuZUxVnoSx+DUo0ZB1sX=d2SSwBaD0s_a+w@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rAa9q-004ASe-1Q
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:58448
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBfwPk2OT1C9xXowqyPQFHngwQtC8BV5bLcAMJDKNcTIoq5CXcZ54j5wkI3zNxWNtZ3tefTwh4iYZNE3cOxnwUvMwmJaGJ4Xv4dh/vzaR+FUM+zk+XhN
+ 9eFENRoeXZMxx+SYCv7P/y4U4NFyl7qg0gZEDeL5GsCBHuMtSP7AMPyQPV3HztYIFSO2rqx+UQ85Qw==
 
-On Tue, Dec 05, 2023 at 09:51:03PM +0530, Naresh Kamboju wrote:
-> On Tue, 5 Dec 2023 at 08:59, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.1.66 release.
-> > There are 107 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.66-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> 
-> Powerpc, s390 and riscv allmodconfig failed on stable-rc linux-6.1.y
-> 
->  - s390: gcc-13-allmodconfig: FAILED
->  - Powerpc: gcc-13-allmodconfig: FAILED
->  - riscv: gcc-13-allmodconfig: FAILED
-> 
-> S390 build error:
-> arch/s390/mm/page-states.c:198:23: error: 'invalid_pg_dir' undeclared
-> (first use in this function); did you mean 'is_valid_bugaddr'?
->   page = virt_to_page(&invalid_pg_dir);
->                        ^~~~~~~~~~~~~~
-> 
-> s390/cmma: fix handling of swapper_pg_dir and invalid_pg_dir
->  [ Upstream commit 84bb41d5df48868055d159d9247b80927f1f70f9 ]
-> 
-> 
-> Powerpc build error:
-> arch/powerpc/platforms/pseries/iommu.c:926:28: error: 'struct dma_win'
-> has no member named 'direct'
->     *direct_mapping = window->direct;
->                             ^~
-> 
-> powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping
-> for SR-IOV device
->  [ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
-> 
-> 
-> riscv: gcc-13-allmodconfig: FAILED
-> 
-> drivers/perf/riscv_pmu_sbi.c: In function 'pmu_sbi_ovf_handler':
-> drivers/perf/riscv_pmu_sbi.c:582:40: error: 'riscv_pmu_irq_num'
-> undeclared (first use in this function); did you mean 'riscv_pmu_irq'?
->   582 |                 csr_clear(CSR_SIP, BIT(riscv_pmu_irq_num));
->       |                                        ^~~~~~~~~~~~~~~~~
-> 
-> drivers: perf: Check find_first_bit() return value
->  [ Upstream commit c6e316ac05532febb0c966fa9b55f5258ed037be ]
+On 12/4/23 7:14 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.5 release.
+> There are 134 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.5-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Thanks, all should now be dropped.  I'll push out new -rc releases in a
-bit...
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-greg k-h
+Tested-by: Ron Economos <re@w6rz.net>
+
 
