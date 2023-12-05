@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05374804603
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2288046B0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3ABC1F212E4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C03871C20CC5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE7F4437;
-	Tue,  5 Dec 2023 03:23:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC228BEC;
+	Tue,  5 Dec 2023 03:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOwI+29K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTQA4O5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA4B6110;
-	Tue,  5 Dec 2023 03:23:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D36C433C8;
-	Tue,  5 Dec 2023 03:23:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19D16FB1;
+	Tue,  5 Dec 2023 03:30:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3E2DC433C7;
+	Tue,  5 Dec 2023 03:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746622;
-	bh=fBSRQ26nnJQZIFAmMuwYQ271X8520Wv15Wzx1tskz+A=;
+	s=korg; t=1701747032;
+	bh=iZjPH51Dr9bOY+cOLNjHyprIC3IaZTQcXBSnPjlI/NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOwI+29K4PUnLMRmzo1mjbdh07/cPHL3XmvMNwGSzVz+uLW0K+35HwWmdGWlc1OH8
-	 c9o724w4J7Tmi5RTC7UmwO83nJbVT+dK2znBO99SWa6Y45A4UCl8IC8YV4yaV/5mTI
-	 7jT8jMrcOI/PEOZ/B8Zw6ZR+A2CPIUjYGom2pGQc=
+	b=GTQA4O5xMOwBWhYeOzUjeyPiJ765DCF25+0pDLdmvNWeZYZ3FflQioKniAcDnUCBw
+	 5//OH+ICecW5LKyxCIUr/1uDeiwWfAUKOo8LiDqMTXLtAUsRGsl7+Swk0toCWQI4SJ
+	 xDQ8pl9r0VaV6WY8EI4xwNve+1VrKxSl8nlU5nWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Elena Salomatkina <elena.salomatkina.cmc@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/134] octeontx2-af: Fix possible buffer overflow
+	Zheng Wang <zyytlz.wz@163.com>,
+	Coly Li <colyli@suse.de>,
+	Markus Weippert <markus@gekmihesg.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 032/107] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
 Date: Tue,  5 Dec 2023 12:16:07 +0900
-Message-ID: <20231205031541.483240435@linuxfoundation.org>
+Message-ID: <20231205031533.549543819@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +54,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
+From: Markus Weippert <markus@gekmihesg.de>
 
-[ Upstream commit ad31c629ca3c87f6d557488c1f9faaebfbcd203c ]
+commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
 
-A loop in rvu_mbox_handler_nix_bandprof_free() contains
-a break if (idx == MAX_BANDPROF_PER_PFFUNC),
-but if idx may reach MAX_BANDPROF_PER_PFFUNC
-buffer '(*req->prof_idx)[layer]' overflow happens before that check.
+Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
+node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
+NULL pointer dereference.
 
-The patch moves the break to the
-beginning of the loop.
+BUG: kernel NULL pointer dereference, address: 0000000000000080
+Call Trace:
+ ? __die_body.cold+0x1a/0x1f
+ ? page_fault_oops+0xd2/0x2b0
+ ? exc_page_fault+0x70/0x170
+ ? asm_exc_page_fault+0x22/0x30
+ ? btree_node_free+0xf/0x160 [bcache]
+ ? up_write+0x32/0x60
+ btree_gc_coalesce+0x2aa/0x890 [bcache]
+ ? bch_extent_bad+0x70/0x170 [bcache]
+ btree_gc_recurse+0x130/0x390 [bcache]
+ ? btree_gc_mark_node+0x72/0x230 [bcache]
+ bch_btree_gc+0x5da/0x600 [bcache]
+ ? cpuusage_read+0x10/0x10
+ ? bch_btree_gc+0x600/0x600 [bcache]
+ bch_gc_thread+0x135/0x180 [bcache]
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+The relevant code starts with:
 
-Fixes: e8e095b3b370 ("octeontx2-af: cn10k: Bandwidth profiles config support").
-Signed-off-by: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://lore.kernel.org/r/20231124210802.109763-1-elena.salomatkina.cmc@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    new_nodes[0] = NULL;
+
+    for (i = 0; i < nodes; i++) {
+        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
+            goto out_nocoalesce;
+    // ...
+out_nocoalesce:
+    // ...
+    for (i = 0; i < nodes; i++)
+        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
+028ddcac477b
+            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
+            rw_unlock(true, new_nodes[i]);
+        }
+
+This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
+
+Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
+Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
+Cc: stable@vger.kernel.org
+Cc: Zheng Wang <zyytlz.wz@163.com>
+Cc: Coly Li <colyli@suse.de>
+Signed-off-by: Markus Weippert <markus@gekmihesg.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/bcache/btree.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 23c2f2ed2fb83..c112c71ff576f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -5505,6 +5505,8 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
+--- a/drivers/md/bcache/btree.c
++++ b/drivers/md/bcache/btree.c
+@@ -1489,7 +1489,7 @@ out_nocoalesce:
+ 	bch_keylist_free(&keylist);
  
- 		ipolicer = &nix_hw->ipolicer[layer];
- 		for (idx = 0; idx < req->prof_count[layer]; idx++) {
-+			if (idx == MAX_BANDPROF_PER_PFFUNC)
-+				break;
- 			prof_idx = req->prof_idx[layer][idx];
- 			if (prof_idx >= ipolicer->band_prof.max ||
- 			    ipolicer->pfvf_map[prof_idx] != pcifunc)
-@@ -5518,8 +5520,6 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
- 			ipolicer->pfvf_map[prof_idx] = 0x00;
- 			ipolicer->match_id[prof_idx] = 0;
- 			rvu_free_rsrc(&ipolicer->band_prof, prof_idx);
--			if (idx == MAX_BANDPROF_PER_PFFUNC)
--				break;
+ 	for (i = 0; i < nodes; i++)
+-		if (!IS_ERR(new_nodes[i])) {
++		if (!IS_ERR_OR_NULL(new_nodes[i])) {
+ 			btree_node_free(new_nodes[i]);
+ 			rw_unlock(true, new_nodes[i]);
  		}
- 	}
- 	mutex_unlock(&rvu->rsrc_lock);
--- 
-2.42.0
-
 
 
 
