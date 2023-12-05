@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-4052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0287D8045CC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF0C58045CF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FE4C1C20C49
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9710C282534
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E4D6FAF;
-	Tue,  5 Dec 2023 03:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C08D79F2;
+	Tue,  5 Dec 2023 03:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPif22Kd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WKyY271g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3978A6AA0;
-	Tue,  5 Dec 2023 03:21:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD953C433C7;
-	Tue,  5 Dec 2023 03:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CAD6AA0;
+	Tue,  5 Dec 2023 03:21:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67401C433C8;
+	Tue,  5 Dec 2023 03:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746497;
-	bh=x017ePMRf+bKFJVOz2nFHV5d5FlHSvo6YegdAD4d6bw=;
+	s=korg; t=1701746501;
+	bh=iokkyjSm8NDwgV2Bz2qkp+JHe1M82rGROAb52VG9t3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SPif22KdTAIgNJA083/rc2JL5eTLHsIeZAH0CRjd47SgfAp1LMbxnsK9AHJJJC50p
-	 1QInR2uy2A1wUxcC87eQmWgxDE5aeiHbVdbW9ZrBXCbrZrX54yZM+HuSqQ6Y6qrMuv
-	 mh9cs5H54puw3MwsXMZR31F9D0NopoI1pgaEs1Ss=
+	b=WKyY271g8JUj+k5+9sqkChxnDivDWLRQdDvvlBCdzRqk3KxPSn/zBnGw8cTu05Vy5
+	 54wUw6WTDFkuE28cJMAzTmRQAFKtjBVYFH1AvDAqqnO/uqnTV/zYg/IS2ih0dg778z
+	 QcYgDo33a//5YpWw0AqRUOOlAArQ47j9pSwzh1FM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Faith Ekstrand <faith.ekstrand@collabora.com>,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 6.6 045/134] nouveau: find the smallest page allocation to cover a buffer alloc.
-Date: Tue,  5 Dec 2023 12:15:17 +0900
-Message-ID: <20231205031538.416091213@linuxfoundation.org>
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 046/134] powercap: DTPM: Fix unneeded conversions to micro-Watts
+Date: Tue,  5 Dec 2023 12:15:18 +0900
+Message-ID: <20231205031538.481504835@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
 References: <20231205031535.163661217@linuxfoundation.org>
@@ -57,48 +56,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Lukasz Luba <lukasz.luba@arm.com>
 
-commit e9ba37d9f9a6872b069dd893bd86a7d77ba8c153 upstream.
+commit b817f1488fca548fe50e2654d84a1956a16a1a8a upstream.
 
-With the new uapi we don't have the comp flags on the allocation,
-so we shouldn't be using the first size that works, we should be
-iterating until we get the correct one.
+The power values coming from the Energy Model are already in uW.
 
-This reduces allocations from 2MB to 64k in lots of places.
+The PowerCap and DTPM frameworks operate on uW, so all places should
+just use the values from the EM.
 
-Fixes dEQP-VK.memory.allocation.basic.size_8KiB.forward.count_4000
-on my ampere/gsp system.
+Fix the code by removing all of the conversion to uW still present in it.
 
-Cc: stable@vger.kernel.org # v6.6
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Reviewed-by: Faith Ekstrand <faith.ekstrand@collabora.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230811031520.248341-1-airlied@gmail.com
+Fixes: ae6ccaa65038 (PM: EM: convert power field to micro-Watts precision and align drivers)
+Cc: 5.19+ <stable@vger.kernel.org> # v5.19+
+Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_bo.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/powercap/dtpm_cpu.c     |    6 +-----
+ drivers/powercap/dtpm_devfreq.c |   11 +++--------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_bo.c b/drivers/gpu/drm/nouveau/nouveau_bo.c
-index 0f3bd187ede6..280d1d9a559b 100644
---- a/drivers/gpu/drm/nouveau/nouveau_bo.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
-@@ -318,8 +318,9 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size, int *align, u32 domain,
- 			    (!vmm->page[i].host || vmm->page[i].shift > PAGE_SHIFT))
- 				continue;
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -24,7 +24,6 @@
+ #include <linux/of.h>
+ #include <linux/pm_qos.h>
+ #include <linux/slab.h>
+-#include <linux/units.h>
  
--			if (pi < 0)
--				pi = i;
-+			/* pick the last one as it will be smallest. */
-+			pi = i;
-+
- 			/* Stop once the buffer is larger than the current page size. */
- 			if (*size >= 1ULL << vmm->page[i].shift)
- 				break;
--- 
-2.43.0
-
+ struct dtpm_cpu {
+ 	struct dtpm dtpm;
+@@ -104,8 +103,7 @@ static u64 get_pd_power_uw(struct dtpm *
+ 		if (pd->table[i].frequency < freq)
+ 			continue;
+ 
+-		return scale_pd_power_uw(pd_mask, pd->table[i].power *
+-					 MICROWATT_PER_MILLIWATT);
++		return scale_pd_power_uw(pd_mask, pd->table[i].power);
+ 	}
+ 
+ 	return 0;
+@@ -122,11 +120,9 @@ static int update_pd_power_uw(struct dtp
+ 	nr_cpus = cpumask_weight(&cpus);
+ 
+ 	dtpm->power_min = em->table[0].power;
+-	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
+ 	dtpm->power_min *= nr_cpus;
+ 
+ 	dtpm->power_max = em->table[em->nr_perf_states - 1].power;
+-	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
+ 	dtpm->power_max *= nr_cpus;
+ 
+ 	return 0;
+--- a/drivers/powercap/dtpm_devfreq.c
++++ b/drivers/powercap/dtpm_devfreq.c
+@@ -39,10 +39,8 @@ static int update_pd_power_uw(struct dtp
+ 	struct em_perf_domain *pd = em_pd_get(dev);
+ 
+ 	dtpm->power_min = pd->table[0].power;
+-	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
+ 
+ 	dtpm->power_max = pd->table[pd->nr_perf_states - 1].power;
+-	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
+ 
+ 	return 0;
+ }
+@@ -54,13 +52,10 @@ static u64 set_pd_power_limit(struct dtp
+ 	struct device *dev = devfreq->dev.parent;
+ 	struct em_perf_domain *pd = em_pd_get(dev);
+ 	unsigned long freq;
+-	u64 power;
+ 	int i;
+ 
+ 	for (i = 0; i < pd->nr_perf_states; i++) {
+-
+-		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
+-		if (power > power_limit)
++		if (pd->table[i].power > power_limit)
+ 			break;
+ 	}
+ 
+@@ -68,7 +63,7 @@ static u64 set_pd_power_limit(struct dtp
+ 
+ 	dev_pm_qos_update_request(&dtpm_devfreq->qos_req, freq);
+ 
+-	power_limit = pd->table[i - 1].power * MICROWATT_PER_MILLIWATT;
++	power_limit = pd->table[i - 1].power;
+ 
+ 	return power_limit;
+ }
+@@ -110,7 +105,7 @@ static u64 get_pd_power_uw(struct dtpm *
+ 		if (pd->table[i].frequency < freq)
+ 			continue;
+ 
+-		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
++		power = pd->table[i].power;
+ 		power *= status.busy_time;
+ 		power >>= 10;
+ 
 
 
 
