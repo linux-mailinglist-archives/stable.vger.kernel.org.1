@@ -1,168 +1,150 @@
-Return-Path: <stable+bounces-4658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18BF805148
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:54:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D805C8051A1
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 12:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9907228170E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:54:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C7DEB20B43
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 11:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A0D3F8D3;
-	Tue,  5 Dec 2023 10:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B3155781;
+	Tue,  5 Dec 2023 11:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nK+cWFsU"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LCEoyrwL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92EF0D45;
-	Tue,  5 Dec 2023 02:54:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701773657; x=1733309657;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=yCuIHOeWcfGOCJR+76s/7IFgjxS9TLWZvOKlnLpi+0Y=;
-  b=nK+cWFsURHii2wQDnYgJ9zWuhkpPPOzhEDkrw0fBvFM/OFD09PFw7d6i
-   r9IFrHN4GzyibibcpoW7z8N2JgZ9AcvcFdKk3NHpntkDjOTjPN5XQGTau
-   SbImAVICD2BC356DgbLQvXQW1LMcfdFFEc2C9UmKI70I1aKAwqAtDWR9l
-   +buBa0/cLIf9xOgx1xwCuMBUnx2SuHctEcG4u2adoH71PsevIdmgcKWCT
-   ddpJjN5llaHfF9NsIWDi/JFwTGsj5ETzh8YjfgKr4ZooFTAJQBol1HN33
-   hruTD7ka6hW8B/uyF6g5aOa8fzoY15qm4O8o7LQWY6hNVUeO8/EHxkmMz
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="396672855"
-X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="396672855"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 02:54:16 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="747184419"
-X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
-   d="scan'208";a="747184419"
-Received: from abijaz-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.61.240])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 02:54:10 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 89EC610A437; Tue,  5 Dec 2023 13:54:07 +0300 (+03)
-Date: Tue, 5 Dec 2023 13:54:07 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Michael Kelley <mhkelley58@gmail.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"Cui, Dexuan" <decui@microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"stefan.bader@canonical.com" <stefan.bader@canonical.com>,
-	"tim.gardner@canonical.com" <tim.gardner@canonical.com>,
-	"roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
-	"cascardo@canonical.com" <cascardo@canonical.com>,
-	"kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Message-ID: <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2088.outbound.protection.outlook.com [40.107.92.88])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E96F211F;
+	Tue,  5 Dec 2023 03:09:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FC0fbLqb/JBzHtFX5jUt41StYMyZsWayIgQusuuI9uj3hQK0g7uqgrekDEkgKZ3bFVdI0BB4qckUxobLVh8xFWZzxybSEGzUREpTt1Tl8wGqzBdGAe74F6v7kNJ93J07akVNEJYGLRpvrIGhCmQYN6o+B0P4sd07rkRGjajSKA3leiPpXC6ZEG18lT/owstHbgnN2yneeoLIIIGcSXQ7E6IaQv52ZfA/xW1IQr8jyZY3qsKfyCTtKujXOqDAMOEKLrJcIzzAOCxkCoGy3FgoHJSna9Juwsn2nkxU05HfuPs0otTQUSKNJvXvlK2sFv9n6HvY9T5WFXNI/RBOWAZCyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=X38+pDy5h5MTuelDMywsbGzj8jhar/mCeWZXePns+BM=;
+ b=AZHwrx1nvpCqwbWlDI8PJ9sHboKK0qPgruz+9U3CZ4/M2lad9pUc5jQbOOKtda32X3ihzORznumHkWstLWbjo17v7HLLHmKZrgx7Og9SO5QF4Y0feGjtVk9MpzaEmuDsJX+XFIC/b9ocWjiYhcRQSHxVtzstrS5555Q5ILjuQ5EQLMuFiVsXh2Kdg/L5FnYlJySVpZjPZY2s0eU3WaQwh2MHePrOHz05bTprT/9MUu4EUHh3+9sea/IFiZlLV85ej4sIvgbhHV1DlX/QzaZ5CR5gzbaJFRyPldmfAwuUAw8wLw1h0AP2h+PYv0Sabvhj4RhM/l5ARHdFTRBrxyy4mQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=X38+pDy5h5MTuelDMywsbGzj8jhar/mCeWZXePns+BM=;
+ b=LCEoyrwLQcRJ9bkPeeQrL/RVqugXyq0l0n1OQBHcgRfmpIvWCzQZukiUa2ltKtew/M058RpxoSJItbJzuEn2IY98y7gs6FzwoQYgC1m35Fl1y4BBPh15bSJRhZtqupV3lojPz+PVogiKeEBDhIyTJqf9NcimdTQpgdT6Aou3PwcKWDRtqwQbcmkGsQVqL/TuK14j8cgNzSChtsbyWilvevKsb8Gh7th6DPVyd1Tmk/2ewpbJofYNXt9S7CCw4O1F/1fC22GlfSjb9RlDDdQ0cSNkS3eC6Xk5bBGesbzkEwrfZrM6ASOAghZ4PtV8LbLlXSBzc8HwhAWhOddvHXaypw==
+Received: from MN2PR08CA0026.namprd08.prod.outlook.com (2603:10b6:208:239::31)
+ by PH0PR12MB8773.namprd12.prod.outlook.com (2603:10b6:510:28d::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.33; Tue, 5 Dec
+ 2023 11:09:25 +0000
+Received: from BL6PEPF0001AB77.namprd02.prod.outlook.com
+ (2603:10b6:208:239:cafe::fa) by MN2PR08CA0026.outlook.office365.com
+ (2603:10b6:208:239::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.27 via Frontend
+ Transport; Tue, 5 Dec 2023 11:09:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ BL6PEPF0001AB77.mail.protection.outlook.com (10.167.242.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7068.20 via Frontend Transport; Tue, 5 Dec 2023 11:09:25 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 5 Dec 2023
+ 03:09:12 -0800
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Tue, 5 Dec 2023
+ 03:09:12 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Tue, 5 Dec 2023 03:09:12 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.14 00/30] 4.14.332-rc1 review
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
+Message-ID: <7156a696-7d9b-41ae-84e0-038d440c4718@rnnvmail203.nvidia.com>
+Date: Tue, 5 Dec 2023 03:09:12 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB77:EE_|PH0PR12MB8773:EE_
+X-MS-Office365-Filtering-Correlation-Id: b263e960-a4b7-495e-e876-08dbf582a44f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	DLrfwMLlEBy3A+yoTFejTgnd6TMV4jqfCOzfLlnHXdL5OD56Q9GUkH8zrHC3MuNKzYfCXP8lD4Wph4VSwyDM6o4/b66VEedXqR9wrK00S3qQTPPJ5RZYbCpPBy6+gn7nRD6502RAo6fX3Kb9CEA/JQRPT5XQk7+0LWjwL4cLmL9GuzHsczMuWKSDAHZ5XUlYOPGERnB3uvs6vbJ2oXLHnDfz5ho5OpkPMFJidbLZYgA6Z5VEGmG2CDPNecTpIxvbGgGV0V3I86lTW02l2cKIry4a1075zCE5surEAIavt4/OwVuKBeUcVu9RCVCKCiSvaaM+HvQX8Nd9jua4h9idy/OVqe720DAvElq8J5JvVSQv8XnNZtwslmhkmPQ+K5q18083af57hwtQygpU++KLEQIGO14tNp5raBGPvTGISd3jLVak1EiGRUn9UcluwuOW1I626xZBIA5HhjaAfOasBWdiLZ0ZUBt+IAtzpxFdSG3GKTZTWNLhWCUssUeDgn+SeOIo2m8Fq1QiXyzLnJ4dkK5fJz0LCQHrdg+WFNzVnytGFNZPEJGHfYDA2BUapGCuRWrVpjpvnbPvV9L3p1I7gdsIam6CnPlabKGjZZLTVvc1IcRdw+6z702c+oRpHdHGFkcPNkdoVXReRgAr7bnwBqkdP6KwDHGLW+Lvt+Xvg2VW2050dzqtBn7fmW8Hrg+eroVogewRlzWMnyrAkJE+WP4s5gelUB0Fq2xnRA0J3C+5glsCyet1esSJ/mn+xk3cRzx64bMcHhDZ2wqz8qqJoGzwEPAoav0a9Rm3y87HslU=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(376002)(39860400002)(346002)(230922051799003)(186009)(64100799003)(1800799012)(82310400011)(451199024)(46966006)(36840700001)(40470700004)(31686004)(40480700001)(41300700001)(2906002)(40460700003)(7416002)(5660300002)(8676002)(8936002)(966005)(6916009)(54906003)(316002)(478600001)(70586007)(70206006)(356005)(47076005)(7636003)(4326008)(36860700001)(86362001)(26005)(31696002)(426003)(82740400003)(336012);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Dec 2023 11:09:25.2123
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b263e960-a4b7-495e-e876-08dbf582a44f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF0001AB77.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8773
 
-On Mon, Dec 04, 2023 at 08:07:38PM +0100, Jeremi Piotrowski wrote:
-> On 04/12/2023 10:17, Reshetova, Elena wrote:
-> >> Check for additional CPUID bits to identify TDX guests running with Trust
-> >> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
-> >> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
-> >>
-> >> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is
-> >> visible
-> >> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
-> >> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
-> >> aware mechanisms for what's left. So currently such guests do not have
-> >> X86_FEATURE_TDX_GUEST set.
-> > 
-> > Back to this concrete patch. Why cannot L1 VMM emulate the correct value of
-> > the TDX_CPUID_LEAF_ID to L2 VM? It can do this per TDX partitioning arch.
-> > How do you handle this and other CPUID calls call currently in L1? Per spec,
-> > all CPUIDs calls from L2 will cause L2 --> L1 exit, so what do you do in L1?
-> The disclaimer here is that I don't have access to the paravisor (L1) code. But
-> to the best of my knowledge the L1 handles CPUID calls by calling into the TDX
-> module, or synthesizing a response itself. TDX_CPUID_LEAF_ID is not provided to
-> the L2 guest in order to discriminate a guest that is solely responsible for every
-> TDX mechanism (running at L1) from one running at L2 that has to cooperate with L1.
-> More below.
+On Tue, 05 Dec 2023 12:16:07 +0900, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.14.332 release.
+> There are 30 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> > 
-> > Given that you do that simple emulation, you already end up with TDX guest
-> > code being activated. Next you can check what features you wont be able to
-> > provide in L1 and create simple emulation calls for the TDG calls that must be
-> > supported and cannot return error. The biggest TDG call (TDVMCALL) is already
-> > direct call into L0 VMM, so this part doesn’t require L1 VMM support. 
+> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
+> Anything received after that time might be too late.
 > 
-> I don't see anything in the TD-partitioning spec that gives the TDX guest a way
-> to detect if it's running at L2 or L1, or check whether TDVMCALLs go to L0/L1.
-> So in any case this requires an extra cpuid call to establish the environment.
-> Given that, exposing TDX_CPUID_LEAF_ID to the guest doesn't help.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.332-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
+> and the diffstat can be found below.
 > 
-> I'll give some examples of where the idea of emulating a TDX environment
-> without attempting L1-L2 cooperation breaks down.
+> thanks,
 > 
-> hlt: if the guest issues a hlt TDVMCALL it goes to L0, but if it issues a classic hlt
-> it traps to L1. The hlt should definitely go to L1 so that L1 has a chance to do
-> housekeeping.
+> greg k-h
 
-Why would L2 issue HLT TDVMCALL? It only happens in response to #VE, but
-if partitioning enabled #VEs are routed to L1 anyway.
+All tests passing for Tegra ...
 
-> map gpa: say the guest uses MAP_GPA TDVMCALL. This goes to L0, not L1 which is the actual
-> entity that needs to have a say in performing the conversion. L1 can't act on the request
-> if L0 would forward it because of the CoCo threat model. So L1 and L2 get out of sync.
-> The only safe approach is for L2 to use a different mechanism to trap to L1 explicitly.
+Test results for stable-v4.14:
+    10 builds:	10 pass, 0 fail
+    16 boots:	16 pass, 0 fail
+    32 tests:	32 pass, 0 fail
 
-Hm? L1 is always in loop on share<->private conversion. I don't know why
-you need MAP_GPA for that.
+Linux version:	4.14.332-rc1-g4937f1b0d0b4
+Boards tested:	tegra124-jetson-tk1, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
 
-You can't rely on MAP_GPA anyway. It is optional (unfortunately). Conversion
-doesn't require MAP_GPA call.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-> Having a paravisor is required to support a TPM and having TDVMCALLs go to L0 is
-> required to make performance viable for real workloads.
-> 
-> > 
-> > Until we really see what breaks with this approach, I don’t think it is worth to
-> > take in the complexity to support different L1 hypervisors view on partitioning.
-> > 
-> 
-> I'm not asking to support different L1 hypervisors view on partitioning, I want to
-> clean up the code (by fixing assumptions that no longer hold) for the model that I'm
-> describing that: the kernel already supports, has an implementation that works and
-> has actual users. This is also a model that Intel intentionally created the TD-partitioning
-> spec to support.
-> 
-> So lets work together to make X86_FEATURE_TDX_GUEST match reality.
-
-I think the right direction is to make TDX architecture good enough
-without that. If we need more hooks in TDX module that give required
-control to L1, let's do that. (I don't see it so far)
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jon
 
