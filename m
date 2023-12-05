@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-4521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45538047D7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72451804780
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65641B20D2C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E3B7281678
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC1479F2;
-	Tue,  5 Dec 2023 03:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B279E8C03;
+	Tue,  5 Dec 2023 03:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRmXMwRr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gouKTrve"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED926AC2;
-	Tue,  5 Dec 2023 03:42:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEC6CC433C8;
-	Tue,  5 Dec 2023 03:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700CB6FB1;
+	Tue,  5 Dec 2023 03:39:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BB66C433CA;
+	Tue,  5 Dec 2023 03:39:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747772;
-	bh=O94ghMHhdccr3JLfRxULUy38emkdU7VgphL76WjikOQ=;
+	s=korg; t=1701747563;
+	bh=KLm21gRqYh66R6g9xls2W9fwx/+R54qhhFEaiiwcG2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kRmXMwRrvhofOLRQlSR8BjSatkp3EpBig87HdJDCCApiUe7ZjOuLv0a4VC1NXSnM1
-	 wJ3aTp8lmiLpSN56rzuQMzMlHeu0iQVEFkohEfzXGDl0K2B5LoHiQcf7cdwdsVGdEX
-	 CTyytAHOdnMBlanFlI4RamrXvwzjt1Qds5B5c5JQ=
+	b=gouKTrve+5bMQ5GuQxuSMcH33DU/6o161UOJYl8d6POw5aUtA/xdBxE2e7ftfPhh4
+	 4dkDLZtMUMGUDH21NoBzRLFbPewo86fNhw0zPmV48cLAxSVfQiGs6Zk0TehK+W3sL2
+	 LBOkRYRVkUk95NCzmvBdBxH+ASz1EkAIRedOS1JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/67] Revert "workqueue: remove unused cancel_work()"
+Subject: [PATCH 5.10 122/135] scsi: qla2xxx: Use scsi_cmd_to_rq() instead of scsi_cmnd.request
 Date: Tue,  5 Dec 2023 12:17:23 +0900
-Message-ID: <20231205031522.013585645@linuxfoundation.org>
+Message-ID: <20231205031538.585539706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
-References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +51,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 73b4b53276a1d6290cd4f47dbbc885b6e6e59ac6 ]
+[ Upstream commit c7d6b2c2cd5656b05849afb0de3f422da1742d0f ]
 
-This reverts commit 6417250d3f894e66a68ba1cd93676143f2376a6f.
+Prepare for removal of the request pointer by using scsi_cmd_to_rq()
+instead. This patch does not change any functionality.
 
-amdpgu need this function in order to prematurly stop pending
-reset works when another reset work already in progress.
-
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
-Reviewed-by: Lai Jiangshan<jiangshanlai@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 91d3d149978b ("r8169: prevent potential deadlock in rtl8169_close")
+Link: https://lore.kernel.org/r/20210809230355.8186-39-bvanassche@acm.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 19597cad64d6 ("scsi: qla2xxx: Fix system crash due to bad pointer access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/workqueue.h | 1 +
- kernel/workqueue.c        | 9 +++++++++
- 2 files changed, 10 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-index 1e96680f50230..5f2e531d0a80d 100644
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -462,6 +462,7 @@ extern int schedule_on_each_cpu(work_func_t func);
- int execute_in_process_context(work_func_t fn, struct execute_work *);
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 8d199deaf3b12..136522a1c7281 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -839,7 +839,7 @@ qla2xxx_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
+ 		uint16_t hwq;
+ 		struct qla_qpair *qpair = NULL;
  
- extern bool flush_work(struct work_struct *work);
-+extern bool cancel_work(struct work_struct *work);
- extern bool cancel_work_sync(struct work_struct *work);
+-		tag = blk_mq_unique_tag(cmd->request);
++		tag = blk_mq_unique_tag(scsi_cmd_to_rq(cmd));
+ 		hwq = blk_mq_unique_tag_to_hwq(tag);
+ 		qpair = ha->queue_pair_map[hwq];
  
- extern bool flush_delayed_work(struct delayed_work *dwork);
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 962ee27ec7d70..d5f30b610217e 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -3277,6 +3277,15 @@ static bool __cancel_work(struct work_struct *work, bool is_dwork)
- 	return ret;
- }
+@@ -1714,7 +1714,7 @@ static void qla2x00_abort_srb(struct qla_qpair *qp, srb_t *sp, const int res,
+ 		}
  
-+/*
-+ * See cancel_delayed_work()
-+ */
-+bool cancel_work(struct work_struct *work)
-+{
-+	return __cancel_work(work, false);
-+}
-+EXPORT_SYMBOL(cancel_work);
-+
- /**
-  * cancel_delayed_work - cancel a delayed work
-  * @dwork: delayed_work to cancel
+ 		spin_lock_irqsave(qp->qp_lock_ptr, *flags);
+-		if (ret_cmd && blk_mq_request_started(cmd->request))
++		if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
+ 			sp->done(sp, res);
+ 	} else {
+ 		sp->done(sp, res);
 -- 
 2.42.0
 
