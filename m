@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-4276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8DC98046CF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBBDE80459D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A38052815BC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70FD21F21370
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C098BF1;
-	Tue,  5 Dec 2023 03:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643726FAF;
+	Tue,  5 Dec 2023 03:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTlEgiW3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cBdoNfNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0E66FB1;
-	Tue,  5 Dec 2023 03:31:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BFBC433C7;
-	Tue,  5 Dec 2023 03:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1586AA0;
+	Tue,  5 Dec 2023 03:19:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AECBC433C8;
+	Tue,  5 Dec 2023 03:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747107;
-	bh=tswMCRidaPb/E+4lnNmClmNc3suQZ8iea7jsFlytyss=;
+	s=korg; t=1701746364;
+	bh=vjwo2T6ygTRtrIdyngj3W5pKhzc3a9Eo+xmExYZoSZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gTlEgiW31Evetc3fjGmX1eCGatpoFXsOR/L9VFr5Q1eIjcO3rMzUqLocalIDCELCE
-	 YEtSVA+BIT/260coiD5GRRrFoWjO0DvuuHDKs2MzXSusYVf32ZhwbOldyJVbT1+ITJ
-	 oSNfx1lZ2gMuVqHQpw7TCdkawm6uEkH8CK0XzxoU=
+	b=cBdoNfNYqOhmW5e+Yg/Yi8sJ1zt4VvLyglRirMh6iW3PSf8L/rnghLrTto18PKh11
+	 wKEaVbRhEC6H3lyczYzIJqX5EYRHEaYuepnpjT9AD24/2WKM4aBTt7ftfMtmp+rN1I
+	 iIlLwELwnPzxaywsy/9XhS9NnCbJZ+DeUZPZhl0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Dmitry Safonov <0x7f454c46@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/107] selftests/net: ipsec: fix constant out of range
-Date: Tue,  5 Dec 2023 12:16:36 +0900
-Message-ID: <20231205031535.231908751@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Saravana Kannan <saravanak@google.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	James Clark <james.clark@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>
+Subject: [PATCH 4.14 30/30] driver core: Release all resources during unbind before updating device links
+Date: Tue,  5 Dec 2023 12:16:37 +0900
+Message-ID: <20231205031513.296826070@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +58,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Saravana Kannan <saravanak@google.com>
 
-[ Upstream commit 088559815477c6f623a5db5993491ddd7facbec7 ]
+commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 upstream.
 
-Fix a small compiler warning.
+This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
+dependencies tracking support") where the device link status was
+incorrectly updated in the driver unbind path before all the device's
+resources were released.
 
-nr_process must be a signed long: it is assigned a signed long by
-strtol() and is compared against LONG_MIN and LONG_MAX.
-
-ipsec.c:2280:65:
-    error: result of comparison of constant -9223372036854775808
-    with expression of type 'unsigned int' is always false
-    [-Werror,-Wtautological-constant-out-of-range-compare]
-
-  if ((errno == ERANGE && (nr_process == LONG_MAX || nr_process == LONG_MIN))
-
-Fixes: bc2652b7ae1e ("selftest/net/xfrm: Add test for ipsec tunnel")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
-Link: https://lore.kernel.org/r/20231124171645.1011043-2-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking support")
+Cc: stable <stable@kernel.org>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pengutronix.de/
+Signed-off-by: Saravana Kannan <saravanak@google.com>
+Cc: Thierry Reding <thierry.reding@gmail.com>
+Cc: Yang Yingliang <yangyingliang@huawei.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: James Clark <james.clark@arm.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@google.com
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/ipsec.c | 4 ++--
+ drivers/base/dd.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/ipsec.c b/tools/testing/selftests/net/ipsec.c
-index 9a8229abfa026..be4a30a0d02ae 100644
---- a/tools/testing/selftests/net/ipsec.c
-+++ b/tools/testing/selftests/net/ipsec.c
-@@ -2263,7 +2263,7 @@ static int check_results(void)
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -869,8 +869,6 @@ static void __device_release_driver(stru
+ 		else if (drv->remove)
+ 			drv->remove(dev);
  
- int main(int argc, char **argv)
- {
--	unsigned int nr_process = 1;
-+	long nr_process = 1;
- 	int route_sock = -1, ret = KSFT_SKIP;
- 	int test_desc_fd[2];
- 	uint32_t route_seq;
-@@ -2284,7 +2284,7 @@ int main(int argc, char **argv)
- 			exit_usage(argv);
- 		}
+-		device_links_driver_cleanup(dev);
+-
+ 		devres_release_all(dev);
+ 		dma_deconfigure(dev);
+ 		dev->driver = NULL;
+@@ -879,6 +877,8 @@ static void __device_release_driver(stru
+ 			dev->pm_domain->dismiss(dev);
+ 		pm_runtime_reinit(dev);
  
--		if (nr_process > MAX_PROCESSES || !nr_process) {
-+		if (nr_process > MAX_PROCESSES || nr_process < 1) {
- 			printk("nr_process should be between [1; %u]",
- 					MAX_PROCESSES);
- 			exit_usage(argv);
--- 
-2.42.0
-
++		device_links_driver_cleanup(dev);
++
+ 		klist_remove(&dev->p->knode_driver);
+ 		device_pm_check_callbacks(dev);
+ 		if (dev->bus)
 
 
 
