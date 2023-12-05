@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-4338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6405804713
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 897D88045E1
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BB0A281168
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBC511C20CA2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C62C8BF1;
-	Tue,  5 Dec 2023 03:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148B06FB0;
+	Tue,  5 Dec 2023 03:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jixFsbMS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjJ3UMv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00F26FB1;
-	Tue,  5 Dec 2023 03:34:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C007C433C7;
-	Tue,  5 Dec 2023 03:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D4C6AA0;
+	Tue,  5 Dec 2023 03:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B05C433C7;
+	Tue,  5 Dec 2023 03:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747275;
-	bh=PfBclSW4vFYaXb8Gjuq3kolKJ2o+ewTZWF8mwGhM6fY=;
+	s=korg; t=1701746546;
+	bh=OTKzp/jlIFXyorD6utj1TuLMpkJnviaW5o2BD+GESuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jixFsbMSO9Z2gYtJgMlz+4oCO7N2neO32vt+Mxx7Rh3RgGCv65bGwqiaM72I7Nvkf
-	 d9+myyg8gO1GyaGc/ZnPyIkpLOepgwCdDaxhnIJ1qRNnp/t1iJ+bj36CbCI6lYA9T5
-	 cf/3zxHBWeInYRce5+3MItsVs0O77AOElj0K3HTw=
+	b=RjJ3UMv7Al6zUK/95wJHThobGhALStvcWmptLt2pXAtb6Afl+dAAqVMY0lzb8dmCL
+	 PWAhhA6QgG2Cx3VOaLTLljuje7+799bawhMLG8j3X5oT3svwtNFe1PwIzN/m8Dc3kN
+	 5MJKVZCIjHLF6SLU5HxCJrwPRZ/sHW3ZWfOqvo5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/135] wireguard: use DEV_STATS_INC()
+	Bragatheswaran Manickavel <bragathemanick0908@gmail.com>,
+	David Sterba <dsterba@suse.com>,
+	syzbot+d66de4cbf532749df35f@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 065/134] btrfs: ref-verify: fix memory leaks in btrfs_ref_tree_mod()
 Date: Tue,  5 Dec 2023 12:15:37 +0900
-Message-ID: <20231205031531.562458349@linuxfoundation.org>
+Message-ID: <20231205031539.675811976@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,126 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
 
-[ Upstream commit 93da8d75a66568ba4bb5b14ad2833acd7304cd02 ]
+commit f91192cd68591c6b037da345bc9fcd5e50540358 upstream.
 
-wg_xmit() can be called concurrently, KCSAN reported [1]
-some device stats updates can be lost.
+In btrfs_ref_tree_mod(), when !parent 're' was allocated through
+kmalloc(). In the following code, if an error occurs, the execution will
+be redirected to 'out' or 'out_unlock' and the function will be exited.
+However, on some of the paths, 're' are not deallocated and may lead to
+memory leaks.
 
-Use DEV_STATS_INC() for this unlikely case.
+For example: lookup_block_entry() for 'be' returns NULL, the out label
+will be invoked. During that flow ref and 'ra' are freed but not 're',
+which can potentially lead to a memory leak.
 
-[1]
-BUG: KCSAN: data-race in wg_xmit / wg_xmit
-
-read-write to 0xffff888104239160 of 8 bytes by task 1375 on cpu 0:
-wg_xmit+0x60f/0x680 drivers/net/wireguard/device.c:231
-__netdev_start_xmit include/linux/netdevice.h:4918 [inline]
-netdev_start_xmit include/linux/netdevice.h:4932 [inline]
-xmit_one net/core/dev.c:3543 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3559
-...
-
-read-write to 0xffff888104239160 of 8 bytes by task 1378 on cpu 1:
-wg_xmit+0x60f/0x680 drivers/net/wireguard/device.c:231
-__netdev_start_xmit include/linux/netdevice.h:4918 [inline]
-netdev_start_xmit include/linux/netdevice.h:4932 [inline]
-xmit_one net/core/dev.c:3543 [inline]
-dev_hard_start_xmit+0x11b/0x3f0 net/core/dev.c:3559
-...
-
-v2: also change wg_packet_consume_data_done() (Hangbin Liu)
-    and wg_packet_purge_staged_packets()
-
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Jason A. Donenfeld <Jason@zx2c4.com>
-Cc: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 5.10+
+Reported-and-tested-by: syzbot+d66de4cbf532749df35f@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d66de4cbf532749df35f
+Signed-off-by: Bragatheswaran Manickavel <bragathemanick0908@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/device.c  |  4 ++--
- drivers/net/wireguard/receive.c | 12 ++++++------
- drivers/net/wireguard/send.c    |  3 ++-
- 3 files changed, 10 insertions(+), 9 deletions(-)
+ fs/btrfs/ref-verify.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
-index e0693cd965ec4..713ca20feaef4 100644
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -193,7 +193,7 @@ static netdev_tx_t wg_xmit(struct sk_buff *skb, struct net_device *dev)
- 	 */
- 	while (skb_queue_len(&peer->staged_packet_queue) > MAX_STAGED_PACKETS) {
- 		dev_kfree_skb(__skb_dequeue(&peer->staged_packet_queue));
--		++dev->stats.tx_dropped;
-+		DEV_STATS_INC(dev, tx_dropped);
- 	}
- 	skb_queue_splice_tail(&packets, &peer->staged_packet_queue);
- 	spin_unlock_bh(&peer->staged_packet_queue.lock);
-@@ -211,7 +211,7 @@ static netdev_tx_t wg_xmit(struct sk_buff *skb, struct net_device *dev)
- 	else if (skb->protocol == htons(ETH_P_IPV6))
- 		icmpv6_ndo_send(skb, ICMPV6_DEST_UNREACH, ICMPV6_ADDR_UNREACH, 0);
- err:
--	++dev->stats.tx_errors;
-+	DEV_STATS_INC(dev, tx_errors);
- 	kfree_skb(skb);
- 	return ret;
- }
-diff --git a/drivers/net/wireguard/receive.c b/drivers/net/wireguard/receive.c
-index f500aaf678370..d38b24339a1f9 100644
---- a/drivers/net/wireguard/receive.c
-+++ b/drivers/net/wireguard/receive.c
-@@ -423,20 +423,20 @@ static void wg_packet_consume_data_done(struct wg_peer *peer,
- 	net_dbg_skb_ratelimited("%s: Packet has unallowed src IP (%pISc) from peer %llu (%pISpfsc)\n",
- 				dev->name, skb, peer->internal_id,
- 				&peer->endpoint.addr);
--	++dev->stats.rx_errors;
--	++dev->stats.rx_frame_errors;
-+	DEV_STATS_INC(dev, rx_errors);
-+	DEV_STATS_INC(dev, rx_frame_errors);
- 	goto packet_processed;
- dishonest_packet_type:
- 	net_dbg_ratelimited("%s: Packet is neither ipv4 nor ipv6 from peer %llu (%pISpfsc)\n",
- 			    dev->name, peer->internal_id, &peer->endpoint.addr);
--	++dev->stats.rx_errors;
--	++dev->stats.rx_frame_errors;
-+	DEV_STATS_INC(dev, rx_errors);
-+	DEV_STATS_INC(dev, rx_frame_errors);
- 	goto packet_processed;
- dishonest_packet_size:
- 	net_dbg_ratelimited("%s: Packet has incorrect size from peer %llu (%pISpfsc)\n",
- 			    dev->name, peer->internal_id, &peer->endpoint.addr);
--	++dev->stats.rx_errors;
--	++dev->stats.rx_length_errors;
-+	DEV_STATS_INC(dev, rx_errors);
-+	DEV_STATS_INC(dev, rx_length_errors);
- 	goto packet_processed;
- packet_processed:
- 	dev_kfree_skb(skb);
-diff --git a/drivers/net/wireguard/send.c b/drivers/net/wireguard/send.c
-index 95c853b59e1da..0d48e0f4a1ba3 100644
---- a/drivers/net/wireguard/send.c
-+++ b/drivers/net/wireguard/send.c
-@@ -333,7 +333,8 @@ static void wg_packet_create_data(struct wg_peer *peer, struct sk_buff *first)
- void wg_packet_purge_staged_packets(struct wg_peer *peer)
- {
- 	spin_lock_bh(&peer->staged_packet_queue.lock);
--	peer->device->dev->stats.tx_dropped += peer->staged_packet_queue.qlen;
-+	DEV_STATS_ADD(peer->device->dev, tx_dropped,
-+		      peer->staged_packet_queue.qlen);
- 	__skb_queue_purge(&peer->staged_packet_queue);
- 	spin_unlock_bh(&peer->staged_packet_queue.lock);
- }
--- 
-2.42.0
-
+--- a/fs/btrfs/ref-verify.c
++++ b/fs/btrfs/ref-verify.c
+@@ -791,6 +791,7 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ 			dump_ref_action(fs_info, ra);
+ 			kfree(ref);
+ 			kfree(ra);
++			kfree(re);
+ 			goto out_unlock;
+ 		} else if (be->num_refs == 0) {
+ 			btrfs_err(fs_info,
+@@ -800,6 +801,7 @@ int btrfs_ref_tree_mod(struct btrfs_fs_i
+ 			dump_ref_action(fs_info, ra);
+ 			kfree(ref);
+ 			kfree(ra);
++			kfree(re);
+ 			goto out_unlock;
+ 		}
+ 
 
 
 
