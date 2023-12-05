@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D2A880482B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72B768047CA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:42:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE2E81C20ECD
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A45201C20E36
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239628C13;
-	Tue,  5 Dec 2023 03:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E712979F2;
+	Tue,  5 Dec 2023 03:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I2Vh7G1l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V0J7uhAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B266FB0;
-	Tue,  5 Dec 2023 03:46:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65AD3C433C7;
-	Tue,  5 Dec 2023 03:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B586AC2;
+	Tue,  5 Dec 2023 03:42:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D522C433C8;
+	Tue,  5 Dec 2023 03:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747996;
-	bh=8CYqbQvBCEq/o3soq3ZIEzq08n92RVnBWXI6cIDnb38=;
+	s=korg; t=1701747736;
+	bh=E4BMY+RSGV5/CZPm4XVPVZPWsbBqkVswVpi2EsT9lh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I2Vh7G1ltz8p2pI6TjfOTiXWGg4gqVO2oHXotB26XuKaqr7s17A4S13fDRj5nGUNl
-	 iB2gxrgLYj+LnFboJe6VKRrCwaxo4m/1iSgY96MKA5vxKEXis3FLsiu94rsUBG8J1X
-	 UVVJdD7OX2/Cx61vaGbl36IxvPUpKCJuFGfDCRbg=
+	b=V0J7uhAPkjLVsaA1A4SahAxwZNqUtmS5go/gQ8cFz4qKQvPp379o6TqO9TCXBvjtm
+	 Ygb5SsvombFob4/Mls8FidrMXjZgF1dzG1hklexjhhmThDAQ0T7duGufRmVdbIg8Tn
+	 tu6zPU/rLW4DRVFS8/Zj/fZLlFGTFFO7Wku3LfPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Toledanes <chris.toledanes@hp.com>,
-	Carl Ng <carl.ng@hp.com>,
-	Max Nguyen <maxwell.nguyen@hp.com>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.4 67/94] Input: xpad - add HyperX Clutch Gladiate Support
+	Gaurav Batra <gbatra@linux.vnet.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 50/67] powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping for SR-IOV device
 Date: Tue,  5 Dec 2023 12:17:35 +0900
-Message-ID: <20231205031526.602306192@linuxfoundation.org>
+Message-ID: <20231205031522.716255841@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,45 +53,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Nguyen <maxwell.nguyen@hp.com>
+From: Gaurav Batra <gbatra@linux.vnet.ibm.com>
 
-commit e28a0974d749e5105d77233c0a84d35c37da047e upstream.
+[ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
 
-Add HyperX controller support to xpad_device and xpad_table.
+When a device is initialized, the driver invokes dma_supported() twice -
+first for streaming mappings followed by coherent mappings. For an
+SR-IOV device, default window is deleted and DDW created. With vPMEM
+enabled, TCE mappings are dynamically created for both vPMEM and SR-IOV
+device.  There are no direct mappings.
 
-Suggested-by: Chris Toledanes <chris.toledanes@hp.com>
-Reviewed-by: Carl Ng <carl.ng@hp.com>
-Signed-off-by: Max Nguyen <maxwell.nguyen@hp.com>
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Link: https://lore.kernel.org/r/20230906231514.4291-1-hphyperxdev@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+First time when dma_supported() is called with 64 bit mask, DDW is created
+and marked as dynamic window. The second time dma_supported() is called,
+enable_ddw() finds existing window for the device and incorrectly returns
+it as "direct mapping".
+
+This only happens when size of DDW is big enough to map max LPAR memory.
+
+This results in streaming TCEs to not get dynamically mapped, since code
+incorrently assumes these are already pre-mapped. The adapter initially
+comes up but goes down due to EEH.
+
+Fixes: 381ceda88c4c ("powerpc/pseries/iommu: Make use of DDW for indirect mapping")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Gaurav Batra <gbatra@linux.vnet.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231003030802.47914-1-gbatra@linux.vnet.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/platforms/pseries/iommu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -119,6 +119,7 @@ static const struct xpad_device {
- 	{ 0x044f, 0x0f07, "Thrustmaster, Inc. Controller", 0, XTYPE_XBOX },
- 	{ 0x044f, 0x0f10, "Thrustmaster Modena GT Wheel", 0, XTYPE_XBOX },
- 	{ 0x044f, 0xb326, "Thrustmaster Gamepad GP XID", 0, XTYPE_XBOX360 },
-+	{ 0x03f0, 0x0495, "HyperX Clutch Gladiate", 0, XTYPE_XBOXONE },
- 	{ 0x045e, 0x0202, "Microsoft X-Box pad v1 (US)", 0, XTYPE_XBOX },
- 	{ 0x045e, 0x0285, "Microsoft X-Box pad (Japan)", 0, XTYPE_XBOX },
- 	{ 0x045e, 0x0287, "Microsoft Xbox Controller S", 0, XTYPE_XBOX },
-@@ -431,6 +432,7 @@ static const struct usb_device_id xpad_t
- 	XPAD_XBOX360_VENDOR(0x0079),		/* GPD Win 2 Controller */
- 	XPAD_XBOX360_VENDOR(0x03eb),		/* Wooting Keyboards (Legacy) */
- 	XPAD_XBOX360_VENDOR(0x044f),		/* Thrustmaster X-Box 360 controllers */
-+	XPAD_XBOXONE_VENDOR(0x03f0),		/* HP HyperX Xbox One Controllers */
- 	XPAD_XBOX360_VENDOR(0x045e),		/* Microsoft X-Box 360 controllers */
- 	XPAD_XBOXONE_VENDOR(0x045e),		/* Microsoft X-Box One controllers */
- 	XPAD_XBOX360_VENDOR(0x046d),		/* Logitech X-Box 360 style controllers */
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index aa5f8074e9b10..bee61292de23b 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -891,7 +891,8 @@ static int remove_ddw(struct device_node *np, bool remove_prop, const char *win_
+ 	return 0;
+ }
+ 
+-static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift)
++static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *window_shift,
++			      bool *direct_mapping)
+ {
+ 	struct dma_win *window;
+ 	const struct dynamic_dma_window_prop *dma64;
+@@ -904,6 +905,7 @@ static bool find_existing_ddw(struct device_node *pdn, u64 *dma_addr, int *windo
+ 			dma64 = window->prop;
+ 			*dma_addr = be64_to_cpu(dma64->dma_base);
+ 			*window_shift = be32_to_cpu(dma64->window_shift);
++			*direct_mapping = window->direct;
+ 			found = true;
+ 			break;
+ 		}
+@@ -1253,10 +1255,8 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 
+ 	mutex_lock(&dma_win_init_mutex);
+ 
+-	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len)) {
+-		direct_mapping = (len >= max_ram_len);
++	if (find_existing_ddw(pdn, &dev->dev.archdata.dma_offset, &len, &direct_mapping))
+ 		goto out_unlock;
+-	}
+ 
+ 	/*
+ 	 * If we already went through this for a previous function of
+-- 
+2.42.0
+
 
 
 
