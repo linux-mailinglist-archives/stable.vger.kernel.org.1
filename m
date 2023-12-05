@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-4350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BB380471F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C528045EE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F2EB1F21427
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F13921C20C5A
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868DD79E3;
-	Tue,  5 Dec 2023 03:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB56E6FAF;
+	Tue,  5 Dec 2023 03:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkLzucqo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPgiqala"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F7D6FB1;
-	Tue,  5 Dec 2023 03:35:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF75DC433C7;
-	Tue,  5 Dec 2023 03:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9975879E3;
+	Tue,  5 Dec 2023 03:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE27FC433C8;
+	Tue,  5 Dec 2023 03:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747310;
-	bh=kxDAObiAMRJQYj9EnoC4fqjc1PwCRCKFH0af/LidByE=;
+	s=korg; t=1701746576;
+	bh=RW8DQrwd4h01ZvVqVmR8uCtj846/lQzpvGuymrfO00Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkLzucqoysO0uZW86gAEBUBFm3EsCjD/cEeqP/iDA/CXQLnZwYeLY9adRtL6+6g8u
-	 +8572jRgBM8Sc7Hz5C6Un3yX9Zfoq+L1puL6Jh+PcilM9w27eISstw7nRi+krbYzRY
-	 YzEOyznESGFTnSiqSuJyNIT4KzQP0zSHle5qX21s=
+	b=lPgiqalav1+TurztHP5M2vb0QRqGsO6dm9Mba0kNOSRNFIrqkPoMXahC8fceqKFAb
+	 RZ2VbC9CwGFxCCu/v7S788iQydMDRIE6TmelAtRrrtgfuoGU2wnFfnL+zezm7eJymH
+	 HDAPKBd55zZg0IagJRjrd0N92bJa2qBjyDXlc7fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/135] amd-xgbe: propagate the correct speed and duplex status
+Subject: [PATCH 6.6 076/134] pinctrl: stm32: fix array read out of bound
 Date: Tue,  5 Dec 2023 12:15:48 +0900
-Message-ID: <20231205031532.352956670@linuxfoundation.org>
+Message-ID: <20231205031540.307173525@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Antonio Borneo <antonio.borneo@foss.st.com>
 
-[ Upstream commit 7a2323ac24a50311f64a3a9b54ed5bef5821ecae ]
+[ Upstream commit edd48fd9d45370d6c8ba0dd834fcc51ff688cc87 ]
 
-xgbe_get_link_ksettings() does not propagate correct speed and duplex
-information to ethtool during cable unplug. Due to which ethtool reports
-incorrect values for speed and duplex.
+The existing code does not verify if the "tentative" index exceeds
+the size of the array, causing out of bound read.
+Issue identified with kasan.
 
-Address this by propagating correct information.
+Check the index before using it.
 
-Fixes: 7c12aa08779c ("amd-xgbe: Move the PHY support into amd-xgbe")
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Antonio Borneo <antonio.borneo@foss.st.com>
+Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
+Link: https://lore.kernel.org/r/20231107110520.4449-1-antonio.borneo@foss.st.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
-index 61f39a0e04f95..64aebf922dda9 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c
-@@ -314,10 +314,15 @@ static int xgbe_get_link_ksettings(struct net_device *netdev,
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index 419eca49ccecb..346a31f31bba8 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1283,9 +1283,11 @@ static struct stm32_desc_pin *stm32_pctrl_get_desc_pin_from_gpio(struct stm32_pi
+ 	int i;
  
- 	cmd->base.phy_address = pdata->phy.address;
- 
--	cmd->base.autoneg = pdata->phy.autoneg;
--	cmd->base.speed = pdata->phy.speed;
--	cmd->base.duplex = pdata->phy.duplex;
-+	if (netif_carrier_ok(netdev)) {
-+		cmd->base.speed = pdata->phy.speed;
-+		cmd->base.duplex = pdata->phy.duplex;
-+	} else {
-+		cmd->base.speed = SPEED_UNKNOWN;
-+		cmd->base.duplex = DUPLEX_UNKNOWN;
+ 	/* With few exceptions (e.g. bank 'Z'), pin number matches with pin index in array */
+-	pin_desc = pctl->pins + stm32_pin_nb;
+-	if (pin_desc->pin.number == stm32_pin_nb)
+-		return pin_desc;
++	if (stm32_pin_nb < pctl->npins) {
++		pin_desc = pctl->pins + stm32_pin_nb;
++		if (pin_desc->pin.number == stm32_pin_nb)
++			return pin_desc;
 +	}
  
-+	cmd->base.autoneg = pdata->phy.autoneg;
- 	cmd->base.port = PORT_NONE;
- 
- 	XGBE_LM_COPY(cmd, supported, lks, supported);
+ 	/* Otherwise, loop all array to find the pin with the right number */
+ 	for (i = 0; i < pctl->npins; i++) {
 -- 
 2.42.0
 
