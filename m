@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B41B80476B
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7ED4804682
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 164BB281665
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B03EB208A5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48AE8C03;
-	Tue,  5 Dec 2023 03:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB9179E3;
+	Tue,  5 Dec 2023 03:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObYgYyg9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npa7/jiW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682CE79E3;
-	Tue,  5 Dec 2023 03:38:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9ABEC433CA;
-	Tue,  5 Dec 2023 03:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8746FAF;
+	Tue,  5 Dec 2023 03:28:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EA2C433C8;
+	Tue,  5 Dec 2023 03:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747502;
-	bh=jrQ8Py1dE1CRgdn8EHJWLYA83Oq6OPSo/nmvA+JNRUA=;
+	s=korg; t=1701746910;
+	bh=L6nsT5Wy/896KbcP4TrgQtT0Fr8NtWbQNW1DHDCsdNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObYgYyg9F+CPmahnuU5M723+Mnvf0m6H5ZY5Utw+c6EzVAtgBtILeT0PxgFo8F24x
-	 alPpypeK9osGeIh5+efbILgKRM8VpmIxho2+YIZ3oxE5VfJXaTodssb0+cxE4I3Lk0
-	 bZm1k1eweSvEMc5x/ioEejEK/t4tlbO1IyDua1Yg=
+	b=npa7/jiWeg1DUpVVdFWtOPggv5II6OfTV6X+c8YyDf2eh1pAQqik43tMVSXhctlKW
+	 9eORWLJ9C9LhRDFw/HL4lCdG5G3ZyPf9w+weUNfMrx81epD4IPID69GHURRifCu25a
+	 xWE9U4eYCwwKxNi7QwE0T1PS612w/aNUqG6/3GMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>,
+	Konstantin Khlebnikov <khlebnikov@yandex-team.ru>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 100/135] ravb: Fix races between ravb_tx_timeout_work() and net related ops
+Subject: [PATCH 4.19 63/71] ovl: skip overlayfs superblocks at global sync
 Date: Tue,  5 Dec 2023 12:17:01 +0900
-Message-ID: <20231205031536.989740390@linuxfoundation.org>
+Message-ID: <20231205031521.539334896@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +55,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
 
-[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
+[ Upstream commit 32b1924b210a70dcacdf65abd687c5ef86a67541 ]
 
-Fix races between ravb_tx_timeout_work() and functions of net_device_ops
-and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
-since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
-ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
-may happen in ravb_tx_timeout_work() like below:
+Stacked filesystems like overlayfs has no own writeback, but they have to
+forward syncfs() requests to backend for keeping data integrity.
 
-CPU0			CPU1
-			ravb_tx_timeout()
-			schedule_work()
-...
-__dev_close_many()
-// Under rtnl lock
-ravb_close()
-cancel_work_sync()
-// Waiting
-			ravb_tx_timeout_work()
-			rtnl_lock()
-			// This is possible to cause a deadlock
+During global sync() each overlayfs instance calls method ->sync_fs() for
+backend although it itself is in global list of superblocks too.  As a
+result one syscall sync() could write one superblock several times and send
+multiple disk barriers.
 
-If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
+This patch adds flag SB_I_SKIP_SYNC into sb->sb_iflags to avoid that.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Dmitry Monakhov <dmtrmonakhov@yandex-team.ru>
+Signed-off-by: Konstantin Khlebnikov <khlebnikov@yandex-team.ru>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Stable-dep-of: b836c4d29f27 ("ima: detect changes to the backing overlay file")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/overlayfs/super.c | 5 +++--
+ fs/sync.c            | 3 ++-
+ include/linux/fs.h   | 2 ++
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index f218bacec0013..9d4a35f006c68 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1438,6 +1438,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 	struct net_device *ndev = priv->ndev;
- 	int error;
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index 1a7a1e2988855..1c1eb873e6ecc 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -268,8 +268,8 @@ static int ovl_sync_fs(struct super_block *sb, int wait)
+ 		return 0;
  
-+	if (!rtnl_trylock()) {
-+		usleep_range(1000, 2000);
-+		schedule_work(&priv->work);
-+		return;
-+	}
-+
- 	netif_tx_stop_all_queues(ndev);
+ 	/*
+-	 * If this is a sync(2) call or an emergency sync, all the super blocks
+-	 * will be iterated, including upper_sb, so no need to do anything.
++	 * Not called for sync(2) call or an emergency sync (SB_I_SKIP_SYNC).
++	 * All the super blocks will be iterated, including upper_sb.
+ 	 *
+ 	 * If this is a syncfs(2) call, then we do need to call
+ 	 * sync_filesystem() on upper_sb, but enough if we do it when being
+@@ -1664,6 +1664,7 @@ static int ovl_fill_super(struct super_block *sb, void *data, int silent)
+ 	sb->s_xattr = ovl_xattr_handlers;
+ 	sb->s_fs_info = ofs;
+ 	sb->s_flags |= SB_POSIXACL;
++	sb->s_iflags |= SB_I_SKIP_SYNC;
  
- 	/* Stop PTP Clock driver */
-@@ -1470,7 +1476,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		 */
- 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
- 			   __func__, error);
--		return;
-+		goto out_unlock;
- 	}
- 	ravb_emac_init(ndev);
+ 	err = -ENOMEM;
+ 	root_dentry = d_make_root(ovl_new_inode(sb, S_IFDIR, 0));
+diff --git a/fs/sync.c b/fs/sync.c
+index b54e0541ad899..917ebd12c2515 100644
+--- a/fs/sync.c
++++ b/fs/sync.c
+@@ -76,7 +76,8 @@ static void sync_inodes_one_sb(struct super_block *sb, void *arg)
  
-@@ -1480,6 +1486,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		ravb_ptp_init(ndev, priv->pdev);
- 
- 	netif_tx_start_all_queues(ndev);
-+
-+out_unlock:
-+	rtnl_unlock();
+ static void sync_fs_one_sb(struct super_block *sb, void *arg)
+ {
+-	if (!sb_rdonly(sb) && sb->s_op->sync_fs)
++	if (!sb_rdonly(sb) && !(sb->s_iflags & SB_I_SKIP_SYNC) &&
++	    sb->s_op->sync_fs)
+ 		sb->s_op->sync_fs(sb, *(int *)arg);
  }
  
- /* Packet transmit function for Ethernet AVB */
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index 95b8ef09b76cf..f89748aac8c32 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1351,6 +1351,8 @@ extern int send_sigurg(struct fown_struct *fown);
+ #define SB_I_IMA_UNVERIFIABLE_SIGNATURE	0x00000020
+ #define SB_I_UNTRUSTED_MOUNTER		0x00000040
+ 
++#define SB_I_SKIP_SYNC	0x00000100	/* Skip superblock at global sync */
++
+ /* Possible states of 'frozen' field */
+ enum {
+ 	SB_UNFROZEN = 0,		/* FS is unfrozen */
 -- 
 2.42.0
 
