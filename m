@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-3998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2CC804594
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1421B804619
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78878B20AE7
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4660B1C20CEA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940D879F2;
-	Tue,  5 Dec 2023 03:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806026110;
+	Tue,  5 Dec 2023 03:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDQCQWev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k031xsUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C776AA0;
-	Tue,  5 Dec 2023 03:18:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C4BC433C8;
-	Tue,  5 Dec 2023 03:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4067F79E3;
+	Tue,  5 Dec 2023 03:24:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EFAEC433C8;
+	Tue,  5 Dec 2023 03:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746337;
-	bh=TWnc2ejVz9cB4DDCQSWnPD31s1QkvyQQuWyDBmbJ8vQ=;
+	s=korg; t=1701746681;
+	bh=0kGQjg7YQ6OZnlizW4x83/qk6X5jDs4oso9muJFnkBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDQCQWevO55S//4jT0ajewz0xal01d9r5dwC1OfGNB3rxe/zZ5xiKbh9gxIBxr5Gy
-	 osZa1CiseUbqtLYRG+aOjRrCrQYH7O42bbv0tHdp4FE6wEGtDfcjcV2S1Cnoe1ETQp
-	 XHPaw7Eu/w1F8IY3U3gmoZeXn1e+285JlZl9T2fQ=
+	b=k031xsUGuR799TaPl7OXB5+5Skm5sZTif7Cwoy605ohKfQyeSYVCojnCNhnjtGiT0
+	 2r2wdG27Orei74Tsi23mWpFuHgW/yeLuhO0CVFRQlGhJCnqhWy4DFONq+MupZmzEGz
+	 m63UNPQMkdYpfxEbq8GaOfh5xInKCnMN/sO9bSXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 4.14 22/30] dm-verity: align struct dm_verity_fec_io properly
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/134] iommu/vt-d: Omit devTLB invalidation requests when TES=0
 Date: Tue,  5 Dec 2023 12:16:29 +0900
-Message-ID: <20231205031512.802214057@linuxfoundation.org>
+Message-ID: <20231205031542.899411539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +54,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-commit 38bc1ab135db87577695816b190e7d6d8ec75879 upstream.
+[ Upstream commit 0f5432a9b839847dcfe9fa369d72e3d646102ddf ]
 
-dm_verity_fec_io is placed after the end of two hash digests. If the hash
-digest has unaligned length, struct dm_verity_fec_io could be unaligned.
+The latest VT-d spec indicates that when remapping hardware is disabled
+(TES=0 in Global Status Register), upstream ATS Invalidation Completion
+requests are treated as UR (Unsupported Request).
 
-This commit fixes the placement of struct dm_verity_fec_io, so that it's
-aligned.
+Consequently, the spec recommends in section 4.3 Handling of Device-TLB
+Invalidations that software refrain from submitting any Device-TLB
+invalidation requests when address remapping hardware is disabled.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Verify address remapping hardware is enabled prior to submitting Device-
+TLB invalidation requests.
+
+Fixes: 792fb43ce2c9 ("iommu/vt-d: Enable Intel IOMMU scalable mode by default")
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20231114011036.70142-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-fec.c |    3 ++-
- drivers/md/dm-verity.h     |    6 ------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ drivers/iommu/intel/dmar.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -28,7 +28,8 @@ bool verity_fec_is_enabled(struct dm_ver
-  */
- static inline struct dm_verity_fec_io *fec_io(struct dm_verity_io *io)
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index a3414afe11b07..23cb80d62a9ab 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1522,6 +1522,15 @@ void qi_flush_dev_iotlb(struct intel_iommu *iommu, u16 sid, u16 pfsid,
  {
--	return (struct dm_verity_fec_io *) verity_io_digest_end(io->v, io);
-+	return (struct dm_verity_fec_io *)
-+		((char *)io + io->v->ti->per_io_data_size - sizeof(struct dm_verity_fec_io));
- }
+ 	struct qi_desc desc;
  
- /*
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -113,12 +113,6 @@ static inline u8 *verity_io_want_digest(
- 	return (u8 *)(io + 1) + v->ahash_reqsize + v->digest_size;
- }
++	/*
++	 * VT-d spec, section 4.3:
++	 *
++	 * Software is recommended to not submit any Device-TLB invalidation
++	 * requests while address remapping hardware is disabled.
++	 */
++	if (!(iommu->gcmd & DMA_GCMD_TE))
++		return;
++
+ 	if (mask) {
+ 		addr |= (1ULL << (VTD_PAGE_SHIFT + mask - 1)) - 1;
+ 		desc.qw1 = QI_DEV_IOTLB_ADDR(addr) | QI_DEV_IOTLB_SIZE;
+@@ -1587,6 +1596,15 @@ void qi_flush_dev_iotlb_pasid(struct intel_iommu *iommu, u16 sid, u16 pfsid,
+ 	unsigned long mask = 1UL << (VTD_PAGE_SHIFT + size_order - 1);
+ 	struct qi_desc desc = {.qw1 = 0, .qw2 = 0, .qw3 = 0};
  
--static inline u8 *verity_io_digest_end(struct dm_verity *v,
--				       struct dm_verity_io *io)
--{
--	return verity_io_want_digest(v, io) + v->digest_size;
--}
--
- extern int verity_for_bv_block(struct dm_verity *v, struct dm_verity_io *io,
- 			       struct bvec_iter *iter,
- 			       int (*process)(struct dm_verity *v,
++	/*
++	 * VT-d spec, section 4.3:
++	 *
++	 * Software is recommended to not submit any Device-TLB invalidation
++	 * requests while address remapping hardware is disabled.
++	 */
++	if (!(iommu->gcmd & DMA_GCMD_TE))
++		return;
++
+ 	desc.qw0 = QI_DEV_EIOTLB_PASID(pasid) | QI_DEV_EIOTLB_SID(sid) |
+ 		QI_DEV_EIOTLB_QDEP(qdep) | QI_DEIOTLB_TYPE |
+ 		QI_DEV_IOTLB_PFSID(pfsid);
+-- 
+2.42.0
+
 
 
 
