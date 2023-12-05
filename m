@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DB8804749
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E14804660
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 641EC1C20DAF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CAE1F213E3
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01858BF7;
-	Tue,  5 Dec 2023 03:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB44779E3;
+	Tue,  5 Dec 2023 03:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSMY+WAU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBMQfGAf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6946B6FB1;
-	Tue,  5 Dec 2023 03:36:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39EBC433C8;
-	Tue,  5 Dec 2023 03:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1976FAF;
+	Tue,  5 Dec 2023 03:26:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 851F1C433C7;
+	Tue,  5 Dec 2023 03:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747417;
-	bh=su2IBED/KfxjWr0u67oCnOgD66cOFsGAr+xnmEbJKzc=;
+	s=korg; t=1701746818;
+	bh=aPR0z7yZGHVqBlc0FS2Q2j95J1p4FMHZs+MWlLO0eF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSMY+WAUoyQVlW/CNSTxfVzRqJV5QaT5N+MfG6O4PiSxW8gHshqeXNvy2y4/YROxJ
-	 3UfzSuXQ7I7RSdlZaVC+2P3kg02JLX+CTluwA0wmsH8g9AnF3+5D7Mc5XrFf8o3VdT
-	 sEAwwTJAGC1AF8nfy28RoWDQhjWPaZc9NONiB3mU=
+	b=rBMQfGAfeY0x9mQ1+BaVieFfa03ZhzI7KLXRVLIJnZC89MWq1g9x5FcgPjEIxfmX7
+	 dS7XLMAtUDusSigIfF+5E7H3qqEud7l+A8TMjgEOkmKwZQQMhtWXz7Fl39m2bZcxli
+	 VnSIXGFb0LOJiMuVVxNQVfVu5D+Q1MJBaqZ77Ud4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keith Busch <kbusch@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 069/135] io_uring: fix off-by one bvec index
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 4.19 32/71] USB: dwc3: qcom: fix wakeup after probe deferral
 Date: Tue,  5 Dec 2023 12:16:30 +0900
-Message-ID: <20231205031534.804689098@linuxfoundation.org>
+Message-ID: <20231205031519.697803784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +52,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit d6fef34ee4d102be448146f24caf96d7b4a05401 upstream.
+commit 41f5a0973259db9e4e3c9963d36505f80107d1a0 upstream.
 
-If the offset equals the bv_len of the first registered bvec, then the
-request does not include any of that first bvec. Skip it so that drivers
-don't have to deal with a zero length bvec, which was observed to break
-NVMe's PRP list creation.
+The Qualcomm glue driver is overriding the interrupt trigger types
+defined by firmware when requesting the wakeup interrupts during probe.
 
-Cc: stable@vger.kernel.org
-Fixes: bd11b3a391e3 ("io_uring: don't use iov_iter_advance() for fixed buffers")
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20231120221831.2646460-1-kbusch@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This can lead to a failure to map the DP/DM wakeup interrupts after a
+probe deferral as the firmware defined trigger types do not match the
+type used for the initial mapping:
+
+	irq: type mismatch, failed to map hwirq-14 for interrupt-controller@b220000!
+	irq: type mismatch, failed to map hwirq-15 for interrupt-controller@b220000!
+
+Fix this by not overriding the firmware provided trigger types when
+requesting the wakeup interrupts.
+
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231120161607.7405-3-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-qcom.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3149,7 +3149,7 @@ static int __io_import_fixed(struct io_k
- 		 */
- 		const struct bio_vec *bvec = imu->bvec;
- 
--		if (offset <= bvec->bv_len) {
-+		if (offset < bvec->bv_len) {
- 			iov_iter_advance(iter, offset);
- 		} else {
- 			unsigned long seg_skip;
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -329,7 +329,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "hs_phy_irq failed: %d\n", ret);
+@@ -343,7 +343,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DP_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dp_hs_phy_irq failed: %d\n", ret);
+@@ -357,7 +357,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 DM_HS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "dm_hs_phy_irq failed: %d\n", ret);
+@@ -371,7 +371,7 @@ static int dwc3_qcom_setup_irq(struct pl
+ 		irq_set_status_flags(irq, IRQ_NOAUTOEN);
+ 		ret = devm_request_threaded_irq(qcom->dev, irq, NULL,
+ 					qcom_dwc3_resume_irq,
+-					IRQF_TRIGGER_HIGH | IRQF_ONESHOT,
++					IRQF_ONESHOT,
+ 					"qcom_dwc3 SS", qcom);
+ 		if (ret) {
+ 			dev_err(qcom->dev, "ss_phy_irq failed: %d\n", ret);
 
 
 
