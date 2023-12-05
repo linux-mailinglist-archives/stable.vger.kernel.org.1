@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-4207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9CF804683
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5AE8047A6
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BA731C20C25
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2980E1C20BF7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507A879F2;
-	Tue,  5 Dec 2023 03:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E015A8C07;
+	Tue,  5 Dec 2023 03:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obnK+leX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0Vwph+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9486FAF;
-	Tue,  5 Dec 2023 03:28:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7754AC433C7;
-	Tue,  5 Dec 2023 03:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1A76FB1;
+	Tue,  5 Dec 2023 03:40:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F782C433C8;
+	Tue,  5 Dec 2023 03:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746912;
-	bh=eJlbayiKgH0b/mFNiRyMRaoycGm9TscYurrbR6Kgqhs=;
+	s=korg; t=1701747651;
+	bh=835BGh2chJ7gtgab/Lh/oMlpEUdxydD/ojXreNrvkOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=obnK+leX6NV1jLU6h32x8kZCz6IwsPue983DZwSQZqXSj5O7TzsuJANESyk4KFzuS
-	 Y8JN2anl4RhUJ/D5moarFuLU1II62OS1/v49kLOn7XlbXT5G6O5SB2uMeYrz+Uk2JE
-	 QMk+8IF9MkqFlh8L5bbATs7r8o9likR38oXIg6oo=
+	b=K0Vwph+nezCGhRnHsrsJNcB66Oq1Y77AlJ8SlWUCiHLIP3cAJ6/c7/YaFQZihn2sr
+	 z7rpPZws+Sa1QxmVm093bTWZcafqRJMLraTd0QIuo0Zduo2htLmkzSPqziZQQxzjlA
+	 AMPDaGwRiQErRckoRdtPxyh8Ex6VAQ99S+yClNwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Eric Snowberg <eric.snowberg@oracle.com>,
-	Raul E Rangel <rrangel@chromium.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 64/71] ima: detect changes to the backing overlay file
-Date: Tue,  5 Dec 2023 12:17:02 +0900
-Message-ID: <20231205031521.601376006@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>,
+	Bruno Haible <bruno@clisp.org>
+Subject: [PATCH 5.15 18/67] parisc: Drop the HP-UX ENOSYM and EREMOTERELEASE error codes
+Date: Tue,  5 Dec 2023 12:17:03 +0900
+Message-ID: <20231205031520.831574017@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,115 +52,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit b836c4d29f2744200b2af41e14bf50758dddc818 ]
+commit e5f3e299a2b1e9c3ece24a38adfc089aef307e8a upstream.
 
-Commit 18b44bc5a672 ("ovl: Always reevaluate the file signature for
-IMA") forced signature re-evaulation on every file access.
+Those return codes are only defined for the parisc architecture and
+are leftovers from when we wanted to be HP-UX compatible.
 
-Instead of always re-evaluating the file's integrity, detect a change
-to the backing file, by comparing the cached file metadata with the
-backing file's metadata.  Verifying just the i_version has not changed
-is insufficient.  In addition save and compare the i_ino and s_dev
-as well.
+They are not returned by any Linux kernel syscall but do trigger
+problems with the glibc strerrorname_np() and strerror() functions as
+reported in glibc issue #31080.
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Tested-by: Eric Snowberg <eric.snowberg@oracle.com>
-Tested-by: Raul E Rangel <rrangel@chromium.org>
+There is no need to keep them, so simply remove them.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Bruno Haible <bruno@clisp.org>
+Closes: https://sourceware.org/bugzilla/show_bug.cgi?id=31080
 Cc: stable@vger.kernel.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/integrity/ima/ima_api.c  |  5 +++++
- security/integrity/ima/ima_main.c | 16 +++++++++++++++-
- security/integrity/integrity.h    |  2 ++
- 3 files changed, 22 insertions(+), 1 deletion(-)
+ arch/parisc/include/uapi/asm/errno.h       |    2 --
+ lib/errname.c                              |    6 ------
+ tools/arch/parisc/include/uapi/asm/errno.h |    2 --
+ 3 files changed, 10 deletions(-)
 
-diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
-index a02c5acfd403b..377a6f7cd3c76 100644
---- a/security/integrity/ima/ima_api.c
-+++ b/security/integrity/ima/ima_api.c
-@@ -201,6 +201,7 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- {
- 	const char *audit_cause = "failed";
- 	struct inode *inode = file_inode(file);
-+	struct inode *real_inode = d_real_inode(file_dentry(file));
- 	const char *filename = file->f_path.dentry->d_name.name;
- 	int result = 0;
- 	int length;
-@@ -243,6 +244,10 @@ int ima_collect_measurement(struct integrity_iint_cache *iint,
- 	iint->ima_hash = tmpbuf;
- 	memcpy(iint->ima_hash, &hash, length);
- 	iint->version = i_version;
-+	if (real_inode != inode) {
-+		iint->real_ino = real_inode->i_ino;
-+		iint->real_dev = real_inode->i_sb->s_dev;
-+	}
+--- a/arch/parisc/include/uapi/asm/errno.h
++++ b/arch/parisc/include/uapi/asm/errno.h
+@@ -75,7 +75,6 @@
  
- 	/* Possibly temporary failure due to type of read (eg. O_DIRECT) */
- 	if (!result)
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index c85aab3bd398b..d9a33d433b9fa 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -29,6 +29,7 @@
- #include <linux/ima.h>
- #include <linux/iversion.h>
- #include <linux/fs.h>
-+#include <linux/iversion.h>
+ /* We now return you to your regularly scheduled HPUX. */
  
- #include "ima.h"
+-#define ENOSYM		215	/* symbol does not exist in executable */
+ #define	ENOTSOCK	216	/* Socket operation on non-socket */
+ #define	EDESTADDRREQ	217	/* Destination address required */
+ #define	EMSGSIZE	218	/* Message too long */
+@@ -101,7 +100,6 @@
+ #define	ETIMEDOUT	238	/* Connection timed out */
+ #define	ECONNREFUSED	239	/* Connection refused */
+ #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
+-#define	EREMOTERELEASE	240	/* Remote peer released connection */
+ #define	EHOSTDOWN	241	/* Host is down */
+ #define	EHOSTUNREACH	242	/* No route to host */
  
-@@ -170,7 +171,7 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 			       u32 secid, char *buf, loff_t size, int mask,
- 			       enum ima_hooks func)
- {
--	struct inode *inode = file_inode(file);
-+	struct inode *backing_inode, *inode = file_inode(file);
- 	struct integrity_iint_cache *iint = NULL;
- 	struct ima_template_desc *template_desc;
- 	char *pathbuf = NULL;
-@@ -242,6 +243,19 @@ static int process_measurement(struct file *file, const struct cred *cred,
- 		iint->measured_pcrs = 0;
- 	}
+--- a/lib/errname.c
++++ b/lib/errname.c
+@@ -111,9 +111,6 @@ static const char *names_0[] = {
+ 	E(ENOSPC),
+ 	E(ENOSR),
+ 	E(ENOSTR),
+-#ifdef ENOSYM
+-	E(ENOSYM),
+-#endif
+ 	E(ENOSYS),
+ 	E(ENOTBLK),
+ 	E(ENOTCONN),
+@@ -144,9 +141,6 @@ static const char *names_0[] = {
+ #endif
+ 	E(EREMOTE),
+ 	E(EREMOTEIO),
+-#ifdef EREMOTERELEASE
+-	E(EREMOTERELEASE),
+-#endif
+ 	E(ERESTART),
+ 	E(ERFKILL),
+ 	E(EROFS),
+--- a/tools/arch/parisc/include/uapi/asm/errno.h
++++ b/tools/arch/parisc/include/uapi/asm/errno.h
+@@ -75,7 +75,6 @@
  
-+	/* Detect and re-evaluate changes made to the backing file. */
-+	backing_inode = d_real_inode(file_dentry(file));
-+	if (backing_inode != inode &&
-+	    (action & IMA_DO_MASK) && (iint->flags & IMA_DONE_MASK)) {
-+		if (!IS_I_VERSION(backing_inode) ||
-+		    backing_inode->i_sb->s_dev != iint->real_dev ||
-+		    backing_inode->i_ino != iint->real_ino ||
-+		    !inode_eq_iversion(backing_inode, iint->version)) {
-+			iint->flags &= ~IMA_DONE_MASK;
-+			iint->measured_pcrs = 0;
-+		}
-+	}
-+
- 	/* Determine if already appraised/measured based on bitmask
- 	 * (IMA_MEASURE, IMA_MEASURED, IMA_XXXX_APPRAISE, IMA_XXXX_APPRAISED,
- 	 *  IMA_AUDIT, IMA_AUDITED)
-diff --git a/security/integrity/integrity.h b/security/integrity/integrity.h
-index e60473b13a8d2..b0264ba45ddd1 100644
---- a/security/integrity/integrity.h
-+++ b/security/integrity/integrity.h
-@@ -122,6 +122,8 @@ struct integrity_iint_cache {
- 	unsigned long flags;
- 	unsigned long measured_pcrs;
- 	unsigned long atomic_flags;
-+	unsigned long real_ino;
-+	dev_t real_dev;
- 	enum integrity_status ima_file_status:4;
- 	enum integrity_status ima_mmap_status:4;
- 	enum integrity_status ima_bprm_status:4;
--- 
-2.42.0
-
+ /* We now return you to your regularly scheduled HPUX. */
+ 
+-#define ENOSYM		215	/* symbol does not exist in executable */
+ #define	ENOTSOCK	216	/* Socket operation on non-socket */
+ #define	EDESTADDRREQ	217	/* Destination address required */
+ #define	EMSGSIZE	218	/* Message too long */
+@@ -101,7 +100,6 @@
+ #define	ETIMEDOUT	238	/* Connection timed out */
+ #define	ECONNREFUSED	239	/* Connection refused */
+ #define	EREFUSED	ECONNREFUSED	/* for HP's NFS apparently */
+-#define	EREMOTERELEASE	240	/* Remote peer released connection */
+ #define	EHOSTDOWN	241	/* Host is down */
+ #define	EHOSTUNREACH	242	/* No route to host */
+ 
 
 
 
