@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-4059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02BA18045D4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:21:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551C28045F9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA2F1F213A6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:21:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11598283132
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1E866FB1;
-	Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FA879E3;
+	Tue,  5 Dec 2023 03:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYdFNaie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQJnd8d2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDBD6AA0;
-	Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452EBC433C8;
-	Tue,  5 Dec 2023 03:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589596FB0;
+	Tue,  5 Dec 2023 03:23:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBB6C433C9;
+	Tue,  5 Dec 2023 03:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746513;
-	bh=JEiLvcFT2IcWk0VeSp/I/MOGfz32MZNjLcrV82C0Qsg=;
+	s=korg; t=1701746599;
+	bh=6qXwnit/X4VIGKxPc+DP8ksO1hqPTulihiUVa2aaHx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QYdFNaieIbsksTlkP0eWIcruiT92s5Aaqmh8P39dFbvS1X68eNoguqy+5Q8O5yKs2
-	 yohFrfLmdseBZx5spQB/zXVEl+n0IdFBSFskzCI2nvy4r/+EDvD3D6Dv/twpC8AmtP
-	 +eTekFTyRIuTrIIRYkCcgbR9UmcymojeTD3Zi3wA=
+	b=fQJnd8d276d+mYdaMhsG0khGI/ropGx3OJ7saXXPWNCEvA2KnVEKY4lDso3lDW9IZ
+	 G5ga8cUyVtLpAQrbbp4qRe+oYdQ+ngJLANJfI3KgjBbYqKs+w6Ioe6oKHPbHh2hg40
+	 l5HpEwOtn3/gLsj4hScGEzw9hF8KINfug7mQrDJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Coly Li <colyli@suse.de>,
-	Markus Weippert <markus@gekmihesg.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 051/134] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
-Date: Tue,  5 Dec 2023 12:15:23 +0900
-Message-ID: <20231205031538.819010653@linuxfoundation.org>
+	Christoph Hellwig <hch@lst.de>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 052/134] ext2: Fix ki_pos update for DIO buffered-io fallback case
+Date: Tue,  5 Dec 2023 12:15:24 +0900
+Message-ID: <20231205031538.878687276@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
 References: <20231205031535.163661217@linuxfoundation.org>
@@ -58,73 +57,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Markus Weippert <markus@gekmihesg.de>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
+commit 8abc712ea4867a81c860853048f24e511bbc20f2 upstream.
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
-NULL pointer dereference.
+Commit "filemap: update ki_pos in generic_perform_write", made updating
+of ki_pos into common code in generic_perform_write() function.
+This also causes generic/091 to fail.
+This happened due to an in-flight collision with:
+fb5de4358e1a ("ext2: Move direct-io to use iomap"). I have chosen fixes tag
+based on which commit got landed later to upstream kernel.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000080
-Call Trace:
- ? __die_body.cold+0x1a/0x1f
- ? page_fault_oops+0xd2/0x2b0
- ? exc_page_fault+0x70/0x170
- ? asm_exc_page_fault+0x22/0x30
- ? btree_node_free+0xf/0x160 [bcache]
- ? up_write+0x32/0x60
- btree_gc_coalesce+0x2aa/0x890 [bcache]
- ? bch_extent_bad+0x70/0x170 [bcache]
- btree_gc_recurse+0x130/0x390 [bcache]
- ? btree_gc_mark_node+0x72/0x230 [bcache]
- bch_btree_gc+0x5da/0x600 [bcache]
- ? cpuusage_read+0x10/0x10
- ? bch_btree_gc+0x600/0x600 [bcache]
- bch_gc_thread+0x135/0x180 [bcache]
-
-The relevant code starts with:
-
-    new_nodes[0] = NULL;
-
-    for (i = 0; i < nodes; i++) {
-        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
-            goto out_nocoalesce;
-    // ...
-out_nocoalesce:
-    // ...
-    for (i = 0; i < nodes; i++)
-        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
-028ddcac477b
-            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
-            rw_unlock(true, new_nodes[i]);
-        }
-
-This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
+Fixes: 182c25e9c157 ("filemap: update ki_pos in generic_perform_write")
 Cc: stable@vger.kernel.org
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Cc: Coly Li <colyli@suse.de>
-Signed-off-by: Markus Weippert <markus@gekmihesg.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <d595bee9f2475ed0e8a2e7fb94f7afc2c6ffc36a.1700643443.git.ritesh.list@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/bcache/btree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext2/file.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1510,7 +1510,7 @@ out_nocoalesce:
- 	bch_keylist_free(&keylist);
- 
- 	for (i = 0; i < nodes; i++)
--		if (!IS_ERR(new_nodes[i])) {
-+		if (!IS_ERR_OR_NULL(new_nodes[i])) {
- 			btree_node_free(new_nodes[i]);
- 			rw_unlock(true, new_nodes[i]);
+diff --git a/fs/ext2/file.c b/fs/ext2/file.c
+index 1039e5bf90af..4ddc36f4dbd4 100644
+--- a/fs/ext2/file.c
++++ b/fs/ext2/file.c
+@@ -258,7 +258,6 @@ static ssize_t ext2_dio_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 			goto out_unlock;
  		}
+ 
+-		iocb->ki_pos += status;
+ 		ret += status;
+ 		endbyte = pos + status - 1;
+ 		ret2 = filemap_write_and_wait_range(inode->i_mapping, pos,
+-- 
+2.43.0
+
 
 
 
