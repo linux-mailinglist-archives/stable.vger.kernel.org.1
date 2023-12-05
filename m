@@ -1,226 +1,224 @@
-Return-Path: <stable+bounces-4688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97BF80580F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:59:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 205A7805819
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 16:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DEC9281B99
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 14:59:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFA06281D9D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 15:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3835867E73;
-	Tue,  5 Dec 2023 14:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z21uFAYj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB0367E7B;
+	Tue,  5 Dec 2023 15:02:04 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5AFA9
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 06:59:13 -0800 (PST)
-Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7c45fa55391so1771042241.2
-        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 06:59:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701788353; x=1702393153; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O8ly4PRrtbFhpvmMcAd/IAQqDN3hBgIZ/cSCffSAAOY=;
-        b=Z21uFAYjL+KwqZAuLXvVpOHNQzTa0t8vqVVPApwNND7HOT2NIg1mReB/keeWBgM4o7
-         dDrntGKFs9Tq3kd9aEwX5wmhuxrg1cXLmD0drMXwWzaFAM9LTMi0ZhbRHa3juFbxM+/C
-         bL6t73/Ut13kCWdROzOY0ukApLWgk15Vyrca2YIBzXySwgMi+Cl79mV3/M4yFVYP0DvP
-         T3sP47bJ/VKwqB+/mi/ZLYozSXWLXB0AL8MWU2flW2iZvU9tO3qKZRiSTO0W4HNZabqe
-         HytE9+hxMguHm0cdgXpaEcJPH+/4Gowwv+6SvkthQCpM/C6BcmyQkIWgVwmRjbPn+IKq
-         LvEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701788353; x=1702393153;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O8ly4PRrtbFhpvmMcAd/IAQqDN3hBgIZ/cSCffSAAOY=;
-        b=eCVGm8MoRiQWM+a7iW2DgdYJZZCQqOzLkZPFoG/rjHHFomBR+82i9h58KBT5CqmJFR
-         Da1+jrWA7dlUVvOIvheve8ODO7TYSIXudFviCgrg1R/XYRwSB48AHnC8wPhegyD9+khv
-         VJQGokAFz0M+mDki9ymCfwb+7n8+iAlqknyND8gpw56ubK01fw0RkKu5QjhYC422w7mx
-         c+kt/oE1MaMGobBl6ATtlsC8ie2e0gbFFZckjz31d75keRdPDTX2QVD1P+zkCcJhqEq6
-         +2EhtRz55SvgALyBtQRFYooC2IX6MI9dFgqiZQ6LbiStMooPyEzlE9QalpBfWek3VHg4
-         Eivg==
-X-Gm-Message-State: AOJu0Yx3FQjwiddkRgtNp3E0xpYBMod5luqcp2V0gHg/yq7vpp84UCaY
-	y4Mjvm63sl5AfWWpwMY6yaBihnEoul6tXjQA/MrQYQ==
-X-Google-Smtp-Source: AGHT+IFFmj78JXPJcEQrLiGMwcKHkteXoPlhwfKxlDXUl0UR6JNMJeAsSWdEyzJb9Pm+DqpCXBVKKSuv9pY1Kfvwxjs=
-X-Received: by 2002:a67:af0b:0:b0:464:7b6d:2efc with SMTP id
- v11-20020a67af0b000000b004647b6d2efcmr3614145vsl.34.1701788352287; Tue, 05
- Dec 2023 06:59:12 -0800 (PST)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 65773129
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 07:02:00 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B23D2139F;
+	Tue,  5 Dec 2023 07:02:46 -0800 (PST)
+Received: from e121345-lin.cambridge.arm.com (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 69B6B3F6C4;
+	Tue,  5 Dec 2023 07:01:59 -0800 (PST)
+From: Robin Murphy <robin.murphy@arm.com>
+To: stable@vger.kernel.org
+Cc: Zhenhua Huang <quic_zhenhuah@quicinc.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	=?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.1.y] iommu: Avoid more races around device probe
+Date: Tue,  5 Dec 2023 15:01:45 +0000
+Message-Id: <4a349b612b726d42b35611368f0f49e447e16dff.1701788504.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.39.2.101.g768bb238c484.dirty
+In-Reply-To: <2023120303-purposely-museum-96a7@gregkh>
+References: <2023120303-purposely-museum-96a7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231205031517.859409664@linuxfoundation.org>
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 5 Dec 2023 20:29:00 +0530
-Message-ID: <CA+G9fYvZH1HhsznP1KxiBRoP7SbN-veMWKavdSoT4mGQ2_-2Kw@mail.gmail.com>
-Subject: Re: [PATCH 4.19 00/71] 4.19.301-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 5 Dec 2023 at 08:56, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 4.19.301 release.
-> There are 71 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
-4.19.301-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+It turns out there are more subtle races beyond just the main part of
+__iommu_probe_device() itself running in parallel - the dev_iommu_free()
+on the way out of an unsuccessful probe can still manage to trip up
+concurrent accesses to a device's fwspec. Thus, extend the scope of
+iommu_probe_device_lock() to also serialise fwspec creation and initial
+retrieval.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Reported-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+Link: https://lore.kernel.org/linux-iommu/e2e20e1c-6450-4ac5-9804-b0000acdf7de@quicinc.com/
+Fixes: 01657bc14a39 ("iommu: Avoid races around device probe")
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: André Draszik <andre.draszik@linaro.org>
+Tested-by: André Draszik <andre.draszik@linaro.org>
+Link: https://lore.kernel.org/r/16f433658661d7cadfea51e7c65da95826112a2b.1700071477.git.robin.murphy@arm.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+(cherry picked from commit a2e7e59a94269484a83386972ca07c22fd188854)
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ drivers/acpi/scan.c      |  7 ++++++-
+ drivers/iommu/iommu.c    | 19 +++++++++----------
+ drivers/iommu/of_iommu.c | 12 +++++++++---
+ include/linux/iommu.h    |  1 +
+ 4 files changed, 25 insertions(+), 14 deletions(-)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/acpi/scan.c b/drivers/acpi/scan.c
+index a0e347f6f97e..94154a849a3e 100644
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -1563,17 +1563,22 @@ static const struct iommu_ops *acpi_iommu_configure_id(struct device *dev,
+ 	int err;
+ 	const struct iommu_ops *ops;
+ 
++	/* Serialise to make dev->iommu stable under our potential fwspec */
++	mutex_lock(&iommu_probe_device_lock);
+ 	/*
+ 	 * If we already translated the fwspec there is nothing left to do,
+ 	 * return the iommu_ops.
+ 	 */
+ 	ops = acpi_iommu_fwspec_ops(dev);
+-	if (ops)
++	if (ops) {
++		mutex_unlock(&iommu_probe_device_lock);
+ 		return ops;
++	}
+ 
+ 	err = iort_iommu_configure_id(dev, id_in);
+ 	if (err && err != -EPROBE_DEFER)
+ 		err = viot_iommu_configure(dev);
++	mutex_unlock(&iommu_probe_device_lock);
+ 
+ 	/*
+ 	 * If we have reason to believe the IOMMU driver missed the initial
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 2bcd1f23d07d..8b3897239477 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -278,12 +278,13 @@ static void dev_iommu_free(struct device *dev)
+ 	kfree(param);
+ }
+ 
++DEFINE_MUTEX(iommu_probe_device_lock);
++
+ static int __iommu_probe_device(struct device *dev, struct list_head *group_list)
+ {
+ 	const struct iommu_ops *ops = dev->bus->iommu_ops;
+ 	struct iommu_device *iommu_dev;
+ 	struct iommu_group *group;
+-	static DEFINE_MUTEX(iommu_probe_device_lock);
+ 	int ret;
+ 
+ 	if (!ops)
+@@ -295,11 +296,9 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+ 	 * probably be able to use device_lock() here to minimise the scope,
+ 	 * but for now enforcing a simple global ordering is fine.
+ 	 */
+-	mutex_lock(&iommu_probe_device_lock);
+-	if (!dev_iommu_get(dev)) {
+-		ret = -ENOMEM;
+-		goto err_unlock;
+-	}
++	lockdep_assert_held(&iommu_probe_device_lock);
++	if (!dev_iommu_get(dev))
++		return -ENOMEM;
+ 
+ 	if (!try_module_get(ops->owner)) {
+ 		ret = -EINVAL;
+@@ -326,7 +325,6 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+ 	mutex_unlock(&group->mutex);
+ 	iommu_group_put(group);
+ 
+-	mutex_unlock(&iommu_probe_device_lock);
+ 	iommu_device_link(iommu_dev, dev);
+ 
+ 	return 0;
+@@ -341,9 +339,6 @@ static int __iommu_probe_device(struct device *dev, struct list_head *group_list
+ err_free:
+ 	dev_iommu_free(dev);
+ 
+-err_unlock:
+-	mutex_unlock(&iommu_probe_device_lock);
+-
+ 	return ret;
+ }
+ 
+@@ -353,7 +348,9 @@ int iommu_probe_device(struct device *dev)
+ 	struct iommu_group *group;
+ 	int ret;
+ 
++	mutex_lock(&iommu_probe_device_lock);
+ 	ret = __iommu_probe_device(dev, NULL);
++	mutex_unlock(&iommu_probe_device_lock);
+ 	if (ret)
+ 		goto err_out;
+ 
+@@ -1684,7 +1681,9 @@ static int probe_iommu_group(struct device *dev, void *data)
+ 		return 0;
+ 	}
+ 
++	mutex_lock(&iommu_probe_device_lock);
+ 	ret = __iommu_probe_device(dev, group_list);
++	mutex_unlock(&iommu_probe_device_lock);
+ 	if (ret == -ENODEV)
+ 		ret = 0;
+ 
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index 5696314ae69e..1fa1db3be852 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -112,16 +112,20 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
+ 					   const u32 *id)
+ {
+ 	const struct iommu_ops *ops = NULL;
+-	struct iommu_fwspec *fwspec = dev_iommu_fwspec_get(dev);
++	struct iommu_fwspec *fwspec;
+ 	int err = NO_IOMMU;
+ 
+ 	if (!master_np)
+ 		return NULL;
+ 
++	/* Serialise to make dev->iommu stable under our potential fwspec */
++	mutex_lock(&iommu_probe_device_lock);
++	fwspec = dev_iommu_fwspec_get(dev);
+ 	if (fwspec) {
+-		if (fwspec->ops)
++		if (fwspec->ops) {
++			mutex_unlock(&iommu_probe_device_lock);
+ 			return fwspec->ops;
+-
++		}
+ 		/* In the deferred case, start again from scratch */
+ 		iommu_fwspec_free(dev);
+ 	}
+@@ -155,6 +159,8 @@ const struct iommu_ops *of_iommu_configure(struct device *dev,
+ 		fwspec = dev_iommu_fwspec_get(dev);
+ 		ops    = fwspec->ops;
+ 	}
++	mutex_unlock(&iommu_probe_device_lock);
++
+ 	/*
+ 	 * If we have reason to believe the IOMMU driver missed the initial
+ 	 * probe for dev, replay it to get things in order.
+diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+index 3c9da1f8979e..9d87090953bc 100644
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -657,6 +657,7 @@ static inline void dev_iommu_priv_set(struct device *dev, void *priv)
+ 	dev->iommu->priv = priv;
+ }
+ 
++extern struct mutex iommu_probe_device_lock;
+ int iommu_probe_device(struct device *dev);
+ void iommu_release_device(struct device *dev);
+ 
+-- 
+2.39.2.101.g768bb238c484.dirty
 
-## Build
-* kernel: 4.19.301-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-4.19.y
-* git commit: 82300ecbea435bee3c53b97f701e530cac79b81e
-* git describe: v4.19.300-72-g82300ecbea43
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.19.y/build/v4.19=
-.300-72-g82300ecbea43
-
-## Test Regressions (compared to v4.19.300)
-
-## Metric Regressions (compared to v4.19.300)
-
-## Test Fixes (compared to v4.19.300)
-
-## Metric Fixes (compared to v4.19.300)
-
-## Test result summary
-total: 54948, pass: 46304, fail: 1597, skip: 7016, xfail: 31
-
-## Build Summary
-* arc: 10 total, 10 passed, 0 failed
-* arm: 111 total, 105 passed, 6 failed
-* arm64: 37 total, 32 passed, 5 failed
-* i386: 21 total, 18 passed, 3 failed
-* mips: 20 total, 20 passed, 0 failed
-* parisc: 3 total, 0 passed, 3 failed
-* powerpc: 24 total, 24 passed, 0 failed
-* s390: 6 total, 6 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 31 total, 26 passed, 5 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-user
-* kselftest-vm
-* kselftest-zram
-* kunit
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-crypto
-* ltp-cve
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
