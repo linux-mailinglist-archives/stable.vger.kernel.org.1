@@ -1,98 +1,127 @@
-Return-Path: <stable+bounces-4716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C63805A42
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 17:48:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092C0805A47
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 17:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EC4D281D1F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 16:48:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A77D31F2175D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 16:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DAC675D4;
-	Tue,  5 Dec 2023 16:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2201D584C7;
+	Tue,  5 Dec 2023 16:49:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bX8dLM53"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="fn1nSC1A"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7237188;
-	Tue,  5 Dec 2023 08:48:18 -0800 (PST)
-Received: by mail-ot1-x32d.google.com with SMTP id 46e09a7af769-6d8d28e4bbeso1951222a34.3;
-        Tue, 05 Dec 2023 08:48:18 -0800 (PST)
+Received: from mail-ua1-x931.google.com (mail-ua1-x931.google.com [IPv6:2607:f8b0:4864:20::931])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C08E019B
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 08:49:01 -0800 (PST)
+Received: by mail-ua1-x931.google.com with SMTP id a1e0cc1a2514c-7bb4b7eb808so1973202241.3
+        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 08:49:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701794898; x=1702399698; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4F+cl8bqviYCfWVifl1IWgKB6oJF4gmJXAutfvfQxKQ=;
-        b=bX8dLM53NfObCqscJ88i7M36eOBIHvyQRF/HP9rB1G5gFqvfvCxPtMFlA9DytfTolE
-         1yrNdxqKl5gCxgCxmKQYRDkbAkGmGR3bVT12GLNCRyME0nf2j3GP6CdGYPtd1Qopfct2
-         8rP3iAVHPbGqMf5BXGx5oCh5cfRbILMHq0OPoCezNYkVCFnMcFqeG/TfDga0LvPlHV1V
-         dje7nZ7aiJIn7+6AWS+WM5oBej7e4/qxDFNKzka78V+qN/a1lVXUq5L8WEc+hcDeD1Ez
-         1K9t778E0a2xJvvlpcsXYIKPGUjo2XVhipJDl9u1wKVsoAMgwy3mGnNC3X0C7BS8p08H
-         dSrA==
+        d=linaro.org; s=google; t=1701794941; x=1702399741; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YfqclM3ZkWiAXDbZmcjbBwB6xmJbMZCT4iOO/IexVc0=;
+        b=fn1nSC1AhZaI/jDXiQ29B/j5H6DSsxhadFaNMyO+yYYxUdllanCvc+HFE+J0CjVYJA
+         HJ74tcMFq7pixIc+i2+KSSUyrcXTBwBlDEXMo/gfk77G/9wYsGg2P9YUIotYBNq24CoD
+         axeWez0VQ0bJow945POWHHyIn+jIJ/pRGFET+bafhmS7gTTDiRIkl1oiK4l+6v0VQB6y
+         qa2vJnu+cxTGyJLXbp5s3W7Cf49THF8XP4ZW5sFF7yX4WSfZefUmL+lbr6yhaTgV8BRm
+         KWRCIC6mlH175l1lYtmm5BlYm4DtczdNWzlMVHu6Hm1Wk1rK1SmXPmvNm9uQBMZkLxfb
+         UP5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701794898; x=1702399698;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4F+cl8bqviYCfWVifl1IWgKB6oJF4gmJXAutfvfQxKQ=;
-        b=BDZRAq0MNRgaevpxm9mfUg7hdFpn6ONeUdLBUhyM7WzEWzU81eWeUp+j09ovz/SvG2
-         /jimqjc9NjdDkQ7WfXeCLHeKUGuDFHLgbSfEinbZ9Pc0/7up21VaV2s3Q7tUQQxRTnXh
-         h1ZGy90l45naH6rXsOUMB9JRSWYxIyPIOAYY06QXUIBfUdU26ugB8+YxYwNzuXAAfCu4
-         ZbqtJcquDj2TpwAyM8Dgc9e0O1sACEC6Tcimu0lSxJNyWxRTHNSlfGBZvzZiHH4cQHeT
-         g0W/9C5XMheuhzQXL56i+jQfx5aU78ZYKiS4ZLRPHgUl1hW8lzI+xMHAcvqDCobpATfF
-         6Y3w==
-X-Gm-Message-State: AOJu0Yyk18ISsHg554TVk4hzWDUjTdZqDITZR6zkfpiuQ3t7/OByt9PI
-	UBf7AllOirlaWTfdXUS5Abg=
-X-Google-Smtp-Source: AGHT+IFNL+2khA0N/44s+bMmXXd2EwayAYlVrA3MCsA66rjsp9s7dopeeGCPN5NT2LI09aTlvlRh5Q==
-X-Received: by 2002:a05:6870:e242:b0:1fb:17ff:2a71 with SMTP id d2-20020a056870e24200b001fb17ff2a71mr6434826oac.50.1701794898014;
-        Tue, 05 Dec 2023 08:48:18 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id nl18-20020a056871459200b001fb31d5c733sm1674470oab.52.2023.12.05.08.48.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 08:48:17 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Tue, 5 Dec 2023 08:48:16 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 5.10 000/134] 5.10.203-rc2 review
-Message-ID: <d128c8cb-52a5-461b-aee0-6e8159ab91d2@roeck-us.net>
-References: <20231205043610.004070706@linuxfoundation.org>
+        d=1e100.net; s=20230601; t=1701794941; x=1702399741;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YfqclM3ZkWiAXDbZmcjbBwB6xmJbMZCT4iOO/IexVc0=;
+        b=atmd+DHEA//Gi6feKP0KcV5qSrbEtPASxkr14mf822YnGxKf4E8K6E2e7DDJJixXxe
+         xfKxOFARlbJ4dAmvW9myPUiue03ahWM0J2SPdWk9iutoc/froOf6qJz5w63VnhE0Kv6o
+         XuvZI6h32el97arcpokGbHn+ARk/Cq0lHOk0CVsl5NYgIigiLyt0dfcz2uqZo4r6fqb9
+         AlvgWzjT4uJyBRzCyNLhQy5xoQXPnFEbOxehF5VQvoMUKyUqy5oSA0B9rdxWyZ7Fa17q
+         o71zmSFdB2d30RUTCQCVJng9/ZFSqBfYLI94d2q7sG0MJ9MrGvvbMJr5pAG3cTW78onz
+         UDLw==
+X-Gm-Message-State: AOJu0YwJaunM454Iy+VWN/BbSUbFHcwEaehSIYNekzGrI1GUbzaVy3qq
+	MiQtmzGSesBdEgiyy4jjjtoddmm7/tKiFxVU1Wk3yg==
+X-Google-Smtp-Source: AGHT+IHus3uB7dNMpJ0cP1uy5kkamJOMFLF8zMXjR6WyF50uZ0U0xiaK7tFOWnFeBiVqsPbRDg47o04MaF15ciRegfc=
+X-Received: by 2002:a05:6102:34e2:b0:462:c2e9:6dda with SMTP id
+ bi2-20020a05610234e200b00462c2e96ddamr3198642vsb.31.1701794940837; Tue, 05
+ Dec 2023 08:49:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205043610.004070706@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 5 Dec 2023 22:18:49 +0530
+Message-ID: <CA+G9fYs-XB29+aZ2kk9psA+MTo8PCh0owWgwGRiq8JK60CuUtg@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/67] 5.15.142-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	Gaurav Batra <gbatra@linux.vnet.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Dec 05, 2023 at 01:36:53PM +0900, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.203 release.
-> There are 134 patches in this series, all will be posted as a response
+On Tue, 5 Dec 2023 at 09:10, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.142 release.
+> There are 67 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
-> Responses should be made by Thu, 07 Dec 2023 04:35:38 +0000.
+>
+> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
 > Anything received after that time might be too late.
-> 
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.142-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 493 pass: 493 fail: 0
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+Following powerpc build failures noticed.
 
-Guenter
+* powerpc, build
+  - clang-17-defconfig - FAILED
+  - gcc-12-defconfig - FAILED
+  - gcc-8-defconfig - FAILED
+
+build error:
+---
+arch/powerpc/platforms/pseries/iommu.c: In function 'find_existing_ddw':
+arch/powerpc/platforms/pseries/iommu.c:908:49: error: 'struct dma_win'
+has no member named 'direct'
+  908 |                         *direct_mapping = window->direct;
+      |                                                 ^~
+
+suspected commit:
+powerpc/pseries/iommu: enable_ddw incorrectly returns direct mapping
+for SR-IOV device
+ [ Upstream commit 3bf983e4e93ce8e6d69e9d63f52a66ec0856672e ]
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Links:
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.141-68-gbff845be423f/testrun/21492943/suite/build/test/gcc-12-defconfig/details/
+  - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.141-68-gbff845be423f/testrun/21492943/suite/build/test/gcc-12-defconfig/history/
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
