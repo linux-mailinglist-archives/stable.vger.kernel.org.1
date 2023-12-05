@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 777F68046C6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA08804618
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2303F1F21424
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 072781C20C40
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D5038BF1;
-	Tue,  5 Dec 2023 03:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D993B6FB1;
+	Tue,  5 Dec 2023 03:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+i0rxk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaVZRwwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7BC6FB1;
-	Tue,  5 Dec 2023 03:31:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9677C433C8;
-	Tue,  5 Dec 2023 03:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923C9A59;
+	Tue,  5 Dec 2023 03:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5A9C433C7;
+	Tue,  5 Dec 2023 03:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747083;
-	bh=jth5mZsWPKZUn30URO4WIQD94s+u0PNfGtGy7pGQtLE=;
+	s=korg; t=1701746678;
+	bh=cVmm0pB7BH5akBBxraqnr2QUalXaF7bYKVsIR3/0L1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+i0rxk45sNkrP0qz1frZa102AGTJwgDh0N4QFZ3JXo0s9+u79abj52L3UTLqCGo8
-	 lbBZFsSyRjDg2cdgMCWvE/zL3kf5mYdrHfD8e1A1pfcMYLR4U4dSvABHyB1vbmJFSC
-	 IBGKlYooUiwQkURj6tJ3uS4PlRsZC1YJYUes+/Wo=
+	b=iaVZRwwHQwBMs1u+8MOnXNYJu9Wm97hXHmeYc0fVxQZTPiEZ/GcaLhD71qefl2nFz
+	 tvAA6pMPgsZCd1QRnkvfWtM2nDUXD5ylilHCy4VxUvXYVQVg9FlDDQ+jQrZBfipTfq
+	 6KbcYwcKa4MFE3iMs4wklqmUE0ypYHsXqSCvTKI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lech Perczak <lech.perczak@camlingroup.com>,
-	Hugo Villeneuve <hugo@hugovil.com>
-Subject: [PATCH 6.1 053/107] serial: sc16is7xx: add missing support for rs485 devicetree properties
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Marek Vasut <marex@denx.de>,
+	Fabio Estevam <festevam@denx.de>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 116/134] cpufreq: imx6q: Dont disable 792 Mhz OPP unnecessarily
 Date: Tue,  5 Dec 2023 12:16:28 +0900
-Message-ID: <20231205031534.654451887@linuxfoundation.org>
+Message-ID: <20231205031542.838768303@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +53,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-commit b4a778303ea0fcabcaff974721477a5743e1f8ec upstream.
+[ Upstream commit 2e4e0984c7d696cc74cf2fd7e7f62997f0e9ebe6 ]
 
-Retrieve rs485 devicetree properties on registration of sc16is7xx ports in
-case they are attached to an rs485 transceiver.
+For a 900MHz i.MX6ULL CPU the 792MHz OPP is disabled. There is no
+convincing reason to disable this OPP. If a CPU can run at 900MHz,
+it should also be able to cope with 792MHz. Looking at the voltage
+level of 792MHz in [1] (page 24, table 10. "Operating Ranges") the
+current defined OPP is above the minimum. So the voltage level
+shouldn't be a problem. However in [2] (page 24, table 10.
+"Operating Ranges"), it is not mentioned that 792MHz OPP isn't
+allowed. Change it to only disable 792MHz OPP for i.MX6ULL types
+below 792 MHz.
 
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Link: https://lore.kernel.org/r/20230807214556.540627-7-hugo@hugovil.com
-Cc: Hugo Villeneuve <hugo@hugovil.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://www.nxp.com/docs/en/data-sheet/IMX6ULLIEC.pdf
+[2] https://www.nxp.com/docs/en/data-sheet/IMX6ULLCEC.pdf
+
+Fixes: 0aa9abd4c212 ("cpufreq: imx6q: check speed grades for i.MX6ULL")
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Fabio Estevam <festevam@denx.de>
+[ Viresh: Edited subject ]
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/cpufreq/imx6q-cpufreq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1556,6 +1556,10 @@ static int sc16is7xx_probe(struct device
- 			goto out_ports;
- 		}
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index 494d044b9e720..33728c242f66c 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -327,7 +327,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 			imx6x_disable_freq_in_opp(dev, 696000000);
  
-+		ret = uart_get_rs485_mode(&s->p[i].port);
-+		if (ret)
-+			goto out_ports;
-+
- 		/* Disable all interrupts */
- 		sc16is7xx_port_write(&s->p[i].port, SC16IS7XX_IER_REG, 0);
- 		/* Disable TX/RX */
+ 	if (of_machine_is_compatible("fsl,imx6ull")) {
+-		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
++		if (val < OCOTP_CFG3_6ULL_SPEED_792MHZ)
+ 			imx6x_disable_freq_in_opp(dev, 792000000);
+ 
+ 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
+-- 
+2.42.0
+
 
 
 
