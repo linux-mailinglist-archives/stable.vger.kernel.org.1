@@ -1,47 +1,52 @@
-Return-Path: <stable+bounces-4071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B348045E0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 174BA804694
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 227E22829C5
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B672C1F20F49
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B50A06FB1;
-	Tue,  5 Dec 2023 03:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0C08BF1;
+	Tue,  5 Dec 2023 03:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+whDd08"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7q3p06Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759166AA0;
-	Tue,  5 Dec 2023 03:22:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D7CC433C8;
-	Tue,  5 Dec 2023 03:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2776FAF;
+	Tue,  5 Dec 2023 03:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C9CC433C7;
+	Tue,  5 Dec 2023 03:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746544;
-	bh=3rGckHRthjYww+836mEwhU2G4ybjBf6J80IwymTpmKk=;
+	s=korg; t=1701746959;
+	bh=P/yPtLFfG6fs/aJ7nb2UKZ6poXbdL+X+6dXFbKCCxI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+whDd08kvy+KMaMiA9MDrj+CxIed4FCJVNAJXMhxql7DJyxOWZWnR0+m4TkrygLN
-	 Cw9QTBbCHIqGmO9RnybKeKypxrfLrXUv++dxoGrEGSoJwhgoAT/lQdd72v/8i55E6/
-	 Si+y1dWeN5oCvvWKrqO6qeOc1rYgEi6VUpzumqU8=
+	b=R7q3p06YPmPIuY3Ycw/tuV7uJiOeogQYe9PRu1UAu3lGveNs/J3uxMMYrzG0SM/h5
+	 zwQoHfmbFddIpucn52gIOfNn4IH5VKlvUtYdWKcpfoGC5S0zjTXLsyRFCR0ANaayAG
+	 GdoBbT2ezaEM2U/00dNv18GZP6k5DE4C8nePZIK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 064/134] btrfs: add dmesg output for first mount and last unmount of a filesystem
+	David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	linux-mm@kvack.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 001/107] cifs: Fix FALLOC_FL_ZERO_RANGE by setting i_size if EOF moved
 Date: Tue,  5 Dec 2023 12:15:36 +0900
-Message-ID: <20231205031539.609009762@linuxfoundation.org>
+Message-ID: <20231205031531.545150790@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +58,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 2db313205f8b96eea467691917138d646bb50aef upstream.
+commit 83d5518b124dfd605f10a68128482c839a239f9d upstream.
 
-There is a feature request to add dmesg output when unmounting a btrfs.
-There are several alternative methods to do the same thing, but with
-their own problems:
+Fix the cifs filesystem implementations of FALLOC_FL_ZERO_RANGE, in
+smb3_zero_range(), to set i_size after extending the file on the server.
 
-- Use eBPF to watch btrfs_put_super()/open_ctree()
-  Not end user friendly, they have to dip their head into the source
-  code.
-
-- Watch for directory /sys/fs/<uuid>/
-  This is way more simple, but still requires some simple device -> uuid
-  lookups.  And a script needs to use inotify to watch /sys/fs/.
-
-Compared to all these, directly outputting the information into dmesg
-would be the most simple one, with both device and UUID included.
-
-And since we're here, also add the output when mounting a filesystem for
-the first time for parity. A more fine grained monitoring of subvolume
-mounts should be done by another layer, like audit.
-
-Now mounting a btrfs with all default mkfs options would look like this:
-
-  [81.906566] BTRFS info (device dm-8): first mount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
-  [81.907494] BTRFS info (device dm-8): using crc32c (crc32c-intel) checksum algorithm
-  [81.908258] BTRFS info (device dm-8): using free space tree
-  [81.912644] BTRFS info (device dm-8): auto enabling async discard
-  [81.913277] BTRFS info (device dm-8): checking UUID tree
-  [91.668256] BTRFS info (device dm-8): last unmount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
-
-CC: stable@vger.kernel.org # 5.4+
-Link: https://github.com/kdave/btrfs-progs/issues/689
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ update changelog ]
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 72c419d9b073 ("cifs: fix smb3_zero_range so it can expand the file-size when required")
+Cc: stable@vger.kernel.org
+Signed-off-by: David Howells <dhowells@redhat.com>
+Acked-by: Paulo Alcantara <pc@manguebit.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: linux-mm@kvack.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    1 +
- fs/btrfs/super.c   |    5 ++++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/client/smb2ops.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -3197,6 +3197,7 @@ int __cold open_ctree(struct super_block
- 		goto fail_alloc;
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -3424,6 +3424,7 @@ static long smb3_zero_range(struct file
+ 	struct inode *inode = file_inode(file);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsFileInfo *cfile = file->private_data;
++	unsigned long long new_size;
+ 	long rc;
+ 	unsigned int xid;
+ 	__le64 eof;
+@@ -3454,10 +3455,15 @@ static long smb3_zero_range(struct file
+ 	/*
+ 	 * do we also need to change the size of the file?
+ 	 */
+-	if (keep_size == false && i_size_read(inode) < offset + len) {
+-		eof = cpu_to_le64(offset + len);
++	new_size = offset + len;
++	if (keep_size == false && (unsigned long long)i_size_read(inode) < new_size) {
++		eof = cpu_to_le64(new_size);
+ 		rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
+ 				  cfile->fid.volatile_fid, cfile->pid, &eof);
++		if (rc >= 0) {
++			truncate_setsize(inode, new_size);
++			fscache_resize_cookie(cifs_inode_cookie(inode), new_size);
++		}
  	}
  
-+	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
- 	/*
- 	 * Verify the type first, if that or the checksum value are
- 	 * corrupted, we'll find out
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -79,7 +79,10 @@ static int btrfs_remount(struct super_bl
- 
- static void btrfs_put_super(struct super_block *sb)
- {
--	close_ctree(btrfs_sb(sb));
-+	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
-+
-+	btrfs_info(fs_info, "last unmount of filesystem %pU", fs_info->fs_devices->fsid);
-+	close_ctree(fs_info);
- }
- 
- enum {
+  zero_range_exit:
 
 
 
