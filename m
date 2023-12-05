@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 803128046B3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1B68045ED
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37BDE1F2141C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8D45B20912
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961018BF1;
-	Tue,  5 Dec 2023 03:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9AF6FB8;
+	Tue,  5 Dec 2023 03:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdPhShPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opTnGf1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AE996FB1;
-	Tue,  5 Dec 2023 03:30:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D59BC433C7;
-	Tue,  5 Dec 2023 03:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D202A6AA0;
+	Tue,  5 Dec 2023 03:22:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64215C433C7;
+	Tue,  5 Dec 2023 03:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747040;
-	bh=ctRONOS0brVrOLzY/0bDIWf//tlJ622M5u7DTIk9Kjg=;
+	s=korg; t=1701746573;
+	bh=GtDem1sDcIf2VXPlKzOtSRk0Kb1YEMFv1K7C2YzlQ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kdPhShPRlu6c8r7n8aLfSb/P2MLbc0kx/GKn/EZGiXSfrGAn/DK0+4yJpp+40LjQQ
-	 9p9oOt8PXdL72oScvk1BrLzn4JKIO9jpuxTPsSR2AG/Ik/GtWACGItgw1UVX2DQJG3
-	 Bi+hfbVZE2UiyLWtKbVbjTquMklI6PPOgOi7s6y8=
+	b=opTnGf1nf4tdmG5zCi1KYk4WIppYH8cVYXwxj0kBzYMVLR/+Kk3l0h+/QpQAILb28
+	 +wN2LOPEkdijHaWJJJ8RQPrERqP0CUyWOJ6EI0n99fukn8qojvmnijRZfhS3WSDCcG
+	 tLP6pCv6VKpm1WjyoM2NKTXs0vQZutmkDYeE4Lr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 012/107] mmc: block: Be sure to wait while busy in CQE error recovery
+	Chen Ni <nichen@iscas.ac.cn>,
+	Valentin Caron <valentin.caron@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 075/134] pinctrl: stm32: Add check for devm_kcalloc
 Date: Tue,  5 Dec 2023 12:15:47 +0900
-Message-ID: <20231205031532.356996598@linuxfoundation.org>
+Message-ID: <20231205031540.249346729@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,41 +54,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit c616696a902987352426fdaeec1b0b3240949e6b upstream.
+[ Upstream commit b0eeba527e704d6023a6cd9103f929226e326b03 ]
 
-STOP command does not guarantee to wait while busy, but subsequent command
-MMC_CMDQ_TASK_MGMT to discard the queue will fail if the card is busy, so
-be sure to wait by employing mmc_poll_for_busy().
+Add check for the return value of devm_kcalloc() and return the error
+if it fails in order to avoid NULL pointer dereference.
 
-Fixes: 72a5af554df8 ("mmc: core: Add support for handling CQE requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-4-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using pin names")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Acked-by: Valentin Caron <valentin.caron@foss.st.com>
+Link: https://lore.kernel.org/r/20231031080807.3600656-1-nichen@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/mmc/core/core.c
-+++ b/drivers/mmc/core/core.c
-@@ -554,6 +554,8 @@ int mmc_cqe_recovery(struct mmc_host *ho
- 	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
- 	mmc_wait_for_cmd(host, &cmd, MMC_CMD_RETRIES);
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index a73385a431de9..419eca49ccecb 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1378,6 +1378,11 @@ static int stm32_gpiolib_register_bank(struct stm32_pinctrl *pctl, struct fwnode
+ 	}
  
-+	mmc_poll_for_busy(host->card, MMC_CQE_RECOVERY_TIMEOUT, true, MMC_BUSY_IO);
+ 	names = devm_kcalloc(dev, npins, sizeof(char *), GFP_KERNEL);
++	if (!names) {
++		err = -ENOMEM;
++		goto err_clk;
++	}
 +
- 	memset(&cmd, 0, sizeof(cmd));
- 	cmd.opcode       = MMC_CMDQ_TASK_MGMT;
- 	cmd.arg          = 1; /* Discard entire queue */
+ 	for (i = 0; i < npins; i++) {
+ 		stm32_pin = stm32_pctrl_get_desc_pin_from_gpio(pctl, bank, i);
+ 		if (stm32_pin && stm32_pin->pin.name)
+-- 
+2.42.0
+
 
 
 
