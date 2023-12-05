@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-3995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2A0D804590
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68B1F80466D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4C4B1C209A8
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111651F21413
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C001B6AC2;
-	Tue,  5 Dec 2023 03:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EFD79E3;
+	Tue,  5 Dec 2023 03:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfixkvGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHChwbJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B24D8BEC;
-	Tue,  5 Dec 2023 03:18:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC8BC433C8;
-	Tue,  5 Dec 2023 03:18:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBBF6FAF;
+	Tue,  5 Dec 2023 03:27:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEE1C433C8;
+	Tue,  5 Dec 2023 03:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746328;
-	bh=FuHwLO+sE+JD3yP/FpiIsfPvqUHNdSq9H0qX74xstnY=;
+	s=korg; t=1701746851;
+	bh=uQtblrI01nKQHYxeAWqRzMGXtWdD4ZhVgWHohs+VW1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfixkvGjnxmsjnFllnbjMs2HIqqTMNyoOlbDKEnoeInTZ2f7YjCmMSkC0GSDUAhVj
-	 dk+pA96ooC7DbdnUU9Dc2TcjcJZEDapjClSZoXAYMMIw4M9eMQ7fCfNIaU8XCKGNQF
-	 89tlrBCUC8ompCbPMMqhcUHSIScBKt+/JnVzq8uA=
+	b=FHChwbJBDWziKYAx/+KwWwD7tC3XKHLwa32tjqcp+SK86/o7KiPFmM6auzkP1Q8nb
+	 E8ERTk274cwMnl2NLrvU2NvEJwd00DyYJnHjA8tdh1biH7hXLxZs9m0k0gqLuNK44B
+	 05STFm5QOanYnJk4A94E1nwAVyGYwCVrNrch097k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claire Lin <claire.lin@broadcom.com>,
-	Ray Jui <ray.jui@broadcom.com>,
-	Kamal Dasu <kdasu.kdev@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Yuta Hayama <hayama@lineo.co.jp>
-Subject: [PATCH 4.14 11/30] mtd: rawnand: brcmnand: Fix ecc chunk calculation for erased page bitfips
+	Stefan Haberland <sth@linux.ibm.com>,
+	=?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 4.19 20/71] s390/dasd: protect device queue against concurrent access
 Date: Tue,  5 Dec 2023 12:16:18 +0900
-Message-ID: <20231205031512.153069003@linuxfoundation.org>
+Message-ID: <20231205031519.005117461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +51,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claire Lin <claire.lin@broadcom.com>
+From: Jan Höppner <hoeppner@linux.ibm.com>
 
-commit 7f852cc1579297fd763789f8cd370639d0c654b6 upstream.
+commit db46cd1e0426f52999d50fa72cfa97fa39952885 upstream.
 
-In brcmstb_nand_verify_erased_page(), the ECC chunk pointer calculation
-while correcting erased page bitflips is wrong, fix it.
+In dasd_profile_start() the amount of requests on the device queue are
+counted. The access to the device queue is unprotected against
+concurrent access. With a lot of parallel I/O, especially with alias
+devices enabled, the device queue can change while dasd_profile_start()
+is accessing the queue. In the worst case this leads to a kernel panic
+due to incorrect pointer accesses.
 
-Fixes: 02b88eea9f9c ("mtd: brcmnand: Add check for erased page bitflips")
-Signed-off-by: Claire Lin <claire.lin@broadcom.com>
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Kamal Dasu <kdasu.kdev@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Yuta Hayama <hayama@lineo.co.jp>
+Fix this by taking the device lock before accessing the queue and
+counting the requests. Additionally the check for a valid profile data
+pointer can be done earlier to avoid unnecessary locking in a hot path.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 4fa52aa7a82f ("[S390] dasd: add enhanced DASD statistics interface")
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231025132437.1223363-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/brcmnand/brcmnand.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/s390/block/dasd.c |   24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/drivers/mtd/nand/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/brcmnand/brcmnand.c
-@@ -1753,6 +1753,7 @@ static int brcmstb_nand_verify_erased_pa
- 	int bitflips = 0;
- 	int page = addr >> chip->page_shift;
- 	int ret;
-+	void *ecc_chunk;
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -725,18 +725,20 @@ static void dasd_profile_start(struct da
+ 	 * we count each request only once.
+ 	 */
+ 	device = cqr->startdev;
+-	if (device->profile.data) {
+-		counter = 1; /* request is not yet queued on the start device */
+-		list_for_each(l, &device->ccw_queue)
+-			if (++counter >= 31)
+-				break;
+-	}
++	if (!device->profile.data)
++		return;
++
++	spin_lock(get_ccwdev_lock(device->cdev));
++	counter = 1; /* request is not yet queued on the start device */
++	list_for_each(l, &device->ccw_queue)
++		if (++counter >= 31)
++			break;
++	spin_unlock(get_ccwdev_lock(device->cdev));
++
+ 	spin_lock(&device->profile.lock);
+-	if (device->profile.data) {
+-		device->profile.data->dasd_io_nr_req[counter]++;
+-		if (rq_data_dir(req) == READ)
+-			device->profile.data->dasd_read_nr_req[counter]++;
+-	}
++	device->profile.data->dasd_io_nr_req[counter]++;
++	if (rq_data_dir(req) == READ)
++		device->profile.data->dasd_read_nr_req[counter]++;
+ 	spin_unlock(&device->profile.lock);
+ }
  
- 	if (!buf) {
- 		buf = chip->buffers->databuf;
-@@ -1769,7 +1770,9 @@ static int brcmstb_nand_verify_erased_pa
- 		return ret;
- 
- 	for (i = 0; i < chip->ecc.steps; i++, oob += sas) {
--		ret = nand_check_erased_ecc_chunk(buf, chip->ecc.size,
-+		ecc_chunk = buf + chip->ecc.size * i;
-+		ret = nand_check_erased_ecc_chunk(ecc_chunk,
-+						  chip->ecc.size,
- 						  oob, sas, NULL, 0,
- 						  chip->ecc.strength);
- 		if (ret < 0)
 
 
 
