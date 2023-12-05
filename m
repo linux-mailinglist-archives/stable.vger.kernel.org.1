@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4348046E4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:32:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA7DC8046EB
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD36281168
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBC251C20DB5
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25D228BEC;
-	Tue,  5 Dec 2023 03:32:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2248B79F2;
+	Tue,  5 Dec 2023 03:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgkhdXtm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idRyJ0xl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A476FB1;
-	Tue,  5 Dec 2023 03:32:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63DE3C433C8;
-	Tue,  5 Dec 2023 03:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23AA6FB1;
+	Tue,  5 Dec 2023 03:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC06C433C8;
+	Tue,  5 Dec 2023 03:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747161;
-	bh=i58eVIeVTNba6351h/c5Z1IW3343ucNmxessJwZ7HQw=;
+	s=korg; t=1701747179;
+	bh=dyUMmz/M8qtWfQ0zQYBpej61bAsoR+SxzNmdQgnYufY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgkhdXtmITqhsJUZDfEuNJlMa1LgnRGpBZmLepyPwSFt1A6AaCixeyKswQp23abYp
-	 uymk/eTLALngGER0K7xgNoP6sp/NjReUJ4LJnpyaI+qH6mPr3POhhv8kV/wLzfbt0s
-	 QTpx5c2x5Sx6dAn5s3VuBh28Nctzytgw8h8VjML4=
+	b=idRyJ0xlA2WJvdId6CFcLjKTcvxPPoGFA33Sivf0SKMSUZ+SA9SKiifqNBr4zEf2f
+	 0y0u16bxTrQwz5dRIJhbe4brKJE+k2Gk8ZJTBWNKHWNEyhV5pt9Ur51irKlrBpb5fU
+	 mabSXKSoG8UE+AhDuaO/Gsvmnm/39kL1f41EkNcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Willem de Bruijn <willemb@google.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Elena Salomatkina <elena.salomatkina.cmc@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/107] selftests/net: mptcp: fix uninitialized variable warnings
-Date: Tue,  5 Dec 2023 12:16:39 +0900
-Message-ID: <20231205031535.424278606@linuxfoundation.org>
+Subject: [PATCH 6.1 065/107] octeontx2-af: Fix possible buffer overflow
+Date: Tue,  5 Dec 2023 12:16:40 +0900
+Message-ID: <20231205031535.498012569@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
 References: <20231205031531.426872356@linuxfoundation.org>
@@ -59,108 +59,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
 
-[ Upstream commit 00a4f8fd9c750f20d8fd4535c71c9caa7ef5ff2f ]
+[ Upstream commit ad31c629ca3c87f6d557488c1f9faaebfbcd203c ]
 
-Same init_rng() in both tests. The function reads /dev/urandom to
-initialize srand(). In case of failure, it falls back onto the
-entropy in the uninitialized variable. Not sure if this is on purpose.
-But failure reading urandom should be rare, so just fail hard. While
-at it, convert to getrandom(). Which man 4 random suggests is simpler
-and more robust.
+A loop in rvu_mbox_handler_nix_bandprof_free() contains
+a break if (idx == MAX_BANDPROF_PER_PFFUNC),
+but if idx may reach MAX_BANDPROF_PER_PFFUNC
+buffer '(*req->prof_idx)[layer]' overflow happens before that check.
 
-    mptcp_inq.c:525:6:
-    mptcp_connect.c:1131:6:
+The patch moves the break to the
+beginning of the loop.
 
-    error: variable 'foo' is used uninitialized
-    whenever 'if' condition is false
-    [-Werror,-Wsometimes-uninitialized]
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 048d19d444be ("mptcp: add basic kselftest for mptcp")
-Fixes: b51880568f20 ("selftests: mptcp: add inq test case")
-Cc: Florian Westphal <fw@strlen.de>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-
-----
-
-When input is randomized because this is expected to meaningfully
-explore edge cases, should we also add
-1. logging the random seed to stdout and
-2. adding a command line argument to replay from a specific seed
-I can do this in net-next, if authors find it useful in this case.
-Reviewed-by: Matthieu Baerts <matttbe@kernel.org>
-
-Link: https://lore.kernel.org/r/20231124171645.1011043-5-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e8e095b3b370 ("octeontx2-af: cn10k: Bandwidth profiles config support").
+Signed-off-by: Elena Salomatkina <elena.salomatkina.cmc@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Link: https://lore.kernel.org/r/20231124210802.109763-1-elena.salomatkina.cmc@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_connect.c | 11 ++++-------
- tools/testing/selftests/net/mptcp/mptcp_inq.c     | 11 ++++-------
- 2 files changed, 8 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-index 7df6b9b6f9a84..e6b514cb7bdda 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -18,6 +18,7 @@
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 1f3a8cf42765e..7310047136986 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -5236,6 +5236,8 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
  
- #include <sys/ioctl.h>
- #include <sys/poll.h>
-+#include <sys/random.h>
- #include <sys/sendfile.h>
- #include <sys/stat.h>
- #include <sys/socket.h>
-@@ -1050,15 +1051,11 @@ int main_loop_s(int listensock)
- 
- static void init_rng(void)
- {
--	int fd = open("/dev/urandom", O_RDONLY);
- 	unsigned int foo;
- 
--	if (fd > 0) {
--		int ret = read(fd, &foo, sizeof(foo));
--
--		if (ret < 0)
--			srand(fd + foo);
--		close(fd);
-+	if (getrandom(&foo, sizeof(foo), 0) == -1) {
-+		perror("getrandom");
-+		exit(1);
+ 		ipolicer = &nix_hw->ipolicer[layer];
+ 		for (idx = 0; idx < req->prof_count[layer]; idx++) {
++			if (idx == MAX_BANDPROF_PER_PFFUNC)
++				break;
+ 			prof_idx = req->prof_idx[layer][idx];
+ 			if (prof_idx >= ipolicer->band_prof.max ||
+ 			    ipolicer->pfvf_map[prof_idx] != pcifunc)
+@@ -5249,8 +5251,6 @@ int rvu_mbox_handler_nix_bandprof_free(struct rvu *rvu,
+ 			ipolicer->pfvf_map[prof_idx] = 0x00;
+ 			ipolicer->match_id[prof_idx] = 0;
+ 			rvu_free_rsrc(&ipolicer->band_prof, prof_idx);
+-			if (idx == MAX_BANDPROF_PER_PFFUNC)
+-				break;
+ 		}
  	}
- 
- 	srand(foo);
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_inq.c b/tools/testing/selftests/net/mptcp/mptcp_inq.c
-index 8672d898f8cda..218aac4673212 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_inq.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_inq.c
-@@ -18,6 +18,7 @@
- #include <time.h>
- 
- #include <sys/ioctl.h>
-+#include <sys/random.h>
- #include <sys/socket.h>
- #include <sys/types.h>
- #include <sys/wait.h>
-@@ -519,15 +520,11 @@ static int client(int unixfd)
- 
- static void init_rng(void)
- {
--	int fd = open("/dev/urandom", O_RDONLY);
- 	unsigned int foo;
- 
--	if (fd > 0) {
--		int ret = read(fd, &foo, sizeof(foo));
--
--		if (ret < 0)
--			srand(fd + foo);
--		close(fd);
-+	if (getrandom(&foo, sizeof(foo), 0) == -1) {
-+		perror("getrandom");
-+		exit(1);
- 	}
- 
- 	srand(foo);
+ 	mutex_unlock(&rvu->rsrc_lock);
 -- 
 2.42.0
 
