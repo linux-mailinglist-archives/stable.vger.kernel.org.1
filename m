@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6E080480E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ADB5804691
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24DDC1F22026
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BE87B20C87
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 415E68C03;
-	Tue,  5 Dec 2023 03:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA036FB8;
+	Tue,  5 Dec 2023 03:29:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ow7GSmbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QmXriL0e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014D06FB0;
-	Tue,  5 Dec 2023 03:45:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70D86C433C7;
-	Tue,  5 Dec 2023 03:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1666FAF;
+	Tue,  5 Dec 2023 03:29:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B30AC433CB;
+	Tue,  5 Dec 2023 03:29:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747923;
-	bh=VhYsoqb2HILVVJqW2uPmqzIDf9Jfc9iPKrR/tW3yzY4=;
+	s=korg; t=1701746950;
+	bh=vh8EYCRSAG1mcqPOWWWodiYvMQlKoK0CffwLxoQgjBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ow7GSmbG2LtzUZ9tQYHjCaPLPfsTiizyskiXkAfHn0TXWwxFRhbw/HQHNwdHuSKCG
-	 jFmhhcmx2w9sY20SN0Uk3jAtwH7xxcuTDTNt6qfnT3v3nADgtBJALutNc8wJmsyKdE
-	 yKeuLsD1j0qNUL4+AbjVFOblftXNcU5SZIQPBXBk=
+	b=QmXriL0eXaWpCBpQ9IbOPMrObOX1Kvhc6zdF8BtWJyxRVEh0m+svskPmmODaRb6fo
+	 ANMwhdruPDWEsRcnVEEFkylZNDwza1w8216+l/oA1HrsSmKQGiliy2oyiRqVsaVDn+
+	 UAbqnnlTfRa4Udp6KU9Idtu+TZWMpgx/4AclFpNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
+	Zheng Yongjun <zhengyongjun3@huawei.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 40/94] dm-delay: fix a race between delay_presuspend and delay_bio
+Subject: [PATCH 4.19 70/71] mmc: core: convert comma to semicolon
 Date: Tue,  5 Dec 2023 12:17:08 +0900
-Message-ID: <20231205031525.131354964@linuxfoundation.org>
+Message-ID: <20231205031521.917456938@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,100 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Zheng Yongjun <zhengyongjun3@huawei.com>
 
-[ Upstream commit 6fc45b6ed921dc00dfb264dc08c7d67ee63d2656 ]
+[ Upstream commit 6b1dc6229aecbcb45e8901576684a8c09e25ad7b ]
 
-In delay_presuspend, we set the atomic variable may_delay and then stop
-the timer and flush pending bios. The intention here is to prevent the
-delay target from re-arming the timer again.
+Replace a comma between expression statements by a semicolon.
 
-However, this test is racy. Suppose that one thread goes to delay_bio,
-sees that dc->may_delay is one and proceeds; now, another thread executes
-delay_presuspend, it sets dc->may_delay to zero, deletes the timer and
-flushes pending bios. Then, the first thread continues and adds the bio to
-delayed->list despite the fact that dc->may_delay is false.
-
-Fix this bug by changing may_delay's type from atomic_t to bool and
-only access it while holding the delayed_bios_lock mutex. Note that we
-don't have to grab the mutex in delay_resume because there are no bios
-in flight at this point.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Zheng Yongjun <zhengyongjun3@huawei.com>
+Link: https://lore.kernel.org/r/20201216131737.14883-1-zhengyongjun3@huawei.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 8155d1fa3a74 ("mmc: block: Retry commands in CQE error recovery")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-delay.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/mmc/core/core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-delay.c b/drivers/md/dm-delay.c
-index f496213f8b675..7c0e7c662e07f 100644
---- a/drivers/md/dm-delay.c
-+++ b/drivers/md/dm-delay.c
-@@ -30,7 +30,7 @@ struct delay_c {
- 	struct workqueue_struct *kdelayd_wq;
- 	struct work_struct flush_expired_bios;
- 	struct list_head delayed_bios;
--	atomic_t may_delay;
-+	bool may_delay;
+diff --git a/drivers/mmc/core/core.c b/drivers/mmc/core/core.c
+index 6937f39fe6575..d76184e4377ef 100644
+--- a/drivers/mmc/core/core.c
++++ b/drivers/mmc/core/core.c
+@@ -567,10 +567,10 @@ int mmc_cqe_recovery(struct mmc_host *host)
+ 	host->cqe_ops->cqe_recovery_start(host);
  
- 	struct delay_class read;
- 	struct delay_class write;
-@@ -191,7 +191,7 @@ static int delay_ctr(struct dm_target *ti, unsigned int argc, char **argv)
- 	INIT_WORK(&dc->flush_expired_bios, flush_expired_bios);
- 	INIT_LIST_HEAD(&dc->delayed_bios);
- 	mutex_init(&dc->timer_lock);
--	atomic_set(&dc->may_delay, 1);
-+	dc->may_delay = true;
- 	dc->argc = argc;
+ 	memset(&cmd, 0, sizeof(cmd));
+-	cmd.opcode       = MMC_STOP_TRANSMISSION,
+-	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC,
++	cmd.opcode       = MMC_STOP_TRANSMISSION;
++	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
+ 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
+-	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT,
++	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
+ 	mmc_wait_for_cmd(host, &cmd, 0);
  
- 	ret = delay_class_ctr(ti, &dc->read, argv);
-@@ -245,7 +245,7 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
- 	struct dm_delay_info *delayed;
- 	unsigned long expires = 0;
+ 	memset(&cmd, 0, sizeof(cmd));
+@@ -578,7 +578,7 @@ int mmc_cqe_recovery(struct mmc_host *host)
+ 	cmd.arg          = 1; /* Discard entire queue */
+ 	cmd.flags        = MMC_RSP_R1B | MMC_CMD_AC;
+ 	cmd.flags       &= ~MMC_RSP_CRC; /* Ignore CRC */
+-	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT,
++	cmd.busy_timeout = MMC_CQE_RECOVERY_TIMEOUT;
+ 	err = mmc_wait_for_cmd(host, &cmd, 0);
  
--	if (!c->delay || !atomic_read(&dc->may_delay))
-+	if (!c->delay)
- 		return DM_MAPIO_REMAPPED;
- 
- 	delayed = dm_per_bio_data(bio, sizeof(struct dm_delay_info));
-@@ -254,6 +254,10 @@ static int delay_bio(struct delay_c *dc, struct delay_class *c, struct bio *bio)
- 	delayed->expires = expires = jiffies + msecs_to_jiffies(c->delay);
- 
- 	mutex_lock(&delayed_bios_lock);
-+	if (unlikely(!dc->may_delay)) {
-+		mutex_unlock(&delayed_bios_lock);
-+		return DM_MAPIO_REMAPPED;
-+	}
- 	c->ops++;
- 	list_add_tail(&delayed->list, &dc->delayed_bios);
- 	mutex_unlock(&delayed_bios_lock);
-@@ -267,7 +271,10 @@ static void delay_presuspend(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
- 
--	atomic_set(&dc->may_delay, 0);
-+	mutex_lock(&delayed_bios_lock);
-+	dc->may_delay = false;
-+	mutex_unlock(&delayed_bios_lock);
-+
- 	del_timer_sync(&dc->delay_timer);
- 	flush_bios(flush_delayed_bios(dc, 1));
- }
-@@ -276,7 +283,7 @@ static void delay_resume(struct dm_target *ti)
- {
- 	struct delay_c *dc = ti->private;
- 
--	atomic_set(&dc->may_delay, 1);
-+	dc->may_delay = true;
- }
- 
- static int delay_map(struct dm_target *ti, struct bio *bio)
+ 	host->cqe_ops->cqe_recovery_finish(host);
 -- 
 2.42.0
 
