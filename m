@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-4580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A710804815
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:45:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53926804781
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2081F1F221F1
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:45:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EF33281619
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184588C07;
-	Tue,  5 Dec 2023 03:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A0779E3;
+	Tue,  5 Dec 2023 03:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qScxTQwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWOslLfT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC13D79E3;
-	Tue,  5 Dec 2023 03:45:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632E4C433C7;
-	Tue,  5 Dec 2023 03:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3710A6FB1;
+	Tue,  5 Dec 2023 03:39:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 411D9C433C8;
+	Tue,  5 Dec 2023 03:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747939;
-	bh=mV/Jj9ZC2BbKT1GZE93R8cNr6hihU91MqWnIr6Ou7Xc=;
+	s=korg; t=1701747560;
+	bh=p516HOjGGxoUvcJVqlTm6SD1ZXfZF3XmJju7ahF5NCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qScxTQwlU5YkcRTIm6aPr31LQ7ZyvAPz4k0kV6G5h3gG13hPS9EUqIoSVe0ynXpPk
-	 HOOZdLlm9BXoWOnf8mYGl9leBp1rO8165jnmW+XBadN5y6IoUbqY8clPzJ5IO7rw7k
-	 85qPod6dDPsmT3Gx7u1ieRnO5qQ2u8dfQqm/EPWs=
+	b=MWOslLfTulxdOsDBPHCV7fohjO1hZ1RjDTJ9kD6IJ5/rvl1s0IYHH2UCQwJFjxNsJ
+	 2MjdB7KCeHQ92xK5NIfMv3UYZieG0zP1qfEkKD/j/qgCRBOSrOFh16ZbBWW8/mWEEa
+	 y9WUoKR4E3YNiUteymas/lLilXUvolf/6yXxhcPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenchao Chen <wenchao.chen@unisoc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 54/94] mmc: sdhci-sprd: Fix vqmmc not shutting down after the card was pulled
+	Christoph Hellwig <hch@lst.de>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 121/135] scsi: core: Introduce the scsi_cmd_to_rq() function
 Date: Tue,  5 Dec 2023 12:17:22 +0900
-Message-ID: <20231205031525.865585105@linuxfoundation.org>
+Message-ID: <20231205031538.507809293@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,93 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenchao Chen <wenchao.chen@unisoc.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 477865af60b2117ceaa1d558e03559108c15c78c upstream.
+[ Upstream commit 51f3a478892873337c54068d1185bcd797000a52 ]
 
-With cat regulator_summary, we found that vqmmc was not shutting
-down after the card was pulled.
+The 'request' member of struct scsi_cmnd is superfluous. The struct request
+and struct scsi_cmnd data structures are adjacent and hence the request
+pointer can be derived easily from a scsi_cmnd pointer. Introduce a helper
+function that performs that conversion in a type-safe way. This patch is
+the first step towards removing the request member from struct
+scsi_cmnd. Making that change has the following advantages:
 
-cat /sys/kernel/debug/regulator/regulator_summary
-1.before fix
-1)Insert SD card
- vddsdio		1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+ - This is a performance optimization since adding an offset to a pointer
+   takes less time than dereferencing a pointer.
 
-2)Pull out the SD card
- vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
+ - struct scsi_cmnd becomes smaller.
 
-2.after fix
-1)Insert SD cardt
- vddsdio                1    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  1                         0mA  3500mV  3600mV
-
-2)Pull out the SD card
- vddsdio		0    1  0 unknown  3500mV 0mA  1200mV  3750mV
-    71100000.mmc-vqmmc  0                         0mA  3500mV  3600mV
-
-Fixes: fb8bd90f83c4 ("mmc: sdhci-sprd: Add Spreadtrum's initial host controller")
-Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20231115083406.7368-1-wenchao.chen@unisoc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20210809230355.8186-2-bvanassche@acm.org
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 19597cad64d6 ("scsi: qla2xxx: Fix system crash due to bad pointer access")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-sprd.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ include/scsi/scsi_cmnd.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/mmc/host/sdhci-sprd.c
-+++ b/drivers/mmc/host/sdhci-sprd.c
-@@ -381,12 +381,33 @@ static unsigned int sdhci_sprd_get_ro(st
- 	return 0;
- }
+diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
+index 4d272e834ca2e..b1c9b52876f3c 100644
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -144,6 +144,12 @@ struct scsi_cmnd {
+ 	unsigned int extra_len;	/* length of alignment and padding */
+ };
  
-+static void sdhci_sprd_set_power(struct sdhci_host *host, unsigned char mode,
-+				 unsigned short vdd)
++/* Variant of blk_mq_rq_from_pdu() that verifies the type of its argument. */
++static inline struct request *scsi_cmd_to_rq(struct scsi_cmnd *scmd)
 +{
-+	struct mmc_host *mmc = host->mmc;
-+
-+	switch (mode) {
-+	case MMC_POWER_OFF:
-+		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, 0);
-+
-+		mmc_regulator_disable_vqmmc(mmc);
-+		break;
-+	case MMC_POWER_ON:
-+		mmc_regulator_enable_vqmmc(mmc);
-+		break;
-+	case MMC_POWER_UP:
-+		mmc_regulator_set_ocr(host->mmc, mmc->supply.vmmc, vdd);
-+		break;
-+	}
++	return blk_mq_rq_from_pdu(scmd);
 +}
 +
- static struct sdhci_ops sdhci_sprd_ops = {
- 	.read_l = sdhci_sprd_readl,
- 	.write_l = sdhci_sprd_writel,
- 	.write_w = sdhci_sprd_writew,
- 	.write_b = sdhci_sprd_writeb,
- 	.set_clock = sdhci_sprd_set_clock,
-+	.set_power = sdhci_sprd_set_power,
- 	.get_max_clock = sdhci_sprd_get_max_clock,
- 	.get_min_clock = sdhci_sprd_get_min_clock,
- 	.set_bus_width = sdhci_set_bus_width,
-@@ -630,6 +651,10 @@ static int sdhci_sprd_probe(struct platf
- 	host->caps1 &= ~(SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_SDR104 |
- 			 SDHCI_SUPPORT_DDR50);
- 
-+	ret = mmc_regulator_get_supply(host->mmc);
-+	if (ret)
-+		goto pm_runtime_disable;
-+
- 	ret = sdhci_setup_host(host);
- 	if (ret)
- 		goto pm_runtime_disable;
+ /*
+  * Return the driver private allocation behind the command.
+  * Only works if cmd_size is set in the host template.
+-- 
+2.42.0
+
 
 
 
