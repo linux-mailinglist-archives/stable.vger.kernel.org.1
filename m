@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E18458046F6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:33:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B486804827
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DFDF1C20DC3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3F41F225A2
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F3E8C0F;
-	Tue,  5 Dec 2023 03:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032018C05;
+	Tue,  5 Dec 2023 03:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCWm2JcB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6MLbsEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1628BF7;
-	Tue,  5 Dec 2023 03:33:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710BBC433C8;
-	Tue,  5 Dec 2023 03:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FED6FB0;
+	Tue,  5 Dec 2023 03:46:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4F6C433C7;
+	Tue,  5 Dec 2023 03:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747206;
-	bh=qYmYJqcBdSX7+P1AQfPv4p3pODf+7DYJQi/whJJJb0U=;
+	s=korg; t=1701747986;
+	bh=cRiF6CMst+Vz15SSsv7jYaLf/3/FxUOS1EyDMMXwoWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCWm2JcBCT5zn2TKT+S+DZ/+GOuSsmzyTXNQGkIsJ4+AupWlCkXx7we6CQWyVcnjr
-	 d+SR7cm0imuAaWLrztA2P/scQz/C6PMRoKBewBLsvwPjU1Dou2aQsxYiU+UDaRjZne
-	 pyGybJjFj3verrQssgMR5ssp4pjhJy3l7GXkZzzM=
+	b=E6MLbsENzzyruylsXqj4+fZ7rVnrx7l3JIHgsgzALrCiViF/oT5Gz5Rub6Z0yLdHj
+	 02GZ2o+XStQqJ4UwojD/P2+eMs/1bh33XY2CUW46HOpMtwd78lnK1POwme2hUeWWKj
+	 EgwGr2vQg0tT+pSLVnVS2T9A7llLq1pQ2P6DgTPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/107] drm/amd/display: clean code-style issues in dcn30_set_mpc_shaper_3dlut
+	Oliver Neukum <oneukum@suse.com>,
+	Ivan Ivanov <ivan.ivanov@suse.com>,
+	Andrea della Porta <andrea.porta@suse.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.4 46/94] USB: dwc2: write HCINT with INTMASK applied
 Date: Tue,  5 Dec 2023 12:17:14 +0900
-Message-ID: <20231205031537.931438784@linuxfoundation.org>
+Message-ID: <20231205031525.432932878@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,105 +52,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 94369589e4ec13c762fe10a1fdc4463bdfee5d5f ]
+commit 0583bc776ca5b5a3f5752869fc31cf7322df2b35 upstream.
 
-This function has many conditions and all code style issues (identation,
-missing braces, etc.) make reading it really annoying.
+dwc2_hc_n_intr() writes back INTMASK as read but evaluates it
+with intmask applied. In stress testing this causes spurious
+interrupts like this:
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 6f395cebdd89 ("drm/amd/display: Fix MPCC 1DLUT programming")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 7 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:07 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 0 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_hc_chhltd_intr_dma: Channel 4 - ChHltd set, but reason is unknown
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: hcint 0x00000002, intsts 0x04600001
+[Mon Aug 14 10:51:08 2023] dwc2 3f980000.usb: dwc2_update_urb_state_abn(): trimming xfer length
+
+Applying INTMASK prevents this. The issue exists in all versions of the
+driver.
+
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Tested-by: Ivan Ivanov <ivan.ivanov@suse.com>
+Tested-by: Andrea della Porta <andrea.porta@suse.com>
+Link: https://lore.kernel.org/r/20231115144514.15248-1-oneukum@suse.com
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/amd/display/dc/dcn30/dcn30_hwseq.c    | 37 ++++++++++---------
- 1 file changed, 19 insertions(+), 18 deletions(-)
+ drivers/usb/dwc2/hcd_intr.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-index a1b312483d7f1..07691b487e28c 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_hwseq.c
-@@ -91,8 +91,8 @@ bool dcn30_set_blend_lut(
- 	return result;
- }
- 
--static bool dcn30_set_mpc_shaper_3dlut(
--	struct pipe_ctx *pipe_ctx, const struct dc_stream_state *stream)
-+static bool dcn30_set_mpc_shaper_3dlut(struct pipe_ctx *pipe_ctx,
-+				       const struct dc_stream_state *stream)
+--- a/drivers/usb/dwc2/hcd_intr.c
++++ b/drivers/usb/dwc2/hcd_intr.c
+@@ -2045,15 +2045,17 @@ static void dwc2_hc_n_intr(struct dwc2_h
  {
- 	struct dpp *dpp_base = pipe_ctx->plane_res.dpp;
- 	int mpcc_id = pipe_ctx->plane_res.hubp->inst;
-@@ -104,19 +104,18 @@ static bool dcn30_set_mpc_shaper_3dlut(
- 	const struct pwl_params *shaper_lut = NULL;
- 	//get the shaper lut params
- 	if (stream->func_shaper) {
--		if (stream->func_shaper->type == TF_TYPE_HWPWL)
-+		if (stream->func_shaper->type == TF_TYPE_HWPWL) {
- 			shaper_lut = &stream->func_shaper->pwl;
--		else if (stream->func_shaper->type == TF_TYPE_DISTRIBUTED_POINTS) {
--			cm_helper_translate_curve_to_hw_format(
--					stream->func_shaper,
--					&dpp_base->shaper_params, true);
-+		} else if (stream->func_shaper->type == TF_TYPE_DISTRIBUTED_POINTS) {
-+			cm_helper_translate_curve_to_hw_format(stream->func_shaper,
-+							       &dpp_base->shaper_params, true);
- 			shaper_lut = &dpp_base->shaper_params;
- 		}
+ 	struct dwc2_qtd *qtd;
+ 	struct dwc2_host_chan *chan;
+-	u32 hcint, hcintmsk;
++	u32 hcint, hcintraw, hcintmsk;
+ 
+ 	chan = hsotg->hc_ptr_array[chnum];
+ 
+-	hcint = dwc2_readl(hsotg, HCINT(chnum));
++	hcintraw = dwc2_readl(hsotg, HCINT(chnum));
+ 	hcintmsk = dwc2_readl(hsotg, HCINTMSK(chnum));
++	hcint = hcintraw & hcintmsk;
++	dwc2_writel(hsotg, hcint, HCINT(chnum));
++
+ 	if (!chan) {
+ 		dev_err(hsotg->dev, "## hc_ptr_array for channel is NULL ##\n");
+-		dwc2_writel(hsotg, hcint, HCINT(chnum));
+ 		return;
  	}
  
- 	if (stream->lut3d_func &&
--		stream->lut3d_func->state.bits.initialized == 1 &&
--		stream->lut3d_func->state.bits.rmu_idx_valid == 1) {
-+	    stream->lut3d_func->state.bits.initialized == 1 &&
-+	    stream->lut3d_func->state.bits.rmu_idx_valid == 1) {
- 		if (stream->lut3d_func->state.bits.rmu_mux_num == 0)
- 			mpcc_id_projected = stream->lut3d_func->state.bits.mpc_rmu0_mux;
- 		else if (stream->lut3d_func->state.bits.rmu_mux_num == 1)
-@@ -125,20 +124,22 @@ static bool dcn30_set_mpc_shaper_3dlut(
- 			mpcc_id_projected = stream->lut3d_func->state.bits.mpc_rmu2_mux;
- 		if (mpcc_id_projected != mpcc_id)
- 			BREAK_TO_DEBUGGER();
--		/*find the reason why logical layer assigned a differant mpcc_id into acquire_post_bldn_3dlut*/
-+		/* find the reason why logical layer assigned a different
-+		 * mpcc_id into acquire_post_bldn_3dlut
-+		 */
- 		acquired_rmu = mpc->funcs->acquire_rmu(mpc, mpcc_id,
--				stream->lut3d_func->state.bits.rmu_mux_num);
-+						       stream->lut3d_func->state.bits.rmu_mux_num);
- 		if (acquired_rmu != stream->lut3d_func->state.bits.rmu_mux_num)
- 			BREAK_TO_DEBUGGER();
--		result = mpc->funcs->program_3dlut(mpc,
--								&stream->lut3d_func->lut_3d,
--								stream->lut3d_func->state.bits.rmu_mux_num);
-+
-+		result = mpc->funcs->program_3dlut(mpc, &stream->lut3d_func->lut_3d,
-+						   stream->lut3d_func->state.bits.rmu_mux_num);
- 		result = mpc->funcs->program_shaper(mpc, shaper_lut,
--				stream->lut3d_func->state.bits.rmu_mux_num);
--	} else
--		/*loop through the available mux and release the requested mpcc_id*/
-+						    stream->lut3d_func->state.bits.rmu_mux_num);
-+	} else {
-+		// loop through the available mux and release the requested mpcc_id
- 		mpc->funcs->release_rmu(mpc, mpcc_id);
--
-+	}
+@@ -2062,11 +2064,9 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ 			 chnum);
+ 		dev_vdbg(hsotg->dev,
+ 			 "  hcint 0x%08x, hcintmsk 0x%08x, hcint&hcintmsk 0x%08x\n",
+-			 hcint, hcintmsk, hcint & hcintmsk);
++			 hcintraw, hcintmsk, hcint);
+ 	}
  
- 	return result;
- }
--- 
-2.42.0
-
+-	dwc2_writel(hsotg, hcint, HCINT(chnum));
+-
+ 	/*
+ 	 * If we got an interrupt after someone called
+ 	 * dwc2_hcd_endpoint_disable() we don't want to crash below
+@@ -2076,8 +2076,7 @@ static void dwc2_hc_n_intr(struct dwc2_h
+ 		return;
+ 	}
+ 
+-	chan->hcint = hcint;
+-	hcint &= hcintmsk;
++	chan->hcint = hcintraw;
+ 
+ 	/*
+ 	 * If the channel was halted due to a dequeue, the qtd list might
 
 
 
