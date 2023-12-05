@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-4364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C4280472E
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7B178046AD
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2DF31F210AC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 144761C20D85
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA0E8BF2;
-	Tue,  5 Dec 2023 03:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5BE78BF2;
+	Tue,  5 Dec 2023 03:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lj0ywqlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Npxo0r6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D036FB1;
-	Tue,  5 Dec 2023 03:35:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAB8C433C8;
-	Tue,  5 Dec 2023 03:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E4C6FB1;
+	Tue,  5 Dec 2023 03:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CA8C433C7;
+	Tue,  5 Dec 2023 03:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747346;
-	bh=O9dEsog5afVs6sk01wRPC+IdOBMSJ9X1yPlP7ce27j0=;
+	s=korg; t=1701747023;
+	bh=GLFi/dU/nxldp6qBf4QPDbkbQXmjz+88neuL9QnFX38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lj0ywqlG8s+1QlWHVzWA5/3fdG+6zW36mhHC/pBEh0cwE9BEYxj8HuJT/wgvG88ye
-	 FzANEiV3biGXZAwaQpMbv75LY1CZjKK3KoUrg9F5dDZL9bD+zNEK3qUdGIPBVVre0Q
-	 TCwpRGd38/cfEM3f/PANwi4PE2CvpB9/pOb9kpUw=
+	b=Npxo0r6fjKszhhMlJjSmjkRs6ObsBSWk9gFXYhqbWbgeP9Ax5fL1+zqOMLjLgaRI6
+	 7J1lLnQsz3uoacqbau9TLLi5K/ANKwQYINurxp7NEpQlZ5/ps83rONWl5cNn8/CMwp
+	 kAeA+g7MmyP+nKZO2BArGFZr7LBJMvDjVDi61HeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 042/135] ext4: using nofail preallocation in ext4_es_remove_extent()
-Date: Tue,  5 Dec 2023 12:16:03 +0900
-Message-ID: <20231205031533.242518140@linuxfoundation.org>
+	Lukasz Luba <lukasz.luba@arm.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 029/107] powercap: DTPM: Fix unneeded conversions to micro-Watts
+Date: Tue,  5 Dec 2023 12:16:04 +0900
+Message-ID: <20231205031533.379093657@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,78 +52,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Lukasz Luba <lukasz.luba@arm.com>
 
-[ Upstream commit e9fe2b882bd5b26b987c9ba110c2222796f72af5 ]
+commit b817f1488fca548fe50e2654d84a1956a16a1a8a upstream.
 
-If __es_remove_extent() returns an error it means that when splitting
-extent, allocating an extent that must be kept failed, where returning
-an error directly would cause the extent tree to be inconsistent. So we
-use GFP_NOFAIL to pre-allocate an extent_status and pass it to
-__es_remove_extent() to avoid this problem.
+The power values coming from the Energy Model are already in uW.
 
-In addition, since the allocated memory is outside the i_es_lock, the
-extent_status tree may change and the pre-allocated extent_status is
-no longer needed, so we release the pre-allocated extent_status when
-es->es_len is not initialized.
+The PowerCap and DTPM frameworks operate on uW, so all places should
+just use the values from the EM.
 
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-7-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 8e387c89e96b ("ext4: make sure allocate pending entry not fail")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix the code by removing all of the conversion to uW still present in it.
+
+Fixes: ae6ccaa65038 (PM: EM: convert power field to micro-Watts precision and align drivers)
+Cc: 5.19+ <stable@vger.kernel.org> # v5.19+
+Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents_status.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/powercap/dtpm_cpu.c     |  6 +-----
+ drivers/powercap/dtpm_devfreq.c | 11 +++--------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 10550d62a6763..4af825eb0cb45 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1457,6 +1457,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	ext4_lblk_t end;
- 	int err = 0;
- 	int reserved = 0;
-+	struct extent_status *es = NULL;
+diff --git a/drivers/powercap/dtpm_cpu.c b/drivers/powercap/dtpm_cpu.c
+index 2ff7717530bf..8a2f18fa3faf 100644
+--- a/drivers/powercap/dtpm_cpu.c
++++ b/drivers/powercap/dtpm_cpu.c
+@@ -24,7 +24,6 @@
+ #include <linux/of.h>
+ #include <linux/pm_qos.h>
+ #include <linux/slab.h>
+-#include <linux/units.h>
  
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
- 		return 0;
-@@ -1471,17 +1472,25 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	end = lblk + len - 1;
- 	BUG_ON(end < lblk);
+ struct dtpm_cpu {
+ 	struct dtpm dtpm;
+@@ -104,8 +103,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+ 		if (pd->table[i].frequency < freq)
+ 			continue;
  
-+retry:
-+	if (err && !es)
-+		es = __es_alloc_extent(true);
- 	/*
- 	 * ext4_clear_inode() depends on us taking i_es_lock unconditionally
- 	 * so that we are sure __es_shrink() is done with the inode before it
- 	 * is reclaimed.
- 	 */
- 	write_lock(&EXT4_I(inode)->i_es_lock);
--	err = __es_remove_extent(inode, lblk, end, &reserved, NULL);
-+	err = __es_remove_extent(inode, lblk, end, &reserved, es);
-+	if (es && !es->es_len)
-+		__es_free_extent(es);
- 	write_unlock(&EXT4_I(inode)->i_es_lock);
-+	if (err)
-+		goto retry;
-+
- 	ext4_es_print_tree(inode);
- 	ext4_da_release_space(inode, reserved);
--	return err;
-+	return 0;
+-		return scale_pd_power_uw(pd_mask, pd->table[i].power *
+-					 MICROWATT_PER_MILLIWATT);
++		return scale_pd_power_uw(pd_mask, pd->table[i].power);
+ 	}
+ 
+ 	return 0;
+@@ -122,11 +120,9 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+ 	nr_cpus = cpumask_weight(&cpus);
+ 
+ 	dtpm->power_min = em->table[0].power;
+-	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
+ 	dtpm->power_min *= nr_cpus;
+ 
+ 	dtpm->power_max = em->table[em->nr_perf_states - 1].power;
+-	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
+ 	dtpm->power_max *= nr_cpus;
+ 
+ 	return 0;
+diff --git a/drivers/powercap/dtpm_devfreq.c b/drivers/powercap/dtpm_devfreq.c
+index 91276761a31d..612c3b59dd5b 100644
+--- a/drivers/powercap/dtpm_devfreq.c
++++ b/drivers/powercap/dtpm_devfreq.c
+@@ -39,10 +39,8 @@ static int update_pd_power_uw(struct dtpm *dtpm)
+ 	struct em_perf_domain *pd = em_pd_get(dev);
+ 
+ 	dtpm->power_min = pd->table[0].power;
+-	dtpm->power_min *= MICROWATT_PER_MILLIWATT;
+ 
+ 	dtpm->power_max = pd->table[pd->nr_perf_states - 1].power;
+-	dtpm->power_max *= MICROWATT_PER_MILLIWATT;
+ 
+ 	return 0;
  }
+@@ -54,13 +52,10 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 power_limit)
+ 	struct device *dev = devfreq->dev.parent;
+ 	struct em_perf_domain *pd = em_pd_get(dev);
+ 	unsigned long freq;
+-	u64 power;
+ 	int i;
  
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
+ 	for (i = 0; i < pd->nr_perf_states; i++) {
+-
+-		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
+-		if (power > power_limit)
++		if (pd->table[i].power > power_limit)
+ 			break;
+ 	}
+ 
+@@ -68,7 +63,7 @@ static u64 set_pd_power_limit(struct dtpm *dtpm, u64 power_limit)
+ 
+ 	dev_pm_qos_update_request(&dtpm_devfreq->qos_req, freq);
+ 
+-	power_limit = pd->table[i - 1].power * MICROWATT_PER_MILLIWATT;
++	power_limit = pd->table[i - 1].power;
+ 
+ 	return power_limit;
+ }
+@@ -110,7 +105,7 @@ static u64 get_pd_power_uw(struct dtpm *dtpm)
+ 		if (pd->table[i].frequency < freq)
+ 			continue;
+ 
+-		power = pd->table[i].power * MICROWATT_PER_MILLIWATT;
++		power = pd->table[i].power;
+ 		power *= status.busy_time;
+ 		power >>= 10;
+ 
 -- 
-2.42.0
+2.43.0
 
 
 
