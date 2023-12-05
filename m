@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-4395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346F880474D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD5D28047EE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63FCE1C20DAF
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E98771C20E96
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A984079E3;
-	Tue,  5 Dec 2023 03:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4093879E3;
+	Tue,  5 Dec 2023 03:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDziGVJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rL76gpU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633056FB1;
-	Tue,  5 Dec 2023 03:37:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E79ADC433C8;
-	Tue,  5 Dec 2023 03:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDA46AC2;
+	Tue,  5 Dec 2023 03:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29117C433C7;
+	Tue,  5 Dec 2023 03:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747427;
-	bh=SuuaSgZZJpAvhFcvNQ6LFrUs9+GMCUzckpsyWRdxQVw=;
+	s=korg; t=1701747838;
+	bh=cSbwLlxh30DcphPvcArqtytdizblQkmmbdKhQiaCRy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDziGVJCpH6R5lUVOJr2C8q6YNj4sDAMLGGI2KLbOCxFJ8dktagN1nZdMzCt6ztws
-	 ZeUckQLNutoy7KVxjJuGXooy+/wFbJHUJI2OCz2uNJSgE4vH8nYAKWej47qd1nnxwu
-	 PDtHVLEQ4eaesXFQQOLtQP1Jkz8cJttyli33LErU=
+	b=0rL76gpUndeAG2wjXYKl47ylan2AUt0mj8WrXT1/2FUXa1C+PEm04tIBTeFimabYg
+	 vcy9m6xuVeM1SWT9UP4uZL26UtDVSoctzoZKDvqNt5u9BK8uMa7dK0ZgXw35sPsEuB
+	 x91b4S8AFxP/lTjMJn9QeDp7g+T1UeBQbo2CC000=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 073/135] mmc: block: Do not lose cache flush during CQE error recovery
-Date: Tue,  5 Dec 2023 12:16:34 +0900
-Message-ID: <20231205031535.103916577@linuxfoundation.org>
+	Chen Ni <nichen@iscas.ac.cn>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 07/94] ata: pata_isapnp: Add missing error check for devm_ioport_map()
+Date: Tue,  5 Dec 2023 12:16:35 +0900
+Message-ID: <20231205031523.276078340@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +54,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 174925d340aac55296318e43fd96c0e1d196e105 upstream.
+[ Upstream commit a6925165ea82b7765269ddd8dcad57c731aa00de ]
 
-During CQE error recovery, error-free data commands get requeued if there
-is any data left to transfer, but non-data commands are completed even
-though they have not been processed.  Requeue them instead.
+Add missing error return check for devm_ioport_map() and return the
+error if this function call fails.
 
-Note the only non-data command is cache flush, which would have resulted in
-a cache flush being lost if it was queued at the time of CQE recovery.
-
-Fixes: 1e8e55b67030 ("mmc: block: Add CQE support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-2-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0d5ff566779f ("libata: convert to iomap")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ata/pata_isapnp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1418,6 +1418,8 @@ static void mmc_blk_cqe_complete_rq(stru
- 			blk_mq_requeue_request(req, true);
- 		else
- 			__blk_mq_end_request(req, BLK_STS_OK);
-+	} else if (mq->in_recovery) {
-+		blk_mq_requeue_request(req, true);
- 	} else {
- 		blk_mq_end_request(req, BLK_STS_OK);
- 	}
+diff --git a/drivers/ata/pata_isapnp.c b/drivers/ata/pata_isapnp.c
+index 43bb224430d3c..8892931ea8676 100644
+--- a/drivers/ata/pata_isapnp.c
++++ b/drivers/ata/pata_isapnp.c
+@@ -82,6 +82,9 @@ static int isapnp_init_one(struct pnp_dev *idev, const struct pnp_device_id *dev
+ 	if (pnp_port_valid(idev, 1)) {
+ 		ctl_addr = devm_ioport_map(&idev->dev,
+ 					   pnp_port_start(idev, 1), 1);
++		if (!ctl_addr)
++			return -ENOMEM;
++
+ 		ap->ioaddr.altstatus_addr = ctl_addr;
+ 		ap->ioaddr.ctl_addr = ctl_addr;
+ 		ap->ops = &isapnp_port_ops;
+-- 
+2.42.0
+
 
 
 
