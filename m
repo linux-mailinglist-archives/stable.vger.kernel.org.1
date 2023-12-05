@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-4222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C1C0804693
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3723E804702
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05831F213DE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24A301C20E01
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371E08BEC;
-	Tue,  5 Dec 2023 03:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36E679E3;
+	Tue,  5 Dec 2023 03:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfqknVvm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbugvSto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E756FAF;
-	Tue,  5 Dec 2023 03:29:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616A1C433C7;
-	Tue,  5 Dec 2023 03:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F4A8F79;
+	Tue,  5 Dec 2023 03:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E14CDC433CB;
+	Tue,  5 Dec 2023 03:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746956;
-	bh=4cHWZBNgkxrsJ8pm7AfnWomjAjnJAJ38wIQuELOBipo=;
+	s=korg; t=1701747234;
+	bh=A/fxMXsycQKKbtERYalJoA8cvmUACDb/hnGUdU0wuJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfqknVvmyDbJvODqOyt0JhuYO/E1Z56o/w11bMCA9eQ4zKoCAX9VwP0LFU3CtUnXA
-	 AW1N1mmxNDZ3xpsocQq+Jj0tUh8RQMlr247HHUqMgLay9r2ihigEQXhXWwrzOOKkNl
-	 OR6kxaxETKozZ7UZluVWuHlZVelgGnnZqBNk3g3Q=
+	b=FbugvStoK7yNDus+sIj6E9OXY2vuFL+uSmoOj5v6EHpVBLSeigcLqyWgMZMBW8Ctb
+	 xe5t7hRXPhZA5xbPkdwMgHex2x1gEVZ12E6x+37L6AOf44YaEVHlfJ3AXPBI/EaR2H
+	 DNPSGEZk3P9akAuuIexPLuVvgbm+PQdro+oVhB1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Avri Altman <avri.altman@wdc.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 68/71] mmc: cqhci: Warn of halt or task clear failure
+Subject: [PATCH 6.1 091/107] iommu/vt-d: Allocate pasid table in device probe path
 Date: Tue,  5 Dec 2023 12:17:06 +0900
-Message-ID: <20231205031521.812160249@linuxfoundation.org>
+Message-ID: <20231205031537.381772322@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
+References: <20231205031531.426872356@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +54,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 35597bdb04ec27ef3b1cea007dc69f8ff5df75a5 ]
+[ Upstream commit ec62b4424174f41bdcedd08d12d7bed80088453d ]
 
-A correctly operating controller should successfully halt and clear tasks.
-Failure may result in errors elsewhere, so promote messages from debug to
-warnings.
+Whether or not a domain is attached to the device, the pasid table should
+always be valid as long as it has been probed. This moves the pasid table
+allocation from the domain attaching device path to device probe path and
+frees it in the device release path.
 
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
-Link: https://lore.kernel.org/r/20231103084720.6886-6-adrian.hunter@intel.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20221118132451.114406-2-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: da37dddcf4ca ("iommu/vt-d: Disable PCI ATS in legacy passthrough mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/cqhci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iommu/intel/iommu.c | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
-index 773941a92649d..deae330441788 100644
---- a/drivers/mmc/host/cqhci.c
-+++ b/drivers/mmc/host/cqhci.c
-@@ -884,8 +884,8 @@ static bool cqhci_clear_all_tasks(struct mmc_host *mmc, unsigned int timeout)
- 	ret = cqhci_tasks_cleared(cq_host);
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index bd34fcc5a5274..3dbf86c61f073 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -2494,13 +2494,6 @@ static int domain_add_dev_info(struct dmar_domain *domain, struct device *dev)
  
- 	if (!ret)
--		pr_debug("%s: cqhci: Failed to clear tasks\n",
--			 mmc_hostname(mmc));
-+		pr_warn("%s: cqhci: Failed to clear tasks\n",
-+			mmc_hostname(mmc));
+ 	/* PASID table is mandatory for a PCI device in scalable mode. */
+ 	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev)) {
+-		ret = intel_pasid_alloc_table(dev);
+-		if (ret) {
+-			dev_err(dev, "PASID table allocation failed\n");
+-			dmar_remove_one_dev_info(dev);
+-			return ret;
+-		}
+-
+ 		/* Setup the PASID entry for requests without PASID: */
+ 		if (hw_pass_through && domain_type_is_si(domain))
+ 			ret = intel_pasid_setup_pass_through(iommu, domain,
+@@ -4112,7 +4105,6 @@ static void dmar_remove_one_dev_info(struct device *dev)
  
- 	return ret;
+ 		iommu_disable_dev_iotlb(info);
+ 		domain_context_clear(info);
+-		intel_pasid_free_table(info->dev);
+ 	}
+ 
+ 	spin_lock_irqsave(&domain->lock, flags);
+@@ -4477,6 +4469,7 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
+ 	struct device_domain_info *info;
+ 	struct intel_iommu *iommu;
+ 	u8 bus, devfn;
++	int ret;
+ 
+ 	iommu = device_to_iommu(dev, &bus, &devfn);
+ 	if (!iommu || !iommu->iommu.ops)
+@@ -4521,6 +4514,16 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
+ 
+ 	dev_iommu_priv_set(dev, info);
+ 
++	if (sm_supported(iommu) && !dev_is_real_dma_subdevice(dev)) {
++		ret = intel_pasid_alloc_table(dev);
++		if (ret) {
++			dev_err(dev, "PASID table allocation failed\n");
++			dev_iommu_priv_set(dev, NULL);
++			kfree(info);
++			return ERR_PTR(ret);
++		}
++	}
++
+ 	return &iommu->iommu;
  }
-@@ -918,7 +918,7 @@ static bool cqhci_halt(struct mmc_host *mmc, unsigned int timeout)
- 	ret = cqhci_halted(cq_host);
  
- 	if (!ret)
--		pr_debug("%s: cqhci: Failed to halt\n", mmc_hostname(mmc));
-+		pr_warn("%s: cqhci: Failed to halt\n", mmc_hostname(mmc));
+@@ -4529,6 +4532,7 @@ static void intel_iommu_release_device(struct device *dev)
+ 	struct device_domain_info *info = dev_iommu_priv_get(dev);
  
- 	return ret;
- }
+ 	dmar_remove_one_dev_info(dev);
++	intel_pasid_free_table(dev);
+ 	dev_iommu_priv_set(dev, NULL);
+ 	kfree(info);
+ 	set_dma_ops(dev, NULL);
 -- 
 2.42.0
 
