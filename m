@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-3992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4016D80458D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:18:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F05D804662
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 719BF1C20B3C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEABF28142D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041E26FB0;
-	Tue,  5 Dec 2023 03:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E9006FAF;
+	Tue,  5 Dec 2023 03:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmnM+TPi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3Qp3MGc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A566AA0;
-	Tue,  5 Dec 2023 03:18:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13172C433C7;
-	Tue,  5 Dec 2023 03:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8046FB1;
+	Tue,  5 Dec 2023 03:27:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EE5C433C8;
+	Tue,  5 Dec 2023 03:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746320;
-	bh=vCLpCNyGPiXqf+/flotcalaZWrPxlPXeloPDijjvkrk=;
+	s=korg; t=1701746827;
+	bh=EGoNz0dKKtitVKc9t+Jr7HV3iPyaAMgNKsHPWpiqpTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vmnM+TPiRPiLDS7cEUuENPP1H7shsG521JSLVejO57sZb5Op3jS2deREF3gFmtz8h
-	 FZoLg/6Xn/8MPmC8HaTNXcDd20sLvETRstP6j07aVgoVwW8LpiDUFk4fqq7XcUN1mG
-	 i0YviwdzJGbBODoeh3OnF/cuhewMZV8c42Mm3gMA=
+	b=l3Qp3MGccv4GuIYCTx6gH7lLyiRkQXJuOEKxemKIiiWEkW5b8mAAXNa+sIrZ7K317
+	 tg8elSEAjbglj56LVJGcuXxAzk3+F55qfjbEoBoU8ANZ6qeYlK2kHWEADwOxu1R9xg
+	 WYuDQv8ns9/AePwPZIHcTEENCHVg4PDBUkjbfkj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 08/30] amd-xgbe: handle corner-case during sfp hotplug
+	Andrew Murray <andrew.murray@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>
+Subject: [PATCH 4.19 17/71] KVM: arm64: limit PMU version to PMUv3 for ARMv8.1
 Date: Tue,  5 Dec 2023 12:16:15 +0900
-Message-ID: <20231205031511.968402880@linuxfoundation.org>
+Message-ID: <20231205031518.837972807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
-References: <20231205031511.476698159@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +55,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Andrew Murray <andrew.murray@arm.com>
 
-[ Upstream commit 676ec53844cbdf2f47e68a076cdff7f0ec6cbe3f ]
+commit c854188ea01062f5a5fd7f05658feb1863774eaa upstream.
 
-Force the mode change for SFI in Fixed PHY configurations. Fixed PHY
-configurations needs PLL to be enabled while doing mode set. When the
-SFP module isn't connected during boot, driver assumes AN is ON and
-attempts auto-negotiation. However, if the connected SFP comes up in
-Fixed PHY configuration the link will not come up as PLL isn't enabled
-while the initial mode set command is issued. So, force the mode change
-for SFI in Fixed PHY configuration to fix link issues.
+We currently expose the PMU version of the host to the guest via
+emulation of the DFR0_EL1 and AA64DFR0_EL1 debug feature registers.
+However many of the features offered beyond PMUv3 for 8.1 are not
+supported in KVM. Examples of this include support for the PMMIR
+registers (added in PMUv3 for ARMv8.4) and 64-bit event counters
+added in (PMUv3 for ARMv8.5).
 
-Fixes: e57f7a3feaef ("amd-xgbe: Prepare for working with more than one type of phy")
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's trap the Debug Feature Registers in order to limit
+PMUVer/PerfMon in the Debug Feature Registers to PMUv3 for ARMv8.1
+to avoid unexpected behaviour.
+
+Both ID_AA64DFR0.PMUVer and ID_DFR0.PerfMon follow the "Alternative ID
+scheme used for the Performance Monitors Extension version" where 0xF
+means an IMPLEMENTATION DEFINED PMU is implemented, and values 0x0-0xE
+are treated as with an unsigned field (with 0x0 meaning no PMU is
+present). As we don't expect to expose an IMPLEMENTATION DEFINED PMU,
+and our cap is below 0xF, we can treat these fields as unsigned when
+applying the cap.
+
+Signed-off-by: Andrew Murray <andrew.murray@arm.com>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+[Mark: make field names consistent, use perfmon cap]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+[yuzenghui@huawei.com: adjust the context in read_id_reg()]
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-mdio.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/sysreg.h |    6 ++++++
+ arch/arm64/kvm/sys_regs.c       |   10 ++++++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-index bbb93c2637f39..ef78ad84b0f43 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-mdio.c
-@@ -1192,7 +1192,19 @@ static int xgbe_phy_config_fixed(struct xgbe_prv_data *pdata)
- 	if (pdata->phy.duplex != DUPLEX_FULL)
- 		return -EINVAL;
+--- a/arch/arm64/include/asm/sysreg.h
++++ b/arch/arm64/include/asm/sysreg.h
+@@ -622,6 +622,12 @@
+ #define ID_AA64DFR0_TRACEVER_SHIFT	4
+ #define ID_AA64DFR0_DEBUGVER_SHIFT	0
  
--	xgbe_set_mode(pdata, mode);
-+	/* Force the mode change for SFI in Fixed PHY config.
-+	 * Fixed PHY configs needs PLL to be enabled while doing mode set.
-+	 * When the SFP module isn't connected during boot, driver assumes
-+	 * AN is ON and attempts autonegotiation. However, if the connected
-+	 * SFP comes up in Fixed PHY config, the link will not come up as
-+	 * PLL isn't enabled while the initial mode set command is issued.
-+	 * So, force the mode change for SFI in Fixed PHY configuration to
-+	 * fix link issues.
-+	 */
-+	if (mode == XGBE_MODE_SFI)
-+		xgbe_change_mode(pdata, mode);
-+	else
-+		xgbe_set_mode(pdata, mode);
++#define ID_AA64DFR0_PMUVER_8_1		0x4
++
++#define ID_DFR0_PERFMON_SHIFT		24
++
++#define ID_DFR0_PERFMON_8_1		0x4
++
+ #define ID_ISAR5_RDM_SHIFT		24
+ #define ID_ISAR5_CRC32_SHIFT		16
+ #define ID_ISAR5_SHA2_SHIFT		12
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -1049,6 +1049,16 @@ static u64 read_id_reg(struct sys_reg_de
+ 			kvm_debug("LORegions unsupported for guests, suppressing\n");
  
- 	return 0;
- }
--- 
-2.42.0
-
+ 		val &= ~(0xfUL << ID_AA64MMFR1_LOR_SHIFT);
++	} else if (id == SYS_ID_AA64DFR0_EL1) {
++		/* Limit guests to PMUv3 for ARMv8.1 */
++		val = cpuid_feature_cap_perfmon_field(val,
++						ID_AA64DFR0_PMUVER_SHIFT,
++						ID_AA64DFR0_PMUVER_8_1);
++	} else if (id == SYS_ID_DFR0_EL1) {
++		/* Limit guests to PMUv3 for ARMv8.1 */
++		val = cpuid_feature_cap_perfmon_field(val,
++						ID_DFR0_PERFMON_SHIFT,
++						ID_DFR0_PERFMON_8_1);
+ 	}
+ 
+ 	return val;
 
 
 
