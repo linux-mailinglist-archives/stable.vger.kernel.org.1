@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-4245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD04C8046AE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64276804654
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68AAC28155D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9643A1C20D3C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F20E979F2;
-	Tue,  5 Dec 2023 03:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC4AC2F7;
+	Tue,  5 Dec 2023 03:26:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSTL2ivp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WptYDqZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAF326FB1;
-	Tue,  5 Dec 2023 03:30:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F306C433C8;
-	Tue,  5 Dec 2023 03:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22FF79E3;
+	Tue,  5 Dec 2023 03:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE21C433C8;
+	Tue,  5 Dec 2023 03:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747026;
-	bh=f+KEVj1A99vC/oD2zkA8FAIE6h3AyfmcT4BTIB0tKdI=;
+	s=korg; t=1701746787;
+	bh=8osd6kk9JBcr2qwOfbHuxWMB2omuAE2ehCsWpAqFN00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSTL2ivpalNsI9/yDIqZ/wlBZK8euEr1ZUX4Zf7vTkt0ZLFYjhMS9WL1gn1CU1wBT
-	 PIGjxP0Eg9UOTZcKZmeTJ9Z4whWlp2yGgYj7MML/UqPqhmfN4Jk2M8VH7N/RztQD3d
-	 9PW304+jk3NtUBSs1CFZSZdIizMv8ECaITVN4uzo=
+	b=WptYDqZEHYhbVCON2PLGotMvHYddxrEFz4ZvOBjv8hZw7dPXIiom6LHE4+CIX9IqK
+	 MZwVExBHUkUXK6K41/VAWh+nJE1xk3gnmtlcgYPe08RbUOYFG9MmTF2foYN0DSVv3S
+	 K5Z0r0ywrvXBwjgo5XsgkR+pCTxx5OFTiFsTVF8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huang Rui <ray.huang@amd.com>,
-	Wyes Karny <wyes.karny@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 030/107] cpufreq/amd-pstate: Fix the return value of amd_pstate_fast_switch()
-Date: Tue,  5 Dec 2023 12:16:05 +0900
-Message-ID: <20231205031533.425909255@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 08/71] ipv4: Correct/silence an endian warning in __ip_do_redirect
+Date: Tue,  5 Dec 2023 12:16:06 +0900
+Message-ID: <20231205031518.352901757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,48 +54,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit bb87be267b8ee9b40917fb5bf51be5ddb33c37c2 upstream.
+[ Upstream commit c0e2926266af3b5acf28df0a8fc6e4d90effe0bb ]
 
-cpufreq_driver->fast_switch() callback expects a frequency as a return
-value. amd_pstate_fast_switch() was returning the return value of
-amd_pstate_update_freq(), which only indicates a success or failure.
+net/ipv4/route.c:783:46: warning: incorrect type in argument 2 (different base types)
+net/ipv4/route.c:783:46:    expected unsigned int [usertype] key
+net/ipv4/route.c:783:46:    got restricted __be32 [usertype] new_gw
 
-Fix this by making amd_pstate_fast_switch() return the target_freq
-when the call to amd_pstate_update_freq() is successful, and return
-the current frequency from policy->cur when the call to
-amd_pstate_update_freq() is unsuccessful.
-
-Fixes: 4badf2eb1e98 ("cpufreq: amd-pstate: Add ->fast_switch() callback")
-Acked-by: Huang Rui <ray.huang@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-Cc: 6.4+ <stable@vger.kernel.org> # v6.4+
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 969447f226b4 ("ipv4: use new_gw for redirect neigh lookup")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20231119141759.420477-1-chentao@kylinos.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv4/route.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -296,7 +296,9 @@ static int amd_pstate_target(struct cpuf
- static unsigned int amd_pstate_fast_switch(struct cpufreq_policy *policy,
- 				  unsigned int target_freq)
- {
--	return amd_pstate_update_freq(policy, target_freq, true);
-+	if (!amd_pstate_update_freq(policy, target_freq, true))
-+		return target_freq;
-+	return policy->cur;
- }
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 9753d07bfc0bf..f4d41ceef9466 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -791,7 +791,7 @@ static void __ip_do_redirect(struct rtable *rt, struct sk_buff *skb, struct flow
+ 			goto reject_redirect;
+ 	}
  
- static void amd_pstate_adjust_perf(unsigned int cpu,
+-	n = __ipv4_neigh_lookup(rt->dst.dev, new_gw);
++	n = __ipv4_neigh_lookup(rt->dst.dev, (__force u32)new_gw);
+ 	if (!n)
+ 		n = neigh_create(&arp_tbl, &new_gw, rt->dst.dev);
+ 	if (!IS_ERR(n)) {
+-- 
+2.42.0
+
 
 
 
