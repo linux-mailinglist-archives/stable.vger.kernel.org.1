@@ -1,117 +1,112 @@
-Return-Path: <stable+bounces-4644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D3F804D2A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:04:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCC5804D27
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 10:04:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4D271F21517
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:04:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEB2D1F214D8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 09:04:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197463D975;
-	Tue,  5 Dec 2023 09:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7783D983;
+	Tue,  5 Dec 2023 09:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m7tG/LKK"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16580138
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 01:04:49 -0800 (PST)
-Received: from [192.168.1.104] (178.176.74.217) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 5 Dec
- 2023 12:04:38 +0300
-Subject: Re: [PATCH 5.15 44/67] ravb: Separate handling of irq enable/disable
- regs into feature
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, Phil Edworthy <phil.edworthy@renesas.com>, Biju
- Das <biju.das.jz@bp.renesas.com>, "David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-References: <20231205031519.853779502@linuxfoundation.org>
- <20231205031522.365127466@linuxfoundation.org>
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <d33f2fef-4623-1f74-0765-6998c2a65999@omp.ru>
-Date: Tue, 5 Dec 2023 12:04:37 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 871A111F;
+	Tue,  5 Dec 2023 01:04:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701767083; x=1733303083;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=VCYXjHvj6vQAnVMBfKsjYdOGUml5t+S2AlaIXferjKU=;
+  b=m7tG/LKK+kicsfluRVH9dfjJe/Y65QCipF42e0cfZWlJeM8JEtfiakI9
+   x16tRaweZ1L5l5yZN1LJq3IXc1w8U2XPSwR/UMQzmErral9aMb8UGfjDX
+   a99oj04tqkD89kjydWElnnS4xItjJAVadyndLk7QAwAK62JjWVhDa1KFg
+   FJ8BBVv9XiLsjoLHm6DNqfMOJWGoUv3nnUTml6UMfSd0wf1Gm69uFcAfe
+   5ZwPNgXXPSweGq3sRch8vY3akdBgK/Gye/TV90IIj1fkjf0Jup0F8agRC
+   vS/7kNk9G6SKpwpRWy5ZK3rPdPVTvx2HFF9W2DPtj9B25zPu56iYpZ3oM
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="378891874"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
+   d="scan'208";a="378891874"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Dec 2023 01:04:42 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10914"; a="1102386629"
+X-IronPort-AV: E=Sophos;i="6.04,251,1695711600"; 
+   d="scan'208";a="1102386629"
+Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
+  by fmsmga005.fm.intel.com with ESMTP; 05 Dec 2023 01:04:38 -0800
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: <linux-usb@vger.kernel.org>,
+	linux-bluetooth@vger.kernel.org,
+	mario.limonciello@amd.com,
+	regressions@lists.linux.dev,
+	regressions@leemhuis.info,
+	Basavaraj.Natikar@amd.com,
+	pmenzel@molgen.mpg.de,
+	bugs-a21@moonlit-rail.com,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] Revert "xhci: Loosen RPM as default policy to cover for AMD xHC 1.1"
+Date: Tue,  5 Dec 2023 11:05:48 +0200
+Message-Id: <20231205090548.1377667-1-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2023120521-dusk-handwrite-cea3@gregkh>
+References: <2023120521-dusk-handwrite-cea3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20231205031522.365127466@linuxfoundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.0.0, Database issued on: 12/05/2023 08:44:32
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 181841 [Dec 05 2023]
-X-KSE-AntiSpam-Info: Version: 6.0.0.2
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 5 0.3.5 98d108ddd984cca1d7e65e595eac546a62b0144b
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.217 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.74.217 in (user)
- dbl.spamhaus.org}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;178.176.74.217:7.1.2
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.74.217
-X-KSE-AntiSpam-Info: {DNS response errors}
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 12/05/2023 08:50:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 12/5/2023 6:02:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Transfer-Encoding: 8bit
 
-On 12/5/23 6:17 AM, Greg Kroah-Hartman wrote:
+This reverts commit 4baf1218150985ee3ab0a27220456a1f027ea0ac.
 
-> 5.15-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Phil Edworthy <phil.edworthy@renesas.com>
-> 
-> [ Upstream commit cb99badde146c327f150773921ffe080abe1eb44 ]
-> 
-> Currently, when the HW has a single interrupt, the driver uses the
-> GIC, TIC, RIC0 registers to enable and disable interrupts.
-> When the HW has multiple interrupts, it uses the GIE, GID, TIE, TID,
-> RIE0, RID0 registers.
-> 
-> However, other devices, e.g. RZ/V2M, have multiple irqs and only have
-> the GIC, TIC, RIC0 registers.
-> Therefore, split this into a separate feature.
-> 
-> Signed-off-by: Phil Edworthy <phil.edworthy@renesas.com>
-> Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
-> Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> Stable-dep-of: eac16a733427 ("net: ravb: Stop DMA in case of failures on ravb_open()")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-[...]
+Enabling runtime pm as default for all AMD xHC 1.1 controllers caused
+regression. An initial attempt to fix those was done in commit a5d6264b638e
+("xhci: Enable RPM on controllers that support low-power states") but new
+issues are still seen.
 
-   This and the following patch shouldn't be necessary If you have troubles
-backporting the actual fix to 5.15, please ask me to look at it instead...
+Revert this to get those AMD xHC 1.1 systems working
 
-MBR, Sergey
+This patch went to stable an needs to be reverted from there as well.
+
+Fixes: 4baf12181509 ("xhci: Loosen RPM as default policy to cover for AMD xHC 1.1")
+Link: https://lore.kernel.org/linux-usb/55c50bf5-bffb-454e-906e-4408c591cb63@molgen.mpg.de
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Basavaraj Natikar <Basavaraj.Natikar@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+---
+v1 -> v2
+Revert only one patch, keep commit a5d6264b638
+Minor commit message changes
+
+ drivers/usb/host/xhci-pci.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index 95ed9404f6f8..d6fc08e5db8f 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -535,8 +535,6 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 	/* xHC spec requires PCI devices to support D3hot and D3cold */
+ 	if (xhci->hci_version >= 0x120)
+ 		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+-	else if (pdev->vendor == PCI_VENDOR_ID_AMD && xhci->hci_version >= 0x110)
+-		xhci->quirks |= XHCI_DEFAULT_PM_RUNTIME_ALLOW;
+ 
+ 	if (xhci->quirks & XHCI_RESET_ON_RESUME)
+ 		xhci_dbg_trace(xhci, trace_xhci_dbg_quirks,
+-- 
+2.25.1
+
 
