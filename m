@@ -1,54 +1,46 @@
-Return-Path: <stable+bounces-4535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-3998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87C28047E4
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:43:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2CC804594
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4484281756
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:43:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78878B20AE7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A6079F2;
-	Tue,  5 Dec 2023 03:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940D879F2;
+	Tue,  5 Dec 2023 03:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VJwDWlCg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDQCQWev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4076AC2;
-	Tue,  5 Dec 2023 03:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165EEC433C8;
-	Tue,  5 Dec 2023 03:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C776AA0;
+	Tue,  5 Dec 2023 03:18:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C4BC433C8;
+	Tue,  5 Dec 2023 03:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747813;
-	bh=D1uIk8bmIDfiX+Q4a+r0fIZDRVJaQw3GokpmLS60cmY=;
+	s=korg; t=1701746337;
+	bh=TWnc2ejVz9cB4DDCQSWnPD31s1QkvyQQuWyDBmbJ8vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJwDWlCgEpLNZHQSazNCnXv1aWVibPqv7fT6GZet6lJM/sco8nILi/eZGCwxLpu1s
-	 sglm6kRFP7+kD/WRDpODlq1R9h5byAS0ta3uW/35XEsTy7eec5T7E83R0LMlUF21DX
-	 6UeGqp4ZYL5FzRmszxxt3RrT7UKO/c26OQG5U+1o=
+	b=gDQCQWevO55S//4jT0ajewz0xal01d9r5dwC1OfGNB3rxe/zZ5xiKbh9gxIBxr5Gy
+	 osZa1CiseUbqtLYRG+aOjRrCrQYH7O42bbv0tHdp4FE6wEGtDfcjcV2S1Cnoe1ETQp
+	 XHPaw7Eu/w1F8IY3U3gmoZeXn1e+285JlZl9T2fQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Saravana Kannan <saravanak@google.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	James Clark <james.clark@arm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>
-Subject: [PATCH 5.4 01/94] driver core: Release all resources during unbind before updating device links
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 4.14 22/30] dm-verity: align struct dm_verity_fec_io properly
 Date: Tue,  5 Dec 2023 12:16:29 +0900
-Message-ID: <20231205031522.914131640@linuxfoundation.org>
+Message-ID: <20231205031512.802214057@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,63 +50,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 2e84dc37920012b458e9458b19fc4ed33f81bc74 upstream.
+commit 38bc1ab135db87577695816b190e7d6d8ec75879 upstream.
 
-This commit fixes a bug in commit 9ed9895370ae ("driver core: Functional
-dependencies tracking support") where the device link status was
-incorrectly updated in the driver unbind path before all the device's
-resources were released.
+dm_verity_fec_io is placed after the end of two hash digests. If the hash
+digest has unaligned length, struct dm_verity_fec_io could be unaligned.
 
-Fixes: 9ed9895370ae ("driver core: Functional dependencies tracking support")
-Cc: stable <stable@kernel.org>
-Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Closes: https://lore.kernel.org/all/20231014161721.f4iqyroddkcyoefo@pengutronix.de/
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Cc: Thierry Reding <thierry.reding@gmail.com>
-Cc: Yang Yingliang <yangyingliang@huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: James Clark <james.clark@arm.com>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
-Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231018013851.3303928-1-saravanak@google.com
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+This commit fixes the placement of struct dm_verity_fec_io, so that it's
+aligned.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/dd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-verity-fec.c |    3 ++-
+ drivers/md/dm-verity.h     |    6 ------
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1162,8 +1162,6 @@ static void __device_release_driver(stru
- 		else if (drv->remove)
- 			drv->remove(dev);
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -28,7 +28,8 @@ bool verity_fec_is_enabled(struct dm_ver
+  */
+ static inline struct dm_verity_fec_io *fec_io(struct dm_verity_io *io)
+ {
+-	return (struct dm_verity_fec_io *) verity_io_digest_end(io->v, io);
++	return (struct dm_verity_fec_io *)
++		((char *)io + io->v->ti->per_io_data_size - sizeof(struct dm_verity_fec_io));
+ }
  
--		device_links_driver_cleanup(dev);
+ /*
+--- a/drivers/md/dm-verity.h
++++ b/drivers/md/dm-verity.h
+@@ -113,12 +113,6 @@ static inline u8 *verity_io_want_digest(
+ 	return (u8 *)(io + 1) + v->ahash_reqsize + v->digest_size;
+ }
+ 
+-static inline u8 *verity_io_digest_end(struct dm_verity *v,
+-				       struct dm_verity_io *io)
+-{
+-	return verity_io_want_digest(v, io) + v->digest_size;
+-}
 -
- 		devres_release_all(dev);
- 		arch_teardown_dma_ops(dev);
- 		dev->driver = NULL;
-@@ -1173,6 +1171,8 @@ static void __device_release_driver(stru
- 		pm_runtime_reinit(dev);
- 		dev_pm_set_driver_flags(dev, 0);
- 
-+		device_links_driver_cleanup(dev);
-+
- 		klist_remove(&dev->p->knode_driver);
- 		device_pm_check_callbacks(dev);
- 		if (dev->bus)
+ extern int verity_for_bv_block(struct dm_verity *v, struct dm_verity_io *io,
+ 			       struct bvec_iter *iter,
+ 			       int (*process)(struct dm_verity *v,
 
 
 
