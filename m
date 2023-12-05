@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-4420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A7F804768
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:38:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D902804681
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6145C1F2148A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:38:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D55F4B20C87
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CD38C03;
-	Tue,  5 Dec 2023 03:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425F26FB1;
+	Tue,  5 Dec 2023 03:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Do6Kev0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsfE6JxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8DF4A59;
-	Tue,  5 Dec 2023 03:38:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C84C433C7;
-	Tue,  5 Dec 2023 03:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022C66FAF;
+	Tue,  5 Dec 2023 03:28:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82076C433C8;
+	Tue,  5 Dec 2023 03:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747496;
-	bh=fysSgXQJbRmXrxSY8aQDmTwAwzXzfoHYsrcjWeVuiMQ=;
+	s=korg; t=1701746904;
+	bh=0ngq9dM1KZ9ByzFKZoR+2S0jcQ8NXf4aSUzq4tMWhqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Do6Kev0YL6OHFCmDgtbpMK3EKEw4/mj5SZOYcnqlJ6CK2UWCPE2Wa9yE6r8qDYvMN
-	 q7nuYNYQ2kKt0PzfIXvluw+jmgbvccZLIRNYzEKs7lKvQMsD+a0SWurEXnOWH/PXC2
-	 H3+tJeJASbrEdN1I4yemzMnG/cbhjhOFiPOCSe8k=
+	b=YsfE6JxS1Lfvs4lJMNkNB/2S8ZS8NVZHsc2yN5NDW3ompYDFeVeMHVoI64rK3TK1e
+	 6q05awEveO2wWFel+6gJylXSYOrIx6pXEpfZYWDHyGqIpCVaui+s+a3mMbn+KNPgkv
+	 KPqnArjrpI+nHApCmBSc4j3OvrVCz11ekG5X4PWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Andrey Grodzovsky <andrey.grodzovsky@amd.com>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/135] Revert "workqueue: remove unused cancel_work()"
+Subject: [PATCH 4.19 61/71] fbdev: stifb: Make the STI next font pointer a 32-bit signed offset
 Date: Tue,  5 Dec 2023 12:16:59 +0900
-Message-ID: <20231205031536.851621539@linuxfoundation.org>
+Message-ID: <20231205031521.405187717@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +50,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 73b4b53276a1d6290cd4f47dbbc885b6e6e59ac6 ]
+[ Upstream commit 8a32aa17c1cd48df1ddaa78e45abcb8c7a2220d6 ]
 
-This reverts commit 6417250d3f894e66a68ba1cd93676143f2376a6f.
+The pointer to the next STI font is actually a signed 32-bit
+offset. With this change the 64-bit kernel will correctly subract
+the (signed 32-bit) offset instead of adding a (unsigned 32-bit)
+offset. It has no effect on 32-bit kernels.
 
-amdpgu need this function in order to prematurly stop pending
-reset works when another reset work already in progress.
+This fixes the stifb driver with a 64-bit kernel on qemu.
 
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Andrey Grodzovsky <andrey.grodzovsky@amd.com>
-Reviewed-by: Lai Jiangshan<jiangshanlai@gmail.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 91d3d149978b ("r8169: prevent potential deadlock in rtl8169_close")
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/workqueue.h | 1 +
- kernel/workqueue.c        | 9 +++++++++
- 2 files changed, 10 insertions(+)
+ drivers/video/fbdev/sticore.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/workqueue.h b/include/linux/workqueue.h
-index 460c58fa011ae..0383fac637e19 100644
---- a/include/linux/workqueue.h
-+++ b/include/linux/workqueue.h
-@@ -460,6 +460,7 @@ extern int schedule_on_each_cpu(work_func_t func);
- int execute_in_process_context(work_func_t fn, struct execute_work *);
- 
- extern bool flush_work(struct work_struct *work);
-+extern bool cancel_work(struct work_struct *work);
- extern bool cancel_work_sync(struct work_struct *work);
- 
- extern bool flush_delayed_work(struct delayed_work *dwork);
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 37d01e44d4837..63140e4dd5dfc 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -3240,6 +3240,15 @@ static bool __cancel_work(struct work_struct *work, bool is_dwork)
- 	return ret;
- }
- 
-+/*
-+ * See cancel_delayed_work()
-+ */
-+bool cancel_work(struct work_struct *work)
-+{
-+	return __cancel_work(work, false);
-+}
-+EXPORT_SYMBOL(cancel_work);
-+
- /**
-  * cancel_delayed_work - cancel a delayed work
-  * @dwork: delayed_work to cancel
+diff --git a/drivers/video/fbdev/sticore.h b/drivers/video/fbdev/sticore.h
+index fb8f58f9867a7..0416e2bc27d85 100644
+--- a/drivers/video/fbdev/sticore.h
++++ b/drivers/video/fbdev/sticore.h
+@@ -237,7 +237,7 @@ struct sti_rom_font {
+ 	 u8 height;
+ 	 u8 font_type;		/* language type */
+ 	 u8 bytes_per_char;
+-	u32 next_font;
++	s32 next_font;		/* note: signed int */
+ 	 u8 underline_height;
+ 	 u8 underline_pos;
+ 	 u8 res008[2];
 -- 
 2.42.0
 
