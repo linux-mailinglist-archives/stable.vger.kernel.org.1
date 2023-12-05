@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37869804685
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A597F8047A7
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D67531F2140D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6063D281597
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3597B79E3;
-	Tue,  5 Dec 2023 03:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B1E8BF8;
+	Tue,  5 Dec 2023 03:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSX6sYHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORCPmKvN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E141F6FAF;
-	Tue,  5 Dec 2023 03:28:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2D8C433C8;
-	Tue,  5 Dec 2023 03:28:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990E36FB1;
+	Tue,  5 Dec 2023 03:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0FB2C433C8;
+	Tue,  5 Dec 2023 03:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746915;
-	bh=07xEdSCAk/KBvjED6N9UfhZlS5rXTbvNb4gAE145kDY=;
+	s=korg; t=1701747654;
+	bh=bGB1ekzZiYsZuGhUErcDfzyKDd05YitN7EuWfw5x8ug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSX6sYHGdNLDhFDmeeqp40rWO7ne0AVldNRPNAM75jT/P3TXK9abeJyCQSLaoGQkO
-	 nESocBeKQKP88k1NFiF3wmZtnOLdzN5ducjwgUahIKgUsBnEK2xkfvecEg9RjkyhG5
-	 FoQWWIuVCeGcN4SISEOXSZ2rMlaGSf/hpCK9/yJc=
+	b=ORCPmKvNUp7yYM8IsxzQzbYzGGMi6miv5W+8uEYe2d/S+Hq8uYvVMDnftNcZnaHeK
+	 67qM85jXZYp41C+OJO/9zlcBSOBbb44RALiPAu/yoNco8gU0mPoU3jcZeCGWzIkH9q
+	 VDAL/orN47uhEHtO/wuQnUt2oGduRImP/RGMbq14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 65/71] cpufreq: imx6q: dont warn for disabling a non-existing frequency
-Date: Tue,  5 Dec 2023 12:17:03 +0900
-Message-ID: <20231205031521.657159602@linuxfoundation.org>
+	Anand Jain <anand.jain@oracle.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 19/67] btrfs: add dmesg output for first mount and last unmount of a filesystem
+Date: Tue,  5 Dec 2023 12:17:04 +0900
+Message-ID: <20231205031520.885660901@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,98 +53,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 11a3b0ac33d95aa84be426e801f800997262a225 ]
+commit 2db313205f8b96eea467691917138d646bb50aef upstream.
 
-It is confusing if a warning is given for disabling a non-existent
-frequency of the operating performance points (OPP). In this case
-the function dev_pm_opp_disable() returns -ENODEV. Check the return
-value and avoid the output of a warning in this case. Avoid code
-duplication by using a separate function.
+There is a feature request to add dmesg output when unmounting a btrfs.
+There are several alternative methods to do the same thing, but with
+their own problems:
 
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-[ Viresh : Updated commit subject ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: 2e4e0984c7d6 ("cpufreq: imx6q: Don't disable 792 Mhz OPP unnecessarily")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+- Use eBPF to watch btrfs_put_super()/open_ctree()
+  Not end user friendly, they have to dip their head into the source
+  code.
+
+- Watch for directory /sys/fs/<uuid>/
+  This is way more simple, but still requires some simple device -> uuid
+  lookups.  And a script needs to use inotify to watch /sys/fs/.
+
+Compared to all these, directly outputting the information into dmesg
+would be the most simple one, with both device and UUID included.
+
+And since we're here, also add the output when mounting a filesystem for
+the first time for parity. A more fine grained monitoring of subvolume
+mounts should be done by another layer, like audit.
+
+Now mounting a btrfs with all default mkfs options would look like this:
+
+  [81.906566] BTRFS info (device dm-8): first mount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
+  [81.907494] BTRFS info (device dm-8): using crc32c (crc32c-intel) checksum algorithm
+  [81.908258] BTRFS info (device dm-8): using free space tree
+  [81.912644] BTRFS info (device dm-8): auto enabling async discard
+  [81.913277] BTRFS info (device dm-8): checking UUID tree
+  [91.668256] BTRFS info (device dm-8): last unmount of filesystem 633b5c16-afe3-4b79-b195-138fe145e4f2
+
+CC: stable@vger.kernel.org # 5.4+
+Link: https://github.com/kdave/btrfs-progs/issues/689
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ update changelog ]
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/imx6q-cpufreq.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ fs/btrfs/disk-io.c |    1 +
+ fs/btrfs/super.c   |    5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index a0cbbdfc77359..1a4ea82e4c172 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -240,6 +240,14 @@ static struct cpufreq_driver imx6q_cpufreq_driver = {
- 	.suspend = cpufreq_generic_suspend,
- };
- 
-+static void imx6x_disable_freq_in_opp(struct device *dev, unsigned long freq)
-+{
-+	int ret = dev_pm_opp_disable(dev, freq);
-+
-+	if (ret < 0 && ret != -ENODEV)
-+		dev_warn(dev, "failed to disable %ldMHz OPP\n", freq / 1000000);
-+}
-+
- #define OCOTP_CFG3			0x440
- #define OCOTP_CFG3_SPEED_SHIFT		16
- #define OCOTP_CFG3_SPEED_1P2GHZ		0x3
-@@ -275,17 +283,15 @@ static void imx6q_opp_check_speed_grading(struct device *dev)
- 	val &= 0x3;
- 
- 	if (val < OCOTP_CFG3_SPEED_996MHZ)
--		if (dev_pm_opp_disable(dev, 996000000))
--			dev_warn(dev, "failed to disable 996MHz OPP\n");
-+		imx6x_disable_freq_in_opp(dev, 996000000);
- 
- 	if (of_machine_is_compatible("fsl,imx6q") ||
- 	    of_machine_is_compatible("fsl,imx6qp")) {
- 		if (val != OCOTP_CFG3_SPEED_852MHZ)
--			if (dev_pm_opp_disable(dev, 852000000))
--				dev_warn(dev, "failed to disable 852MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 852000000);
-+
- 		if (val != OCOTP_CFG3_SPEED_1P2GHZ)
--			if (dev_pm_opp_disable(dev, 1200000000))
--				dev_warn(dev, "failed to disable 1.2GHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 1200000000);
- 	}
- 	iounmap(base);
- put_node:
-@@ -338,20 +344,16 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 	val >>= OCOTP_CFG3_SPEED_SHIFT;
- 	val &= 0x3;
- 
--	if (of_machine_is_compatible("fsl,imx6ul")) {
-+	if (of_machine_is_compatible("fsl,imx6ul"))
- 		if (val != OCOTP_CFG3_6UL_SPEED_696MHZ)
--			if (dev_pm_opp_disable(dev, 696000000))
--				dev_warn(dev, "failed to disable 696MHz OPP\n");
--	}
-+			imx6x_disable_freq_in_opp(dev, 696000000);
- 
- 	if (of_machine_is_compatible("fsl,imx6ull")) {
- 		if (val != OCOTP_CFG3_6ULL_SPEED_792MHZ)
--			if (dev_pm_opp_disable(dev, 792000000))
--				dev_warn(dev, "failed to disable 792MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 792000000);
- 
- 		if (val != OCOTP_CFG3_6ULL_SPEED_900MHZ)
--			if (dev_pm_opp_disable(dev, 900000000))
--				dev_warn(dev, "failed to disable 900MHz OPP\n");
-+			imx6x_disable_freq_in_opp(dev, 900000000);
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3204,6 +3204,7 @@ int __cold open_ctree(struct super_block
+ 		goto fail_alloc;
  	}
  
- 	return ret;
--- 
-2.42.0
-
++	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
+ 	/*
+ 	 * Verify the type first, if that or the checksum value are
+ 	 * corrupted, we'll find out
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -337,7 +337,10 @@ void __btrfs_panic(struct btrfs_fs_info
+ 
+ static void btrfs_put_super(struct super_block *sb)
+ {
+-	close_ctree(btrfs_sb(sb));
++	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
++
++	btrfs_info(fs_info, "last unmount of filesystem %pU", fs_info->fs_devices->fsid);
++	close_ctree(fs_info);
+ }
+ 
+ enum {
 
 
 
