@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-4103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76984804604
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54FA804733
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 315D8283426
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B3F1F21423
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22B579E3;
-	Tue,  5 Dec 2023 03:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72ED28BF8;
+	Tue,  5 Dec 2023 03:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWKR+Vyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAFgPoEm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0F46FB1;
-	Tue,  5 Dec 2023 03:23:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20B1C433C8;
-	Tue,  5 Dec 2023 03:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333B86FB1;
+	Tue,  5 Dec 2023 03:36:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8CD4C433C7;
+	Tue,  5 Dec 2023 03:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746625;
-	bh=KEusSJuiBavPGBBkYDFo53V8jOZ90L5GcYmWWLhdTKU=;
+	s=korg; t=1701747361;
+	bh=hx3gRY8//gMNjOq3OpAUxKG69NC8ubHeRgnZbI0oP/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWKR+Vyh4JNB7JttpJ4jCJSooywt2MiYfUEDNsMOjNPhPxuYs2iJxlYPHzstG8gFo
-	 TXrjiI8K9SA5yxlyWTD+SdFt2TT3oCIw1JATGYQ2b6pSxxpBlqkydE4w4+EeQqZa0q
-	 M5pY9j8MesWGzv+TAKo6Ln6Xi3t1AukXta0e02Dw=
+	b=SAFgPoEm7RelPuH9JK+Dns4zd3dTDryZMlElgdquEvIbuueMtydusyK7xaLRKO4zN
+	 Ng3nnVnK25bogPprREkGJEpvzEVAeeEXf3dYyLgzr/YaM3AHtgG+yMmpsUyxvqnW02
+	 gg7TYIxhRorBNyBoP+ccxibTNVmulec5Ab4q9Kgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Furong Xu <0x1207@gmail.com>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/134] net: stmmac: xgmac: Disable FPE MMC interrupts
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.10 047/135] nfsd: lock_rename() needs both directories to live on the same fs
 Date: Tue,  5 Dec 2023 12:16:08 +0900
-Message-ID: <20231205031541.552631682@linuxfoundation.org>
+Message-ID: <20231205031533.491617244@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,59 +53,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Furong Xu <0x1207@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit e54d628a2721bfbb002c19f6e8ca6746cec7640f ]
+commit 1aee9158bc978f91701c5992e395efbc6da2de3c upstream.
 
-Commit aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts
-by default") tries to disable MMC interrupts to avoid a storm of
-unhandled interrupts, but leaves the FPE(Frame Preemption) MMC
-interrupts enabled, FPE MMC interrupts can cause the same problem.
-Now we mask FPE TX and RX interrupts to disable all MMC interrupts.
+... checking that after lock_rename() is too late.  Incidentally,
+NFSv2 had no nfserr_xdev...
 
-Fixes: aeb18dd07692 ("net: stmmac: xgmac: Disable MMC interrupts by default")
-Reviewed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Furong Xu <0x1207@gmail.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Link: https://lore.kernel.org/r/20231125060126.2328690-1-0x1207@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: aa387d6ce153 "nfsd: fix EXDEV checking in rename"
+Cc: stable@vger.kernel.org # v3.9+
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Tested-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/mmc_core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfsd/vfs.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-index ea4910ae0921a..6a7c1d325c464 100644
---- a/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/mmc_core.c
-@@ -177,8 +177,10 @@
- #define MMC_XGMAC_RX_DISCARD_OCT_GB	0x1b4
- #define MMC_XGMAC_RX_ALIGN_ERR_PKT	0x1bc
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1758,6 +1758,12 @@ nfsd_rename(struct svc_rqst *rqstp, stru
+ 	if (!flen || isdotent(fname, flen) || !tlen || isdotent(tname, tlen))
+ 		goto out;
  
-+#define MMC_XGMAC_TX_FPE_INTR_MASK	0x204
- #define MMC_XGMAC_TX_FPE_FRAG		0x208
- #define MMC_XGMAC_TX_HOLD_REQ		0x20c
-+#define MMC_XGMAC_RX_FPE_INTR_MASK	0x224
- #define MMC_XGMAC_RX_PKT_ASSEMBLY_ERR	0x228
- #define MMC_XGMAC_RX_PKT_SMD_ERR	0x22c
- #define MMC_XGMAC_RX_PKT_ASSEMBLY_OK	0x230
-@@ -352,6 +354,8 @@ static void dwxgmac_mmc_intr_all_mask(void __iomem *mmcaddr)
- {
- 	writel(0x0, mmcaddr + MMC_RX_INTR_MASK);
- 	writel(0x0, mmcaddr + MMC_TX_INTR_MASK);
-+	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_TX_FPE_INTR_MASK);
-+	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_FPE_INTR_MASK);
- 	writel(MMC_DEFAULT_MASK, mmcaddr + MMC_XGMAC_RX_IPC_INTR_MASK);
- }
++	err = (rqstp->rq_vers == 2) ? nfserr_acces : nfserr_xdev;
++	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
++		goto out;
++	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
++		goto out;
++
+ retry:
+ 	host_err = fh_want_write(ffhp);
+ 	if (host_err) {
+@@ -1792,12 +1798,6 @@ retry:
+ 	if (ndentry == trap)
+ 		goto out_dput_new;
  
--- 
-2.42.0
-
+-	host_err = -EXDEV;
+-	if (ffhp->fh_export->ex_path.mnt != tfhp->fh_export->ex_path.mnt)
+-		goto out_dput_new;
+-	if (ffhp->fh_export->ex_path.dentry != tfhp->fh_export->ex_path.dentry)
+-		goto out_dput_new;
+-
+ 	if (nfsd_has_cached_files(ndentry)) {
+ 		has_cached = true;
+ 		goto out_dput_old;
 
 
 
