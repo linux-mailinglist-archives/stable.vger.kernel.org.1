@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-4256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5B28046BC
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:31:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D8980473D
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FE04B209A6
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E03B0B20BF0
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417378BF2;
-	Tue,  5 Dec 2023 03:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E4C8BF8;
+	Tue,  5 Dec 2023 03:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujmM+UUn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="innbZnoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB51C79F2;
-	Tue,  5 Dec 2023 03:30:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E49FC433C8;
-	Tue,  5 Dec 2023 03:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F62F6FB1;
+	Tue,  5 Dec 2023 03:36:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC6DC433C7;
+	Tue,  5 Dec 2023 03:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747055;
-	bh=SNiEg76vUvc8zRbYpkk1jDir3xkz+CvjcJk4AoHbeQY=;
+	s=korg; t=1701747386;
+	bh=oNTOOcszilmRKOvHejysuifF1MTcbdx7+L2uvUGLi5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujmM+UUn8drWX29pKwaWYn9H9PPc4A1OHFE7lbiciEBv6ufuuOAUnKKD8EZJy/9YI
-	 8N9fVI7Wm0cpvF9+6X77Afl0gHjEODSVmZxY7qpFTLeW4X6Bd4qgBk9I0yfiqq4zZh
-	 9Ms+wJP+F5YzHaiCQHXMbqAPHHROhZLgYl+V4pSA=
+	b=innbZnoUzIOyVgh4ym60IA0QpSpNTOU2lL4g42GHk0bJTOCEwGaSHRiOgs49W5Ta8
+	 oTmgkSm4MllscDfxh8jaX3g9ebDQHUoOiPzrgBuGgQ/r276DAvlBCiL2x6TeFdeRk6
+	 X009ApXchFKU51lXMNuufF1BDED3TfXLIIeqcBFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 018/107] scsi: sd: Fix system start for ATA devices
-Date: Tue,  5 Dec 2023 12:15:53 +0900
-Message-ID: <20231205031532.774958069@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Lee Jones <lee@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 033/135] USB: dwc3: qcom: fix resource leaks on probe deferral
+Date: Tue,  5 Dec 2023 12:15:54 +0900
+Message-ID: <20231205031532.758830120@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,92 +55,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit b09d7f8fd50f6e93cbadd8d27fde178f745b42a1 upstream.
+[ Upstream commit 51392a1879ff06dc21b68aef4825f6ef68a7be42 ]
 
-It is not always possible to keep a device in the runtime suspended state
-when a system level suspend/resume cycle is executed. E.g. for ATA devices
-connected to AHCI adapters, system resume resets the ATA ports, which
-causes connected devices to spin up. In such case, a runtime suspended disk
-will incorrectly be seen with a suspended runtime state because the device
-is not resumed by sd_resume_system(). The power state seen by the user is
-different than the actual device physical power state.
+The driver needs to deregister and free the newly allocated dwc3 core
+platform device on ACPI probe errors (e.g. probe deferral) and on driver
+unbind but instead it leaked those resources while erroneously dropping
+a reference to the parent platform device which is still in use.
 
-Fix this issue by introducing the struct scsi_device flag
-force_runtime_start_on_system_start. When set, this flag causes
-sd_resume_system() to request a runtime resume operation for runtime
-suspended devices. This results in the user seeing the device runtime_state
-as active after a system resume, thus correctly reflecting the device
-physical power state.
+For OF probing the driver takes a reference to the dwc3 core platform
+device which has also always been leaked.
 
-Fixes: 9131bff6a9f1 ("scsi: core: pm: Only runtime resume if necessary")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20231120225631.37938-3-dlemoal@kernel.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fix the broken ACPI tear down and make sure to drop the dwc3 core
+reference for both OF and ACPI.
+
+Fixes: 8fd95da2cfb5 ("usb: dwc3: qcom: Release the correct resources in dwc3_qcom_remove()")
+Fixes: 2bc02355f8ba ("usb: dwc3: qcom: Add support for booting with ACPI")
+Fixes: a4333c3a6ba9 ("usb: dwc3: Add Qualcomm DWC3 glue driver")
+Cc: stable@vger.kernel.org      # 4.18
+Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Lee Jones <lee@kernel.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Andrew Halaney <ahalaney@redhat.com>
+Link: https://lore.kernel.org/r/20231117173650.21161-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 9cf87666fc6e ("USB: dwc3: qcom: fix ACPI platform device leak")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c  |    5 +++++
- drivers/scsi/sd.c          |    9 ++++++++-
- include/scsi/scsi_device.h |    6 ++++++
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-qcom.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1086,9 +1086,14 @@ int ata_scsi_dev_config(struct scsi_devi
- 		 * Ask the sd driver to issue START STOP UNIT on runtime suspend
- 		 * and resume and shutdown only. For system level suspend/resume,
- 		 * devices power state is handled directly by libata EH.
-+		 * Given that disks are always spun up on system resume, also
-+		 * make sure that the sd driver forces runtime suspended disks
-+		 * to be resumed to correctly reflect the power state of the
-+		 * device.
- 		 */
- 		sdev->manage_runtime_start_stop = 1;
- 		sdev->manage_shutdown = 1;
-+		sdev->force_runtime_start_on_system_start = 1;
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 3973f6c18857e..0d11d282c0a2e 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -690,6 +690,7 @@ static int dwc3_qcom_of_register_core(struct platform_device *pdev)
+ 	if (!qcom->dwc3) {
+ 		ret = -ENODEV;
+ 		dev_err(dev, "failed to get dwc3 platform device\n");
++		of_platform_depopulate(dev);
  	}
  
- 	/*
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -3834,8 +3834,15 @@ static int sd_resume(struct device *dev,
+ node_put:
+@@ -832,7 +833,7 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
  
- static int sd_resume_system(struct device *dev)
- {
--	if (pm_runtime_suspended(dev))
-+	if (pm_runtime_suspended(dev)) {
-+		struct scsi_disk *sdkp = dev_get_drvdata(dev);
-+		struct scsi_device *sdp = sdkp ? sdkp->device : NULL;
-+
-+		if (sdp && sdp->force_runtime_start_on_system_start)
-+			pm_request_resume(dev);
-+
- 		return 0;
-+	}
+ 	if (ret) {
+ 		dev_err(dev, "failed to register DWC3 Core, err=%d\n", ret);
+-		goto depopulate;
++		goto clk_disable;
+ 	}
  
- 	return sd_resume(dev, false);
- }
---- a/include/scsi/scsi_device.h
-+++ b/include/scsi/scsi_device.h
-@@ -181,6 +181,12 @@ struct scsi_device {
- 	 */
- 	unsigned manage_shutdown:1;
+ 	ret = dwc3_qcom_interconnect_init(qcom);
+@@ -864,7 +865,8 @@ static int dwc3_qcom_probe(struct platform_device *pdev)
+ 	if (np)
+ 		of_platform_depopulate(&pdev->dev);
+ 	else
+-		platform_device_put(pdev);
++		platform_device_del(qcom->dwc3);
++	platform_device_put(qcom->dwc3);
+ clk_disable:
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+@@ -886,7 +888,8 @@ static int dwc3_qcom_remove(struct platform_device *pdev)
+ 	if (np)
+ 		of_platform_depopulate(&pdev->dev);
+ 	else
+-		platform_device_put(pdev);
++		platform_device_del(qcom->dwc3);
++	platform_device_put(qcom->dwc3);
  
-+	/*
-+	 * If set and if the device is runtime suspended, ask the high-level
-+	 * device driver (sd) to force a runtime resume of the device.
-+	 */
-+	unsigned force_runtime_start_on_system_start:1;
-+
- 	unsigned removable:1;
- 	unsigned changed:1;	/* Data invalid due to media change */
- 	unsigned busy:1;	/* Used to prevent races */
+ 	for (i = qcom->num_clocks - 1; i >= 0; i--) {
+ 		clk_disable_unprepare(qcom->clks[i]);
+-- 
+2.42.0
+
 
 
 
