@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-4600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FA980482A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23D81804690
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48A0A1C20EC2
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D395C2814FF
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE146FB1;
-	Tue,  5 Dec 2023 03:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E8B79E3;
+	Tue,  5 Dec 2023 03:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GeNG7S6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U6xWPHTH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C54F6FB0;
-	Tue,  5 Dec 2023 03:46:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C843AC433C7;
-	Tue,  5 Dec 2023 03:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201446FAF;
+	Tue,  5 Dec 2023 03:29:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907F5C433C7;
+	Tue,  5 Dec 2023 03:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747994;
-	bh=asJvNU2od7ARZLR8fblpfvca8DtlKNd5Dfp9zFHf0+0=;
+	s=korg; t=1701746948;
+	bh=lVf4k4AoAEgCLoJnikyg9T9ytLjCVyHbOSEtjG7OLa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GeNG7S6CsbmgH2ymcHyHAxsCgTY60G2Wedc1RNQNe9dCdMrnLpNX3FyxgyimoTboi
-	 FVV7RMRyC87NOnvjrpyT0azgQbZflJ4Q5Id11SJGeFLY/5Q1T3aLsOXsIU8O3xktkv
-	 FZ+pCrikxHjIo0IKSBRKXwMOceldSvZ0akh4mrw4=
+	b=U6xWPHTHG4RWjxzFX6kmxfEeVFej1YXc7Dc4twNmq7E/QbjQ2qCvgGk7wwUz4DnQd
+	 WHwGmLa7+ShZYe/dkLeByTcRjO17qUPs5E0TdtPzhwsrJD9Lxz/yax4P1EgJ4XAEgm
+	 SMkwVHJCl2Pu1D0fVu696dt86sqdaEDyUilhqaX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.4 39/94] hv_netvsc: Mark VF as slave before exposing it to user-mode
+	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 69/71] mmc: cqhci: Fix task clearing in CQE error recovery
 Date: Tue,  5 Dec 2023 12:17:07 +0900
-Message-ID: <20231205031525.083382777@linuxfoundation.org>
+Message-ID: <20231205031521.874088071@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
+References: <20231205031517.859409664@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,102 +53,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit c807d6cd089d2f4951baa838081ec5ae3e2360f8 upstream.
+[ Upstream commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 ]
 
-When a VF is being exposed form the kernel, it should be marked as "slave"
-before exposing to the user-mode. The VF is not usable without netvsc
-running as master. The user-mode should never see a VF without the "slave"
-flag.
+If a task completion notification (TCN) is received when there is no
+outstanding task, the cqhci driver issues a "spurious TCN" warning. This
+was observed to happen right after CQE error recovery.
 
-This commit moves the code of setting the slave flag to the time before
-VF is exposed to user-mode.
+When an error interrupt is received the driver runs recovery logic.
+It halts the controller, clears all pending tasks, and then re-enables
+it. On some platforms, like Intel Jasper Lake, a stale task completion
+event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
 
+This results in either:
+a) Spurious TC completion event for an empty slot.
+b) Corrupted data being passed up the stack, as a result of premature
+   completion for a newly added task.
+
+Rather than add a quirk for affected controllers, ensure tasks are cleared
+by toggling CQHCI_ENABLE, which would happen anyway if
+cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
+effective for all controllers.
+
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
 Cc: stable@vger.kernel.org
-Fixes: 0c195567a8f6 ("netvsc: transparent VF management")
-Signed-off-by: Long Li <longli@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Acked-by: Stephen Hemminger <stephen@networkplumber.org>
-Acked-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Kornel Dulęba <korneld@chromium.org>
+Tested-by: Kornel Dulęba <korneld@chromium.org>
+Co-developed-by: Kornel Dulęba <korneld@chromium.org>
+Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/netvsc_drv.c |   32 +++++++++++++++++++++++---------
- 1 file changed, 23 insertions(+), 9 deletions(-)
+ drivers/mmc/host/cqhci.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2060,9 +2060,6 @@ static int netvsc_vf_join(struct net_dev
- 		goto upper_link_failed;
- 	}
+diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
+index deae330441788..a17b87fa26351 100644
+--- a/drivers/mmc/host/cqhci.c
++++ b/drivers/mmc/host/cqhci.c
+@@ -1017,28 +1017,28 @@ static void cqhci_recovery_finish(struct mmc_host *mmc)
  
--	/* set slave flag before open to prevent IPv6 addrconf */
--	vf_netdev->flags |= IFF_SLAVE;
+ 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+ 
+-	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
+-		ok = false;
 -
- 	schedule_delayed_work(&ndev_ctx->vf_takeover, VF_TAKEOVER_INT);
- 
- 	call_netdevice_notifiers(NETDEV_JOIN, vf_netdev);
-@@ -2160,16 +2157,18 @@ static struct net_device *get_netvsc_bys
- 			return hv_get_drvdata(ndev_ctx->device_ctx);
- 	}
- 
--	/* Fallback path to check synthetic vf with
--	 * help of mac addr
-+	/* Fallback path to check synthetic vf with help of mac addr.
-+	 * Because this function can be called before vf_netdev is
-+	 * initialized (NETDEV_POST_INIT) when its perm_addr has not been copied
-+	 * from dev_addr, also try to match to its dev_addr.
-+	 * Note: On Hyper-V and Azure, it's not possible to set a MAC address
-+	 * on a VF that matches to the MAC of a unrelated NETVSC device.
+ 	/*
+ 	 * The specification contradicts itself, by saying that tasks cannot be
+ 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
+ 	 * be disabled/re-enabled, but not to disable before clearing tasks.
+ 	 * Have a go anyway.
  	 */
- 	list_for_each_entry(ndev_ctx, &netvsc_dev_list, list) {
- 		ndev = hv_get_drvdata(ndev_ctx->device_ctx);
--		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr)) {
--			netdev_notice(vf_netdev,
--				      "falling back to mac addr based matching\n");
-+		if (ether_addr_equal(vf_netdev->perm_addr, ndev->perm_addr) ||
-+		    ether_addr_equal(vf_netdev->dev_addr, ndev->perm_addr))
- 			return ndev;
--		}
- 	}
- 
- 	netdev_notice(vf_netdev,
-@@ -2177,6 +2176,19 @@ static struct net_device *get_netvsc_bys
- 	return NULL;
- }
- 
-+static int netvsc_prepare_bonding(struct net_device *vf_netdev)
-+{
-+	struct net_device *ndev;
+-	if (!ok) {
+-		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
+-		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
+-		cqcfg &= ~CQHCI_ENABLE;
+-		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+-		cqcfg |= CQHCI_ENABLE;
+-		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+-		/* Be sure that there are no tasks */
+-		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+-		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
+-			ok = false;
+-		WARN_ON(!ok);
+-	}
++	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
++		ok = false;
 +
-+	ndev = get_netvsc_byslot(vf_netdev);
-+	if (!ndev)
-+		return NOTIFY_DONE;
++	/* Disable to make sure tasks really are cleared */
++	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
++	cqcfg &= ~CQHCI_ENABLE;
++	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
 +
-+	/* set slave flag before open to prevent IPv6 addrconf */
-+	vf_netdev->flags |= IFF_SLAVE;
-+	return NOTIFY_DONE;
-+}
++	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
++	cqcfg |= CQHCI_ENABLE;
++	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
 +
- static int netvsc_register_vf(struct net_device *vf_netdev)
- {
- 	struct net_device_context *net_device_ctx;
-@@ -2495,6 +2507,8 @@ static int netvsc_netdev_event(struct no
- 		return NOTIFY_DONE;
++	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
++
++	if (!ok)
++		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
  
- 	switch (event) {
-+	case NETDEV_POST_INIT:
-+		return netvsc_prepare_bonding(event_dev);
- 	case NETDEV_REGISTER:
- 		return netvsc_register_vf(event_dev);
- 	case NETDEV_UNREGISTER:
+ 	cqhci_recover_mrqs(cq_host);
+ 
+-- 
+2.42.0
+
 
 
 
