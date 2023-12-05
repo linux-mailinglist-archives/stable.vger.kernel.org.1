@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-4588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987C980481D
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:46:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F85804789
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:39:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FFB01F2232A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:46:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C0D7B20CE8
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A508C13;
-	Tue,  5 Dec 2023 03:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 042068C05;
+	Tue,  5 Dec 2023 03:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtrnrrMF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aYNosbwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741596FB0;
-	Tue,  5 Dec 2023 03:46:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A93C433C8;
-	Tue,  5 Dec 2023 03:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21DF6FB1;
+	Tue,  5 Dec 2023 03:39:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5BEC433C7;
+	Tue,  5 Dec 2023 03:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747960;
-	bh=M3P6jRhdKQCi69zlhfntJv1UoZIxaNklvPjnky1Ws9c=;
+	s=korg; t=1701747583;
+	bh=/s8BTSrsKzbeqUQnI+t31GXydqUB6FJHpylQ1kAzM1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtrnrrMFX7AuWPO1mCWw0hzy86NclOcQPyHqVjPASZt9L25mDeiITefVZG5Dnqfrg
-	 VneD4oBRvPydf14KKswsOg4sNXZ0sify+F0n93zzFFckiDsgf6vXTYy5S2AObX9a16
-	 iQVzpalCjw6t/VklLEweMFqtynvltf6Av9k7rqLk=
+	b=aYNosbwTiRo+LLz8xJkqDMLqP6IN9GfD+ab31M4Q15iurLbEN834hxr/MeCWaNie8
+	 +JI3mwm2pQg+xcYEfwk0A47TVkvx34x96MvyALref0kM45ghkCbQKywp1c0xyyZ9ag
+	 cl9sFs9zCAmWHS5ZagTADqEmBwBR2ryudmyipDdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Wang <zyytlz.wz@163.com>,
-	Coly Li <colyli@suse.de>,
-	Markus Weippert <markus@gekmihesg.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.4 61/94] bcache: revert replacing IS_ERR_OR_NULL with IS_ERR
+	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@chromium.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 128/135] mmc: cqhci: Fix task clearing in CQE error recovery
 Date: Tue,  5 Dec 2023 12:17:29 +0900
-Message-ID: <20231205031526.244874925@linuxfoundation.org>
+Message-ID: <20231205031538.960838315@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
-References: <20231205031522.815119918@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +53,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Markus Weippert <markus@gekmihesg.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-commit bb6cc253861bd5a7cf8439e2118659696df9619f upstream.
+[ Upstream commit 1de1b77982e1a1df9707cb11f9b1789e6b8919d4 ]
 
-Commit 028ddcac477b ("bcache: Remove unnecessary NULL point check in
-node allocations") replaced IS_ERR_OR_NULL by IS_ERR. This leads to a
-NULL pointer dereference.
+If a task completion notification (TCN) is received when there is no
+outstanding task, the cqhci driver issues a "spurious TCN" warning. This
+was observed to happen right after CQE error recovery.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000080
-Call Trace:
- ? __die_body.cold+0x1a/0x1f
- ? page_fault_oops+0xd2/0x2b0
- ? exc_page_fault+0x70/0x170
- ? asm_exc_page_fault+0x22/0x30
- ? btree_node_free+0xf/0x160 [bcache]
- ? up_write+0x32/0x60
- btree_gc_coalesce+0x2aa/0x890 [bcache]
- ? bch_extent_bad+0x70/0x170 [bcache]
- btree_gc_recurse+0x130/0x390 [bcache]
- ? btree_gc_mark_node+0x72/0x230 [bcache]
- bch_btree_gc+0x5da/0x600 [bcache]
- ? cpuusage_read+0x10/0x10
- ? bch_btree_gc+0x600/0x600 [bcache]
- bch_gc_thread+0x135/0x180 [bcache]
+When an error interrupt is received the driver runs recovery logic.
+It halts the controller, clears all pending tasks, and then re-enables
+it. On some platforms, like Intel Jasper Lake, a stale task completion
+event was observed, regardless of the CQHCI_CLEAR_ALL_TASKS bit being set.
 
-The relevant code starts with:
+This results in either:
+a) Spurious TC completion event for an empty slot.
+b) Corrupted data being passed up the stack, as a result of premature
+   completion for a newly added task.
 
-    new_nodes[0] = NULL;
+Rather than add a quirk for affected controllers, ensure tasks are cleared
+by toggling CQHCI_ENABLE, which would happen anyway if
+cqhci_clear_all_tasks() timed out. This is simpler and should be safe and
+effective for all controllers.
 
-    for (i = 0; i < nodes; i++) {
-        if (__bch_keylist_realloc(&keylist, bkey_u64s(&r[i].b->key)))
-            goto out_nocoalesce;
-    // ...
-out_nocoalesce:
-    // ...
-    for (i = 0; i < nodes; i++)
-        if (!IS_ERR(new_nodes[i])) {  // IS_ERR_OR_NULL before
-028ddcac477b
-            btree_node_free(new_nodes[i]);  // new_nodes[0] is NULL
-            rw_unlock(true, new_nodes[i]);
-        }
-
-This patch replaces IS_ERR() by IS_ERR_OR_NULL() to fix this.
-
-Fixes: 028ddcac477b ("bcache: Remove unnecessary NULL point check in node allocations")
-Link: https://lore.kernel.org/all/3DF4A87A-2AC1-4893-AE5F-E921478419A9@suse.de/
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
 Cc: stable@vger.kernel.org
-Cc: Zheng Wang <zyytlz.wz@163.com>
-Cc: Coly Li <colyli@suse.de>
-Signed-off-by: Markus Weippert <markus@gekmihesg.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Kornel Dulęba <korneld@chromium.org>
+Tested-by: Kornel Dulęba <korneld@chromium.org>
+Co-developed-by: Kornel Dulęba <korneld@chromium.org>
+Signed-off-by: Kornel Dulęba <korneld@chromium.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Link: https://lore.kernel.org/r/20231103084720.6886-7-adrian.hunter@intel.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/bcache/btree.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/cqhci.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
 
---- a/drivers/md/bcache/btree.c
-+++ b/drivers/md/bcache/btree.c
-@@ -1538,7 +1538,7 @@ out_nocoalesce:
- 	bch_keylist_free(&keylist);
+diff --git a/drivers/mmc/host/cqhci.c b/drivers/mmc/host/cqhci.c
+index 7bccd6494cd93..23cf7912c1ba3 100644
+--- a/drivers/mmc/host/cqhci.c
++++ b/drivers/mmc/host/cqhci.c
+@@ -1023,28 +1023,28 @@ static void cqhci_recovery_finish(struct mmc_host *mmc)
  
- 	for (i = 0; i < nodes; i++)
--		if (!IS_ERR(new_nodes[i])) {
-+		if (!IS_ERR_OR_NULL(new_nodes[i])) {
- 			btree_node_free(new_nodes[i]);
- 			rw_unlock(true, new_nodes[i]);
- 		}
+ 	ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+ 
+-	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
+-		ok = false;
+-
+ 	/*
+ 	 * The specification contradicts itself, by saying that tasks cannot be
+ 	 * cleared if CQHCI does not halt, but if CQHCI does not halt, it should
+ 	 * be disabled/re-enabled, but not to disable before clearing tasks.
+ 	 * Have a go anyway.
+ 	 */
+-	if (!ok) {
+-		pr_debug("%s: cqhci: disable / re-enable\n", mmc_hostname(mmc));
+-		cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
+-		cqcfg &= ~CQHCI_ENABLE;
+-		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+-		cqcfg |= CQHCI_ENABLE;
+-		cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
+-		/* Be sure that there are no tasks */
+-		ok = cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
+-		if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
+-			ok = false;
+-		WARN_ON(!ok);
+-	}
++	if (!cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT))
++		ok = false;
++
++	/* Disable to make sure tasks really are cleared */
++	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
++	cqcfg &= ~CQHCI_ENABLE;
++	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
++
++	cqcfg = cqhci_readl(cq_host, CQHCI_CFG);
++	cqcfg |= CQHCI_ENABLE;
++	cqhci_writel(cq_host, cqcfg, CQHCI_CFG);
++
++	cqhci_halt(mmc, CQHCI_FINISH_HALT_TIMEOUT);
++
++	if (!ok)
++		cqhci_clear_all_tasks(mmc, CQHCI_CLEAR_TIMEOUT);
+ 
+ 	cqhci_recover_mrqs(cq_host);
+ 
+-- 
+2.42.0
+
 
 
 
