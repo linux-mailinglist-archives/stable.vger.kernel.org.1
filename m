@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-4629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C987804849
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEEF804851
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:53:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 927731F227D3
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 262C01F214E9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B878C07;
-	Tue,  5 Dec 2023 03:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FDC8F56;
+	Tue,  5 Dec 2023 03:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zqcv4wiq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XuRrX+3q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-x2a.google.com (mail-oa1-x2a.google.com [IPv6:2001:4860:4864:20::2a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6127D3;
-	Mon,  4 Dec 2023 19:47:53 -0800 (PST)
-Received: by mail-oa1-x2a.google.com with SMTP id 586e51a60fabf-1f5da5df68eso3046491fac.2;
-        Mon, 04 Dec 2023 19:47:53 -0800 (PST)
+Received: from mail-oo1-xc34.google.com (mail-oo1-xc34.google.com [IPv6:2607:f8b0:4864:20::c34])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7466AC6;
+	Mon,  4 Dec 2023 19:53:29 -0800 (PST)
+Received: by mail-oo1-xc34.google.com with SMTP id 006d021491bc7-58e28e0461bso1723893eaf.1;
+        Mon, 04 Dec 2023 19:53:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701748073; x=1702352873; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1701748409; x=1702353209; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0+2tKqrr0Nkmoxm3XNJxnGBns+mTRfDBaYZhOHyL6U=;
-        b=Zqcv4wiq1xaW7z03m7WlUgeKtgch4rzszdUtlBvjQ2xieNWazbj/G/qdcXIiTNY80V
-         JnI57aiclqHxHGdz7iT8oYypAi+VNIjZ7qSaz4HCWGO7mGeZdZqdhan0M6w+YnvcgMOR
-         f9Z6vFW9P8ejwOK6SzqpP9Za4RKgix7KUtx2sl5tXvjZHI1z3cCZU7V+PYWgMo2YBRNJ
-         UnVpkmBhK0uD/BV3Xs2uo69ieaqJxkBvQAHWXTjGUP6UF8EwnjP9xeXrmZUpbiDMMKib
-         WM1/orulm632mXilua1h4NGIX3yiQS8/BQ5zWTpHfH7mr3dpKhIX6OvIGdULzyCl2q9h
-         Uc3g==
+        bh=yMlipu20UYvgghTH7yK/DQyqHGpCso8cXNl7YDlvHV4=;
+        b=XuRrX+3qK4t3tsqm2W5a3uayy1o83YWRIhBqNqZkWFWFhxEBAFthbCVcvLKevCGBTh
+         Zh1TJaxYu0Ez4MQP3x+MowpSWTKtzVjRVHHxPMKsZKo+swd5aaZvZokVnT4yN3hS/11n
+         z1ysGAwhfIJdLp+0rpZivU2+DgDNAsHdVy1nswYcsWACtrWm30p5Vbf+/AFmD12DlvXp
+         XDCY6z1nrxTVw+o7sZ4ybgzAXEvnXa6LcGbsAyp8jB1ESM8j42KBuOL+ntKrrz3Mpc9q
+         32w8An1fXDXhwc1+nATwxU1e/DbRMVY6am8riFIyiG30gk4sRMarQ9EBSDAc0gwG1QDV
+         kdiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701748073; x=1702352873;
+        d=1e100.net; s=20230601; t=1701748409; x=1702353209;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :sender:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+0+2tKqrr0Nkmoxm3XNJxnGBns+mTRfDBaYZhOHyL6U=;
-        b=cRNnVvb+5lVOdIgyI0KyGsSrR9lRiqkxP5z7ungGE6JWvsJs/jCn7LY2+6AHTYxAH7
-         tMR6/cjU51quDiG8K+tep5l82OhBBvQnTl9BWQIAZ1BsQDfZV3UnsxmCsEA2uvPg7Kpb
-         18bcMx7jFkKduGtKgp1/oLYlcvv/FrZSwy7x13zbXVja65oaiEdC/LbP5N+teLNp19H5
-         Qvqx2+m4DNwozILYE/gSNS/9RSa10boZdzwWjjQZX9trsxqfDdySygbSgt0sEqxD7E7J
-         MSJFAw/zTWG8iJN3PB0P59vX23YGMxUQmySJr9eZIf2/91M6bOtadQke++XtEFUBhGqJ
-         zcXQ==
-X-Gm-Message-State: AOJu0YzPctGZCNOSUOC5OP8pPCI1//LiPOyw735uhWEm3lW0Ftzqe69f
-	qLqSxg21eUXKVWchW+WpEEY=
-X-Google-Smtp-Source: AGHT+IFcJGqFZls/HyK+TBq3sFIEkeo6OC2UTd1syyFLR5E+B1h0jwfDTlxfSGZmUOSXdvoFEuNIxA==
-X-Received: by 2002:a05:6870:1699:b0:1fb:75b:12fc with SMTP id j25-20020a056870169900b001fb075b12fcmr5439554oae.78.1701748072892;
-        Mon, 04 Dec 2023 19:47:52 -0800 (PST)
+        bh=yMlipu20UYvgghTH7yK/DQyqHGpCso8cXNl7YDlvHV4=;
+        b=Rn6EMByPIb7pNn5sZYeuUjGnyKDNOlFCccN0MFhK9v1GtNvkKeujDLApEfLVUTHLtJ
+         DVXNZKP0xpXJFEnaD5zD+q9l7paFrSr8+iYzIO5vdHgGxO4ix0ws/lqTdX8pdo06t1Ak
+         vUPWyu+d7PH/Wl1gwFcqLuU1bv1hgoHZWqgmV8QuRiNG98cK5HE1aU2UhGsPL3G5u3j0
+         C8bwhT6XIMY0v5WarOnzUHxc+9MY/rX4J/ojW7zX/jjoMVHeJqAlPltx1eB+9ZX0aD7p
+         NZ/cWDCelAjoqC10/k6+44nSS/AtESAcT3NltQzliwQIpSzejC6gwKgiy2X3MRO7btcb
+         1QDA==
+X-Gm-Message-State: AOJu0YzyYj6dJDqNrea47TPh3MNobFlSATBUi/4oNbJlEMgeb+PtrQ0E
+	aWZL4+n1DxoQqVaCWm8f4AM=
+X-Google-Smtp-Source: AGHT+IHU6n/h4gPzeKgRihvC/XsoaUJ238XyaynjfYs3PCK4g+2uVE7ZX15hbO0e9OJ+hevG6s8Fxw==
+X-Received: by 2002:a05:6870:1d09:b0:1fb:75a:6d44 with SMTP id pa9-20020a0568701d0900b001fb075a6d44mr5995704oab.107.1701748408675;
+        Mon, 04 Dec 2023 19:53:28 -0800 (PST)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id lb5-20020a056871414500b001faf4ca5940sm2521707oab.58.2023.12.04.19.47.49
+        by smtp.gmail.com with ESMTPSA id hl19-20020a0568701b1300b001fb1e7ec1besm1935723oab.39.2023.12.04.19.53.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Dec 2023 19:47:51 -0800 (PST)
+        Mon, 04 Dec 2023 19:53:28 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <2d9146a0-3043-4e22-841f-78ada94224c6@roeck-us.net>
-Date: Mon, 4 Dec 2023 19:47:48 -0800
+Message-ID: <7ac20588-3816-4e53-be31-8cc4c0de7caa@roeck-us.net>
+Date: Mon, 4 Dec 2023 19:53:26 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,7 +64,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10 000/135] 5.10.203-rc1 review
+Subject: Re: [PATCH 5.4 00/94] 5.4.263-rc1 review
 Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
@@ -72,7 +72,7 @@ Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
  patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
  jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
  srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031522.815119918@linuxfoundation.org>
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
  xsFNBE6H1WcBEACu6jIcw5kZ5dGeJ7E7B2uweQR/4FGxH10/H1O1+ApmcQ9i87XdZQiB9cpN
@@ -117,13 +117,13 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 12/4/23 19:15, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.203 release.
-> There are 135 patches in this series, all will be posted as a response
+On 12/4/23 19:16, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.263 release.
+> There are 94 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -131,12 +131,21 @@ On 12/4/23 19:15, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 
-drivers/s390/crypto/ap_bus.c: In function 'ap_bus_force_rescan':
-drivers/s390/crypto/ap_bus.c:791:28: error: 'ap_scan_bus_count' undeclared
+Building arm64:allmodconfig ... failed
+--------------
+Error log:
+drivers/mmc/host/sdhci-sprd.c: In function 'sdhci_sprd_set_power':
+drivers/mmc/host/sdhci-sprd.c:393:17: error: implicit declaration of function 'mmc_regulator_disable_vqmmc'; did you mean 'mmc_regulator_set_vqmmc'? [-Werror=implicit-function-declaration]
+   393 |                 mmc_regulator_disable_vqmmc(mmc);
+       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                 mmc_regulator_set_vqmmc
+drivers/mmc/host/sdhci-sprd.c:396:17: error: implicit declaration of function 'mmc_regulator_enable_vqmmc'; did you mean 'mmc_regulator_set_vqmmc'? [-Werror=implicit-function-declaration]
+   396 |                 mmc_regulator_enable_vqmmc(mmc);
+       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~
+       |                 mmc_regulator_set_vqmmc
 
-Seen with various s390 builds. Caused by commit 4c61e62ecde8 ("s390/ap: fix AP
-bus crash on early config change callback invocation") which uses the
-undeclared variable but does not introduce it.
+Commit 2b11e5bd4ac0 ("mmc: sdhci-sprd: Fix vqmmc not shutting down after
+the card was pulled") calls those functions without introducing them.
 
 Guenter
 
