@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-4254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC948046B9
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:30:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2513804729
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:35:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 396F21C20DA0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:30:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68C861F21449
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D04FA79E3;
-	Tue,  5 Dec 2023 03:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98F08C07;
+	Tue,  5 Dec 2023 03:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0pRmBNU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdJn7OqD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DCDC14B;
-	Tue,  5 Dec 2023 03:30:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCEDC433C7;
-	Tue,  5 Dec 2023 03:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2938BF7;
+	Tue,  5 Dec 2023 03:35:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90C8C433C7;
+	Tue,  5 Dec 2023 03:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747050;
-	bh=lRLVYU+3DMafOcXVt0rckCYKPQ4zDvM58/w78IiVFiM=;
+	s=korg; t=1701747336;
+	bh=tQ/tMCla90fQnqLOZZ06erXaytHHo8hGB2rCqHeafro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m0pRmBNULs0/JhAXwqJnv+2UjM2d3r8DbhMFbvIn2WwUlCIwh97xhb1bco0TeBjdg
-	 wKNQ0kHR/JhOPSOjMexjDDApE+21iIcJ66tcNGc+aAge9+A94LWZJF2WUfzH1ZrXg6
-	 dsu0tePke+WY6JhJ5JnOx6H4vGbXVfPHaHEA/NXk=
+	b=RdJn7OqDAOC+8oMomFwVMCj2pld82QzxTl25kvthFbM1nfrpwpguUwmY6Yh30keab
+	 UB7sZjEOGyL2YcE5LZ7dyTCGtPb4cwoRdjjBJ2+LhlDa3h+e853Mc4tdaeEWstnIE0
+	 x7gGjIkLBWBFMIne6/4KzgscTa4KXzhmyCTORID0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 016/107] dm-verity: align struct dm_verity_fec_io properly
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 030/135] afs: Fix file locking on R/O volumes to operate in local mode
 Date: Tue,  5 Dec 2023 12:15:51 +0900
-Message-ID: <20231205031532.651675509@linuxfoundation.org>
+Message-ID: <20231205031532.569207164@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031531.426872356@linuxfoundation.org>
-References: <20231205031531.426872356@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,57 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 38bc1ab135db87577695816b190e7d6d8ec75879 upstream.
+[ Upstream commit b590eb41be766c5a63acc7e8896a042f7a4e8293 ]
 
-dm_verity_fec_io is placed after the end of two hash digests. If the hash
-digest has unaligned length, struct dm_verity_fec_io could be unaligned.
+AFS doesn't really do locking on R/O volumes as fileservers don't maintain
+state with each other and thus a lock on a R/O volume file on one
+fileserver will not be be visible to someone looking at the same file on
+another fileserver.
 
-This commit fixes the placement of struct dm_verity_fec_io, so that it's
-aligned.
+Further, the server may return an error if you try it.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Fixes: a739ff3f543a ("dm verity: add support for forward error correction")
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by doing what other AFS clients do and handle filelocking on R/O
+volume files entirely within the client and don't touch the server.
+
+Fixes: 6c6c1d63c243 ("afs: Provide mount-time configurable byte-range file locking emulation")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-fec.c |    3 ++-
- drivers/md/dm-verity.h     |    6 ------
- 2 files changed, 2 insertions(+), 7 deletions(-)
+ fs/afs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -24,7 +24,8 @@ bool verity_fec_is_enabled(struct dm_ver
-  */
- static inline struct dm_verity_fec_io *fec_io(struct dm_verity_io *io)
- {
--	return (struct dm_verity_fec_io *) verity_io_digest_end(io->v, io);
-+	return (struct dm_verity_fec_io *)
-+		((char *)io + io->v->ti->per_io_data_size - sizeof(struct dm_verity_fec_io));
- }
+diff --git a/fs/afs/super.c b/fs/afs/super.c
+index e38bb1e7a4d22..1b62a99b36731 100644
+--- a/fs/afs/super.c
++++ b/fs/afs/super.c
+@@ -406,6 +406,8 @@ static int afs_validate_fc(struct fs_context *fc)
+ 			return PTR_ERR(volume);
  
- /*
---- a/drivers/md/dm-verity.h
-+++ b/drivers/md/dm-verity.h
-@@ -115,12 +115,6 @@ static inline u8 *verity_io_want_digest(
- 	return (u8 *)(io + 1) + v->ahash_reqsize + v->digest_size;
- }
+ 		ctx->volume = volume;
++		if (volume->type != AFSVL_RWVOL)
++			ctx->flock_mode = afs_flock_mode_local;
+ 	}
  
--static inline u8 *verity_io_digest_end(struct dm_verity *v,
--				       struct dm_verity_io *io)
--{
--	return verity_io_want_digest(v, io) + v->digest_size;
--}
--
- extern int verity_for_bv_block(struct dm_verity *v, struct dm_verity_io *io,
- 			       struct bvec_iter *iter,
- 			       int (*process)(struct dm_verity *v,
+ 	return 0;
+-- 
+2.42.0
+
 
 
 
