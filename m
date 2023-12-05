@@ -1,47 +1,44 @@
-Return-Path: <stable+bounces-4611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 232FA804835
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC418804837
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:47:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47BB2817D0
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C68FB20D79
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 719088C05;
-	Tue,  5 Dec 2023 03:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C663379E3;
+	Tue,  5 Dec 2023 03:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DfHeQLGx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM6NoJfi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3986FB0;
-	Tue,  5 Dec 2023 03:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF6DC433C8;
-	Tue,  5 Dec 2023 03:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8058B6FB0;
+	Tue,  5 Dec 2023 03:47:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10444C433C8;
+	Tue,  5 Dec 2023 03:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701748025;
-	bh=LzEl0h5i2AdIt8UjX6Za8wsiSmLbb7fsy47vz8Ycvlc=;
+	s=korg; t=1701748030;
+	bh=vi4oxmR5lx8uMMLtTsPVLIB6n1mFIf9aK/TPxlPVNE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DfHeQLGxtEYjdL4uGtxvDNhXa9NS9RW02SoosztgjXArZDI3BmmkuqoVs9BHGY9dm
-	 tjlTeoKY9ab/T/LuhDIAoanb1PS4L3QL2DvdgCA790OTHz+4OzPdGaTsBK8zdcZ9iS
-	 FKBx4S4QObY4ccY7xVXFOVsfn5BQObnPWtJyQfAs=
+	b=tM6NoJfiu9ZA4jURR6zcQjTSrJXViTMkhE0d/2u6yM7oLMYlOh9M6FhJrW1T9MuMp
+	 3O1Je+N5VzYMAdvLZBKjZgmZUUsOhpEUZ/Chz1hwRmhPNGqehleRdjtfHeW64jz0xn
+	 N2W2TzAmitcibAwTNTJSujz9GryD7oLrS/s25l1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Ming Lei <ming.lei@redhat.com>,
 	Bart Van Assche <bvanassche@acm.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 85/94] scsi: core: Introduce the scsi_cmd_to_rq() function
-Date: Tue,  5 Dec 2023 12:17:53 +0900
-Message-ID: <20231205031527.553410613@linuxfoundation.org>
+Subject: [PATCH 5.4 86/94] scsi: qla2xxx: Use scsi_cmd_to_rq() instead of scsi_cmnd.request
+Date: Tue,  5 Dec 2023 12:17:54 +0900
+Message-ID: <20231205031527.604321565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231205031522.815119918@linuxfoundation.org>
 References: <20231205031522.815119918@linuxfoundation.org>
@@ -62,50 +59,42 @@ Content-Transfer-Encoding: 8bit
 
 From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 51f3a478892873337c54068d1185bcd797000a52 ]
+[ Upstream commit c7d6b2c2cd5656b05849afb0de3f422da1742d0f ]
 
-The 'request' member of struct scsi_cmnd is superfluous. The struct request
-and struct scsi_cmnd data structures are adjacent and hence the request
-pointer can be derived easily from a scsi_cmnd pointer. Introduce a helper
-function that performs that conversion in a type-safe way. This patch is
-the first step towards removing the request member from struct
-scsi_cmnd. Making that change has the following advantages:
+Prepare for removal of the request pointer by using scsi_cmd_to_rq()
+instead. This patch does not change any functionality.
 
- - This is a performance optimization since adding an offset to a pointer
-   takes less time than dereferencing a pointer.
-
- - struct scsi_cmnd becomes smaller.
-
-Link: https://lore.kernel.org/r/20210809230355.8186-2-bvanassche@acm.org
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Hannes Reinecke <hare@suse.de>
-Cc: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
+Link: https://lore.kernel.org/r/20210809230355.8186-39-bvanassche@acm.org
 Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Stable-dep-of: 19597cad64d6 ("scsi: qla2xxx: Fix system crash due to bad pointer access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/scsi/scsi_cmnd.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/scsi/scsi_cmnd.h b/include/scsi/scsi_cmnd.h
-index 7738a055d9535..dafde3d764d03 100644
---- a/include/scsi/scsi_cmnd.h
-+++ b/include/scsi/scsi_cmnd.h
-@@ -143,6 +143,12 @@ struct scsi_cmnd {
- 	unsigned char tag;	/* SCSI-II queued command tag */
- };
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 8329b80c41eb7..eb6fb78ebefde 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -814,7 +814,7 @@ qla2xxx_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
+ 		uint16_t hwq;
+ 		struct qla_qpair *qpair = NULL;
  
-+/* Variant of blk_mq_rq_from_pdu() that verifies the type of its argument. */
-+static inline struct request *scsi_cmd_to_rq(struct scsi_cmnd *scmd)
-+{
-+	return blk_mq_rq_from_pdu(scmd);
-+}
-+
- /*
-  * Return the driver private allocation behind the command.
-  * Only works if cmd_size is set in the host template.
+-		tag = blk_mq_unique_tag(cmd->request);
++		tag = blk_mq_unique_tag(scsi_cmd_to_rq(cmd));
+ 		hwq = blk_mq_unique_tag_to_hwq(tag);
+ 		qpair = ha->queue_pair_map[hwq];
+ 
+@@ -1705,7 +1705,7 @@ static void qla2x00_abort_srb(struct qla_qpair *qp, srb_t *sp, const int res,
+ 		}
+ 
+ 		spin_lock_irqsave(qp->qp_lock_ptr, *flags);
+-		if (ret_cmd && blk_mq_request_started(cmd->request))
++		if (ret_cmd && blk_mq_request_started(scsi_cmd_to_rq(cmd)))
+ 			sp->done(sp, res);
+ 	} else {
+ 		sp->done(sp, res);
 -- 
 2.42.0
 
