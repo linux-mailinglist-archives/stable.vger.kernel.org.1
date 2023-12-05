@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-4181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62762804669
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B07804750
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04489B20C1F
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C3E1F21407
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F379E3;
-	Tue,  5 Dec 2023 03:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFA88BF2;
+	Tue,  5 Dec 2023 03:37:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wjvKCeNf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uB95/c4T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BA16FAF;
-	Tue,  5 Dec 2023 03:27:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB00C433CA;
-	Tue,  5 Dec 2023 03:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2616FB1;
+	Tue,  5 Dec 2023 03:37:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE32BC433C7;
+	Tue,  5 Dec 2023 03:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746837;
-	bh=sYfdqpfXYqW7yMugmceXKhJD5zUut7YQ0K1EqIZwRRc=;
+	s=korg; t=1701747436;
+	bh=wbIaDUEpdTTYNPkyKIfU3JW7TXKAHbaaT94KUWxQLkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wjvKCeNfsy/cMuc2uZOnclKfPErIlJJjoOKk0RchdxRydUv1khFA7fxRCOTLbpXgP
-	 hmZWGCrHh7LUj9WXJv50OlUb6PvCLYc7li/ZOQWB3eIvq9hMY62lLsqvp0QfTjxtLM
-	 AK/zj9YQyhYaxt8HFZDKah4igmrnJ4v0gXIrjOw8=
+	b=uB95/c4TlaN25rkOvSIM2qfRn+d1lOFxXedw6201/B9zm7VlEfsEFqNFKmFa+LSem
+	 keUhoPb9jvRQ5csFC/8tnKbUUvaUKINg5zNhmWjRkegKkb87rnJyAT8oZ62ty24QzQ
+	 lBEoq6c+G7YjdPpfz7rW2oujsdo0jK5jaIqqF1W8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Kailang Yang <kailang@realtek.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 4.19 38/71] ALSA: hda/realtek: Headset Mic VREF to 100%
+Subject: [PATCH 5.10 075/135] ALSA: hda/realtek: Headset Mic VREF to 100%
 Date: Tue,  5 Dec 2023 12:16:36 +0900
-Message-ID: <20231205031520.057134535@linuxfoundation.org>
+Message-ID: <20231205031535.204171329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
+References: <20231205031530.557782248@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -73,7 +73,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/sound/pci/hda/patch_realtek.c
 +++ b/sound/pci/hda/patch_realtek.c
-@@ -1917,6 +1917,7 @@ enum {
+@@ -1994,6 +1994,7 @@ enum {
  	ALC887_FIXUP_ASUS_AUDIO,
  	ALC887_FIXUP_ASUS_HMIC,
  	ALCS1200A_FIXUP_MIC_VREF,
@@ -81,7 +81,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  };
  
  static void alc889_fixup_coef(struct hda_codec *codec,
-@@ -2470,6 +2471,13 @@ static const struct hda_fixup alc882_fix
+@@ -2547,6 +2548,13 @@ static const struct hda_fixup alc882_fix
  			{}
  		}
  	},
@@ -95,7 +95,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  };
  
  static const struct snd_pci_quirk alc882_fixup_tbl[] = {
-@@ -2539,6 +2547,7 @@ static const struct snd_pci_quirk alc882
+@@ -2616,6 +2624,7 @@ static const struct snd_pci_quirk alc882
  	SND_PCI_QUIRK(0x106b, 0x4a00, "Macbook 5,2", ALC889_FIXUP_MBA11_VREF),
  
  	SND_PCI_QUIRK(0x1071, 0x8258, "Evesham Voyaeger", ALC882_FIXUP_EAPD),
