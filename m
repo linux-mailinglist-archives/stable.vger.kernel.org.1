@@ -1,48 +1,50 @@
-Return-Path: <stable+bounces-4214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07BA80468A
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:28:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9B780479C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:40:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57DF21F21418
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:28:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A48B2815FC
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BB88BF1;
-	Tue,  5 Dec 2023 03:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0487D8F56;
+	Tue,  5 Dec 2023 03:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlAiXLQm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZ6RGeeu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CE06FAF;
-	Tue,  5 Dec 2023 03:28:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9E5C433C7;
-	Tue,  5 Dec 2023 03:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFEDCA5C;
+	Tue,  5 Dec 2023 03:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44AF6C433C8;
+	Tue,  5 Dec 2023 03:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746933;
-	bh=AbTT7eC3oP7yKyLXB+j76RmfV1PhfCavok0D8J2oWsc=;
+	s=korg; t=1701747628;
+	bh=obpTu6KiHLJicRTgRbzW3o0eCw/CP5PoNP37h3yQDUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DlAiXLQmmR7UJwlGLDKpZSXgzJGvzJMbo8FNmAaXY56/wLXHoB6VUpmzwFyqRtaxM
-	 CGnMIgMxJtxfplIcEcFx8qY5/YGUlzyR3+QwYGvJup+XK1OqZ+NJqJgb311e5zjvOG
-	 NkFoN7AmORDEbjfeTRRHqd2/t/0GkLLqg8e8M5ug=
+	b=qZ6RGeeuvDN47LF9RWzVfyfbQiFGBSB+DY8wj2WECf9TWsyIM4WSfqe8OFPmRCPxJ
+	 bACVXQOmjba6BcPV9W11+CwPrtS+qjMtjIK/5qVSURP5xyOEuDW6Z3e3J2NugNCBvp
+	 uqTQ6VHVGqYjWZz5NAm0HpE7QkvZFWCwtGzTKFoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 47/71] ravb: Fix races between ravb_tx_timeout_work() and net related ops
-Date: Tue,  5 Dec 2023 12:16:45 +0900
-Message-ID: <20231205031520.592800439@linuxfoundation.org>
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Lieven Hey <lieven.hey@kdab.com>,
+	Namhyung Kim <namhyung@kernel.org>
+Subject: [PATCH 5.15 01/67] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
+Date: Tue,  5 Dec 2023 12:16:46 +0900
+Message-ID: <20231205031519.942251301@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031519.853779502@linuxfoundation.org>
+References: <20231205031519.853779502@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,84 +56,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 9870257a0a338cd8d6c1cddab74e703f490f6779 ]
+commit 89b15d00527b7825ff19130ed83478e80e3fae99 upstream.
 
-Fix races between ravb_tx_timeout_work() and functions of net_device_ops
-and ethtool_ops by using rtnl_trylock() and rtnl_unlock(). Note that
-since ravb_close() is under the rtnl lock and calls cancel_work_sync(),
-ravb_tx_timeout_work() should calls rtnl_trylock(). Otherwise, a deadlock
-may happen in ravb_tx_timeout_work() like below:
+When a program header was added, it moved the text section but
+GEN_ELF_TEXT_OFFSET was not updated.
 
-CPU0			CPU1
-			ravb_tx_timeout()
-			schedule_work()
-...
-__dev_close_many()
-// Under rtnl lock
-ravb_close()
-cancel_work_sync()
-// Waiting
-			ravb_tx_timeout_work()
-			rtnl_lock()
-			// This is possible to cause a deadlock
+Fix by adding the program header size and aligning.
 
-If rtnl_trylock() fails, rescheduling the work with sleep for 1 msec.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20231127122420.3706751-1-yoshihiro.shimoda.uh@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Lieven Hey <lieven.hey@kdab.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ tools/perf/util/genelf.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index a1906804c139e..e3eedb3e72156 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1447,6 +1447,12 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 	struct net_device *ndev = priv->ndev;
- 	int error;
+--- a/tools/perf/util/genelf.h
++++ b/tools/perf/util/genelf.h
+@@ -2,6 +2,8 @@
+ #ifndef __GENELF_H__
+ #define __GENELF_H__
  
-+	if (!rtnl_trylock()) {
-+		usleep_range(1000, 2000);
-+		schedule_work(&priv->work);
-+		return;
-+	}
++#include <linux/math.h>
 +
- 	netif_tx_stop_all_queues(ndev);
+ /* genelf.c */
+ int jit_write_elf(int fd, uint64_t code_addr, const char *sym,
+ 		  const void *code, int csize, void *debug, int nr_debug_entries,
+@@ -73,6 +75,6 @@ int jit_add_debug_info(Elf *e, uint64_t
+ #endif
  
- 	/* Stop PTP Clock driver */
-@@ -1479,7 +1485,7 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		 */
- 		netdev_err(ndev, "%s: ravb_dmac_init() failed, error %d\n",
- 			   __func__, error);
--		return;
-+		goto out_unlock;
- 	}
- 	ravb_emac_init(ndev);
+ /* The .text section is directly after the ELF header */
+-#define GEN_ELF_TEXT_OFFSET sizeof(Elf_Ehdr)
++#define GEN_ELF_TEXT_OFFSET round_up(sizeof(Elf_Ehdr) + sizeof(Elf_Phdr), 16)
  
-@@ -1489,6 +1495,9 @@ static void ravb_tx_timeout_work(struct work_struct *work)
- 		ravb_ptp_init(ndev, priv->pdev);
- 
- 	netif_tx_start_all_queues(ndev);
-+
-+out_unlock:
-+	rtnl_unlock();
- }
- 
- /* Packet transmit function for Ethernet AVB */
--- 
-2.42.0
-
+ #endif
 
 
 
