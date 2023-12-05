@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-4335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFBB804710
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:34:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB8BE8045DE
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52F38281591
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:34:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED0781C20BCA
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3018BF2;
-	Tue,  5 Dec 2023 03:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2F26FB1;
+	Tue,  5 Dec 2023 03:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2wDykVDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CnjEzCUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF116FB1;
-	Tue,  5 Dec 2023 03:34:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29589C433C9;
-	Tue,  5 Dec 2023 03:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2156AA0;
+	Tue,  5 Dec 2023 03:22:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AD0C433C7;
+	Tue,  5 Dec 2023 03:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701747267;
-	bh=4cnlMie8zJTn5LlI4Shdj0lyRWoqpH1YNEF3804yGsA=;
+	s=korg; t=1701746538;
+	bh=Tmj760NrMFVtoqCCAIRwDvkIeUwLUBWdadsZuhYu7+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2wDykVDseFmGqErLGbVgsMDN0P857fYJRWmsXa3pFIjL2kH6cF1iFp/HRCZhP8LE4
-	 mYVsrkgR9tFxWwyBtz6ZEdVv4f8bb81GrV9HEwJjeq3duSpw11EdpGduNhgxWvmlNN
-	 r7ECT64uh60USOhgdhxOxyXHok23PLWg/zuZiHQ0=
+	b=CnjEzCUucE7o5cCcXckXQujqTHIjiE34nfcIFl3ffMmUbLZFFn3pIxDzVlEkAhwMd
+	 9fvyf0LKB9YQtmUdHvnkkMWhsiOuvByMCKRpmpu3EeDWkmuMVxqwoMLFfaDUFSGSBy
+	 ukaYYvsuUWGzLLRvstIM/ZFkQNtNNysOcFN6fLJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 013/135] drm/panel: auo,b101uan08.3: Fine tune the panel power sequence
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.6 062/134] parisc: Ensure 32-bit alignment on parisc unwind section
 Date: Tue,  5 Dec 2023 12:15:34 +0900
-Message-ID: <20231205031531.334449705@linuxfoundation.org>
+Message-ID: <20231205031539.468778002@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031530.557782248@linuxfoundation.org>
-References: <20231205031530.557782248@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,42 +51,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 6965809e526917b73c8f9178173184dcf13cec4b ]
+commit c9fcb2b65c2849e8ff3be23fd8828312fb68dc19 upstream.
 
-For "auo,b101uan08.3" this panel, it is stipulated in the panel spec that
-MIPI needs to keep the LP11 state before the lcm_reset pin is pulled high.
+Make sure the .PARISC.unwind section will be 32-bit aligned.
 
-Fixes: 56ad624b4cb5 ("drm/panel: support for auo, b101uan08.3 wuxga dsi video mode panel")
-Signed-off-by: Xuxin Xiong <xuxinxiong@huaqin.corp-partner.google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231114044205.613421-1-xuxinxiong@huaqin.corp-partner.google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org   # v6.0+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c | 1 +
+ arch/parisc/kernel/vmlinux.lds.S |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-index 3229e5eabbd21..9e518213a54ff 100644
---- a/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-+++ b/drivers/gpu/drm/panel/panel-boe-tv101wum-nl6.c
-@@ -697,6 +697,7 @@ static const struct panel_desc auo_b101uan08_3_desc = {
- 	.mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
- 		      MIPI_DSI_MODE_LPM,
- 	.init_cmds = auo_b101uan08_3_init_cmd,
-+	.lp11_before_reset = true,
- };
+--- a/arch/parisc/kernel/vmlinux.lds.S
++++ b/arch/parisc/kernel/vmlinux.lds.S
+@@ -130,6 +130,7 @@ SECTIONS
+ 	RO_DATA(8)
  
- static const struct drm_display_mode boe_tv105wum_nw0_default_mode = {
--- 
-2.42.0
-
+ 	/* unwind info */
++	. = ALIGN(4);
+ 	.PARISC.unwind : {
+ 		__start___unwind = .;
+ 		*(.PARISC.unwind)
 
 
 
