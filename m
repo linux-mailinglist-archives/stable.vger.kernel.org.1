@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-4170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A69480465C
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:26:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7CE5804617
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B99551F20172
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:26:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80F2828344C
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE42679F2;
-	Tue,  5 Dec 2023 03:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE71D8BE0;
+	Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAEeC13E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OSaArJsZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20C86FAF;
-	Tue,  5 Dec 2023 03:26:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C3C2C433C9;
-	Tue,  5 Dec 2023 03:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A287A6FB1;
+	Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FEDC433C7;
+	Tue,  5 Dec 2023 03:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746806;
-	bh=09IhV/ImS6pFdW5yG4qQ57sPmajMpCRn5Wudd6MN4to=;
+	s=korg; t=1701746675;
+	bh=9v6+D6gmnJgN0YWm+Q9LtqLz+RkRwnEEWTytvr2b17g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAEeC13E7FXW4nO/hmZquowmgZ3pcFNGO4n0mtJhSoiCD8nY7lnw4+i+hQyQv19+M
-	 JqeRCn/lb/34hj3fOzsJ0RJ8esWt3Vrb/BZ2u/yyMSGz9b8JXJZ46FY3CcbJbJznAN
-	 Y5fvwDGRvMKjzBlO4JETVro86QFfzSYnckt0airo=
+	b=OSaArJsZAaUgabg0JMkXjfyLQe7zyHbYwfWkFn+oYgXofgTZl34XhKfMfkCb3VokL
+	 oHx9CHNNC3IEeK054zaHj41mW3ebJ+ZhIKZdTfvZatji3JncEE0YrsDzC8DnlHEDwc
+	 LvS2sBb+m8G/O+mucGs91Cxm6+1xsceqSI8rHPhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Puliang Lu <puliang.lu@fibocom.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 28/71] USB: serial: option: fix FM101R-GL defines
-Date: Tue,  5 Dec 2023 12:16:26 +0900
-Message-ID: <20231205031519.486526639@linuxfoundation.org>
+	Swapnil Patel <swapnil.patel@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Agustin Gutierrez <agustin.gutierrez@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 115/134] drm/amd/display: Remove power sequencing check
+Date: Tue,  5 Dec 2023 12:16:27 +0900
+Message-ID: <20231205031542.775971687@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+References: <20231205031535.163661217@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +56,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Puliang Lu <puliang.lu@fibocom.com>
+From: Agustin Gutierrez <agustin.gutierrez@amd.com>
 
-commit a1092619dd28ac0fcf23016160a2fdccd98ef935 upstream.
+[ Upstream commit b0399e22ada096435de3e3e73899aa8bc026820d ]
 
-Modify the definition of the two Fibocom FM101R-GL PID macros, which had
-their PIDs switched.
+[Why]
+	Some ASICs keep backlight powered on after dpms off
+	command has been issued.
 
-The correct PIDs are:
+[How]
+	The check for no edp power sequencing was never going to pass.
+	The value is never changed from what it is set by design.
 
-- VID:PID 413C:8213, FM101R-GL ESIM are laptop M.2 cards (with
-  MBIM interfaces for Linux)
-
-- VID:PID 413C:8215, FM101R-GL are laptop M.2 cards (with
-  MBIM interface for Linux)
-
-0x8213: mbim, tty
-0x8215: mbim, tty
-
-Signed-off-by: Puliang Lu <puliang.lu@fibocom.com>
-Fixes: 52480e1f1a25 ("USB: serial: option: add Fibocom to DELL custom modem FM101R-GL")
-Link: https://lore.kernel.org/lkml/TYZPR02MB508845BAD7936A62A105CE5D89DFA@TYZPR02MB5088.apcprd02.prod.outlook.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org # 6.1+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
+Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
+Acked-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/link/link_dpms.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -203,8 +203,8 @@ static void option_instat_callback(struc
- #define DELL_PRODUCT_5829E_ESIM			0x81e4
- #define DELL_PRODUCT_5829E			0x81e6
+diff --git a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+index 28cb1f5a504d1..a17a06eb7762b 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
++++ b/drivers/gpu/drm/amd/display/dc/link/link_dpms.c
+@@ -1930,8 +1930,7 @@ static void disable_link_dp(struct dc_link *link,
+ 	dp_disable_link_phy(link, link_res, signal);
  
--#define DELL_PRODUCT_FM101R			0x8213
--#define DELL_PRODUCT_FM101R_ESIM		0x8215
-+#define DELL_PRODUCT_FM101R_ESIM		0x8213
-+#define DELL_PRODUCT_FM101R			0x8215
+ 	if (link->connector_signal == SIGNAL_TYPE_EDP) {
+-		if (!link->dc->config.edp_no_power_sequencing &&
+-			!link->skip_implict_edp_power_control)
++		if (!link->skip_implict_edp_power_control)
+ 			link->dc->hwss.edp_power_control(link, false);
+ 	}
  
- #define KYOCERA_VENDOR_ID			0x0c88
- #define KYOCERA_PRODUCT_KPC650			0x17da
+-- 
+2.42.0
+
 
 
 
