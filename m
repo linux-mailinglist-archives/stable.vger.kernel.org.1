@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-4176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85079804664
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:27:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D1F804597
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 04:19:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 333E62814BE
-	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:27:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C34EF2817A9
+	for <lists+stable@lfdr.de>; Tue,  5 Dec 2023 03:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6AD79E3;
-	Tue,  5 Dec 2023 03:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61EAD611E;
+	Tue,  5 Dec 2023 03:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="diFp3gvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuixAQ1Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8543E6FAF;
-	Tue,  5 Dec 2023 03:27:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2866C433C7;
-	Tue,  5 Dec 2023 03:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13FB96AA0;
+	Tue,  5 Dec 2023 03:19:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87865C433C8;
+	Tue,  5 Dec 2023 03:19:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701746824;
-	bh=dSfi7GgBV4xWBhbAuhGKq5XvMuSvO0/rrX7Fqe3ScNc=;
+	s=korg; t=1701746346;
+	bh=Zotwh0ozNZdUwjgXm3CyOZIZ21Sjyfv43uTVvlQKPcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=diFp3gvgTpVhGSwnTYM8ysv3JM4Jv8nxpvEcyWupUbMishLbQBhkHfoNfQt1nF9BC
-	 Nb6gimivWIMNEilAJoVOPOG4P4eC/+ABfp9spG3wZzvYHY3OjxG0rs8ZziGU1h/0KE
-	 zRoTQTh5dI/V2bFl28c0Y84zpzHGY5gFfboFIt2g=
+	b=QuixAQ1Q9m/8RbdI3fgru1j8iMXGoQRVLcOl1C2tS/ovVkxVFzPiUyzjO6OBU+kx+
+	 vB/QrrhBh+ZMievdcMCyiNL0fIR1mQJ3EiuRtQ2B7Pw8rU3ulyaDEzK+rT1MnQ0FUB
+	 0UtxfnISwUmTjH/GnTnIDi9zwoPA5qq2TZYPPxic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maria Yu <quic_aiquny@quicinc.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 4.19 34/71] pinctrl: avoid reload of p state in list iteration
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 4.14 25/30] btrfs: fix off-by-one when checking chunk map includes logical address
 Date: Tue,  5 Dec 2023 12:16:32 +0900
-Message-ID: <20231205031519.833667209@linuxfoundation.org>
+Message-ID: <20231205031512.981935464@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231205031517.859409664@linuxfoundation.org>
-References: <20231205031517.859409664@linuxfoundation.org>
+In-Reply-To: <20231205031511.476698159@linuxfoundation.org>
+References: <20231205031511.476698159@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,59 +53,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maria Yu <quic_aiquny@quicinc.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 4198a9b571065978632276264e01d71d68000ac5 upstream.
+commit 5fba5a571858ce2d787fdaf55814e42725bfa895 upstream.
 
-When in the list_for_each_entry iteration, reload of p->state->settings
-with a local setting from old_state will turn the list iteration into an
-infinite loop.
+At btrfs_get_chunk_map() we get the extent map for the chunk that contains
+the given logical address stored in the 'logical' argument. Then we do
+sanity checks to verify the extent map contains the logical address. One
+of these checks verifies if the extent map covers a range with an end
+offset behind the target logical address - however this check has an
+off-by-one error since it will consider an extent map whose start offset
+plus its length matches the target logical address as inclusive, while
+the fact is that the last byte it covers is behind the target logical
+address (by 1).
 
-The typical symptom when the issue happens, will be a printk message like:
+So fix this condition by using '<=' rather than '<' when comparing the
+extent map's "start + length" against the target logical address.
 
-  "not freeing pin xx (xxx) as part of deactivating group xxx - it is
-already used for some other setting".
-
-This is a compiler-dependent problem, one instance occurred using Clang
-version 10.0 on the arm64 architecture with linux version 4.19.
-
-Fixes: 6e5e959dde0d ("pinctrl: API changes to support multiple states per device")
-Signed-off-by: Maria Yu <quic_aiquny@quicinc.com>
-Cc:  <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231115102824.23727-1-quic_aiquny@quicinc.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/core.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/volumes.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1224,17 +1224,17 @@ EXPORT_SYMBOL_GPL(pinctrl_lookup_state);
- static int pinctrl_commit_state(struct pinctrl *p, struct pinctrl_state *state)
- {
- 	struct pinctrl_setting *setting, *setting2;
--	struct pinctrl_state *old_state = p->state;
-+	struct pinctrl_state *old_state = READ_ONCE(p->state);
- 	int ret;
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -2823,7 +2823,7 @@ static struct extent_map *get_chunk_map(
+ 		return ERR_PTR(-EINVAL);
+ 	}
  
--	if (p->state) {
-+	if (old_state) {
- 		/*
- 		 * For each pinmux setting in the old state, forget SW's record
- 		 * of mux owner for that pingroup. Any pingroups which are
- 		 * still owned by the new state will be re-acquired by the call
- 		 * to pinmux_enable_setting() in the loop below.
- 		 */
--		list_for_each_entry(setting, &p->state->settings, node) {
-+		list_for_each_entry(setting, &old_state->settings, node) {
- 			if (setting->type != PIN_MAP_TYPE_MUX_GROUP)
- 				continue;
- 			pinmux_disable_setting(setting);
+-	if (em->start > logical || em->start + em->len < logical) {
++	if (em->start > logical || em->start + em->len <= logical) {
+ 		btrfs_crit(fs_info,
+ 			   "found a bad mapping, wanted %llu-%llu, found %llu-%llu",
+ 			   logical, length, em->start, em->start + em->len);
 
 
 
