@@ -1,88 +1,90 @@
-Return-Path: <stable+bounces-4843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB91E8070CF
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 14:24:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9566D8071B1
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 15:03:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3DA1F21628
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 13:24:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF79C1C20DD5
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 14:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985BE39FC9;
-	Wed,  6 Dec 2023 13:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01A53DB80;
+	Wed,  6 Dec 2023 14:03:54 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9AF9122
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 05:24:22 -0800 (PST)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <r.czerwinski@pengutronix.de>)
-	id 1rArsv-0002sd-JQ; Wed, 06 Dec 2023 14:24:17 +0100
-Message-ID: <6e3049e37b00e2e5a5f02bff7b75d6c9282973b5.camel@pengutronix.de>
-Subject: Re: [PATCH] net: rfkill: gpio: set GPIO direction
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-To: Johannes Berg <johannes@sipsolutions.net>, Josua Mayer
- <josua@solid-run.com>,  linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	kernel@pengutronix.de, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	 <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Date: Wed, 06 Dec 2023 14:24:16 +0100
-In-Reply-To: <cd25fd96fa391d3c8a5811d995d166cbb0b0efe5.camel@sipsolutions.net>
-References: <20231206131336.3099727-1-r.czerwinski@pengutronix.de>
-	 <cd25fd96fa391d3c8a5811d995d166cbb0b0efe5.camel@sipsolutions.net>
-Autocrypt: addr=r.czerwinski@pengutronix.de; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.1 
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E313181;
+	Wed,  6 Dec 2023 06:03:50 -0800 (PST)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rAsVA-0006aQ-6t; Wed, 06 Dec 2023 15:03:48 +0100
+Message-ID: <8ca2c199-b1cf-468e-8182-f590ac0afb3c@leemhuis.info>
+Date: Wed, 6 Dec 2023 15:03:47 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: r.czerwinski@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] Revert "fuse: Apply flags2 only when userspace set the
+ FUSE_INIT_EXT"
+Content-Language: en-US, de-DE
+To: =?UTF-8?Q?Andr=C3=A9_Draszik?= <andre.draszik@linaro.org>,
+ Linux regressions mailing list <regressions@lists.linux.dev>,
+ Miklos Szeredi <mszeredi@redhat.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Paul Lawrence <paullawrence@google.com>, Daniel Rosenberg
+ <drosen@google.com>, Alessio Balsini <balsini@android.com>,
+ Amir Goldstein <amir73il@gmail.com>, Bernd Schubert <bschubert@ddn.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <717fd97a-6d14-4dc9-808c-d752d718fb80@ddn.com>
+ <fa3510f3-d3cc-45d2-b38e-e8717e2a9f83@ddn.com>
+ <1b03f355170333f20ee20e47c5f355dc73d3a91c.camel@linaro.org>
+ <9afc3152-5448-42eb-a7f4-4167fc8bc589@ddn.com>
+ <5cd87a64-c506-46f2-9fed-ac8a74658631@ddn.com>
+ <8ae8ce4d-6323-4160-848a-5e94895ae60e@leemhuis.info>
+ <CAOssrKdvy9qTGSwwPVqYLAYYEk0jbqhGg4Lz=jEff7U58O4Yqw@mail.gmail.com>
+ <2023102731-wobbly-glimpse-97f5@gregkh>
+ <CAOssrKfNkMmHB2oHHO8gWbzDX27vS--e9dZoh_Mjv-17mSUTBw@mail.gmail.com>
+ <2023102740-think-hatless-ab87@gregkh>
+ <CAOssrKd-O1JKEPzvnM1VkQ0-oTpDv0RfY6B5oF5p63AtQ4HoqA@mail.gmail.com>
+ <689f677b84b484636b673b362b17a6501a056968.camel@linaro.org>
+ <CAOssrKfP+t-cy322ujizQofgZkPZsBu1H4+zfbWNEFCmTsXwug@mail.gmail.com>
+ <afe378bf254f6c4ac73bb55be3fa7422f2da3f5f.camel@linaro.org>
+ <CAOssrKeJB7BZ7fA6Uqo6rHohybmgovc6rVwDeHbegvweSyZeeA@mail.gmail.com>
+ <7df24b0e-ea98-4dc7-9e1b-dfc29d0fa1b1@leemhuis.info>
+ <61be0ebb17ae0f01ea0e88a225cbfa07ff661060.camel@linaro.org>
+From: "Linux regression tracking (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <61be0ebb17ae0f01ea0e88a225cbfa07ff661060.camel@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1701871430;7228451f;
+X-HE-SMSGID: 1rAsVA-0006aQ-6t
 
-Hi Johannes,
+On 08.11.23 11:31, André Draszik wrote:
+> [...]
+> But I agree, it seems we're stuck and I'm not sure how to resolve this
+> either, Miklos has his points, Android has a different position.
 
-On Wed, 2023-12-06 at 14:16 +0100, Johannes Berg wrote:
-> On Wed, 2023-12-06 at 14:13 +0100, Rouven Czerwinski wrote:
-> >=20
-> > +++ b/net/rfkill/rfkill-gpio.c
-> > @@ -126,6 +126,16 @@ static int rfkill_gpio_probe(struct
-> > platform_device *pdev)
-> > =C2=A0		return -EINVAL;
-> > =C2=A0	}
-> > =C2=A0
-> > +	if (rfkill->reset_gpio)
-> > +		ret =3D gpiod_direction_output(rfkill->reset_gpio,
-> > true);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (rfkill->shutdown_gpio)
-> > +		ret =3D gpiod_direction_output(rfkill-
-> > >shutdown_gpio, true);
-> > +	if (ret)
-> > +		return ret;
-> >=20
->=20
-> That's weird, you need ret to be inside the if. It's even entirely
-> uninitialized if you don't have ACPI, if you don't have
-> reset/shutdown.
+FWIW, this thread died down without any agreement if this is an
+regression or not. Continuing to track it as one likely is not worth the
+effort, hence I'll remove it from the list of tracked issues. If anyone
+still thinks this is something that should be fixed I'd say that person
+should revive this thread and bring Linus in (but FWIW, I pointed him at
+this thread once already).
 
-Thanks for the review, you are totally right, I didn't look at the ret
-initialization. I moved it inside the if for v2.
+#regzbot inconclusive: people can't agree if this is a regression or not
+and it seems people stopped caring
+#regzbot ignore-activity
 
-Thanks,
-Rouven
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+If I did something stupid, please tell me, as explained on that page.
 
