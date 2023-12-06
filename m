@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-4795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D271A806482
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 03:02:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1A298064E1
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 03:15:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5EF2822AD
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:02:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2EC1F21744
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:15:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3216D538A;
-	Wed,  6 Dec 2023 02:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3EE566C;
+	Wed,  6 Dec 2023 02:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJdpPvLp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IoYWQXcs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E041817DB
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 02:02:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22118C433C8;
-	Wed,  6 Dec 2023 02:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC041856
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 02:15:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DAEC433C7;
+	Wed,  6 Dec 2023 02:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701828161;
-	bh=j9+isF/1MNyufgtWxQZQKJX9QO5fm7Ev8sVLd5TVyAk=;
+	s=k20201202; t=1701828908;
+	bh=S33V7R2udorBvtquhqz/QBRaf4aGyfRlNwWWMXTv/Os=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJdpPvLpjJV1BK0+n+zO/cYRzSGbiJGOzSjVTzOcHpvXwn6Gtc50/V4VHnZlkNRi9
-	 Vk7fiRZQYBSjcOe4MqzB8r3wQ/7yBPl2665uKUFI86gMkL7cb4kC1AY5Bk1Q2gCB5h
-	 THJ6YF3byvdAml3JGCTzeMbwbxctAps5NK6T96zdZZmUzNsRAiS7+pHIx1MnnTgl3s
-	 1ldxxqs4h7SW70rPSufvr5kXU7cayLh6a93EwHdwpXVpBEvIEnU154EvZm4LgcVxFC
-	 hPZ1raiRI1bSDm/y5DLUn7LSjy1/IZFCtf5DIAkWg5CeDTYiksOY6NDViFjjQ3da63
-	 JLUl5GJCpkA9Q==
+	b=IoYWQXcsejxSvaQ7oKGwiZskf14prHqlX3ntnRD2vUCUhe31S15OBX8flJMNbGIBR
+	 S1nssGguU9hpYaehqxsTNHk9sWj997AMzxVovBTwJEfylhBZFtD5XMfhwo2EpLDySE
+	 dLrebiToEF1KBgUB6AXLGhubxWTSxpvTQ/mmM294NnLYue62O9Sv69Zf3FhyEJlJvM
+	 0u5H+t9/0TyXaxKleT9S+IqZJGnhtyy85cAlu+aLfE7l6W6I94jC9/tJVJwsX4FwY7
+	 EzLVZJuMsZHDPXbu5HV8iUhcqxWOu1MuyPOVRG1bVdOeCUfbnGm5oGvC8F71Qu3fEp
+	 E3d47YC2K06Hw==
 From: mhiramat@kernel.org
 To: stable@vger.kernel.org
 Cc: JP Kobryn <inwardvessel@gmail.com>,
 	Masami Hiramatsu <mhiramat@kernel.org>
-Subject: [PATCH 6.1.y] kprobes: consistent rcu api usage for kretprobe holder
-Date: Wed,  6 Dec 2023 11:02:34 +0900
-Message-ID: <20231206020234.40657-1-mhiramat@kernel.org>
+Subject: [PATCH 5.15.y] kprobes: consistent rcu api usage for kretprobe holder
+Date: Wed,  6 Dec 2023 11:14:58 +0900
+Message-ID: <20231206021458.90689-1-mhiramat@kernel.org>
 X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
-In-Reply-To: <2023120318-banana-quilt-5997@gregkh>
-References: <2023120318-banana-quilt-5997@gregkh>
+In-Reply-To: <2023120319-failing-aviator-303a@gregkh>
+References: <2023120319-failing-aviator-303a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,10 +86,10 @@ Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
  2 files changed, 4 insertions(+), 7 deletions(-)
 
 diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 85a64cb95d75..0fce4951a554 100644
+index 2cbb6a51c291..24b0eaa5de30 100644
 --- a/include/linux/kprobes.h
 +++ b/include/linux/kprobes.h
-@@ -140,7 +140,7 @@ static inline bool kprobe_ftrace(struct kprobe *p)
+@@ -139,7 +139,7 @@ static inline int kprobe_ftrace(struct kprobe *p)
   *
   */
  struct kretprobe_holder {
@@ -98,7 +98,7 @@ index 85a64cb95d75..0fce4951a554 100644
  	refcount_t		ref;
  };
  
-@@ -250,10 +250,7 @@ unsigned long kretprobe_trampoline_handler(struct pt_regs *regs,
+@@ -224,10 +224,7 @@ unsigned long kretprobe_trampoline_handler(struct pt_regs *regs,
  
  static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
  {
@@ -109,12 +109,12 @@ index 85a64cb95d75..0fce4951a554 100644
 +	return rcu_dereference_check(ri->rph->rp, rcu_read_lock_any_held());
  }
  
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
+ #else /* CONFIG_KRETPROBES */
 diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 3da9726232ff..dbfddfa86c14 100644
+index 6cf561322bbe..07d36cee2a80 100644
 --- a/kernel/kprobes.c
 +++ b/kernel/kprobes.c
-@@ -2253,7 +2253,7 @@ int register_kretprobe(struct kretprobe *rp)
+@@ -2044,7 +2044,7 @@ int register_kretprobe(struct kretprobe *rp)
  	if (!rp->rph)
  		return -ENOMEM;
  
@@ -123,15 +123,15 @@ index 3da9726232ff..dbfddfa86c14 100644
  	for (i = 0; i < rp->maxactive; i++) {
  		inst = kzalloc(sizeof(struct kretprobe_instance) +
  			       rp->data_size, GFP_KERNEL);
-@@ -2314,7 +2314,7 @@ void unregister_kretprobes(struct kretprobe **rps, int num)
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- 		rethook_free(rps[i]->rh);
- #else
+@@ -2101,7 +2101,7 @@ void unregister_kretprobes(struct kretprobe **rps, int num)
+ 	for (i = 0; i < num; i++) {
+ 		if (__unregister_kprobe_top(&rps[i]->kp) < 0)
+ 			rps[i]->kp.addr = NULL;
 -		rps[i]->rph->rp = NULL;
 +		rcu_assign_pointer(rps[i]->rph->rp, NULL);
- #endif
  	}
  	mutex_unlock(&kprobe_mutex);
+ 
 -- 
 2.43.0.rc2.451.g8631bc7472-goog
 
