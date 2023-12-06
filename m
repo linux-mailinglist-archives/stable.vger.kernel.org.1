@@ -1,91 +1,71 @@
-Return-Path: <stable+bounces-4871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70EDB807B38
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 23:16:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE50807B58
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 23:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1D2D1C21163
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 22:16:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED5C81C20C2A
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 22:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CEF563AD;
-	Wed,  6 Dec 2023 22:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99F247F69;
+	Wed,  6 Dec 2023 22:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="Qwz79I/V"
+	dkim=pass (2048-bit key) header.d=skoll.ca header.i=@skoll.ca header.b="Im+oaxws"
 X-Original-To: stable@vger.kernel.org
-Received: from aposti.net (aposti.net [89.234.176.197])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F75DE;
-	Wed,  6 Dec 2023 14:16:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1701900965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DeOfiwPqUJFIvt+4ZOkSbwzl+rjE80SmmjKvk0CB4Ks=;
-	b=Qwz79I/VCFDPi94zJjv74DUJAf1YJuPc7LpjnG7RQlkzqrRFAAPIR9wO5LaD+csZ5jmWFI
-	zgztbxfKKGx9TadvY0Lg+7n0GO0mFR7Ty4LlC2254p7pY11r9PejoZD54IvuJPJh7H3w3l
-	rr89iXVhaZxp1FODgHczgMbtSP7Y7WU=
-From: Paul Cercueil <paul@crapouillou.net>
-To: Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alim Akhtar <alim.akhtar@samsung.com>
-Cc: devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Paul Cercueil <paul@crapouillou.net>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/3] ARM: dts: samsung: exynos4210-i9100: Unconditionally enable LDO12
-Date: Wed,  6 Dec 2023 23:15:54 +0100
-Message-ID: <20231206221556.15348-2-paul@crapouillou.net>
-In-Reply-To: <20231206221556.15348-1-paul@crapouillou.net>
-References: <20231206221556.15348-1-paul@crapouillou.net>
+X-Greylist: delayed 517 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Dec 2023 14:31:07 PST
+Received: from dianne.skoll.ca (dianne.skoll.ca [144.217.161.9])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80C34D59
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 14:31:07 -0800 (PST)
+Received: from pi4.skoll.ca ([192.168.84.18])
+	by dianne.skoll.ca (8.17.1.9/8.17.1.9/Debian-2) with ESMTP id 3B6MMLPA150301;
+	Wed, 6 Dec 2023 17:22:21 -0500
+Received: from gato.skoll.ca (gato.skoll.ca [192.168.83.21])
+	by pi4.skoll.ca (Postfix) with ESMTPS id 4SlsMw6MLzzgd526;
+	Wed,  6 Dec 2023 17:22:20 -0500 (EST)
+Date: Wed, 6 Dec 2023 17:22:20 -0500
+From: Dianne Skoll <dianne@skoll.ca>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Subject: Regression: Radeon video card does not work with 6.6.4; works fine
+ with 6.6.3
+Message-ID: <20231206172220.37ff4df9@gato.skoll.ca>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam: Yes
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=skoll.ca; h=date
+	:from:to:cc:subject:message-id:mime-version:content-type
+	:content-transfer-encoding; s=canit2; bh=X8/H0YQ8bBMIujNIYJC8/g8
+	7XEoEBQ/bCEH1iwpOx0g=; b=Im+oaxwsqCTcMD/cP9hOU8cmaeZwryBnCsw9TAm
+	jk0cxBUMksvsP6EESILhKoL3bgC1gCuei0IIT2dQTf6yjI/tled2A4PbiVjk/Icc
+	HPQosA9rz3xBRHO3d+Y7XzTdQ4FPVo71fDPQv2QnjSBXWuak2gIGFDaMWHhd0aR8
+	MDOWnxOg5RD/zxOj9+PyYRWTNqPUWF1YdaOT03vmrcW8Be+FTBN9sAzybyHi3a9y
+	IehC74XL8+X4beqiMOdhk37uLU2hsRE9nkZZWx5d0aMIMkqgdFtsSuLMSbyQA7Dc
+	+4G5W5Q3JrV4LG/Q+ekWigA1pdmMI/9v+WBwuc6QiPxWqug==
+X-Scanned-By: CanIt (www . roaringpenguin . com)
+X-Scanned-By: mailmunge 3.12 on 192.168.83.18
+X-Spam-Score: undef - relay 192.168.84.18 marked with skip_spam_scan
+X-CanIt-Geo: No geolocation information available for 192.168.84.18
+X-CanItPRO-Stream: outbound (inherits from default)
+X-Canit-Stats-ID: Bayes signature not available
+X-CanIt-Archive-Cluster: tWKWaF/NcZkqjWIj0BEJTBHJhwY
+X-CanIt-Archived-As: base/20231206 / 01bjaml1b
 
-The kernel hangs for a good 12 seconds without any info being printed to
-dmesg, very early in the boot process, if this regulator is not enabled.
+Hi,
 
-Force-enable it to work around this issue, until we know more about the
-underlying problem.
+I had to go back to 6.6.3 because 6.6.4 seems to have broken my Radeon
+video setup.  The full bug report:
+https://bugzilla.kernel.org/show_bug.cgi?id=218238
 
-Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
-Cc: <stable@vger.kernel.org> # v5.8+
----
- arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Regards,
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-index a9ec1f6c1dea..a076a1dfe41f 100644
---- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-+++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
-@@ -527,6 +527,14 @@ vtcam_reg: LDO12 {
- 				regulator-name = "VT_CAM_1.8V";
- 				regulator-min-microvolt = <1800000>;
- 				regulator-max-microvolt = <1800000>;
-+
-+				/*
-+				 * Force-enable this regulator; otherwise the
-+				 * kernel hangs very early in the boot process
-+				 * for about 12 seconds, without apparent
-+				 * reason.
-+				 */
-+				regulator-always-on;
- 			};
- 
- 			vcclcd_reg: LDO13 {
--- 
-2.42.0
-
+Dianne.
 
