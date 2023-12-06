@@ -1,118 +1,174 @@
-Return-Path: <stable+bounces-4806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9CC8065F7
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 05:08:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559D7806661
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 05:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16BD01C210E4
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 04:08:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00F45281EFC
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 04:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F01DF52;
-	Wed,  6 Dec 2023 04:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=owenh.net header.i=@owenh.net header.b="wT3khbfO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292FA1FD2;
+	Wed,  6 Dec 2023 04:55:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B7BCD42
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 20:08:42 -0800 (PST)
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4SlP5y3W6mz9sbC;
-	Wed,  6 Dec 2023 05:08:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=owenh.net; s=MBO0001;
-	t=1701835718;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9tHKdQ0J5iT5fwEMnNKTPB4w/ZnjVg983tzlHAk/F6g=;
-	b=wT3khbfO9H/TaacQ5aL+cvBIYjl+eR+b35Ai0l7Vrntg74jMOx4LGb/IWaJFQPT2kLEHA4
-	ToVaqsC32nBEj57aDgY04oGHzvuqkH3aKMg0NvLqXD1XjpECgvyNOp92dlRZZcK4oACUJp
-	oUJwV5Pg3NsxILQaynj+Hl/UqvIEWlQttRsI7FcaNcvzw5wTLEORM/kaUZurdzIzIn11bE
-	VMEyPKH/UFA7UMXdsiA7VXuepG3VU8a0ZFYS20WZikNjCWpPWS2J2cVDdENMUYtEaYKgB5
-	tARo3aSKnOCfr4pWGwVHnyEBmrb1KSGxZdECdCAZvHZkS3TMHI43eWvuxTefsA==
-Message-ID: <652eec09-1942-4d29-bf90-2911d4223894@owenh.net>
-Date: Tue, 5 Dec 2023 22:08:28 -0600
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3948D122;
+	Tue,  5 Dec 2023 20:55:44 -0800 (PST)
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0VxwkXh6_1701838535;
+Received: from e69b19392.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0VxwkXh6_1701838535)
+          by smtp.aliyun-inc.com;
+          Wed, 06 Dec 2023 12:55:42 +0800
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+To: linux-erofs@lists.ozlabs.org
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Juhyung Park <qkrwngud825@gmail.com>,
+	stable <stable@vger.kernel.org>
+Subject: [PATCH v2] erofs: fix lz4 inplace decompression
+Date: Wed,  6 Dec 2023 12:55:34 +0800
+Message-Id: <20231206045534.3920847-1-hsiangkao@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [REGRESSION]: nouveau: Asynchronous wait on fence
-To: Thorsten Leemhuis <linux@leemhuis.info>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- stable@vger.kernel.org
-Cc: nouveau@lists.freedesktop.org, Karol Herbst <kherbst@redhat.com>,
- Lyude Paul <lyude@redhat.com>, Sasha Levin <sashal@kernel.org>,
- Danilo Krummrich <dakr@redhat.com>, dri-devel@lists.freedesktop.org
-References: <6f027566-c841-4415-bc85-ce11a5832b14@owenh.net>
- <5ecf0eac-a089-4da9-b76e-b45272c98393@leemhuis.info>
- <6b7a71b4-c8a2-46f4-a995-0c63e7745ca3@owenh.net>
- <c72ca99e-8657-4ed8-9999-5702ebeb5b8c@leemhuis.info>
- <9bce5d00-8db6-4c8b-9817-06502492b44a@owenh.net>
- <c1dd675d-cb3e-4c4c-8dc4-dd561ef4950b@owenh.net>
- <66bf26bf-250e-43dd-ae70-e88bb709e272@leemhuis.info>
-Content-Language: en-US
-From: "Owen T. Heisler" <writer@owenh.net>
-In-Reply-To: <66bf26bf-250e-43dd-ae70-e88bb709e272@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Thorsten and others,
+Currently EROFS can map another compressed buffer for inplace
+decompression, that was used to handle the cases that some pages of
+compressed data are actually not in-place I/O.
 
-On 12/5/23 06:33, Thorsten Leemhuis wrote:
-> On 29.11.23 01:37, Owen T. Heisler wrote:
->> On 11/21/23 14:23, Owen T. Heisler wrote:
->>> On 11/21/23 09:16, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>> On 15.11.23 07:19, Owen T. Heisler wrote:
->>>>> On 10/31/23 04:18, Linux regression tracking (Thorsten Leemhuis) wrote:
->>>>>> On 28.10.23 04:46, Owen T. Heisler wrote:
->>>>>>> #regzbot introduced: d386a4b54607cf6f76e23815c2c9a3abc1d66882
->>>>>>> #regzbot link:
->>>>>>> https://gitlab.freedesktop.org/drm/nouveau/-/issues/180
->>>>>>>
->>>>>>> 3. Suddenly the secondary Nvidia-connected display turns off and X
->>>>>>> stops responding to keyboard/mouse input.
->>
->>> I am currently testing v6.6 with the culprit commit reverted.
->>
->> - v6.6: fails
->> - v6.6 with the culprit commit reverted: works
->>
->> See <https://gitlab.freedesktop.org/drm/nouveau/-/issues/180> for full
->> details including a decoded kernel log.
-> 
-> Not sure about the others, but it's kind of confusing that you update
-> the issue descriptions all the time and never add a comment to that ticket.
+However, like most simple LZ77 algorithms, LZ4 expects the compressed
+data is arranged at the end of the decompressed buffer and it
+explicitly uses memmove() to handle overlapping:
+  __________________________________________________________
+ |_ direction of decompression --> ____ |_ compressed data _|
 
-Thank you for the feedback; I will use comments more for future updates 
-there. I didn't know anyone was following that issue (I haven't received 
-any reply from nouveau developers on the nouveau list [1] or on gitlab 
-[2]) so I have tried to keep that issue description succinct and 
-up-to-date for anyone reading it for the first time.
+Although EROFS arranges compressed data like this, it typically maps two
+individual virtual buffers so the relative order is uncertain.
+Previously, it was hardly observed since LZ4 only uses memmove() for
+short overlapped literals and x86/arm64 memmove implementations seem to
+completely cover it up and they don't have this issue.  Juhyung reported
+that EROFS data corruption can be found on a new Intel x86 processor.
+After some analysis, it seems that recent x86 processors with the new
+FSRM feature expose this issue with "rep movsb".
 
-[1]: 
-<https://lists.freedesktop.org/archives/nouveau/2022-September/041001.html>
-[2]: But Karol Herbst did add the "regression" label.
+Let's strictly use the decompressed buffer for lz4 inplace
+decompression for now.  Later, as an useful improvement, we could try
+to tie up these two buffers together in the correct order.
 
-> Anyway: Nouveau maintainers, could any of you at least comment on this?
-> Sure, it's the regression is caused by an old commit (6eaa1f3c59a707 was
-> merged for v5.14-rc7) and reverting it likely is not a option, but it
-> nevertheless it would be great if this could be solved somehow.
+Reported-and-tested-by: Juhyung Park <qkrwngud825@gmail.com>
+Closes: https://lore.kernel.org/r/CAD14+f2AVKf8Fa2OO1aAUdDNTDsVzzR6ctU_oJSmTyd6zSYR2Q@mail.gmail.com
+Fixes: 0ffd71bcc3a0 ("staging: erofs: introduce LZ4 decompression inplace")
+Fixes: 598162d05080 ("erofs: support decompress big pcluster for lz4 backend")
+Cc: stable <stable@vger.kernel.org> # 5.4+
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+---
+changes since v1:
+ - address some nits pointed out by Juhyung.
 
-Also if anyone has any ideas about any stress-tests or anything else 
-that I might be able to trigger the crash with, please share.
+ fs/erofs/decompressor.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-Thanks,
-Owen
+diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+index 5ec11f5024b7..d08a6ee23ac5 100644
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -121,11 +121,11 @@ static int z_erofs_lz4_prepare_dstpages(struct z_erofs_lz4_decompress_ctx *ctx,
+ }
+ 
+ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
+-			void *inpage, unsigned int *inputmargin, int *maptype,
+-			bool may_inplace)
++			void *inpage, void *out, unsigned int *inputmargin,
++			int *maptype, bool may_inplace)
+ {
+ 	struct z_erofs_decompress_req *rq = ctx->rq;
+-	unsigned int omargin, total, i, j;
++	unsigned int omargin, total, i;
+ 	struct page **in;
+ 	void *src, *tmp;
+ 
+@@ -135,12 +135,13 @@ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
+ 		    omargin < LZ4_DECOMPRESS_INPLACE_MARGIN(rq->inputsize))
+ 			goto docopy;
+ 
+-		for (i = 0; i < ctx->inpages; ++i) {
+-			DBG_BUGON(rq->in[i] == NULL);
+-			for (j = 0; j < ctx->outpages - ctx->inpages + i; ++j)
+-				if (rq->out[j] == rq->in[i])
+-					goto docopy;
+-		}
++		for (i = 0; i < ctx->inpages; ++i)
++			if (rq->out[ctx->outpages - ctx->inpages + i] !=
++			    rq->in[i])
++				goto docopy;
++		kunmap_local(inpage);
++		*maptype = 3;
++		return out + ((ctx->outpages - ctx->inpages) << PAGE_SHIFT);
+ 	}
+ 
+ 	if (ctx->inpages <= 1) {
+@@ -148,7 +149,6 @@ static void *z_erofs_lz4_handle_overlap(struct z_erofs_lz4_decompress_ctx *ctx,
+ 		return inpage;
+ 	}
+ 	kunmap_local(inpage);
+-	might_sleep();
+ 	src = erofs_vm_map_ram(rq->in, ctx->inpages);
+ 	if (!src)
+ 		return ERR_PTR(-ENOMEM);
+@@ -204,12 +204,12 @@ int z_erofs_fixup_insize(struct z_erofs_decompress_req *rq, const char *padbuf,
+ }
+ 
+ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+-				      u8 *out)
++				      u8 *dst)
+ {
+ 	struct z_erofs_decompress_req *rq = ctx->rq;
+ 	bool support_0padding = false, may_inplace = false;
+ 	unsigned int inputmargin;
+-	u8 *headpage, *src;
++	u8 *out, *headpage, *src;
+ 	int ret, maptype;
+ 
+ 	DBG_BUGON(*rq->in == NULL);
+@@ -230,11 +230,12 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+ 	}
+ 
+ 	inputmargin = rq->pageofs_in;
+-	src = z_erofs_lz4_handle_overlap(ctx, headpage, &inputmargin,
++	src = z_erofs_lz4_handle_overlap(ctx, headpage, dst, &inputmargin,
+ 					 &maptype, may_inplace);
+ 	if (IS_ERR(src))
+ 		return PTR_ERR(src);
+ 
++	out = dst + rq->pageofs_out;
+ 	/* legacy format could compress extra data in a pcluster. */
+ 	if (rq->partial_decoding || !support_0padding)
+ 		ret = LZ4_decompress_safe_partial(src + inputmargin, out,
+@@ -265,7 +266,7 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+ 		vm_unmap_ram(src, ctx->inpages);
+ 	} else if (maptype == 2) {
+ 		erofs_put_pcpubuf(src);
+-	} else {
++	} else if (maptype != 3) {
+ 		DBG_BUGON(1);
+ 		return -EFAULT;
+ 	}
+@@ -308,7 +309,7 @@ static int z_erofs_lz4_decompress(struct z_erofs_decompress_req *rq,
+ 	}
+ 
+ dstmap_out:
+-	ret = z_erofs_lz4_decompress_mem(&ctx, dst + rq->pageofs_out);
++	ret = z_erofs_lz4_decompress_mem(&ctx, dst);
+ 	if (!dst_maptype)
+ 		kunmap_local(dst);
+ 	else if (dst_maptype == 2)
+-- 
+2.39.3
 
---
-Owen T. Heisler
-<https://owenh.net>
 
