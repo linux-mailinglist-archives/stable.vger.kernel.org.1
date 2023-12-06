@@ -1,152 +1,151 @@
-Return-Path: <stable+bounces-4823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DADC806A1A
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 09:50:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65953806C9A
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 11:47:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E2D1C2100D
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 08:50:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19C6B1F21377
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 10:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9188199A3;
-	Wed,  6 Dec 2023 08:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EE92FE3A;
+	Wed,  6 Dec 2023 10:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="unK7AS3C"
 X-Original-To: stable@vger.kernel.org
-Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B191BF1
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 00:49:51 -0800 (PST)
-Received: by air.basealt.ru (Postfix, from userid 490)
-	id 2EB732F2023C; Wed,  6 Dec 2023 08:49:50 +0000 (UTC)
-X-Spam-Level: 
-Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id 1F30F2F20241;
-	Wed,  6 Dec 2023 08:49:48 +0000 (UTC)
-From: kovalev@altlinux.org
-To: devel-kernel@lists.altlinux.org
-Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	dri-devel@lists.freedesktop.org,
-	stable@vger.kernel.org,
-	Jani Nikula <jani.nikula@intel.com>
-Subject: [PATCH 1/1] Revert "drm/edid: Fix csync detailed mode parsing"
-Date: Wed,  6 Dec 2023 11:49:46 +0300
-Message-Id: <20231206084946.111835-2-kovalev@altlinux.org>
-X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20231206084946.111835-1-kovalev@altlinux.org>
-References: <20231206084946.111835-1-kovalev@altlinux.org>
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F291FD9;
+	Wed,  6 Dec 2023 02:46:50 -0800 (PST)
+Received: from relay2.suse.de (unknown [149.44.160.134])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 1C7CB22035;
+	Wed,  6 Dec 2023 10:46:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1701859607; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tvr+wZuWLjk8prt1x/6hIZLKUrQpVd6qxv/alDG6+W8=;
+	b=unK7AS3Cg4pIF3+wrVJCEBQpXSLpS8lwYo4HyRLgQYo5tfw4JxvANAmdDDXQJXB8SNqbQw
+	Ud871XDWRtnqr+JH5efDPaEYlO3pWko0LJWBR4iXWznCTO0cViZtWUeNoeMu1SlB1rlKv6
+	+avrHb+G/LxY3TFk1jyRjSfk8F7GzEM=
+Received: from suse.cz (unknown [10.100.201.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by relay2.suse.de (Postfix) with ESMTPS id 845E12C153;
+	Wed,  6 Dec 2023 10:46:44 +0000 (UTC)
+Date: Wed, 6 Dec 2023 11:46:43 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Herve Codina <herve.codina@bootlin.com>
+Cc: Saravana Kannan <saravanak@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	linux-kernel@vger.kernel.org,
+	Allan Nielsen <allan.nielsen@microchip.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Steen Hegelund <steen.hegelund@microchip.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] lib/vsprintf: Fix %pfwf when current node
+ refcount == 0
+Message-ID: <ZXBRE2oR_YIkpsIQ@alley>
+References: <20231114152655.409331-1-herve.codina@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231114152655.409331-1-herve.codina@bootlin.com>
+X-Spamd-Bar: ++++++++++++++++++
+Authentication-Results: smtp-out1.suse.de;
+	dkim=none;
+	dmarc=fail reason="No valid SPF, No valid DKIM" header.from=suse.com (policy=quarantine);
+	spf=fail (smtp-out1.suse.de: domain of pmladek@suse.com does not designate 149.44.160.134 as permitted sender) smtp.mailfrom=pmladek@suse.com
+X-Rspamd-Server: rspamd2
+X-Spamd-Result: default: False [18.00 / 50.00];
+	 RDNS_NONE(1.00)[];
+	 SPAMHAUS_XBL(0.00)[149.44.160.134:from];
+	 TO_DN_SOME(0.00)[];
+	 RWL_MAILSPIKE_GOOD(-1.00)[149.44.160.134:from];
+	 HFILTER_HELO_IP_A(1.00)[relay2.suse.de];
+	 HFILTER_HELO_NORES_A_OR_MX(0.30)[relay2.suse.de];
+	 MX_GOOD(-0.01)[];
+	 RCVD_NO_TLS_LAST(0.10)[];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 R_DKIM_NA(2.20)[];
+	 MIME_TRACE(0.00)[0:+];
+	 BAYES_HAM(-0.10)[65.55%];
+	 RDNS_DNSFAIL(0.00)[];
+	 ARC_NA(0.00)[];
+	 R_SPF_FAIL(1.00)[-all];
+	 FROM_HAS_DN(0.00)[];
+	 DMARC_POLICY_QUARANTINE(1.50)[suse.com : No valid SPF, No valid DKIM,quarantine];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 NEURAL_SPAM_SHORT(3.00)[1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 VIOLATED_DIRECT_SPF(3.50)[];
+	 RCPT_COUNT_TWELVE(0.00)[14];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,bootlin.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 MID_RHS_NOT_FQDN(0.50)[];
+	 RCVD_COUNT_TWO(0.00)[2];
+	 HFILTER_HOSTNAME_UNKNOWN(2.50)[]
+X-Spam-Score: 18.00
+X-Rspamd-Queue-Id: 1C7CB22035
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+On Tue 2023-11-14 16:26:55, Herve Codina wrote:
+> A refcount issue can appeared in __fwnode_link_del() due to the
+> pr_debug() call:
+>   WARNING: CPU: 0 PID: 901 at lib/refcount.c:25 refcount_warn_saturate+0xe5/0x110
+>   Call Trace:
+>   <TASK>
+>   ...
+>   of_node_get+0x1e/0x30
+>   of_fwnode_get+0x28/0x40
+>   fwnode_full_name_string+0x34/0x90
+>   fwnode_string+0xdb/0x140
+>   ...
+>   vsnprintf+0x17b/0x630
+>   ...
+>   __fwnode_link_del+0x25/0xa0
+>   fwnode_links_purge+0x39/0xb0
+>   of_node_release+0xd9/0x180
+>   ...
+> 
+> Indeed, an fwnode (of_node) is being destroyed and so, of_node_release()
+> is called because the of_node refcount reached 0.
+> >From of_node_release() several function calls are done and lead to
+> a pr_debug() calls with %pfwf to print the fwnode full name.
+> The issue is not present if we change %pfwf to %pfwP.
+> 
+> To print the full name, %pfwf iterates over the current node and its
+> parents and obtain/drop a reference to all nodes involved.
+> 
+> In order to allow to print the full name (%pfwf) of a node while it is
+> being destroyed, do not obtain/drop a reference to this current node.
+> 
+> Fixes: a92eb7621b9f ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+> Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-This reverts commit 5a46dc8e4a064769e916d87bf9bccae75afc7289.
+I have pushed the fix into printk/linux.git, branch for-6.8.
 
-Commit 50b6f2c8297793f7f3315623db78dcff85158e96 upstream.
+Please, let me know if you would prefer to push this into 6.7.
 
-Commit 5a46dc8e4a0647 ("drm/edid: Fix csync detailed mode parsing") fixed
-EDID detailed mode sync parsing. Unfortunately, there are quite a few
-displays out there that have bogus (zero) sync field that are broken by
-the change. Zero means analog composite sync, which is not right for
-digital displays, and the modes get rejected. Regardless, it used to
-work, and it needs to continue to work. Revert the change.
+The "Fixes:" tag points to a pretty old commit from v5.5 so
+it does not look like a super urgent fix. And I always
+prefer when fixes spend some time in linux-next.
 
-Rejecting modes with analog composite sync was the part that fixed the
-gitlab issue 8146 [1]. We'll need to get back to the drawing board with
-that.
-
-[1] https://gitlab.freedesktop.org/drm/intel/-/issues/8146
-
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8789
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8930
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9044
-Fixes: 5a46dc8e4a0647 ("drm/edid: Fix csync detailed mode parsing")
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.4+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Acked-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230815101907.2900768-1-jani.nikula@intel.com
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
----
- drivers/gpu/drm/drm_edid.c | 26 +++++++-------------------
- include/drm/drm_edid.h     | 12 +++---------
- 2 files changed, 10 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index a26c6c57a627c0..5ed77e3361fd72 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -3307,6 +3307,9 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
- 		DRM_DEBUG_KMS("stereo mode not supported\n");
- 		return NULL;
- 	}
-+	if (!(pt->misc & DRM_EDID_PT_SEPARATE_SYNC)) {
-+		DRM_DEBUG_KMS("composite sync not supported\n");
-+	}
- 
- 	/* it is incorrect if hsync/vsync width is zero */
- 	if (!hsync_pulse_width || !vsync_pulse_width) {
-@@ -3353,25 +3356,10 @@ static struct drm_display_mode *drm_mode_detailed(struct drm_device *dev,
- 	if (quirks & EDID_QUIRK_DETAILED_SYNC_PP) {
- 		mode->flags |= DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC;
- 	} else {
--		switch (pt->misc & DRM_EDID_PT_SYNC_MASK) {
--		case DRM_EDID_PT_ANALOG_CSYNC:
--		case DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC:
--			drm_dbg_kms(dev, "Analog composite sync!\n");
--			mode->flags |= DRM_MODE_FLAG_CSYNC | DRM_MODE_FLAG_NCSYNC;
--			break;
--		case DRM_EDID_PT_DIGITAL_CSYNC:
--			drm_dbg_kms(dev, "Digital composite sync!\n");
--			mode->flags |= DRM_MODE_FLAG_CSYNC;
--			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
--				DRM_MODE_FLAG_PCSYNC : DRM_MODE_FLAG_NCSYNC;
--			break;
--		case DRM_EDID_PT_DIGITAL_SEPARATE_SYNC:
--			mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
--				DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
--			mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
--				DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
--			break;
--		}
-+		mode->flags |= (pt->misc & DRM_EDID_PT_HSYNC_POSITIVE) ?
-+			DRM_MODE_FLAG_PHSYNC : DRM_MODE_FLAG_NHSYNC;
-+		mode->flags |= (pt->misc & DRM_EDID_PT_VSYNC_POSITIVE) ?
-+			DRM_MODE_FLAG_PVSYNC : DRM_MODE_FLAG_NVSYNC;
- 	}
- 
- set_size:
-diff --git a/include/drm/drm_edid.h b/include/drm/drm_edid.h
-index 008d2ed39822ec..1ed61e2b30a41c 100644
---- a/include/drm/drm_edid.h
-+++ b/include/drm/drm_edid.h
-@@ -61,15 +61,9 @@ struct std_timing {
- 	u8 vfreq_aspect;
- } __attribute__((packed));
- 
--#define DRM_EDID_PT_SYNC_MASK              (3 << 3)
--# define DRM_EDID_PT_ANALOG_CSYNC          (0 << 3)
--# define DRM_EDID_PT_BIPOLAR_ANALOG_CSYNC  (1 << 3)
--# define DRM_EDID_PT_DIGITAL_CSYNC         (2 << 3)
--#  define DRM_EDID_PT_CSYNC_ON_RGB         (1 << 1) /* analog csync only */
--#  define DRM_EDID_PT_CSYNC_SERRATE        (1 << 2)
--# define DRM_EDID_PT_DIGITAL_SEPARATE_SYNC (3 << 3)
--#  define DRM_EDID_PT_HSYNC_POSITIVE       (1 << 1) /* also digital csync */
--#  define DRM_EDID_PT_VSYNC_POSITIVE       (1 << 2)
-+#define DRM_EDID_PT_HSYNC_POSITIVE (1 << 1)
-+#define DRM_EDID_PT_VSYNC_POSITIVE (1 << 2)
-+#define DRM_EDID_PT_SEPARATE_SYNC  (3 << 3)
- #define DRM_EDID_PT_STEREO         (1 << 5)
- #define DRM_EDID_PT_INTERLACED     (1 << 7)
- 
--- 
-2.33.8
-
+Best Regards,
+Petr
 
