@@ -1,100 +1,228 @@
-Return-Path: <stable+bounces-4873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4677807B5C
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 23:34:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DE7A807BB0
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 23:54:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4831F21944
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 22:34:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 608471C20B9F
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 22:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3AD563B6;
-	Wed,  6 Dec 2023 22:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABD2199C5;
+	Wed,  6 Dec 2023 22:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="P2+VFVd9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XRt3udaP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CD83D5A
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 14:34:26 -0800 (PST)
-Received: by mail-oi1-x244.google.com with SMTP id 5614622812f47-3b88c29a995so256889b6e.0
-        for <stable@vger.kernel.org>; Wed, 06 Dec 2023 14:34:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1701902065; x=1702506865; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZLAnzUmImkhc8qIHSMyVS5GmGRI3/cRZA2cD+zeipTg=;
-        b=P2+VFVd91FhMYdDvjKfNHUiArb24/CYL83mKm7g8D8ECiL+waQh5opOpPm5UGlblwP
-         e/dnbPT0I2GnKMk99kvsjPB2SijJiww9Bm1TKBalGzH3YN9B/6yln4eXajy3mesq/bRS
-         4kiOly8fMHG5Q/5/Hrwe2x2iEeZYozyDOg31Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701902065; x=1702506865;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZLAnzUmImkhc8qIHSMyVS5GmGRI3/cRZA2cD+zeipTg=;
-        b=vHxwqVbKICwP0aO7X6twVwXYNN4clQQU6jG/fuSZdkI137Q8esOQHTuZa9lsrWW6ul
-         SphRh4AZySiMqfXgiFKRwj9EaqxpFDmFO7z+IaMz7mPgk9ShaNVteoHlmGvWSgP1fhPg
-         3Nypprthn6rEG1sJxm+Ms3CjzdzqBzlMwGAGGi9Wo5AZ5/fQZXSSGgqCCm6EOuHlU8pU
-         tFSGS7fTPdSXPdYywdU9tGajQh3RDPySDyQrgDWWg/1caJ3FwLNwwWHha/P/1IGVGIhh
-         JdWo0B31JbVVdvlk+5NwTyEjCn/Pqqv3iB1H4FgnyD9BTq9cGEOMpZqOQsEP0A1IYx31
-         UhEg==
-X-Gm-Message-State: AOJu0YyuWDmAUfG7MMbMx9n6xakNiIcZ5AObkgljiQqs8jJ5Dv/3IEr9
-	GFO8VAJTxDTltIPQOMxsBHiFUA==
-X-Google-Smtp-Source: AGHT+IF/i0+BQhG4ASvw1P/Q/HjuK2+tumaFPvDBBwN5XEKcKYVZi79XVoybw+GeboMuvgjJju3MIA==
-X-Received: by 2002:a05:6808:1aaa:b0:3b8:b063:a1e0 with SMTP id bm42-20020a0568081aaa00b003b8b063a1e0mr1464142oib.106.1701902065495;
-        Wed, 06 Dec 2023 14:34:25 -0800 (PST)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id z7-20020a056808048700b003b29c2f50f0sm11033oid.18.2023.12.06.14.34.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Dec 2023 14:34:24 -0800 (PST)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date: Wed, 6 Dec 2023 16:34:23 -0600
-From: Justin Forbes <jforbes@fedoraproject.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/134] 6.6.5-rc1 review
-Message-ID: <ZXD276eHg24P4237@fedora64.linuxtx.org>
-References: <20231205031535.163661217@linuxfoundation.org>
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23E2C18D;
+	Wed,  6 Dec 2023 14:54:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701903265; x=1733439265;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=JX/oMvpTI/2qT6JJCaAT7HVae/ammdoaCW90BVpkcJI=;
+  b=XRt3udaPTt6Ew68tPdULZIpYzcWK6KjhPhg0uY9GTwyb+HiqE1XLKhdZ
+   v1VutHAfD3yHXhE4vxIGvG/fGPT77/+vlXYpIeNJqJ1xGYP694fsEnOg3
+   QQNKDGi8g+86wA6A7HcDngDW1i1I0Gh/A7lFDLUjkUuDEs7PyQmc3GIZF
+   oGarW7RPt0kigptDlvrwZiuHi/Qr4XebhfRRQznJrso0F5L1fBvhSorW5
+   5pXjX9QDolKcFmo+gjn7p/IU2chCLNHHYEifiui9CCShRJykiP9c1DYLa
+   +R6xEcMqVEqMtMaMBNLMLcT7TtbV/VYUYl9K8+9YadOtJDuY62SFyDCO4
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="458464949"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="458464949"
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 14:54:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="862255152"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="862255152"
+Received: from eborisov-mobl2.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.46.36])
+  by fmsmga003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Dec 2023 14:54:17 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 1455110A3F5; Thu,  7 Dec 2023 01:54:15 +0300 (+03)
+Date: Thu, 7 Dec 2023 01:54:15 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Michael Kelley <mhkelley58@gmail.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"Cui, Dexuan" <decui@microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"stefan.bader@canonical.com" <stefan.bader@canonical.com>,
+	"tim.gardner@canonical.com" <tim.gardner@canonical.com>,
+	"roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
+	"cascardo@canonical.com" <cascardo@canonical.com>,
+	"kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
+ TDX init
+Message-ID: <20231206225415.zxfm2ndpwsmthc6e@box.shutemov.name>
+References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
+ <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
+ <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
+ <0c4e33f0-6207-448d-a692-e81391089bea@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0c4e33f0-6207-448d-a692-e81391089bea@linux.microsoft.com>
 
-On Tue, Dec 05, 2023 at 12:14:32PM +0900, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.5 release.
-> There are 134 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Dec 06, 2023 at 06:49:11PM +0100, Jeremi Piotrowski wrote:
+> On 05/12/2023 11:54, Kirill A. Shutemov wrote:
+> > On Mon, Dec 04, 2023 at 08:07:38PM +0100, Jeremi Piotrowski wrote:
+> >> On 04/12/2023 10:17, Reshetova, Elena wrote:
+> >>>> Check for additional CPUID bits to identify TDX guests running with Trust
+> >>>> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
+> >>>> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
+> >>>>
+> >>>> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is
+> >>>> visible
+> >>>> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
+> >>>> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
+> >>>> aware mechanisms for what's left. So currently such guests do not have
+> >>>> X86_FEATURE_TDX_GUEST set.
+> >>>
+> >>> Back to this concrete patch. Why cannot L1 VMM emulate the correct value of
+> >>> the TDX_CPUID_LEAF_ID to L2 VM? It can do this per TDX partitioning arch.
+> >>> How do you handle this and other CPUID calls call currently in L1? Per spec,
+> >>> all CPUIDs calls from L2 will cause L2 --> L1 exit, so what do you do in L1?
+> >> The disclaimer here is that I don't have access to the paravisor (L1) code. But
+> >> to the best of my knowledge the L1 handles CPUID calls by calling into the TDX
+> >> module, or synthesizing a response itself. TDX_CPUID_LEAF_ID is not provided to
+> >> the L2 guest in order to discriminate a guest that is solely responsible for every
+> >> TDX mechanism (running at L1) from one running at L2 that has to cooperate with L1.
+> >> More below.
+> >>
+> >>>
+> >>> Given that you do that simple emulation, you already end up with TDX guest
+> >>> code being activated. Next you can check what features you wont be able to
+> >>> provide in L1 and create simple emulation calls for the TDG calls that must be
+> >>> supported and cannot return error. The biggest TDG call (TDVMCALL) is already
+> >>> direct call into L0 VMM, so this part doesn’t require L1 VMM support. 
+> >>
+> >> I don't see anything in the TD-partitioning spec that gives the TDX guest a way
+> >> to detect if it's running at L2 or L1, or check whether TDVMCALLs go to L0/L1.
+> >> So in any case this requires an extra cpuid call to establish the environment.
+> >> Given that, exposing TDX_CPUID_LEAF_ID to the guest doesn't help.
+> >>
+> >> I'll give some examples of where the idea of emulating a TDX environment
+> >> without attempting L1-L2 cooperation breaks down.
+> >>
+> >> hlt: if the guest issues a hlt TDVMCALL it goes to L0, but if it issues a classic hlt
+> >> it traps to L1. The hlt should definitely go to L1 so that L1 has a chance to do
+> >> housekeeping.
+> > 
+> > Why would L2 issue HLT TDVMCALL? It only happens in response to #VE, but
+> > if partitioning enabled #VEs are routed to L1 anyway.
 > 
-> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+> What about tdx_safe_halt? When X86_FEATURE_TDX_GUEST is defined I see
+> "using TDX aware idle routing" in dmesg.
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+Yeah. I forgot about this one. My bad. :/
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+I think it makes a case for more fine-grained control on where TDVMCALL
+routed: to L1 or to L0. I think TDX module can do that.
+
+BTW, what kind of housekeeping do you do in L1 for HLT case?
+
+> >> map gpa: say the guest uses MAP_GPA TDVMCALL. This goes to L0, not L1 which is the actual
+> >> entity that needs to have a say in performing the conversion. L1 can't act on the request
+> >> if L0 would forward it because of the CoCo threat model. So L1 and L2 get out of sync.
+> >> The only safe approach is for L2 to use a different mechanism to trap to L1 explicitly.
+> > 
+> > Hm? L1 is always in loop on share<->private conversion. I don't know why
+> > you need MAP_GPA for that.
+> > 
+> > You can't rely on MAP_GPA anyway. It is optional (unfortunately). Conversion
+> > doesn't require MAP_GPA call.
+> > 
+> 
+> I'm sorry, I don't quite follow. I'm reading tdx_enc_status_changed():
+> - TDVMCALL_MAP_GPA is issued for all transitions
+> - TDX_ACCEPT_PAGE is issued for shared->private transitions
+
+I am talking about TDX architecture. It doesn't require MAP_GPA call.
+Just setting shared bit and touching the page will do the conversion.
+MAP_GPA is "being nice" on the guest behalf.
+
+Linux do MAP_GPA all the time. Or tries to. I had bug where I converted
+page by mistake this way. It was pain to debug.
+
+My point is that if you *must* catch all conversions in L1, MAP_GPA is not
+reliable way.
+
+> This doesn't work in partitioning when TDVMCALLs go to L0: TDVMCALL_MAP_GPA bypasses
+> L1 and TDX_ACCEPT_PAGE is L1 responsibility.
+> 
+> If you want to see how this is currently supported take a look at arch/x86/hyperv/ivm.c.
+> All memory starts as private and there is a hypercall to notify the paravisor for both
+> TDX (when partitioning) and SNP (when VMPL). This guarantees that all page conversions
+> go through L1.
+
+But L1 guest control anyway during page conversion and it has to manage
+aliases with TDG.MEM.PAGE.ATTR.RD/WR. Why do you need MAP_GPA for that?
+
+> >> Having a paravisor is required to support a TPM and having TDVMCALLs go to L0 is
+> >> required to make performance viable for real workloads.
+> >>
+> >>>
+> >>> Until we really see what breaks with this approach, I don’t think it is worth to
+> >>> take in the complexity to support different L1 hypervisors view on partitioning.
+> >>>
+> >>
+> >> I'm not asking to support different L1 hypervisors view on partitioning, I want to
+> >> clean up the code (by fixing assumptions that no longer hold) for the model that I'm
+> >> describing that: the kernel already supports, has an implementation that works and
+> >> has actual users. This is also a model that Intel intentionally created the TD-partitioning
+> >> spec to support.
+> >>
+> >> So lets work together to make X86_FEATURE_TDX_GUEST match reality.
+> > 
+> > I think the right direction is to make TDX architecture good enough
+> > without that. If we need more hooks in TDX module that give required
+> > control to L1, let's do that. (I don't see it so far)
+> > 
+> 
+> I'm not the right person to propose changes to the TDX module, I barely know anything about
+> TDX. The team that develops the paravisor collaborates with Intel on it and was also consulted
+> in TD-partitioning design.
+
+One possible change I mentioned above: make TDVMCALL exit to L1 for some
+TDVMCALL leafs (or something along the line).
+
+I would like to keep it transparent for enlightened TDX Linux guest. It
+should not care if it runs as L1 or as L2 in your environment.
+
+> I'm also not sure what kind of changes you envision. Everything is supported by the
+> kernel already and the paravisor ABI is meant to stay vendor independent.
+> 
+> What I'm trying to accomplish is better integration with the non-partitioning side of TDX
+> so that users don't see "Memory Encryption Features active: AMD SEV" when running on Intel
+> TDX with a paravisor.
+
+This part is cosmetics and doesn't make much difference.
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
