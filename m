@@ -1,123 +1,227 @@
-Return-Path: <stable+bounces-4782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB51806377
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 01:33:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2635B806419
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD2521C2117E
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 00:33:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE0891F21724
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 01:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4B5652;
-	Wed,  6 Dec 2023 00:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B585A56;
+	Wed,  6 Dec 2023 01:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RbrxDNOk"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="LWkm67AV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFA219A
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 16:33:39 -0800 (PST)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-d9b9adaf291so3900436276.1
-        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 16:33:39 -0800 (PST)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC8110E4
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 17:25:54 -0800 (PST)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-1cf7a8ab047so27679925ad.1
+        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 17:25:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701822819; x=1702427619; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5xu9oRa8BSfMv9BLhUnnloC2Q8CY9EL7xXo54kO5COc=;
-        b=RbrxDNOkM2IQb9GiF0JOyHt2ynyoDPiS+4xeGzzb9MFhjwiIE7MrbPqIVq7mfUxOCA
-         XUgBtI9hBI1Vs2LZ+Rqd9LDMn6IRHYGq0dtB6kxrGKOL9BuC+dU9twsTUu4LuhJ/+KNu
-         DQ9VcvmzYFdMBrEnIy6TOzrWmhBCK93bQHseRwaVT5uaGkHVTV3GVsd8syGk0JvBLSul
-         psMTSr0tUXeIFUtZVYrugp+ZS/BQFmiT1b9EFVdQDLVes3kV6FoLtkQzLqSrUyLg+MWA
-         kjovrfvhnXKcltznUQFsaWHTA8JYbP+A/0szDZnAlzN0DnwIZ80opv7rSW2SyoNzlLB5
-         8Baw==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701825954; x=1702430754; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=tkcT2MiMcdi74aHHMnUXzoOH8ExndwBtiR7/ym84lLA=;
+        b=LWkm67AVM7ejx8gqW6ZQZSMCMC17VOlt09reEvTlRqJzSUXx25io7wqbHEzJyVP/cW
+         KYFZJTF8X775aNS+IDPXP+5BweUpgG75DYfVMecV4Z/8cpFkh2MgxbjQpWRmpT43yAlg
+         IGluTwEEiM4loy+5OO2OsE7wFmejucUSjFEqvBobqNK7r31wMaTgqu/jjVFk8Ffudks6
+         6YHxvVsAUqdbhA3OPPbfJNbFfz4fRBuGZtGR2dTlN/OLXJJAYC9NkZw1GVozWle4medZ
+         hcQsHUyg7SYmVYsEQVj6uZUlC1FlKItDK1bmxnPAw+5lBRIByEUaOT9HjM6NtpKwyDmT
+         A+0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701822819; x=1702427619;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5xu9oRa8BSfMv9BLhUnnloC2Q8CY9EL7xXo54kO5COc=;
-        b=artI+rgVuwnQ61EVVSm4sgBH76wI2l/hs4MahotYpPbmZ8fDr6Lve9SdEXmzOeson3
-         n2litRSHv6B/gsQ4w+wA3qRVmJvN0PcPytPR4Zleq/3mOMRjiOgxraR4AKS48yJ2fNo7
-         qvBSVZjnq57WgQtvLD9g2mDCjf6NSOumh30clQBs1PlFNSF3xQxtY5MzMBEG99HF5/fQ
-         ayhFpvsVCLlT9xxl3g3TmK1+wi5svSublQoL184IZS+Q4VUDWer54H0o2Ov6ekC2+9IZ
-         /iZzp17UT2ZzR71PpHsVoar0OXNx4iCXEkM0UCI6/WyCG8i8p8H4mEukO2ROYrOYua4q
-         9T4w==
-X-Gm-Message-State: AOJu0Yx4G9S0ZkpPAMOTkSVbPWt1cakOujQzwn1NnJ7P+N/JAfA6HDKS
-	VQG4MQT3/McW5TRIKADMQRn113bNOd9foXHzPuE=
-X-Google-Smtp-Source: AGHT+IHonzzibf5ZZHh+7K/UVAPqQEw4hM4dQz6l5XubBlwFnIEoIIT4on/J7koxoWBpFJgXUSsCIh4tsFdmii6I7B8=
-X-Received: by 2002:a25:e613:0:b0:db7:dacf:4d6f with SMTP id
- d19-20020a25e613000000b00db7dacf4d6fmr1791ybh.107.1701822818959; Tue, 05 Dec
- 2023 16:33:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701825954; x=1702430754;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tkcT2MiMcdi74aHHMnUXzoOH8ExndwBtiR7/ym84lLA=;
+        b=rrpdN7j4xw5ASPJhNlAgV8R7NeNVBJrdwgSgXGkBwhzNQJhw0E0hAekvJ5U+r80JAi
+         CoVglni57KcYvWSB/JURqdJbloAtow61ARZzRxfK+Q8qLBgv584tUeBDppi6rWT5X6lY
+         iT1pJxEAO4zpBhEfyVQvTr5AHLndIgkWwN64lmc011tqDB/d6YxwGte060wwvPLI4+52
+         NzU2dSvDBoOwoOZUS4rthQXRJ78ZOXCn2J49C77DMvzIxrFPKjMaRNf+cCiC7Na5Zxfo
+         uy9n1q2HSXihHQu96fUrTamjjlxsajRQlCNoYcSfi86JyzaAsYK4rlyE901uMXy0BV+x
+         rcJA==
+X-Gm-Message-State: AOJu0Yze1xsKgvcfbYXy/y1XfkI3hko2oL19B4v9sf2R41ymPg2P9cLv
+	+XKeeOPO93juOT9iUwUgkX84KlJYMPi8gHAIqqmgMQ==
+X-Google-Smtp-Source: AGHT+IH+uA4GFO9niJh4IZvU8sPCbAZpQLNMLcD+oHftXr2ABy5V1EwN1fQt+U+JtjRbfZYKfYEtXQ==
+X-Received: by 2002:a17:903:2784:b0:1d0:6ffd:8368 with SMTP id jw4-20020a170903278400b001d06ffd8368mr49714plb.115.1701825953854;
+        Tue, 05 Dec 2023 17:25:53 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id w19-20020a1709027b9300b001cc307bcdbdsm2992737pll.211.2023.12.05.17.25.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Dec 2023 17:25:53 -0800 (PST)
+Message-ID: <656fcda1.170a0220.2d1a5.a925@mx.google.com>
+Date: Tue, 05 Dec 2023 17:25:53 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231205031531.426872356@linuxfoundation.org> <20231205031534.517148119@linuxfoundation.org>
-In-Reply-To: <20231205031534.517148119@linuxfoundation.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 6 Dec 2023 01:33:27 +0100
-Message-ID: <CANiq72kuK9cFDNWszsR1jSAiQo6qV9cjduYNm+oAooGtE6mRkw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 051/107] auxdisplay: hd44780: move cursor home after
- clear display command
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	David Reaver <me@davidreaver.com>, Miguel Ojeda <ojeda@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.1.65-106-gb22b2d52d0a3
+Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.65-106-gb22b2d52d0a3)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Tue, Dec 5, 2023 at 4:31=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> 6.1-stable review patch.  If anyone has any objections, please let me kno=
-w.
->
-> ------------------
->
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
->
-> commit 35b464e32c8bccef435e415db955787ead4ab44c upstream.
->
-> The DISPLAY_CLEAR command on the NewHaven NHD-0220DZW-AG5 display
-> does NOT change the DDRAM address to 00h (home position) like the
-> standard Hitachi HD44780 controller. As a consequence, the starting
-> position of the initial string LCD_INIT_TEXT is not guaranteed to be
-> at 0,0 depending on where the cursor was before the DISPLAY_CLEAR
-> command.
->
-> Extract of DISPLAY_CLEAR command from datasheets of:
->
->     Hitachi HD44780:
->         ... It then sets DDRAM address 0 into the address counter...
->
->     NewHaven NHD-0220DZW-AG5 datasheet:
->         ... This instruction does not change the DDRAM Address
->
-> Move the cursor home after sending DISPLAY_CLEAR command to support
-> non-standard LCDs.
->
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-> Tested-by: David Reaver <me@davidreaver.com>
-> Link: https://lore.kernel.org/r/20230722180925.1408885-1-hugo@hugovil.com
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
+1.65-106-gb22b2d52d0a3)
 
-The commit enables more hardware to work, so it is a "feature" in
-sense. It does not break the current supported hardware (as far as we
-know -- David's `Tested-by` was on HD44780), but as usual, there is
-always a risk with any change.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.65-106-gb22b2d52d0a3/
 
-If it is OK to take commits like this into stable or somebody wanted
-to use that hardware in 6.1, then I assume it is fine, but I wanted to
-point it out just in case.
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.65-106-gb22b2d52d0a3
+Git Commit: b22b2d52d0a36cac86d9e27a0dd7bbcfb3b36fa9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-Thanks!
+Warnings Detected:
 
-Cheers,
-Miguel
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
