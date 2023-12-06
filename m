@@ -1,152 +1,94 @@
-Return-Path: <stable+bounces-4833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B307806EFB
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 12:50:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E9C806F89
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 13:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4BAA1C2087B
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 11:50:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68F00B20DEC
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 12:17:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5780534575;
-	Wed,  6 Dec 2023 11:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B13E364A4;
+	Wed,  6 Dec 2023 12:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QCdF8Txc"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LDNy3lDA"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2083.outbound.protection.outlook.com [40.107.244.83])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B3FAD47;
-	Wed,  6 Dec 2023 03:50:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Yc2qWNf/zqM/4VNJxZy/lwkmYax42PYp9GwnIZgIQrfl1lbWH1nSQDhMnMtW6MsA7tT9O0a5hqAyUS99BMd1iIWFHHq/IWfYSEzbWl4fqWlv6hkDLO6O2rtEoyXJr9seTI8juL1XkQiCJC+4ANRKZPRbC6EQvorsm9fvS4PpEAsMQ961hub2nB8+X2aUSeIQ/DInwuRqMjo8ZEaIp2PwLpnCHfvuyRnpiyJ0CTvJs4eW3Z2kdOrOR0DmtBMzYd5tXSnr+6sVaXfjVBLfFaT82tfC+50Iq/aWrh7LfbPUUrQssmeUteVnwmg9yopDaGps6Px2ikDfBFy1AkAM7mgFZQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eUd+2aPKu8RAZBEV4uqQqCHNyeiQymHGM0N3MP51vLA=;
- b=miex+ftfyP0dbFWf7IrCeDoaNZYLEo3Uphg/Fzho36cIrvZSM/bPJ0yEmPnwgK30qcoJsIQELEueP+v0iYLNcwMer92zBQUMFu1s93jGQ8JpCXVualxSkir1rnnJa5yEa+8NOxZ3MLnegqd2U4qDMp8kk4MwIanqGIOa8TLOPHUTzaSvcJiri5DblVpK+jVdHrXRO9HGEJASajcHp0SHHb4NQkq/VGsK4ShoWoDNi4DgF7tM5vrBgJiuWl+/J7C/tfkCc6QNmqeguh5rGtn/clg9o35LQba6y49PcaNYpDhwssaECVaQK9WRsG+B7NBkUvj6kNKZAUo9xe2poFUjSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eUd+2aPKu8RAZBEV4uqQqCHNyeiQymHGM0N3MP51vLA=;
- b=QCdF8Txcc+GxtChy2rUNQVcs0WqFyCtMQXzhOFlcPrpHEDHcGSgzINMPuCVzvrdz+T9M7V8T3ML4xb3TBnBGBPHNErjVN8/sLZD/Ky82sm/RdDMkBvVJy1fIu8zF8/gJh/3TPacYhuJbKmB8N7/s3uPGMqlKzZN9mM9AqtIanF7wAdT/1dFuQkGR4Skr5Chja9tTgzFgfrhwT/UzymBe3QTO8mj+x5JmT51rLI+9Dlzadpga/cMLZVB0pm/4E7mKBjSgmm0NNJyyT13HiUm3XRtUuc1PG7kaxEZEtETG6r9c3FD6B6sNFlzvAjIjjKKAEEB3hk/iCmMh1bbD91A65A==
-Received: from CY8PR12CA0018.namprd12.prod.outlook.com (2603:10b6:930:4e::18)
- by SA1PR12MB5671.namprd12.prod.outlook.com (2603:10b6:806:23b::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Wed, 6 Dec
- 2023 11:50:29 +0000
-Received: from CY4PEPF0000FCC1.namprd03.prod.outlook.com
- (2603:10b6:930:4e:cafe::1) by CY8PR12CA0018.outlook.office365.com
- (2603:10b6:930:4e::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
- Transport; Wed, 6 Dec 2023 11:50:28 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.118.232) by
- CY4PEPF0000FCC1.mail.protection.outlook.com (10.167.242.103) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7068.26 via Frontend Transport; Wed, 6 Dec 2023 11:50:28 +0000
-Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
- (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Wed, 6 Dec 2023
- 03:50:20 -0800
-Received: from drhqmail203.nvidia.com (10.126.190.182) by
- drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Wed, 6 Dec 2023 03:50:19 -0800
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
- Transport; Wed, 6 Dec 2023 03:50:19 -0800
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 6.1 000/105] 6.1.66-rc2 review
-In-Reply-To: <20231205183248.388576393@linuxfoundation.org>
-References: <20231205183248.388576393@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 467BCBA
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 04:17:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1701865061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eB959rdqwj3McpopDWbd2KITPsbXVjh5QYy/Nwyj7gY=;
+	b=LDNy3lDAHufF7P/X1ceFVZHDVENsTsJorh751Y3eJ4noh/SvPFgGhyPLj7hcB2enuOKChh
+	3GNQiHevgnCrHUcdkerBmhcyX69vI/Po5z/li3tG4ooPkF/bh8ht6GqgEZj7QTsuGy2Ubj
+	oXz6EbFriVdCXwaYgB7V7NQxMF1s6rg=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-553-oRHB5hP9Ot2hTUPZpvAgvg-1; Wed, 06 Dec 2023 07:17:38 -0500
+X-MC-Unique: oRHB5hP9Ot2hTUPZpvAgvg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8CCD685CBA5;
+	Wed,  6 Dec 2023 12:17:37 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.39.193.237])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 4998D111E3EE;
+	Wed,  6 Dec 2023 12:17:34 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: stern@rowland.harvard.edu
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	greg@kroah.com,
+	jtornosm@redhat.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	oneukum@suse.com,
+	pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] net: usb: ax88179_178a: avoid failed operations when device is disconnected
+Date: Wed,  6 Dec 2023 13:17:32 +0100
+Message-ID: <20231206121732.7154-1-jtornosm@redhat.com>
+In-Reply-To: <624ad05b-0b90-4d1c-b06b-7a75473401c3@rowland.harvard.edu>
+References: <624ad05b-0b90-4d1c-b06b-7a75473401c3@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <b0f0b502-6fe3-4e53-b920-e15e759269e9@drhqmail203.nvidia.com>
-Date: Wed, 6 Dec 2023 03:50:19 -0800
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC1:EE_|SA1PR12MB5671:EE_
-X-MS-Office365-Filtering-Correlation-Id: e016f996-e0b0-4042-e7ed-08dbf6518b00
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	3riZsXlPkBmkA6ttN8NmYmapctEmLW0f0VDimFdf4dmC6v2T4kFqWsuqEg6MvxoNyOyG32ASpfWAAB+UOYyR0ecMTGVug4GLnoaPNUrdkif5+nmq7zZjby240/mMbMm6dtXYA66eI+qdz9ahnJsPdLVQM5z5E4mp4wcmjY1VauS01lWp6Lie8svGxy9I371I4JFXMNI07sRKE1xHt890J9cE/ByyggYMrd1ja0kQvC8IzWeLbqtGsTm91T2yi7G75UuhswEieCUg905d3oYdDdMOu5JRGGCF6T5nBNHZ2HbfzefB6GMRmN5ImTfy3tTc/lFZom+RBet3O8VHoZ9FEX64RyTXMuxaNPPTRTyiLjiEFGkmSF5GxxToPIJzZGEGWT1ydkJIvRgHYnNiRJBMRIKWd//GrgWDlHHdHUPii75tEkvnTwbKtHhmkRHeRdpJ/6Rgvlbe06VVVgf5UCtZ3/Af+Kg6SejPyzfkt58zSpxtDr8hRMy0VlsOz4D/xbVuP2Bpoo9vti6q72MHToTgicF7xejyKCOGufjfsTs8rjnyRm66kWYI/n99TCL0C6qG1+UyRwU7eSxgU7uv4L3r8FnTf4Jtg+yX0XP/q7yNWDKBeq4jQVdS4Igu1v1PeoeGQW86PVOB1AT+8w3KgwISwV8/kk0LxsTzDX0MLuhxKVo6t3SycnGb+TJ5mIZXxDz49gqSXArebHrS/CW+qcn8tXypXuM4rUTevMYfmXJgR48cInfiJZ3bRo1WIq7ddvIF3R6pBLm3d/pgPHJArugsXwuYVLrvIhxcRlSmaf+83Ug=
-X-Forefront-Antispam-Report:
-	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(396003)(39860400002)(136003)(230922051799003)(186009)(64100799003)(1800799012)(451199024)(82310400011)(40470700004)(36840700001)(46966006)(70586007)(36860700001)(7636003)(40480700001)(356005)(966005)(478600001)(31686004)(47076005)(82740400003)(426003)(40460700003)(70206006)(8676002)(4326008)(2906002)(7416002)(5660300002)(31696002)(86362001)(41300700001)(6916009)(54906003)(8936002)(316002)(26005)(336012);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 11:50:28.6995
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e016f996-e0b0-4042-e7ed-08dbf6518b00
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000FCC1.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5671
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
-On Wed, 06 Dec 2023 04:22:38 +0900, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.66 release.
-> There are 105 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 07 Dec 2023 18:32:16 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.66-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hello Alan,
 
-All tests passing for Tegra ...
+> The __ax88179_read_cmd() and __ax88179_write_cmd() routines are 
+> asynchronous with respect to ax88179_disconnect(), right?  Or at least, 
+> they are if they run as a result of the user closing the network 
+> interface.  Otherwise there wouldn't be any memory ordering issues.
+Yes, I think so, they could be asynchronous regarding ax88179_disconnect.
 
-Test results for stable-v6.1:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    116 tests:	116 pass, 0 fail
+> But the memory barriers you added are not the proper solution.  What you 
+> need here is _synchronization_, not _ordering_.  As it is, the memory 
+> barriers you have added don't do anything; they shouldn't be in the 
+> patch.
+Ok, thank you for the helpful clarification, let me check it better,
+I understood it in a wrong way.
 
-Linux version:	6.1.66-rc2-gb22b2d52d0a3
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
+> If you would like a more in-depth explanation, let me know.
+Thank you for your help, I will try first, I really appreciate this.
 
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Best regards
+José Ignacio
 
-Jon
 
