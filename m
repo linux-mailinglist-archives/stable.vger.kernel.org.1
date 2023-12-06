@@ -1,195 +1,96 @@
-Return-Path: <stable+bounces-4789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200A9806470
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:54:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 642A2806473
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6EA1C20856
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 01:54:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 184251F216D8
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 01:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863A33FF5;
-	Wed,  6 Dec 2023 01:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0279946AC;
+	Wed,  6 Dec 2023 01:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlsaJJP+"
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="TJSU66sc";
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="TSTKfgWt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4217046AC
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 01:54:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B8FC433C8;
-	Wed,  6 Dec 2023 01:54:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701827685;
-	bh=IPFVOrJ1SR6T8KENlRQmx0EQJxyjA1v3HV5oHTiS4XY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlsaJJP+BStoWyyPKdV40DU6o9tjdwxIFsQpN5BnNbYBMuYMH1og2KkAJ9/E16Xfi
-	 0fiB2r3KxZVhgG/EsOqXtUby8PlH4c0n9tMmJ/D26dQe5P4DwHc/uH6lVCAiu5ijry
-	 5col9iMQ9O2L3+Pf+KKV/aXefKTp6xAnktCXgvjlViMkvIq7xnHKuMY8z74SAlcwFs
-	 g1qvmpaZEVj9R7qGZQAIFGQCPFvQpc5BZyAtOpsIbX2bqFVmUHU9Zn7TYVImRmhTb5
-	 cuAc9KIL0FOfEfymYOx45Mue8cl3kOZhwDLnMd7tXxIqNxZDGn/gnf7qX9kokLFWPD
-	 reNCr5EIlCckA==
-From: mhiramat@kernel.org
-To: stable@vger.kernel.org
-Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	kernel test robot <lkp@intel.com>,
-	JP Kobryn <inwardvessel@gmail.com>
-Subject: [PATCH 6.6.y] rethook: Use __rcu pointer for rethook::handler
-Date: Wed,  6 Dec 2023 10:54:35 +0900
-Message-ID: <20231206015435.38870-1-mhiramat@kernel.org>
-X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
-In-Reply-To: <2023120320-obtuse-gap-3bfa@gregkh>
-References: <2023120320-obtuse-gap-3bfa@gregkh>
+Received: from nautica.notk.org (nautica.notk.org [91.121.71.147])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C992CBA;
+	Tue,  5 Dec 2023 17:55:48 -0800 (PST)
+Received: by nautica.notk.org (Postfix, from userid 108)
+	id 7C56CC01B; Wed,  6 Dec 2023 02:55:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1701827746; bh=w04/oDIBtpK1gN2WKAOLZcgCdqrueDoJ2tN/IfXA+tY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TJSU66scY8SRyyxY5IALugmRpeK4O+1IQDp7057uLa8Ao5FXZfOvtEzUWgaa2aJK7
+	 6rfn+m+o7a/PZ8xXnblwgW1pad3SKV3Vrw6Q81hESmMGTAD3ryTk73wOOleXUvph9Q
+	 Qd4PmQz17li35ctIRmLkN3zaRcPLYrhQhd6ftE07rmUG6AH8cOLbCnFfOBhsPzjoRj
+	 Xw+En7Qv1KVyTcMIKVc+nZ9dm1ybGVTDkaLZLr1SC7MGu4PjSE1EVqEsPzp6DXpXeG
+	 UCkVPPIps40GFKnzTPU1D0BDfXQbGy77xek5//0Vbsr7YNedN/ouwZQQM3LTiZNvEo
+	 m2Ov9o0cCE4sQ==
+X-Spam-Level: 
+Received: from gaia (localhost [127.0.0.1])
+	by nautica.notk.org (Postfix) with ESMTPS id 03B4BC009;
+	Wed,  6 Dec 2023 02:55:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org; s=2;
+	t=1701827743; bh=w04/oDIBtpK1gN2WKAOLZcgCdqrueDoJ2tN/IfXA+tY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TSTKfgWtRHEX+X6eX+Pg4rgkOipdjk7TA3DZri/pEgJdl5oPJc4XN/+oH0uPfCc65
+	 RynEzN9rLFSVzd2efW/meXojC/5oaaO1Cx4qLJv3X2yjGf7RDb3Ityye7TYLerf1gd
+	 FqH5l8UuZ+9dfZg9Bmb0bI2TobcI4c/cRi/txEMiS3HccbsnAge6U/mfPCN8cip6NJ
+	 qu7RUs6QWmMatXyYzl+LYLcnOQBHgfc+nbj9Wg+N83EN+8d89FgZ/EAfFbKtc5W94U
+	 puI1xtcCYY8p01BH0ZAMgowMfHlHG/iX3FNsV20vczdl+QR6oryP0Ad/5jyYPz8wWG
+	 MpduHB/J3OPEw==
+Received: from localhost (gaia [local])
+	by gaia (OpenSMTPD) with ESMTPA id 95a0808f;
+	Wed, 6 Dec 2023 01:55:35 +0000 (UTC)
+Date: Wed, 6 Dec 2023 10:55:20 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 000/131] 5.10.203-rc3 review
+Message-ID: <ZW_UiI6iA_KZ8v0D@codewreck.org>
+References: <20231205183249.651714114@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231205183249.651714114@linuxfoundation.org>
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Greg Kroah-Hartman wrote on Wed, Dec 06, 2023 at 04:22:23AM +0900:
+> This is the start of the stable review cycle for the 5.10.203 release.
+> There are 131 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 07 Dec 2023 18:32:16 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.203-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
 
-Since the rethook::handler is an RCU-maganged pointer so that it will
-notice readers the rethook is stopped (unregistered) or not, it should
-be an __rcu pointer and use appropriate functions to be accessed. This
-will use appropriate memory barrier when accessing it. OTOH,
-rethook::data is never changed, so we don't need to check it in
-get_kretprobe().
+Tested on:
+- arm i.MX6ULL (Armadillo 640)
+- arm64 i.MX8MP (Armadillo G4)
 
-NOTE: To avoid sparse warning, rethook::handler is defined by a raw
-function pointer type with __rcu instead of rethook_handler_t.
+No obvious regression in dmesg or basic tests:
+Tested-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
 
-Link: https://lore.kernel.org/all/170126066201.398836.837498688669005979.stgit@devnote2/
-
-Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
-Cc: stable@vger.kernel.org
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311241808.rv9ceuAh-lkp@intel.com/
-Tested-by: JP Kobryn <inwardvessel@gmail.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-(cherry picked from commit a1461f1fd6cfdc4b8917c9d4a91e92605d1f28dc)
----
- include/linux/kprobes.h |  6 ++----
- include/linux/rethook.h |  7 ++++++-
- kernel/trace/rethook.c  | 23 ++++++++++++++---------
- 3 files changed, 22 insertions(+), 14 deletions(-)
-
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 85a64cb95d75..38a774287bde 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -202,10 +202,8 @@ extern int arch_trampoline_kprobe(struct kprobe *p);
- #ifdef CONFIG_KRETPROBE_ON_RETHOOK
- static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
- {
--	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
--		"Kretprobe is accessed from instance under preemptive context");
--
--	return (struct kretprobe *)READ_ONCE(ri->node.rethook->data);
-+	/* rethook::data is non-changed field, so that you can access it freely. */
-+	return (struct kretprobe *)ri->node.rethook->data;
- }
- static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
- {
-diff --git a/include/linux/rethook.h b/include/linux/rethook.h
-index 26b6f3c81a76..544e1bbfad28 100644
---- a/include/linux/rethook.h
-+++ b/include/linux/rethook.h
-@@ -29,7 +29,12 @@ typedef void (*rethook_handler_t) (struct rethook_node *, void *, unsigned long,
-  */
- struct rethook {
- 	void			*data;
--	rethook_handler_t	handler;
-+	/*
-+	 * To avoid sparse warnings, this uses a raw function pointer with
-+	 * __rcu, instead of rethook_handler_t. But this must be same as
-+	 * rethook_handler_t.
-+	 */
-+	void (__rcu *handler) (struct rethook_node *, void *, unsigned long, struct pt_regs *);
- 	struct freelist_head	pool;
- 	refcount_t		ref;
- 	struct rcu_head		rcu;
-diff --git a/kernel/trace/rethook.c b/kernel/trace/rethook.c
-index 5eb9b598f4e9..3cebcbaf35a4 100644
---- a/kernel/trace/rethook.c
-+++ b/kernel/trace/rethook.c
-@@ -63,7 +63,7 @@ static void rethook_free_rcu(struct rcu_head *head)
-  */
- void rethook_stop(struct rethook *rh)
- {
--	WRITE_ONCE(rh->handler, NULL);
-+	rcu_assign_pointer(rh->handler, NULL);
- }
- 
- /**
-@@ -78,11 +78,17 @@ void rethook_stop(struct rethook *rh)
-  */
- void rethook_free(struct rethook *rh)
- {
--	WRITE_ONCE(rh->handler, NULL);
-+	rethook_stop(rh);
- 
- 	call_rcu(&rh->rcu, rethook_free_rcu);
- }
- 
-+static inline rethook_handler_t rethook_get_handler(struct rethook *rh)
-+{
-+	return (rethook_handler_t)rcu_dereference_check(rh->handler,
-+							rcu_read_lock_any_held());
-+}
-+
- /**
-  * rethook_alloc() - Allocate struct rethook.
-  * @data: a data to pass the @handler when hooking the return.
-@@ -102,7 +108,7 @@ struct rethook *rethook_alloc(void *data, rethook_handler_t handler)
- 	}
- 
- 	rh->data = data;
--	rh->handler = handler;
-+	rcu_assign_pointer(rh->handler, handler);
- 	rh->pool.head = NULL;
- 	refcount_set(&rh->ref, 1);
- 
-@@ -142,9 +148,10 @@ static void free_rethook_node_rcu(struct rcu_head *head)
-  */
- void rethook_recycle(struct rethook_node *node)
- {
--	lockdep_assert_preemption_disabled();
-+	rethook_handler_t handler;
- 
--	if (likely(READ_ONCE(node->rethook->handler)))
-+	handler = rethook_get_handler(node->rethook);
-+	if (likely(handler))
- 		freelist_add(&node->freelist, &node->rethook->pool);
- 	else
- 		call_rcu(&node->rcu, free_rethook_node_rcu);
-@@ -160,11 +167,9 @@ NOKPROBE_SYMBOL(rethook_recycle);
-  */
- struct rethook_node *rethook_try_get(struct rethook *rh)
- {
--	rethook_handler_t handler = READ_ONCE(rh->handler);
-+	rethook_handler_t handler = rethook_get_handler(rh);
- 	struct freelist_node *fn;
- 
--	lockdep_assert_preemption_disabled();
--
- 	/* Check whether @rh is going to be freed. */
- 	if (unlikely(!handler))
- 		return NULL;
-@@ -312,7 +317,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
- 		rhn = container_of(first, struct rethook_node, llist);
- 		if (WARN_ON_ONCE(rhn->frame != frame))
- 			break;
--		handler = READ_ONCE(rhn->rethook->handler);
-+		handler = rethook_get_handler(rhn->rethook);
- 		if (handler)
- 			handler(rhn, rhn->rethook->data,
- 				correct_ret_addr, regs);
 -- 
-2.43.0.rc2.451.g8631bc7472-goog
-
+Dominique Martinet | Asmadeus
 
