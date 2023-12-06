@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-4801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75B480658C
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 04:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D008580659F
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 04:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C99931C21069
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 03:19:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5B611C20A34
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 03:24:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBFFECA70;
-	Wed,  6 Dec 2023 03:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300797470;
+	Wed,  6 Dec 2023 03:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="jaiCGlAH"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="GpX4V+Bi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67CE11AA
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 19:19:29 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id 5614622812f47-3b2e330033fso3777957b6e.3
-        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 19:19:29 -0800 (PST)
+Received: from mail-oo1-xc32.google.com (mail-oo1-xc32.google.com [IPv6:2607:f8b0:4864:20::c32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A35CC6
+	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 19:24:47 -0800 (PST)
+Received: by mail-oo1-xc32.google.com with SMTP id 006d021491bc7-58e256505f7so2395919eaf.3
+        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 19:24:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701832768; x=1702437568; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701833086; x=1702437886; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=gdKwPIYgnq27RC9ip1rZK8FJBJ+5tAhweXoWCDyK1LU=;
-        b=jaiCGlAHZNKWa27kRxmknqA+iee3P0MBTFnirXOuIxJbqKeSp430WI6/3V9kSI/aVk
-         nfsUBKiQONVGsTP0gkK3a25nYKJ6YUq4wwqk+av/WvE1Hl8mVyKhwaGLYlktzLtJ5ec1
-         SmA7EErJmrNq36DZPboCWJKM0RgT14DXRJyBeB5CDnz1rNIeXtLGrg7gzI1ogpJpxNvi
-         SWFaj2/ECyv1Bp+U9lUFO+ZtnGj6TulFj0jdt7r8NOUlL41tLS00Dzdgr3BFMHdvIotA
-         iqQaqDrs/X4PEEtU4nrDBL6mvCM4KYTOxm6jvkoIXkzny81JPi3452BwqORjHacsKC3k
-         kyAg==
+        bh=SROk+D06MYHktbVOjGXTZLgzNYynsMquPSp13I7N6tQ=;
+        b=GpX4V+Bi92xIAXY8kNJAXiBVle1fOOcyL+tv+WZsCTamb3Rp3idzvjwzuFgWzCgJ+k
+         PvikDU1vLU/TpYD00s8qGB7P5+WI9rDX1g72O9vAl4Vyo+9HYNOwBAxjNexX5bbNmYIK
+         uHCgVHZ9bRto8k/bIrtKNQNZo8vsequt44N+uk8B60AeVE6COJIdwIEWZWVHZL+tCGhM
+         fUJcwMv488+7bhk4Ww8KipFZTVqXpmEAkNZiL/uQfuTaJWwvkZUCbPeEerI4T3goZ5ts
+         AgRAjdqe4CnIYqaJSQ13giNAQdOHzY4ldD0XX2jZfie2QpVEXr7uCUNdzYOrrfzmo94m
+         lAUw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701832768; x=1702437568;
+        d=1e100.net; s=20230601; t=1701833086; x=1702437886;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gdKwPIYgnq27RC9ip1rZK8FJBJ+5tAhweXoWCDyK1LU=;
-        b=YxdoH7IxCHz4vr/LNcRQkC3AHuU1oYAsgUGhXFUIcgnmAHTxGNvxLmxhm88Fbyijnj
-         gGjByCnXxNbNI+8DHd7G+I9K/sHWSHYy36p86Wlbba8ZsVHA5G26MWRxzGUwO82/L3wu
-         gTCd5BGcWpxmL5G9sMTS6GUMZU6Rqe9O6dS6AHM8VOfelewGJy+gH/MkJFFujjgcP6KA
-         GBbPs3zG+aEzIWCk+HJpLxO6kOrl4SXSIEz9Ckzn60MQcfpilo29c2HWnST28mifMAhc
-         is6pcQ5iU+yGcPLytBYE7ZM+g6WxGEfsd+TFokkcjLz2c0nLG7AaiKYpscHwPACm9+/o
-         4ViQ==
-X-Gm-Message-State: AOJu0Yz/Ap/oD7PStBmSfwegyCmidG0uKJxGGxNGBmTop8RP2YJmpeoR
-	rR8ThBtwNSYFaZr/jvfI2f2gI5rngAnbI/DhCdcLxw==
-X-Google-Smtp-Source: AGHT+IGZ47FFZs254Krj0DzSTmfFSejFomuJW7eDXyaEyXss0tqpg9+j4t4eltXCHjneIoexVsPrWg==
-X-Received: by 2002:a05:6808:318b:b0:3b8:b55a:84aa with SMTP id cd11-20020a056808318b00b003b8b55a84aamr371483oib.43.1701832768271;
-        Tue, 05 Dec 2023 19:19:28 -0800 (PST)
+        bh=SROk+D06MYHktbVOjGXTZLgzNYynsMquPSp13I7N6tQ=;
+        b=mepxjA7G174qO0HiKTQUA1lkpozmv24ieyaZtD3FCqpTuKt7CR1gLcQn2HT55rcOVR
+         UkStyas+nKG/kxHDFu8uYHXMVrxyuHVC/xQOmukQexX+VukHytaD+r9d3PMPxsEi/QEK
+         tCrHPwtw/ksrHudTl18dm7GmlBGQtRHcJc/54sNlk1YME4gCs9aCm1Srx0hTj/az3DT7
+         B6/PM2kD3tlD61lMDK/dUMJoV3B6zWClsL3B7Ka6Bm7x/KJUQ4kKi24HUf+DVakU3HhL
+         q85OGuB4oJsvwO35pjDbpoo/GifUMiqbjCndFi3vG1cqmIxboir3ITTv6AN2ytjjKmyd
+         UJbg==
+X-Gm-Message-State: AOJu0YxXGINaJq6eIFQxWPe8MPEzZQYrocDkb5OiYQXzkbvcUGMXXd6M
+	Neaj8I75RGX9RiG+rhq2eIg9vunpneOlvawL68u2Sg==
+X-Google-Smtp-Source: AGHT+IFY6dHl4EMPARrs+Agi+A/T9ePtn1iCmjG70x6Kymwf/NQJwSBgfYRSr5/RCg0mnN6SpMZeZg==
+X-Received: by 2002:a05:6358:78c:b0:170:5398:81ec with SMTP id n12-20020a056358078c00b00170539881ecmr427825rwj.43.1701833086101;
+        Tue, 05 Dec 2023 19:24:46 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id z2-20020a656642000000b005c2130fd8d7sm8613465pgv.91.2023.12.05.19.19.27
+        by smtp.gmail.com with ESMTPSA id jm1-20020a17090304c100b001c5fc11c085sm6423354plb.264.2023.12.05.19.24.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 19:19:27 -0800 (PST)
-Message-ID: <656fe83f.650a0220.be47f.7f0f@mx.google.com>
-Date: Tue, 05 Dec 2023 19:19:27 -0800 (PST)
+        Tue, 05 Dec 2023 19:24:45 -0800 (PST)
+Message-ID: <656fe97d.170a0220.b7b65.15c7@mx.google.com>
+Date: Tue, 05 Dec 2023 19:24:45 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,26 +62,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Branch: queue/5.15
 X-Kernelci-Tree: stable-rc
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.141-65-gfef113ea8057
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.141-65-gfef113ea8057)
+X-Kernelci-Kernel: v5.15.141-64-g455871f0fe3d
+Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.141-64-g455871f0fe3d)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
-5.15.141-65-gfef113ea8057)
+stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 3 warnings (v5.=
+15.141-64-g455871f0fe3d)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.141-65-gfef113ea8057/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.141-64-g455871f0fe3d/
 
 Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.141-65-gfef113ea8057
-Git Commit: fef113ea8057148a392215b58a5901786c11dbf7
+Branch: queue/5.15
+Git Describe: v5.15.141-64-g455871f0fe3d
+Git Commit: 455871f0fe3da76d22c33ee0d3f41957aae8c0c9
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -203,13 +203,13 @@ ion mismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
 
 ---------------------------------------------------------------------------=
 -----
