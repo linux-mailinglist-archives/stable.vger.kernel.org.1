@@ -1,304 +1,179 @@
-Return-Path: <stable+bounces-4854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E948076C3
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 18:39:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67378076F5
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 18:49:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A3F61F211A5
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 17:39:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76F4BB20DE5
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 17:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF926A01E;
-	Wed,  6 Dec 2023 17:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5B96ABB9;
+	Wed,  6 Dec 2023 17:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="FMgulIYf"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="etZrPFxi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C59D122
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 09:39:07 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6ce95e387e5so69559b3a.2
-        for <stable@vger.kernel.org>; Wed, 06 Dec 2023 09:39:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701884346; x=1702489146; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=iY1c5ZekCZ5QnfGLHaPxxXEaTJCTG/xLhN1QlPS4MaQ=;
-        b=FMgulIYfqcqKpPit+c+YfLqnLTQlSEodZMQ6RdEYFBPpKFIr9Av+39mLJdMZ9nZAhG
-         BKAGw1EGF+k6EhSrOVFQYQiZgyhVOad2e8EL64xoSpFsrsi4aUoMgv1eaXLqAnIV6nAX
-         9yVmS9NL6FbopNK6dSwLYZK5s81HuLNeSDkAOXpHjpMFOVR0T9oD8lU+o/vaPNsvIXuv
-         ed4u04TNsYSQcFKJHoDqDFp5gxAf5t6Nc5qqDwp5KeVW9z7wypuUOD4/pLtw8rdMhs1Q
-         uM5jvXLcd6fmvEhKmgxCZPYBx4Xvj1tj2uklKV71GHrNVxk+Is1GW2VTecr9bTEXY0Dr
-         hZGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701884346; x=1702489146;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iY1c5ZekCZ5QnfGLHaPxxXEaTJCTG/xLhN1QlPS4MaQ=;
-        b=PD+yZ0U67msRRGyxESqHzL7EmutcwRSFLcYzfhWbVbu+WWYfhi+iMBraJkrdCfyXlc
-         bifCawyuZPXknzB0GL2FwbR363mVf5MyY0FkN3vpl0sd55+mSG2AHm6oBq7XQOke+I+K
-         Fvg8oYVps7Cim8JCAKvR7NIwSWvSHUbqUcC3Shps7AzPdxakUnBpDdSbdElGsVcpmCG8
-         kpGiUJ9xZ2UApehXkp6R2isgV0IARLYZYXqDDHPyUyFJAEmaDICOqXbqm64JXIl7QLsr
-         IacsRTOEM7NWg8sm/1LKDDa5sUiZi7q0ImCxjUZkjmc4nkyX+HH/PHLpj+aOdo2R7OOM
-         UctA==
-X-Gm-Message-State: AOJu0Yw8JfIU7zgLkaJtqFqHVfB38PnZ3PSQKaA00EGJRrbaIT1KSUV/
-	lcUzHNmAYLdKvOQKcQEhH//JapdEQvH5veU+6NoICA==
-X-Google-Smtp-Source: AGHT+IF2E9IzOjnQjOzFZIMgqICBtpaoumSsCJ+AEhKJBJgK2AkgGrTcUb6n4Pw+cpQP8TG9vQ6tWQ==
-X-Received: by 2002:a05:6a00:4297:b0:6ce:2732:285 with SMTP id bx23-20020a056a00429700b006ce27320285mr914832pfb.52.1701884345718;
-        Wed, 06 Dec 2023 09:39:05 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id n15-20020aa78a4f000000b006cbb58301basm267860pfa.19.2023.12.06.09.39.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Dec 2023 09:39:05 -0800 (PST)
-Message-ID: <6570b1b9.a70a0220.2d2ee.1767@mx.google.com>
-Date: Wed, 06 Dec 2023 09:39:05 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 40A0ED50;
+	Wed,  6 Dec 2023 09:49:20 -0800 (PST)
+Received: from [192.168.178.49] (dynamic-adsl-84-220-28-122.clienti.tiscali.it [84.220.28.122])
+	by linux.microsoft.com (Postfix) with ESMTPSA id E05E020B74C0;
+	Wed,  6 Dec 2023 09:49:12 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E05E020B74C0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1701884959;
+	bh=fdR3ND6srPYvib8II0FgNBO6VSaEommUDv/ciiWxLMo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=etZrPFxiZcXIZsGhguAUl+MqXiO/y4XO0YnqkS/CY59bkO2ayurtbE67EJXZ6ndGQ
+	 enBcx4H8aYwZCs96EZ+eVpxYD9os9OAjzK9ILC9kPd6NWR7PD1k2hftMnoFluz1AiF
+	 efPUoJ+tZ8TOhZfAOTbZUf91N6WpLqkis9BmlyMg=
+Message-ID: <0c4e33f0-6207-448d-a692-e81391089bea@linux.microsoft.com>
+Date: Wed, 6 Dec 2023 18:49:11 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.4
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.262-90-gb7e70c9c4c420
-Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
- 26 warnings (v5.4.262-90-gb7e70c9c4c420)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
+ TDX init
+Content-Language: en-US
+To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Michael Kelley <mhkelley58@gmail.com>, Nikolay Borisov
+ <nik.borisov@suse.com>, Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
+ <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>,
+ "Cui, Dexuan" <decui@microsoft.com>,
+ "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "stefan.bader@canonical.com" <stefan.bader@canonical.com>,
+ "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
+ "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
+ "cascardo@canonical.com" <cascardo@canonical.com>,
+ "kys@microsoft.com" <kys@microsoft.com>,
+ "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+ "wei.liu@kernel.org" <wei.liu@kernel.org>,
+ "sashal@kernel.org" <sashal@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
+ <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
+ <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
+From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+In-Reply-To: <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
-4.262-90-gb7e70c9c4c420)
+On 05/12/2023 11:54, Kirill A. Shutemov wrote:
+> On Mon, Dec 04, 2023 at 08:07:38PM +0100, Jeremi Piotrowski wrote:
+>> On 04/12/2023 10:17, Reshetova, Elena wrote:
+>>>> Check for additional CPUID bits to identify TDX guests running with Trust
+>>>> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
+>>>> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
+>>>>
+>>>> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is
+>>>> visible
+>>>> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
+>>>> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
+>>>> aware mechanisms for what's left. So currently such guests do not have
+>>>> X86_FEATURE_TDX_GUEST set.
+>>>
+>>> Back to this concrete patch. Why cannot L1 VMM emulate the correct value of
+>>> the TDX_CPUID_LEAF_ID to L2 VM? It can do this per TDX partitioning arch.
+>>> How do you handle this and other CPUID calls call currently in L1? Per spec,
+>>> all CPUIDs calls from L2 will cause L2 --> L1 exit, so what do you do in L1?
+>> The disclaimer here is that I don't have access to the paravisor (L1) code. But
+>> to the best of my knowledge the L1 handles CPUID calls by calling into the TDX
+>> module, or synthesizing a response itself. TDX_CPUID_LEAF_ID is not provided to
+>> the L2 guest in order to discriminate a guest that is solely responsible for every
+>> TDX mechanism (running at L1) from one running at L2 that has to cooperate with L1.
+>> More below.
+>>
+>>>
+>>> Given that you do that simple emulation, you already end up with TDX guest
+>>> code being activated. Next you can check what features you wont be able to
+>>> provide in L1 and create simple emulation calls for the TDG calls that must be
+>>> supported and cannot return error. The biggest TDG call (TDVMCALL) is already
+>>> direct call into L0 VMM, so this part doesn’t require L1 VMM support. 
+>>
+>> I don't see anything in the TD-partitioning spec that gives the TDX guest a way
+>> to detect if it's running at L2 or L1, or check whether TDVMCALLs go to L0/L1.
+>> So in any case this requires an extra cpuid call to establish the environment.
+>> Given that, exposing TDX_CPUID_LEAF_ID to the guest doesn't help.
+>>
+>> I'll give some examples of where the idea of emulating a TDX environment
+>> without attempting L1-L2 cooperation breaks down.
+>>
+>> hlt: if the guest issues a hlt TDVMCALL it goes to L0, but if it issues a classic hlt
+>> it traps to L1. The hlt should definitely go to L1 so that L1 has a chance to do
+>> housekeeping.
+> 
+> Why would L2 issue HLT TDVMCALL? It only happens in response to #VE, but
+> if partitioning enabled #VEs are routed to L1 anyway.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
-/kernel/v5.4.262-90-gb7e70c9c4c420/
+What about tdx_safe_halt? When X86_FEATURE_TDX_GUEST is defined I see
+"using TDX aware idle routing" in dmesg.
 
-Tree: stable-rc
-Branch: queue/5.4
-Git Describe: v5.4.262-90-gb7e70c9c4c420
-Git Commit: b7e70c9c4c42023168e201428d4727786d661b90
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+> 
+>> map gpa: say the guest uses MAP_GPA TDVMCALL. This goes to L0, not L1 which is the actual
+>> entity that needs to have a say in performing the conversion. L1 can't act on the request
+>> if L0 would forward it because of the CoCo threat model. So L1 and L2 get out of sync.
+>> The only safe approach is for L2 to use a different mechanism to trap to L1 explicitly.
+> 
+> Hm? L1 is always in loop on share<->private conversion. I don't know why
+> you need MAP_GPA for that.
+> 
+> You can't rely on MAP_GPA anyway. It is optional (unfortunately). Conversion
+> doesn't require MAP_GPA call.
+> 
 
-Warnings Detected:
+I'm sorry, I don't quite follow. I'm reading tdx_enc_status_changed():
+- TDVMCALL_MAP_GPA is issued for all transitions
+- TDX_ACCEPT_PAGE is issued for shared->private transitions
 
-arc:
+This doesn't work in partitioning when TDVMCALLs go to L0: TDVMCALL_MAP_GPA bypasses
+L1 and TDX_ACCEPT_PAGE is L1 responsibility.
 
-arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 2 warnings
+If you want to see how this is currently supported take a look at arch/x86/hyperv/ivm.c.
+All memory starts as private and there is a hypercall to notify the paravisor for both
+TDX (when partitioning) and SNP (when VMPL). This guarantees that all page conversions
+go through L1.
 
-arm:
+>> Having a paravisor is required to support a TPM and having TDVMCALLs go to L0 is
+>> required to make performance viable for real workloads.
+>>
+>>>
+>>> Until we really see what breaks with this approach, I don’t think it is worth to
+>>> take in the complexity to support different L1 hypervisors view on partitioning.
+>>>
+>>
+>> I'm not asking to support different L1 hypervisors view on partitioning, I want to
+>> clean up the code (by fixing assumptions that no longer hold) for the model that I'm
+>> describing that: the kernel already supports, has an implementation that works and
+>> has actual users. This is also a model that Intel intentionally created the TD-partitioning
+>> spec to support.
+>>
+>> So lets work together to make X86_FEATURE_TDX_GUEST match reality.
+> 
+> I think the right direction is to make TDX architecture good enough
+> without that. If we need more hooks in TDX module that give required
+> control to L1, let's do that. (I don't see it so far)
+> 
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+I'm not the right person to propose changes to the TDX module, I barely know anything about
+TDX. The team that develops the paravisor collaborates with Intel on it and was also consulted
+in TD-partitioning design.
 
-mips:
+I'm also not sure what kind of changes you envision. Everything is supported by the
+kernel already and the paravisor ABI is meant to stay vendor independent.
 
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-board (gcc-10): 4 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
-nings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+What I'm trying to accomplish is better integration with the non-partitioning side of TDX
+so that users don't see "Memory Encryption Features active: AMD SEV" when running on Intel
+TDX with a paravisor.
 
