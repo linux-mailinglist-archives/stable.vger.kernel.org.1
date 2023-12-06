@@ -1,179 +1,143 @@
-Return-Path: <stable+bounces-4855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67378076F5
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 18:49:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE8F80774F
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 19:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76F4BB20DE5
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 17:49:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E43F1F2122F
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 18:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5B96ABB9;
-	Wed,  6 Dec 2023 17:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B336E587;
+	Wed,  6 Dec 2023 18:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="etZrPFxi"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0bm1ZIM9"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 40A0ED50;
-	Wed,  6 Dec 2023 09:49:20 -0800 (PST)
-Received: from [192.168.178.49] (dynamic-adsl-84-220-28-122.clienti.tiscali.it [84.220.28.122])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E05E020B74C0;
-	Wed,  6 Dec 2023 09:49:12 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E05E020B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701884959;
-	bh=fdR3ND6srPYvib8II0FgNBO6VSaEommUDv/ciiWxLMo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=etZrPFxiZcXIZsGhguAUl+MqXiO/y4XO0YnqkS/CY59bkO2ayurtbE67EJXZ6ndGQ
-	 enBcx4H8aYwZCs96EZ+eVpxYD9os9OAjzK9ILC9kPd6NWR7PD1k2hftMnoFluz1AiF
-	 efPUoJ+tZ8TOhZfAOTbZUf91N6WpLqkis9BmlyMg=
-Message-ID: <0c4e33f0-6207-448d-a692-e81391089bea@linux.microsoft.com>
-Date: Wed, 6 Dec 2023 18:49:11 +0100
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2076.outbound.protection.outlook.com [40.107.93.76])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE91B122
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 10:08:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=oNk691dNcrx6VrGyM/oCP6MoPzxphzZm/BViewHVoT0gUcLcbo4tcf30HVFbywkLaOeHE26KVKuHykZhauDcgSjopPKzVhxhx83XUDMJFVQpQIO0ZDvwwqvEyBWI7fKiw0+YgnMPMjiEZqwWovFnnPLVEZMNNhveNKdlp0WVfy82sBPnew8hqP56MjFsITM6Lv//HY5DnU44s3bC+Fm/97DI06pBMrGBuxeFqSZ9+saKfCOeO2pYxhDJzrj5xaAAt0hnHPxmqVv8qVvcqyI4rn7VX/gtByHPAuM+cUCmhg5480brdu09Md1ELyHOo49QEvdacGLYjF/N4YYY7yeQLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7uBpiIvzQ+FIf/mVKJ/rNByhheMQeeFkpVgyq7VNL1g=;
+ b=ME/5TjgC8RFNw6vi8dyk/S/6bREUiGJvuGaDSG0U60ItTWwsjnVfiyyNsCfGOZfzaksxEe4Ntr/67wvv3an+U1Aj4KPysS8nkSupkkvU/FJe2zeC1LQlnqLN/SLuHWNDUzpssmY9CSo3OtshxVhPVIJAxyQ83eOfSQYbiP8F6x/4p2ucZFvgWHb+r2yFjPUMgQMkWaTmb82LTnDhWxnWQeaMQXRLBMUJIJkWc+WDP5IR6HoCFXMa39jUe8yH049ExspUchgBlso4mnhDaJ4eJs+GhXw1qg9xb+Zh7je7wuSZzT6aizC9iLOqdFEDSEIsZWKA/+6y9tJDD2dxYR16HQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7uBpiIvzQ+FIf/mVKJ/rNByhheMQeeFkpVgyq7VNL1g=;
+ b=0bm1ZIM95Hu2po5VIrmizd+Fv9ncJGnqRvFgKqRElRlIYXzQowTdfy+lihV3WV1PSma/Peso1k2KI806AlLVdAxhK2ojKMFt4+eTreYm/PqPOBnatvgZ8sNhmCB+2z4a+ZnYylTysclHG2gFbnkxyKe95P8gfHh4cdAeXtcnxl4=
+Received: from BYAPR08CA0012.namprd08.prod.outlook.com (2603:10b6:a03:100::25)
+ by DS7PR12MB8232.namprd12.prod.outlook.com (2603:10b6:8:e3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Wed, 6 Dec
+ 2023 18:08:46 +0000
+Received: from MWH0EPF000989EC.namprd02.prod.outlook.com
+ (2603:10b6:a03:100:cafe::72) by BYAPR08CA0012.outlook.office365.com
+ (2603:10b6:a03:100::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34 via Frontend
+ Transport; Wed, 6 Dec 2023 18:08:46 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ MWH0EPF000989EC.mail.protection.outlook.com (10.167.241.139) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7068.20 via Frontend Transport; Wed, 6 Dec 2023 18:08:45 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 6 Dec
+ 2023 12:08:44 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Mario Limonciello <mario.limonciello@amd.com>, Mark Herbert
+	<mark.herbert42@gmail.com>, <stable@vger.kernel.org>, Camille Cho
+	<camille.cho@amd.com>, Krunoslav Kovac <krunoslav.kovac@amd.com>, "Hamza
+ Mahfooz" <hamza.mahfooz@amd.com>
+Subject: [PATCH] drm/amd/display: Restore guard against default backlight value < 1 nit
+Date: Wed, 6 Dec 2023 12:08:26 -0600
+Message-ID: <20231206180826.13446-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Content-Language: en-US
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Michael Kelley <mhkelley58@gmail.com>, Nikolay Borisov
- <nik.borisov@suse.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Tom Lendacky
- <thomas.lendacky@amd.com>, "x86@kernel.org" <x86@kernel.org>,
- "Cui, Dexuan" <decui@microsoft.com>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "stefan.bader@canonical.com" <stefan.bader@canonical.com>,
- "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
- "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
- "cascardo@canonical.com" <cascardo@canonical.com>,
- "kys@microsoft.com" <kys@microsoft.com>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "sashal@kernel.org" <sashal@kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
- <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989EC:EE_|DS7PR12MB8232:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e421b1c-59fc-4910-6345-08dbf68663a1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	D3WY2tYIKIKdp1ng0+aMZu2J6E6j+WDyFyC/4bS8pnJ4NF+0+xiWeFxVPnZ0w+fwQkEXtZDNTCEXsdzkt9p3C2cYlf4KwmM6MicY/JSstG8C8t8uOeJ0HNEuVS7SoVj92jDWq/MFJoTWZ2rbC9G4cOJL+QPkb9KtsFvhJD6gKBnb37SLlCMQFl+fYWUiqQ88cBE0s27JJ7B7MfISjIgac9AytdjTgYqUbMnuVjLgIrmjt+/0l5TyISRTMXBSFvT6j/njsPZSDaiFA0vxW6JAQkbO0GoFo2NSwyBLQHTwUzcOotxyHTxRmm2a5d7oeyYJZpN83ha44sZs/HtYRAOt7SYaZhtcXwope8RalJJVzFNd5FZcn/7Sm103hhTKG/vtAAZd5Z/bK2JQFahuXyPis/Q1I07z1hA6Ubh1hOv9Ngu8FSEjzkzaRzO0x1fq4LqP7Vp1Ch3lS90Mhy5u3iz1Fq6vDZ/318nHOzDUYf2/i28tDtucdf3yPagu4s9Wr53U+tNALF4/fuR54qU46kgcCk44WIBsGlsmV0azjtXkmQfTmUHzFSnDYV054CQ1cGhLEVn/w+G5FmccT6hCt/qjH9pbR7dLCVL08gms9eo+hYWm4joKYZ5OtLIgHm+Z7da/NoJgUvxNKckl3YkRayNwQhj/92pRl6SUCpTxTlQONuJGyk5TxoA8QEqZ7+T2LkLaYp8UHXwIKpEwS8VCi1R200fwX7twHmBoJK2D04EPLNCrv46054rxSqVwweAtHU1Y
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(39860400002)(396003)(346002)(230922051799003)(1800799012)(64100799003)(82310400011)(451199024)(186009)(46966006)(36840700001)(40470700004)(82740400003)(356005)(81166007)(478600001)(5660300002)(40480700001)(2906002)(36860700001)(47076005)(44832011)(83380400001)(86362001)(426003)(70586007)(26005)(336012)(1076003)(41300700001)(2616005)(36756003)(70206006)(54906003)(6916009)(40460700003)(316002)(8676002)(6666004)(7696005)(8936002)(4326008)(16526019)(966005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Dec 2023 18:08:45.9066
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e421b1c-59fc-4910-6345-08dbf68663a1
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000989EC.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8232
 
-On 05/12/2023 11:54, Kirill A. Shutemov wrote:
-> On Mon, Dec 04, 2023 at 08:07:38PM +0100, Jeremi Piotrowski wrote:
->> On 04/12/2023 10:17, Reshetova, Elena wrote:
->>>> Check for additional CPUID bits to identify TDX guests running with Trust
->>>> Domain (TD) partitioning enabled. TD partitioning is like nested virtualization
->>>> inside the Trust Domain so there is a L1 TD VM(M) and there can be L2 TD VM(s).
->>>>
->>>> In this arrangement we are not guaranteed that the TDX_CPUID_LEAF_ID is
->>>> visible
->>>> to Linux running as an L2 TD VM. This is because a majority of TDX facilities
->>>> are controlled by the L1 VMM and the L2 TDX guest needs to use TD partitioning
->>>> aware mechanisms for what's left. So currently such guests do not have
->>>> X86_FEATURE_TDX_GUEST set.
->>>
->>> Back to this concrete patch. Why cannot L1 VMM emulate the correct value of
->>> the TDX_CPUID_LEAF_ID to L2 VM? It can do this per TDX partitioning arch.
->>> How do you handle this and other CPUID calls call currently in L1? Per spec,
->>> all CPUIDs calls from L2 will cause L2 --> L1 exit, so what do you do in L1?
->> The disclaimer here is that I don't have access to the paravisor (L1) code. But
->> to the best of my knowledge the L1 handles CPUID calls by calling into the TDX
->> module, or synthesizing a response itself. TDX_CPUID_LEAF_ID is not provided to
->> the L2 guest in order to discriminate a guest that is solely responsible for every
->> TDX mechanism (running at L1) from one running at L2 that has to cooperate with L1.
->> More below.
->>
->>>
->>> Given that you do that simple emulation, you already end up with TDX guest
->>> code being activated. Next you can check what features you wont be able to
->>> provide in L1 and create simple emulation calls for the TDG calls that must be
->>> supported and cannot return error. The biggest TDG call (TDVMCALL) is already
->>> direct call into L0 VMM, so this part doesn’t require L1 VMM support. 
->>
->> I don't see anything in the TD-partitioning spec that gives the TDX guest a way
->> to detect if it's running at L2 or L1, or check whether TDVMCALLs go to L0/L1.
->> So in any case this requires an extra cpuid call to establish the environment.
->> Given that, exposing TDX_CPUID_LEAF_ID to the guest doesn't help.
->>
->> I'll give some examples of where the idea of emulating a TDX environment
->> without attempting L1-L2 cooperation breaks down.
->>
->> hlt: if the guest issues a hlt TDVMCALL it goes to L0, but if it issues a classic hlt
->> it traps to L1. The hlt should definitely go to L1 so that L1 has a chance to do
->> housekeeping.
-> 
-> Why would L2 issue HLT TDVMCALL? It only happens in response to #VE, but
-> if partitioning enabled #VEs are routed to L1 anyway.
+Mark reports that brightness is not restored after Xorg dpms screen blank.
 
-What about tdx_safe_halt? When X86_FEATURE_TDX_GUEST is defined I see
-"using TDX aware idle routing" in dmesg.
+This behavior was introduced by commit d9e865826c20 ("drm/amd/display:
+Simplify brightness initialization") which dropped the cached backlight
+value in display code, but also removed code for when the default value
+read back was less than 1 nit.
 
-> 
->> map gpa: say the guest uses MAP_GPA TDVMCALL. This goes to L0, not L1 which is the actual
->> entity that needs to have a say in performing the conversion. L1 can't act on the request
->> if L0 would forward it because of the CoCo threat model. So L1 and L2 get out of sync.
->> The only safe approach is for L2 to use a different mechanism to trap to L1 explicitly.
-> 
-> Hm? L1 is always in loop on share<->private conversion. I don't know why
-> you need MAP_GPA for that.
-> 
-> You can't rely on MAP_GPA anyway. It is optional (unfortunately). Conversion
-> doesn't require MAP_GPA call.
-> 
+Restore this code so that the backlight brightness is restored to the
+correct default value in this circumstance.
 
-I'm sorry, I don't quite follow. I'm reading tdx_enc_status_changed():
-- TDVMCALL_MAP_GPA is issued for all transitions
-- TDX_ACCEPT_PAGE is issued for shared->private transitions
+Reported-by: Mark Herbert <mark.herbert42@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3031
+Cc: stable@vger.kernel.org
+Cc: Camille Cho <camille.cho@amd.com>
+Cc: Krunoslav Kovac <krunoslav.kovac@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Fixes: d9e865826c20 ("drm/amd/display: Simplify brightness initialization")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ .../amd/display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This doesn't work in partitioning when TDVMCALLs go to L0: TDVMCALL_MAP_GPA bypasses
-L1 and TDX_ACCEPT_PAGE is L1 responsibility.
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+index ac0fa88b52a0..bf53a86ea817 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+@@ -287,8 +287,8 @@ bool set_default_brightness_aux(struct dc_link *link)
+ 	if (link && link->dpcd_sink_ext_caps.bits.oled == 1) {
+ 		if (!read_default_bl_aux(link, &default_backlight))
+ 			default_backlight = 150000;
+-		// if > 5000, it might be wrong readback
+-		if (default_backlight > 5000000)
++		// if < 1 nits or > 5000, it might be wrong readback
++		if (default_backlight < 1000 || default_backlight > 5000000)
+ 			default_backlight = 150000;
+ 
+ 		return edp_set_backlight_level_nits(link, true,
+-- 
+2.34.1
 
-If you want to see how this is currently supported take a look at arch/x86/hyperv/ivm.c.
-All memory starts as private and there is a hypercall to notify the paravisor for both
-TDX (when partitioning) and SNP (when VMPL). This guarantees that all page conversions
-go through L1.
-
->> Having a paravisor is required to support a TPM and having TDVMCALLs go to L0 is
->> required to make performance viable for real workloads.
->>
->>>
->>> Until we really see what breaks with this approach, I don’t think it is worth to
->>> take in the complexity to support different L1 hypervisors view on partitioning.
->>>
->>
->> I'm not asking to support different L1 hypervisors view on partitioning, I want to
->> clean up the code (by fixing assumptions that no longer hold) for the model that I'm
->> describing that: the kernel already supports, has an implementation that works and
->> has actual users. This is also a model that Intel intentionally created the TD-partitioning
->> spec to support.
->>
->> So lets work together to make X86_FEATURE_TDX_GUEST match reality.
-> 
-> I think the right direction is to make TDX architecture good enough
-> without that. If we need more hooks in TDX module that give required
-> control to L1, let's do that. (I don't see it so far)
-> 
-
-I'm not the right person to propose changes to the TDX module, I barely know anything about
-TDX. The team that develops the paravisor collaborates with Intel on it and was also consulted
-in TD-partitioning design.
-
-I'm also not sure what kind of changes you envision. Everything is supported by the
-kernel already and the paravisor ABI is meant to stay vendor independent.
-
-What I'm trying to accomplish is better integration with the non-partitioning side of TDX
-so that users don't see "Memory Encryption Features active: AMD SEV" when running on Intel
-TDX with a paravisor.
 
