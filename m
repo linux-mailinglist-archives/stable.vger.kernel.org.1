@@ -1,39 +1,40 @@
-Return-Path: <stable+bounces-4822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456648069F5
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 09:41:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DADC806A1A
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 09:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C14B4B20D55
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 08:41:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53E2D1C2100D
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 08:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB71A15EAA;
-	Wed,  6 Dec 2023 08:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9188199A3;
+	Wed,  6 Dec 2023 08:50:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from air.basealt.ru (air.basealt.ru [194.107.17.39])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14CBEA1
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 00:40:50 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B191BF1
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 00:49:51 -0800 (PST)
 Received: by air.basealt.ru (Postfix, from userid 490)
-	id 8A6AD2F20244; Wed,  6 Dec 2023 08:40:49 +0000 (UTC)
+	id 2EB732F2023C; Wed,  6 Dec 2023 08:49:50 +0000 (UTC)
 X-Spam-Level: 
 Received: from altlinux.malta.altlinux.ru (obninsk.basealt.ru [217.15.195.17])
-	by air.basealt.ru (Postfix) with ESMTPSA id C8A132F20242;
-	Wed,  6 Dec 2023 08:40:46 +0000 (UTC)
+	by air.basealt.ru (Postfix) with ESMTPSA id 1F30F2F20241;
+	Wed,  6 Dec 2023 08:49:48 +0000 (UTC)
 From: kovalev@altlinux.org
-To: kovalev@altlinux.org
-Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+To: devel-kernel@lists.altlinux.org
+Cc: Vasiliy Kovalev <kovalev@altlinux.org>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
 	dri-devel@lists.freedesktop.org,
 	stable@vger.kernel.org,
 	Jani Nikula <jani.nikula@intel.com>
 Subject: [PATCH 1/1] Revert "drm/edid: Fix csync detailed mode parsing"
-Date: Wed,  6 Dec 2023 11:40:45 +0300
-Message-Id: <20231206084045.111544-2-kovalev@altlinux.org>
+Date: Wed,  6 Dec 2023 11:49:46 +0300
+Message-Id: <20231206084946.111835-2-kovalev@altlinux.org>
 X-Mailer: git-send-email 2.33.8
-In-Reply-To: <20231206084045.111544-1-kovalev@altlinux.org>
-References: <20231206084045.111544-1-kovalev@altlinux.org>
+In-Reply-To: <20231206084946.111835-1-kovalev@altlinux.org>
+References: <20231206084946.111835-1-kovalev@altlinux.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
