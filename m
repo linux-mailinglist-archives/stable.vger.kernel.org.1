@@ -1,304 +1,195 @@
-Return-Path: <stable+bounces-4788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02248806469
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:53:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200A9806470
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 02:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97070B211B3
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 01:53:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A6EA1C20856
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 01:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3213FE6;
-	Wed,  6 Dec 2023 01:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863A33FF5;
+	Wed,  6 Dec 2023 01:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="JmFqKcmz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZlsaJJP+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 202821AA
-	for <stable@vger.kernel.org>; Tue,  5 Dec 2023 17:52:57 -0800 (PST)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1d04c097e34so3304155ad.0
-        for <stable@vger.kernel.org>; Tue, 05 Dec 2023 17:52:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1701827576; x=1702432376; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=nDLvGNW9/3tFWCYIOdv6y08A9oZH+3HGwuQakPaW/Mk=;
-        b=JmFqKcmzwRkZ44NBrp3KLC/C6bs/9S4K19J9eVHhDHfEbvam6IQ7GbR4OyvXfJOvih
-         DLquUo2pbobyqVwWecoaThkVKjPltut55wduBVjeU1s8QdMuFag8C3yYZERzUrutebYO
-         NrTTxFjSzh8rU+3SFh6iIQp9PIlV+E2WwwdHrTXVsXGJre1ROqSpVPRvy56C243PP5BY
-         ULLBAraPtC+Y4rCj5dzTCSOhnkXlVKx/iBOVD1JrZRF/DhZVsIGPkjUF00+dyd3KRPs/
-         PqOa7jGZSEIu8ANgrKVVuTTAlpF7yGGu8XWrO40S5kQAMX0zfWhq0iEqX79JOa25LWbL
-         XQMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701827576; x=1702432376;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nDLvGNW9/3tFWCYIOdv6y08A9oZH+3HGwuQakPaW/Mk=;
-        b=ZFCi5vUdluRjddP+59jxJ6VoAh2ZR0cN9asF2+/K1AxB9rvTsJ9p7zUttjZBkpg9l5
-         rR0e3PBjMf70M+9oCPATYTiVfs4FxAJQzf1VMewisE3/sjgMlA5NG7LDoNwmsfm33w4g
-         +xdeTuuy4O9RiX1lnCYnLTm+hPropmIaokQiFKZ5qZNJoVeaZQTKGaM3VUQdht4yXJME
-         xiST8U2uV6fiFaJ3Cn9KWz/jKPi6Wf85EIungX9VQtwvVPJi5/k8Omt1RI9kSF32PCM9
-         rgVaqKB8kQcWboiYFiRTc/74UWEfyOx3mi9UzEHwhkUmo+tscacPubOTkbxrLcdT/E0d
-         M2YA==
-X-Gm-Message-State: AOJu0YwTblJE/FUdFv8xNdK3l5KD76wOMeWgoID24RwjShtMzgzOAlCh
-	yzNlqvdzTyTrt1nV2Agb7Lvm/8lHnNIeXKDSGQ4Akg==
-X-Google-Smtp-Source: AGHT+IGXxI5diHhHR2nHqDeBrIc1mVD1eSL5aM7V++42H6LiRqz4T6sUV85D2DAIXpKnruQFqNZN/Q==
-X-Received: by 2002:a17:902:da8a:b0:1cf:d660:5b09 with SMTP id j10-20020a170902da8a00b001cfd6605b09mr252115plx.0.1701827576114;
-        Tue, 05 Dec 2023 17:52:56 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id y10-20020a1709027c8a00b001cfa0c04553sm10760385pll.116.2023.12.05.17.52.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 17:52:55 -0800 (PST)
-Message-ID: <656fd3f7.170a0220.90f90.ee22@mx.google.com>
-Date: Tue, 05 Dec 2023 17:52:55 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4217046AC
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 01:54:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B8FC433C8;
+	Wed,  6 Dec 2023 01:54:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701827685;
+	bh=IPFVOrJ1SR6T8KENlRQmx0EQJxyjA1v3HV5oHTiS4XY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZlsaJJP+BStoWyyPKdV40DU6o9tjdwxIFsQpN5BnNbYBMuYMH1og2KkAJ9/E16Xfi
+	 0fiB2r3KxZVhgG/EsOqXtUby8PlH4c0n9tMmJ/D26dQe5P4DwHc/uH6lVCAiu5ijry
+	 5col9iMQ9O2L3+Pf+KKV/aXefKTp6xAnktCXgvjlViMkvIq7xnHKuMY8z74SAlcwFs
+	 g1qvmpaZEVj9R7qGZQAIFGQCPFvQpc5BZyAtOpsIbX2bqFVmUHU9Zn7TYVImRmhTb5
+	 cuAc9KIL0FOfEfymYOx45Mue8cl3kOZhwDLnMd7tXxIqNxZDGn/gnf7qX9kokLFWPD
+	 reNCr5EIlCckA==
+From: mhiramat@kernel.org
+To: stable@vger.kernel.org
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	JP Kobryn <inwardvessel@gmail.com>
+Subject: [PATCH 6.6.y] rethook: Use __rcu pointer for rethook::handler
+Date: Wed,  6 Dec 2023 10:54:35 +0900
+Message-ID: <20231206015435.38870-1-mhiramat@kernel.org>
+X-Mailer: git-send-email 2.43.0.rc2.451.g8631bc7472-goog
+In-Reply-To: <2023120320-obtuse-gap-3bfa@gregkh>
+References: <2023120320-obtuse-gap-3bfa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.262-91-g97430ed51c91
-Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
- 26 warnings (v5.4.262-91-g97430ed51c91)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
 
-stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
-5.4.262-91-g97430ed51c91)
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.262-91-g97430ed51c91/
+Since the rethook::handler is an RCU-maganged pointer so that it will
+notice readers the rethook is stopped (unregistered) or not, it should
+be an __rcu pointer and use appropriate functions to be accessed. This
+will use appropriate memory barrier when accessing it. OTOH,
+rethook::data is never changed, so we don't need to check it in
+get_kretprobe().
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.262-91-g97430ed51c91
-Git Commit: 97430ed51c915b4a8037655ac6656a644fd42e9e
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+NOTE: To avoid sparse warning, rethook::handler is defined by a raw
+function pointer type with __rcu instead of rethook_handler_t.
 
-Warnings Detected:
+Link: https://lore.kernel.org/all/170126066201.398836.837498688669005979.stgit@devnote2/
 
-arc:
-
-arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 2 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-board (gcc-10): 4 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
-nings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Fixes: 54ecbe6f1ed5 ("rethook: Add a generic return hook")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311241808.rv9ceuAh-lkp@intel.com/
+Tested-by: JP Kobryn <inwardvessel@gmail.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+(cherry picked from commit a1461f1fd6cfdc4b8917c9d4a91e92605d1f28dc)
 ---
-For more info write to <info@kernelci.org>
+ include/linux/kprobes.h |  6 ++----
+ include/linux/rethook.h |  7 ++++++-
+ kernel/trace/rethook.c  | 23 ++++++++++++++---------
+ 3 files changed, 22 insertions(+), 14 deletions(-)
+
+diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+index 85a64cb95d75..38a774287bde 100644
+--- a/include/linux/kprobes.h
++++ b/include/linux/kprobes.h
+@@ -202,10 +202,8 @@ extern int arch_trampoline_kprobe(struct kprobe *p);
+ #ifdef CONFIG_KRETPROBE_ON_RETHOOK
+ static nokprobe_inline struct kretprobe *get_kretprobe(struct kretprobe_instance *ri)
+ {
+-	RCU_LOCKDEP_WARN(!rcu_read_lock_any_held(),
+-		"Kretprobe is accessed from instance under preemptive context");
+-
+-	return (struct kretprobe *)READ_ONCE(ri->node.rethook->data);
++	/* rethook::data is non-changed field, so that you can access it freely. */
++	return (struct kretprobe *)ri->node.rethook->data;
+ }
+ static nokprobe_inline unsigned long get_kretprobe_retaddr(struct kretprobe_instance *ri)
+ {
+diff --git a/include/linux/rethook.h b/include/linux/rethook.h
+index 26b6f3c81a76..544e1bbfad28 100644
+--- a/include/linux/rethook.h
++++ b/include/linux/rethook.h
+@@ -29,7 +29,12 @@ typedef void (*rethook_handler_t) (struct rethook_node *, void *, unsigned long,
+  */
+ struct rethook {
+ 	void			*data;
+-	rethook_handler_t	handler;
++	/*
++	 * To avoid sparse warnings, this uses a raw function pointer with
++	 * __rcu, instead of rethook_handler_t. But this must be same as
++	 * rethook_handler_t.
++	 */
++	void (__rcu *handler) (struct rethook_node *, void *, unsigned long, struct pt_regs *);
+ 	struct freelist_head	pool;
+ 	refcount_t		ref;
+ 	struct rcu_head		rcu;
+diff --git a/kernel/trace/rethook.c b/kernel/trace/rethook.c
+index 5eb9b598f4e9..3cebcbaf35a4 100644
+--- a/kernel/trace/rethook.c
++++ b/kernel/trace/rethook.c
+@@ -63,7 +63,7 @@ static void rethook_free_rcu(struct rcu_head *head)
+  */
+ void rethook_stop(struct rethook *rh)
+ {
+-	WRITE_ONCE(rh->handler, NULL);
++	rcu_assign_pointer(rh->handler, NULL);
+ }
+ 
+ /**
+@@ -78,11 +78,17 @@ void rethook_stop(struct rethook *rh)
+  */
+ void rethook_free(struct rethook *rh)
+ {
+-	WRITE_ONCE(rh->handler, NULL);
++	rethook_stop(rh);
+ 
+ 	call_rcu(&rh->rcu, rethook_free_rcu);
+ }
+ 
++static inline rethook_handler_t rethook_get_handler(struct rethook *rh)
++{
++	return (rethook_handler_t)rcu_dereference_check(rh->handler,
++							rcu_read_lock_any_held());
++}
++
+ /**
+  * rethook_alloc() - Allocate struct rethook.
+  * @data: a data to pass the @handler when hooking the return.
+@@ -102,7 +108,7 @@ struct rethook *rethook_alloc(void *data, rethook_handler_t handler)
+ 	}
+ 
+ 	rh->data = data;
+-	rh->handler = handler;
++	rcu_assign_pointer(rh->handler, handler);
+ 	rh->pool.head = NULL;
+ 	refcount_set(&rh->ref, 1);
+ 
+@@ -142,9 +148,10 @@ static void free_rethook_node_rcu(struct rcu_head *head)
+  */
+ void rethook_recycle(struct rethook_node *node)
+ {
+-	lockdep_assert_preemption_disabled();
++	rethook_handler_t handler;
+ 
+-	if (likely(READ_ONCE(node->rethook->handler)))
++	handler = rethook_get_handler(node->rethook);
++	if (likely(handler))
+ 		freelist_add(&node->freelist, &node->rethook->pool);
+ 	else
+ 		call_rcu(&node->rcu, free_rethook_node_rcu);
+@@ -160,11 +167,9 @@ NOKPROBE_SYMBOL(rethook_recycle);
+  */
+ struct rethook_node *rethook_try_get(struct rethook *rh)
+ {
+-	rethook_handler_t handler = READ_ONCE(rh->handler);
++	rethook_handler_t handler = rethook_get_handler(rh);
+ 	struct freelist_node *fn;
+ 
+-	lockdep_assert_preemption_disabled();
+-
+ 	/* Check whether @rh is going to be freed. */
+ 	if (unlikely(!handler))
+ 		return NULL;
+@@ -312,7 +317,7 @@ unsigned long rethook_trampoline_handler(struct pt_regs *regs,
+ 		rhn = container_of(first, struct rethook_node, llist);
+ 		if (WARN_ON_ONCE(rhn->frame != frame))
+ 			break;
+-		handler = READ_ONCE(rhn->rethook->handler);
++		handler = rethook_get_handler(rhn->rethook);
+ 		if (handler)
+ 			handler(rhn, rhn->rethook->data,
+ 				correct_ret_addr, regs);
+-- 
+2.43.0.rc2.451.g8631bc7472-goog
+
 
