@@ -1,114 +1,222 @@
-Return-Path: <stable+bounces-4836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDB63806F8F
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 13:20:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B5C80703D
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 13:52:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8808D281B76
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 12:20:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 454E0281BC7
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 12:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD63D364BE;
-	Wed,  6 Dec 2023 12:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087B2358A2;
+	Wed,  6 Dec 2023 12:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PF1ziB2S"
+	dkim=pass (2048-bit key) header.d=dabbelt-com.20230601.gappssmtp.com header.i=@dabbelt-com.20230601.gappssmtp.com header.b="2TGgnzKk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DB57D3
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 04:20:01 -0800 (PST)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2c9f8faf57bso51159111fa.3
-        for <stable@vger.kernel.org>; Wed, 06 Dec 2023 04:20:01 -0800 (PST)
+Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5D97FA
+	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 04:52:12 -0800 (PST)
+Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6d9d0d0e083so105803a34.2
+        for <stable@vger.kernel.org>; Wed, 06 Dec 2023 04:52:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1701865200; x=1702470000; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+i4Ygk68LEIXvF8ovwCDnUeBvBPCrOF9ltM3kyzBELs=;
-        b=PF1ziB2SIg4qc/OE5MV0auQAj/lWiY3/ZBafxRKxFSVH/WUD9JzLLdMy8jDb9/DnMB
-         5MADX6vbvWyhfx1It6PvZJe+qhOp4apenPvNou5cm1WnhCHAgz8GptVOxlPD85FK1n+K
-         ptDipsmIuNCrM8f1BH0wh7XiMM1VlkdkAsw5jVfcMmP0akwDye0CXlcfZdhbA1bkxHFK
-         /bcRZuB+/9UtwphSDtzxTGd/mvkrgilmrBmwe76Rk7u0bKT7TP2Q8USQzz/eh1S6+m2L
-         nYlsfnBnfTyBRQA3MWRH1i1pfXJNmILB3LZ3yxq21FZcQdMT6i8VAA/Oa4fdnh1/xa9M
-         ezWg==
+        d=dabbelt-com.20230601.gappssmtp.com; s=20230601; t=1701867132; x=1702471932; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u2u6Xixa1YAjeH/4C/qasYXYlNm9UNg6+7+FVH6S5Jo=;
+        b=2TGgnzKkW6nN0nLX+kf0jFILnoeRb3I5NTqsr0TNr1BB9w9aptrxo7OgcieLBY7TMD
+         i03gNEZ+UnYllLb2pC9onzspa1i1814/75dPO3CIUl8ewV3S+ZRZnnKmkI1DAw7GOrCq
+         lPA3kZhfH1kQpA2ABPT/a4M5gQUcH8pCwI2M1CdkkLutD4b40SHZELvAswQ38X++8H5l
+         5/VKb8aHHd8Hl/IDyuKKQ468UuBmxOY/ObHA+gCak3UwP0bop+nM397ycdRplenersvd
+         x0jSTuhhusGYWIt+KifETJJN2QZ5siOvq3ZtN8J3N0m56oNALDIilBFSXZH/u94EuI4M
+         qpow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701865200; x=1702470000;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+i4Ygk68LEIXvF8ovwCDnUeBvBPCrOF9ltM3kyzBELs=;
-        b=TwajJG7Dc+bICbqRApv/3e+A4hTf60TcjAEcW7zlQdFhZCQIiC0qtKmvgPUWShVO/+
-         MGUSnKWNrBOaBHg7yePHUJIO4nXvSO7ZS9PKDKMkqjLIiMZScp3Nr2iwRyzXaLGkBGta
-         C4LOzJUC+qYXeF1aIu0GAYaNeoR4C8PVrq8j/cIzbnYQbRIwjO+mzVXXqM3PyB5+y9qR
-         smYELgESRIpu0b+09enrqVlYCL6UGYPoO6MogtGAhAcEOqLdiSKLZsASuPnk5rLGvvaM
-         9nT2yKQRfpfVSXSyve0A2yhu5Dx+UO3w2kaXfbmPIPbJPgq3NmbtyH+JhU4c8F4w7AHe
-         pgZA==
-X-Gm-Message-State: AOJu0Ywe3ia0OP8Hl6CzJZdV1IRDvrb3MY5lTA6QLG1fa3NVgV5B2tbo
-	8TvTyKW5nD6TGy/C+GQ2J5f3bg==
-X-Google-Smtp-Source: AGHT+IGDUAakGvSrTeFgi2nx9gIOE1y209ymR5Qb+p1nSlHQs/zqcKybiK8Xz1Q0AbYMBjC+NnL+xQ==
-X-Received: by 2002:a2e:3514:0:b0:2ca:18de:5c63 with SMTP id z20-20020a2e3514000000b002ca18de5c63mr553729ljz.72.1701865199839;
-        Wed, 06 Dec 2023 04:19:59 -0800 (PST)
-Received: from [172.30.205.186] (UNUSED.212-182-62-129.lubman.net.pl. [212.182.62.129])
-        by smtp.gmail.com with ESMTPSA id z23-20020a05651c023700b002c9f8d8e5f4sm1209955ljn.41.2023.12.06.04.19.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Dec 2023 04:19:59 -0800 (PST)
-Message-ID: <81b4f158-41e7-43b6-a762-1a05a0994d6e@linaro.org>
-Date: Wed, 6 Dec 2023 13:19:56 +0100
+        d=1e100.net; s=20230601; t=1701867132; x=1702471932;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=u2u6Xixa1YAjeH/4C/qasYXYlNm9UNg6+7+FVH6S5Jo=;
+        b=ILqUegL/Rjvpj2uEDjw1xXXwAcD4VyC6YKQ0o36CT8MDl27Ds09w+vN0QqBaZ3CcxC
+         T8Ta8OZql8gUBb34A8RC1RW8DFq4e6liF2AsJjaFmIoCLk691FszyhD5DvGuy+JTd4p3
+         UDD9cq+UjwVbOiRAmo30s0KIl6CkPe//MRtl0Ztf5gcgL5Com99S9bCMfLw7ZtBrnC+c
+         +icgzL1LDJh7RdxlfKxrDPrMROU1+I7AVhXorOwxi33BS3wTOT5ArMVTTA8/j6JQQ+kS
+         kw3yFR8QtneHrg1qVkbT3sTYFq7MgUzEmD3fjy9sLGvaCB64kIulrLHw8JLHg4TlfHeh
+         3owQ==
+X-Gm-Message-State: AOJu0YyJXVzM2IQw+M8fbJQ3puYqKPULTEHSV00/HVOhQYgkl9xfCzcq
+	/LkBmwCf4xp4MS4PtxfW9LXzSA==
+X-Google-Smtp-Source: AGHT+IFo8cQfWhV8swbKEf3islhCo6malnup6YNIbLn5q10GsK1yfkvEG2E/lOLG+1vPBZPzBrA2sA==
+X-Received: by 2002:a9d:7358:0:b0:6d9:cec2:aa66 with SMTP id l24-20020a9d7358000000b006d9cec2aa66mr283337otk.30.1701867131750;
+        Wed, 06 Dec 2023 04:52:11 -0800 (PST)
+Received: from localhost ([192.184.165.199])
+        by smtp.gmail.com with ESMTPSA id az15-20020a056830458f00b006d94fa88156sm1459097otb.14.2023.12.06.04.52.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Dec 2023 04:52:11 -0800 (PST)
+Date: Wed, 06 Dec 2023 04:52:11 -0800 (PST)
+X-Google-Original-Date: Wed, 06 Dec 2023 04:52:08 PST (-0800)
+Subject:     Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for OpenSBI's PMP protected regions
+In-Reply-To: <20230810-crewless-pampers-6f51aafb8cff@wendy>
+CC: Atish Patra <atishp@rivosinc.com>, Conor Dooley <conor@kernel.org>,
+  Paul Walmsley <paul.walmsley@sifive.com>, apatel@ventanamicro.com, alexghiti@rivosinc.com,
+  Bjorn Topel <bjorn@rivosinc.com>, suagrfillet@gmail.com, jeeheng.sia@starfivetech.com,
+  petrtesarik@huaweicloud.com, linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+  stable@vger.kernel.org
+From: Palmer Dabbelt <palmer@dabbelt.com>
+To: Conor Dooley <conor.dooley@microchip.com>, geert+renesas@glider.be
+Message-ID: <mhng-550dee8b-a2fb-485b-ad4d-2763e94191b4@palmer-ri-x1c9>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT] interconnect: qcom: icc-rpm: Fix peak rate
- calculation
-To: Bjorn Andersson <quic_bjorande@quicinc.com>,
- Andy Gross <agross@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
- Georgi Djakov <djakov@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20231205-qcom_icc_calc_rate-typo-v1-1-9d4378dcf53e@quicinc.com>
-Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-In-Reply-To: <20231205-qcom_icc_calc_rate-typo-v1-1-9d4378dcf53e@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: *
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
+On Thu, 10 Aug 2023 02:07:10 PDT (-0700), Conor Dooley wrote:
+> On Wed, Aug 09, 2023 at 02:01:07AM -0700, Atish Kumar Patra wrote:
+>> On Tue, Aug 8, 2023 at 6:39 AM Conor Dooley <conor@kernel.org> wrote:
+>> >
+>> > On Tue, Aug 08, 2023 at 12:54:11AM -0700, Atish Kumar Patra wrote:
+>> > > On Wed, Aug 2, 2023 at 4:14 AM Conor Dooley <conor.dooley@microchip.com> wrote:
+>> > > >
+>> > > > Add an erratum for versions [v0.8 to v1.3) of OpenSBI which fail to add
+>> > > > the "no-map" property to the reserved memory nodes for the regions it
+>> > > > has protected using PMPs.
+>> > > >
+>> > > > Our existing fix sweeping hibernation under the carpet by marking it
+>> > > > NONPORTABLE is insufficient as there are other ways to generate
+>> > > > accesses to these reserved memory regions, as Petr discovered [1]
+>> > > > while testing crash kernels & kdump.
+>> > > >
+>> > > > Intercede during the boot process when the afflicted versions of OpenSBI
+>> > > > are present & set the "no-map" property in all "mmode_resv" nodes before
+>> > > > the kernel does its reserved memory region initialisation.
+>> > > >
+>> > >
+>> > > We have different mechanisms of DT being passed to the kernel.
+>> > >
+>> > > 1. A prior stage(e.g U-Boot SPL) to M-mode runtime firmware (e.g.
+>> > > OpenSBI, rustSBI) passes the DT to M-mode runtime firmware and it
+>> > > passes to the next stage.
+>> > > In this case, M-mode runtime firmware gets a chance to update the
+>> > > no-map property in DT that the kernel can parse.
+>> > >
+>> > > 2. User loads the DT from the boot loader (e.g EDK2, U-Boot proper).
+>> > > Any DT patching done by the M-mode firmware is useless. If these DTBs
+>> > > don't have the no-map
+>> > > property, hibernation or EFI booting will have issues as well.
+>> > >
+>> >
+>> > > We are trying to solve only one part of problem #1 in this patch.
+>> >
+>> > Correct.
+>> >
+>> > If someone's second stage is also providing an incorrect devicetree
+>> > then, yeah, this approach would fall apart - but it's the firmware
+>> > provided devicetree being incorrect that I am trying to account for
+>> > here. If a person incorrectly constructed one, I am not really sure what
+>> > we can do for them, they incorrect described their hardware /shrug
+>> > My patch should of course help in some of the scenarios you mention above
+>> > if the name of the reserved memory region from OpenSBI is propagated by
+>> > the second-stage bootloader, but that is just an extension of case 1,
+>> > not case 2.
+>> >
+>> > > I
+>> > > don't think any other M-mode runtime firmware patches DT with no-map
+>> > > property as well.
+>> > > Please let me know if I am wrong about that. The problem is not
+>> > > restricted to [v0.8 to v1.3) of OpenSBI.
+>> >
+>> > It comes down to Alex's question - do we want to fix this kind of
+>> > firmware issue in the kernel? Ultimately this is a policy decision that
+>> > "somebody" has to make. Maybe the list of firmwares that need this
+>> 
+>> IMO, we shouldn't as this is a slippery slope. Kernel can't fix every
+>> firmware bug by having erratas.
+>> I agree with your point below about firmware in shipping products. I
+>> am not aware of any official products shipping anything other than
+>> OpenSBI either.
+>
+>> However, I have seen users using other firmwares in their dev
+>> environment.
+>
+> If someone's already changed their boards firmware, I have less sympathy
+> for them, as they should be able to make further changes. Punters buying
+> SBCs to install Fedora or Debian w/o having to consider their firmware
+> are who I am more interested in helping.
+>
+>> IMHO, this approach sets a bad precedent for the future especially
+>> when it only solves one part of the problem.
+>
+> Yeah, I'm certainly wary of setting an unwise precedent here.
+> Inevitably we will need to have firmware-related errata and it'd be good
+> to have a policy for what is (or more importantly what isn't
+> acceptable). Certainly we have said that known-broken version of OpenSBI
+> that T-Head puts in their SDK is not supported by the mainline kernel.
+> On the latter part, I'm perfectly happy to expand the erratum to cover
+> all affected firmwares, but I wasn't even sure if my fix worked
+> properly, hence the request for testing from those who encountered the
+> problem.
+>
+>> We shouldn't hide firmware bugs in the kernel when an upgraded
+>> firmware is already available.
+>
+> Just to note, availability of an updated firmware upstream does not
+> necessarily mean that corresponding update is possible for affected
+> hardware.
 
+Yep.  I think we're been in a very hobbist-centric world in RISC-V land, 
+but in general trying to get people to update firmware is hard.  Part of 
+the whole "kernel updates don't break users" thing is what's underneath 
+the kernel, it's not just a uABI thing.
 
-On 12/5/23 23:14, Bjorn Andersson wrote:
-> Per the commit message of commit 'dd014803f260 ("interconnect: qcom:
-> icc-rpm: Add AB/IB calculations coefficients")', the peak rate should be
-> 100/ib_percent. But, in what looks like a typical typo, the numerator
-> value is discarded in the calculation.
-> 
-> Update the implementation to match the described intention.
-> 
-> Fixes: dd014803f260 ("interconnect: qcom: icc-rpm: Add AB/IB calculations coefficients")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-> ---
-> Spotted while reading the code, patch is untested.
-> ---
->   drivers/interconnect/qcom/icc-rpm.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/interconnect/qcom/icc-rpm.c b/drivers/interconnect/qcom/icc-rpm.c
-> index fb54e78f8fd7..a8ed435f696c 100644
-> --- a/drivers/interconnect/qcom/icc-rpm.c
-> +++ b/drivers/interconnect/qcom/icc-rpm.c
-> @@ -307,7 +307,7 @@ static u64 qcom_icc_calc_rate(struct qcom_icc_provider *qp, struct qcom_icc_node
->   
->   	if (qn->ib_coeff) {
->   		agg_peak_rate = qn->max_peak[ctx] * 100;
-> -		agg_peak_rate = div_u64(qn->max_peak[ctx], qn->ib_coeff);
-> +		agg_peak_rate = div_u64(agg_peak_rate, qn->ib_coeff);
-Oh fun.. I'dve assumed the compiler is smart enough to catch this
+>> This bug is well documented in various threads and fixed in the latest
+>> version of OpenSBI.
+>> I am assuming other firmwares will follow it as well.
+>> 
+>> Anybody facing hibernation or efi related booting issues should just
+>> upgrade to the latest version of firmware (e.g OpenSBI v1.3)
+>> Latest version of Qemu will support(if not happened already) the
+>> latest version of OpenSBI.
+>> 
+>> This issue will only manifest in kernels 6.4 or higher. Any user
+>> facing these with the latest kernel can also upgrade the firmware.
+>> Do you see any issue with that ?
+>
+> I don't think it is fair to compare the ease of upgrading the kernel
+> to that required to upgrade a boards firmware, with the latter being
+> far, far more inconvenient on pretty much all of the boards that I have.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+IMO we're in the same spot as every other port here, and generally they 
+work around firmware bugs when they've rolled out into production 
+somewhere that firmware updates aren't likely to happen quickly.  I'm 
+not sure if there's any sort of exact rules written down anywhere, but 
+IMO if the bug is going to impact users then we should deal with it.
 
-Konrad
+That applies for hardware bugs, but also firmware bugs (at a certain 
+point we won't be able to tell the difference).  We're sort of doing 
+this with the misaligned access handling, for example.
+
+> I'm perfectly happy to drop this series though, if people generally are
+> of the opinion that this sort of firmware workaround is ill-advised.
+> We are unaffected by it, so I certainly have no pressure to have
+> something working here. It's my desire not to be user-hostile that
+> motivated this patch.
+
+IIUC you guys and Reneas are the only ones who have hardware that might 
+be in a spot where users aren't able to update the firmware (ie, it's 
+out in production somewhere).  So I'm adding Geert, though he probably 
+saw this months ago...
+
+On that note: It's been ~4 months and it look like nobody's tested 
+anything (and the comments aren't really things that would preculde 
+testing).  So maybe we just pick that second patch up into for-next and 
+see what happens?  IIUC that will result in broken systems for users who 
+haven't updated their firmware.
+
+I agree that's a user-hostile way to do things, which is generally a bad 
+way to go, but if it's really true that there's no users then we're 
+safe.  Probably also worth calling it out on sw-dev just to be safe.
 
