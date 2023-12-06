@@ -1,102 +1,91 @@
-Return-Path: <stable+bounces-4870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59919807AAA
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 22:43:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70EDB807B38
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 23:16:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDAC2B2111D
-	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 21:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1D2D1C21163
+	for <lists+stable@lfdr.de>; Wed,  6 Dec 2023 22:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A0B70986;
-	Wed,  6 Dec 2023 21:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0CEF563AD;
+	Wed,  6 Dec 2023 22:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="SK7ZQ7m7"
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="Qwz79I/V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F7A998;
-	Wed,  6 Dec 2023 13:42:58 -0800 (PST)
-Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-58d12b53293so139572eaf.0;
-        Wed, 06 Dec 2023 13:42:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701898977; x=1702503777;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=G+/fJM3jhJ9Ym3ibRvsgfYVd/7GnLfdEWeKgca1GSDM=;
-        b=WL6SSoZKkmBmj+Vu4w16S6LdsXnO7fBgo0eEW1ucgEL2WwxJPo9spm09hEpAMZhnJr
-         hOm09mwoMLsLoBobYseXZLWytW+KQvdoyVp4KNLpHO2rXjrovDdDJr1yqAIG0rTDu9Q1
-         yHVk6yOqbPaeOqGtF4TVOMgM84g1t81QPJnLbnKW0inx6RTfvnePVTia9La7PiW09Ilz
-         iGJBYIts0FLSDjlwVYigceO5zTySJerJA0opZXsXUwUhEVrFfb8FzRjrdGgeihTldE7D
-         K0wpseqdRXEMaaP91gKCFV6zb/FTt5BTD6C68xF2mcdTPxS4LFfEorKBKnr582ZrB0vm
-         xk9Q==
-X-Gm-Message-State: AOJu0YxmIhteHWT5QnlYci5XMeboa7o6abcv8Ku0bwFtZc9dmisWDXey
-	X8hcsRnQDRBBgo3EfbIhWsI=
-X-Google-Smtp-Source: AGHT+IEGaBIM38k+345rksTXCmqkaZf55qi/QOP58bKt3rV7Q69ICIjRIzZGQ6PJVsI/HVeMIJBjZg==
-X-Received: by 2002:a05:6358:7e84:b0:170:2abc:6e34 with SMTP id o4-20020a0563587e8400b001702abc6e34mr2358249rwn.19.1701898977379;
-        Wed, 06 Dec 2023 13:42:57 -0800 (PST)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id b1-20020a056a00114100b006cb7bdbc3besm447820pfm.17.2023.12.06.13.42.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Dec 2023 13:42:56 -0800 (PST)
-Date: Wed, 6 Dec 2023 18:42:54 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2023; t=1701898974;
+Received: from aposti.net (aposti.net [89.234.176.197])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5F75DE;
+	Wed,  6 Dec 2023 14:16:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+	s=mail; t=1701900965;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G+/fJM3jhJ9Ym3ibRvsgfYVd/7GnLfdEWeKgca1GSDM=;
-	b=SK7ZQ7m7+KS+DkQUUFCZ8kDv0apQxPzOOmE+WUEaUfR4yg07D0DfAWbIkfyrHlnqOkyLaA
-	u1fXezvaOIrBWqe0X38jIl2m/RnuU34waHDpBbT4cKFcFEqU/CsSA9rLoVLPSHqrN15yIr
-	TMxf4gcQuQtAVryDgbTLrBmiCUTnHMR+6GR+KL0Cq29jap+abUaz+fCUQiBoT+LJ/wLXFM
-	jFFa8l6XjypUwVNkDG+Txs76A/gkNfvS9ul/D9FaEUDHSf8huAELX5nUv1lq0+/+PCpV05
-	5XydvWtHBeFRk+/E7bBv2copG43W8KH7V6N2H5o6zrH4N/GDp+/ayiyusK7NQw==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/134] 6.6.5-rc1 review
-Message-ID: <vtxguldy2soodrfvvfqrvfojlfpo66axtaodszyuguc73mfh4u@qbtwh5qxjuzz>
-References: <20231205031535.163661217@linuxfoundation.org>
+	bh=DeOfiwPqUJFIvt+4ZOkSbwzl+rjE80SmmjKvk0CB4Ks=;
+	b=Qwz79I/VCFDPi94zJjv74DUJAf1YJuPc7LpjnG7RQlkzqrRFAAPIR9wO5LaD+csZ5jmWFI
+	zgztbxfKKGx9TadvY0Lg+7n0GO0mFR7Ty4LlC2254p7pY11r9PejoZD54IvuJPJh7H3w3l
+	rr89iXVhaZxp1FODgHczgMbtSP7Y7WU=
+From: Paul Cercueil <paul@crapouillou.net>
+To: Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Alim Akhtar <alim.akhtar@samsung.com>
+Cc: devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Paul Cercueil <paul@crapouillou.net>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] ARM: dts: samsung: exynos4210-i9100: Unconditionally enable LDO12
+Date: Wed,  6 Dec 2023 23:15:54 +0100
+Message-ID: <20231206221556.15348-2-paul@crapouillou.net>
+In-Reply-To: <20231206221556.15348-1-paul@crapouillou.net>
+References: <20231206221556.15348-1-paul@crapouillou.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231205031535.163661217@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-Spam: Yes
 
-On 23/12/05 12:14PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.5 release.
-> There are 134 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Thu, 07 Dec 2023 03:14:57 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.5-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
+The kernel hangs for a good 12 seconds without any info being printed to
+dmesg, very early in the boot process, if this regulator is not enabled.
 
-No regressions on my system,
-[    0.000000] Linux version 6.6.5-rc1+ (rbmarliere@debian) (Debian clang version 16.0.6 (19), GNU ld (GNU Binutils for Debian) 2.41) #10 SMP PREEMPT_DYNAMIC Wed Dec  6 18:35:57 -03 2023
+Force-enable it to work around this issue, until we know more about the
+underlying problem.
 
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Fixes: 8620cc2f99b7 ("ARM: dts: exynos: Add devicetree file for the Galaxy S2")
+Cc: <stable@vger.kernel.org> # v5.8+
+---
+ arch/arm/boot/dts/samsung/exynos4210-i9100.dts | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Thanks!
+diff --git a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+index a9ec1f6c1dea..a076a1dfe41f 100644
+--- a/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
++++ b/arch/arm/boot/dts/samsung/exynos4210-i9100.dts
+@@ -527,6 +527,14 @@ vtcam_reg: LDO12 {
+ 				regulator-name = "VT_CAM_1.8V";
+ 				regulator-min-microvolt = <1800000>;
+ 				regulator-max-microvolt = <1800000>;
++
++				/*
++				 * Force-enable this regulator; otherwise the
++				 * kernel hangs very early in the boot process
++				 * for about 12 seconds, without apparent
++				 * reason.
++				 */
++				regulator-always-on;
+ 			};
+ 
+ 			vcclcd_reg: LDO13 {
+-- 
+2.42.0
+
 
