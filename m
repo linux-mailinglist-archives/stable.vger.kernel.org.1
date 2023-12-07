@@ -1,141 +1,106 @@
-Return-Path: <stable+bounces-4959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F408092D4
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 21:56:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72018092F0
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 22:04:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004821C209AB
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 20:56:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244901C20C4B
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 21:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD5C4F60D;
-	Thu,  7 Dec 2023 20:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0664C50274;
+	Thu,  7 Dec 2023 21:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L7y6tU9x"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="QoRiMK/Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ED191713;
-	Thu,  7 Dec 2023 12:56:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701982585; x=1733518585;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=n3FnhgX0cW+i0sQ51vehSslGZAw1aIhqgl0Q6Iu8nas=;
-  b=L7y6tU9x+1WX7V0HrYX9My0D2b4ShSkWmwiNYC6o1fHZQc1/TsnCKe2T
-   CWcjz29txcSvl7wJMmJRcUg20haQSCWxdvqIezIcLYjAp5QGbJcJ36tiH
-   lSV88xtAu+E8EW5S7yxVsi5KTpUQXCbU2pVM3XvnE//HC6Nb6JEijcH61
-   yzePQlJFKstw3hyQ2xImy3KjZKEjd+BVUpedy6fp68ozILLhGKwcOpeFB
-   E2GNDarrbNxslIMXlM8N+e0ZCe5CpLUbDVbMgNIt5y6O12WQLw2vc71b9
-   F+cnGnBnjvCXb1P9ztUewJBTumbwu6ke1/7ZA8J2GMLKyFBIsYTMFlAl9
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1383440"
-X-IronPort-AV: E=Sophos;i="6.04,258,1695711600"; 
-   d="scan'208";a="1383440"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 12:56:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="915699144"
-X-IronPort-AV: E=Sophos;i="6.04,258,1695711600"; 
-   d="scan'208";a="915699144"
-Received: from agrische-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.62.188])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 12:56:18 -0800
-Received: by box.shutemov.name (Postfix, from userid 1000)
-	id 4BE2310A42E; Thu,  7 Dec 2023 23:56:16 +0300 (+03)
-Date: Thu, 7 Dec 2023 23:56:16 +0300
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Michael Kelley <mhkelley58@gmail.com>,
-	Nikolay Borisov <nik.borisov@suse.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"x86@kernel.org" <x86@kernel.org>,
-	"Cui, Dexuan" <decui@microsoft.com>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"stefan.bader@canonical.com" <stefan.bader@canonical.com>,
-	"tim.gardner@canonical.com" <tim.gardner@canonical.com>,
-	"roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
-	"cascardo@canonical.com" <cascardo@canonical.com>,
-	"kys@microsoft.com" <kys@microsoft.com>,
-	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
-Message-ID: <20231207205616.4eybazmxianjgud5@box>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
- <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
- <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
- <0c4e33f0-6207-448d-a692-e81391089bea@linux.microsoft.com>
- <20231206225415.zxfm2ndpwsmthc6e@box.shutemov.name>
- <66cff831-1766-4b82-b95a-bc3790a6f24b@linux.microsoft.com>
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08401715
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 13:04:27 -0800 (PST)
+Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-7b7085f4626so2244639f.0
+        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 13:04:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701983067; x=1702587867; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tXvEzGNamUbqRrEd+8gPXXWIOewwxYDCIMTlohmAGFI=;
+        b=QoRiMK/Z9M/7bpN7wxJeH9Ytn/rFh9dfmJgdszH4KaB0TTvLJSTxXTkOisNZgsyGWG
+         dkIadtkDAkS4b9TZfSm45P5Z7AMva6+YYUeqTeb1VvehYUkU6A4/zbB9bwQUqGUWOAVj
+         o8o7THEjtHTFqUeWe29SdFzEvuoPrEGT3wVafZ08RT5KpFO79TSFLQgher4E8KlS40YZ
+         MpqSEFg0qIW80NWGPHasXaJdP9/PNbLKyj2CgQFZGRKXV3bpbqZiOB/8YiamKAsQRXy9
+         Bp/f6M8S6bFuXSz8FhApnN3yaPzIc1Ng6BrVPTJlsfk9/pdvU5Bg8R6aKzPaABakFv0A
+         gmvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701983067; x=1702587867;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tXvEzGNamUbqRrEd+8gPXXWIOewwxYDCIMTlohmAGFI=;
+        b=YecOuu4sv6eV++qjkrnEvHyhofGoYGwQWKEL8IuQqt6H5aLcCyMYGppzKLlvplxVVC
+         w7mOlC9UXcZveafaHxzavoCd6jyv3ouVuqK7FKGr942SpcQ/CuewjxvrljC5VfpfrUb/
+         74QsjdULOvC6ynpLa3L1O5Qq8YPK6jWwpLVDp8z50aYJxNxA+Ho5NG/lcnoRyG43PcP4
+         xO2TNXBiK6I2xL90dUosyOZUJn6vrAz8W4+tsXzUrynzCv3rSbpVHYp69j9o2LDkF90a
+         vMzfQIk1+29QfVpq+NRUOqTHh1TXJWEevWOKOnseG/dbrQsWHYZ6amGszZHQ6wi3oJO1
+         2TTQ==
+X-Gm-Message-State: AOJu0Yxcks/kRhaDsG5mS4o4dEFRXa6WjzifGmAGSlVnhIUbFtmr+9pA
+	uPXpWYa0RkljbD1AlWCI4w5wJw==
+X-Google-Smtp-Source: AGHT+IHD6Hl71ge/A3HXgZbYEah2+7DDoF0+51S3+Ha7PvHo1MdC6v1kljCPHJ00TvAeoRdBNPUd1g==
+X-Received: by 2002:a6b:f105:0:b0:7b6:fb5d:fe4d with SMTP id e5-20020a6bf105000000b007b6fb5dfe4dmr2666390iog.2.1701983067233;
+        Thu, 07 Dec 2023 13:04:27 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id f10-20020a056638118a00b0043a1b74a0e3sm115951jas.90.2023.12.07.13.04.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Dec 2023 13:04:26 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, 
+ Hugh Dickins <hughd@google.com>, linux-mm@kvack.org, 
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+In-Reply-To: <20230814144100.596749-1-willy@infradead.org>
+References: <20230814144100.596749-1-willy@infradead.org>
+Subject: Re: [PATCH] block: Remove special-casing of compound pages
+Message-Id: <170198306635.1954272.10907610290128291539.b4-ty@kernel.dk>
+Date: Thu, 07 Dec 2023 14:04:26 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66cff831-1766-4b82-b95a-bc3790a6f24b@linux.microsoft.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13-dev-7edf1
 
-On Thu, Dec 07, 2023 at 06:06:38PM +0100, Jeremi Piotrowski wrote:
-> > 
-> >> This doesn't work in partitioning when TDVMCALLs go to L0: TDVMCALL_MAP_GPA bypasses
-> >> L1 and TDX_ACCEPT_PAGE is L1 responsibility.
-> >>
-> >> If you want to see how this is currently supported take a look at arch/x86/hyperv/ivm.c.
-> >> All memory starts as private and there is a hypercall to notify the paravisor for both
-> >> TDX (when partitioning) and SNP (when VMPL). This guarantees that all page conversions
-> >> go through L1.
-> > 
-> > But L1 guest control anyway during page conversion and it has to manage
-> > aliases with TDG.MEM.PAGE.ATTR.RD/WR. Why do you need MAP_GPA for that?
+
+On Mon, 14 Aug 2023 15:41:00 +0100, Matthew Wilcox (Oracle) wrote:
+> The special casing was originally added in pre-git history; reproducing
+> the commit log here:
+> 
+> > commit a318a92567d77
+> > Author: Andrew Morton <akpm@osdl.org>
+> > Date:   Sun Sep 21 01:42:22 2003 -0700
 > >
+> >     [PATCH] Speed up direct-io hugetlbpage handling
+> >
+> >     This patch short-circuits all the direct-io page dirtying logic for
+> >     higher-order pages.  Without this, we pointlessly bounce BIOs up to
+> >     keventd all the time.
 > 
-> When the L2 wants to perform a page conversion it needs to notify L1 of this so that it
-> can do its part managing the aliases. Without L1 involvement the conversion doesn't
-> happen. MAP_GPA is not suitable for this purpose as I've described and you've confirmed
-> above.
+> [...]
 
-Memory conversion causes exit to L1 as there will be no aliases in L2
-otherwise. There's no need to intercept MAP_GPA for that. See section
-21.8 of TD partitioning spec.
+Applied, thanks!
 
->  
-> > One possible change I mentioned above: make TDVMCALL exit to L1 for some
-> > TDVMCALL leafs (or something along the line).
-> > 
-> 
-> You can explore changes to TDVMCALL handling in the TDX module but I don't see any reason
-> this would be adopted, because a shared hypercall to control page visibility for SNP & TDX is
-> already part of Hyper-V ABI and works great for this purpose.
-> 
-> > I would like to keep it transparent for enlightened TDX Linux guest. It
-> > should not care if it runs as L1 or as L2 in your environment.
-> 
-> I understand that is how you would prefer it but, as we've established in these emails,
-> that doesn't work when the L1 paravisor provides services to the L2 with an L1 specific
-> protocol and TDVMCALLs are routed to L0 for performance reasons. It can't be done
-> transparently with TDX 1.5 calls alone and we already have TDX 1.5 deployed to users with
-> an upstream kernel.
+[1/1] block: Remove special-casing of compound pages
+      commit: 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55
 
-TDX 1.5 is not set in stone (yet). The spec is still draft. We can add
-capabilities if we make case for them.
-
-Let's try to shift the discussion to how to make TDX better rather than
-adding workaround to kernel.
-
+Best regards,
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jens Axboe
+
+
+
 
