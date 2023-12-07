@@ -1,92 +1,119 @@
-Return-Path: <stable+bounces-4939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C7A2808CDF
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 17:05:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5D95808CF6
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 17:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C11281CD7
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:05:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FEF7B21064
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538D746523;
-	Thu,  7 Dec 2023 16:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D48746B94;
+	Thu,  7 Dec 2023 16:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="nMuPgILV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BdawM9b3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E35A9A3;
-	Thu,  7 Dec 2023 08:05:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
-	:Date:subject:date:message-id:reply-to;
-	bh=SySsyGcu2+Rhlw3fV2fvXq/y4sERddpzVieViCi3PSE=; b=nMuPgILV62egRS6/gPgmdMBvsM
-	/dW1GP+wbaffCJ0MeIOCA7YBYiS7npsODPZ6T2ODMIDdLC9Kje6VH1QVTMOpLgPS6tQzCtZp5Kl/I
-	2J8RWDKFlzfR/BQ+mAylvcWRbdbLjS1m4m0grM/Cy39rHwBKHLOhRPmktNao7nxesV8E=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:49036 helo=pettiford)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1rBGsi-00073a-Fe; Thu, 07 Dec 2023 11:05:45 -0500
-Date: Thu, 7 Dec 2023 11:05:44 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: jirislaby@kernel.org, hvilleneuve@dimonoff.com,
- linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
-Message-Id: <20231207110544.43edc9e404c599bf3dd3bf5c@hugovil.com>
-In-Reply-To: <2023120748-macaroni-gaining-335f@gregkh>
-References: <20231130191050.3165862-1-hugo@hugovil.com>
-	<20231130191050.3165862-2-hugo@hugovil.com>
-	<2023120748-macaroni-gaining-335f@gregkh>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A1AA10FF;
+	Thu,  7 Dec 2023 08:14:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701965685; x=1733501685;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p1g4KkA0JbfZhaiHdJWzaUcY/5IFDKB88xgppTOzQ6s=;
+  b=BdawM9b3V+uzVZP6wlb26V6F9hTsU8jHERFgFUZaDwcxy9SUV5j93xGt
+   EUSSRQ6akFXGXIJKBfhWh73fN/yNsv8fIQKOcSRYzWkT9CosI3Q80fuR5
+   zhBk6YtfgeWdy4lsIEGkHUBXGA5yHxq4kawchdpJ6FLJeBnKf9UXNhy6z
+   0XmGueR/veIFF+8EmSdUUFBzOuuAasIUEU7O5deIx/bkS0b7PviQMYMca
+   xzm8Wnl3QlhDCsMXVqROL3ueb6N/i17aj8XpsAmqJEdSRYZBC3xrpamKF
+   POlpeRygJXzjPV6QF/tSx5ztoCRwBvMu6h4N3S26YeWPzk6N5kdlRo+s3
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1083991"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="1083991"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 08:14:45 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="889797110"
+X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
+   d="scan'208";a="889797110"
+Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
+  by fmsmga002.fm.intel.com with ESMTP; 07 Dec 2023 08:14:34 -0800
+Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rBH1E-000CTW-1F;
+	Thu, 07 Dec 2023 16:14:32 +0000
+Date: Fri, 8 Dec 2023 00:13:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	stable@vger.kernel.org,
+	Alison Schofield <alison.schofield@intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>
+Subject: Re: [PATCH] cxl/hdm: Fix dpa translation locking
+Message-ID: <202312080021.eQEtUpnB-lkp@intel.com>
+References: <170192142664.461900.3169528633970716889.stgit@dwillia2-xfh.jf.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
- sc16is7xx_regmap_name()
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <170192142664.461900.3169528633970716889.stgit@dwillia2-xfh.jf.intel.com>
 
-On Thu, 7 Dec 2023 10:45:48 +0900
-Greg KH <gregkh@linuxfoundation.org> wrote:
+Hi Dan,
 
-> On Thu, Nov 30, 2023 at 02:10:43PM -0500, Hugo Villeneuve wrote:
-> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > 
-> > Change snprint format specifier from %d to %u since port_id is unsigned.
-> > 
-> > Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-> > Cc: stable@vger.kernel.org # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
-> > Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> > ---
-> > I did not originally add a "Cc: stable" tag for commit 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-> > as it was intended only to improve debugging using debugfs. But
-> > since then, I have been able to confirm that it also fixes a long standing
-> > bug in our system where the Tx interrupt are no longer enabled at some
-> > point when transmitting large RS-485 paquets (> 64 bytes, which is the size
-> > of the FIFO). I have been investigating why, but so far I haven't found the
-> > exact cause, altough I suspect it has something to do with regmap caching.
-> > Therefore, I have added it as a prerequisite for this patch so that it is
-> > automatically added to the stable kernels.
-> 
-> As you are splitting fixes from non-fixes in this series, please resend
-> this as 2 different series, one that I can apply now to my tty-linus
-> branch to get merged for 6.7-final, and one that can go into tty-next
-> for 6.8-rc1.  Mixing them up here just ensures that they all would get
-> applied to tty-next.
+kernel test robot noticed the following build warnings:
 
-Ok, makes sense. Will do after I fix the 0-day issue.
+[auto build test WARNING on linus/master]
+[also build test WARNING on v6.7-rc4 next-20231207]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Thank you,
-Hugo.
+url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/cxl-hdm-Fix-dpa-translation-locking/20231207-115958
+base:   linus/master
+patch link:    https://lore.kernel.org/r/170192142664.461900.3169528633970716889.stgit%40dwillia2-xfh.jf.intel.com
+patch subject: [PATCH] cxl/hdm: Fix dpa translation locking
+config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20231208/202312080021.eQEtUpnB-lkp@intel.com/config)
+compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231208/202312080021.eQEtUpnB-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202312080021.eQEtUpnB-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/cxl/core/port.c:231:36: warning: format specifies type 'unsigned long long' but the argument has type 'resource_size_t' (aka 'unsigned int') [-Wformat]
+           return sysfs_emit(buf, "%#llx\n", cxl_dpa_resource_start(cxled));
+                                   ~~~~~     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                                   %#x
+   1 warning generated.
+
+
+vim +231 drivers/cxl/core/port.c
+
+   224	
+   225	static ssize_t dpa_resource_show(struct device *dev, struct device_attribute *attr,
+   226				    char *buf)
+   227	{
+   228		struct cxl_endpoint_decoder *cxled = to_cxl_endpoint_decoder(dev);
+   229	
+   230		guard(rwsem_read)(&cxl_dpa_rwsem);
+ > 231		return sysfs_emit(buf, "%#llx\n", cxl_dpa_resource_start(cxled));
+   232	}
+   233	static DEVICE_ATTR_RO(dpa_resource);
+   234	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
