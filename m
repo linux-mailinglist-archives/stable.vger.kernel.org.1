@@ -1,32 +1,32 @@
-Return-Path: <stable+bounces-4894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 684D5807E9B
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E62807E9C
 	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 03:37:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B652C28260F
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 02:37:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 109BC2825EB
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 02:37:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16061A51;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4533A137F;
 	Thu,  7 Dec 2023 02:37:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2F436C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C3662D
 	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 02:37:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496E2C433C9;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 838A8C433CB;
 	Thu,  7 Dec 2023 02:37:49 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.97)
 	(envelope-from <rostedt@goodmis.org>)
-	id 1rB4HK-00000001aMj-49r6;
+	id 1rB4HL-00000001aND-19dP;
 	Wed, 06 Dec 2023 21:38:19 -0500
-Message-ID: <20231207023818.766723807@goodmis.org>
+Message-ID: <20231207023819.059291958@goodmis.org>
 User-Agent: quilt/0.67
-Date: Wed, 06 Dec 2023 21:37:53 -0500
+Date: Wed, 06 Dec 2023 21:37:54 -0500
 From: Steven Rostedt <rostedt@goodmis.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
@@ -34,7 +34,7 @@ Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  stable@vger.kernel.org
-Subject: [for-linus][PATCH 1/8] tracing: Always update snapshot buffer size
+Subject: [for-linus][PATCH 2/8] tracing: Stop current tracer when resizing buffer
 References: <20231207023752.712829638@goodmis.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -46,81 +46,66 @@ Content-Type: text/plain; charset=UTF-8
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-It use to be that only the top level instance had a snapshot buffer (for
-latency tracers like wakeup and irqsoff). The update of the ring buffer
-size would check if the instance was the top level and if so, it would
-also update the snapshot buffer as it needs to be the same as the main
-buffer.
+When the ring buffer is being resized, it can cause side effects to the
+running tracer. For instance, there's a race with irqsoff tracer that
+swaps individual per cpu buffers between the main buffer and the snapshot
+buffer. The resize operation modifies the main buffer and then the
+snapshot buffer. If a swap happens in between those two operations it will
+break the tracer.
 
-Now that lower level instances also has a snapshot buffer, they too need
-to update their snapshot buffer sizes when the main buffer is changed,
-otherwise the following can be triggered:
+Simply stop the running tracer before resizing the buffers and enable it
+again when finished.
 
- # cd /sys/kernel/tracing
- # echo 1500 > buffer_size_kb
- # mkdir instances/foo
- # echo irqsoff > instances/foo/current_tracer
- # echo 1000 > instances/foo/buffer_size_kb
-
-Produces:
-
- WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
-
-Which is:
-
-	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
-
-	if (ret == -EBUSY) {
-		[..]
-	}
-
-	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
-
-That's because ring_buffer_swap_cpu() has:
-
-	int ret = -EINVAL;
-
-	[..]
-
-	/* At least make sure the two buffers are somewhat the same */
-	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
-		goto out;
-
-	[..]
- out:
-	return ret;
- }
-
-Instead, update all instances' snapshot buffer sizes when their main
-buffer size is updated.
-
-Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
+Link: https://lkml.kernel.org/r/20231205220010.748996423@goodmis.org
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Fixes: 3928a8a2d9808 ("ftrace: make work with new ring buffer")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ kernel/trace/trace.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 9aebf904ff97..231c173ec04f 100644
+index 231c173ec04f..e978868b1a22 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
-@@ -6392,8 +6392,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 		return ret;
+@@ -6387,9 +6387,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ 	if (!tr->array_buffer.buffer)
+ 		return 0;
+ 
++	/* Do not allow tracing while resizng ring buffer */
++	tracing_stop_tr(tr);
++
+ 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
+ 	if (ret < 0)
+-		return ret;
++		goto out_start;
  
  #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
--	    !tr->current_trace->use_max_tr)
-+	if (!tr->current_trace->use_max_tr)
- 		goto out;
+ 	if (!tr->current_trace->use_max_tr)
+@@ -6417,7 +6420,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ 			WARN_ON(1);
+ 			tracing_disabled = 1;
+ 		}
+-		return ret;
++		goto out_start;
+ 	}
  
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+ 	update_buffer_entries(&tr->max_buffer, cpu);
+@@ -6426,7 +6429,8 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
+ #endif /* CONFIG_TRACER_MAX_TRACE */
+ 
+ 	update_buffer_entries(&tr->array_buffer, cpu);
+-
++ out_start:
++	tracing_start_tr(tr);
+ 	return ret;
+ }
+ 
 -- 
 2.42.0
 
