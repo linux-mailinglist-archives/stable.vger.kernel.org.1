@@ -1,276 +1,192 @@
-Return-Path: <stable+bounces-4904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE480807F91
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 05:27:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 843FA808000
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 06:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 842B81F212A6
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 04:27:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D7AA281A66
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 05:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E6D5693;
-	Thu,  7 Dec 2023 04:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF04107B3;
+	Thu,  7 Dec 2023 05:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="YsiFWQF0"
+	dkim=pass (2048-bit key) header.d=anarazel.de header.i=@anarazel.de header.b="gwK4x++V";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="3eGwlA49"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2051.outbound.protection.outlook.com [40.107.22.51])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69438A9
-	for <stable@vger.kernel.org>; Wed,  6 Dec 2023 20:27:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UZTnXrOAFT7yd5pn8HmR6WORyiYYx92v54gTF4V3ax2dc1IeZdSVD+w8OwDQEYCnNfA29Fe+nJjO1QW0CgJRokYXAyrmn00PxThvRKHdDb11bgscjBnLjFGMLVXEq+RLbJFipFDCYjGjnzdmLFfNMRzWxFtqwUYzLgLylAdPkk+hlcQhHfHVnVfZNbQ+0HkWZHMniuZqC73/kh6INjDCC99VvljSt9LHvygKjfup54vosD+oyx6psH6Y7pj33Go5Tbxbxofjnholla6jup5qZ6YavX/goSmmCpTwjD1eG62/RxRO+oDSpvE3qGKCoytVmacPbR5yyEmnSD77YEbtWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OL5Y819qlfDwp4a57XDHMIV2KVl8xlV6AoajYMuWRwg=;
- b=l/VuOEVbX1DjcdmBEEIe/g31e5tfzj78/S/bkXHmMcv1SLwrC1Wg1ilsUj5jlH4cgfCwgT7Fpy/8AcS+IoLe42ZeK4+4RrUW5oSGKNh32zppkelalQO8fKPoLQrcNVJslxHjTEn3Z9MtPd7K9GOj4TNTHNM/URWBd4KEstlFgluV4g70+XjfE0BJUkEnlAZDxkKJ/eWs/1iVXhq/mAdMG/v7HGX4oxX7UgbNoeIuiGkfwiAUDqMqF2iDaRBYyP975qD2TPj2Tk+WhYe8Ag7vodi2xWW3aIeq/TJLpBqGETXwW/JI+8iPC19D//DYL89BZGNolP+GTVm3w6muYa6OEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OL5Y819qlfDwp4a57XDHMIV2KVl8xlV6AoajYMuWRwg=;
- b=YsiFWQF0SlAvZlYuv1lRyZqHJpD8lzDJ+DNL7b/0zCPjscREiSPkMDimIyDfY2LJMeSPEQEUfMw7gwTW3xeks4GahseYBa1WRIZ2Hb4zamPG9QIH+EMbgwtPlmCVGTYVlUwuWRZxKomEpDINyF6AAeLnZICvZVNHCnzkVoNGkdM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by AM9PR04MB8569.eurprd04.prod.outlook.com (2603:10a6:20b:434::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.27; Thu, 7 Dec
- 2023 04:26:57 +0000
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::34dd:289e:9e8b:9c9b]) by PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::34dd:289e:9e8b:9c9b%7]) with mapi id 15.20.7068.027; Thu, 7 Dec 2023
- 04:26:57 +0000
-From: David Lin <yu-hao.lin@nxp.com>
-To: francesco@dolcini.it
-Cc: tsung-hsien.hsieh@nxp.com,
-	David Lin <yu-hao.lin@nxp.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] wifi: mwifiex: add extra delay for firmware ready
-Date: Thu,  7 Dec 2023 12:26:15 +0800
-Message-Id: <20231207042615.201793-1-yu-hao.lin@nxp.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR02CA0081.apcprd02.prod.outlook.com
- (2603:1096:4:90::21) To PA4PR04MB9638.eurprd04.prod.outlook.com
- (2603:10a6:102:273::20)
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287E3D53;
+	Wed,  6 Dec 2023 21:10:41 -0800 (PST)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailout.nyi.internal (Postfix) with ESMTP id 7F6CA5C0212;
+	Thu,  7 Dec 2023 00:10:38 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Thu, 07 Dec 2023 00:10:38 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=anarazel.de; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+	1701925838; x=1702012238; bh=Z3Xli2pOVHMbO4d5HDdfaRwqVwxvsQsrbmu
+	GcEpy9xI=; b=gwK4x++VCHNA3TzbdtOAHjyugPMqyAupkJnWbkrbilgAV3Lf5P7
+	05722qsMcPKgmZ1dUn1e+H2mNub8rr7EfkWIBFRGNQaK1EMYY2SdAa1hGLyxwYMO
+	Svp+fQCpxmvJGv4dB4Z0ywFOCKSrQJTlLMcVOl4zpHvJj5Eu3W4oXI6dnpChiiNJ
+	eIsG42/7NYb8LyCQZCyoVIADFuNax00gBT4MgT9y3c2gLBlIMgcFFcvIVBKWeHUX
+	gh7baREcyi6M9UK+4bSLw687PD6Cllz43nqhT/9SIJjC+da2SgH679XIBDmkrRRe
+	Rw1bkG+cWWEd+N7IN86R7ApX3UUezts5dHQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:sender:subject:subject:to:to:x-me-proxy
+	:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1701925838; x=1702012238; bh=Z3Xli2pOVHMbO4d5HDdfaRwqVwxvsQsrbmu
+	GcEpy9xI=; b=3eGwlA49VGICR5s3rPrh6zPKV11Y+Lmas/r7XLUalIBU6dr3an3
+	k31TNCFFDOMYsUxTVzM0C32i8vp9DFBPa7npJAuEsh6hZcvkAG4m6efyEWNybtfW
+	ZiZV46PCgpqn2D5XuHuIuXGyPdihyZYJ5oBkjkAtJSQpXqfBURmb617fTbtS9+gr
+	VDrDY8TEunBtBdkO26LvA/m8ZFWqkocpLA9GdOfi6lXuHNu4/qcnp+RU+F+Lr9i5
+	KUeSsfQMDgSCOp+zwV5TpKOwT4/8ae9vv88UZALoSwn6DArFejKoIzbuwVy5uUbx
+	AnBsSvz6H/hYrhtFkK0dNxLImHRnpnGkIjA==
+X-ME-Sender: <xms:zVNxZYTlBZiQsQGMb2pG0h-iRsxvLDrr0M7DSsertsvWUCPpYsCTtg>
+    <xme:zVNxZVxtXVyckV_TA3KYIyZy7fHKPermMFHQJnTvVNJx6UmNBA8Ml4YEi5Z0xOqHV
+    nOJXj2bRfTD9SYzMA>
+X-ME-Received: <xmr:zVNxZV2QONTloWeRiqBNUmLSDEr93Z82ZfN9PKMl54ujS4VWT4lWIRQNy9tWi-oq2k5WmP_zJxSr86v2AlckBELuh7CTnML6m9-y74NllFlkZfSlVJCNsGnN8bA0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudekuddgkedtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpeetnhgu
+    rhgvshcuhfhrvghunhguuceorghnughrvghssegrnhgrrhgriigvlhdruggvqeenucggtf
+    frrghtthgvrhhnpeehkefhtefhiefhtdegieeifeevfefhgeekvdevieeltedvieeuhfdv
+    ledtleejhfenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghnughrvghssegrnhgrrhgriigv
+    lhdruggv
+X-ME-Proxy: <xmx:zVNxZcBxaC5DA5U56uC9b_diIRjXSwLUl4FtS2evBlprhalOzkGD7A>
+    <xmx:zVNxZRiz7jG99d-HhwcVcPtCmOT8225yPmUkQg0c1rtIT6jnvWY3rg>
+    <xmx:zVNxZYptkCKCaEFdfXUk0mSrTdqebrt4NjNxIl-ROieif63IdaNaMg>
+    <xmx:zlNxZYOCfUH7511ZfTieLj_CbCaDCDfqMsbrSIUBxCIlD-I9A2MpUw>
+Feedback-ID: id4a34324:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Dec 2023 00:10:36 -0500 (EST)
+Date: Wed, 6 Dec 2023 21:10:35 -0800
+From: Andres Freund <andres@anarazel.de>
+To: "Zhang, Rui" <rui.zhang@intel.com>
+Cc: "linux-tip-commits@vger.kernel.org" <linux-tip-commits@vger.kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>, "bp@alien8.de" <bp@alien8.de>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"jsperbeck@google.com" <jsperbeck@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"tip-bot2@linutronix.de" <tip-bot2@linutronix.de>
+Subject: Re: [tip: x86/urgent] x86/acpi: Ignore invalid x2APIC entries
+Message-ID: <20231207051035.yef3jix44uo6jlav@awork3.anarazel.de>
+References: <169953729188.3135.6804572126118798018.tip-bot2@tip-bot2>
+ <20231122221947.781812-1-jsperbeck@google.com>
+ <1e565bb08ebdd03897580a5905d1d2de01e15add.camel@intel.com>
+ <904ce2b870b8a7f34114f93adc7c8170420869d1.camel@intel.com>
+ <20231206065850.hs7k554v6wym7gw5@awork3.anarazel.de>
+ <c3b064004a1748c68829f804b3da56a610fbfc8e.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|AM9PR04MB8569:EE_
-X-MS-Office365-Filtering-Correlation-Id: 97a90ff0-e682-43fe-9f5b-08dbf6dcbfd1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	v3ypPfce+1TNWbqa8Ro1cx7qOwJwrvUrHVum2AyjmGJaWsnRP5FlXslEMsk6jPb/2QdI95oxH0eHGvS0TQ3KdPbaW8KXchngMKbKEk++CF5pyUgviLsS8qtR6tkv9ZzVMThK5kTvfXRCLwluAsVbDG3UZ7Y3LPmI2S9K/KvvxRSs3ZXFrhhfOXiqkJ+pA65Yv4g6O8qlByVWD0FvG1AjhuixcivbNd1vvRTCuKkrWR5SDuUIaRSkmQqQslg4QByBGn/RmyKOiESOYMrfhMLkhrgqiw4DQ/sXX1k6xYg/WjPG79Zh+WrSzOAi+UD1Ec6nwaRas4cx1ca25cIDBktO5lzdkz4ieNr9TRJCKEbkFtAp4B5N4zS1qtTg3WfEE6f/n+SdhT2ECExx50GhPbAI/11oQNVuwm7jbuUTXm4x+x8BrqvQ9BqO4tReRy9ht3ng+F1m+NI6osWRlm0wAY1qKxJK4j0NqnMxQS6fBdOGZGreaxij9Wizrrgu/RpjbRWRwFbybGQGrTdiXXDhgiXu5BBq3MPsza/ukbwD0/FKdpW4rEsbIuH6HvqPBFfVBi8PrDTrpe4k/m60PrJnIhUbBg/ZJzAMqlrbuEWeqj44bC6ZvCPoYulDz38bUIH/6NqQ
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366004)(396003)(136003)(346002)(376002)(39860400002)(230922051799003)(451199024)(186009)(1800799012)(64100799003)(8936002)(8676002)(4326008)(38100700002)(316002)(66946007)(66476007)(6916009)(66556008)(41300700001)(86362001)(36756003)(5660300002)(2906002)(2616005)(1076003)(26005)(6512007)(478600001)(6486002)(6506007)(52116002)(6666004)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4VrqmIkJmlRwBFxqI3GC5X/un5fxQUlkyOOn1QEoWUTFAUflzGPGI1AB/EFz?=
- =?us-ascii?Q?jmWvfL89juhZWAYcO4dVXF722Zt2KPr4nuRJkZ0RWFzuRsiLuZH9Y1yU9SOP?=
- =?us-ascii?Q?KyKWQgQRqWAZyXj0XP2D7q2/5ibVL/mNrL2lTHN25D98jP9GQF1zAr+P7WhN?=
- =?us-ascii?Q?rpcIbcZqeY/QT4J3WZA0xEjtRjjtD0mUsqwwkzckrD6ZU41KJSILU+8lc9hJ?=
- =?us-ascii?Q?oJdMJCez2soBjHyafkm2xsRGVYi4MJ4KwDMAJFS7LBk5MANvTiYTkFyVF90W?=
- =?us-ascii?Q?eM9+BbgXEXbWqaOrW6pihCQNr9kRpSAc9jaSoYZStbdj1jzb2Dn04hzrg3Mo?=
- =?us-ascii?Q?vmYy8dlT1h3kLiRYJojw1+7WRDIc6rXq4HgG2lMBPMA9S/u7cpKotCXQECAm?=
- =?us-ascii?Q?2yuNp9bpok49dDyUNxcYq3NdmQO9s9pcQ1hw1TacKbI/GO3XmOG0UAl7/jrF?=
- =?us-ascii?Q?je5TghbJBXsDU09S06tSS86tmhA9uIfRU0knumL87rNt9CmWrpAKYAmOgehX?=
- =?us-ascii?Q?rwMm3OjBAfUaF//3M69tz6RgGEvItv8Yb2zrRKKCQzS7fnDAwqfT9EUULIpb?=
- =?us-ascii?Q?F4/B2UrEoCzGgwNmWgRAFG+MldmvvBi4JEofC8Y/HIEu/E/wIcmggyfJcbmb?=
- =?us-ascii?Q?t64zaVM3rdcbvxrCNgdVM145opOvZDI1ORWqAkabXy6G59VCigxftSObrXsU?=
- =?us-ascii?Q?tZA2VrZURqx9bzBknabj/etv5XJ3ncmMiTdkiwTujXvC7OMPcpjx7hZekz6Q?=
- =?us-ascii?Q?lpMVrSo/sJ3eHX/0/C44OiKGbNh6RfK6xUjtvySPi8AQl2xT5r+glP1QJJm1?=
- =?us-ascii?Q?AXLOZM7GJHBb7ueqs+Twj36Xwt8ZHOdriF2PfQb0ij46mBxx0O8Dc4BtPITs?=
- =?us-ascii?Q?sl97NULybIairEpjtdJe6q4A1EuNjXmCWj7Tv0kJfqKoQc5bhUJqC32Oh93a?=
- =?us-ascii?Q?EumucwD8Ng38dqy2JCgAj5osYfAGTWmi0tFjMxr2Sir6VcHAMKmSDUmpkd9M?=
- =?us-ascii?Q?gF/hV9Q2dRog29xIfP/a4xVak34QBbJfmnSmnwOq4Ldt/pGKjdjwOnqvOmdz?=
- =?us-ascii?Q?JssZvmHg7Xj3M92useiQdcE+1t74tq61y/lCsSC3ckIV1nOwJiH5tMAUu6Yb?=
- =?us-ascii?Q?KIAvHHqtcXtlStbRwMGdIJYxuT8I7AR7zO8Y5CytRUDtERyE9yYb9u8C9kl3?=
- =?us-ascii?Q?dY5eTx7bdR4dMkR62ClmJAYqOSZWY7NAyQ9VvhXr7fZHYMpPPGaR+PgpMAYx?=
- =?us-ascii?Q?nZbLDtrE0Mo50iuEc5xC8yHlFio88lsU8coGlaWo8BF5evt0vwiAYaDtkwf0?=
- =?us-ascii?Q?t3XoYyPy1m5R/rRwombVpdRX3sCVns0O8kwiqPjBWQjuwAu1Jph7fejQm8t2?=
- =?us-ascii?Q?dKrltW5XmtQJX6ZoNWixuzm0xo8M14oTVBJN3dLpf5ciPzO7R7qsSyBxmRKE?=
- =?us-ascii?Q?AaxvCRPGH0a36e3z6G2pitfKmTZS0f75tn4nTjIV0p2fBuzAmGmJEgVaHxK7?=
- =?us-ascii?Q?twjmtyikV3flstEm+9iD/A6zyzJl3g4i5Ab+Lf7fbiHuoUL8On28JGiozCSK?=
- =?us-ascii?Q?c2VaXyBxLH9N6mwP4cySA8eciEMXLnKGUPNiQghE?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 97a90ff0-e682-43fe-9f5b-08dbf6dcbfd1
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2023 04:26:57.6503
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aiL4ohsEjgTBHx4tivSVQdg8KOQmp1sjQN9NANiWZkI4VXni2DjSCAOSakHMxJ4VBzrRg15MNlDvhHOlQtpaIQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8569
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c3b064004a1748c68829f804b3da56a610fbfc8e.camel@intel.com>
 
-For SDIO IW416, in a corner case FW may return ready before complete
-full initialization.
-Command timeout may occur at driver load after reboot.
-Workaround by adding 100ms delay at checking FW status.
+Hi,
 
-Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-Cc: stable@vger.kernel.org
+On 2023-12-07 02:41:34 +0000, Zhang, Rui wrote:
+> On Tue, 2023-12-05 at 22:58 -0800, Andres Freund wrote:
+> > Hi,
+> > 
+> > On 2023-12-01 08:31:48 +0000, Zhang, Rui wrote:
+> > > As a quick fix, I'm not going to fix the "potential issue"
+> > > describes
+> > > above because we have not seen a real problem caused by this yet.
+> > > 
+> > > Can you please try the below patch to confirm if the problem is
+> > > gone on
+> > > your system?
+> > > This patch falls back to the previous way as sent at
+> > > https://lore.kernel.org/lkml/87pm4bp54z.ffs@tglx/T/
+> > 
+> > 
+> > I've just spent a couple hours bisecting why upgrading to 6.7-rc4
+> > left me with
+> > just a single CPU core on my dual socket workstation.
+> > 
+> > 
+> > before:
+> > [    0.000000] Linux version 6.6.0-andres-00003-g31255e072b2e ...
+> > ...
+> > [    0.022960] ACPI: Using ACPI (MADT) for SMP configuration
+> > information
+> > ...
+> > [    0.022968] smpboot: Allowing 40 CPUs, 0 hotplug CPUs
+> > ...
+> > [    0.345921] smpboot: CPU0: Intel(R) Xeon(R) Gold 5215 CPU @
+> > 2.50GHz (family: 0x6, model: 0x55, stepping: 0x7)
+> > ...
+> > [    0.347229] .... node  #0, CPUs:        #1  #2  #3  #4  #5  #6 
+> > #7  #8  #9
+> > [    0.349082] .... node  #1, CPUs:   #10 #11 #12 #13 #14 #15 #16 #17
+> > #18 #19
+> > [    0.003190] smpboot: CPU 10 Converting physical 0 to logical die 1
+> > 
+> > [    0.361053] .... node  #0, CPUs:   #20 #21 #22 #23 #24 #25 #26 #27
+> > #28 #29
+> > [    0.363990] .... node  #1, CPUs:   #30 #31 #32 #33 #34 #35 #36 #37
+> > #38 #39
+> > ...
+> > [    0.370886] smp: Brought up 2 nodes, 40 CPUs
+> > [    0.370891] smpboot: Max logical packages: 2
+> > [    0.370896] smpboot: Total of 40 processors activated (200000.00
+> > BogoMIPS)
+> > [    0.403905] node 0 deferred pages initialised in 32ms
+> > [    0.408865] node 1 deferred pages initialised in 37ms
+> > 
+> > 
+> > after:
+> > [    0.000000] Linux version 6.6.0-andres-00004-gec9aedb2aa1a ...
+> > ...
+> > [    0.022935] ACPI: Using ACPI (MADT) for SMP configuration
+> > information
+> > ...
+> > [    0.022942] smpboot: Allowing 1 CPUs, 0 hotplug CPUs
+> > ...
+> > [    0.356424] smpboot: CPU0: Intel(R) Xeon(R) Gold 5215 CPU @
+> > 2.50GHz (family: 0x6, model: 0x55, stepping: 0x7)
+> > ...
+> > [    0.357098] smp: Bringing up secondary CPUs ...
+> > [    0.357107] smp: Brought up 2 nodes, 1 CPU
+> > [    0.357108] smpboot: Max logical packages: 1
+> > [    0.357110] smpboot: Total of 1 processors activated (5000.00
+> > BogoMIPS)
+> > [    0.726283] node 0 deferred pages initialised in 368ms
+> > [    0.774704] node 1 deferred pages initialised in 418ms
+> > 
+> > 
+> > There does seem to be something off with the ACPI data, when booting
+> > without
+> > the patch,
+> 
+> which patch are you referring to? the original patch in this thread?
 
----
+Yes, the the original patch / the state in 6.7-rc4.
 
-V1->V2:
 
-1. Changed check condition for extra delay with clear comments.
-2. Added flag to struct mwifiex_sdio_device / mwifiex_sdio_sd8978 to
-   enable extra delay only for IW416.
----
- drivers/net/wireless/marvell/mwifiex/sdio.c | 19 +++++++++++++++++++
- drivers/net/wireless/marvell/mwifiex/sdio.h |  2 ++
- 2 files changed, 21 insertions(+)
+> Does the second patch fixes the problem? I mean the patch at
+> https://lore.kernel.org/all/904ce2b870b8a7f34114f93adc7c8170420869d1.camel@intel.com/
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.c b/drivers/net/wireless/marvell/mwifiex/sdio.c
-index 6462a0ffe698..54db79888de5 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
-@@ -331,6 +331,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8786 = {
- 	.can_dump_fw = false,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = false,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8787 = {
-@@ -346,6 +347,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8787 = {
- 	.can_dump_fw = false,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8797 = {
-@@ -361,6 +363,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8797 = {
- 	.can_dump_fw = false,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8897 = {
-@@ -376,6 +379,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8897 = {
- 	.can_dump_fw = true,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8977 = {
-@@ -392,6 +396,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8977 = {
- 	.fw_dump_enh = true,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 = {
-@@ -408,6 +413,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8978 = {
- 	.fw_dump_enh = true,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = true,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 = {
-@@ -425,6 +431,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8997 = {
- 	.fw_dump_enh = true,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 = {
-@@ -440,6 +447,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8887 = {
- 	.can_dump_fw = false,
- 	.can_auto_tdls = true,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8987 = {
-@@ -456,6 +464,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8987 = {
- 	.fw_dump_enh = true,
- 	.can_auto_tdls = true,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static const struct mwifiex_sdio_device mwifiex_sdio_sd8801 = {
-@@ -471,6 +480,7 @@ static const struct mwifiex_sdio_device mwifiex_sdio_sd8801 = {
- 	.can_dump_fw = false,
- 	.can_auto_tdls = false,
- 	.can_ext_scan = true,
-+	.fw_ready_extra_delay = false,
- };
- 
- static struct memory_type_mapping generic_mem_type_map[] = {
-@@ -563,6 +573,7 @@ mwifiex_sdio_probe(struct sdio_func *func, const struct sdio_device_id *id)
- 		card->fw_dump_enh = data->fw_dump_enh;
- 		card->can_auto_tdls = data->can_auto_tdls;
- 		card->can_ext_scan = data->can_ext_scan;
-+		card->fw_ready_extra_delay = data->fw_ready_extra_delay;
- 		INIT_WORK(&card->work, mwifiex_sdio_work);
- 	}
- 
-@@ -766,6 +777,7 @@ mwifiex_sdio_read_fw_status(struct mwifiex_adapter *adapter, u16 *dat)
- static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
- 				   u32 poll_num)
- {
-+	struct sdio_mmc_card *card = adapter->card;
- 	int ret = 0;
- 	u16 firmware_stat;
- 	u32 tries;
-@@ -783,6 +795,13 @@ static int mwifiex_check_fw_status(struct mwifiex_adapter *adapter,
- 		ret = -1;
- 	}
- 
-+	if (card->fw_ready_extra_delay &&
-+	    firmware_stat == FIRMWARE_READY_SDIO)
-+		/* IW416 firmware might pretend to be ready, when it's not.
-+		 * Wait a little bit more as a workaround.
-+		 */
-+		msleep(100);
-+
- 	return ret;
- }
- 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sdio.h b/drivers/net/wireless/marvell/mwifiex/sdio.h
-index b86a9263a6a8..cb63ad55d675 100644
---- a/drivers/net/wireless/marvell/mwifiex/sdio.h
-+++ b/drivers/net/wireless/marvell/mwifiex/sdio.h
-@@ -255,6 +255,7 @@ struct sdio_mmc_card {
- 	bool fw_dump_enh;
- 	bool can_auto_tdls;
- 	bool can_ext_scan;
-+	bool fw_ready_extra_delay;
- 
- 	struct mwifiex_sdio_mpa_tx mpa_tx;
- 	struct mwifiex_sdio_mpa_rx mpa_rx;
-@@ -278,6 +279,7 @@ struct mwifiex_sdio_device {
- 	bool fw_dump_enh;
- 	bool can_auto_tdls;
- 	bool can_ext_scan;
-+	bool fw_ready_extra_delay;
- };
- 
- /*
+Yes.
 
-base-commit: 783004b6dbda2cfe9a552a4cc9c1d168a2068f6c
--- 
-2.25.1
+Greetings,
 
+Andres Freund
 
