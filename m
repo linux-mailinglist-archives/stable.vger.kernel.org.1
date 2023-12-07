@@ -1,144 +1,187 @@
-Return-Path: <stable+bounces-4932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110BE808B85
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:12:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C2CF808BD3
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:29:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB72A1F21529
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 15:12:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86B94B20B8D
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 15:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9C2A44C98;
-	Thu,  7 Dec 2023 15:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F05E44C8A;
+	Thu,  7 Dec 2023 15:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hv2z+4jS"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="39BZDF7z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571CE44C7F;
-	Thu,  7 Dec 2023 15:12:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8FDC433C9;
-	Thu,  7 Dec 2023 15:12:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701961935;
-	bh=vguCcJR1Jj091qVfq+Qnghxcjtym8hIKj5MARAlVG8Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hv2z+4jS6KpsCq8RCfMC7GLLgvHAQ9EpC0ZsujY2FoKFXoMBUpiDWpIC9ZirRE3zA
-	 dIgZRabnwLKuEEoo0TwNgbX4kCitue6NazUjcYsUnqr+oxj+DQLhak98kHsLvN6Gkr
-	 9fmMciWned9LgTQ27aB8ozHUdZYGG0+OLxR+58TCHA10xBsP6h4DoNWHNp0oqSWPst
-	 hcVgFQbLt8sYXYR6tw46XvHadwjmC4XAfZbjA0mfaiy4cgmBo+4QM0TzDBcjPA7i2u
-	 eO5wjWlTMxC/gXp7+6HI3walxo9lMdu4LlmSCezPhpTEpoyLY/K0GDztKWLEx/2Egu
-	 P7f/h5WKhGd7A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1rBG2v-002FcG-RR;
-	Thu, 07 Dec 2023 15:12:13 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: kvmarm@lists.linux.dev,
-	kvm@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Cc: James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>,
-	vdonnefort@google.com,
-	stable@vger.kernel.org
-Subject: [PATCH 3/5] KVM: arm64: vgic: Force vcpu vgic teardown on vcpu destroy
-Date: Thu,  7 Dec 2023 15:11:59 +0000
-Message-Id: <20231207151201.3028710-4-maz@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231207151201.3028710-1-maz@kernel.org>
-References: <20231207151201.3028710-1-maz@kernel.org>
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2053.outbound.protection.outlook.com [40.107.96.53])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DCD210C2
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 07:29:38 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Df7sfcvHZ63PaRDDr+5bRJ46zjjcRA9cG1CrvnbxN5bz56u6MdUQJ1h9X/c61Pcphwr3laKzl0E6AMRN+1A1CIaOGE2tL2MoAxTVSEGJkzRY7MaA9Vpu51ohjIKu4PlMGzj/JfjzgOD79ksemhr39bNQAqCO2F/dBVKFawtlcVl0rHHhSgPNujAdqmSwOO8t4+WsdjfOC4uW7NuuoCtxJz3tw6GzBhc6wD6RIgqz2CQOtO2hxs1YDA0wzE5wB8ofJBfv69tCphL62rND602/VmyMVbTy0gRKXUZs6w5L8BahdTDFC6/7k2u372ELM/ULeaRc1DHm+QDjUuuO1C6Img==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UT503bZxq/RZn3VGckEoox/jFwlNImTJqcpnkiiKZpA=;
+ b=CPnLPiZIMHRAQaNsZK1unOkTzXRd+k+5a6P5zHqHl7wXCTWzd7SB4pVblE590ptQEA8vns9VKAKZ8oAbfET5OS73TB9sTpp3ur7WdCwTsGhuHCDewOZsoyhZNHhhiS85x4OKAD0I/y+4Cn4LeCeAWoEwSSRlPDwEm2MNUfNtL72MOzKAyHeC5WR0gIkl68ZYEtO0hVq1bTAj0kEg0IT4l2QMfBBF/yi0h1LbBUUoR9DsetnfiCMC5zi0Nfza8h87X9Gy9jlhfD+Ggw+KUzhUnRs+cghQin32XLUm5z7jnRZaGNHBhiCDVH8dw0O39QRUMCWALcDgMC0naFEQ74zQPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UT503bZxq/RZn3VGckEoox/jFwlNImTJqcpnkiiKZpA=;
+ b=39BZDF7znJ3rHCTANGIuIkP1GDHogkPfBYhRYeE251jt7a7HkvLRFM7WSOhMdp0lMUajTmUSRfzbd+D/eVxdDtd/UCscR8aiFnedYCfcnuA2neAwjalO6Rob8Jy2jyvHR09lcEtXhhEvmGSzIKlgHndNej3wMbg5ATHvGSLN6yI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
+ by DM6PR12MB4313.namprd12.prod.outlook.com (2603:10b6:5:21e::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7046.34; Thu, 7 Dec
+ 2023 15:29:35 +0000
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::3a35:139f:8361:ab66]) by CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::3a35:139f:8361:ab66%7]) with mapi id 15.20.7068.027; Thu, 7 Dec 2023
+ 15:29:35 +0000
+Message-ID: <842b4216-5ad2-44bc-b34c-7cf59dc55e25@amd.com>
+Date: Thu, 7 Dec 2023 10:29:30 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: Restore guard against default backlight
+ value < 1 nit
+To: Alex Deucher <alexdeucher@gmail.com>,
+ Mario Limonciello <mario.limonciello@amd.com>
+Cc: Krunoslav Kovac <krunoslav.kovac@amd.com>, stable@vger.kernel.org,
+ amd-gfx@lists.freedesktop.org, Mark Herbert <mark.herbert42@gmail.com>,
+ Camille Cho <camille.cho@amd.com>, Hamza Mahfooz <hamza.mahfooz@amd.com>
+References: <20231206180826.13446-1-mario.limonciello@amd.com>
+ <CADnq5_OrnkGPudqTtBOGm1doaWyaHfYBQaA_sJOGTw1zP4PCyA@mail.gmail.com>
+Content-Language: en-US
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <CADnq5_OrnkGPudqTtBOGm1doaWyaHfYBQaA_sJOGTw1zP4PCyA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT1PR01CA0142.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2f::21) To CO6PR12MB5427.namprd12.prod.outlook.com
+ (2603:10b6:5:358::13)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, will@kernel.org, vdonnefort@google.com, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|DM6PR12MB4313:EE_
+X-MS-Office365-Filtering-Correlation-Id: 607d66ca-d843-4179-236c-08dbf7395106
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	KaAdzlMKXKCwGdkGyCABGJAgj92GoKoN5e7CvA17EmjmyXzIX2b9C/07MOlqOWIpcj1TvdOeD8jxseuBZecP8gY2TzM5AIgmkl2EH/Mt9+s/A0iMx85KGUTQQiQ3LDLLxuj7QWhJpPgijFuA8bIhuAlxa4WJLlGvekVelWmPgpbN+EXmTxKQwX3EJhJgkvpwMfCawATlxQ+mIFllr7YE7n27BNvQcrYSe3JlF6gBADXzgmCxratJhQkuhUO4aQ2hwz2up3LTKhtiSPr9NA06Jr/tpkQ/boUgSI+IpaSAlA37NaxsyTAfD2+dv/DEr5vh7lIwVTho+7tDa5Uyyo9O/N+uzh4llbtQ3NtJCCDYKRwbIXpJib8zvWO9Pu8gSwmWGyjSzzhpFYoHnMkSsP2SWjaHTahNAou8zEY6+aKUbG6KQ0oId4JsR9+mgJYomwWKYmSN8/N8B0CJ2DJfqV/uT/udkMW+TmdzgYgkqCXGtSEt6HWFTKHIZ2f+OCXitK1WWdJtP9PdCQYeXaq46KrOs2Vp2MKtJqKqeE8tX+VY+O8UH8k/mBl0zicE6k7uEifnEVRzm5bBZ4o+1uUKN0qXPaRqZc+ayTvqd3Sx7Fj8pfeS0SCM2bbk2UMi7Fj9jnH6Uk8abrDwStyk0KiXV2d5rg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(366004)(376002)(136003)(39860400002)(230922051799003)(186009)(1800799012)(64100799003)(451199024)(966005)(6512007)(41300700001)(31696002)(38100700002)(5660300002)(86362001)(36756003)(44832011)(2906002)(6506007)(53546011)(2616005)(26005)(6666004)(478600001)(8676002)(6486002)(66946007)(4326008)(66556008)(66476007)(110136005)(6636002)(54906003)(83380400001)(316002)(8936002)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?czhsS2t3TDUxQmxlQkRMSU9DbHFaYUl0R3pPMk85anl1YmRXVkp6Zno2WGxO?=
+ =?utf-8?B?eVNyaExaR1JVRkRDNnQ0NURkcDBsSUtpb3N3OFF3Nld4SGNTTlBWZ3Rud1hK?=
+ =?utf-8?B?OE5yN0dVVjVCdmVyM1p3blk4NDIyOGFlbFpSNjNYMjRxSUt0VU4vcXZ4ZFFs?=
+ =?utf-8?B?SkFxc1dQUVhIK2JtVHFkdFREYjV1OGN0ZDRtckQ1elR5ME9KWlRQWm5KWW03?=
+ =?utf-8?B?V2Z6OXlhWWM0L0x6K2dEZU8xMURYbW1CZmhlMGRwR0VpT1RHaGNlMlcxL0Vh?=
+ =?utf-8?B?alJOTmpmTGRHOUJCVHdWeXhHdG8zZGZXU2ZwSnJoWU4ybHFPYitlSEwvWTNV?=
+ =?utf-8?B?ZUh3eHI1cXcrRmFqamdiMDZVZTBmS3dGWjNzVkFyUE1udFIrTVpBZEk3L0dL?=
+ =?utf-8?B?RkRZUGFicHFTWFhreWRLR2oxTzZRRFd2MStGbnprblExMDRtS1ByTG5BWFFQ?=
+ =?utf-8?B?dVVZc2VjUTkyRXBwUm5XL0FoZGZsQm5PUlRUckkyL2tXU2xIZk1QclVrMUVH?=
+ =?utf-8?B?UkdOcXZxeFRXUWdGYUVIQmhzUWQ3VjlyTEFab2FXYTlQWWJ4YkZLZmtOd292?=
+ =?utf-8?B?MEJQejU3K1Y1UEViQTkvWWpHNWZmZ0Z3Ly9pK2N6QlFqY1JNdFRUR2NHTG1v?=
+ =?utf-8?B?bEVJem1iS3JFZzRybWJGeEltbVlrYzlSRGo4U3N3aWRDR1BmVzRSWVhEVjJD?=
+ =?utf-8?B?OVdscDVpREUycUtNVktlU1Bxa2RuVmZiTGZhMEdLUUJQelJNOXRTazNTNXJr?=
+ =?utf-8?B?UDdwWTlERCtNVzUvdGZ6SjVKazZnR0Y5ek8rSWJOU1JoQUF6R0lPVmdqT0F3?=
+ =?utf-8?B?bG04SXNCY043N2xLeDRROW5YYXFwNGhhL3NaUFh6RzhYbGJ5Z2diL05VWVJu?=
+ =?utf-8?B?T21oUmxTcis0UHBlWG9HZEh5TXVMYWZHRVlIbmZsSUpXa0FwWWFEbUxBMGNN?=
+ =?utf-8?B?WEpqRHgwc1NVYkZuWk5DeFVycUMyRWdVUzhRUWx2cUtYZXQ0K3B1MU4zbDFp?=
+ =?utf-8?B?TlZGNDVLWGVNYit4VVI0Q3FhTVlDYk5RaVFIWjBLamE1VW5GWStGV0lTd1dD?=
+ =?utf-8?B?WWFDeTh1NTJFWUVwNkFLQW80U3cwWk5PemYvdU94Szk3TmRib2Q5NXBuektu?=
+ =?utf-8?B?eWJRSW5CRWRzcERQYVM2OXkvbEVJUWhyWVlkclMvRlFaQlRNQjRGbGRKa2lp?=
+ =?utf-8?B?a2gramFxVkYyYmtSbHNObTl1MitJTXFaSHJyNyswMEhlZEVxWVJDeGNQOGdT?=
+ =?utf-8?B?MzlmMFVLeUZ4aWs3b2dtZmdaanBCQ1paVEtKdFlSS0hPcTBsYnBtRkhLcmZP?=
+ =?utf-8?B?eEZCMFRaVkl5V1p4NXJRQTRDTEY4NzlXWEtIbUxuc1d0aWZKbk9RNzJjbENq?=
+ =?utf-8?B?NmRjS3pnR1ZnN1ZzTERRYmpiSFlQVkxBUEwyaTE2NGp5UnVYZWxqcFQwYjlx?=
+ =?utf-8?B?ZzJQWW40YnRJQklqeXJDMW1UaVUwT2dydXpGM21FSnF0MGFlZk5UM1ZYYlZL?=
+ =?utf-8?B?NFp2RE5UaG1mSldFVGNENzJmTkRtMWZNY3FyaC83c0EzWC9WUy82dGJsZUhW?=
+ =?utf-8?B?OUNYTE5KZEtITmVQd3ZBakJYaTdmM0FmaFpQY3ViUE04YmIvRDJkL1dYc3pk?=
+ =?utf-8?B?ZlROK1RlaEIzZ0JYRUE1ODBIclFicmFPV0tycjBuakVFek1hZVB5TFJMNWV2?=
+ =?utf-8?B?eHUwL0dmTVB5M014OG93T0FBVXFlLzRVbUtIYmRENjVEalRwUHdoV0hjanky?=
+ =?utf-8?B?MjdjMkxDQzVzTE02Z1BNUmxZcEFMV1h3MnZ5R3o5ME9zdEVRY1dnMjFPUHI0?=
+ =?utf-8?B?MjBkbW8yNE5rNDN2UmUzcUdYODVoZjkxNjJRaHhSYjZHUm5OOWtWWUxCMUtR?=
+ =?utf-8?B?VEVDOExML09CZEN5WDF4bm5DaC9xdTJIRHVWcGxtNkVMTTlSK0hjazkrc244?=
+ =?utf-8?B?cEJaUk9mU2pIL3BYeWgwaGx6V0VyaVV6UmFsUGtnaGxCUlhOMjJZT000TjNz?=
+ =?utf-8?B?MURSdHU3eEsvOEV1dTlOQVZTdTFzeEFqT1ZmOXQ1Mm00cnowZ29YcFpjZjlv?=
+ =?utf-8?B?LytHNzBnYmdpZ25tZFNJV3NNdEVKNnl0bUViMnpLRHg1WXZEZGJPNXR1L3dr?=
+ =?utf-8?Q?uJUBYhPLw8QaSW+IoaGxIggVm?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 607d66ca-d843-4179-236c-08dbf7395106
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Dec 2023 15:29:35.1038
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Xs0UGf9im0vNurjv0qOzc8e0Fip/3EqhZpFbEDQlow283pZIOVoNfz4ihoDb5t0VpCjf/B081PIs7SShKHRwhA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4313
 
-When failing to create a vcpu because (for example) it has a
-duplicate vcpu_id, we destroy the vcpu. Amusingly, this leaves
-the redistributor registered with the KVM_MMIO bus.
 
-This is no good, and we should properly clean the mess. Force
-a teardown of the vgic vcpu interface, including the RD device
-before returning to the caller.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Zyngier <maz@kernel.org>
----
- arch/arm64/kvm/arm.c               | 2 +-
- arch/arm64/kvm/vgic/vgic-init.c    | 5 ++++-
- arch/arm64/kvm/vgic/vgic-mmio-v3.c | 2 +-
- arch/arm64/kvm/vgic/vgic.h         | 1 +
- 4 files changed, 7 insertions(+), 3 deletions(-)
+On 2023-12-07 10:03, Alex Deucher wrote:
+> On Thu, Dec 7, 2023 at 9:47 AM Mario Limonciello
+> <mario.limonciello@amd.com> wrote:
+>>
+>> Mark reports that brightness is not restored after Xorg dpms screen blank.
+>>
+>> This behavior was introduced by commit d9e865826c20 ("drm/amd/display:
+>> Simplify brightness initialization") which dropped the cached backlight
+>> value in display code, but also removed code for when the default value
+>> read back was less than 1 nit.
+>>
+>> Restore this code so that the backlight brightness is restored to the
+>> correct default value in this circumstance.
+>>
+>> Reported-by: Mark Herbert <mark.herbert42@gmail.com>
+>> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3031
+>> Cc: stable@vger.kernel.org
+>> Cc: Camille Cho <camille.cho@amd.com>
+>> Cc: Krunoslav Kovac <krunoslav.kovac@amd.com>
+>> Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+>> Fixes: d9e865826c20 ("drm/amd/display: Simplify brightness initialization")
+>> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> 
+> Acked-by: Alex Deucher <alexander.deucher@amd.com>
 
-diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-index e5f75f1f1085..4796104c4471 100644
---- a/arch/arm64/kvm/arm.c
-+++ b/arch/arm64/kvm/arm.c
-@@ -410,7 +410,7 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
- 	kvm_mmu_free_memory_cache(&vcpu->arch.mmu_page_cache);
- 	kvm_timer_vcpu_terminate(vcpu);
- 	kvm_pmu_vcpu_destroy(vcpu);
--
-+	kvm_vgic_vcpu_destroy(vcpu);
- 	kvm_arm_vcpu_destroy(vcpu);
- }
- 
-diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-index a86f300321a7..e949e1d0fd9f 100644
---- a/arch/arm64/kvm/vgic/vgic-init.c
-+++ b/arch/arm64/kvm/vgic/vgic-init.c
-@@ -379,7 +379,10 @@ static void __kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
- 	vgic_flush_pending_lpis(vcpu);
- 
- 	INIT_LIST_HEAD(&vgic_cpu->ap_list_head);
--	vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
-+	if (vcpu->kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3) {
-+		vgic_unregister_redist_iodev(vcpu);
-+		vgic_cpu->rd_iodev.base_addr = VGIC_ADDR_UNDEF;
-+	}
- }
- 
- void kvm_vgic_vcpu_destroy(struct kvm_vcpu *vcpu)
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v3.c b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-index 89117ba2528a..0f039d46d4fc 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v3.c
-@@ -820,7 +820,7 @@ int vgic_register_redist_iodev(struct kvm_vcpu *vcpu)
- 	return ret;
- }
- 
--static void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
-+void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu)
- {
- 	struct vgic_io_device *rd_dev = &vcpu->arch.vgic_cpu.rd_iodev;
- 
-diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
-index 0ab09b0d4440..8d134569d0a1 100644
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -241,6 +241,7 @@ int vgic_v3_lpi_sync_pending_status(struct kvm *kvm, struct vgic_irq *irq);
- int vgic_v3_save_pending_tables(struct kvm *kvm);
- int vgic_v3_set_redist_base(struct kvm *kvm, u32 index, u64 addr, u32 count);
- int vgic_register_redist_iodev(struct kvm_vcpu *vcpu);
-+void vgic_unregister_redist_iodev(struct kvm_vcpu *vcpu);
- bool vgic_v3_check_base(struct kvm *kvm);
- 
- void vgic_v3_load(struct kvm_vcpu *vcpu);
--- 
-2.39.2
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+
+Harry
+
+> 
+>> ---
+>>  .../amd/display/dc/link/protocols/link_edp_panel_control.c    | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+>> index ac0fa88b52a0..bf53a86ea817 100644
+>> --- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+>> +++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+>> @@ -287,8 +287,8 @@ bool set_default_brightness_aux(struct dc_link *link)
+>>         if (link && link->dpcd_sink_ext_caps.bits.oled == 1) {
+>>                 if (!read_default_bl_aux(link, &default_backlight))
+>>                         default_backlight = 150000;
+>> -               // if > 5000, it might be wrong readback
+>> -               if (default_backlight > 5000000)
+>> +               // if < 1 nits or > 5000, it might be wrong readback
+>> +               if (default_backlight < 1000 || default_backlight > 5000000)
+>>                         default_backlight = 150000;
+>>
+>>                 return edp_set_backlight_level_nits(link, true,
+>> --
+>> 2.34.1
+>>
 
 
