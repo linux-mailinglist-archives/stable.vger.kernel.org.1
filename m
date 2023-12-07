@@ -1,82 +1,119 @@
-Return-Path: <stable+bounces-4907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3984780812A
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 07:51:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECC2280812F
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 07:51:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB401C209EF
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 06:51:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0BFE1F21370
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 06:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C323013AED;
-	Thu,  7 Dec 2023 06:50:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF2A13AED;
+	Thu,  7 Dec 2023 06:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcR4zYOr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/IHDWz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6765910A00;
-	Thu,  7 Dec 2023 06:50:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C665C433CC;
-	Thu,  7 Dec 2023 06:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E613F14280
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 06:51:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FEFC433C7;
+	Thu,  7 Dec 2023 06:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701931857;
-	bh=5rq84evr5Sp4/RH4eXvLAxgnsQiE23jaVtXpmghA1G0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CcR4zYOrTjlo6Y9j0vouEKHP+t3UfzxX0klqYQd02P6/nycMBXSx4jDA1ys1O7l//
-	 jEn30fvBRo2lOihnjQ5AG2LzYlSBB48wiMoO3w1eNt16E9Rc2GwEnS7F6VniJeUYu+
-	 pA5Nr5e/CozwpXpbYkitpAYnB67qETBIb7FhElCM=
-Date: Thu, 7 Dec 2023 10:45:48 +0900
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: jirislaby@kernel.org, hvilleneuve@dimonoff.com,
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-	stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
- sc16is7xx_regmap_name()
-Message-ID: <2023120748-macaroni-gaining-335f@gregkh>
-References: <20231130191050.3165862-1-hugo@hugovil.com>
- <20231130191050.3165862-2-hugo@hugovil.com>
+	s=korg; t=1701931877;
+	bh=R2x2cuD3sDXaqFhqtbJWG1AiE+KRrWsjJWoz87Sh89A=;
+	h=Subject:To:From:Date:From;
+	b=L/IHDWz+9CLBq7W2/nI16YhKhRZJqc10Ipy+I0aQ7LImnCuhDnHtDIxYvOkj6gWaZ
+	 nYB3aGGlrR2+18VmRXIE8E13wWarxPjsbnLrQjtFWxY/XUJ/IlVleiWhpfxg+A9qfS
+	 4qJZcrp0fo8xxV12NE6S/YFhZqMvVwo9EL/lfORo=
+Subject: patch "serial: ma35d1: Validate console index before assignment" added to tty-linus
+To: andi.shyti@kernel.org,gregkh@linuxfoundation.org,stable@vger.kernel.org,ychuang3@nuvoton.com
+From: <gregkh@linuxfoundation.org>
+Date: Thu, 07 Dec 2023 10:49:41 +0900
+Message-ID: <2023120741-sadly-saint-4319@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231130191050.3165862-2-hugo@hugovil.com>
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 30, 2023 at 02:10:43PM -0500, Hugo Villeneuve wrote:
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> Change snprint format specifier from %d to %u since port_id is unsigned.
-> 
-> Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-> Cc: stable@vger.kernel.org # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> ---
-> I did not originally add a "Cc: stable" tag for commit 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
-> as it was intended only to improve debugging using debugfs. But
-> since then, I have been able to confirm that it also fixes a long standing
-> bug in our system where the Tx interrupt are no longer enabled at some
-> point when transmitting large RS-485 paquets (> 64 bytes, which is the size
-> of the FIFO). I have been investigating why, but so far I haven't found the
-> exact cause, altough I suspect it has something to do with regmap caching.
-> Therefore, I have added it as a prerequisite for this patch so that it is
-> automatically added to the stable kernels.
 
-As you are splitting fixes from non-fixes in this series, please resend
-this as 2 different series, one that I can apply now to my tty-linus
-branch to get merged for 6.7-final, and one that can go into tty-next
-for 6.8-rc1.  Mixing them up here just ensures that they all would get
-applied to tty-next.
+This is a note to let you know that I've just added the patch titled
 
-thanks,
+    serial: ma35d1: Validate console index before assignment
 
-greg k-h
+to my tty git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
+in the tty-linus branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
+
+If you have any questions about this process, please let me know.
+
+
+From f0b9d97a77fa8f18400450713358303a435ab688 Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@kernel.org>
+Date: Mon, 4 Dec 2023 17:38:03 +0100
+Subject: serial: ma35d1: Validate console index before assignment
+
+The console is immediately assigned to the ma35d1 port without
+checking its index. This oversight can lead to out-of-bounds
+errors when the index falls outside the valid '0' to
+MA35_UART_NR range. Such scenario trigges ran error like the
+following:
+
+ UBSAN: array-index-out-of-bounds in drivers/tty/serial/ma35d1_serial.c:555:51
+ index -1 is out of range for type 'uart_ma35d1_port [17]
+
+Check the index before using it and bail out with a warning.
+
+Fixes: 930cbf92db01 ("tty: serial: Add Nuvoton ma35d1 serial driver support")
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Cc: Jacky Huang <ychuang3@nuvoton.com>
+Cc: <stable@vger.kernel.org> # v6.5+
+Link: https://lore.kernel.org/r/20231204163804.1331415-2-andi.shyti@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/tty/serial/ma35d1_serial.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/tty/serial/ma35d1_serial.c b/drivers/tty/serial/ma35d1_serial.c
+index a6a7c405892e..21b574f78b86 100644
+--- a/drivers/tty/serial/ma35d1_serial.c
++++ b/drivers/tty/serial/ma35d1_serial.c
+@@ -552,11 +552,19 @@ static void ma35d1serial_console_putchar(struct uart_port *port, unsigned char c
+  */
+ static void ma35d1serial_console_write(struct console *co, const char *s, u32 count)
+ {
+-	struct uart_ma35d1_port *up = &ma35d1serial_ports[co->index];
++	struct uart_ma35d1_port *up;
+ 	unsigned long flags;
+ 	int locked = 1;
+ 	u32 ier;
+ 
++	if ((co->index < 0) || (co->index >= MA35_UART_NR)) {
++		pr_warn("Failed to write on ononsole port %x, out of range\n",
++			co->index);
++		return;
++	}
++
++	up = &ma35d1serial_ports[co->index];
++
+ 	if (up->port.sysrq)
+ 		locked = 0;
+ 	else if (oops_in_progress)
+-- 
+2.43.0
+
+
 
