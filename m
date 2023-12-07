@@ -1,77 +1,89 @@
-Return-Path: <stable+bounces-4937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7282808CC4
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:57:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 302E5808CDA
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 17:03:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8891C208A3
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 15:57:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E2E01F211D6
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53AEA44C82;
-	Thu,  7 Dec 2023 15:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C4146523;
+	Thu,  7 Dec 2023 16:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SLt53Gku"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="zj6odPv7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B351A4209
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 07:55:01 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id 5b1f17b1804b1-40c09b021daso13852025e9.0
-        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 07:55:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701964491; x=1702569291; darn=vger.kernel.org;
-        h=reply-to:date:to:subject:content-description
-         :content-transfer-encoding:mime-version:from:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oFz3Ug8s3W34bq0JUJvpn3d805TVgn5tO7UMghaa1Ao=;
-        b=SLt53GkusGepnfyv9tJcHL/bbz4rYxi2zu8DZI9aP8JTUTj44ymEKnU/Vm7uWLCtaD
-         hnt40bEX0BfK0+xMd6Mwms8e2ycNGKjnToa2FpBTMPxpgcE0NGo0+JDbYDZQodUAF9eZ
-         qxbuRxbsNMWhM8D3HlbK5+LzFb8dV5qjVirq/1vYwmpqTu7uA4ydfvEznv0Mkd8PBQhf
-         54fBWbkhCsi9aQxW8B5R+BAR01TsQfpKHBHRnDRXD8rkOS8D6DhB68/aa2BpPUFNkaSM
-         zYUo/BncEBAFz+3Wr8ldaL/B6ekFYm8SM9sYxV76yIm5uuI25f+G4e/TYdmUzARN3EDh
-         2zfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701964491; x=1702569291;
-        h=reply-to:date:to:subject:content-description
-         :content-transfer-encoding:mime-version:from:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oFz3Ug8s3W34bq0JUJvpn3d805TVgn5tO7UMghaa1Ao=;
-        b=HDZ1cFmBmHxXZUwZEAGuGMOZO0VWS2k9DSyl4aBta5gQ8LSqj5z1kJQE0iHjvFMWiv
-         BxFUvmRG7YAcUW55i7hSJp2f2hScl8xPIH+Xu5UdJG5L6ixy1cAfoNZeHSgOWtN5eY9u
-         LR0tQAj3ZkVT9n4Tjc0FKJevDzDPcr8J2iAx3KY36/PFOEyLnVKvwHdI/Zru5QDbCmud
-         Y/Emvcr6JWnNunQtcN/QXvJGEjzPXGNhJuJ01vlooDATHNon5/qxd3xZtK2O/CmgbVaO
-         x5AtZKVA8gSrGL9Fs7HeEyr5B+bgiWvOxRZfd98YSAW4Vb//Yh4NmoQQB2j5AebnZrqF
-         xgJA==
-X-Gm-Message-State: AOJu0Yw3NNGE1ga8/Urv2CwburMqUVJ4zh2Gk/l4dNBBpIlgL/DVBi89
-	mP5r7t5rI26kiQA1jtIlFi3RocNqP+XHyA==
-X-Google-Smtp-Source: AGHT+IEVXHdNIWxcr56/gRxIheZ2CMwLoIToXFgmsAiF4xRy6uIjzC9MhgrY3eS9MZ0Bbl55mjwl3w==
-X-Received: by 2002:a7b:c4cd:0:b0:40c:71a:3cac with SMTP id g13-20020a7bc4cd000000b0040c071a3cacmr1581855wmk.218.1701964491451;
-        Thu, 07 Dec 2023 07:54:51 -0800 (PST)
-Received: from [192.168.1.87] ([196.170.65.203])
-        by smtp.gmail.com with ESMTPSA id j17-20020a05600c1c1100b0040b48690c49sm89436wms.6.2023.12.07.07.54.50
-        for <stable@vger.kernel.org>
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 07 Dec 2023 07:54:51 -0800 (PST)
-Message-ID: <6571eacb.050a0220.8d69d.072a@mx.google.com>
-From: Patricia Horoho <tkoufiognan@gmail.com>
-X-Google-Original-From: "Patricia Horoho" <patriciahorohh@gmail.com>
-Content-Type: text/plain; charset="iso-8859-1"
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F39610C3;
+	Thu,  7 Dec 2023 08:02:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:Mime-Version:Message-Id:Cc:To:From
+	:Date:subject:date:message-id:reply-to;
+	bh=9hxmOxzlmeubWF8MZL43e5U0xtVhFBe0Cobz79lxqI8=; b=zj6odPv7rjZuL72UE9JehHSORQ
+	QGDf+Gm9uILicHxNCMYwWZdj0pTcqxXhKJfWWM9FU7fS0pX9lLjuY704AGlZcYh+0+UdcdBMDJaik
+	+wURkW151BOqGGrGSUh12VRg/eaHcr5/uHYKEuthIFHWlbg33Bafz4Peqtxz8/CasyZE=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:52566 helo=pettiford)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rBGpw-00072a-QE; Thu, 07 Dec 2023 11:02:53 -0500
+Date: Thu, 7 Dec 2023 11:02:52 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: jirislaby@kernel.org, hvilleneuve@dimonoff.com,
+ linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+ stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
+Message-Id: <20231207110252.1c7dfd46c0c5772edda9a770@hugovil.com>
+In-Reply-To: <2023120748-swimming-precinct-722c@gregkh>
+References: <20231130191050.3165862-1-hugo@hugovil.com>
+	<20231130191050.3165862-2-hugo@hugovil.com>
+	<2023120748-swimming-precinct-722c@gregkh>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re:Hallo
-To: stable@vger.kernel.org
-Date: Thu, 07 Dec 2023 15:54:48 +0000
-Reply-To: patriciahorohh@gmail.com
-X-Spam-Level: *
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
+ sc16is7xx_regmap_name()
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-Hallo,
-Haben Sie meine vorherige Nachricht erhalten, die ich Ihnen gesendet habe?
+On Thu, 7 Dec 2023 10:44:33 +0900
+Greg KH <gregkh@linuxfoundation.org> wrote:
+
+> On Thu, Nov 30, 2023 at 02:10:43PM -0500, Hugo Villeneuve wrote:
+> > From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > 
+> > Change snprint format specifier from %d to %u since port_id is unsigned.
+> > 
+> > Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+> > Cc: stable@vger.kernel.org # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+> > Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> > Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> > ---
+> > I did not originally add a "Cc: stable" tag for commit 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+> > as it was intended only to improve debugging using debugfs. But
+> > since then, I have been able to confirm that it also fixes a long standing
+> > bug in our system where the Tx interrupt are no longer enabled at some
+> > point when transmitting large RS-485 paquets (> 64 bytes, which is the size
+> > of the FIFO). I have been investigating why, but so far I haven't found the
+> > exact cause, altough I suspect it has something to do with regmap caching.
+> > Therefore, I have added it as a prerequisite for this patch so that it is
+> > automatically added to the stable kernels.
+> 
+> Looks like the 0-day test bot found problems with this, so I'll hold off
+> on taking this patch and the rest of the series until that's fixed up
+> with a new version of this series.
+
+No problem, I am on it.
+
+Hugo
 
