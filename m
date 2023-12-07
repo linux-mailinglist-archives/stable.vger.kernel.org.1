@@ -1,62 +1,34 @@
-Return-Path: <stable+bounces-4940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D95808CF6
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 17:14:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A545808DA9
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 17:41:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FEF7B21064
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:14:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BF60281F6E
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 16:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D48746B94;
-	Thu,  7 Dec 2023 16:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BdawM9b3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1309C46BAB;
+	Thu,  7 Dec 2023 16:41:15 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A1AA10FF;
-	Thu,  7 Dec 2023 08:14:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701965685; x=1733501685;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=p1g4KkA0JbfZhaiHdJWzaUcY/5IFDKB88xgppTOzQ6s=;
-  b=BdawM9b3V+uzVZP6wlb26V6F9hTsU8jHERFgFUZaDwcxy9SUV5j93xGt
-   EUSSRQ6akFXGXIJKBfhWh73fN/yNsv8fIQKOcSRYzWkT9CosI3Q80fuR5
-   zhBk6YtfgeWdy4lsIEGkHUBXGA5yHxq4kawchdpJ6FLJeBnKf9UXNhy6z
-   0XmGueR/veIFF+8EmSdUUFBzOuuAasIUEU7O5deIx/bkS0b7PviQMYMca
-   xzm8Wnl3QlhDCsMXVqROL3ueb6N/i17aj8XpsAmqJEdSRYZBC3xrpamKF
-   POlpeRygJXzjPV6QF/tSx5ztoCRwBvMu6h4N3S26YeWPzk6N5kdlRo+s3
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1083991"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="1083991"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 08:14:45 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="889797110"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="889797110"
-Received: from lkp-server02.sh.intel.com (HELO b07ab15da5fe) ([10.239.97.151])
-  by fmsmga002.fm.intel.com with ESMTP; 07 Dec 2023 08:14:34 -0800
-Received: from kbuild by b07ab15da5fe with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rBH1E-000CTW-1F;
-	Thu, 07 Dec 2023 16:14:32 +0000
-Date: Fri, 8 Dec 2023 00:13:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	stable@vger.kernel.org,
-	Alison Schofield <alison.schofield@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>, Ira Weiny <ira.weiny@intel.com>
-Subject: Re: [PATCH] cxl/hdm: Fix dpa translation locking
-Message-ID: <202312080021.eQEtUpnB-lkp@intel.com>
-References: <170192142664.461900.3169528633970716889.stgit@dwillia2-xfh.jf.intel.com>
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by lindbergh.monkeyblade.net (Postfix) with SMTP id 6FBC310DD
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 08:41:09 -0800 (PST)
+Received: (qmail 9300 invoked by uid 1000); 7 Dec 2023 11:41:08 -0500
+Date: Thu, 7 Dec 2023 11:41:08 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+Cc: davem@davemloft.net, edumazet@google.com, greg@kroah.com, kuba@kernel.org,
+  linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+  netdev@vger.kernel.org, oneukum@suse.com, pabeni@redhat.com,
+  stable@vger.kernel.org
+Subject: Re: [PATCH v5] net: usb: ax88179_178a: avoid failed operations when
+ device is disconnected
+Message-ID: <0bd3204e-19f4-48de-b42e-a75640a1b1da@rowland.harvard.edu>
+References: <624ad05b-0b90-4d1c-b06b-7a75473401c3@rowland.harvard.edu>
+ <20231207114209.14595-1-jtornosm@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,55 +37,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <170192142664.461900.3169528633970716889.stgit@dwillia2-xfh.jf.intel.com>
+In-Reply-To: <20231207114209.14595-1-jtornosm@redhat.com>
 
-Hi Dan,
+On Thu, Dec 07, 2023 at 12:42:09PM +0100, Jose Ignacio Tornos Martinez wrote:
+> When the device is disconnected we get the following messages showing
+> failed operations:
+> Nov 28 20:22:11 localhost kernel: usb 2-3: USB disconnect, device number 2
+> Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: unregister 'ax88179_178a' usb-0000:02:00.0-3, ASIX AX88179 USB 3.0 Gigabit Ethernet
+> Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: Failed to read reg index 0x0002: -19
+> Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3: Failed to write reg index 0x0002: -19
+> Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0002: -19
+> Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0001: -19
+> Nov 28 20:22:11 localhost kernel: ax88179_178a 2-3:1.0 enp2s0u3 (unregistered): Failed to write reg index 0x0002: -19
+> 
+> The reason is that although the device is detached, normal stop and
+> unbind operations are commanded from the driver. These operations are
+> not necessary in this situation, so avoid these logs when the device is
+> detached if the result of the operation is -ENODEV and if the new flag
+> informing about the disconnecting status is enabled.
+> 
+> cc: stable@vger.kernel.org
+> Fixes: e2ca90c276e1f ("ax88179_178a: ASIX AX88179_178A USB 3.0/2.0 to gigabit ethernet adapter driver")
+> Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+> ---
+> V1 -> V2:
+> - Follow the suggestions from Alan Stern and Oliver Neukum to check the
+> result of the operations (-ENODEV) and not the internal state of the USB 
+> layer (USB_STATE_NOTATTACHED).
+> V2 -> V3
+> - Add cc: stable line in the signed-off-by area.
+> V3 -> V4
+> - Follow the suggestions from Oliver Neukum to use only one flag when
+> disconnecting and include barriers to avoid memory ordering issues.
+> V4 -> V5
+> - Fix my misundestanding and follow the suggestion from Alan Stern to 
+> syncronize and not order the flag.
 
-kernel test robot noticed the following build warnings:
+I did not suggest that you should synchronize anything.  What I said was 
+that the problem you faced was one of synchronization, not of ordering.  
 
-[auto build test WARNING on linus/master]
-[also build test WARNING on v6.7-rc4 next-20231207]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+In fact, you should not try to synchronize -- ultimately it is 
+impossible to do.  The only way to get true synchronization is to 
+prevent the user from disconnecting the device and bringing the 
+interface down at the same time, and obviously the kernel cannot do 
+this.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/cxl-hdm-Fix-dpa-translation-locking/20231207-115958
-base:   linus/master
-patch link:    https://lore.kernel.org/r/170192142664.461900.3169528633970716889.stgit%40dwillia2-xfh.jf.intel.com
-patch subject: [PATCH] cxl/hdm: Fix dpa translation locking
-config: i386-allmodconfig (https://download.01.org/0day-ci/archive/20231208/202312080021.eQEtUpnB-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20231208/202312080021.eQEtUpnB-lkp@intel.com/reproduce)
+>  drivers/net/usb/ax88179_178a.c | 47 +++++++++++++++++++++++++++++-----
+>  1 file changed, 40 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
+> index 4ea0e155bb0d..e07614799f75 100644
+> --- a/drivers/net/usb/ax88179_178a.c
+> +++ b/drivers/net/usb/ax88179_178a.c
+> @@ -173,6 +173,8 @@ struct ax88179_data {
+>  	u8 in_pm;
+>  	u32 wol_supported;
+>  	u32 wolopts;
+> +	u8 disconnecting;
+> +	struct mutex lock;
+>  };
+>  
+>  struct ax88179_int_data {
+> @@ -208,6 +210,8 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+>  {
+>  	int ret;
+>  	int (*fn)(struct usbnet *, u8, u8, u16, u16, void *, u16);
+> +	struct ax88179_data *ax179_data = dev->driver_priv;
+> +	u8 disconnecting;
+>  
+>  	BUG_ON(!dev);
+>  
+> @@ -219,9 +223,14 @@ static int __ax88179_read_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+>  	ret = fn(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+>  		 value, index, data, size);
+>  
+> -	if (unlikely(ret < 0))
+> -		netdev_warn(dev->net, "Failed to read reg index 0x%04x: %d\n",
+> -			    index, ret);
+> +	if (unlikely(ret < 0)) {
+> +		mutex_lock(&ax179_data->lock);
+> +		disconnecting = ax179_data->disconnecting;
+> +		mutex_unlock(&ax179_data->lock);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202312080021.eQEtUpnB-lkp@intel.com/
+Clearly you don't understand how mutexes work.  Using a mutex like this 
+accomplishes nothing.
 
-All warnings (new ones prefixed by >>):
+> +		if (!(ret == -ENODEV && disconnecting))
+> +			netdev_warn(dev->net, "Failed to read reg index 0x%04x: %d\n",
+> +				    index, ret);
+> +	}
+>  
+>  	return ret;
+>  }
+> @@ -231,6 +240,8 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+>  {
+>  	int ret;
+>  	int (*fn)(struct usbnet *, u8, u8, u16, u16, const void *, u16);
+> +	struct ax88179_data *ax179_data = dev->driver_priv;
+> +	u8 disconnecting;
+>  
+>  	BUG_ON(!dev);
+>  
+> @@ -242,9 +253,14 @@ static int __ax88179_write_cmd(struct usbnet *dev, u8 cmd, u16 value, u16 index,
+>  	ret = fn(dev, cmd, USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
+>  		 value, index, data, size);
+>  
+> -	if (unlikely(ret < 0))
+> -		netdev_warn(dev->net, "Failed to write reg index 0x%04x: %d\n",
+> -			    index, ret);
+> +	if (unlikely(ret < 0)) {
+> +		mutex_lock(&ax179_data->lock);
+> +		disconnecting = ax179_data->disconnecting;
+> +		mutex_unlock(&ax179_data->lock);
 
->> drivers/cxl/core/port.c:231:36: warning: format specifies type 'unsigned long long' but the argument has type 'resource_size_t' (aka 'unsigned int') [-Wformat]
-           return sysfs_emit(buf, "%#llx\n", cxl_dpa_resource_start(cxled));
-                                   ~~~~~     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                                   %#x
-   1 warning generated.
+Same here.
 
+> +		if (!(ret == -ENODEV && disconnecting))
+> +			netdev_warn(dev->net, "Failed to write reg index 0x%04x: %d\n",
+> +				    index, ret);
+> +	}
+>  
+>  	return ret;
+>  }
+> @@ -492,6 +508,22 @@ static int ax88179_resume(struct usb_interface *intf)
+>  	return usbnet_resume(intf);
+>  }
+>  
+> +static void ax88179_disconnect(struct usb_interface *intf)
+> +{
+> +	struct usbnet *dev = usb_get_intfdata(intf);
+> +	struct ax88179_data *ax179_data;
+> +
+> +	if (!dev)
+> +		return;
+> +
+> +	ax179_data = dev->driver_priv;
+> +	mutex_lock(&ax179_data->lock);
+> +	ax179_data->disconnecting = 1;
+> +	mutex_unlock(&ax179_data->lock);
 
-vim +231 drivers/cxl/core/port.c
+And again, this does nothing.
 
-   224	
-   225	static ssize_t dpa_resource_show(struct device *dev, struct device_attribute *attr,
-   226				    char *buf)
-   227	{
-   228		struct cxl_endpoint_decoder *cxled = to_cxl_endpoint_decoder(dev);
-   229	
-   230		guard(rwsem_read)(&cxl_dpa_rwsem);
- > 231		return sysfs_emit(buf, "%#llx\n", cxl_dpa_resource_start(cxled));
-   232	}
-   233	static DEVICE_ATTR_RO(dpa_resource);
-   234	
+Imagine a situation where the user brings the interface down on CPU 1, 
+while at the same time CPU 2 handles a disconnection.  Then the 
+following timeline of events can occur:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+	CPU 1				CPU 2
+	---------------------------	-----------------------------
+	The stop operation calls
+	__ax88179_read_cmd()
+
+					The device is unplugged
+
+	The routine tries to communicate
+	with the device and gets a -ENODEV
+	error because the device is gone
+
+					The USB core calls ax88179_disconnect()
+
+	The routine locks the mutex,
+	reads ax179_data->disconnecting = 0,
+	and unlocks the mutex
+
+					ax88179_disconnect() locks the mutex,
+					sets ax179_data->disconnecting = 1,
+					and unlocks the mutex
+
+	The routine prints an error message
+
+As you can see, using the mutex does not prevent the problem from 
+occurring.  You should not add the mutex at all; it serves no purpose.
+
+Alan Stern
 
