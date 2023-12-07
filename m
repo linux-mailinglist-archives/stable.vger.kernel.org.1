@@ -1,136 +1,110 @@
-Return-Path: <stable+bounces-4947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC12808FD0
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 19:25:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F066808FD1
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 19:25:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCE231C2091F
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 18:25:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47C4228109B
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 18:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 302994E60A;
-	Thu,  7 Dec 2023 18:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FC949F92;
+	Thu,  7 Dec 2023 18:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TGvZ7tai"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aZxKiu9Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-xf2f.google.com (mail-qv1-xf2f.google.com [IPv6:2607:f8b0:4864:20::f2f])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB432E0;
-	Thu,  7 Dec 2023 10:25:22 -0800 (PST)
-Received: by mail-qv1-xf2f.google.com with SMTP id 6a1803df08f44-67a948922aaso6703396d6.3;
-        Thu, 07 Dec 2023 10:25:22 -0800 (PST)
+Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BDEA10E7
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 10:25:50 -0800 (PST)
+Received: by mail-wr1-x42b.google.com with SMTP id ffacd0b85a97d-33330a5617fso1293658f8f.2
+        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 10:25:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1701973522; x=1702578322; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5JdtSkhV/uZ+qgTv5nm/tjN7XRjVnjCUJ7V0n44iPxI=;
-        b=TGvZ7taiAXsoQ7SnBTc3PwpC7eY1mDVqhoFpJZX5Ev0IAic+4r0YZzytAemj5zG02m
-         8ogr+N6YU0y/1rNN5yREzrYvZkZgEIQyN80+Y6lSAroCLxXFo44s7tzHVz+7nqC6GycU
-         0QMiLMnQwpzbMgjQuL2wdOYzoQfXfJVd4eLX5/U7FKK+iUtkGRLYK4Mul/K8PgH836r6
-         Zy08SIRENtqBYYszroaeIuxEdF+dSZk5f7r0Xv83iLRXrO9FfUeF9p29bo2ZfoTRbk3b
-         UZ8KkWlxaYjRE/npllHi9Yl/hWVxikq2FE4jfDkbl633CTZ/R0FstFztOcDWNHXRMW6b
-         kS3w==
+        d=gmail.com; s=20230601; t=1701973549; x=1702578349; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QFhF+WHm92cVBxSbo98wCO9PJ9Iq9HjlgAyvaR9w2ck=;
+        b=aZxKiu9Q36BIqn3iX1kBR24qvYfpyP2vtOJUy39fCA4x0bJfSot0AjAWef5yQgvpSG
+         4FQZiCSe5m7KqY61xL08nQGTgUlmv118lZSwldranmhH//G+1Uza7W94Sefo6eSD220B
+         +4VFF8dTFrRJBng3F0IDM5ok49vUF1DyMe/DCJ0UEkAK9ladyfpiAT5EVx71iu8ooEH4
+         8aylesRM8QWmVS7J6vSbCxTR6numYsx5Sr6MfSPK8/BE0hyNuwqFO2B8xC4ypUXjexsG
+         XYh64tLH3c7SoKJ6s4b/kRU5DInfjQ53gIlr8/bGsubJunwwLrc9T7pHi5vDsiSktSSA
+         nBSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701973522; x=1702578322;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5JdtSkhV/uZ+qgTv5nm/tjN7XRjVnjCUJ7V0n44iPxI=;
-        b=jXfkOSJkRUUniTCX1dWlL9ChldJ4ZgyqqxtYdGYxlHuCbUJYi0Dxwfgb74f3BRCzwL
-         NJV5EbW3vWeWaVJ2JwQiuLPu1h6d/3LdnpEZCp064TrgLeFClIqj3XeMVu3mQzbGy1IK
-         khkomampIS6gi3Xpe3z6zqvNs8MQZ3cjFDFMEs/HkH1ntQvszwQyMg+du1j1x5Cr06bq
-         /cXnsKCRcLDMq1wsmEPvce5byZMZSg1T7pMPCH2E+LWGZ/gRNI13mdCEB4SK8Rs/C7mu
-         gVeWuuhMQLR1yF1t4JMs0Ycegmes5MhYCI/C8DyLVeAv+rV9Uo1EpPnkiCIKrIXmqzlO
-         KJbg==
-X-Gm-Message-State: AOJu0YyBpECXUsuHmRjr1qxFhnC1NTk4hO7PgUwgs3Gm/sl5QhJR7Sm+
-	Jj1XPsXE+lFFee9xJXlf+r+/Ep/+n1xhqKTWBBo=
-X-Google-Smtp-Source: AGHT+IHY+s/sc69Wv6rSKgC8GVl9b1PBrwAVNxIVr9rnmx1+q5QlZJy/UldZI2uZtz7PpgeFAYDI2UwljpPqDCLnd6Y=
-X-Received: by 2002:ad4:4f11:0:b0:67a:a721:e140 with SMTP id
- fb17-20020ad44f11000000b0067aa721e140mr3126459qvb.109.1701973521839; Thu, 07
- Dec 2023 10:25:21 -0800 (PST)
+        d=1e100.net; s=20230601; t=1701973549; x=1702578349;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QFhF+WHm92cVBxSbo98wCO9PJ9Iq9HjlgAyvaR9w2ck=;
+        b=SagAmtmwmLBljEoouAcv4LNe2lKVeMoGXGmt5t8UD2RIptk+9kmpzUsZo+kR9sit21
+         j0Zxp6gqYhKRk6z3l4poC+ecg0Fn7axKe5tqG3Nx52f4DtUDI2Qr14NiCZZ7yhWbO4Qc
+         stSagg7C6yba7YnhqZg8JP04KHdvdH5vFQ7KIs7ZCmleuGhu5tD8opMYB8AW/C/ExeQK
+         BZyVwXsh3QFqIco+mx+ZtkDV6FlFuuRIY0IzYMQi+vEs1fwnRhrM1ivWpnN0d+rbWcF9
+         olnPF6M2EK6+fdUFrHZIyYL0hlp6whromowOHaliuEOJe54vNvQ+eBvLGnXk+lzylCxc
+         ElNA==
+X-Gm-Message-State: AOJu0YzhRb0VOGWchf3iAadYqabifU2i595i4eIT16FbLJnGc6XH2xvh
+	uKmoPspde0WNXaJwXmhO31o=
+X-Google-Smtp-Source: AGHT+IGGXN4Wz5RSI2d7rXy0IjXkVfWyTq3KUtJRpnUAU8d6KvlTeEvxhdof7kcCZc1McgCdfOl2Sg==
+X-Received: by 2002:adf:f303:0:b0:333:135f:a7f4 with SMTP id i3-20020adff303000000b00333135fa7f4mr1902241wro.56.1701973548815;
+        Thu, 07 Dec 2023 10:25:48 -0800 (PST)
+Received: from xavers-framework.fritz.box ([89.38.117.155])
+        by smtp.gmail.com with ESMTPSA id j16-20020a5d5650000000b0033344e2522dsm257302wrw.37.2023.12.07.10.25.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Dec 2023 10:25:48 -0800 (PST)
+From: Xaver Hugl <xaver.hugl@gmail.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: Xaver Hugl <xaver.hugl@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/amd/display: fix cursor-plane-only atomic commits not triggering pageflips
+Date: Thu,  7 Dec 2023 19:25:32 +0100
+Message-ID: <20231207182532.19416-1-xaver.hugl@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231130191050.3165862-2-hugo@hugovil.com> <202312061443.Cknef7Uq-lkp@intel.com>
- <20231207125243.c056d5cd0f875ea6dfdfa194@hugovil.com>
-In-Reply-To: <20231207125243.c056d5cd0f875ea6dfdfa194@hugovil.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Thu, 7 Dec 2023 20:24:45 +0200
-Message-ID: <CAHp75VebCZckUrNraYQj9k=Mrn2kbYs1Lx26f5-8rKJ3RXeh-w@mail.gmail.com>
-Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in sc16is7xx_regmap_name()
-To: Hugo Villeneuve <hugo@hugovil.com>
-Cc: kernel test robot <lkp@intel.com>, gregkh@linuxfoundation.org, jirislaby@kernel.org, 
-	hvilleneuve@dimonoff.com, oe-kbuild-all@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 7, 2023 at 7:52=E2=80=AFPM Hugo Villeneuve <hugo@hugovil.com> w=
-rote:
-> On Wed, 6 Dec 2023 14:29:39 +0800
-> kernel test robot <lkp@intel.com> wrote:
+With VRR, every atomic commit affecting a given display must trigger
+a new scanout cycle, so that userspace is able to control the refresh
+rate of the display. Before this commit, this was not the case for
+atomic commits that only contain cursor plane properties.
 
-...
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3034
+Cc: stable@vger.kernel.org
 
-> >    drivers/tty/serial/sc16is7xx.c: In function 'sc16is7xx_i2c_probe':
-> > >> drivers/tty/serial/sc16is7xx.c:1703:41: warning: '%u' directive outp=
-ut may be truncated writing between 1 and 10 bytes into a region of size 2 =
-[-Wformat-truncation=3D]
-> >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
-> >          |                                         ^~
-> >    In function 'sc16is7xx_regmap_name',
-> >        inlined from 'sc16is7xx_i2c_probe' at drivers/tty/serial/sc16is7=
-xx.c:1805:17:
-> >    drivers/tty/serial/sc16is7xx.c:1703:36: note: directive argument in =
-the range [0, 4294967294]
-> >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
-> >          |                                    ^~~~~~~~
-> >    drivers/tty/serial/sc16is7xx.c:1703:9: note: 'snprintf' output betwe=
-en 6 and 15 bytes into a destination of size 6
-> >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
-> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
-> Hi,
-> the only solution I could find is to add this line just before snprintf:
->
->     BUG_ON(port_id > MAX310X_MAX_PORTS);
->
-> it allows us to have the smallest buffer size possible.
->
-> One other solution would be to change port_id from "unsigned int"
-> to "u8", and increase the buffer by an additional 2 bytes to silence
-> the warning, but then wasting 2 bytes for each channel, like so:
+Signed-off-by: Xaver Hugl <xaver.hugl@gmail.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-I didn't get this. It's a buffer that is rewritten on each port (why
-is it even static?). Just make sure it's enough for any given number
-and drop the static.
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index b452796fc6d3..b379c859fbef 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8149,9 +8149,15 @@ static void amdgpu_dm_commit_planes(struct drm_atomic_state *state,
+ 		/* Cursor plane is handled after stream updates */
+ 		if (plane->type == DRM_PLANE_TYPE_CURSOR) {
+ 			if ((fb && crtc == pcrtc) ||
+-			    (old_plane_state->fb && old_plane_state->crtc == pcrtc))
++			    (old_plane_state->fb && old_plane_state->crtc == pcrtc)) {
+ 				cursor_update = true;
+-
++				/*
++				 * With atomic modesetting, cursor changes must
++				 * also trigger a new refresh period with vrr
++				 */
++				if (!state->legacy_cursor_update)
++					pflip_present = true;
++			}
+ 			continue;
+ 		}
+ 
+-- 
+2.43.0
 
-...
-
-While at it, can you look at the following items to improve?
-- sc16is7xx_alloc_line() can be updated to use IDA framework
-- move return xxx; to the default cases in a few functions
-- if (div > 0xffff) { --> if (div >=3D BIT(16)) { as it better shows why
-the limit is that (we have only 16 bits for the divider)
-- do {} while (0) in the sc16is7xx_port_irq, WTH?!
-- while (1) { -- do { } while (keep_polling); in sc16is7xx_irq()
-- use in_range() in sc16is7xx_setup_mctrl_ports() ? (maybe not, dunno)
-- for (i--; i >=3D 0; i--) { --> while (i--) {
-- use spi_get_device_match_data() and i2c_get_match_data()
-- 15000000 --> 15 * HZ_PER_MHZ ?
-- dropping MODULE_ALIAS (and fix the ID tables, _if_ needed)
-- split the code to the core / main + SPI + I2C glue drivers
-
-* These just come on the first glance at the code, perhaps there is
-more room to improve.
-
---
-With Best Regards,
-Andy Shevchenko
 
