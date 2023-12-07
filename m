@@ -1,117 +1,80 @@
-Return-Path: <stable+bounces-4890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47C4807E0E
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 02:41:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E07A808128
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 07:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3696CB20B9F
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 01:41:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCD1281B57
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 06:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D785259;
-	Thu,  7 Dec 2023 01:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07A613AFD;
+	Thu,  7 Dec 2023 06:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQN2dWoL"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3DA5D63;
-	Wed,  6 Dec 2023 17:40:23 -0800 (PST)
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-286e9ce9feaso119781a91.1;
-        Wed, 06 Dec 2023 17:40:23 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701913223; x=1702518023;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E5gAtdhf3r5uOhJWk/x5Qdd2aBvmdfuVX+ev2hC4WxQ=;
-        b=iHljwmTnfLGWqFkeijr0aE2vdrM6DLkPK7u0iFkmry7rjQg2nGshs1aIGmVv1vx8X0
-         IcHDeCpsREqbXNshJj8AMAcRsJ2solKDQJw2fZCAEFiK5yCWPJ7S9qoKitkN34YKXmSL
-         Ds+Gl/mVIohK1Jo0+N4COf2SMI0SZ5gcZiOawffVr6NrC0Al7/zDPFsow7bdcPDCIhei
-         ryns/vD6XNUdXisli8sDAcPl3qVzgjUq479rgiYeQcAJ44M6lyL8I20HkQX5eHZcp1Ag
-         gQQeZ1yHiUsYStjHcHtrq0aJ2+SR1G9fvSBQ7UwbuIFGjTn8K8eyVxqvoVs8e2xj6jXx
-         J+wg==
-X-Gm-Message-State: AOJu0YwGBoVCWDXK/eY+6h6NsNFRJxDTSalzFF67HaffWPiyAy+FmAQD
-	gWlco+x6ralBph2U6Zqm26Q=
-X-Google-Smtp-Source: AGHT+IHbcHzy97gpr5HE+p3R5XYYVU16Ol709lMcB2sU9udtuHGesq8L/wW43jaXT1xj3P7704OYYw==
-X-Received: by 2002:a17:90b:4b4a:b0:286:5123:ddaf with SMTP id mi10-20020a17090b4b4a00b002865123ddafmr3650342pjb.3.1701913223416;
-        Wed, 06 Dec 2023 17:40:23 -0800 (PST)
-Received: from tgsp-ThinkPad-X280.. ([223.148.152.37])
-        by smtp.gmail.com with ESMTPSA id sj16-20020a17090b2d9000b00286e9f15f21sm72304pjb.12.2023.12.06.17.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Dec 2023 17:40:23 -0800 (PST)
-From: xiongxin <xiongxin@kylinos.cn>
-To: tglx@linutronix.de,
-	jikos@kernel.org,
-	benjamin.tissoires@redhat.com
-Cc: linux-input@vger.kernel.org,
-	xiongxin <xiongxin@kylinos.cn>,
-	stable@vger.kernel.org,
-	Riwen Lu <luriwen@kylinos.cn>
-Subject: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called in pairs
-Date: Thu,  7 Dec 2023 09:40:03 +0800
-Message-Id: <20231207014003.12919-1-xiongxin@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530D610A00;
+	Thu,  7 Dec 2023 06:50:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7998AC433C8;
+	Thu,  7 Dec 2023 06:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1701931854;
+	bh=pnIdKiT+bON/xCNZGUM/Uq8e1AWP7hNVCHxLJbzR0us=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CQN2dWoL36aLwsT1eLWhMsAa5I3P+sAOVlGrvLF52zU4G77OImp7uJJ2eB6xXL6d2
+	 s8ypmac5WZ7u1/oCqxD3FKpvq/v2jDtyP9s9g2NR8E+9zOH1yF1lqNh09IOM1QmMqB
+	 pWak8HAm65qEfa87U6CALD3V9h3rbym3K4fRNy2E=
+Date: Thu, 7 Dec 2023 10:44:33 +0900
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Hugo Villeneuve <hugo@hugovil.com>
+Cc: jirislaby@kernel.org, hvilleneuve@dimonoff.com,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
+ sc16is7xx_regmap_name()
+Message-ID: <2023120748-swimming-precinct-722c@gregkh>
+References: <20231130191050.3165862-1-hugo@hugovil.com>
+ <20231130191050.3165862-2-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231130191050.3165862-2-hugo@hugovil.com>
 
-When an interrupt controller uses a function such as handle_level_irq()
-as an interrupt handler and the controller implements the irq_disable()
-callback, the following scenario will appear in the i2c-hid driver in
-the sleep scenario:
+On Thu, Nov 30, 2023 at 02:10:43PM -0500, Hugo Villeneuve wrote:
+> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> 
+> Change snprint format specifier from %d to %u since port_id is unsigned.
+> 
+> Fixes: 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+> Cc: stable@vger.kernel.org # 6.1.x: 3837a03 serial: sc16is7xx: improve regmap debugfs by using one regmap per port
+> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+> ---
+> I did not originally add a "Cc: stable" tag for commit 3837a0379533 ("serial: sc16is7xx: improve regmap debugfs by using one regmap per port")
+> as it was intended only to improve debugging using debugfs. But
+> since then, I have been able to confirm that it also fixes a long standing
+> bug in our system where the Tx interrupt are no longer enabled at some
+> point when transmitting large RS-485 paquets (> 64 bytes, which is the size
+> of the FIFO). I have been investigating why, but so far I haven't found the
+> exact cause, altough I suspect it has something to do with regmap caching.
+> Therefore, I have added it as a prerequisite for this patch so that it is
+> automatically added to the stable kernels.
 
-in the sleep flow, while the user is still triggering the i2c-hid
-interrupt, we get the following function call:
+Looks like the 0-day test bot found problems with this, so I'll hold off
+on taking this patch and the rest of the series until that's fixed up
+with a new version of this series.
 
-  handle_level_irq()
-    -> mask_ack_irq()
-      -> mask_irq()
-				i2c_hid_core_suspend()
-				  -> disable_irq()
-				    -> __irq_disable()
-				      -> irq_state_set_disabled()
-				      -> irq_state_set_masked()
+thanks,
 
-  irq_thread_fn()
-    -> irq_finalize_oneshot()
-      -> if (!desc->threads_oneshot && !irqd_irq_disabled() &&
-	     irqd_irq_masked())
-      	 	unmask_threaded_irq()
-		  -> unmask_irq()
-
-That is, when __irq_disable() is called between mask_irq() and
-irq_finalize_oneshot(), the code in irq_finalize_oneshot() will cause
-the !irqd_irq_disabled() fails to enter the unmask_irq() branch, which
-causes mask_irq/unmask_irq to be called unpaired and the i2c-hid
-interrupt to be masked.
-
-Since mask_irq/unmask_irq and irq_disabled() belong to two different
-hardware registers or policies, the !irqd_irq_disabled() assertion may
-not be used to determine whether unmask_irq() needs to be called.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: xiongxin <xiongxin@kylinos.cn>
-Signed-off-by: Riwen Lu <luriwen@kylinos.cn>
-
-diff --git a/kernel/irq/manage.c b/kernel/irq/manage.c
-index 1782f90cd8c6..9160fc9170b3 100644
---- a/kernel/irq/manage.c
-+++ b/kernel/irq/manage.c
-@@ -1120,8 +1120,7 @@ static void irq_finalize_oneshot(struct irq_desc *desc,
- 
- 	desc->threads_oneshot &= ~action->thread_mask;
- 
--	if (!desc->threads_oneshot && !irqd_irq_disabled(&desc->irq_data) &&
--	    irqd_irq_masked(&desc->irq_data))
-+	if (!desc->threads_oneshot && irqd_irq_masked(&desc->irq_data))
- 		unmask_threaded_irq(desc);
- 
- out_unlock:
--- 
-2.34.1
-
+greg k-h
 
