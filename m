@@ -1,140 +1,80 @@
-Return-Path: <stable+bounces-4920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6808088E8
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 14:12:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CEC980891C
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 14:24:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8252F1C20B89
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 13:12:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9B71F212C8
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 13:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A5D3DB99;
-	Thu,  7 Dec 2023 13:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="EoAUjU1O"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B68D405E0;
+	Thu,  7 Dec 2023 13:24:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E404910E9;
-	Thu,  7 Dec 2023 05:12:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1701954728; x=1733490728;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=4hPha8F9u1bHaqRGRfkg8SwanFYTgp+4Z7tK+Ubzcjs=;
-  b=EoAUjU1OqOJHpCkpqwFv39VX/gT55zavlED0+Zi14t+KhRpDWDZw6XTj
-   tCexsmJ2QjuJwZ++nNL9TRybezLIN7bTLzLSxAvUK6vOinQ5efJHsKm+i
-   1nl8MvhAfTCyawpYOEjiPZdzGimFzAHxJtPL27dvOUi4iTug/SgMohWzw
-   64goeFEfPSZ3E7QWSVFAOd6ndUcPrbSs8pQXrKM8JeoaR27i80T7F+Kji
-   uLaC3kFquGE38P+WdXpXRrvlQ+na/Ey9pPJXGhyOHmsaMlR/FUeWxnXb/
-   MSGWgUuMEMQMs9jhWLCOU6No5Kzoih+Rgei4NrRfdBAr82bSL3ntUtleI
-   w==;
-X-CSE-ConnectionGUID: JQolBRUHQTen03AsQHVsCg==
-X-CSE-MsgGUID: phlp69xtRlu1zFivcfKhmw==
-X-ThreatScanner-Verdict: Negative
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="asc'?scan'208";a="13247861"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 07 Dec 2023 06:12:07 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 7 Dec 2023 06:11:56 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Thu, 7 Dec 2023 06:11:53 -0700
-Date: Thu, 7 Dec 2023 13:11:23 +0000
-From: Conor Dooley <conor.dooley@microchip.com>
-To: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-CC: Conor Dooley <conor@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	<geert+renesas@glider.be>, Atish Patra <atishp@rivosinc.com>, Paul Walmsley
-	<paul.walmsley@sifive.com>, <apatel@ventanamicro.com>,
-	<alexghiti@rivosinc.com>, Bjorn Topel <bjorn@rivosinc.com>,
-	<suagrfillet@gmail.com>, <jeeheng.sia@starfivetech.com>,
-	<petrtesarik@huaweicloud.com>, <linux-riscv@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<prabhakar.mahadev-lad.rj@bp.renesas.com>
-Subject: Re: [RFT 1/2] RISC-V: handle missing "no-map" properties for
- OpenSBI's PMP protected regions
-Message-ID: <20231207-buffalo-varmint-de843c8a12bb@wendy>
-References: <20230810-crewless-pampers-6f51aafb8cff@wendy>
- <mhng-550dee8b-a2fb-485b-ad4d-2763e94191b4@palmer-ri-x1c9>
- <20231206-precut-serotonin-2eecee4ab6af@spud>
- <CA+V-a8s3MjvpD8gAE7-mOUc6PEytbPOR6x_PHuw0J0hOLkaz-w@mail.gmail.com>
+Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEA0210CF;
+	Thu,  7 Dec 2023 05:24:38 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4SmFNs2WxKz4f3l1t;
+	Thu,  7 Dec 2023 21:24:29 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 1E4351A07F3;
+	Thu,  7 Dec 2023 21:24:34 +0800 (CST)
+Received: from [10.174.179.247] (unknown [10.174.179.247])
+	by APP2 (Coremail) with SMTP id Syh0CgAHXkyRx3FljQlYDA--.45823S3;
+	Thu, 07 Dec 2023 21:24:33 +0800 (CST)
+Message-ID: <7dbaaedd-e039-1025-76de-4ebf7fa7bc35@huaweicloud.com>
+Date: Thu, 7 Dec 2023 21:24:33 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="f9Fz83/CoTY3gAXZ"
-Content-Disposition: inline
-In-Reply-To: <CA+V-a8s3MjvpD8gAE7-mOUc6PEytbPOR6x_PHuw0J0hOLkaz-w@mail.gmail.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.10.0
+Subject: Re: [PATCH v5] block: add check that partition length needs to be
+ aligned with block size
+To: Min Li <min15.li@samsung.com>, axboe@kernel.dk, hch@lst.de,
+ dlemoal@kernel.org
+Cc: gregkh@linuxfoundation.org, kch@nvidia.com, linux-block@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, willy@infradead.org
+References: <20230629073322.GB19464@lst.de>
+ <CGME20231016060514epcas5p2ab38287c243a9539736453b4cb34e447@epcas5p2.samsung.com>
+ <20231016140311.32367-1-min15.li@samsung.com>
+From: Li Nan <linan666@huaweicloud.com>
+In-Reply-To: <20231016140311.32367-1-min15.li@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgAHXkyRx3FljQlYDA--.45823S3
+X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
+	VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYB7kC6x804xWl14x267AKxVW8JVW5JwAF
+	c2x0x2IEx4CE42xK8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII
+	0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xv
+	wVC0I7IYx2IY6xkF7I0E14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7
+	xvwVC2z280aVCY1x0267AKxVW0oVCq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE
+	52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGV
+	WUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48J
+	M4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64
+	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUojjgDUUUU
+X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
 
---f9Fz83/CoTY3gAXZ
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+friendly ping ...
 
-On Thu, Dec 07, 2023 at 01:02:00PM +0000, Lad, Prabhakar wrote:
-> On Wed, Dec 6, 2023 at 2:26=E2=80=AFPM Conor Dooley <conor@kernel.org> wr=
-ote:
-> > On Wed, Dec 06, 2023 at 04:52:11AM -0800, Palmer Dabbelt wrote:
-> > > On Thu, 10 Aug 2023 02:07:10 PDT (-0700), Conor Dooley wrote:
+在 2023/10/16 22:03, Min Li 写道:
+> Thanks
+> 
+> Min li
+> .
 
-> > > > I'm perfectly happy to drop this series though, if people generally=
- are
-> > > > of the opinion that this sort of firmware workaround is ill-advised.
-> > > > We are unaffected by it, so I certainly have no pressure to have
-> > > > something working here. It's my desire not to be user-hostile that
-> > > > motivated this patch.
-> > >
-> > > IIUC you guys and Reneas are the only ones who have hardware that mig=
-ht be
-> > > in a spot where users aren't able to update the firmware (ie, it's ou=
-t in
-> > > production somewhere).
-> >
-> > I dunno if we can really keep thinking like that though. In terms of
-> > people who have devicetrees in the kernel and stuff available in western
-> > catalog distribution, sure.
-> > I don't think we can assume that that covers all users though, certainly
-> > the syntacore folks pop up every now and then, and I sure hope that
-> > Andes etc have larger customer bases than the in-kernel users would
-> > suggest.
-> >
-> > > So I'm adding Geert, though he probably saw this
-> > > months ago...
-> >
-> > Prabhakar might be a good call on that front. I'm not sure if the
-> > Renesas stuff works on affected versions of OpenSBI though, guess it
-> > depends on the sequencing of the support for the non-coherent stuff and
-> > when this bug was fixed.
-> >
-> ATM, I dont think there are any users who are using the upstream
-> kernel + OpenSBI (apart from me and Geert!). Currently the customers
-> are using the BSP releases.
+-- 
+Thanks,
+Nan
 
-That doesn't really answer whether or not you (and your customers) are
-using an affected version of the vendor OpenSBI?
-The affected range for OpenSBI itself is [v0.8 to v1.3).
-
---f9Fz83/CoTY3gAXZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZXHEewAKCRB4tDGHoIJi
-0qAVAQDuyK5FCD922oVznNjcMLfpdk3VinS8Td2EgK/P06qa2wD+NHaA5dhQABPZ
-AL8kEYvuUajwlHISzPfMrsohnzvnlQE=
-=LBlc
------END PGP SIGNATURE-----
-
---f9Fz83/CoTY3gAXZ--
 
