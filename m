@@ -1,35 +1,35 @@
-Return-Path: <stable+bounces-4906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E07A808128
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 07:50:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3984780812A
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 07:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDCD1281B57
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 06:50:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AB401C209EF
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 06:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07A613AFD;
-	Thu,  7 Dec 2023 06:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C323013AED;
+	Thu,  7 Dec 2023 06:50:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQN2dWoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CcR4zYOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530D610A00;
-	Thu,  7 Dec 2023 06:50:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7998AC433C8;
-	Thu,  7 Dec 2023 06:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6765910A00;
+	Thu,  7 Dec 2023 06:50:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C665C433CC;
+	Thu,  7 Dec 2023 06:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1701931854;
-	bh=pnIdKiT+bON/xCNZGUM/Uq8e1AWP7hNVCHxLJbzR0us=;
+	s=korg; t=1701931857;
+	bh=5rq84evr5Sp4/RH4eXvLAxgnsQiE23jaVtXpmghA1G0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CQN2dWoL36aLwsT1eLWhMsAa5I3P+sAOVlGrvLF52zU4G77OImp7uJJ2eB6xXL6d2
-	 s8ypmac5WZ7u1/oCqxD3FKpvq/v2jDtyP9s9g2NR8E+9zOH1yF1lqNh09IOM1QmMqB
-	 pWak8HAm65qEfa87U6CALD3V9h3rbym3K4fRNy2E=
-Date: Thu, 7 Dec 2023 10:44:33 +0900
+	b=CcR4zYOrTjlo6Y9j0vouEKHP+t3UfzxX0klqYQd02P6/nycMBXSx4jDA1ys1O7l//
+	 jEn30fvBRo2lOihnjQ5AG2LzYlSBB48wiMoO3w1eNt16E9Rc2GwEnS7F6VniJeUYu+
+	 pA5Nr5e/CozwpXpbYkitpAYnB67qETBIb7FhElCM=
+Date: Thu, 7 Dec 2023 10:45:48 +0900
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Hugo Villeneuve <hugo@hugovil.com>
 Cc: jirislaby@kernel.org, hvilleneuve@dimonoff.com,
@@ -37,7 +37,7 @@ Cc: jirislaby@kernel.org, hvilleneuve@dimonoff.com,
 	stable@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
 Subject: Re: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
  sc16is7xx_regmap_name()
-Message-ID: <2023120748-swimming-precinct-722c@gregkh>
+Message-ID: <2023120748-macaroni-gaining-335f@gregkh>
 References: <20231130191050.3165862-1-hugo@hugovil.com>
  <20231130191050.3165862-2-hugo@hugovil.com>
 Precedence: bulk
@@ -70,9 +70,11 @@ On Thu, Nov 30, 2023 at 02:10:43PM -0500, Hugo Villeneuve wrote:
 > Therefore, I have added it as a prerequisite for this patch so that it is
 > automatically added to the stable kernels.
 
-Looks like the 0-day test bot found problems with this, so I'll hold off
-on taking this patch and the rest of the series until that's fixed up
-with a new version of this series.
+As you are splitting fixes from non-fixes in this series, please resend
+this as 2 different series, one that I can apply now to my tty-linus
+branch to get merged for 6.7-final, and one that can go into tty-next
+for 6.8-rc1.  Mixing them up here just ensures that they all would get
+applied to tty-next.
 
 thanks,
 
