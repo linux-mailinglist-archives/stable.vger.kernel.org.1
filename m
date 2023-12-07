@@ -1,94 +1,86 @@
-Return-Path: <stable+bounces-4914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F978084D1
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 10:38:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15542808556
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 11:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A50E01C21AEC
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 09:38:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4CC1F2257A
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 10:20:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D0B35261;
-	Thu,  7 Dec 2023 09:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A37A736B00;
+	Thu,  7 Dec 2023 10:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="f4F/DIEh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0GpJwOS"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D972DAC
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 01:38:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701941908; x=1733477908;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=NRCb2skgWUY6/0k+GgOYc1syRPquz6NY6LhlUq60Bi8=;
-  b=f4F/DIEhI4bqE97XEbAWG31cjlqbmbSeeKKYmbPEvcbPlq+Fjwgn22AC
-   3RV675F5T7PyHG+vokhAJCPG4tFVgT1mzfcLyn0dbEeIT/cwudAIT+22/
-   3aN8YE+mIH6YPTe3XoP2DZIgezOmlmv34Lf5gKjvZpNvXpz4k7YHY0nHV
-   xYDXm4rks/CZ6Cf8HCz7NRgj+7dur0X5rwYjdg088pl+UHxp0SF/mOM8r
-   Jvompm83/n39SUWWyV6uip0mrmDmdVaUccz8xCoKOSPE7l9PYdeUn/Iti
-   yNT3hQCWsGmXX7MByoIf9pNVMR5MLE26XF21Dj5OelF2XARyXvg4m5FJA
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="391378211"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="391378211"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 01:38:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10916"; a="771668691"
-X-IronPort-AV: E=Sophos;i="6.04,256,1695711600"; 
-   d="scan'208";a="771668691"
-Received: from mrehana-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.62.169])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 01:38:25 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: intel-gfx@lists.freedesktop.org,
-	jani.nikula@intel.com,
-	bbaa <bbaa@bbaa.fun>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/edid: also call add modes in EDID connector update fallback
-Date: Thu,  7 Dec 2023 11:38:21 +0200
-Message-Id: <20231207093821.2654267-1-jani.nikula@intel.com>
-X-Mailer: git-send-email 2.39.2
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533E63529F;
+	Thu,  7 Dec 2023 10:20:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C726BC433C9;
+	Thu,  7 Dec 2023 10:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701944423;
+	bh=VN5ael7ejZIKhO7wu8DyqQP7P5tXKIv5eQOqK3DVo90=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=P0GpJwOSjYQJYgtunsRIXTuk45QfxZ06wCJbJkwTk33vBhWmgvdBpZNdtdcz9OhE0
+	 ap6r4zWspCDP7Z0lYkESMgMRxUBT3QkP7wPaPlX5BTVgNVNSp657ThihKWmRhexS1k
+	 86a/M7agO5O0Ejaw/spq+ihEBKNP91I1nwx2WufZFIMbpvPA+j3dRMM3URi3mJMewZ
+	 96zcDfkeY7mH+vQy/Ox+k8FtPXOLe4kQ+IDzq7FgF/WPDyB+dhp4EDOkKLMnyxMSZo
+	 rMRaGclLag12tQJXlQUwOiFSo1ABU35AmjojH0cN7hH8U64JZgNDQ5WwIId/JA8Xnu
+	 KwNcpTZvapqdQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A65D3C40C5E;
+	Thu,  7 Dec 2023 10:20:23 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] nfp: flower: fix for take a mutex lock in soft irq
+ context and rcu lock
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <170194442367.4036.11698027347829180563.git-patchwork-notify@kernel.org>
+Date: Thu, 07 Dec 2023 10:20:23 +0000
+References: <20231205092625.18197-1-louis.peens@corigine.com>
+In-Reply-To: <20231205092625.18197-1-louis.peens@corigine.com>
+To: Louis Peens <louis.peens@corigine.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ hui.zhou@corigine.com, netdev@vger.kernel.org, stable@vger.kernel.org,
+ oss-drivers@corigine.com
 
-When the separate add modes call was added back in commit c533b5167c7e
-("drm/edid: add separate drm_edid_connector_add_modes()"), it failed to
-address drm_edid_override_connector_update(). Also call add modes there.
+Hello:
 
-Reported-by: bbaa <bbaa@bbaa.fun>
-Closes: https://lore.kernel.org/r/930E9B4C7D91FDFF+29b34d89-8658-4910-966a-c772f320ea03@bbaa.fun
-Fixes: c533b5167c7e ("drm/edid: add separate drm_edid_connector_add_modes()")
-Cc: <stable@vger.kernel.org> # v6.3+
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- drivers/gpu/drm/drm_edid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-diff --git a/drivers/gpu/drm/drm_edid.c b/drivers/gpu/drm/drm_edid.c
-index cb4031d5dcbb..69c68804023f 100644
---- a/drivers/gpu/drm/drm_edid.c
-+++ b/drivers/gpu/drm/drm_edid.c
-@@ -2311,7 +2311,8 @@ int drm_edid_override_connector_update(struct drm_connector *connector)
- 
- 	override = drm_edid_override_get(connector);
- 	if (override) {
--		num_modes = drm_edid_connector_update(connector, override);
-+		if (drm_edid_connector_update(connector, override) == 0)
-+			num_modes = drm_edid_connector_add_modes(connector);
- 
- 		drm_edid_free(override);
- 
+On Tue,  5 Dec 2023 11:26:25 +0200 you wrote:
+> From: Hui Zhou <hui.zhou@corigine.com>
+> 
+> The neighbour event callback call the function nfp_tun_write_neigh,
+> this function will take a mutex lock and it is in soft irq context,
+> change the work queue to process the neighbour event.
+> 
+> Move the nfp_tun_write_neigh function out of range rcu_read_lock/unlock()
+> in function nfp_tunnel_request_route_v4 and nfp_tunnel_request_route_v6.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] nfp: flower: fix for take a mutex lock in soft irq context and rcu lock
+    https://git.kernel.org/netdev/net/c/0ad722bd9ee3
+
+You are awesome, thank you!
 -- 
-2.39.2
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
