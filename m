@@ -1,106 +1,88 @@
-Return-Path: <stable+bounces-4960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E72018092F0
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 22:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B576809514
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 23:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244901C20C4B
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 21:04:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 914511C20C10
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 22:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0664C50274;
-	Thu,  7 Dec 2023 21:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C948D840F0;
+	Thu,  7 Dec 2023 22:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="QoRiMK/Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neI12TK/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E08401715
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 13:04:27 -0800 (PST)
-Received: by mail-io1-xd2b.google.com with SMTP id ca18e2360f4ac-7b7085f4626so2244639f.0
-        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 13:04:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1701983067; x=1702587867; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tXvEzGNamUbqRrEd+8gPXXWIOewwxYDCIMTlohmAGFI=;
-        b=QoRiMK/Z9M/7bpN7wxJeH9Ytn/rFh9dfmJgdszH4KaB0TTvLJSTxXTkOisNZgsyGWG
-         dkIadtkDAkS4b9TZfSm45P5Z7AMva6+YYUeqTeb1VvehYUkU6A4/zbB9bwQUqGUWOAVj
-         o8o7THEjtHTFqUeWe29SdFzEvuoPrEGT3wVafZ08RT5KpFO79TSFLQgher4E8KlS40YZ
-         MpqSEFg0qIW80NWGPHasXaJdP9/PNbLKyj2CgQFZGRKXV3bpbqZiOB/8YiamKAsQRXy9
-         Bp/f6M8S6bFuXSz8FhApnN3yaPzIc1Ng6BrVPTJlsfk9/pdvU5Bg8R6aKzPaABakFv0A
-         gmvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701983067; x=1702587867;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tXvEzGNamUbqRrEd+8gPXXWIOewwxYDCIMTlohmAGFI=;
-        b=YecOuu4sv6eV++qjkrnEvHyhofGoYGwQWKEL8IuQqt6H5aLcCyMYGppzKLlvplxVVC
-         w7mOlC9UXcZveafaHxzavoCd6jyv3ouVuqK7FKGr942SpcQ/CuewjxvrljC5VfpfrUb/
-         74QsjdULOvC6ynpLa3L1O5Qq8YPK6jWwpLVDp8z50aYJxNxA+Ho5NG/lcnoRyG43PcP4
-         xO2TNXBiK6I2xL90dUosyOZUJn6vrAz8W4+tsXzUrynzCv3rSbpVHYp69j9o2LDkF90a
-         vMzfQIk1+29QfVpq+NRUOqTHh1TXJWEevWOKOnseG/dbrQsWHYZ6amGszZHQ6wi3oJO1
-         2TTQ==
-X-Gm-Message-State: AOJu0Yxcks/kRhaDsG5mS4o4dEFRXa6WjzifGmAGSlVnhIUbFtmr+9pA
-	uPXpWYa0RkljbD1AlWCI4w5wJw==
-X-Google-Smtp-Source: AGHT+IHD6Hl71ge/A3HXgZbYEah2+7DDoF0+51S3+Ha7PvHo1MdC6v1kljCPHJ00TvAeoRdBNPUd1g==
-X-Received: by 2002:a6b:f105:0:b0:7b6:fb5d:fe4d with SMTP id e5-20020a6bf105000000b007b6fb5dfe4dmr2666390iog.2.1701983067233;
-        Thu, 07 Dec 2023 13:04:27 -0800 (PST)
-Received: from [127.0.0.1] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id f10-20020a056638118a00b0043a1b74a0e3sm115951jas.90.2023.12.07.13.04.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Dec 2023 13:04:26 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576EC840C4;
+	Thu,  7 Dec 2023 22:10:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20215C433C8;
+	Thu,  7 Dec 2023 22:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1701987016;
+	bh=sBNd3oxL6+a22NEO/VDNFOidep38poCkeBZb+XkzywM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=neI12TK/fHjGgZNDnLArNdLQEFClIYknp5Ch25AvJ3uzwa2mhmCuGfWn6SZmc4Xyh
+	 gQMahdRIXK77n5/TMkaJuK/OTaGAPpUr8VBnnr4q3wtd7Fji08gZbr7yFVPHi4KIgb
+	 kPw8zNI7nHJ/VS+tzDxLN1M0wA5VuigBoMI9/5Yj/pDRS49Sl+6w9ez2hmAT7NjNC7
+	 qQdXIGld6g178tGepH6B2006iUsLwQmpAinMxrh1bo76odHAfwiueeCK5A2UhUESZZ
+	 nVUMpRinVsxy8gbJ5s20Klo6zNQG6cK7+fyob9qhJiofGyOE3G4twLx4NuUzZqYJo8
+	 EHr/yFHXpV51A==
+Date: Thu, 7 Dec 2023 15:10:13 -0700
+From: Keith Busch <kbusch@kernel.org>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, 
- Hugh Dickins <hughd@google.com>, linux-mm@kvack.org, 
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-In-Reply-To: <20230814144100.596749-1-willy@infradead.org>
-References: <20230814144100.596749-1-willy@infradead.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Andrew Morton <akpm@linux-foundation.org>,
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+	Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
+	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH] block: Remove special-casing of compound pages
-Message-Id: <170198306635.1954272.10907610290128291539.b4-ty@kernel.dk>
-Date: Thu, 07 Dec 2023 14:04:26 -0700
+Message-ID: <ZXJCxbAm1_V7lPnF@kbusch-mbp>
+References: <20230814144100.596749-1-willy@infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13-dev-7edf1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814144100.596749-1-willy@infradead.org>
 
+On Mon, Aug 14, 2023 at 03:41:00PM +0100, Matthew Wilcox (Oracle) wrote:
+>  void __bio_release_pages(struct bio *bio, bool mark_dirty)
+>  {
+> -	struct bvec_iter_all iter_all;
+> -	struct bio_vec *bvec;
+> +	struct folio_iter fi;
+> +
+> +	bio_for_each_folio_all(fi, bio) {
+> +		struct page *page;
+> +		size_t done = 0;
+>  
+> -	bio_for_each_segment_all(bvec, bio, iter_all) {
+> -		if (mark_dirty && !PageCompound(bvec->bv_page))
+> -			set_page_dirty_lock(bvec->bv_page);
+> -		bio_release_page(bio, bvec->bv_page);
+> +		if (mark_dirty) {
+> +			folio_lock(fi.folio);
+> +			folio_mark_dirty(fi.folio);
+> +			folio_unlock(fi.folio);
+> +		}
+> +		page = folio_page(fi.folio, fi.offset / PAGE_SIZE);
+> +		do {
+> +			bio_release_page(bio, page++);
+> +			done += PAGE_SIZE;
+> +		} while (done < fi.length);
+>  	}
+>  }
 
-On Mon, 14 Aug 2023 15:41:00 +0100, Matthew Wilcox (Oracle) wrote:
-> The special casing was originally added in pre-git history; reproducing
-> the commit log here:
-> 
-> > commit a318a92567d77
-> > Author: Andrew Morton <akpm@osdl.org>
-> > Date:   Sun Sep 21 01:42:22 2003 -0700
-> >
-> >     [PATCH] Speed up direct-io hugetlbpage handling
-> >
-> >     This patch short-circuits all the direct-io page dirtying logic for
-> >     higher-order pages.  Without this, we pointlessly bounce BIOs up to
-> >     keventd all the time.
-> 
-> [...]
-
-Applied, thanks!
-
-[1/1] block: Remove special-casing of compound pages
-      commit: 1b151e2435fc3a9b10c8946c6aebe9f3e1938c55
-
-Best regards,
--- 
-Jens Axboe
-
-
-
+Is it okay to release same-folio pages while creating the bio instead of
+releasing all the pages at the completion? If so, the completion could
+provide just the final bio_release_page() instead looping. I'm more
+confirming if that's an appropriate way to use folios here.
 
