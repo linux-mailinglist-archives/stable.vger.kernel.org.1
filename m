@@ -1,153 +1,141 @@
-Return-Path: <stable+bounces-4952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86B88809187
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 20:35:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E35C8091C9
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 20:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B59A01C208CC
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 19:35:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7E8A1F210F8
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 19:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89734F8A6;
-	Thu,  7 Dec 2023 19:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="SEnV+pY3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FD94F89D;
+	Thu,  7 Dec 2023 19:46:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTP id 3C964171E;
-	Thu,  7 Dec 2023 11:35:43 -0800 (PST)
-Received: from [192.168.178.49] (dynamic-adsl-84-220-28-122.clienti.tiscali.it [84.220.28.122])
-	by linux.microsoft.com (Postfix) with ESMTPSA id D2D7220B74C0;
-	Thu,  7 Dec 2023 11:35:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D2D7220B74C0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1701977742;
-	bh=6BiLByj3fZjdf+BfxwCzcTu0LXWFgvJe9QuEPuRxeO4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=SEnV+pY3cHBgbDr+d8z34kVMryVfuOl0+dMA8g20vqAM6ROcn3YJik6DRDuaoaCrW
-	 o2NybIL15Y5hBMXjaHTTLdcdy5S6Zub8nYIoEXmJCrRs4B+hxlG6vwTh028qtBZlSe
-	 mrDfw2y5fPDOreaJkDjkztR0iF2R4Gq0Kvc6eR6U=
-Message-ID: <6ec6b73e-c3f6-4952-9835-0dbc4b7c199f@linux.microsoft.com>
-Date: Thu, 7 Dec 2023 20:35:33 +0100
+Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D29F1711
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 11:46:13 -0800 (PST)
+Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
+ relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
+ uk-mta-216-Lg-bH7P_MLmKxgoy-bEtjA-1; Thu, 07 Dec 2023 19:46:10 +0000
+X-MC-Unique: Lg-bH7P_MLmKxgoy-bEtjA-1
+Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
+ (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 7 Dec
+ 2023 19:45:55 +0000
+Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
+ id 15.00.1497.048; Thu, 7 Dec 2023 19:45:55 +0000
+From: David Laight <David.Laight@ACULAB.COM>
+To: 'Hugo Villeneuve' <hugo@hugovil.com>, kernel test robot <lkp@intel.com>
+CC: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"jirislaby@kernel.org" <jirislaby@kernel.org>, "hvilleneuve@dimonoff.com"
+	<hvilleneuve@dimonoff.com>, "oe-kbuild-all@lists.linux.dev"
+	<oe-kbuild-all@lists.linux.dev>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-serial@vger.kernel.org"
+	<linux-serial@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: RE: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
+ sc16is7xx_regmap_name()
+Thread-Topic: [PATCH 1/7] serial: sc16is7xx: fix snprintf format specifier in
+ sc16is7xx_regmap_name()
+Thread-Index: AQHaKTY2EJh7ggNIk0GV0BoNbt/4DLCeM6bg
+Date: Thu, 7 Dec 2023 19:45:55 +0000
+Message-ID: <16093ec23ca34085824987456eac8f2a@AcuMS.aculab.com>
+References: <20231130191050.3165862-2-hugo@hugovil.com>
+	<202312061443.Cknef7Uq-lkp@intel.com>
+ <20231207125243.c056d5cd0f875ea6dfdfa194@hugovil.com>
+In-Reply-To: <20231207125243.c056d5cd0f875ea6dfdfa194@hugovil.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
- TDX init
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: aculab.com
 Content-Language: en-US
-From: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-To: "Huang, Kai" <kai.huang@intel.com>,
- "kirill.shutemov@linux.intel.com" <kirill.shutemov@linux.intel.com>,
- "mhkelley58@gmail.com" <mhkelley58@gmail.com>,
- "Cui, Dexuan" <decui@microsoft.com>,
- "Reshetova, Elena" <elena.reshetova@intel.com>,
- Borislav Petkov <bp@alien8.de>
-Cc: "cascardo@canonical.com" <cascardo@canonical.com>,
- "tim.gardner@canonical.com" <tim.gardner@canonical.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
- "roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "haiyangz@microsoft.com" <haiyangz@microsoft.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "mingo@redhat.com" <mingo@redhat.com>, "kys@microsoft.com"
- <kys@microsoft.com>, "stefan.bader@canonical.com"
- <stefan.bader@canonical.com>, "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "tglx@linutronix.de" <tglx@linutronix.de>, "hpa@zytor.com" <hpa@zytor.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "wei.liu@kernel.org" <wei.liu@kernel.org>,
- "sashal@kernel.org" <sashal@kernel.org>,
- "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "bp@alien8.de" <bp@alien8.de>, "x86@kernel.org" <x86@kernel.org>
-References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
- <20231123135846.pakk44rqbbi7njmb@box.shutemov.name>
- <9f550947-9d13-479c-90c4-2e3f7674afee@linux.microsoft.com>
- <20231124104337.gjfyasjmo5pp666l@box.shutemov.name>
- <58c82110-45b2-4e23-9a82-90e1f3fa43c2@linux.microsoft.com>
- <20231124133358.sdhomfs25seki3lg@box.shutemov.name>
- <6f27610f-afc4-4356-b297-13253bb0a232@linux.microsoft.com>
- <ffcc8c550d5ba6122b201d8170b42ee581826d47.camel@intel.com>
- <02e079e8-cc72-49d8-9191-8a753526eb18@linux.microsoft.com>
- <7b725783f1f9102c176737667bfec12f75099961.camel@intel.com>
- <fa86fbd1-998b-456b-971f-a5a94daeca28@linux.microsoft.com>
- <59bdfee24a9c0f7656f7c83e65789d72ab203edc.camel@intel.com>
- <8362bf44-f933-4a7e-9e56-a7c425a2ba5a@linux.microsoft.com>
-In-Reply-To: <8362bf44-f933-4a7e-9e56-a7c425a2ba5a@linux.microsoft.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 07/12/2023 18:21, Jeremi Piotrowski wrote:
-> On 07/12/2023 13:58, Huang, Kai wrote:
->>>
->>> That's how it currently works - all the enlightenments are in hypervisor/paravisor
->>> specific code in arch/x86/hyperv and drivers/hv and the vm is not marked with
->>> X86_FEATURE_TDX_GUEST.
->>
->> And I believe there's a reason that the VM is not marked as TDX guest.
-> Yes, as Elena said:
-> """
-> OK, so in your case it is a decision of L1 VMM not to set the TDX_CPUID_LEAF_ID
-> to reflect that it is a tdx guest and it is on purpose because you want to 
-> drop into a special tdx guest, i.e. partitioned guest. 
-> """
-> TDX does not provide a means to let the partitioned guest know that it needs to
-> cooperate with the paravisor (e.g. because TDVMCALLs are routed to L0) so this is
-> exposed in a paravisor specific way (cpuids in patch 1).
-> 
->>
->>>
->>> But without X86_FEATURE_TDX_GUEST userspace has no unified way to discover that an
->>> environment is protected by TDX and also the VM gets classified as "AMD SEV" in dmesg.
->>> This is due to CC_ATTR_GUEST_MEM_ENCRYPT being set but X86_FEATURE_TDX_GUEST not.
->>
->> Can you provide more information about what does _userspace_ do here?
-> 
-> I gave one usecase in a different email. A workload scheduler like Kubernetes might want to
-> place a workload in a confidential environment, and needs a way to determine that a VM is
-> TDX protected (or SNP protected) to make that placement decision.
-> 
->>
->> What's the difference if it sees a TDX guest or a normal non-coco guest in
->> /proc/cpuinfo?
->>
->> Looks the whole purpose of this series is to make userspace happy by advertising
->> TDX guest to /proc/cpuinfo.  But if we do that we will have bad side-effect in
->> the kernel so that we need to do things in your patch 2/3.
->>
-> 
-> Yes, exactly. It's unifying the two approaches so that userspace doesn't have to
-> care.
-> 
->> That doesn't seem very convincing.
-> 
-> Why not? 
-> The whole point of the kernel is to provide a unified interface to userspace and
-> abstract away these small differences. Yes it requires some kernel code to do,
-> thats not a reason to force every userspace to implement its own logic. This is
-> what the flags in /proc/cpuinfo are for.
-> 
+From: Hugo Villeneuve
+> Sent: 07 December 2023 17:53
+...
+> > kernel test robot noticed the following build warnings:
+> >
+> > [auto build test WARNING on d804987153e7bedf503f8e4ba649afe52cfd7f6d]
+> >
+> > url:    https://github.com/intel-lab-lkp/linux/commits/Hugo-Villeneuve/=
+serial-sc16is7xx-fix-
+> snprintf-format-specifier-in-sc16is7xx_regmap_name/20231201-031413
+> > base:   d804987153e7bedf503f8e4ba649afe52cfd7f6d
+> > patch link:    https://lore.kernel.org/r/20231130191050.3165862-2-hugo%=
+40hugovil.com
+> > patch subject: [PATCH 1/7] serial: sc16is7xx: fix snprintf format speci=
+fier in
+> sc16is7xx_regmap_name()
+> > config: x86_64-buildonly-randconfig-001-20231201 (https://download.01.o=
+rg/0day-
+> ci/archive/20231206/202312061443.Cknef7Uq-lkp@intel.com/config)
+> > compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+> > reproduce (this is a W=3D1 build): (https://download.01.org/0day-
+> ci/archive/20231206/202312061443.Cknef7Uq-lkp@intel.com/reproduce)
+> >
+> > If you fix the issue in a separate patch/commit (i.e. not just a new ve=
+rsion of
+> > the same patch/commit), kindly add following tags
+> > | Reported-by: kernel test robot <lkp@intel.com>
+> > | Closes: https://lore.kernel.org/oe-kbuild-all/202312061443.Cknef7Uq-l=
+kp@intel.com/
+> >
+> > All warnings (new ones prefixed by >>):
+> >
+> >    drivers/tty/serial/sc16is7xx.c: In function 'sc16is7xx_i2c_probe':
+> > >> drivers/tty/serial/sc16is7xx.c:1703:41: warning: '%u' directive outp=
+ut may be truncated writing
+> between 1 and 10 bytes into a region of size 2 [-Wformat-truncation=3D]
+> >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
+> >          |                                         ^~
+> >    In function 'sc16is7xx_regmap_name',
+> >        inlined from 'sc16is7xx_i2c_probe' at drivers/tty/serial/sc16is7=
+xx.c:1805:17:
+> >    drivers/tty/serial/sc16is7xx.c:1703:36: note: directive argument in =
+the range [0, 4294967294]
+> >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
+> >          |                                    ^~~~~~~~
+> >    drivers/tty/serial/sc16is7xx.c:1703:9: note: 'snprintf' output betwe=
+en 6 and 15 bytes into a
+> destination of size 6
+> >     1703 |         snprintf(buf, sizeof(buf), "port%u", port_id);
+> >          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>=20
+> Hi,
+> the only solution I could find is to add this line just before snprintf:
+>=20
+>     BUG_ON(port_id > MAX310X_MAX_PORTS);
+>=20
+> it allows us to have the smallest buffer size possible.
 
-So I feel like we're finally getting to the gist of the disagreements in this thread.
+Or "port%c", '0' + port_id);
 
-Here's something I think we should all agree on (both a) and b)). X86_FEATURE_TDX_GUEST:
-a) is visible to userspace and not just some kernel-only construct
-b) means "this is a guest running in an Intel TDX Trust Domain, and said guest is aware
-   of TDX"
+Or maybe:
+=09size_t buflen =3D sizeof (buf);
+=09OPTIMIZER_HIDE_VAR(buflen);
+=09snprintf(buf, buflen, fmt, args);
 
-a) is obvious but I think needs restating. b) is what userspace expects, and excludes legacy
-(/unmodified) guests running in a TD. That's a reasonable definition.
+See https://godbolt.org/z/Wjz3xG5c4
 
-For kernel only checks we can rely on platform-specific CC_ATTRS checked through
-intel_cc_platform_has.
+Maybe there should be snprintf_may_truncate() (etc) in one of the headers.
 
-@Borislav: does that sound reasonable to you?
-@Kai, @Kirill, @Elena: can I get you to agree with this compromise, for userspace' sake?
+=09David
 
-Jeremi
+-
+Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1=
+PT, UK
+Registration No: 1397386 (Wales)
+
 
