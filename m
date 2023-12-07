@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-4880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 549B6807CCD
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 01:13:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200CB807CCF
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 01:13:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E428282573
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 00:13:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4368B21135
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 00:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87A237C;
-	Thu,  7 Dec 2023 00:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150767E;
+	Thu,  7 Dec 2023 00:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="SJuVX+6A"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MBRKJCGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9B57E
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 00:13:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D93CC433C7;
-	Thu,  7 Dec 2023 00:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4451380
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 00:13:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44975C433C9;
+	Thu,  7 Dec 2023 00:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1701908010;
-	bh=pO9+JQ+bQlQ8aPFwm3Xwya4kqfy+SdnqC70+XjRq51E=;
+	s=korg; t=1701908011;
+	bh=9WD1wAGYhjrCyk90QtJ4lOnF8ebhQSAKs5c17ysIlkA=;
 	h=Date:To:From:Subject:From;
-	b=SJuVX+6A5JcWqPJa/nVLDe7BQ65LajY8Vytt+mlUmFjUaLtcdtizoxzIh80BhE0ej
-	 sxkyiZKiYtsyvCf0MkyqAfyzQniG2ybhRL0z4Bgcoj8+Boh6Z/ulTycGfn66H/JqhY
-	 wtX1Ga+Uul1pMiFxhHeiEVB6z04JmOdorpLXg+fg=
-Date: Wed, 06 Dec 2023 16:13:29 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,mhocko@suse.com,lkp@intel.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,david@redhat.com,anshuman.khandual@arm.com,aneesh.kumar@linux.ibm.com,agordeev@linux.ibm.com,sumanthk@linux.ibm.com,akpm@linux-foundation.org
+	b=MBRKJCGDEboozCgtr8DNmCHwdLGSPw8qwzOUoCQ3QzURe+hn1uKrXqkOUIqvpPx0w
+	 OClaf8X63RqEn9vBs1lZuNMFKbsr2OPRCWiwj4xPZwKXHHhz+OnXaqQZ3jBhyHDeiE
+	 fh+HkhC+nafa2yyau7wf9lL1ET0KbNqf//gM5E7w=
+Date: Wed, 06 Dec 2023 16:13:30 -0800
+To: mm-commits@vger.kernel.org,v.narang@samsung.com,stable@vger.kernel.org,masahiroy@kernel.org,maninder1.s@samsung.com,hca@linux.ibm.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-memory_hotplug-fix-error-handling-in-add_memory_resource.patch removed from -mm tree
-Message-Id: <20231207001330.2D93CC433C7@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] checkstack-fix-printed-address.patch removed from -mm tree
+Message-Id: <20231207001331.44975C433C9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,70 +42,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/memory_hotplug: fix error handling in add_memory_resource()
+     Subject: checkstack: fix printed address
 has been removed from the -mm tree.  Its filename was
-     mm-memory_hotplug-fix-error-handling-in-add_memory_resource.patch
+     checkstack-fix-printed-address.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Subject: mm/memory_hotplug: fix error handling in add_memory_resource()
-Date: Mon, 20 Nov 2023 15:53:53 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+Subject: checkstack: fix printed address
+Date: Mon, 20 Nov 2023 19:37:17 +0100
 
-In add_memory_resource(), creation of memory block devices occurs after
-successful call to arch_add_memory().  However, creation of memory block
-devices could fail.  In that case, arch_remove_memory() is called to
-perform necessary cleanup.
+All addresses printed by checkstack have an extra incorrect 0 appended at
+the end.
 
-Currently with or without altmap support, arch_remove_memory() is always
-passed with altmap set to NULL during error handling.  This leads to
-freeing of struct pages using free_pages(), eventhough the allocation
-might have been performed with altmap support via
-altmap_alloc_block_buf().
+This was introduced with commit 677f1410e058 ("scripts/checkstack.pl: don't
+display $dre as different entity"): since then the address is taken from
+the line which contains the function name, instead of the line which
+contains stack consumption. E.g. on s390:
 
-Fix the error handling by passing altmap in arch_remove_memory(). This
-ensures the following:
-* When altmap is disabled, deallocation of the struct pages array occurs
-  via free_pages().
-* When altmap is enabled, deallocation occurs via vmem_altmap_free().
+0000000000100a30 <do_one_initcall>:
+...
+  100a44:       e3 f0 ff 70 ff 71       lay     %r15,-144(%r15)
 
-Link: https://lkml.kernel.org/r/20231120145354.308999-3-sumanthk@linux.ibm.com
-Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
+So the used regex which matches spaces and hexadecimal numbers to extract
+an address now matches a different substring. Subsequently replacing spaces
+with 0 appends a zero at the and, instead of replacing leading spaces.
+
+Fix this by using the proper regex, and simplify the code a bit.
+
+Link: https://lkml.kernel.org/r/20231120183719.2188479-2-hca@linux.ibm.com
+Fixes: 677f1410e058 ("scripts/checkstack.pl: don't display $dre as different entity")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Cc: Maninder Singh <maninder1.s@samsung.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Vaneet Narang <v.narang@samsung.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/memory_hotplug.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/checkstack.pl |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-error-handling-in-add_memory_resource
-+++ a/mm/memory_hotplug.c
-@@ -1458,7 +1458,7 @@ int __ref add_memory_resource(int nid, s
- 	/* create memory block devices after memory was added */
- 	ret = create_memory_block_devices(start, size, params.altmap, group);
- 	if (ret) {
--		arch_remove_memory(start, size, NULL);
-+		arch_remove_memory(start, size, params.altmap);
- 		goto error_free;
- 	}
- 
+--- a/scripts/checkstack.pl~checkstack-fix-printed-address
++++ a/scripts/checkstack.pl
+@@ -139,15 +139,11 @@ $total_size = 0;
+ while (my $line = <STDIN>) {
+ 	if ($line =~ m/$funcre/) {
+ 		$func = $1;
+-		next if $line !~ m/^($xs*)/;
++		next if $line !~ m/^($x*)/;
+ 		if ($total_size > $min_stack) {
+ 			push @stack, "$intro$total_size\n";
+ 		}
+-
+-		$addr = $1;
+-		$addr =~ s/ /0/g;
+-		$addr = "0x$addr";
+-
++		$addr = "0x$1";
+ 		$intro = "$addr $func [$file]:";
+ 		my $padlen = 56 - length($intro);
+ 		while ($padlen > 0) {
 _
 
-Patches currently in -mm which might be from sumanthk@linux.ibm.com are
+Patches currently in -mm which might be from hca@linux.ibm.com are
 
-mm-use-vmem_altmap-code-without-config_zone_device.patch
+arch-remove-arch_thread_stack_allocator.patch
+arch-remove-arch_task_struct_allocator.patch
+arch-remove-arch_task_struct_on_stack.patch
+checkstack-sort-output-by-size-and-function-name.patch
+checkstack-allow-to-pass-minstacksize-parameter.patch
 
 
