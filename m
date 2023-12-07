@@ -1,58 +1,84 @@
-Return-Path: <stable+bounces-4958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCEE38092B8
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 21:47:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10F408092D4
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 21:56:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AC76B20D6B
-	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 20:47:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004821C209AB
+	for <lists+stable@lfdr.de>; Thu,  7 Dec 2023 20:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C195026E;
-	Thu,  7 Dec 2023 20:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD5C4F60D;
+	Thu,  7 Dec 2023 20:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BABDhGje"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L7y6tU9x"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A18A50248;
-	Thu,  7 Dec 2023 20:47:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D638EC433C7;
-	Thu,  7 Dec 2023 20:47:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1701982038;
-	bh=szsXL9Pkyj4AVfw+UsXxMv2rdIObYfpxXnQD6RrB26Q=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=BABDhGjeDklAokNm+6dGqWNnZfxS3OO2Vc3g2Y+0ipyVsnBwl0U98CGmYZstopMuq
-	 E8i88OMhYZnALskRuMHpJ2CNniaeZ0NGLWFqjpI7P05HYTqLDzCIFUzz0u0FURk7v2
-	 p/KaNNFB51Liqer6Jc/o5I4JIL9b6ozn1mPSw4vv/1zzvivbFuGkfVI+67ktZE4TnX
-	 UXZVVLEAWRhaPsMVE5S5FHw+xdc09hx0cSW4EIIP4RP7RBi9nIDBH6SopoPsiEAUzm
-	 iPRc8TR+1Rfgeq7H5DBoF9WxMVuP4rD4F6GbBcVlLFZ+JqzW4b3SCn9aBp3Zlqj/SE
-	 GD7C2o9DZgltg==
-Date: Thu, 7 Dec 2023 14:47:16 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>, Andy Gross <agross@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Nirmal Patel <nirmal.patel@linux.intel.com>,
-	Jonathan Derrick <jonathan.derrick@linux.dev>,
-	linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Michael Bottini <michael.a.bottini@linux.intel.com>,
-	"David E . Box" <david.e.box@linux.intel.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>
-Subject: Re: [PATCH v2 1/6] PCI/ASPM: Add locked helper for enabling link
- state
-Message-ID: <20231207204716.GA764883@bhelgaas>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9ED191713;
+	Thu,  7 Dec 2023 12:56:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1701982585; x=1733518585;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=n3FnhgX0cW+i0sQ51vehSslGZAw1aIhqgl0Q6Iu8nas=;
+  b=L7y6tU9x+1WX7V0HrYX9My0D2b4ShSkWmwiNYC6o1fHZQc1/TsnCKe2T
+   CWcjz29txcSvl7wJMmJRcUg20haQSCWxdvqIezIcLYjAp5QGbJcJ36tiH
+   lSV88xtAu+E8EW5S7yxVsi5KTpUQXCbU2pVM3XvnE//HC6Nb6JEijcH61
+   yzePQlJFKstw3hyQ2xImy3KjZKEjd+BVUpedy6fp68ozILLhGKwcOpeFB
+   E2GNDarrbNxslIMXlM8N+e0ZCe5CpLUbDVbMgNIt5y6O12WQLw2vc71b9
+   F+cnGnBnjvCXb1P9ztUewJBTumbwu6ke1/7ZA8J2GMLKyFBIsYTMFlAl9
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="1383440"
+X-IronPort-AV: E=Sophos;i="6.04,258,1695711600"; 
+   d="scan'208";a="1383440"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 12:56:24 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10917"; a="915699144"
+X-IronPort-AV: E=Sophos;i="6.04,258,1695711600"; 
+   d="scan'208";a="915699144"
+Received: from agrische-mobl1.ger.corp.intel.com (HELO box.shutemov.name) ([10.252.62.188])
+  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Dec 2023 12:56:18 -0800
+Received: by box.shutemov.name (Postfix, from userid 1000)
+	id 4BE2310A42E; Thu,  7 Dec 2023 23:56:16 +0300 (+03)
+Date: Thu, 7 Dec 2023 23:56:16 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: "Reshetova, Elena" <elena.reshetova@intel.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+	Michael Kelley <mhkelley58@gmail.com>,
+	Nikolay Borisov <nik.borisov@suse.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	"x86@kernel.org" <x86@kernel.org>,
+	"Cui, Dexuan" <decui@microsoft.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"stefan.bader@canonical.com" <stefan.bader@canonical.com>,
+	"tim.gardner@canonical.com" <tim.gardner@canonical.com>,
+	"roxana.nicolescu@canonical.com" <roxana.nicolescu@canonical.com>,
+	"cascardo@canonical.com" <cascardo@canonical.com>,
+	"kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v1 1/3] x86/tdx: Check for TDX partitioning during early
+ TDX init
+Message-ID: <20231207205616.4eybazmxianjgud5@box>
+References: <20231122170106.270266-1-jpiotrowski@linux.microsoft.com>
+ <DM8PR11MB575090573031AD9888D4738AE786A@DM8PR11MB5750.namprd11.prod.outlook.com>
+ <9ab71fee-be9f-4afc-8098-ad9d6b667d46@linux.microsoft.com>
+ <20231205105407.vp2rejqb5avoj7mx@box.shutemov.name>
+ <0c4e33f0-6207-448d-a692-e81391089bea@linux.microsoft.com>
+ <20231206225415.zxfm2ndpwsmthc6e@box.shutemov.name>
+ <66cff831-1766-4b82-b95a-bc3790a6f24b@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,112 +87,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231128081512.19387-2-johan+linaro@kernel.org>
+In-Reply-To: <66cff831-1766-4b82-b95a-bc3790a6f24b@linux.microsoft.com>
 
-[+cc Kai-Heng]
-
-On Tue, Nov 28, 2023 at 09:15:07AM +0100, Johan Hovold wrote:
-> Add a helper for enabling link states that can be used in contexts where
-> a pci_bus_sem read lock is already held (e.g. from pci_walk_bus()).
+On Thu, Dec 07, 2023 at 06:06:38PM +0100, Jeremi Piotrowski wrote:
+> > 
+> >> This doesn't work in partitioning when TDVMCALLs go to L0: TDVMCALL_MAP_GPA bypasses
+> >> L1 and TDX_ACCEPT_PAGE is L1 responsibility.
+> >>
+> >> If you want to see how this is currently supported take a look at arch/x86/hyperv/ivm.c.
+> >> All memory starts as private and there is a hypercall to notify the paravisor for both
+> >> TDX (when partitioning) and SNP (when VMPL). This guarantees that all page conversions
+> >> go through L1.
+> > 
+> > But L1 guest control anyway during page conversion and it has to manage
+> > aliases with TDG.MEM.PAGE.ATTR.RD/WR. Why do you need MAP_GPA for that?
+> >
 > 
-> This helper will be used to fix a couple of potential deadlocks where
-> the current helper is called with the lock already held, hence the CC
-> stable tag.
+> When the L2 wants to perform a page conversion it needs to notify L1 of this so that it
+> can do its part managing the aliases. Without L1 involvement the conversion doesn't
+> happen. MAP_GPA is not suitable for this purpose as I've described and you've confirmed
+> above.
+
+Memory conversion causes exit to L1 as there will be no aliases in L2
+otherwise. There's no need to intercept MAP_GPA for that. See section
+21.8 of TD partitioning spec.
+
+>  
+> > One possible change I mentioned above: make TDVMCALL exit to L1 for some
+> > TDVMCALL leafs (or something along the line).
+> > 
 > 
-> Fixes: f492edb40b54 ("PCI: vmd: Add quirk to configure PCIe ASPM and LTR")
-> Cc: stable@vger.kernel.org	# 6.3
-> Cc: Michael Bottini <michael.a.bottini@linux.intel.com>
-> Cc: David E. Box <david.e.box@linux.intel.com>
-> Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-> ---
->  drivers/pci/pcie/aspm.c | 53 +++++++++++++++++++++++++++++++----------
->  include/linux/pci.h     |  3 +++
->  2 files changed, 43 insertions(+), 13 deletions(-)
+> You can explore changes to TDVMCALL handling in the TDX module but I don't see any reason
+> this would be adopted, because a shared hypercall to control page visibility for SNP & TDX is
+> already part of Hyper-V ABI and works great for this purpose.
 > 
-> diff --git a/drivers/pci/pcie/aspm.c b/drivers/pci/pcie/aspm.c
-> index 50b04ae5c394..5eb462772354 100644
-> --- a/drivers/pci/pcie/aspm.c
-> +++ b/drivers/pci/pcie/aspm.c
-> @@ -1109,17 +1109,7 @@ int pci_disable_link_state(struct pci_dev *pdev, int state)
->  }
->  EXPORT_SYMBOL(pci_disable_link_state);
->  
-> -/**
-> - * pci_enable_link_state - Clear and set the default device link state so that
-> - * the link may be allowed to enter the specified states. Note that if the
-> - * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
-> - * touch the LNKCTL register. Also note that this does not enable states
-> - * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-> - *
-> - * @pdev: PCI device
-> - * @state: Mask of ASPM link states to enable
-> - */
-> -int pci_enable_link_state(struct pci_dev *pdev, int state)
-> +static int __pci_enable_link_state(struct pci_dev *pdev, int state, bool locked)
->  {
->  	struct pcie_link_state *link = pcie_aspm_get_link(pdev);
->  
-> @@ -1136,7 +1126,8 @@ int pci_enable_link_state(struct pci_dev *pdev, int state)
->  		return -EPERM;
->  	}
->  
-> -	down_read(&pci_bus_sem);
-> +	if (!locked)
-> +		down_read(&pci_bus_sem);
->  	mutex_lock(&aspm_lock);
->  	link->aspm_default = 0;
->  	if (state & PCIE_LINK_STATE_L0S)
-> @@ -1157,12 +1148,48 @@ int pci_enable_link_state(struct pci_dev *pdev, int state)
->  	link->clkpm_default = (state & PCIE_LINK_STATE_CLKPM) ? 1 : 0;
->  	pcie_set_clkpm(link, policy_to_clkpm_state(link));
->  	mutex_unlock(&aspm_lock);
-> -	up_read(&pci_bus_sem);
-> +	if (!locked)
-> +		up_read(&pci_bus_sem);
->  
->  	return 0;
->  }
-> +
-> +/**
-> + * pci_enable_link_state - Clear and set the default device link state so that
-> + * the link may be allowed to enter the specified states. Note that if the
-> + * BIOS didn't grant ASPM control to the OS, this does nothing because we can't
-> + * touch the LNKCTL register. Also note that this does not enable states
-> + * disabled by pci_disable_link_state(). Return 0 or a negative errno.
-> + *
-> + * @pdev: PCI device
-> + * @state: Mask of ASPM link states to enable
-> + */
-> +int pci_enable_link_state(struct pci_dev *pdev, int state)
-> +{
-> +	return __pci_enable_link_state(pdev, state, false);
-> +}
->  EXPORT_SYMBOL(pci_enable_link_state);
+> > I would like to keep it transparent for enlightened TDX Linux guest. It
+> > should not care if it runs as L1 or as L2 in your environment.
+> 
+> I understand that is how you would prefer it but, as we've established in these emails,
+> that doesn't work when the L1 paravisor provides services to the L2 with an L1 specific
+> protocol and TDVMCALLs are routed to L0 for performance reasons. It can't be done
+> transparently with TDX 1.5 calls alone and we already have TDX 1.5 deployed to users with
+> an upstream kernel.
 
-As far as I can see, we end up with pci_enable_link_state() defined
-but never called and pci_enable_link_state_locked() being called only
-by pcie-qcom.c and vmd.c.
+TDX 1.5 is not set in stone (yet). The spec is still draft. We can add
+capabilities if we make case for them.
 
-Can we just rename pci_enable_link_state() to
-pci_enable_link_state_locked() and assert that pci_bus_sem is held, so
-we don't end up with a function that's never used?
+Let's try to shift the discussion to how to make TDX better rather than
+adding workaround to kernel.
 
-I hope we can obsolete this whole idea someday.  Using pci_walk_bus()
-in qcom and vmd to enable ASPM is an ugly hack to work around this
-weird idea that "the OS isn't allowed to enable more ASPM states than
-the BIOS did because the BIOS might have left ASPM disabled because it
-knows about hardware issues."  More history at
-https://lore.kernel.org/linux-pci/20230615070421.1704133-1-kai.heng.feng@canonical.com/T/#u
-
-I think we need to get to a point where Linux enables all supported
-ASPM features by default.  If we really think x86 BIOS assumes an
-implicit contract that the OS will never enable ASPM more
-aggressively, we might need some kind of arch quirk for that.
-
-If we can get there, the qcom use of pci_enable_link_state() could go
-away, and the vmd use could be replaced by some kind of "if device is
-below VMD, get rid of the legacy x86 ASPM assumption" quirk.
-
-Bjorn
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
