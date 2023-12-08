@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-4963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 778A8809AAE
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 04:49:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E8809AAF
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 04:49:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C3A1F2111D
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 03:49:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5811C20A60
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 03:49:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E6246B4;
-	Fri,  8 Dec 2023 03:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E029B46B4;
+	Fri,  8 Dec 2023 03:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qa8vce7M"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hh1atVs7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x549.google.com (mail-pg1-x549.google.com [IPv6:2607:f8b0:4864:20::549])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46D231706
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 19:48:57 -0800 (PST)
-Received: by mail-pg1-x549.google.com with SMTP id 41be03b00d2f7-5c627dd2accso923646a12.0
-        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 19:48:57 -0800 (PST)
+Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1DD91706
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 19:49:36 -0800 (PST)
+Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-5c668b87db3so1227274a12.3
+        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 19:49:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702007337; x=1702612137; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1702007376; x=1702612176; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=dUpTvp9Jtnn0MWNwbTieSu+qWCm4XF1ER3oT458kAnI=;
-        b=qa8vce7MOvyKPB8iBBe0Kpc3Sh5IPtKc3CsV/QkwrKqJnsvOTgWFrLUCTaExAmpor1
-         PU8Zlenbc6RkIi6mq26uLn3GXWJIycpBYDNHsO72hMToIRu0TlzqE4K8DQd4uGU6xi3S
-         K+Dff7eeugVp+nti1YjZ4gm9gOoou88CQ4/BskoToX98kykqz7nxxVojc/oKT4fEXn6/
-         dw62z6WOEF4RP6V/cdJv7MiAW0Oi8hDCoNDrR7dctVUweGrkvV4FncxhhAgN+W++hnQY
-         /MTRQYJ8HjBHBzORlhOGgzgZZaLWYRWUqBSUgavKdGdmxLdVU56XpsXX0EvvIBSiDnUM
-         XWNw==
+        bh=iYsH0w1DYVjoMg1s5Zd0ZREoiBGPi4xz58SN28eyFJM=;
+        b=hh1atVs7cxz1Y91hFEXwVAZ85FTHEqAqUoiT+g7IwnBYNh2HT8ViiNPUNUSwDg5y39
+         WRVLif5uGksQYQqSe6tP8ZP9pneW/jluOHs8hJ0TV52qyynBNTN/x5T8OoF1LxMhLkET
+         DXVTi+VULu7ySMyZV4PEwsK7PjpyR1XA36GCn7nUgeJ2JE0/nBJqRMGNUzpPLi0MtAcd
+         wp9uUeS9OgPV05ltCpXf51LwLRGs3z4cM0/bFno8mhb7d7A/CYbHgvniKX3S3UaUAFx3
+         AIZ+TgOvUwJcqTHzxWW2fjxkv/PmGPtZh+d+6oVHbEsFB10qPovAukNW31wICQcpMXJ2
+         QZJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702007337; x=1702612137;
+        d=1e100.net; s=20230601; t=1702007376; x=1702612176;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dUpTvp9Jtnn0MWNwbTieSu+qWCm4XF1ER3oT458kAnI=;
-        b=OKhUlzUjuCC41m3c0GLgMn/Kk+COvFEQkddtFoylXYLD3UaT8VZfH1hQYBuT/gZCcw
-         yJKn5Is/sTEbZv/fivFXVLljvijcCrzdhInyAMnZW1difb46FVa9HX2YbYSe0bjyUKTZ
-         WrVyb1V2pmJ+jPiaJVH2K18aaOM1cc9wAHyCL8dbbV8jeIQGDuTknIxnItaizUrnhIsf
-         siveSB40kDLYxwwQmnIvEsqJodHBiXE7hEj+BrJfTl7T9bZJqYp5DMmDyeUrz/0iEySg
-         CjtsaeSfz26Y9wvN9m9Bir6mSYIF8fUA1JZX0uJmNaZAh/UmiFwpBd9oa8nWAuIxmluM
-         S9qQ==
-X-Gm-Message-State: AOJu0Yzea5FyQEM7a85qyVKEuM5DaD+Z25ANMYlpdGsLlCuLfCVhzaa5
-	YDSHY4uY9fwi/bPcSAI1hzPBRJMxyIaTLWl26Grug4tk06gUmqvso4v1hbMKJonTQjdZ0k7WlOa
-	AUavtzfZVTG7Vh9f0maS6X5+plVpVzFMm0uWrxbV8ejgfkdA5N8B6JQyHbNFQvcnY0os=
-X-Google-Smtp-Source: AGHT+IFy1wPsbJ8df74DvOqZzg+2JjsC5bqJDbBglrG6HOG2omadnRjrWvaCC9czgMMZpGWgG6qnAKfCoIGRiw==
+        bh=iYsH0w1DYVjoMg1s5Zd0ZREoiBGPi4xz58SN28eyFJM=;
+        b=EC01/wGbY/Ek8xlufT8ciQfmNTgUyg1rGamgAUJZoToVgdkaUxzDUClUCF6U7X5Pa6
+         F4x09teRR20BZap3Fo3K0WlmvQ/GNrIWtiYfYlC63bGKh9hfGtfNIhQdyLP+vMz8SMx4
+         dT/ptVM+2zcO/KsGDmIADCYOPhcGUGowPh3l8cf+qerFBHKdVBMfPErz+gdY+wtdCF4F
+         cFohtElTcSFedWr8Ofz61Iwz5ygBys0rktO/z9ktGacB/Vy6pF3IwBcp9oFr3ljB9jlZ
+         dvIH8qia+C5WEA/huKhqbJ7cxUg5WCqA6GTaJ45OsEA+3pbtZKuOTu/GRxb7uc6Ok545
+         eRTA==
+X-Gm-Message-State: AOJu0YyEewVePzuqpqftRz3a4HfbqVXzRhQ34+GmZ8RHDm0qP0Q/+eQz
+	YshDfOeXfWovCK0nP1+NPLdHkzXB/zBoUvaPb4xWEIa6Cih4OYvhMe3jAUkrj0ifyV7W9Cpfalg
+	ktGbNGLsqmjESzzdw4+Dkl7HeFdOcJc+vP8cNIsgKMZ3PbAIL9vOa2HR9/9bpPuF0b/o=
+X-Google-Smtp-Source: AGHT+IFbDBvgJh5PJ3vnU82/4AM4QabQ9Vn0Dy2n8bkc5X63hpe88fQ6rjsAymgBgRPm43la38uUZfQUG4uyIw==
 X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a63:1f02:0:b0:5c6:5eb2:bc6f with SMTP id
- f2-20020a631f02000000b005c65eb2bc6fmr38161pgf.11.1702007335468; Thu, 07 Dec
- 2023 19:48:55 -0800 (PST)
-Date: Fri,  8 Dec 2023 03:48:42 +0000
+ (user=cmllamas job=sendgmr) by 2002:a65:644d:0:b0:5be:3925:b5b7 with SMTP id
+ s13-20020a65644d000000b005be3925b5b7mr43640pgv.5.1702007375894; Thu, 07 Dec
+ 2023 19:49:35 -0800 (PST)
+Date: Fri,  8 Dec 2023 03:49:23 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,8 +58,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231208034842.997899-1-cmllamas@google.com>
-Subject: [PATCH 5.15] binder: fix memory leaks of spam and pending work
+Message-ID: <20231208034923.998315-1-cmllamas@google.com>
+Subject: [PATCH 6.1] binder: fix memory leaks of spam and pending work
 From: Carlos Llamas <cmllamas@google.com>
 To: stable@vger.kernel.org
 Cc: Carlos Llamas <cmllamas@google.com>, 
@@ -115,7 +115,7 @@ Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Acked-by: Todd Kjos <tkjos@google.com>
 Link: https://lore.kernel.org/r/20230922175138.230331-1-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: backport to v5.15 by dropping BINDER_WORK_TRANSACTION_PENDING
+[cmllamas: backport to v6.1 by dropping BINDER_WORK_TRANSACTION_PENDING
  as commit 0567461a7a6e is not present. Remove fixes tag accordingly.]
 Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
@@ -123,10 +123,10 @@ Signed-off-by: Carlos Llamas <cmllamas@google.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index cbbed43baf05..b63322e7e101 100644
+index e4a6da81cd4b..9cc3a2b1b4fc 100644
 --- a/drivers/android/binder.c
 +++ b/drivers/android/binder.c
-@@ -4620,6 +4620,7 @@ static void binder_release_work(struct binder_proc *proc,
+@@ -4788,6 +4788,7 @@ static void binder_release_work(struct binder_proc *proc,
  				"undelivered TRANSACTION_ERROR: %u\n",
  				e->cmd);
  		} break;
@@ -135,7 +135,7 @@ index cbbed43baf05..b63322e7e101 100644
  			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
  				"undelivered TRANSACTION_COMPLETE\n");
 
-base-commit: 9b91d36ba301db86bbf9e783169f7f6abf2585d8
+base-commit: c6114c845984144944f1abc07c61de219367a4da
 -- 
 2.43.0.472.g3155946c3a-goog
 
