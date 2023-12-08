@@ -1,146 +1,233 @@
-Return-Path: <stable+bounces-5074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC60780B0B1
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 00:45:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5B980B0B4
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 00:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A7E6B20C2E
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 23:45:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23B51281AE0
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 23:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97465ABBC;
-	Fri,  8 Dec 2023 23:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999625ABB7;
+	Fri,  8 Dec 2023 23:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7Mhz6vK"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="swxpllpg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E99F4171C;
-	Fri,  8 Dec 2023 15:45:28 -0800 (PST)
-Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-425922f5b89so12789291cf.0;
-        Fri, 08 Dec 2023 15:45:28 -0800 (PST)
+Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 115081712
+	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 15:47:43 -0800 (PST)
+Received: by mail-oi1-x229.google.com with SMTP id 5614622812f47-3b8b8372e30so1740504b6e.3
+        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 15:47:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1702079128; x=1702683928; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=YjiMTyTYq0iaoICIneQ1GFZjHnofXDyC38RnLJ083b4=;
-        b=I7Mhz6vKilDTs0tLcoGB9sojDxqoKq3FssRw/891geVR+MOpsTyim9Hd/mcdwgZSR2
-         1406PqcDN1lwckNb8SxIPnG8GL6cqkioqtqheXeiOS/s1zFrWS1H78pEOBygbIOO0dB9
-         W1r24bcPCbTCeAOKxisz5NtSOmfZO3kTgD6psVW+ftBtmzNXFD5ZJyK8H/lqgmeVv6so
-         l0Juo7rblufUbKsJn0mjDbI9nbmdQJz6bN7AqOXAuAHY9f2yzBY7Ial2eTx0YdJ7hFVL
-         bSvtktS+OyFUn0zh3nDpaEvsxRsb1gcbFKURxhIqumK1loPdzQ6F+OSlL25BeK9fHc2o
-         mG9A==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702079262; x=1702684062; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=s1NWl/lnp+nWQOywRewoUBsfUqk5XPl+uX8vwIrRDsc=;
+        b=swxpllpgiJuhYgBAkq63u+m7bfa05YnY+8YmvXNBeU4HgYnocnHgDvYzocMF4FTApf
+         Ja0o0pFNkhgLwKQd8LYm4fAaK14VvFgMtarJ26n1IgdTPEU5UnNvnElzqQLHwBsoXWER
+         rFNa96EfTG2Oj3RwktJFFD5cebTDAY4/Y07pCVdDkPW4mNGJa8jsvjN/5/g/puHcChxT
+         aOB9749DHfxNw3jwv4jDG0n3/9oXl6AfN3sxD81TwWtApeoaavAS8o9qSEioLOunff4R
+         bByJa88bCQI13vM7XIG0asRMH9FXplc4kkdrhyfi9zxBvyqvKHO4FAkMm9d5O3z6Hp88
+         Mvng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702079128; x=1702683928;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YjiMTyTYq0iaoICIneQ1GFZjHnofXDyC38RnLJ083b4=;
-        b=H6S29zethVHpckm/Y2rZJIJBOTGuLOH+tKS27Y51hyc+V+WFpMOPb6Js+YzAR6bN1I
-         CqT7bm+qSeVFg0iwVGZAgGuejAPfySxWi906lLEIMwIu7XHyfXK1Edv/opFpPs/sN65d
-         JEZOKbyR7H0M/3SOiVp6aZuTdgsEFUxhDBD+sP6X3r/YWs2g5Rj2xcfqDEBbhs3aygN4
-         kYQ5kCW5l3Dp9pI5hUzsypafuy5jYWI+Bs/1wk2UeRRnKetdSGL25Bu+MccG0f8tW9kl
-         jxONUtY0pcpZ0mueskFs+phicg47+CYKXvnN1BmQVEnlFJtAlAAtPa0iWI5s671ZNPZZ
-         o3/A==
-X-Gm-Message-State: AOJu0YxM2b6W0ZRGU23JKzueTZ5tppcElTJLRPDjiqLD18RdOX69sWJR
-	KLWkMvBL4L7sigUuVkFTax0=
-X-Google-Smtp-Source: AGHT+IFc2XIzsdgLtCJLn4PA5X0f5QOsTdKCu/ux5g+EbzKT72TDTN5x2/zKjSPLrCbAITjzuZThoA==
-X-Received: by 2002:a05:622a:491:b0:425:a68c:98e7 with SMTP id p17-20020a05622a049100b00425a68c98e7mr1069510qtx.12.1702079127865;
-        Fri, 08 Dec 2023 15:45:27 -0800 (PST)
-Received: from google.com ([205.220.129.31])
-        by smtp.gmail.com with ESMTPSA id c26-20020ac8519a000000b0042542920ec9sm1164692qtn.27.2023.12.08.15.45.17
+        d=1e100.net; s=20230601; t=1702079262; x=1702684062;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s1NWl/lnp+nWQOywRewoUBsfUqk5XPl+uX8vwIrRDsc=;
+        b=t0h0NoO9lU63H+Gnc5Dc/AieYuLCgxUnug+sJXaqe8IpGnT0fNfSFWaFpqzM/WVuzj
+         pR72iTTV9fzHq3s9WY/DFIQjd2poNzFofSGEVt6ZpZ3bH+Gowx5ebOXDT+giJBTcgWJC
+         MCGMPHzRnJFD0jXoMXDENEQSYBsTxTlfe7tdJRjJbndLqh0zhAeSfy7YaGY0V12MGgjz
+         QD+JVHz3FLSehdCvQqd5AqFl8qcH4bkn/LQPF3kSR/tLMl7O3Jok3HxuuobHNaSYi37D
+         NTXIbUrxc5wrC7aVncAueJwgmbLYGHf38sooLrYC/Qt8DZ4VlzT5iw4rVd9ApbvUup5W
+         bdkg==
+X-Gm-Message-State: AOJu0Yz5ePZQ5Z8ILJVBa5mHIQHLAU5rQZzEaKinhZfWqJ31fqU3UFWg
+	tOthlPioKtzH76UagiWhnyoS6XMiQqVUDpqTEfpoFg==
+X-Google-Smtp-Source: AGHT+IGmzFRG4txxetHV22wl4JpOCdLmnkbKexOwaw4+5ObxePzzCE3NCj6jSsk08WJLkJmng2kdOQ==
+X-Received: by 2002:a05:6808:2381:b0:3b9:e7d1:fa71 with SMTP id bp1-20020a056808238100b003b9e7d1fa71mr907762oib.47.1702079261950;
+        Fri, 08 Dec 2023 15:47:41 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id iw15-20020a170903044f00b001d2dce13d72sm2268760plb.183.2023.12.08.15.47.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 15:45:27 -0800 (PST)
-Date: Fri, 8 Dec 2023 23:45:02 +0000
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: David Laight <David.Laight@aculab.com>
-Cc: 'Arnd Bergmann' <arnd@arndb.de>, Zack Rusin <zackr@vmware.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Raul Rangel <rrangel@chromium.org>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] input/vmmouse: Fix device name copies
-Message-ID: <ZXOp5y4F2aoRq2UT@google.com>
-References: <20231127204206.3593559-1-zack@kde.org>
- <ZWzLvctpo1nNTMOo@google.com>
- <d180f06b-64b0-4885-9794-5127c297a0f0@app.fastmail.com>
- <f3e6cab719c646bf91265b6fd2887061@AcuMS.aculab.com>
+        Fri, 08 Dec 2023 15:47:41 -0800 (PST)
+Message-ID: <6573ab1d.170a0220.5e71f.85a1@mx.google.com>
+Date: Fri, 08 Dec 2023 15:47:41 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f3e6cab719c646bf91265b6fd2887061@AcuMS.aculab.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.10
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.203-7-g904bbd534ce44
+Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.203-7-g904bbd534ce44)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Sun, Dec 03, 2023 at 09:14:49PM +0000, David Laight wrote:
-> From: Arnd Bergmann
-> > Sent: 03 December 2023 20:51
-> > On Sun, Dec 3, 2023, at 19:41, Dmitry Torokhov wrote:
-> > > On Mon, Nov 27, 2023 at 03:42:06PM -0500, Zack Rusin wrote:
-> > >> From: Zack Rusin <zackr@vmware.com>
-> > >>
-> > >> Make sure vmmouse_data::phys can hold serio::phys (which is 32 bytes)
-> > >> plus an extra string, extend it to 64.
-> > >>
-> > >> Fixes gcc13 warnings:
-> > >> drivers/input/mouse/vmmouse.c: In function ‘vmmouse_init’:
-> > >> drivers/input/mouse/vmmouse.c:455:53: warning: ‘/input1’ directive output may be truncated writing
-> > 7 bytes into a region of size between 1 and 32 [-Wformat-truncation=]
-> > >>   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
-> > >>       |                                                     ^~~~~~~
-> > >> drivers/input/mouse/vmmouse.c:455:9: note: ‘snprintf’ output between 8 and 39 bytes into a
-> > destination of size 32
-> > >>   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
-> > >>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >>   456 |                  psmouse->ps2dev.serio->phys);
-> > >>       |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > >
-> > > This simply wastes 32 bytes. It is perfectly fine to truncate phys
-> > > (which does not happen in real life).
-> > >
-> > > -Wformat-truncation is disabled in normal builds, folks should stop
-> > > using it with W=1 as well.
-> > 
-> > It does find real bugs, and we are fairly close to being able
-> > to enable it by default once the remaining warnings are all
-> > fixed.
-> > 
-> > It also doesn't waste any memory
+stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
+10.203-7-g904bbd534ce44)
 
-... at this time ...
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.203-7-g904bbd534ce44/
 
-> > in this specific case since
-> > vmmouse_data is currently at 168 bytes, which gets rounded
-> > up to either 192 or 256 bytes anyway. I'd suggest using
-> > the minimum size that is large enough though, in this case
-> > 39 bytes for the string I guess.
+Tree: stable-rc
+Branch: queue/5.10
+Git Describe: v5.10.203-7-g904bbd534ce44
+Git Commit: 904bbd534ce44314b4a8c56baeac6090a8c6a598
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-This assumes we never change how our allocators work to provide better
-memory packing.
+Warnings Detected:
 
-> 
-> That rather depends on whether any of the earlier char[] lengths
-> have been rounded up to a 'nice' value.
-> 
-> I'd also have thought that dangerous overflows would come from
-> unbounded %s formats, not fixed size strings or integers that are
-> always small.
-> 
-> There really ought to be a sane method of telling gcc not to bleat
-> about snprintf() potentially overflowing the target.
+arc:
 
-Yes, that would be my preference before we enable this warning globally.
+arm64:
 
-Thanks.
+arm:
 
--- 
-Dmitry
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
