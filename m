@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-5025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F056280A557
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 15:23:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF23580A581
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 15:32:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FC9C1C20D87
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 14:23:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66887281831
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 14:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2C1D1DFCF;
-	Fri,  8 Dec 2023 14:22:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804671BDC3;
+	Fri,  8 Dec 2023 14:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="kMBZlZip"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="RHGQ6TQ3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0A8BFA
-	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 06:22:55 -0800 (PST)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-6ce72faf1e8so1551391b3a.0
-        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 06:22:55 -0800 (PST)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E32A1723
+	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 06:32:31 -0800 (PST)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-5c1a75a4b6cso1455419a12.2
+        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 06:32:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702045375; x=1702650175; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702045950; x=1702650750; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ygXUAA7+4OWI49BLJilSge+WbgSJPOQk0sxdbQboaKk=;
-        b=kMBZlZipLyrpdgW2myb5T8oiCs2vN0pXkAnCO4OmhrHTRsAHNl37ByT4Se9ocH9XkI
-         hndDF5dB2HLFj6Ja6qYGXz9Ef9w21QgDrJM8jXJcwqCKulmQd/IttGJvnmo42HwU0xuO
-         AbiNGzoaTamdi8Ifu2Lbt1NWR7gsicd1EUvM9iTlxI2sQvV/QFr++XsKsyK4k0emURB0
-         rT596+E6TJaxJFrRWtpJ/ZjzK1URb51JpYu0xzfJowoQKEcv/5Kj5EWX8YnGKwGF1aIf
-         KwBt4QOGgojNUY4y8McRY6AL1mTFvrp7Lb/d/H9rDNqKpvcxeuaw1HcmbEblU8QVZNmA
-         xCHA==
+        bh=9iOFNPjA7t6cNc/sYhrlDcHPPo+qT1lN5VRxCfjRXuo=;
+        b=RHGQ6TQ3WXqEhPt5FMmWgP0ER2c0sefHuD4dJRWSia4VK7c7uzVzJtpO0suorwFhMQ
+         X/AM/7nmWjmt+5o3AXW4pSUNAEzWDzimavZWcoXyHp+95LYldNUYPlt+Cl+feLtw4mid
+         ObNWW4HQXJJH2xQWXEAk1TYyz6j2mS3nHGKSCb0vB+ay2o8P7mraQOFgb5HFzFqX1uve
+         GHIdafzScW+FDc3lrq2BMz/AXuH3rOL4WeT8eS7dKujCKwYOLZQnKGPPOxYfu6MpddG/
+         Xj2svXjlXvQvfMDlxo6LKM2Xo23eHU/iV0tuWBzYt3SvZrE8blysZ+EHlGjTfST0GYfc
+         xaJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702045375; x=1702650175;
+        d=1e100.net; s=20230601; t=1702045950; x=1702650750;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ygXUAA7+4OWI49BLJilSge+WbgSJPOQk0sxdbQboaKk=;
-        b=qzkT4h6ezFrHo4EkHBqU3W91j7LmLaNEmwhHj96XeJhTScwVl+kFZPLcGki1ns5O+2
-         BaffI0Gi0khZbCxoP16NdXXYEDcSIW0w1arSY2OoNKtMjNBj4A/+MJ2NmU5RPaTAMeEA
-         d+K8EPsxtZT4/JWj+sG51JR1ZyqAxKnVL0J676yeW2OGV8NLTkVdHGu2BWUJSG7CG8tZ
-         xAX4fC8vmVr6imBM/g7QmDyh09JssWmWG1R461/AjKsd+kA8ASbZYGuXEKhvnnOITP13
-         zijteRR51EyZvz65tueBQlLm1OkkGxv4FVKSJ5y4yIxvcp+B2Pinm+mPvib8k+auqzMA
-         ksNA==
-X-Gm-Message-State: AOJu0YyFKPCK6nn1ExmobHBWgl2UizadamZikyaIWTvnMa2qYM3PtTxp
-	jn2JAoTxg9BpQ1csUh053zZmF17wKfQ4zqSxkvJzug==
-X-Google-Smtp-Source: AGHT+IHj1LIncouS6ioXYWkqJ0CdsVooW5PxNtTIw6XGdMDvaZL0MTO4qLN8B3kDkP9LsIO4+8qLrw==
-X-Received: by 2002:a05:6a00:22c3:b0:6ce:3876:d730 with SMTP id f3-20020a056a0022c300b006ce3876d730mr99606pfj.24.1702045373389;
-        Fri, 08 Dec 2023 06:22:53 -0800 (PST)
+        bh=9iOFNPjA7t6cNc/sYhrlDcHPPo+qT1lN5VRxCfjRXuo=;
+        b=LDJ7Ny2oi1OGwagWZwxi1zSHorwgrhGyc50DiVTt/xoz7Td14Fu0GEE344VlvyvcHq
+         6RRZVzzccfSCsAQk4q9JEuJZ/QjS0o0UJgWtqlS5JUlXK/yfRKPgmdk038jvpsu7ZGeX
+         Fbg2x13Y+3iNukss0rD5TzwIEe9S7gbYcSM0HTmSVTRQwjfo2ikXMpMi2CQDl92XsyLl
+         JZM4mdjM+7FuUU0z1RnJb5jQ0KLvT6aUzBTsYfht/li4e336poscHPx4qeYxuvn8RiVz
+         kxIU0zEsCzhrWYEMq/K8z8RniR5u3QVCNzOau0G9dmAtOLHco869Y7dsiApemP8OKpue
+         JHnA==
+X-Gm-Message-State: AOJu0YxhqIJmwWqE5RugYXq738q9L4+Ayy7TCbqBZw7N7pUwks6YeqPW
+	E7VFp6e3BgMic9u64Bv4MbXGtxcTFUwiuUhputyM7g==
+X-Google-Smtp-Source: AGHT+IGaRDDsoDd/5nswXAZJNpm0YueI48Utm/JC69r/jl1nBGtcIN2F7a0HhuxB6O8YU2dTNVKiAg==
+X-Received: by 2002:a17:90a:d143:b0:285:25b3:4d5d with SMTP id t3-20020a17090ad14300b0028525b34d5dmr175172pjw.8.1702045950003;
+        Fri, 08 Dec 2023 06:32:30 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id e20-20020aa78c54000000b006cb9a9ea64dsm1602068pfd.220.2023.12.08.06.22.52
+        by smtp.gmail.com with ESMTPSA id sf3-20020a17090b51c300b0028a42f9d3ebsm671005pjb.53.2023.12.08.06.32.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 06:22:52 -0800 (PST)
-Message-ID: <657326bc.a70a0220.32a7a.4f36@mx.google.com>
-Date: Fri, 08 Dec 2023 06:22:52 -0800 (PST)
+        Fri, 08 Dec 2023 06:32:29 -0800 (PST)
+Message-ID: <657328fd.170a0220.60bbc.2086@mx.google.com>
+Date: Fri, 08 Dec 2023 06:32:29 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,213 +62,312 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.332
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.332)
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v5.15.142
+Subject: stable/linux-5.15.y baseline: 236 runs, 8 regressions (v5.15.142)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.332)
+stable/linux-5.15.y baseline: 236 runs, 8 regressions (v5.15.142)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.332/
+Regressions Summary
+-------------------
 
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.332
-Git Commit: ae1952ac1aac66010a51a69c4592d72724d91ce2
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+kontron-pitx-imx8m          | arm64 | lab-kontron  | gcc-10   | defconfig  =
+                  | 2          =
 
-Warnings Detected:
+meson-gxbb-p200             | arm64 | lab-baylibre | gcc-10   | defconfig  =
+                  | 1          =
 
-arc:
+meson-gxbb-p200             | arm64 | lab-baylibre | gcc-10   | defconfig+k=
+selftest          | 1          =
 
-arm64:
+sun7i-a20-cubieboard2       | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
 
-arm:
+sun8i-a33-olinuxino         | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
 
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
+sun8i-h3-orangepi-pc        | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
 
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+sun8i-r40-bananapi-m2-ultra | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
 
 
-Warnings summary:
+  Details:  https://kernelci.org/test/job/stable/branch/linux-5.15.y/kernel=
+/v5.15.142/plan/baseline/
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+  Test:     baseline
+  Tree:     stable
+  Branch:   linux-5.15.y
+  Describe: v5.15.142
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able.git
+  SHA:      8a1d809b05454b2e08fb3d801787917975fdb037 =
 
-Section mismatches summary:
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+Test Regressions
+---------------- =
 
-Detailed per-defconfig build reports:
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+kontron-pitx-imx8m          | arm64 | lab-kontron  | gcc-10   | defconfig  =
+                  | 2          =
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
+  Details:     https://kernelci.org/test/plan/id/6572f1a2f71fb9f042e134d8
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+  Results:     50 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm64/defconfig/gcc-10/lab-kontron/baseline-kontron-pitx-imx8m.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm64/defconfig/gcc-10/lab-kontron/baseline-kontron-pitx-imx8m.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6572f1a2f71fb9f042e134db
+        new failure (last pass: v5.15.141)
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+    2023-12-08T10:35:53.481633  / # #
+    2023-12-08T10:35:53.582574  export SHELL=3D/bin/sh
+    2023-12-08T10:35:53.583209  #
+    2023-12-08T10:35:53.684374  / # export SHELL=3D/bin/sh. /lava-403347/en=
+vironment
+    2023-12-08T10:35:53.685130  =
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+    2023-12-08T10:35:53.786412  / # . /lava-403347/environment/lava-403347/=
+bin/lava-test-runner /lava-403347/1
+    2023-12-08T10:35:53.787649  =
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
+    2023-12-08T10:35:53.795962  / # /lava-403347/bin/lava-test-runner /lava=
+-403347/1
+    2023-12-08T10:35:53.853613  + export 'TESTRUN_ID=3D1_bootrr'
+    2023-12-08T10:35:53.853976  + cd /l<8>[   12.149883] <LAVA_SIGNAL_START=
+RUN 1_bootrr 403347_1.5.2.4.5> =
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    ... (10 line(s) more)  =
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+  * baseline.bootrr.dwc3-usb1-probed: https://kernelci.org/test/case/id/657=
+2f1a2f71fb9f042e134eb
+        new failure (last pass: v5.15.141)
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
+    2023-12-08T10:35:56.176932  /lava-403347/1/../bin/lava-test-case
+    2023-12-08T10:35:56.177350  <8>[   14.571323] <LAVA_SIGNAL_TESTCASE TES=
+T_CASE_ID=3Ddwc3-usb1-probed RESULT=3Dfail>   =
 
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+ =
 
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
 
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+meson-gxbb-p200             | arm64 | lab-baylibre | gcc-10   | defconfig  =
+                  | 1          =
 
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+  Details:     https://kernelci.org/test/plan/id/6572f295c86c8acafae135d6
 
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
 
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
+  * baseline.login: https://kernelci.org/test/case/id/6572f295c86c8acafae13=
+5d7
+        new failure (last pass: v5.15.137) =
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+ =
 
----
-For more info write to <info@kernelci.org>
+
+
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+meson-gxbb-p200             | arm64 | lab-baylibre | gcc-10   | defconfig+k=
+selftest          | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6572f795545fd7f830e13492
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig+kselftest
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm64/defconfig+kselftest/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm64/defconfig+kselftest/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6572f795545fd7f830e13=
+493
+        new failure (last pass: v5.15.137) =
+
+ =
+
+
+
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+sun7i-a20-cubieboard2       | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6572f5bc4b4d0219d8e13485
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: multi_v7_defconfig+kselftest
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun7i-a20-cubie=
+board2.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun7i-a20-cubie=
+board2.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6572f5bc4b4d0219d8e13=
+486
+        failing since 29 days (last pass: v5.15.137, first fail: v5.15.138) =
+
+ =
+
+
+
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+sun8i-a33-olinuxino         | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6572f5bb4b4d0219d8e1347f
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: multi_v7_defconfig+kselftest
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun8i-a33-olinu=
+xino.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun8i-a33-olinu=
+xino.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6572f5bb4b4d0219d8e13=
+480
+        failing since 29 days (last pass: v5.15.137, first fail: v5.15.138) =
+
+ =
+
+
+
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+sun8i-h3-orangepi-pc        | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6572f737dd028b108ce13492
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: multi_v7_defconfig+kselftest
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun8i-h3-orange=
+pi-pc.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun8i-h3-orange=
+pi-pc.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6572f737dd028b108ce13=
+493
+        failing since 29 days (last pass: v5.15.137, first fail: v5.15.138) =
+
+ =
+
+
+
+platform                    | arch  | lab          | compiler | defconfig  =
+                  | regressions
+----------------------------+-------+--------------+----------+------------=
+------------------+------------
+sun8i-r40-bananapi-m2-ultra | arm   | lab-clabbe   | gcc-10   | multi_v7_de=
+fconfig+kselftest | 1          =
+
+
+  Details:     https://kernelci.org/test/plan/id/6572f723f52d2dc8e8e13525
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: multi_v7_defconfig+kselftest
+  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
+10110)
+  Plain log:   https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun8i-r40-banan=
+api-m2-ultra.txt
+  HTML log:    https://storage.kernelci.org//stable/linux-5.15.y/v5.15.142/=
+arm/multi_v7_defconfig+kselftest/gcc-10/lab-clabbe/baseline-sun8i-r40-banan=
+api-m2-ultra.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/armel/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6572f723f52d2dc8e8e13=
+526
+        failing since 29 days (last pass: v5.15.137, first fail: v5.15.138) =
+
+ =20
 
