@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-5023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3E180A4E8
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 14:58:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97BAE80A4F2
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 15:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16ACE2817AD
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 13:58:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E138281635
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 14:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BEF51DA4E;
-	Fri,  8 Dec 2023 13:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700991DA4E;
+	Fri,  8 Dec 2023 14:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="24zR5yC2"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Dzz5acwA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x436.google.com (mail-pf1-x436.google.com [IPv6:2607:f8b0:4864:20::436])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA631706
-	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 05:58:29 -0800 (PST)
-Received: by mail-pf1-x436.google.com with SMTP id d2e1a72fcca58-6ceb93fb381so1227477b3a.0
-        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 05:58:29 -0800 (PST)
+Received: from mail-oo1-xc31.google.com (mail-oo1-xc31.google.com [IPv6:2607:f8b0:4864:20::c31])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42161A9
+	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 06:00:07 -0800 (PST)
+Received: by mail-oo1-xc31.google.com with SMTP id 006d021491bc7-59082c4aadaso565793eaf.0
+        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 06:00:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702043909; x=1702648709; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702044006; x=1702648806; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=gCjeHbBa3c9rkFw7BA90YhuuokD5ZoloJ9w6pQ1XlE8=;
-        b=24zR5yC2kpMCdvmMAxo8msJq3r8d+77sFga2abh+LSAjP+ca4aS29mka7UknjZYJV4
-         Rn7jYJh6XQ0zSGOjTqgCSPcJQ6UEBDwdCFKl2lC4z2nAiFAQRA+iuGagV2eW69dE4cvx
-         VDzz2/4mB8S5LjLVPszIaV++pgmAxzzj742rqWVuHKroFlWDPxAItMW1uFFeM8l7Wi+h
-         eBkCb5cAE+qE3YxYTQv8662LO+750NLwxt5TqNZP2zTmQHRc57aaBBCXdAmkTcCyLcqy
-         9NaDHwpHrYVX5jd+deBV6TOKLOUd8a1/OoCIEpTcp4RTRFuymhVIcGT5dYJkOny91yC+
-         qvmQ==
+        bh=oXml4rCKM9XrgYKUEjE5K657lOwK/Zy9ylP0VDRkPt4=;
+        b=Dzz5acwAhiviy+Kxk0ufyp/aHjiEMwNgQMQZkBisqiUMIOc+qIUP3SdBCdvoTyRzmu
+         yr6iw8fmZmsmJmTAY1qqDKGj/tCSuNwJm8ezwdc313ZN8Pc7a8EfuxADhh1cH1/z4TKC
+         LmSlxa1pjKI5aaNdkdrwjTpsUdj8oGUacndH+cySVOjEuCVikWWJFfyXJKuGNAi1i7En
+         O6W+b0ZysPvrSz3qxzw1hYi/HulgbWqehkRIpF7Z5viYN7ScxQBMquO2IDw3r2yxWvCZ
+         8kjC6cea92+pUMB2F2tiYyG1wUTzjDO6shoFmAy/RlMJWBNHZguW7L0OFYd3kz90b3AH
+         9d7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702043909; x=1702648709;
+        d=1e100.net; s=20230601; t=1702044006; x=1702648806;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gCjeHbBa3c9rkFw7BA90YhuuokD5ZoloJ9w6pQ1XlE8=;
-        b=DJ1pGgAwVE/uXCKV1L8XzllitacrktLXeXp2wtxcjyT3b8pkxn/L06/BJqI9tNG8u3
-         RipJWJn0aaltqSgEP1iwPaA2/JHqW3y22xHh9a3gd/83Q0i8RKY4fi4I650Waj6cnBFM
-         9cgSHvWJkZBzWdz2rsm3owT6yC0TJMuRdzcGhrLu4oUvuBDD/u/h0vokkqzc+26VxE07
-         5nAzPIUnDbUtpICrNqso2yokuFRHiuH8EuW6FVfLbP0V0P4RdhMZK2vl87PW10gwx8we
-         evJg+IH7yAZZvpsI+OCi5kuv7oc42VoRCFLqC3Bp4OxMdmT4pLT2K1+CshBs25lHDk3L
-         Wdmw==
-X-Gm-Message-State: AOJu0YxM8mfFdnITW2QItPgBR+TdJRREgg78mdKu7NDEFsG0UuWw5oi4
-	sIcuThVnmbKYSGERQAnG22QacZP3m+cOLsbiw3Xxow==
-X-Google-Smtp-Source: AGHT+IGSNmLy1qnSA1PHG0b5tAvZxftctfHPzhgafC//v6JqW/FY8DjPDJ0pedKi+lN3LNbLYVC5tg==
-X-Received: by 2002:a05:6a20:1609:b0:187:bb9c:569 with SMTP id l9-20020a056a20160900b00187bb9c0569mr236634pzj.5.1702043908920;
-        Fri, 08 Dec 2023 05:58:28 -0800 (PST)
+        bh=oXml4rCKM9XrgYKUEjE5K657lOwK/Zy9ylP0VDRkPt4=;
+        b=UuJNm20x1MSqQpj070lpltbDdtGvr3Lx4HeIiJsB9zoDP5FzXOr1Asf7SxNm3ywvhs
+         bPsF/GlspoIYLFAmT2qM59cDWD6XKSJirqHM6c2tOjvN4G21wRZ8djdcrOeI43HabaLG
+         Xn/YGK6Rb2QNjz/Up7Oz5SebT1wgq89u1Gn37lJ02e+gCS7hKPQHdP70z8nIzhYb7oIV
+         g1T5soqX0gWfCd1LqLwAsZ/y/9IxnVRmADCplQlCG72ne/+1wlIYuZtP4RW19HGbcdIB
+         3tWl+Vn9NCaIdC9Imab0wTPJAl7kE8Rpb+z0/vOyGZ1xmEmohED9YyKV4PFfbysM17Wv
+         MAlg==
+X-Gm-Message-State: AOJu0Yy4MaKO48PxiQRW84gmOC2zcz2w70JSG62/QDMH3mmfG7TuKSmL
+	HZDDigPD0CazkZiQUd1NVQXbVgVkHTgezOez9RQ/Qg==
+X-Google-Smtp-Source: AGHT+IEA2KuqOZDE6Dv6gwPYmPL1iYb/BQQFAHpLZ88tnxqyf8RnBD8wSNREoBX+AgZhg0Nn0CNhSA==
+X-Received: by 2002:a05:6358:91a7:b0:16b:631e:5021 with SMTP id j39-20020a05635891a700b0016b631e5021mr5528101rwa.7.1702044005451;
+        Fri, 08 Dec 2023 06:00:05 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id z1-20020aa79901000000b006ce41b15613sm1580311pff.112.2023.12.08.05.58.28
+        by smtp.gmail.com with ESMTPSA id a2-20020aa78642000000b006bd9422b279sm1597296pfo.54.2023.12.08.06.00.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 05:58:28 -0800 (PST)
-Message-ID: <65732104.a70a0220.6136.4ae3@mx.google.com>
-Date: Fri, 08 Dec 2023 05:58:28 -0800 (PST)
+        Fri, 08 Dec 2023 06:00:04 -0800 (PST)
+Message-ID: <65732164.a70a0220.45d1b.4dff@mx.google.com>
+Date: Fri, 08 Dec 2023 06:00:04 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,66 +62,235 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v5.10.203
-Subject: stable/linux-5.10.y baseline: 155 runs, 1 regressions (v5.10.203)
+X-Kernelci-Branch: queue/4.19
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.19.301-12-g7151bbb2b612c
+Subject: stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed,
+ 20 warnings (v4.19.301-12-g7151bbb2b612c)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable/linux-5.10.y baseline: 155 runs, 1 regressions (v5.10.203)
+stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed, 20 warnings (v4=
+.19.301-12-g7151bbb2b612c)
 
-Regressions Summary
--------------------
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+9/kernel/v4.19.301-12-g7151bbb2b612c/
 
-platform        | arch  | lab          | compiler | defconfig | regressions
-----------------+-------+--------------+----------+-----------+------------
-meson-gxbb-p200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+Tree: stable-rc
+Branch: queue/4.19
+Git Describe: v4.19.301-12-g7151bbb2b612c
+Git Commit: 7151bbb2b612ca6b29f24fc4d6dcc866aa2f8c3f
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
+Build Failures Detected:
 
-  Details:  https://kernelci.org/test/job/stable/branch/linux-5.10.y/kernel=
-/v5.10.203/plan/baseline/
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
-  Test:     baseline
-  Tree:     stable
-  Branch:   linux-5.10.y
-  Describe: v5.10.203
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able.git
-  SHA:      d330ef1d295df26d38e7c6d8e74462ab8a396527 =
+Warnings Detected:
 
+arc:
 
+arm64:
+    defconfig (gcc-10): 3 warnings
+    defconfig+arm64-chromebook (gcc-10): 3 warnings
 
-Test Regressions
----------------- =
+arm:
 
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
 
+mips:
 
-platform        | arch  | lab          | compiler | defconfig | regressions
-----------------+-------+--------------+----------+-----------+------------
-meson-gxbb-p200 | arm64 | lab-baylibre | gcc-10   | defconfig | 1          =
+riscv:
 
-
-  Details:     https://kernelci.org/test/plan/id/6572f0dcaa8e5e809de134af
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable/linux-5.10.y/v5.10.203/=
-arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.txt
-  HTML log:    https://storage.kernelci.org//stable/linux-5.10.y/v5.10.203/=
-arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxbb-p200.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 2 warnings
+    x86_64_defconfig+x86-board (gcc-10): 2 warnings
 
 
-  * baseline.login: https://kernelci.org/test/case/id/6572f0dcaa8e5e809de13=
-4b0
-        new failure (last pass: v5.10.199) =
+Warnings summary:
 
- =20
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+
+Section mismatches summary:
+
+    4    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
+ings, 0 section mismatches
+
+Warnings:
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
+nings, 0 section mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
