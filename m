@@ -1,113 +1,146 @@
-Return-Path: <stable+bounces-5073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4314C80B0AD
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 00:42:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC60780B0B1
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 00:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 083382815E7
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 23:42:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A7E6B20C2E
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 23:45:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 787521F92D;
-	Fri,  8 Dec 2023 23:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97465ABBC;
+	Fri,  8 Dec 2023 23:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K8gDe7e+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7Mhz6vK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C8A1729
-	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 15:41:51 -0800 (PST)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-db53fec212aso3442714276.2
-        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 15:41:51 -0800 (PST)
+Received: from mail-qt1-x833.google.com (mail-qt1-x833.google.com [IPv6:2607:f8b0:4864:20::833])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E99F4171C;
+	Fri,  8 Dec 2023 15:45:28 -0800 (PST)
+Received: by mail-qt1-x833.google.com with SMTP id d75a77b69052e-425922f5b89so12789291cf.0;
+        Fri, 08 Dec 2023 15:45:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702078911; x=1702683711; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=k7GsY6GT/+tnbArErtPc1f6cs5/DzWiGNX1GnrooOm8=;
-        b=K8gDe7e+NlM5dXA3tekfmsM6qM9+PqKWF1pdarRSKxNQLp6Zmo234R6MPjNiZTC7Bd
-         Sy2givuIttjJG13JBSjEv1tei319RBdaOfFkhvN8v6DWnaTFFUNds0wcmRjCsalowXot
-         OMyFpWUQAzQAR1novnmJ9Vmk6H4Y2rId/IgpkewJqXu8y0YzmDJkNFmYqMUcA8eKo7ZF
-         SgDcmELPbDV/IHo/muYmi/NejnD6ff1fSUFLKhWavBao4W+HfVUs/e8v4u0ibVnbvXxb
-         0UpLfwUZFTrZYw11OAh/MZBCS91Nwa7wpYrcPnUYawdqHqhVSWGEfnyOTmnu+JO79LS1
-         Y9Gw==
+        d=gmail.com; s=20230601; t=1702079128; x=1702683928; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YjiMTyTYq0iaoICIneQ1GFZjHnofXDyC38RnLJ083b4=;
+        b=I7Mhz6vKilDTs0tLcoGB9sojDxqoKq3FssRw/891geVR+MOpsTyim9Hd/mcdwgZSR2
+         1406PqcDN1lwckNb8SxIPnG8GL6cqkioqtqheXeiOS/s1zFrWS1H78pEOBygbIOO0dB9
+         W1r24bcPCbTCeAOKxisz5NtSOmfZO3kTgD6psVW+ftBtmzNXFD5ZJyK8H/lqgmeVv6so
+         l0Juo7rblufUbKsJn0mjDbI9nbmdQJz6bN7AqOXAuAHY9f2yzBY7Ial2eTx0YdJ7hFVL
+         bSvtktS+OyFUn0zh3nDpaEvsxRsb1gcbFKURxhIqumK1loPdzQ6F+OSlL25BeK9fHc2o
+         mG9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702078911; x=1702683711;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=k7GsY6GT/+tnbArErtPc1f6cs5/DzWiGNX1GnrooOm8=;
-        b=suCEUOd3TUpbE/DpJte/W/Jtu4qIjLTGeL/S6WlgV3QBLoNSVFvOtvfoZeBk3VZezw
-         j5pi3U60mnZqhZGO0napS4jESnpqPiAUY1vTNWJpuFWeAKkUjowEVG/Y0kR6cmw7I5EA
-         l6zvdJG8Ehl4OVOLYDnRp24SC7k+z96iyPq6kCoaSisKrBgJu2XNMJtyidr/glo/l2cd
-         Gq3ibR2VWaMGJJOR7EiO1JDhgyOTBvTcZrAEwONx5gWmXbL4wq1vVKPVka+UzASMJaW6
-         QJqX902918hNwZ6dM5E2B1duJYJtnwZ4ZPLil5kg08A5uV8fPw0o97blriPQco2+Gq4S
-         U+Mg==
-X-Gm-Message-State: AOJu0YwiBql2GJrQi5c4HDz3tYTWaP+5lFqAx5I6I8FV/IJ+KWkOQ0e/
-	PcpmN4Az5tGm5xHtMKPsKx7HEqB1olHPgE7v+pvkgA==
-X-Google-Smtp-Source: AGHT+IHGOJeWukTVNuH3xvDlUiPgdeVPjjFBrpqw0bilGbylCV43u5Ik4f0j+Oum1gYfbgenTrdwcI2XwBEmlFpybrySNQ==
-X-Received: from isaacmanjarres.irv.corp.google.com ([2620:15c:2d:3:4a64:6d71:c7b8:4fc3])
- (user=isaacmanjarres job=sendgmr) by 2002:a25:76c8:0:b0:db7:d315:6643 with
- SMTP id r191-20020a2576c8000000b00db7d3156643mr6416ybc.6.1702078911016; Fri,
- 08 Dec 2023 15:41:51 -0800 (PST)
-Date: Fri,  8 Dec 2023 15:41:40 -0800
+        d=1e100.net; s=20230601; t=1702079128; x=1702683928;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YjiMTyTYq0iaoICIneQ1GFZjHnofXDyC38RnLJ083b4=;
+        b=H6S29zethVHpckm/Y2rZJIJBOTGuLOH+tKS27Y51hyc+V+WFpMOPb6Js+YzAR6bN1I
+         CqT7bm+qSeVFg0iwVGZAgGuejAPfySxWi906lLEIMwIu7XHyfXK1Edv/opFpPs/sN65d
+         JEZOKbyR7H0M/3SOiVp6aZuTdgsEFUxhDBD+sP6X3r/YWs2g5Rj2xcfqDEBbhs3aygN4
+         kYQ5kCW5l3Dp9pI5hUzsypafuy5jYWI+Bs/1wk2UeRRnKetdSGL25Bu+MccG0f8tW9kl
+         jxONUtY0pcpZ0mueskFs+phicg47+CYKXvnN1BmQVEnlFJtAlAAtPa0iWI5s671ZNPZZ
+         o3/A==
+X-Gm-Message-State: AOJu0YxM2b6W0ZRGU23JKzueTZ5tppcElTJLRPDjiqLD18RdOX69sWJR
+	KLWkMvBL4L7sigUuVkFTax0=
+X-Google-Smtp-Source: AGHT+IFc2XIzsdgLtCJLn4PA5X0f5QOsTdKCu/ux5g+EbzKT72TDTN5x2/zKjSPLrCbAITjzuZThoA==
+X-Received: by 2002:a05:622a:491:b0:425:a68c:98e7 with SMTP id p17-20020a05622a049100b00425a68c98e7mr1069510qtx.12.1702079127865;
+        Fri, 08 Dec 2023 15:45:27 -0800 (PST)
+Received: from google.com ([205.220.129.31])
+        by smtp.gmail.com with ESMTPSA id c26-20020ac8519a000000b0042542920ec9sm1164692qtn.27.2023.12.08.15.45.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Dec 2023 15:45:27 -0800 (PST)
+Date: Fri, 8 Dec 2023 23:45:02 +0000
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: David Laight <David.Laight@aculab.com>
+Cc: 'Arnd Bergmann' <arnd@arndb.de>, Zack Rusin <zackr@vmware.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	VMware Graphics Reviewers <linux-graphics-maintainer@vmware.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Raul Rangel <rrangel@chromium.org>,
+	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] input/vmmouse: Fix device name copies
+Message-ID: <ZXOp5y4F2aoRq2UT@google.com>
+References: <20231127204206.3593559-1-zack@kde.org>
+ <ZWzLvctpo1nNTMOo@google.com>
+ <d180f06b-64b0-4885-9794-5127c297a0f0@app.fastmail.com>
+ <f3e6cab719c646bf91265b6fd2887061@AcuMS.aculab.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231208234141.2356157-1-isaacmanjarres@google.com>
-Subject: [PATCH v1] iommu/dma: Trace bounce buffer usage when mapping buffers
-From: "Isaac J. Manjarres" <isaacmanjarres@google.com>
-To: Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Tom Murphy <murphyt7@tcd.ie>, Lu Baolu <baolu.lu@linux.intel.com>
-Cc: "Isaac J. Manjarres" <isaacmanjarres@google.com>, stable@vger.kernel.org, 
-	Saravana Kannan <saravanak@google.com>, kernel-team@android.com, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f3e6cab719c646bf91265b6fd2887061@AcuMS.aculab.com>
 
-When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
-use bounce buffers") was introduced, it did not add the logic
-for tracing the bounce buffer usage from iommu_dma_map_page().
+On Sun, Dec 03, 2023 at 09:14:49PM +0000, David Laight wrote:
+> From: Arnd Bergmann
+> > Sent: 03 December 2023 20:51
+> > On Sun, Dec 3, 2023, at 19:41, Dmitry Torokhov wrote:
+> > > On Mon, Nov 27, 2023 at 03:42:06PM -0500, Zack Rusin wrote:
+> > >> From: Zack Rusin <zackr@vmware.com>
+> > >>
+> > >> Make sure vmmouse_data::phys can hold serio::phys (which is 32 bytes)
+> > >> plus an extra string, extend it to 64.
+> > >>
+> > >> Fixes gcc13 warnings:
+> > >> drivers/input/mouse/vmmouse.c: In function ‘vmmouse_init’:
+> > >> drivers/input/mouse/vmmouse.c:455:53: warning: ‘/input1’ directive output may be truncated writing
+> > 7 bytes into a region of size between 1 and 32 [-Wformat-truncation=]
+> > >>   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
+> > >>       |                                                     ^~~~~~~
+> > >> drivers/input/mouse/vmmouse.c:455:9: note: ‘snprintf’ output between 8 and 39 bytes into a
+> > destination of size 32
+> > >>   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
+> > >>       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >>   456 |                  psmouse->ps2dev.serio->phys);
+> > >>       |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> > >
+> > > This simply wastes 32 bytes. It is perfectly fine to truncate phys
+> > > (which does not happen in real life).
+> > >
+> > > -Wformat-truncation is disabled in normal builds, folks should stop
+> > > using it with W=1 as well.
+> > 
+> > It does find real bugs, and we are fairly close to being able
+> > to enable it by default once the remaining warnings are all
+> > fixed.
+> > 
+> > It also doesn't waste any memory
 
-All of the users of swiotlb_tbl_map_single() trace their bounce
-buffer usage, except iommu_dma_map_page(). This makes it difficult
-to track SWIOTLB usage from that function. Thus, trace bounce buffer
-usage from iommu_dma_map_page().
+... at this time ...
 
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Cc: stable@vger.kernel.org # v5.15+
-Cc: Tom Murphy <murphyt7@tcd.ie>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
----
- drivers/iommu/dma-iommu.c | 3 +++
- 1 file changed, 3 insertions(+)
+> > in this specific case since
+> > vmmouse_data is currently at 168 bytes, which gets rounded
+> > up to either 192 or 256 bytes anyway. I'd suggest using
+> > the minimum size that is large enough though, in this case
+> > 39 bytes for the string I guess.
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 85163a83df2f..037fcf826407 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -29,6 +29,7 @@
- #include <linux/spinlock.h>
- #include <linux/swiotlb.h>
- #include <linux/vmalloc.h>
-+#include <trace/events/swiotlb.h>
- 
- #include "dma-iommu.h"
- 
-@@ -1156,6 +1157,8 @@ static dma_addr_t iommu_dma_map_page(struct device *dev, struct page *page,
- 			return DMA_MAPPING_ERROR;
- 		}
- 
-+		trace_swiotlb_bounced(dev, phys, size);
-+
- 		aligned_size = iova_align(iovad, size);
- 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
- 					      iova_mask(iovad), dir, attrs);
+This assumes we never change how our allocators work to provide better
+memory packing.
+
+> 
+> That rather depends on whether any of the earlier char[] lengths
+> have been rounded up to a 'nice' value.
+> 
+> I'd also have thought that dangerous overflows would come from
+> unbounded %s formats, not fixed size strings or integers that are
+> always small.
+> 
+> There really ought to be a sane method of telling gcc not to bleat
+> about snprintf() potentially overflowing the target.
+
+Yes, that would be my preference before we enable this warning globally.
+
+Thanks.
+
 -- 
-2.43.0.472.g3155946c3a-goog
-
+Dmitry
 
