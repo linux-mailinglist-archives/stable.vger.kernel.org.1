@@ -1,142 +1,105 @@
-Return-Path: <stable+bounces-4964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E8809AAF
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 04:49:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83CD9809B42
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 06:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5811C20A60
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 03:49:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CB961F21313
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 05:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E029B46B4;
-	Fri,  8 Dec 2023 03:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62722525D;
+	Fri,  8 Dec 2023 05:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hh1atVs7"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="EofmHpNL";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="0JoNE5lc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1DD91706
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 19:49:36 -0800 (PST)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-5c668b87db3so1227274a12.3
-        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 19:49:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702007376; x=1702612176; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=iYsH0w1DYVjoMg1s5Zd0ZREoiBGPi4xz58SN28eyFJM=;
-        b=hh1atVs7cxz1Y91hFEXwVAZ85FTHEqAqUoiT+g7IwnBYNh2HT8ViiNPUNUSwDg5y39
-         WRVLif5uGksQYQqSe6tP8ZP9pneW/jluOHs8hJ0TV52qyynBNTN/x5T8OoF1LxMhLkET
-         DXVTi+VULu7ySMyZV4PEwsK7PjpyR1XA36GCn7nUgeJ2JE0/nBJqRMGNUzpPLi0MtAcd
-         wp9uUeS9OgPV05ltCpXf51LwLRGs3z4cM0/bFno8mhb7d7A/CYbHgvniKX3S3UaUAFx3
-         AIZ+TgOvUwJcqTHzxWW2fjxkv/PmGPtZh+d+6oVHbEsFB10qPovAukNW31wICQcpMXJ2
-         QZJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702007376; x=1702612176;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iYsH0w1DYVjoMg1s5Zd0ZREoiBGPi4xz58SN28eyFJM=;
-        b=EC01/wGbY/Ek8xlufT8ciQfmNTgUyg1rGamgAUJZoToVgdkaUxzDUClUCF6U7X5Pa6
-         F4x09teRR20BZap3Fo3K0WlmvQ/GNrIWtiYfYlC63bGKh9hfGtfNIhQdyLP+vMz8SMx4
-         dT/ptVM+2zcO/KsGDmIADCYOPhcGUGowPh3l8cf+qerFBHKdVBMfPErz+gdY+wtdCF4F
-         cFohtElTcSFedWr8Ofz61Iwz5ygBys0rktO/z9ktGacB/Vy6pF3IwBcp9oFr3ljB9jlZ
-         dvIH8qia+C5WEA/huKhqbJ7cxUg5WCqA6GTaJ45OsEA+3pbtZKuOTu/GRxb7uc6Ok545
-         eRTA==
-X-Gm-Message-State: AOJu0YyEewVePzuqpqftRz3a4HfbqVXzRhQ34+GmZ8RHDm0qP0Q/+eQz
-	YshDfOeXfWovCK0nP1+NPLdHkzXB/zBoUvaPb4xWEIa6Cih4OYvhMe3jAUkrj0ifyV7W9Cpfalg
-	ktGbNGLsqmjESzzdw4+Dkl7HeFdOcJc+vP8cNIsgKMZ3PbAIL9vOa2HR9/9bpPuF0b/o=
-X-Google-Smtp-Source: AGHT+IFbDBvgJh5PJ3vnU82/4AM4QabQ9Vn0Dy2n8bkc5X63hpe88fQ6rjsAymgBgRPm43la38uUZfQUG4uyIw==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a65:644d:0:b0:5be:3925:b5b7 with SMTP id
- s13-20020a65644d000000b005be3925b5b7mr43640pgv.5.1702007375894; Thu, 07 Dec
- 2023 19:49:35 -0800 (PST)
-Date: Fri,  8 Dec 2023 03:49:23 +0000
+X-Greylist: delayed 387 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 Dec 2023 21:02:54 PST
+Received: from wnew1-smtp.messagingengine.com (wnew1-smtp.messagingengine.com [64.147.123.26])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF6AB10F7;
+	Thu,  7 Dec 2023 21:02:54 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailnew.west.internal (Postfix) with ESMTP id 492732B00124;
+	Thu,  7 Dec 2023 23:56:22 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 07 Dec 2023 23:56:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:sender
+	:subject:subject:to:to; s=fm1; t=1702011381; x=1702018581; bh=PI
+	Y64CBSNt0PPb9bxeilH/4eQNVTuavlLXd+xLtdLt4=; b=EofmHpNL/cIg5AKToO
+	umxa3/vm8NffW15CQ/NYWKLTmOntZUlTXzL07BQN9Zzd1qkj/zIQY2BNpeU3NNnE
+	DsyuHH3WZaGBzjQorUzlwiFe/4NPCQlENpKqreDBuJVMeLp6sZaNlIXcysHdaNRc
+	VEBzwBp21QplxcXEbl27bmgnF5pmLSDH0ONvG3vpQ7j3dFUXRgm6b+dWV4nd4HGl
+	SWheN6zX7f77TSnmKwBt69fMkeY7vcpYMbjU7GbnOXep63hQWV1N/LSBPbrYOTRp
+	fXLqehXrXtZqsPTcqJbc3tosb+da+i8EQrUzDBVMvjAsRUUs+nAZG0k6OSVXdw8F
+	kR8Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:sender:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1702011381; x=1702018581; bh=PIY64CBSNt0PP
+	b9bxeilH/4eQNVTuavlLXd+xLtdLt4=; b=0JoNE5lcC5CNnZsf0Wrxk0j03GnnD
+	jKhNB/IWHt20uvZzwI8UD4N+ZmDmCB7ssaaymo/kcvUG9aTopzcCzQC/kIar85eH
+	FF73aIfF48k+sJCT6KDh2qwa4MpjeIS8zono/MVUEsiM/KpsAwbbQDRFyrE7JP6t
+	iZ+SdSRt+D8vWJNgNstFf7rxNYiEfRWIO/LXVRKWJEc5rSrblhxPCO3hwsPyJ2MA
+	BWB1vtmLc1nS7dNF4hkptHIe+jCQfQKYq6S23Rj84g4b85QqQsisSTFc2aXhhm3q
+	lfGZwhLYxEqTogHcPiuVYoVmuQyjsJtiomiXqlN1FbTEortKcfJ3ehxew==
+X-ME-Sender: <xms:9aFyZYCQddBddhZLtTdmaCagb1YejJJydeA7lnR9rCFc2q2T68f5Rg>
+    <xme:9aFyZaii19_64B-wL9K1uZUjRIE0pAy_5jb714kJnHdyH6bLJuIQ2-8r6Gk8MGV6-
+    SmpbysNcrM9zQ>
+X-ME-Received: <xmr:9aFyZbmJM6VIeIhwKoz-C4nYvlKCuRI71S6CIsmYX141cRu6ODga5VANakJmYUtEfjoWCeTgzgfOBv2l4u53-EaJGhnT6Spfxg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrudekhedgvdduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:9aFyZexFHU7norGA_X7Vuge-0fgLPT5e-anhtsm-yBQXlpEC96Xu2w>
+    <xmx:9aFyZdSRHOl3NF57458as0Ve8eZCYGAaF_n1-6gqdF1RZ0r7dlPAHg>
+    <xmx:9aFyZZYrhbQQaBlzWULnF1wKDDRQooLtJAJuUYqDs3mhE7PSQ08drQ>
+    <xmx:9aFyZeSODrZnAjSz5JEizXuxoWQeQSuK2TXNjmKIflKUcWV2ydV1ReukdwI>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Dec 2023 23:56:21 -0500 (EST)
+Date: Fri, 8 Dec 2023 05:56:19 +0100
+From: Greg KH <greg@kroah.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	Jose Ignacio Tornos Martinez <jtornosm@redhat.com>,
+	davem@davemloft.net, edumazet@google.com,
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, oneukum@suse.com, pabeni@redhat.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v6] net: usb: ax88179_178a: avoid failed operations when
+ device is disconnected
+Message-ID: <2023120813-yummy-scrubbed-517e@gregkh>
+References: <0bd3204e-19f4-48de-b42e-a75640a1b1da@rowland.harvard.edu>
+ <20231207175007.263907-1-jtornosm@redhat.com>
+ <d8c331dd-deb1-4f12-8e66-295bfac8b1d7@rowland.harvard.edu>
+ <20231207123256.337753f9@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231208034923.998315-1-cmllamas@google.com>
-Subject: [PATCH 6.1] binder: fix memory leaks of spam and pending work
-From: Carlos Llamas <cmllamas@google.com>
-To: stable@vger.kernel.org
-Cc: Carlos Llamas <cmllamas@google.com>, 
-	syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com, 
-	Alice Ryhl <aliceryhl@google.com>, Todd Kjos <tkjos@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231207123256.337753f9@kernel.org>
 
-commit 1aa3aaf8953c84bad398adf6c3cabc9d6685bf7d upstream
+On Thu, Dec 07, 2023 at 12:32:56PM -0800, Jakub Kicinski wrote:
+> On Thu, 7 Dec 2023 15:23:23 -0500 Alan Stern wrote:
+> > Acked-by: Alan Stern <stern@rowland.harvard.edu>
+> 
+> FWIW I'm expecting Greg to pick this up for usb.
 
-A transaction complete work is allocated and queued for each
-transaction. Under certain conditions the work->type might be marked as
-BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
-potential spamming threads or as BINDER_WORK_TRANSACTION_PENDING when
-the target is currently frozen.
+Sure, will do!
 
-However, these work types are not being handled in binder_release_work()
-so they will leak during a cleanup. This was reported by syzkaller with
-the following kmemleak dump:
-
-BUG: memory leak
-unreferenced object 0xffff88810e2d6de0 (size 32):
-  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
-  hex dump (first 32 bytes):
-    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
-    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
-    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
-    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
-    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
-    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
-    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
-    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
-    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
-    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
-    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
-    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fix the leaks by kfreeing these work types in binder_release_work() and
-handle them as a BINDER_WORK_TRANSACTION_COMPLETE cleanup.
-
-Cc: stable@vger.kernel.org
-Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
-Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20230922175138.230331-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: backport to v6.1 by dropping BINDER_WORK_TRANSACTION_PENDING
- as commit 0567461a7a6e is not present. Remove fixes tag accordingly.]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/binder.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index e4a6da81cd4b..9cc3a2b1b4fc 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4788,6 +4788,7 @@ static void binder_release_work(struct binder_proc *proc,
- 				"undelivered TRANSACTION_ERROR: %u\n",
- 				e->cmd);
- 		} break;
-+		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
- 		case BINDER_WORK_TRANSACTION_COMPLETE: {
- 			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
- 				"undelivered TRANSACTION_COMPLETE\n");
-
-base-commit: c6114c845984144944f1abc07c61de219367a4da
--- 
-2.43.0.472.g3155946c3a-goog
 
 
