@@ -1,296 +1,271 @@
-Return-Path: <stable+bounces-5035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478D080A830
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 17:07:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98A280A8B7
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 17:23:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC1A71F21061
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 16:07:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EC411F2129B
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 16:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8B4358AF;
-	Fri,  8 Dec 2023 16:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC3038DF9;
+	Fri,  8 Dec 2023 16:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="HRuLJUSo"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EUocNr8f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C0BB1985
-	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 08:07:42 -0800 (PST)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-5c5fb06b131so1575392a12.0
-        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 08:07:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702051661; x=1702656461; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pEqkvw7/yKbKuJ/96L5pHdEhvpZS+plJEkvn5sjvc0g=;
-        b=HRuLJUSoSRaMrKRgS89TlbfJNTeabfUmCx10UdY/see7fkfYHOHLEK/8UA/tf7mu0k
-         PkxHfooSHLlP80A/hBo43naUVwODXmhKrDYoNU7ejtVZMOO4hQrwYGfPDXlHCzh0mvNj
-         W+wfEA+cfP3TcJLD7J7UYj9PTNWTbW6nVmI0zr7uzxbynBWvwU+esF1ETCbb3o8DUT63
-         yIILyH00saBs6gfqSW4zIlupAZMxs7CMD8DGikIpZMlD7Z3sFpmRPJYEROC3a2+c9CQ4
-         avGmqT6nHA3azehOElAKF4azjcMVNYyW5zJezxj1wNjLSKCqjfTdarsp0BQxhb4m/btZ
-         /UOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702051661; x=1702656461;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pEqkvw7/yKbKuJ/96L5pHdEhvpZS+plJEkvn5sjvc0g=;
-        b=Uiqj2Lfu2ZCc2gUQ3Y6xStg6blWW6127IxVvt09rAY58WauwaaBDJO65AQxM2Dsksp
-         Bw50SBPGoIQbzemmwVkuwcX/uJhdBwpE83M7CkwkPaZG13PRyxxms5go6D55+g/BqFAy
-         v4kOJKZtvm39/WNoELvxvpxRTOgd1jO1A0OCBLlweiY0udbUz9uI729w/oYeiuIW6G5T
-         5k4cQrNcaMXkFC2JNB6Fw0y0wRMoQWkhl46OcTtHGj5gHBhrk2E7LrGJ/ijbXjv4eeH6
-         76zijQHq8Ss8UoSkvWMQ2cKDrzvxpX73ztmUL7MT9CZdVBxscRVFCiJeHt+EQVMD6B0Y
-         PKug==
-X-Gm-Message-State: AOJu0YxhQnvxYTfn+M9x3yUK/Z2jxn8ecilrXTFVLTXH1SGoIjnVfQw+
-	uDQrRrsY7g4arUat1Bvy5AM+jvtxH0KmYqF2MF4B3w==
-X-Google-Smtp-Source: AGHT+IEfqVZ5sv7RJ0XJ/bYTlGx8QeqMNnYmKNtUavDp0NXfdwWgsjXwLpOng5SGGct8lL+jNVqzcw==
-X-Received: by 2002:a05:6a20:1683:b0:18f:97c:5b98 with SMTP id q3-20020a056a20168300b0018f097c5b98mr204199pzc.102.1702051660965;
-        Fri, 08 Dec 2023 08:07:40 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id du6-20020a056a002b4600b006cde7dd80cbsm1758757pfb.191.2023.12.08.08.07.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 08:07:40 -0800 (PST)
-Message-ID: <65733f4c.050a0220.69d36.5b3a@mx.google.com>
-Date: Fri, 08 Dec 2023 08:07:40 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8121199D;
+	Fri,  8 Dec 2023 08:23:05 -0800 (PST)
+Received: from pps.filterd (m0353724.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3B8GIEBS020700;
+	Fri, 8 Dec 2023 16:23:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : in-reply-to : references : mime-version :
+ content-transfer-encoding; s=pp1;
+ bh=OMt9lUxteJ3PnJ8WN1U5G+vp9nxVLOAH2K9zcnmF8oI=;
+ b=EUocNr8f015GB/7JpPZNcCbntuwkg/9g92iQOky4fAjXNgt4fk6+HOvMxnBQ6IjKV0L7
+ p4OEbA/iXCefmac4IH5JYTac35FrJg7YFT1+oUeTCxoZY6YRdspV4GPRuFAbJa8iPk3s
+ lAZeTDyjZlPAS2EKkhqcjKzhPDlWFSSmJFzBQmQU/5GHM39OkKGf7FuzkEvT//K5D1ZK
+ uXrcLMT+w1DipZuTLPcuHgS10bt0bV1SRPoLPyHlPWBvPWQTFq67M0Y8Qw5jxT9mX8cw
+ ugKX5jywDFUyhE2faqMs78I8aNLsjtLG8MI6Hr31B1DAu8jJJSqIRyY7uUbgOydMoDSt Kw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv6htr69g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Dec 2023 16:23:02 +0000
+Received: from m0353724.ppops.net (m0353724.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3B8GJbLX026875;
+	Fri, 8 Dec 2023 16:23:02 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3uv6htr697-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Dec 2023 16:23:02 +0000
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 3B8GGTeJ013775;
+	Fri, 8 Dec 2023 16:23:01 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3utau4jhwp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 Dec 2023 16:23:01 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 3B8GN02366388470
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Dec 2023 16:23:00 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5A1EF58054;
+	Fri,  8 Dec 2023 16:23:00 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F2355803F;
+	Fri,  8 Dec 2023 16:22:59 +0000 (GMT)
+Received: from li-2c1e724c-2c76-11b2-a85c-ae42eaf3cb3d.ibm.com.com (unknown [9.61.47.9])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 Dec 2023 16:22:59 +0000 (GMT)
+From: Tony Krowiak <akrowiak@linux.ibm.com>
+To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org
+Cc: jjherne@linux.ibm.com, borntraeger@de.ibm.com, pasic@linux.ibm.com,
+        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        alex.williamson@redhat.com, kwankhede@nvidia.com,
+        stable@vger.kernel.org
+Subject: [PATCH v1 1/6] s390/vfio-ap: always filter entire AP matrix
+Date: Fri,  8 Dec 2023 11:22:46 -0500
+Message-ID: <20231208162256.10633-2-akrowiak@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231208162256.10633-1-akrowiak@linux.ibm.com>
+References: <20231208162256.10633-1-akrowiak@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.301
-Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.301)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qUSVKKoVjqtKdkQZUcqsTsJXkSvjIffa
+X-Proofpoint-ORIG-GUID: m1PGbWmuOwuuoXgTVb3MtT8QitWPbwDg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-08_11,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 lowpriorityscore=0 impostorscore=0 priorityscore=1501
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2312080135
 
-stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
-v4.19.301)
+The vfio_ap_mdev_filter_matrix function is called whenever a new adapter or
+domain is assigned to the mdev. The purpose of the function is to update
+the guest's AP configuration by filtering the matrix of adapters and
+domains assigned to the mdev. When an adapter or domain is assigned, only
+the APQNs associated with the APID of the new adapter or APQI of the new
+domain are inspected. If an APQN does not reference a queue device bound to
+the vfio_ap device driver, then it's APID will be filtered from the mdev's
+matrix when updating the guest's AP configuration.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.301/
+Inspecting only the APID of the new adapter or APQI of the new domain will
+result in passing AP queues through to a guest that are not bound to the
+vfio_ap device driver under certain circumstances. Consider the following:
 
-Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.301
-Git Commit: 3e205b99cc35777195fea391cdfe25bd537589b3
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+guest's AP configuration (all also assigned to the mdev's matrix):
+14.0004
+14.0005
+14.0006
+16.0004
+16.0005
+16.0006
 
-Build Failures Detected:
+unassign domain 4
+unbind queue 16.0005
+assign domain 4
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+When domain 4 is re-assigned, since only domain 4 will be inspected, the
+APQNs that will be examined will be:
+14.0004
+16.0004
 
-Warnings Detected:
+Since both of those APQNs reference queue devices that are bound to the
+vfio_ap device driver, nothing will get filtered from the mdev's matrix
+when updating the guest's AP configuration. Consequently, queue 16.0005
+will get passed through despite not being bound to the driver. This
+violates the linux device model requirement that a guest shall only be
+given access to devices bound to the device driver facilitating their
+pass-through.
 
-arc:
+To resolve this problem, every adapter and domain assigned to the mdev will
+be inspected when filtering the mdev's matrix.
 
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    4    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Fixes: 48cae940c31d ("s390/vfio-ap: refresh guest's APCB by filtering AP resources assigned to mdev")
+Cc: <stable@vger.kernel.org>
 ---
-For more info write to <info@kernelci.org>
+ drivers/s390/crypto/vfio_ap_ops.c | 57 +++++++++----------------------
+ 1 file changed, 17 insertions(+), 40 deletions(-)
+
+diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+index 4db538a55192..9382b32e5bd1 100644
+--- a/drivers/s390/crypto/vfio_ap_ops.c
++++ b/drivers/s390/crypto/vfio_ap_ops.c
+@@ -670,8 +670,7 @@ static bool vfio_ap_mdev_filter_cdoms(struct ap_matrix_mdev *matrix_mdev)
+  * Return: a boolean value indicating whether the KVM guest's APCB was changed
+  *	   by the filtering or not.
+  */
+-static bool vfio_ap_mdev_filter_matrix(unsigned long *apm, unsigned long *aqm,
+-				       struct ap_matrix_mdev *matrix_mdev)
++static bool vfio_ap_mdev_filter_matrix(struct ap_matrix_mdev *matrix_mdev)
+ {
+ 	unsigned long apid, apqi, apqn;
+ 	DECLARE_BITMAP(prev_shadow_apm, AP_DEVICES);
+@@ -692,8 +691,8 @@ static bool vfio_ap_mdev_filter_matrix(unsigned long *apm, unsigned long *aqm,
+ 	bitmap_and(matrix_mdev->shadow_apcb.aqm, matrix_mdev->matrix.aqm,
+ 		   (unsigned long *)matrix_dev->info.aqm, AP_DOMAINS);
+ 
+-	for_each_set_bit_inv(apid, apm, AP_DEVICES) {
+-		for_each_set_bit_inv(apqi, aqm, AP_DOMAINS) {
++	for_each_set_bit_inv(apid, matrix_mdev->matrix.apm, AP_DEVICES) {
++		for_each_set_bit_inv(apqi, matrix_mdev->matrix.aqm, AP_DOMAINS) {
+ 			/*
+ 			 * If the APQN is not bound to the vfio_ap device
+ 			 * driver, then we can't assign it to the guest's
+@@ -958,7 +957,6 @@ static ssize_t assign_adapter_store(struct device *dev,
+ {
+ 	int ret;
+ 	unsigned long apid;
+-	DECLARE_BITMAP(apm_delta, AP_DEVICES);
+ 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ap_perms_mutex);
+@@ -987,11 +985,8 @@ static ssize_t assign_adapter_store(struct device *dev,
+ 	}
+ 
+ 	vfio_ap_mdev_link_adapter(matrix_mdev, apid);
+-	memset(apm_delta, 0, sizeof(apm_delta));
+-	set_bit_inv(apid, apm_delta);
+ 
+-	if (vfio_ap_mdev_filter_matrix(apm_delta,
+-				       matrix_mdev->matrix.aqm, matrix_mdev))
++	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 
+ 	ret = count;
+@@ -1167,7 +1162,6 @@ static ssize_t assign_domain_store(struct device *dev,
+ {
+ 	int ret;
+ 	unsigned long apqi;
+-	DECLARE_BITMAP(aqm_delta, AP_DOMAINS);
+ 	struct ap_matrix_mdev *matrix_mdev = dev_get_drvdata(dev);
+ 
+ 	mutex_lock(&ap_perms_mutex);
+@@ -1196,11 +1190,8 @@ static ssize_t assign_domain_store(struct device *dev,
+ 	}
+ 
+ 	vfio_ap_mdev_link_domain(matrix_mdev, apqi);
+-	memset(aqm_delta, 0, sizeof(aqm_delta));
+-	set_bit_inv(apqi, aqm_delta);
+ 
+-	if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm, aqm_delta,
+-				       matrix_mdev))
++	if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 		vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 
+ 	ret = count;
+@@ -2091,9 +2082,7 @@ int vfio_ap_mdev_probe_queue(struct ap_device *apdev)
+ 	if (matrix_mdev) {
+ 		vfio_ap_mdev_link_queue(matrix_mdev, q);
+ 
+-		if (vfio_ap_mdev_filter_matrix(matrix_mdev->matrix.apm,
+-					       matrix_mdev->matrix.aqm,
+-					       matrix_mdev))
++		if (vfio_ap_mdev_filter_matrix(matrix_mdev))
+ 			vfio_ap_mdev_update_guest_apcb(matrix_mdev);
+ 	}
+ 	dev_set_drvdata(&apdev->device, q);
+@@ -2443,34 +2432,22 @@ void vfio_ap_on_cfg_changed(struct ap_config_info *cur_cfg_info,
+ 
+ static void vfio_ap_mdev_hot_plug_cfg(struct ap_matrix_mdev *matrix_mdev)
+ {
+-	bool do_hotplug = false;
+-	int filter_domains = 0;
+-	int filter_adapters = 0;
+-	DECLARE_BITMAP(apm, AP_DEVICES);
+-	DECLARE_BITMAP(aqm, AP_DOMAINS);
++	bool filter_domains, filter_adapters, filter_cdoms, do_hotplug = false;
+ 
+ 	mutex_lock(&matrix_mdev->kvm->lock);
+ 	mutex_lock(&matrix_dev->mdevs_lock);
+ 
+-	filter_adapters = bitmap_and(apm, matrix_mdev->matrix.apm,
+-				     matrix_mdev->apm_add, AP_DEVICES);
+-	filter_domains = bitmap_and(aqm, matrix_mdev->matrix.aqm,
+-				    matrix_mdev->aqm_add, AP_DOMAINS);
+-
+-	if (filter_adapters && filter_domains)
+-		do_hotplug |= vfio_ap_mdev_filter_matrix(apm, aqm, matrix_mdev);
+-	else if (filter_adapters)
+-		do_hotplug |=
+-			vfio_ap_mdev_filter_matrix(apm,
+-						   matrix_mdev->shadow_apcb.aqm,
+-						   matrix_mdev);
+-	else
+-		do_hotplug |=
+-			vfio_ap_mdev_filter_matrix(matrix_mdev->shadow_apcb.apm,
+-						   aqm, matrix_mdev);
++	filter_adapters = bitmap_intersects(matrix_mdev->matrix.apm,
++					    matrix_mdev->apm_add, AP_DEVICES);
++	filter_domains = bitmap_intersects(matrix_mdev->matrix.aqm,
++					   matrix_mdev->aqm_add, AP_DOMAINS);
++	filter_cdoms = bitmap_intersects(matrix_mdev->matrix.adm,
++					 matrix_mdev->adm_add, AP_DOMAINS);
++
++	if (filter_adapters || filter_domains)
++		do_hotplug = vfio_ap_mdev_filter_matrix(matrix_mdev);
+ 
+-	if (bitmap_intersects(matrix_mdev->matrix.adm, matrix_mdev->adm_add,
+-			      AP_DOMAINS))
++	if (filter_cdoms)
+ 		do_hotplug |= vfio_ap_mdev_filter_cdoms(matrix_mdev);
+ 
+ 	if (do_hotplug)
+-- 
+2.43.0
+
 
