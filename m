@@ -1,304 +1,192 @@
-Return-Path: <stable+bounces-4975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C130809D97
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 08:52:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5708809D9F
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 08:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE0A828160F
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 07:52:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1951F20F5F
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 07:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5365107B5;
-	Fri,  8 Dec 2023 07:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790F510944;
+	Fri,  8 Dec 2023 07:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="kYJScpF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0boSA+y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-x22a.google.com (mail-oi1-x22a.google.com [IPv6:2607:f8b0:4864:20::22a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66E4A1725
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 23:51:54 -0800 (PST)
-Received: by mail-oi1-x22a.google.com with SMTP id 5614622812f47-3b83fc26e4cso1173172b6e.2
-        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 23:51:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702021913; x=1702626713; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=1HF5rRI32CLoWxBgFdY3pALeJSV4HCiqJxEbIj+pimY=;
-        b=kYJScpF6cZuhF3Z/bqDW94LLgFKdPi81D0yL/xsZuGT0BwBICAGMOAcKMRvDexWCWH
-         HpiGqS86ZIFZOIbM9OfTAb8da8rt52pVZ2XS9jsfInhBi5pwa/p3fQwoyPsT1q79aK29
-         35tGE8Y+B5OH36Hn4qpFmSkcWnWMWO1Wplh9S5S5ncSRX+vTwkPUmvjHLSQrHX4aQ0Vb
-         DfYnqo4YrPGQ73CKskO1J8a79EAFvO44nkaCDAnhhyZVSgNVysd3zX1weIE+wNqXLKfY
-         1YEOXPWpnNK8NtF11AkCiDT7e9EHWQL85zXKI4s2WTZz99Zg1/i6/RPo0nY1udIdN9Kg
-         qjfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702021913; x=1702626713;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1HF5rRI32CLoWxBgFdY3pALeJSV4HCiqJxEbIj+pimY=;
-        b=gjgUxLREeswMI0/Biwikavz+b7NTTg6EuE6YA+ZwARj7ajRHvnBbjwgDuWbwkqOc9p
-         nekBH/uebjgvhD+B32QXjvWYQW0OHa7UrxtvtMWZEHy8V/VxJJ1chpa2piPpKecMJj9j
-         /6KThPlryErwSIioRyrwarlTCDqOlfYgzlms3V0lVOni/wpjTy5VEjUVc8UgVnGJKUk0
-         4r5WB575/+yed3qS7sL4tFpxXU5nzCC5QIjaEVbtUQan2sX5fllPk/v9fB9CY0cBb1/P
-         63PzE2AsVU9N3JB2SHmQG31e6ZuLsGfvLOz+I8TEDT9AY1I8OCoQZ/iRRoZgXb0C7Ye9
-         fAEg==
-X-Gm-Message-State: AOJu0Yw7o6b55M59HyURycwsa0B3mRvGw1UcOXrcFXNENIGQGilGNTEc
-	qd84AyWkJ6jHyQOVZXFUx1BAUhUyKsly1VU3L5SZIA==
-X-Google-Smtp-Source: AGHT+IE1U8pnvoIVHVDj10f5D7sahavsV+qhEfRJJ9A1N2fa0C7Tp9hA+kvGaSGCDpWU+PIOkzkNEw==
-X-Received: by 2002:a05:6808:309b:b0:3b8:b7a7:1ce4 with SMTP id bl27-20020a056808309b00b003b8b7a71ce4mr4554639oib.42.1702021913127;
-        Thu, 07 Dec 2023 23:51:53 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id s16-20020a62e710000000b006ce3bf7acc7sm961673pfh.113.2023.12.07.23.51.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Dec 2023 23:51:52 -0800 (PST)
-Message-ID: <6572cb18.620a0220.1c60f.32fb@mx.google.com>
-Date: Thu, 07 Dec 2023 23:51:52 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F6D107B0
+	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 07:56:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4064AC433C9;
+	Fri,  8 Dec 2023 07:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702022179;
+	bh=/l7Lj/1U//FKCU0KtA/eEYLmxK4Hp8KTpSQ6BifUPeU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=a0boSA+y/+bhXCb7/md/F5JZKlIJB6HCYBLKAFKsQPExItjHzSxq4RlPt6O4ErN6F
+	 oHYhuSNP4wlI7ypOyhvkUjEVpqUaOdgt5XlNmqmAWfhJ1im4XvP5jKASqKXqMmZ1hw
+	 TCg4fjeOrC3MXpWOmnUPp6KkT7cuNbnP4P9fccYQ=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.332
+Date: Fri,  8 Dec 2023 08:56:15 +0100
+Message-ID: <2023120815-agony-resize-1fd9@gregkh>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.4
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.262-90-g111d9011d61ba
-Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
- 26 warnings (v5.4.262-90-g111d9011d61ba)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
-4.262-90-g111d9011d61ba)
+I'm announcing the release of the 4.14.332 kernel.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
-/kernel/v5.4.262-90-g111d9011d61ba/
+All users of the 4.14 kernel series must upgrade.
 
-Tree: stable-rc
-Branch: queue/5.4
-Git Describe: v5.4.262-90-g111d9011d61ba
-Git Commit: 111d9011d61bae4d0f11e3994c22164b99a4b72c
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-Warnings Detected:
+thanks,
 
-arc:
+greg k-h
 
-arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 2 warnings
+------------
 
-arm:
+ Makefile                                          |    2 -
+ arch/arm/xen/enlighten.c                          |    3 +-
+ arch/powerpc/kernel/fpu.S                         |   13 +++++++++++
+ arch/powerpc/kernel/vector.S                      |    2 +
+ drivers/ata/pata_isapnp.c                         |    3 ++
+ drivers/base/dd.c                                 |    4 +--
+ drivers/firewire/core-device.c                    |   11 +++-------
+ drivers/gpu/drm/panel/panel-simple.c              |   12 +++++------
+ drivers/gpu/drm/rockchip/rockchip_drm_vop.c       |   14 ++++++++++--
+ drivers/infiniband/hw/i40iw/i40iw_ctrl.c          |    6 +++++
+ drivers/infiniband/hw/i40iw/i40iw_type.h          |    2 +
+ drivers/infiniband/hw/i40iw/i40iw_verbs.c         |   10 +++++++--
+ drivers/md/bcache/btree.c                         |    2 +
+ drivers/md/bcache/sysfs.c                         |    2 -
+ drivers/md/dm-verity-fec.c                        |    3 +-
+ drivers/md/dm-verity-target.c                     |    4 ++-
+ drivers/md/dm-verity.h                            |    6 -----
+ drivers/mtd/nand/brcmnand/brcmnand.c              |    5 +++-
+ drivers/net/ethernet/amd/xgbe/xgbe-ethtool.c      |   11 +++++++---
+ drivers/net/ethernet/amd/xgbe/xgbe-mdio.c         |   14 +++++++++++-
+ drivers/net/ethernet/renesas/ravb_main.c          |   15 +++++++++++--
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c |    2 -
+ drivers/net/usb/ax88179_178a.c                    |    4 +--
+ drivers/pinctrl/core.c                            |    6 ++---
+ drivers/s390/block/dasd.c                         |   24 +++++++++++-----------
+ drivers/usb/dwc3/core.c                           |    2 +
+ drivers/usb/serial/option.c                       |   11 +++++++---
+ fs/btrfs/send.c                                   |    2 -
+ fs/btrfs/volumes.c                                |    2 -
+ net/ipv4/igmp.c                                   |    6 +++--
+ net/ipv4/route.c                                  |    2 -
+ 31 files changed, 141 insertions(+), 64 deletions(-)
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+Asuna Yang (1):
+      USB: serial: option: add Luat Air72*U series products
 
-mips:
+Chen Ni (1):
+      ata: pata_isapnp: Add missing error check for devm_ioport_map()
 
-riscv:
+Christopher Bednarz (1):
+      RDMA/irdma: Prevent zero-length STAG registration
 
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+Claire Lin (1):
+      mtd: rawnand: brcmnand: Fix ecc chunk calculation for erased page bitfips
 
+Claudiu Beznea (1):
+      net: ravb: Start TX queues after HW initialization succeeded
 
-Warnings summary:
+Coly Li (1):
+      bcache: check return value from btree_node_alloc_replacement()
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
+Filipe Manana (1):
+      btrfs: fix off-by-one when checking chunk map includes logical address
 
-Section mismatches summary:
+Greg Kroah-Hartman (1):
+      Linux 4.14.332
 
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
+Jan Höppner (1):
+      s390/dasd: protect device queue against concurrent access
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+Jann Horn (1):
+      btrfs: send: ensure send_fd is writable
 
-Detailed per-defconfig build reports:
+Jonas Karlman (1):
+      drm/rockchip: vop: Fix color for RGB888/BGR888 format on VOP full
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
+Jose Ignacio Tornos Martinez (1):
+      net: usb: ax88179_178a: fix failed operations during ax88179_reset
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
+Kunwu Chan (1):
+      ipv4: Correct/silence an endian warning in __ip_do_redirect
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+Lech Perczak (1):
+      USB: serial: option: don't claim interface 4 for ZTE MF290
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
+Marek Vasut (1):
+      drm/panel: simple: Fix Innolux G101ICE-L01 timings
 
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+Maria Yu (1):
+      pinctrl: avoid reload of p state in list iteration
 
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+Mikulas Patocka (1):
+      dm-verity: align struct dm_verity_fec_io properly
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
+Puliang Lu (1):
+      USB: serial: option: fix FM101R-GL defines
 
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
+Raju Rangoju (2):
+      amd-xgbe: handle corner-case during sfp hotplug
+      amd-xgbe: propagate the correct speed and duplex status
 
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
-ings, 0 section mismatches
+Rand Deeb (1):
+      bcache: prevent potential division by zero error
 
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
+Ricardo Ribalda (1):
+      usb: dwc3: set the dma max_seg_size
 
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
+Samuel Holland (1):
+      net: axienet: Fix check for partial TX checksum
 
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
+Saravana Kannan (1):
+      driver core: Release all resources during unbind before updating device links
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+Stefano Stabellini (1):
+      arm/xen: fix xen_vcpu_info allocation alignment
 
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+Timothy Pearson (1):
+      powerpc: Don't clobber f0/vs0 during fp|altivec register save
 
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+Victor Fragoso (1):
+      USB: serial: option: add Fibocom L7xx modules
 
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
+Wu Bo (1):
+      dm verity: don't perform FEC for failed readahead IO
 
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
+Yang Yingliang (1):
+      firewire: core: fix possible memory leak in create_units()
 
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+Yoshihiro Shimoda (1):
+      ravb: Fix races between ravb_tx_timeout_work() and net related ops
 
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
+Zhengchao Shao (1):
+      ipv4: igmp: fix refcnt uaf issue when receiving igmp query packet
 
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
-nings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
