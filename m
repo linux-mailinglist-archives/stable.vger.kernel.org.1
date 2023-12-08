@@ -1,74 +1,82 @@
-Return-Path: <stable+bounces-5066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD1B80AF90
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 23:16:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D28D80AF94
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 23:18:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B40C3B20A6B
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 22:16:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA6EF28171C
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 22:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B9459166;
-	Fri,  8 Dec 2023 22:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40E558AC3;
+	Fri,  8 Dec 2023 22:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dp9eSxuk"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g/5UJK4Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8F547A5E;
-	Fri,  8 Dec 2023 22:16:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9862C433C7;
-	Fri,  8 Dec 2023 22:16:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702073780;
-	bh=4jtOxyTXC1Zhc3BU449OCvozRrSno/0pGK9xBwiWzj0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Dp9eSxukWivDGnnqLm5p/1dy7Fycj/b4VPi99MUlFRCHlyGjLCzShqX4wOwgNVjXc
-	 0nMkD//n2AOPmDzWG8i+ROc6PpEmWarre208FQsWrYdE9Br1tyPS7kT3ACy66f4ssG
-	 jmcj1F8opaDg0xM6/C7SxCDgEC0Fxo1zfeMpFWfsVzxpNdzglEoeS74stneAFvEKg7
-	 1z/btf3sNG6a8MCKSLPMdY6zTZU+66yq4s+Zdr5zidA8aR0ZozKZ6kYtupqqIt4SHl
-	 6slbDKkyVoQM8etCnOSEvxtI90E0+p8EiO/Bu1pO6eOuYaGF9MQbcRwGzBeBUjngkR
-	 lnP40GBp5HXNA==
-Date: Fri, 8 Dec 2023 16:16:18 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: linux-pci@vger.kernel.org, lpieralisi@kernel.org, kw@linux.com,
-	robh@kernel.org, linux-kernel@vger.kernel.org,
-	chenhuacai@kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6] pci: loongson: Workaround MIPS firmware MRRS settings
-Message-ID: <20231208221618.GA834006@bhelgaas>
+Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC19B10E0
+	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 14:17:53 -0800 (PST)
+Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-40c2db0ca48so6225e9.1
+        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 14:17:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702073872; x=1702678672; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=A8NS/q6MZlMtVuhwouxtULy+pDCV492DXJLYT6vzHxk=;
+        b=g/5UJK4ZdOZUsUXBfSJZIuPaIi2Zb4P2NQ2++VRT06TY6/gyXek/vxqkXmiKgRV0Po
+         L4uRwUA4RrJ0I2mJAIcyffIrocSucAvI877u6Voj5Rt5byJIt+zDeBL4MpTkFf83nw84
+         U1PIwYgQZAeFn5LJIBED2Vjou5Q/LI2utJ9qcWddvN5uqQMLfoFMSWqB8RNP6TCqsDh1
+         1UtluCgaAofRABiUamea6/onsam12H65M7vKaYqhEW8EAdnm7+BA8smkIw+wYYRh/59N
+         De/qALiDZl+yAK3z8GdBBR9O4CVE/maeghRdn0yxIoKv2uY6WYCFlySxve2Z9hLyasdm
+         jZ9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702073872; x=1702678672;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A8NS/q6MZlMtVuhwouxtULy+pDCV492DXJLYT6vzHxk=;
+        b=oB8vJgD53KpEnRGG6U9aRWGCLIJzQGlwbJ+s9u6Ccl9gm8h1q7GsfgN4MsnOTNDhQV
+         jhlVNGUKzmgIcXaa+i2pZ6mRvJ4bxL87UjXMFumacIkLOFazW5jgQFzQC3XiKBqSoYi0
+         G9ft8xhNd5/EwHhpOJMcgtCgQFENw8NmV79KaM37ISOqXDsT8ibaatz5OWORloHliIjN
+         xHKgeGEIf5ubJWNo/9MBHqvA3m0prHec9d5NqMWOO1nsI3xgjTG/0g3gygCDDDdEFoCt
+         gWtTUJa/7/OVm9HhfZrxaRPmpVYrZZZWmVok2lp5Sy7516P1sLr9Bchevx3Kwb5MPRNY
+         NCbg==
+X-Gm-Message-State: AOJu0YwzLGJpTj18kYxakR0eCCmKWF6S1kojniLEsHUdyC2pvvDrJkhO
+	PfNCKsQ5Mesez7YIMQsAO4pWs/ys7q3mpsw5Z5vyomwvoytXP6Yf8N/PSA==
+X-Google-Smtp-Source: AGHT+IEvATgDaKaN1ndd8Lvm9xiiFd0Zapn6U3J69ChczCSE4msgaHrZWbaOjZP0gEbqvHTERAya25iiOwFPuQM4XGM=
+X-Received: by 2002:a05:600c:3491:b0:40b:33aa:a2b9 with SMTP id
+ a17-20020a05600c349100b0040b33aaa2b9mr111109wmq.4.1702073871892; Fri, 08 Dec
+ 2023 14:17:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231201115028.84351-1-jiaxun.yang@flygoat.com>
+From: =?UTF-8?Q?Maciej_=C5=BBenczykowski?= <maze@google.com>
+Date: Fri, 8 Dec 2023 14:17:36 -0800
+Message-ID: <CANP3RGcj8zskLQLcZTDZUET-LEtvixpp7K25m4c64wQhvg++zA@mail.gmail.com>
+Subject: Request for 3 patches.
+To: stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Dec 01, 2023 at 11:50:28AM +0000, Jiaxun Yang wrote:
-> ...
+It appears that 4.14 (.332) and 4.19 (.301) LTS missed out on:
 
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS2K_PCIE_PORT0) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT0) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT1) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT2) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT3) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT4) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT5) },
-> +		{ PCI_VDEVICE(LOONGSON, DEV_LS7A_PCIE_PORT6) },
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=66b5f1c439843bcbab01cc7f3854ae2742f3d1e3
+  net-ipv6-ndisc: add support for RFC7710 RA Captive Portal Identifier
 
-P.S. I notice most of these Device IDs are not in the lspci database
-at https://admin.pci-ids.ucw.cz/read/PC/0014.  It's easy to add them;
-there's a link at the bottom of that page.
+while 4.14, 4.19 and 5.4 (.263) LTS missed out on:
 
-Some, e.g., 0x7a09 (DEV_LS7A_PCIE_PORT0), are described as "PCI-to-PCI
-Bridge".  I had the impression these were Root Ports.  If so, the
-description could be more specific.
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c24a77edc9a7ac9b5fea75407f197fe1469262f4
+  ipv6: ndisc: add support for 'PREF64' dns64 prefix identifier
+and
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9175d3f38816835b0801bacbf4f6aff1a1672b71
+  ipv6: ndisc: RFC-ietf-6man-ra-pref64-09 is now published as RFC8781
 
-Bjorn
+Could we get these included?
+They're trivial.
+
+Thanks,
+- Maciej
 
