@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-5058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD1780AD36
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 20:39:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BB480AD5F
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 20:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B201C20D02
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 19:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F9071F21068
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 19:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BF54F5F2;
-	Fri,  8 Dec 2023 19:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1DEB50259;
+	Fri,  8 Dec 2023 19:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="eZcvJfoX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LfYE3V1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451D041C78;
-	Fri,  8 Dec 2023 19:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0389C433C7;
-	Fri,  8 Dec 2023 19:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA67481D4;
+	Fri,  8 Dec 2023 19:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF7DC433C8;
+	Fri,  8 Dec 2023 19:53:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1702064366;
-	bh=kPBvzTdNHZ5UUoNbEQYpmT2MvnD4IFeMO1rJZk1A5Gk=;
+	s=korg; t=1702065239;
+	bh=I1VnRCEKoW1i9i3+g1aKH6rlt4cc0b7gneFXx1rFgiA=;
 	h=Date:To:From:Subject:From;
-	b=eZcvJfoXazIGD1ZqGmTDcA4hKTXBqAdBcGS/TDhscn7wuPxTEt5NIp/BehSnrt8Ne
-	 dyw/RtGSfC0sM9HGTJi6IG5vV2UWVGvcvCHsTGFbtbN6F10YqHLPKpkVPgFURcY1rl
-	 qG8DEOhgz19ZDo5f9Rlt6Z11MSmz4O1mO7uxYZ2M=
-Date: Fri, 08 Dec 2023 11:39:25 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,changbin.du@intel.com,acsjakub@amazon.de,sj@kernel.org,akpm@linux-foundation.org
+	b=LfYE3V1rWX4o9HLH6+YsWM8ZzN3aJ0ze8rJKamipgwCu2HXqkFA8LWWfxJT1s6MXC
+	 xwN+unAKnL8AHgbzgaiNtmypRFLjgjSx4iDTklMo0h9qY+aw2dEKLnpBHi5Yrpkn4v
+	 fJ7hAe9uZW97wA+OQXHN5ljBdhb+FNcHZlocYYII=
+Date: Fri, 08 Dec 2023 11:53:59 -0800
+To: mm-commits@vger.kernel.org,tjmercier@google.com,stable@vger.kernel.org,ryncsn@gmail.com,quic_charante@quicinc.com,kaleshsingh@google.com,jaroslav.pulchart@gooddata.com,hdanton@sina.com,yuzhao@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts.patch added to mm-hotfixes-unstable branch
-Message-Id: <20231208193925.E0389C433C7@smtp.kernel.org>
+Subject: + mm-mglru-fix-underprotected-page-cache.patch added to mm-hotfixes-unstable branch
+Message-Id: <20231208195359.AEF7DC433C8@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,12 +42,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm/damon/core: make damon_start() waits until kdamond_fn() starts
+     Subject: mm/mglru: fix underprotected page cache
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts.patch
+     mm-mglru-fix-underprotected-page-cache.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mglru-fix-underprotected-page-cache.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -65,98 +65,136 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/core: make damon_start() waits until kdamond_fn() starts
-Date: Fri, 8 Dec 2023 17:50:18 +0000
+From: Yu Zhao <yuzhao@google.com>
+Subject: mm/mglru: fix underprotected page cache
+Date: Thu, 7 Dec 2023 23:14:04 -0700
 
-The cleanup tasks of kdamond threads including reset of corresponding
-DAMON context's ->kdamond field and decrease of global nr_running_ctxs
-counter is supposed to be executed by kdamond_fn().  However, commit
-0f91d13366a4 ("mm/damon: simplify stop mechanism") made neither
-damon_start() nor damon_stop() ensure the corresponding kdamond has
-started the execution of kdamond_fn().
+Unmapped folios accessed through file descriptors can be underprotected. 
+Those folios are added to the oldest generation based on:
 
-As a result, the cleanup can be skipped if damon_stop() is called fast
-enough after the previous damon_start().  Especially the skipped reset
-of ->kdamond could cause a use-after-free.
+1. The fact that they are less costly to reclaim (no need to walk the
+   rmap and flush the TLB) and have less impact on performance (don't
+   cause major PFs and can be non-blocking if needed again).
+2. The observation that they are likely to be single-use. E.g., for
+   client use cases like Android, its apps parse configuration files
+   and store the data in heap (anon); for server use cases like MySQL,
+   it reads from InnoDB files and holds the cached data for tables in
+   buffer pools (anon).
 
-Fix it by waiting for start of kdamond_fn() execution from
-damon_start().
+However, the oldest generation can be very short lived, and if so, it
+doesn't provide the PID controller with enough time to respond to a surge
+of refaults.  (Note that the PID controller uses weighted refaults and
+those from evicted generations only take a half of the whole weight.) In
+other words, for a short lived generation, the moving average smooths out
+the spike quickly.
 
-Link: https://lkml.kernel.org/r/20231208175018.63880-1-sj@kernel.org
-Fixes: 0f91d13366a4 ("mm/damon: simplify stop mechanism")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Reported-by: Jakub Acs <acsjakub@amazon.de>
-Cc: Changbin Du <changbin.du@intel.com>
-Cc: Jakub Acs <acsjakub@amazon.de>
-Cc: <stable@vger.kernel.org> # 5.15.x
+To fix the problem:
+1. For folios that are already on LRU, if they can be beyond the
+   tracking range of tiers, i.e., five accesses through file
+   descriptors, move them to the second oldest generation to give them
+   more time to age. (Note that tiers are used by the PID controller
+   to statistically determine whether folios accessed multiple times
+   through file descriptors are worth protecting.)
+2. When adding unmapped folios to LRU, adjust the placement of them so
+   that they are not too close to the tail. The effect of this is
+   similar to the above.
+
+On Android, launching 55 apps sequentially:
+                           Before     After      Change
+  workingset_refault_anon  25641024   25598972   0%
+  workingset_refault_file  115016834  106178438  -8%
+
+Link: https://lkml.kernel.org/r/20231208061407.2125867-1-yuzhao@google.com
+Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
+Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Tested-by: Kalesh Singh <kaleshsingh@google.com>
+Cc: T.J. Mercier <tjmercier@google.com>
+Cc: Kairui Song <ryncsn@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/damon.h |    2 ++
- mm/damon/core.c       |    6 ++++++
- 2 files changed, 8 insertions(+)
+ include/linux/mm_inline.h |   23 ++++++++++++++---------
+ mm/vmscan.c               |    2 +-
+ mm/workingset.c           |    6 +++---
+ 3 files changed, 18 insertions(+), 13 deletions(-)
 
---- a/include/linux/damon.h~mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts
-+++ a/include/linux/damon.h
-@@ -559,6 +559,8 @@ struct damon_ctx {
- 	 * update
+--- a/include/linux/mm_inline.h~mm-mglru-fix-underprotected-page-cache
++++ a/include/linux/mm_inline.h
+@@ -232,22 +232,27 @@ static inline bool lru_gen_add_folio(str
+ 	if (folio_test_unevictable(folio) || !lrugen->enabled)
+ 		return false;
+ 	/*
+-	 * There are three common cases for this page:
+-	 * 1. If it's hot, e.g., freshly faulted in or previously hot and
+-	 *    migrated, add it to the youngest generation.
+-	 * 2. If it's cold but can't be evicted immediately, i.e., an anon page
+-	 *    not in swapcache or a dirty page pending writeback, add it to the
+-	 *    second oldest generation.
+-	 * 3. Everything else (clean, cold) is added to the oldest generation.
++	 * There are four common cases for this page:
++	 * 1. If it's hot, i.e., freshly faulted in, add it to the youngest
++	 *    generation, and it's protected over the rest below.
++	 * 2. If it can't be evicted immediately, i.e., a dirty page pending
++	 *    writeback, add it to the second youngest generation.
++	 * 3. If it should be evicted first, e.g., cold and clean from
++	 *    folio_rotate_reclaimable(), add it to the oldest generation.
++	 * 4. Everything else falls between 2 & 3 above and is added to the
++	 *    second oldest generation if it's considered inactive, or the
++	 *    oldest generation otherwise. See lru_gen_is_active().
  	 */
- 	unsigned long next_ops_update_sis;
-+	/* for waiting until the execution of the kdamond_fn is started */
-+	struct completion kdamond_started;
+ 	if (folio_test_active(folio))
+ 		seq = lrugen->max_seq;
+ 	else if ((type == LRU_GEN_ANON && !folio_test_swapcache(folio)) ||
+ 		 (folio_test_reclaim(folio) &&
+ 		  (folio_test_dirty(folio) || folio_test_writeback(folio))))
+-		seq = lrugen->min_seq[type] + 1;
+-	else
++		seq = lrugen->max_seq - 1;
++	else if (reclaiming || lrugen->min_seq[type] + MIN_NR_GENS >= lrugen->max_seq)
+ 		seq = lrugen->min_seq[type];
++	else
++		seq = lrugen->min_seq[type] + 1;
  
- /* public: */
- 	struct task_struct *kdamond;
---- a/mm/damon/core.c~mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts
-+++ a/mm/damon/core.c
-@@ -445,6 +445,8 @@ struct damon_ctx *damon_new_ctx(void)
- 	if (!ctx)
- 		return NULL;
- 
-+	init_completion(&ctx->kdamond_started);
-+
- 	ctx->attrs.sample_interval = 5 * 1000;
- 	ctx->attrs.aggr_interval = 100 * 1000;
- 	ctx->attrs.ops_update_interval = 60 * 1000 * 1000;
-@@ -668,11 +670,14 @@ static int __damon_start(struct damon_ct
- 	mutex_lock(&ctx->kdamond_lock);
- 	if (!ctx->kdamond) {
- 		err = 0;
-+		reinit_completion(&ctx->kdamond_started);
- 		ctx->kdamond = kthread_run(kdamond_fn, ctx, "kdamond.%d",
- 				nr_running_ctxs);
- 		if (IS_ERR(ctx->kdamond)) {
- 			err = PTR_ERR(ctx->kdamond);
- 			ctx->kdamond = NULL;
-+		} else {
-+			wait_for_completion(&ctx->kdamond_started);
- 		}
+ 	gen = lru_gen_from_seq(seq);
+ 	flags = (gen + 1UL) << LRU_GEN_PGOFF;
+--- a/mm/vmscan.c~mm-mglru-fix-underprotected-page-cache
++++ a/mm/vmscan.c
+@@ -4232,7 +4232,7 @@ static bool sort_folio(struct lruvec *lr
  	}
- 	mutex_unlock(&ctx->kdamond_lock);
-@@ -1433,6 +1438,7 @@ static int kdamond_fn(void *data)
  
- 	pr_debug("kdamond (%d) starts\n", current->pid);
+ 	/* protected */
+-	if (tier > tier_idx) {
++	if (tier > tier_idx || refs == BIT(LRU_REFS_WIDTH)) {
+ 		int hist = lru_hist_from_seq(lrugen->min_seq[type]);
  
-+	complete(&ctx->kdamond_started);
- 	kdamond_init_intervals_sis(ctx);
- 
- 	if (ctx->ops.init)
+ 		gen = folio_inc_gen(lruvec, folio, false);
+--- a/mm/workingset.c~mm-mglru-fix-underprotected-page-cache
++++ a/mm/workingset.c
+@@ -313,10 +313,10 @@ static void lru_gen_refault(struct folio
+ 	 * 1. For pages accessed through page tables, hotter pages pushed out
+ 	 *    hot pages which refaulted immediately.
+ 	 * 2. For pages accessed multiple times through file descriptors,
+-	 *    numbers of accesses might have been out of the range.
++	 *    they would have been protected by sort_folio().
+ 	 */
+-	if (lru_gen_in_fault() || refs == BIT(LRU_REFS_WIDTH)) {
+-		folio_set_workingset(folio);
++	if (lru_gen_in_fault() || refs >= BIT(LRU_REFS_WIDTH) - 1) {
++		set_mask_bits(&folio->flags, 0, LRU_REFS_MASK | BIT(PG_workingset));
+ 		mod_lruvec_state(lruvec, WORKINGSET_RESTORE_BASE + type, delta);
+ 	}
+ unlock:
 _
 
-Patches currently in -mm which might be from sj@kernel.org are
+Patches currently in -mm which might be from yuzhao@google.com are
 
-mm-damon-core-make-damon_start-waits-until-kdamond_fn-starts.patch
-mm-damon-core-test-test-damon_split_region_ats-access-rate-copying.patch
-mm-damon-core-implement-goal-oriented-feedback-driven-quota-auto-tuning.patch
-mm-damon-core-implement-goal-oriented-feedback-driven-quota-auto-tuning-fix.patch
-mm-damon-sysfs-schemes-implement-files-for-scheme-quota-goals-setup.patch
-mm-damon-sysfs-schemes-commit-damos-quota-goals-user-input-to-damos.patch
-mm-damon-sysfs-schemes-implement-a-command-for-scheme-quota-goals-only-commit.patch
-mm-damon-core-test-add-a-unit-test-for-the-feedback-loop-algorithm.patch
-selftests-damon-test-quota-goals-directory.patch
-docs-mm-damon-design-document-damos-quota-auto-tuning.patch
-docs-abi-damon-document-damos-quota-goals.patch
-docs-admin-guide-mm-damon-usage-document-for-quota-goals.patch
+mm-mglru-fix-underprotected-page-cache.patch
+mm-mglru-try-to-stop-at-high-watermarks.patch
+mm-mglru-respect-min_ttl_ms-with-memcgs.patch
+mm-mglru-reclaim-offlined-memcgs-harder.patch
 
 
