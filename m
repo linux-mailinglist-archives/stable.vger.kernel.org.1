@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-4968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-4969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CFFF809C3F
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 07:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D76809C3E
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 07:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C377FB20A47
-	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 06:14:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1205C1F212B0
+	for <lists+stable@lfdr.de>; Fri,  8 Dec 2023 06:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E3379C8;
-	Fri,  8 Dec 2023 06:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197C4748D;
+	Fri,  8 Dec 2023 06:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DYMfm5ep"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GUYrbsor"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 987AE10FC
-	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 22:14:18 -0800 (PST)
-Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-5d1b2153ba1so17835557b3.2
-        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 22:14:18 -0800 (PST)
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0F91721
+	for <stable@vger.kernel.org>; Thu,  7 Dec 2023 22:14:20 -0800 (PST)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-5d42c43d8daso11381157b3.0
+        for <stable@vger.kernel.org>; Thu, 07 Dec 2023 22:14:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1702016058; x=1702620858; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1702016060; x=1702620860; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVLrJAGnIVd+3pf7kb6jXJD9XT/HKbFyDQ4DzyYCxV8=;
-        b=DYMfm5eproKgtvufpK7UWF4bD5BIst+8BSRd4OIrXlzLFrW+BE4SangKzXmimaiMvU
-         mhPWsiJi2CNur9lIL21AjXP+8mMRZ3olgR/DGFDMfasTqoaCil282hBIMrIrocOLfNfd
-         Td9/+FHAKknL9PzG53MJ6nZUjz5sqVh0ZqL+KhHjMSFjLiJkbsk+Gr1mRhvjViEumZL6
-         nCzeIf2h+08CS6q6STOPN1nPJojI4r+BtIohMd+qYEohNrtwgzRZBOExsjrbNwj06qj0
-         w2jhn3Jquo0nNYJbHGVH3o8q+5rce0RHycxEsfggL3Qa1/pGdi4GO0chXzOVPjRToGnd
-         RDYw==
+        bh=XyO/ljh9FKCeCHVPdhFy9bPgiCVl0Vc+13vD9r1JAPY=;
+        b=GUYrbsor2KKaC7Oq15b/4pulJKhW+gjsCS0minnbPPwyvsHQFaZzo35B6Wrlaqc3bG
+         ItvYxkU+76n3Gh/uZHpFEDogn6aZo9mMc3qbHzjaFYGQbhtia40wLFS9uGoSVCTs7dwQ
+         PYJhdgNM5xAT1dQlLe07Yn03/E+LTNyxZn6cTs9EWKDZqInOttTFuT+H/C6WD2rx7aBZ
+         TwTYMvJUIcBsfGP8pHpDUr+9nsqnx6o577bt/yZ9mi+L4sGML9Kk/JP44HPVBhXaAzSO
+         dU1FcKVBTT4wm2ZSrl2Bi34BH1HLlEamXWcWlNHdEjmn0DXF5dkorJAp4HYCDis/F9uY
+         stfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702016058; x=1702620858;
+        d=1e100.net; s=20230601; t=1702016060; x=1702620860;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bVLrJAGnIVd+3pf7kb6jXJD9XT/HKbFyDQ4DzyYCxV8=;
-        b=nJsKms9FL95Qu+8RQ/roIv97DCCsOqdXbzL04c3RcDTjooZrzhnn+opVl2E7N0pzOO
-         AbdCIdJXsW/WuHOdiLiCMpgowh3n6ZtLXpRFBlq5/+6aYpx58oxaFdWcpEyctvpjjquT
-         l/4/CthmgNTVuYFdSOdnNsbETOvHVUxWgx9bJx90FuMQkriBUHgGW0/04k5eRG5wNrzf
-         oEf3RsRYu9SvuJebSfjBdZVT025ye9+hq/gtrXNNvvxG7uKsQXlkceAyAsB9O4yTopR3
-         SpPek9cL7u8k+9bS5eZ8r+XS+CZY3jnfp80VZlKOZOIoid2p49Fow0venJFQV1eJer6Q
-         DdcA==
-X-Gm-Message-State: AOJu0YwTh9FOvcjashWAXzhWNteEs/3gSE/6rSGmfgRMpfjPB85RzLMe
-	FBRaGwy9+gq5Mzoet5+1WZd+eLg5cIk=
-X-Google-Smtp-Source: AGHT+IEZAEdkcU44UW2VfipVvWCCbfA4P11A2km0xUAWfMA+F2bO2hVaznBKtFn6SfuvrT80lhXwHcrPs/o=
+        bh=XyO/ljh9FKCeCHVPdhFy9bPgiCVl0Vc+13vD9r1JAPY=;
+        b=EDbAdGhVxjh6cyZ0kp4XeMmL+ZRkY3oXdAWLeOqQDEyk2cARSPUzJS77myXAq2sBRb
+         1T9LJiJaUgti/CZm/d/p30Ld6ER1nf3lLf4+N/HHxcxMuY8lpK1tDXskydAyL6FpU25j
+         Hj/wc1b3YtYLrUARMnqu0eLYnAQ3zr0c4/urn2w5siJs+ccC/JHu9UEmogdS/Q/hNNWl
+         ix7/onFD6GBsvQ2/bbJvb3winAvMD+jO3qfV1PPJDrxOPCQOwbyu5wSVvLR5ycrTHWy4
+         4kzG+QCwmpX8lAMsutK/n/afA/qaJdM4e7JEbEJcI43DDLcDKK67m9RJ6+XRRZCOYMX1
+         hnfQ==
+X-Gm-Message-State: AOJu0YygKV9Kh00uoUIy77mtGwGGN6773cLtynUEGuDgWkQJsPx6GKWu
+	Vm8HPqRzMyb829eIPa5h9sboyu4LBAM=
+X-Google-Smtp-Source: AGHT+IHgAD3BUwnh/ze1lDgA5VK1+NfzNOWSF6TnZDywN1IKmaY+ZlKGrPraa9vlIOKdRdO0XE83PMMSUHc=
 X-Received: from yuzhao2.bld.corp.google.com ([100.64.188.49]) (user=yuzhao
- job=sendgmr) by 2002:a81:af51:0:b0:5d7:1941:61d3 with SMTP id
- x17-20020a81af51000000b005d7194161d3mr44861ywj.9.1702016057776; Thu, 07 Dec
- 2023 22:14:17 -0800 (PST)
-Date: Thu,  7 Dec 2023 23:14:06 -0700
+ job=sendgmr) by 2002:a05:690c:d05:b0:5d3:e8b8:e1fd with SMTP id
+ cn5-20020a05690c0d0500b005d3e8b8e1fdmr7250ywb.3.1702016060001; Thu, 07 Dec
+ 2023 22:14:20 -0800 (PST)
+Date: Thu,  7 Dec 2023 23:14:07 -0700
 In-Reply-To: <20231208061407.2125867-1-yuzhao@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -59,216 +59,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20231208061407.2125867-1-yuzhao@google.com>
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-Message-ID: <20231208061407.2125867-3-yuzhao@google.com>
-Subject: [PATCH mm-unstable v1 3/4] mm/mglru: respect min_ttl_ms with memcgs
+Message-ID: <20231208061407.2125867-4-yuzhao@google.com>
+Subject: [PATCH mm-unstable v1 4/4] mm/mglru: reclaim offlined memcgs harder
 From: Yu Zhao <yuzhao@google.com>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Yu Zhao <yuzhao@google.com>, "T . J . Mercier" <tjmercier@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-While investigating kswapd "consuming 100% CPU" [1] (also see
-"mm/mglru: try to stop at high watermarks"), it was discovered that
-the memcg LRU can breach the thrashing protection imposed by
-min_ttl_ms.
+In the effort to reduce zombie memcgs [1], it was discovered that the
+memcg LRU doesn't apply enough pressure on offlined memcgs.
+Specifically, instead of rotating them to the tail of the current
+generation (MEMCG_LRU_TAIL) for a second attempt, it moves them to the
+next generation (MEMCG_LRU_YOUNG) after the first attempt.
 
-Before the memcg LRU:
-  kswapd()
-    shrink_node_memcgs()
-      mem_cgroup_iter()
-        inc_max_seq()  // always hit a different memcg
-    lru_gen_age_node()
-      mem_cgroup_iter()
-        check the timestamp of the oldest generation
+Not applying enough pressure on offlined memcgs can cause them to
+build up, and this can be particularly harmful to memory-constrained
+systems.
 
-After the memcg LRU:
-  kswapd()
-    shrink_many()
-      restart:
-        iterate the memcg LRU:
-          inc_max_seq()  // occasionally hit the same memcg
-          if raced with lru_gen_rotate_memcg():
-            goto restart
-    lru_gen_age_node()
-      mem_cgroup_iter()
-        check the timestamp of the oldest generation
+On Pixel 8 Pro, launching apps for 50 cycles:
+                 Before  After  Change
+  Zombie memcgs  45      35     -22%
 
-Specifically, when the restart happens in shrink_many(), it needs to
-stick with the (memcg LRU) generation it began with. In other words,
-it should neither re-read memcg_lru->seq nor age an lruvec of a
-different generation. Otherwise it can hit the same memcg multiple
-times without giving lru_gen_age_node() a chance to check the
-timestamp of that memcg's oldest generation (against min_ttl_ms).
-
-[1] https://lore.kernel.org/CAK8fFZ4DY+GtBA40Pm7Nn5xCHy+51w3sfxPqkqpqakSXYyX+Wg@mail.gmail.com/
+[1] https://lore.kernel.org/CABdmKX2M6koq4Q0Cmp_-=wbP0Qa190HdEGGaHfxNS05gAkUtPA@mail.gmail.com/
 
 Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
 Signed-off-by: Yu Zhao <yuzhao@google.com>
+Reported-by: T.J. Mercier <tjmercier@google.com>
 Tested-by: T.J. Mercier <tjmercier@google.com>
 Cc: stable@vger.kernel.org
 ---
- include/linux/mmzone.h | 30 +++++++++++++++++-------------
- mm/vmscan.c            | 30 ++++++++++++++++--------------
- 2 files changed, 33 insertions(+), 27 deletions(-)
+ include/linux/mmzone.h |  8 ++++----
+ mm/vmscan.c            | 24 ++++++++++++++++--------
+ 2 files changed, 20 insertions(+), 12 deletions(-)
 
 diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-index b23bc5390240..e3093ef9530f 100644
+index e3093ef9530f..2efd3be484fd 100644
 --- a/include/linux/mmzone.h
 +++ b/include/linux/mmzone.h
-@@ -510,33 +510,37 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
-  * the old generation, is incremented when all its bins become empty.
-  *
-  * There are four operations:
-- * 1. MEMCG_LRU_HEAD, which moves an memcg to the head of a random bin in its
-+ * 1. MEMCG_LRU_HEAD, which moves a memcg to the head of a random bin in its
-  *    current generation (old or young) and updates its "seg" to "head";
-- * 2. MEMCG_LRU_TAIL, which moves an memcg to the tail of a random bin in its
-+ * 2. MEMCG_LRU_TAIL, which moves a memcg to the tail of a random bin in its
-  *    current generation (old or young) and updates its "seg" to "tail";
-- * 3. MEMCG_LRU_OLD, which moves an memcg to the head of a random bin in the old
-+ * 3. MEMCG_LRU_OLD, which moves a memcg to the head of a random bin in the old
-  *    generation, updates its "gen" to "old" and resets its "seg" to "default";
-- * 4. MEMCG_LRU_YOUNG, which moves an memcg to the tail of a random bin in the
-+ * 4. MEMCG_LRU_YOUNG, which moves a memcg to the tail of a random bin in the
-  *    young generation, updates its "gen" to "young" and resets its "seg" to
-  *    "default".
-  *
-  * The events that trigger the above operations are:
+@@ -524,10 +524,10 @@ void lru_gen_look_around(struct page_vma_mapped_walk *pvmw);
   * 1. Exceeding the soft limit, which triggers MEMCG_LRU_HEAD;
-- * 2. The first attempt to reclaim an memcg below low, which triggers
-+ * 2. The first attempt to reclaim a memcg below low, which triggers
+  * 2. The first attempt to reclaim a memcg below low, which triggers
   *    MEMCG_LRU_TAIL;
-- * 3. The first attempt to reclaim an memcg below reclaimable size threshold,
-+ * 3. The first attempt to reclaim a memcg below reclaimable size threshold,
-  *    which triggers MEMCG_LRU_TAIL;
-- * 4. The second attempt to reclaim an memcg below reclaimable size threshold,
-+ * 4. The second attempt to reclaim a memcg below reclaimable size threshold,
-  *    which triggers MEMCG_LRU_YOUNG;
-- * 5. Attempting to reclaim an memcg below min, which triggers MEMCG_LRU_YOUNG;
-+ * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
+- * 3. The first attempt to reclaim a memcg below reclaimable size threshold,
+- *    which triggers MEMCG_LRU_TAIL;
+- * 4. The second attempt to reclaim a memcg below reclaimable size threshold,
+- *    which triggers MEMCG_LRU_YOUNG;
++ * 3. The first attempt to reclaim a memcg offlined or below reclaimable size
++ *    threshold, which triggers MEMCG_LRU_TAIL;
++ * 4. The second attempt to reclaim a memcg offlined or below reclaimable size
++ *    threshold, which triggers MEMCG_LRU_YOUNG;
+  * 5. Attempting to reclaim a memcg below min, which triggers MEMCG_LRU_YOUNG;
   * 6. Finishing the aging on the eviction path, which triggers MEMCG_LRU_YOUNG;
-- * 7. Offlining an memcg, which triggers MEMCG_LRU_OLD.
-+ * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
-  *
-- * Note that memcg LRU only applies to global reclaim, and the round-robin
-- * incrementing of their max_seq counters ensures the eventual fairness to all
-- * eligible memcgs. For memcg reclaim, it still relies on mem_cgroup_iter().
-+ * Notes:
-+ * 1. Memcg LRU only applies to global reclaim, and the round-robin incrementing
-+ *    of their max_seq counters ensures the eventual fairness to all eligible
-+ *    memcgs. For memcg reclaim, it still relies on mem_cgroup_iter().
-+ * 2. There are only two valid generations: old (seq) and young (seq+1).
-+ *    MEMCG_NR_GENS is set to three so that when reading the generation counter
-+ *    locklessly, a stale value (seq-1) does not wraparound to young.
-  */
--#define MEMCG_NR_GENS	2
-+#define MEMCG_NR_GENS	3
- #define MEMCG_NR_BINS	8
- 
- struct lru_gen_memcg {
+  * 7. Offlining a memcg, which triggers MEMCG_LRU_OLD.
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 10e964cd0efe..cac38e9cac86 100644
+index cac38e9cac86..dad4b80b04cd 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4117,6 +4117,9 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
- 	else
- 		VM_WARN_ON_ONCE(true);
- 
-+	WRITE_ONCE(lruvec->lrugen.seg, seg);
-+	WRITE_ONCE(lruvec->lrugen.gen, new);
-+
- 	hlist_nulls_del_rcu(&lruvec->lrugen.list);
- 
- 	if (op == MEMCG_LRU_HEAD || op == MEMCG_LRU_OLD)
-@@ -4127,9 +4130,6 @@ static void lru_gen_rotate_memcg(struct lruvec *lruvec, int op)
- 	pgdat->memcg_lru.nr_memcgs[old]--;
- 	pgdat->memcg_lru.nr_memcgs[new]++;
- 
--	lruvec->lrugen.gen = new;
--	WRITE_ONCE(lruvec->lrugen.seg, seg);
--
- 	if (!pgdat->memcg_lru.nr_memcgs[old] && old == get_memcg_gen(pgdat->memcg_lru.seq))
- 		WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
- 
-@@ -4152,11 +4152,11 @@ void lru_gen_online_memcg(struct mem_cgroup *memcg)
- 
- 		gen = get_memcg_gen(pgdat->memcg_lru.seq);
- 
-+		lruvec->lrugen.gen = gen;
-+
- 		hlist_nulls_add_tail_rcu(&lruvec->lrugen.list, &pgdat->memcg_lru.fifo[gen][bin]);
- 		pgdat->memcg_lru.nr_memcgs[gen]++;
- 
--		lruvec->lrugen.gen = gen;
--
- 		spin_unlock_irq(&pgdat->memcg_lru.lock);
- 	}
- }
-@@ -4663,7 +4663,7 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc, bool
- 	DEFINE_MAX_SEQ(lruvec);
- 
- 	if (mem_cgroup_below_min(sc->target_mem_cgroup, memcg))
--		return 0;
-+		return -1;
- 
- 	if (!should_run_aging(lruvec, max_seq, sc, can_swap, &nr_to_scan))
- 		return nr_to_scan;
-@@ -4738,7 +4738,7 @@ static bool try_to_shrink_lruvec(struct lruvec *lruvec, struct scan_control *sc)
- 		cond_resched();
+@@ -4626,7 +4626,12 @@ static bool should_run_aging(struct lruvec *lruvec, unsigned long max_seq,
  	}
  
--	/* whether try_to_inc_max_seq() was successful */
-+	/* whether this lruvec should be rotated */
- 	return nr_to_scan < 0;
- }
- 
-@@ -4792,13 +4792,13 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
- 	struct lruvec *lruvec;
- 	struct lru_gen_folio *lrugen;
- 	struct mem_cgroup *memcg;
--	const struct hlist_nulls_node *pos;
-+	struct hlist_nulls_node *pos;
- 
-+	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
- 	bin = first_bin = get_random_u32_below(MEMCG_NR_BINS);
- restart:
- 	op = 0;
- 	memcg = NULL;
--	gen = get_memcg_gen(READ_ONCE(pgdat->memcg_lru.seq));
- 
- 	rcu_read_lock();
- 
-@@ -4809,6 +4809,10 @@ static void shrink_many(struct pglist_data *pgdat, struct scan_control *sc)
- 		}
- 
- 		mem_cgroup_put(memcg);
-+		memcg = NULL;
+ 	/* try to scrape all its memory if this memcg was deleted */
+-	*nr_to_scan = mem_cgroup_online(memcg) ? (total >> sc->priority) : total;
++	if (!mem_cgroup_online(memcg)) {
++		*nr_to_scan = total;
++		return false;
++	}
 +
-+		if (gen != READ_ONCE(lrugen->gen))
-+			continue;
++	*nr_to_scan = total >> sc->priority;
  
- 		lruvec = container_of(lrugen, struct lruvec, lrugen);
- 		memcg = lruvec_memcg(lruvec);
-@@ -4893,16 +4897,14 @@ static void set_initial_priority(struct pglist_data *pgdat, struct scan_control
- 	if (sc->priority != DEF_PRIORITY || sc->nr_to_reclaim < MIN_LRU_BATCH)
- 		return;
  	/*
--	 * Determine the initial priority based on ((total / MEMCG_NR_GENS) >>
--	 * priority) * reclaimed_to_scanned_ratio = nr_to_reclaim, where the
--	 * estimated reclaimed_to_scanned_ratio = inactive / total.
-+	 * Determine the initial priority based on
-+	 * (total >> priority) * reclaimed_to_scanned_ratio = nr_to_reclaim,
-+	 * where reclaimed_to_scanned_ratio = inactive / total.
- 	 */
- 	reclaimable = node_page_state(pgdat, NR_INACTIVE_FILE);
- 	if (get_swappiness(lruvec, sc))
- 		reclaimable += node_page_state(pgdat, NR_INACTIVE_ANON);
+ 	 * The aging tries to be lazy to reduce the overhead, while the eviction
+@@ -4747,14 +4752,9 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 	bool success;
+ 	unsigned long scanned = sc->nr_scanned;
+ 	unsigned long reclaimed = sc->nr_reclaimed;
+-	int seg = lru_gen_memcg_seg(lruvec);
+ 	struct mem_cgroup *memcg = lruvec_memcg(lruvec);
+ 	struct pglist_data *pgdat = lruvec_pgdat(lruvec);
  
--	reclaimable /= MEMCG_NR_GENS;
+-	/* see the comment on MEMCG_NR_GENS */
+-	if (!lruvec_is_sizable(lruvec, sc))
+-		return seg != MEMCG_LRU_TAIL ? MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
 -
- 	/* round down reclaimable and round up sc->nr_to_reclaim */
- 	priority = fls_long(reclaimable) - 1 - fls_long(sc->nr_to_reclaim - 1);
+ 	mem_cgroup_calculate_protection(NULL, memcg);
  
+ 	if (mem_cgroup_below_min(NULL, memcg))
+@@ -4762,7 +4762,7 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 
+ 	if (mem_cgroup_below_low(NULL, memcg)) {
+ 		/* see the comment on MEMCG_NR_GENS */
+-		if (seg != MEMCG_LRU_TAIL)
++		if (lru_gen_memcg_seg(lruvec) != MEMCG_LRU_TAIL)
+ 			return MEMCG_LRU_TAIL;
+ 
+ 		memcg_memory_event(memcg, MEMCG_LOW);
+@@ -4778,7 +4778,15 @@ static int shrink_one(struct lruvec *lruvec, struct scan_control *sc)
+ 
+ 	flush_reclaim_state(sc);
+ 
+-	return success ? MEMCG_LRU_YOUNG : 0;
++	if (success && mem_cgroup_online(memcg))
++		return MEMCG_LRU_YOUNG;
++
++	if (!success && lruvec_is_sizable(lruvec, sc))
++		return 0;
++
++	/* one retry if offlined or too small */
++	return lru_gen_memcg_seg(lruvec) != MEMCG_LRU_TAIL ?
++	       MEMCG_LRU_TAIL : MEMCG_LRU_YOUNG;
+ }
+ 
+ #ifdef CONFIG_MEMCG
 -- 
 2.43.0.472.g3155946c3a-goog
 
