@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BD980B427
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:25:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C3880B429
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:25:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81428B20AEC
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:25:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21A85B20B74
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4851114282;
-	Sat,  9 Dec 2023 12:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7043B14293;
+	Sat,  9 Dec 2023 12:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evwZDbqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uoaQgp1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B2113FE5
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:25:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DFFAC433C8;
-	Sat,  9 Dec 2023 12:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAB914286
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:25:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB53C433C8;
+	Sat,  9 Dec 2023 12:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702124704;
-	bh=d03UJdZaeQ8gjZAYZ1qpZKOn99QiFzkGcCSZgrOuluc=;
+	s=korg; t=1702124707;
+	bh=0wQzgY1tAvyRRschnprM62kjBXRky6wMwad4hCZiWsI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=evwZDbqpsMTpjVysPEOccHdYVpjLIKHm2asweXNvKTd2tFdU7ApBLzqmxrmhz9Jvn
-	 kE5coI/ILNr/MNBZY1aRt9yfJo0Ph3DVUmW8KWc0qZd+xPwEM3GoAFmUHbsRHal8ki
-	 hyqBlmgtiYYcuuUIQgR7PF42e1Zgve8Ljhhij5Yg=
-Subject: FAILED: patch "[PATCH] ring-buffer: Force absolute timestamp on discard of event" failed to apply to 6.1-stable tree
+	b=uoaQgp1TcFu6GbyE2WTkOO/dKrEwe2aBEFzTkhN5ibnRSPB1a7gLSUMwI7DWENseQ
+	 liyvq/DSFiHB7CcKgA/GCfGsOi3llZkAO0FWfspA9FkePLOwco6maQZe9yC012T9rv
+	 pxYC0BZWT4n1sIEN1YpVNq07gEjziwQYvACOmC1I=
+Subject: FAILED: patch "[PATCH] ring-buffer: Force absolute timestamp on discard of event" failed to apply to 5.15-stable tree
 To: rostedt@goodmis.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:24:38 +0100
-Message-ID: <2023120938-unclamped-fleshy-688e@gregkh>
+Date: Sat, 09 Dec 2023 13:24:39 +0100
+Message-ID: <2023120939-gladly-chef-ae61@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x b2dd797543cfa6580eac8408dd67fa02164d9e56
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120938-unclamped-fleshy-688e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120939-gladly-chef-ae61@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
