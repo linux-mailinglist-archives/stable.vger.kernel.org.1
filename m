@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2179C80B453
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33E480B454
 	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6E71F2107F
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F787281119
 	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:50:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57B21429A;
-	Sat,  9 Dec 2023 12:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA72A14A94;
+	Sat,  9 Dec 2023 12:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZi5iaXm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HskG18VS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F09748C
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:50:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B2BC433C8;
-	Sat,  9 Dec 2023 12:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3E6748C
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27350C433C8;
+	Sat,  9 Dec 2023 12:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702126205;
-	bh=sX8S0AfOqVJBn0cCf74yqO0/AxKxSLTHFhFjwXGkLKg=;
+	s=korg; t=1702126208;
+	bh=utdfZ75KnDVJ1wq1+n5H02mKIC0Y/sVwvCXcMaqEoH4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=jZi5iaXmZrbFUH2enVm9f64mJDyyOnlvHBCZPke3UQUONROFyW/8QN9U2QtP8r+lZ
-	 eSHAxP78/wZZp7y8C8GYZV+7pUwj5MZiWqKjzYc3JOFipzXlwoF3EiONiVA8sBEM7w
-	 7AmRzRJEUHWijmXp2sj+nq1KYMMID9fNYaIJD1rE=
-Subject: FAILED: patch "[PATCH] arm64: dts: mt8183: kukui: Fix underscores in node names" failed to apply to 6.1-stable tree
+	b=HskG18VSiMLGXTIFF2ASeb+XH9e+Kcb7f/iix3Di8GSR0S3kRY0gLre+utSg397nw
+	 uQPOZi58lCng8Ykpu/dTzRivrwM1kXG310b25jEtvMGiEBGmPJ2AnCKQQGmXwLpQ2x
+	 qcRDQ4rnersruqkfq0VxmtluFhwK8z7Rmpk8BfvQ=
+Subject: FAILED: patch "[PATCH] arm64: dts: mt8183: kukui: Fix underscores in node names" failed to apply to 5.15-stable tree
 To: hsinyi@chromium.org,angelogioacchino.delregno@collabora.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:49:52 +0100
-Message-ID: <2023120952-hertz-dweller-ccd1@gregkh>
+Date: Sat, 09 Dec 2023 13:49:53 +0100
+Message-ID: <2023120952-animosity-geometry-5d8d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,24 +45,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 8980c30141d3986beab815d85762b9c67196ed72
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120952-hertz-dweller-ccd1@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120952-animosity-geometry-5d8d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 8980c30141d3 ("arm64: dts: mt8183: kukui: Fix underscores in node names")
 a9c740c57f97 ("arm64: dts: mediatek: add missing space before {")
+d2bbd5d96b03 ("arm64: dts: mt8183: add kukui platform audio node")
 
 thanks,
 
