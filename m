@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1DD580B42E
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:27:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B91F480B42F
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B6B928108B
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:27:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F272F1C2074F
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2AD14282;
-	Sat,  9 Dec 2023 12:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A4014288;
+	Sat,  9 Dec 2023 12:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG8Ba2gi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLkDBuNI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D93513FE5
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:27:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C77C433C8;
-	Sat,  9 Dec 2023 12:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0E513FE5
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:27:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D84C433C9;
+	Sat,  9 Dec 2023 12:27:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702124826;
-	bh=2MDZthgMtn3RewceDAp1G9IxG1awz99f+wpWwdHq9x4=;
+	s=korg; t=1702124829;
+	bh=hSlJ/J4yXUk1fWMn6cPhNu2iYhiK5HVX30NetYnvoB4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=rG8Ba2givkC3UnZLad+Nc7wgsrGVb5oDVOOahDba5iJe38tyn/RS/ZmQbrvY1cM1I
-	 eZPflH8BZCTD+39FEtw/Z3cAPBShCg7sXxmfQSbDVR+Ba9y7OQQJWF/w86khwyu/1K
-	 b4MtHvyRzlnjMpIcyuQFFDz60hZZcLCYMMt1QKz8=
-Subject: FAILED: patch "[PATCH] tracing: Stop current tracer when resizing buffer" failed to apply to 4.19-stable tree
+	b=xLkDBuNI2BFCvJRHYHr5VbzQF5oXjTx0XxiMAKFrUSdWfxJghUCtcs/OTlbl0HXyf
+	 vylI0QOj9vFXWlLP5HLtzAnzBxf35cpYxN7EbAPEdI7jBwaExsaxkmTsQ4W3lPfHz7
+	 ApQ+Bvbh/gm69wylEpEcJNH5lHnF4IalMZVCIhwo=
+Subject: FAILED: patch "[PATCH] tracing: Stop current tracer when resizing buffer" failed to apply to 4.14-stable tree
 To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:26:54 +0100
-Message-ID: <2023120954-satisfy-sample-730b@gregkh>
+Date: Sat, 09 Dec 2023 13:26:55 +0100
+Message-ID: <2023120955-jolly-spool-3d4c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x d78ab792705c7be1b91243b2544d1a79406a2ad7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120954-satisfy-sample-730b@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120955-jolly-spool-3d4c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
