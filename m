@@ -1,111 +1,233 @@
-Return-Path: <stable+bounces-5092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 850C080B2A2
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 08:09:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E9280B2A3
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 08:14:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E971C209A2
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 07:09:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCB961C20AB7
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 07:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D3D1FB5;
-	Sat,  9 Dec 2023 07:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C471FA7;
+	Sat,  9 Dec 2023 07:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Us4DFsp0"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="lJSLx5LS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE15F1389
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 07:09:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3CAC433C7;
-	Sat,  9 Dec 2023 07:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702105774;
-	bh=bGtgddhdeeOPisNvVsv4rsYMwjVeLfXFv6UjUdDhx/E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Us4DFsp0R7Pfn9ojTz4tPNGHzULwlrNjNXv1hSaNe6oJkdK4pyQY8rULFWUtpo+/b
-	 Cg6ZNzZuTVSrZYIkAPMKj8fwUUu0yVuODIHYwXsSnWCOi0bPEM4m0d3q6q2cFQ/Gll
-	 a+9sxziCRUTPms5yon/BRVWyzPidsi3wm5ojnp+RCB7DvuJj1ReTKhBJ2kmh74WCx3
-	 YpIjp00kroNpit28oavM6p3KwbKy/B5waCnxP4WItjHi6bfxnsnzClO+8w1eyAcb32
-	 Vhto2rWV4uD0HG1lZjjyZ9yYnvUnvZBvDfUzUUgGcgw2p6uHocV7viNJA/9HGRIXJt
-	 gAE2gfYnosg4Q==
-Date: Sat, 9 Dec 2023 02:09:18 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: stable@vger.kernel.org,
-	syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
-	Alice Ryhl <aliceryhl@google.com>, Todd Kjos <tkjos@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 6.1] binder: fix memory leaks of spam and pending work
-Message-ID: <ZXQSnm8Ye5IYzniU@sashalap>
-References: <20231208034923.998315-1-cmllamas@google.com>
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4CFBD1
+	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 23:14:28 -0800 (PST)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-286f8ee27aeso2917557a91.3
+        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 23:14:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702106068; x=1702710868; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CCDqEw6RjaFM2d1tQtzUFU9SJwCz1o2LfPBykdFx3mw=;
+        b=lJSLx5LSrntfTTP1YwvV/GY+pYu0iGM1zkcgvJ8ya7qC4b2YDcBs35h3fqoVyU/ejw
+         cLC+xEYJqEzeabT9EL9KyXifdVWnJNUhcyWsgoRIEEbzdBtd94vtPpGwNDZoFTO5vDZw
+         IGAgqvvaovkkrwGlFoYgDdzIFphZNO1IsZ00G0vFeVuHJELX/I5XqIx7PH/FGrB9ReeL
+         CAd1FLL6gl9DO4TbmGtaEDKZMZAdGYgQC+S8OI0F2dzsbQkHrenJ7xD4kWzO08vpfTkO
+         wDvlbn1kF7MkP2hPxLxRJxD/07JoLCo1CCUGVUMWeM7u2Jh8XgbIllJK0wsja0jt0fE8
+         0yZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702106068; x=1702710868;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CCDqEw6RjaFM2d1tQtzUFU9SJwCz1o2LfPBykdFx3mw=;
+        b=CQq6zQ7htxRwDiTj48m6Eqaip5sUfbGeMtCjI6g0ih8sIWxKpl5rjlWGYFjXTn+drM
+         taErSruoD24dX7ysQsxJHYfXbb5uPW0tu70QObzFL8HQsAS+bGG5abZ3xKNpxA7NdZEK
+         WUx31cJhhScci/Wkrsu7oCRacrOOGkHOTEW0hyRkONpuWZHYu4CzUvK014qnma3nsVl4
+         3F2rgwgBlC2k692pM9Q8OkKY6RkS4fc0f1gpI0eWs/qEf3mM9+ZNC6tYIckqg3hQhWfI
+         lbUwhC5jjvn1sLyLD3Y3K4rubA5jBcuqfMBKheTy3vW8wBmVD6VZ4rL2achVevEi3pf6
+         k85A==
+X-Gm-Message-State: AOJu0YxrCjFTmpDX6rHWf7sJhu4jOoA3o/A9i97jP14vMkbrDSc5CBEY
+	aTOIKE6YtK9kJd3pJbGe9lEDoDZze55NMaDzhDbdGw==
+X-Google-Smtp-Source: AGHT+IEd06LxduBV73VPuAZc22suXwVb6aotSytx1jOYS0RJlrO/hf26YxHWPbP30Dn9X4TdOTGZYQ==
+X-Received: by 2002:a17:902:d58b:b0:1d0:4be4:8dcc with SMTP id k11-20020a170902d58b00b001d04be48dccmr1656742plh.9.1702106067965;
+        Fri, 08 Dec 2023 23:14:27 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j4-20020a170902da8400b001cc3c521affsm2768586plx.300.2023.12.08.23.14.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Dec 2023 23:14:27 -0800 (PST)
+Message-ID: <657413d3.170a0220.16116.9937@mx.google.com>
+Date: Fri, 08 Dec 2023 23:14:27 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20231208034923.998315-1-cmllamas@google.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/5.10
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.203-46-g46c237c8ed938
+Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.203-46-g46c237c8ed938)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Fri, Dec 08, 2023 at 03:49:23AM +0000, Carlos Llamas wrote:
->commit 1aa3aaf8953c84bad398adf6c3cabc9d6685bf7d upstream
->
->A transaction complete work is allocated and queued for each
->transaction. Under certain conditions the work->type might be marked as
->BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
->potential spamming threads or as BINDER_WORK_TRANSACTION_PENDING when
->the target is currently frozen.
->
->However, these work types are not being handled in binder_release_work()
->so they will leak during a cleanup. This was reported by syzkaller with
->the following kmemleak dump:
->
->BUG: memory leak
->unreferenced object 0xffff88810e2d6de0 (size 32):
->  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
->  hex dump (first 32 bytes):
->    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
->    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
->  backtrace:
->    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
->    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
->    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
->    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
->    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
->    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
->    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
->    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
->    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
->    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
->    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
->    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
->    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
->
->Fix the leaks by kfreeing these work types in binder_release_work() and
->handle them as a BINDER_WORK_TRANSACTION_COMPLETE cleanup.
->
->Cc: stable@vger.kernel.org
->Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
->Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
->Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
->Suggested-by: Alice Ryhl <aliceryhl@google.com>
->Signed-off-by: Carlos Llamas <cmllamas@google.com>
->Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->Acked-by: Todd Kjos <tkjos@google.com>
->Link: https://lore.kernel.org/r/20230922175138.230331-1-cmllamas@google.com
->Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->[cmllamas: backport to v6.1 by dropping BINDER_WORK_TRANSACTION_PENDING
-> as commit 0567461a7a6e is not present. Remove fixes tag accordingly.]
+stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
+10.203-46-g46c237c8ed938)
 
-Queued up, thanks!
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+0/kernel/v5.10.203-46-g46c237c8ed938/
 
--- 
-Thanks,
-Sasha
+Tree: stable-rc
+Branch: queue/5.10
+Git Describe: v5.10.203-46-g46c237c8ed938
+Git Commit: 46c237c8ed9381fa8f2170c03d12cf27c0d78be8
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
