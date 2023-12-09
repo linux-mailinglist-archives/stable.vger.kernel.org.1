@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD89580B43C
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 481FA80B43D
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F110C1C20A72
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793321C20AF1
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DA911184;
-	Sat,  9 Dec 2023 12:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CB411703;
+	Sat,  9 Dec 2023 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wheLNHsk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSaOwIIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9D187C
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F1C433C9;
-	Sat,  9 Dec 2023 12:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0004F6ABB
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B10C433C7;
+	Sat,  9 Dec 2023 12:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702125367;
-	bh=Ntttwa8XdS+qPPpn9rAZybHAiloO3AMhG7Z5opPJIP4=;
+	s=korg; t=1702125376;
+	bh=eErQJJLrlEcCYKw5YFcjveH0PLtWnHpZnSF1rXttTzs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wheLNHsk17a+jaKBLPECyYf3lk2gcCxrA7xScYHoNhoGCQQavkDKsu75obYRqRbgg
-	 fFF9p//0zakZD/TygRTD2uoCRUmblF5Yypgk8/hipAye4gqBJk2tX29WVmrXV5/rnX
-	 fPQ6d67yldL/j8lVQkwEhF12BSdIlC5ONvHmRnZI=
-Subject: FAILED: patch "[PATCH] mm/memory_hotplug: fix error handling in" failed to apply to 5.15-stable tree
+	b=sSaOwIIt9R5HYmOZqkso+X6Fk8hbixqm85MFwJmLdA6JLhH9kahwVwzaVgF+ic0Im
+	 VEZRmTXM4lEnobVbm4dipwUx+Msx48kU/HpyNgijlDRPZxeB+Z5vsHHE1xAQNy962f
+	 IfC26VylaCgOEn42U3xPDwhURa+9XEPq0KVMUuZI=
+Subject: FAILED: patch "[PATCH] mm/memory_hotplug: fix error handling in" failed to apply to 5.10-stable tree
 To: sumanthk@linux.ibm.com,agordeev@linux.ibm.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,david@redhat.com,gerald.schaefer@linux.ibm.com,gor@linux.ibm.com,hca@linux.ibm.com,lkp@intel.com,mhocko@suse.com,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:36:04 +0100
-Message-ID: <2023120904-duffel-joining-636f@gregkh>
+Date: Sat, 09 Dec 2023 13:36:07 +0100
+Message-ID: <2023120907-trophy-subdivide-10be@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x f42ce5f087eb69e47294ababd2e7e6f88a82d308
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120904-duffel-joining-636f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120907-trophy-subdivide-10be@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
