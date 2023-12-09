@@ -1,325 +1,154 @@
-Return-Path: <stable+bounces-5177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CA5980B5F6
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 20:01:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7E580B5FC
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 20:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 337011F20610
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 19:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66070281029
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 19:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C6B199DF;
-	Sat,  9 Dec 2023 19:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C37219BD0;
+	Sat,  9 Dec 2023 19:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="IjG+5qxc"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NmAenHVy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4065F9
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 11:01:28 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-2866951b6e0so3106955a91.2
-        for <stable@vger.kernel.org>; Sat, 09 Dec 2023 11:01:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702148487; x=1702753287; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=v36n2EP/9JVL5do+eiZLChl8nhRY9QX04CvFRb4BQmQ=;
-        b=IjG+5qxch591XjkySfXhofXGTRtBekw65GlX2N8tZBtS5qWcaJMUeJwqWnXpNYM1Yh
-         FMSkMtBrYexnNdPY6Rkvh4eJV+tNxCMOfXfzAjN7KOTBS248CnXzWqy4sV0AL0nEj2Vy
-         Rcv98/AhHAQKDbklN3Tzgxn60rBJ32q5ekdcMT/7a8bxjSAa9s+BbtiQnTWveVGUapK0
-         bAjX/kd2qIfB3NjjZOoul2V9qxCRNLFUrnAjHTk0JET9kpTadqLMUeTJ1pMerbs/N0Ph
-         ZVR5p6WqcY495JxSqXVUx/oe21Dou3jHfQ5G1HjjpOJpVwCB2wNmQDSM6zk45Cu3sd/i
-         8OYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702148487; x=1702753287;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v36n2EP/9JVL5do+eiZLChl8nhRY9QX04CvFRb4BQmQ=;
-        b=qldDz/NPej1piObt7IzCFx9mYWFDM850iCCbaWnWiSL/qtk7NXHVegykxogghg5WLV
-         gv4ji90AAIgKD93CmkEXrDQTgVmC0/qqW4vgGNKQplNEr6VRLDVVgdYVoqN8rY45KqsB
-         /TWWNl/in5dDzf7zWdxOkUsunbhvAr/6X0JG5T4T3WsvwoC+RLG+E8b0EKt7nvT7WJ/A
-         zTljXR7db+uSqBQdyev60+NT1PL/V/5nKHbMlu+AqjnqMtunLD5ov6/oJnVF+LPDvPrK
-         xovtbbNe2PmOmQIlVo/GMn+nas8N/N7T8WavaHCo2AHy0cdKLvbIwqU/B2Y54ES9fTGI
-         Kj8w==
-X-Gm-Message-State: AOJu0Yzn3nBLyFqUgOR3FNCIQzXnB5Rc1mYgMDV0chQLwK/shB5LXztt
-	2Exy7D8hJjs5jhXsQrLR5k55azv9fY69UimrUk+vMA==
-X-Google-Smtp-Source: AGHT+IEO8l80yD6D4fCRoAzfsb06fWClMDcsPdQqi8at3WZPp861eyUUNFEj3Y6ddRJKRHIY2pb0HA==
-X-Received: by 2002:a17:902:b683:b0:1d0:6ffd:9e25 with SMTP id c3-20020a170902b68300b001d06ffd9e25mr2042515pls.119.1702148487372;
-        Sat, 09 Dec 2023 11:01:27 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id o1-20020a170902d4c100b001cfcd4eca11sm3681375plg.114.2023.12.09.11.01.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Dec 2023 11:01:26 -0800 (PST)
-Message-ID: <6574b986.170a0220.7b052.b2b3@mx.google.com>
-Date: Sat, 09 Dec 2023 11:01:26 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5977D1BB
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 11:12:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=hi2WBFEIOsD7ADtk/1pkq73vsJ0MLNvEbtKDv1om3Rc=; b=NmAenHVyEXJvyACRgp56dIGPcV
+	ZIdAidQan/JWZ/pGP7wvWpPEr7LpBGcpSOAFjxrDzZ/8tR57b0pxdkHZJKCbnJPpvccuD3trFPL5D
+	erSy1Xax5zIeNpbUzoQcaGrhlsx8sDBgLgSOVlAmjj9L/TreaELkPGXTikKABlDgGEWkjiqHyIvOZ
+	ZXgXsvGf2cHMxmPJOfJV9i6at3l2UIYbZN5aq0pKsqgysewxXmiBlmvTMXgXzHxNaugugMJk6AHnz
+	WgOHucXzDEz7V9pApa+BCHxwRcRAjmjMgsUkgqwc7vwjQPHXrX0f8AWlDxpTXBip9TpzytawLQ2Gs
+	qYXW5ySw==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rC2k3-007SMH-C4; Sat, 09 Dec 2023 19:11:59 +0000
+Date: Sat, 9 Dec 2023 19:11:59 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: gregkh@linuxfoundation.org
+Cc: hughd@google.com, akpm@linux-foundation.org, david@redhat.com,
+	jannh@google.com, jose.pekkarinen@foxhound.fi,
+	kirill.shutemov@linux.intel.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] mm: fix oops when filemap_map_pmd()
+ without prealloc_pte" failed to apply to 5.15-stable tree
+Message-ID: <ZXS7/8jHrj8XFUoA@casper.infradead.org>
+References: <2023120945-citizen-library-9f46@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/6.1
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: test
-X-Kernelci-Kernel: v6.1.66-135-gd37672462f1e8
-Subject: stable-rc/queue/6.1 baseline: 151 runs,
- 4 regressions (v6.1.66-135-gd37672462f1e8)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/6.1 baseline: 151 runs, 4 regressions (v6.1.66-135-gd376724=
-62f1e8)
-
-Regressions Summary
--------------------
-
-platform              | arch  | lab           | compiler | defconfig       =
-   | regressions
-----------------------+-------+---------------+----------+-----------------=
----+------------
-at91-sama5d4_xplained | arm   | lab-baylibre  | gcc-10   | multi_v7_defconf=
-ig | 1          =
-
-r8a77960-ulcb         | arm64 | lab-collabora | gcc-10   | defconfig       =
-   | 1          =
-
-sun50i-h6-pine-h64    | arm64 | lab-clabbe    | gcc-10   | defconfig       =
-   | 1          =
-
-sun50i-h6-pine-h64    | arm64 | lab-collabora | gcc-10   | defconfig       =
-   | 1          =
-
-
-  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
-el/v6.1.66-135-gd37672462f1e8/plan/baseline/
-
-  Test:     baseline
-  Tree:     stable-rc
-  Branch:   queue/6.1
-  Describe: v6.1.66-135-gd37672462f1e8
-  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
-able-rc.git
-  SHA:      d37672462f1e8aca757b9d8ce7350f10cc37ae7c =
-
-
-
-Test Regressions
----------------- =
-
-
-
-platform              | arch  | lab           | compiler | defconfig       =
-   | regressions
-----------------------+-------+---------------+----------+-----------------=
----+------------
-at91-sama5d4_xplained | arm   | lab-baylibre  | gcc-10   | multi_v7_defconf=
-ig | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/657483fdeeca3b992de134a9
-
-  Results:     0 PASS, 1 FAIL, 0 SKIP
-  Full config: multi_v7_defconfig
-  Compiler:    gcc-10 (arm-linux-gnueabihf-gcc (Debian 10.2.1-6) 10.2.1 202=
-10110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-at91-s=
-ama5d4_xplained.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm/multi_v7_defconfig/gcc-10/lab-baylibre/baseline-at91-s=
-ama5d4_xplained.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/armel/rootfs.cpio.gz =
-
-
-
-  * baseline.login: https://kernelci.org/test/case/id/657483fdeeca3b992de13=
-4aa
-        new failure (last pass: v6.1.66-15-ga472e3690d9cb) =
-
- =
-
-
-
-platform              | arch  | lab           | compiler | defconfig       =
-   | regressions
-----------------------+-------+---------------+----------+-----------------=
----+------------
-r8a77960-ulcb         | arm64 | lab-collabora | gcc-10   | defconfig       =
-   | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/65748435ca3c6e2843e1348d
-
-  Results:     4 PASS, 2 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulc=
-b.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulc=
-b.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/65748435ca3c6e2843e13492
-        failing since 16 days (last pass: v6.1.31-26-gef50524405c2, first f=
-ail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-09T15:21:19.041307  / # #
-
-    2023-12-09T15:21:19.143450  export SHELL=3D/bin/sh
-
-    2023-12-09T15:21:19.144171  #
-
-    2023-12-09T15:21:19.245516  / # export SHELL=3D/bin/sh. /lava-12230462/=
-environment
-
-    2023-12-09T15:21:19.246156  =
-
-
-    2023-12-09T15:21:19.347509  / # . /lava-12230462/environment/lava-12230=
-462/bin/lava-test-runner /lava-12230462/1
-
-    2023-12-09T15:21:19.348672  =
-
-
-    2023-12-09T15:21:19.355429  / # /lava-12230462/bin/lava-test-runner /la=
-va-12230462/1
-
-    2023-12-09T15:21:19.414670  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-09T15:21:19.415193  + cd /lav<8>[   19.167530] <LAVA_SIGNAL_STA=
-RTRUN 1_bootrr 12230462_1.5.2.4.5>
- =
-
-    ... (28 line(s) more)  =
-
- =
-
-
-
-platform              | arch  | lab           | compiler | defconfig       =
-   | regressions
-----------------------+-------+---------------+----------+-----------------=
----+------------
-sun50i-h6-pine-h64    | arm64 | lab-clabbe    | gcc-10   | defconfig       =
-   | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/657484262ae82a2bc1e134c4
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-=
-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-=
-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/657484262ae82a2bc1e134c9
-        failing since 16 days (last pass: v6.1.22-372-g971903477e72, first =
-fail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-09T15:13:36.542179  <8>[   18.143893] <LAVA_SIGNAL_ENDRUN 0_dme=
-sg 447297_1.5.2.4.1>
-    2023-12-09T15:13:36.647218  / # #
-    2023-12-09T15:13:36.748864  export SHELL=3D/bin/sh
-    2023-12-09T15:13:36.749497  #
-    2023-12-09T15:13:36.850485  / # export SHELL=3D/bin/sh. /lava-447297/en=
-vironment
-    2023-12-09T15:13:36.851090  =
-
-    2023-12-09T15:13:36.952088  / # . /lava-447297/environment/lava-447297/=
-bin/lava-test-runner /lava-447297/1
-    2023-12-09T15:13:36.952841  =
-
-    2023-12-09T15:13:36.957354  / # /lava-447297/bin/lava-test-runner /lava=
--447297/1
-    2023-12-09T15:13:37.030294  + export 'TESTRUN_ID=3D1_bootrr' =
-
-    ... (12 line(s) more)  =
-
- =
-
-
-
-platform              | arch  | lab           | compiler | defconfig       =
-   | regressions
-----------------------+-------+---------------+----------+-----------------=
----+------------
-sun50i-h6-pine-h64    | arm64 | lab-collabora | gcc-10   | defconfig       =
-   | 1          =
-
-
-  Details:     https://kernelci.org/test/plan/id/6574844b2f56bd4de1e13477
-
-  Results:     5 PASS, 1 FAIL, 1 SKIP
-  Full config: defconfig
-  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
-110)
-  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pi=
-ne-h64.txt
-  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-13=
-5-gd37672462f1e8/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pi=
-ne-h64.html
-  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
-t-baseline/20230623.0/arm64/rootfs.cpio.gz =
-
-
-
-  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
-/6574844b2f56bd4de1e1347c
-        failing since 16 days (last pass: v6.1.22-372-g971903477e72, first =
-fail: v6.1.63-176-gecc0fed1ffa4)
-
-    2023-12-09T15:21:34.240483  / # #
-
-    2023-12-09T15:21:34.342701  export SHELL=3D/bin/sh
-
-    2023-12-09T15:21:34.343406  #
-
-    2023-12-09T15:21:34.444781  / # export SHELL=3D/bin/sh. /lava-12230463/=
-environment
-
-    2023-12-09T15:21:34.445494  =
-
-
-    2023-12-09T15:21:34.546684  / # . /lava-12230463/environment/lava-12230=
-463/bin/lava-test-runner /lava-12230463/1
-
-    2023-12-09T15:21:34.546984  =
-
-
-    2023-12-09T15:21:34.548065  / # /lava-12230463/bin/lava-test-runner /la=
-va-12230463/1
-
-    2023-12-09T15:21:34.629121  + export 'TESTRUN_ID=3D1_bootrr'
-
-    2023-12-09T15:21:34.629295  + cd /lava-1223046<8>[   19.117379] <LAVA_S=
-IGNAL_STARTRUN 1_bootrr 12230463_1.5.2.4.5>
- =
-
-    ... (11 line(s) more)  =
-
- =20
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2023120945-citizen-library-9f46@gregkh>
+
+On Sat, Dec 09, 2023 at 01:35:45PM +0100, gregkh@linuxfoundation.org wrote:
+> The patch below does not apply to the 5.15-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+
+This should do the job.  It's not clear to me whether this bug remains
+latent on 5.15, so it may not be appropriate to apply.  I defer to Hugh.
+
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 81e28722edfa..84a5b0213e0e 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3209,7 +3209,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct page *page)
+ 	    }
+ 	}
+ 
+-	if (pmd_none(*vmf->pmd)) {
++	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte) {
+ 		vmf->ptl = pmd_lock(mm, vmf->pmd);
+ 		if (likely(pmd_none(*vmf->pmd))) {
+ 			mm_inc_nr_ptes(mm);
+
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 9aa1345d66b8132745ffb99b348b1492088da9e2
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120945-citizen-library-9f46@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 9aa1345d66b8 ("mm: fix oops when filemap_map_pmd() without prealloc_pte")
+> 03c4f20454e0 ("mm: introduce pmd_install() helper")
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> >From 9aa1345d66b8132745ffb99b348b1492088da9e2 Mon Sep 17 00:00:00 2001
+> From: Hugh Dickins <hughd@google.com>
+> Date: Fri, 17 Nov 2023 00:49:18 -0800
+> Subject: [PATCH] mm: fix oops when filemap_map_pmd() without prealloc_pte
+> MIME-Version: 1.0
+> Content-Type: text/plain; charset=UTF-8
+> Content-Transfer-Encoding: 8bit
+> 
+> syzbot reports oops in lockdep's __lock_acquire(), called from
+> __pte_offset_map_lock() called from filemap_map_pages(); or when I run the
+> repro, the oops comes in pmd_install(), called from filemap_map_pmd()
+> called from filemap_map_pages(), just before the __pte_offset_map_lock().
+> 
+> The problem is that filemap_map_pmd() has been assuming that when it finds
+> pmd_none(), a page table has already been prepared in prealloc_pte; and
+> indeed do_fault_around() has been careful to preallocate one there, when
+> it finds pmd_none(): but what if *pmd became none in between?
+> 
+> My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
+> easy for *pmd to be cleared while servicing a page fault; but even before
+> those, a huge *pmd might be zapped while a fault is serviced.
+> 
+> The difference in symptomatic stack traces comes from the "memory model"
+> in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
+> models that is strict, and will oops on the NULL prealloc_pte; in other
+> models, it will construct a bogus value to be populated into *pmd, then
+> __pte_offset_map_lock() oops when trying to access split ptlock pointer
+> (or some other symptom in normal case of ptlock embedded not pointer).
+> 
+> Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
+> Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
+> Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
+> Signed-off-by: Hugh Dickins <hughd@google.com>
+> Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> Cc: Jann Horn <jannh@google.com>,
+> Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: <stable@vger.kernel.org>    [5.12+]
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 32eedf3afd45..f1c8c278310f 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3371,7 +3371,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct folio *folio,
+>  		}
+>  	}
+>  
+> -	if (pmd_none(*vmf->pmd))
+> +	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
+>  		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
+>  
+>  	return false;
+> 
 
