@@ -1,250 +1,145 @@
-Return-Path: <stable+bounces-5087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3992980B222
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 06:15:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FE680B25C
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 07:35:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D7171C20B20
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 05:15:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61AF5281102
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 06:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37E417CA;
-	Sat,  9 Dec 2023 05:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B0D1867;
+	Sat,  9 Dec 2023 06:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="hZELvbcP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JByOoW2V"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5326010EF
-	for <stable@vger.kernel.org>; Fri,  8 Dec 2023 21:15:48 -0800 (PST)
-Received: by mail-ot1-x32a.google.com with SMTP id 46e09a7af769-6d9d0d0e083so1996748a34.2
-        for <stable@vger.kernel.org>; Fri, 08 Dec 2023 21:15:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702098947; x=1702703747; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=i12TGs9JSW3LKqB+BoSHWno9YIhHTZZOPupZtYwOjd8=;
-        b=hZELvbcP0MrCZERclLWP+7QONLMlQ+DlzGsc5Vhadw5TOplb8o1KzOOP1UQa3zuwqw
-         6NGWcp8pIaa/JXbzMtEjR7JWU/yX3UFD0ADoJ2VZKD0NQ08DaRqVQtxlFAB4rkADGexk
-         mNwh3lwyU3njVJ5F9iVgp8drzdI04sLf4Agt6X2sixkgXXqo0Fv5LQJm2KSVHRV5agFp
-         vmRhTvAAsfPc97+wZqJZCnbpOxx4Bq/RYga1pmsc4847yJOdxvTmjK9K+gacLCyoUDDu
-         100sJhUvxBlMMOJ4KFyX21QmLAao70f628OC3VDVV9i+svSQG4763vbTGDroarhL5xIm
-         klSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702098947; x=1702703747;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i12TGs9JSW3LKqB+BoSHWno9YIhHTZZOPupZtYwOjd8=;
-        b=r84fndA+v95hLSTOSMFNOJt1LR0cfTiXl/3juDm3bX06GVoszWiIUuCTguSLZk6877
-         T/3s+CiVinSqMZ2MGs95TWjargAjq3aoAjlXp3p63H2BoJboepY7j/gep/6dtqbe6taE
-         3wfWwfgPK/5R1D3P+Rj5JL5Q8bHhI69aHfhAlggOKHIlsh/8xUAEi+b6Rlr/wFIMN2cy
-         2m3cvys3j/1ogtcL5ybqbev93efqhoBulSh8JmpY7DyxiIboyM1HONTrP1bcYTArFnrj
-         tEjhTo/amgkXBu3wwJNW49HHIA1gB2yrkRRA8IPpKbqTgOJvSyEbxoR/5FEkbQwIaWW8
-         JRmQ==
-X-Gm-Message-State: AOJu0YzWeAZAOBmxh0AJc0SbZ1hsEM8zvXqORbGoj0lBctDcDHvOUhZs
-	JUMb7SBNChVXW0WqPzHfGutlz2MA2SVX+/YKuglXrA==
-X-Google-Smtp-Source: AGHT+IGzGDAi2u/Cp6k4aHhBxiCkYQ/fODGL9XE9oVPHIt9WyZbWVYCEKuSS8/tLLgBd1CXKbYjMdA==
-X-Received: by 2002:a05:6808:448a:b0:3b9:e076:9061 with SMTP id eq10-20020a056808448a00b003b9e0769061mr1503826oib.113.1702098947265;
-        Fri, 08 Dec 2023 21:15:47 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id k9-20020aa79d09000000b006ce5066282bsm2466565pfp.34.2023.12.08.21.15.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Dec 2023 21:15:46 -0800 (PST)
-Message-ID: <6573f802.a70a0220.3be3d.9264@mx.google.com>
-Date: Fri, 08 Dec 2023 21:15:46 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2371C03;
+	Sat,  9 Dec 2023 06:35:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C9CAC433C7;
+	Sat,  9 Dec 2023 06:34:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1702103700;
+	bh=evyiymai8Mj6HXAskfzzPohovQRL2Ek0ONBj8sXQysg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JByOoW2VhX9rJ9CmscBJKczww0eOD5ao6VlGejTp72vlxmO0BFIrFJ1Du1gN9RjBt
+	 IrpmDIHeAZvgoEhDazpnRLc8cE2OXxa3rEBpUbBEYocu34vMIB/jqzM82chs3vGyvA
+	 ejFZ4IQ7HSSW0CWTwC6zsPJiQTELDAqOuZYFyK2nJc0DM9NjoMsbmWqvlR4l/l1p8J
+	 +Sbasjzf80d2RtPdgX8AmjUgce6eLWXVVcR1E56/k+aMZPiDoaBqxFhX7Whl3wiMui
+	 lagXnLgUpsuyqXNBjSPFub8cmsqydjE6k3mmNjeHJKMOmCLoJv9pqiWuiy+K+WmXeW
+	 /okmyDRwc1x+w==
+Date: Sat, 9 Dec 2023 01:34:51 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: stable-commits@vger.kernel.org, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Mark Brown <broonie@kernel.org>, NXP Linux Team <linux-imx@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, stable@vger.kernel.org
+Subject: Re: Patch "spi: imx: add a device specific prepare_message callback"
+ has been added to the 4.19-stable tree
+Message-ID: <ZXQKi4QvI7KOJsyb@sashalap>
+References: <20231208100833.2847199-1-sashal@kernel.org>
+ <20231208104838.xqtiuezd72nzufd4@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.142-48-gdbed703bb51c2
-Subject: stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed,
- 6 warnings (v5.15.142-48-gdbed703bb51c2)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231208104838.xqtiuezd72nzufd4@pengutronix.de>
 
-stable-rc/queue/5.15 build: 20 builds: 0 failed, 20 passed, 6 warnings (v5.=
-15.142-48-gdbed703bb51c2)
+On Fri, Dec 08, 2023 at 11:48:38AM +0100, Uwe Kleine-König wrote:
+>Hello,
+>
+>On Fri, Dec 08, 2023 at 05:08:32AM -0500, Sasha Levin wrote:
+>> This is a note to let you know that I've just added the patch titled
+>>
+>>     spi: imx: add a device specific prepare_message callback
+>>
+>> to the 4.19-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>> The filename of the patch is:
+>>      spi-imx-add-a-device-specific-prepare_message-callba.patch
+>> and it can be found in the queue-4.19 subdirectory.
+>>
+>> If you, or anyone else, feels it should not be added to the stable tree,
+>> please let <stable@vger.kernel.org> know about it.
+>>
+>>
+>>
+>> commit b19a3770ce84da3c16acc7142e754cd8ff80ad3d
+>> Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>> Date:   Fri Nov 30 07:47:05 2018 +0100
+>>
+>>     spi: imx: add a device specific prepare_message callback
+>>
+>>     [ Upstream commit e697271c4e2987b333148e16a2eb8b5b924fd40a ]
+>>
+>>     This is just preparatory work which allows to move some initialisation
+>>     that currently is done in the per transfer hook .config to an earlier
+>>     point in time in the next few patches. There is no change in behaviour
+>>     introduced by this patch.
+>>
+>>     Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>>     Signed-off-by: Mark Brown <broonie@kernel.org>
+>>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>The patch alone shouldn't be needed for stable and there is no
+>indication that it's a dependency for another patch. Is this an
+>oversight?
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-5/kernel/v5.15.142-48-gdbed703bb51c2/
+It is, appologies. I've been traveling and my patch-shuffling-fu isn't
+doing well with conference/jetlag.
 
-Tree: stable-rc
-Branch: queue/5.15
-Git Describe: v5.15.142-48-gdbed703bb51c2
-Git Commit: dbed703bb51c2f7ff36312dc544210731e815729
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+This is a dependency for 00b80ac93553 ("spi: imx: mx51-ecspi: Move some
+initialisation to prepare_message hook.").
 
-Warnings Detected:
+>Other than that: IMHO the subject for this type of report could be improved. Currently it's:
+>
+>	Subject: Patch "spi: imx: add a device specific prepare_message callback" has been added to the 4.19-stable tree
+>
+>The most important part of it is "4.19-stable", but that only appears
+>after character column 90 and so my MUA doesn't show it unless the
+>window is wider than my default setting. Maybe make this:
+>
+>	Subject: for-stable-4.19: "spi: imx: add a device specific prepare_message callback"
+>
+>?
 
-arc:
+I borrowed the format from Greg, and I'd say that if we make changes
+then we should be consistent with eachother.
 
-arm64:
+No objections on my end; maybe I'd even go further and try and send one
+email per patch rather than one mail per patch/tree.
 
-arm:
+Or... finally drop the stable-commits mailing list altogether? Does
+anyone still need this (vs. just looking at -rcs)?
 
-i386:
-    i386_defconfig (gcc-10): 1 warning
+Greg?
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+>Another thing I wonder about is: The mail contains
+>
+>	If you, or anyone else, feels it should not be added to the
+>	stable tree, please let <stable@vger.kernel.org> know about it.
+>
+>but it wasn't sent to stable@vger.kernel.org.
 
-riscv:
+Good point. I figured we want to reduce the spam on stable@ since you'd
+see a mail about this patch in the -rc mails, and so stable@ isn't
+cc'ed, but I can definitely add a reply-to header.
 
-x86_64:
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
+Thanks!
 
-
-Warnings summary:
-
-    3    drivers/gpu/drm/i915/i915_perf.c:2817:9: warning: left shift of ne=
-gative value [-Wshift-negative-value]
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sectio=
-n mismatches
-
-Warnings:
-    drivers/gpu/drm/i915/i915_perf.c:2817:9: warning: left shift of negativ=
-e value [-Wshift-negative-value]
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    drivers/gpu/drm/i915/i915_perf.c:2817:9: warning: left shift of negativ=
-e value [-Wshift-negative-value]
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    drivers/gpu/drm/i915/i915_perf.c:2817:9: warning: left shift of negativ=
-e value [-Wshift-negative-value]
-
----
-For more info write to <info@kernelci.org>
+-- 
+Thanks,
+Sasha
 
