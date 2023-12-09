@@ -1,274 +1,346 @@
-Return-Path: <stable+bounces-5148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A12880B44F
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:48:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B4780B450
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:49:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC0C1C20B01
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:48:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5C611C20A53
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942041429A;
-	Sat,  9 Dec 2023 12:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76D001429A;
+	Sat,  9 Dec 2023 12:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="1NtHgb7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlBdL5Uc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC494CF
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 04:48:13 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d053c45897so26858235ad.2
-        for <stable@vger.kernel.org>; Sat, 09 Dec 2023 04:48:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702126093; x=1702730893; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=KDuKsEpatsiEvokXiP3A2w/VkoVn9TGzax/PQCWjRJ0=;
-        b=1NtHgb7uGb1ePnXoRBsQ7edkF/SBn06FipmO8a3Kh6L4iyiv+G4KoCah2tEv9lmcAv
-         PCYyeMb+2w1Rb+uBRQcpXge8W9nbWCtztb0eOKOt4c02ZIVlXrQQ9amM1XLTIyD5pDvW
-         5G9qvKMcnkf4VV8vg7xUKwWVug7w8WdNxaHSh4oJdjN++5a/5FFgn8qHQBm+NHXLFyOS
-         82bJXKQkpAk5YodcBq2tG12bEmaH4rHDRlGZlSl+A4HhrVVgG6wQD/JwMc9hLk+Dx1eP
-         G/ClT2BZudYPM7XPj+9443PH4O6WLGMI9g7lqtHZjj2fNoTEWdx93A0Q1f7w7IdQ5JWN
-         L0LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702126093; x=1702730893;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KDuKsEpatsiEvokXiP3A2w/VkoVn9TGzax/PQCWjRJ0=;
-        b=OsG5G1HVfr+RRLToYHawTDcZlvQBcXigC6zOBkThmVPp1nv2PXMk5jXKM21FG7po/G
-         tgpa+647oGye1J0oE+iAhJfa4ncgzM0c4+k7FHXQmGGnux+GcqJYDQ5EfhZCe+qSG+em
-         czAbG/w6o4O61UTgSmWzYfBeh1VZQPA1dW+uxS0+PUsBWX3siYsC0nIPQ1207f/+xrS2
-         sFVl20A+6rJfcmCd+rG7s9WXfwW1cJ7pCN3x/448AAsNPyGl7zbCE6sTNmKnebo1eHAq
-         yjiJE0zZgd4VqOmO2pmrPUsuUgwhQqZAw06N64BazFEYhE4P/RuM+KPiBSYoF80K7tnU
-         asGg==
-X-Gm-Message-State: AOJu0YxJ6GHHVeMGvSQkG7278YTDA/5GA574U+mTrqTMY/h/879+3JZn
-	o17Rdxd+e7WgbQbhUGEdyCo1AuVDHwfMs4byKRbUTw==
-X-Google-Smtp-Source: AGHT+IH3JewSEA7jlldwoqwE1Kz7mISbTCdjn2zParyDd3fDOhCTvehWBg+3oUwDlB494gCTY+9eCQ==
-X-Received: by 2002:a17:903:18e:b0:1d0:6ffd:9e35 with SMTP id z14-20020a170903018e00b001d06ffd9e35mr1909657plg.135.1702126092638;
-        Sat, 09 Dec 2023 04:48:12 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id v23-20020a170902e8d700b001d05fb4cf2csm3337277plg.15.2023.12.09.04.48.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Dec 2023 04:48:12 -0800 (PST)
-Message-ID: <6574620c.170a0220.7504c.a6b3@mx.google.com>
-Date: Sat, 09 Dec 2023 04:48:12 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCF0748C
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:49:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F547C433C7;
+	Sat,  9 Dec 2023 12:49:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702126148;
+	bh=5Dvrplqm7pWq0i0AHzVdVvZ2fS0rdHWflon+VaZR5Hk=;
+	h=Subject:To:Cc:From:Date:From;
+	b=YlBdL5Ucd6XRKZBtng8f0eWfTvYVnxBb4Crvut/BEL9PoKUCFQS4rhLA04x5kQ033
+	 dEiavgFKPURkWgBQ7tiAMoWqsn9leTHADuodLsq9/0KumSYiOHXiOcCuw5Hhpl0JWr
+	 WzRjJ1vf8M9Dq9be/kAf4av32Ec4NP9jeZ+hPQks=
+Subject: FAILED: patch "[PATCH] arm64: dts: mediatek: mt8183: Move thermal-zones to the root" failed to apply to 5.15-stable tree
+To: angelogioacchino.delregno@collabora.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 09 Dec 2023 13:49:05 +0100
+Message-ID: <2023120905-cannot-badly-2890@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/4.14
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.332-10-gf9198816842fd
-Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.332-10-gf9198816842fd)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
-
-stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
-.14.332-10-gf9198816842fd)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-4/kernel/v4.14.332-10-gf9198816842fd/
-
-Tree: stable-rc
-Branch: queue/4.14
-Git Describe: v4.14.332-10-gf9198816842fd
-Git Commit: f9198816842fd17ffa3811521d81962576c58b14
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
-Warnings summary:
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Section mismatches summary:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 5a60d63439694590cd5ab1f998fc917ff7ba1c1d
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120905-cannot-badly-2890@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-    3    WARNING: modpost: Found 1 section mismatch(es).
+Possible dependencies:
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+5a60d6343969 ("arm64: dts: mediatek: mt8183: Move thermal-zones to the root node")
+624f1806a7c3 ("arm64: dts: mediatek: align thermal zone node names with dtschema")
 
-Detailed per-defconfig build reports:
+thanks,
 
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
+greg k-h
 
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
+------------------ original commit in Linus's tree ------------------
 
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+From 5a60d63439694590cd5ab1f998fc917ff7ba1c1d Mon Sep 17 00:00:00 2001
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Date: Wed, 25 Oct 2023 11:38:16 +0200
+Subject: [PATCH] arm64: dts: mediatek: mt8183: Move thermal-zones to the root
+ node
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
+The thermal zones are not a soc bus device: move it to the root
+node to solve simple_bus_reg warnings.
 
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+Cc: stable@vger.kernel.org
+Fixes: b325ce39785b ("arm64: dts: mt8183: add thermal zone node")
+Link: https://lore.kernel.org/r/20231025093816.44327-9-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 5169779d01df..976dc968b3ca 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1210,127 +1210,6 @@ thermal: thermal@1100b000 {
+ 			nvmem-cell-names = "calibration-data";
+ 		};
+ 
+-		thermal_zones: thermal-zones {
+-			cpu_thermal: cpu-thermal {
+-				polling-delay-passive = <100>;
+-				polling-delay = <500>;
+-				thermal-sensors = <&thermal 0>;
+-				sustainable-power = <5000>;
+-
+-				trips {
+-					threshold: trip-point0 {
+-						temperature = <68000>;
+-						hysteresis = <2000>;
+-						type = "passive";
+-					};
+-
+-					target: trip-point1 {
+-						temperature = <80000>;
+-						hysteresis = <2000>;
+-						type = "passive";
+-					};
+-
+-					cpu_crit: cpu-crit {
+-						temperature = <115000>;
+-						hysteresis = <2000>;
+-						type = "critical";
+-					};
+-				};
+-
+-				cooling-maps {
+-					map0 {
+-						trip = <&target>;
+-						cooling-device = <&cpu0
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu1
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu2
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu3
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>;
+-						contribution = <3072>;
+-					};
+-					map1 {
+-						trip = <&target>;
+-						cooling-device = <&cpu4
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu5
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu6
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>,
+-								 <&cpu7
+-							THERMAL_NO_LIMIT
+-							THERMAL_NO_LIMIT>;
+-						contribution = <1024>;
+-					};
+-				};
+-			};
+-
+-			/* The tzts1 ~ tzts6 don't need to polling */
+-			/* The tzts1 ~ tzts6 don't need to thermal throttle */
+-
+-			tzts1: tzts1 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 1>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts2: tzts2 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 2>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts3: tzts3 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 3>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts4: tzts4 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 4>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tzts5: tzts5 {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 5>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-
+-			tztsABB: tztsABB {
+-				polling-delay-passive = <0>;
+-				polling-delay = <0>;
+-				thermal-sensors = <&thermal 6>;
+-				sustainable-power = <5000>;
+-				trips {};
+-				cooling-maps {};
+-			};
+-		};
+-
+ 		pwm0: pwm@1100e000 {
+ 			compatible = "mediatek,mt8183-disp-pwm";
+ 			reg = <0 0x1100e000 0 0x1000>;
+@@ -2105,4 +1984,125 @@ larb3: larb@1a002000 {
+ 			power-domains = <&spm MT8183_POWER_DOMAIN_CAM>;
+ 		};
+ 	};
++
++	thermal_zones: thermal-zones {
++		cpu_thermal: cpu-thermal {
++			polling-delay-passive = <100>;
++			polling-delay = <500>;
++			thermal-sensors = <&thermal 0>;
++			sustainable-power = <5000>;
++
++			trips {
++				threshold: trip-point0 {
++					temperature = <68000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				target: trip-point1 {
++					temperature = <80000>;
++					hysteresis = <2000>;
++					type = "passive";
++				};
++
++				cpu_crit: cpu-crit {
++					temperature = <115000>;
++					hysteresis = <2000>;
++					type = "critical";
++				};
++			};
++
++			cooling-maps {
++				map0 {
++					trip = <&target>;
++					cooling-device = <&cpu0
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu1
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu2
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu3
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>;
++					contribution = <3072>;
++				};
++				map1 {
++					trip = <&target>;
++					cooling-device = <&cpu4
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu5
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu6
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>,
++							 <&cpu7
++						THERMAL_NO_LIMIT
++						THERMAL_NO_LIMIT>;
++					contribution = <1024>;
++				};
++			};
++		};
++
++		/* The tzts1 ~ tzts6 don't need to polling */
++		/* The tzts1 ~ tzts6 don't need to thermal throttle */
++
++		tzts1: tzts1 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 1>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts2: tzts2 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 2>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts3: tzts3 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 3>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts4: tzts4 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 4>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tzts5: tzts5 {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 5>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++
++		tztsABB: tztsABB {
++			polling-delay-passive = <0>;
++			polling-delay = <0>;
++			thermal-sensors = <&thermal 6>;
++			sustainable-power = <5000>;
++			trips {};
++			cooling-maps {};
++		};
++	};
+ };
 
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
 
