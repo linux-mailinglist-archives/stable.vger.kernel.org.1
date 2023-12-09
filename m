@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220B580B439
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:35:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9431980B43A
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:35:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D04C12810D0
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:35:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10347B20AF5
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EA9CA76;
-	Sat,  9 Dec 2023 12:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7557B11184;
+	Sat,  9 Dec 2023 12:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RM2kxOEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQIZ4b09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D60711184
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:35:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821FAC433C7;
-	Sat,  9 Dec 2023 12:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3689C187C
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:35:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506D8C433C8;
+	Sat,  9 Dec 2023 12:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702125329;
-	bh=52dHSvX4wYfErirlFcdAhuBWIMgUhCR2g+S9vwu2AZo=;
+	s=korg; t=1702125338;
+	bh=W+a5NE5HnL6MQAUhwkBqhhoirPP9D09HlEclnp6k408=;
 	h=Subject:To:Cc:From:Date:From;
-	b=RM2kxOErF7SlyjzuzEG4ACqY01jKnuILE3AVWtCrXUiRTVbCPkdKPaAsV+s8btRo6
-	 /MdroTlSX4OKiOwPF0IxLsNTpMvXnO7gdRlXyF9ZWJ/wWMEFE2m1pDyL6Zn9Q3Xve2
-	 F2CpmmZIm6d90HvWvq7tXyZx+LQ5/gTvixQptIaE=
-Subject: FAILED: patch "[PATCH] mm/memory_hotplug: add missing mem_hotplug_lock" failed to apply to 6.1-stable tree
+	b=pQIZ4b09l/ALkqY3TMb1ZX4g3jM11w6OXSwOpGK6y09EVl7nT2DveshchFPAUuznM
+	 drvbsnTirgxIV8hNFarXBXTegLFNG2vr7SPePl/+8gpUeEoYrX1aaVuQz9yqsReUlj
+	 x4jsPWTlUBQpXMP0DEEQVHJA2ReL6L/vK09ZDX+U=
+Subject: FAILED: patch "[PATCH] mm/memory_hotplug: add missing mem_hotplug_lock" failed to apply to 5.15-stable tree
 To: sumanthk@linux.ibm.com,agordeev@linux.ibm.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,david@redhat.com,gerald.schaefer@linux.ibm.com,gor@linux.ibm.com,hca@linux.ibm.com,lkp@intel.com,mhocko@suse.com,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:35:26 +0100
-Message-ID: <2023120925-hazard-mustard-8df5@gregkh>
+Date: Sat, 09 Dec 2023 13:35:27 +0100
+Message-ID: <2023120927-immobile-half-41d8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 001002e73712cdf6b8d9a103648cda3040ad7647
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120925-hazard-mustard-8df5@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120927-immobile-half-41d8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -70,6 +70,17 @@ e3c2bfdd33a3 ("mm/memory_hotplug: allow memmap on memory hotplug request to fall
 a46c9304b4bb ("mm/hwpoison: pass pfn to num_poisoned_pages_*()")
 d027122d8363 ("mm/hwpoison: move definitions of num_poisoned_pages_* to memory-failure.c")
 e591ef7d96d6 ("mm,hwpoison,hugetlb,memory_hotplug: hotremove memory section with hwpoisoned hugepage")
+0d206b5d2e0d ("mm/swap: add swp_offset_pfn() to fetch PFN from swap entry")
+eba4d770efc8 ("mm/swap: comment all the ifdef in swapops.h")
+21c9e90ab9a4 ("mm, hwpoison: use num_poisoned_pages_sub() to decrease num_poisoned_pages")
+f36a5543a748 ("mm, hwpoison: fix page refcnt leaking in try_memory_failure_hugetlb()")
+7453bf621cfa ("mm, hwpoison: make __page_handle_poison returns int")
+38f6d29397cc ("mm, hwpoison: set PG_hwpoison for busy hugetlb pages")
+ac5fcde0a96a ("mm, hwpoison: make unpoison aware of raw error info in hwpoisoned hugepage")
+161df60e9e89 ("mm, hwpoison, hugetlb: support saving mechanism of raw error pages")
+6213834c10de ("mm: hugetlb_vmemmap: improve hugetlb_vmemmap code readability")
+998a2997885f ("mm: hugetlb_vmemmap: move vmemmap code related to HugeTLB to hugetlb_vmemmap.c")
+dff033818a06 ("mm: hugetlb_vmemmap: introduce the name HVO")
 
 thanks,
 
