@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A9880B43E
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F5E80B440
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF28E2810BE
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24C931F2127B
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DCC11703;
-	Sat,  9 Dec 2023 12:36:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4187711703;
+	Sat,  9 Dec 2023 12:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYs89VUS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHbIjlAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0273C6ABB
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A29EC433C8;
-	Sat,  9 Dec 2023 12:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0075914293
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A45FC433C7;
+	Sat,  9 Dec 2023 12:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702125381;
-	bh=Z7pvnBY64/n8n2wE7kj3r27XdBkm5moUUQxIUvp35kI=;
+	s=korg; t=1702125395;
+	bh=CkHpF94Vxyzip5MM39dx3zTxFl8Uk0gnPgcLJ1vBQHc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=EYs89VUSEXYMHni7POhVlRKigvp2j4vbtaNekLmtTB/FO/g2PFZ7F+Pl4vYhbys1j
-	 NsaS8m1eWMBPT7J5CrRSoXdqQ0WpFiwoW4+a7ch72EPag5q29nSY52AladLRCB+XVP
-	 8iDzSaZbrfRIIje2MU0qf1Lfpgbms1TU+io2W3BE=
-Subject: FAILED: patch "[PATCH] mm/memory_hotplug: fix error handling in" failed to apply to 6.1-stable tree
-To: sumanthk@linux.ibm.com,agordeev@linux.ibm.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,david@redhat.com,gerald.schaefer@linux.ibm.com,gor@linux.ibm.com,hca@linux.ibm.com,lkp@intel.com,mhocko@suse.com,osalvador@suse.de,stable@vger.kernel.org
+	b=GHbIjlAkItL5NpuhkBtUt5KKJuOGVYH0I8cLsjPBnDaZxObZhAZhzuecKgCo6nnxU
+	 CaWQfTMptHCqp+M/fZ/btJP8EEqZgNBg+Q1cOJNySsqcdqPsfmW0Iv6VIoxOIJBRE2
+	 hVRp4SAbwBV20SXq19i2ef+L1bf8DyfyFbLhNk8g=
+Subject: FAILED: patch "[PATCH] drm/amdgpu: Restrict extended wait to PSP v13.0.6" failed to apply to 6.6-stable tree
+To: lijo.lazar@amd.com,alexander.deucher@amd.com,asad.kamal@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:36:18 +0100
-Message-ID: <2023120918-qualify-refutable-6c2a@gregkh>
+Date: Sat, 09 Dec 2023 13:36:32 +0100
+Message-ID: <2023120932-suffocate-neuter-c5d7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,27 +45,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f42ce5f087eb69e47294ababd2e7e6f88a82d308
+git cherry-pick -x 6fce23a4d8c5f93bf80b7f122449fbb97f1e40dd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120918-qualify-refutable-6c2a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120932-suffocate-neuter-c5d7@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-f42ce5f087eb ("mm/memory_hotplug: fix error handling in add_memory_resource()")
-1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
-2d1f649c7c08 ("mm/memory_hotplug: support memmap_on_memory when memmap is not aligned to pageblocks")
-85a2b4b08f20 ("mm/memory_hotplug: allow architecture to override memmap on memory support check")
-e3c2bfdd33a3 ("mm/memory_hotplug: allow memmap on memory hotplug request to fallback")
+6fce23a4d8c5 ("drm/amdgpu: Restrict extended wait to PSP v13.0.6")
+d8c1925ba8cd ("drm/amdgpu: update retry times for psp BL wait")
+fc5988907156 ("drm/amdgpu: update retry times for psp vmbx wait")
 
 thanks,
 
@@ -73,57 +71,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f42ce5f087eb69e47294ababd2e7e6f88a82d308 Mon Sep 17 00:00:00 2001
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Date: Mon, 20 Nov 2023 15:53:53 +0100
-Subject: [PATCH] mm/memory_hotplug: fix error handling in
- add_memory_resource()
+From 6fce23a4d8c5f93bf80b7f122449fbb97f1e40dd Mon Sep 17 00:00:00 2001
+From: Lijo Lazar <lijo.lazar@amd.com>
+Date: Wed, 29 Nov 2023 18:06:55 +0530
+Subject: [PATCH] drm/amdgpu: Restrict extended wait to PSP v13.0.6
 
-In add_memory_resource(), creation of memory block devices occurs after
-successful call to arch_add_memory().  However, creation of memory block
-devices could fail.  In that case, arch_remove_memory() is called to
-perform necessary cleanup.
+Only PSPv13.0.6 SOCs take a longer time to reach steady state. Other
+PSPv13 based SOCs don't need extended wait. Also, reduce PSPv13.0.6 wait
+time.
 
-Currently with or without altmap support, arch_remove_memory() is always
-passed with altmap set to NULL during error handling.  This leads to
-freeing of struct pages using free_pages(), eventhough the allocation
-might have been performed with altmap support via
-altmap_alloc_block_buf().
+Cc: stable@vger.kernel.org
+Fixes: fc5988907156 ("drm/amdgpu: update retry times for psp vmbx wait")
+Fixes: d8c1925ba8cd ("drm/amdgpu: update retry times for psp BL wait")
+Link: https://lore.kernel.org/amd-gfx/34dd4c66-f7bf-44aa-af8f-c82889dd652c@amd.com/
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 
-Fix the error handling by passing altmap in arch_remove_memory(). This
-ensures the following:
-* When altmap is disabled, deallocation of the struct pages array occurs
-  via free_pages().
-* When altmap is enabled, deallocation occurs via vmem_altmap_free().
-
-Link: https://lkml.kernel.org/r/20231120145354.308999-3-sumanthk@linux.ibm.com
-Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index bb908289679e..7a5fc89a8652 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1458,7 +1458,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 	/* create memory block devices after memory was added */
- 	ret = create_memory_block_devices(start, size, params.altmap, group);
- 	if (ret) {
--		arch_remove_memory(start, size, NULL);
-+		arch_remove_memory(start, size, params.altmap);
- 		goto error_free;
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
+index 5f46877f78cf..df1844d0800f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/psp_v13_0.c
+@@ -60,7 +60,7 @@ MODULE_FIRMWARE("amdgpu/psp_14_0_0_ta.bin");
+ #define GFX_CMD_USB_PD_USE_LFB 0x480
  
+ /* Retry times for vmbx ready wait */
+-#define PSP_VMBX_POLLING_LIMIT 20000
++#define PSP_VMBX_POLLING_LIMIT 3000
+ 
+ /* VBIOS gfl defines */
+ #define MBOX_READY_MASK 0x80000000
+@@ -161,14 +161,18 @@ static int psp_v13_0_wait_for_vmbx_ready(struct psp_context *psp)
+ static int psp_v13_0_wait_for_bootloader(struct psp_context *psp)
+ {
+ 	struct amdgpu_device *adev = psp->adev;
+-	int retry_loop, ret;
++	int retry_loop, retry_cnt, ret;
+ 
++	retry_cnt =
++		(amdgpu_ip_version(adev, MP0_HWIP, 0) == IP_VERSION(13, 0, 6)) ?
++			PSP_VMBX_POLLING_LIMIT :
++			10;
+ 	/* Wait for bootloader to signify that it is ready having bit 31 of
+ 	 * C2PMSG_35 set to 1. All other bits are expected to be cleared.
+ 	 * If there is an error in processing command, bits[7:0] will be set.
+ 	 * This is applicable for PSP v13.0.6 and newer.
+ 	 */
+-	for (retry_loop = 0; retry_loop < PSP_VMBX_POLLING_LIMIT; retry_loop++) {
++	for (retry_loop = 0; retry_loop < retry_cnt; retry_loop++) {
+ 		ret = psp_wait_for(
+ 			psp, SOC15_REG_OFFSET(MP0, 0, regMP0_SMN_C2PMSG_35),
+ 			0x80000000, 0xffffffff, false);
 
 
