@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-5139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2282380B43B
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:35:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD89580B43C
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C660F280E86
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:35:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F110C1C20A72
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCB8125B6;
-	Sat,  9 Dec 2023 12:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DA911184;
+	Sat,  9 Dec 2023 12:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLyo329q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wheLNHsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F7D187C
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:35:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD9BC433C8;
-	Sat,  9 Dec 2023 12:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB9D187C
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57F1C433C9;
+	Sat,  9 Dec 2023 12:36:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702125349;
-	bh=2KEG3p5hQDJ3KVLITDzxV1RY0E37Db4DJYBFdRV8K+w=;
+	s=korg; t=1702125367;
+	bh=Ntttwa8XdS+qPPpn9rAZybHAiloO3AMhG7Z5opPJIP4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xLyo329qCPW3oEVm74fZxCUZH9aKDzVXghbYBePEYC1tEob/0Ho7NTwLGE6WoT7ox
-	 ih4cA3vIltDew4Y6ozZMHWybKDJxMQdE8t4GXWSJ4sjqGbWoik2ud8TISFzSVGvISz
-	 2mIbAu3hjGMKqC4kW+4415Dp87iDe+HdQXkb1rr0=
-Subject: FAILED: patch "[PATCH] mm: fix oops when filemap_map_pmd() without prealloc_pte" failed to apply to 5.15-stable tree
-To: hughd@google.com,akpm@linux-foundation.org,david@redhat.com,jannh@google.com,jose.pekkarinen@foxhound.fi,kirill.shutemov@linux.intel.com,stable@vger.kernel.org,willy@infradead.org
+	b=wheLNHsk17a+jaKBLPECyYf3lk2gcCxrA7xScYHoNhoGCQQavkDKsu75obYRqRbgg
+	 fFF9p//0zakZD/TygRTD2uoCRUmblF5Yypgk8/hipAye4gqBJk2tX29WVmrXV5/rnX
+	 fPQ6d67yldL/j8lVQkwEhF12BSdIlC5ONvHmRnZI=
+Subject: FAILED: patch "[PATCH] mm/memory_hotplug: fix error handling in" failed to apply to 5.15-stable tree
+To: sumanthk@linux.ibm.com,agordeev@linux.ibm.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,david@redhat.com,gerald.schaefer@linux.ibm.com,gor@linux.ibm.com,hca@linux.ibm.com,lkp@intel.com,mhocko@suse.com,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:35:45 +0100
-Message-ID: <2023120945-citizen-library-9f46@gregkh>
+Date: Sat, 09 Dec 2023 13:36:04 +0100
+Message-ID: <2023120904-duffel-joining-636f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
@@ -54,15 +54,33 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9aa1345d66b8132745ffb99b348b1492088da9e2
+git cherry-pick -x f42ce5f087eb69e47294ababd2e7e6f88a82d308
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120945-citizen-library-9f46@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120904-duffel-joining-636f@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-9aa1345d66b8 ("mm: fix oops when filemap_map_pmd() without prealloc_pte")
-03c4f20454e0 ("mm: introduce pmd_install() helper")
+f42ce5f087eb ("mm/memory_hotplug: fix error handling in add_memory_resource()")
+1a8c64e11043 ("mm/memory_hotplug: embed vmem_altmap details in memory block")
+2d1f649c7c08 ("mm/memory_hotplug: support memmap_on_memory when memmap is not aligned to pageblocks")
+85a2b4b08f20 ("mm/memory_hotplug: allow architecture to override memmap on memory support check")
+e3c2bfdd33a3 ("mm/memory_hotplug: allow memmap on memory hotplug request to fallback")
+66361095129b ("mm: memory_hotplug: make hugetlb_optimize_vmemmap compatible with memmap_on_memory")
+78f39084b41d ("mm: hugetlb_vmemmap: add hugetlb_optimize_vmemmap sysctl")
+9c54c522bb76 ("mm: hugetlb_vmemmap: use kstrtobool for hugetlb_vmemmap param parsing")
+6e02c46b4d97 ("mm: memory_hotplug: override memmap_on_memory when hugetlb_free_vmemmap=on")
+0effdf461c57 ("mm: hugetlb_vmemmap: disable hugetlb_optimize_vmemmap when struct page crosses page boundaries")
+47010c040dec ("mm: hugetlb_vmemmap: cleanup CONFIG_HUGETLB_PAGE_FREE_VMEMMAP*")
+f10f1442c309 ("mm: hugetlb_vmemmap: cleanup hugetlb_free_vmemmap_enabled*")
+5981611d0a00 ("mm: hugetlb_vmemmap: cleanup hugetlb_vmemmap related functions")
+1e63ac088f20 ("arm64: mm: hugetlb: enable HUGETLB_PAGE_FREE_VMEMMAP for arm64")
+2e4ec02bbcc0 ("mm: hugetlb_vmemmap: introduce ARCH_WANT_HUGETLB_PAGE_FREE_VMEMMAP")
+2aa065f7afb2 ("drivers/base/memory: clarify adding and removing of memory blocks")
+395f6081bad4 ("drivers/base/memory: determine and store zone for single-zone memory blocks")
+7ea0d2d79da0 ("drivers/base/memory: add memory block to memory group after registration succeeded")
+e54084173487 ("mm: sparsemem: move vmemmap related to HugeTLB to CONFIG_HUGETLB_PAGE_FREE_VMEMMAP")
+a6b40850c442 ("mm: hugetlb: replace hugetlb_free_vmemmap_enabled with a static_key")
 
 thanks,
 
@@ -70,61 +88,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9aa1345d66b8132745ffb99b348b1492088da9e2 Mon Sep 17 00:00:00 2001
-From: Hugh Dickins <hughd@google.com>
-Date: Fri, 17 Nov 2023 00:49:18 -0800
-Subject: [PATCH] mm: fix oops when filemap_map_pmd() without prealloc_pte
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From f42ce5f087eb69e47294ababd2e7e6f88a82d308 Mon Sep 17 00:00:00 2001
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Date: Mon, 20 Nov 2023 15:53:53 +0100
+Subject: [PATCH] mm/memory_hotplug: fix error handling in
+ add_memory_resource()
 
-syzbot reports oops in lockdep's __lock_acquire(), called from
-__pte_offset_map_lock() called from filemap_map_pages(); or when I run the
-repro, the oops comes in pmd_install(), called from filemap_map_pmd()
-called from filemap_map_pages(), just before the __pte_offset_map_lock().
+In add_memory_resource(), creation of memory block devices occurs after
+successful call to arch_add_memory().  However, creation of memory block
+devices could fail.  In that case, arch_remove_memory() is called to
+perform necessary cleanup.
 
-The problem is that filemap_map_pmd() has been assuming that when it finds
-pmd_none(), a page table has already been prepared in prealloc_pte; and
-indeed do_fault_around() has been careful to preallocate one there, when
-it finds pmd_none(): but what if *pmd became none in between?
+Currently with or without altmap support, arch_remove_memory() is always
+passed with altmap set to NULL during error handling.  This leads to
+freeing of struct pages using free_pages(), eventhough the allocation
+might have been performed with altmap support via
+altmap_alloc_block_buf().
 
-My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
-easy for *pmd to be cleared while servicing a page fault; but even before
-those, a huge *pmd might be zapped while a fault is serviced.
+Fix the error handling by passing altmap in arch_remove_memory(). This
+ensures the following:
+* When altmap is disabled, deallocation of the struct pages array occurs
+  via free_pages().
+* When altmap is enabled, deallocation occurs via vmem_altmap_free().
 
-The difference in symptomatic stack traces comes from the "memory model"
-in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
-models that is strict, and will oops on the NULL prealloc_pte; in other
-models, it will construct a bogus value to be populated into *pmd, then
-__pte_offset_map_lock() oops when trying to access split ptlock pointer
-(or some other symptom in normal case of ptlock embedded not pointer).
-
-Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
-Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
-Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>,
-Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>    [5.12+]
+Link: https://lkml.kernel.org/r/20231120145354.308999-3-sumanthk@linux.ibm.com
+Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: kernel test robot <lkp@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 32eedf3afd45..f1c8c278310f 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3371,7 +3371,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct folio *folio,
- 		}
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index bb908289679e..7a5fc89a8652 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1458,7 +1458,7 @@ int __ref add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
+ 	/* create memory block devices after memory was added */
+ 	ret = create_memory_block_devices(start, size, params.altmap, group);
+ 	if (ret) {
+-		arch_remove_memory(start, size, NULL);
++		arch_remove_memory(start, size, params.altmap);
+ 		goto error_free;
  	}
  
--	if (pmd_none(*vmf->pmd))
-+	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
- 		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
- 
- 	return false;
 
 
