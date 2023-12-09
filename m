@@ -1,154 +1,142 @@
-Return-Path: <stable+bounces-5178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7E580B5FC
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 20:12:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D23280C11E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:05:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66070281029
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 19:12:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6534280C81
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C37219BD0;
-	Sat,  9 Dec 2023 19:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 910AC1EB5D;
+	Mon, 11 Dec 2023 06:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NmAenHVy"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0qAwz6DL"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5977D1BB
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 11:12:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=hi2WBFEIOsD7ADtk/1pkq73vsJ0MLNvEbtKDv1om3Rc=; b=NmAenHVyEXJvyACRgp56dIGPcV
-	ZIdAidQan/JWZ/pGP7wvWpPEr7LpBGcpSOAFjxrDzZ/8tR57b0pxdkHZJKCbnJPpvccuD3trFPL5D
-	erSy1Xax5zIeNpbUzoQcaGrhlsx8sDBgLgSOVlAmjj9L/TreaELkPGXTikKABlDgGEWkjiqHyIvOZ
-	ZXgXsvGf2cHMxmPJOfJV9i6at3l2UIYbZN5aq0pKsqgysewxXmiBlmvTMXgXzHxNaugugMJk6AHnz
-	WgOHucXzDEz7V9pApa+BCHxwRcRAjmjMgsUkgqwc7vwjQPHXrX0f8AWlDxpTXBip9TpzytawLQ2Gs
-	qYXW5ySw==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rC2k3-007SMH-C4; Sat, 09 Dec 2023 19:11:59 +0000
-Date: Sat, 9 Dec 2023 19:11:59 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: gregkh@linuxfoundation.org
-Cc: hughd@google.com, akpm@linux-foundation.org, david@redhat.com,
-	jannh@google.com, jose.pekkarinen@foxhound.fi,
-	kirill.shutemov@linux.intel.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] mm: fix oops when filemap_map_pmd()
- without prealloc_pte" failed to apply to 5.15-stable tree
-Message-ID: <ZXS7/8jHrj8XFUoA@casper.infradead.org>
-References: <2023120945-citizen-library-9f46@gregkh>
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2075.outbound.protection.outlook.com [40.107.244.75])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B13BDB
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 22:04:55 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=TaJ/+5VtnytUAZaLlc8nDQWRvSfw2bch5yZe+PQWxQ10elZ7qVcB4tFmzsE+1soTweTODfnkHRxrV3Yah5MVXYHKredzWgw3/J0uea/T1tY0oaQpd7Tq1owUSAiJMW4DnTJqIAzdZl63p1sXGzmP+PQDHmW9yzXh4L23SZlgMxVG0r2HhvJ30lNoe9k4e/tnp+mG83pTtg/Ddr6TMB2haLEndEznATb4bB44c44e1O3vM786yBAh0ydXZHC8dhb35MVFvp4ZiFjDc9Zek4dBpgEfRzoxWbJsDPgyDwtRhCfSfQuj3o3awVwnSGGIqR8bm+SMkOXYbrMND2LX+X/3TQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2VUE62sF6BH8p7j/1kR1wAefyWKM2H7xaC/+/RMOeHQ=;
+ b=nGf7H/GBDGkk34BGzNrZ0d2CkByvCOdT/urmn/pDqNuRD1dyiUzUWe20lXjfLpVu9ruG4cVwxfheDl54IuO+5Df/BOr0mLHwTzwI6ikQfxe5/+1XNaHrlGfoPqWM56cfdJducpWHcsw8CeBywjttQsuamMbj+XC4Bs4+4dmgp+/VC9hGrdbxrkz5FsL8qVKmBMF5AomONoYzdMHDQrRknDDniseAaNsa/84YNJEGUmabWMBlI0IB04pB/kkIJXdGe13Tvd8J+1XXbBuaArXJgaE86fmxeSOgEzZ/i0NIwzbSfO0XF/0DbF3hFG/xyhsHzQc05AKQudzohcOXjMivww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2VUE62sF6BH8p7j/1kR1wAefyWKM2H7xaC/+/RMOeHQ=;
+ b=0qAwz6DLAGAe5HdqySqXAy2EZaf85hRL3t2kgnhZmoTuJzihnCisOFMuO2D7mJScgeYBnHZ4Tui+ihtCR/IKaRtq7jxNxYAVB/dMGpnCWUsJpl872rtIziQ/kNR4LogTSPgZi0pqsrG+H1Iyv3AdsDsQN40CvsNi33vB0k5ufJg=
+Received: from CY5P221CA0160.NAMP221.PROD.OUTLOOK.COM (2603:10b6:930:6a::12)
+ by CH2PR12MB4860.namprd12.prod.outlook.com (2603:10b6:610:6c::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Mon, 11 Dec
+ 2023 06:04:53 +0000
+Received: from CY4PEPF0000EE3F.namprd03.prod.outlook.com
+ (2603:10b6:930:6a:cafe::81) by CY5P221CA0160.outlook.office365.com
+ (2603:10b6:930:6a::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32 via Frontend
+ Transport; Mon, 11 Dec 2023 06:04:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000EE3F.mail.protection.outlook.com (10.167.242.19) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7091.18 via Frontend Transport; Mon, 11 Dec 2023 06:04:52 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Mon, 11 Dec
+ 2023 00:04:51 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Mario Limonciello <mario.limonciello@amd.com>, <stable@vger.kernel.org>,
+	<aaron.ma@canonical.com>, <binli@gnome.org>, Marc Rossi <Marc.Rossi@amd.com>,
+	Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Subject: [PATCH] drm/amd/display: Disable PSR-SU on Parade 0803 TCON again
+Date: Sat, 9 Dec 2023 14:08:30 -0600
+Message-ID: <20231209200830.379629-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023120945-citizen-library-9f46@gregkh>
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE3F:EE_|CH2PR12MB4860:EE_
+X-MS-Office365-Filtering-Correlation-Id: ee4a21eb-d384-4a15-53f7-08dbfa0f177d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	nAfsyHUFCwZqY9tvYt6Te6PR1Q0W7cwuEInwYaAwjA/MnJB4FF+t1MZAMRy4GWi7WBjz9vOY7wshQx398FhS2horEVHWjQTy4/JzbeL3X9XeS0wN4A4QWeNIilXPdtPiA1G267HVeVMIxkM8pMY/OL71MfSGL0aC1MLgppjMdSu/fw4uWpop6BSTB52KwkaXrU/zmD56PwV9QVwniwf1VH4Jhvl/1bUlUOJDKzzW5ih96kzEMb97ae4tbyI+dd1R1LMrEO0dY+4jq1sM3LJtHPyBC8x88T+mmebuzyWKm3jknCdcirEcfDRy3pBpXUzYwvoppMN3Pvoi97eOSYNbFsREf7ZJbAd7geyg+rF4gqbMdFyKew4nZFiDWq7KW5cpMn8v024rspHe9GK2VdN231juiWpW8qGoflERTKbLtRJ2pqeWbro/5+8D/ORf/uPVhNHoqgpe9gWV5vOps0TyFd1OI+Z4HbkdqwM+yA2pwM90Ah/A/G6w+GLWPbFECGU31B36oFfmlLbbq0wqP5wxgmij5sjK96IcM7jfgqrKcDshJvlGPvDeUrW3M2bWJZh3ar2h3qIwQ+ellOhcOVQfZ5Qjatqs7dpJzF1uCDZ3xHe2yzl6OpQn2Nyfiv021hxgwkrZo3129Jyr60fj1sww84CytD3z+/WSKsJ8e3qBVdTQdwUv5Au6Q11zDvkxvsPmlIUFAdXbEXszpdAaGebiaqincp6l2Px08qJxxo+1hTDiegYTary1L5MRBN7/Md0UyAVjgqRtF4YVO7oKYd1OgQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(396003)(376002)(39860400002)(136003)(230922051799003)(64100799003)(82310400011)(451199024)(186009)(1800799012)(40470700004)(46966006)(36840700001)(2616005)(1076003)(36756003)(7696005)(6666004)(478600001)(316002)(70206006)(6916009)(54906003)(70586007)(8676002)(40460700003)(86362001)(4326008)(44832011)(356005)(81166007)(82740400003)(36860700001)(47076005)(8936002)(40480700001)(426003)(336012)(83380400001)(26005)(16526019)(5660300002)(41300700001)(2906002)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 06:04:52.7506
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ee4a21eb-d384-4a15-53f7-08dbfa0f177d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE3F.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4860
+X-Spam-Level: **
 
-On Sat, Dec 09, 2023 at 01:35:45PM +0100, gregkh@linuxfoundation.org wrote:
-> The patch below does not apply to the 5.15-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+When screen brightness is rapidly changed and PSR-SU is enabled the
+display hangs on panels with this TCON even on the latest DCN 3.1.4
+microcode (0x8002a81 at this time).
 
-This should do the job.  It's not clear to me whether this bug remains
-latent on 5.15, so it may not be appropriate to apply.  I defer to Hugh.
+This was disabled previously as commit 072030b17830 ("drm/amd: Disable
+PSR-SU on Parade 0803 TCON") but reverted as commit 1e66a17ce546 ("Revert
+"drm/amd: Disable PSR-SU on Parade 0803 TCON"") in favor of testing for
+a new enough microcode (commit cd2e31a9ab93 ("drm/amd/display: Set minimum
+requirement for using PSR-SU on Phoenix")).
 
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 81e28722edfa..84a5b0213e0e 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3209,7 +3209,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct page *page)
- 	    }
- 	}
- 
--	if (pmd_none(*vmf->pmd)) {
-+	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte) {
- 		vmf->ptl = pmd_lock(mm, vmf->pmd);
- 		if (likely(pmd_none(*vmf->pmd))) {
- 			mm_inc_nr_ptes(mm);
+As hangs are still happening specifically with this TCON, disable PSR-SU
+again for it until it can be root caused.
 
-> To reproduce the conflict and resubmit, you may use the following commands:
-> 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 9aa1345d66b8132745ffb99b348b1492088da9e2
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120945-citizen-library-9f46@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-> 
-> Possible dependencies:
-> 
-> 9aa1345d66b8 ("mm: fix oops when filemap_map_pmd() without prealloc_pte")
-> 03c4f20454e0 ("mm: introduce pmd_install() helper")
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> >From 9aa1345d66b8132745ffb99b348b1492088da9e2 Mon Sep 17 00:00:00 2001
-> From: Hugh Dickins <hughd@google.com>
-> Date: Fri, 17 Nov 2023 00:49:18 -0800
-> Subject: [PATCH] mm: fix oops when filemap_map_pmd() without prealloc_pte
-> MIME-Version: 1.0
-> Content-Type: text/plain; charset=UTF-8
-> Content-Transfer-Encoding: 8bit
-> 
-> syzbot reports oops in lockdep's __lock_acquire(), called from
-> __pte_offset_map_lock() called from filemap_map_pages(); or when I run the
-> repro, the oops comes in pmd_install(), called from filemap_map_pmd()
-> called from filemap_map_pages(), just before the __pte_offset_map_lock().
-> 
-> The problem is that filemap_map_pmd() has been assuming that when it finds
-> pmd_none(), a page table has already been prepared in prealloc_pte; and
-> indeed do_fault_around() has been careful to preallocate one there, when
-> it finds pmd_none(): but what if *pmd became none in between?
-> 
-> My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made it
-> easy for *pmd to be cleared while servicing a page fault; but even before
-> those, a huge *pmd might be zapped while a fault is serviced.
-> 
-> The difference in symptomatic stack traces comes from the "memory model"
-> in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
-> models that is strict, and will oops on the NULL prealloc_pte; in other
-> models, it will construct a bogus value to be populated into *pmd, then
-> __pte_offset_map_lock() oops when trying to access split ptlock pointer
-> (or some other symptom in normal case of ptlock embedded not pointer).
-> 
-> Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekkarinen@foxhound.fi/
-> Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@google.com
-> Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepaths")
-> Signed-off-by: Hugh Dickins <hughd@google.com>
-> Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotmail.com
-> Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@google.com/
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> Cc: Jann Horn <jannh@google.com>,
-> Cc: José Pekkarinen <jose.pekkarinen@foxhound.fi>
-> Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: <stable@vger.kernel.org>    [5.12+]
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 32eedf3afd45..f1c8c278310f 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3371,7 +3371,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct folio *folio,
->  		}
->  	}
->  
-> -	if (pmd_none(*vmf->pmd))
-> +	if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
->  		pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
->  
->  	return false;
-> 
+Cc: stable@vger.kernel.org
+Cc: aaron.ma@canonical.com
+Cc: binli@gnome.org
+Cc: Marc Rossi <Marc.Rossi@amd.com>
+Cc: Hamza Mahfooz <Hamza.Mahfooz@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/gpu/drm/amd/display/modules/power/power_helpers.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+index a522a7c02911..1675314a3ff2 100644
+--- a/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
++++ b/drivers/gpu/drm/amd/display/modules/power/power_helpers.c
+@@ -839,6 +839,8 @@ bool is_psr_su_specific_panel(struct dc_link *link)
+ 				((dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x08) ||
+ 				(dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x07)))
+ 				isPSRSUSupported = false;
++			else if (dpcd_caps->sink_dev_id_str[1] == 0x08 && dpcd_caps->sink_dev_id_str[0] == 0x03)
++				isPSRSUSupported = false;
+ 			else if (dpcd_caps->psr_info.force_psrsu_cap == 0x1)
+ 				isPSRSUSupported = true;
+ 		}
+-- 
+2.34.1
+
 
