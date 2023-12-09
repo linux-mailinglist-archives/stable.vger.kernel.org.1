@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B91F480B42F
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:27:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C92C380B430
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F272F1C2074F
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:27:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED6431C20AAB
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A4014288;
-	Sat,  9 Dec 2023 12:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4920914282;
+	Sat,  9 Dec 2023 12:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLkDBuNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GI+2PTIy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0E513FE5
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:27:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20D84C433C9;
-	Sat,  9 Dec 2023 12:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084D813FE5
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:27:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 611C5C433C9;
+	Sat,  9 Dec 2023 12:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702124829;
-	bh=hSlJ/J4yXUk1fWMn6cPhNu2iYhiK5HVX30NetYnvoB4=;
+	s=korg; t=1702124832;
+	bh=gB4/P1h3YcAzgMiVY0QmQ1jjQ6aD1yBQWdCqSlDoZlE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xLkDBuNI2BFCvJRHYHr5VbzQF5oXjTx0XxiMAKFrUSdWfxJghUCtcs/OTlbl0HXyf
-	 vylI0QOj9vFXWlLP5HLtzAnzBxf35cpYxN7EbAPEdI7jBwaExsaxkmTsQ4W3lPfHz7
-	 ApQ+Bvbh/gm69wylEpEcJNH5lHnF4IalMZVCIhwo=
-Subject: FAILED: patch "[PATCH] tracing: Stop current tracer when resizing buffer" failed to apply to 4.14-stable tree
+	b=GI+2PTIyQLiadjTOHAa/oQP4CcBTELBmxhwZjEa2SAvKI7cyqtA6SEvjVPEehHH6Q
+	 7zlmGj7xqwIAwA8KZip2dCDvaz9NyTppa9eUhBQ86hXkKmAhFCw+oyjACP7uYHOX9Q
+	 WYXxFt/KJr+2XfSp+HKZi6cqxQ+2Q9N3Ro9Z4MMY=
+Subject: FAILED: patch "[PATCH] tracing: Disable snapshot buffer when stopping instance" failed to apply to 5.4-stable tree
 To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:26:55 +0100
-Message-ID: <2023120955-jolly-spool-3d4c@gregkh>
+Date: Sat, 09 Dec 2023 13:27:08 +0100
+Message-ID: <2023120908-crisply-trash-d37e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,28 +45,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x d78ab792705c7be1b91243b2544d1a79406a2ad7
+git cherry-pick -x b538bf7d0ec11ca49f536dfda742a5f6db90a798
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120955-jolly-spool-3d4c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120908-crisply-trash-d37e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-d78ab792705c ("tracing: Stop current tracer when resizing buffer")
-6d98a0f2ac3c ("tracing: Set actual size after ring buffer resize")
+b538bf7d0ec1 ("tracing: Disable snapshot buffer when stopping instance tracers")
+13292494379f ("tracing: Make struct ring_buffer less ambiguous")
 1c5eb4481e01 ("tracing: Rename trace_buffer to array_buffer")
-a47b53e95acc ("tracing: Rename tracing_reset() to tracing_reset_cpu()")
-46cc0b44428d ("tracing/snapshot: Resize spare buffer if size changed")
-d2d8b146043a ("Merge tag 'trace-v5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace")
+2d6425af6116 ("tracing: Declare newly exported APIs in include/linux/trace.h")
 
 thanks,
 
@@ -74,67 +72,216 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d78ab792705c7be1b91243b2544d1a79406a2ad7 Mon Sep 17 00:00:00 2001
+From b538bf7d0ec11ca49f536dfda742a5f6db90a798 Mon Sep 17 00:00:00 2001
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Tue, 5 Dec 2023 16:52:10 -0500
-Subject: [PATCH] tracing: Stop current tracer when resizing buffer
+Date: Tue, 5 Dec 2023 16:52:11 -0500
+Subject: [PATCH] tracing: Disable snapshot buffer when stopping instance
+ tracers
 
-When the ring buffer is being resized, it can cause side effects to the
-running tracer. For instance, there's a race with irqsoff tracer that
-swaps individual per cpu buffers between the main buffer and the snapshot
-buffer. The resize operation modifies the main buffer and then the
-snapshot buffer. If a swap happens in between those two operations it will
-break the tracer.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). When stopping a tracer in an
+instance would not disable the snapshot buffer. This could have some
+unintended consequences if the irqsoff tracer is enabled.
 
-Simply stop the running tracer before resizing the buffers and enable it
-again when finished.
+Consolidate the tracing_start/stop() with tracing_start/stop_tr() so that
+all instances behave the same. The tracing_start/stop() functions will
+just call their respective tracing_start/stop_tr() with the global_array
+passed in.
 
-Link: https://lkml.kernel.org/r/20231205220010.748996423@goodmis.org
+Link: https://lkml.kernel.org/r/20231205220011.041220035@goodmis.org
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 3928a8a2d9808 ("ftrace: make work with new ring buffer")
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 
 diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 231c173ec04f..e978868b1a22 100644
+index e978868b1a22..2492c6c76850 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
-@@ -6387,9 +6387,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 	if (!tr->array_buffer.buffer)
- 		return 0;
- 
-+	/* Do not allow tracing while resizng ring buffer */
-+	tracing_stop_tr(tr);
-+
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
- 	if (ret < 0)
--		return ret;
-+		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	if (!tr->current_trace->use_max_tr)
-@@ -6417,7 +6420,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 			WARN_ON(1);
- 			tracing_disabled = 1;
- 		}
--		return ret;
-+		goto out_start;
- 	}
- 
- 	update_buffer_entries(&tr->max_buffer, cpu);
-@@ -6426,7 +6429,8 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- #endif /* CONFIG_TRACER_MAX_TRACE */
- 
- 	update_buffer_entries(&tr->array_buffer, cpu);
--
-+ out_start:
-+	tracing_start_tr(tr);
- 	return ret;
+@@ -2360,49 +2360,6 @@ int is_tracing_stopped(void)
+ 	return global_trace.stop_count;
  }
  
+-/**
+- * tracing_start - quick start of the tracer
+- *
+- * If tracing is enabled but was stopped by tracing_stop,
+- * this will start the tracer back up.
+- */
+-void tracing_start(void)
+-{
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	if (tracing_disabled)
+-		return;
+-
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (--global_trace.stop_count) {
+-		if (global_trace.stop_count < 0) {
+-			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			global_trace.stop_count = 0;
+-		}
+-		goto out;
+-	}
+-
+-	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
+-
+-	buffer = global_trace.array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_enable(buffer);
+-
+-#ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_enable(buffer);
+-#endif
+-
+-	arch_spin_unlock(&global_trace.max_lock);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
+-}
+-
+ static void tracing_start_tr(struct trace_array *tr)
+ {
+ 	struct trace_buffer *buffer;
+@@ -2411,25 +2368,70 @@ static void tracing_start_tr(struct trace_array *tr)
+ 	if (tracing_disabled)
+ 		return;
+ 
+-	/* If global, we need to also start the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_start();
+-
+ 	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-
+ 	if (--tr->stop_count) {
+-		if (tr->stop_count < 0) {
++		if (WARN_ON_ONCE(tr->stop_count < 0)) {
+ 			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+ 			tr->stop_count = 0;
+ 		}
+ 		goto out;
+ 	}
+ 
++	/* Prevent the buffers from switching */
++	arch_spin_lock(&tr->max_lock);
++
+ 	buffer = tr->array_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ 
++#ifdef CONFIG_TRACER_MAX_TRACE
++	buffer = tr->max_buffer.buffer;
++	if (buffer)
++		ring_buffer_record_enable(buffer);
++#endif
++
++	arch_spin_unlock(&tr->max_lock);
++
++ out:
++	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
++}
++
++/**
++ * tracing_start - quick start of the tracer
++ *
++ * If tracing is enabled but was stopped by tracing_stop,
++ * this will start the tracer back up.
++ */
++void tracing_start(void)
++
++{
++	return tracing_start_tr(&global_trace);
++}
++
++static void tracing_stop_tr(struct trace_array *tr)
++{
++	struct trace_buffer *buffer;
++	unsigned long flags;
++
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (tr->stop_count++)
++		goto out;
++
++	/* Prevent the buffers from switching */
++	arch_spin_lock(&tr->max_lock);
++
++	buffer = tr->array_buffer.buffer;
++	if (buffer)
++		ring_buffer_record_disable(buffer);
++
++#ifdef CONFIG_TRACER_MAX_TRACE
++	buffer = tr->max_buffer.buffer;
++	if (buffer)
++		ring_buffer_record_disable(buffer);
++#endif
++
++	arch_spin_unlock(&tr->max_lock);
++
+  out:
+ 	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+@@ -2442,51 +2444,7 @@ static void tracing_start_tr(struct trace_array *tr)
+  */
+ void tracing_stop(void)
+ {
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (global_trace.stop_count++)
+-		goto out;
+-
+-	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
+-
+-	buffer = global_trace.array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_disable(buffer);
+-
+-#ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_disable(buffer);
+-#endif
+-
+-	arch_spin_unlock(&global_trace.max_lock);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
+-}
+-
+-static void tracing_stop_tr(struct trace_array *tr)
+-{
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	/* If global, we need to also stop the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_stop();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-	if (tr->stop_count++)
+-		goto out;
+-
+-	buffer = tr->array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_disable(buffer);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
++	return tracing_stop_tr(&global_trace);
+ }
+ 
+ static int trace_save_cmdline(struct task_struct *tsk)
 
 
