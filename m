@@ -1,118 +1,274 @@
-Return-Path: <stable+bounces-5147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD5A80B44E
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:47:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A12880B44F
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:48:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4627E1C20B12
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:47:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC0C1C20B01
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:48:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0865B14293;
-	Sat,  9 Dec 2023 12:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942041429A;
+	Sat,  9 Dec 2023 12:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yb5PwMR/"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="1NtHgb7u"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C253E748C
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:47:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8679C433C8;
-	Sat,  9 Dec 2023 12:47:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702126029;
-	bh=lRpZzRdn1aWvPpk8lihzSv3U3tCncNrI3KRdQfLyeW8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=yb5PwMR/bZhysqpxmHSiS/UJwpG4Yj2Xw1ggEx40lk/hHwDvI9GTE5Xt6IIL/g23i
-	 tR+Ib6yAahca/KOA9YPgeKCxgitU7JrPvHoq7oCUcK+NBarnwBOpOoOSUWAOGiEgX1
-	 oN77b5Fcrew4ROeGBOAKUf044mwOtUlmJTovEw7I=
-Subject: FAILED: patch "[PATCH] drm/amdgpu: disable MCBP by default" failed to apply to 6.6-stable tree
-To: Jiadong.Zhu@amd.com,alexander.deucher@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:46:53 +0100
-Message-ID: <2023120953-unaligned-chowtime-dd0c@gregkh>
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC494CF
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 04:48:13 -0800 (PST)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1d053c45897so26858235ad.2
+        for <stable@vger.kernel.org>; Sat, 09 Dec 2023 04:48:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702126093; x=1702730893; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=KDuKsEpatsiEvokXiP3A2w/VkoVn9TGzax/PQCWjRJ0=;
+        b=1NtHgb7uGb1ePnXoRBsQ7edkF/SBn06FipmO8a3Kh6L4iyiv+G4KoCah2tEv9lmcAv
+         PCYyeMb+2w1Rb+uBRQcpXge8W9nbWCtztb0eOKOt4c02ZIVlXrQQ9amM1XLTIyD5pDvW
+         5G9qvKMcnkf4VV8vg7xUKwWVug7w8WdNxaHSh4oJdjN++5a/5FFgn8qHQBm+NHXLFyOS
+         82bJXKQkpAk5YodcBq2tG12bEmaH4rHDRlGZlSl+A4HhrVVgG6wQD/JwMc9hLk+Dx1eP
+         G/ClT2BZudYPM7XPj+9443PH4O6WLGMI9g7lqtHZjj2fNoTEWdx93A0Q1f7w7IdQ5JWN
+         L0LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702126093; x=1702730893;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KDuKsEpatsiEvokXiP3A2w/VkoVn9TGzax/PQCWjRJ0=;
+        b=OsG5G1HVfr+RRLToYHawTDcZlvQBcXigC6zOBkThmVPp1nv2PXMk5jXKM21FG7po/G
+         tgpa+647oGye1J0oE+iAhJfa4ncgzM0c4+k7FHXQmGGnux+GcqJYDQ5EfhZCe+qSG+em
+         czAbG/w6o4O61UTgSmWzYfBeh1VZQPA1dW+uxS0+PUsBWX3siYsC0nIPQ1207f/+xrS2
+         sFVl20A+6rJfcmCd+rG7s9WXfwW1cJ7pCN3x/448AAsNPyGl7zbCE6sTNmKnebo1eHAq
+         yjiJE0zZgd4VqOmO2pmrPUsuUgwhQqZAw06N64BazFEYhE4P/RuM+KPiBSYoF80K7tnU
+         asGg==
+X-Gm-Message-State: AOJu0YxJ6GHHVeMGvSQkG7278YTDA/5GA574U+mTrqTMY/h/879+3JZn
+	o17Rdxd+e7WgbQbhUGEdyCo1AuVDHwfMs4byKRbUTw==
+X-Google-Smtp-Source: AGHT+IH3JewSEA7jlldwoqwE1Kz7mISbTCdjn2zParyDd3fDOhCTvehWBg+3oUwDlB494gCTY+9eCQ==
+X-Received: by 2002:a17:903:18e:b0:1d0:6ffd:9e35 with SMTP id z14-20020a170903018e00b001d06ffd9e35mr1909657plg.135.1702126092638;
+        Sat, 09 Dec 2023 04:48:12 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id v23-20020a170902e8d700b001d05fb4cf2csm3337277plg.15.2023.12.09.04.48.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Dec 2023 04:48:12 -0800 (PST)
+Message-ID: <6574620c.170a0220.7504c.a6b3@mx.google.com>
+Date: Sat, 09 Dec 2023 04:48:12 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.332-10-gf9198816842fd
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.332-10-gf9198816842fd)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
+
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.332-10-gf9198816842fd)
+
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.332-10-gf9198816842fd/
+
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.332-10-gf9198816842fd
+Git Commit: f9198816842fd17ffa3811521d81962576c58b14
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Warnings summary:
 
-To reproduce the conflict and resubmit, you may use the following commands:
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x d6a57588666301acd9d42d3b00d74240964f07f6
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120953-unaligned-chowtime-dd0c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+Section mismatches summary:
 
-Possible dependencies:
+    3    WARNING: modpost: Found 1 section mismatch(es).
 
-d6a575886663 ("drm/amdgpu: disable MCBP by default")
-4e8303cf2c4d ("drm/amdgpu: Use function for IP version check")
-6b7d211740da ("drm/amdgpu: Fix refclk reporting for SMU v13.0.6")
-1b8e56b99459 ("drm/amdgpu: Restrict bootloader wait to SMUv13.0.6")
-983ac45a06ae ("drm/amdgpu: update SET_HW_RESOURCES definition for UMSCH")
-822f7808291f ("drm/amdgpu/discovery: enable UMSCH 4.0 in IP discovery")
-3488c79beafa ("drm/amdgpu: add initial support for UMSCH")
-2da1b04a2096 ("drm/amdgpu: add UMSCH 4.0 api definition")
-3ee8fb7005ef ("drm/amdgpu: enable VPE for VPE 6.1.0")
-9d4346bdbc64 ("drm/amdgpu: add VPE 6.1.0 support")
-e370f8f38976 ("drm/amdgpu: Add bootloader wait for PSP v13")
-aba2be41470a ("drm/amdgpu: add mmhub 3.3.0 support")
-15e7cbd91de6 ("drm/amdgpu/gfx11: initialize gfx11.5.0")
-f56c1941ebb7 ("drm/amdgpu: use 6.1.0 register offset for HDP CLK_CNTL")
-15c5c5f57514 ("drm/amdgpu: Add bootloader status check")
-3cce0bfcd0f9 ("drm/amd/display: Enable Replay for static screen use cases")
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
 
-thanks,
+Detailed per-defconfig build reports:
 
-greg k-h
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
 
------------------- original commit in Linus's tree ------------------
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
 
-From d6a57588666301acd9d42d3b00d74240964f07f6 Mon Sep 17 00:00:00 2001
-From: Jiadong Zhu <Jiadong.Zhu@amd.com>
-Date: Fri, 1 Dec 2023 08:38:15 +0800
-Subject: [PATCH] drm/amdgpu: disable MCBP by default
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
-Disable MCBP(mid command buffer preemption) by default as old Mesa
-hangs with it. We shall not enable the feature that breaks old usermode
-driver.
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
 
-Fixes: 50a7c8765ca6 ("drm/amdgpu: enable mcbp by default on gfx9")
-Signed-off-by: Jiadong Zhu <Jiadong.Zhu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 5c0817cbc7c2..1cc1ae2743c1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -3791,10 +3791,6 @@ static void amdgpu_device_set_mcbp(struct amdgpu_device *adev)
- 		adev->gfx.mcbp = true;
- 	else if (amdgpu_mcbp == 0)
- 		adev->gfx.mcbp = false;
--	else if ((amdgpu_ip_version(adev, GC_HWIP, 0) >= IP_VERSION(9, 0, 0)) &&
--		 (amdgpu_ip_version(adev, GC_HWIP, 0) < IP_VERSION(10, 0, 0)) &&
--		 adev->gfx.num_gfx_rings)
--		adev->gfx.mcbp = true;
- 
- 	if (amdgpu_sriov_vf(adev))
- 		adev->gfx.mcbp = true;
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
 
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
