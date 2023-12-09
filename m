@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3860E80B432
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:27:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 769FA80B434
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:33:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E360A2810D0
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:27:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1F4F2810B3
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82E314293;
-	Sat,  9 Dec 2023 12:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DEA11184;
+	Sat,  9 Dec 2023 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hf2DxPSj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5zrffyX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FEA14286
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:27:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD9CC433C8;
-	Sat,  9 Dec 2023 12:27:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F16187C
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:33:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DD7C433C7;
+	Sat,  9 Dec 2023 12:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702124839;
-	bh=ezgQiL2UkB9jjcxE1R+tyKatuFzKlkdwi8Y6Sl7jm8E=;
+	s=korg; t=1702125199;
+	bh=zQVo12L6ZxcjSAeeIrbT1Ophdyxp/SOhlKwNuB0ZzVA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Hf2DxPSjKZEj1HJfIhUxriz+WEPNgJbKc/fJKilHXhp74+dcs5P7gugMCixaCVxD7
-	 DtQp0Q/fyljBxmIPAjR2YzuWInYRT36IGdEK1v5z1vfGBZcHqFCL0O7N8ES25kqjMw
-	 Jz8lsWqelW4X0Jjv7oqDi9YygE35rSRBmKNJ38SA=
-Subject: FAILED: patch "[PATCH] tracing: Disable snapshot buffer when stopping instance" failed to apply to 4.14-stable tree
-To: rostedt@goodmis.org,akpm@linux-foundation.org,mark.rutland@arm.com,mathieu.desnoyers@efficios.com,mhiramat@kernel.org
+	b=P5zrffyXOqMqDwTE6cVyREj2Vr5xkOu4JHRvh/8+Z19P5hzbWbRwnviCYEKD1jW1f
+	 samftbLIi1L6Ix5jgT3ml2tlpgVxf+QwnHV4yU+aJTp1Rbl8puLA/juvZJ4ctozGea
+	 +qWUeEYpFaulkfgICHcq+Cj3yg/hrkJ1CGqG7YBQ=
+Subject: FAILED: patch "[PATCH] r8169: fix rtl8125b PAUSE frames blasting when suspended" failed to apply to 5.15-stable tree
+To: hau@realtek.com,grundler@chromium.org,hkallweit1@gmail.com,jacob.e.keller@intel.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:27:10 +0100
-Message-ID: <2023120910-reputable-mummy-5f86@gregkh>
+Date: Sat, 09 Dec 2023 13:33:17 +0100
+Message-ID: <2023120916-frigidly-dispatch-b4f7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,29 +45,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x b538bf7d0ec11ca49f536dfda742a5f6db90a798
+git cherry-pick -x 4b0768b6556af56ee9b7cf4e68452a2b6289ae45
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120910-reputable-mummy-5f86@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120916-frigidly-dispatch-b4f7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-b538bf7d0ec1 ("tracing: Disable snapshot buffer when stopping instance tracers")
-13292494379f ("tracing: Make struct ring_buffer less ambiguous")
-1c5eb4481e01 ("tracing: Rename trace_buffer to array_buffer")
-2d6425af6116 ("tracing: Declare newly exported APIs in include/linux/trace.h")
-a47b53e95acc ("tracing: Rename tracing_reset() to tracing_reset_cpu()")
-46cc0b44428d ("tracing/snapshot: Resize spare buffer if size changed")
-d2d8b146043a ("Merge tag 'trace-v5.2' of git://git.kernel.org/pub/scm/linux/kernel/git/rostedt/linux-trace")
+4b0768b6556a ("r8169: fix rtl8125b PAUSE frames blasting when suspended")
+efc37109c780 ("r8169: remove support for chip version 60")
+ebe598985711 ("r8169: remove support for chip versions 45 and 47")
+68650b4e6c13 ("r8169: support L1.2 control on RTL8168h")
+c217ab7a3961 ("r8169: enable ASPM L1.2 if system vendor flags it as safe")
+4b5f82f6aaef ("r8169: enable ASPM L1/L1.1 from RTL8168h")
 
 thanks,
 
@@ -75,216 +74,68 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From b538bf7d0ec11ca49f536dfda742a5f6db90a798 Mon Sep 17 00:00:00 2001
-From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Date: Tue, 5 Dec 2023 16:52:11 -0500
-Subject: [PATCH] tracing: Disable snapshot buffer when stopping instance
- tracers
+From 4b0768b6556af56ee9b7cf4e68452a2b6289ae45 Mon Sep 17 00:00:00 2001
+From: ChunHao Lin <hau@realtek.com>
+Date: Wed, 29 Nov 2023 23:53:50 +0800
+Subject: [PATCH] r8169: fix rtl8125b PAUSE frames blasting when suspended
 
-It use to be that only the top level instance had a snapshot buffer (for
-latency tracers like wakeup and irqsoff). When stopping a tracer in an
-instance would not disable the snapshot buffer. This could have some
-unintended consequences if the irqsoff tracer is enabled.
+When FIFO reaches near full state, device will issue pause frame.
+If pause slot is enabled(set to 1), in this time, device will issue
+pause frame only once. But if pause slot is disabled(set to 0), device
+will keep sending pause frames until FIFO reaches near empty state.
 
-Consolidate the tracing_start/stop() with tracing_start/stop_tr() so that
-all instances behave the same. The tracing_start/stop() functions will
-just call their respective tracing_start/stop_tr() with the global_array
-passed in.
+When pause slot is disabled, if there is no one to handle receive
+packets, device FIFO will reach near full state and keep sending
+pause frames. That will impact entire local area network.
 
-Link: https://lkml.kernel.org/r/20231205220011.041220035@goodmis.org
+This issue can be reproduced in Chromebox (not Chromebook) in
+developer mode running a test image (and v5.10 kernel):
+1) ping -f $CHROMEBOX (from workstation on same local network)
+2) run "powerd_dbus_suspend" from command line on the $CHROMEBOX
+3) ping $ROUTER (wait until ping fails from workstation)
 
+Takes about ~20-30 seconds after step 2 for the local network to
+stop working.
+
+Fix this issue by enabling pause slot to only send pause frame once
+when FIFO reaches near full state.
+
+Fixes: f1bce4ad2f1c ("r8169: add support for RTL8125")
+Reported-by: Grant Grundler <grundler@chromium.org>
+Tested-by: Grant Grundler <grundler@chromium.org>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: ChunHao Lin <hau@realtek.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/20231129155350.5843-1-hau@realtek.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index e978868b1a22..2492c6c76850 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2360,49 +2360,6 @@ int is_tracing_stopped(void)
- 	return global_trace.stop_count;
- }
- 
--/**
-- * tracing_start - quick start of the tracer
-- *
-- * If tracing is enabled but was stopped by tracing_stop,
-- * this will start the tracer back up.
-- */
--void tracing_start(void)
--{
--	struct trace_buffer *buffer;
--	unsigned long flags;
--
--	if (tracing_disabled)
--		return;
--
--	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
--	if (--global_trace.stop_count) {
--		if (global_trace.stop_count < 0) {
--			/* Someone screwed up their debugging */
--			WARN_ON_ONCE(1);
--			global_trace.stop_count = 0;
--		}
--		goto out;
--	}
--
--	/* Prevent the buffers from switching */
--	arch_spin_lock(&global_trace.max_lock);
--
--	buffer = global_trace.array_buffer.buffer;
--	if (buffer)
--		ring_buffer_record_enable(buffer);
--
--#ifdef CONFIG_TRACER_MAX_TRACE
--	buffer = global_trace.max_buffer.buffer;
--	if (buffer)
--		ring_buffer_record_enable(buffer);
--#endif
--
--	arch_spin_unlock(&global_trace.max_lock);
--
-- out:
--	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
--}
--
- static void tracing_start_tr(struct trace_array *tr)
- {
- 	struct trace_buffer *buffer;
-@@ -2411,25 +2368,70 @@ static void tracing_start_tr(struct trace_array *tr)
- 	if (tracing_disabled)
- 		return;
- 
--	/* If global, we need to also start the max tracer */
--	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
--		return tracing_start();
--
- 	raw_spin_lock_irqsave(&tr->start_lock, flags);
--
- 	if (--tr->stop_count) {
--		if (tr->stop_count < 0) {
-+		if (WARN_ON_ONCE(tr->stop_count < 0)) {
- 			/* Someone screwed up their debugging */
--			WARN_ON_ONCE(1);
- 			tr->stop_count = 0;
- 		}
- 		goto out;
- 	}
- 
-+	/* Prevent the buffers from switching */
-+	arch_spin_lock(&tr->max_lock);
-+
- 	buffer = tr->array_buffer.buffer;
- 	if (buffer)
- 		ring_buffer_record_enable(buffer);
- 
-+#ifdef CONFIG_TRACER_MAX_TRACE
-+	buffer = tr->max_buffer.buffer;
-+	if (buffer)
-+		ring_buffer_record_enable(buffer);
-+#endif
-+
-+	arch_spin_unlock(&tr->max_lock);
-+
-+ out:
-+	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
-+}
-+
-+/**
-+ * tracing_start - quick start of the tracer
-+ *
-+ * If tracing is enabled but was stopped by tracing_stop,
-+ * this will start the tracer back up.
-+ */
-+void tracing_start(void)
-+
-+{
-+	return tracing_start_tr(&global_trace);
-+}
-+
-+static void tracing_stop_tr(struct trace_array *tr)
-+{
-+	struct trace_buffer *buffer;
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&tr->start_lock, flags);
-+	if (tr->stop_count++)
-+		goto out;
-+
-+	/* Prevent the buffers from switching */
-+	arch_spin_lock(&tr->max_lock);
-+
-+	buffer = tr->array_buffer.buffer;
-+	if (buffer)
-+		ring_buffer_record_disable(buffer);
-+
-+#ifdef CONFIG_TRACER_MAX_TRACE
-+	buffer = tr->max_buffer.buffer;
-+	if (buffer)
-+		ring_buffer_record_disable(buffer);
-+#endif
-+
-+	arch_spin_unlock(&tr->max_lock);
-+
-  out:
- 	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
- }
-@@ -2442,51 +2444,7 @@ static void tracing_start_tr(struct trace_array *tr)
-  */
- void tracing_stop(void)
- {
--	struct trace_buffer *buffer;
--	unsigned long flags;
--
--	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
--	if (global_trace.stop_count++)
--		goto out;
--
--	/* Prevent the buffers from switching */
--	arch_spin_lock(&global_trace.max_lock);
--
--	buffer = global_trace.array_buffer.buffer;
--	if (buffer)
--		ring_buffer_record_disable(buffer);
--
--#ifdef CONFIG_TRACER_MAX_TRACE
--	buffer = global_trace.max_buffer.buffer;
--	if (buffer)
--		ring_buffer_record_disable(buffer);
--#endif
--
--	arch_spin_unlock(&global_trace.max_lock);
--
-- out:
--	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
--}
--
--static void tracing_stop_tr(struct trace_array *tr)
--{
--	struct trace_buffer *buffer;
--	unsigned long flags;
--
--	/* If global, we need to also stop the max tracer */
--	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
--		return tracing_stop();
--
--	raw_spin_lock_irqsave(&tr->start_lock, flags);
--	if (tr->stop_count++)
--		goto out;
--
--	buffer = tr->array_buffer.buffer;
--	if (buffer)
--		ring_buffer_record_disable(buffer);
--
-- out:
--	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
-+	return tracing_stop_tr(&global_trace);
- }
- 
- static int trace_save_cmdline(struct task_struct *tsk)
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 62cabeeb842a..bb787a52bc75 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -196,6 +196,7 @@ enum rtl_registers {
+ 					/* No threshold before first PCI xfer */
+ #define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
+ #define	RX_EARLY_OFF			(1 << 11)
++#define	RX_PAUSE_SLOT_ON		(1 << 11)	/* 8125b and later */
+ #define	RXCFG_DMA_SHIFT			8
+ 					/* Unlimited maximum PCI burst. */
+ #define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
+@@ -2306,9 +2307,13 @@ static void rtl_init_rxcfg(struct rtl8169_private *tp)
+ 	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
+ 		break;
+-	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
++	case RTL_GIGA_MAC_VER_61:
+ 		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
+ 		break;
++	case RTL_GIGA_MAC_VER_63:
++		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST |
++			RX_PAUSE_SLOT_ON);
++		break;
+ 	default:
+ 		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
+ 		break;
 
 
