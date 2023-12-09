@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 481FA80B43D
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A9880B43E
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:36:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 793321C20AF1
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF28E2810BE
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CB411703;
-	Sat,  9 Dec 2023 12:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DCC11703;
+	Sat,  9 Dec 2023 12:36:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSaOwIIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EYs89VUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0004F6ABB
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B10C433C7;
-	Sat,  9 Dec 2023 12:36:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0273C6ABB
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:36:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A29EC433C8;
+	Sat,  9 Dec 2023 12:36:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702125376;
-	bh=eErQJJLrlEcCYKw5YFcjveH0PLtWnHpZnSF1rXttTzs=;
+	s=korg; t=1702125381;
+	bh=Z7pvnBY64/n8n2wE7kj3r27XdBkm5moUUQxIUvp35kI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sSaOwIIt9R5HYmOZqkso+X6Fk8hbixqm85MFwJmLdA6JLhH9kahwVwzaVgF+ic0Im
-	 VEZRmTXM4lEnobVbm4dipwUx+Msx48kU/HpyNgijlDRPZxeB+Z5vsHHE1xAQNy962f
-	 IfC26VylaCgOEn42U3xPDwhURa+9XEPq0KVMUuZI=
-Subject: FAILED: patch "[PATCH] mm/memory_hotplug: fix error handling in" failed to apply to 5.10-stable tree
+	b=EYs89VUSEXYMHni7POhVlRKigvp2j4vbtaNekLmtTB/FO/g2PFZ7F+Pl4vYhbys1j
+	 NsaS8m1eWMBPT7J5CrRSoXdqQ0WpFiwoW4+a7ch72EPag5q29nSY52AladLRCB+XVP
+	 8iDzSaZbrfRIIje2MU0qf1Lfpgbms1TU+io2W3BE=
+Subject: FAILED: patch "[PATCH] mm/memory_hotplug: fix error handling in" failed to apply to 6.1-stable tree
 To: sumanthk@linux.ibm.com,agordeev@linux.ibm.com,akpm@linux-foundation.org,aneesh.kumar@linux.ibm.com,anshuman.khandual@arm.com,david@redhat.com,gerald.schaefer@linux.ibm.com,gor@linux.ibm.com,hca@linux.ibm.com,lkp@intel.com,mhocko@suse.com,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:36:07 +0100
-Message-ID: <2023120907-trophy-subdivide-10be@gregkh>
+Date: Sat, 09 Dec 2023 13:36:18 +0100
+Message-ID: <2023120918-qualify-refutable-6c2a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x f42ce5f087eb69e47294ababd2e7e6f88a82d308
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120907-trophy-subdivide-10be@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120918-qualify-refutable-6c2a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,21 +66,6 @@ f42ce5f087eb ("mm/memory_hotplug: fix error handling in add_memory_resource()")
 2d1f649c7c08 ("mm/memory_hotplug: support memmap_on_memory when memmap is not aligned to pageblocks")
 85a2b4b08f20 ("mm/memory_hotplug: allow architecture to override memmap on memory support check")
 e3c2bfdd33a3 ("mm/memory_hotplug: allow memmap on memory hotplug request to fallback")
-66361095129b ("mm: memory_hotplug: make hugetlb_optimize_vmemmap compatible with memmap_on_memory")
-78f39084b41d ("mm: hugetlb_vmemmap: add hugetlb_optimize_vmemmap sysctl")
-9c54c522bb76 ("mm: hugetlb_vmemmap: use kstrtobool for hugetlb_vmemmap param parsing")
-6e02c46b4d97 ("mm: memory_hotplug: override memmap_on_memory when hugetlb_free_vmemmap=on")
-0effdf461c57 ("mm: hugetlb_vmemmap: disable hugetlb_optimize_vmemmap when struct page crosses page boundaries")
-47010c040dec ("mm: hugetlb_vmemmap: cleanup CONFIG_HUGETLB_PAGE_FREE_VMEMMAP*")
-f10f1442c309 ("mm: hugetlb_vmemmap: cleanup hugetlb_free_vmemmap_enabled*")
-5981611d0a00 ("mm: hugetlb_vmemmap: cleanup hugetlb_vmemmap related functions")
-1e63ac088f20 ("arm64: mm: hugetlb: enable HUGETLB_PAGE_FREE_VMEMMAP for arm64")
-2e4ec02bbcc0 ("mm: hugetlb_vmemmap: introduce ARCH_WANT_HUGETLB_PAGE_FREE_VMEMMAP")
-2aa065f7afb2 ("drivers/base/memory: clarify adding and removing of memory blocks")
-395f6081bad4 ("drivers/base/memory: determine and store zone for single-zone memory blocks")
-7ea0d2d79da0 ("drivers/base/memory: add memory block to memory group after registration succeeded")
-e54084173487 ("mm: sparsemem: move vmemmap related to HugeTLB to CONFIG_HUGETLB_PAGE_FREE_VMEMMAP")
-a6b40850c442 ("mm: hugetlb: replace hugetlb_free_vmemmap_enabled with a static_key")
 
 thanks,
 
