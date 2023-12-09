@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 769FA80B434
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:33:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74B1880B436
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 13:33:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1F4F2810B3
-	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:33:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8245B20B10
+	for <lists+stable@lfdr.de>; Sat,  9 Dec 2023 12:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DEA11184;
-	Sat,  9 Dec 2023 12:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DD011184;
+	Sat,  9 Dec 2023 12:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5zrffyX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxDOTMC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F16187C
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:33:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DD7C433C7;
-	Sat,  9 Dec 2023 12:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADAD187C
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 12:33:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21446C433C7;
+	Sat,  9 Dec 2023 12:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702125199;
-	bh=zQVo12L6ZxcjSAeeIrbT1Ophdyxp/SOhlKwNuB0ZzVA=;
+	s=korg; t=1702125209;
+	bh=FONxdUC4Zo0FGJIuqsBfZFHT8jAwrXV5C2mE5fBG0dA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=P5zrffyXOqMqDwTE6cVyREj2Vr5xkOu4JHRvh/8+Z19P5hzbWbRwnviCYEKD1jW1f
-	 samftbLIi1L6Ix5jgT3ml2tlpgVxf+QwnHV4yU+aJTp1Rbl8puLA/juvZJ4ctozGea
-	 +qWUeEYpFaulkfgICHcq+Cj3yg/hrkJ1CGqG7YBQ=
-Subject: FAILED: patch "[PATCH] r8169: fix rtl8125b PAUSE frames blasting when suspended" failed to apply to 5.15-stable tree
+	b=TxDOTMC44OqEu+NXiQl01acmooSuYqfpU+d7orhT7sJUvWt4d4NJ9eupek8qmUdIa
+	 l/7VcS8/ffBRPNNSftZBqHFbBDGdvJ3dhoUjIis40ooc2uxmVP8VcbqG7Ziv10+9Ef
+	 YyhcORcgmiK9aPX9VBbS4yL4s8hDUNS3AcHWkRcE=
+Subject: FAILED: patch "[PATCH] r8169: fix rtl8125b PAUSE frames blasting when suspended" failed to apply to 5.10-stable tree
 To: hau@realtek.com,grundler@chromium.org,hkallweit1@gmail.com,jacob.e.keller@intel.com,kuba@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sat, 09 Dec 2023 13:33:17 +0100
-Message-ID: <2023120916-frigidly-dispatch-b4f7@gregkh>
+Date: Sat, 09 Dec 2023 13:33:18 +0100
+Message-ID: <2023120918-coma-plentiful-2159@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,19 +45,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4b0768b6556af56ee9b7cf4e68452a2b6289ae45
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120916-frigidly-dispatch-b4f7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023120918-coma-plentiful-2159@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -67,6 +67,11 @@ ebe598985711 ("r8169: remove support for chip versions 45 and 47")
 68650b4e6c13 ("r8169: support L1.2 control on RTL8168h")
 c217ab7a3961 ("r8169: enable ASPM L1.2 if system vendor flags it as safe")
 4b5f82f6aaef ("r8169: enable ASPM L1/L1.1 from RTL8168h")
+18a9eae240cb ("r8169: enable ASPM L0s state")
+e6d6ca6e1204 ("r8169: Add support for another RTL8168FP")
+e0d38b588075 ("r8169: improve DASH support")
+c6cff9dfebb3 ("r8169: move ERI access functions to avoid forward declaration")
+ae0d0bb29b31 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
