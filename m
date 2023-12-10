@@ -1,274 +1,233 @@
-Return-Path: <stable+bounces-5185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B5180B893
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 04:40:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A90F80B8E3
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 05:50:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BA4E1C2084D
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 03:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B564C280ECD
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 04:50:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A58A15B2;
-	Sun, 10 Dec 2023 03:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE2517E1;
+	Sun, 10 Dec 2023 04:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="yBST/+qu"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aoW5CPJP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21E0BFE
-	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 19:40:31 -0800 (PST)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-35da160de2bso13990715ab.1
-        for <stable@vger.kernel.org>; Sat, 09 Dec 2023 19:40:31 -0800 (PST)
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BA25CC
+	for <stable@vger.kernel.org>; Sat,  9 Dec 2023 20:50:20 -0800 (PST)
+Received: by mail-qk1-x731.google.com with SMTP id af79cd13be357-77f552d4179so107068485a.1
+        for <stable@vger.kernel.org>; Sat, 09 Dec 2023 20:50:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702179630; x=1702784430; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fOl/zUjkAjuzwDVdlqG7va60A+1B+LN+Jta60wuf6AA=;
-        b=yBST/+qulQYrlrpbOnQ61Ltb5o/SGEf2QoVFUEvfdlRB93Y2rcLAaH78LCa2WVmNBJ
-         TZNgQIwzp8mX7vkC18I66rXxZ1tIu2/qLD1EV3F5zeyUzBLDNoBWSK3vXM5XNg8sIRZd
-         dZcjjZmle8XyEIYAZzBxBepvRqALeCX1WZrckKaP7BmOMavvwF/5g7VyEWRSPSdaM+55
-         krpI9ppLH6uab919CjaDUB+UtWpwSLI9FO5VNpwsp3dUEbsz2jNgTHEaAhzYqlCAKmgq
-         bNVd570vbO7Hf75t/ymELyyYsTvDSiGfJsWttrRFb0Ymi3Z4tWGHnnhDO4HCc3mZBe1q
-         bypg==
+        d=google.com; s=20230601; t=1702183819; x=1702788619; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YIkIlVjuTsSZonYbT9Lh+ydI60SKI4+lH6hx+9t9RiI=;
+        b=aoW5CPJPcB/+VBCVaf8ti0WvZyw+SThvDMS6V8XyUnwzaiQqIsL/v6q3qU4hdRcKvB
+         XeCSyDVdH5KoRczSxUYAILALIcB/cvANvB+hGDNL4VtOpVzd52VxG7iW6cP2js7gTwc6
+         tFKbFqv5LFR2PTQUfHtHIQBO5NWBwMV5HWKVJOePgsQikZzQ7eJVQE4ZX1Y4Hl7rVrrM
+         MYaQOptEu4J4dx94NCwMp1Ps9z+z3s7sOSFXO1WJN1ese/HMFaDvRrk0EpyUgYzfswHw
+         Xt+NA2TRIhxOQi2BXOo2lfCiv16+3EeECP5DYkg61UUqeXQa8py/Gy03glJmT7gVokhU
+         zBrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702179630; x=1702784430;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fOl/zUjkAjuzwDVdlqG7va60A+1B+LN+Jta60wuf6AA=;
-        b=LAVS3COluQv7Ih7Q0HqN0JNV1nLiXR/543xZds1Pd34j/baBc+GaK8hjxBWX8cbHwY
-         a81fq/fjyVa6v8KQKed+jnt/DY63VtzqnCuFMOz6X+D3KhGs5I8YELvAlhl+eQlGE9Py
-         5aSfPA4Neo97aO1+QuzgnMCubyqpxjCYAWFdHpLinAesY7ROILZ5Hkjjh98GdOGbVl0q
-         eT8uJmbsSsG7COe+c3Cuwrtxkgaz9oP+sFgWlX4Zkrlj+pDZm4GvL6bnXbnOP3Lh6+Fr
-         Ia472jJT3z0f8uauW9F7MO6Ghu4Kh63LU7jQvT+OADiJuS58oSSLjCWlL6qrhK97wRmE
-         MWDQ==
-X-Gm-Message-State: AOJu0Yw6n5c81JR8xJkS1lWw++8//SSF1noTu4dNTXpz8vrtMmEeVgQk
-	wpbiVI/xvKT+iZjd64Rv74UzQriMBGYh+9cN3ie0ng==
-X-Google-Smtp-Source: AGHT+IEsjEPy2ViaUNJqSffetCi7iLtOqUYyb49wFX4Xa1Ht7fRCBMQF0/O6qrrOYbKsDyVzYQU4ew==
-X-Received: by 2002:a05:6e02:1c49:b0:35d:66a0:5432 with SMTP id d9-20020a056e021c4900b0035d66a05432mr4660064ilg.13.1702179630053;
-        Sat, 09 Dec 2023 19:40:30 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id s22-20020a170902989600b001ce5b859a59sm4088201plp.305.2023.12.09.19.40.29
+        d=1e100.net; s=20230601; t=1702183819; x=1702788619;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YIkIlVjuTsSZonYbT9Lh+ydI60SKI4+lH6hx+9t9RiI=;
+        b=wQg0h9NFSN8dYNuUpPnZInJrknClw4cAHK/ambQaLvPyrnInuyBb43L+/buOwvpnYe
+         hBFYrQXqrleDn3QSlQxrgA92Hdd7Q+Ov3gqOfoGzUA0F0DPkpbEelXbELlQoB705kpM8
+         b/o5sZTLaQlaz6hg0/3gRF7Dt7Smp12e16MiDxYN4jbYz8Pkl1bg+h6VBvLLzG1Re60o
+         JAAWSnnVVOIJB6p75VhQr29ylkPkj9mocYl0lyOGUkIa0QXa/2Jg9DHCRmlr0Yuriz4b
+         2NUXgcn6VHM7rVPXv9ZyRT+024a1a74wvkAxyBwitgq9NFm/+k6Mep8kShWI3r+CJAUr
+         a3gQ==
+X-Gm-Message-State: AOJu0Yxs+0vxcdKYChqQb7G2gh3TID2V+bp9kHUd0RYhtxnCWsNTK1+V
+	Gp+I0E5uqyUc1//iSo9cqa7QFMlH5EOlV1ECMWbvhg==
+X-Google-Smtp-Source: AGHT+IEm16/D/eAs3soq2Xal/FSr/wfLyb6kCBuJ6snlXpo/Orf/GeXYk5wUdplDUfNurPSmxIhKzQ==
+X-Received: by 2002:a05:620a:4620:b0:77e:fba3:939c with SMTP id br32-20020a05620a462000b0077efba3939cmr3926688qkb.126.1702183819407;
+        Sat, 09 Dec 2023 20:50:19 -0800 (PST)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id w200-20020a0dd4d1000000b005d91e8945acsm1973500ywd.110.2023.12.09.20.50.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Dec 2023 19:40:29 -0800 (PST)
-Message-ID: <6575332d.170a0220.4dc55.c7df@mx.google.com>
-Date: Sat, 09 Dec 2023 19:40:29 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Sat, 09 Dec 2023 20:50:18 -0800 (PST)
+Date: Sat, 9 Dec 2023 20:50:08 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Matthew Wilcox <willy@infradead.org>
+cc: gregkh@linuxfoundation.org, hughd@google.com, akpm@linux-foundation.org, 
+    david@redhat.com, jannh@google.com, 
+    =?ISO-8859-15?Q?Jos=E9_Pekkarinen?= <jose.pekkarinen@foxhound.fi>, 
+    kirill.shutemov@linux.intel.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] mm: fix oops when filemap_map_pmd()
+ without prealloc_pte" failed to apply to 5.15-stable tree
+In-Reply-To: <ZXS7/8jHrj8XFUoA@casper.infradead.org>
+Message-ID: <f8b98b02-3467-50b9-21de-48de571ff3ec@google.com>
+References: <2023120945-citizen-library-9f46@gregkh> <ZXS7/8jHrj8XFUoA@casper.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/4.14
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.332-16-gc41f0adab79b3
-Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.332-16-gc41f0adab79b3)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: multipart/mixed; boundary="-1463753983-612107459-1702183818=:20836"
 
-stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
-.14.332-16-gc41f0adab79b3)
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-4/kernel/v4.14.332-16-gc41f0adab79b3/
+---1463753983-612107459-1702183818=:20836
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Tree: stable-rc
-Branch: queue/4.14
-Git Describe: v4.14.332-16-gc41f0adab79b3
-Git Commit: c41f0adab79b300fe1946d4afb2dbdac329affd5
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+On Sat, 9 Dec 2023, Matthew Wilcox wrote:
+> On Sat, Dec 09, 2023 at 01:35:45PM +0100, gregkh@linuxfoundation.org wrot=
+e:
+> > The patch below does not apply to the 5.15-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+>=20
+> This should do the job.  It's not clear to me whether this bug remains
+> latent on 5.15, so it may not be appropriate to apply.  I defer to Hugh.
 
-Warnings Detected:
+Yes, that's exactly it, thanks Matthew. I knew I was going to need to
+look at this one, and even the 6.1 version, when they came out: because
+my mods did change what a safe procedure is; but this and the 6.1
+version are both good, because of the old pmd_devmap_trans_unstable()
+check which follows in both of those trees.
 
-arc:
+As to whether it's needed in 5.15 and 6.1: I believe so. There's no
+doubt that my changes made it very much easier to hit, but I think it
+was a possibility before them. When I first wrote the commit message,
+I was describing how: I think you need huge tmpfs, and MADV_DONTNEED
+zapping the huge pmd under mmap_lock for read, racing with this fault
+which, to come this way, would have needed to have been on a previous
+page table which khugepaged has collapsed just before MADV_DONTNEED
+and fault got mmap_lock for read.
 
-arm64:
+Far fetched, and of course I could be wrong. But reading my original
+commit message, I thought it was needlessly encouraging to bad actors,
+so cut it out. What I'm most afraid of is the "(or some other symptom
+in normal case of ptlock embedded not pointer)" - data corruption or
+data leak perhaps.
 
-arm:
+I see Greg provides some new and helpfully explicit instructions below,
+on how to manage sending replacement patches: I'll send a replacement
+following those instructions (but might hit an issue at git send-email
+stage - will send manually if so).
 
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
+Hugh
 
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-board (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
-nings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+>=20
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 81e28722edfa..84a5b0213e0e 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3209,7 +3209,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, s=
+truct page *page)
+>  =09    }
+>  =09}
+> =20
+> -=09if (pmd_none(*vmf->pmd)) {
+> +=09if (pmd_none(*vmf->pmd) && vmf->prealloc_pte) {
+>  =09=09vmf->ptl =3D pmd_lock(mm, vmf->pmd);
+>  =09=09if (likely(pmd_none(*vmf->pmd))) {
+>  =09=09=09mm_inc_nr_ptes(mm);
+>=20
+> > To reproduce the conflict and resubmit, you may use the following comma=
+nds:
+> >=20
+> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.=
+git/ linux-5.15.y
+> > git checkout FETCH_HEAD
+> > git cherry-pick -x 9aa1345d66b8132745ffb99b348b1492088da9e2
+> > # <resolve conflicts, build, test, etc.>
+> > git commit -s
+> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '202312094=
+5-citizen-library-9f46@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+> >=20
+> > Possible dependencies:
+> >=20
+> > 9aa1345d66b8 ("mm: fix oops when filemap_map_pmd() without prealloc_pte=
+")
+> > 03c4f20454e0 ("mm: introduce pmd_install() helper")
+> >=20
+> > thanks,
+> >=20
+> > greg k-h
+> >=20
+> > ------------------ original commit in Linus's tree ------------------
+> >=20
+> > >From 9aa1345d66b8132745ffb99b348b1492088da9e2 Mon Sep 17 00:00:00 2001
+> > From: Hugh Dickins <hughd@google.com>
+> > Date: Fri, 17 Nov 2023 00:49:18 -0800
+> > Subject: [PATCH] mm: fix oops when filemap_map_pmd() without prealloc_p=
+te
+> > MIME-Version: 1.0
+> > Content-Type: text/plain; charset=3DUTF-8
+> > Content-Transfer-Encoding: 8bit
+> >=20
+> > syzbot reports oops in lockdep's __lock_acquire(), called from
+> > __pte_offset_map_lock() called from filemap_map_pages(); or when I run =
+the
+> > repro, the oops comes in pmd_install(), called from filemap_map_pmd()
+> > called from filemap_map_pages(), just before the __pte_offset_map_lock(=
+).
+> >=20
+> > The problem is that filemap_map_pmd() has been assuming that when it fi=
+nds
+> > pmd_none(), a page table has already been prepared in prealloc_pte; and
+> > indeed do_fault_around() has been careful to preallocate one there, whe=
+n
+> > it finds pmd_none(): but what if *pmd became none in between?
+> >=20
+> > My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made=
+ it
+> > easy for *pmd to be cleared while servicing a page fault; but even befo=
+re
+> > those, a huge *pmd might be zapped while a fault is serviced.
+> >=20
+> > The difference in symptomatic stack traces comes from the "memory model=
+"
+> > in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
+> > models that is strict, and will oops on the NULL prealloc_pte; in other
+> > models, it will construct a bogus value to be populated into *pmd, then
+> > __pte_offset_map_lock() oops when trying to access split ptlock pointer
+> > (or some other symptom in normal case of ptlock embedded not pointer).
+> >=20
+> > Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekk=
+arinen@foxhound.fi/
+> > Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@go=
+ogle.com
+> > Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepa=
+ths")
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotma=
+il.com
+> > Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@g=
+oogle.com/
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> > Cc: Jann Horn <jannh@google.com>,
+> > Cc: Jos=E9 Pekkarinen <jose.pekkarinen@foxhound.fi>
+> > Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Cc: <stable@vger.kernel.org>    [5.12+]
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> >=20
+> > diff --git a/mm/filemap.c b/mm/filemap.c
+> > index 32eedf3afd45..f1c8c278310f 100644
+> > --- a/mm/filemap.c
+> > +++ b/mm/filemap.c
+> > @@ -3371,7 +3371,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf,=
+ struct folio *folio,
+> >  =09=09}
+> >  =09}
+> > =20
+> > -=09if (pmd_none(*vmf->pmd))
+> > +=09if (pmd_none(*vmf->pmd) && vmf->prealloc_pte)
+> >  =09=09pmd_install(mm, vmf->pmd, &vmf->prealloc_pte);
+> > =20
+> >  =09return false;
+> >=20
+---1463753983-612107459-1702183818=:20836--
 
