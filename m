@@ -1,113 +1,274 @@
-Return-Path: <stable+bounces-5219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7D680BD68
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 22:47:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACB480BD67
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 22:46:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A575B207DA
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 21:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D14E1C203A9
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 21:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D321CFAF;
-	Sun, 10 Dec 2023 21:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9F51CFAF;
+	Sun, 10 Dec 2023 21:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=leolam.fr header.i=@leolam.fr header.b="Y8q6aSP5"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Akh5jEy9"
 X-Original-To: stable@vger.kernel.org
-X-Greylist: delayed 477 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 10 Dec 2023 13:47:32 PST
-Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [IPv6:2001:1600:4:17::bc0c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD99CD
-	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:47:32 -0800 (PST)
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4SpJDf3SSCzMqKGL;
-	Sun, 10 Dec 2023 21:39:30 +0000 (UTC)
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4SpJDf03mqzMpp9s;
-	Sun, 10 Dec 2023 22:39:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leolam.fr;
-	s=20210220; t=1702244370;
-	bh=WJlZL56ffwYy6XwE5X4p1IcwpQ1ZzaknRnS6NkBRZUc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Y8q6aSP5zohAHl+CIkkqp/tMLznvT3L3RWB3mF7XtzZMHYzV829leToknw03trIeL
-	 7tUvhG0/C7Hc2IN70zCKcDwgrFK3FtiT31uuwUC3Br3DeZWc94i5gTqGDcUM4fyAV/
-	 s/6UzUFOk3d0DbIcK7fedhvpR5s302rakg6JwFWo=
-From: =?UTF-8?q?L=C3=A9o=20Lam?= <leo@leolam.fr>
-To: stable@vger.kernel.org
-Cc: =?UTF-8?q?L=C3=A9o=20Lam?= <leo@leolam.fr>
-Subject: [PATCH] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
-Date: Sun, 10 Dec 2023 21:39:30 +0000
-Message-ID: <20231210213930.61378-1-leo@leolam.fr>
-X-Mailer: git-send-email 2.43.0
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C768FCD
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:46:22 -0800 (PST)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-28a1625b503so3250646a91.2
+        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:46:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702244782; x=1702849582; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CyVXEoJSB2RPGZY53I7YLEqAuMghY/KbIMVesLx8S6Q=;
+        b=Akh5jEy9OV/8OKm0UwXkOLbJjxHovLgXKwmSmSUyZ/1vejSsvs127zn1NG8ghCKNrF
+         qdb7QHe1ZrDg6VsRnlxwmkYAnBx1yBmpVS3NpYTzaOSiSyoBvlONM5wH3sLY4nMr2pYf
+         fFipbkBJ7LKeqqkcWERMw9UjaKELVEFzDPSdZsv+AYvp7PO0JKKbbs9ZSFPhaEUL8q+Y
+         QgNUSRo7nKhvDEggVaIYhddNdtRUgVeN/ylxKRSFq/MwNntX3LYY2lyeDC/qDJcsq74l
+         TsCm32UgoTpcIG7LodRI+pkMtf8ZzBUUFJxq0Dbg/nUq7cxxGXQFPOuJYCzJ02lazi54
+         7nCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702244782; x=1702849582;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CyVXEoJSB2RPGZY53I7YLEqAuMghY/KbIMVesLx8S6Q=;
+        b=j1IWDRZx+0st55KQSq0dImvgIkFl0ONbffatYtg4HebweikxLpG5inKvaP8H9O9oK1
+         Of+wYXXelpXpJicq0reI1JblQpsUwRp43zl+7P2vyft8xboJ9cOHuWfoKqpJOiHzcMR7
+         RdxWEgoEVuQ7O9u/MmhgplSx2r3KNukJ7XfxxMR3DH7B/IT9/73Ee18oVqZMQHX1oLuC
+         D9mzgWNBVbqAkG/qEkBSB9x/AJaNBD908IEZwuBM6qOD3CtUhLJomQHmTSstsmgKR6x4
+         VAUaK9NgZP9GLhZcEzPKi98VQ+CnO/1pqxJnWGJpsXiuV1mgKB/BnDDi7izQWbRzXRWt
+         WpZQ==
+X-Gm-Message-State: AOJu0YyVTxKRewPLzMbqAIZmq65aiNRH1X1oDkziNUXaO9qlwHx3gwY2
+	1Vb5+DUTyLa1l+S6LDuDtDjjj5ItWjU9Qn3fQpHTbw==
+X-Google-Smtp-Source: AGHT+IFkO3qoxeB6rtQXsB7/Z74lwMOTyHdGD2YRBp6uU3GIbOoHNdlQFhem9Ei7lmfT7NDPPCuZFQ==
+X-Received: by 2002:a17:90b:3846:b0:28a:8123:f975 with SMTP id nl6-20020a17090b384600b0028a8123f975mr831994pjb.83.1702244781809;
+        Sun, 10 Dec 2023 13:46:21 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id 26-20020a17090a191a00b00286e69c8fb1sm5972934pjg.52.2023.12.10.13.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Dec 2023 13:46:21 -0800 (PST)
+Message-ID: <657631ad.170a0220.8d4c2.0b6b@mx.google.com>
+Date: Sun, 10 Dec 2023 13:46:21 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Infomaniak-Routing: alpha
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.332-16-g0a53e9f04489b
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.332-16-g0a53e9f04489b)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-Commit 4a7e92551618f3737b305f62451353ee05662f57 ("wifi: cfg80211: fix
-CQM for non-range use" on 6.6.x) causes nl80211_set_cqm_rssi not to
-release the wdev lock in some situations.
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.332-16-g0a53e9f04489b)
 
-Of course, the ensuing deadlock causes userland network managers to
-break pretty badly, and on typical systems this also causes lockups on
-on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.332-16-g0a53e9f04489b/
 
-The upstream commit, 7e7efdda6adb385fbdfd6f819d76bc68c923c394
-("wifi: cfg80211: fix CQM for non-range use"), does not trigger this
-issue because the wdev lock does not exist there.
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.332-16-g0a53e9f04489b
+Git Commit: 0a53e9f04489bec7e725501ec67f1f501865afd5
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-Fix the deadlock by releasing the lock before returning.
+Warnings Detected:
 
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
-[2] https://bbs.archlinux.org/viewtopic.php?id=290976
-[3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
+arc:
 
-Fixes: 4a7e92551618 ("wifi: cfg80211: fix CQM for non-range use")
-Cc: stable@vger.kernel.org
-Signed-off-by: Léo Lam <leo@leolam.fr>
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
 ---
- net/wireless/nl80211.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 6a82dd876f27..0b0dfecedc50 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12906,17 +12906,23 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
- 					lockdep_is_held(&wdev->mtx));
- 
- 	/* if already disabled just succeed */
--	if (!n_thresholds && !old)
--		return 0;
-+	if (!n_thresholds && !old) {
-+		err = 0;
-+		goto unlock;
-+	}
- 
- 	if (n_thresholds > 1) {
- 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
- 					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
--		    !rdev->ops->set_cqm_rssi_range_config)
--			return -EOPNOTSUPP;
-+		    !rdev->ops->set_cqm_rssi_range_config) {
-+			err = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 	} else {
--		if (!rdev->ops->set_cqm_rssi_config)
--			return -EOPNOTSUPP;
-+		if (!rdev->ops->set_cqm_rssi_config) {
-+			err = -EOPNOTSUPP;
-+			goto unlock;
-+		}
- 	}
- 
- 	if (n_thresholds) {
--- 
-2.43.0
-
+For more info write to <info@kernelci.org>
 
