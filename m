@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-5216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3467D80BD59
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 22:25:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C7F80BD5C
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 22:31:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1CC61F20F04
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 21:25:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A53201C204D6
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 21:31:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17AD1CF86;
-	Sun, 10 Dec 2023 21:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832191CF87;
+	Sun, 10 Dec 2023 21:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="OO6isPTm"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="CgbLvzC8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4ED4D0
-	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:24:52 -0800 (PST)
-Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-58cecfb4412so2152293eaf.3
-        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:24:52 -0800 (PST)
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94547E4
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:31:11 -0800 (PST)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-28659b38bc7so3742340a91.0
+        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:31:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702243491; x=1702848291; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702243871; x=1702848671; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=CnG4Nj7M3xcQrFsTcFGk220KkkIbRxEe1A0cV7qOqHc=;
-        b=OO6isPTmoJVTQ7eP6vueYnBHeU9iA9mGT4UOI2euTgkIme1HeaHqrJfsSJRBcZryB9
-         J2rJf/o3opminbrfUyWFEI0pR2+cdwaVJEUsbAbrBdwvAqlgcxZU3kO8Sg61pBcQ2Jb+
-         z0ZWrdNoONThrKBcVuxQaBdl012P1UGodZlnzCKI6Xa5pqLFfLg4cioLA1qZxDmJkXU1
-         LjvuSbJqX/OhJENKLwOhXZFDGgIfwAuzPC8bE/jCCNL96gkVig1Q/u8DytZCwes+elSQ
-         3x5gtFa0vSm5LkOO7ng77zUB8PhjyUHvg7OMn5obEER9g4dhWleVNuLFzNf34wuw7UO9
-         SGBQ==
+        bh=YvShYOb5rs6j/OiEWasAnUJCL36WE9Cre90j0PgU8us=;
+        b=CgbLvzC8jwNH/PjAoPRAM5aeYLjc9qAHQzeufWqeR5XNToBhrhs0Kf2HUkeG1uTZ0+
+         AMTWY7a6D9EkXPIaKILU0TE/jioICsAbhBENdTcVVmD7ZfRhRO+l9lC70rHh8dc6uKQL
+         hEqx5Y8NsYCBpwlBquEnMzba1gQzODllwHH+FmG/zCQOv8VLB4PWIRVsaNj4qx2qDUXg
+         bu/5evTWC4SyYee2V1j0vuS2TU5vzmtzqpH7PQ1ZqxJknghaz7LWf3iqa9IiqhbbjuWR
+         VCKcEgsFQLT/gpNKizGrLcOkWyE3Pmg/0fVpTcMph1xqytOGLcboVS05wJowaLGTUWzp
+         cvaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702243491; x=1702848291;
+        d=1e100.net; s=20230601; t=1702243871; x=1702848671;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=CnG4Nj7M3xcQrFsTcFGk220KkkIbRxEe1A0cV7qOqHc=;
-        b=vCrqcGgwnE+tfJR+CwxundXWg2CWDH+7riWIkfeb9i+rmx2luKQgh3EgVZTsR2JxMu
-         ps4clvqnaK8LdES3he82s6fHVbnwyZCZJSz1mK/m5BFvEHjVv16wQFyvP6qPs8axy+jG
-         zSA0Q3jLshIZXu31jiIxMuthviFdqnAczMB1Yz+W6NC0pmEZuMdMaoCT8Ol2lDYY0Ftr
-         csnSBNkBRH4aOOWQoCyep8hO4UKb4f4DvUhhIrY9VRgdH7qjQXSP+z7QKxEr3jimeyAJ
-         skJjNrk3ySZ8aPZ2Woq+T30MKIBg5khoNlCmi54bQf3npjCptJsitcDmo/Fuc77fl+DH
-         ETBw==
-X-Gm-Message-State: AOJu0YytU0NNCMvV2RY/NRJOwjEQEZOWjc+tkVcNGk6N1qRdrUGKPkXG
-	fUVf9JoE74+c8/GFyymSD2jzmt+j834vvHMlnJHljg==
-X-Google-Smtp-Source: AGHT+IE+LBpSKQj0TwBew7OG5kN0BkKUIPSGILoqSIfNp6Rcqg8EN5hMaPsWUMBX6TZzf3m18so8rQ==
-X-Received: by 2002:a05:6359:720c:b0:170:94d:24d1 with SMTP id uu12-20020a056359720c00b00170094d24d1mr3015821rwb.24.1702243491474;
-        Sun, 10 Dec 2023 13:24:51 -0800 (PST)
+        bh=YvShYOb5rs6j/OiEWasAnUJCL36WE9Cre90j0PgU8us=;
+        b=RFT04H8de1jkZtoNG2ftWGVXqyUkE2iuQUcH214fwtl0Qhy6TgegIKK9F5D8AkP9RF
+         xNtPqDS2VV+6Sr+ar2dYEkIAgUDc5nUayW4rdcNK37fuNGO0insmGtHBOl0+awq+PHSW
+         ylL2aYZPueFtRhf+jIVzDneUe2K05AvZ5WJQ/FmmurGVd7nOlOODaUGsKiY+2bsy/DT6
+         8qjNA8729wkcV0LPZRo9wi41uQhUWLsjaLF3fsnp5fCfE5ec3aaWX6LHSq/METKdVhey
+         N57keJjMXDjmmVMbZk5VdjpcreDe8nd5V0lW5VZHgY+rDk4G8XO1stb/nYLxt22ruZAp
+         qHTw==
+X-Gm-Message-State: AOJu0YxHSjiyU15rI55HaNjxdGilHgjHYsanj/mh+FThTG2HFQP37Lw4
+	Md/NNTliXjHmTmbnaNwKAx3/9HgXmxIYLQShJoSntQ==
+X-Google-Smtp-Source: AGHT+IGNSEWgIvzmI+KuW10V+SHSt+zIDwlV8kkUT6Wrk7FuABu8UAa5/o9hQ/cVI9eso0Yz/nKI+g==
+X-Received: by 2002:a17:90b:87:b0:286:9bc6:c95b with SMTP id bb7-20020a17090b008700b002869bc6c95bmr2467774pjb.2.1702243870610;
+        Sun, 10 Dec 2023 13:31:10 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id g14-20020a1709029f8e00b001cf7c07be50sm5159744plq.58.2023.12.10.13.24.50
+        by smtp.gmail.com with ESMTPSA id mp1-20020a17090b190100b0027722832498sm7111901pjb.52.2023.12.10.13.31.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Dec 2023 13:24:50 -0800 (PST)
-Message-ID: <65762ca2.170a0220.f10d.e3ec@mx.google.com>
-Date: Sun, 10 Dec 2023 13:24:50 -0800 (PST)
+        Sun, 10 Dec 2023 13:31:10 -0800 (PST)
+Message-ID: <65762e1e.170a0220.93232.381a@mx.google.com>
+Date: Sun, 10 Dec 2023 13:31:10 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,80 +62,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.4
+X-Kernelci-Branch: queue/5.15
 X-Kernelci-Tree: stable-rc
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.263-43-ge6e02ed35bbc0
-Subject: stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed,
- 26 warnings (v5.4.263-43-ge6e02ed35bbc0)
+X-Kernelci-Kernel: v5.15.142-112-g6fca85622af22
+Subject: stable-rc/queue/5.15 build: 20 builds: 4 failed, 16 passed, 4 errors,
+ 7 warnings (v5.15.142-112-g6fca85622af22)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/5.4 build: 17 builds: 0 failed, 17 passed, 26 warnings (v5.=
-4.263-43-ge6e02ed35bbc0)
+stable-rc/queue/5.15 build: 20 builds: 4 failed, 16 passed, 4 errors, 7 war=
+nings (v5.15.142-112-g6fca85622af22)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.4=
-/kernel/v5.4.263-43-ge6e02ed35bbc0/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
+5/kernel/v5.15.142-112-g6fca85622af22/
 
 Tree: stable-rc
-Branch: queue/5.4
-Git Describe: v5.4.263-43-ge6e02ed35bbc0
-Git Commit: e6e02ed35bbc0248b63a0a4066167ccd59708861
+Branch: queue/5.15
+Git Describe: v5.15.142-112-g6fca85622af22
+Git Commit: 6fca85622af224ed8a3158fffeed4bdcabd75f52
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
 
-Warnings Detected:
+Build Failures Detected:
+
+arm:
+    omap2plus_defconfig: (gcc-10) FAIL
+
+i386:
+    i386_defconfig: (gcc-10) FAIL
+
+x86_64:
+    x86_64_defconfig: (gcc-10) FAIL
+    x86_64_defconfig+x86-board: (gcc-10) FAIL
+
+Errors and Warnings Detected:
 
 arc:
 
 arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 2 warnings
 
 arm:
+    omap2plus_defconfig (gcc-10): 1 error, 1 warning
 
 i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 1 error, 1 warning
 
 mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
 
 x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-board (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 1 error, 2 warnings
+    x86_64_defconfig+x86-board (gcc-10): 1 error, 2 warnings
 
+Errors summary:
+
+    4    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of =
+function =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=
+=80=98kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declar=
+ation]
 
 Warnings summary:
 
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
+    4    cc1: some warnings being treated as errors
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -146,32 +144,23 @@ Detailed per-defconfig build reports:
 
 ---------------------------------------------------------------------------=
 -----
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
 
 Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
 ---------------------------------------------------------------------------=
 -----
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
 mismatches
 
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -180,25 +169,13 @@ ismatches
 
 ---------------------------------------------------------------------------=
 -----
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
 
 ---------------------------------------------------------------------------=
 -----
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
 ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
 
 ---------------------------------------------------------------------------=
 -----
@@ -207,13 +184,16 @@ haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
 
 ---------------------------------------------------------------------------=
 -----
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
+i386_defconfig (i386, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
+ mismatches
+
+Errors:
+    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
+ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
+kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
 
 Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
@@ -225,11 +205,6 @@ ection mismatches
 multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
 ction mismatches
 
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
 ---------------------------------------------------------------------------=
 -----
 multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
@@ -237,32 +212,41 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
 
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
+tion mismatches
+
+Errors:
+    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
+ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
+kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+Warnings:
+    cc1: some warnings being treated as errors
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
  mismatches
 
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
 ---------------------------------------------------------------------------=
 -----
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
 ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
 
 ---------------------------------------------------------------------------=
 -----
@@ -271,33 +255,33 @@ ction mismatches
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 se=
+ction mismatches
+
+Errors:
+    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
+ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
+kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
 
 Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+    cc1: some warnings being treated as errors
 
 ---------------------------------------------------------------------------=
 -----
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 war=
-nings, 0 section mismatches
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warn=
+ings, 0 section mismatches
+
+Errors:
+    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
+ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
+kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
 
 Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
+    cc1: some warnings being treated as errors
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
 
 ---
 For more info write to <info@kernelci.org>
