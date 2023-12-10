@@ -1,288 +1,113 @@
-Return-Path: <stable+bounces-5217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C7F80BD5C
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 22:31:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7D680BD68
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 22:47:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A53201C204D6
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 21:31:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A575B207DA
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 21:47:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832191CF87;
-	Sun, 10 Dec 2023 21:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D321CFAF;
+	Sun, 10 Dec 2023 21:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="CgbLvzC8"
+	dkim=pass (1024-bit key) header.d=leolam.fr header.i=@leolam.fr header.b="Y8q6aSP5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94547E4
-	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:31:11 -0800 (PST)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-28659b38bc7so3742340a91.0
-        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:31:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702243871; x=1702848671; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=YvShYOb5rs6j/OiEWasAnUJCL36WE9Cre90j0PgU8us=;
-        b=CgbLvzC8jwNH/PjAoPRAM5aeYLjc9qAHQzeufWqeR5XNToBhrhs0Kf2HUkeG1uTZ0+
-         AMTWY7a6D9EkXPIaKILU0TE/jioICsAbhBENdTcVVmD7ZfRhRO+l9lC70rHh8dc6uKQL
-         hEqx5Y8NsYCBpwlBquEnMzba1gQzODllwHH+FmG/zCQOv8VLB4PWIRVsaNj4qx2qDUXg
-         bu/5evTWC4SyYee2V1j0vuS2TU5vzmtzqpH7PQ1ZqxJknghaz7LWf3iqa9IiqhbbjuWR
-         VCKcEgsFQLT/gpNKizGrLcOkWyE3Pmg/0fVpTcMph1xqytOGLcboVS05wJowaLGTUWzp
-         cvaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702243871; x=1702848671;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YvShYOb5rs6j/OiEWasAnUJCL36WE9Cre90j0PgU8us=;
-        b=RFT04H8de1jkZtoNG2ftWGVXqyUkE2iuQUcH214fwtl0Qhy6TgegIKK9F5D8AkP9RF
-         xNtPqDS2VV+6Sr+ar2dYEkIAgUDc5nUayW4rdcNK37fuNGO0insmGtHBOl0+awq+PHSW
-         ylL2aYZPueFtRhf+jIVzDneUe2K05AvZ5WJQ/FmmurGVd7nOlOODaUGsKiY+2bsy/DT6
-         8qjNA8729wkcV0LPZRo9wi41uQhUWLsjaLF3fsnp5fCfE5ec3aaWX6LHSq/METKdVhey
-         N57keJjMXDjmmVMbZk5VdjpcreDe8nd5V0lW5VZHgY+rDk4G8XO1stb/nYLxt22ruZAp
-         qHTw==
-X-Gm-Message-State: AOJu0YxHSjiyU15rI55HaNjxdGilHgjHYsanj/mh+FThTG2HFQP37Lw4
-	Md/NNTliXjHmTmbnaNwKAx3/9HgXmxIYLQShJoSntQ==
-X-Google-Smtp-Source: AGHT+IGNSEWgIvzmI+KuW10V+SHSt+zIDwlV8kkUT6Wrk7FuABu8UAa5/o9hQ/cVI9eso0Yz/nKI+g==
-X-Received: by 2002:a17:90b:87:b0:286:9bc6:c95b with SMTP id bb7-20020a17090b008700b002869bc6c95bmr2467774pjb.2.1702243870610;
-        Sun, 10 Dec 2023 13:31:10 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id mp1-20020a17090b190100b0027722832498sm7111901pjb.52.2023.12.10.13.31.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Dec 2023 13:31:10 -0800 (PST)
-Message-ID: <65762e1e.170a0220.93232.381a@mx.google.com>
-Date: Sun, 10 Dec 2023 13:31:10 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+X-Greylist: delayed 477 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 10 Dec 2023 13:47:32 PST
+Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [IPv6:2001:1600:4:17::bc0c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BD99CD
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 13:47:32 -0800 (PST)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4SpJDf3SSCzMqKGL;
+	Sun, 10 Dec 2023 21:39:30 +0000 (UTC)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4SpJDf03mqzMpp9s;
+	Sun, 10 Dec 2023 22:39:29 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leolam.fr;
+	s=20210220; t=1702244370;
+	bh=WJlZL56ffwYy6XwE5X4p1IcwpQ1ZzaknRnS6NkBRZUc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y8q6aSP5zohAHl+CIkkqp/tMLznvT3L3RWB3mF7XtzZMHYzV829leToknw03trIeL
+	 7tUvhG0/C7Hc2IN70zCKcDwgrFK3FtiT31uuwUC3Br3DeZWc94i5gTqGDcUM4fyAV/
+	 s/6UzUFOk3d0DbIcK7fedhvpR5s302rakg6JwFWo=
+From: =?UTF-8?q?L=C3=A9o=20Lam?= <leo@leolam.fr>
+To: stable@vger.kernel.org
+Cc: =?UTF-8?q?L=C3=A9o=20Lam?= <leo@leolam.fr>
+Subject: [PATCH] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi (6.6.x)
+Date: Sun, 10 Dec 2023 21:39:30 +0000
+Message-ID: <20231210213930.61378-1-leo@leolam.fr>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.15
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.142-112-g6fca85622af22
-Subject: stable-rc/queue/5.15 build: 20 builds: 4 failed, 16 passed, 4 errors,
- 7 warnings (v5.15.142-112-g6fca85622af22)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Infomaniak-Routing: alpha
 
-stable-rc/queue/5.15 build: 20 builds: 4 failed, 16 passed, 4 errors, 7 war=
-nings (v5.15.142-112-g6fca85622af22)
+Commit 4a7e92551618f3737b305f62451353ee05662f57 ("wifi: cfg80211: fix
+CQM for non-range use" on 6.6.x) causes nl80211_set_cqm_rssi not to
+release the wdev lock in some situations.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-5/kernel/v5.15.142-112-g6fca85622af22/
+Of course, the ensuing deadlock causes userland network managers to
+break pretty badly, and on typical systems this also causes lockups on
+on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
 
-Tree: stable-rc
-Branch: queue/5.15
-Git Describe: v5.15.142-112-g6fca85622af22
-Git Commit: 6fca85622af224ed8a3158fffeed4bdcabd75f52
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+The upstream commit, 7e7efdda6adb385fbdfd6f819d76bc68c923c394
+("wifi: cfg80211: fix CQM for non-range use"), does not trigger this
+issue because the wdev lock does not exist there.
 
-Build Failures Detected:
+Fix the deadlock by releasing the lock before returning.
 
-arm:
-    omap2plus_defconfig: (gcc-10) FAIL
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
+[2] https://bbs.archlinux.org/viewtopic.php?id=290976
+[3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
 
-i386:
-    i386_defconfig: (gcc-10) FAIL
-
-x86_64:
-    x86_64_defconfig: (gcc-10) FAIL
-    x86_64_defconfig+x86-board: (gcc-10) FAIL
-
-Errors and Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-    omap2plus_defconfig (gcc-10): 1 error, 1 warning
-
-i386:
-    i386_defconfig (gcc-10): 1 error, 1 warning
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 error, 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 1 error, 2 warnings
-
-Errors summary:
-
-    4    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of =
-function =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=
-=80=98kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declar=
-ation]
-
-Warnings summary:
-
-    4    cc1: some warnings being treated as errors
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 section=
- mismatches
-
-Errors:
-    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
-ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
-kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
-tion mismatches
-
-Errors:
-    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
-ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
-kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warnings, 0 se=
-ction mismatches
-
-Errors:
-    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
-ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
-kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 FAIL, 1 error, 2 warn=
-ings, 0 section mismatches
-
-Errors:
-    kernel/trace/trace_kprobe.c:725:2: error: implicit declaration of funct=
-ion =E2=80=98kallsyms_on_each_match_symbol=E2=80=99; did you mean =E2=80=98=
-kallsyms_on_each_symbol=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-
-Warnings:
-    cc1: some warnings being treated as errors
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
+Fixes: 4a7e92551618 ("wifi: cfg80211: fix CQM for non-range use")
+Cc: stable@vger.kernel.org
+Signed-off-by: Léo Lam <leo@leolam.fr>
 ---
-For more info write to <info@kernelci.org>
+ net/wireless/nl80211.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 6a82dd876f27..0b0dfecedc50 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -12906,17 +12906,23 @@ static int nl80211_set_cqm_rssi(struct genl_info *info,
+ 					lockdep_is_held(&wdev->mtx));
+ 
+ 	/* if already disabled just succeed */
+-	if (!n_thresholds && !old)
+-		return 0;
++	if (!n_thresholds && !old) {
++		err = 0;
++		goto unlock;
++	}
+ 
+ 	if (n_thresholds > 1) {
+ 		if (!wiphy_ext_feature_isset(&rdev->wiphy,
+ 					     NL80211_EXT_FEATURE_CQM_RSSI_LIST) ||
+-		    !rdev->ops->set_cqm_rssi_range_config)
+-			return -EOPNOTSUPP;
++		    !rdev->ops->set_cqm_rssi_range_config) {
++			err = -EOPNOTSUPP;
++			goto unlock;
++		}
+ 	} else {
+-		if (!rdev->ops->set_cqm_rssi_config)
+-			return -EOPNOTSUPP;
++		if (!rdev->ops->set_cqm_rssi_config) {
++			err = -EOPNOTSUPP;
++			goto unlock;
++		}
+ 	}
+ 
+ 	if (n_thresholds) {
+-- 
+2.43.0
+
 
