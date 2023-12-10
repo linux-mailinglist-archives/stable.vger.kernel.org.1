@@ -1,296 +1,124 @@
-Return-Path: <stable+bounces-5206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C30B80BC47
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 18:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B022E80BC84
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 19:07:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C2ED1C204AB
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 17:00:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E08761C208C8
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 18:07:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62FA171A2;
-	Sun, 10 Dec 2023 17:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513161A58B;
+	Sun, 10 Dec 2023 18:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="hZ8VxIM/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h3Ix7O5Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CDC3F4
-	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 09:00:44 -0800 (PST)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-6cec976b197so1759969b3a.0
-        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 09:00:44 -0800 (PST)
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D47CBA;
+	Sun, 10 Dec 2023 10:07:02 -0800 (PST)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-6cea5548eb2so3155621b3a.0;
+        Sun, 10 Dec 2023 10:07:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702227643; x=1702832443; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=EXx6VniGzATtdZx10W1xt0+PSoNryk4sUJTxGAFU914=;
-        b=hZ8VxIM/ftN3KYN46R6h8dDOrHaxChMGdFoIf8BkOHkshhGEM9KrWyJbJW2vYDA+sq
-         Pd+sVx1FToQH2VHtUDk0wA/dulGjZLOvd4K51HSAF77KLGmx88CDhyWB/JEKdxL63Oe1
-         ilV99Jf6VZ72XHdiQ1w6Z7c9/p+ZqbdoHD3hWBG9UUycmLiFj2fxyLNMIubdPkzRQJGz
-         AgvKNYn0/aYvxgi6W61Avzm0OTEsx+/OKlyWC2MrdcKU1gx2z6aIXKKOk13JVeEjQVmm
-         v1XStPz/SWYwEZQdi7ZuxA/kObQOFl7E+Fh3ufUrBiT82aWwOAFYYkDSfPOEkEdf76BC
-         MYsQ==
+        d=gmail.com; s=20230601; t=1702231622; x=1702836422; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/OTV7HGPkUIAwckXy51M7re7fb1HUU7ow6BY0UtdbRw=;
+        b=h3Ix7O5Zrf5MxCHP/1lsSxPl0sJJV757ZR32lHB5IQ6LRtRtdQvnzE/FSlMeSJlpIr
+         9Rvn0bCWeEHMDs33nCDrAoo+aQAx9BCWDg3Koe3iWFU0Hk78spMBlO7MnAMkqMZBOsts
+         AbsTUcTANcZdAuetRJY4flzaRKzvgZTFIvMZAwt/oOujR0EcbgllsFoMUe8tTTJDeAC3
+         jSwfwHlJxKU03YEZ/OkCSG87MMDjRvk1yyipNGT4X+jxgoWTqH1B0acEPn/MyTwDfXnb
+         /U8LNG/lWwemrPR71t/TdI9jasYQlZ85hEj3FxS35Jr+jw0cHSwh8jfNfRwVi/K0bq0s
+         i7yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702227643; x=1702832443;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1702231622; x=1702836422;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EXx6VniGzATtdZx10W1xt0+PSoNryk4sUJTxGAFU914=;
-        b=szs8Z7nCZjzreM0+rVGxBPHLMuq08rmowA/A4P4/xRyey6iR95wFbI9l5tc7Fx3M0l
-         JNvychqjBufgp6E25vFNuOsTLj95NVZTxLqJ4PLi/2H+CIT7DfsHHnzqt9hvWonjP1D/
-         rjAx0kbYReXAr5/Tq+N60VXPe3h+/a65VoTlzSHs4GgCKrqf7Fz0ELCyrEAkzS9Jq+kp
-         NgwizJUA4YY9lMl3k8teUQqb4goHvt0HdTK/H7c6Qz+wyH98/0WDqzZgwWlglc/uF+NR
-         4h83fW48fI1D/ivS4EFFzWIFhol8riBm3GfQwUPQVwu+9sni/uHI0RwuOOGywdZ8Ecgu
-         nu9Q==
-X-Gm-Message-State: AOJu0YxPgZ6keAMPgWxGEh4FZhsN7ZqHdzToIKrprK3RhwDwR+xNs5VU
-	ehdYP4Cu+iN4yDQvrGlh7d4vuQvtf3HfxZMo8FTatA==
-X-Google-Smtp-Source: AGHT+IH7YGc9jjscSfOMZB1W612q6mipXJRZf329yCj9/QmTWT+udAxBtHo104PHPHZSDgblH6kzzg==
-X-Received: by 2002:a05:6a00:84f:b0:6ce:2732:1e0a with SMTP id q15-20020a056a00084f00b006ce27321e0amr1456199pfk.68.1702227642990;
-        Sun, 10 Dec 2023 09:00:42 -0800 (PST)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id d4-20020a056a0010c400b006ce7344328asm4757811pfu.77.2023.12.10.09.00.42
+        bh=/OTV7HGPkUIAwckXy51M7re7fb1HUU7ow6BY0UtdbRw=;
+        b=T/4MRPYoFWxqqIL9pJxU20hDSyckyY0cs5D++1GprXF7hFSrPFSHzgkhhFuV7zOqhq
+         RZvQxSsN+YoqFqGu+g5HLYK904iEb4EUp/BVIBog1TES6ke2bnQesPkClVIpeDGiXICr
+         0spWn5MSbZ/2oLEs5k2X30dp/k2ldKGz+tffXF1HgP0//OPk2O+q67yiTStHx/iQ/wzZ
+         5k/fdQnXqNHGDnGu2Jiufa9y9z7PL9pEJpn94pXPEK4zOXBFVdbi+yBy59R6ZsOl8lFI
+         A3iKCjVhCm9hV/XVbtGoWY4LWWMeqFhzcMDtZg/DnxX37FSwlaIr/OQS70Zl4UhMceF4
+         Y5GA==
+X-Gm-Message-State: AOJu0Yw5aNPffI++xAfTuSrtlvlKTZnKzWdRtulkEWFTmy0TA1dlYc0Q
+	IVar/Cvtmlpdr0MGLpU5UmA=
+X-Google-Smtp-Source: AGHT+IGf1cjoJui1YLxDAmJIwqwz1hXkSEY0wBxCHb7JCefydWE1QX71XuqaZiGK7iUv67Arc0VJrQ==
+X-Received: by 2002:a05:6a20:7f9b:b0:18f:97c:8a3b with SMTP id d27-20020a056a207f9b00b0018f097c8a3bmr5034958pzj.102.1702231621767;
+        Sun, 10 Dec 2023 10:07:01 -0800 (PST)
+Received: from localhost (c-73-37-105-206.hsd1.or.comcast.net. [73.37.105.206])
+        by smtp.gmail.com with ESMTPSA id 11-20020a63154b000000b005b458aa0541sm4769792pgv.15.2023.12.10.10.07.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Dec 2023 09:00:42 -0800 (PST)
-Message-ID: <6575eeba.050a0220.82e80.d8d6@mx.google.com>
-Date: Sun, 10 Dec 2023 09:00:42 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+        Sun, 10 Dec 2023 10:07:01 -0800 (PST)
+From: Rob Clark <robdclark@gmail.com>
+To: iommu@lists.linux-foundation.org
+Cc: freedreno@lists.freedesktop.org,
+	linux-arm-msm@vger.kernel.org,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Rob Clark <robdclark@chromium.org>,
+	stable@vger.kernel.org,
+	Will Deacon <will@kernel.org>,
+	Joerg Roedel <joro@8bytes.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Danila Tikhonov <danila@jiaxyga.com>,
+	Elliot Berman <quic_eberman@quicinc.com>,
+	linux-arm-kernel@lists.infradead.org (moderated list:ARM SMMU DRIVERS),
+	iommu@lists.linux.dev (open list:IOMMU SUBSYSTEM),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2] iommu/arm-smmu-qcom: Add missing GMU entry to match table
+Date: Sun, 10 Dec 2023 10:06:53 -0800
+Message-ID: <20231210180655.75542-1-robdclark@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/4.19
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.301-37-gc884030fe4215
-Subject: stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.301-37-gc884030fe4215)
-To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
- kernelci-results@groups.io
-From: "kernelci.org bot" <bot@kernelci.org>
+Content-Transfer-Encoding: 8bit
 
-stable-rc/queue/4.19 build: 19 builds: 3 failed, 16 passed, 20 warnings (v4=
-.19.301-37-gc884030fe4215)
+From: Rob Clark <robdclark@chromium.org>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
-9/kernel/v4.19.301-37-gc884030fe4215/
+In some cases the firmware expects cbndx 1 to be assigned to the GMU,
+so we also want the default domain for the GMU to be an identy domain.
+This way it does not get a context bank assigned.  Without this, both
+of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
+allocating and configuring a context bank.  So GMU ends up attached to
+both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
+and surprises the firmware if the GPU later triggers a translation
+fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
+getting wedged and the GPU stuck without memory access.
 
-Tree: stable-rc
-Branch: queue/4.19
-Git Describe: v4.19.301-37-gc884030fe4215
-Git Commit: c884030fe421520c0dfff03b27f46eb935dd5da6
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Build Failures Detected:
-
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-board (gcc-10): 2 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    4    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 war=
-nings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 ---
-For more info write to <info@kernelci.org>
+
+I didn't add a fixes tag because really this issue has been there
+all along, but either didn't matter with other firmware or we didn't 
+notice the problem.
+
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index 549ae4dba3a6..d326fa230b96 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -243,6 +243,7 @@ static int qcom_adreno_smmu_init_context(struct arm_smmu_domain *smmu_domain,
+ 
+ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,adreno" },
++	{ .compatible = "qcom,adreno-gmu" },
+ 	{ .compatible = "qcom,mdp4" },
+ 	{ .compatible = "qcom,mdss" },
+ 	{ .compatible = "qcom,sc7180-mdss" },
+-- 
+2.43.0
+
 
