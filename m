@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-5201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 485ED80BC12
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 17:05:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E0A80BC2C
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 17:32:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CBE81C20889
-	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 16:05:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10173B208C7
+	for <lists+stable@lfdr.de>; Sun, 10 Dec 2023 16:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1D2171B2;
-	Sun, 10 Dec 2023 16:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101AA7472;
+	Sun, 10 Dec 2023 16:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="ok2uTUWQ"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="PO3/ptqy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80E82F5
-	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 08:04:58 -0800 (PST)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-6cebcf8a48aso2640998b3a.3
-        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 08:04:58 -0800 (PST)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7497FF5
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 08:32:44 -0800 (PST)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-6ce6caedce6so2307693b3a.3
+        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 08:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702224297; x=1702829097; darn=vger.kernel.org;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702225963; x=1702830763; darn=vger.kernel.org;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=rjYIH3b9fCurcqLs5TCxw03KReKTwQYaFjXTRMlrTcA=;
-        b=ok2uTUWQATc10tPs8QOQofSSqFkOIJNgz6lvO2FRQuWFHD4/EnYnzjeLYHE7v3XtW6
-         /o/xdF/wf7mhcspclAjssCfjVxRjNUxb/X3iTH4JqNEWTEW30uc3vaX18SAF8VvZ9d62
-         eUNOF6xJ8OZc0Ho2LeLZHMkERsg/yq9btt4ZDpAdPxdi75enKgMfez3NIAOu8pGYFJxf
-         auQO+zMnYSuvhtv+C/ifRbEvu/Ep8Qe+pkweEiqqXC3wbt2LpLlNVccRlie3dRZiVZSd
-         +RFMdDmHwlbPEGAsSwOjf+vx0UL6J1Epgd0ytoua4FOg99jQgVwda5+UttzaZj2IRjxV
-         GMVQ==
+        bh=y0N86L63lyeYG0fkGbhef98DQLPt4tXAPDOWQMvNhKg=;
+        b=PO3/ptqyhSQ7zMdGTvgAsPbnDvdlo1xyYrgLjzmG52V3yCFpFoFIu2zaj7BIjzQdDB
+         /cnNtzwo9BMXTX9eE3cQl06N7FBkoOR03jwMx5QHNIhHzgFCkNwNgDc/6kAvrqxnq54k
+         wxIX8IHwDi3oicWm7kqONfZ+8eivpkAfdfEelNIcj+A8m5NBrhbAyn61djBFR0wYREvG
+         JAkhd2f7LW8HDqZUGiWU5tDbWXI1g5glnUR/QiRAIaEbbI+gUktQ08HIYod4nSn3/udC
+         XhQVsvfDQOulNx/aUeIonA/qou2IVIS98UE/AAi7iKmcb3KMHiRJAcxFby6/SLt11gTt
+         sAmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702224297; x=1702829097;
+        d=1e100.net; s=20230601; t=1702225963; x=1702830763;
         h=from:to:subject:content-transfer-encoding:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rjYIH3b9fCurcqLs5TCxw03KReKTwQYaFjXTRMlrTcA=;
-        b=ey3gvDiy7N/e9FoZ00vF1mQQrM27cusm3B60SH59JDbfV6B3EFEh+OAQG5jUHR1BJA
-         RJNW6qHddLCwDPnoIhc5VkE7rQod0Ct6H2k0/5avGea7BdcJE55zuu7dNFZgQip66W44
-         ZyEU8dkqdMQok27Cr/XtZi3PO9fCCQCulM56yCk3kuZHrWGiJnss13wm4TKsAgRrbWSi
-         h9sN1TVC4rBQueVm/Cir9XiIpyVyrpdyUJcg+F6cseHmCXQZhlibg0LuWHPBtBb6YqI7
-         HD8D5SSZ+dQ39SbDta8DVQGCY7UxJEzs5OjCGGddu8j6Sh3b4xnVOhydDpDx38Iqhps5
-         uW7A==
-X-Gm-Message-State: AOJu0Yynvca5YzUi3x1tYsKnxNLN6sffh0sWV2L0fqaMC5nK7+w2cDXO
-	jygX0Ei+Wnz0Iewv1pO53bCYuXqtKmf0cX6xXHikjg==
-X-Google-Smtp-Source: AGHT+IHMT2DYKSVNLXX1veuvCTYgQ9NwfmICIrNqld20BVIfHEX1W7rgyRUup6z7nqA7o2+64WWYOg==
-X-Received: by 2002:a05:6a00:4653:b0:6ce:6f99:4ec4 with SMTP id kp19-20020a056a00465300b006ce6f994ec4mr4061678pfb.1.1702224297510;
-        Sun, 10 Dec 2023 08:04:57 -0800 (PST)
+        bh=y0N86L63lyeYG0fkGbhef98DQLPt4tXAPDOWQMvNhKg=;
+        b=qcdU3leTj2+4iSY3etjtqIdaANCzGCzkVoJ5kJWrFCtL3Rd6Na/glnEsGdD/Y2+W1Q
+         SBAAJygwi02pYwJLPvg0yPz0TNkrCRVJTJIkX9jHLsc7f/you3pX6TrrW90CZ9/rCUxs
+         k4XeGepIbfbYKzP2HWXuGH5Je6vmuSwURTvMM8Hibs6tvTV825VC0Qt03HNAeHcyLKWu
+         SwUER1E+L/EdxMpqoGKREEEcXdAaIKDAGHrYGJJUvb/D3H+7Ns3/P6V5GrHNbI6hYY+f
+         LlNa5pt5DsrO4UwX3qoj9BXpwm5DELve4s9BZDOAuy50zTvEGLuyXPyN2DL1akyrsJgp
+         jk5Q==
+X-Gm-Message-State: AOJu0YyyudB4zm0WKcKmMopUyt83EZ1XCGpobE6zzyK0kLIFZ3Kp3mf+
+	JbV3bPcOz5chQai93P4AbbMWQCEVPdkrVdna/iyxRg==
+X-Google-Smtp-Source: AGHT+IG0Yuvm24yIaDi10tyBZgefMlqsmquOjlHnYj39q4qFM/VyH7k6ZR5grytdeDWMBnbx0gZIZQ==
+X-Received: by 2002:a05:6a20:13cc:b0:18f:97c:4f70 with SMTP id ho12-20020a056a2013cc00b0018f097c4f70mr1259818pzc.124.1702225963407;
+        Sun, 10 Dec 2023 08:32:43 -0800 (PST)
 Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id z19-20020aa78893000000b006cb884c0362sm4666341pfe.87.2023.12.10.08.04.56
+        by smtp.gmail.com with ESMTPSA id e6-20020a654786000000b005bd2b3a03eesm4178265pgs.6.2023.12.10.08.32.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 Dec 2023 08:04:56 -0800 (PST)
-Message-ID: <6575e1a8.a70a0220.4351b.cebe@mx.google.com>
-Date: Sun, 10 Dec 2023 08:04:56 -0800 (PST)
+        Sun, 10 Dec 2023 08:32:42 -0800 (PST)
+Message-ID: <6575e82a.650a0220.d9075.ad3e@mx.google.com>
+Date: Sun, 10 Dec 2023 08:32:42 -0800 (PST)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -62,26 +62,26 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: queue/5.10
+X-Kernelci-Branch: queue/6.1
 X-Kernelci-Tree: stable-rc
 X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.203-59-gd6656e065a9a5
-Subject: stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.203-59-gd6656e065a9a5)
+X-Kernelci-Kernel: v6.1.66-136-g3bb44622830bc
+Subject: stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.66-136-g3bb44622830bc)
 To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
  kernelci-results@groups.io
 From: "kernelci.org bot" <bot@kernelci.org>
 
-stable-rc/queue/5.10 build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.=
-10.203-59-gd6656e065a9a5)
+stable-rc/queue/6.1 build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.=
+66-136-g3bb44622830bc)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F5.1=
-0/kernel/v5.10.203-59-gd6656e065a9a5/
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
+/kernel/v6.1.66-136-g3bb44622830bc/
 
 Tree: stable-rc
-Branch: queue/5.10
-Git Describe: v5.10.203-59-gd6656e065a9a5
-Git Commit: d6656e065a9a52c761a83874e2234e0b067393fb
+Branch: queue/6.1
+Git Describe: v6.1.66-136-g3bb44622830bc
+Git Commit: 3bb44622830bc461027a2b37a6186dd74203be96
 Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
 e-rc.git
 Built: 7 unique architectures
@@ -100,19 +100,15 @@ mips:
     32r2el_defconfig (gcc-10): 1 warning
 
 riscv:
-    rv32_defconfig (gcc-10): 4 warnings
 
 x86_64:
 
 
 Warnings summary:
 
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
 
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
 =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
@@ -127,18 +123,19 @@ Detailed per-defconfig build reports:
 ion mismatches
 
 Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
 
 ---------------------------------------------------------------------------=
 -----
 allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
 n mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
 
 ---------------------------------------------------------------------------=
 -----
@@ -187,21 +184,18 @@ nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
 
 ---------------------------------------------------------------------------=
 -----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
 omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
 ection mismatches
 
 ---------------------------------------------------------------------------=
 -----
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
 ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
 
 ---------------------------------------------------------------------------=
 -----
