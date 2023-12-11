@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8078680D84A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AE080DA28
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B21A21C215E2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B378A1C216B0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E929951036;
-	Mon, 11 Dec 2023 18:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA55E52F84;
+	Mon, 11 Dec 2023 18:59:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1QNNHg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C08AgdSE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8864FC06;
-	Mon, 11 Dec 2023 18:44:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31227C433C9;
-	Mon, 11 Dec 2023 18:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652A1321B8;
+	Mon, 11 Dec 2023 18:59:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAE3C433C8;
+	Mon, 11 Dec 2023 18:59:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320272;
-	bh=uoNjS8QDAfixy5pyBv+vt8P8cdcfhyFn1jP5gCmWB24=;
+	s=korg; t=1702321157;
+	bh=v4VWqROuaHsJJwsH/mg24Oy6rthEBcZqkk5XlNOJfnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z1QNNHg1EM741tkI73nBf0ByYYwqPZ75HUczHy/KluGa6DyZxsF3+vn1E8WTVSVIE
-	 29vR6edi+LZtH3708kh4A0a7i0QPA37PPdD6aN77V1Gy087zSJAyqCqkCws2ZgQS9Y
-	 EsRvhLnRrU0TLUbMAVtZe/+cw9HKjOIf7AX7QqOU=
+	b=C08AgdSEAxDhwPtk8/6kcbfPrAMUPlc9ilkGeEe9669H1Sj8R6a56DKycJGOg9W7r
+	 2zI0Dt0wVCx1Py5Y7doBR5yqA3ahi5sErp5buX3EettNtlBJYkq9ct0Eg193WrHlly
+	 RDtXhbtTPYjrJKVc/Bih4UfkCJJbPO+4VdLAIZWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 5.4 57/67] io_uring/af_unix: disable sending io_uring over sockets
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 102/141] ring-buffer: Force absolute timestamp on discard of event
 Date: Mon, 11 Dec 2023 19:22:41 +0100
-Message-ID: <20231211182017.420293556@linuxfoundation.org>
+Message-ID: <20231211182030.985659979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,172 +55,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 705318a99a138c29a512a72c3e0043b3cd7f55f4 upstream.
+[ Upstream commit b2dd797543cfa6580eac8408dd67fa02164d9e56 ]
 
-File reference cycles have caused lots of problems for io_uring
-in the past, and it still doesn't work exactly right and races with
-unix_stream_read_generic(). The safest fix would be to completely
-disallow sending io_uring files via sockets via SCM_RIGHT, so there
-are no possible cycles invloving registered files and thus rendering
-SCM accounting on the io_uring side unnecessary.
+There's a race where if an event is discarded from the ring buffer and an
+interrupt were to happen at that time and insert an event, the time stamp
+is still used from the discarded event as an offset. This can screw up the
+timings.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 0091bfc81741b ("io_uring/af_unix: defer registered files gc to io_uring release")
-Reported-and-suggested-by: Jann Horn <jannh@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/c716c88321939156909cfa1bd8b0faaf1c804103.1701868795.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the event is going to be discarded, set the "before_stamp" to zero.
+When a new event comes in, it compares the "before_stamp" with the
+"write_stamp" and if they are not equal, it will insert an absolute
+timestamp. This will prevent the timings from getting out of sync due to
+the discarded event.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231206100244.5130f9b3@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 6f6be606e763f ("ring-buffer: Force before_stamp and write_stamp to be different on discard")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/io_uring.c  |  101 ---------------------------------------------------------
- net/core/scm.c |    6 +++
- 2 files changed, 7 insertions(+), 100 deletions(-)
+ kernel/trace/ring_buffer.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
---- a/fs/io_uring.c
-+++ b/fs/io_uring.c
-@@ -3137,101 +3137,6 @@ static void io_finish_async(struct io_ri
- 	}
- }
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index a930a9d7d834d..16fce72a7601c 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2982,22 +2982,19 @@ rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
+ 			local_read(&bpage->write) & ~RB_WRITE_MASK;
+ 		unsigned long event_length = rb_event_length(event);
  
--#if defined(CONFIG_UNIX)
--static void io_destruct_skb(struct sk_buff *skb)
--{
--	struct io_ring_ctx *ctx = skb->sk->sk_user_data;
--	int i;
--
--	for (i = 0; i < ARRAY_SIZE(ctx->sqo_wq); i++)
--		if (ctx->sqo_wq[i])
--			flush_workqueue(ctx->sqo_wq[i]);
--
--	unix_destruct_scm(skb);
--}
--
--/*
-- * Ensure the UNIX gc is aware of our file set, so we are certain that
-- * the io_uring can be safely unregistered on process exit, even if we have
-- * loops in the file referencing.
-- */
--static int __io_sqe_files_scm(struct io_ring_ctx *ctx, int nr, int offset)
--{
--	struct sock *sk = ctx->ring_sock->sk;
--	struct scm_fp_list *fpl;
--	struct sk_buff *skb;
--	int i;
--
--	fpl = kzalloc(sizeof(*fpl), GFP_KERNEL);
--	if (!fpl)
--		return -ENOMEM;
--
--	skb = alloc_skb(0, GFP_KERNEL);
--	if (!skb) {
--		kfree(fpl);
--		return -ENOMEM;
--	}
--
--	skb->sk = sk;
--	skb->scm_io_uring = 1;
--	skb->destructor = io_destruct_skb;
--
--	fpl->user = get_uid(ctx->user);
--	for (i = 0; i < nr; i++) {
--		fpl->fp[i] = get_file(ctx->user_files[i + offset]);
--		unix_inflight(fpl->user, fpl->fp[i]);
--	}
--
--	fpl->max = fpl->count = nr;
--	UNIXCB(skb).fp = fpl;
--	refcount_add(skb->truesize, &sk->sk_wmem_alloc);
--	skb_queue_head(&sk->sk_receive_queue, skb);
--
--	for (i = 0; i < nr; i++)
--		fput(fpl->fp[i]);
--
--	return 0;
--}
--
--/*
-- * If UNIX sockets are enabled, fd passing can cause a reference cycle which
-- * causes regular reference counting to break down. We rely on the UNIX
-- * garbage collection to take care of this problem for us.
-- */
--static int io_sqe_files_scm(struct io_ring_ctx *ctx)
--{
--	unsigned left, total;
--	int ret = 0;
--
--	total = 0;
--	left = ctx->nr_user_files;
--	while (left) {
--		unsigned this_files = min_t(unsigned, left, SCM_MAX_FD);
--
--		ret = __io_sqe_files_scm(ctx, this_files, total);
--		if (ret)
--			break;
--		left -= this_files;
--		total += this_files;
--	}
--
--	if (!ret)
--		return 0;
--
--	while (total < ctx->nr_user_files) {
--		fput(ctx->user_files[total]);
--		total++;
--	}
--
--	return ret;
--}
--#else
--static int io_sqe_files_scm(struct io_ring_ctx *ctx)
--{
--	return 0;
--}
--#endif
--
- static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
- 				 unsigned nr_args)
- {
-@@ -3285,11 +3190,7 @@ static int io_sqe_files_register(struct
- 		return ret;
- 	}
++		/*
++		 * For the before_stamp to be different than the write_stamp
++		 * to make sure that the next event adds an absolute
++		 * value and does not rely on the saved write stamp, which
++		 * is now going to be bogus.
++		 */
++		rb_time_set(&cpu_buffer->before_stamp, 0);
++
+ 		/* Something came in, can't discard */
+ 		if (!rb_time_cmpxchg(&cpu_buffer->write_stamp,
+ 				       write_stamp, write_stamp - delta))
+ 			return 0;
  
--	ret = io_sqe_files_scm(ctx);
--	if (ret)
--		io_sqe_files_unregister(ctx);
+-		/*
+-		 * It's possible that the event time delta is zero
+-		 * (has the same time stamp as the previous event)
+-		 * in which case write_stamp and before_stamp could
+-		 * be the same. In such a case, force before_stamp
+-		 * to be different than write_stamp. It doesn't
+-		 * matter what it is, as long as its different.
+-		 */
+-		if (!delta)
+-			rb_time_set(&cpu_buffer->before_stamp, 0);
 -
--	return ret;
-+	return 0;
- }
- 
- static int io_sq_offload_start(struct io_ring_ctx *ctx,
---- a/net/core/scm.c
-+++ b/net/core/scm.c
-@@ -26,6 +26,7 @@
- #include <linux/nsproxy.h>
- #include <linux/slab.h>
- #include <linux/errqueue.h>
-+#include <linux/io_uring.h>
- 
- #include <linux/uaccess.h>
- 
-@@ -103,6 +104,11 @@ static int scm_fp_copy(struct cmsghdr *c
- 
- 		if (fd < 0 || !(file = fget_raw(fd)))
- 			return -EBADF;
-+		/* don't allow io_uring files */
-+		if (io_uring_get_socket(file)) {
-+			fput(file);
-+			return -EINVAL;
-+		}
- 		*fpp++ = file;
- 		fpl->count++;
- 	}
+ 		/*
+ 		 * If an event were to come in now, it would see that the
+ 		 * write_stamp and the before_stamp are different, and assume
+-- 
+2.42.0
+
 
 
 
