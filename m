@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-6017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C15880D854
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE06580D969
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C663F1F21B0A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A022281F88
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C295102F;
-	Mon, 11 Dec 2023 18:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7A951C53;
+	Mon, 11 Dec 2023 18:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxHK4EKZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xPzJGxte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8566FC06;
-	Mon, 11 Dec 2023 18:44:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4BFC433C8;
-	Mon, 11 Dec 2023 18:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C154E51C38;
+	Mon, 11 Dec 2023 18:53:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4487BC433C8;
+	Mon, 11 Dec 2023 18:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320288;
-	bh=R/k8s7O4dlFYeHkl8CPV6byNTZMOjb7Qh808bDdY94o=;
+	s=korg; t=1702320811;
+	bh=uZCdrJvkrbTdqleIclHCwBkNMt0S1YJBbjwGVOeNHMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FxHK4EKZNCWwMFGzmvZxyA4DrAdiC41HxnrCRJLinYCjIQLICjnQ343tvNebnx62j
-	 fVUa6jNiORtnldBZukCPB6fME51DawbznSo6zRBwxV59+hbUCdIe41xcyXXH14HzyS
-	 YKddbbrwRL17kPJuoX0DFccd3PbCHHwr4ViNPYkE=
+	b=xPzJGxteDZYVIu4hv9OZGApxOdpJgqLnH0zKhcvoNNXycVSncBL2D/cJhof+i4PRC
+	 rekLMLhwaZd/sWUCWJKeX7FF7jx1nvZa7wziZmn6+wqg6Q+IKDSYFtlCqCvgJi4Jbw
+	 ySf0Vo8/dviZzmSf2QDaahhQ3GQDhjKTn4+aXIlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.4 63/67] Revert "btrfs: add dmesg output for first mount and last unmount of a filesystem"
+	Ronald Wahl <ronald.wahl@raritan.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 177/194] serial: 8250_omap: Add earlycon support for the AM654 UART controller
 Date: Mon, 11 Dec 2023 19:22:47 +0100
-Message-ID: <20231211182017.697748074@linuxfoundation.org>
+Message-ID: <20231211182044.562250335@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +53,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ronald Wahl <ronald.wahl@raritan.com>
 
-This reverts commit dd94ffab1b6d84b3ba9a8d09b6b0f44610d397eb which is
-commit 2db313205f8b96eea467691917138d646bb50aef upstream.
+commit 8e42c301ce64e0dcca547626eb486877d502d336 upstream.
 
-As pointed out by many, the disk_super structure is NOT initialized
-before it is dereferenced in the function
-fs/btrfs/disk-io.c:open_ctree() that this commit adds, so something went
-wrong here.
+Currently there is no support for earlycon on the AM654 UART
+controller. This commit adds it.
 
-Revert it for now until it gets straightened out.
-
-Link: https://lore.kernel.org/r/5b0eb360-3765-40e1-854a-9da6d97eb405@roeck-us.net
-Link: https://lore.kernel.org/r/20231209172836.GA2154579@dev-arch.thelio-3990X
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Cc: Anand Jain <anand.jain@oracle.com>
-Cc: Qu Wenruo <wqu@suse.com>
-Cc: David Sterba <dsterba@suse.com>
+Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
+Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://lore.kernel.org/r/20231031131242.15516-1-rwahl@gmx.de
+Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/disk-io.c |    1 -
- fs/btrfs/super.c   |    5 +----
- 2 files changed, 1 insertion(+), 5 deletions(-)
+ drivers/tty/serial/8250/8250_early.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -2829,7 +2829,6 @@ int open_ctree(struct super_block *sb,
- 		goto fail_alloc;
- 	}
+--- a/drivers/tty/serial/8250/8250_early.c
++++ b/drivers/tty/serial/8250/8250_early.c
+@@ -197,6 +197,7 @@ static int __init early_omap8250_setup(s
+ OF_EARLYCON_DECLARE(omap8250, "ti,omap2-uart", early_omap8250_setup);
+ OF_EARLYCON_DECLARE(omap8250, "ti,omap3-uart", early_omap8250_setup);
+ OF_EARLYCON_DECLARE(omap8250, "ti,omap4-uart", early_omap8250_setup);
++OF_EARLYCON_DECLARE(omap8250, "ti,am654-uart", early_omap8250_setup);
  
--	btrfs_info(fs_info, "first mount of filesystem %pU", disk_super->fsid);
- 	/*
- 	 * Verify the type first, if that or the checksum value are
- 	 * corrupted, we'll find out
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -291,10 +291,7 @@ void __btrfs_panic(struct btrfs_fs_info
+ #endif
  
- static void btrfs_put_super(struct super_block *sb)
- {
--	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
--
--	btrfs_info(fs_info, "last unmount of filesystem %pU", fs_info->fs_devices->fsid);
--	close_ctree(fs_info);
-+	close_ctree(btrfs_sb(sb));
- }
- 
- enum {
 
 
 
