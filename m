@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-6179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8372980D93C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A883080D83D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4ECE1C216B0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9DFA1C215CA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA26051C44;
-	Mon, 11 Dec 2023 18:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCB251036;
+	Mon, 11 Dec 2023 18:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3LTTMro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b86HCMeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A071651C2D;
-	Mon, 11 Dec 2023 18:52:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22301C433C8;
-	Mon, 11 Dec 2023 18:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6550FC06;
+	Mon, 11 Dec 2023 18:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4B5C433C8;
+	Mon, 11 Dec 2023 18:43:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320724;
-	bh=4NJYC4At217pyovCsvS9b/0ZLUu0tnrWrAoHM5Nvh0w=;
+	s=korg; t=1702320239;
+	bh=6QNIb37pzO+Mx8hOYlcWukSaJ8DFZSseF15DkVmkLuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3LTTMrohgB+1DeYux0bR10PGQbJW8SH2Fn8h+a3c4beYpu2SnwXfY6lSXbEglqsw
-	 AS4+xV66mk1osXfL2CeknoKBAUlTVrwkUx50G2JSrPyVrw5aQ2KLl9vOPNQHDwFh6K
-	 9rIABC5RvIERY3gnCGr5+QgZpZ/Qg5W3EO/7Bd8g=
+	b=b86HCMeE4+o0JvhWvnlV+hT6JG2H/tofbPxD3iPmFF+NoFfxrHWbSZJhEeZd5sDVe
+	 XM0mRmtOUq5ZzT9ywqI5XtqeNE7Q0AQOh1vOVHj0WjaK+SHBfl6/DXQuR7BgsAMUwf
+	 pdSXUyEKsHpFNJxshDEyv0/b2/EyqabMTCnl79yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 167/194] serial: 8250_dw: Add ACPI ID for Granite Rapids-D UART
-Date: Mon, 11 Dec 2023 19:22:37 +0100
-Message-ID: <20231211182044.097249918@linuxfoundation.org>
+	stable@kernel.org,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.4 54/67] x86/CPU/AMD: Check vendor in the AMD microcode callback
+Date: Mon, 11 Dec 2023 19:22:38 +0100
+Message-ID: <20231211182017.304437717@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,35 +52,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit e92fad024929c79460403acf946bc9c09ce5c3a9 upstream.
+commit 9b8493dc43044376716d789d07699f17d538a7c4 upstream.
 
-Granite Rapids-D has an additional UART that is enumerated via ACPI.
-Add ACPI ID for it.
+Commit in Fixes added an AMD-specific microcode callback. However, it
+didn't check the CPU vendor the kernel runs on explicitly.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20231205195524.2705965-1-andriy.shevchenko@linux.intel.com
+The only reason the Zenbleed check in it didn't run on other x86 vendors
+hardware was pure coincidental luck:
+
+  if (!cpu_has_amd_erratum(c, amd_zenbleed))
+	  return;
+
+gives true on other vendors because they don't have those families and
+models.
+
+However, with the removal of the cpu_has_amd_erratum() in
+
+  05f5f73936fa ("x86/CPU/AMD: Drop now unused CPU erratum checking function")
+
+that coincidental condition is gone, leading to the zenbleed check
+getting executed on other vendors too.
+
+Add the explicit vendor check for the whole callback as it should've
+been done in the first place.
+
+Fixes: 522b1d69219d ("x86/cpu/amd: Add a Zenbleed fix")
+Cc: <stable@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231201184226.16749-1-bp@alien8.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/amd.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -795,6 +795,7 @@ static const struct acpi_device_id dw825
- 	{ "INT33C5", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "INT3434", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ "INT3435", (kernel_ulong_t)&dw8250_dw_apb },
-+	{ "INTC10EE", (kernel_ulong_t)&dw8250_dw_apb },
- 	{ },
- };
- MODULE_DEVICE_TABLE(acpi, dw8250_acpi_match);
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -1248,5 +1248,8 @@ static void zenbleed_check_cpu(void *unu
+ 
+ void amd_check_microcode(void)
+ {
++	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
++		return;
++
+ 	on_each_cpu(zenbleed_check_cpu, NULL, 1);
+ }
 
 
 
