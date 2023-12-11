@@ -1,81 +1,95 @@
-Return-Path: <stable+bounces-5494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DD480CE0A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:16:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9992980CE11
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 147C71C21152
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:16:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEF9BB217DF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8913B219FB;
-	Mon, 11 Dec 2023 14:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2875487B3;
+	Mon, 11 Dec 2023 14:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aqKeB+FI";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EYzIPVN3"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hDjdil+9";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ibuq7a5A"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F22143A91;
-	Mon, 11 Dec 2023 06:12:00 -0800 (PST)
-Date: Mon, 11 Dec 2023 15:11:58 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1702303919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jZKIjBd21OWnGaJBiVOBN57bXhYz4xgeT/z9NbvImzs=;
-	b=aqKeB+FIuovH58QJwNpR5zEZ0nfq4BxRJJZshJDFEW0lUoHNSJldnXl9gKcnvD0JwMsJa2
-	rDVpKgsRA5FVdfg4ZsTmio8exgchy8EYcwzPCP4ByoOx/FYS0Vii2srPxmgtrxYjB8V2HN
-	I9sC12MS3M1nKn2tTUjvbm9dQItpu4eooJexmkPl1uHGkq0pnQOuQC+vZUrKuIO9rDs5KJ
-	kcAGcT6Z1huhwy4ZtMUswxlwPED7omMkTJ2gL9Ri6JVDozKGQkvlushfz5BPU4fgq9GqMe
-	EV4m0AlK0m6tzC3dP8Z+OvuVxl4Yl4cJm5s78cK0Exp0v+2mVBd4zaABpC8EXQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1702303919;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jZKIjBd21OWnGaJBiVOBN57bXhYz4xgeT/z9NbvImzs=;
-	b=EYzIPVN3fD74DLanAmeKpYTZ7fMEQ22FjkrGo2fy9E24npcGG53tahRZlmShZJ51DbTTlW
-	Elh5LyELGlEAWRAA==
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCC683247;
+	Mon, 11 Dec 2023 06:16:09 -0800 (PST)
 From: Nam Cao <namcao@linutronix.de>
-To: Andreas Schwab <schwab@suse.de>
-Cc: stable@vger.kernel.org, jiajie.ho@starfivetech.com, palmer@rivosinc.com,
- conor.dooley@microchip.com, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Subject: Re: Backport riscv kconfig for v6.6
-Message-ID: <20231211151158.18de6a99@namcao>
-In-Reply-To: <mvmwmtkq18l.fsf@suse.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1702304168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ppjU+31LnK9VxtavD2GvL4JVjKrjbiZoU7R+ROKBQw0=;
+	b=hDjdil+9JU5/ytG0e6pkeyZEi9edP1ZWxu1wXzWH9ftXHULdjTHR1m6Pidh/DpgHOJYozI
+	XhD5eCdVGfxOBwp5i25Vvxwn+ipA0o2iZpmzoKMuDTtBdWZr/bdKalDhIRgo39NV6DCNWk
+	oCdvQR4T06kV0c8sEJnSmaRiiN8Pq4Rdro2hV3WDV4IP1SXNIXAp+RLXJZ7dl+hMU1T3LS
+	+yVnBMcUdWUrFNwsneDvxu9wkG9fdvJYPkmcl13RMSIqKFIDtAuXU84mTO5hfCpzUCkcId
+	eJLJRXkgv94QnTJJQdLce7L+H+N0r6hlJHcC6IhDwDfVyMdp+8x+cBUlXJPx8g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1702304168;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ppjU+31LnK9VxtavD2GvL4JVjKrjbiZoU7R+ROKBQw0=;
+	b=ibuq7a5Az7Pjp0C516ChSpwDNo8VYpdGUiMuwu2e4BF0j1aNiiNTNq3aHUS31bE6P+aI6D
+	IgAuM+cNwzYVydDA==
+To: stable@vger.kernel.org
+Cc: jiajie.ho@starfivetech.com,
+	palmer@rivosinc.com,
+	conor.dooley@microchip.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Nam Cao <namcao@linutronix.de>
+Subject: [PATCH v6.1] riscv: Kconfig: Add select ARM_AMBA to SOC_STARFIVE
+Date: Mon, 11 Dec 2023 15:15:55 +0100
+Message-Id: <20231211141555.89648-1-namcao@linutronix.de>
+In-Reply-To: <20231211145750.7bc2d378@namcao>
 References: <20231211145750.7bc2d378@namcao>
-	<mvmwmtkq18l.fsf@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 11 Dec 2023 15:10:02 +0100 Andreas Schwab <schwab@suse.de> wrote:
+From: Jia Jie Ho <jiajie.ho@starfivetech.com>
 
-> On Dez 11 2023, Nam Cao wrote:
-> 
-> > Without this, it is not possible to configure the kernel with SPI drivers
-> > for the Visionfive 2 board.  
-> 
-> Is it?  There is nothing that stops you from just enabling it.
+[ Upstream commit 78a03b9f8e6b317f7c65738a3fc60e1e85106a64 ]
 
-config SPI_PL022
-	tristate "ARM AMBA PL022 SSP controller"
-	depends on ARM_AMBA
+Selects ARM_AMBA platform support for StarFive SoCs required by spi and
+crypto dma engine.
 
-The "depends on" stops me.
+Signed-off-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+[ resolve conflict due to removal of "select SIFIVE_PLIC" ]
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+---
+ arch/riscv/Kconfig.socs | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
-Nam
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 69774bb362d6..29d78eefc889 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -23,6 +23,7 @@ config SOC_STARFIVE
+ 	select PINCTRL
+ 	select RESET_CONTROLLER
+ 	select SIFIVE_PLIC
++	select ARM_AMBA
+ 	help
+ 	  This enables support for StarFive SoC platform hardware.
+=20
+--=20
+2.39.2
 
 
