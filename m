@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-6271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 213BF80D9B6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:56:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3B980D572
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF84F1F218D3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:56:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D5A91C213FA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4CA51C50;
-	Mon, 11 Dec 2023 18:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4A25101D;
+	Mon, 11 Dec 2023 18:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvd0vzMP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njUtISy/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AFB51C44;
-	Mon, 11 Dec 2023 18:56:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3909DC433C8;
-	Mon, 11 Dec 2023 18:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2C84F212;
+	Mon, 11 Dec 2023 18:24:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01A0C433C8;
+	Mon, 11 Dec 2023 18:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320975;
-	bh=uImUUe/Mw89v78Q3ahIW5cr+knatHoDamtvh4xtrxzM=;
+	s=korg; t=1702319083;
+	bh=2lYJ72Dc9j6OBEQ5HWSAKMic0j0yRDcgO/a41lP/b3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvd0vzMPnEzLMUJWUmqAdzBjno40DEyivO7cEtZrE/ju5VHI0ryLU03oJDEssW8BT
-	 nn/F2YtyS2a71R6JwbDuRe0SainvajywhfiiQ4WbFuK+NVj4Rj9CnBLCyaxeJi9l37
-	 LTyPBDrHdKhWBjwIEiEdxjKmJnX9nf4Y0k8CSOrE=
+	b=njUtISy/PZ4v3Z/W5YQJX6hutTAx5i2qlQAmW90nb4qyIv1dm1vsRgZfkh+Mj6oAD
+	 gStRQFT1fMhIm8zCy1GLckxbF1mZhO7S+vR1l3UI5C/K8+ChY4CQpfch3zx302luSO
+	 nitG1jNjAv4DHUU9lPgkyTae1iOXHplXUEmLo1zk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	urbinek@gmail.com,
+	Armin Wolf <W_Armin@gmx.de>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 035/141] ionic: Fix dim work handling in split interrupt mode
+Subject: [PATCH 4.19 24/55] hwmon: (acpi_power_meter) Fix 4.29 MW bug
 Date: Mon, 11 Dec 2023 19:21:34 +0100
-Message-ID: <20231211182028.057552715@linuxfoundation.org>
+Message-ID: <20231211182013.095155575@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,69 +54,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 4115ba677c35f694b62298e55f0e04ce84eed469 ]
+[ Upstream commit 1fefca6c57fb928d2131ff365270cbf863d89c88 ]
 
-Currently ionic_dim_work() is incorrect when in
-split interrupt mode. This is because the interrupt
-rate is only being changed for the Rx side even for
-dim running on Tx. Fix this by using the qcq from
-the container_of macro. Also, introduce some local
-variables for a bit of cleanup.
+The ACPI specification says:
 
-Fixes: a6ff85e0a2d9 ("ionic: remove intr coalesce update from napi")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231204192234.21017-3-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+"If an error occurs while obtaining the meter reading or if the value
+is not available then an Integer with all bits set is returned"
+
+Since the "integer" is 32 bits in case of the ACPI power meter,
+userspace will get a power reading of 2^32 * 1000 miliwatts (~4.29 MW)
+in case of such an error. This was discovered due to a lm_sensors
+bugreport (https://github.com/lm-sensors/lm-sensors/issues/460).
+Fix this by returning -ENODATA instead.
+
+Tested-by: <urbinek@gmail.com>
+Fixes: de584afa5e18 ("hwmon driver for ACPI 4.0 power meters")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231124182747.13956-1-W_Armin@gmx.de
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/hwmon/acpi_power_meter.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 2cc126d378353..63181866809fd 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -44,24 +44,24 @@ static void ionic_lif_queue_identify(struct ionic_lif *lif);
- static void ionic_dim_work(struct work_struct *work)
- {
- 	struct dim *dim = container_of(work, struct dim, work);
-+	struct ionic_intr_info *intr;
- 	struct dim_cq_moder cur_moder;
- 	struct ionic_qcq *qcq;
-+	struct ionic_lif *lif;
- 	u32 new_coal;
+diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
+index 2f40da04a9445..b1e5ad59ec718 100644
+--- a/drivers/hwmon/acpi_power_meter.c
++++ b/drivers/hwmon/acpi_power_meter.c
+@@ -45,6 +45,7 @@ ACPI_MODULE_NAME(ACPI_POWER_METER_NAME);
+ #define POWER_METER_CAN_NOTIFY	(1 << 3)
+ #define POWER_METER_IS_BATTERY	(1 << 8)
+ #define UNKNOWN_HYSTERESIS	0xFFFFFFFF
++#define UNKNOWN_POWER		0xFFFFFFFF
  
- 	cur_moder = net_dim_get_rx_moderation(dim->mode, dim->profile_ix);
- 	qcq = container_of(dim, struct ionic_qcq, dim);
--	new_coal = ionic_coal_usec_to_hw(qcq->q.lif->ionic, cur_moder.usec);
-+	lif = qcq->q.lif;
-+	new_coal = ionic_coal_usec_to_hw(lif->ionic, cur_moder.usec);
- 	new_coal = new_coal ? new_coal : 1;
+ #define METER_NOTIFY_CONFIG	0x80
+ #define METER_NOTIFY_TRIP	0x81
+@@ -356,6 +357,9 @@ static ssize_t show_power(struct device *dev,
+ 	update_meter(resource);
+ 	mutex_unlock(&resource->lock);
  
--	if (qcq->intr.dim_coal_hw != new_coal) {
--		unsigned int qi = qcq->cq.bound_q->index;
--		struct ionic_lif *lif = qcq->q.lif;
--
--		qcq->intr.dim_coal_hw = new_coal;
-+	intr = &qcq->intr;
-+	if (intr->dim_coal_hw != new_coal) {
-+		intr->dim_coal_hw = new_coal;
++	if (resource->power == UNKNOWN_POWER)
++		return -ENODATA;
++
+ 	return sprintf(buf, "%llu\n", resource->power * 1000);
+ }
  
- 		ionic_intr_coal_init(lif->ionic->idev.intr_ctrl,
--				     lif->rxqcqs[qi]->intr.index,
--				     qcq->intr.dim_coal_hw);
-+				     intr->index, intr->dim_coal_hw);
- 	}
- 
- 	dim->state = DIM_START_MEASURE;
 -- 
 2.42.0
 
