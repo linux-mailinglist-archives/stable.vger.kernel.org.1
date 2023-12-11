@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-6029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF99880D865
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B984580D607
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A3E61F21B12
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7D21F21AA8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3D85102F;
-	Mon, 11 Dec 2023 18:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9150241740;
+	Mon, 11 Dec 2023 18:30:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnBgW8D+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGCzdwlJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2104437B;
-	Mon, 11 Dec 2023 18:45:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2537AC433C8;
-	Mon, 11 Dec 2023 18:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5202E1D696;
+	Mon, 11 Dec 2023 18:30:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C363C433C7;
+	Mon, 11 Dec 2023 18:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320320;
-	bh=78SOpB8BTN5ilwmg+dooxA3r484Bz3VR7GAV49q++oY=;
+	s=korg; t=1702319436;
+	bh=PdGCJ6wWx2KY+PqJMUXNNVAY6UQgpn3YKsyq0vgorg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnBgW8D+GqXxjpVtTCsQ3hJOTwOTUjiX9aSf8yIWEU1FQU+VIeUlO+kRVO/Kx8935
-	 sWh4ir27IAp0SslmMAKz1nP1ZoueQpYaOkum1aNkaIj894PVgquAEO4qwYYsSh0X+q
-	 dc3OYQv6kYYHIRyAxAkruisSUwtI9w0/0YS6ae0k=
+	b=yGCzdwlJUat6k4LcW4duKBECKuM2n3oJ6GyKSEiwVLEx3+0ByGF2Q49rqbxEutTG3
+	 nIh+GDUT9jtBHdHayPnqYHnupjPjQsdhaKjEOq/prYIZt0ydw3nhMYVetXE3AIJQ+f
+	 y0veqFZDZhWD5hjkWy3WhsMIlteRXFgEXEOlfqBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/194] tg3: Move the [rt]x_dropped counters to tg3_napi
+Subject: [PATCH 6.6 103/244] firmware: arm_scmi: Extend perf protocol ops to get information of a domain
 Date: Mon, 11 Dec 2023 19:19:56 +0100
-Message-ID: <20231211182036.893005556@linuxfoundation.org>
+Message-ID: <20231211182050.394352099@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,141 +53,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 907d1bdb8b2cc0357d03a1c34d2a08d9943760b1 ]
+[ Upstream commit 3d99ed60721bf2e108c8fc660775766057689a92 ]
 
-This change moves [rt]x_dropped counters to tg3_napi so that they can be
-updated by a single writer, race-free.
+Similar to other protocol ops, it's useful for an scmi module driver to get
+some generic information of a performance domain. Therefore, let's add a
+new callback to provide this information. The information is currently
+limited to the name of the performance domain and whether the set-level
+operation is supported, although this can easily be extended if we find the
+need for it.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-1-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://lore.kernel.org/r/20230825112633.236607-3-ulf.hansson@linaro.org
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Stable-dep-of: 8e3c98d9187e ("firmware: arm_scmi: Fix frequency truncation by promoting multiplier type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 38 +++++++++++++++++++++++++----
- drivers/net/ethernet/broadcom/tg3.h |  4 +--
- 2 files changed, 35 insertions(+), 7 deletions(-)
+ drivers/firmware/arm_scmi/perf.c | 47 ++++++++++++++++++++------------
+ include/linux/scmi_protocol.h    |  8 ++++++
+ 2 files changed, 38 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 85570e40c8e9b..830f542a7c6d2 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -6853,7 +6853,7 @@ static int tg3_rx(struct tg3_napi *tnapi, int budget)
- 				       desc_idx, *post_ptr);
- 		drop_it_no_recycle:
- 			/* Other statistics kept track of by card. */
--			tp->rx_dropped++;
-+			tnapi->rx_dropped++;
- 			goto next_pkt;
- 		}
+diff --git a/drivers/firmware/arm_scmi/perf.c b/drivers/firmware/arm_scmi/perf.c
+index da901c65388a6..6677caefb36bc 100644
+--- a/drivers/firmware/arm_scmi/perf.c
++++ b/drivers/firmware/arm_scmi/perf.c
+@@ -145,7 +145,6 @@ struct scmi_msg_resp_perf_describe_levels_v4 {
+ struct perf_dom_info {
+ 	u32 id;
+ 	bool set_limits;
+-	bool set_perf;
+ 	bool perf_limit_notify;
+ 	bool perf_level_notify;
+ 	bool perf_fastchannels;
+@@ -154,7 +153,7 @@ struct perf_dom_info {
+ 	u32 sustained_freq_khz;
+ 	u32 sustained_perf_level;
+ 	u32 mult_factor;
+-	char name[SCMI_MAX_STR_SIZE];
++	struct scmi_perf_domain_info info;
+ 	struct scmi_opp opp[MAX_OPPS];
+ 	struct scmi_fc_info *fc_info;
+ 	struct xarray opps_by_idx;
+@@ -257,7 +256,7 @@ scmi_perf_domain_attributes_get(const struct scmi_protocol_handle *ph,
+ 		flags = le32_to_cpu(attr->flags);
  
-@@ -8151,7 +8151,7 @@ static netdev_tx_t tg3_start_xmit(struct sk_buff *skb, struct net_device *dev)
- drop:
- 	dev_kfree_skb_any(skb);
- drop_nofree:
--	tp->tx_dropped++;
-+	tnapi->tx_dropped++;
- 	return NETDEV_TX_OK;
- }
- 
-@@ -9330,7 +9330,7 @@ static void __tg3_set_rx_mode(struct net_device *);
- /* tp->lock is held. */
- static int tg3_halt(struct tg3 *tp, int kind, bool silent)
- {
--	int err;
-+	int err, i;
- 
- 	tg3_stop_fw(tp);
- 
-@@ -9351,6 +9351,13 @@ static int tg3_halt(struct tg3 *tp, int kind, bool silent)
- 
- 		/* And make sure the next sample is new data */
- 		memset(tp->hw_stats, 0, sizeof(struct tg3_hw_stats));
-+
-+		for (i = 0; i < TG3_IRQ_MAX_VECS; ++i) {
-+			struct tg3_napi *tnapi = &tp->napi[i];
-+
-+			tnapi->rx_dropped = 0;
-+			tnapi->tx_dropped = 0;
-+		}
+ 		dom_info->set_limits = SUPPORTS_SET_LIMITS(flags);
+-		dom_info->set_perf = SUPPORTS_SET_PERF_LVL(flags);
++		dom_info->info.set_perf = SUPPORTS_SET_PERF_LVL(flags);
+ 		dom_info->perf_limit_notify = SUPPORTS_PERF_LIMIT_NOTIFY(flags);
+ 		dom_info->perf_level_notify = SUPPORTS_PERF_LEVEL_NOTIFY(flags);
+ 		dom_info->perf_fastchannels = SUPPORTS_PERF_FASTCHANNELS(flags);
+@@ -276,7 +275,8 @@ scmi_perf_domain_attributes_get(const struct scmi_protocol_handle *ph,
+ 			dom_info->mult_factor =
+ 					(dom_info->sustained_freq_khz * 1000) /
+ 					dom_info->sustained_perf_level;
+-		strscpy(dom_info->name, attr->name, SCMI_SHORT_NAME_MAX_SIZE);
++		strscpy(dom_info->info.name, attr->name,
++			SCMI_SHORT_NAME_MAX_SIZE);
  	}
  
- 	return err;
-@@ -11900,6 +11907,9 @@ static void tg3_get_nstats(struct tg3 *tp, struct rtnl_link_stats64 *stats)
- {
- 	struct rtnl_link_stats64 *old_stats = &tp->net_stats_prev;
- 	struct tg3_hw_stats *hw_stats = tp->hw_stats;
-+	unsigned long rx_dropped;
-+	unsigned long tx_dropped;
-+	int i;
+ 	ph->xops->xfer_put(ph, t);
+@@ -288,7 +288,7 @@ scmi_perf_domain_attributes_get(const struct scmi_protocol_handle *ph,
+ 	if (!ret && PROTOCOL_REV_MAJOR(version) >= 0x3 &&
+ 	    SUPPORTS_EXTENDED_NAMES(flags))
+ 		ph->hops->extended_name_get(ph, PERF_DOMAIN_NAME_GET,
+-					    dom_info->id, dom_info->name,
++					    dom_info->id, dom_info->info.name,
+ 					    SCMI_MAX_STR_SIZE);
  
- 	stats->rx_packets = old_stats->rx_packets +
- 		get_stat64(&hw_stats->rx_ucast_packets) +
-@@ -11946,8 +11956,26 @@ static void tg3_get_nstats(struct tg3 *tp, struct rtnl_link_stats64 *stats)
- 	stats->rx_missed_errors = old_stats->rx_missed_errors +
- 		get_stat64(&hw_stats->rx_discards);
- 
--	stats->rx_dropped = tp->rx_dropped;
--	stats->tx_dropped = tp->tx_dropped;
-+	/* Aggregate per-queue counters. The per-queue counters are updated
-+	 * by a single writer, race-free. The result computed by this loop
-+	 * might not be 100% accurate (counters can be updated in the middle of
-+	 * the loop) but the next tg3_get_nstats() will recompute the current
-+	 * value so it is acceptable.
-+	 *
-+	 * Note that these counters wrap around at 4G on 32bit machines.
-+	 */
-+	rx_dropped = (unsigned long)(old_stats->rx_dropped);
-+	tx_dropped = (unsigned long)(old_stats->tx_dropped);
-+
-+	for (i = 0; i < tp->irq_cnt; i++) {
-+		struct tg3_napi *tnapi = &tp->napi[i];
-+
-+		rx_dropped += tnapi->rx_dropped;
-+		tx_dropped += tnapi->tx_dropped;
-+	}
-+
-+	stats->rx_dropped = rx_dropped;
-+	stats->tx_dropped = tx_dropped;
+ 	if (dom_info->level_indexing_mode) {
+@@ -430,6 +430,29 @@ static int scmi_perf_num_domains_get(const struct scmi_protocol_handle *ph)
+ 	return pi->num_domains;
  }
  
- static int tg3_get_regs_len(struct net_device *dev)
-diff --git a/drivers/net/ethernet/broadcom/tg3.h b/drivers/net/ethernet/broadcom/tg3.h
-index 1000c894064f0..8d753f8c5b065 100644
---- a/drivers/net/ethernet/broadcom/tg3.h
-+++ b/drivers/net/ethernet/broadcom/tg3.h
-@@ -3018,6 +3018,7 @@ struct tg3_napi {
- 	u16				*rx_rcb_prod_idx;
- 	struct tg3_rx_prodring_set	prodring;
- 	struct tg3_rx_buffer_desc	*rx_rcb;
-+	unsigned long			rx_dropped;
++static inline struct perf_dom_info *
++scmi_perf_domain_lookup(const struct scmi_protocol_handle *ph, u32 domain)
++{
++	struct scmi_perf_info *pi = ph->get_priv(ph);
++
++	if (domain >= pi->num_domains)
++		return ERR_PTR(-EINVAL);
++
++	return pi->dom_info + domain;
++}
++
++static const struct scmi_perf_domain_info *
++scmi_perf_info_get(const struct scmi_protocol_handle *ph, u32 domain)
++{
++	struct perf_dom_info *dom;
++
++	dom = scmi_perf_domain_lookup(ph, domain);
++	if (IS_ERR(dom))
++		return ERR_PTR(-EINVAL);
++
++	return &dom->info;
++}
++
+ static int scmi_perf_msg_limits_set(const struct scmi_protocol_handle *ph,
+ 				    u32 domain, u32 max_perf, u32 min_perf)
+ {
+@@ -453,17 +476,6 @@ static int scmi_perf_msg_limits_set(const struct scmi_protocol_handle *ph,
+ 	return ret;
+ }
  
- 	u32				tx_prod	____cacheline_aligned;
- 	u32				tx_cons;
-@@ -3026,6 +3027,7 @@ struct tg3_napi {
- 	u32				prodmbox;
- 	struct tg3_tx_buffer_desc	*tx_ring;
- 	struct tg3_tx_ring_info		*tx_buffers;
-+	unsigned long			tx_dropped;
+-static inline struct perf_dom_info *
+-scmi_perf_domain_lookup(const struct scmi_protocol_handle *ph, u32 domain)
+-{
+-	struct scmi_perf_info *pi = ph->get_priv(ph);
+-
+-	if (domain >= pi->num_domains)
+-		return ERR_PTR(-EINVAL);
+-
+-	return pi->dom_info + domain;
+-}
+-
+ static int __scmi_perf_limits_set(const struct scmi_protocol_handle *ph,
+ 				  struct perf_dom_info *dom, u32 max_perf,
+ 				  u32 min_perf)
+@@ -819,7 +831,7 @@ static int scmi_dvfs_device_opps_add(const struct scmi_protocol_handle *ph,
+ 		}
  
- 	dma_addr_t			status_mapping;
- 	dma_addr_t			rx_rcb_mapping;
-@@ -3219,8 +3221,6 @@ struct tg3 {
+ 		dev_dbg(dev, "[%d][%s]:: Registered OPP[%d] %lu\n",
+-			domain, dom->name, idx, freq);
++			domain, dom->info.name, idx, freq);
+ 	}
+ 	return 0;
+ }
+@@ -956,6 +968,7 @@ scmi_power_scale_get(const struct scmi_protocol_handle *ph)
  
+ static const struct scmi_perf_proto_ops perf_proto_ops = {
+ 	.num_domains_get = scmi_perf_num_domains_get,
++	.info_get = scmi_perf_info_get,
+ 	.limits_set = scmi_perf_limits_set,
+ 	.limits_get = scmi_perf_limits_get,
+ 	.level_set = scmi_perf_level_set,
+diff --git a/include/linux/scmi_protocol.h b/include/linux/scmi_protocol.h
+index 71b39cbbdace0..71923ae63b014 100644
+--- a/include/linux/scmi_protocol.h
++++ b/include/linux/scmi_protocol.h
+@@ -97,11 +97,17 @@ struct scmi_clk_proto_ops {
+ 			      u32 clk_id);
+ };
  
- 	/* begin "everything else" cacheline(s) section */
--	unsigned long			rx_dropped;
--	unsigned long			tx_dropped;
- 	struct rtnl_link_stats64	net_stats_prev;
- 	struct tg3_ethtool_stats	estats_prev;
- 
++struct scmi_perf_domain_info {
++	char name[SCMI_MAX_STR_SIZE];
++	bool set_perf;
++};
++
+ /**
+  * struct scmi_perf_proto_ops - represents the various operations provided
+  *	by SCMI Performance Protocol
+  *
+  * @num_domains_get: gets the number of supported performance domains
++ * @info_get: get the information of a performance domain
+  * @limits_set: sets limits on the performance level of a domain
+  * @limits_get: gets limits on the performance level of a domain
+  * @level_set: sets the performance level of a domain
+@@ -122,6 +128,8 @@ struct scmi_clk_proto_ops {
+  */
+ struct scmi_perf_proto_ops {
+ 	int (*num_domains_get)(const struct scmi_protocol_handle *ph);
++	const struct scmi_perf_domain_info __must_check *(*info_get)
++		(const struct scmi_protocol_handle *ph, u32 domain);
+ 	int (*limits_set)(const struct scmi_protocol_handle *ph, u32 domain,
+ 			  u32 max_perf, u32 min_perf);
+ 	int (*limits_get)(const struct scmi_protocol_handle *ph, u32 domain,
 -- 
 2.42.0
 
