@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-5932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 742EC80D7EA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED9980D9EC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B2531F211C8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2052DB21956
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AF6451C46;
-	Mon, 11 Dec 2023 18:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD040524B2;
+	Mon, 11 Dec 2023 18:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKVrjjOC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCtADW0m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08383FBE1;
-	Mon, 11 Dec 2023 18:40:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE09C433C8;
-	Mon, 11 Dec 2023 18:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C22D321B8;
+	Mon, 11 Dec 2023 18:57:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1346FC433C9;
+	Mon, 11 Dec 2023 18:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320054;
-	bh=m1TjUP3Zw3xWJP0Nf4Vw0h+6alkaYBWCXIEzSX0IddE=;
+	s=korg; t=1702321045;
+	bh=/h8yapKK/E3WQN9fnY3QKw+1OZga8nxGjRydrmHQk7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKVrjjOCAchz0lVBhB3E9ye9+GKfMrGDstVpPa+cy7ll/HxXnajoQWZ7X2F75RUXe
-	 uO0HP6mSeID+9+eWUk/fsStA6ohc4+Q1x7m3t6i4++0Gh2Apz7mhClPAl37J0QT41l
-	 vyUXQc94P/21BQdSML8vI8sMLVmE6KZqMUpC/TVA=
+	b=uCtADW0mRtzeRjfJpasauZNJhaXNV3UqD/qQ51ZSwIpsBW6KwssmSrmurpD/M0YRd
+	 iaWyU4gIghjjy+nHi8dXdzCxKfk4RRP+jzbF66eshXipy8zcwCORzaZ1U2nrBtwiAd
+	 CTlGgnhhbYFxQfIvMNDrZqoT35PdufVFfnM2fOYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	stable@kernel.org,
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 85/97] psample: Require CAP_NET_ADMIN when joining "packets" group
+Subject: [PATCH 5.15 089/141] packet: Move reference count in packet_sock to atomic_long_t
 Date: Mon, 11 Dec 2023 19:22:28 +0100
-Message-ID: <20231211182023.458608529@linuxfoundation.org>
+Message-ID: <20231211182030.413641118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,117 +57,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 upstream.
+commit db3fadacaf0c817b222090290d06ca2a338422d0 upstream.
 
-The "psample" generic netlink family notifies sampled packets over the
-"packets" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+In some potential instances the reference count on struct packet_sock
+could be saturated and cause overflows which gets the kernel a bit
+confused. To prevent this, move to a 64-bit atomic reference count on
+64-bit architectures to prevent the possibility of this type to overflow.
 
-Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
-prevent non-root users or root without the 'CAP_NET_ADMIN' capability
-(in the user namespace owning the network namespace) from joining the
-group.
+Because we can not handle saturation, using refcount_t is not possible
+in this place. Maybe someday in the future if it changes it could be
+used. Also, instead of using plain atomic64_t, use atomic_long_t instead.
+32-bit machines tend to be memory-limited (i.e. anything that increases
+a reference uses so much memory that you can't actually get to 2**32
+references). 32-bit architectures also tend to have serious problems
+with 64-bit atomics. Hence, atomic_long_t is the more natural solution.
 
-Tested using [1].
-
-Before:
-
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
-
-After:
-
- # capsh -- -c ./psample_repo
- # capsh --drop=cap_net_admin -- -c ./psample_repo
- Failed to join "packets" multicast group
-
-[1]
- $ cat psample.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
-
- int join_grp(struct nl_sock *sk, const char *grp_name)
- {
- 	int grp, err;
-
- 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
- 	if (grp < 0) {
- 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
- 			grp_name);
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
- 			grp_name);
- 		return err;
- 	}
-
- 	return 0;
- }
-
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int err;
-
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
-
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
-
- 	err = join_grp(sk, "config");
- 	if (err)
- 		return err;
-
- 	err = join_grp(sk, "packets");
- 	if (err)
- 		return err;
-
- 	return 0;
- }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
-
-Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
 Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Co-developed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@kernel.org
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231201131021.19999-1-daniel@iogearbox.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/psample/psample.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/packet/af_packet.c |   16 ++++++++--------
+ net/packet/internal.h  |    2 +-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/net/psample/psample.c
-+++ b/net/psample/psample.c
-@@ -30,7 +30,8 @@ enum psample_nl_multicast_groups {
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -4244,7 +4244,7 @@ static void packet_mm_open(struct vm_are
+ 	struct sock *sk = sock->sk;
  
- static const struct genl_multicast_group psample_nl_mcgrps[] = {
- 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
--	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
-+	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
-+				      .flags = GENL_UNS_ADMIN_PERM },
- };
+ 	if (sk)
+-		atomic_inc(&pkt_sk(sk)->mapped);
++		atomic_long_inc(&pkt_sk(sk)->mapped);
+ }
  
- static struct genl_family psample_nl_family __ro_after_init;
+ static void packet_mm_close(struct vm_area_struct *vma)
+@@ -4254,7 +4254,7 @@ static void packet_mm_close(struct vm_ar
+ 	struct sock *sk = sock->sk;
+ 
+ 	if (sk)
+-		atomic_dec(&pkt_sk(sk)->mapped);
++		atomic_long_dec(&pkt_sk(sk)->mapped);
+ }
+ 
+ static const struct vm_operations_struct packet_mmap_ops = {
+@@ -4349,7 +4349,7 @@ static int packet_set_ring(struct sock *
+ 
+ 	err = -EBUSY;
+ 	if (!closing) {
+-		if (atomic_read(&po->mapped))
++		if (atomic_long_read(&po->mapped))
+ 			goto out;
+ 		if (packet_read_pending(rb))
+ 			goto out;
+@@ -4452,7 +4452,7 @@ static int packet_set_ring(struct sock *
+ 
+ 	err = -EBUSY;
+ 	mutex_lock(&po->pg_vec_lock);
+-	if (closing || atomic_read(&po->mapped) == 0) {
++	if (closing || atomic_long_read(&po->mapped) == 0) {
+ 		err = 0;
+ 		spin_lock_bh(&rb_queue->lock);
+ 		swap(rb->pg_vec, pg_vec);
+@@ -4470,9 +4470,9 @@ static int packet_set_ring(struct sock *
+ 		po->prot_hook.func = (po->rx_ring.pg_vec) ?
+ 						tpacket_rcv : packet_rcv;
+ 		skb_queue_purge(rb_queue);
+-		if (atomic_read(&po->mapped))
+-			pr_err("packet_mmap: vma is busy: %d\n",
+-			       atomic_read(&po->mapped));
++		if (atomic_long_read(&po->mapped))
++			pr_err("packet_mmap: vma is busy: %ld\n",
++			       atomic_long_read(&po->mapped));
+ 	}
+ 	mutex_unlock(&po->pg_vec_lock);
+ 
+@@ -4550,7 +4550,7 @@ static int packet_mmap(struct file *file
+ 		}
+ 	}
+ 
+-	atomic_inc(&po->mapped);
++	atomic_long_inc(&po->mapped);
+ 	vma->vm_ops = &packet_mmap_ops;
+ 	err = 0;
+ 
+--- a/net/packet/internal.h
++++ b/net/packet/internal.h
+@@ -126,7 +126,7 @@ struct packet_sock {
+ 	__be16			num;
+ 	struct packet_rollover	*rollover;
+ 	struct packet_mclist	*mclist;
+-	atomic_t		mapped;
++	atomic_long_t		mapped;
+ 	enum tpacket_versions	tp_version;
+ 	unsigned int		tp_hdrlen;
+ 	unsigned int		tp_reserve;
 
 
 
