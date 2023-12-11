@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-6198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A490980D957
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02F680DA1B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D669D1C216DC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CAE1F21C54
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C167051C47;
-	Mon, 11 Dec 2023 18:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14155524B7;
+	Mon, 11 Dec 2023 18:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egkCO4av"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f3+JaXX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E4A51C2D;
-	Mon, 11 Dec 2023 18:52:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B73DC433C9;
-	Mon, 11 Dec 2023 18:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77F2E548;
+	Mon, 11 Dec 2023 18:58:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B1CDC433C8;
+	Mon, 11 Dec 2023 18:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320776;
-	bh=VqXSvnAkUnLdJeHvJpUP25C2/P+8Ok/z9yn2mgwoiww=;
+	s=korg; t=1702321124;
+	bh=zHASkbDmvrGzjgR/SbHz1Grl/bbHaQM4F/TYJUeUqvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=egkCO4avJ3CqylULYurX2V7vBsI217EuHnmpRYFTLVWKePLUjMeIn/tpNWaPtvTBR
-	 WA1+XGV5jfmS5A/vHiQZxUL5OY5gmK+yg9sD8xPvwwtSqOkNOK0JTH8/UczgHm1TOq
-	 5zNIGIVETWIKDaR1Ea8FsgivT5P8u0sxbvkECuoQ=
+	b=f3+JaXX3rhvl+PdDCxux1NkN81LlQitARgmvqnTqFSE8B9H2hFmrmEl+xSZfQNYoS
+	 TV2HIjnxZsWyPYOw3Vev6/NZqenYK4UzXdcRdQ2YqB7jTaRWlxIkd9I1q1QbOosViX
+	 ZMIuWm/HEUagpAB1bPHmh6B/Nt0LE0CjNGj00EGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 187/194] MIPS: Loongson64: Handle more memory types passed from firmware
+	Boerge Struempfel <boerge.struempfel@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 118/141] gpiolib: sysfs: Fix error handling on failed export
 Date: Mon, 11 Dec 2023 19:22:57 +0100
-Message-ID: <20231211182045.034087927@linuxfoundation.org>
+Message-ID: <20231211182031.679929645@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,113 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Boerge Struempfel <boerge.struempfel@gmail.com>
 
-commit c7206e7bd214ebb3ca6fa474a4423662327d9beb upstream.
+[ Upstream commit 95dd1e34ff5bbee93a28ff3947eceaf6de811b1a ]
 
-There are many types of revsered memory passed from firmware
-that should be reserved in memblock, and UMA memory passed
-from firmware that should be added to system memory for system
-to use.
+If gpio_set_transitory() fails, we should free the GPIO again. Most
+notably, the flag FLAG_REQUESTED has previously been set in
+gpiod_request_commit(), and should be reset on failure.
 
-Also for memblock there is no need to align those space into page,
-which actually cause problems.
+To my knowledge, this does not affect any current users, since the
+gpio_set_transitory() mainly returns 0 and -ENOTSUPP, which is converted
+to 0. However the gpio_set_transitory() function calles the .set_config()
+function of the corresponding GPIO chip and there are some GPIO drivers in
+which some (unlikely) branches return other values like -EPROBE_DEFER,
+and -EINVAL. In these cases, the above mentioned FLAG_REQUESTED would not
+be reset, which results in the pin being blocked until the next reboot.
 
-Handle them properly to prevent memory corruption on some systems.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e10f72bf4b3e ("gpio: gpiolib: Generalise state persistence beyond sleep")
+Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/mach-loongson64/boot_param.h |    6 ++-
- arch/mips/loongson64/init.c                        |   42 +++++++++++++--------
- 2 files changed, 31 insertions(+), 17 deletions(-)
+ drivers/gpio/gpiolib-sysfs.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -14,7 +14,11 @@
- #define ADAPTER_ROM		8
- #define ACPI_TABLE		9
- #define SMBIOS_TABLE		10
--#define MAX_MEMORY_TYPE		11
-+#define UMA_VIDEO_RAM		11
-+#define VUMA_VIDEO_RAM		12
-+#define MAX_MEMORY_TYPE		13
-+
-+#define MEM_SIZE_IS_IN_BYTES	(1 << 31)
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index 44c1ad51b3fe9..95bd1a4a08d11 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -480,14 +480,17 @@ static ssize_t export_store(struct class *class,
+ 		goto done;
  
- #define LOONGSON3_BOOT_MEM_MAP_MAX 128
- struct efi_memory_map_loongson {
---- a/arch/mips/loongson64/init.c
-+++ b/arch/mips/loongson64/init.c
-@@ -49,8 +49,7 @@ void virtual_early_config(void)
- void __init szmem(unsigned int node)
- {
- 	u32 i, mem_type;
--	static unsigned long num_physpages;
--	u64 node_id, node_psize, start_pfn, end_pfn, mem_start, mem_size;
-+	phys_addr_t node_id, mem_start, mem_size;
- 
- 	/* Otherwise come from DTB */
- 	if (loongson_sysconf.fw_interface != LOONGSON_LEFI)
-@@ -64,27 +63,38 @@ void __init szmem(unsigned int node)
- 
- 		mem_type = loongson_memmap->map[i].mem_type;
- 		mem_size = loongson_memmap->map[i].mem_size;
--		mem_start = loongson_memmap->map[i].mem_start;
-+
-+		/* Memory size comes in MB if MEM_SIZE_IS_IN_BYTES not set */
-+		if (mem_size & MEM_SIZE_IS_IN_BYTES)
-+			mem_size &= ~MEM_SIZE_IS_IN_BYTES;
-+		else
-+			mem_size = mem_size << 20;
-+
-+		mem_start = (node_id << 44) | loongson_memmap->map[i].mem_start;
- 
- 		switch (mem_type) {
- 		case SYSTEM_RAM_LOW:
- 		case SYSTEM_RAM_HIGH:
--			start_pfn = ((node_id << 44) + mem_start) >> PAGE_SHIFT;
--			node_psize = (mem_size << 20) >> PAGE_SHIFT;
--			end_pfn  = start_pfn + node_psize;
--			num_physpages += node_psize;
--			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
--				(u32)node_id, mem_type, mem_start, mem_size);
--			pr_info("       start_pfn:0x%llx, end_pfn:0x%llx, num_physpages:0x%lx\n",
--				start_pfn, end_pfn, num_physpages);
--			memblock_add_node(PFN_PHYS(start_pfn),
--					  PFN_PHYS(node_psize), node,
-+		case UMA_VIDEO_RAM:
-+			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes usable\n",
-+				(u32)node_id, mem_type, &mem_start, &mem_size);
-+			memblock_add_node(mem_start, mem_size, node,
- 					  MEMBLOCK_NONE);
- 			break;
- 		case SYSTEM_RAM_RESERVED:
--			pr_info("Node%d: mem_type:%d, mem_start:0x%llx, mem_size:0x%llx MB\n",
--				(u32)node_id, mem_type, mem_start, mem_size);
--			memblock_reserve(((node_id << 44) + mem_start), mem_size << 20);
-+		case VIDEO_ROM:
-+		case ADAPTER_ROM:
-+		case ACPI_TABLE:
-+		case SMBIOS_TABLE:
-+			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes reserved\n",
-+				(u32)node_id, mem_type, &mem_start, &mem_size);
-+			memblock_reserve(mem_start, mem_size);
-+			break;
-+		/* We should not reserve VUMA_VIDEO_RAM as it overlaps with MMIO */
-+		case VUMA_VIDEO_RAM:
-+		default:
-+			pr_info("Node %d, mem_type:%d\t[%pa], %pa bytes unhandled\n",
-+				(u32)node_id, mem_type, &mem_start, &mem_size);
- 			break;
- 		}
+ 	status = gpiod_set_transitory(desc, false);
+-	if (!status) {
+-		status = gpiod_export(desc, true);
+-		if (status < 0)
+-			gpiod_free(desc);
+-		else
+-			set_bit(FLAG_SYSFS, &desc->flags);
++	if (status) {
++		gpiod_free(desc);
++		goto done;
  	}
+ 
++	status = gpiod_export(desc, true);
++	if (status < 0)
++		gpiod_free(desc);
++	else
++		set_bit(FLAG_SYSFS, &desc->flags);
++
+ done:
+ 	if (status)
+ 		pr_debug("%s: status %d\n", __func__, status);
+-- 
+2.42.0
+
 
 
 
