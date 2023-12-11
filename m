@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610C680D56E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D88D80D8BE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C09E2819FB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4FA1C21642
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1D9A5101D;
-	Mon, 11 Dec 2023 18:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E676951C2C;
+	Mon, 11 Dec 2023 18:48:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amcwQMKu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnyFztDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9824B4F213;
-	Mon, 11 Dec 2023 18:24:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18CF6C433C8;
-	Mon, 11 Dec 2023 18:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74B25102A;
+	Mon, 11 Dec 2023 18:48:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDBFC433C7;
+	Mon, 11 Dec 2023 18:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319072;
-	bh=UQl5fwc83UeWrnvOsNLL9ySObmSZizvyfpdTT1HJvwg=;
+	s=korg; t=1702320509;
+	bh=7gx4WxcuXcNv3CzFSwmGdR+dY5gcNionhOqJRIvaQ8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amcwQMKubFAvBJsbyBlDdRuObrt9iQwG5f5GFA8VjZAExHcwqgzFChQvuct6xa6Wc
-	 z4WKo9zGjELP9ffzMyWI6YZekUfOLFdP0SVg6tPgvoz6ltAWOdLhpvDyoBBadjSalC
-	 Kq+nXFxBiC4CEEQLpDeFs82m3KKNfs/V0ncKZwjA=
+	b=AnyFztDvRsBFEcbdRvK0J/tv9k7Y45QjJOUhcbnG7x3dii8jbyxM43f7Lhy3rC/vN
+	 NlX8c9dRhm9iOSZk9LOascwbrY6GvZdqzqxfLcZqXFTdQqzCTzZSH0lS8kzieLW5rv
+	 EPmZfIXNT2cfBYO8v3FgbUZNTJnDaSjgzu7209bE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Liao <liaoyu15@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Liu Tie <liutie4@huawei.com>,
+	Nathan Rossi <nathan.rossi@digi.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 07/55] hrtimers: Push pending hrtimers away from outgoing CPU earlier
-Date: Mon, 11 Dec 2023 19:21:17 +0100
-Message-ID: <20231211182012.494629114@linuxfoundation.org>
+Subject: [PATCH 6.1 088/194] arm64: dts: imx8mp: imx8mq: Add parkmode-disable-ss-quirk on DWC3
+Date: Mon, 11 Dec 2023 19:21:18 +0100
+Message-ID: <20231211182040.394456359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,156 +54,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Nathan Rossi <nathan.rossi@digi.com>
 
-[ Upstream commit 5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94 ]
+[ Upstream commit 209043cf092d7b0d4739921b3f11d6d0b451eabf ]
 
-2b8272ff4a70 ("cpu/hotplug: Prevent self deadlock on CPU hot-unplug")
-solved the straight forward CPU hotplug deadlock vs. the scheduler
-bandwidth timer. Yu discovered a more involved variant where a task which
-has a bandwidth timer started on the outgoing CPU holds a lock and then
-gets throttled. If the lock required by one of the CPU hotplug callbacks
-the hotplug operation deadlocks because the unthrottling timer event is not
-handled on the dying CPU and can only be recovered once the control CPU
-reaches the hotplug state which pulls the pending hrtimers from the dead
-CPU.
+The i.MX8MP and i.MX8MQ devices both use the same DWC3 controller and
+are both affected by a known issue with the controller due to specific
+behaviour when park mode is enabled in SuperSpeed host mode operation.
 
-Solve this by pushing the hrtimers away from the dying CPU in the dying
-callbacks. Nothing can queue a hrtimer on the dying CPU at that point because
-all other CPUs spin in stop_machine() with interrupts disabled and once the
-operation is finished the CPU is marked offline.
+Under heavy USB traffic from multiple endpoints the controller will
+sometimes incorrectly process transactions such that some transactions
+are lost, or the controller may hang when processing transactions. When
+the controller hangs it does not recover.
 
-Reported-by: Yu Liao <liaoyu15@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Liu Tie <liutie4@huawei.com>
-Link: https://lore.kernel.org/r/87a5rphara.ffs@tglx
+This issue is documented partially within the linux-imx vendor kernel
+which references a Synopsys STAR number 9001415732 in commits [1] and
+additional details in [2]. Those commits provide some additional
+controller internal implementation specifics around the incorrect
+behaviour of the SuperSpeed host controller operation when park mode is
+enabled.
+
+The summary of this issue is that the host controller can incorrectly
+enter/exit park mode such that part of the controller is in a state
+which behaves as if in park mode even though it is not. In this state
+the controller incorrectly calculates the number of TRBs available which
+results in incorrect access of the internal caches causing the overwrite
+of pending requests in the cache which should have been processed but
+are ignored. This can cause the controller to drop the requests or hang
+waiting for the pending state of the dropped requests.
+
+The workaround for this issue is to disable park mode for SuperSpeed
+operation of the controller through the GUCTL1[17] bit. This is already
+available as a quirk for the DWC3 controller and can be enabled via the
+'snps,parkmode-disable-ss-quirk' device tree property.
+
+It is possible to replicate this failure on an i.MX8MP EVK with a USB
+Hub connecting 4 SuperSpeed USB flash drives. Performing continuous
+small read operations (dd if=/dev/sd... of=/dev/null bs=16) on the block
+devices will result in device errors initially and will eventually
+result in the controller hanging.
+
+  [13240.896936] xhci-hcd xhci-hcd.0.auto: WARN Event TRB for slot 4 ep 2 with no TDs queued?
+  [13240.990708] usb 2-1.3: reset SuperSpeed USB device number 5 using xhci-hcd
+  [13241.015582] sd 2:0:0:0: [sdc] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
+  [13241.025198] sd 2:0:0:0: [sdc] tag#0 CDB: opcode=0x28 28 00 00 00 03 e0 00 01 00 00
+  [13241.032949] I/O error, dev sdc, sector 992 op 0x0:(READ) flags 0x80700 phys_seg 25 prio class 2
+  [13272.150710] usb 2-1.2: reset SuperSpeed USB device number 4 using xhci-hcd
+  [13272.175469] sd 1:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x03 driverbyte=DRIVER_OK cmd_age=31s
+  [13272.185365] sd 1:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 00 00 03 e0 00 01 00 00
+  [13272.193385] I/O error, dev sdb, sector 992 op 0x0:(READ) flags 0x80700 phys_seg 18 prio class 2
+  [13434.846556] xhci-hcd xhci-hcd.0.auto: xHCI host not responding to stop endpoint command
+  [13434.854592] xhci-hcd xhci-hcd.0.auto: xHCI host controller not responding, assume dead
+  [13434.862553] xhci-hcd xhci-hcd.0.auto: HC died; cleaning up
+
+[1] https://github.com/nxp-imx/linux-imx/commit/97a5349d936b08cf301730b59e4e8855283f815c
+[2] https://github.com/nxp-imx/linux-imx/commit/b4b5cbc5a12d7c3b920d1d7cba0ada3379e4e42b
+
+Fixes: fb8587a2c165 ("arm64: dtsi: imx8mp: add usb nodes")
+Fixes: ad37549cb5dc ("arm64: dts: imx8mq: add USB nodes")
+Signed-off-by: Nathan Rossi <nathan.rossi@digi.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cpuhotplug.h |  1 +
- include/linux/hrtimer.h    |  4 ++--
- kernel/cpu.c               |  8 +++++++-
- kernel/time/hrtimer.c      | 33 ++++++++++++---------------------
- 4 files changed, 22 insertions(+), 24 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp.dtsi | 2 ++
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 71a0a5ffdbb1a..dd9f035be63f7 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -139,6 +139,7 @@ enum cpuhp_state {
- 	CPUHP_AP_ARM_CORESIGHT_STARTING,
- 	CPUHP_AP_ARM64_ISNDEP_STARTING,
- 	CPUHP_AP_SMPCFD_DYING,
-+	CPUHP_AP_HRTIMERS_DYING,
- 	CPUHP_AP_X86_TBOOT_DYING,
- 	CPUHP_AP_ARM_CACHE_B15_RAC_DYING,
- 	CPUHP_AP_ONLINE,
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 542b4fa2cda9b..3bdaa92a2cab3 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -508,9 +508,9 @@ extern void sysrq_timer_list_show(void);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp.dtsi b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+index 25630a395db56..8c34b3e12a66a 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp.dtsi
+@@ -1301,6 +1301,7 @@
+ 				phys = <&usb3_phy0>, <&usb3_phy0>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				snps,gfladj-refclk-lpm-sel-quirk;
++				snps,parkmode-disable-ss-quirk;
+ 			};
  
- int hrtimers_prepare_cpu(unsigned int cpu);
- #ifdef CONFIG_HOTPLUG_CPU
--int hrtimers_dead_cpu(unsigned int cpu);
-+int hrtimers_cpu_dying(unsigned int cpu);
- #else
--#define hrtimers_dead_cpu	NULL
-+#define hrtimers_cpu_dying	NULL
- #endif
+ 		};
+@@ -1343,6 +1344,7 @@
+ 				phys = <&usb3_phy1>, <&usb3_phy1>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				snps,gfladj-refclk-lpm-sel-quirk;
++				snps,parkmode-disable-ss-quirk;
+ 			};
+ 		};
  
- #endif
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index c9ca190ec0347..34c09c3d37bc6 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1418,7 +1418,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 	[CPUHP_HRTIMERS_PREPARE] = {
- 		.name			= "hrtimers:prepare",
- 		.startup.single		= hrtimers_prepare_cpu,
--		.teardown.single	= hrtimers_dead_cpu,
-+		.teardown.single	= NULL,
- 	},
- 	[CPUHP_SMPCFD_PREPARE] = {
- 		.name			= "smpcfd:prepare",
-@@ -1485,6 +1485,12 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 		.startup.single		= NULL,
- 		.teardown.single	= smpcfd_dying_cpu,
- 	},
-+	[CPUHP_AP_HRTIMERS_DYING] = {
-+		.name			= "hrtimers:dying",
-+		.startup.single		= NULL,
-+		.teardown.single	= hrtimers_cpu_dying,
-+	},
-+
- 	/* Entry state on starting. Interrupts enabled from here on. Transient
- 	 * state for synchronsization */
- 	[CPUHP_AP_ONLINE] = {
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 8512f06f0ebef..bf74f43e42af0 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1922,29 +1922,22 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 	}
- }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index d3b6874a75238..e642cb7d54d77 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1431,6 +1431,7 @@
+ 			phys = <&usb3_phy0>, <&usb3_phy0>;
+ 			phy-names = "usb2-phy", "usb3-phy";
+ 			power-domains = <&pgc_otg1>;
++			snps,parkmode-disable-ss-quirk;
+ 			status = "disabled";
+ 		};
  
--int hrtimers_dead_cpu(unsigned int scpu)
-+int hrtimers_cpu_dying(unsigned int dying_cpu)
- {
- 	struct hrtimer_cpu_base *old_base, *new_base;
--	int i;
-+	int i, ncpu = cpumask_first(cpu_active_mask);
- 
--	BUG_ON(cpu_online(scpu));
--	tick_cancel_sched_timer(scpu);
-+	tick_cancel_sched_timer(dying_cpu);
-+
-+	old_base = this_cpu_ptr(&hrtimer_bases);
-+	new_base = &per_cpu(hrtimer_bases, ncpu);
- 
--	/*
--	 * this BH disable ensures that raise_softirq_irqoff() does
--	 * not wakeup ksoftirqd (and acquire the pi-lock) while
--	 * holding the cpu_base lock
--	 */
--	local_bh_disable();
--	local_irq_disable();
--	old_base = &per_cpu(hrtimer_bases, scpu);
--	new_base = this_cpu_ptr(&hrtimer_bases);
- 	/*
- 	 * The caller is globally serialized and nobody else
- 	 * takes two locks at once, deadlock is not possible.
- 	 */
--	raw_spin_lock(&new_base->lock);
--	raw_spin_lock_nested(&old_base->lock, SINGLE_DEPTH_NESTING);
-+	raw_spin_lock(&old_base->lock);
-+	raw_spin_lock_nested(&new_base->lock, SINGLE_DEPTH_NESTING);
- 
- 	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
- 		migrate_hrtimer_list(&old_base->clock_base[i],
-@@ -1955,15 +1948,13 @@ int hrtimers_dead_cpu(unsigned int scpu)
- 	 * The migration might have changed the first expiring softirq
- 	 * timer on this CPU. Update it.
- 	 */
--	hrtimer_update_softirq_timer(new_base, false);
-+	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
-+	/* Tell the other CPU to retrigger the next event */
-+	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
- 
--	raw_spin_unlock(&old_base->lock);
- 	raw_spin_unlock(&new_base->lock);
-+	raw_spin_unlock(&old_base->lock);
- 
--	/* Check, if we got expired work to do */
--	__hrtimer_peek_ahead_timers();
--	local_irq_enable();
--	local_bh_enable();
- 	return 0;
- }
+@@ -1462,6 +1463,7 @@
+ 			phys = <&usb3_phy1>, <&usb3_phy1>;
+ 			phy-names = "usb2-phy", "usb3-phy";
+ 			power-domains = <&pgc_otg2>;
++			snps,parkmode-disable-ss-quirk;
+ 			status = "disabled";
+ 		};
  
 -- 
 2.42.0
