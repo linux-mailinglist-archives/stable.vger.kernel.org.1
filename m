@@ -1,30 +1,30 @@
-Return-Path: <stable+bounces-5302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 072B180CA07
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:42:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BB580CA08
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00091F211C2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:42:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21FB7281CF8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0C13B7BE;
-	Mon, 11 Dec 2023 12:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1F13B7BC;
+	Mon, 11 Dec 2023 12:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AdvGjPYq"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="T6JVRTvT"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2063.outbound.protection.outlook.com [40.107.102.63])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 728C7A1
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 04:42:24 -0800 (PST)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2054.outbound.protection.outlook.com [40.107.244.54])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13A638E
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 04:42:57 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Eb7E5JoBXYX0xbzvQ5zcPrUbwv+C28Deso1kT66umzTsXGb8TA7sZbE7aUmGtxb2Px2P7hKu+2y5gc3Sfw4d75BSy2iDB/12JtKOt9D3PRiV1CSAykC5AqFcJkaylT25yhs8S2pQFcYWBBV/cg7gJc4tvyaQXm8y7NZyc3KqITWyCnD+Dnmq9oMinxXk1FH+tbm27edQKiuGZJe811vVxIUIaBoU62gg83Voj/8XwUy0e1JybKwn4ZoPrGxFQdOeevnE5kwK2x+q1Vy9uXATXLklmhqJ5ykBmYBi7Um5CnaVMXwCQBOJLOun9lFWyb0DnJlWR7mQPGR1MRQ1JyYE+w==
+ b=MYLKxEPftymf8Sdz3XD11rJ8ISUEJAPO64799qWeTsINLCIfzzgR29YH4Xn/nAxp2TR3zyb6qYz2eP9pM0YGVHfQSq18DYZxrapf6EsToKnJXhBwcC1G4OgMZZh82nHaGw0MTOgc2j7OyQzVWg8J11uKpDm7GMHyRxZ2uGVzaXZGO+YzLjUragbIXuhZQJBE9pT8Xf6LVzr8O+YelslktX3fG9G4iXk7IZCR0yeoaIySo5MrLpGnJX2y2XlTr24+5cBwyFlYc2BOnis5i7LyOUYiWSFbOz1R+YmOfK/vuV2v5AYHsDh1+pf9YO8C6RiZjDnhWjbhz3p0H6MhplNqAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mCpayKNSW8qs3jLBUKoLTRGbyD81osVnDZ/xzEHM53U=;
- b=hVE3pgVj/LIU8uevE8+84Zc3e5EFRMTPg/h2xMXLfrcDV4KnNxKG8Opdtz6dBl/Vz+u4bZeNezeu7vgdijSL846aqkyOcsrEXn2kcblfpn+A1ZT788YIuxw0LcFYPQ/O1PGoYWW4u/PRxMcKrWbIWIPwhU0jLl96iheqV4a+eEGM+iCIkrLSDvFSHBBf+zPCtFz/p4GMUluqzGgEnlOKmCw4nLYtbbd8lvB09kpe4uf348SKcI04zukGEFtqYdqSBDImLukBzwJPEuJO2DZcpHLTzUtqvl4AbLMQBqPenAaJLRokwOmAmAFcyBD5BHR/jCuuIZ4ouXh+oZ9azT7Wpw==
+ bh=NWgKbm4a9G0QGodtiaDqkC5QYubmPKfsFLeTIf5QGaQ=;
+ b=c46NTQgS2ikojjZmCs7s8I3KZtW3xJcDufCKFpNm1NYI97Nd3IwroUA1Ai/MolOSnKzkbLlW3ihPh8EAQuvGuDj3e49FdBbfmkPRaHbQALt9MpWB6podHQc7Zv+k8aiiSelusaEm3LzKNbBXmafN9YsTBZDbJDi8jPMLEOXyCE3nfZZaL0nxXKuyMcSaJujBfi4klxfEnUtDIWJcx2SGTcds8UMMXqwTc7vBaqIdDtUpM2v+zzhMBLJ4NwYthAU6xqHzhY1y64Za5/63DMqFxGmleVTC8HX7ET/gYP7vnYVvWdbBivX+ryIsgYeVvnMNz5+O5FnHNU6cpT3s/tDtUA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -32,18 +32,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mCpayKNSW8qs3jLBUKoLTRGbyD81osVnDZ/xzEHM53U=;
- b=AdvGjPYqNy1QuNDdFE64qxkr9tLmSFn9j4XfVDFXptTVY80ARCwY7y9GK9dKp0EQdpYtex6rshMvVrRf6g03UWx7+fdPBdB21Ec/VUmuzrlTfAXOxZyp0meTzzDdmv97LqcNtucJ7fDxODeYdLtpaH+JFxraB6lzL/M/XNvI/B3AqRCcqA3EtKGxvDS9ikWVvs4FDeukqZ2/IpLWrmIVusqj4/+6vpIBV2WYoD/32uLL6XpviHAVLJLiJzTRCigpLPQd59XWT/ZdST2NFsW3VW4qHJR7gf88tahY0v8gHGvjpf7Eb5ThhtkChixi2ZEXnFjngcgOC3OfEh2U+fTzJg==
-Received: from BL1PR13CA0116.namprd13.prod.outlook.com (2603:10b6:208:2b9::31)
- by BY5PR12MB4225.namprd12.prod.outlook.com (2603:10b6:a03:211::20) with
+ bh=NWgKbm4a9G0QGodtiaDqkC5QYubmPKfsFLeTIf5QGaQ=;
+ b=T6JVRTvTxU+4hnZgT6C03csda7NZZ32Gs1O6D5fx5vghLd75TSrdbFVyQydrJwVqgVrN5TZD/ZK9EK/i6UpMrOmNwUTeZ/7ossLW/PUhSPaaAzSdRk8Qgm/qsLZJBT2DmJI0kDyeqyG+3RvNJURYPHu54QlLwVxlBqt0u0rgNwABtS5YEZ7I8AizmDnsF6bRIUY7kzwz96FKooS9pkTQMGHJ61d0YvB7glMgGvhZXtVEwjC4SE5cmbJ3mBvxXWspJQVKwjioxSu/0uZCxkGcmgJdm538giqIKYENzb87in+EhTn07IIts5iWugOFNtHDceeBQgXmPLicL8WovyeXMw==
+Received: from BL1PR13CA0086.namprd13.prod.outlook.com (2603:10b6:208:2b8::31)
+ by MN0PR12MB5740.namprd12.prod.outlook.com (2603:10b6:208:373::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33; Mon, 11 Dec
- 2023 12:42:21 +0000
-Received: from BL6PEPF0001AB4E.namprd04.prod.outlook.com
- (2603:10b6:208:2b9:cafe::97) by BL1PR13CA0116.outlook.office365.com
- (2603:10b6:208:2b9::31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Mon, 11 Dec
+ 2023 12:42:53 +0000
+Received: from BL6PEPF0001AB50.namprd04.prod.outlook.com
+ (2603:10b6:208:2b8:cafe::1b) by BL1PR13CA0086.outlook.office365.com
+ (2603:10b6:208:2b8::31) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7091.23 via Frontend
- Transport; Mon, 11 Dec 2023 12:42:21 +0000
+ Transport; Mon, 11 Dec 2023 12:42:52 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -51,29 +51,27 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.161 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.161) by
- BL6PEPF0001AB4E.mail.protection.outlook.com (10.167.242.72) with Microsoft
+ BL6PEPF0001AB50.mail.protection.outlook.com (10.167.242.74) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7091.18 via Frontend Transport; Mon, 11 Dec 2023 12:42:20 +0000
+ 15.20.7091.18 via Frontend Transport; Mon, 11 Dec 2023 12:42:52 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 11 Dec
- 2023 04:42:06 -0800
-Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.230.35) by
+ 2023 04:42:38 -0800
+Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.35) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Mon, 11 Dec 2023 04:42:03 -0800
+ 15.2.986.41; Mon, 11 Dec 2023 04:42:35 -0800
 From: Ido Schimmel <idosch@nvidia.com>
 To: <stable@vger.kernel.org>
 CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<edumazet@google.com>, <nhorman@tuxdriver.com>, <yotam.gi@gmail.com>,
 	<sashal@kernel.org>, <fw@strlen.de>, <jacob.e.keller@intel.com>,
 	<jiri@nvidia.com>
-Subject: [PATCH 5.4 4/4] drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group
-Date: Mon, 11 Dec 2023 14:41:33 +0200
-Message-ID: <20231211124133.822891-5-idosch@nvidia.com>
+Subject: [PATCH 4.19 0/4] Generic netlink multicast fixes
+Date: Mon, 11 Dec 2023 14:42:18 +0200
+Message-ID: <20231211124222.822925-1-idosch@nvidia.com>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20231211124133.822891-1-idosch@nvidia.com>
-References: <20231211124133.822891-1-idosch@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,180 +84,48 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4E:EE_|BY5PR12MB4225:EE_
-X-MS-Office365-Filtering-Correlation-Id: 95737d7b-c5a2-4912-e664-08dbfa469e13
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB50:EE_|MN0PR12MB5740:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44621085-e48c-416c-56b4-08dbfa46b125
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	ni7/k6zseYqTu4XRBlfyGv+S9Zd4uEqbgteTrwfPHX7ozawf3N5kztaNCqF64Kkf2bobS1yqhJsv1g8hrTN4tFRtbgYy/kvEhC53yp7BSGo0/izXeyaSG8JxADSx0ZkN7oSolFJTd6K7eXVoAtR55YpjxX+a4/oM98jzlUOFdEajadH+nCxbd0TYJ3Y1XVueR+QHiGkFBpju+ecKQc5mMyayrLkYmvWeBduQ9JjhTgg3hL8nyBLQ3VHlezsB7Gc6zDSdaYd49z2aWgeIfCACNIKBy9ZXez/83mvrSZ95ygx0xkN1paMTsyHuPxmhXQbuLgZLr1W7j1SpIKKOEE1t2oSbQCzADtmQsPYAZXuyI+jNnGJex3vTinGZqc9evH4GZKx+6UXHrKq2dyFp9WcW7LTOzrjIIrhxXLBEAB/FrnFSDnOQJpM++yD1fKCb76Q0qn9m4+hm9ivmjs5Dgd+MUdTJBzwfD57X8z0UF3CU9b9MCzAs4WXgfAVAPnrHZl3VyRcUZGYhaLeRABSixEJ8LEqx3jFL8cXK4FdD0gfzfyPDL2IkLFfguAwY2LA23xMrBlMbV0uivdBlpuGIQW20ApbplTQ7uwEZreiaECpeO9Bz1z4Gx1xPEF6CCtuqXE/tosjqxTV/wov93PUhVwyQTm0BMPrGOCpDowPYyoEYiBLSChNUZtGKRKF31zXkfGMs6KhANFsd8PRxTl6jvQb3IelomCg5K7t5iI0wm3PPVhjtCNIeuM7RDfkvjeDYUCCbFWcj/fjV8GqpPnlIDDQ0kXvw5HJQoNg0VYYkieEhmVg=
+	uug1UQ6XseN5h7TzZeIDSuxym2XH38TJJqglxKl0itTjsZYKvqgpP4ftgJUJMi935OfUECO1xatdNUBBVLTocwb+FLvePnEcbiAdIEDAbtohCgTKok4EPtaG0JOMJhi0NWLnLHmcoYiODJ709qCXCWVbJGmdhVFxwG/BW0cvVOrH3c99zNe3g0baoT5KjqTtDGT3aIe6Ug0RpiFlK55SPgokK3pRtESDeXwWuCtLDiOVH4SgDUyxhtzQRPZAtG3Onefq9EiPiH5eRjd8pQotYfiXMYEEZnL9XXFnclMgdDybEN+7SqRIpccpM0+L0Zb9+qkHMA5jh5KYLMBk9RByjsRYVogAA0XlLJ8mDjwRcDLnnOEz7Fb8YVN2ANzimqkYIsgFWTMaNtiMD4xTCpv0yw0NmaiCnCbzk4iAgfJxOf97FJ2ibzaFqeKCVnA+8Lpc9pOxk8CXPAgjxdbbl2mQVjd2G6k93cAlUpI0z8XaVgqvIKMVTjrrmPlLF4rmSBRbpFSXq+ioeLJIVSHdYbrqzfEi1MRijdQCDSfGdXaUmSjqwaLy06V28FGE2gPnM7VcQ1+/Eb3sblxOW0FouW9yM6CjQfl2c4s/23eJAmAIxHhgLNzmL0cdlN/3iqSUMlVCtukDPYoujibLa8YgPrdOhKAjN8Wox7fpWvcUeFuKPhN0/g6WQ1mjmkGF8t6X7qrgqvhKvzfnPRj9frjcjJtQYw11KulpXlLXWmP//VpkhKwsu2zMYjNlO3ZcxiTcnBOYT6O96Gh5EZNF2OOke+TOTA==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(376002)(396003)(136003)(39850400004)(230922051799003)(186009)(1800799012)(82310400011)(64100799003)(451199024)(40470700004)(36840700001)(46966006)(7416002)(40460700003)(2906002)(41300700001)(36860700001)(36756003)(86362001)(7636003)(82740400003)(356005)(2616005)(107886003)(1076003)(336012)(26005)(426003)(16526019)(6666004)(478600001)(47076005)(966005)(83380400001)(4326008)(5660300002)(316002)(70586007)(6916009)(70206006)(54906003)(8676002)(8936002)(40480700001);DIR:OUT;SFP:1101;
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(346002)(39860400002)(376002)(230922051799003)(64100799003)(451199024)(82310400011)(186009)(1800799012)(36840700001)(40470700004)(46966006)(40480700001)(41300700001)(4744005)(40460700003)(2906002)(7416002)(5660300002)(316002)(4326008)(8936002)(8676002)(6916009)(70586007)(54906003)(70206006)(7636003)(356005)(82740400003)(2616005)(36860700001)(86362001)(36756003)(47076005)(83380400001)(16526019)(426003)(26005)(6666004)(478600001)(107886003)(1076003)(336012)(41533002);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 12:42:20.7784
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 12:42:52.7538
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 95737d7b-c5a2-4912-e664-08dbfa469e13
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44621085-e48c-416c-56b4-08dbfa46b125
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0001AB4E.namprd04.prod.outlook.com
+	BL6PEPF0001AB50.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4225
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5740
 
-commit e03781879a0d524ce3126678d50a80484a513c4b upstream.
+Restrict two generic netlink multicast groups - in the "psample" and
+"NET_DM" families - to be root-only with the appropriate capabilities.
 
-The "NET_DM" generic netlink family notifies drop locations over the
-"events" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+Patch #1 is a dependency of patch #2 which is needed by the actual fixes
+in patches #3 and #4.
 
-Fix by adding a new field to the generic netlink multicast group
-structure that when set prevents non-root users or root without the
-'CAP_SYS_ADMIN' capability (in the user namespace owning the network
-namespace) from joining the group. Set this field for the "events"
-group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
-nature of the information that is shared over this group.
+Florian Westphal (1):
+  netlink: don't call ->netlink_bind with table lock held
 
-Note that the capability check in this case will always be performed
-against the initial user namespace since the family is not netns aware
-and only operates in the initial network namespace.
+Ido Schimmel (3):
+  genetlink: add CAP_NET_ADMIN test for multicast bind
+  psample: Require 'CAP_NET_ADMIN' when joining "packets" group
+  drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group
 
-A new field is added to the structure rather than using the "flags"
-field because the existing field uses uAPI flags and it is inappropriate
-to add a new uAPI flag for an internal kernel check. In net-next we can
-rework the "flags" field to use internal flags and fold the new field
-into it. But for now, in order to reduce the amount of changes, add a
-new field.
+ include/net/genetlink.h  |  3 +++
+ net/core/drop_monitor.c  |  4 +++-
+ net/netlink/af_netlink.c |  4 ++--
+ net/netlink/genetlink.c  | 35 +++++++++++++++++++++++++++++++++++
+ net/psample/psample.c    |  3 ++-
+ 5 files changed, 45 insertions(+), 4 deletions(-)
 
-Since the information can only be consumed by root, mark the control
-plane operations that start and stop the tracing as root-only using the
-'GENL_ADMIN_PERM' flag.
-
-Tested using [1].
-
-Before:
-
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
-
-After:
-
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
- Failed to join "events" multicast group
-
-[1]
- $ cat dm.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
-
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int grp, err;
-
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
-
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
-
- 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
- 	if (grp < 0) {
- 		fprintf(stderr,
- 			"Failed to resolve \"events\" multicast group\n");
- 		return grp;
- 	}
-
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
- 		return err;
- 	}
-
- 	return 0;
- }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
-
-Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- include/net/genetlink.h | 2 ++
- net/core/drop_monitor.c | 4 +++-
- net/netlink/genetlink.c | 3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/genetlink.h b/include/net/genetlink.h
-index a8c9c8d1eb51..2d52776def52 100644
---- a/include/net/genetlink.h
-+++ b/include/net/genetlink.h
-@@ -11,10 +11,12 @@
- /**
-  * struct genl_multicast_group - generic netlink multicast group
-  * @name: name of the multicast group, names are per-family
-+ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
-  */
- struct genl_multicast_group {
- 	char			name[GENL_NAMSIZ];
- 	u8			flags;
-+	u8			cap_sys_admin:1;
- };
- 
- struct genl_ops;
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index e8e8389ddc96..feb946c954b6 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -180,7 +180,7 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
- }
- 
- static const struct genl_multicast_group dropmon_mcgrps[] = {
--	{ .name = "events", },
-+	{ .name = "events", .cap_sys_admin = 1 },
- };
- 
- static void send_dm_alert(struct work_struct *work)
-@@ -1539,11 +1539,13 @@ static const struct genl_ops dropmon_ops[] = {
- 		.cmd = NET_DM_CMD_START,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_STOP,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_CONFIG_GET,
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 34e3c8eb5911..a03e16e06e29 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1012,6 +1012,9 @@ static int genl_bind(struct net *net, int group)
- 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
-+		if (grp->cap_sys_admin &&
-+		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
-+			ret = -EPERM;
- 
- 		break;
- 	}
 -- 
 2.40.1
 
