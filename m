@@ -1,64 +1,66 @@
-Return-Path: <stable+bounces-5425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 805BB80CC01
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:56:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D8980CC0A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5701C2095B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9A51F210B4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EA347A56;
-	Mon, 11 Dec 2023 13:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8656647A4D;
+	Mon, 11 Dec 2023 13:57:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LA3EcSqm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TkM9bYK8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB0147A4C
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 13:56:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E470C433C8;
-	Mon, 11 Dec 2023 13:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 422B8358A9
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 13:57:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920EFC43395;
+	Mon, 11 Dec 2023 13:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702303010;
-	bh=bYKkKLzZA8jGXcnt6bR9g4qRqoJgH/dKArVF5Co8L98=;
+	s=k20201202; t=1702303023;
+	bh=jA5ATd62nm6QKEUKH0AuLYKNFPPhQMQlHAKgb9v1MYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LA3EcSqm3uQl/934YG3mOEgOClGDO+z1TEqfFBe8uBCSTYoRi4W9Or7oVif/hHU6/
-	 bDQwf54YnORtQy7nqyu15upP64xFl/eFOld1PUzgDE5lWkq6JRC72uCxvJTkSloZGw
-	 +046fblIrCj7ZJuYDXfpvEiTE5MLw/a+fucked6AZRnWnTzCS0YXDL91za0xO7YBWb
-	 8zwryIS5faNGkbpeHBbJW7VPRoLbwP84VNzU8TUt8nIH3CjlOjhP/2GUmasnuw3Wat
-	 vocJSUrhez3h2t4RzzKUowtKU36ljM9OfxC70tahEuzpPl4xmi5eKW5bMyNQlGmb+H
-	 RNK2VIS8MpaSA==
+	b=TkM9bYK8JGt1Cc/1Tm7BRdoCub2BYQi3BI2Zi/4tHV8c4fxELVq2/fN9daYRTzPyh
+	 bFsU1LBaxS51Z9eq7bRcFW+xmnP+NqEPAGPRuk7VXuqLNU03OfIk3wShQlvdt760kB
+	 4+JU0nQZaXd9EV+6JRzOTdVEcVDwMNhOpCUNJcD8ntuPCPmbLLW1MrUyI1SftR3u8z
+	 DAZSHpETAb+6XQ6glvmB7sQEoVqlLdUgJjBHSbHKWNgCfek7tG2kCPI60BG58+8gwv
+	 gSp1NRs4FKvfMfiHtit6M+vQrQ4KS2nNEuOyB5/yAwB3TjgBU70NTdYv7RDFrD0FAC
+	 qFhJNS+o2S1HQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alvin Lee <alvin.lee2@amd.com>,
+Cc: Ivan Lipski <ivlipski@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Samson Tam <samson.tam@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
 	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
 	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
 	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	felipe.clark@amd.com,
-	tony.tascioglu@amd.com,
-	ruanjinjie@huawei.com,
-	drv@mailo.com,
-	sunran001@208suo.com,
-	mario.limonciello@amd.com,
+	qingqing.zhuo@amd.com,
+	Wayne.Lin@amd.com,
+	lyude@redhat.com,
+	srinivasan.shanmugam@amd.com,
+	aurabindo.pillai@amd.com,
+	sungjoon.kim@amd.com,
+	wenjing.liu@amd.com,
+	hamza.mahfooz@amd.com,
+	mikita.lipski@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.1 23/29] drm/amd/display: Use channel_width = 2 for vram table 3.0
-Date: Mon, 11 Dec 2023 08:54:07 -0500
-Message-ID: <20231211135457.381397-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 24/29] drm/amd/display: Add monitor patch for specific eDP
+Date: Mon, 11 Dec 2023 08:54:08 -0500
+Message-ID: <20231211135457.381397-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20231211135457.381397-1-sashal@kernel.org>
 References: <20231211135457.381397-1-sashal@kernel.org>
@@ -73,43 +75,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.66
 Content-Transfer-Encoding: 8bit
 
-From: Alvin Lee <alvin.lee2@amd.com>
+From: Ivan Lipski <ivlipski@amd.com>
 
-[ Upstream commit fec05adc40c25a028c9dfa9d540f800a2d433f80 ]
+[ Upstream commit 3d71a8726e05a35beb9de394e86ce896d69e563f ]
 
-VBIOS has suggested to use channel_width=2 for any ASIC that uses vram
-info 3.0. This is because channel_width in the vram table no longer
-represents the memory width
+[WHY]
+Some eDP panels's ext caps don't write initial value cause the value of
+dpcd_addr(0x317) is random.  It means that sometimes the eDP will
+clarify it is OLED, miniLED...etc cause the backlight control interface
+is incorrect.
+
+[HOW]
+Add a new panel patch to remove sink ext caps(HDR,OLED...etc)
 
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Samson Tam <samson.tam@amd.com>
+Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
 Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Ivan Lipski <ivlipski@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index e507d2e1410b7..72891d69afb68 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -2402,7 +2402,13 @@ static enum bp_result get_vram_info_v30(
- 		return BP_RESULT_BADBIOSTABLE;
- 
- 	info->num_chans = info_v30->channel_num;
--	info->dram_channel_width_bytes = (1 << info_v30->channel_width) / 8;
-+	/* As suggested by VBIOS we should always use
-+	 * dram_channel_width_bytes = 2 when using VRAM
-+	 * table version 3.0. This is because the channel_width
-+	 * param in the VRAM info table is changed in 7000 series and
-+	 * no longer represents the memory channel width.
-+	 */
-+	info->dram_channel_width_bytes = 2;
- 
- 	return result;
- }
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+index 9dc41f569a761..b13f7aba22960 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -64,6 +64,12 @@ static void apply_edid_quirks(struct edid *edid, struct dc_edid_caps *edid_caps)
+ 		DRM_DEBUG_DRIVER("Disabling FAMS on monitor with panel id %X\n", panel_id);
+ 		edid_caps->panel_patch.disable_fams = true;
+ 		break;
++	/* Workaround for some monitors that do not clear DPCD 0x317 if FreeSync is unsupported */
++	case drm_edid_encode_panel_id('A', 'U', 'O', 0xA7AB):
++	case drm_edid_encode_panel_id('A', 'U', 'O', 0xE69B):
++		DRM_DEBUG_DRIVER("Clearing DPCD 0x317 on monitor with panel id %X\n", panel_id);
++		edid_caps->panel_patch.remove_sink_ext_caps = true;
++		break;
+ 	default:
+ 		return;
+ 	}
 -- 
 2.42.0
 
