@@ -1,53 +1,48 @@
-Return-Path: <stable+bounces-5908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE50080D7BF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540FE80D986
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8FF1281FA4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D783281F7E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D4A52F71;
-	Mon, 11 Dec 2023 18:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9383451C59;
+	Mon, 11 Dec 2023 18:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC9qB/KH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiuPWE0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7807524D4;
-	Mon, 11 Dec 2023 18:39:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662B7C433C7;
-	Mon, 11 Dec 2023 18:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4902B51C38;
+	Mon, 11 Dec 2023 18:54:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC69C433C8;
+	Mon, 11 Dec 2023 18:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319989;
-	bh=huU9pSf9X0bSVZtw5n7GaY2jk7gmJF+ECQfn/ienCOs=;
+	s=korg; t=1702320875;
+	bh=JZ3so8KkjmpXUf83Gvlr93UDw0ym2kI6ssbXWlLf1iQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC9qB/KHYlJXW6Nv3rnh4b3hwsItQ4Jy/heQ94lmya72wbqKRhFTaKmQhVWtCiuk+
-	 WmkybZvpXq057YYPihW1nmpozcNkn1FIrmanwvWYzQiv5Ce/NHLQrqc/lgLAi9lVQL
-	 a/9fhUaeOrBZ4jCcweoFq131g+3BtcyGAJ90tl0s=
+	b=hiuPWE0Yvu7Y/W6WRA/IFhuabla+ucjd+VURCr+nkfvzNmdZU3Kp+TSYY3ftyTadv
+	 pCH+0HHpN4YbxUxaowH5EQmHDkJEa1es3sZ5Syn3niM2s7dj1UIa0yYVTbC9810T/9
+	 +LosAGDWs25OKOpqb8cpwIjEXF8Mgc0BVmpJivS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/97] hv_netvsc: rndis_filter needs to select NLS
+Subject: [PATCH 5.15 027/141] platform/mellanox: Add null pointer checks for devm_kasprintf()
 Date: Mon, 11 Dec 2023 19:21:26 +0100
-Message-ID: <20231211182020.758669319@linuxfoundation.org>
+Message-ID: <20231211182027.717513113@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,48 +52,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
+[ Upstream commit 2c7c857f5fed997be93047d2de853d7f10c8defe ]
 
-rndis_filter uses utf8s_to_utf16s() which is provided by setting
-NLS, so select NLS to fix the build error:
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
+Compile-tested only.
 
-Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1a218d312e65 ("platform/mellanox: mlxbf-pmc: Add Mellanox BlueField PMC driver")
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20231201055447.2356001-1-chentao@kylinos.cn
+[ij: split the change into two]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/hyperv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/mellanox/mlxbf-pmc.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
-index ca7bf7f897d36..c8cbd85adcf99 100644
---- a/drivers/net/hyperv/Kconfig
-+++ b/drivers/net/hyperv/Kconfig
-@@ -3,5 +3,6 @@ config HYPERV_NET
- 	tristate "Microsoft Hyper-V virtual network driver"
- 	depends on HYPERV
- 	select UCS2_STRING
-+	select NLS
- 	help
- 	  Select this option to enable the Hyper-V virtual network driver.
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 2d4bbe99959ef..925bfc4aef8ce 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1202,6 +1202,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 	attr->dev_attr.show = mlxbf_pmc_event_list_show;
+ 	attr->nr = blk_num;
+ 	attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL, "event_list");
++	if (!attr->dev_attr.attr.name)
++		return -ENOMEM;
+ 	pmc->block[blk_num].block_attr[i] = &attr->dev_attr.attr;
+ 	attr = NULL;
+ 
+@@ -1214,6 +1216,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  "enable");
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[++i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 	}
+@@ -1240,6 +1244,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  "counter%d", j);
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[++i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 
+@@ -1251,6 +1257,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  "event%d", j);
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[++i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 	}
+@@ -1283,6 +1291,8 @@ static int mlxbf_pmc_init_perftype_reg(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  events[j].evt_name);
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 		i++;
+@@ -1311,6 +1321,8 @@ static int mlxbf_pmc_create_groups(struct device *dev, int blk_num)
+ 	pmc->block[blk_num].block_attr_grp.attrs = pmc->block[blk_num].block_attr;
+ 	pmc->block[blk_num].block_attr_grp.name = devm_kasprintf(
+ 		dev, GFP_KERNEL, pmc->block_name[blk_num]);
++	if (!pmc->block[blk_num].block_attr_grp.name)
++		return -ENOMEM;
+ 	pmc->groups[blk_num] = &pmc->block[blk_num].block_attr_grp;
+ 
+ 	return 0;
 -- 
 2.42.0
 
