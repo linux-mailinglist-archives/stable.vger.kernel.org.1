@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-6298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C3580D9EE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6EE780D9EF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E69081F21B9C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8B81F2172E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BB52524B9;
-	Mon, 11 Dec 2023 18:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022E8524B7;
+	Mon, 11 Dec 2023 18:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQKD+LP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KldETcGa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE570321B8;
-	Mon, 11 Dec 2023 18:57:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F0CC433C7;
-	Mon, 11 Dec 2023 18:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADC1321B8;
+	Mon, 11 Dec 2023 18:57:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D210C433C7;
+	Mon, 11 Dec 2023 18:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321050;
-	bh=KCSvwIOqensw/Bg7AEnVsWh4U16pGmQacseNBCWOEOY=;
+	s=korg; t=1702321053;
+	bh=Y1er9JxquiwC02IudzWXYffbJGjzrZK+ZdIeyo7xKME=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQKD+LP3e9b53KIqpbNnMo7/PU/0eB0sB3j9VYawXugPldzdpT8f49/swbnvnOfg1
-	 gatAKUtRgF1tiEDJ4KbGpfB+8IMhwMmc4gu7giofUYd4LkRYAsq1TZ08bmqKvxfJC1
-	 1c9tjvpJ2CrWVIDBNOEWhALV463XsiuLLzUEpFLI=
+	b=KldETcGaliDFvlfoGF0Dtj8xhmU3Bo7+E5gVjdUqJFmncuvNDl68prLQdfBl3yEtO
+	 Jd7NzOLgyd4opjUEhkRp+PiV/CmPsm6gL6wtxTZw6x9XeY5yFnKlIvgNZRqE/xjX+a
+	 UnTks/6sKbtMVH7ELYB1T1qIhuVvT1LuhyjS4ZuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 5.15 091/141] platform/surface: aggregator: fix recv_buf() return value
-Date: Mon, 11 Dec 2023 19:22:30 +0100
-Message-ID: <20231211182030.493432372@linuxfoundation.org>
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 5.15 092/141] arm64: dts: mediatek: mt7622: fix memory node warning check
+Date: Mon, 11 Dec 2023 19:22:31 +0100
+Message-ID: <20231211182030.540881790@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
 References: <20231211182026.503492284@linuxfoundation.org>
@@ -51,54 +50,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Eugen Hristev <eugen.hristev@collabora.com>
 
-commit c8820c92caf0770bec976b01fa9e82bb993c5865 upstream.
+commit 8e6ecbfd44b5542a7598c1c5fc9c6dcb5d367f2a upstream.
 
-Serdev recv_buf() callback is supposed to return the amount of bytes
-consumed, therefore an int in between 0 and count.
+dtbs_check throws a warning at the memory node:
+Warning (unit_address_vs_reg): /memory: node has a reg or ranges property, but no unit name
 
-Do not return negative number in case of issue, when
-ssam_controller_receive_buf() returns ESHUTDOWN just returns 0, e.g. no
-bytes consumed, this keep the exact same behavior as it was before.
+fix by adding the address into the node name.
 
-This fixes a potential WARN in serdev-ttyport.c:ttyport_receive_buf().
-
-Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
 Cc: stable@vger.kernel.org
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20231128194935.11350-1-francesco@dolcini.it
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 0b6286dd96c0 ("arm64: dts: mt7622: add bananapi BPI-R64 board")
+Signed-off-by: Eugen Hristev <eugen.hristev@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230814065042.4973-1-eugen.hristev@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/surface/aggregator/core.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts |    2 +-
+ arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts             |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/platform/surface/aggregator/core.c
-+++ b/drivers/platform/surface/aggregator/core.c
-@@ -230,9 +230,12 @@ static int ssam_receive_buf(struct serde
- 			    size_t n)
- {
- 	struct ssam_controller *ctrl;
-+	int ret;
+--- a/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-bananapi-bpi-r64.dts
+@@ -69,7 +69,7 @@
+ 		};
+ 	};
  
- 	ctrl = serdev_device_get_drvdata(dev);
--	return ssam_controller_receive_buf(ctrl, buf, n);
-+	ret = ssam_controller_receive_buf(ctrl, buf, n);
-+
-+	return ret < 0 ? 0 : ret;
- }
+-	memory {
++	memory@40000000 {
+ 		reg = <0 0x40000000 0 0x40000000>;
+ 	};
  
- static void ssam_write_wakeup(struct serdev_device *dev)
+--- a/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
++++ b/arch/arm64/boot/dts/mediatek/mt7622-rfb1.dts
+@@ -55,7 +55,7 @@
+ 		};
+ 	};
+ 
+-	memory {
++	memory@40000000 {
+ 		reg = <0 0x40000000 0 0x20000000>;
+ 	};
+ 
 
 
 
