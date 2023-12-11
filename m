@@ -1,45 +1,48 @@
-Return-Path: <stable+bounces-5782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DF680D6E3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA10080D97B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 584AD1F21AAC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC3611C216B5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7241851C28;
-	Mon, 11 Dec 2023 18:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4151A51C50;
+	Mon, 11 Dec 2023 18:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFSEpWUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv0+NWb0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DFA8FBE1;
-	Mon, 11 Dec 2023 18:34:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA7EC433C8;
-	Mon, 11 Dec 2023 18:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BFF51C38;
+	Mon, 11 Dec 2023 18:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F86C433C8;
+	Mon, 11 Dec 2023 18:54:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319649;
-	bh=scJfkLbMq7fUnUk7+P/lrKwZf4grn5HnVtWnupbQC9k=;
+	s=korg; t=1702320847;
+	bh=TrGVFcFysLq4K3VjNGkkXnjS+L2Z23KYVc8LfWzUaBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFSEpWUMipINr7c/3nLcJPZXHbIpuIcK9xDlvdkonWs0W/cfAybtUahCASDfEWf8i
-	 /8n0XEL222LubAUtt3VzMhyvXfWP0rKK5fmOcTkRWKNXULblmg1gt5xpmvLsrxKoWk
-	 4oLZzZmDY4btbO412xcN0LptmxNlaBpl7CTPjGSA=
+	b=iv0+NWb0CpkLlHwzfH0jWcUUdCnGl8GDsIr8XR4kRPFMcaC5UFZ6zOuntLatG9kQq
+	 a/uJpQAHMluFrTa7xNbfnPkMZo21XoDr1BWhOBnhIcGHi/QdQXXiixIuS1R9u9qWUe
+	 gOnTDx5pH1VOZIqt2THL5gkr2ke+/tuxEx1oFzL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 184/244] arm64: dts: mediatek: mt8183: Fix unit address for scp reserved memory
+	Subbaraya Sundeep <sbhatta@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 018/141] octeontx2-pf: Add missing mutex lock in otx2_get_pauseparam
 Date: Mon, 11 Dec 2023 19:21:17 +0100
-Message-ID: <20231211182054.190944164@linuxfoundation.org>
+Message-ID: <20231211182027.306351770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +54,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Subbaraya Sundeep <sbhatta@marvell.com>
 
-commit 19cba9a6c071db57888dc6b2ec1d9bf8996ea681 upstream.
+[ Upstream commit 9572c949385aa2ef10368287c439bcb7935137c8 ]
 
-The reserved memory for scp had node name "scp_mem_region" and also
-without unit-address: change the name to "memory@(address)".
-This fixes a unit_address_vs_reg warning.
+All the mailbox messages sent to AF needs to be guarded
+by mutex lock. Add the missing lock in otx2_get_pauseparam
+function.
 
-Cc: stable@vger.kernel.org
-Fixes: 1652dbf7363a ("arm64: dts: mt8183: add scp node")
-Link: https://lore.kernel.org/r/20231025093816.44327-6-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75f36270990c ("octeontx2-pf: Support to enable/disable pause frames via ethtool")
+Signed-off-by: Subbaraya Sundeep <sbhatta@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-evb.dts    |    2 +-
- arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
-@@ -31,7 +31,7 @@
- 		#address-cells = <2>;
- 		#size-cells = <2>;
- 		ranges;
--		scp_mem_reserved: scp_mem_region {
-+		scp_mem_reserved: memory@50000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x50000000 0 0x2900000>;
- 			no-map;
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -108,7 +108,7 @@
- 		#size-cells = <2>;
- 		ranges;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index dbfa3bc39e34e..fa4b2d833d77b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -316,9 +316,12 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 	if (is_otx2_lbkvf(pfvf->pdev))
+ 		return;
  
--		scp_mem_reserved: scp_mem_region {
-+		scp_mem_reserved: memory@50000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0 0x50000000 0 0x2900000>;
- 			no-map;
++	mutex_lock(&pfvf->mbox.lock);
+ 	req = otx2_mbox_alloc_msg_cgx_cfg_pause_frm(&pfvf->mbox);
+-	if (!req)
++	if (!req) {
++		mutex_unlock(&pfvf->mbox.lock);
+ 		return;
++	}
+ 
+ 	if (!otx2_sync_mbox_msg(&pfvf->mbox)) {
+ 		rsp = (struct cgx_pause_frm_cfg *)
+@@ -326,6 +329,7 @@ static void otx2_get_pauseparam(struct net_device *netdev,
+ 		pause->rx_pause = rsp->rx_pause;
+ 		pause->tx_pause = rsp->tx_pause;
+ 	}
++	mutex_unlock(&pfvf->mbox.lock);
+ }
+ 
+ static int otx2_set_pauseparam(struct net_device *netdev,
+-- 
+2.42.0
+
 
 
 
