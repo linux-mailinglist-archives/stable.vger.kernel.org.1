@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-6006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909B780D846
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2A4180D9F5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 486791F21AD7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F5031F21B9C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8C35102F;
-	Mon, 11 Dec 2023 18:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB2E524B0;
+	Mon, 11 Dec 2023 18:57:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbj1Vm83"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seHoOax2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32467FC06;
-	Mon, 11 Dec 2023 18:44:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DF6C433C8;
-	Mon, 11 Dec 2023 18:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EF8E548;
+	Mon, 11 Dec 2023 18:57:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CAE0C433C7;
+	Mon, 11 Dec 2023 18:57:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320259;
-	bh=my0+aonaHYI2MTpcAhaP3/NM8wpgE4KqOgCU9RcehLU=;
+	s=korg; t=1702321072;
+	bh=imJxDkv/OBoOAQGdpRU+GoKR5ZkM+u3TsKbjzWR/5fw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dbj1Vm83EqSuFUioR7f2RxE7BAYvRDfKfwl7LtPtIeFceHpkIcF41XmltGO4A0X/i
-	 /8O7BD7yTIIIbp8fesFsOUa0EW4U+Ik1loGrcpEOj8hoiAvvxIbupTNVcJ0nghgKeD
-	 H6wmQGt+uli0gIrgu5Py/afwTE6zO8qRR7nSpLPU=
+	b=seHoOax2WdMiZijP+mptL4EdvjKqnriSEtFrjHs+rFNW4Py74z+mxZDKBh36tvXlf
+	 0d6XWIw1m/pOeZ7shemBM/f7beXj5BEbQZJbkQ/6EiqtjaNLnrSU+Wgi9GuvuXZE69
+	 kLtz+jQuTSdJ/2G4X4Ci3hYTYuCb1wHerDp4KWBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 24/67] netfilter: xt_owner: Fix for unsafe access of sk->sk_socket
+Subject: [PATCH 5.15 069/141] scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
 Date: Mon, 11 Dec 2023 19:22:08 +0100
-Message-ID: <20231211182016.107262740@linuxfoundation.org>
+Message-ID: <20231211182029.549732598@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,71 +54,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 7ae836a3d630e146b732fe8ef7d86b243748751f ]
+[ Upstream commit 235f2b548d7f4ac5931d834f05d3f7f5166a2e72 ]
 
-A concurrently running sock_orphan() may NULL the sk_socket pointer in
-between check and deref. Follow other users (like nft_meta.c for
-instance) and acquire sk_callback_lock before dereferencing sk_socket.
+When an error occurs in the for loop of beiscsi_init_wrb_handle(), we
+should free phwi_ctxt->be_wrbq before returning an error code to prevent
+potential memleak.
 
-Fixes: 0265ab44bacc ("[NETFILTER]: merge ipt_owner/ip6t_owner in xt_owner")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: a7909b396ba7 ("[SCSI] be2iscsi: Fix dynamic CID allocation Mechanism in driver")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231123081941.24854-1-dinghao.liu@zju.edu.cn
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_owner.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ drivers/scsi/be2iscsi/be_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/xt_owner.c b/net/netfilter/xt_owner.c
-index e85ce69924aee..50332888c8d23 100644
---- a/net/netfilter/xt_owner.c
-+++ b/net/netfilter/xt_owner.c
-@@ -76,18 +76,23 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 		 */
- 		return false;
- 
--	filp = sk->sk_socket->file;
--	if (filp == NULL)
-+	read_lock_bh(&sk->sk_callback_lock);
-+	filp = sk->sk_socket ? sk->sk_socket->file : NULL;
-+	if (filp == NULL) {
-+		read_unlock_bh(&sk->sk_callback_lock);
- 		return ((info->match ^ info->invert) &
- 		       (XT_OWNER_UID | XT_OWNER_GID)) == 0;
-+	}
- 
- 	if (info->match & XT_OWNER_UID) {
- 		kuid_t uid_min = make_kuid(net->user_ns, info->uid_min);
- 		kuid_t uid_max = make_kuid(net->user_ns, info->uid_max);
- 		if ((uid_gte(filp->f_cred->fsuid, uid_min) &&
- 		     uid_lte(filp->f_cred->fsuid, uid_max)) ^
--		    !(info->invert & XT_OWNER_UID))
-+		    !(info->invert & XT_OWNER_UID)) {
-+			read_unlock_bh(&sk->sk_callback_lock);
- 			return false;
-+		}
+diff --git a/drivers/scsi/be2iscsi/be_main.c b/drivers/scsi/be2iscsi/be_main.c
+index 7974c1326d461..27e73cd54beaa 100644
+--- a/drivers/scsi/be2iscsi/be_main.c
++++ b/drivers/scsi/be2iscsi/be_main.c
+@@ -2691,6 +2691,7 @@ static int beiscsi_init_wrb_handle(struct beiscsi_hba *phba)
+ 		kfree(pwrb_context->pwrb_handle_base);
+ 		kfree(pwrb_context->pwrb_handle_basestd);
  	}
- 
- 	if (info->match & XT_OWNER_GID) {
-@@ -112,10 +117,13 @@ owner_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 			}
- 		}
- 
--		if (match ^ !(info->invert & XT_OWNER_GID))
-+		if (match ^ !(info->invert & XT_OWNER_GID)) {
-+			read_unlock_bh(&sk->sk_callback_lock);
- 			return false;
-+		}
- 	}
- 
-+	read_unlock_bh(&sk->sk_callback_lock);
- 	return true;
++	kfree(phwi_ctxt->be_wrbq);
+ 	return -ENOMEM;
  }
  
 -- 
