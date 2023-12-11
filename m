@@ -1,127 +1,222 @@
-Return-Path: <stable+bounces-5238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF1BB80C056
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 05:16:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1781880C064
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 05:39:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58F83B208A6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 04:16:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890941F20F4B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 04:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D5C18058;
-	Mon, 11 Dec 2023 04:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA6F19BB8;
+	Mon, 11 Dec 2023 04:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HeBgNvZ9"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="V7aFozyG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF3B168B5;
-	Mon, 11 Dec 2023 04:16:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95783C433C8;
-	Mon, 11 Dec 2023 04:16:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702268191;
-	bh=ReCrERUD50uu8LVUvETQ+sPC28c7ctlOLp5FcoBUuYE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HeBgNvZ9f9Ii3onGIhafCKESMWC1w5Md9DtZBH9hQuUjADqCWn6hwIJBczqS/m2sV
-	 O6561BhQtmHwTuKp9B64o01YHzowYZxOGAmqq3fRBimOpYeaAH8uJ7517/zs9TCdzJ
-	 EKH2GsJp7QcZZzcZEc/oTGtILQ/2oO1dZjpHUI3Bi6chJTEqIwXIMVZCQemyJWV4qO
-	 PcpX4IFx0GAXyC37Oz2CDkP45BH0ytNQMM9jtTguwbDT8Tcvmi2WwuPEnoY8tkOPGg
-	 hzM6vMvVM1sjr0fHHjX9+se7D7VG7WlvT36dQhaN9o9SrfI23bWrSbLXwF+qqeCUJq
-	 INtHdlOmRqJHQ==
-Date: Sun, 10 Dec 2023 23:16:30 -0500
-From: Sasha Levin <sashal@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: stable-commits@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Federico Vaga <federico.vaga@vaga.pv.it>,
-	Alex Shi <alexs@kernel.org>, Yanteng Si <siyanteng@loongson.cn>,
-	Hu Haowen <src.res.211@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, stable@vger.kernel.org,
-	Greg KH <gregkh@linuxfoundation.org>
-Subject: Re: Patch "Kbuild: move to -std=gnu11" has been added to the
- 5.15-stable tree
-Message-ID: <ZXaNHiqpN2lfEHQO@sashalap>
-References: <20231209024607.11701-1-sashal@kernel.org>
- <da3b2875-3f1d-4a96-a4ab-7aab3a695701@app.fastmail.com>
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB64CFD
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 20:39:31 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1d05212a7c5so21190895ad.0
+        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 20:39:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702269571; x=1702874371; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=STHOHK+4Dvoz7R8z68a4PLobDN4NwZOe5hsbnljXy5I=;
+        b=V7aFozyG3Fw16DqwjUnhlUfyO2hHhzBLi71uM3tGRMuZCUQ3v9sj0v8NVW7919XXXs
+         zQyb5UstXltuN+NhzSmP5ybm4mI1euOTiIC8OsT4kagTPIPU9iDi3s9yI3MqRiwgHZfG
+         a0PjDeATG2fQceqKbbMKrqo/Htte0cJDkcsyuyFlr2ZraSUd9hBpH0c+m3K+6jQcU7LB
+         pBjZgC9cOXzSih7gyqXZrp+R48OmgcpspoCguYUm9QOCeDwDtuJxkxFGL7SSFmZ29KD5
+         8Dj/ooL3g6DT0m5uj/UHp/FQOHqe4clKbEdshGUhAk82bhJj70Pa9pMZr4ZzsqJHcctm
+         cw7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702269571; x=1702874371;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=STHOHK+4Dvoz7R8z68a4PLobDN4NwZOe5hsbnljXy5I=;
+        b=tz9RuluWo2DF3kIuzuUZO+h7u8dz8kl1GLg8l0+FbYD+2/KUd2syq7IYOWwL07Onm+
+         bg+tRUh20AGAuTxM9vd7EZUwDqu0HAPVZbWhFRN9/02JfZdx/5CKzpTC7YPoJagnNe5p
+         KSIK7ls3Gp6CK2CvatjoAvT4e7I8MO7SRSPHMeU2XfC4jFAUatK3WhNj8ov81UqnI0FQ
+         3LFeQDxI4CZvHr9bRVQL+CWOw4daNYUDa5bxwMLozB4CGPpWnwmw4xIpdwBoTgq7rARg
+         dzqimuvU3mpPVAabrUIwUNPgSyxOK0BI3+GWnXNhs4EskRMEicMCdAaOFEvxffX9yh28
+         OT7A==
+X-Gm-Message-State: AOJu0YwmBbsel8+erSfRKrf45kxsVWZj9Nkq3lE7iwFbyjMvOd3G/LKk
+	EowA2J/tzl/BdvANVmbYk2Hm0uBLWNf/mGE0Tynwrg==
+X-Google-Smtp-Source: AGHT+IFTOFDUG3NbNcEF1RShRG5gIy2STY43qtx/os+caKkSS7OsWmsw3OIl+IPOPpWRxUDI6Vkw0g==
+X-Received: by 2002:a17:902:dacd:b0:1cf:8ebd:4eae with SMTP id q13-20020a170902dacd00b001cf8ebd4eaemr1260004plx.69.1702269570914;
+        Sun, 10 Dec 2023 20:39:30 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id m1-20020a170902768100b001d078445069sm5508689pll.230.2023.12.10.20.39.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Dec 2023 20:39:30 -0800 (PST)
+Message-ID: <65769282.170a0220.d4afa.f7cb@mx.google.com>
+Date: Sun, 10 Dec 2023 20:39:30 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <da3b2875-3f1d-4a96-a4ab-7aab3a695701@app.fastmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.1.66-149-gd84f8303168b1
+Subject: stable-rc/queue/6.1 build: 19 builds: 0 failed, 19 passed,
+ 1 warning (v6.1.66-149-gd84f8303168b1)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On Sat, Dec 09, 2023 at 11:47:49AM +0100, Arnd Bergmann wrote:
->On Sat, Dec 9, 2023, at 03:46, Sasha Levin wrote:
->> This is a note to let you know that I've just added the patch titled
->>
->>     Kbuild: move to -std=gnu11
->>
->> to the 5.15-stable tree which can be found at:
->>
->> http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->> The filename of the patch is:
->>      kbuild-move-to-std-gnu11.patch
->> and it can be found in the queue-5.15 subdirectory.
->>
->> If you, or anyone else, feels it should not be added to the stable tree,
->> please let <stable@vger.kernel.org> know about it.
->
->I think the patch initially caused a few regressions, so
->I'm not sure if backporting this is the best idea. Is this
->needed for some other backport?
+stable-rc/queue/6.1 build: 19 builds: 0 failed, 19 passed, 1 warning (v6.1.=
+66-149-gd84f8303168b1)
 
-Hey Arnd,
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F6.1=
+/kernel/v6.1.66-149-gd84f8303168b1/
 
-I spent some time over the weeked trying to figure it out. Initially it
-looked like there's something wrong with my local toolchain, but what I
-found out is the following:
+Tree: stable-rc
+Branch: queue/6.1
+Git Describe: v6.1.66-149-gd84f8303168b1
+Git Commit: d84f8303168b150ca33fdfccf7faba4087b8b54a
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-There is now kernel code relying on code constructs that are illegal
-without c99/gnu11/etc. The example in this case is WMI code which even
-in upstream [1] does:
+Warnings Detected:
 
-	list_for_each_entry(wblock, &wmi_block_list, list) {
-	/* skip warning and register if we know the driver will use struct wmi_driver */
-	for (int i = 0; allow_duplicates[i] != NULL; i++) {
-	    ^^^^^^^^^^^
-		if (guid_parse_and_compare(allow_duplicates[i], guid))
-			return false;
+arc:
 
-The decleration of a variable there doesn't work unless you're using a
-newer standard, which is why the dependency bot ended up pulling this
-commit in.
+arm64:
 
-At this point, not taking this change means that we can't take some
-commits without doing custom changes to backport them, which in turn
-means that we'll keep diverging from upstream.
+arm:
 
-Agreeing with you that this isn't a trivial change, but it seems that we
-need to take it to make even not-that-old trees (<=5.15) accept some
-fixes.
+i386:
 
-With the commit in question applied I see no new errors or warnings, so
-I'll keep it in 5.15, and we can see how it survives the -rc tests.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-I haven't seen any fixes pointing to that commit besides a documentation
-fix, so if I've missed anything please let me know.
+riscv:
 
-[1]: https://elixir.bootlin.com/linux/v6.7-rc5/source/drivers/platform/x86/wmi.c#L1289
+x86_64:
 
--- 
-Thanks,
-Sasha
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
 
