@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-5713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABB4080D614
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5F8C80D888
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66DC42820E6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51B851F21707
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF68720DDE;
-	Mon, 11 Dec 2023 18:31:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B42715103A;
+	Mon, 11 Dec 2023 18:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q9W2lOLQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d9B9jCoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B304FBE1;
-	Mon, 11 Dec 2023 18:31:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F6FC433CA;
-	Mon, 11 Dec 2023 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72560C8C8;
+	Mon, 11 Dec 2023 18:46:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A0AC433C7;
+	Mon, 11 Dec 2023 18:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319466;
-	bh=FNEKQXBom0b/+ZBtkfQQtVEeKnZTi3yYrWm15VaxkjI=;
+	s=korg; t=1702320400;
+	bh=pwjrzfn4amgmtgX/Y26dA8G3M4SBsqz5mkKCo3Sd6ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q9W2lOLQ3HcB3e9oewwgAYeS4xZzO2YwgLXH7XCvJ63QAtxliLXaQ6UBWlf8ZbKz2
-	 p2VQaDBDh/MyusnB+ul9rCfg7C3va+Jp2R5CHPrbC1gndszTXz2gz/PU7OWX4OtKys
-	 fT56fSGe17/7wJ3GrB63ibxpMRiCAbHMtPTzaLVA=
+	b=d9B9jCoSZAIa0xO2legk75LGXr4oRB40GNYmvGtcMoZwDUWqE4DlmByAqwFwPBQ3U
+	 kS50TBLVsGdquhcUYRI27leCK4cFvNXKMCHYoP68zRrgUCEQDxtkck43i4GseLXOyJ
+	 MgcFBqjOM5kD9GkSavVHMXBK1Pr4VyuStWY/sDqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Alexis Belmonte <alexbelm48@gmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/244] io_uring/kbuf: check for buffer list readiness after NULL check
+Subject: [PATCH 6.1 019/194] platform/x86: wmi: Skip blocks with zero instances
 Date: Mon, 11 Dec 2023 19:20:09 +0100
-Message-ID: <20231211182051.002976772@linuxfoundation.org>
+Message-ID: <20231211182037.466319133@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +52,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 9865346b7e8374b57f1c3ccacdc77846c6352ff4 ]
+[ Upstream commit cbf54f37600e874d82886aa3b2f471778cae01ce ]
 
-Move the buffer list 'is_ready' check below the validity check for
-the buffer list for a given group.
+Some machines like the HP Omen 17 ck2000nf contain WMI blocks
+with zero instances, so any WMI driver which tries to handle the
+associated WMI device will fail.
+Skip such WMI blocks to avoid confusing any WMI drivers.
 
-Fixes: 5cf4f52e6d8a ("io_uring: free io_buffer_list entries via RCU")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reported-by: Alexis Belmonte <alexbelm48@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218188
+Fixes: bff431e49ff5 ("ACPI: WMI: Add ACPI-WMI mapping driver")
+Tested-by: Alexis Belmonte <alexbelm48@gmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://lore.kernel.org/r/20231129181654.5800-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/wmi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index 12eec4778c5b1..e8516f3bbbaaa 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -743,6 +743,8 @@ void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
+diff --git a/drivers/platform/x86/wmi.c b/drivers/platform/x86/wmi.c
+index 2b79377cc21e2..b3f3e23a64eee 100644
+--- a/drivers/platform/x86/wmi.c
++++ b/drivers/platform/x86/wmi.c
+@@ -1227,6 +1227,11 @@ static int parse_wdg(struct device *wmi_bus_dev, struct acpi_device *device)
+ 		if (debug_dump_wdg)
+ 			wmi_dump_wdg(&gblock[i]);
  
- 	bl = __io_buffer_get_list(ctx, smp_load_acquire(&ctx->io_bl), bgid);
++		if (!gblock[i].instance_count) {
++			dev_info(wmi_bus_dev, FW_INFO "%pUL has zero instances\n", &gblock[i].guid);
++			continue;
++		}
++
+ 		if (guid_already_parsed_for_legacy(device, &gblock[i].guid))
+ 			continue;
  
-+	if (!bl || !bl->is_mmap)
-+		return NULL;
- 	/*
- 	 * Ensure the list is fully setup. Only strictly needed for RCU lookup
- 	 * via mmap, and in that case only for the array indexed groups. For
-@@ -750,8 +752,6 @@ void *io_pbuf_get_address(struct io_ring_ctx *ctx, unsigned long bgid)
- 	 */
- 	if (!smp_load_acquire(&bl->is_ready))
- 		return NULL;
--	if (!bl || !bl->is_mmap)
--		return NULL;
- 
- 	return bl->buf_ring;
- }
 -- 
 2.42.0
 
