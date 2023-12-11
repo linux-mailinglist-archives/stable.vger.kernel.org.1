@@ -1,76 +1,76 @@
-Return-Path: <stable+bounces-5294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4F280C9F8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:39:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF14380C9F7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:39:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37A3F281F1D
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4451F21069
 	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8013B7AF;
-	Mon, 11 Dec 2023 12:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282273B7BB;
+	Mon, 11 Dec 2023 12:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UeRMtfMr"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="gozvrXjQ"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2075.outbound.protection.outlook.com [40.107.243.75])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 681F0A9
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 04:38:55 -0800 (PST)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE6AA1
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 04:38:54 -0800 (PST)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=J+1OHqAGQ8iBJzOXRrpSqMZ2w4FB3EBCXKCFGJuL5uICUvk+zuIQZABpFC59hznZeBGHmCmTgNP0ia8fwHrE4isW4GgIRT7qp/RK28uLqixQz0cqf1QI0E/g6Ob5GswYo5YBxq2pmR0raDiyJbi7EhXHiOn0WRJ5z4/N7Wch+jT768DGXQZdDm7NKZiGYaoBl43oBJ9CDUIW2Ve/5vWl9Xlqtsn2HFacVC8WhUdbd0QVWjagkO84SNddZtViCHf2tn4h3nQe1Us16fF4LwM/sozCiVLWrp4lw9eWvWmPmheviWj5LLpcKcAOFLEofx6VxyYjXt1H+wnkK2iYo3wlLw==
+ b=ccsu7FXtrXh0nny9BUp2OK+0X/EnZWxfo+vjlC+4II4fRZMNoF3dVm9bVuFCRhSxJLBZSZg1vz1rgyrhHWuAeP1R+6utDHi4v5ZNpEGV1Q5e46hI1Tv8t2RPeCBgQLBXblJ+WdWAumRNvH0j06gbILUX4ngZrFxdp3W6KSarLHZD1e4i3clKdwK2WENK2U253oeJjZsK8liHumVXfgFFBEUdsC+O2G7rvVK9t+ZDCkI+GtYDVzSllrRY8th3r47cbON58UBtUo168RJv6n3Uo9+MQCFn2Jwnk8cJkisNfMI2JA2A+67OfNFQWadWPJ95WSQH3QoTHTvJ5x54HvI0MA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X39HFrO5YHPj9LyEXHBhR0HYXf5Fy70DxaILNYq3RPk=;
- b=hAIdwHAWUzZCRtDwi6ZqY283HtZS6DjgoQRArv9abXt0eyC1Xh7rFT55wiAIOOpt0FY/OJLAqcDne+/xXbWnFsYr8oVytxpBmVVjTfwuajRon6FgUl8emhVU4rmKF2hfNnc4hUrlwRqkt3EEPbi6RJBYvalcZq1MzKsUfICPr8Tq7Pjv/5OWG/qooNBT35Xy0Y4uBCtvDUxmPsxexszk/2aDRjXIYt7KBhHOTfwVb0k6+uXf6Atv3xbv9OEmhr85FgNEar5G/51GhytbclKRChTk/WJOqcncWxUcl5h0u8iYU7XJT2T56fOVxu62m9pVrQfQ/eahIx3Yp1wDDNgU/A==
+ bh=IiI9syoZFgVRUMAo+qHTpNe9iFtf0Z+5QAoPaZ1r4eQ=;
+ b=QiwNlsZXOzhjHmS71BgTBHORbHVXbg/zw+Rai6dmcE9nmmy0W8NXacushne84gDa5Rc0vY4bRjp661xEUVlm7ipvA7kOLGoPs4cuKG6gxvJdU/2FoPyPxiq2Qq465FX/91BHaldujxYBjyOmfWeX8lGDqc/Gc72/w7GuMqh6J0XY/rk6TjTC889MUJABXKiFjl1hduXNs3lEmtcE/XtiD6BYzIImjoUhk3Ml7SRRQacgEtjjuV0CwXcJbpMJrSfvGkX45N9UpPegMAGo1r8eKNVRuyWh5g2yvFSETIbpY2r6WG6YRZxqFroT+DrPoMmmF1sF5QxG4WDjaKFSNOQ4oQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X39HFrO5YHPj9LyEXHBhR0HYXf5Fy70DxaILNYq3RPk=;
- b=UeRMtfMrzBvYns9nQUqWbNpTpXWmG+uCWn64CmFsGWkQJhyv+bJ2HTYHSZky6SXiRlaFRMKXc+S2NKwft//68uF1f3lTEqWgLZgtqIoKpbcJGPIF9JRG8hhNoNOTv7GFtg7H6xaJgtZ/knc3AJP7n9t5RFdg0sRLQWwgU03uHz3rvOscCS5G9L+mY68WfiuNfIsSZ4kbFJYa1r0k0BBQrh9lusksGaCCgRs0bHSZBpWSVEuQ1r0xEsY1tBdjBadfmxu9D7bzs0vvioU5SP14xGS1WR8sq06P0bv7359TeSAySUb4NIvMnPDqufA5J9jDPXN3wsTCO7pPZoQuG1NTxQ==
-Received: from CY8P220CA0048.NAMP220.PROD.OUTLOOK.COM (2603:10b6:930:47::25)
- by DS7PR12MB5861.namprd12.prod.outlook.com (2603:10b6:8:78::12) with
+ bh=IiI9syoZFgVRUMAo+qHTpNe9iFtf0Z+5QAoPaZ1r4eQ=;
+ b=gozvrXjQntbztE9a1oKL9QkEI4uKsAtVPHL63hGfdSQ0+pEH2CsQcBuPgWtxk26JnBs/8gzLv/FI0VK0+oij0cI9g9SnKRNhFjYZdEy7JDtX/Vbvx9OnWU+gpFrHFgCnOEW/vB9apHpS0wAkHIGDMiH2uoKnDSui8k52XEx5zT9qWTwnmIMRNV9yNO5C7wh0QhMIDeUr5dmnNhIKrX6HCRh0B7BLjDgvGtB+jV51am0KdmKJkgllXJmTOyR87+0MJTs0XCdZBT3EnAp4pLvHc1JjVzIJl6AGRUt9gZkw/vZ55bNz5UAu3ZZtULeTZpMp5YWnMNVccdfJGokgWQ3jmQ==
+Received: from CYXPR02CA0008.namprd02.prod.outlook.com (2603:10b6:930:cf::14)
+ by PH7PR12MB8108.namprd12.prod.outlook.com (2603:10b6:510:2bc::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.32; Mon, 11 Dec
- 2023 12:38:49 +0000
-Received: from CY4PEPF0000EDD7.namprd03.prod.outlook.com
- (2603:10b6:930:47:cafe::b4) by CY8P220CA0048.outlook.office365.com
- (2603:10b6:930:47::25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6886.34 via Frontend
- Transport; Mon, 11 Dec 2023 12:38:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ 2023 12:38:52 +0000
+Received: from CY4PEPF0000FCC2.namprd03.prod.outlook.com
+ (2603:10b6:930:cf:cafe::64) by CYXPR02CA0008.outlook.office365.com
+ (2603:10b6:930:cf::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7068.33 via Frontend
+ Transport; Mon, 11 Dec 2023 12:38:51 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
 Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CY4PEPF0000EDD7.mail.protection.outlook.com (10.167.241.211) with Microsoft
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CY4PEPF0000FCC2.mail.protection.outlook.com (10.167.242.104) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7091.18 via Frontend Transport; Mon, 11 Dec 2023 12:38:49 +0000
+ 15.20.7091.18 via Frontend Transport; Mon, 11 Dec 2023 12:38:51 +0000
 Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 11 Dec
- 2023 04:38:38 -0800
+ 2023 04:38:42 -0800
 Received: from dev-r-vrt-155.mtr.labs.mlnx (10.126.231.35) by
  rnnvmail201.nvidia.com (10.129.68.8) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.41; Mon, 11 Dec 2023 04:38:35 -0800
+ 15.2.986.41; Mon, 11 Dec 2023 04:38:38 -0800
 From: Ido Schimmel <idosch@nvidia.com>
 To: <stable@vger.kernel.org>
 CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<edumazet@google.com>, <nhorman@tuxdriver.com>, <yotam.gi@gmail.com>,
 	<sashal@kernel.org>, <fw@strlen.de>, <jacob.e.keller@intel.com>,
 	<jiri@nvidia.com>
-Subject: [PATCH 5.10 1/4] netlink: don't call ->netlink_bind with table lock held
-Date: Mon, 11 Dec 2023 14:37:37 +0200
-Message-ID: <20231211123740.822802-2-idosch@nvidia.com>
+Subject: [PATCH 5.10 2/4] genetlink: add CAP_NET_ADMIN test for multicast bind
+Date: Mon, 11 Dec 2023 14:37:38 +0200
+Message-ID: <20231211123740.822802-3-idosch@nvidia.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20231211123740.822802-1-idosch@nvidia.com>
 References: <20231211123740.822802-1-idosch@nvidia.com>
@@ -86,115 +86,114 @@ X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
  rnnvmail201.nvidia.com (10.129.68.8)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD7:EE_|DS7PR12MB5861:EE_
-X-MS-Office365-Filtering-Correlation-Id: 85ffbb2f-8b2d-40dc-e97c-08dbfa461ff6
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC2:EE_|PH7PR12MB8108:EE_
+X-MS-Office365-Filtering-Correlation-Id: 53047faa-5d56-42f2-e856-08dbfa46214a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info:
-	exovF1QHawkVGMc8FxPkHndfFHtIQs7zJmTJUFTN+NiOPsEYB7fxodscuAUnVqTckBaa9KzUa34tG1vMjYUnKqc1hqQevBKTx+AP2GIPdDCHvzDC/WQ8lnFWMCx5xyunsZyU6biillLSdit8D0uUOkwBkgDKwIlG7U5CUABKVbhhEl9jt+aW5YdtaWk7JHteYpAgftIURExsqFvelzMfllV+S6Tk0SNDOALOGoNFl3/JywOXpf+m2u4pKzXghUoAQzxvDSxo+BQ1ikYqdqHyJmgqigYMN5x/h6qO4SxQzoxs7ztMq9OSkY7PjKenmch9YJnbX9S57IdKqBHtSKWul7jE+d/vWGH2Czr6YDd1XLo78MpudQtniNGnec9wqXtJZHhVdu9XFc1b9uu6cDgc8s5ZxGvVbrJd6DwBbWft2gmHoUebO1xCecLwnVrBRQt5GaLLXkr3TLQ/TsEAy7wKx8IT5b+/Y+4A/tfg5j7EB/rG+ccEHbwWtxD722n4kNzxZPvO57iIsMb/6noNMf62HCF3jDHYgrfnTB9meFhrjlBVnrMhhb00GsAWXnjkSQ1cls0ZhTdPoIg5msHtZ61KF85gEvrc90VT59Ccj9/gcj5cIXSCnYnrP/kUHiJAIxzRbSXrB1A9pgaydsa+qepPIDBko3vxMIqCUVFXzlU2jFQKrSf+c+5051bypLsMBYxkdlngaowatnleAYq6Aci0O96p79UT3NZunu8M+ZLmvbrODn8fRaHGdIiZzV9jq57s4bCQH8Y89VGQ7AXpB97HICldYd+hcL1svyWXoCgtaX8=
+	ON89a0yMLyrh96XOWGpAG1UtGMlU0kqundP7sa7q6PafUJAHgeijU0fKbjjUpiU3HViYQNLhbLlDrQjo4aQeo/A1goRlj5Fbrnlk3tpZAoanvnH76jGtNDuJxA0Zk3L2ca8PthxpPvmnXGK2k7EZI0IMSVbki4HaG0Hz+EbBOUFZEri5Ioc9MNlAz5614z3qv0CgmtH9CArkBMrVonNKSXRSA1DQX0TexwjWLMCjfO1XHHdWBzhJIEIMycCTBq1jTe5/ZKi8Kl/PSgWwxBZhRycPJtWAMjUzPq/OQxzQ/z1Rmi+lUzUz2/ZGkuomLg3D4a9HB+78ZEm6Y/obixZJoF9Dv+4Hf/LDRoc16OzcOPYaLiBAJn2qOy7pSqd8JsXmK89pnPoGBv0vj3ZH0rNXklV9b5BGfq9U5c0mZGX2VLB61/S8HHYDwc2A7lY1wnV/Ttr4lmzvPmDuFTJdIY/AjV3MSg4xuZRuXog+Sspn3XT+eHJ3gLDXfUWhOA59bpIu6iEh1elQC0p0U5/Aj7XnBWWv7PTSrfEMzo2g+fmyxKD5eyIT3vhl5EqI77Npgd7B5td7mAEDevpy7Y8U1K1hrCK0XIuF6EzKj3p5YLRAgQSu2K/uRwrJ1dmFGkfUZnY9S5A0XgbymNTReoMXjApYLcbyFYFe2Q16FAdLA6Yq6Z6k4SX8hVmz13zHYsAXEIomFUtFBogEoXUYZ8pCF+iCs/aV0aYVf7tM8+mUVK2EsXpXw0FRCV80LFOFuv9lgNGSgla4bIZlpLwmNqd/shsY0Q==
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(376002)(136003)(396003)(230922051799003)(82310400011)(64100799003)(186009)(1800799012)(451199024)(46966006)(40470700004)(36840700001)(40460700003)(1076003)(26005)(16526019)(2616005)(107886003)(336012)(426003)(36860700001)(83380400001)(5660300002)(47076005)(7416002)(41300700001)(2906002)(4326008)(478600001)(8676002)(8936002)(70206006)(70586007)(316002)(54906003)(966005)(6916009)(82740400003)(356005)(86362001)(7636003)(36756003)(40480700001);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(136003)(346002)(376002)(39860400002)(230922051799003)(1800799012)(451199024)(64100799003)(186009)(82310400011)(46966006)(40470700004)(36840700001)(40480700001)(1076003)(26005)(426003)(336012)(107886003)(16526019)(2616005)(40460700003)(82740400003)(6916009)(36756003)(7636003)(356005)(86362001)(47076005)(5660300002)(83380400001)(7416002)(36860700001)(316002)(70586007)(70206006)(8936002)(8676002)(54906003)(966005)(41300700001)(4326008)(2906002)(478600001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 12:38:49.2893
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Dec 2023 12:38:51.4862
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 85ffbb2f-8b2d-40dc-e97c-08dbfa461ff6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53047faa-5d56-42f2-e856-08dbfa46214a
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD7.namprd03.prod.outlook.com
+	CY4PEPF0000FCC2.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5861
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8108
 
-From: Florian Westphal <fw@strlen.de>
+This is a partial backport of upstream commit 4d54cc32112d ("mptcp:
+avoid lock_fast usage in accept path"). It is only a partial backport
+because the patch in the link below was erroneously squash-merged into
+upstream commit 4d54cc32112d ("mptcp: avoid lock_fast usage in accept
+path"). Below is the original patch description from Florian Westphal:
 
-commit f2764bd4f6a8dffaec3e220728385d9756b3c2cb upstream.
+"
+genetlink sets NL_CFG_F_NONROOT_RECV for its netlink socket so anyone can
+subscribe to multicast messages.
 
-When I added support to allow generic netlink multicast groups to be
-restricted to subscribers with CAP_NET_ADMIN I was unaware that a
-genl_bind implementation already existed in the past.
+rtnetlink doesn't allow this unconditionally,  rtnetlink_bind() restricts
+bind requests to CAP_NET_ADMIN for a few groups.
 
-It was reverted due to ABBA deadlock:
+This allows to set GENL_UNS_ADMIN_PERM flag on genl mcast groups to
+mandate CAP_NET_ADMIN.
 
-1. ->netlink_bind gets called with the table lock held.
-2. genetlink bind callback is invoked, it grabs the genl lock.
+This will be used by the upcoming mptcp netlink event facility which
+exposes the token (mptcp connection identifier) to userspace.
+"
 
-But when a new genl subsystem is (un)registered, these two locks are
-taken in reverse order.
-
-One solution would be to revert again and add a comment in genl
-referring 1e82a62fec613, "genetlink: remove genl_bind").
-
-This would need a second change in mptcp to not expose the raw token
-value anymore, e.g.  by hashing the token with a secret key so userspace
-can still associate subflow events with the correct mptcp connection.
-
-However, Paolo Abeni reminded me to double-check why the netlink table is
-locked in the first place.
-
-I can't find one.  netlink_bind() is already called without this lock
-when userspace joins a group via NETLINK_ADD_MEMBERSHIP setsockopt.
-Same holds for the netlink_unbind operation.
-
-Digging through the history, commit f773608026ee1
-("netlink: access nlk groups safely in netlink bind and getname")
-expanded the lock scope.
-
-commit 3a20773beeeeade ("net: netlink: cap max groups which will be considered in netlink_bind()")
-... removed the nlk->ngroups access that the lock scope
-extension was all about.
-
-Reduce the lock scope again and always call ->netlink_bind without
-the table lock.
-
-The Fixes tag should be vs. the patch mentioned in the link below,
-but that one got squash-merged into the patch that came earlier in the
-series.
-
-Fixes: 4d54cc32112d8d ("mptcp: avoid lock_fast usage in accept path")
-Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/T/#u
-Cc: Cong Wang <xiyou.wangcong@gmail.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Cc: Johannes Berg <johannes.berg@intel.com>
-Cc: Sean Tranchetti <stranche@codeaurora.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lore.kernel.org/mptcp/20210213000001.379332-8-mathew.j.martineau@linux.intel.com/
 Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 ---
- net/netlink/af_netlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/genetlink.h |  1 +
+ net/netlink/genetlink.c | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 33 insertions(+)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 9737c3229c12..901358a5b593 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -1021,7 +1021,6 @@ static int netlink_bind(struct socket *sock, struct sockaddr *addr,
- 			return -EINVAL;
- 	}
+diff --git a/include/net/genetlink.h b/include/net/genetlink.h
+index e55ec1597ce7..7cb3fa8310ed 100644
+--- a/include/net/genetlink.h
++++ b/include/net/genetlink.h
+@@ -14,6 +14,7 @@
+  */
+ struct genl_multicast_group {
+ 	char			name[GENL_NAMSIZ];
++	u8			flags;
+ };
  
--	netlink_lock_table();
- 	if (nlk->netlink_bind && groups) {
- 		int group;
+ struct genl_ops;
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index 9fd7ba01b9f8..4dce39013d75 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -1364,11 +1364,43 @@ static struct genl_family genl_ctrl __ro_after_init = {
+ 	.netnsok = true,
+ };
  
-@@ -1033,13 +1032,14 @@ static int netlink_bind(struct socket *sock, struct sockaddr *addr,
- 			if (!err)
- 				continue;
- 			netlink_undo_bind(group, groups, sk);
--			goto unlock;
-+			return err;
- 		}
- 	}
++static int genl_bind(struct net *net, int group)
++{
++	const struct genl_family *family;
++	unsigned int id;
++	int ret = 0;
++
++	genl_lock_all();
++
++	idr_for_each_entry(&genl_fam_idr, family, id) {
++		const struct genl_multicast_group *grp;
++		int i;
++
++		if (family->n_mcgrps == 0)
++			continue;
++
++		i = group - family->mcgrp_offset;
++		if (i < 0 || i >= family->n_mcgrps)
++			continue;
++
++		grp = &family->mcgrps[i];
++		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
++		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
++			ret = -EPERM;
++
++		break;
++	}
++
++	genl_unlock_all();
++	return ret;
++}
++
+ static int __net_init genl_pernet_init(struct net *net)
+ {
+ 	struct netlink_kernel_cfg cfg = {
+ 		.input		= genl_rcv,
+ 		.flags		= NL_CFG_F_NONROOT_RECV,
++		.bind		= genl_bind,
+ 	};
  
- 	/* No need for barriers here as we return to user-space without
- 	 * using any of the bound attributes.
- 	 */
-+	netlink_lock_table();
- 	if (!bound) {
- 		err = nladdr->nl_pid ?
- 			netlink_insert(sk, nladdr->nl_pid) :
+ 	/* we'll bump the group number right afterwards */
 -- 
 2.40.1
 
