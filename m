@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA5C80D8C0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6599780D980
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98F4281DB5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C56DEB20A6F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E15E51C2D;
-	Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 170AA51C58;
+	Mon, 11 Dec 2023 18:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IpENR452"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrFoYpaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FBC5102A;
-	Mon, 11 Dec 2023 18:48:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8187AC433C7;
-	Mon, 11 Dec 2023 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD4051C38;
+	Mon, 11 Dec 2023 18:54:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AA3FC433C8;
+	Mon, 11 Dec 2023 18:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320515;
-	bh=MWAO75snP/z8MzPch9qrTJ/cBixUixeSJUaOhbab7m4=;
+	s=korg; t=1702320861;
+	bh=YX4b8m/OrsQEjDPkEqgV8rk2qIDrCjFjdRpcHs7hipo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IpENR452n8VgkY6Bj2Ccdm1ukZGKfX8iu/Alw000RpsQrmuxikMPqGFD7zp0VYl1k
-	 OwfRS2y7bS7A5UOfHiZVyZ8lLyx/gu7mrmRXo4iUNfWQvtKPkyH58ijFdQoGZx/cSt
-	 9QhPiDp6im3inIC6iGNU3RV7frUamGkLFr+Xxyhc=
+	b=ZrFoYpaCCxZ5c18xEDlsie5h+5RuUi6GB4hZa0DaSmQv1IcdMMPEj20EapQFj/jwc
+	 WX96WwLGSaCKreP+1g0n2RGCECQ2nkPOef6oxld4S7pusRGBkAqARRAdCfAmfj9WeR
+	 zzxks5TrGZ9wGE/tqxo0q+rLSQ2/7TSmv3ZJ8dbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Grant Grundler <grundler@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Hayes Wang <hayeswang@realtek.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/194] tracing: Fix a warning when allocating buffered events fails
-Date: Mon, 11 Dec 2023 19:21:20 +0100
-Message-ID: <20231211182040.471364742@linuxfoundation.org>
+Subject: [PATCH 5.15 022/141] r8152: Add RTL8152_INACCESSIBLE checks to more loops
+Date: Mon, 11 Dec 2023 19:21:21 +0100
+Message-ID: <20231211182027.489116256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +55,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
+[ Upstream commit 32a574c7e2685aa8138754d4d755f9246cc6bd48 ]
 
-Function trace_buffered_event_disable() produces an unexpected warning
-when the previous call to trace_buffered_event_enable() fails to
-allocate pages for buffered events.
+Previous commits added checks for RTL8152_INACCESSIBLE in the loops in
+the driver. There are still a few more that keep tripping the driver
+up in error cases and make things take longer than they should. Add
+those in.
 
-The situation can occur as follows:
+All the loops that are part of this commit existed in some form or
+another since the r8152 driver was first introduced, though
+RTL8152_INACCESSIBLE was known as RTL8152_UNPLUG before commit
+715f67f33af4 ("r8152: Rename RTL8152_UNPLUG to RTL8152_INACCESSIBLE")
 
-* The counter trace_buffered_event_ref is at 0.
-
-* The soft mode gets enabled for some event and
-  trace_buffered_event_enable() is called. The function increments
-  trace_buffered_event_ref to 1 and starts allocating event pages.
-
-* The allocation fails for some page and trace_buffered_event_disable()
-  is called for cleanup.
-
-* Function trace_buffered_event_disable() decrements
-  trace_buffered_event_ref back to 0, recognizes that it was the last
-  use of buffered events and frees all allocated pages.
-
-* The control goes back to trace_buffered_event_enable() which returns.
-  The caller of trace_buffered_event_enable() has no information that
-  the function actually failed.
-
-* Some time later, the soft mode is disabled for the same event.
-  Function trace_buffered_event_disable() is called. It warns on
-  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
-
-Buffered events are just an optimization and can handle failures. Make
-trace_buffered_event_enable() exit on the first failure and left any
-cleanup later to when trace_buffered_event_disable() is called.
-
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
-
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: ac718b69301c ("net/usb: new driver for RTL8152")
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Acked-by: Hayes Wang <hayeswang@realtek.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/usb/r8152.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index ddcfc78e93e00..f65d2649fd9bc 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2707,8 +2707,11 @@ void trace_buffered_event_enable(void)
- 	for_each_tracing_cpu(cpu) {
- 		page = alloc_pages_node(cpu_to_node(cpu),
- 					GFP_KERNEL | __GFP_NORETRY, 0);
--		if (!page)
--			goto failed;
-+		/* This is just an optimization and can handle failures */
-+		if (!page) {
-+			pr_err("Failed to allocate event buffer\n");
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 7a353409928a6..1bb304857a744 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -2850,6 +2850,8 @@ static void rtl8152_nic_reset(struct r8152 *tp)
+ 		ocp_write_byte(tp, MCU_TYPE_PLA, PLA_CR, CR_RST);
+ 
+ 		for (i = 0; i < 1000; i++) {
++			if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++				break;
+ 			if (!(ocp_read_byte(tp, MCU_TYPE_PLA, PLA_CR) & CR_RST))
+ 				break;
+ 			usleep_range(100, 400);
+@@ -3179,6 +3181,8 @@ static void rtl_disable(struct r8152 *tp)
+ 	rxdy_gated_en(tp, true);
+ 
+ 	for (i = 0; i < 1000; i++) {
++		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
 +			break;
-+		}
- 
- 		event = page_address(page);
- 		memset(event, 0, sizeof(*event));
-@@ -2722,10 +2725,6 @@ void trace_buffered_event_enable(void)
- 			WARN_ON_ONCE(1);
- 		preempt_enable();
+ 		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
+ 		if ((ocp_data & FIFO_EMPTY) == FIFO_EMPTY)
+ 			break;
+@@ -3186,6 +3190,8 @@ static void rtl_disable(struct r8152 *tp)
  	}
--
--	return;
-- failed:
--	trace_buffered_event_disable();
- }
  
- static void enable_trace_buffered_event(void *data)
+ 	for (i = 0; i < 1000; i++) {
++		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++			break;
+ 		if (ocp_read_word(tp, MCU_TYPE_PLA, PLA_TCR0) & TCR0_TX_EMPTY)
+ 			break;
+ 		usleep_range(1000, 2000);
+@@ -5374,6 +5380,8 @@ static void wait_oob_link_list_ready(struct r8152 *tp)
+ 	int i;
+ 
+ 	for (i = 0; i < 1000; i++) {
++		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
++			break;
+ 		ocp_data = ocp_read_byte(tp, MCU_TYPE_PLA, PLA_OOB_CTRL);
+ 		if (ocp_data & LINK_LIST_READY)
+ 			break;
 -- 
 2.42.0
 
