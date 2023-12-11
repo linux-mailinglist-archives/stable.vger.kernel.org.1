@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A1880D699
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E438980D540
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEA3B1F21B65
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21FE61C214BA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC11524A0;
-	Mon, 11 Dec 2023 18:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03BA351020;
+	Mon, 11 Dec 2023 18:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p7IK4w4s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlP1xHXz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA568C2D0;
-	Mon, 11 Dec 2023 18:33:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54806C433C7;
-	Mon, 11 Dec 2023 18:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31DA4F213;
+	Mon, 11 Dec 2023 18:21:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A1CC433C7;
+	Mon, 11 Dec 2023 18:21:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319605;
-	bh=SpamuoVu2Z/um0LBBfzH1CbRyqyKzv6L7Z25ESgfIE0=;
+	s=korg; t=1702318913;
+	bh=gSOi6DzRVbcGNKKZDMZJ70BIcoOHokQcFVKr5Gd0ICs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7IK4w4sgbsYLfD3yaXw4Zn/RKWbu0BQs7HqJHKJToxM9aAFm1zjUTPNyfe4l7qtJ
-	 r+FfDosqr8455EPUuclBBHB+WGKg3/TeaP4P8FJASBcDvd1SA0448x6FAZeWDnU3dK
-	 bcL75318ODMYpG+1fge2sUVAfAqF7fwedh7Nmawc=
+	b=dlP1xHXzIFF9pjOYaSA8Hyk8oBzSESMH7MnFgyXwvqlcGm2J23QTnFg6Fz2UDRuAy
+	 DYNhfWlm7MTOMwMX7qglGKdD3vMy3OIZI/U7aaBLREOulhox3X/XQOCoN6YcXpZuWI
+	 UoB7LBXfFcLt7KZezUPnApm6RLe0eCtt0yahsHdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baoquan He <bhe@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Eric DeVolder <eric_devolder@yahoo.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ignat Korchagin <ignat@cloudflare.com>
-Subject: [PATCH 6.6 166/244] drivers/base/cpu: crash data showing should depends on KEXEC_CORE
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 08/25] tracing: Fix a warning when allocating buffered events fails
 Date: Mon, 11 Dec 2023 19:20:59 +0100
-Message-ID: <20231211182053.326787795@linuxfoundation.org>
+Message-ID: <20231211182009.002123543@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,85 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baoquan He <bhe@redhat.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit 4e9e2e4c65136dfd32dd0afe555961433d1cf906 upstream.
+[ Upstream commit 34209fe83ef8404353f91ab4ea4035dbc9922d04 ]
 
-After commit 88a6f8994421 ("crash: memory and CPU hotplug sysfs
-attributes"), on x86_64, if only below kernel configs related to kdump are
-set, compiling error are triggered.
+Function trace_buffered_event_disable() produces an unexpected warning
+when the previous call to trace_buffered_event_enable() fails to
+allocate pages for buffered events.
 
-----
-CONFIG_CRASH_CORE=y
-CONFIG_KEXEC_CORE=y
-CONFIG_CRASH_DUMP=y
-CONFIG_CRASH_HOTPLUG=y
-------
+The situation can occur as follows:
 
-------------------------------------------------------
-drivers/base/cpu.c: In function `crash_hotplug_show':
-drivers/base/cpu.c:309:40: error: implicit declaration of function `crash_hotplug_cpu_support'; did you mean `crash_hotplug_show'? [-Werror=implicit-function-declaration]
-  309 |         return sysfs_emit(buf, "%d\n", crash_hotplug_cpu_support());
-      |                                        ^~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                        crash_hotplug_show
-cc1: some warnings being treated as errors
-------------------------------------------------------
+* The counter trace_buffered_event_ref is at 0.
 
-CONFIG_KEXEC is used to enable kexec_load interface, the
-crash_notes/crash_notes_size/crash_hotplug showing depends on
-CONFIG_KEXEC is incorrect. It should depend on KEXEC_CORE instead.
+* The soft mode gets enabled for some event and
+  trace_buffered_event_enable() is called. The function increments
+  trace_buffered_event_ref to 1 and starts allocating event pages.
 
-Fix it now.
+* The allocation fails for some page and trace_buffered_event_disable()
+  is called for cleanup.
 
-Link: https://lkml.kernel.org/r/20231128055248.659808-1-bhe@redhat.com
-Fixes: 88a6f8994421 ("crash: memory and CPU hotplug sysfs attributes")
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Tested-by: Ignat Korchagin <ignat@cloudflare.com>	[compile-time only]
-Tested-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reviewed-by: Eric DeVolder <eric_devolder@yahoo.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+* Function trace_buffered_event_disable() decrements
+  trace_buffered_event_ref back to 0, recognizes that it was the last
+  use of buffered events and frees all allocated pages.
+
+* The control goes back to trace_buffered_event_enable() which returns.
+  The caller of trace_buffered_event_enable() has no information that
+  the function actually failed.
+
+* Some time later, the soft mode is disabled for the same event.
+  Function trace_buffered_event_disable() is called. It warns on
+  "WARN_ON_ONCE(!trace_buffered_event_ref)" and returns.
+
+Buffered events are just an optimization and can handle failures. Make
+trace_buffered_event_enable() exit on the first failure and left any
+cleanup later to when trace_buffered_event_disable() is called.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-3-petr.pavlu@suse.com
+
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/cpu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/trace/trace.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/base/cpu.c b/drivers/base/cpu.c
-index 9ea22e165acd..548491de818e 100644
---- a/drivers/base/cpu.c
-+++ b/drivers/base/cpu.c
-@@ -144,7 +144,7 @@ static DEVICE_ATTR(release, S_IWUSR, NULL, cpu_release_store);
- #endif /* CONFIG_ARCH_CPU_PROBE_RELEASE */
- #endif /* CONFIG_HOTPLUG_CPU */
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index c851b6fe45b27..a5ae1e8cdf49b 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2202,8 +2202,11 @@ void trace_buffered_event_enable(void)
+ 	for_each_tracing_cpu(cpu) {
+ 		page = alloc_pages_node(cpu_to_node(cpu),
+ 					GFP_KERNEL | __GFP_NORETRY, 0);
+-		if (!page)
+-			goto failed;
++		/* This is just an optimization and can handle failures */
++		if (!page) {
++			pr_err("Failed to allocate event buffer\n");
++			break;
++		}
  
--#ifdef CONFIG_KEXEC
-+#ifdef CONFIG_KEXEC_CORE
- #include <linux/kexec.h>
+ 		event = page_address(page);
+ 		memset(event, 0, sizeof(*event));
+@@ -2217,10 +2220,6 @@ void trace_buffered_event_enable(void)
+ 			WARN_ON_ONCE(1);
+ 		preempt_enable();
+ 	}
+-
+-	return;
+- failed:
+-	trace_buffered_event_disable();
+ }
  
- static ssize_t crash_notes_show(struct device *dev,
-@@ -189,14 +189,14 @@ static const struct attribute_group crash_note_cpu_attr_group = {
- #endif
- 
- static const struct attribute_group *common_cpu_attr_groups[] = {
--#ifdef CONFIG_KEXEC
-+#ifdef CONFIG_KEXEC_CORE
- 	&crash_note_cpu_attr_group,
- #endif
- 	NULL
- };
- 
- static const struct attribute_group *hotplugable_cpu_attr_groups[] = {
--#ifdef CONFIG_KEXEC
-+#ifdef CONFIG_KEXEC_CORE
- 	&crash_note_cpu_attr_group,
- #endif
- 	NULL
+ static void enable_trace_buffered_event(void *data)
 -- 
-2.43.0
+2.42.0
 
 
 
