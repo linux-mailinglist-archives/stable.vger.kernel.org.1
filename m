@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-6339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A464880DA2A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CB780D966
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E8251F21BD2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 907271C216F4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BCA524AB;
-	Mon, 11 Dec 2023 18:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B680651C50;
+	Mon, 11 Dec 2023 18:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKkZrAgX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPggsT3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05C5321B8;
-	Mon, 11 Dec 2023 18:59:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41530C433CA;
-	Mon, 11 Dec 2023 18:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7356E51C37;
+	Mon, 11 Dec 2023 18:53:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05ADC433C8;
+	Mon, 11 Dec 2023 18:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321162;
-	bh=C7XBHCBsSy3xdBkISeq9+Yro7TZGMC7T6skFkeVWx44=;
+	s=korg; t=1702320803;
+	bh=wk3tum5RsmMc/JNvAWFgZHPoX8J1hJi+1aSJM1JxIbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKkZrAgXoWS8BgXbpgoqdp5WoCcH0BueZ5nUA4sfbtVcWhY1LvNd4QD+D1GkUyjky
-	 saGgIBxIfLLtk1G2jDNasbAMP6Nr1ftVnCsAp67boOyceElTvHreEA4Z6zbobpxCs8
-	 Ixuln+2f0T4tX1UoZ2ip37m+xuU2gAVRBY8d6CT0=
+	b=gPggsT3DaC+DGED69Nv3CzRFagrCVBOpsOU1QZJ0gVzBxJ+nVjFb5cWg1ZiKDLaGx
+	 z45mC9MW77tl0wukkP6RllPJbKywkubeW8kacmFETtOm/H3TWE07SLbDbTUGjukMHx
+	 SWW6lJ0MR1UnmwLynLvfSKcLv1dvdHFj2weYXZCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/141] tracing: Stop current tracer when resizing buffer
-Date: Mon, 11 Dec 2023 19:22:43 +0100
-Message-ID: <20231211182031.067704918@linuxfoundation.org>
+	Daniel Mack <daniel@zonque.org>,
+	Maxim Popov <maxim.snafu@gmail.com>
+Subject: [PATCH 6.1 174/194] serial: sc16is7xx: address RX timeout interrupt errata
+Date: Mon, 11 Dec 2023 19:22:44 +0100
+Message-ID: <20231211182044.430272147@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,78 +52,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Daniel Mack <daniel@zonque.org>
 
-[ Upstream commit d78ab792705c7be1b91243b2544d1a79406a2ad7 ]
+commit 08ce9a1b72e38cf44c300a44ac5858533eb3c860 upstream.
 
-When the ring buffer is being resized, it can cause side effects to the
-running tracer. For instance, there's a race with irqsoff tracer that
-swaps individual per cpu buffers between the main buffer and the snapshot
-buffer. The resize operation modifies the main buffer and then the
-snapshot buffer. If a swap happens in between those two operations it will
-break the tracer.
+This device has a silicon bug that makes it report a timeout interrupt
+but no data in the FIFO.
 
-Simply stop the running tracer before resizing the buffers and enable it
-again when finished.
+The datasheet states the following in the errata section 18.1.4:
 
-Link: https://lkml.kernel.org/r/20231205220010.748996423@goodmis.org
+  "If the host reads the receive FIFO at the same time as a
+  time-out interrupt condition happens, the host might read 0xCC
+  (time-out) in the Interrupt Indication Register (IIR), but bit 0
+  of the Line Status Register (LSR) is not set (means there is no
+  data in the receive FIFO)."
 
+The errata description seems to indicate it concerns only polled mode of
+operation when reading bit 0 of the LSR register. However, tests have
+shown and NXP has confirmed that the RXLVL register also yields 0 when
+the bug is triggered, and hence the IRQ driven implementation in this
+driver is equally affected.
+
+This bug has hit us on production units and when it does, sc16is7xx_irq()
+would spin forever because sc16is7xx_port_irq() keeps seeing an
+interrupt in the IIR register that is not cleared because the driver
+does not call into sc16is7xx_handle_rx() unless the RXLVL register
+reports at least one byte in the FIFO.
+
+Fix this by always reading one byte from the FIFO when this condition
+is detected in order to clear the interrupt. This approach was
+confirmed to be correct by NXP through their support channels.
+
+Tested by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+
+Signed-off-by: Daniel Mack <daniel@zonque.org>
+Co-Developed-by: Maxim Popov <maxim.snafu@gmail.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 3928a8a2d9808 ("ftrace: make work with new ring buffer")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20231123072818.1394539-1-daniel@zonque.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 049daa6a9ad42..657ecb8f03545 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -6243,9 +6243,12 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 	if (!tr->array_buffer.buffer)
- 		return 0;
- 
-+	/* Do not allow tracing while resizng ring buffer */
-+	tracing_stop_tr(tr);
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -769,6 +769,18 @@ static bool sc16is7xx_port_irq(struct sc
+ 		case SC16IS7XX_IIR_RTOI_SRC:
+ 		case SC16IS7XX_IIR_XOFFI_SRC:
+ 			rxlen = sc16is7xx_port_read(port, SC16IS7XX_RXLVL_REG);
 +
- 	ret = ring_buffer_resize(tr->array_buffer.buffer, size, cpu);
- 	if (ret < 0)
--		return ret;
-+		goto out_start;
- 
- #ifdef CONFIG_TRACER_MAX_TRACE
- 	if (!tr->current_trace->use_max_tr)
-@@ -6273,7 +6276,7 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- 			WARN_ON(1);
- 			tracing_disabled = 1;
- 		}
--		return ret;
-+		goto out_start;
- 	}
- 
- 	update_buffer_entries(&tr->max_buffer, cpu);
-@@ -6282,7 +6285,8 @@ static int __tracing_resize_ring_buffer(struct trace_array *tr,
- #endif /* CONFIG_TRACER_MAX_TRACE */
- 
- 	update_buffer_entries(&tr->array_buffer, cpu);
--
-+ out_start:
-+	tracing_start_tr(tr);
- 	return ret;
- }
- 
--- 
-2.42.0
-
++			/*
++			 * There is a silicon bug that makes the chip report a
++			 * time-out interrupt but no data in the FIFO. This is
++			 * described in errata section 18.1.4.
++			 *
++			 * When this happens, read one byte from the FIFO to
++			 * clear the interrupt.
++			 */
++			if (iir == SC16IS7XX_IIR_RTOI_SRC && !rxlen)
++				rxlen = 1;
++
+ 			if (rxlen)
+ 				sc16is7xx_handle_rx(port, rxlen, iir);
+ 			break;
 
 
 
