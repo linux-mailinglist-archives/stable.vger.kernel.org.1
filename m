@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-6196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8349480D955
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA1F80DA1A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF451F21B71
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82FB028211A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7819251C46;
-	Mon, 11 Dec 2023 18:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875DB524B1;
+	Mon, 11 Dec 2023 18:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYzCfA7L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/KjhJJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A8B51C2D;
-	Mon, 11 Dec 2023 18:52:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40EFC433C9;
-	Mon, 11 Dec 2023 18:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1C951C5C;
+	Mon, 11 Dec 2023 18:58:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FBDC433C8;
+	Mon, 11 Dec 2023 18:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320771;
-	bh=jqvDxBCT97pe2VhqlLplDANkG7iseFGFMxckOKVkw+g=;
+	s=korg; t=1702321119;
+	bh=urNeVWXalrIlTvf3vryNWaBYwD1MLqvtYcQkozdRUUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYzCfA7LAVNYCMkp9gY9ZcoS1dmdusHqshXdH6fYKxWVoDa9GLKNav23ScYkbPpoc
-	 f+FrzjuMkJMyTnF7r78ngNQj5A/LHF6HpCZ+Rx0t3dW264tG0J4SJGs1eG5ae+Ab2c
-	 4L0YgmueVCF55r+FyUj0myFclws+sP4sJd4JiB/A=
+	b=l/KjhJJeeypOzxiGsyXqseWaLQMGW52iyNCRIMK+mN7ATK7K2ijkbk2w1Nq7357n5
+	 xxqar0ajD+2LkMmhfvlkEcEOBonU37zIuQX745i6EEfKJVKNXvxRaABi7uhNRRSQSY
+	 L2NADNoA+TpMO1g9Zxzdo7EMLdEvJkOU4Ix05BMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.1 185/194] KVM: SVM: Update EFER software model on CR0 trap for SEV-ES
+	Namhyung Kim <namhyung@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Jiri Olsa <jolsa@redhat.com>
+Subject: [PATCH 5.15 116/141] perf/core: Add a new read format to get a number of lost samples
 Date: Mon, 11 Dec 2023 19:22:55 +0100
-Message-ID: <20231211182044.936144855@linuxfoundation.org>
+Message-ID: <20231211182031.580338561@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +54,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-commit 4cdf351d3630a640ab6a05721ef055b9df62277f upstream.
+[ Upstream commit 119a784c81270eb88e573174ed2209225d646656 ]
 
-In general, activating long mode involves setting the EFER_LME bit in
-the EFER register and then enabling the X86_CR0_PG bit in the CR0
-register. At this point, the EFER_LMA bit will be set automatically by
-hardware.
+Sometimes we want to know an accurate number of samples even if it's
+lost.  Currenlty PERF_RECORD_LOST is generated for a ring-buffer which
+might be shared with other events.  So it's hard to know per-event
+lost count.
 
-In the case of SVM/SEV guests where writes to CR0 are intercepted, it's
-necessary for the host to set EFER_LMA on behalf of the guest since
-hardware does not see the actual CR0 write.
+Add event->lost_samples field and PERF_FORMAT_LOST to retrieve it from
+userspace.
 
-In the case of SEV-ES guests where writes to CR0 are trapped instead of
-intercepted, the hardware *does* see/record the write to CR0 before
-exiting and passing the value on to the host, so as part of enabling
-SEV-ES support commit f1c6366e3043 ("KVM: SVM: Add required changes to
-support intercepts under SEV-ES") dropped special handling of the
-EFER_LMA bit with the understanding that it would be set automatically.
-
-However, since the guest never explicitly sets the EFER_LMA bit, the
-host never becomes aware that it has been set. This becomes problematic
-when userspace tries to get/set the EFER values via
-KVM_GET_SREGS/KVM_SET_SREGS, since the EFER contents tracked by the host
-will be missing the EFER_LMA bit, and when userspace attempts to pass
-the EFER value back via KVM_SET_SREGS it will fail a sanity check that
-asserts that EFER_LMA should always be set when X86_CR0_PG and EFER_LME
-are set.
-
-Fix this by always inferring the value of EFER_LMA based on X86_CR0_PG
-and EFER_LME, regardless of whether or not SEV-ES is enabled.
-
-Fixes: f1c6366e3043 ("KVM: SVM: Add required changes to support intercepts under SEV-ES")
-Reported-by: Peter Gonda <pgonda@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20210507165947.2502412-2-seanjc@google.com>
-[A two year old patch that was revived after we noticed the failure in
- KVM_SET_SREGS and a similar patch was posted by Michael Roth.  This is
- Sean's patch, but with Michael's more complete commit message. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Original-patch-by: Jiri Olsa <jolsa@redhat.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20220616180623.1358843-1-namhyung@kernel.org
+Stable-dep-of: 382c27f4ed28 ("perf: Fix perf_event_validate_size()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ include/linux/perf_event.h      |  2 ++
+ include/uapi/linux/perf_event.h |  5 ++++-
+ kernel/events/core.c            | 21 ++++++++++++++++++---
+ kernel/events/ring_buffer.c     |  5 ++++-
+ 4 files changed, 28 insertions(+), 5 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1786,15 +1786,17 @@ void svm_set_cr0(struct kvm_vcpu *vcpu,
- 	bool old_paging = is_paging(vcpu);
+diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
+index dbf6ba59fbd09..200995c5210ea 100644
+--- a/include/linux/perf_event.h
++++ b/include/linux/perf_event.h
+@@ -750,6 +750,8 @@ struct perf_event {
+ 	struct pid_namespace		*ns;
+ 	u64				id;
  
- #ifdef CONFIG_X86_64
--	if (vcpu->arch.efer & EFER_LME && !vcpu->arch.guest_state_protected) {
-+	if (vcpu->arch.efer & EFER_LME) {
- 		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
- 			vcpu->arch.efer |= EFER_LMA;
--			svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
-+			if (!vcpu->arch.guest_state_protected)
-+				svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
- 		}
++	atomic64_t			lost_samples;
++
+ 	u64				(*clock)(void);
+ 	perf_overflow_handler_t		overflow_handler;
+ 	void				*overflow_handler_context;
+diff --git a/include/uapi/linux/perf_event.h b/include/uapi/linux/perf_event.h
+index a7fb8d2b77096..25bc59231961c 100644
+--- a/include/uapi/linux/perf_event.h
++++ b/include/uapi/linux/perf_event.h
+@@ -301,6 +301,7 @@ enum {
+  *	  { u64		time_enabled; } && PERF_FORMAT_TOTAL_TIME_ENABLED
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		id;           } && PERF_FORMAT_ID
++ *	  { u64		lost;         } && PERF_FORMAT_LOST
+  *	} && !PERF_FORMAT_GROUP
+  *
+  *	{ u64		nr;
+@@ -308,6 +309,7 @@ enum {
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		value;
+  *	    { u64	id;           } && PERF_FORMAT_ID
++ *	    { u64	lost;         } && PERF_FORMAT_LOST
+  *	  }		cntr[nr];
+  *	} && PERF_FORMAT_GROUP
+  * };
+@@ -317,8 +319,9 @@ enum perf_event_read_format {
+ 	PERF_FORMAT_TOTAL_TIME_RUNNING		= 1U << 1,
+ 	PERF_FORMAT_ID				= 1U << 2,
+ 	PERF_FORMAT_GROUP			= 1U << 3,
++	PERF_FORMAT_LOST			= 1U << 4,
  
- 		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
- 			vcpu->arch.efer &= ~EFER_LMA;
--			svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
-+			if (!vcpu->arch.guest_state_protected)
-+				svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
- 		}
+-	PERF_FORMAT_MAX = 1U << 4,		/* non-ABI */
++	PERF_FORMAT_MAX = 1U << 5,		/* non-ABI */
+ };
+ 
+ #define PERF_ATTR_SIZE_VER0	64	/* sizeof first published struct */
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 8e1290340aaf6..c25dc417d79fc 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1914,6 +1914,9 @@ static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
+ 	if (event->attr.read_format & PERF_FORMAT_ID)
+ 		entry += sizeof(u64);
+ 
++	if (event->attr.read_format & PERF_FORMAT_LOST)
++		entry += sizeof(u64);
++
+ 	if (event->attr.read_format & PERF_FORMAT_GROUP) {
+ 		nr += nr_siblings;
+ 		size += sizeof(u64);
+@@ -5431,11 +5434,15 @@ static int __perf_read_group_add(struct perf_event *leader,
+ 	values[n++] += perf_event_count(leader);
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(leader);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&leader->lost_samples);
+ 
+ 	for_each_sibling_event(sub, leader) {
+ 		values[n++] += perf_event_count(sub);
+ 		if (read_format & PERF_FORMAT_ID)
+ 			values[n++] = primary_event_id(sub);
++		if (read_format & PERF_FORMAT_LOST)
++			values[n++] = atomic64_read(&sub->lost_samples);
  	}
- #endif
+ 
+ unlock:
+@@ -5489,7 +5496,7 @@ static int perf_read_one(struct perf_event *event,
+ 				 u64 read_format, char __user *buf)
+ {
+ 	u64 enabled, running;
+-	u64 values[4];
++	u64 values[5];
+ 	int n = 0;
+ 
+ 	values[n++] = __perf_event_read_value(event, &enabled, &running);
+@@ -5499,6 +5506,8 @@ static int perf_read_one(struct perf_event *event,
+ 		values[n++] = running;
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(event);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&event->lost_samples);
+ 
+ 	if (copy_to_user(buf, values, n * sizeof(u64)))
+ 		return -EFAULT;
+@@ -7059,7 +7068,7 @@ static void perf_output_read_one(struct perf_output_handle *handle,
+ 				 u64 enabled, u64 running)
+ {
+ 	u64 read_format = event->attr.read_format;
+-	u64 values[4];
++	u64 values[5];
+ 	int n = 0;
+ 
+ 	values[n++] = perf_event_count(event);
+@@ -7073,6 +7082,8 @@ static void perf_output_read_one(struct perf_output_handle *handle,
+ 	}
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(event);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&event->lost_samples);
+ 
+ 	__output_copy(handle, values, n * sizeof(u64));
+ }
+@@ -7083,7 +7094,7 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ {
+ 	struct perf_event *leader = event->group_leader, *sub;
+ 	u64 read_format = event->attr.read_format;
+-	u64 values[5];
++	u64 values[6];
+ 	int n = 0;
+ 
+ 	values[n++] = 1 + leader->nr_siblings;
+@@ -7101,6 +7112,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 	values[n++] = perf_event_count(leader);
+ 	if (read_format & PERF_FORMAT_ID)
+ 		values[n++] = primary_event_id(leader);
++	if (read_format & PERF_FORMAT_LOST)
++		values[n++] = atomic64_read(&leader->lost_samples);
+ 
+ 	__output_copy(handle, values, n * sizeof(u64));
+ 
+@@ -7114,6 +7127,8 @@ static void perf_output_read_group(struct perf_output_handle *handle,
+ 		values[n++] = perf_event_count(sub);
+ 		if (read_format & PERF_FORMAT_ID)
+ 			values[n++] = primary_event_id(sub);
++		if (read_format & PERF_FORMAT_LOST)
++			values[n++] = atomic64_read(&sub->lost_samples);
+ 
+ 		__output_copy(handle, values, n * sizeof(u64));
+ 	}
+diff --git a/kernel/events/ring_buffer.c b/kernel/events/ring_buffer.c
+index 6808873555f0d..45965f13757e4 100644
+--- a/kernel/events/ring_buffer.c
++++ b/kernel/events/ring_buffer.c
+@@ -172,8 +172,10 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 		goto out;
+ 
+ 	if (unlikely(rb->paused)) {
+-		if (rb->nr_pages)
++		if (rb->nr_pages) {
+ 			local_inc(&rb->lost);
++			atomic64_inc(&event->lost_samples);
++		}
+ 		goto out;
+ 	}
+ 
+@@ -254,6 +256,7 @@ __perf_output_begin(struct perf_output_handle *handle,
+ 
+ fail:
+ 	local_inc(&rb->lost);
++	atomic64_inc(&event->lost_samples);
+ 	perf_output_put_handle(handle);
+ out:
+ 	rcu_read_unlock();
+-- 
+2.42.0
+
 
 
 
