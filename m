@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-6053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE6F80D883
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CB180D698
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44545B21605
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 832751F21B01
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C80A51C2B;
-	Mon, 11 Dec 2023 18:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D875C8C8;
+	Mon, 11 Dec 2023 18:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0TfbbvB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgiPJdcc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AABC8C8;
-	Mon, 11 Dec 2023 18:46:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0469C433C7;
-	Mon, 11 Dec 2023 18:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284775102F;
+	Mon, 11 Dec 2023 18:33:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A30AEC433C7;
+	Mon, 11 Dec 2023 18:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320384;
-	bh=wi51PGAZAU0Tm78Pk5ubGhjH9iB3Ceu12rVkVhO4LZo=;
+	s=korg; t=1702319603;
+	bh=YVQ4BdS8u6HHffWG2pHxO/S9vdv31JRt4jR4mIVy7yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0TfbbvBw3X375t5yBGhzK1rB9HvVyLq6Xr+ey6eeiiyIkrWtnIBo3nCSlymULFbL
-	 EhUEZaujxRGxVWMPTHGG7iz4M/xUlsdDe5vPbEfvPyhvU1kPYkvgzy1ksOGZMYLXMK
-	 5dWc3porxWJ4JBcYupMJQGjbCxZuzkHiBQmrX4P4=
+	b=mgiPJdccAc/zeG7unK0pcBNWknVjn6PNgIa7wWLJUCb/aPLr2SBCicq3dH+rDB4Ky
+	 k/vwyR/EcvuR5MrVd8hBBG2gppiS3Tg0KuKB3kMrMP5kBE9GitAKrr+0ZSZB9L1t++
+	 nTlwfBxMqyfGQGIDzjq9/GVLG99NM9h9zTmNoBZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/194] ionic: fix snprintf format length warning
-Date: Mon, 11 Dec 2023 19:20:31 +0100
-Message-ID: <20231211182038.417639037@linuxfoundation.org>
+	=?UTF-8?q?Pascal=20No=C3=ABl?= <pascal@pascalcompiles.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 139/244] ALSA: hda/realtek: Apply quirk for ASUS UM3504DA
+Date: Mon, 11 Dec 2023 19:20:32 +0100
+Message-ID: <20231211182052.019422127@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,52 +50,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Pascal Noël <pascal@pascalcompiles.com>
 
-[ Upstream commit 0ceb3860a67652f9d36dfdecfcd2cb3eb2f4537d ]
+commit c5c325bb5849868d76969d3fe014515f5e99eabc upstream.
 
-Our friendly kernel test robot has reminded us that with a new
-check we have a warning about a potential string truncation.
-In this case it really doesn't hurt anything, but it is worth
-addressing especially since there really is no reason to reserve
-so many bytes for our queue names.  It seems that cutting the
-queue name buffer length in half stops the complaint.
+The ASUS UM3504DA uses a Realtek HDA codec and two CS35L41 amplifiers via I2C.
+Apply existing quirk to model.
 
-Fixes: c06107cabea3 ("ionic: more ionic name tweaks")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311300201.lO8v7mKU-lkp@intel.com/
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231204192234.21017-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pascal Noël <pascal@pascalcompiles.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231202013744.12369-1-pascal@pascalcompiles.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_dev.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-index 93a4258421667..13dfcf9f75dad 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-@@ -214,7 +214,7 @@ struct ionic_desc_info {
- 	void *cb_arg;
- };
- 
--#define IONIC_QUEUE_NAME_MAX_SZ		32
-+#define IONIC_QUEUE_NAME_MAX_SZ		16
- 
- struct ionic_queue {
- 	struct device *dev;
--- 
-2.42.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9873,6 +9873,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1043, 0x17f3, "ROG Ally RC71L_RC71L", ALC294_FIXUP_ASUS_ALLY),
+ 	SND_PCI_QUIRK(0x1043, 0x1881, "ASUS Zephyrus S/M", ALC294_FIXUP_ASUS_GX502_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x18b1, "Asus MJ401TA", ALC256_FIXUP_ASUS_HEADSET_MIC),
++	SND_PCI_QUIRK(0x1043, 0x18d3, "ASUS UM3504DA", ALC294_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x18f1, "Asus FX505DT", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x194e, "ASUS UX563FD", ALC294_FIXUP_ASUS_HPE),
+ 	SND_PCI_QUIRK(0x1043, 0x1970, "ASUS UX550VE", ALC289_FIXUP_ASUS_GA401),
 
 
 
