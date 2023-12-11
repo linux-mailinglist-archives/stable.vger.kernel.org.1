@@ -1,40 +1,40 @@
-Return-Path: <stable+bounces-5327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDECC80CA39
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:50:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C79980CA3A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87B8A1F217D4
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:50:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 051D42818A8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 12:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E473C064;
-	Mon, 11 Dec 2023 12:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 833213C064;
+	Mon, 11 Dec 2023 12:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwkgrvNi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ezjj6gkz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF00F3BB2B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B85C433CA;
-	Mon, 11 Dec 2023 12:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44FD83BB2B
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 12:50:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB149C433C8;
+	Mon, 11 Dec 2023 12:50:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702299014;
-	bh=DjQaYJdvhacXS3heG04xLkvW2ccOwaNtdjclDVB/STg=;
+	s=korg; t=1702299034;
+	bh=m2vh0lrkYkHtQmONhfZYqRQ65kebCXTgKH0tINClm4s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fwkgrvNiP0sRLmUOjAdhuelX4vsRPz63yFBvSaijoyLFYk2gbHYRjq+vNTMbrFklZ
-	 B9IA/Sj/gY3gVLMkIf/nwiM1Mp5ThjoMJQ/n2MxEzIC0i04BN8vfKnuok8i+nU9EKd
-	 tFctBB79ws5gPiOVk/TRe0FmW//J15rRl3QeHwiA=
-Subject: FAILED: patch "[PATCH] powerpc/ftrace: Fix stack teardown in ftrace_no_trace" failed to apply to 6.1-stable tree
-To: naveen@kernel.org,mpe@ellerman.id.au
+	b=Ezjj6gkzvMcG34zZx5ALtGM+/vvMoFkS9i9NZixUWRiFpI5di8YwtZMZqywjDmnI1
+	 4zIBsToViby0VOgsudDTlJBi/vtd1vS6JcbMx1xPce0zf8QkIEurnfODBP37oO/CTI
+	 fH+EtYKLHjLBnwgGriVNVkYcJhJ+O55flE2FLQak=
+Subject: FAILED: patch "[PATCH] USB: gadget: core: adjust uevent timing on gadget unbind" failed to apply to 5.15-stable tree
+To: royluo@google.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 11 Dec 2023 13:50:12 +0100
-Message-ID: <2023121112-image-dreadlock-4677@gregkh>
+Date: Mon, 11 Dec 2023 13:50:31 +0100
+Message-ID: <2023121131-epidural-reunion-1706@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -45,23 +45,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2
+git cherry-pick -x 73ea73affe8622bdf292de898da869d441da6a9d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121112-image-dreadlock-4677@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023121131-epidural-reunion-1706@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-4b3338aaa74d ("powerpc/ftrace: Fix stack teardown in ftrace_no_trace")
+73ea73affe86 ("USB: gadget: core: adjust uevent timing on gadget unbind")
+50966da807c8 ("usb: gadget: udc: core: Offload usb_udc_vbus_handler processing")
+1016fc0c096c ("USB: gadget: Fix obscure lockdep violation for udc_mutex")
+f9d76d15072c ("USB: gadget: Add ID numbers to gadget names")
+fc274c1e9973 ("USB: gadget: Add a new bus for gadgets")
+6ebb449f9f25 ("USB: gadget: Register udc before gadget")
+af1969a2d734 ("USB: gadget: Rename usb_gadget_probe_driver()")
+710f5d627a98 ("Merge tag 'usb-5.18-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb")
 
 thanks,
 
@@ -69,46 +76,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4b3338aaa74d7d4ec5b6734dc298f0db94ec83d2 Mon Sep 17 00:00:00 2001
-From: Naveen N Rao <naveen@kernel.org>
-Date: Thu, 30 Nov 2023 12:29:47 +0530
-Subject: [PATCH] powerpc/ftrace: Fix stack teardown in ftrace_no_trace
+From 73ea73affe8622bdf292de898da869d441da6a9d Mon Sep 17 00:00:00 2001
+From: Roy Luo <royluo@google.com>
+Date: Tue, 28 Nov 2023 22:17:56 +0000
+Subject: [PATCH] USB: gadget: core: adjust uevent timing on gadget unbind
 
-Commit 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix
-stack unwind") added use of a new stack frame on ftrace entry to fix
-stack unwind. However, the commit missed updating the offset used while
-tearing down the ftrace stack when ftrace is disabled. Fix the same.
+The KOBJ_CHANGE uevent is sent before gadget unbind is actually
+executed, resulting in inaccurate uevent emitted at incorrect timing
+(the uevent would have USB_UDC_DRIVER variable set while it would
+soon be removed).
+Move the KOBJ_CHANGE uevent to the end of the unbind function so that
+uevent is sent only after the change has been made.
 
-In addition, the commit missed saving the correct stack pointer in
-pt_regs. Update the same.
+Fixes: 2ccea03a8f7e ("usb: gadget: introduce UDC Class")
+Cc: stable@vger.kernel.org
+Signed-off-by: Roy Luo <royluo@google.com>
+Link: https://lore.kernel.org/r/20231128221756.2591158-1-royluo@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Fixes: 41a506ef71eb ("powerpc/ftrace: Create a dummy stackframe to fix stack unwind")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231130065947.2188860-1-naveen@kernel.org
-
-diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-index 90701885762c..40677416d7b2 100644
---- a/arch/powerpc/kernel/trace/ftrace_entry.S
-+++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-@@ -62,7 +62,7 @@
- 	.endif
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index ded9531f141b..d59f94464b87 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1646,8 +1646,6 @@ static void gadget_unbind_driver(struct device *dev)
  
- 	/* Save previous stack pointer (r1) */
--	addi	r8, r1, SWITCH_FRAME_SIZE
-+	addi	r8, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	PPC_STL	r8, GPR1(r1)
+ 	dev_dbg(&udc->dev, "unbinding gadget driver [%s]\n", driver->function);
  
- 	.if \allregs == 1
-@@ -182,7 +182,7 @@ ftrace_no_trace:
- 	mflr	r3
- 	mtctr	r3
- 	REST_GPR(3, r1)
--	addi	r1, r1, SWITCH_FRAME_SIZE
-+	addi	r1, r1, SWITCH_FRAME_SIZE+STACK_FRAME_MIN_SIZE
- 	mtlr	r0
- 	bctr
- #endif
+-	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+-
+ 	udc->allow_connect = false;
+ 	cancel_work_sync(&udc->vbus_work);
+ 	mutex_lock(&udc->connect_lock);
+@@ -1667,6 +1665,8 @@ static void gadget_unbind_driver(struct device *dev)
+ 	driver->is_bound = false;
+ 	udc->driver = NULL;
+ 	mutex_unlock(&udc_lock);
++
++	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
+ }
+ 
+ /* ------------------------------------------------------------------------- */
 
 
