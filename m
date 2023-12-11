@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-5955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0557380D807
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E871280D583
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4ED4280DED
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 930B31F21A30
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605DD51C37;
-	Mon, 11 Dec 2023 18:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A655101D;
+	Mon, 11 Dec 2023 18:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPYViLss"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqssIgX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5E9FC06;
-	Mon, 11 Dec 2023 18:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952E6C433C9;
-	Mon, 11 Dec 2023 18:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E54F212;
+	Mon, 11 Dec 2023 18:25:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49C5C433C8;
+	Mon, 11 Dec 2023 18:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320118;
-	bh=RSf4dwaC+PecLSVRe8/N9KuXH1t9IxYoOujB3dLvbfE=;
+	s=korg; t=1702319127;
+	bh=hky5CJNCwuTP802x2q39ngLq5U6p4bxuxS2B6Iuo82A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GPYViLssSkeryO69h+HaZBUhUPs9vyYfnpueKhQwSLjTYEFCacgWW/DxmrH5+qPOE
-	 TKiQxoA2ftinA4J2w9wNMnFQkRXh3QwwbCpBSCkGiILeV3+W2hLeMD1volDPMB93BZ
-	 vjn45Q9pRDLSgqHqAi7n2Hzp2d5+8GSz8wJ0TJgA=
+	b=aqssIgX2B1wOTjSqUbz1aPl5VAy+oVs58dp22Mg+7IZAiaeNlucFKvQRVTMmYFRXL
+	 NDz/rTlO7Pm0gAXEfBY943qBEC3rYTcK/K3/RLFkPu/5ffwY9w9hDeiX69WA62uG6b
+	 +XVTAfrqqgsFMogsRNvjXjb/cSyfWog4nwGN52rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-	Rob Herring <robh@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Rob Herring <robh+dt@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 12/67] of/irq: Make of_msi_map_rid() PCI bus agnostic
-Date: Mon, 11 Dec 2023 19:21:56 +0100
-Message-ID: <20231211182015.619428264@linuxfoundation.org>
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 47/55] nilfs2: fix missing error check for sb_set_blocksize call
+Date: Mon, 11 Dec 2023 19:21:57 +0100
+Message-ID: <20231211182013.988723609@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,150 +52,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 2bcdd8f2c07f1aa1bfd34fa0dab8e06949e34846 ]
+commit d61d0ab573649789bf9eb909c89a1a193b2e3d10 upstream.
 
-There is nothing PCI bus specific in the of_msi_map_rid()
-implementation other than the requester ID tag for the input
-ID space. Rename requester ID to a more generic ID so that
-the translation code can be used by all busses that require
-input/output ID translations.
+When mounting a filesystem image with a block size larger than the page
+size, nilfs2 repeatedly outputs long error messages with stack traces to
+the kernel log, such as the following:
 
-No functional change intended.
+ getblk(): invalid block size 8192 requested
+ logical block size: 512
+ ...
+ Call Trace:
+  dump_stack_lvl+0x92/0xd4
+  dump_stack+0xd/0x10
+  bdev_getblk+0x33a/0x354
+  __breadahead+0x11/0x80
+  nilfs_search_super_root+0xe2/0x704 [nilfs2]
+  load_nilfs+0x72/0x504 [nilfs2]
+  nilfs_mount+0x30f/0x518 [nilfs2]
+  legacy_get_tree+0x1b/0x40
+  vfs_get_tree+0x18/0xc4
+  path_mount+0x786/0xa88
+  __ia32_sys_mount+0x147/0x1a8
+  __do_fast_syscall_32+0x56/0xc8
+  do_fast_syscall_32+0x29/0x58
+  do_SYSENTER_32+0x15/0x18
+  entry_SYSENTER_32+0x98/0xf1
+ ...
 
-Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
-Reviewed-by: Rob Herring <robh@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Rob Herring <robh+dt@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20200619082013.13661-11-lorenzo.pieralisi@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Stable-dep-of: d79972789d17 ("of: dynamic: Fix of_reconfig_get_state_change() return value documentation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This overloads the system logger.  And to make matters worse, it sometimes
+crashes the kernel with a memory access violation.
+
+This is because the return value of the sb_set_blocksize() call, which
+should be checked for errors, is not checked.
+
+The latter issue is due to out-of-buffer memory being accessed based on a
+large block size that caused sb_set_blocksize() to fail for buffers read
+with the initial minimum block size that remained unupdated in the
+super_block structure.
+
+Since nilfs2 mkfs tool does not accept block sizes larger than the system
+page size, this has been overlooked.  However, it is possible to create
+this situation by intentionally modifying the tool or by passing a
+filesystem image created on a system with a large page size to a system
+with a smaller page size and mounting it.
+
+Fix this issue by inserting the expected error handling for the call to
+sb_set_blocksize().
+
+Link: https://lkml.kernel.org/r/20231129141547.4726-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c       | 28 ++++++++++++++--------------
- drivers/pci/msi.c      |  2 +-
- include/linux/of_irq.h |  8 ++++----
- 3 files changed, 19 insertions(+), 19 deletions(-)
+ fs/nilfs2/the_nilfs.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 1005e4f349ef6..25d17b8a1a1aa 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -576,43 +576,43 @@ void __init of_irq_init(const struct of_device_id *matches)
- 	}
- }
+--- a/fs/nilfs2/the_nilfs.c
++++ b/fs/nilfs2/the_nilfs.c
+@@ -688,7 +688,11 @@ int init_nilfs(struct the_nilfs *nilfs,
+ 			goto failed_sbh;
+ 		}
+ 		nilfs_release_super_block(nilfs);
+-		sb_set_blocksize(sb, blocksize);
++		if (!sb_set_blocksize(sb, blocksize)) {
++			nilfs_msg(sb, KERN_ERR, "bad blocksize %d", blocksize);
++			err = -EINVAL;
++			goto out;
++		}
  
--static u32 __of_msi_map_rid(struct device *dev, struct device_node **np,
--			    u32 rid_in)
-+static u32 __of_msi_map_id(struct device *dev, struct device_node **np,
-+			    u32 id_in)
- {
- 	struct device *parent_dev;
--	u32 rid_out = rid_in;
-+	u32 id_out = id_in;
- 
- 	/*
- 	 * Walk up the device parent links looking for one with a
- 	 * "msi-map" property.
- 	 */
- 	for (parent_dev = dev; parent_dev; parent_dev = parent_dev->parent)
--		if (!of_map_id(parent_dev->of_node, rid_in, "msi-map",
--				"msi-map-mask", np, &rid_out))
-+		if (!of_map_id(parent_dev->of_node, id_in, "msi-map",
-+				"msi-map-mask", np, &id_out))
- 			break;
--	return rid_out;
-+	return id_out;
- }
- 
- /**
-- * of_msi_map_rid - Map a MSI requester ID for a device.
-+ * of_msi_map_id - Map a MSI ID for a device.
-  * @dev: device for which the mapping is to be done.
-  * @msi_np: device node of the expected msi controller.
-- * @rid_in: unmapped MSI requester ID for the device.
-+ * @id_in: unmapped MSI ID for the device.
-  *
-  * Walk up the device hierarchy looking for devices with a "msi-map"
-- * property.  If found, apply the mapping to @rid_in.
-+ * property.  If found, apply the mapping to @id_in.
-  *
-- * Returns the mapped MSI requester ID.
-+ * Returns the mapped MSI ID.
-  */
--u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in)
-+u32 of_msi_map_id(struct device *dev, struct device_node *msi_np, u32 id_in)
- {
--	return __of_msi_map_rid(dev, &msi_np, rid_in);
-+	return __of_msi_map_id(dev, &msi_np, id_in);
- }
- 
- /**
-  * of_msi_map_get_device_domain - Use msi-map to find the relevant MSI domain
-  * @dev: device for which the mapping is to be done.
-- * @rid: Requester ID for the device.
-+ * @id: Device ID.
-  * @bus_token: Bus token
-  *
-  * Walk up the device hierarchy looking for devices with a "msi-map"
-@@ -625,7 +625,7 @@ struct irq_domain *of_msi_map_get_device_domain(struct device *dev, u32 id,
- {
- 	struct device_node *np = NULL;
- 
--	__of_msi_map_rid(dev, &np, id);
-+	__of_msi_map_id(dev, &np, id);
- 	return irq_find_matching_host(np, bus_token);
- }
- 
-diff --git a/drivers/pci/msi.c b/drivers/pci/msi.c
-index 392d2ecf7dc89..c4f4a8a3bf8fa 100644
---- a/drivers/pci/msi.c
-+++ b/drivers/pci/msi.c
-@@ -1603,7 +1603,7 @@ u32 pci_msi_domain_get_msi_rid(struct irq_domain *domain, struct pci_dev *pdev)
- 	pci_for_each_dma_alias(pdev, get_msi_id_cb, &rid);
- 
- 	of_node = irq_domain_get_of_node(domain);
--	rid = of_node ? of_msi_map_rid(&pdev->dev, of_node, rid) :
-+	rid = of_node ? of_msi_map_id(&pdev->dev, of_node, rid) :
- 			iort_msi_map_id(&pdev->dev, rid);
- 
- 	return rid;
-diff --git a/include/linux/of_irq.h b/include/linux/of_irq.h
-index 7142a37227584..e8b78139f78c5 100644
---- a/include/linux/of_irq.h
-+++ b/include/linux/of_irq.h
-@@ -55,7 +55,7 @@ extern struct irq_domain *of_msi_map_get_device_domain(struct device *dev,
- 							u32 id,
- 							u32 bus_token);
- extern void of_msi_configure(struct device *dev, struct device_node *np);
--u32 of_msi_map_rid(struct device *dev, struct device_node *msi_np, u32 rid_in);
-+u32 of_msi_map_id(struct device *dev, struct device_node *msi_np, u32 id_in);
- #else
- static inline int of_irq_count(struct device_node *dev)
- {
-@@ -93,10 +93,10 @@ static inline struct irq_domain *of_msi_map_get_device_domain(struct device *dev
- static inline void of_msi_configure(struct device *dev, struct device_node *np)
- {
- }
--static inline u32 of_msi_map_rid(struct device *dev,
--				 struct device_node *msi_np, u32 rid_in)
-+static inline u32 of_msi_map_id(struct device *dev,
-+				 struct device_node *msi_np, u32 id_in)
- {
--	return rid_in;
-+	return id_in;
- }
- #endif
- 
--- 
-2.42.0
-
+ 		err = nilfs_load_super_block(nilfs, sb, blocksize, &sbp);
+ 		if (err)
 
 
 
