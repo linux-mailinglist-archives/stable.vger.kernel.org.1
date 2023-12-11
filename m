@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8217A80D55C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D0080D6EF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A14BA1C20AB1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC4F82822A6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5EF5101B;
-	Mon, 11 Dec 2023 18:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5C951C4E;
+	Mon, 11 Dec 2023 18:34:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVcNmhZ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xcxqs0ti"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA844F212;
-	Mon, 11 Dec 2023 18:23:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6E0C433C7;
-	Mon, 11 Dec 2023 18:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D306FBE0;
+	Mon, 11 Dec 2023 18:34:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CC4C433C8;
+	Mon, 11 Dec 2023 18:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319036;
-	bh=ABDIy7CHBUIiStB3jEwQVW3fgOjiTBuyX+lQpLpEHGI=;
+	s=korg; t=1702319673;
+	bh=C+PA1gFGl0AQbSVM68Eh8KZHCOENjvVIkkyMYRap4o0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVcNmhZ2Ir+XnQxOCmHeVD5U7lHMG3dYjsdJORtLAuc1KSgg4U/YpVtz1vYBEGY39
-	 HO9kL8npLr7EiE3CuqknNI+1KlFHz5yqUZAlbgSyzCCclWn2kXzSPdtPx/PxKN98KN
-	 yOn1oIzloi8tZIw7iYTTGm6vRubxaaD2+gAO+Ywk=
+	b=Xcxqs0tiy8Y3oAemhZOr4w/eWUjIsbahWiQnq5goE/MVuWbGaM/t4Q8M6awoJiSoG
+	 FS7poRpDRuo1bh4xKB+OuZSzYZRhUy/vtp7B+fnxd33Q8H3/osTm94/1xgKAu8UnKh
+	 Aa48nApTawzNIPfrZvcdkmNn4pj/6klIN30TtGa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <a.darwish@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Junhao He <hejunhao3@huawei.com>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 15/55] net: arcnet: Fix RESET flag handling
+Subject: [PATCH 6.6 192/244] coresight: ultrasoc-smb: Fix sleep while close preempt in enable_smb
 Date: Mon, 11 Dec 2023 19:21:25 +0100
-Message-ID: <20231211182012.768630607@linuxfoundation.org>
+Message-ID: <20231211182054.561465461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,301 +54,234 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <a.darwish@linutronix.de>
+From: Junhao He <hejunhao3@huawei.com>
 
-[ Upstream commit 01365633bd1c836240f9bbf86bbeee749795480a ]
+[ Upstream commit b8411287aef4a994eff0c68f5597910c4194dfe3 ]
 
-The main arcnet interrupt handler calls arcnet_close() then
-arcnet_open(), if the RESET status flag is encountered.
+When we to enable the SMB by perf, the perf sched will call perf_ctx_lock()
+to close system preempt in event_function_call(). But SMB::enable_smb() use
+mutex to lock the critical section, which may sleep.
 
-This is invalid:
+ BUG: sleeping function called from invalid context at kernel/locking/mutex.c:580
+ in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 153023, name: perf
+ preempt_count: 2, expected: 0
+ RCU nest depth: 0, expected: 0
+ INFO: lockdep is turned off.
+ irq event stamp: 0
+ hardirqs last  enabled at (0): [<0000000000000000>] 0x0
+ hardirqs last disabled at (0): [<ffffa2983f5c5f40>] copy_process+0xae8/0x2b48
+ softirqs last  enabled at (0): [<ffffa2983f5c5f40>] copy_process+0xae8/0x2b48
+ softirqs last disabled at (0): [<0000000000000000>] 0x0
+ CPU: 2 PID: 153023 Comm: perf Kdump: loaded Tainted: G   W  O   6.5.0-rc4+ #1
 
-  1) In general, interrupt handlers should never call ->ndo_stop() and
-     ->ndo_open() functions. They are usually full of blocking calls and
-     other methods that are expected to be called only from drivers
-     init and exit code paths.
+ Call trace:
+ ...
+  __mutex_lock+0xbc/0xa70
+  mutex_lock_nested+0x34/0x48
+  smb_update_buffer+0x58/0x360 [ultrasoc_smb]
+  etm_event_stop+0x204/0x2d8 [coresight]
+  etm_event_del+0x1c/0x30 [coresight]
+  event_sched_out+0x17c/0x3b8
+  group_sched_out.part.0+0x5c/0x208
+  __perf_event_disable+0x15c/0x210
+  event_function+0xe0/0x230
+  remote_function+0xb4/0xe8
+  generic_exec_single+0x160/0x268
+  smp_call_function_single+0x20c/0x2a0
+  event_function_call+0x20c/0x220
+  _perf_event_disable+0x5c/0x90
+  perf_event_for_each_child+0x58/0xc0
+  _perf_ioctl+0x34c/0x1250
+  perf_ioctl+0x64/0x98
+ ...
 
-  2) arcnet_close() contains a del_timer_sync(). If the irq handler
-     interrupts the to-be-deleted timer, del_timer_sync() will just loop
-     forever.
+Use spinlock to replace mutex to control driver data access to one at a
+time. The function copy_to_user() may sleep, it cannot be in a spinlock
+context, so we can't simply replace it in smb_read(). But we can ensure
+that only one user gets the SMB device fd by smb_open(), so remove the
+locks from smb_read() and buffer synchronization is guaranteed by the user.
 
-  3) arcnet_close() also calls tasklet_kill(), which has a warning if
-     called from irq context.
-
-  4) For device reset, the sequence "arcnet_close(); arcnet_open();" is
-     not complete.  Some children arcnet drivers have special init/exit
-     code sequences, which then embed a call to arcnet_open() and
-     arcnet_close() accordingly. Check drivers/net/arcnet/com20020.c.
-
-Run the device RESET sequence from a scheduled workqueue instead.
-
-Signed-off-by: Ahmed S. Darwish <a.darwish@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20210128194802.727770-1-a.darwish@linutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 6b17a597fc2f ("arcnet: restoring support for multiple Sohard Arcnet cards")
+Fixes: 06f5c2926aaa ("drivers/coresight: Add UltraSoc System Memory Buffer driver")
+Signed-off-by: Junhao He <hejunhao3@huawei.com>
+Reviewed-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20231114133346.30489-2-hejunhao3@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/arc-rimi.c     |    4 +-
- drivers/net/arcnet/arcdevice.h    |    6 +++
- drivers/net/arcnet/arcnet.c       |   66 +++++++++++++++++++++++++++++++++++---
- drivers/net/arcnet/com20020-isa.c |    4 +-
- drivers/net/arcnet/com20020-pci.c |    2 -
- drivers/net/arcnet/com20020_cs.c  |    2 -
- drivers/net/arcnet/com90io.c      |    4 +-
- drivers/net/arcnet/com90xx.c      |    4 +-
- 8 files changed, 78 insertions(+), 14 deletions(-)
+ drivers/hwtracing/coresight/ultrasoc-smb.c | 35 +++++++++-------------
+ drivers/hwtracing/coresight/ultrasoc-smb.h |  6 ++--
+ 2 files changed, 17 insertions(+), 24 deletions(-)
 
---- a/drivers/net/arcnet/arc-rimi.c
-+++ b/drivers/net/arcnet/arc-rimi.c
-@@ -332,7 +332,7 @@ static int __init arc_rimi_init(void)
- 		dev->irq = 9;
+diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.c b/drivers/hwtracing/coresight/ultrasoc-smb.c
+index e9a32a97fbee6..0a0fe9fcc57f9 100644
+--- a/drivers/hwtracing/coresight/ultrasoc-smb.c
++++ b/drivers/hwtracing/coresight/ultrasoc-smb.c
+@@ -99,7 +99,7 @@ static int smb_open(struct inode *inode, struct file *file)
+ 					struct smb_drv_data, miscdev);
+ 	int ret = 0;
  
- 	if (arcrimi_probe(dev)) {
--		free_netdev(dev);
-+		free_arcdev(dev);
- 		return -EIO;
+-	mutex_lock(&drvdata->mutex);
++	spin_lock(&drvdata->spinlock);
+ 
+ 	if (drvdata->reading) {
+ 		ret = -EBUSY;
+@@ -115,7 +115,7 @@ static int smb_open(struct inode *inode, struct file *file)
+ 
+ 	drvdata->reading = true;
+ out:
+-	mutex_unlock(&drvdata->mutex);
++	spin_unlock(&drvdata->spinlock);
+ 
+ 	return ret;
+ }
+@@ -132,10 +132,8 @@ static ssize_t smb_read(struct file *file, char __user *data, size_t len,
+ 	if (!len)
+ 		return 0;
+ 
+-	mutex_lock(&drvdata->mutex);
+-
+ 	if (!sdb->data_size)
+-		goto out;
++		return 0;
+ 
+ 	to_copy = min(sdb->data_size, len);
+ 
+@@ -145,20 +143,15 @@ static ssize_t smb_read(struct file *file, char __user *data, size_t len,
+ 
+ 	if (copy_to_user(data, sdb->buf_base + sdb->buf_rdptr, to_copy)) {
+ 		dev_dbg(dev, "Failed to copy data to user\n");
+-		to_copy = -EFAULT;
+-		goto out;
++		return -EFAULT;
  	}
  
-@@ -349,7 +349,7 @@ static void __exit arc_rimi_exit(void)
- 	iounmap(lp->mem_start);
- 	release_mem_region(dev->mem_start, dev->mem_end - dev->mem_start + 1);
- 	free_irq(dev->irq, dev);
--	free_netdev(dev);
-+	free_arcdev(dev);
+ 	*ppos += to_copy;
+-
+ 	smb_update_read_ptr(drvdata, to_copy);
+-
+-	dev_dbg(dev, "%zu bytes copied\n", to_copy);
+-out:
+ 	if (!sdb->data_size)
+ 		smb_reset_buffer(drvdata);
+-	mutex_unlock(&drvdata->mutex);
+ 
++	dev_dbg(dev, "%zu bytes copied\n", to_copy);
+ 	return to_copy;
  }
  
- #ifndef MODULE
---- a/drivers/net/arcnet/arcdevice.h
-+++ b/drivers/net/arcnet/arcdevice.h
-@@ -303,6 +303,10 @@ struct arcnet_local {
+@@ -167,9 +160,9 @@ static int smb_release(struct inode *inode, struct file *file)
+ 	struct smb_drv_data *drvdata = container_of(file->private_data,
+ 					struct smb_drv_data, miscdev);
  
- 	int excnak_pending;    /* We just got an excesive nak interrupt */
+-	mutex_lock(&drvdata->mutex);
++	spin_lock(&drvdata->spinlock);
+ 	drvdata->reading = false;
+-	mutex_unlock(&drvdata->mutex);
++	spin_unlock(&drvdata->spinlock);
  
-+	/* RESET flag handling */
-+	int reset_in_progress;
-+	struct work_struct reset_work;
-+
- 	struct {
- 		uint16_t sequence;	/* sequence number (incs with each packet) */
- 		__be16 aborted_seq;
-@@ -355,7 +359,9 @@ void arcnet_dump_skb(struct net_device *
- 
- void arcnet_unregister_proto(struct ArcProto *proto);
- irqreturn_t arcnet_interrupt(int irq, void *dev_id);
-+
- struct net_device *alloc_arcdev(const char *name);
-+void free_arcdev(struct net_device *dev);
- 
- int arcnet_open(struct net_device *dev);
- int arcnet_close(struct net_device *dev);
---- a/drivers/net/arcnet/arcnet.c
-+++ b/drivers/net/arcnet/arcnet.c
-@@ -387,10 +387,44 @@ static void arcnet_timer(struct timer_li
- 	struct arcnet_local *lp = from_timer(lp, t, timer);
- 	struct net_device *dev = lp->dev;
- 
--	if (!netif_carrier_ok(dev)) {
-+	spin_lock_irq(&lp->lock);
-+
-+	if (!lp->reset_in_progress && !netif_carrier_ok(dev)) {
- 		netif_carrier_on(dev);
- 		netdev_info(dev, "link up\n");
- 	}
-+
-+	spin_unlock_irq(&lp->lock);
-+}
-+
-+static void reset_device_work(struct work_struct *work)
-+{
-+	struct arcnet_local *lp;
-+	struct net_device *dev;
-+
-+	lp = container_of(work, struct arcnet_local, reset_work);
-+	dev = lp->dev;
-+
-+	/* Do not bring the network interface back up if an ifdown
-+	 * was already done.
-+	 */
-+	if (!netif_running(dev) || !lp->reset_in_progress)
-+		return;
-+
-+	rtnl_lock();
-+
-+	/* Do another check, in case of an ifdown that was triggered in
-+	 * the small race window between the exit condition above and
-+	 * acquiring RTNL.
-+	 */
-+	if (!netif_running(dev) || !lp->reset_in_progress)
-+		goto out;
-+
-+	dev_close(dev);
-+	dev_open(dev);
-+
-+out:
-+	rtnl_unlock();
- }
- 
- static void arcnet_reply_tasklet(unsigned long data)
-@@ -452,12 +486,25 @@ struct net_device *alloc_arcdev(const ch
- 		lp->dev = dev;
- 		spin_lock_init(&lp->lock);
- 		timer_setup(&lp->timer, arcnet_timer, 0);
-+		INIT_WORK(&lp->reset_work, reset_device_work);
- 	}
- 
- 	return dev;
- }
- EXPORT_SYMBOL(alloc_arcdev);
- 
-+void free_arcdev(struct net_device *dev)
-+{
-+	struct arcnet_local *lp = netdev_priv(dev);
-+
-+	/* Do not cancel this at ->ndo_close(), as the workqueue itself
-+	 * indirectly calls the ifdown path through dev_close().
-+	 */
-+	cancel_work_sync(&lp->reset_work);
-+	free_netdev(dev);
-+}
-+EXPORT_SYMBOL(free_arcdev);
-+
- /* Open/initialize the board.  This is called sometime after booting when
-  * the 'ifconfig' program is run.
-  *
-@@ -587,6 +634,10 @@ int arcnet_close(struct net_device *dev)
- 
- 	/* shut down the card */
- 	lp->hw.close(dev);
-+
-+	/* reset counters */
-+	lp->reset_in_progress = 0;
-+
- 	module_put(lp->hw.owner);
  	return 0;
  }
-@@ -820,6 +871,9 @@ irqreturn_t arcnet_interrupt(int irq, vo
+@@ -262,7 +255,7 @@ static int smb_enable(struct coresight_device *csdev, enum cs_mode mode,
+ 	struct smb_drv_data *drvdata = dev_get_drvdata(csdev->dev.parent);
+ 	int ret = 0;
  
- 	spin_lock_irqsave(&lp->lock, flags);
+-	mutex_lock(&drvdata->mutex);
++	spin_lock(&drvdata->spinlock);
  
-+	if (lp->reset_in_progress)
-+		goto out;
-+
- 	/* RESET flag was enabled - if device is not running, we must
- 	 * clear it right away (but nothing else).
- 	 */
-@@ -852,11 +906,14 @@ irqreturn_t arcnet_interrupt(int irq, vo
- 		if (status & RESETflag) {
- 			arc_printk(D_NORMAL, dev, "spurious reset (status=%Xh)\n",
- 				   status);
--			arcnet_close(dev);
--			arcnet_open(dev);
-+
-+			lp->reset_in_progress = 1;
-+			netif_stop_queue(dev);
-+			netif_carrier_off(dev);
-+			schedule_work(&lp->reset_work);
+ 	/* Do nothing, the trace data is reading by other interface now */
+ 	if (drvdata->reading) {
+@@ -294,7 +287,7 @@ static int smb_enable(struct coresight_device *csdev, enum cs_mode mode,
  
- 			/* get out of the interrupt handler! */
--			break;
-+			goto out;
- 		}
- 		/* RX is inhibited - we must have received something.
- 		 * Prepare to receive into the next buffer.
-@@ -1052,6 +1109,7 @@ irqreturn_t arcnet_interrupt(int irq, vo
- 	udelay(1);
- 	lp->hw.intmask(dev, lp->intmask);
+ 	dev_dbg(&csdev->dev, "Ultrasoc SMB enabled\n");
+ out:
+-	mutex_unlock(&drvdata->mutex);
++	spin_unlock(&drvdata->spinlock);
  
-+out:
- 	spin_unlock_irqrestore(&lp->lock, flags);
- 	return retval;
+ 	return ret;
  }
---- a/drivers/net/arcnet/com20020-isa.c
-+++ b/drivers/net/arcnet/com20020-isa.c
-@@ -169,7 +169,7 @@ static int __init com20020_init(void)
- 		dev->irq = 9;
+@@ -304,7 +297,7 @@ static int smb_disable(struct coresight_device *csdev)
+ 	struct smb_drv_data *drvdata = dev_get_drvdata(csdev->dev.parent);
+ 	int ret = 0;
  
- 	if (com20020isa_probe(dev)) {
--		free_netdev(dev);
-+		free_arcdev(dev);
- 		return -EIO;
+-	mutex_lock(&drvdata->mutex);
++	spin_lock(&drvdata->spinlock);
+ 
+ 	if (drvdata->reading) {
+ 		ret = -EBUSY;
+@@ -327,7 +320,7 @@ static int smb_disable(struct coresight_device *csdev)
+ 
+ 	dev_dbg(&csdev->dev, "Ultrasoc SMB disabled\n");
+ out:
+-	mutex_unlock(&drvdata->mutex);
++	spin_unlock(&drvdata->spinlock);
+ 
+ 	return ret;
+ }
+@@ -408,7 +401,7 @@ static unsigned long smb_update_buffer(struct coresight_device *csdev,
+ 	if (!buf)
+ 		return 0;
+ 
+-	mutex_lock(&drvdata->mutex);
++	spin_lock(&drvdata->spinlock);
+ 
+ 	/* Don't do anything if another tracer is using this sink. */
+ 	if (atomic_read(&csdev->refcnt) != 1)
+@@ -432,7 +425,7 @@ static unsigned long smb_update_buffer(struct coresight_device *csdev,
+ 	if (!buf->snapshot && lost)
+ 		perf_aux_output_flag(handle, PERF_AUX_FLAG_TRUNCATED);
+ out:
+-	mutex_unlock(&drvdata->mutex);
++	spin_unlock(&drvdata->spinlock);
+ 
+ 	return data_size;
+ }
+@@ -590,7 +583,7 @@ static int smb_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
-@@ -182,7 +182,7 @@ static void __exit com20020_exit(void)
- 	unregister_netdev(my_dev);
- 	free_irq(my_dev->irq, my_dev);
- 	release_region(my_dev->base_addr, ARCNET_TOTAL_SIZE);
--	free_netdev(my_dev);
-+	free_arcdev(my_dev);
- }
+-	mutex_init(&drvdata->mutex);
++	spin_lock_init(&drvdata->spinlock);
+ 	drvdata->pid = -1;
  
- #ifndef MODULE
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -294,7 +294,7 @@ static void com20020pci_remove(struct pc
+ 	ret = smb_register_sink(pdev, drvdata);
+diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.h b/drivers/hwtracing/coresight/ultrasoc-smb.h
+index d2e14e8d2c8a8..82a44c14a8829 100644
+--- a/drivers/hwtracing/coresight/ultrasoc-smb.h
++++ b/drivers/hwtracing/coresight/ultrasoc-smb.h
+@@ -8,7 +8,7 @@
+ #define _ULTRASOC_SMB_H
  
- 		unregister_netdev(dev);
- 		free_irq(dev->irq, dev);
--		free_netdev(dev);
-+		free_arcdev(dev);
- 	}
- }
+ #include <linux/miscdevice.h>
+-#include <linux/mutex.h>
++#include <linux/spinlock.h>
  
---- a/drivers/net/arcnet/com20020_cs.c
-+++ b/drivers/net/arcnet/com20020_cs.c
-@@ -177,7 +177,7 @@ static void com20020_detach(struct pcmci
- 		dev = info->dev;
- 		if (dev) {
- 			dev_dbg(&link->dev, "kfree...\n");
--			free_netdev(dev);
-+			free_arcdev(dev);
- 		}
- 		dev_dbg(&link->dev, "kfree2...\n");
- 		kfree(info);
---- a/drivers/net/arcnet/com90io.c
-+++ b/drivers/net/arcnet/com90io.c
-@@ -394,7 +394,7 @@ static int __init com90io_init(void)
- 	err = com90io_probe(dev);
- 
- 	if (err) {
--		free_netdev(dev);
-+		free_arcdev(dev);
- 		return err;
- 	}
- 
-@@ -417,7 +417,7 @@ static void __exit com90io_exit(void)
- 
- 	free_irq(dev->irq, dev);
- 	release_region(dev->base_addr, ARCNET_TOTAL_SIZE);
--	free_netdev(dev);
-+	free_arcdev(dev);
- }
- 
- module_init(com90io_init)
---- a/drivers/net/arcnet/com90xx.c
-+++ b/drivers/net/arcnet/com90xx.c
-@@ -554,7 +554,7 @@ err_free_irq:
- err_release_mem:
- 	release_mem_region(dev->mem_start, dev->mem_end - dev->mem_start + 1);
- err_free_dev:
--	free_netdev(dev);
-+	free_arcdev(dev);
- 	return -EIO;
- }
- 
-@@ -672,7 +672,7 @@ static void __exit com90xx_exit(void)
- 		release_region(dev->base_addr, ARCNET_TOTAL_SIZE);
- 		release_mem_region(dev->mem_start,
- 				   dev->mem_end - dev->mem_start + 1);
--		free_netdev(dev);
-+		free_arcdev(dev);
- 	}
- }
- 
+ /* Offset of SMB global registers */
+ #define SMB_GLB_CFG_REG		0x00
+@@ -105,7 +105,7 @@ struct smb_data_buffer {
+  * @csdev:	Component vitals needed by the framework.
+  * @sdb:	Data buffer for SMB.
+  * @miscdev:	Specifics to handle "/dev/xyz.smb" entry.
+- * @mutex:	Control data access to one at a time.
++ * @spinlock:	Control data access to one at a time.
+  * @reading:	Synchronise user space access to SMB buffer.
+  * @pid:	Process ID of the process being monitored by the
+  *		session that is using this component.
+@@ -116,7 +116,7 @@ struct smb_drv_data {
+ 	struct coresight_device	*csdev;
+ 	struct smb_data_buffer sdb;
+ 	struct miscdevice miscdev;
+-	struct mutex mutex;
++	spinlock_t spinlock;
+ 	bool reading;
+ 	pid_t pid;
+ 	enum cs_mode mode;
+-- 
+2.42.0
+
 
 
 
