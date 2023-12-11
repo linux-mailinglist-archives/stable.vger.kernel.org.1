@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597DF80D6F1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEC380D987
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 143A7282519
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3561F21B10
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B970751C54;
-	Mon, 11 Dec 2023 18:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D19951C50;
+	Mon, 11 Dec 2023 18:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+efys7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WxzPvqbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B3AFBE0;
-	Mon, 11 Dec 2023 18:34:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEAE1C433CC;
-	Mon, 11 Dec 2023 18:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F303251C38;
+	Mon, 11 Dec 2023 18:54:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DEAC433C8;
+	Mon, 11 Dec 2023 18:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319679;
-	bh=LhMD8eeS8TWSGObLHV3Gswfmd9kXx72MlyIYNKFMVNg=;
+	s=korg; t=1702320877;
+	bh=XSHPB6Rpj2SJec4E8RB7SWcc5blUZhFn779Hq0BrmzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+efys7GFuv5X3OvVD+Ia3ELMXukKXKaGInIsZ8MdllV1xFgVaBS29d02aTpoe5nJ
-	 +z2+iAlaEtC8UTaUsnqp3oijXyniOSO1BYoRbTE4/bJMRpHsCJ6R85ZslaQY5lJs7f
-	 BZLn0HmC7gQN1My3yVLWB1KbKJ1+p+JCD5rh9dGI=
+	b=WxzPvqbRTy7badQPDuFA97JopO/v8FiYjzLJspSKGEUBOYpnd0yLXO5I6AE8/K1NW
+	 Bwl3jiWKGHvizzguYKUexwzU4wMzJCZXDGruv6/q3YkBgF0IB1diobEZYw5snq7ISA
+	 mEX2Tf4Adwpg98S0PNv6J/PjfIbs4T7OYFst04BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/244] coresight: ultrasoc-smb: Fix uninitialized before use buf_hw_base
+Subject: [PATCH 5.15 028/141] platform/mellanox: Check devm_hwmon_device_register_with_groups() return value
 Date: Mon, 11 Dec 2023 19:21:27 +0100
-Message-ID: <20231211182054.631990164@linuxfoundation.org>
+Message-ID: <20231211182027.756842034@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +52,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 862c135bde8bc185e8aae2110374175e6a1b6ed5 ]
+[ Upstream commit 3494a594315b56516988afb6854d75dee5b501db ]
 
-In smb_reset_buffer, the sdb->buf_hw_base variable is uninitialized
-before use, which initializes it in smb_init_data_buffer. And the SMB
-regiester are set in smb_config_inport.
-So move the call after smb_config_inport.
+devm_hwmon_device_register_with_groups() returns an error pointer upon
+failure. Check its return value for errors.
 
-Fixes: 06f5c2926aaa ("drivers/coresight: Add UltraSoc System Memory Buffer driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231114133346.30489-4-hejunhao3@huawei.com
+Compile-tested only.
+
+Fixes: 1a218d312e65 ("platform/mellanox: mlxbf-pmc: Add Mellanox BlueField PMC driver")
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20231201055447.2356001-1-chentao@kylinos.cn
+[ij: split the change into two]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/ultrasoc-smb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/mellanox/mlxbf-pmc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwtracing/coresight/ultrasoc-smb.c b/drivers/hwtracing/coresight/ultrasoc-smb.c
-index 2f2aba90a5148..6e32d31a95fe0 100644
---- a/drivers/hwtracing/coresight/ultrasoc-smb.c
-+++ b/drivers/hwtracing/coresight/ultrasoc-smb.c
-@@ -477,7 +477,6 @@ static int smb_init_data_buffer(struct platform_device *pdev,
- static void smb_init_hw(struct smb_drv_data *drvdata)
- {
- 	smb_disable_hw(drvdata);
--	smb_reset_buffer(drvdata);
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 925bfc4aef8ce..db7a1d360cd2c 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1454,6 +1454,8 @@ static int mlxbf_pmc_probe(struct platform_device *pdev)
  
- 	writel(SMB_LB_CFG_LO_DEFAULT, drvdata->base + SMB_LB_CFG_LO_REG);
- 	writel(SMB_LB_CFG_HI_DEFAULT, drvdata->base + SMB_LB_CFG_HI_REG);
-@@ -587,6 +586,7 @@ static int smb_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
+ 	pmc->hwmon_dev = devm_hwmon_device_register_with_groups(
+ 		dev, "bfperf", pmc, pmc->groups);
++	if (IS_ERR(pmc->hwmon_dev))
++		return PTR_ERR(pmc->hwmon_dev);
+ 	platform_set_drvdata(pdev, pmc);
  
-+	smb_reset_buffer(drvdata);
- 	platform_set_drvdata(pdev, drvdata);
- 	spin_lock_init(&drvdata->spinlock);
- 	drvdata->pid = -1;
+ 	return 0;
 -- 
 2.42.0
 
