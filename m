@@ -1,79 +1,84 @@
-Return-Path: <stable+bounces-5250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDB480C17B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:46:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5F880C17D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:47:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60CC1C20934
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:46:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57FB1F20F0C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F871F60A;
-	Mon, 11 Dec 2023 06:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A911F606;
+	Mon, 11 Dec 2023 06:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oIWYsJhF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k28DK+gM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE2A1D69A;
-	Mon, 11 Dec 2023 06:46:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3723C433C8;
-	Mon, 11 Dec 2023 06:46:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743621D69A
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 06:47:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872A9C433C7;
+	Mon, 11 Dec 2023 06:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702277175;
-	bh=kHnEszmD14gAE0yGcIoS2wtHuhi2+yTazSYkElaFc64=;
+	s=korg; t=1702277256;
+	bh=wiZf7baW/NVYGsl044hxt6FCjizb2DSSaHIhaWXdkCM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oIWYsJhFRtc3rznu98ThG9D4IUodSsPJLVR05l1lNjoBnXFiodm4CLeNRzFwUTd6t
-	 pSLWnN6uSyY7t8k0yNeggaTa4Klfnl35h/XVn4gjU4kbh4kZONSs1PzdEZgLv0ifQz
-	 QH6hzW703/HeTf/GCZV9+Ue56WAhKglL3s5cI4gw=
-Date: Mon, 11 Dec 2023 07:46:12 +0100
+	b=k28DK+gMVyBvqtrhpHOSLjGZUoqERr3LLkTBvIK3AxpJM7PLPTgFnmHwvgBFtFs+l
+	 IBiMlH4sXlH2SnmlJSdEy48CFyz6trT83w7GE1rfw4EYUv5p+8cyJ1gPPC0JvPpuqY
+	 /6yYX1HQ/dgDxd4pUaYoSWIC/dwjnpTD+RB9sxGo=
+Date: Mon, 11 Dec 2023 07:47:32 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Simon Kaegi <simon.kaegi@gmail.com>
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
-	Bobby Eshleman <bobby.eshleman@bytedance.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>, jpiotrowski@linux.microsoft.com
-Subject: Re: [REGRESSION] vsocket timeout with kata containers agent 3.2.0
- and kernel 6.1.63
-Message-ID: <2023121156-giblet-thumb-037f@gregkh>
-References: <CACW2H-4FpZAizkp+U1aS94V_ODn8NUd1ta27BAz_zh0wo63_rQ@mail.gmail.com>
+To: =?iso-8859-1?B?TOlv?= Lam <leo@leolam.fr>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: nl80211: fix deadlock in nl80211_set_cqm_rssi
+ (6.6.x)
+Message-ID: <2023121135-unwilling-exception-0bcc@gregkh>
+References: <20231210213930.61378-1-leo@leolam.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <CACW2H-4FpZAizkp+U1aS94V_ODn8NUd1ta27BAz_zh0wo63_rQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20231210213930.61378-1-leo@leolam.fr>
 
-On Sun, Dec 10, 2023 at 11:05:37PM -0500, Simon Kaegi wrote:
-> #regzbot introduced v6.1.62..v6.1.63
-> #regzbot introduced: baddcc2c71572968cdaeee1c4ab3dc0ad90fa765
+On Sun, Dec 10, 2023 at 09:39:30PM +0000, Léo Lam wrote:
+> Commit 4a7e92551618f3737b305f62451353ee05662f57 ("wifi: cfg80211: fix
+> CQM for non-range use" on 6.6.x) causes nl80211_set_cqm_rssi not to
+> release the wdev lock in some situations.
 > 
-> We hit this regression when updating our guest vm kernel from 6.1.62 to
-> 6.1.63 -- bisecting, this problem was introduced
-> in baddcc2c71572968cdaeee1c4ab3dc0ad90fa765 -- virtio/vsock: replace
-> virtio_vsock_pkt with sk_buff --
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.63&id=baddcc2c71572968cdaeee1c4ab3dc0ad90fa765
+> Of course, the ensuing deadlock causes userland network managers to
+> break pretty badly, and on typical systems this also causes lockups on
+> on suspend, poweroff and reboot. See [1], [2], [3] for example reports.
 > 
-> We're getting a timeout when trying to connect to the vsocket in the
-> guest VM when launching a kata containers 3.2.0 agent. We haven't done
-> much more to understand the problem at this point.
+> The upstream commit, 7e7efdda6adb385fbdfd6f819d76bc68c923c394
+> ("wifi: cfg80211: fix CQM for non-range use"), does not trigger this
+> issue because the wdev lock does not exist there.
 > 
-> We can reproduce 100% of the time but don't currently have a simple
-> reproducer as the problem was found in our build service which uses
-> kata-containers (with cloud-hypervisor).
+> Fix the deadlock by releasing the lock before returning.
 > 
-> We have not checked the mainline as we currently are tied to 6.1.x.
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=218247
+> [2] https://bbs.archlinux.org/viewtopic.php?id=290976
+> [3] https://lore.kernel.org/all/87sf4belmm.fsf@turtle.gmx.de/
+> 
+> Fixes: 4a7e92551618 ("wifi: cfg80211: fix CQM for non-range use")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Léo Lam <leo@leolam.fr>
+> ---
+>  net/wireless/nl80211.c | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
 
-What is "tieing" you to the old 6.1.y tree?
+So this is only for the 6.6.y tree?  If so, you should at least cc: the
+other wireless developers involved in the original fix, right?
 
-Also, can you try 6.1.66?  Numerous fixes have gone into there as well.
+And what commit actually fixed this issue upstream, why not take that
+instead?
 
 thanks,
 
