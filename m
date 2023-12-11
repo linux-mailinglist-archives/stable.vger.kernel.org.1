@@ -1,47 +1,51 @@
-Return-Path: <stable+bounces-6200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7682C80D95A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7DC80DA1F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219EA1F21B3D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E9A1C2170D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FBB51C47;
-	Mon, 11 Dec 2023 18:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44615524CF;
+	Mon, 11 Dec 2023 18:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsqe7nWB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0Dkgjq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F1D51C37;
-	Mon, 11 Dec 2023 18:53:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B1DC433C7;
-	Mon, 11 Dec 2023 18:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623C51C5C;
+	Mon, 11 Dec 2023 18:58:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE69C433C7;
+	Mon, 11 Dec 2023 18:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320781;
-	bh=eWM4zmJ5iC1OPM7z5J0mSS0j5vy3KuR1GJM2S1Xgtl0=;
+	s=korg; t=1702321132;
+	bh=AQU6NnDjI5LcAbXr3aHcvW2C/ioIbGfmnzG9WyLW/eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tsqe7nWBo/wx8RYKoN/TtMoyF0Fo8LgUHU3/F9mhykDuDJAjbcyaAEubkRPGgHSvt
-	 NC6WCsF8Udfy6P0lrD0dcjR4+meyna+jr5vx2PfDAKYUayDYejs4fzuISrdqw2NlNA
-	 o6WtnsUQCCLpHgzPN0d5a6yIu4cjylgi5AVS+L/U=
+	b=T0Dkgjq3qhtJ7zzSdxjx0F02cDD/JRiQ2f/DRMDFyjQIQ1w4/9JwC1gCW27gYk3iX
+	 heLxVIxgZg5pXGs/VeaBN6zMLXmQjEXT3xXS3u0bb7ZQnFUJItAo8D/w2xK9gcFpO2
+	 vo1lUkMPGbyAAU7GeF1/3eTwEpOZQVi6nqseNM00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyuan Mo <hdthky0@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 189/194] netfilter: nft_set_pipapo: skip inactive elements during set walk
-Date: Mon, 11 Dec 2023 19:22:59 +0100
-Message-ID: <20231211182045.133347541@linuxfoundation.org>
+	Mark Rutland <mark.rutland@arm.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Sedat Dilek <sedat.dilek@gmail.com>
+Subject: [PATCH 5.15 121/141] Kbuild: use -Wdeclaration-after-statement
+Date: Mon, 11 Dec 2023 19:23:00 +0100
+Message-ID: <20231211182031.821388143@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +55,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Mark Rutland <mark.rutland@arm.com>
 
-commit 317eb9685095678f2c9f5a8189de698c5354316a upstream.
+[ Upstream commit 4d94f910e79a349b00a4f8aab6f3ae87129d8c5a ]
 
-Otherwise set elements can be deactivated twice which will cause a crash.
+The kernel is moving from using `-std=gnu89` to `-std=gnu11`, permitting
+the use of additional C11 features such as for-loop initial declarations.
 
-Reported-by: Xingyuan Mo <hdthky0@gmail.com>
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+One contentious aspect of C99 is that it permits mixed declarations and
+code, and for now at least, it seems preferable to enforce that
+declarations must come first.
+
+These warnings were already enabled in the kernel itself, but not
+for KBUILD_USERCFLAGS or the compat VDSO on arch/arm64, which uses
+a separate set of CFLAGS.
+
+This patch fixes an existing violation in modpost.c, which is not
+reported because of the missing flag in KBUILD_USERCFLAGS:
+
+| scripts/mod/modpost.c: In function ‘match’:
+| scripts/mod/modpost.c:837:3: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
+|   837 |   const char *endp = p + strlen(p) - 1;
+|       |   ^~~~~
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+[arnd: don't add a duplicate flag to the default set, update changelog]
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Tested-by: Sedat Dilek <sedat.dilek@gmail.com> # LLVM/Clang v13.0.0 (x86-64)
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Stable-dep-of: e8c07082a810 ("Kbuild: move to -std=gnu11")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c |    3 +++
- 1 file changed, 3 insertions(+)
+ Makefile                          | 3 ++-
+ arch/arm64/kernel/vdso32/Makefile | 1 +
+ scripts/mod/modpost.c             | 4 +++-
+ 3 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -2042,6 +2042,9 @@ static void nft_pipapo_walk(const struct
+diff --git a/Makefile b/Makefile
+index 678e712591f89..5976e71522607 100644
+--- a/Makefile
++++ b/Makefile
+@@ -440,7 +440,8 @@ endif
+ HOSTPKG_CONFIG	= pkg-config
  
- 		e = f->mt[r].e;
+ export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
+-			      -O2 -fomit-frame-pointer -std=gnu89
++			      -O2 -fomit-frame-pointer -std=gnu89 \
++			      -Wdeclaration-after-statement
+ export KBUILD_USERLDFLAGS :=
  
-+		if (!nft_set_elem_active(&e->ext, iter->genmask))
-+			goto cont;
+ KBUILD_HOSTCFLAGS   := $(KBUILD_USERCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
+index 83e9399e38368..50cb1ec092ae5 100644
+--- a/arch/arm64/kernel/vdso32/Makefile
++++ b/arch/arm64/kernel/vdso32/Makefile
+@@ -76,6 +76,7 @@ VDSO_CFLAGS += -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+                -fno-strict-aliasing -fno-common \
+                -Werror-implicit-function-declaration \
+                -Wno-format-security \
++               -Wdeclaration-after-statement \
+                -std=gnu89
+ VDSO_CFLAGS  += -O2
+ # Some useful compiler-dependent flags from top-level Makefile
+diff --git a/scripts/mod/modpost.c b/scripts/mod/modpost.c
+index c6e655e0ed988..945f9ecb34079 100644
+--- a/scripts/mod/modpost.c
++++ b/scripts/mod/modpost.c
+@@ -833,8 +833,10 @@ static int match(const char *sym, const char * const pat[])
+ {
+ 	const char *p;
+ 	while (*pat) {
++		const char *endp;
 +
- 		elem.priv = e;
+ 		p = *pat++;
+-		const char *endp = p + strlen(p) - 1;
++		endp = p + strlen(p) - 1;
  
- 		iter->err = iter->fn(ctx, set, iter, &elem);
+ 		/* "*foo*" */
+ 		if (*p == '*' && *endp == '*') {
+-- 
+2.42.0
+
 
 
 
