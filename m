@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-5882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B0680D7A9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE29F80D90F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 670E72821F6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 585D21F21BCB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4548537EC;
-	Mon, 11 Dec 2023 18:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE54A51C35;
+	Mon, 11 Dec 2023 18:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kGFbstDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZgR7oa6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A100A537E4;
-	Mon, 11 Dec 2023 18:38:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FC8C433C8;
-	Mon, 11 Dec 2023 18:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1B15102A;
+	Mon, 11 Dec 2023 18:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AB4C433C9;
+	Mon, 11 Dec 2023 18:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319919;
-	bh=HEEU/MkTfDafDyv1BoF1UjEZhCMEddUJMpLqVVjwm8k=;
+	s=korg; t=1702320644;
+	bh=l+iqHDAW0T2sjveyD4CTPnt8FxJK2ET0pQXJ+I6qfnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kGFbstDOgoeKiXXxg7DxCvBR9hwUm7Zg7x44t3xAxO2a7f+uuapRVu6NzWeZL8eNm
-	 xoqyMVrTewTY2p6JE+saeBOzlPWBEZyJolOladapVrH+35iWADb7mI6rX1yJSe3gfn
-	 wgsRUo7hVgMx8FKYJ9w1NOBriN57W/BSTkE/Uksg=
+	b=DZgR7oa6H0KUP89TdtWV7Q1RZ3dmG9mHL9Y28/+mMO2u2NuZNX3ch/vSDmTcpNTiJ
+	 KHC01IdKV3cSGSWe7U8uAIO8ORHCoXUzXkeV88YevnTJKtKM6lKzbEAEWvBIMTdann
+	 Y/ZL8nSh4JPSRaZpnT5o9JRA3qr/zod2W6h53+Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 37/97] arm64: dts: rockchip: Expand reg size of vdec node for RK3399
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 110/194] ring-buffer: Test last update in 32bit version of __rb_time_read()
 Date: Mon, 11 Dec 2023 19:21:40 +0100
-Message-ID: <20231211182021.342706220@linuxfoundation.org>
+Message-ID: <20231211182041.392908888@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +54,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 35938c18291b5da7422b2fac6dac0af11aa8d0d7 ]
+commit f458a1453424e03462b5bb539673c9a3cddda480 upstream.
 
-Expand the reg size for the vdec node to include cache/performance
-registers the rkvdec driver writes to. Also add missing clocks to the
-related power-domain.
+Since 64 bit cmpxchg() is very expensive on 32bit architectures, the
+timestamp used by the ring buffer does some interesting tricks to be able
+to still have an atomic 64 bit number. It originally just used 60 bits and
+broke it up into two 32 bit words where the extra 2 bits were used for
+synchronization. But this was not enough for all use cases, and all 64
+bits were required.
 
-Fixes: cbd7214402ec ("arm64: dts: rockchip: Define the rockchip Video Decoder node on rk3399")
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20231105233630.3927502-10-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The 32bit version of the ring buffer timestamp was then broken up into 3
+32bit words using the same counter trick. But one update was not done. The
+check to see if the read operation was done without interruption only
+checked the first two words and not last one (like it had before this
+update). Fix it by making sure all three updates happen without
+interruption by comparing the initial counter with the last updated
+counter.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231206100050.3100b7bb@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: f03f2abce4f39 ("ring-buffer: Have 32 bit time stamps use all 64 bits")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/ring_buffer.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399.dtsi b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-index c5f3d4f8f4d21..3180f576ed02e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399.dtsi
-@@ -1022,7 +1022,9 @@
- 			power-domain@RK3399_PD_VDU {
- 				reg = <RK3399_PD_VDU>;
- 				clocks = <&cru ACLK_VDU>,
--					 <&cru HCLK_VDU>;
-+					 <&cru HCLK_VDU>,
-+					 <&cru SCLK_VDU_CA>,
-+					 <&cru SCLK_VDU_CORE>;
- 				pm_qos = <&qos_video_m1_r>,
- 					 <&qos_video_m1_w>;
- 			};
-@@ -1276,7 +1278,7 @@
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -646,8 +646,8 @@ static inline bool __rb_time_read(rb_tim
  
- 	vdec: video-codec@ff660000 {
- 		compatible = "rockchip,rk3399-vdec";
--		reg = <0x0 0xff660000 0x0 0x400>;
-+		reg = <0x0 0xff660000 0x0 0x480>;
- 		interrupts = <GIC_SPI 116 IRQ_TYPE_LEVEL_HIGH 0>;
- 		clocks = <&cru ACLK_VDU>, <&cru HCLK_VDU>,
- 			 <&cru SCLK_VDU_CA>, <&cru SCLK_VDU_CORE>;
--- 
-2.42.0
-
+ 	*cnt = rb_time_cnt(top);
+ 
+-	/* If top and bottom counts don't match, this interrupted a write */
+-	if (*cnt != rb_time_cnt(bottom))
++	/* If top and msb counts don't match, this interrupted a write */
++	if (*cnt != rb_time_cnt(msb))
+ 		return false;
+ 
+ 	/* The shift to msb will lose its cnt bits */
 
 
 
