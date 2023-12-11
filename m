@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD0680D8EC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7817480D781
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B7F31F21A21
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E35E1B20DC4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A40F51C58;
-	Mon, 11 Dec 2023 18:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F11A5380F;
+	Mon, 11 Dec 2023 18:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4Sl1RoC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Bw3eFtr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E6E5102A;
-	Mon, 11 Dec 2023 18:49:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E43CC433C7;
-	Mon, 11 Dec 2023 18:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C322D52F8D;
+	Mon, 11 Dec 2023 18:37:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46DDFC433C8;
+	Mon, 11 Dec 2023 18:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320577;
-	bh=Km8Q0f3ugCEF4HE2A0wR8ogjDsqIhO1dXghbiUGNJxU=;
+	s=korg; t=1702319850;
+	bh=1dVttS8F9y0ly3VuEC0h6KhHnuqwlUt0enhkX5zED0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4Sl1RoCRsy4XBQ6ojVxCaup1u3Pu23/GRffI5m/naDls5ocjIIltX6QsSOcZmX8T
-	 S3W8BYy6DPKHIIAfFlexdD/OWkTeiNuvC7B613F6YD1C2HUm+nMiMonS2x8va9w2+h
-	 gAxF1Ml+pdFCzvLmtU1zi0NDfHCWuNuDpgzSRwKc=
+	b=2Bw3eFtrMUHjE53ms/CjOTLaTcE7KA2abHmABIS5W+wJ2/MqrTyW/pDm2oMb8aoFA
+	 226supKTpSUvTiv9Of8g1aQfrlXJW4VEGpfUfwxidJdpqEAs3Q5/p9hlAA/nM+756v
+	 TyLKSWdHPPFZQDD9Vl0bT91PVLXyivUBArHbSuqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	"Luke D. Jones" <luke@ljones.dev>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/194] RDMA/core: Fix umem iterator when PAGE_SIZE is greater then HCA pgsz
-Date: Mon, 11 Dec 2023 19:21:14 +0100
-Message-ID: <20231211182040.225975662@linuxfoundation.org>
+Subject: [PATCH 5.10 12/97] platform/x86: asus-wmi: Adjust tablet/lidflip handling to use enum
+Date: Mon, 11 Dec 2023 19:21:15 +0100
+Message-ID: <20231211182020.343937325@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,147 +53,222 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Luke D. Jones <luke@ljones.dev>
 
-[ Upstream commit 4fbc3a52cd4d14de3793f4b2c721d7306ea84cf9 ]
+[ Upstream commit 00aa846955fbfb04f7bc0c26c49febfe5395eca1 ]
 
-64k pages introduce the situation in this diagram when the HCA 4k page
-size is being used:
+Due to multiple types of tablet/lidflip, the existing code for
+handling these events is refactored to use an enum for each type.
 
- +-------------------------------------------+ <--- 64k aligned VA
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
- |                   o                       |
- |                                           |
- |                   o                       |
- |                                           |
- |                   o                       |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+ <--- Live HCA page
- |OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO| <--- offset
- |                                           | <--- VA
- |                MR data                    |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
- |                   o                       |
- |                                           |
- |                   o                       |
- |                                           |
- |                   o                       |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
-
-The VA addresses are coming from rdma-core in this diagram can be
-arbitrary, but for 64k pages, the VA may be offset by some number of HCA
-4k pages and followed by some number of HCA 4k pages.
-
-The current iterator doesn't account for either the preceding 4k pages or
-the following 4k pages.
-
-Fix the issue by extending the ib_block_iter to contain the number of DMA
-pages like comment [1] says and by using __sg_advance to start the
-iterator at the first live HCA page.
-
-The changes are contained in a parallel set of iterator start and next
-functions that are umem aware and specific to umem since there is one user
-of the rdma_for_each_block() without umem.
-
-These two fixes prevents the extra pages before and after the user MR
-data.
-
-Fix the preceding pages by using the __sq_advance field to start at the
-first 4k page containing MR data.
-
-Fix the following pages by saving the number of pgsz blocks in the
-iterator state and downcounting on each next.
-
-This fix allows for the elimination of the small page crutch noted in the
-Fixes.
-
-Fixes: 10c75ccb54e4 ("RDMA/umem: Prevent small pages from being returned by ib_umem_find_best_pgsz()")
-Link: https://lore.kernel.org/r/20231129202143.1434-2-shiraz.saleem@intel.com
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Luke D. Jones <luke@ljones.dev>
+Link: https://lore.kernel.org/r/20220813092753.6635-1-luke@ljones.dev
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem.c | 6 ------
- include/rdma/ib_umem.h         | 9 ++++++++-
- include/rdma/ib_verbs.h        | 1 +
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/platform/x86/asus-nb-wmi.c | 13 +++-----
+ drivers/platform/x86/asus-wmi.c    | 49 +++++++++++++++++++++---------
+ drivers/platform/x86/asus-wmi.h    |  9 ++++--
+ 3 files changed, 47 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index 957634eceba8f..8ce569bf7525e 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -96,12 +96,6 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 		return page_size;
+diff --git a/drivers/platform/x86/asus-nb-wmi.c b/drivers/platform/x86/asus-nb-wmi.c
+index 59ca3dab59e10..f723af0106a1f 100644
+--- a/drivers/platform/x86/asus-nb-wmi.c
++++ b/drivers/platform/x86/asus-nb-wmi.c
+@@ -115,12 +115,12 @@ static struct quirk_entry quirk_asus_forceals = {
+ };
+ 
+ static struct quirk_entry quirk_asus_use_kbd_dock_devid = {
+-	.use_kbd_dock_devid = true,
++	.tablet_switch_mode = asus_wmi_kbd_dock_devid,
+ };
+ 
+ static struct quirk_entry quirk_asus_use_lid_flip_devid = {
+ 	.wmi_backlight_set_devstate = true,
+-	.use_lid_flip_devid = true,
++	.tablet_switch_mode = asus_wmi_lid_flip_devid,
+ };
+ 
+ static int dmi_matched(const struct dmi_system_id *dmi)
+@@ -492,16 +492,13 @@ static void asus_nb_wmi_quirks(struct asus_wmi_driver *driver)
+ 
+ 	switch (tablet_mode_sw) {
+ 	case 0:
+-		quirks->use_kbd_dock_devid = false;
+-		quirks->use_lid_flip_devid = false;
++		quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
+ 		break;
+ 	case 1:
+-		quirks->use_kbd_dock_devid = true;
+-		quirks->use_lid_flip_devid = false;
++		quirks->tablet_switch_mode = asus_wmi_kbd_dock_devid;
+ 		break;
+ 	case 2:
+-		quirks->use_kbd_dock_devid = false;
+-		quirks->use_lid_flip_devid = true;
++		quirks->tablet_switch_mode = asus_wmi_lid_flip_devid;
+ 		break;
  	}
  
--	/* rdma_for_each_block() has a bug if the page size is smaller than the
--	 * page size used to build the umem. For now prevent smaller page sizes
--	 * from being returned.
--	 */
--	pgsz_bitmap &= GENMASK(BITS_PER_LONG - 1, PAGE_SHIFT);
--
- 	/* The best result is the smallest page size that results in the minimum
- 	 * number of required pages. Compute the largest page size that could
- 	 * work based on VA address bits that don't change.
-diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
-index 92a673cd9b4fd..77b83ea62dd69 100644
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -78,6 +78,13 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 93b4c61130837..80a442a392cb2 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -353,8 +353,11 @@ static bool asus_wmi_dev_is_present(struct asus_wmi *asus, u32 dev_id)
+ 
+ static int asus_wmi_input_init(struct asus_wmi *asus)
  {
- 	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
- 				umem->sgt_append.sgt.nents, pgsz);
-+	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
-+	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
-+}
++	struct device *dev;
+ 	int err, result;
+ 
++	dev = &asus->platform_device->dev;
 +
-+static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
-+{
-+	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
+ 	asus->inputdev = input_allocate_device();
+ 	if (!asus->inputdev)
+ 		return -ENOMEM;
+@@ -362,35 +365,38 @@ static int asus_wmi_input_init(struct asus_wmi *asus)
+ 	asus->inputdev->name = asus->driver->input_name;
+ 	asus->inputdev->phys = asus->driver->input_phys;
+ 	asus->inputdev->id.bustype = BUS_HOST;
+-	asus->inputdev->dev.parent = &asus->platform_device->dev;
++	asus->inputdev->dev.parent = dev;
+ 	set_bit(EV_REP, asus->inputdev->evbit);
+ 
+ 	err = sparse_keymap_setup(asus->inputdev, asus->driver->keymap, NULL);
+ 	if (err)
+ 		goto err_free_dev;
+ 
+-	if (asus->driver->quirks->use_kbd_dock_devid) {
++	switch (asus->driver->quirks->tablet_switch_mode) {
++	case asus_wmi_no_tablet_switch:
++		break;
++	case asus_wmi_kbd_dock_devid:
+ 		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_KBD_DOCK);
+ 		if (result >= 0) {
+ 			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
+ 			input_report_switch(asus->inputdev, SW_TABLET_MODE, !result);
+ 		} else if (result != -ENODEV) {
+-			pr_err("Error checking for keyboard-dock: %d\n", result);
++			dev_err(dev, "Error checking for keyboard-dock: %d\n", result);
+ 		}
+-	}
+-
+-	if (asus->driver->quirks->use_lid_flip_devid) {
++		break;
++	case asus_wmi_lid_flip_devid:
+ 		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP);
+ 		if (result < 0)
+-			asus->driver->quirks->use_lid_flip_devid = 0;
++			asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
+ 		if (result >= 0) {
+ 			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
+ 			input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
+ 		} else if (result == -ENODEV) {
+-			pr_err("This device has lid_flip quirk but got ENODEV checking it. This is a bug.");
++			dev_err(dev, "This device has lid_flip quirk but got ENODEV checking it. This is a bug.");
+ 		} else {
+-			pr_err("Error checking for lid-flip: %d\n", result);
++			dev_err(dev, "Error checking for lid-flip: %d\n", result);
+ 		}
++		break;
+ 	}
+ 
+ 	err = input_register_device(asus->inputdev);
+@@ -416,8 +422,9 @@ static void asus_wmi_input_exit(struct asus_wmi *asus)
+ 
+ static void lid_flip_tablet_mode_get_state(struct asus_wmi *asus)
+ {
+-	int result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP);
++	int result;
+ 
++	result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP);
+ 	if (result >= 0) {
+ 		input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
+ 		input_sync(asus->inputdev);
+@@ -2236,7 +2243,8 @@ static void asus_wmi_handle_event_code(int code, struct asus_wmi *asus)
+ 		return;
+ 	}
+ 
+-	if (asus->driver->quirks->use_kbd_dock_devid && code == NOTIFY_KBD_DOCK_CHANGE) {
++	if (asus->driver->quirks->tablet_switch_mode == asus_wmi_kbd_dock_devid &&
++	    code == NOTIFY_KBD_DOCK_CHANGE) {
+ 		result = asus_wmi_get_devstate_simple(asus,
+ 						      ASUS_WMI_DEVID_KBD_DOCK);
+ 		if (result >= 0) {
+@@ -2247,7 +2255,8 @@ static void asus_wmi_handle_event_code(int code, struct asus_wmi *asus)
+ 		return;
+ 	}
+ 
+-	if (asus->driver->quirks->use_lid_flip_devid && code == NOTIFY_LID_FLIP) {
++	if (asus->driver->quirks->tablet_switch_mode == asus_wmi_lid_flip_devid &&
++	    code == NOTIFY_LID_FLIP) {
+ 		lid_flip_tablet_mode_get_state(asus);
+ 		return;
+ 	}
+@@ -2852,8 +2861,14 @@ static int asus_hotk_resume(struct device *device)
+ 	if (asus_wmi_has_fnlock_key(asus))
+ 		asus_wmi_fnlock_update(asus);
+ 
+-	if (asus->driver->quirks->use_lid_flip_devid)
++	switch (asus->driver->quirks->tablet_switch_mode) {
++	case asus_wmi_no_tablet_switch:
++	case asus_wmi_kbd_dock_devid:
++		break;
++	case asus_wmi_lid_flip_devid:
+ 		lid_flip_tablet_mode_get_state(asus);
++		break;
++	}
+ 
+ 	return 0;
  }
+@@ -2894,8 +2909,14 @@ static int asus_hotk_restore(struct device *device)
+ 	if (asus_wmi_has_fnlock_key(asus))
+ 		asus_wmi_fnlock_update(asus);
  
- /**
-@@ -93,7 +100,7 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
-  */
- #define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
- 	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
--	     __rdma_block_iter_next(biter);)
-+	     __rdma_umem_block_iter_next(biter);)
+-	if (asus->driver->quirks->use_lid_flip_devid)
++	switch (asus->driver->quirks->tablet_switch_mode) {
++	case asus_wmi_no_tablet_switch:
++	case asus_wmi_kbd_dock_devid:
++		break;
++	case asus_wmi_lid_flip_devid:
+ 		lid_flip_tablet_mode_get_state(asus);
++		break;
++	}
  
- #ifdef CONFIG_INFINIBAND_USER_MEM
+ 	return 0;
+ }
+diff --git a/drivers/platform/x86/asus-wmi.h b/drivers/platform/x86/asus-wmi.h
+index 49f2b8f8ad3eb..f0302a51c5196 100644
+--- a/drivers/platform/x86/asus-wmi.h
++++ b/drivers/platform/x86/asus-wmi.h
+@@ -25,6 +25,12 @@ struct module;
+ struct key_entry;
+ struct asus_wmi;
  
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index 975d6e9efbcb4..5582509003264 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -2835,6 +2835,7 @@ struct ib_block_iter {
- 	/* internal states */
- 	struct scatterlist *__sg;	/* sg holding the current aligned block */
- 	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
-+	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
- 	unsigned int __sg_nents;	/* number of SG entries */
- 	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
- 	unsigned int __pg_bit;		/* alignment of current block */
++enum asus_wmi_tablet_switch_mode {
++	asus_wmi_no_tablet_switch,
++	asus_wmi_kbd_dock_devid,
++	asus_wmi_lid_flip_devid,
++};
++
+ struct quirk_entry {
+ 	bool hotplug_wireless;
+ 	bool scalar_panel_brightness;
+@@ -33,8 +39,7 @@ struct quirk_entry {
+ 	bool wmi_backlight_native;
+ 	bool wmi_backlight_set_devstate;
+ 	bool wmi_force_als_set;
+-	bool use_kbd_dock_devid;
+-	bool use_lid_flip_devid;
++	enum asus_wmi_tablet_switch_mode tablet_switch_mode;
+ 	int wapf;
+ 	/*
+ 	 * For machines with AMD graphic chips, it will send out WMI event
 -- 
 2.42.0
 
