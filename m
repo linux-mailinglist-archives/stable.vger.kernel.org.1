@@ -1,47 +1,56 @@
-Return-Path: <stable+bounces-5541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ADF380D54A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD6880D731
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BFFB1C213FA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1601F214F2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CC65101D;
-	Mon, 11 Dec 2023 18:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F6B53E2D;
+	Mon, 11 Dec 2023 18:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb3U2wIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fl+oDKM7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4A4F212;
-	Mon, 11 Dec 2023 18:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFE5C433C7;
-	Mon, 11 Dec 2023 18:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8405453E02;
+	Mon, 11 Dec 2023 18:35:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF8AC433C7;
+	Mon, 11 Dec 2023 18:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318940;
-	bh=6va/pOUNOsijhAzL7+Y24ZxW5v4645N+UUAFWURFoP4=;
+	s=korg; t=1702319720;
+	bh=2KTOMBZYNZbNiNdlV4Fz5HFnqY1wpCZ/hCxOKyIJwB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bb3U2wIP9vSE0zeTqbu/MMnWA3uIvGjBkXH0GBHAICEs34M5hQ6sMJcq2Gquyy1bu
-	 Lvo3k/vNIBd51nzwFCSoex7WhdZj00oXIQjfBhQaGTXksC85OJmHJ7cDukK0XrCn7w
-	 Mm60BZNwsukJeTTt26DvFcygAeeZfiXr9lEXH0cs=
+	b=Fl+oDKM7VB5/IjI/nuA4GboQsSD/i77khm7PWujpl4v5uVLFmLF+1j9/vASO+DA+0
+	 li4oYe1dSvf7MZ62WrFP95U4CKqePPuahckLyT2PeiEdexxfIwbjUmo8b/odg9DEWk
+	 MsV4+SXrT0uDtkwlmpt4F5wQ+N2lGZ/93CZ/zR7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.14 11/25] nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
+Subject: [PATCH 6.6 169/244] mm/memory_hotplug: fix error handling in add_memory_resource()
 Date: Mon, 11 Dec 2023 19:21:02 +0100
-Message-ID: <20231211182009.113822940@linuxfoundation.org>
+Message-ID: <20231211182053.470141306@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,113 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Sumanth Korikkar <sumanthk@linux.ibm.com>
 
-commit 675abf8df1353e0e3bde314993e0796c524cfbf0 upstream.
+commit f42ce5f087eb69e47294ababd2e7e6f88a82d308 upstream.
 
-If nilfs2 reads a disk image with corrupted segment usage metadata, and
-its segment usage information is marked as an error for the segment at the
-write location, nilfs_sufile_set_segment_usage() can trigger WARN_ONs
-during log writing.
+In add_memory_resource(), creation of memory block devices occurs after
+successful call to arch_add_memory().  However, creation of memory block
+devices could fail.  In that case, arch_remove_memory() is called to
+perform necessary cleanup.
 
-Segments newly allocated for writing with nilfs_sufile_alloc() will not
-have this error flag set, but this unexpected situation will occur if the
-segment indexed by either nilfs->ns_segnum or nilfs->ns_nextnum (active
-segment) was marked in error.
+Currently with or without altmap support, arch_remove_memory() is always
+passed with altmap set to NULL during error handling.  This leads to
+freeing of struct pages using free_pages(), eventhough the allocation
+might have been performed with altmap support via
+altmap_alloc_block_buf().
 
-Fix this issue by inserting a sanity check to treat it as a file system
-corruption.
+Fix the error handling by passing altmap in arch_remove_memory(). This
+ensures the following:
+* When altmap is disabled, deallocation of the struct pages array occurs
+  via free_pages().
+* When altmap is enabled, deallocation occurs via vmem_altmap_free().
 
-Since error returns are not allowed during the execution phase where
-nilfs_sufile_set_segment_usage() is used, this inserts the sanity check
-into nilfs_sufile_mark_dirty() which pre-reads the buffer containing the
-segment usage record to be updated and sets it up in a dirty state for
-writing.
-
-In addition, nilfs_sufile_set_segment_usage() is also called when
-canceling log writing and undoing segment usage update, so in order to
-avoid issuing the same kernel warning in that case, in case of
-cancellation, avoid checking the error flag in
-nilfs_sufile_set_segment_usage().
-
-Link: https://lkml.kernel.org/r/20231205085947.4431-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=14e9f834f6ddecece094
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20231120145354.308999-3-sumanthk@linux.ibm.com
+Fixes: a08a2ae34613 ("mm,memory_hotplug: allocate memmap from the added memory range")
+Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
+Reviewed-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: kernel test robot <lkp@intel.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/sufile.c |   42 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
+ mm/memory_hotplug.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nilfs2/sufile.c
-+++ b/fs/nilfs2/sufile.c
-@@ -513,15 +513,38 @@ int nilfs_sufile_mark_dirty(struct inode
- 
- 	down_write(&NILFS_MDT(sufile)->mi_sem);
- 	ret = nilfs_sufile_get_segment_usage_block(sufile, segnum, 0, &bh);
--	if (!ret) {
--		mark_buffer_dirty(bh);
--		nilfs_mdt_mark_dirty(sufile);
--		kaddr = kmap_atomic(bh->b_page);
--		su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
-+	if (ret)
-+		goto out_sem;
-+
-+	kaddr = kmap_atomic(bh->b_page);
-+	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
-+	if (unlikely(nilfs_segment_usage_error(su))) {
-+		struct the_nilfs *nilfs = sufile->i_sb->s_fs_info;
-+
-+		kunmap_atomic(kaddr);
-+		brelse(bh);
-+		if (nilfs_segment_is_active(nilfs, segnum)) {
-+			nilfs_error(sufile->i_sb,
-+				    "active segment %llu is erroneous",
-+				    (unsigned long long)segnum);
-+		} else {
-+			/*
-+			 * Segments marked erroneous are never allocated by
-+			 * nilfs_sufile_alloc(); only active segments, ie,
-+			 * the segments indexed by ns_segnum or ns_nextnum,
-+			 * can be erroneous here.
-+			 */
-+			WARN_ON_ONCE(1);
-+		}
-+		ret = -EIO;
-+	} else {
- 		nilfs_segment_usage_set_dirty(su);
- 		kunmap_atomic(kaddr);
-+		mark_buffer_dirty(bh);
-+		nilfs_mdt_mark_dirty(sufile);
- 		brelse(bh);
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1458,7 +1458,7 @@ int __ref add_memory_resource(int nid, s
+ 	/* create memory block devices after memory was added */
+ 	ret = create_memory_block_devices(start, size, params.altmap, group);
+ 	if (ret) {
+-		arch_remove_memory(start, size, NULL);
++		arch_remove_memory(start, size, params.altmap);
+ 		goto error_free;
  	}
-+out_sem:
- 	up_write(&NILFS_MDT(sufile)->mi_sem);
- 	return ret;
- }
-@@ -548,9 +571,14 @@ int nilfs_sufile_set_segment_usage(struc
- 
- 	kaddr = kmap_atomic(bh->b_page);
- 	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
--	WARN_ON(nilfs_segment_usage_error(su));
--	if (modtime)
-+	if (modtime) {
-+		/*
-+		 * Check segusage error and set su_lastmod only when updating
-+		 * this entry with a valid timestamp, not for cancellation.
-+		 */
-+		WARN_ON_ONCE(nilfs_segment_usage_error(su));
- 		su->su_lastmod = cpu_to_le64(modtime);
-+	}
- 	su->su_nblocks = cpu_to_le32(nblocks);
- 	kunmap_atomic(kaddr);
  
 
 
