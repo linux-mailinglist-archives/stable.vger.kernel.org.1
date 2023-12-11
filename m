@@ -1,142 +1,325 @@
-Return-Path: <stable+bounces-5283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E9080C633
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 11:18:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C46A80C634
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 11:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97AA81C20C70
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 10:18:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05A751F20CD4
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 10:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E656622321;
-	Mon, 11 Dec 2023 10:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636D922EE3;
+	Mon, 11 Dec 2023 10:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manjaro.org header.i=@manjaro.org header.b="FFHsoWa8"
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="F2cYaeKw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.manjaro.org (mail.manjaro.org [IPv6:2a01:4f8:c0c:51f3::1])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FDC7D7
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 02:17:54 -0800 (PST)
-Message-ID: <8008134b-c830-47ed-adc5-81a8162e4fb5@manjaro.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manjaro.org; s=2021;
-	t=1702289872;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wXSJhe49YjQVpHqD7TTbFNnvBUYYVjlj1kSXwjzSvuY=;
-	b=FFHsoWa8/nPumc+LOL01VsBhfHu/Qamu3H05+GoIcvMSJ++1jw24PX74YepbMz0c301Dw4
-	g4XvbO2lZO5x5lNSrPYFm+8QK25qNZ4ncjjgPjWetC/lnxLX8PcZPi18FaQlMLYLyd0IAa
-	WWEuBizh+T3gLHvwjDewosi2WEsfuPqOqRdjIT9G3g1xqIr0MmiAQQ0SMvjsq53U8IxRD3
-	/KHlBLglkkCjBW+c5EO7tglVVzkAJ4R37R4Ey+N6rm7z0HunUD1E3jaqIsR58y0qjN0NEN
-	apNXLTIYi5bSHieVgQm1yv1TcfIQxUHnuINfuVCMIEzGtMwxh747L8Vt8WfZow==
-Date: Mon, 11 Dec 2023 17:17:47 +0700
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0ACAB8
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 02:18:08 -0800 (PST)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1d30141d108so2847645ad.2
+        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 02:18:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702289888; x=1702894688; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ujf7mLC7WvsU0XlB1BVgRT3unTDLhvqws9b19Z83lGY=;
+        b=F2cYaeKw62SuC2AUCog/wBrVnev2noBOjlvjnyfPdYVTxG3LV10U1Db6XipdPs6JUZ
+         /7X2K9FKERePuwsl9DxdRs+gfeNddm7yVEqZGyjA+TkiFZo30EUO2djiSbqDiPyfUkGG
+         UhVsWyU3M37m8lodpOSswHa1dc0JSP6SOFP32w4OfXS5c9aLwEdIJfy33tmZWdDA8nds
+         3bk76CqjSubuEzK55Jou3hxQuR9fZg1e9FRf03CrgFt+tr5cb2Z/yUVtEkCzMGpGVc67
+         +DD6pirziyAzQWJztyDUXVtsNE9PKtUgucug69TJcjEL2XrlllOW1qyo+wROwnZWVz0m
+         HjVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702289888; x=1702894688;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ujf7mLC7WvsU0XlB1BVgRT3unTDLhvqws9b19Z83lGY=;
+        b=eh/GgTeh5cNlTVDraL+RKAMtZ49lhjo1lwVGi6KeEPXOGUvlZlyvN1xO2B7AGGnJT4
+         q2rhtwoOqLpOpcVGYOiejUkRVKcNigmlPlRbFPMlJ63oGvOYRLRKwrFiG9X9qFHj6dYu
+         b3J+4d0SjuObP/BiktdfKpuvzMrA+P9wcXUJSNiShVR9AUyZ6Fm2/JvS3ivpP8VnZtgX
+         hgDP/616mRfmM4VQ6e/nMuWowK/5rnHL3eVtcmD1XpivBGf2YQMY6v4W7U/Ib0oZKzNd
+         IoGrLJUvn+CKj02DoCEG5QO6JM99jV63sGhs8KA+N8h2cWpYNdIY39KRFPDrWE0o6vMF
+         CmFQ==
+X-Gm-Message-State: AOJu0YxE8VdRDzVJSFGC0J5fSswiBnsIjorBIb4o5pimwd87Wj5BisGt
+	SNyFAMqDT4hZvp055BhKsaRSdeGSlR1agHszaAq1bQ==
+X-Google-Smtp-Source: AGHT+IFOZwynpgl7FTPG++y6vIcz/uN10zmkOjiJFCaHkkX/3wI6J5e/uW41wn7r+et8zIJiIBA9nw==
+X-Received: by 2002:a17:902:ec89:b0:1d0:aa79:6ef5 with SMTP id x9-20020a170902ec8900b001d0aa796ef5mr1508118plg.123.1702289887888;
+        Mon, 11 Dec 2023 02:18:07 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id j3-20020a170902c08300b001d0b3c4f5fbsm6263757pld.63.2023.12.11.02.18.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Dec 2023 02:18:07 -0800 (PST)
+Message-ID: <6576e1df.170a0220.327e8.09f2@mx.google.com>
+Date: Mon, 11 Dec 2023 02:18:07 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [Regression] 6.1.66, 6.6.5 - wifi: cfg80211: fix CQM for
- non-range use
-Content-Language: en-US
-From: =?UTF-8?Q?Philip_M=C3=BCller?= <philm@manjaro.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, leo@leolam.fr
-Cc: Johannes Berg <johannes.berg@intel.com>, stable@vger.kernel.org
-References: <e374bb16-5b13-44cc-b11a-2f4eefb1ecf5@manjaro.org>
- <2023121139-scrunch-smilingly-54f4@gregkh>
- <aee3e5a0-94b5-4c19-88e4-bb6a8d1fafe3@manjaro.org>
- <2023121127-obstinate-constable-e04f@gregkh>
- <2023121128-unlighted-bagful-f6f1@gregkh>
- <fbd66e83-4aa4-4d48-972a-e41d4ec905f9@manjaro.org>
-Organization: Manjaro Community
-Disposition-Notification-To: =?UTF-8?Q?Philip_M=C3=BCller?=
- <philm@manjaro.org>
-In-Reply-To: <fbd66e83-4aa4-4d48-972a-e41d4ec905f9@manjaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=philm@manjaro.org smtp.mailfrom=philm@manjaro.org
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/6.1
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: test
+X-Kernelci-Kernel: v6.1.66-165-g5921722632a98
+Subject: stable-rc/queue/6.1 baseline: 138 runs,
+ 4 regressions (v6.1.66-165-g5921722632a98)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-On 11.12.23 16:46, Philip Müller wrote:
-> On 11.12.23 16:40, Greg Kroah-Hartman wrote:
->> On Mon, Dec 11, 2023 at 10:39:26AM +0100, Greg Kroah-Hartman wrote:
->>> On Mon, Dec 11, 2023 at 04:26:26PM +0700, Philip Müller wrote:
->>>> On 11.12.23 16:25, Greg Kroah-Hartman wrote:
->>>>> On Mon, Dec 11, 2023 at 04:02:11PM +0700, Philip Müller wrote:
->>>>>> Hi Johannes, hi Greg,
->>>>>>
->>>>>> Any tree that back-ported 7e7efdda6adb wifi: cfg80211: fix CQM for 
->>>>>> non-range
->>>>>> use that does not contain 076fc8775daf wifi: cfg80211: remove wdev 
->>>>>> mutex
->>>>>> (which does not apply cleanly to 6.6.y or 6.6.1) will be affected.
->>>>>>
->>>>>> You can find a downstream bug report at Arch Linux:
->>>>>>
->>>>>> https://gitlab.archlinux.org/archlinux/packaging/packages/linux/-/issues/17
->>>>>>
->>>>>> So we should either revert 7e7efdda6adb or backport the needed to 
->>>>>> those
->>>>>> kernel series. 6.7.y is reported to work with 6.7.0-rc4.
->>>>>
->>>>> Yeah, this looks bad, I'll go just revert this for now and push out a
->>>>> new release with the fix as lots of people are hitting it.
->>>>>
->>>>> thanks,
->>>>>
->>>>> greg k-h
->>>>
->>>>
->>>> Hi Greg,
->>>>
->>>> there is actually a fix for it:
->>>>
->>>> https://www.spinics.net/lists/stable/msg703040.html
->>>
->>> That "fix" was not cc:ed to any of the wifi developers and would need a
->>> lot of review before I feel comfortable accepting it, as I said in the
->>> response to that message.
->>>
->>> Also, please point to lore.kernel.org lists, it's much easier to handle
->>> as we don't have any control over any other archive web site.
->>
->> Also, have you tested that proposed fix?
->>
->> thanks,
->>
->> greg k-h
-> 
-> Not yet. Currently build kernels on my end to see if it fixes the 
-> regression. A revert of the patch is confirmed to work also by users who 
-> have the issue. I can check with mine, when I've released a kernel with 
-> Léo Lam's fix.
-> 
+stable-rc/queue/6.1 baseline: 138 runs, 4 regressions (v6.1.66-165-g5921722=
+632a98)
 
-According to the author of the patch, it was not yet tested:
+Regressions Summary
+-------------------
 
-This is a kernel bug on the 6.6.x stable branch. As people have 
-correctly pointed out, 4a7e92551618 ("wifi: cfg80211: fix CQM for 
-non-range use" backported to 6.6.x) is the culprit as it causes 
-cfg80211_cqm_rssi_update not to release the wdev lock in some cases - 
-which then causes various other things to deadlock.
+platform              | arch  | lab           | compiler | defconfig | regr=
+essions
+----------------------+-------+---------------+----------+-----------+-----=
+-------
+meson-gxm-khadas-vim2 | arm64 | lab-baylibre  | gcc-10   | defconfig | 1   =
+       =
 
-I have submitted a patch: 
-https://lore.kernel.org/stable/20231210213930.61378-1-leo@leolam.fr/T/
+r8a77960-ulcb         | arm64 | lab-collabora | gcc-10   | defconfig | 1   =
+       =
 
-I'm pretty sure it will fix the issue but I haven't tested it.
+sun50i-h6-pine-h64    | arm64 | lab-clabbe    | gcc-10   | defconfig | 1   =
+       =
 
-https://bbs.archlinux.org/viewtopic.php?pid=2136529#p2136529
+sun50i-h6-pine-h64    | arm64 | lab-collabora | gcc-10   | defconfig | 1   =
+       =
 
-There is an Arch Kernel with that patch applied for testing:
-https://bbs.archlinux.org/viewtopic.php?pid=2136533#p2136533
 
-The proper fix seems to be '076fc8775daf wifi: cfg80211: remove wdev 
-mutex' which does not apply cleanly to either 6.6.y or 6.1.y as stated 
-here: https://bbs.archlinux.org/viewtopic.php?pid=2136579#p2136579
+  Details:  https://kernelci.org/test/job/stable-rc/branch/queue%2F6.1/kern=
+el/v6.1.66-165-g5921722632a98/plan/baseline/
 
--- 
-Best, Philip
+  Test:     baseline
+  Tree:     stable-rc
+  Branch:   queue/6.1
+  Describe: v6.1.66-165-g5921722632a98
+  URL:      https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-st=
+able-rc.git
+  SHA:      5921722632a9847bb0be4acec8f02106952f5189 =
 
+
+
+Test Regressions
+---------------- =
+
+
+
+platform              | arch  | lab           | compiler | defconfig | regr=
+essions
+----------------------+-------+---------------+----------+-----------+-----=
+-------
+meson-gxm-khadas-vim2 | arm64 | lab-baylibre  | gcc-10   | defconfig | 1   =
+       =
+
+
+  Details:     https://kernelci.org/test/plan/id/6576adc9d07073ddf2e1363a
+
+  Results:     0 PASS, 1 FAIL, 0 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-kha=
+das-vim2.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-baylibre/baseline-meson-gxm-kha=
+das-vim2.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.login: https://kernelci.org/test/case/id/6576adc9d07073ddf2e13=
+63b
+        new failure (last pass: v6.1.66-149-gd84f8303168b1) =
+
+ =
+
+
+
+platform              | arch  | lab           | compiler | defconfig | regr=
+essions
+----------------------+-------+---------------+----------+-----------+-----=
+-------
+r8a77960-ulcb         | arm64 | lab-collabora | gcc-10   | defconfig | 1   =
+       =
+
+
+  Details:     https://kernelci.org/test/plan/id/6576c2f37fb4b34c81e134b9
+
+  Results:     4 PASS, 2 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulc=
+b.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-collabora/baseline-r8a77960-ulc=
+b.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6576c2f37fb4b34c81e134be
+        failing since 18 days (last pass: v6.1.31-26-gef50524405c2, first f=
+ail: v6.1.63-176-gecc0fed1ffa4)
+
+    2023-12-11T08:13:28.847182  / # #
+
+    2023-12-11T08:13:28.949378  export SHELL=3D/bin/sh
+
+    2023-12-11T08:13:28.950100  #
+
+    2023-12-11T08:13:29.051423  / # export SHELL=3D/bin/sh. /lava-12243007/=
+environment
+
+    2023-12-11T08:13:29.052107  =
+
+
+    2023-12-11T08:13:29.153491  / # . /lava-12243007/environment/lava-12243=
+007/bin/lava-test-runner /lava-12243007/1
+
+    2023-12-11T08:13:29.154460  =
+
+
+    2023-12-11T08:13:29.155887  / # /lava-12243007/bin/lava-test-runner /la=
+va-12243007/1
+
+    2023-12-11T08:13:29.220235  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-11T08:13:29.220783  + cd /lav<8>[   19.110502] <LAVA_SIGNAL_STA=
+RTRUN 1_bootrr 12243007_1.5.2.4.5>
+ =
+
+    ... (28 line(s) more)  =
+
+ =
+
+
+
+platform              | arch  | lab           | compiler | defconfig | regr=
+essions
+----------------------+-------+---------------+----------+-----------+-----=
+-------
+sun50i-h6-pine-h64    | arm64 | lab-clabbe    | gcc-10   | defconfig | 1   =
+       =
+
+
+  Details:     https://kernelci.org/test/plan/id/6576acb2fc43b4d4d1e13475
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-=
+h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-clabbe/baseline-sun50i-h6-pine-=
+h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6576acb2fc43b4d4d1e1347a
+        failing since 18 days (last pass: v6.1.22-372-g971903477e72, first =
+fail: v6.1.63-176-gecc0fed1ffa4)
+
+    2023-12-11T06:31:09.061224  <8>[   18.121860] <LAVA_SIGNAL_ENDRUN 0_dme=
+sg 447580_1.5.2.4.1>
+    2023-12-11T06:31:09.166186  / # #
+    2023-12-11T06:31:09.267828  export SHELL=3D/bin/sh
+    2023-12-11T06:31:09.268519  #
+    2023-12-11T06:31:09.369506  / # export SHELL=3D/bin/sh. /lava-447580/en=
+vironment
+    2023-12-11T06:31:09.370096  =
+
+    2023-12-11T06:31:09.471122  / # . /lava-447580/environment/lava-447580/=
+bin/lava-test-runner /lava-447580/1
+    2023-12-11T06:31:09.472010  =
+
+    2023-12-11T06:31:09.476580  / # /lava-447580/bin/lava-test-runner /lava=
+-447580/1
+    2023-12-11T06:31:09.549641  + export 'TESTRUN_ID=3D1_bootrr' =
+
+    ... (12 line(s) more)  =
+
+ =
+
+
+
+platform              | arch  | lab           | compiler | defconfig | regr=
+essions
+----------------------+-------+---------------+----------+-----------+-----=
+-------
+sun50i-h6-pine-h64    | arm64 | lab-collabora | gcc-10   | defconfig | 1   =
+       =
+
+
+  Details:     https://kernelci.org/test/plan/id/6576acd41d4dbc3f5fe134b8
+
+  Results:     5 PASS, 1 FAIL, 1 SKIP
+  Full config: defconfig
+  Compiler:    gcc-10 (aarch64-linux-gnu-gcc (Debian 10.2.1-6) 10.2.1 20210=
+110)
+  Plain log:   https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pi=
+ne-h64.txt
+  HTML log:    https://storage.kernelci.org//stable-rc/queue-6.1/v6.1.66-16=
+5-g5921722632a98/arm64/defconfig/gcc-10/lab-collabora/baseline-sun50i-h6-pi=
+ne-h64.html
+  Rootfs:      http://storage.kernelci.org/images/rootfs/buildroot/buildroo=
+t-baseline/20230623.0/arm64/rootfs.cpio.gz =
+
+
+
+  * baseline.bootrr.deferred-probe-empty: https://kernelci.org/test/case/id=
+/6576acd41d4dbc3f5fe134bd
+        failing since 18 days (last pass: v6.1.22-372-g971903477e72, first =
+fail: v6.1.63-176-gecc0fed1ffa4)
+
+    2023-12-11T06:39:01.401881  / # #
+
+    2023-12-11T06:39:01.502532  export SHELL=3D/bin/sh
+
+    2023-12-11T06:39:01.502777  #
+
+    2023-12-11T06:39:01.603545  / # export SHELL=3D/bin/sh. /lava-12243008/=
+environment
+
+    2023-12-11T06:39:01.603785  =
+
+
+    2023-12-11T06:39:01.704389  / # . /lava-12243008/environment/lava-12243=
+008/bin/lava-test-runner /lava-12243008/1
+
+    2023-12-11T06:39:01.704698  =
+
+
+    2023-12-11T06:39:01.715496  / # /lava-12243008/bin/lava-test-runner /la=
+va-12243008/1
+
+    2023-12-11T06:39:01.788016  + export 'TESTRUN_ID=3D1_bootrr'
+
+    2023-12-11T06:39:01.788547  + cd /lava-1224300<8>[   19.181892] <LAVA_S=
+IGNAL_STARTRUN 1_bootrr 12243008_1.5.2.4.5>
+ =
+
+    ... (11 line(s) more)  =
+
+ =20
 
