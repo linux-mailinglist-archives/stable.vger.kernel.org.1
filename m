@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-5755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E9D780D68E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7719580D89A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 601531C215CF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31F7E281A98
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98DA751C3B;
-	Mon, 11 Dec 2023 18:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD3351C2A;
+	Mon, 11 Dec 2023 18:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrG1OGGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOZsdNzC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A81DFBE0;
-	Mon, 11 Dec 2023 18:32:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D663EC433C8;
-	Mon, 11 Dec 2023 18:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8233F4437B;
+	Mon, 11 Dec 2023 18:47:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C43C433C8;
+	Mon, 11 Dec 2023 18:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319579;
-	bh=HeVcsTwKmIQT6fk95AxYAGpW88iMClirm1goAC5aAmk=;
+	s=korg; t=1702320433;
+	bh=dp7m5zy9+ni+cn31FqSZiycvX0UxpsOtyzrlO/Y7hcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrG1OGGE9mvMf3VurgaUcc/sVPvIr75OWOXxkaduPgn2iw0xBjlZyVyOvVGs5OV1D
-	 +HSOvp4KBxz5n0CUO8DVAz3TFFyXSuv5Kn+iIW9f2/jpxnbK9lX0QA/vPp+AFfo7br
-	 c7648gz1ZJl4/kDKVLJMs1ml/Tje8KY9oWOo+nUk=
+	b=dOZsdNzCfWfhWx3si9yJMkU9RyRwf96rcMzGb7WkOvOITHIrKXg+YUUH1BMACIXG0
+	 Hea40UH/EibSIr7CFPYJMEaNoY5S5WGZODtQjgsGL0xCc2AEEOPkDUeROEBbGMkzVV
+	 KZzBIVLTeWC+N7iqeVZ9ymGjuL8hllXynZD1sVHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 157/244] tracing: Fix a possible race when disabling buffered events
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 060/194] psample: Require CAP_NET_ADMIN when joining "packets" group
 Date: Mon, 11 Dec 2023 19:20:50 +0100
-Message-ID: <20231211182052.880395809@linuxfoundation.org>
+Message-ID: <20231211182039.201120807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,87 +56,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit c0591b1cccf708a47bc465c62436d669a4213323 upstream.
+[ Upstream commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 ]
 
-Function trace_buffered_event_disable() is responsible for freeing pages
-backing buffered events and this process can run concurrently with
-trace_event_buffer_lock_reserve().
+The "psample" generic netlink family notifies sampled packets over the
+"packets" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-The following race is currently possible:
+Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
+prevent non-root users or root without the 'CAP_NET_ADMIN' capability
+(in the user namespace owning the network namespace) from joining the
+group.
 
-* Function trace_buffered_event_disable() is called on CPU 0. It
-  increments trace_buffered_event_cnt on each CPU and waits via
-  synchronize_rcu() for each user of trace_buffered_event to complete.
+Tested using [1].
 
-* After synchronize_rcu() is finished, function
-  trace_buffered_event_disable() has the exclusive access to
-  trace_buffered_event. All counters trace_buffered_event_cnt are at 1
-  and all pointers trace_buffered_event are still valid.
+Before:
 
-* At this point, on a different CPU 1, the execution reaches
-  trace_event_buffer_lock_reserve(). The function calls
-  preempt_disable_notrace() and only now enters an RCU read-side
-  critical section. The function proceeds and reads a still valid
-  pointer from trace_buffered_event[CPU1] into the local variable
-  "entry". However, it doesn't yet read trace_buffered_event_cnt[CPU1]
-  which happens later.
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
 
-* Function trace_buffered_event_disable() continues. It frees
-  trace_buffered_event[CPU1] and decrements
-  trace_buffered_event_cnt[CPU1] back to 0.
+After:
 
-* Function trace_event_buffer_lock_reserve() continues. It reads and
-  increments trace_buffered_event_cnt[CPU1] from 0 to 1. This makes it
-  believe that it can use the "entry" that it already obtained but the
-  pointer is now invalid and any access results in a use-after-free.
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+ Failed to join "packets" multicast group
 
-Fix the problem by making a second synchronize_rcu() call after all
-trace_buffered_event values are set to NULL. This waits on all potential
-users in trace_event_buffer_lock_reserve() that still read a previous
-pointer from trace_buffered_event.
+[1]
+ $ cat psample.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
 
-Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
-Link: https://lkml.kernel.org/r/20231205161736.19663-4-petr.pavlu@suse.com
+ int join_grp(struct nl_sock *sk, const char *grp_name)
+ {
+ 	int grp, err;
 
-Cc: stable@vger.kernel.org
-Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- kernel/trace/trace.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
-
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2790,13 +2790,17 @@ void trace_buffered_event_disable(void)
- 		free_page((unsigned long)per_cpu(trace_buffered_event, cpu));
- 		per_cpu(trace_buffered_event, cpu) = NULL;
+ 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
+ 	if (grp < 0) {
+ 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
+ 			grp_name);
+ 		return grp;
  	}
-+
- 	/*
--	 * Make sure trace_buffered_event is NULL before clearing
--	 * trace_buffered_event_cnt.
-+	 * Wait for all CPUs that potentially started checking if they can use
-+	 * their event buffer only after the previous synchronize_rcu() call and
-+	 * they still read a valid pointer from trace_buffered_event. It must be
-+	 * ensured they don't see cleared trace_buffered_event_cnt else they
-+	 * could wrongly decide to use the pointed-to buffer which is now freed.
- 	 */
--	smp_wmb();
-+	synchronize_rcu();
- 
--	/* Do the work on each cpu */
-+	/* For each CPU, relinquish the buffer */
- 	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
- 			 true);
+
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
+ 			grp_name);
+ 		return err;
+ 	}
+
+ 	return 0;
  }
+
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int err;
+
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
+
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	err = join_grp(sk, "config");
+ 	if (err)
+ 		return err;
+
+ 	err = join_grp(sk, "packets");
+ 	if (err)
+ 		return err;
+
+ 	return 0;
+ }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
+
+Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/psample/psample.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/psample/psample.c b/net/psample/psample.c
+index 81a794e36f535..c34e902855dbe 100644
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -31,7 +31,8 @@ enum psample_nl_multicast_groups {
+ 
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+-	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
++	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
++				      .flags = GENL_UNS_ADMIN_PERM },
+ };
+ 
+ static struct genl_family psample_nl_family __ro_after_init;
+-- 
+2.42.0
+
 
 
 
