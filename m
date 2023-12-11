@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-5588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7FA80D582
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E9580D9AD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC1221F21A5C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABB081C2165A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BB15101E;
-	Mon, 11 Dec 2023 18:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F206651C47;
+	Mon, 11 Dec 2023 18:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a11834iW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pCxPKtxz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5384F212;
-	Mon, 11 Dec 2023 18:25:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F58C433C7;
-	Mon, 11 Dec 2023 18:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB734321B8;
+	Mon, 11 Dec 2023 18:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F26DC433C7;
+	Mon, 11 Dec 2023 18:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319124;
-	bh=5OM9A2xnSJbAVoO/yDRQccSdbzdwsW8+SQh6V/IU32s=;
+	s=korg; t=1702320956;
+	bh=NW3CBN7Kk540Ed4tKNsaqC5lahOjVdWgz+swaJQzxUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a11834iWmMqABcB4IqZgIhvPGYP8ah7QL/M4z3z4KPbaNwpZMVxAvadj5O+Hf6OQB
-	 CX45mvikjca1x3xk6ceQbOS7T+S5IImlPk0Hog1H9669PZMsc+SBhWeUR2hP81FGCk
-	 N+SitMLOncS0Gt1JJxxv6hcUKIU40uy1doT2FR4E=
+	b=pCxPKtxzd5dCmnMNmj02l3tf/KCc90LhDjTCLFi/pbuwWUM4mMVJ4YzJkTHkR0NO3
+	 aBQRUcOgY2SdCdAS5/bXNz5ihOqPz/ly4w+2fUr9NGVt+T0T7pkurMF3Gd3X25P/AY
+	 9q46+OjBzWZVaIXjR6ymf0ozrnmcecxZ1jLhFkOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>
-Subject: [PATCH 4.19 46/55] KVM: s390/mm: Properly reset no-dat
+	Jack Wang <jinpu.wang@ionos.com>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 057/141] RDMA/rtrs-clt: Fix the max_send_wr setting
 Date: Mon, 11 Dec 2023 19:21:56 +0100
-Message-ID: <20231211182013.947761048@linuxfoundation.org>
+Message-ID: <20231211182029.032615304@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,38 +55,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Jack Wang <jinpu.wang@ionos.com>
 
-commit 27072b8e18a73ffeffb1c140939023915a35134b upstream.
+[ Upstream commit 6d09f6f7d7584e099633282ea915988914f86529 ]
 
-When the CMMA state needs to be reset, the no-dat bit also needs to be
-reset. Failure to do so could cause issues in the guest, since the
-guest expects the bit to be cleared after a reset.
+For each write request, we need Request, Response Memory Registration,
+Local Invalidate.
 
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
-Message-ID: <20231109123624.37314-1-imbrenda@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Reviewed-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://lore.kernel.org/r/20231120154146.920486-7-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pgtable.c |    2 +-
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/mm/pgtable.c
-+++ b/arch/s390/mm/pgtable.c
-@@ -699,7 +699,7 @@ void ptep_zap_unused(struct mm_struct *m
- 		pte_clear(mm, addr, ptep);
- 	}
- 	if (reset)
--		pgste_val(pgste) &= ~_PGSTE_GPS_USAGE_MASK;
-+		pgste_val(pgste) &= ~(_PGSTE_GPS_USAGE_MASK | _PGSTE_GPS_NODAT);
- 	pgste_set_unlock(ptep, pgste);
- 	preempt_enable();
- }
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index fac5e122fd372..c0950587f377a 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -1682,7 +1682,7 @@ static int create_con_cq_qp(struct rtrs_clt_con *con)
+ 		clt_path->s.dev_ref++;
+ 		max_send_wr = min_t(int, wr_limit,
+ 			      /* QD * (REQ + RSP + FR REGS or INVS) + drain */
+-			      clt_path->queue_depth * 3 + 1);
++			      clt_path->queue_depth * 4 + 1);
+ 		max_recv_wr = min_t(int, wr_limit,
+ 			      clt_path->queue_depth * 3 + 1);
+ 		max_send_sge = 2;
+-- 
+2.42.0
+
 
 
 
