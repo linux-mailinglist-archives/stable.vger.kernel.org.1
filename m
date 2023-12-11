@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-5858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 833B580D782
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60AC80D8BD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CF272817EB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA951F210C3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404895381D;
-	Mon, 11 Dec 2023 18:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE7051C33;
+	Mon, 11 Dec 2023 18:48:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHrGWPHF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoXvqi36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11B151C5D;
-	Mon, 11 Dec 2023 18:37:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B29C433C7;
-	Mon, 11 Dec 2023 18:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059DB5102A;
+	Mon, 11 Dec 2023 18:48:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5962EC433C8;
+	Mon, 11 Dec 2023 18:48:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319856;
-	bh=pJZEW/oaY1Lis249SeFkj5ydeaW+ht3lJBdn6Fmwb00=;
+	s=korg; t=1702320506;
+	bh=xV/9BUlrV4lJQg6GEyzIxHSHphllx9ySeE88CdhHhSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KHrGWPHF68GeSsgckZJi7IecfS/TL8zZjDjD2wZaSdfqnrFE00NfKAPGZG0CuXZsW
-	 Spq3MqYj4MGmSi5ZqN3Wto2qgtUn4aLUyBpHkdy1wTaU0dw5+E90WlApq+u/ImxUKH
-	 H9lTTJoIvAODLoX+YUASU1S6H19NV3oLOC2nvhHc=
+	b=RoXvqi369+spPRKU6URLj0c6OrNXQfsCKwqnfNuauomIhs4zq5zPOIY+DY99mBEts
+	 Qy9gvAN0HlGq6YHFtdUWE3lgv0ax8R3Ez1kpSHuvffs4rrtFaq8p2Hm87tnUjiqp8S
+	 JLMLZumvI+f6BdoE7esoWUUuLYPuZAWJtKUaeXB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Hans de Goede <hdegoede@redhat.com>,
+	Peng Fan <peng.fan@nxp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 14/97] platform/x86: asus-wmi: Simplify tablet-mode-switch probing
+Subject: [PATCH 6.1 087/194] arm64: dts: imx8mq: drop usb3-resume-missing-cas from usb
 Date: Mon, 11 Dec 2023 19:21:17 +0100
-Message-ID: <20231211182020.423518542@linuxfoundation.org>
+Message-ID: <20231211182040.349982163@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,108 +52,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit c98dc61ee08f833e68337700546e120e2edac7c9 ]
+[ Upstream commit fcd3f50845be909c9e0f8ac402874a2fb4b09c6c ]
 
-The 3 different tablet-mode-switch initialization paths repeat a lot
-of the same code. Add a helper function for this.
+The property is NXP downstream property that there is no user
+in upstream, drop it.
 
-This also makes the error-handling for the kbd_dock_devid case consistent
-with the other 2 cases.
-
-Cc: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20220824151145.1448010-1-hdegoede@redhat.com
-Stable-dep-of: b52cbca22cbf ("platform/x86: asus-wmi: Move i8042 filter install to shared asus-wmi code")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20230323035531.3808192-2-peng.fan@oss.nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 209043cf092d ("arm64: dts: imx8mp: imx8mq: Add parkmode-disable-ss-quirk on DWC3")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 55 +++++++++++++--------------------
- 1 file changed, 22 insertions(+), 33 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mq.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 31f5e4df43910..a1a6e48d0c04e 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -351,13 +351,28 @@ static bool asus_wmi_dev_is_present(struct asus_wmi *asus, u32 dev_id)
- }
+diff --git a/arch/arm64/boot/dts/freescale/imx8mq.dtsi b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+index bf8f02c1535c1..d3b6874a75238 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mq.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mq.dtsi
+@@ -1431,7 +1431,6 @@
+ 			phys = <&usb3_phy0>, <&usb3_phy0>;
+ 			phy-names = "usb2-phy", "usb3-phy";
+ 			power-domains = <&pgc_otg1>;
+-			usb3-resume-missing-cas;
+ 			status = "disabled";
+ 		};
  
- /* Input **********************************************************************/
-+static void asus_wmi_tablet_sw_init(struct asus_wmi *asus, u32 dev_id, int event_code)
-+{
-+	struct device *dev = &asus->platform_device->dev;
-+	int result;
-+
-+	result = asus_wmi_get_devstate_simple(asus, dev_id);
-+	if (result < 0)
-+		asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
-+	if (result >= 0) {
-+		input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
-+		input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
-+	} else if (result == -ENODEV) {
-+		dev_err(dev, "This device has tablet-mode-switch quirk but got ENODEV checking it. This is a bug.");
-+	} else {
-+		dev_err(dev, "Error checking for tablet-mode-switch: %d\n", result);
-+	}
-+}
- 
- static int asus_wmi_input_init(struct asus_wmi *asus)
- {
--	struct device *dev;
--	int err, result;
--
--	dev = &asus->platform_device->dev;
-+	struct device *dev = &asus->platform_device->dev;
-+	int err;
- 
- 	asus->inputdev = input_allocate_device();
- 	if (!asus->inputdev)
-@@ -377,39 +392,13 @@ static int asus_wmi_input_init(struct asus_wmi *asus)
- 	case asus_wmi_no_tablet_switch:
- 		break;
- 	case asus_wmi_kbd_dock_devid:
--		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_KBD_DOCK);
--		if (result >= 0) {
--			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
--			input_report_switch(asus->inputdev, SW_TABLET_MODE, !result);
--		} else if (result != -ENODEV) {
--			dev_err(dev, "Error checking for keyboard-dock: %d\n", result);
--		}
-+		asus_wmi_tablet_sw_init(asus, ASUS_WMI_DEVID_KBD_DOCK, NOTIFY_KBD_DOCK_CHANGE);
- 		break;
- 	case asus_wmi_lid_flip_devid:
--		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP);
--		if (result < 0)
--			asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
--		if (result >= 0) {
--			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
--			input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
--		} else if (result == -ENODEV) {
--			dev_err(dev, "This device has lid_flip quirk but got ENODEV checking it. This is a bug.");
--		} else {
--			dev_err(dev, "Error checking for lid-flip: %d\n", result);
--		}
-+		asus_wmi_tablet_sw_init(asus, ASUS_WMI_DEVID_LID_FLIP, NOTIFY_LID_FLIP);
- 		break;
- 	case asus_wmi_lid_flip_rog_devid:
--		result = asus_wmi_get_devstate_simple(asus, ASUS_WMI_DEVID_LID_FLIP_ROG);
--		if (result < 0)
--			asus->driver->quirks->tablet_switch_mode = asus_wmi_no_tablet_switch;
--		if (result >= 0) {
--			input_set_capability(asus->inputdev, EV_SW, SW_TABLET_MODE);
--			input_report_switch(asus->inputdev, SW_TABLET_MODE, result);
--		} else if (result == -ENODEV) {
--			dev_err(dev, "This device has lid-flip-rog quirk but got ENODEV checking it. This is a bug.");
--		} else {
--			dev_err(dev, "Error checking for lid-flip: %d\n", result);
--		}
-+		asus_wmi_tablet_sw_init(asus, ASUS_WMI_DEVID_LID_FLIP_ROG, NOTIFY_LID_FLIP_ROG);
- 		break;
- 	}
+@@ -1463,7 +1462,6 @@
+ 			phys = <&usb3_phy1>, <&usb3_phy1>;
+ 			phy-names = "usb2-phy", "usb3-phy";
+ 			power-domains = <&pgc_otg2>;
+-			usb3-resume-missing-cas;
+ 			status = "disabled";
+ 		};
  
 -- 
 2.42.0
