@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-6163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0374A80D925
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66C680D7E0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B28F7281EB9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD5A1F2113A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222AE51C38;
-	Mon, 11 Dec 2023 18:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661B151C2C;
+	Mon, 11 Dec 2023 18:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JOYKJqdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5sD5Y85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D76A351C2C;
-	Mon, 11 Dec 2023 18:51:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D43FC433C7;
-	Mon, 11 Dec 2023 18:51:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 200AEFC06;
+	Mon, 11 Dec 2023 18:40:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9C5C433C8;
+	Mon, 11 Dec 2023 18:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320681;
-	bh=MzaTm0vdPClxzY+mhqWf95MVUD51K7E2IO+pSzkcAeA=;
+	s=korg; t=1702320036;
+	bh=ayAc9tm9aEJrhOFQ9ruGDvT4ZkeLS6ADzssj37/HxP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JOYKJqdV2wLSt6pfphl8RIJApaxOdC2HcxDxxM4M6cMT/tjEhlfKF+f29Ss2hXzSF
-	 mPzDOxUCXmKT61x9KR9IoJZKiGKSiI94PZCiLtw/zXKVGnbG7YfzxqN+xEAIKhT4nI
-	 6+ejmZD319AXYkvW8XFDft4RN1pJFqi7jfoekxdw=
+	b=w5sD5Y859dLMa9bVCkLjtjcOBWeLlxkUKhsF/Rm1VqlkeCTx9HHjGUweIBohcQQqy
+	 Kw/TuDzV2h6i/9Xr21qK2EBKjjjDEaxgKPWPh+eypUc+NUOxBHWdN8Bg7zqjuI+TnP
+	 TVdyQwYk9x2FJqapFCM1beZsyljjeHF1VOebiIQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boerge Struempfel <boerge.struempfel@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/194] gpiolib: sysfs: Fix error handling on failed export
+	Nico Boehr <nrb@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>
+Subject: [PATCH 5.10 79/97] KVM: s390/mm: Properly reset no-dat
 Date: Mon, 11 Dec 2023 19:22:22 +0100
-Message-ID: <20231211182043.433794820@linuxfoundation.org>
+Message-ID: <20231211182023.187827731@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +52,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boerge Struempfel <boerge.struempfel@gmail.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 95dd1e34ff5bbee93a28ff3947eceaf6de811b1a ]
+commit 27072b8e18a73ffeffb1c140939023915a35134b upstream.
 
-If gpio_set_transitory() fails, we should free the GPIO again. Most
-notably, the flag FLAG_REQUESTED has previously been set in
-gpiod_request_commit(), and should be reset on failure.
+When the CMMA state needs to be reset, the no-dat bit also needs to be
+reset. Failure to do so could cause issues in the guest, since the
+guest expects the bit to be cleared after a reset.
 
-To my knowledge, this does not affect any current users, since the
-gpio_set_transitory() mainly returns 0 and -ENOTSUPP, which is converted
-to 0. However the gpio_set_transitory() function calles the .set_config()
-function of the corresponding GPIO chip and there are some GPIO drivers in
-which some (unlikely) branches return other values like -EPROBE_DEFER,
-and -EINVAL. In these cases, the above mentioned FLAG_REQUESTED would not
-be reset, which results in the pin being blocked until the next reboot.
-
-Fixes: e10f72bf4b3e ("gpio: gpiolib: Generalise state persistence beyond sleep")
-Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
+Message-ID: <20231109123624.37314-1-imbrenda@linux.ibm.com>
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-sysfs.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ arch/s390/mm/pgtable.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
-index cd27bf173dec8..a64648682c72c 100644
---- a/drivers/gpio/gpiolib-sysfs.c
-+++ b/drivers/gpio/gpiolib-sysfs.c
-@@ -463,14 +463,17 @@ static ssize_t export_store(struct class *class,
- 		goto done;
- 
- 	status = gpiod_set_transitory(desc, false);
--	if (!status) {
--		status = gpiod_export(desc, true);
--		if (status < 0)
--			gpiod_free(desc);
--		else
--			set_bit(FLAG_SYSFS, &desc->flags);
-+	if (status) {
-+		gpiod_free(desc);
-+		goto done;
+--- a/arch/s390/mm/pgtable.c
++++ b/arch/s390/mm/pgtable.c
+@@ -717,7 +717,7 @@ void ptep_zap_unused(struct mm_struct *m
+ 		pte_clear(mm, addr, ptep);
  	}
- 
-+	status = gpiod_export(desc, true);
-+	if (status < 0)
-+		gpiod_free(desc);
-+	else
-+		set_bit(FLAG_SYSFS, &desc->flags);
-+
- done:
- 	if (status)
- 		pr_debug("%s: status %d\n", __func__, status);
--- 
-2.42.0
-
+ 	if (reset)
+-		pgste_val(pgste) &= ~_PGSTE_GPS_USAGE_MASK;
++		pgste_val(pgste) &= ~(_PGSTE_GPS_USAGE_MASK | _PGSTE_GPS_NODAT);
+ 	pgste_set_unlock(ptep, pgste);
+ 	preempt_enable();
+ }
 
 
 
