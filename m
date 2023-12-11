@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-5827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB90180D751
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2378E80D80C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67BB2281F35
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C5F280DDA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAD651036;
-	Mon, 11 Dec 2023 18:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE88051C59;
+	Mon, 11 Dec 2023 18:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YXxqsUqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Re2DL+KJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F55FBE1;
-	Mon, 11 Dec 2023 18:36:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C666FC433C8;
-	Mon, 11 Dec 2023 18:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927FAFC06;
+	Mon, 11 Dec 2023 18:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA399C433C9;
+	Mon, 11 Dec 2023 18:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319770;
-	bh=0cwpbNrrTjo4cWHlb49Upk1TeXh0jMuZk6F3YPUYfE0=;
+	s=korg; t=1702320129;
+	bh=3MvU7fBs940NONXe2h2CtUt85PU3okxDWZKNnHKMTpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YXxqsUqDKzBXZOUi0MpG3ndHb8SrfKHL+q3dVW7pO2v+UJQD2229R5od9E3fNasSk
-	 Yq8YNlw4bK182w2GYtamcY+5lzXZBdXVNHM/Byo4ur/FAWXTgUkoYFwkZtN+z7JdQq
-	 O8hf+PrLUZKjuHKMocGYc0OykGjNM2JJ3xZv71gQ=
+	b=Re2DL+KJvOBihrrPJ6IEsA48eoXldAVLnOb166ed1+DHccxMq2pk5IajNAoLAwv7l
+	 KrSfeBEZH/V2NAglpt7apjOj+tegGeFrz9Vgix5P4cVTQBKOpGKFLF7ZuDHP2hyxVi
+	 op8Dm59XvE5wrZVDimlehaNMQDiWtneKIOhEsPTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roy Luo <royluo@google.com>
-Subject: [PATCH 6.6 227/244] USB: gadget: core: adjust uevent timing on gadget unbind
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Rob Herring <robh@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 16/67] of: dynamic: Fix of_reconfig_get_state_change() return value documentation
 Date: Mon, 11 Dec 2023 19:22:00 +0100
-Message-ID: <20231211182056.198649420@linuxfoundation.org>
+Message-ID: <20231211182015.786542546@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +53,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roy Luo <royluo@google.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 73ea73affe8622bdf292de898da869d441da6a9d upstream.
+[ Upstream commit d79972789d17499b6091ded2fc0c6763c501a5ba ]
 
-The KOBJ_CHANGE uevent is sent before gadget unbind is actually
-executed, resulting in inaccurate uevent emitted at incorrect timing
-(the uevent would have USB_UDC_DRIVER variable set while it would
-soon be removed).
-Move the KOBJ_CHANGE uevent to the end of the unbind function so that
-uevent is sent only after the change has been made.
+The documented numeric return values do not match the actual returned
+values. Fix them by using the enum names instead of raw numbers.
 
-Fixes: 2ccea03a8f7e ("usb: gadget: introduce UDC Class")
-Cc: stable@vger.kernel.org
-Signed-off-by: Roy Luo <royluo@google.com>
-Link: https://lore.kernel.org/r/20231128221756.2591158-1-royluo@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b53a2340d0d3 ("of/reconfig: Add of_reconfig_get_state_change() of notifier helper.")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://lore.kernel.org/r/20231123-fix-of_reconfig_get_state_change-docs-v1-1-f51892050ff9@bootlin.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/of/dynamic.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -1635,8 +1635,6 @@ static void gadget_unbind_driver(struct
- 
- 	dev_dbg(&udc->dev, "unbinding gadget driver [%s]\n", driver->function);
- 
--	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
--
- 	udc->allow_connect = false;
- 	cancel_work_sync(&udc->vbus_work);
- 	mutex_lock(&udc->connect_lock);
-@@ -1656,6 +1654,8 @@ static void gadget_unbind_driver(struct
- 	driver->is_bound = false;
- 	udc->driver = NULL;
- 	mutex_unlock(&udc_lock);
-+
-+	kobject_uevent(&udc->dev.kobj, KOBJ_CHANGE);
- }
- 
- /* ------------------------------------------------------------------------- */
+diff --git a/drivers/of/dynamic.c b/drivers/of/dynamic.c
+index 92ee15be78d43..ae969630958cd 100644
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -105,8 +105,9 @@ int of_reconfig_notify(unsigned long action, struct of_reconfig_data *p)
+  *
+  * Returns the new state of a device based on the notifier used.
+  *
+- * Return: 0 on device going from enabled to disabled, 1 on device
+- * going from disabled to enabled and -1 on no change.
++ * Return: OF_RECONFIG_CHANGE_REMOVE on device going from enabled to
++ * disabled, OF_RECONFIG_CHANGE_ADD on device going from disabled to
++ * enabled and OF_RECONFIG_NO_CHANGE on no change.
+  */
+ int of_reconfig_get_state_change(unsigned long action, struct of_reconfig_data *pr)
+ {
+-- 
+2.42.0
+
 
 
 
