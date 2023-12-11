@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-6341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F2C80DA2C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20CC80D93A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3E91F21D11
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 203DE1C216BF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8386E52F95;
-	Mon, 11 Dec 2023 18:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A03351C44;
+	Mon, 11 Dec 2023 18:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2K9gFFOM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hX1oFMEh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4558452F89;
-	Mon, 11 Dec 2023 18:59:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B6EC433C8;
-	Mon, 11 Dec 2023 18:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C22151C2D;
+	Mon, 11 Dec 2023 18:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C92C433C7;
+	Mon, 11 Dec 2023 18:51:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321168;
-	bh=XacQL7F5NxV5EqCeqnbMhAR/Yek3e0v4KaLT+oB/99w=;
+	s=korg; t=1702320719;
+	bh=xqhAL008a5tdJHh3x5ZIFMYwVab95ZUnJqT8JEwIE0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2K9gFFOM6uE8L8kk9joDVVEdmtScMJkEI9UazfL1wVuQf/++sK2ZUTFP9vgJyatVR
-	 Zc0xKcJaT7UAMU9l1uJIIkVHqKheOD7GOisQZKxdQpELfzKvazW3xTk3SjIEZipahE
-	 W3cRvoWi7240iPW6WRC7RoHTv51b+FJggwPs31lg=
+	b=hX1oFMEh+OgHI/8hjmbQ3WJ+WNfnh7+sVCkQLP4LKkXm6ZJuk+He4gt1daU7rnVyh
+	 pSJrJgPO8IYfjk0CUk9cw7o/I4F09l+fw3u2Pz6YJNN1E5DS44139UKU/qkym/XoYW
+	 2i3eMFevFxv/VoD1iorqzEodo2YRiYWPPwTN/NLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>,
-	Todd Kjos <tkjos@google.com>,
+	Candice Li <candice.li@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/141] binder: fix memory leaks of spam and pending work
+Subject: [PATCH 6.1 165/194] drm/amdgpu: Update EEPROM I2C address for smu v13_0_0
 Date: Mon, 11 Dec 2023 19:22:35 +0100
-Message-ID: <20231211182030.717031479@linuxfoundation.org>
+Message-ID: <20231211182044.014619623@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,79 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Candice Li <candice.li@amd.com>
 
-commit 1aa3aaf8953c84bad398adf6c3cabc9d6685bf7d upstream
+[ Upstream commit e0409021e34af50e7b6f31635c8d21583d7c43dd ]
 
-A transaction complete work is allocated and queued for each
-transaction. Under certain conditions the work->type might be marked as
-BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT to notify userspace about
-potential spamming threads or as BINDER_WORK_TRANSACTION_PENDING when
-the target is currently frozen.
+Check smu v13_0_0 SKU type to select EEPROM I2C address.
 
-However, these work types are not being handled in binder_release_work()
-so they will leak during a cleanup. This was reported by syzkaller with
-the following kmemleak dump:
-
-BUG: memory leak
-unreferenced object 0xffff88810e2d6de0 (size 32):
-  comm "syz-executor338", pid 5046, jiffies 4294968230 (age 13.590s)
-  hex dump (first 32 bytes):
-    e0 6d 2d 0e 81 88 ff ff e0 6d 2d 0e 81 88 ff ff  .m-......m-.....
-    04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff81573b75>] kmalloc_trace+0x25/0x90 mm/slab_common.c:1114
-    [<ffffffff83d41873>] kmalloc include/linux/slab.h:599 [inline]
-    [<ffffffff83d41873>] kzalloc include/linux/slab.h:720 [inline]
-    [<ffffffff83d41873>] binder_transaction+0x573/0x4050 drivers/android/binder.c:3152
-    [<ffffffff83d45a05>] binder_thread_write+0x6b5/0x1860 drivers/android/binder.c:4010
-    [<ffffffff83d486dc>] binder_ioctl_write_read drivers/android/binder.c:5066 [inline]
-    [<ffffffff83d486dc>] binder_ioctl+0x1b2c/0x3cf0 drivers/android/binder.c:5352
-    [<ffffffff816b25f2>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff816b25f2>] __do_sys_ioctl fs/ioctl.c:871 [inline]
-    [<ffffffff816b25f2>] __se_sys_ioctl fs/ioctl.c:857 [inline]
-    [<ffffffff816b25f2>] __x64_sys_ioctl+0xf2/0x140 fs/ioctl.c:857
-    [<ffffffff84b30008>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84b30008>] do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84c0008b>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-Fix the leaks by kfreeing these work types in binder_release_work() and
-handle them as a BINDER_WORK_TRANSACTION_COMPLETE cleanup.
-
-Cc: stable@vger.kernel.org
-Fixes: a7dc1e6f99df ("binder: tell userspace to dump current backtrace when detected oneway spamming")
-Reported-by: syzbot+7f10c1653e35933c0f1e@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7f10c1653e35933c0f1e
-Suggested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Todd Kjos <tkjos@google.com>
-Link: https://lore.kernel.org/r/20230922175138.230331-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: backport to v5.15 by dropping BINDER_WORK_TRANSACTION_PENDING
- as commit 0567461a7a6e is not present. Remove fixes tag accordingly.]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Candice Li <candice.li@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org # 6.1.x
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index cbbed43baf056..b63322e7e1011 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4620,6 +4620,7 @@ static void binder_release_work(struct binder_proc *proc,
- 				"undelivered TRANSACTION_ERROR: %u\n",
- 				e->cmd);
- 		} break;
-+		case BINDER_WORK_TRANSACTION_ONEWAY_SPAM_SUSPECT:
- 		case BINDER_WORK_TRANSACTION_COMPLETE: {
- 			binder_debug(BINDER_DEBUG_DEAD_TRANSACTION,
- 				"undelivered TRANSACTION_COMPLETE\n");
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+index 47406456e2707..f5f747cfe90a1 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -167,6 +167,12 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
+ 			control->i2c_address = EEPROM_I2C_MADDR_0;
+ 		return true;
+ 	case IP_VERSION(13, 0, 0):
++		if (strnstr(atom_ctx->vbios_pn, "D707",
++			    sizeof(atom_ctx->vbios_pn)))
++			control->i2c_address = EEPROM_I2C_MADDR_0;
++		else
++			control->i2c_address = EEPROM_I2C_MADDR_4;
++		return true;
+ 	case IP_VERSION(13, 0, 6):
+ 	case IP_VERSION(13, 0, 10):
+ 		control->i2c_address = EEPROM_I2C_MADDR_4;
 -- 
 2.42.0
 
