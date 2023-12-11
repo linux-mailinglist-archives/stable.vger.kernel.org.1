@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-5844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BED80D772
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB8980D7C5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC43D1F21B47
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36F24B20973
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6177A537F3;
-	Mon, 11 Dec 2023 18:36:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 308B8537E5;
+	Mon, 11 Dec 2023 18:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yhHrwbgY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRtkLrMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A28524B1;
-	Mon, 11 Dec 2023 18:36:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A8CAC433C8;
-	Mon, 11 Dec 2023 18:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BB351C53;
+	Mon, 11 Dec 2023 18:40:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68494C433C8;
+	Mon, 11 Dec 2023 18:40:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319818;
-	bh=ErRyEKewPAJ71rGxpHCLq4Aou3hEZ7Sl/63LF8x7zYY=;
+	s=korg; t=1702320000;
+	bh=SNO472HfZbPMbrrGL8XY8fzvCth3Zon0QjH+ZGjW9Sk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yhHrwbgYf0htp3jrR5S06ekvm4Mrb7uMe4KoqJGOTvUFr47S4AhOxE5C09Kpp66c+
-	 P5UnTEXQa51GZmCkvv+SHnA3eu73IUZGmnd6NPUGvx1EBKcH5LdnCaAbMoDtD1EsaF
-	 t1flgm06+3nBR64Cz4rMDQSl5cSwuQdonYx9aF50=
+	b=gRtkLrMcrXVGwQlH+HPHobMyVwBjujFTGu5EYmB16L8Y/edeVUGDr6agcLkBFF58R
+	 R4/MPse8GyvOIXssvZ03Wd4MZL9igsykoooArEEeAmeZptoDT4l5n8nGhPrg0+lIKm
+	 JlrJdVMeNYjN+C3JavOtIRb/3XDZfIvzKpR4khrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 237/244] MIPS: Loongson64: Enable DMA noncoherent support
+	Boerge Struempfel <boerge.struempfel@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 67/97] gpiolib: sysfs: Fix error handling on failed export
 Date: Mon, 11 Dec 2023 19:22:10 +0100
-Message-ID: <20231211182056.647732917@linuxfoundation.org>
+Message-ID: <20231211182022.641974250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,92 +54,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Boerge Struempfel <boerge.struempfel@gmail.com>
 
-commit edc0378eee00200a5bedf1bb9f00ad390e0d1bd4 upstream.
+[ Upstream commit 95dd1e34ff5bbee93a28ff3947eceaf6de811b1a ]
 
-There are some Loongson64 systems come with broken coherent DMA
-support, firmware will set a bit in boot_param and pass nocoherentio
-in cmdline.
+If gpio_set_transitory() fails, we should free the GPIO again. Most
+notably, the flag FLAG_REQUESTED has previously been set in
+gpiod_request_commit(), and should be reset on failure.
 
-However nonconherent support was missed out when spin off Loongson-2EF
-form Loongson64, and that boot_param change never made itself into
-upstream.
+To my knowledge, this does not affect any current users, since the
+gpio_set_transitory() mainly returns 0 and -ENOTSUPP, which is converted
+to 0. However the gpio_set_transitory() function calles the .set_config()
+function of the corresponding GPIO chip and there are some GPIO drivers in
+which some (unlikely) branches return other values like -EPROBE_DEFER,
+and -EINVAL. In these cases, the above mentioned FLAG_REQUESTED would not
+be reset, which results in the pin being blocked until the next reboot.
 
-Support DMA noncoherent properly to get those systems working.
-
-Cc: stable@vger.kernel.org
-Fixes: 71e2f4dd5a65 ("MIPS: Fork loongson2ef from loongson64")
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e10f72bf4b3e ("gpio: gpiolib: Generalise state persistence beyond sleep")
+Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/Kconfig                                  |    2 ++
- arch/mips/include/asm/mach-loongson64/boot_param.h |    3 ++-
- arch/mips/loongson64/env.c                         |   10 +++++++++-
- 3 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib-sysfs.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -482,6 +482,7 @@ config MACH_LOONGSON2EF
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index fa5d945b2f286..f45ba0f789d4f 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -491,14 +491,17 @@ static ssize_t export_store(struct class *class,
+ 	}
  
- config MACH_LOONGSON64
- 	bool "Loongson 64-bit family of machines"
-+	select ARCH_DMA_DEFAULT_COHERENT
- 	select ARCH_SPARSEMEM_ENABLE
- 	select ARCH_MIGHT_HAVE_PC_PARPORT
- 	select ARCH_MIGHT_HAVE_PC_SERIO
-@@ -1273,6 +1274,7 @@ config CPU_LOONGSON64
- 	select CPU_SUPPORTS_MSA
- 	select CPU_DIEI_BROKEN if !LOONGSON3_ENHANCEMENT
- 	select CPU_MIPSR2_IRQ_VI
-+	select DMA_NONCOHERENT
- 	select WEAK_ORDERING
- 	select WEAK_REORDERING_BEYOND_LLSC
- 	select MIPS_ASID_BITS_VARIABLE
---- a/arch/mips/include/asm/mach-loongson64/boot_param.h
-+++ b/arch/mips/include/asm/mach-loongson64/boot_param.h
-@@ -121,7 +121,8 @@ struct irq_source_routing_table {
- 	u64 pci_io_start_addr;
- 	u64 pci_io_end_addr;
- 	u64 pci_config_addr;
--	u32 dma_mask_bits;
-+	u16 dma_mask_bits;
-+	u16 dma_noncoherent;
- } __packed;
+ 	status = gpiod_set_transitory(desc, false);
+-	if (!status) {
+-		status = gpiod_export(desc, true);
+-		if (status < 0)
+-			gpiod_free(desc);
+-		else
+-			set_bit(FLAG_SYSFS, &desc->flags);
++	if (status) {
++		gpiod_free(desc);
++		goto done;
+ 	}
  
- struct interface_info {
---- a/arch/mips/loongson64/env.c
-+++ b/arch/mips/loongson64/env.c
-@@ -13,6 +13,8 @@
-  * Copyright (C) 2009 Lemote Inc.
-  * Author: Wu Zhangjin, wuzhangjin@gmail.com
-  */
++	status = gpiod_export(desc, true);
++	if (status < 0)
++		gpiod_free(desc);
++	else
++		set_bit(FLAG_SYSFS, &desc->flags);
 +
-+#include <linux/dma-map-ops.h>
- #include <linux/export.h>
- #include <linux/pci_ids.h>
- #include <asm/bootinfo.h>
-@@ -147,8 +149,14 @@ void __init prom_lefi_init_env(void)
- 
- 	loongson_sysconf.dma_mask_bits = eirq_source->dma_mask_bits;
- 	if (loongson_sysconf.dma_mask_bits < 32 ||
--		loongson_sysconf.dma_mask_bits > 64)
-+			loongson_sysconf.dma_mask_bits > 64) {
- 		loongson_sysconf.dma_mask_bits = 32;
-+		dma_default_coherent = true;
-+	} else {
-+		dma_default_coherent = !eirq_source->dma_noncoherent;
-+	}
-+
-+	pr_info("Firmware: Coherent DMA: %s\n", dma_default_coherent ? "on" : "off");
- 
- 	loongson_sysconf.restart_addr = boot_p->reset_system.ResetWarm;
- 	loongson_sysconf.poweroff_addr = boot_p->reset_system.Shutdown;
+ done:
+ 	if (status)
+ 		pr_debug("%s: status %d\n", __func__, status);
+-- 
+2.42.0
+
 
 
 
