@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-6189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 915D680D94B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2945D80D7C3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7E82816E7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3DB61F21D0E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF78851C46;
-	Mon, 11 Dec 2023 18:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C6E537E1;
+	Mon, 11 Dec 2023 18:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEkW0Pgg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MX7+iIw/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9139C51C2D;
-	Mon, 11 Dec 2023 18:52:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18187C433CA;
-	Mon, 11 Dec 2023 18:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D03B524D4;
+	Mon, 11 Dec 2023 18:39:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C87C433CB;
+	Mon, 11 Dec 2023 18:39:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320752;
-	bh=zpnrVrjIlNaV92mnEmkjPzUAjYJ1DXTqpGfB1H2Q1U4=;
+	s=korg; t=1702319998;
+	bh=BqFQSB+9g7Y5bWP1rDlUqcdGqwBSMBfJNU7v/t7LQfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zEkW0PggL6OgfLg25Y1r/1CcBQZPizvZTvgb7y9C9J38avG/rvGE5JKnuLH2STRmn
-	 XD8Eey8LbeK7ctpFGHUYcseHYqKO7jSrVWipGqaqQfCNIYteceySVY+4RFV/a9NwZB
-	 JWXhWCetTCgdJnzIiyCcdLbJIpoxI5xMI3p2Hi6Y=
+	b=MX7+iIw/vHHS5FQsPusG1Kcd6avWxX5+J716Kd15mqbUsNfIDaVwrYgiMXpBv6KAq
+	 52z9K+oxiYV1UzO65CAZiT4OyqTOam7mHddsbsjJkMNJ/cG820e16OUCEyOvWxP8dQ
+	 LH7i29ipygiEdR7ImjVtvfznOTszLH4E8e04pCEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/194] misc: mei: client.c: return negative error code in mei_cl_write
+Subject: [PATCH 5.10 66/97] perf: Fix perf_event_validate_size()
 Date: Mon, 11 Dec 2023 19:22:09 +0100
-Message-ID: <20231211182042.811714449@linuxfoundation.org>
+Message-ID: <20231211182022.598273078@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +53,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 8f06aee8089cf42fd99a20184501bd1347ce61b9 ]
+[ Upstream commit 382c27f4ed28f803b1f1473ac2d8db0afc795a1b ]
 
-mei_msg_hdr_init() return negative error code, rets should be
-'PTR_ERR(mei_hdr)' rather than '-PTR_ERR(mei_hdr)'.
+Budimir noted that perf_event_validate_size() only checks the size of
+the newly added event, even though the sizes of all existing events
+can also change due to not all events having the same read_format.
 
-Fixes: 0cd7c01a60f8 ("mei: add support for mei extended header.")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231120095523.178385-1-suhui@nfschina.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When we attach the new event, perf_group_attach(), we do re-compute
+the size for all events.
+
+Fixes: a723968c0ed3 ("perf: Fix u16 overflows")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/mei/client.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 61 +++++++++++++++++++++++++++-----------------
+ 1 file changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/misc/mei/client.c b/drivers/misc/mei/client.c
-index 0b2fbe1335a77..77501e392cdeb 100644
---- a/drivers/misc/mei/client.c
-+++ b/drivers/misc/mei/client.c
-@@ -1978,7 +1978,7 @@ ssize_t mei_cl_write(struct mei_cl *cl, struct mei_cl_cb *cb)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index f7ac1b24f93e0..0a6855d648031 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -1912,31 +1912,34 @@ static inline void perf_event__state_init(struct perf_event *event)
+ 					      PERF_EVENT_STATE_INACTIVE;
+ }
  
- 	mei_hdr = mei_msg_hdr_init(cb);
- 	if (IS_ERR(mei_hdr)) {
--		rets = -PTR_ERR(mei_hdr);
-+		rets = PTR_ERR(mei_hdr);
- 		mei_hdr = NULL;
- 		goto err;
+-static void __perf_event_read_size(struct perf_event *event, int nr_siblings)
++static int __perf_event_read_size(u64 read_format, int nr_siblings)
+ {
+ 	int entry = sizeof(u64); /* value */
+ 	int size = 0;
+ 	int nr = 1;
+ 
+-	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
++	if (read_format & PERF_FORMAT_TOTAL_TIME_ENABLED)
+ 		size += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
++	if (read_format & PERF_FORMAT_TOTAL_TIME_RUNNING)
+ 		size += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_ID)
++	if (read_format & PERF_FORMAT_ID)
+ 		entry += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_LOST)
++	if (read_format & PERF_FORMAT_LOST)
+ 		entry += sizeof(u64);
+ 
+-	if (event->attr.read_format & PERF_FORMAT_GROUP) {
++	if (read_format & PERF_FORMAT_GROUP) {
+ 		nr += nr_siblings;
+ 		size += sizeof(u64);
  	}
+ 
+-	size += entry * nr;
+-	event->read_size = size;
++	/*
++	 * Since perf_event_validate_size() limits this to 16k and inhibits
++	 * adding more siblings, this will never overflow.
++	 */
++	return size + nr * entry;
+ }
+ 
+ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
+@@ -1980,8 +1983,9 @@ static void __perf_event_header_size(struct perf_event *event, u64 sample_type)
+  */
+ static void perf_event__header_size(struct perf_event *event)
+ {
+-	__perf_event_read_size(event,
+-			       event->group_leader->nr_siblings);
++	event->read_size =
++		__perf_event_read_size(event->attr.read_format,
++				       event->group_leader->nr_siblings);
+ 	__perf_event_header_size(event, event->attr.sample_type);
+ }
+ 
+@@ -2012,24 +2016,35 @@ static void perf_event__id_header_size(struct perf_event *event)
+ 	event->id_header_size = size;
+ }
+ 
++/*
++ * Check that adding an event to the group does not result in anybody
++ * overflowing the 64k event limit imposed by the output buffer.
++ *
++ * Specifically, check that the read_size for the event does not exceed 16k,
++ * read_size being the one term that grows with groups size. Since read_size
++ * depends on per-event read_format, also (re)check the existing events.
++ *
++ * This leaves 48k for the constant size fields and things like callchains,
++ * branch stacks and register sets.
++ */
+ static bool perf_event_validate_size(struct perf_event *event)
+ {
+-	/*
+-	 * The values computed here will be over-written when we actually
+-	 * attach the event.
+-	 */
+-	__perf_event_read_size(event, event->group_leader->nr_siblings + 1);
+-	__perf_event_header_size(event, event->attr.sample_type & ~PERF_SAMPLE_READ);
+-	perf_event__id_header_size(event);
++	struct perf_event *sibling, *group_leader = event->group_leader;
+ 
+-	/*
+-	 * Sum the lot; should not exceed the 64k limit we have on records.
+-	 * Conservative limit to allow for callchains and other variable fields.
+-	 */
+-	if (event->read_size + event->header_size +
+-	    event->id_header_size + sizeof(struct perf_event_header) >= 16*1024)
++	if (__perf_event_read_size(event->attr.read_format,
++				   group_leader->nr_siblings + 1) > 16*1024)
+ 		return false;
+ 
++	if (__perf_event_read_size(group_leader->attr.read_format,
++				   group_leader->nr_siblings + 1) > 16*1024)
++		return false;
++
++	for_each_sibling_event(sibling, group_leader) {
++		if (__perf_event_read_size(sibling->attr.read_format,
++					   group_leader->nr_siblings + 1) > 16*1024)
++			return false;
++	}
++
+ 	return true;
+ }
+ 
 -- 
 2.42.0
 
