@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0889780D7B6
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF83C80D55F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B06E21F21A97
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27F4A1C214A7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9526CFBE1;
-	Mon, 11 Dec 2023 18:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C1A51020;
+	Mon, 11 Dec 2023 18:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WS0ZXsED"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqQ93hp4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53A2420DDE;
-	Mon, 11 Dec 2023 18:39:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC109C433C8;
-	Mon, 11 Dec 2023 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84764F212;
+	Mon, 11 Dec 2023 18:24:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4825EC433C7;
+	Mon, 11 Dec 2023 18:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319965;
-	bh=EgEf4YpEiz97lPGJLn/cwskl5NERjQ2asbNWlvc0pt0=;
+	s=korg; t=1702319047;
+	bh=sY6jWWyDFb3J1/I0DcNvB5lHN+lK9QTUeKS0xrfhX9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WS0ZXsED5E14npdHvX+3QE9YebBDgyyKWxr1jGUpNk/pvl+uRfmHRJ3ptXz0JgLmd
-	 Oc8FGB2T8kNodZJKmufabKFvgc7mZftQJ5fFZELFeq49nq/s0H6kJHLWFRsZg1au/A
-	 BMrjXI5pTgfadnOd0msidIhQQ0bQjGOKyALr3uCo=
+	b=QqQ93hp4TSM3pvxfd1lcQxTlTnxgxZFzqEjRNgJTYZaSEfgl0A528V+5GgtoTGzQ0
+	 LzKkM2u/8YdSkhaGOrlQK6Ra+SIKrIOMH5LtxxW0x6gYhOqz9ESAaY99qhvOVh+MGI
+	 ix/q7nUnWY/EQkV1I0IGyldQpx6e2r0EnTEv7vrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Reichinger <thomas.reichinger@sohard.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yonglong Liu <liuyonglong@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 26/97] arcnet: restoring support for multiple Sohard Arcnet cards
+Subject: [PATCH 4.19 19/55] net: hns: fix fake link up on xge port
 Date: Mon, 11 Dec 2023 19:21:29 +0100
-Message-ID: <20231211182020.883573728@linuxfoundation.org>
+Message-ID: <20231211182012.934854706@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,218 +55,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Reichinger <thomas.reichinger@sohard.de>
+From: Yonglong Liu <liuyonglong@huawei.com>
 
-[ Upstream commit 6b17a597fc2f13aaaa0a2780eb7edb9ae7ac9aea ]
+[ Upstream commit f708aba40f9c1eeb9c7e93ed4863b5f85b09b288 ]
 
-Probe of Sohard Arcnet cards fails,
-if 2 or more cards are installed in a system.
-See kernel log:
-[    2.759203] arcnet: arcnet loaded
-[    2.763648] arcnet:com20020: COM20020 chipset support (by David Woodhouse et al.)
-[    2.770585] arcnet:com20020_pci: COM20020 PCI support
-[    2.772295] com20020 0000:02:00.0: enabling device (0000 -> 0003)
-[    2.772354] (unnamed net_device) (uninitialized): PLX-PCI Controls
-...
-[    3.071301] com20020 0000:02:00.0 arc0-0 (uninitialized): PCI COM20020: station FFh found at F080h, IRQ 101.
-[    3.071305] com20020 0000:02:00.0 arc0-0 (uninitialized): Using CKP 64 - data rate 2.5 Mb/s
-[    3.071534] com20020 0000:07:00.0: enabling device (0000 -> 0003)
-[    3.071581] (unnamed net_device) (uninitialized): PLX-PCI Controls
-...
-[    3.369501] com20020 0000:07:00.0: Led pci:green:tx:0-0 renamed to pci:green:tx:0-0_1 due to name collision
-[    3.369535] com20020 0000:07:00.0: Led pci:red:recon:0-0 renamed to pci:red:recon:0-0_1 due to name collision
-[    3.370586] com20020 0000:07:00.0 arc0-0 (uninitialized): PCI COM20020: station E1h found at C000h, IRQ 35.
-[    3.370589] com20020 0000:07:00.0 arc0-0 (uninitialized): Using CKP 64 - data rate 2.5 Mb/s
-[    3.370608] com20020: probe of 0000:07:00.0 failed with error -5
+If a xge port just connect with an optical module and no fiber,
+it may have a fake link up because there may be interference on
+the hardware. This patch adds an anti-shake to avoid the problem.
+And the time of anti-shake is base on tests.
 
-commit 5ef216c1f848 ("arcnet: com20020-pci: add rotary index support")
-changes the device name of all COM20020 based PCI cards,
-even if only some cards support this:
-	snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
-
-The error happens because all Sohard Arcnet cards would be called arc0-0,
-since the Sohard Arcnet cards don't have a PLX rotary coder.
-I.e. EAE Arcnet cards have a PLX rotary coder,
-which sets the first decimal, ensuring unique devices names.
-
-This patch adds two new card feature flags to indicate
-which cards support LEDs and the PLX rotary coder.
-For EAE based cards the names still depend on the PLX rotary coder
-(untested, since missing EAE hardware).
-For Sohard based cards, this patch will result in devices
-being called arc0, arc1, ... (tested).
-
-Signed-off-by: Thomas Reichinger <thomas.reichinger@sohard.de>
-Fixes: 5ef216c1f848 ("arcnet: com20020-pci: add rotary index support")
-Link: https://lore.kernel.org/r/20231130113503.6812-1-thomas.reichinger@sohard.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b917078c1c10 ("net: hns: Add ACPI support to check SFP present")
+Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/arcdevice.h    |  2 +
- drivers/net/arcnet/com20020-pci.c | 89 ++++++++++++++++---------------
- 2 files changed, 48 insertions(+), 43 deletions(-)
+ .../net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 29 +++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/drivers/net/arcnet/arcdevice.h b/drivers/net/arcnet/arcdevice.h
-index 5d4a4c7efbbff..deeabd6ec2e81 100644
---- a/drivers/net/arcnet/arcdevice.h
-+++ b/drivers/net/arcnet/arcdevice.h
-@@ -186,6 +186,8 @@ do {									\
- #define ARC_IS_5MBIT    1   /* card default speed is 5MBit */
- #define ARC_CAN_10MBIT  2   /* card uses COM20022, supporting 10MBit,
- 				 but default is 2.5MBit. */
-+#define ARC_HAS_LED     4   /* card has software controlled LEDs */
-+#define ARC_HAS_ROTARY  8   /* card has rotary encoder */
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
+index cfdc92de9dc0e..d2791bcff5d49 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
+@@ -70,6 +70,27 @@ static enum mac_mode hns_get_enet_interface(const struct hns_mac_cb *mac_cb)
+ 	}
+ }
  
- /* information needed to define an encapsulation driver */
- struct ArcProto {
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 28dccbc0e8d8f..9d9e4200064f9 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -213,12 +213,13 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 		if (!strncmp(ci->name, "EAE PLX-PCI FB2", 15))
- 			lp->backplane = 1;
- 
--		/* Get the dev_id from the PLX rotary coder */
--		if (!strncmp(ci->name, "EAE PLX-PCI MA1", 15))
--			dev_id_mask = 0x3;
--		dev->dev_id = (inb(priv->misc + ci->rotary) >> 4) & dev_id_mask;
--
--		snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
-+		if (ci->flags & ARC_HAS_ROTARY) {
-+			/* Get the dev_id from the PLX rotary coder */
-+			if (!strncmp(ci->name, "EAE PLX-PCI MA1", 15))
-+				dev_id_mask = 0x3;
-+			dev->dev_id = (inb(priv->misc + ci->rotary) >> 4) & dev_id_mask;
-+			snprintf(dev->name, sizeof(dev->name), "arc%d-%d", dev->dev_id, i);
-+		}
- 
- 		if (arcnet_inb(ioaddr, COM20020_REG_R_STATUS) == 0xFF) {
- 			pr_err("IO address %Xh is empty!\n", ioaddr);
-@@ -230,6 +231,10 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 			goto err_free_arcdev;
- 		}
- 
-+		ret = com20020_found(dev, IRQF_SHARED);
-+		if (ret)
-+			goto err_free_arcdev;
++static u32 hns_mac_link_anti_shake(struct mac_driver *mac_ctrl_drv)
++{
++#define HNS_MAC_LINK_WAIT_TIME 5
++#define HNS_MAC_LINK_WAIT_CNT 40
 +
- 		card = devm_kzalloc(&pdev->dev, sizeof(struct com20020_dev),
- 				    GFP_KERNEL);
- 		if (!card) {
-@@ -239,41 +244,39 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 
- 		card->index = i;
- 		card->pci_priv = priv;
--		card->tx_led.brightness_set = led_tx_set;
--		card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
--						GFP_KERNEL, "arc%d-%d-tx",
--						dev->dev_id, i);
--		card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
--						"pci:green:tx:%d-%d",
--						dev->dev_id, i);
--
--		card->tx_led.dev = &dev->dev;
--		card->recon_led.brightness_set = led_recon_set;
--		card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
--						GFP_KERNEL, "arc%d-%d-recon",
--						dev->dev_id, i);
--		card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
--						"pci:red:recon:%d-%d",
--						dev->dev_id, i);
--		card->recon_led.dev = &dev->dev;
--		card->dev = dev;
--
--		ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
--		if (ret)
--			goto err_free_arcdev;
- 
--		ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
--		if (ret)
--			goto err_free_arcdev;
--
--		dev_set_drvdata(&dev->dev, card);
--
--		ret = com20020_found(dev, IRQF_SHARED);
--		if (ret)
--			goto err_free_arcdev;
--
--		devm_arcnet_led_init(dev, dev->dev_id, i);
-+		if (ci->flags & ARC_HAS_LED) {
-+			card->tx_led.brightness_set = led_tx_set;
-+			card->tx_led.default_trigger = devm_kasprintf(&pdev->dev,
-+							GFP_KERNEL, "arc%d-%d-tx",
-+							dev->dev_id, i);
-+			card->tx_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-+							"pci:green:tx:%d-%d",
-+							dev->dev_id, i);
++	u32 link_status = 0;
++	int i;
 +
-+			card->tx_led.dev = &dev->dev;
-+			card->recon_led.brightness_set = led_recon_set;
-+			card->recon_led.default_trigger = devm_kasprintf(&pdev->dev,
-+							GFP_KERNEL, "arc%d-%d-recon",
-+							dev->dev_id, i);
-+			card->recon_led.name = devm_kasprintf(&pdev->dev, GFP_KERNEL,
-+							"pci:red:recon:%d-%d",
-+							dev->dev_id, i);
-+			card->recon_led.dev = &dev->dev;
++	if (!mac_ctrl_drv->get_link_status)
++		return link_status;
 +
-+			ret = devm_led_classdev_register(&pdev->dev, &card->tx_led);
-+			if (ret)
-+				goto err_free_arcdev;
++	for (i = 0; i < HNS_MAC_LINK_WAIT_CNT; i++) {
++		msleep(HNS_MAC_LINK_WAIT_TIME);
++		mac_ctrl_drv->get_link_status(mac_ctrl_drv, &link_status);
++		if (!link_status)
++			break;
++	}
 +
-+			ret = devm_led_classdev_register(&pdev->dev, &card->recon_led);
-+			if (ret)
-+				goto err_free_arcdev;
++	return link_status;
++}
 +
-+			dev_set_drvdata(&dev->dev, card);
-+			devm_arcnet_led_init(dev, dev->dev_id, i);
-+		}
+ void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
+ {
+ 	struct mac_driver *mac_ctrl_drv;
+@@ -87,6 +108,14 @@ void hns_mac_get_link_status(struct hns_mac_cb *mac_cb, u32 *link_status)
+ 							       &sfp_prsnt);
+ 		if (!ret)
+ 			*link_status = *link_status && sfp_prsnt;
++
++		/* for FIBER port, it may have a fake link up.
++		 * when the link status changes from down to up, we need to do
++		 * anti-shake. the anti-shake time is base on tests.
++		 * only FIBER port need to do this.
++		 */
++		if (*link_status && !mac_cb->link)
++			*link_status = hns_mac_link_anti_shake(mac_ctrl_drv);
+ 	}
  
-+		card->dev = dev;
- 		list_add(&card->list, &priv->list_dev);
- 		continue;
- 
-@@ -329,7 +332,7 @@ static struct com20020_pci_card_info card_info_5mbit = {
- };
- 
- static struct com20020_pci_card_info card_info_sohard = {
--	.name = "PLX-PCI",
-+	.name = "SOHARD SH ARC-PCI",
- 	.devcount = 1,
- 	/* SOHARD needs PCI base addr 4 */
- 	.chan_map_tbl = {
-@@ -364,7 +367,7 @@ static struct com20020_pci_card_info card_info_eae_arc1 = {
- 		},
- 	},
- 	.rotary = 0x0,
--	.flags = ARC_CAN_10MBIT,
-+	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
- };
- 
- static struct com20020_pci_card_info card_info_eae_ma1 = {
-@@ -396,7 +399,7 @@ static struct com20020_pci_card_info card_info_eae_ma1 = {
- 		},
- 	},
- 	.rotary = 0x0,
--	.flags = ARC_CAN_10MBIT,
-+	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
- };
- 
- static struct com20020_pci_card_info card_info_eae_fb2 = {
-@@ -421,7 +424,7 @@ static struct com20020_pci_card_info card_info_eae_fb2 = {
- 		},
- 	},
- 	.rotary = 0x0,
--	.flags = ARC_CAN_10MBIT,
-+	.flags = ARC_HAS_ROTARY | ARC_HAS_LED | ARC_CAN_10MBIT,
- };
- 
- static const struct pci_device_id com20020pci_id_table[] = {
+ 	mac_cb->link = *link_status;
 -- 
 2.42.0
 
