@@ -1,50 +1,46 @@
-Return-Path: <stable+bounces-6069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5324D80D898
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BE180D68D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E070281A3D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36A8B1C21589
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9E751038;
-	Mon, 11 Dec 2023 18:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEDE51C37;
+	Mon, 11 Dec 2023 18:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmYEUXce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD6zPro7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5044437B;
-	Mon, 11 Dec 2023 18:47:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B66B3C433C8;
-	Mon, 11 Dec 2023 18:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45C8FBE0;
+	Mon, 11 Dec 2023 18:32:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B41C433C7;
+	Mon, 11 Dec 2023 18:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320428;
-	bh=Bwv4wqmVFp+t5eZNby4m7JflTQ7HGPPrLg/Q17lgMP4=;
+	s=korg; t=1702319576;
+	bh=M5EC+3wSJDOqV6ojf6EaR65LGCPB3it36PbDs+T12Y0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmYEUXceHq2kK3fuzuKS0PaWzO/lIrq3wohijr2GHvhY9hCHm0BC4oCoBvM28mfmm
-	 dwC8E8s3Wkw7Bw3frbZ1miU35w0JEMCGguP9ewP7Mcqcrj/iF2uSNoIfUVo4loP18w
-	 lgERM+lngg59K1ARNu+aQ64rfo0oBAn2LnGxotTs=
+	b=KD6zPro7cfiEYjbnEIItVuSZtvbc0FobMKTNvznHqQsXUEhQBP01R8A+pph62xlyY
+	 RilbirQq8fvW/5I0KbOEBfz2WufPget86m3f9pKv0Y0+fHvdmDHi9+y1zUQac+3ov1
+	 hQst6MS2PbdcZ41GtlpIMHHmwReMytkoZ21deGMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Yepeng Pan <yepeng.pan@cispa.de>,
-	Christian Rossow <rossow@cispa.de>,
-	Neal Cardwell <ncardwell@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/194] tcp: do not accept ACK of bytes we never sent
-Date: Mon, 11 Dec 2023 19:20:48 +0100
-Message-ID: <20231211182039.126740187@linuxfoundation.org>
+	Petr Pavlu <petr.pavlu@suse.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 156/244] tracing: Fix incomplete locking when disabling buffered events
+Date: Mon, 11 Dec 2023 19:20:49 +0100
+Message-ID: <20231211182052.840972901@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,111 +52,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-[ Upstream commit 3d501dd326fb1c73f1b8206d4c6e1d7b15c07e27 ]
+commit 7fed14f7ac9cf5e38c693836fe4a874720141845 upstream.
 
-This patch is based on a detailed report and ideas from Yepeng Pan
-and Christian Rossow.
+The following warning appears when using buffered events:
 
-ACK seq validation is currently following RFC 5961 5.2 guidelines:
+[  203.556451] WARNING: CPU: 53 PID: 10220 at kernel/trace/ring_buffer.c:3912 ring_buffer_discard_commit+0x2eb/0x420
+[...]
+[  203.670690] CPU: 53 PID: 10220 Comm: stress-ng-sysin Tainted: G            E      6.7.0-rc2-default #4 56e6d0fcf5581e6e51eaaecbdaec2a2338c80f3a
+[  203.670704] Hardware name: Intel Corp. GROVEPORT/GROVEPORT, BIOS GVPRCRB1.86B.0016.D04.1705030402 05/03/2017
+[  203.670709] RIP: 0010:ring_buffer_discard_commit+0x2eb/0x420
+[  203.735721] Code: 4c 8b 4a 50 48 8b 42 48 49 39 c1 0f 84 b3 00 00 00 49 83 e8 01 75 b1 48 8b 42 10 f0 ff 40 08 0f 0b e9 fc fe ff ff f0 ff 47 08 <0f> 0b e9 77 fd ff ff 48 8b 42 10 f0 ff 40 08 0f 0b e9 f5 fe ff ff
+[  203.735734] RSP: 0018:ffffb4ae4f7b7d80 EFLAGS: 00010202
+[  203.735745] RAX: 0000000000000000 RBX: ffffb4ae4f7b7de0 RCX: ffff8ac10662c000
+[  203.735754] RDX: ffff8ac0c750be00 RSI: ffff8ac10662c000 RDI: ffff8ac0c004d400
+[  203.781832] RBP: ffff8ac0c039cea0 R08: 0000000000000000 R09: 0000000000000000
+[  203.781839] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[  203.781842] R13: ffff8ac10662c000 R14: ffff8ac0c004d400 R15: ffff8ac10662c008
+[  203.781846] FS:  00007f4cd8a67740(0000) GS:ffff8ad798880000(0000) knlGS:0000000000000000
+[  203.781851] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  203.781855] CR2: 0000559766a74028 CR3: 00000001804c4000 CR4: 00000000001506f0
+[  203.781862] Call Trace:
+[  203.781870]  <TASK>
+[  203.851949]  trace_event_buffer_commit+0x1ea/0x250
+[  203.851967]  trace_event_raw_event_sys_enter+0x83/0xe0
+[  203.851983]  syscall_trace_enter.isra.0+0x182/0x1a0
+[  203.851990]  do_syscall_64+0x3a/0xe0
+[  203.852075]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
+[  203.852090] RIP: 0033:0x7f4cd870fa77
+[  203.982920] Code: 00 b8 ff ff ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 66 90 b8 89 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d e9 43 0e 00 f7 d8 64 89 01 48
+[  203.982932] RSP: 002b:00007fff99717dd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000089
+[  203.982942] RAX: ffffffffffffffda RBX: 0000558ea1d7b6f0 RCX: 00007f4cd870fa77
+[  203.982948] RDX: 0000000000000000 RSI: 00007fff99717de0 RDI: 0000558ea1d7b6f0
+[  203.982957] RBP: 00007fff99717de0 R08: 00007fff997180e0 R09: 00007fff997180e0
+[  203.982962] R10: 00007fff997180e0 R11: 0000000000000246 R12: 00007fff99717f40
+[  204.049239] R13: 00007fff99718590 R14: 0000558e9f2127a8 R15: 00007fff997180b0
+[  204.049256]  </TASK>
 
-   The ACK value is considered acceptable only if
-   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
-   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
-   above condition MUST be discarded and an ACK sent back.  It needs to
-   be noted that RFC 793 on page 72 (fifth check) says: "If the ACK is a
-   duplicate (SEG.ACK < SND.UNA), it can be ignored.  If the ACK
-   acknowledges something not yet sent (SEG.ACK > SND.NXT) then send an
-   ACK, drop the segment, and return".  The "ignored" above implies that
-   the processing of the incoming data segment continues, which means
-   the ACK value is treated as acceptable.  This mitigation makes the
-   ACK check more stringent since any ACK < SND.UNA wouldn't be
-   accepted, instead only ACKs that are in the range ((SND.UNA -
-   MAX.SND.WND) <= SEG.ACK <= SND.NXT) get through.
+For instance, it can be triggered by running these two commands in
+parallel:
 
-This can be refined for new (and possibly spoofed) flows,
-by not accepting ACK for bytes that were never sent.
+ $ while true; do
+    echo hist:key=id.syscall:val=hitcount > \
+      /sys/kernel/debug/tracing/events/raw_syscalls/sys_enter/trigger;
+  done
+ $ stress-ng --sysinfo $(nproc)
 
-This greatly improves TCP security at a little cost.
+The warning indicates that the current ring_buffer_per_cpu is not in the
+committing state. It happens because the active ring_buffer_event
+doesn't actually come from the ring_buffer_per_cpu but is allocated from
+trace_buffered_event.
 
-I added a Fixes: tag to make sure this patch will reach stable trees,
-even if the 'blamed' patch was adhering to the RFC.
+The bug is in function trace_buffered_event_disable() where the
+following normally happens:
 
-tp->bytes_acked was added in linux-4.2
+* The code invokes disable_trace_buffered_event() via
+  smp_call_function_many() and follows it by synchronize_rcu(). This
+  increments the per-CPU variable trace_buffered_event_cnt on each
+  target CPU and grants trace_buffered_event_disable() the exclusive
+  access to the per-CPU variable trace_buffered_event.
 
-Following packetdrill test (courtesy of Yepeng Pan) shows
-the issue at hand:
+* Maintenance is performed on trace_buffered_event, all per-CPU event
+  buffers get freed.
 
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
+* The code invokes enable_trace_buffered_event() via
+  smp_call_function_many(). This decrements trace_buffered_event_cnt and
+  releases the access to trace_buffered_event.
 
-// ---------------- Handshake ------------------- //
+A problem is that smp_call_function_many() runs a given function on all
+target CPUs except on the current one. The following can then occur:
 
-// when window scale is set to 14 the window size can be extended to
-// 65535 * (2^14) = 1073725440. Linux would accept an ACK packet
-// with ack number in (Server_ISN+1-1073725440. Server_ISN+1)
-// ,though this ack number acknowledges some data never
-// sent by the server.
+* Task X executing trace_buffered_event_disable() runs on CPU 0.
 
-+0 < S 0:0(0) win 65535 <mss 1400,nop,wscale 14>
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 65535
-+0 accept(3, ..., ...) = 4
+* The control reaches synchronize_rcu() and the task gets rescheduled on
+  another CPU 1.
 
-// For the established connection, we send an ACK packet,
-// the ack packet uses ack number 1 - 1073725300 + 2^32,
-// where 2^32 is used to wrap around.
-// Note: we used 1073725300 instead of 1073725440 to avoid possible
-// edge cases.
-// 1 - 1073725300 + 2^32 = 3221241997
+* The RCU synchronization finishes. At this point,
+  trace_buffered_event_disable() has the exclusive access to all
+  trace_buffered_event variables except trace_buffered_event[CPU0]
+  because trace_buffered_event_cnt[CPU0] is never incremented and if the
+  buffer is currently unused, remains set to 0.
 
-// Oops, old kernels happily accept this packet.
-+0 < . 1:1001(1000) ack 3221241997 win 65535
+* A different task Y is scheduled on CPU 0 and hits a trace event. The
+  code in trace_event_buffer_lock_reserve() sees that
+  trace_buffered_event_cnt[CPU0] is set to 0 and decides the use the
+  buffer provided by trace_buffered_event[CPU0].
 
-// After the kernel fix the following will be replaced by a challenge ACK,
-// and prior malicious frame would be dropped.
-+0 > . 1:1(0) ack 1001
+* Task X continues its execution in trace_buffered_event_disable(). The
+  code incorrectly frees the event buffer pointed by
+  trace_buffered_event[CPU0] and resets the variable to NULL.
 
-Fixes: 354e4aa391ed ("tcp: RFC 5961 5.2 Blind Data Injection Attack Mitigation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Yepeng Pan <yepeng.pan@cispa.de>
-Reported-by: Christian Rossow <rossow@cispa.de>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Link: https://lore.kernel.org/r/20231205161841.2702925-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* Task Y writes event data to the now freed buffer and later detects the
+  created inconsistency.
+
+The issue is observable since commit dea499781a11 ("tracing: Fix warning
+in trace_buffered_event_disable()") which moved the call of
+trace_buffered_event_disable() in __ftrace_event_enable_disable()
+earlier, prior to invoking call->class->reg(.. TRACE_REG_UNREGISTER ..).
+The underlying problem in trace_buffered_event_disable() is however
+present since the original implementation in commit 0fc1b09ff1ff
+("tracing: Use temp buffer when filtering events").
+
+Fix the problem by replacing the two smp_call_function_many() calls with
+on_each_cpu_mask() which invokes a given callback on all CPUs.
+
+Link: https://lore.kernel.org/all/20231127151248.7232-2-petr.pavlu@suse.com/
+Link: https://lkml.kernel.org/r/20231205161736.19663-2-petr.pavlu@suse.com
+
+Cc: stable@vger.kernel.org
+Fixes: 0fc1b09ff1ff ("tracing: Use temp buffer when filtering events")
+Fixes: dea499781a11 ("tracing: Fix warning in trace_buffered_event_disable()")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 65dae3d43684f..34460c9b37ae2 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -3803,8 +3803,12 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	 * then we can probably ignore it.
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2779,11 +2779,9 @@ void trace_buffered_event_disable(void)
+ 	if (--trace_buffered_event_ref)
+ 		return;
+ 
+-	preempt_disable();
+ 	/* For each CPU, set the buffer as used. */
+-	smp_call_function_many(tracing_buffer_mask,
+-			       disable_trace_buffered_event, NULL, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tracing_buffer_mask, disable_trace_buffered_event,
++			 NULL, true);
+ 
+ 	/* Wait for all current users to finish */
+ 	synchronize_rcu();
+@@ -2798,11 +2796,9 @@ void trace_buffered_event_disable(void)
  	 */
- 	if (before(ack, prior_snd_una)) {
-+		u32 max_window;
-+
-+		/* do not accept ACK for bytes we never sent. */
-+		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
- 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
--		if (before(ack, prior_snd_una - tp->max_window)) {
-+		if (before(ack, prior_snd_una - max_window)) {
- 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
- 				tcp_send_challenge_ack(sk);
- 			return -SKB_DROP_REASON_TCP_TOO_OLD_ACK;
--- 
-2.42.0
-
+ 	smp_wmb();
+ 
+-	preempt_disable();
+ 	/* Do the work on each cpu */
+-	smp_call_function_many(tracing_buffer_mask,
+-			       enable_trace_buffered_event, NULL, 1);
+-	preempt_enable();
++	on_each_cpu_mask(tracing_buffer_mask, enable_trace_buffered_event, NULL,
++			 true);
+ }
+ 
+ static struct trace_buffer *temp_buffer;
 
 
 
