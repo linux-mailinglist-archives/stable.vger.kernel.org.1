@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-5583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB1E80D57D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E06280D73C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A8331F21A6C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1C351C2093B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A1E5101D;
-	Mon, 11 Dec 2023 18:25:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159FB5467A;
+	Mon, 11 Dec 2023 18:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s2S+dscy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzLh4aHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C91D4F212;
-	Mon, 11 Dec 2023 18:25:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515C0C433C8;
-	Mon, 11 Dec 2023 18:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7B6151C44;
+	Mon, 11 Dec 2023 18:35:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C787C433C8;
+	Mon, 11 Dec 2023 18:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319110;
-	bh=6PI1GyVQvfuNbevy0DuXMGeaep69sDKMWheEU4FFozQ=;
+	s=korg; t=1702319745;
+	bh=HYloAgNbfcwENLNPUvMO9oy1WPx0cuilVvy5yiohAX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s2S+dscyBoTwuO+/uyNYooIHgToJRyVoVH7WkjQF2GjoLLFJ/7tJ36JOLKqeLuZBx
-	 uni56I/OF5RBlRRlbtvG40u2aGEm3eJyaT/0c08xju5clM1MvbHZx2KcpB1wsvxOZ/
-	 xSbl+oN2QFaE7dwA2BlmSewNnukWwzGC4Wlnys2Q=
+	b=KzLh4aHd++pPQ6phLkcsNgfIfLTF49M0nca7oZAZef3sUiU+ZBzoQxe4QdMzpnwT7
+	 4N4FXwrmgYnYurqqAPbt8Mr2/4hHTq+4EWPQKOdoMKW/LyUmrIFehvrEiqdKFOcqEj
+	 DyZURcZj2kma56DMlmcxvIDnuPACld+pFR71daSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,12 +36,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	stable <stable@kernel.org>
-Subject: [PATCH 4.19 42/55] ARM: PL011: Fix DMA support
+Subject: [PATCH 6.6 219/244] ARM: PL011: Fix DMA support
 Date: Mon, 11 Dec 2023 19:21:52 +0100
-Message-ID: <20231211182013.802145453@linuxfoundation.org>
+Message-ID: <20231211182055.804899299@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -90,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/tty/serial/amba-pl011.c
 +++ b/drivers/tty/serial/amba-pl011.c
-@@ -227,17 +227,18 @@ static struct vendor_data vendor_zte = {
+@@ -218,17 +218,18 @@ static struct vendor_data vendor_st = {
  
  /* Deals with DMA transactions */
  
@@ -114,7 +114,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	dma_cookie_t		cookie;
  	bool			running;
  	struct timer_list	timer;
-@@ -250,7 +251,8 @@ struct pl011_dmarx_data {
+@@ -241,7 +242,8 @@ struct pl011_dmarx_data {
  
  struct pl011_dmatx_data {
  	struct dma_chan		*chan;
@@ -124,7 +124,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	char			*buf;
  	bool			queued;
  };
-@@ -371,32 +373,24 @@ static int pl011_fifo_to_tty(struct uart
+@@ -366,32 +368,24 @@ static int pl011_fifo_to_tty(struct uart
  
  #define PL011_DMA_BUFFER_SIZE PAGE_SIZE
  
@@ -165,7 +165,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	}
  }
  
-@@ -557,8 +551,8 @@ static void pl011_dma_tx_callback(void *
+@@ -552,8 +546,8 @@ static void pl011_dma_tx_callback(void *
  
  	spin_lock_irqsave(&uap->port.lock, flags);
  	if (uap->dmatx.queued)
@@ -176,7 +176,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	dmacr = uap->dmacr;
  	uap->dmacr = dmacr & ~UART011_TXDMAE;
-@@ -644,18 +638,19 @@ static int pl011_dma_tx_refill(struct ua
+@@ -639,18 +633,19 @@ static int pl011_dma_tx_refill(struct ua
  			memcpy(&dmatx->buf[first], &xmit->buf[0], second);
  	}
  
@@ -201,7 +201,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		uap->dmatx.queued = false;
  		/*
  		 * If DMA cannot be used right now, we complete this
-@@ -819,8 +814,8 @@ __acquires(&uap->port.lock)
+@@ -813,8 +808,8 @@ __acquires(&uap->port.lock)
  	dmaengine_terminate_async(uap->dmatx.chan);
  
  	if (uap->dmatx.queued) {
@@ -212,7 +212,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		uap->dmatx.queued = false;
  		uap->dmacr &= ~UART011_TXDMAE;
  		pl011_write(uap->dmacr, uap, REG_DMACR);
-@@ -834,15 +829,15 @@ static int pl011_dma_rx_trigger_dma(stru
+@@ -828,15 +823,15 @@ static int pl011_dma_rx_trigger_dma(stru
  	struct dma_chan *rxchan = uap->dmarx.chan;
  	struct pl011_dmarx_data *dmarx = &uap->dmarx;
  	struct dma_async_tx_descriptor *desc;
@@ -232,7 +232,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  					DMA_DEV_TO_MEM,
  					DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
  	/*
-@@ -882,8 +877,8 @@ static void pl011_dma_rx_chars(struct ua
+@@ -876,8 +871,8 @@ static void pl011_dma_rx_chars(struct ua
  			       bool readfifo)
  {
  	struct tty_port *port = &uap->port.state->port;
@@ -243,7 +243,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	int dma_count = 0;
  	u32 fifotaken = 0; /* only used for vdbg() */
  
-@@ -892,7 +887,7 @@ static void pl011_dma_rx_chars(struct ua
+@@ -886,7 +881,7 @@ static void pl011_dma_rx_chars(struct ua
  
  	if (uap->dmarx.poll_rate) {
  		/* The data can be taken by polling */
@@ -252,7 +252,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  		/* Recalculate the pending size */
  		if (pending >= dmataken)
  			pending -= dmataken;
-@@ -906,7 +901,7 @@ static void pl011_dma_rx_chars(struct ua
+@@ -900,7 +895,7 @@ static void pl011_dma_rx_chars(struct ua
  		 * Note that tty_insert_flip_buf() tries to take as many chars
  		 * as it can.
  		 */
@@ -261,7 +261,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  				pending);
  
  		uap->port.icount.rx += dma_count;
-@@ -917,7 +912,7 @@ static void pl011_dma_rx_chars(struct ua
+@@ -911,7 +906,7 @@ static void pl011_dma_rx_chars(struct ua
  
  	/* Reset the last_residue for Rx DMA poll */
  	if (uap->dmarx.poll_rate)
@@ -270,7 +270,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	/*
  	 * Only continue with trying to read the FIFO if all DMA chars have
-@@ -954,8 +949,8 @@ static void pl011_dma_rx_irq(struct uart
+@@ -946,8 +941,8 @@ static void pl011_dma_rx_irq(struct uart
  {
  	struct pl011_dmarx_data *dmarx = &uap->dmarx;
  	struct dma_chan *rxchan = dmarx->chan;
@@ -281,7 +281,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	size_t pending;
  	struct dma_tx_state state;
  	enum dma_status dmastat;
-@@ -977,7 +972,7 @@ static void pl011_dma_rx_irq(struct uart
+@@ -969,7 +964,7 @@ static void pl011_dma_rx_irq(struct uart
  	pl011_write(uap->dmacr, uap, REG_DMACR);
  	uap->dmarx.running = false;
  
@@ -290,7 +290,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
  	/* Then we terminate the transfer - we now know our residue */
  	dmaengine_terminate_all(rxchan);
-@@ -1004,8 +999,8 @@ static void pl011_dma_rx_callback(void *
+@@ -996,8 +991,8 @@ static void pl011_dma_rx_callback(void *
  	struct pl011_dmarx_data *dmarx = &uap->dmarx;
  	struct dma_chan *rxchan = dmarx->chan;
  	bool lastbuf = dmarx->use_buf_b;
@@ -301,7 +301,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	size_t pending;
  	struct dma_tx_state state;
  	int ret;
-@@ -1023,7 +1018,7 @@ static void pl011_dma_rx_callback(void *
+@@ -1015,7 +1010,7 @@ static void pl011_dma_rx_callback(void *
  	 * the DMA irq handler. So we check the residue here.
  	 */
  	rxchan->device->device_tx_status(rxchan, dmarx->cookie, &state);
@@ -310,8 +310,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	BUG_ON(pending > PL011_DMA_BUFFER_SIZE);
  	/* Then we terminate the transfer - we now know our residue */
  	dmaengine_terminate_all(rxchan);
-@@ -1075,16 +1070,16 @@ static void pl011_dma_rx_poll(struct tim
- 	unsigned long flags = 0;
+@@ -1067,16 +1062,16 @@ static void pl011_dma_rx_poll(struct tim
+ 	unsigned long flags;
  	unsigned int dmataken = 0;
  	unsigned int size = 0;
 -	struct pl011_sgbuf *sgbuf;
@@ -331,7 +331,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  				size);
  		if (dma_count == size)
  			dmarx->last_residue =  state.residue;
-@@ -1131,7 +1126,7 @@ static void pl011_dma_startup(struct uar
+@@ -1123,7 +1118,7 @@ static void pl011_dma_startup(struct uar
  		return;
  	}
  
@@ -340,7 +340,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	/* The DMA buffer is now the FIFO the TTY subsystem can use */
  	uap->port.fifosize = PL011_DMA_BUFFER_SIZE;
-@@ -1141,7 +1136,7 @@ static void pl011_dma_startup(struct uar
+@@ -1133,7 +1128,7 @@ static void pl011_dma_startup(struct uar
  		goto skip_rx;
  
  	/* Allocate and map DMA RX buffers */
@@ -349,7 +349,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			       DMA_FROM_DEVICE);
  	if (ret) {
  		dev_err(uap->port.dev, "failed to init DMA %s: %d\n",
-@@ -1149,12 +1144,12 @@ static void pl011_dma_startup(struct uar
+@@ -1141,12 +1136,12 @@ static void pl011_dma_startup(struct uar
  		goto skip_rx;
  	}
  
@@ -364,7 +364,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  				 DMA_FROM_DEVICE);
  		goto skip_rx;
  	}
-@@ -1208,8 +1203,9 @@ static void pl011_dma_shutdown(struct ua
+@@ -1200,8 +1195,9 @@ static void pl011_dma_shutdown(struct ua
  		/* In theory, this should already be done by pl011_dma_flush_buffer */
  		dmaengine_terminate_all(uap->dmatx.chan);
  		if (uap->dmatx.queued) {
@@ -376,7 +376,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  			uap->dmatx.queued = false;
  		}
  
-@@ -1220,8 +1216,8 @@ static void pl011_dma_shutdown(struct ua
+@@ -1212,8 +1208,8 @@ static void pl011_dma_shutdown(struct ua
  	if (uap->using_rx_dma) {
  		dmaengine_terminate_all(uap->dmarx.chan);
  		/* Clean up the RX DMA */
