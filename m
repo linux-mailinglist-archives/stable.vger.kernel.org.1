@@ -1,48 +1,53 @@
-Return-Path: <stable+bounces-6310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C5080D9F9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC6A80D80F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C2121F210A0
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCED71C214AE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D16C524AD;
-	Mon, 11 Dec 2023 18:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357A6524AC;
+	Mon, 11 Dec 2023 18:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tylXIodq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h458EXRz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54EFE548;
-	Mon, 11 Dec 2023 18:58:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE6DC433C7;
-	Mon, 11 Dec 2023 18:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B24FC06;
+	Mon, 11 Dec 2023 18:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65255C433C8;
+	Mon, 11 Dec 2023 18:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321083;
-	bh=0HF2S5VCNKBy5ZAamOucmTlml1ybxQWcILeKV+6gddk=;
+	s=korg; t=1702320135;
+	bh=GezmwpaEFXymmsuY3XQA+6rAPKCuyuUXTfCX6A4ngHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tylXIodqcCyfSXdyapgU/LMmoLLa9btyph8GtlF8TiAPGUm+nhRtVGDLavshfIcHx
-	 kOHYK6g7KXemBw04aZUGxuGGIOS5117JfYQHiPnAREz3TjAqv7jCoHGTWv2hPpCwCx
-	 a3R1RrHDXicZPISIp7pgk6YmbS9/JXhz1WLhOsvg=
+	b=h458EXRzYYk9BCyTUhviAyL7M5QaDnByUeovTmBJL685r79OQLhdOKOAoQXON8jir
+	 Uxsgtl+sLgUvpxmzyl6qz9ik2UKI1uUKgQSBI3CxwJHqK1RDwXqAn8J7jLN3BUyelI
+	 UypPRj4+j0x2UOjGOLXP8vrMutR5tctN1qgNUgVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Marciniszyn <mike.marciniszyn@intel.com>,
-	Shiraz Saleem <shiraz.saleem@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/141] RDMA/core: Fix umem iterator when PAGE_SIZE is greater then HCA pgsz
+Subject: [PATCH 5.4 18/67] hv_netvsc: rndis_filter needs to select NLS
 Date: Mon, 11 Dec 2023 19:22:02 +0100
-Message-ID: <20231211182029.276256539@linuxfoundation.org>
+Message-ID: <20231211182015.873111928@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,147 +59,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Marciniszyn <mike.marciniszyn@intel.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 4fbc3a52cd4d14de3793f4b2c721d7306ea84cf9 ]
+[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
 
-64k pages introduce the situation in this diagram when the HCA 4k page
-size is being used:
+rndis_filter uses utf8s_to_utf16s() which is provided by setting
+NLS, so select NLS to fix the build error:
 
- +-------------------------------------------+ <--- 64k aligned VA
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
- |                   o                       |
- |                                           |
- |                   o                       |
- |                                           |
- |                   o                       |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+ <--- Live HCA page
- |OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO| <--- offset
- |                                           | <--- VA
- |                MR data                    |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
- |                   o                       |
- |                                           |
- |                   o                       |
- |                                           |
- |                   o                       |
- +-------------------------------------------+
- |                                           |
- |              HCA 4k page                  |
- |                                           |
- +-------------------------------------------+
+ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
 
-The VA addresses are coming from rdma-core in this diagram can be
-arbitrary, but for 64k pages, the VA may be offset by some number of HCA
-4k pages and followed by some number of HCA 4k pages.
-
-The current iterator doesn't account for either the preceding 4k pages or
-the following 4k pages.
-
-Fix the issue by extending the ib_block_iter to contain the number of DMA
-pages like comment [1] says and by using __sg_advance to start the
-iterator at the first live HCA page.
-
-The changes are contained in a parallel set of iterator start and next
-functions that are umem aware and specific to umem since there is one user
-of the rdma_for_each_block() without umem.
-
-These two fixes prevents the extra pages before and after the user MR
-data.
-
-Fix the preceding pages by using the __sq_advance field to start at the
-first 4k page containing MR data.
-
-Fix the following pages by saving the number of pgsz blocks in the
-iterator state and downcounting on each next.
-
-This fix allows for the elimination of the small page crutch noted in the
-Fixes.
-
-Fixes: 10c75ccb54e4 ("RDMA/umem: Prevent small pages from being returned by ib_umem_find_best_pgsz()")
-Link: https://lore.kernel.org/r/20231129202143.1434-2-shiraz.saleem@intel.com
-Signed-off-by: Mike Marciniszyn <mike.marciniszyn@intel.com>
-Signed-off-by: Shiraz Saleem <shiraz.saleem@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: K. Y. Srinivasan <kys@microsoft.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem.c | 6 ------
- include/rdma/ib_umem.h         | 9 ++++++++-
- include/rdma/ib_verbs.h        | 1 +
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/hyperv/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index 957634eceba8f..8ce569bf7525e 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -96,12 +96,6 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 		return page_size;
- 	}
- 
--	/* rdma_for_each_block() has a bug if the page size is smaller than the
--	 * page size used to build the umem. For now prevent smaller page sizes
--	 * from being returned.
--	 */
--	pgsz_bitmap &= GENMASK(BITS_PER_LONG - 1, PAGE_SHIFT);
--
- 	/* The best result is the smallest page size that results in the minimum
- 	 * number of required pages. Compute the largest page size that could
- 	 * work based on VA address bits that don't change.
-diff --git a/include/rdma/ib_umem.h b/include/rdma/ib_umem.h
-index 5ae9dff74dac8..2381e482fab34 100644
---- a/include/rdma/ib_umem.h
-+++ b/include/rdma/ib_umem.h
-@@ -77,6 +77,13 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
- {
- 	__rdma_block_iter_start(biter, umem->sgt_append.sgt.sgl,
- 				umem->sgt_append.sgt.nents, pgsz);
-+	biter->__sg_advance = ib_umem_offset(umem) & ~(pgsz - 1);
-+	biter->__sg_numblocks = ib_umem_num_dma_blocks(umem, pgsz);
-+}
-+
-+static inline bool __rdma_umem_block_iter_next(struct ib_block_iter *biter)
-+{
-+	return __rdma_block_iter_next(biter) && biter->__sg_numblocks--;
- }
- 
- /**
-@@ -92,7 +99,7 @@ static inline void __rdma_umem_block_iter_start(struct ib_block_iter *biter,
-  */
- #define rdma_umem_for_each_dma_block(umem, biter, pgsz)                        \
- 	for (__rdma_umem_block_iter_start(biter, umem, pgsz);                  \
--	     __rdma_block_iter_next(biter);)
-+	     __rdma_umem_block_iter_next(biter);)
- 
- #ifdef CONFIG_INFINIBAND_USER_MEM
- 
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index 4ba642fc8a19a..fa13bf15feb3e 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -2817,6 +2817,7 @@ struct ib_block_iter {
- 	/* internal states */
- 	struct scatterlist *__sg;	/* sg holding the current aligned block */
- 	dma_addr_t __dma_addr;		/* unaligned DMA address of this block */
-+	size_t __sg_numblocks;		/* ib_umem_num_dma_blocks() */
- 	unsigned int __sg_nents;	/* number of SG entries */
- 	unsigned int __sg_advance;	/* number of bytes to advance in sg in next step */
- 	unsigned int __pg_bit;		/* alignment of current block */
+diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
+index ca7bf7f897d36..c8cbd85adcf99 100644
+--- a/drivers/net/hyperv/Kconfig
++++ b/drivers/net/hyperv/Kconfig
+@@ -3,5 +3,6 @@ config HYPERV_NET
+ 	tristate "Microsoft Hyper-V virtual network driver"
+ 	depends on HYPERV
+ 	select UCS2_STRING
++	select NLS
+ 	help
+ 	  Select this option to enable the Hyper-V virtual network driver.
 -- 
 2.42.0
 
