@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FF3C80DA14
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8349480D955
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:52:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55134281EE8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF451F21B71
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:52:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1D3537EB;
-	Mon, 11 Dec 2023 18:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7819251C46;
+	Mon, 11 Dec 2023 18:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dcNvuO58"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYzCfA7L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FA7537E3;
-	Mon, 11 Dec 2023 18:58:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307FDC433C9;
-	Mon, 11 Dec 2023 18:58:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A8B51C2D;
+	Mon, 11 Dec 2023 18:52:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B40EFC433C9;
+	Mon, 11 Dec 2023 18:52:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321113;
-	bh=jsKeHGRo3SG0YKc47RpqaqS/UcQ1mUO/5HH3BIwsFeE=;
+	s=korg; t=1702320771;
+	bh=jqvDxBCT97pe2VhqlLplDANkG7iseFGFMxckOKVkw+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dcNvuO58hD0iEQ6Bok8Cg//gnxs7k42pT1aW/vMhSHjwfYVbo0EE+qxEG1Z30XDoz
-	 rVaqqjoAG+nH2OmfurDawGG6Dh91M8We8s07zSiEt3HSH4OdvtoluavAc4HPKhCFVa
-	 /UELtPmD2+7aEEJKa1d0rMzgLRQSGld7+i/rinIo=
+	b=mYzCfA7LAVNYCMkp9gY9ZcoS1dmdusHqshXdH6fYKxWVoDa9GLKNav23ScYkbPpoc
+	 f+FrzjuMkJMyTnF7r78ngNQj5A/LHF6HpCZ+Rx0t3dW264tG0J4SJGs1eG5ae+Ab2c
+	 4L0YgmueVCF55r+FyUj0myFclws+sP4sJd4JiB/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 115/141] arm64: dts: mt8183: kukui: Fix underscores in node names
-Date: Mon, 11 Dec 2023 19:22:54 +0100
-Message-ID: <20231211182031.539266632@linuxfoundation.org>
+	Peter Gonda <pgonda@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.1 185/194] KVM: SVM: Update EFER software model on CR0 trap for SEV-ES
+Date: Mon, 11 Dec 2023 19:22:55 +0100
+Message-ID: <20231211182044.936144855@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,410 +53,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 8980c30141d3986beab815d85762b9c67196ed72 ]
+commit 4cdf351d3630a640ab6a05721ef055b9df62277f upstream.
 
-Replace underscores with hyphens in pinctrl node names both for consistency
-and to adhere to the bindings.
+In general, activating long mode involves setting the EFER_LME bit in
+the EFER register and then enabling the X86_CR0_PG bit in the CR0
+register. At this point, the EFER_LMA bit will be set automatically by
+hardware.
 
+In the case of SVM/SEV guests where writes to CR0 are intercepted, it's
+necessary for the host to set EFER_LMA on behalf of the guest since
+hardware does not see the actual CR0 write.
+
+In the case of SEV-ES guests where writes to CR0 are trapped instead of
+intercepted, the hardware *does* see/record the write to CR0 before
+exiting and passing the value on to the host, so as part of enabling
+SEV-ES support commit f1c6366e3043 ("KVM: SVM: Add required changes to
+support intercepts under SEV-ES") dropped special handling of the
+EFER_LMA bit with the understanding that it would be set automatically.
+
+However, since the guest never explicitly sets the EFER_LMA bit, the
+host never becomes aware that it has been set. This becomes problematic
+when userspace tries to get/set the EFER values via
+KVM_GET_SREGS/KVM_SET_SREGS, since the EFER contents tracked by the host
+will be missing the EFER_LMA bit, and when userspace attempts to pass
+the EFER value back via KVM_SET_SREGS it will fail a sanity check that
+asserts that EFER_LMA should always be set when X86_CR0_PG and EFER_LME
+are set.
+
+Fix this by always inferring the value of EFER_LMA based on X86_CR0_PG
+and EFER_LME, regardless of whether or not SEV-ES is enabled.
+
+Fixes: f1c6366e3043 ("KVM: SVM: Add required changes to support intercepts under SEV-ES")
+Reported-by: Peter Gonda <pgonda@google.com>
 Cc: stable@vger.kernel.org
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Fixes: 1652dbf7363a ("arm64: dts: mt8183: add scp node")
-Fixes: 27eaf34df364 ("arm64: dts: mt8183: config dsi node")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20231026191343.3345279-2-hsinyi@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Message-Id: <20210507165947.2502412-2-seanjc@google.com>
+[A two year old patch that was revived after we noticed the failure in
+ KVM_SET_SREGS and a similar patch was posted by Michael Roth.  This is
+ Sean's patch, but with Michael's more complete commit message. - Paolo]
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    |  6 +-
- .../arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 88 +++++++++----------
- 2 files changed, 47 insertions(+), 47 deletions(-)
+ arch/x86/kvm/svm/svm.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index a374b809adec9..c1153580ef958 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -440,20 +440,20 @@ pins2 {
- 	};
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1786,15 +1786,17 @@ void svm_set_cr0(struct kvm_vcpu *vcpu,
+ 	bool old_paging = is_paging(vcpu);
  
- 	touchscreen_pins: touchscreen-pins {
--		touch_int_odl {
-+		touch-int-odl {
- 			pinmux = <PINMUX_GPIO155__FUNC_GPIO155>;
- 			input-enable;
- 			bias-pull-up;
- 		};
+ #ifdef CONFIG_X86_64
+-	if (vcpu->arch.efer & EFER_LME && !vcpu->arch.guest_state_protected) {
++	if (vcpu->arch.efer & EFER_LME) {
+ 		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
+ 			vcpu->arch.efer |= EFER_LMA;
+-			svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
++			if (!vcpu->arch.guest_state_protected)
++				svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
+ 		}
  
--		touch_rst_l {
-+		touch-rst-l {
- 			pinmux = <PINMUX_GPIO156__FUNC_GPIO156>;
- 			output-high;
- 		};
- 	};
- 
- 	trackpad_pins: trackpad-pins {
--		trackpad_int {
-+		trackpad-int {
- 			pinmux = <PINMUX_GPIO7__FUNC_GPIO7>;
- 			input-enable;
- 			bias-disable; /* pulled externally */
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index bc583a1da9060..6b7a42c5d5153 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -407,13 +407,13 @@ &mt6358_vsim2_reg {
- 
- &pio {
- 	bt_pins: bt-pins {
--		pins_bt_en {
-+		pins-bt-en {
- 			pinmux = <PINMUX_GPIO120__FUNC_GPIO120>;
- 			output-low;
- 		};
- 	};
- 
--	ec_ap_int_odl: ec_ap_int_odl {
-+	ec_ap_int_odl: ec-ap-int-odl {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
- 			input-enable;
-@@ -421,7 +421,7 @@ pins1 {
- 		};
- 	};
- 
--	h1_int_od_l: h1_int_od_l {
-+	h1_int_od_l: h1-int-od-l {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO153__FUNC_GPIO153>;
- 			input-enable;
-@@ -429,7 +429,7 @@ pins1 {
- 	};
- 
- 	i2c0_pins: i2c0 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO82__FUNC_SDA0>,
- 				 <PINMUX_GPIO83__FUNC_SCL0>;
- 			mediatek,pull-up-adv = <3>;
-@@ -438,7 +438,7 @@ pins_bus {
- 	};
- 
- 	i2c1_pins: i2c1 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO81__FUNC_SDA1>,
- 				 <PINMUX_GPIO84__FUNC_SCL1>;
- 			mediatek,pull-up-adv = <3>;
-@@ -447,7 +447,7 @@ pins_bus {
- 	};
- 
- 	i2c2_pins: i2c2 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO103__FUNC_SCL2>,
- 				 <PINMUX_GPIO104__FUNC_SDA2>;
- 			bias-disable;
-@@ -456,7 +456,7 @@ pins_bus {
- 	};
- 
- 	i2c3_pins: i2c3 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO50__FUNC_SCL3>,
- 				 <PINMUX_GPIO51__FUNC_SDA3>;
- 			mediatek,pull-up-adv = <3>;
-@@ -465,7 +465,7 @@ pins_bus {
- 	};
- 
- 	i2c4_pins: i2c4 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO105__FUNC_SCL4>,
- 				 <PINMUX_GPIO106__FUNC_SDA4>;
- 			bias-disable;
-@@ -474,7 +474,7 @@ pins_bus {
- 	};
- 
- 	i2c5_pins: i2c5 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO48__FUNC_SCL5>,
- 				 <PINMUX_GPIO49__FUNC_SDA5>;
- 			mediatek,pull-up-adv = <3>;
-@@ -483,7 +483,7 @@ pins_bus {
- 	};
- 
- 	i2c6_pins: i2c6 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO11__FUNC_SCL6>,
- 				 <PINMUX_GPIO12__FUNC_SDA6>;
- 			bias-disable;
-@@ -491,7 +491,7 @@ pins_bus {
- 	};
- 
- 	mmc0_pins_default: mmc0-pins-default {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO123__FUNC_MSDC0_DAT0>,
- 				 <PINMUX_GPIO128__FUNC_MSDC0_DAT1>,
- 				 <PINMUX_GPIO125__FUNC_MSDC0_DAT2>,
-@@ -506,13 +506,13 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <01>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO124__FUNC_MSDC0_CLK>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <10>;
- 		};
- 
--		pins_rst {
-+		pins-rst {
- 			pinmux = <PINMUX_GPIO133__FUNC_MSDC0_RSTB>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <01>;
-@@ -520,7 +520,7 @@ pins_rst {
- 	};
- 
- 	mmc0_pins_uhs: mmc0-pins-uhs {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO123__FUNC_MSDC0_DAT0>,
- 				 <PINMUX_GPIO128__FUNC_MSDC0_DAT1>,
- 				 <PINMUX_GPIO125__FUNC_MSDC0_DAT2>,
-@@ -535,19 +535,19 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <01>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO124__FUNC_MSDC0_CLK>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <10>;
- 		};
- 
--		pins_ds {
-+		pins-ds {
- 			pinmux = <PINMUX_GPIO131__FUNC_MSDC0_DSL>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <10>;
- 		};
- 
--		pins_rst {
-+		pins-rst {
- 			pinmux = <PINMUX_GPIO133__FUNC_MSDC0_RSTB>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-up-adv = <01>;
-@@ -555,7 +555,7 @@ pins_rst {
- 	};
- 
- 	mmc1_pins_default: mmc1-pins-default {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO31__FUNC_MSDC1_CMD>,
- 				 <PINMUX_GPIO32__FUNC_MSDC1_DAT0>,
- 				 <PINMUX_GPIO34__FUNC_MSDC1_DAT1>,
-@@ -565,7 +565,7 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <10>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO29__FUNC_MSDC1_CLK>;
- 			input-enable;
- 			mediatek,pull-down-adv = <10>;
-@@ -573,7 +573,7 @@ pins_clk {
- 	};
- 
- 	mmc1_pins_uhs: mmc1-pins-uhs {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO31__FUNC_MSDC1_CMD>,
- 				 <PINMUX_GPIO32__FUNC_MSDC1_DAT0>,
- 				 <PINMUX_GPIO34__FUNC_MSDC1_DAT1>,
-@@ -584,7 +584,7 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <10>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO29__FUNC_MSDC1_CLK>;
- 			drive-strength = <MTK_DRIVE_8mA>;
- 			mediatek,pull-down-adv = <10>;
-@@ -592,15 +592,15 @@ pins_clk {
- 		};
- 	};
- 
--	panel_pins_default: panel_pins_default {
--		panel_reset {
-+	panel_pins_default: panel-pins-default {
-+		panel-reset {
- 			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
- 			output-low;
- 			bias-pull-up;
- 		};
- 	};
- 
--	pwm0_pin_default: pwm0_pin_default {
-+	pwm0_pin_default: pwm0-pin-default {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO176__FUNC_GPIO176>;
- 			output-high;
-@@ -612,14 +612,14 @@ pins2 {
- 	};
- 
- 	scp_pins: scp {
--		pins_scp_uart {
-+		pins-scp-uart {
- 			pinmux = <PINMUX_GPIO110__FUNC_TP_URXD1_AO>,
- 				 <PINMUX_GPIO112__FUNC_TP_UTXD1_AO>;
- 		};
- 	};
- 
- 	spi0_pins: spi0 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO85__FUNC_SPI0_MI>,
- 				 <PINMUX_GPIO86__FUNC_GPIO86>,
- 				 <PINMUX_GPIO87__FUNC_SPI0_MO>,
-@@ -629,7 +629,7 @@ pins_spi {
- 	};
- 
- 	spi1_pins: spi1 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO161__FUNC_SPI1_A_MI>,
- 				 <PINMUX_GPIO162__FUNC_SPI1_A_CSB>,
- 				 <PINMUX_GPIO163__FUNC_SPI1_A_MO>,
-@@ -639,20 +639,20 @@ pins_spi {
- 	};
- 
- 	spi2_pins: spi2 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO0__FUNC_SPI2_CSB>,
- 				 <PINMUX_GPIO1__FUNC_SPI2_MO>,
- 				 <PINMUX_GPIO2__FUNC_SPI2_CLK>;
- 			bias-disable;
- 		};
--		pins_spi_mi {
-+		pins-spi-mi {
- 			pinmux = <PINMUX_GPIO94__FUNC_SPI2_MI>;
- 			mediatek,pull-down-adv = <00>;
- 		};
- 	};
- 
- 	spi3_pins: spi3 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO21__FUNC_SPI3_MI>,
- 				 <PINMUX_GPIO22__FUNC_SPI3_CSB>,
- 				 <PINMUX_GPIO23__FUNC_SPI3_MO>,
-@@ -662,7 +662,7 @@ pins_spi {
- 	};
- 
- 	spi4_pins: spi4 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO17__FUNC_SPI4_MI>,
- 				 <PINMUX_GPIO18__FUNC_SPI4_CSB>,
- 				 <PINMUX_GPIO19__FUNC_SPI4_MO>,
-@@ -672,7 +672,7 @@ pins_spi {
- 	};
- 
- 	spi5_pins: spi5 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO13__FUNC_SPI5_MI>,
- 				 <PINMUX_GPIO14__FUNC_SPI5_CSB>,
- 				 <PINMUX_GPIO15__FUNC_SPI5_MO>,
-@@ -682,63 +682,63 @@ pins_spi {
- 	};
- 
- 	uart0_pins_default: uart0-pins-default {
--		pins_rx {
-+		pins-rx {
- 			pinmux = <PINMUX_GPIO95__FUNC_URXD0>;
- 			input-enable;
- 			bias-pull-up;
- 		};
--		pins_tx {
-+		pins-tx {
- 			pinmux = <PINMUX_GPIO96__FUNC_UTXD0>;
- 		};
- 	};
- 
- 	uart1_pins_default: uart1-pins-default {
--		pins_rx {
-+		pins-rx {
- 			pinmux = <PINMUX_GPIO121__FUNC_URXD1>;
- 			input-enable;
- 			bias-pull-up;
- 		};
--		pins_tx {
-+		pins-tx {
- 			pinmux = <PINMUX_GPIO115__FUNC_UTXD1>;
- 		};
--		pins_rts {
-+		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
- 			output-enable;
- 		};
--		pins_cts {
-+		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
- 			input-enable;
- 		};
- 	};
- 
- 	uart1_pins_sleep: uart1-pins-sleep {
--		pins_rx {
-+		pins-rx {
- 			pinmux = <PINMUX_GPIO121__FUNC_GPIO121>;
- 			input-enable;
- 			bias-pull-up;
- 		};
--		pins_tx {
-+		pins-tx {
- 			pinmux = <PINMUX_GPIO115__FUNC_UTXD1>;
- 		};
--		pins_rts {
-+		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
- 			output-enable;
- 		};
--		pins_cts {
-+		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
- 			input-enable;
- 		};
- 	};
- 
- 	wifi_pins_pwrseq: wifi-pins-pwrseq {
--		pins_wifi_enable {
-+		pins-wifi-enable {
- 			pinmux = <PINMUX_GPIO119__FUNC_GPIO119>;
- 			output-low;
- 		};
- 	};
- 
- 	wifi_pins_wakeup: wifi-pins-wakeup {
--		pins_wifi_wakeup {
-+		pins-wifi-wakeup {
- 			pinmux = <PINMUX_GPIO113__FUNC_GPIO113>;
- 			input-enable;
- 		};
--- 
-2.42.0
-
+ 		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
+ 			vcpu->arch.efer &= ~EFER_LMA;
+-			svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
++			if (!vcpu->arch.guest_state_protected)
++				svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
+ 		}
+ 	}
+ #endif
 
 
 
