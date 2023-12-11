@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-6327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5291680DA1E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:59:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7682C80D95A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:53:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF1D2820BC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:59:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219EA1F21B3D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE92E548;
-	Mon, 11 Dec 2023 18:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FBB51C47;
+	Mon, 11 Dec 2023 18:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDTrPUSX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tsqe7nWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4165651C5C;
-	Mon, 11 Dec 2023 18:58:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC59AC433C7;
-	Mon, 11 Dec 2023 18:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F1D51C37;
+	Mon, 11 Dec 2023 18:53:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B1DC433C7;
+	Mon, 11 Dec 2023 18:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702321130;
-	bh=98wBZfP/UhL5zEZ6JKCwhnijgKYvmJndQ2fWaNc4fRk=;
+	s=korg; t=1702320781;
+	bh=eWM4zmJ5iC1OPM7z5J0mSS0j5vy3KuR1GJM2S1Xgtl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDTrPUSXIbrArsm7EkB9NJXYUITsbUsj4j/4NI8NbevK5zKsw2KS1zhy1SEN6RF5T
-	 uAono+eT+SMyr9eOABwsyVYRhQgJIrK29DDtgC2UHPmwqsFNSM+oAKd3q1PlJVxUrI
-	 WeMlRbxxTiS2aHLjy83A1JYz0UMgQenBK2tq+698=
+	b=Tsqe7nWBo/wx8RYKoN/TtMoyF0Fo8LgUHU3/F9mhykDuDJAjbcyaAEubkRPGgHSvt
+	 NC6WCsF8Udfy6P0lrD0dcjR4+meyna+jr5vx2PfDAKYUayDYejs4fzuISrdqw2NlNA
+	 o6WtnsUQCCLpHgzPN0d5a6yIu4cjylgi5AVS+L/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 120/141] drm/amdgpu: correct the amdgpu runtime dereference usage count
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 189/194] netfilter: nft_set_pipapo: skip inactive elements during set walk
 Date: Mon, 11 Dec 2023 19:22:59 +0100
-Message-ID: <20231211182031.771183393@linuxfoundation.org>
+Message-ID: <20231211182045.133347541@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +53,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prike Liang <Prike.Liang@amd.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit c6df7f313794c3ad41a49b9a7c95da369db607f3 ]
+commit 317eb9685095678f2c9f5a8189de698c5354316a upstream.
 
-Fix the amdgpu runpm dereference usage count.
+Otherwise set elements can be deactivated twice which will cause a crash.
 
-Signed-off-by: Prike Liang <Prike.Liang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/netfilter/nft_set_pipapo.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-index 2952f89734487..11413b3e80c5b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -296,14 +296,11 @@ int amdgpu_display_crtc_set_config(struct drm_mode_set *set,
- 		adev->have_disp_power_ref = true;
- 		return ret;
- 	}
--	/* if we have no active crtcs, then drop the power ref
--	 * we got before
-+	/* if we have no active crtcs, then go to
-+	 * drop the power ref we got before
- 	 */
--	if (!active && adev->have_disp_power_ref) {
--		pm_runtime_put_autosuspend(dev->dev);
-+	if (!active && adev->have_disp_power_ref)
- 		adev->have_disp_power_ref = false;
--	}
--
- out:
- 	/* drop the power reference we got coming in here */
- 	pm_runtime_put_autosuspend(dev->dev);
--- 
-2.42.0
-
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -2042,6 +2042,9 @@ static void nft_pipapo_walk(const struct
+ 
+ 		e = f->mt[r].e;
+ 
++		if (!nft_set_elem_active(&e->ext, iter->genmask))
++			goto cont;
++
+ 		elem.priv = e;
+ 
+ 		iter->err = iter->fn(ctx, set, iter, &elem);
 
 
 
