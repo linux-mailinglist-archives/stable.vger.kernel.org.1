@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-5875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDE180D79C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8166380D98C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D2BAB2101A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CB1F282053
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C095352F82;
-	Mon, 11 Dec 2023 18:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C728851C59;
+	Mon, 11 Dec 2023 18:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QN61pmbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va1IG3Qf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B71C51C58;
-	Mon, 11 Dec 2023 18:38:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29FDC433C7;
-	Mon, 11 Dec 2023 18:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A2951C38;
+	Mon, 11 Dec 2023 18:54:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3E5C433C7;
+	Mon, 11 Dec 2023 18:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319903;
-	bh=oClygh7hV3Cv4ZywstQTklsA708d6vhkes87uNmc604=;
+	s=korg; t=1702320891;
+	bh=M26aKDLjI4naHN9yuOg4o1X0vlT4cMDH7OhL5nJ7BEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QN61pmbEvVH/mb4tfOtVGhTfHrRgTPzPU5gSDDLmNGytb1ekVNhfYxXqy/JIJdQ9q
-	 XwZCVTyAXGDX+pLhQOzm7mwf0I/hNoZ2AxHpCSMGE7HgAz1uOqJNZiDYMf1W8TNvkn
-	 5jJhM6F2nkoAgcIgasTFMDWsX6Po8WWTDWlr2dSI=
+	b=Va1IG3QflZdv7wp24z9FXv01E1mLePy42nDYErjJ4Oeskc64rGpki5PkdEl93S2L3
+	 RdnEH+I36EsOcJl0e80Nq+H2o5VAEATra5Tw8sXd48rzLMzhzpsyVAUY+1O6hMfCLj
+	 dEMQPH/YZu4hbx4Y5vSjdCn2uCQa2ZntteRNshwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Liao <liaoyu15@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Liu Tie <liutie4@huawei.com>,
+	Alex Pakhunov <alexey.pakhunov@spacex.com>,
+	Vincent Wong <vincent.wong2@spacex.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 01/97] hrtimers: Push pending hrtimers away from outgoing CPU earlier
+Subject: [PATCH 5.15 005/141] tg3: Move the [rt]x_dropped counters to tg3_napi
 Date: Mon, 11 Dec 2023 19:21:04 +0100
-Message-ID: <20231211182019.881869912@linuxfoundation.org>
+Message-ID: <20231211182026.724020443@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,156 +55,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Alex Pakhunov <alexey.pakhunov@spacex.com>
 
-[ Upstream commit 5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94 ]
+[ Upstream commit 907d1bdb8b2cc0357d03a1c34d2a08d9943760b1 ]
 
-2b8272ff4a70 ("cpu/hotplug: Prevent self deadlock on CPU hot-unplug")
-solved the straight forward CPU hotplug deadlock vs. the scheduler
-bandwidth timer. Yu discovered a more involved variant where a task which
-has a bandwidth timer started on the outgoing CPU holds a lock and then
-gets throttled. If the lock required by one of the CPU hotplug callbacks
-the hotplug operation deadlocks because the unthrottling timer event is not
-handled on the dying CPU and can only be recovered once the control CPU
-reaches the hotplug state which pulls the pending hrtimers from the dead
-CPU.
+This change moves [rt]x_dropped counters to tg3_napi so that they can be
+updated by a single writer, race-free.
 
-Solve this by pushing the hrtimers away from the dying CPU in the dying
-callbacks. Nothing can queue a hrtimer on the dying CPU at that point because
-all other CPUs spin in stop_machine() with interrupts disabled and once the
-operation is finished the CPU is marked offline.
-
-Reported-by: Yu Liao <liaoyu15@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Liu Tie <liutie4@huawei.com>
-Link: https://lore.kernel.org/r/87a5rphara.ffs@tglx
+Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
+Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20231113182350.37472-1-alexey.pakhunov@spacex.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cpuhotplug.h |  1 +
- include/linux/hrtimer.h    |  4 ++--
- kernel/cpu.c               |  8 +++++++-
- kernel/time/hrtimer.c      | 33 ++++++++++++---------------------
- 4 files changed, 22 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/broadcom/tg3.c | 38 +++++++++++++++++++++++++----
+ drivers/net/ethernet/broadcom/tg3.h |  4 +--
+ 2 files changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index 7cc2889608e0f..f5a5df3a8cfd1 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -149,6 +149,7 @@ enum cpuhp_state {
- 	CPUHP_AP_ARM_CORESIGHT_CTI_STARTING,
- 	CPUHP_AP_ARM64_ISNDEP_STARTING,
- 	CPUHP_AP_SMPCFD_DYING,
-+	CPUHP_AP_HRTIMERS_DYING,
- 	CPUHP_AP_X86_TBOOT_DYING,
- 	CPUHP_AP_ARM_CACHE_B15_RAC_DYING,
- 	CPUHP_AP_ONLINE,
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 7f1b8549ebcee..a88be8bd4e1d1 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -526,9 +526,9 @@ extern void sysrq_timer_list_show(void);
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index 2c41852a082bb..946b4decac0ce 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -6854,7 +6854,7 @@ static int tg3_rx(struct tg3_napi *tnapi, int budget)
+ 				       desc_idx, *post_ptr);
+ 		drop_it_no_recycle:
+ 			/* Other statistics kept track of by card. */
+-			tp->rx_dropped++;
++			tnapi->rx_dropped++;
+ 			goto next_pkt;
+ 		}
  
- int hrtimers_prepare_cpu(unsigned int cpu);
- #ifdef CONFIG_HOTPLUG_CPU
--int hrtimers_dead_cpu(unsigned int cpu);
-+int hrtimers_cpu_dying(unsigned int cpu);
- #else
--#define hrtimers_dead_cpu	NULL
-+#define hrtimers_cpu_dying	NULL
- #endif
- 
- #endif
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 008b50da22246..abf717c4f57c2 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1595,7 +1595,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 	[CPUHP_HRTIMERS_PREPARE] = {
- 		.name			= "hrtimers:prepare",
- 		.startup.single		= hrtimers_prepare_cpu,
--		.teardown.single	= hrtimers_dead_cpu,
-+		.teardown.single	= NULL,
- 	},
- 	[CPUHP_SMPCFD_PREPARE] = {
- 		.name			= "smpcfd:prepare",
-@@ -1662,6 +1662,12 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 		.startup.single		= NULL,
- 		.teardown.single	= smpcfd_dying_cpu,
- 	},
-+	[CPUHP_AP_HRTIMERS_DYING] = {
-+		.name			= "hrtimers:dying",
-+		.startup.single		= NULL,
-+		.teardown.single	= hrtimers_cpu_dying,
-+	},
-+
- 	/* Entry state on starting. Interrupts enabled from here on. Transient
- 	 * state for synchronsization */
- 	[CPUHP_AP_ONLINE] = {
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 70deb2f01e97a..ede09dda36e90 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2114,29 +2114,22 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 	}
+@@ -8152,7 +8152,7 @@ static netdev_tx_t tg3_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ drop:
+ 	dev_kfree_skb_any(skb);
+ drop_nofree:
+-	tp->tx_dropped++;
++	tnapi->tx_dropped++;
+ 	return NETDEV_TX_OK;
  }
  
--int hrtimers_dead_cpu(unsigned int scpu)
-+int hrtimers_cpu_dying(unsigned int dying_cpu)
+@@ -9331,7 +9331,7 @@ static void __tg3_set_rx_mode(struct net_device *);
+ /* tp->lock is held. */
+ static int tg3_halt(struct tg3 *tp, int kind, bool silent)
  {
- 	struct hrtimer_cpu_base *old_base, *new_base;
--	int i;
-+	int i, ncpu = cpumask_first(cpu_active_mask);
+-	int err;
++	int err, i;
  
--	BUG_ON(cpu_online(scpu));
--	tick_cancel_sched_timer(scpu);
-+	tick_cancel_sched_timer(dying_cpu);
+ 	tg3_stop_fw(tp);
+ 
+@@ -9352,6 +9352,13 @@ static int tg3_halt(struct tg3 *tp, int kind, bool silent)
+ 
+ 		/* And make sure the next sample is new data */
+ 		memset(tp->hw_stats, 0, sizeof(struct tg3_hw_stats));
 +
-+	old_base = this_cpu_ptr(&hrtimer_bases);
-+	new_base = &per_cpu(hrtimer_bases, ncpu);
++		for (i = 0; i < TG3_IRQ_MAX_VECS; ++i) {
++			struct tg3_napi *tnapi = &tp->napi[i];
++
++			tnapi->rx_dropped = 0;
++			tnapi->tx_dropped = 0;
++		}
+ 	}
  
--	/*
--	 * this BH disable ensures that raise_softirq_irqoff() does
--	 * not wakeup ksoftirqd (and acquire the pi-lock) while
--	 * holding the cpu_base lock
--	 */
--	local_bh_disable();
--	local_irq_disable();
--	old_base = &per_cpu(hrtimer_bases, scpu);
--	new_base = this_cpu_ptr(&hrtimer_bases);
- 	/*
- 	 * The caller is globally serialized and nobody else
- 	 * takes two locks at once, deadlock is not possible.
- 	 */
--	raw_spin_lock(&new_base->lock);
--	raw_spin_lock_nested(&old_base->lock, SINGLE_DEPTH_NESTING);
-+	raw_spin_lock(&old_base->lock);
-+	raw_spin_lock_nested(&new_base->lock, SINGLE_DEPTH_NESTING);
+ 	return err;
+@@ -11906,6 +11913,9 @@ static void tg3_get_nstats(struct tg3 *tp, struct rtnl_link_stats64 *stats)
+ {
+ 	struct rtnl_link_stats64 *old_stats = &tp->net_stats_prev;
+ 	struct tg3_hw_stats *hw_stats = tp->hw_stats;
++	unsigned long rx_dropped;
++	unsigned long tx_dropped;
++	int i;
  
- 	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
- 		migrate_hrtimer_list(&old_base->clock_base[i],
-@@ -2147,15 +2140,13 @@ int hrtimers_dead_cpu(unsigned int scpu)
- 	 * The migration might have changed the first expiring softirq
- 	 * timer on this CPU. Update it.
- 	 */
--	hrtimer_update_softirq_timer(new_base, false);
-+	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
-+	/* Tell the other CPU to retrigger the next event */
-+	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
+ 	stats->rx_packets = old_stats->rx_packets +
+ 		get_stat64(&hw_stats->rx_ucast_packets) +
+@@ -11952,8 +11962,26 @@ static void tg3_get_nstats(struct tg3 *tp, struct rtnl_link_stats64 *stats)
+ 	stats->rx_missed_errors = old_stats->rx_missed_errors +
+ 		get_stat64(&hw_stats->rx_discards);
  
--	raw_spin_unlock(&old_base->lock);
- 	raw_spin_unlock(&new_base->lock);
-+	raw_spin_unlock(&old_base->lock);
- 
--	/* Check, if we got expired work to do */
--	__hrtimer_peek_ahead_timers();
--	local_irq_enable();
--	local_bh_enable();
- 	return 0;
+-	stats->rx_dropped = tp->rx_dropped;
+-	stats->tx_dropped = tp->tx_dropped;
++	/* Aggregate per-queue counters. The per-queue counters are updated
++	 * by a single writer, race-free. The result computed by this loop
++	 * might not be 100% accurate (counters can be updated in the middle of
++	 * the loop) but the next tg3_get_nstats() will recompute the current
++	 * value so it is acceptable.
++	 *
++	 * Note that these counters wrap around at 4G on 32bit machines.
++	 */
++	rx_dropped = (unsigned long)(old_stats->rx_dropped);
++	tx_dropped = (unsigned long)(old_stats->tx_dropped);
++
++	for (i = 0; i < tp->irq_cnt; i++) {
++		struct tg3_napi *tnapi = &tp->napi[i];
++
++		rx_dropped += tnapi->rx_dropped;
++		tx_dropped += tnapi->tx_dropped;
++	}
++
++	stats->rx_dropped = rx_dropped;
++	stats->tx_dropped = tx_dropped;
  }
+ 
+ static int tg3_get_regs_len(struct net_device *dev)
+diff --git a/drivers/net/ethernet/broadcom/tg3.h b/drivers/net/ethernet/broadcom/tg3.h
+index 1000c894064f0..8d753f8c5b065 100644
+--- a/drivers/net/ethernet/broadcom/tg3.h
++++ b/drivers/net/ethernet/broadcom/tg3.h
+@@ -3018,6 +3018,7 @@ struct tg3_napi {
+ 	u16				*rx_rcb_prod_idx;
+ 	struct tg3_rx_prodring_set	prodring;
+ 	struct tg3_rx_buffer_desc	*rx_rcb;
++	unsigned long			rx_dropped;
+ 
+ 	u32				tx_prod	____cacheline_aligned;
+ 	u32				tx_cons;
+@@ -3026,6 +3027,7 @@ struct tg3_napi {
+ 	u32				prodmbox;
+ 	struct tg3_tx_buffer_desc	*tx_ring;
+ 	struct tg3_tx_ring_info		*tx_buffers;
++	unsigned long			tx_dropped;
+ 
+ 	dma_addr_t			status_mapping;
+ 	dma_addr_t			rx_rcb_mapping;
+@@ -3219,8 +3221,6 @@ struct tg3 {
+ 
+ 
+ 	/* begin "everything else" cacheline(s) section */
+-	unsigned long			rx_dropped;
+-	unsigned long			tx_dropped;
+ 	struct rtnl_link_stats64	net_stats_prev;
+ 	struct tg3_ethtool_stats	estats_prev;
  
 -- 
 2.42.0
