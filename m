@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-5961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC6A80D80F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3235F80D588
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCED71C214AE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D11521F21A60
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357A6524AC;
-	Mon, 11 Dec 2023 18:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405C751021;
+	Mon, 11 Dec 2023 18:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h458EXRz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYoWa5bH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1B24FC06;
-	Mon, 11 Dec 2023 18:42:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65255C433C8;
-	Mon, 11 Dec 2023 18:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022174F212;
+	Mon, 11 Dec 2023 18:25:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B37AC433C8;
+	Mon, 11 Dec 2023 18:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320135;
-	bh=GezmwpaEFXymmsuY3XQA+6rAPKCuyuUXTfCX6A4ngHE=;
+	s=korg; t=1702319140;
+	bh=q7A5gd3HGFVavjwj+2z4tyj4xATynWhRH7T3dWAxfp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h458EXRzYYk9BCyTUhviAyL7M5QaDnByUeovTmBJL685r79OQLhdOKOAoQXON8jir
-	 Uxsgtl+sLgUvpxmzyl6qz9ik2UKI1uUKgQSBI3CxwJHqK1RDwXqAn8J7jLN3BUyelI
-	 UypPRj4+j0x2UOjGOLXP8vrMutR5tctN1qgNUgVk=
+	b=tYoWa5bH59IClYvMdznnn3PclB28GNo+wyFu5rNdOFbwo7HNIqauFz/GR3qVKm0w8
+	 qPoOlesFZJ+0aTf4YgJzV8Lv3bZaxuVU/fjRuUl6zKlSF3z8seILb1pgQR+Wc4HWpW
+	 GdaIUSaOOAPMfxauYSTNYRqnhwF9efSBCKUUAI5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Michael Kelley <mikelley@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 18/67] hv_netvsc: rndis_filter needs to select NLS
+	Namhyung Kim <namhyung@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 4.19 52/55] tools headers UAPI: Sync linux/perf_event.h with the kernel sources
 Date: Mon, 11 Dec 2023 19:22:02 +0100
-Message-ID: <20231211182015.873111928@linuxfoundation.org>
+Message-ID: <20231211182014.209315651@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +56,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
+commit 65ba872a6971c11ceb342c3330f059289c0e6bdb upstream.
 
-rndis_filter uses utf8s_to_utf16s() which is provided by setting
-NLS, so select NLS to fix the build error:
+To pick the trivial change in:
 
-ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
+  119a784c81270eb8 ("perf/core: Add a new read format to get a number of lost samples")
 
-Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: K. Y. Srinivasan <kys@microsoft.com>
-Cc: Wei Liu <wei.liu@kernel.org>
-Cc: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20220819003644.508916-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/include/uapi/linux/perf_event.h |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
-index ca7bf7f897d36..c8cbd85adcf99 100644
---- a/drivers/net/hyperv/Kconfig
-+++ b/drivers/net/hyperv/Kconfig
-@@ -3,5 +3,6 @@ config HYPERV_NET
- 	tristate "Microsoft Hyper-V virtual network driver"
- 	depends on HYPERV
- 	select UCS2_STRING
-+	select NLS
- 	help
- 	  Select this option to enable the Hyper-V virtual network driver.
--- 
-2.42.0
-
+--- a/tools/include/uapi/linux/perf_event.h
++++ b/tools/include/uapi/linux/perf_event.h
+@@ -273,6 +273,7 @@ enum {
+  *	  { u64		time_enabled; } && PERF_FORMAT_TOTAL_TIME_ENABLED
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		id;           } && PERF_FORMAT_ID
++ *	  { u64		lost;         } && PERF_FORMAT_LOST
+  *	} && !PERF_FORMAT_GROUP
+  *
+  *	{ u64		nr;
+@@ -280,6 +281,7 @@ enum {
+  *	  { u64		time_running; } && PERF_FORMAT_TOTAL_TIME_RUNNING
+  *	  { u64		value;
+  *	    { u64	id;           } && PERF_FORMAT_ID
++ *	    { u64	lost;         } && PERF_FORMAT_LOST
+  *	  }		cntr[nr];
+  *	} && PERF_FORMAT_GROUP
+  * };
+@@ -289,8 +291,9 @@ enum perf_event_read_format {
+ 	PERF_FORMAT_TOTAL_TIME_RUNNING		= 1U << 1,
+ 	PERF_FORMAT_ID				= 1U << 2,
+ 	PERF_FORMAT_GROUP			= 1U << 3,
++	PERF_FORMAT_LOST			= 1U << 4,
+ 
+-	PERF_FORMAT_MAX = 1U << 4,		/* non-ABI */
++	PERF_FORMAT_MAX = 1U << 5,		/* non-ABI */
+ };
+ 
+ #define PERF_ATTR_SIZE_VER0	64	/* sizeof first published struct */
 
 
 
