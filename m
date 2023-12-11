@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-5786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B57F80D6E9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 776E380D558
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1630A2821EB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DE511F21A13
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E82751C3B;
-	Mon, 11 Dec 2023 18:34:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927845101B;
+	Mon, 11 Dec 2023 18:23:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMpoMfCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDS40jNi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240DCFBE0;
-	Mon, 11 Dec 2023 18:34:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E073C433C8;
-	Mon, 11 Dec 2023 18:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9954F212;
+	Mon, 11 Dec 2023 18:23:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78CCC433C7;
+	Mon, 11 Dec 2023 18:23:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319660;
-	bh=zjIQWzd1ZIHQCgGY5opte3ZPShNG+zLUjv7oaXP26Rc=;
+	s=korg; t=1702319025;
+	bh=ir97ZksHb7HOVN832tzzkSg5J5sD3YsfEH4YFjqu5Tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMpoMfCIZv7Qv2z1VU6Z1Ru4tPq5bZWNAzKICA1X0URKOdVSygWem3HFps/BD3GEJ
-	 bbx5xixco+OaMF1QrecPfV2CoHnhjeunSkuMOjeyrEq8Yn47fA7qSyPWCVCMgPPeTw
-	 eSN112s7IkmuvGE30ZqpxzAe+QilAy1z4cVQ3mYE=
+	b=BDS40jNiq5QvIqE7voA+3zqSpV3bNwditrxTfwFKq94MFo1CLWMrtBzkrHliLMHjz
+	 FXu4jR4C6GeCHthZT3TuioiA8gwNiYi1FJ4g/S/ThKxWTbB3j19BatShcrJBEwy03J
+	 9zgK2g99kM1RZ9vJ3y3iE4bJ0QrJx++IDX94WNNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 188/244] arm64: dts: mediatek: mt8186: Change gpu speedbin nvmem cell name
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 11/55] kconfig: fix memory leak from range properties
 Date: Mon, 11 Dec 2023 19:21:21 +0100
-Message-ID: <20231211182054.373950393@linuxfoundation.org>
+Message-ID: <20231211182012.630779262@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +52,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit 59fa1e51ba54e1f513985a8177969b62973f7fd5 upstream.
+[ Upstream commit ae1eff0349f2e908fc083630e8441ea6dc434dc0 ]
 
-MT8186's GPU speedbin value must be interpreted, or the value will not
-be meaningful.
-Use the correct "gpu-speedbin" nvmem cell name for the GPU speedbin to
-allow triggering the cell info fixup handler, hence feeding the right
-speedbin number to the users.
+Currently, sym_validate_range() duplicates the range string using
+xstrdup(), which is overwritten by a subsequent sym_calc_value() call.
+It results in a memory leak.
 
-Cc: stable@vger.kernel.org
-Fixes: 263d2fd02afc ("arm64: dts: mediatek: mt8186: Add GPU speed bin NVMEM cells")
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://lore.kernel.org/r/20231005151150.355536-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, only the pointer should be copied.
+
+Below is a test case, with a summary from Valgrind.
+
+[Test Kconfig]
+
+  config FOO
+          int "foo"
+          range 10 20
+
+[Test .config]
+
+  CONFIG_FOO=0
+
+[Before]
+
+  LEAK SUMMARY:
+     definitely lost: 3 bytes in 1 blocks
+     indirectly lost: 0 bytes in 0 blocks
+       possibly lost: 0 bytes in 0 blocks
+     still reachable: 17,465 bytes in 21 blocks
+          suppressed: 0 bytes in 0 blocks
+
+[After]
+
+  LEAK SUMMARY:
+     definitely lost: 0 bytes in 0 blocks
+     indirectly lost: 0 bytes in 0 blocks
+       possibly lost: 0 bytes in 0 blocks
+     still reachable: 17,462 bytes in 20 blocks
+          suppressed: 0 bytes in 0 blocks
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8186.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/kconfig/symbol.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
-@@ -1668,7 +1668,7 @@
- 			#address-cells = <1>;
- 			#size-cells = <1>;
+diff --git a/scripts/kconfig/symbol.c b/scripts/kconfig/symbol.c
+index 703b9b899ee9c..5adb60b7e12f3 100644
+--- a/scripts/kconfig/symbol.c
++++ b/scripts/kconfig/symbol.c
+@@ -119,9 +119,9 @@ static long long sym_get_range_val(struct symbol *sym, int base)
+ static void sym_validate_range(struct symbol *sym)
+ {
+ 	struct property *prop;
++	struct symbol *range_sym;
+ 	int base;
+ 	long long val, val2;
+-	char str[64];
  
--			gpu_speedbin: gpu-speed-bin@59c {
-+			gpu_speedbin: gpu-speedbin@59c {
- 				reg = <0x59c 0x4>;
- 				bits = <0 3>;
- 			};
+ 	switch (sym->type) {
+ 	case S_INT:
+@@ -137,17 +137,15 @@ static void sym_validate_range(struct symbol *sym)
+ 	if (!prop)
+ 		return;
+ 	val = strtoll(sym->curr.val, NULL, base);
+-	val2 = sym_get_range_val(prop->expr->left.sym, base);
++	range_sym = prop->expr->left.sym;
++	val2 = sym_get_range_val(range_sym, base);
+ 	if (val >= val2) {
+-		val2 = sym_get_range_val(prop->expr->right.sym, base);
++		range_sym = prop->expr->right.sym;
++		val2 = sym_get_range_val(range_sym, base);
+ 		if (val <= val2)
+ 			return;
+ 	}
+-	if (sym->type == S_INT)
+-		sprintf(str, "%lld", val2);
+-	else
+-		sprintf(str, "0x%llx", val2);
+-	sym->curr.val = xstrdup(str);
++	sym->curr.val = range_sym->curr.val;
+ }
+ 
+ static void sym_set_changed(struct symbol *sym)
+-- 
+2.42.0
+
 
 
 
