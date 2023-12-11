@@ -1,45 +1,47 @@
-Return-Path: <stable+bounces-6145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE78680D90B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F92080D756
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74DF21F21BF3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AD251F21A20
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2034D51C47;
-	Mon, 11 Dec 2023 18:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2DC451C42;
+	Mon, 11 Dec 2023 18:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIWSGiQT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDaLSs6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D1C5102A;
-	Mon, 11 Dec 2023 18:50:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B20FC433C7;
-	Mon, 11 Dec 2023 18:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A7EDFBE1;
+	Mon, 11 Dec 2023 18:36:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39ECC433C8;
+	Mon, 11 Dec 2023 18:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320633;
-	bh=uwIGrPYUgJXwtzCdD4SV7cLIb28yo+OJWAV85GZiwaw=;
+	s=korg; t=1702319779;
+	bh=Ibf14BlzmqR6ginzJtsRRFzdOdoY7qWxenIxQgDreqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIWSGiQT1tYxPwpPSZ0jaDxtdgaoN+mNRJfSGFyTCq5PSmc9F9A9xp4KIb/PJcAGk
-	 bRN2dA1oK3vNhu6DZor10ScL0OIKXmeXhPuPYkaIc5ImnymI6dBUMkE9ds7RIpvVSe
-	 fZMuh0Ew+ROXutUQZDAvawcyWHX7cKzjjc+L3XbU=
+	b=bDaLSs6Dc8vzW7HZB7vbQtVXmmIXJd0dmWlj0ghVDgCZnBk87qb8SulAKdkJSjM7i
+	 DYTEgdwVMGPJx5gK4VRBj+c4QA9STOJpM265+edOnlB7dqr49W6HycrCtCd7KH51gx
+	 4zUWoJ2+gplw9zFTNGZuK5WS2ZdlkAuvZU9MWT6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.1 133/194] arm64: dts: mediatek: mt8183: Move thermal-zones to the root node
+	Aurelien Jarno <aurel32@debian.org>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.6 230/244] MIPS: kernel: Clear FPU states when setting up kernel threads
 Date: Mon, 11 Dec 2023 19:22:03 +0100
-Message-ID: <20231211182042.545431758@linuxfoundation.org>
+Message-ID: <20231211182056.341834152@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,282 +53,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 
-commit 5a60d63439694590cd5ab1f998fc917ff7ba1c1d upstream.
+commit a58a173444a68412bb08849bd81c679395f20ca0 upstream.
 
-The thermal zones are not a soc bus device: move it to the root
-node to solve simple_bus_reg warnings.
+io_uring sets up the io worker kernel thread via a syscall out of an
+user space prrocess. This process might have used FPU and since
+copy_thread() didn't clear FPU states for kernel threads a BUG()
+is triggered for using FPU inside kernel. Move code around
+to always clear FPU state for user and kernel threads.
 
 Cc: stable@vger.kernel.org
-Fixes: b325ce39785b ("arm64: dts: mt8183: add thermal zone node")
-Link: https://lore.kernel.org/r/20231025093816.44327-9-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reported-by: Aurelien Jarno <aurel32@debian.org>
+Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1055021
+Suggested-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Reviewed-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi |  242 +++++++++++++++----------------
- 1 file changed, 121 insertions(+), 121 deletions(-)
+ arch/mips/kernel/process.c |   25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1136,127 +1136,6 @@
- 			nvmem-cell-names = "calibration-data";
- 		};
+--- a/arch/mips/kernel/process.c
++++ b/arch/mips/kernel/process.c
+@@ -121,6 +121,19 @@ int copy_thread(struct task_struct *p, c
+ 	/*  Put the stack after the struct pt_regs.  */
+ 	childksp = (unsigned long) childregs;
+ 	p->thread.cp0_status = (read_c0_status() & ~(ST0_CU2|ST0_CU1)) | ST0_KERNEL_CUMASK;
++
++	/*
++	 * New tasks lose permission to use the fpu. This accelerates context
++	 * switching for most programs since they don't use the fpu.
++	 */
++	clear_tsk_thread_flag(p, TIF_USEDFPU);
++	clear_tsk_thread_flag(p, TIF_USEDMSA);
++	clear_tsk_thread_flag(p, TIF_MSA_CTX_LIVE);
++
++#ifdef CONFIG_MIPS_MT_FPAFF
++	clear_tsk_thread_flag(p, TIF_FPUBOUND);
++#endif /* CONFIG_MIPS_MT_FPAFF */
++
+ 	if (unlikely(args->fn)) {
+ 		/* kernel thread */
+ 		unsigned long status = p->thread.cp0_status;
+@@ -149,20 +162,8 @@ int copy_thread(struct task_struct *p, c
+ 	p->thread.reg29 = (unsigned long) childregs;
+ 	p->thread.reg31 = (unsigned long) ret_from_fork;
  
--		thermal_zones: thermal-zones {
--			cpu_thermal: cpu-thermal {
--				polling-delay-passive = <100>;
--				polling-delay = <500>;
--				thermal-sensors = <&thermal 0>;
--				sustainable-power = <5000>;
+-	/*
+-	 * New tasks lose permission to use the fpu. This accelerates context
+-	 * switching for most programs since they don't use the fpu.
+-	 */
+ 	childregs->cp0_status &= ~(ST0_CU2|ST0_CU1);
+ 
+-	clear_tsk_thread_flag(p, TIF_USEDFPU);
+-	clear_tsk_thread_flag(p, TIF_USEDMSA);
+-	clear_tsk_thread_flag(p, TIF_MSA_CTX_LIVE);
 -
--				trips {
--					threshold: trip-point0 {
--						temperature = <68000>;
--						hysteresis = <2000>;
--						type = "passive";
--					};
+-#ifdef CONFIG_MIPS_MT_FPAFF
+-	clear_tsk_thread_flag(p, TIF_FPUBOUND);
+-#endif /* CONFIG_MIPS_MT_FPAFF */
 -
--					target: trip-point1 {
--						temperature = <80000>;
--						hysteresis = <2000>;
--						type = "passive";
--					};
--
--					cpu_crit: cpu-crit {
--						temperature = <115000>;
--						hysteresis = <2000>;
--						type = "critical";
--					};
--				};
--
--				cooling-maps {
--					map0 {
--						trip = <&target>;
--						cooling-device = <&cpu0
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>,
--								 <&cpu1
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>,
--								 <&cpu2
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>,
--								 <&cpu3
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>;
--						contribution = <3072>;
--					};
--					map1 {
--						trip = <&target>;
--						cooling-device = <&cpu4
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>,
--								 <&cpu5
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>,
--								 <&cpu6
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>,
--								 <&cpu7
--							THERMAL_NO_LIMIT
--							THERMAL_NO_LIMIT>;
--						contribution = <1024>;
--					};
--				};
--			};
--
--			/* The tzts1 ~ tzts6 don't need to polling */
--			/* The tzts1 ~ tzts6 don't need to thermal throttle */
--
--			tzts1: tzts1 {
--				polling-delay-passive = <0>;
--				polling-delay = <0>;
--				thermal-sensors = <&thermal 1>;
--				sustainable-power = <5000>;
--				trips {};
--				cooling-maps {};
--			};
--
--			tzts2: tzts2 {
--				polling-delay-passive = <0>;
--				polling-delay = <0>;
--				thermal-sensors = <&thermal 2>;
--				sustainable-power = <5000>;
--				trips {};
--				cooling-maps {};
--			};
--
--			tzts3: tzts3 {
--				polling-delay-passive = <0>;
--				polling-delay = <0>;
--				thermal-sensors = <&thermal 3>;
--				sustainable-power = <5000>;
--				trips {};
--				cooling-maps {};
--			};
--
--			tzts4: tzts4 {
--				polling-delay-passive = <0>;
--				polling-delay = <0>;
--				thermal-sensors = <&thermal 4>;
--				sustainable-power = <5000>;
--				trips {};
--				cooling-maps {};
--			};
--
--			tzts5: tzts5 {
--				polling-delay-passive = <0>;
--				polling-delay = <0>;
--				thermal-sensors = <&thermal 5>;
--				sustainable-power = <5000>;
--				trips {};
--				cooling-maps {};
--			};
--
--			tztsABB: tztsABB {
--				polling-delay-passive = <0>;
--				polling-delay = <0>;
--				thermal-sensors = <&thermal 6>;
--				sustainable-power = <5000>;
--				trips {};
--				cooling-maps {};
--			};
--		};
--
- 		pwm0: pwm@1100e000 {
- 			compatible = "mediatek,mt8183-disp-pwm";
- 			reg = <0 0x1100e000 0 0x1000>;
-@@ -2031,4 +1910,125 @@
- 			power-domains = <&spm MT8183_POWER_DOMAIN_CAM>;
- 		};
- 	};
-+
-+	thermal_zones: thermal-zones {
-+		cpu_thermal: cpu-thermal {
-+			polling-delay-passive = <100>;
-+			polling-delay = <500>;
-+			thermal-sensors = <&thermal 0>;
-+			sustainable-power = <5000>;
-+
-+			trips {
-+				threshold: trip-point0 {
-+					temperature = <68000>;
-+					hysteresis = <2000>;
-+					type = "passive";
-+				};
-+
-+				target: trip-point1 {
-+					temperature = <80000>;
-+					hysteresis = <2000>;
-+					type = "passive";
-+				};
-+
-+				cpu_crit: cpu-crit {
-+					temperature = <115000>;
-+					hysteresis = <2000>;
-+					type = "critical";
-+				};
-+			};
-+
-+			cooling-maps {
-+				map0 {
-+					trip = <&target>;
-+					cooling-device = <&cpu0
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>,
-+							 <&cpu1
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>,
-+							 <&cpu2
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>,
-+							 <&cpu3
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>;
-+					contribution = <3072>;
-+				};
-+				map1 {
-+					trip = <&target>;
-+					cooling-device = <&cpu4
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>,
-+							 <&cpu5
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>,
-+							 <&cpu6
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>,
-+							 <&cpu7
-+						THERMAL_NO_LIMIT
-+						THERMAL_NO_LIMIT>;
-+					contribution = <1024>;
-+				};
-+			};
-+		};
-+
-+		/* The tzts1 ~ tzts6 don't need to polling */
-+		/* The tzts1 ~ tzts6 don't need to thermal throttle */
-+
-+		tzts1: tzts1 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&thermal 1>;
-+			sustainable-power = <5000>;
-+			trips {};
-+			cooling-maps {};
-+		};
-+
-+		tzts2: tzts2 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&thermal 2>;
-+			sustainable-power = <5000>;
-+			trips {};
-+			cooling-maps {};
-+		};
-+
-+		tzts3: tzts3 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&thermal 3>;
-+			sustainable-power = <5000>;
-+			trips {};
-+			cooling-maps {};
-+		};
-+
-+		tzts4: tzts4 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&thermal 4>;
-+			sustainable-power = <5000>;
-+			trips {};
-+			cooling-maps {};
-+		};
-+
-+		tzts5: tzts5 {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&thermal 5>;
-+			sustainable-power = <5000>;
-+			trips {};
-+			cooling-maps {};
-+		};
-+
-+		tztsABB: tztsABB {
-+			polling-delay-passive = <0>;
-+			polling-delay = <0>;
-+			thermal-sensors = <&thermal 6>;
-+			sustainable-power = <5000>;
-+			trips {};
-+			cooling-maps {};
-+		};
-+	};
- };
+ #ifdef CONFIG_MIPS_FP_SUPPORT
+ 	atomic_set(&p->thread.bd_emu_frame, BD_EMUFRAME_NONE);
+ #endif
 
 
 
