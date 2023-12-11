@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9C980D54B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5860B80D98B
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259571F219EE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBD28B2170D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475755101B;
-	Mon, 11 Dec 2023 18:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25118321B8;
+	Mon, 11 Dec 2023 18:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeRWLgHd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xg+PHdmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B34F212;
-	Mon, 11 Dec 2023 18:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81473C433C7;
-	Mon, 11 Dec 2023 18:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE7851C38;
+	Mon, 11 Dec 2023 18:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E28C433C7;
+	Mon, 11 Dec 2023 18:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318942;
-	bh=3qKG0YZvalzyRWT2QXJvqIAFtLkPoO5ZeF5J222PCTQ=;
+	s=korg; t=1702320888;
+	bh=SfC1P3qKndHGcg0PWlKwIbQawGWL+iRyHnsj8I9TxZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YeRWLgHdgi1st7KReVWb1S6V7YtSTzNuzv0BrrjLd1JelsepTQXy/6riqAa5Lf6GA
-	 DfH7S8auH0QCWDsUc4bn8O9YltnMEt0OVKtIlKSkHwCKsGAWHWJe0YzAReJwWQlhbp
-	 Yzn/VGnnjgjy6ongirMEJnXxj0YY+Nk86fBxwG4g=
+	b=Xg+PHdmcSpLIV8dtn+h3S5FUoNeZIr/k5BqDKStSzYMFs9ECf9CF+BR59+eNSSN6F
+	 D4S5QGEs1L4+oolOFfJARCL+PEJHAkbtUcQLPCvnnnRI6y0BBJZ8TB0m4yJTRZMQeI
+	 p1cWSKVjz/4BtG9fkMGwA5ZnO5hMaFR6N3uiUFd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.14 12/25] tracing: Always update snapshot buffer size
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 004/141] netfilter: ipset: fix race condition between swap/destroy and kernel side add/del/test
 Date: Mon, 11 Dec 2023 19:21:03 +0100
-Message-ID: <20231211182009.143793983@linuxfoundation.org>
+Message-ID: <20231211182026.686070823@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,88 +53,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
+[ Upstream commit 28628fa952fefc7f2072ce6e8016968cc452b1ba ]
 
-It use to be that only the top level instance had a snapshot buffer (for
-latency tracers like wakeup and irqsoff). The update of the ring buffer
-size would check if the instance was the top level and if so, it would
-also update the snapshot buffer as it needs to be the same as the main
-buffer.
+Linkui Xiao reported that there's a race condition when ipset swap and destroy is
+called, which can lead to crash in add/del/test element operations. Swap then
+destroy are usual operations to replace a set with another one in a production
+system. The issue can in some cases be reproduced with the script:
 
-Now that lower level instances also has a snapshot buffer, they too need
-to update their snapshot buffer sizes when the main buffer is changed,
-otherwise the following can be triggered:
+ipset create hash_ip1 hash:net family inet hashsize 1024 maxelem 1048576
+ipset add hash_ip1 172.20.0.0/16
+ipset add hash_ip1 192.168.0.0/16
+iptables -A INPUT -m set --match-set hash_ip1 src -j ACCEPT
+while [ 1 ]
+do
+	# ... Ongoing traffic...
+        ipset create hash_ip2 hash:net family inet hashsize 1024 maxelem 1048576
+        ipset add hash_ip2 172.20.0.0/16
+        ipset swap hash_ip1 hash_ip2
+        ipset destroy hash_ip2
+        sleep 0.05
+done
 
- # cd /sys/kernel/tracing
- # echo 1500 > buffer_size_kb
- # mkdir instances/foo
- # echo irqsoff > instances/foo/current_tracer
- # echo 1000 > instances/foo/buffer_size_kb
+In the race case the possible order of the operations are
 
-Produces:
+	CPU0			CPU1
+	ip_set_test
+				ipset swap hash_ip1 hash_ip2
+				ipset destroy hash_ip2
+	hash_net_kadt
 
- WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+Swap replaces hash_ip1 with hash_ip2 and then destroy removes hash_ip2 which
+is the original hash_ip1. ip_set_test was called on hash_ip1 and because destroy
+removed it, hash_net_kadt crashes.
 
-Which is:
+The fix is to force ip_set_swap() to wait for all readers to finish accessing the
+old set pointers by calling synchronize_rcu().
 
-	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+The first version of the patch was written by Linkui Xiao <xiaolinkui@kylinos.cn>.
 
-	if (ret == -EBUSY) {
-		[..]
-	}
+v2: synchronize_rcu() is moved into ip_set_swap() in order not to burden
+    ip_set_destroy() unnecessarily when all sets are destroyed.
+v3: Florian Westphal pointed out that all netfilter hooks run with rcu_read_lock() held
+    and em_ipset.c wraps the entire ip_set_test() in rcu read lock/unlock pair.
+    So there's no need to extend the rcu read locked area in ipset itself.
 
-	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
-
-That's because ring_buffer_swap_cpu() has:
-
-	int ret = -EINVAL;
-
-	[..]
-
-	/* At least make sure the two buffers are somewhat the same */
-	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
-		goto out;
-
-	[..]
- out:
-	return ret;
- }
-
-Instead, update all instances' snapshot buffer sizes when their main
-buffer size is updated.
-
-Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://lore.kernel.org/all/69e7963b-e7f8-3ad0-210-7b86eebf7f78@netfilter.org/
+Reported by: Linkui Xiao <xiaolinkui@kylinos.cn>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/netfilter/ipset/ip_set_core.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5253,8 +5253,7 @@ static int __tracing_resize_ring_buffer(
- 		return ret;
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index 33869db42bb6b..978014928d07a 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -61,6 +61,8 @@ MODULE_ALIAS_NFNL_SUBSYS(NFNL_SUBSYS_IPSET);
+ 	ip_set_dereference((inst)->ip_set_list)[id]
+ #define ip_set_ref_netlink(inst,id)	\
+ 	rcu_dereference_raw((inst)->ip_set_list)[id]
++#define ip_set_dereference_nfnl(p)	\
++	rcu_dereference_check(p, lockdep_nfnl_is_held(NFNL_SUBSYS_IPSET))
  
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
--	    !tr->current_trace->use_max_tr)
-+	if (!tr->current_trace->use_max_tr)
- 		goto out;
+ /* The set types are implemented in modules and registered set types
+  * can be found in ip_set_type_list. Adding/deleting types is
+@@ -708,15 +710,10 @@ __ip_set_put_netlink(struct ip_set *set)
+ static struct ip_set *
+ ip_set_rcu_get(struct net *net, ip_set_id_t index)
+ {
+-	struct ip_set *set;
+ 	struct ip_set_net *inst = ip_set_pernet(net);
  
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+-	rcu_read_lock();
+-	/* ip_set_list itself needs to be protected */
+-	set = rcu_dereference(inst->ip_set_list)[index];
+-	rcu_read_unlock();
+-
+-	return set;
++	/* ip_set_list and the set pointer need to be protected */
++	return ip_set_dereference_nfnl(inst->ip_set_list)[index];
+ }
+ 
+ static inline void
+@@ -1399,6 +1396,9 @@ static int ip_set_swap(struct sk_buff *skb, const struct nfnl_info *info,
+ 	ip_set(inst, to_id) = from;
+ 	write_unlock_bh(&ip_set_ref_lock);
+ 
++	/* Make sure all readers of the old set pointers are completed. */
++	synchronize_rcu();
++
+ 	return 0;
+ }
+ 
+-- 
+2.42.0
+
 
 
 
