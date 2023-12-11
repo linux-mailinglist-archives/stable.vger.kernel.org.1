@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-5261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623CF80C2CA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 09:11:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF5F080C2E1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 09:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03ACF1F20F68
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 08:11:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A44CF1F20FEF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 08:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6474820B26;
-	Mon, 11 Dec 2023 08:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9232C20B30;
+	Mon, 11 Dec 2023 08:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iO8u/E3I"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FER41Ejm"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19E08F1
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 00:11:37 -0800 (PST)
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B300EE5
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 00:16:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1702282298; x=1733818298;
+  t=1702282589; x=1733818589;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=3y/6jtPf/sYdDgmZrk2dD62GBVv5VUYMIz3c0DY0yPk=;
-  b=iO8u/E3IbNF4KQrnOe2kkGjCxTVRlA1G/aHEcD4ZKe3iRSQquWkil6/C
-   qJNSsSQTaUQKv61mv3k7Mc2L1a54Hsa5zW0N18M2X6TJUpEj8NLnFJW9e
-   C/H5fPBx4PfpxuSofM6RAT1YbyRkRWFJbRzI9N8sbb+ayEGsqrDc3pG7j
-   SZg2hZE6Yr55ct2kzdjLRBpMddQv8dg6jBRas7ptMjoT9NQGKE47qrVGh
-   RlowcO47AH1R4DXPsOluUVtvv4ivDWxdODgmazQkvI5u+5XQ5T5mtzZ8F
-   OvuOSs2uIAiM6IGm7aIa6DvuXrTLaBmgIYqIZodSdia5Dq3D8Fqp2Te6R
+  bh=ywo7wd+Xtw6xaZ7BQ+4PbxGvYxNCLgjkctluObVHMX8=;
+  b=FER41EjmHF9tUQV8DKuW9TUXmGgajRVd4wM3dPQOc7hckI3gOoBqYE3o
+   F+DiPNKm3kTlMmFBg+zGI/GtWzfEz7kTCQqhpu78q87ws8t4eSwzatXS7
+   E/lR+cSXK9J4ZtsyMyZ68bRe50hC+tSPop6qeSeLj6KaME3/n7ex3ds/j
+   1uS7z7FEdKouHNLc75gAtM4TjIJuI+i8NqPIRCXmU2g7yedB2fFGHglbL
+   dYzpwRqlbDOELNd3WqwbeSTfZnipefBZ1viD5CDS2xcaap+15Elu0pbzg
+   mXx3uKADP96cSlP0C4BP9fT0a74wjnt2FnNqHeZMyd0EtLk+SChzjP7aI
    A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="461088225"
+X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="461088723"
 X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; 
-   d="scan'208";a="461088225"
+   d="scan'208";a="461088723"
 Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 00:11:37 -0800
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2023 00:16:29 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="766284738"
+X-IronPort-AV: E=McAfee;i="6600,9927,10920"; a="766285626"
 X-IronPort-AV: E=Sophos;i="6.04,267,1695711600"; 
-   d="scan'208";a="766284738"
+   d="scan'208";a="766285626"
 Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga007.jf.intel.com with SMTP; 11 Dec 2023 00:11:35 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Mon, 11 Dec 2023 10:11:34 +0200
+  by orsmga007.jf.intel.com with SMTP; 11 Dec 2023 00:16:26 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Mon, 11 Dec 2023 10:16:25 +0200
 From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Reject async flips with bigjoiner
-Date: Mon, 11 Dec 2023 10:11:34 +0200
-Message-ID: <20231211081134.2698-1-ville.syrjala@linux.intel.com>
+To: dri-devel@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm: Don't unref the same fb many times by mistake due to deadlock handling
+Date: Mon, 11 Dec 2023 10:16:24 +0200
+Message-ID: <20231211081625.25704-1-ville.syrjala@linux.intel.com>
 X-Mailer: git-send-email 2.41.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,38 +62,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Currently async flips are busted when bigjoiner is in use.
-As a short term fix simply reject async flips in that case.
+If we get a deadlock after the fb lookup in drm_mode_page_flip_ioctl()
+we proceed to unref the fb and then retry the whole thing from the top.
+But we forget to reset the fb pointer back to NULL, and so if we then
+get another error during the retry, before the fb lookup, we proceed
+the unref the same fb again without having gotten another reference.
+The end result is that the fb will (eventually) end up being freed
+while it's still in use.
+
+Reset fb to NULL once we've unreffed it to avoid doing it again
+until we've done another fb lookup.
+
+This turned out to be pretty easy to hit on a DG2 when doing async
+flips (and CONFIG_DEBUG_WW_MUTEX_SLOWPATH=y). The first symptom I
+saw that drm_closefb() simply got stuck in a busy loop while walking
+the framebuffer list. Fortunately I was able to convince it to oops
+instead, and from there it was easier to track down the culprit.
 
 Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9769
 Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/drm_plane.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
-index d955957b7d18..61053c19f4cc 100644
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -5926,6 +5926,17 @@ static int intel_async_flip_check_uapi(struct intel_atomic_state *state,
- 		return -EINVAL;
- 	}
- 
-+	/*
-+	 * FIXME: Bigjoiner+async flip is busted currently.
-+	 * Remove this check once the issues are fixed.
-+	 */
-+	if (new_crtc_state->bigjoiner_pipes) {
-+		drm_dbg_kms(&i915->drm,
-+			    "[CRTC:%d:%s] async flip disallowed with bigjoiner\n",
-+			    crtc->base.base.id, crtc->base.name);
-+		return -EINVAL;
-+	}
-+
- 	for_each_oldnew_intel_plane_in_state(state, plane, old_plane_state,
- 					     new_plane_state, i) {
- 		if (plane->pipe != crtc->pipe)
+diff --git a/drivers/gpu/drm/drm_plane.c b/drivers/gpu/drm/drm_plane.c
+index 9e8e4c60983d..672c655c7a8e 100644
+--- a/drivers/gpu/drm/drm_plane.c
++++ b/drivers/gpu/drm/drm_plane.c
+@@ -1503,6 +1503,7 @@ int drm_mode_page_flip_ioctl(struct drm_device *dev,
+ out:
+ 	if (fb)
+ 		drm_framebuffer_put(fb);
++	fb = NULL;
+ 	if (plane->old_fb)
+ 		drm_framebuffer_put(plane->old_fb);
+ 	plane->old_fb = NULL;
 -- 
 2.41.0
 
