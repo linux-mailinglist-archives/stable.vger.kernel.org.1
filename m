@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-5837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1197280D76B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9AF80D58E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:26:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4368F1C2148F
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06992281859
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE984524D7;
-	Mon, 11 Dec 2023 18:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3395101B;
+	Mon, 11 Dec 2023 18:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1F1lDBo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRWsP6V9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6718A524CF;
-	Mon, 11 Dec 2023 18:36:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBB8C433C7;
-	Mon, 11 Dec 2023 18:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592294F212;
+	Mon, 11 Dec 2023 18:25:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D08DCC433C7;
+	Mon, 11 Dec 2023 18:25:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319799;
-	bh=0gs6iQHc54PKz5d596BrL+yYCRyM/fEGoPnraEwOCk8=;
+	s=korg; t=1702319157;
+	bh=SqHyzgK57PNy1KOHaBxffY84Y5i6ZyR5vFrgV0AUhJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1F1lDBoKV/JhIlqy4XvmnnP+I1Podbdx5CTJOpuCLLcTBa5C01wc5PV9Ntc8QGq1
-	 Sa/0Hpop6T8HaPMCbfUJ8GHKbwkK8WJK8nTQMpx90lh1KfnRZ2Onq4J62Y0wMmxHN1
-	 zIukFAv4IC6OC+NlUfMptZkeSCs1mZNHw+NztitU=
+	b=uRWsP6V9kU1+rV4mNzJXjJh2VIcxnKRoopds0AYNeCxu3x+jcNB4G/ByQdgsIoQjh
+	 /kkPKsCUgB0/SdTZx3zfonucmD5OcOkL3htAbsdaIvst+UCynnv3j/paaPHREiKiPS
+	 1/85nfrNFcy2ZZnXv0OxiDu+XB+qb8V2b+m71nLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boerge Struempfel <boerge.struempfel@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/244] gpiolib: sysfs: Fix error handling on failed export
+	Jason Zhang <jason.zhang@rock-chips.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 4.19 30/55] ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
 Date: Mon, 11 Dec 2023 19:21:40 +0100
-Message-ID: <20231211182055.243437236@linuxfoundation.org>
+Message-ID: <20231211182013.348490491@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,66 +52,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boerge Struempfel <boerge.struempfel@gmail.com>
+From: Jason Zhang <jason.zhang@rock-chips.com>
 
-[ Upstream commit 95dd1e34ff5bbee93a28ff3947eceaf6de811b1a ]
+commit 2b3a7a302c9804e463f2ea5b54dc3a6ad106a344 upstream.
 
-If gpio_set_transitory() fails, we should free the GPIO again. Most
-notably, the flag FLAG_REQUESTED has previously been set in
-gpiod_request_commit(), and should be reset on failure.
+The pcm state can be SNDRV_PCM_STATE_DISCONNECTED at disconnect
+callback, and there is not an entry of SNDRV_PCM_STATE_DISCONNECTED
+in snd_pcm_state_names.
 
-To my knowledge, this does not affect any current users, since the
-gpio_set_transitory() mainly returns 0 and -ENOTSUPP, which is converted
-to 0. However the gpio_set_transitory() function calles the .set_config()
-function of the corresponding GPIO chip and there are some GPIO drivers in
-which some (unlikely) branches return other values like -EPROBE_DEFER,
-and -EINVAL. In these cases, the above mentioned FLAG_REQUESTED would not
-be reset, which results in the pin being blocked until the next reboot.
+This patch adds the missing entry to resolve this issue.
 
-Fixes: e10f72bf4b3e ("gpio: gpiolib: Generalise state persistence beyond sleep")
-Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+cat /proc/asound/card2/pcm0p/sub0/status
+That results in stack traces like the following:
+
+[   99.702732][ T5171] Unexpected kernel BRK exception at EL1
+[   99.702774][ T5171] Internal error: BRK handler: f2005512 [#1] PREEMPT SMP
+[   99.703858][ T5171] Modules linked in: bcmdhd(E) (...)
+[   99.747425][ T5171] CPU: 3 PID: 5171 Comm: cat Tainted: G         C OE     5.10.189-android13-4-00003-g4a17384380d8-ab11086999 #1
+[   99.748447][ T5171] Hardware name: Rockchip RK3588 CVTE V10 Board (DT)
+[   99.749024][ T5171] pstate: 60400005 (nZCv daif +PAN -UAO -TCO BTYPE=--)
+[   99.749616][ T5171] pc : snd_pcm_substream_proc_status_read+0x264/0x2bc
+[   99.750204][ T5171] lr : snd_pcm_substream_proc_status_read+0xa4/0x2bc
+[   99.750778][ T5171] sp : ffffffc0175abae0
+[   99.751132][ T5171] x29: ffffffc0175abb80 x28: ffffffc009a2c498
+[   99.751665][ T5171] x27: 0000000000000001 x26: ffffff810cbae6e8
+[   99.752199][ T5171] x25: 0000000000400cc0 x24: ffffffc0175abc60
+[   99.752729][ T5171] x23: 0000000000000000 x22: ffffff802f558400
+[   99.753263][ T5171] x21: ffffff81d8d8ff00 x20: ffffff81020cdc00
+[   99.753795][ T5171] x19: ffffff802d110000 x18: ffffffc014fbd058
+[   99.754326][ T5171] x17: 0000000000000000 x16: 0000000000000000
+[   99.754861][ T5171] x15: 000000000000c276 x14: ffffffff9a976fda
+[   99.755392][ T5171] x13: 0000000065689089 x12: 000000000000d72e
+[   99.755923][ T5171] x11: ffffff802d110000 x10: 00000000000000e0
+[   99.756457][ T5171] x9 : 9c431600c8385d00 x8 : 0000000000000008
+[   99.756990][ T5171] x7 : 0000000000000000 x6 : 000000000000003f
+[   99.757522][ T5171] x5 : 0000000000000040 x4 : ffffffc0175abb70
+[   99.758056][ T5171] x3 : 0000000000000001 x2 : 0000000000000001
+[   99.758588][ T5171] x1 : 0000000000000000 x0 : 0000000000000000
+[   99.759123][ T5171] Call trace:
+[   99.759404][ T5171]  snd_pcm_substream_proc_status_read+0x264/0x2bc
+[   99.759958][ T5171]  snd_info_seq_show+0x54/0xa4
+[   99.760370][ T5171]  seq_read_iter+0x19c/0x7d4
+[   99.760770][ T5171]  seq_read+0xf0/0x128
+[   99.761117][ T5171]  proc_reg_read+0x100/0x1f8
+[   99.761515][ T5171]  vfs_read+0xf4/0x354
+[   99.761869][ T5171]  ksys_read+0x7c/0x148
+[   99.762226][ T5171]  __arm64_sys_read+0x20/0x30
+[   99.762625][ T5171]  el0_svc_common+0xd0/0x1e4
+[   99.763023][ T5171]  el0_svc+0x28/0x98
+[   99.763358][ T5171]  el0_sync_handler+0x8c/0xf0
+[   99.763759][ T5171]  el0_sync+0x1b8/0x1c0
+[   99.764118][ T5171] Code: d65f03c0 b9406102 17ffffae 94191565 (d42aa240)
+[   99.764715][ T5171] ---[ end trace 1eeffa3e17c58e10 ]---
+[   99.780720][ T5171] Kernel panic - not syncing: BRK handler: Fatal exception
+
+Signed-off-by: Jason Zhang <jason.zhang@rock-chips.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231206013139.20506-1-jason.zhang@rock-chips.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-sysfs.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ sound/core/pcm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
-index 50503a4525eb0..c7c5c19ebc66f 100644
---- a/drivers/gpio/gpiolib-sysfs.c
-+++ b/drivers/gpio/gpiolib-sysfs.c
-@@ -474,14 +474,17 @@ static ssize_t export_store(const struct class *class,
- 		goto done;
+--- a/sound/core/pcm.c
++++ b/sound/core/pcm.c
+@@ -266,6 +266,7 @@ static char *snd_pcm_state_names[] = {
+ 	STATE(DRAINING),
+ 	STATE(PAUSED),
+ 	STATE(SUSPENDED),
++	STATE(DISCONNECTED),
+ };
  
- 	status = gpiod_set_transitory(desc, false);
--	if (!status) {
--		status = gpiod_export(desc, true);
--		if (status < 0)
--			gpiod_free(desc);
--		else
--			set_bit(FLAG_SYSFS, &desc->flags);
-+	if (status) {
-+		gpiod_free(desc);
-+		goto done;
- 	}
- 
-+	status = gpiod_export(desc, true);
-+	if (status < 0)
-+		gpiod_free(desc);
-+	else
-+		set_bit(FLAG_SYSFS, &desc->flags);
-+
- done:
- 	if (status)
- 		pr_debug("%s: status %d\n", __func__, status);
--- 
-2.42.0
-
+ static char *snd_pcm_access_names[] = {
 
 
 
