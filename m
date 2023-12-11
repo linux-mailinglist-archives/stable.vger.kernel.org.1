@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-6132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC1B480D8F8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A12180D7B1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9750C281E3E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3502E280FD5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB8651C5E;
-	Mon, 11 Dec 2023 18:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47799524AB;
+	Mon, 11 Dec 2023 18:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKASbFua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOIn4X2H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2E251C58;
-	Mon, 11 Dec 2023 18:49:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AECFC433C7;
-	Mon, 11 Dec 2023 18:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FF020DDE;
+	Mon, 11 Dec 2023 18:39:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8238BC433C8;
+	Mon, 11 Dec 2023 18:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320599;
-	bh=o0gJcD1UfuR21Uku3y79FLVeGR3+1bdV7l6mndAQ4v4=;
+	s=korg; t=1702319951;
+	bh=vdK5dNqMN/UXkeR/9kDXzldaV6gjhG/4WDvvfER0bq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKASbFuaeHOxxtMTou0mLHh+z7S9sLgfoMHbqNWi1gGmI0NX5gwH8N/EPTAoZOX7L
-	 qtpRBcMhOngYf0y82NnDKP29RJbIUVjtswi+Y4An4xQKulNvMYVelDt7SdqmWS/5xh
-	 lv6b+wFfzOLksZj8muqHkJUWE9KvJU3zLvW6dNcA=
+	b=OOIn4X2HH6Jd2RCWg55jL1veKHXVMlPASPFo6nzYdNAWJo8g9Y9mGqjPyjOluHEGc
+	 6VuFKJ95olBhNIIt2HhlSkMqczGjEZP5iknuExOcTDYHlzuqHeHuhPxS6tg+21jVqZ
+	 uNHk1nrEjYV6YPsC1cQBL/N5i3jP5aP5Od8+pjKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Reichl <hias@horus.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 121/194] regmap: fix bogus error on regcache_sync success
+	Bin Li <bin.li@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 48/97] ALSA: hda/realtek: Enable headset on Lenovo M90 Gen5
 Date: Mon, 11 Dec 2023 19:21:51 +0100
-Message-ID: <20231211182041.922481542@linuxfoundation.org>
+Message-ID: <20231211182021.779671736@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +52,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Reichl <hias@horus.com>
+From: Bin Li <bin.li@canonical.com>
 
-commit fea88064445a59584460f7f67d102b6e5fc1ca1d upstream.
+commit 6f7e4664e597440dfbdb8b2931c561b717030d07 upstream.
 
-Since commit 0ec7731655de ("regmap: Ensure range selector registers
-are updated after cache sync") opening pcm512x based soundcards fail
-with EINVAL and dmesg shows sync cache and pm_runtime_get errors:
+Lenovo M90 Gen5 is equipped with ALC897, and it needs
+ALC897_FIXUP_HEADSET_MIC_PIN quirk to make its headset mic work.
 
-[  228.794676] pcm512x 1-004c: Failed to sync cache: -22
-[  228.794740] pcm512x 1-004c: ASoC: error at snd_soc_pcm_component_pm_runtime_get on pcm512x.1-004c: -22
-
-This is caused by the cache check result leaking out into the
-regcache_sync return value.
-
-Fix this by making the check local-only, as the comment above the
-regcache_read call states a non-zero return value means there's
-nothing to do so the return value should not be altered.
-
-Fixes: 0ec7731655de ("regmap: Ensure range selector registers are updated after cache sync")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthias Reichl <hias@horus.com>
-Link: https://lore.kernel.org/r/20231203222216.96547-1-hias@horus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Bin Li <bin.li@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231204100450.642783-1-bin.li@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regcache.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/base/regmap/regcache.c
-+++ b/drivers/base/regmap/regcache.c
-@@ -410,8 +410,7 @@ out:
- 			rb_entry(node, struct regmap_range_node, node);
- 
- 		/* If there's nothing in the cache there's nothing to sync */
--		ret = regcache_read(map, this->selector_reg, &i);
--		if (ret != 0)
-+		if (regcache_read(map, this->selector_reg, &i) != 0)
- 			continue;
- 
- 		ret = _regmap_write(map, this->selector_reg, i);
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -11227,6 +11227,7 @@ static const struct snd_pci_quirk alc662
+ 	SND_PCI_QUIRK(0x17aa, 0x32f7, "Lenovo ThinkCentre M90", ALC897_FIXUP_HEADSET_MIC_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3321, "Lenovo ThinkCentre M70 Gen4", ALC897_FIXUP_HEADSET_MIC_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x331b, "Lenovo ThinkCentre M90 Gen4", ALC897_FIXUP_HEADSET_MIC_PIN),
++	SND_PCI_QUIRK(0x17aa, 0x3364, "Lenovo ThinkCentre M90 Gen5", ALC897_FIXUP_HEADSET_MIC_PIN),
+ 	SND_PCI_QUIRK(0x17aa, 0x3742, "Lenovo TianYi510Pro-14IOB", ALC897_FIXUP_HEADSET_MIC_PIN2),
+ 	SND_PCI_QUIRK(0x17aa, 0x38af, "Lenovo Ideapad Y550P", ALC662_FIXUP_IDEAPAD),
+ 	SND_PCI_QUIRK(0x17aa, 0x3a0d, "Lenovo Ideapad Y550", ALC662_FIXUP_IDEAPAD),
 
 
 
