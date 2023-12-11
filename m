@@ -1,170 +1,74 @@
-Return-Path: <stable+bounces-5248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D393880C176
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:43:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF64680C178
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 07:44:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E021C20926
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:43:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 991F0280D2C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 06:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934911F611;
-	Mon, 11 Dec 2023 06:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7901F606;
+	Mon, 11 Dec 2023 06:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PU8La6Y7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OgDZsZ8z"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2C1710F;
-	Sun, 10 Dec 2023 22:43:28 -0800 (PST)
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 3BB3U2Zx025349;
-	Mon, 11 Dec 2023 06:42:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references; s=
-	qcppdkim1; bh=RYnj6i8X3DA/tzosX99m5OYDnjepi+4YYvJGmfdTIn8=; b=PU
-	8La6Y76Q7tpokiFPcfRkWeeDJnToCq4H4rMZP9J7e37vd1Pu0DDOmgQbqYWrctoo
-	o1u4ZwXnDKDRBgO1HSrH52d9jEiufgB9Z/SyDNYyMo/KAYEzaeEdm9O7gCiQUu6z
-	r/ETt0nosDsO9068Hy5PAHCIUQBhb7uYlYMM6grcs8PzbRP3KaU2W2wtoqBIkvlE
-	bc7UOTfhhiXLRQwX1EFTLz6Jw3osNYnEbcmeC6TzRp6p5v2m8Kxz9wHlMDQDBAUg
-	4ocR0pO+npoCA/qECe9jXIYxsr2aXgeDDCOF4VPIVgJ83w++T+kaLWWn4p0EiFlD
-	Vd1Iux69RK7F2PLSYJXA==
-Received: from aptaippmta01.qualcomm.com (tpe-colo-wan-fw-bordernet.qualcomm.com [103.229.16.4])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3uvp30aeqq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Dec 2023 06:42:58 +0000 (GMT)
-Received: from pps.filterd (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTP id 3BB6gt7r030880;
-	Mon, 11 Dec 2023 06:42:55 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTP id 3uvhak95cr-1;
-	Mon, 11 Dec 2023 06:42:55 +0000
-Received: from APTAIPPMTA01.qualcomm.com (APTAIPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 3BB6gtSs030875;
-	Mon, 11 Dec 2023 06:42:55 GMT
-Received: from cbsp-sh-gv.qualcomm.com (CBSP-SH-gv.ap.qualcomm.com [10.231.249.68])
-	by APTAIPPMTA01.qualcomm.com (PPS) with ESMTP id 3BB6gtLP030873;
-	Mon, 11 Dec 2023 06:42:55 +0000
-Received: by cbsp-sh-gv.qualcomm.com (Postfix, from userid 4098150)
-	id 892B955E8; Mon, 11 Dec 2023 14:42:54 +0800 (CST)
-From: Qiang Yu <quic_qianyu@quicinc.com>
-To: mani@kernel.org, quic_jhugo@quicinc.com
-Cc: mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_cang@quicinc.com,
-        quic_mrana@quicinc.com, Bhaumik Bhatt <bbhatt@codeaurora.org>,
-        stable@vger.kernel.org, Qiang Yu <quic_qianyu@quicinc.com>
-Subject: [PATCH v5 1/2] bus: mhi: host: Add spinlock to protect WP access when queueing TREs
-Date: Mon, 11 Dec 2023 14:42:51 +0800
-Message-Id: <1702276972-41296-2-git-send-email-quic_qianyu@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1702276972-41296-1-git-send-email-quic_qianyu@quicinc.com>
-References: <1702276972-41296-1-git-send-email-quic_qianyu@quicinc.com>
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: CYvXI6dEOR8xWN_a4aN6Zm7O1UJxWgP1
-X-Proofpoint-GUID: CYvXI6dEOR8xWN_a4aN6Zm7O1UJxWgP1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- malwarescore=0 phishscore=0 mlxlogscore=504 lowpriorityscore=0
- clxscore=1011 priorityscore=1501 bulkscore=0 adultscore=0 spamscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2312110054
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF43B1D69A
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 06:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF22DC433C7;
+	Mon, 11 Dec 2023 06:44:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1702277045;
+	bh=9/0EURPl9PI/VDT8Zn5VHboBP2idCB/whBgSZHxC6mM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OgDZsZ8zVp+H94QFD02w/pAT4s3aSivtpiNmUI7ORZfyJBt6m1J2dt9pj5olNOEzF
+	 SjdYjncFkUq+uTjmYApyOvxj5LPsH++UnoGQaCM5AOjGE+ix4Tr81i5Pl2X/ItHQDc
+	 7NyEPFk41xLttwLVOxaovaMym4nfRUfrBYWhtNEA=
+Date: Mon, 11 Dec 2023 07:44:01 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Helge Deller <deller@gmx.de>
+Cc: lkft@linaro.org, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] parisc: Fix asm operand number out of
+ range build error in" failed to apply to 6.1-stable tree
+Message-ID: <2023121129-preoccupy-hypnotize-a2ea@gregkh>
+References: <2023120949-waged-entail-7b6b@gregkh>
+ <c5d9b509-3c37-419b-a325-971d9b2c7c56@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c5d9b509-3c37-419b-a325-971d9b2c7c56@gmx.de>
 
-From: Bhaumik Bhatt <bbhatt@codeaurora.org>
+On Sun, Dec 10, 2023 at 05:43:53PM +0100, Helge Deller wrote:
+> On 12/9/23 13:33, gregkh@linuxfoundation.org wrote:
+> > 
+> > The patch below does not apply to the 6.1-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> 
+> Right, it does not apply, and does NOT need to be backported.
 
-Protect WP accesses such that multiple threads queueing buffers for
-incoming data do not race.
+Are you sure?
 
-Meanwhile, if CONFIG_TRACE_IRQFLAGS is enabled, irq will be enabled once
-__local_bh_enable_ip is called as part of write_unlock_bh. Hence, let's
-take irqsave lock after TRE is generated to avoid running write_unlock_bh
-when irqsave lock is held.
+I ask because:
 
-Cc: <stable@vger.kernel.org>
-Fixes: 189ff97cca53 ("bus: mhi: core: Add support for data transfer")
-Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-Signed-off-by: Qiang Yu <quic_qianyu@quicinc.com>
----
- drivers/bus/mhi/host/main.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+> > Fixes: fe76a1349f23 ("parisc: Use natural CPU alignment for bug_table")
+> > Cc: stable@vger.kernel.org   # v6.0+
 
-diff --git a/drivers/bus/mhi/host/main.c b/drivers/bus/mhi/host/main.c
-index dcf627b..32021fe 100644
---- a/drivers/bus/mhi/host/main.c
-+++ b/drivers/bus/mhi/host/main.c
-@@ -1122,17 +1122,15 @@ static int mhi_queue(struct mhi_device *mhi_dev, struct mhi_buf_info *buf_info,
- 	if (unlikely(MHI_PM_IN_ERROR_STATE(mhi_cntrl->pm_state)))
- 		return -EIO;
- 
--	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
--
- 	ret = mhi_is_ring_full(mhi_cntrl, tre_ring);
--	if (unlikely(ret)) {
--		ret = -EAGAIN;
--		goto exit_unlock;
--	}
-+	if (unlikely(ret))
-+		return -EAGAIN;
- 
- 	ret = mhi_gen_tre(mhi_cntrl, mhi_chan, buf_info, mflags);
- 	if (unlikely(ret))
--		goto exit_unlock;
-+		return ret;
-+
-+	read_lock_irqsave(&mhi_cntrl->pm_lock, flags);
- 
- 	/* Packet is queued, take a usage ref to exit M3 if necessary
- 	 * for host->device buffer, balanced put is done on buffer completion
-@@ -1152,7 +1150,6 @@ static int mhi_queue(struct mhi_device *mhi_dev, struct mhi_buf_info *buf_info,
- 	if (dir == DMA_FROM_DEVICE)
- 		mhi_cntrl->runtime_put(mhi_cntrl);
- 
--exit_unlock:
- 	read_unlock_irqrestore(&mhi_cntrl->pm_lock, flags);
- 
- 	return ret;
-@@ -1204,6 +1201,9 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
- 	int eot, eob, chain, bei;
- 	int ret;
- 
-+	/* Protect accesses for reading and incrementing WP */
-+	write_lock_bh(&mhi_chan->lock);
-+
- 	buf_ring = &mhi_chan->buf_ring;
- 	tre_ring = &mhi_chan->tre_ring;
- 
-@@ -1221,8 +1221,10 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
- 
- 	if (!info->pre_mapped) {
- 		ret = mhi_cntrl->map_single(mhi_cntrl, buf_info);
--		if (ret)
-+		if (ret) {
-+			write_unlock_bh(&mhi_chan->lock);
- 			return ret;
-+		}
- 	}
- 
- 	eob = !!(flags & MHI_EOB);
-@@ -1239,6 +1241,8 @@ int mhi_gen_tre(struct mhi_controller *mhi_cntrl, struct mhi_chan *mhi_chan,
- 	mhi_add_ring_element(mhi_cntrl, tre_ring);
- 	mhi_add_ring_element(mhi_cntrl, buf_ring);
- 
-+	write_unlock_bh(&mhi_chan->lock);
-+
- 	return 0;
- }
- 
--- 
-2.7.4
+Both of those lines imply that yes, it should be backported.  Are they
+incorrect?
 
+thanks,
+
+greg k-h
 
