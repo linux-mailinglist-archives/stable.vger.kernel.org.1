@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-5847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0A4380D774
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A37180D840
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:44:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0E51F219B1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15807281403
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E186537FC;
-	Mon, 11 Dec 2023 18:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9643651036;
+	Mon, 11 Dec 2023 18:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOSKfmzc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XxxPbM2+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B73251C53;
-	Mon, 11 Dec 2023 18:37:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74EAC433C8;
-	Mon, 11 Dec 2023 18:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D6FFC06;
+	Mon, 11 Dec 2023 18:44:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEF3C433C9;
+	Mon, 11 Dec 2023 18:44:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319826;
-	bh=VXw9Bli5bYbwjTD12tBM4zC6OHZ4Tt4x1DB48KZ7sEc=;
+	s=korg; t=1702320245;
+	bh=piXqMfp9pOV4IsDMyhlrGZiNIJ2L5mVFYocCaZHCXKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LOSKfmzcEmehguwpNhgrksk2UMgCdw3l+gMmj4Ur3CAMVPSDLVx8ZbwRoK3GMNGnS
-	 B5eXM0AAPaaq7w55/ZY98uWAGmmyezQazMq1RxTCoUApL4V9+Ej+Xrk1rolAYQ67Bt
-	 mhDJzgXigSKOkrqgbv//FGc+tf1nm/oiK8PTV3qc=
+	b=XxxPbM2+iq7LgVljzJwctEzkMoo1VOiBwm7gAGyKTq51UczIcfPxyHUEYz8TOCM1i
+	 7oMus1il4W4SKkzJWAlsEkzs3NTzd0YC6+bZHaq/4nQOqtd5M/la0Ejr8nTIER99LX
+	 qWvO8V1fz8CbCRu4sQT+5ktawLxCLFWiNK9sOFPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Kees Cook <keescook@chromium.org>
-Subject: [PATCH 6.6 240/244] gcc-plugins: randstruct: Update code comment in relayout_struct()
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 29/67] ASoC: wm_adsp: fix memleak in wm_adsp_buffer_populate
 Date: Mon, 11 Dec 2023 19:22:13 +0100
-Message-ID: <20231211182056.775314401@linuxfoundation.org>
+Message-ID: <20231211182016.314192131@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
+References: <20231211182015.049134368@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,40 +54,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-commit d71f22365a9caca82d424f3a33445de46567e198 upstream.
+[ Upstream commit 29046a78a3c0a1f8fa0427f164caa222f003cf5b ]
 
-Update code comment to clarify that the only element whose layout is
-not randomized is a proper C99 flexible-array member. This update is
-complementary to commit 1ee60356c2dc ("gcc-plugins: randstruct: Only
-warn about true flexible arrays")
+When wm_adsp_buffer_read() fails, we should free buf->regions.
+Otherwise, the callers of wm_adsp_buffer_populate() will
+directly free buf on failure, which makes buf->regions a leaked
+memory.
 
-Signed-off-by: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/ZWJr2MWDjXLHE8ap@work
-Fixes: 1ee60356c2dc ("gcc-plugins: randstruct: Only warn about true flexible arrays")
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a792af69b08f ("ASoC: wm_adsp: Refactor compress stream initialisation")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231204074158.12026-1-dinghao.liu@zju.edu.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/randomize_layout_plugin.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/codecs/wm_adsp.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -339,8 +339,7 @@ static int relayout_struct(tree type)
+diff --git a/sound/soc/codecs/wm_adsp.c b/sound/soc/codecs/wm_adsp.c
+index aedfa6b2895bd..8df5f3bc6e974 100644
+--- a/sound/soc/codecs/wm_adsp.c
++++ b/sound/soc/codecs/wm_adsp.c
+@@ -3649,12 +3649,12 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
+ 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].base_offset,
+ 					  &region->base_addr);
+ 		if (ret < 0)
+-			return ret;
++			goto err;
  
- 	/*
- 	 * enforce that we don't randomize the layout of the last
--	 * element of a struct if it's a 0 or 1-length array
--	 * or a proper flexible array
-+	 * element of a struct if it's a proper flexible array
- 	 */
- 	if (is_flexible_array(newtree[num_fields - 1])) {
- 		has_flexarray = true;
+ 		ret = wm_adsp_buffer_read(buf, caps->region_defs[i].size_offset,
+ 					  &offset);
+ 		if (ret < 0)
+-			return ret;
++			goto err;
+ 
+ 		region->cumulative_size = offset;
+ 
+@@ -3665,6 +3665,10 @@ static int wm_adsp_buffer_populate(struct wm_adsp_compr_buf *buf)
+ 	}
+ 
+ 	return 0;
++
++err:
++	kfree(buf->regions);
++	return ret;
+ }
+ 
+ static void wm_adsp_buffer_clear(struct wm_adsp_compr_buf *buf)
+-- 
+2.42.0
+
 
 
 
