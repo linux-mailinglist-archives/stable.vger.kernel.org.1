@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-6038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EC980D870
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4110C80D61D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAA02B2106A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0C4F2820E9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0129551038;
-	Mon, 11 Dec 2023 18:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9423D4174A;
+	Mon, 11 Dec 2023 18:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orcCoWU1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvIrZAGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FA14437B;
-	Mon, 11 Dec 2023 18:45:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37259C433C8;
-	Mon, 11 Dec 2023 18:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5101DFBE1;
+	Mon, 11 Dec 2023 18:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD5FC433C8;
+	Mon, 11 Dec 2023 18:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320344;
-	bh=8vGvTaDUWnfE6x0pIASNp0keCX79Zdc3OlY5xzQEkZk=;
+	s=korg; t=1702319489;
+	bh=jMMZsMs8NOES66jvWTlgUrt/9FtBQ0iJvOEV72CKUM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orcCoWU11PpTBmYF9rBe8ozzzlEqY6ytBIAWF6Dv4Gts1702vP+jFiCshocFNmFwd
-	 Yj4U1rpfnwbYXDKmnTbV81xmIRuCMdId0fwWITGO2sktuiqO+rI8Ik79dNmE05QEE/
-	 FIupegbgqUGaKGiPbfaOHMR28WsOuQm7kZeDjDSA=
+	b=IvIrZAGWFxy9A6pV55lh2kVQ/yCEtnfl4cqBuu7KlCrGiEVLdMjvBuN+rIdNfIIVF
+	 XqencyjUQYMRfdanmtr9qeK7HbVjPnO2Q3ouvSLdoy8+GIw+Xtr9GGWi9D0QUYDOpb
+	 m8vgDpkgoix2Fgt80Do8SxwiWjtSPr1/qk5OT2B8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grant Grundler <grundler@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Hayes Wang <hayeswang@realtek.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Roland Hieber <rhi@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/194] r8152: Add RTL8152_INACCESSIBLE to r8153_pre_firmware_1()
+Subject: [PATCH 6.6 124/244] ARM: dts: imx7: Declare timers compatible with fsl,imx6dl-gpt
 Date: Mon, 11 Dec 2023 19:20:17 +0100
-Message-ID: <20231211182037.782905485@linuxfoundation.org>
+Message-ID: <20231211182051.382617501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,41 +54,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-[ Upstream commit 8c53a7bd706535a9cf4e2ec3a4e8d61d46353ca0 ]
+[ Upstream commit 397caf68e2d36532054cb14ae8995537f27f8b61 ]
 
-Delay loops in r8152 should break out if RTL8152_INACCESSIBLE is set
-so that they don't delay too long if the device becomes
-inaccessible. Add the break to the loop in r8153_pre_firmware_1().
+The timer nodes declare compatibility with "fsl,imx6sx-gpt", which
+itself is compatible with "fsl,imx6dl-gpt". Switch the fallback
+compatible from "fsl,imx6sx-gpt" to "fsl,imx6dl-gpt".
 
-Fixes: 9370f2d05a2a ("r8152: support request_firmware for RTL8153")
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Acked-by: Hayes Wang <hayeswang@realtek.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 949673450291 ("ARM: dts: add imx7d soc dtsi file")
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/nxp/imx/imx7s.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 8b463a9c5e44c..b8ad038dd36bf 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -5527,6 +5527,8 @@ static int r8153_pre_firmware_1(struct r8152 *tp)
- 	for (i = 0; i < 104; i++) {
- 		u32 ocp_data = ocp_read_byte(tp, MCU_TYPE_USB, USB_WDT1_CTRL);
+diff --git a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
+index e152d08f27d49..bc79163c49b51 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx7s.dtsi
+@@ -454,7 +454,7 @@
+ 			};
  
-+		if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+			return -ENODEV;
- 		if (!(ocp_data & WTD1_EN))
- 			break;
- 		usleep_range(1000, 2000);
+ 			gpt1: timer@302d0000 {
+-				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
++				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
+ 				reg = <0x302d0000 0x10000>;
+ 				interrupts = <GIC_SPI 55 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_GPT1_ROOT_CLK>,
+@@ -463,7 +463,7 @@
+ 			};
+ 
+ 			gpt2: timer@302e0000 {
+-				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
++				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
+ 				reg = <0x302e0000 0x10000>;
+ 				interrupts = <GIC_SPI 54 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_GPT2_ROOT_CLK>,
+@@ -473,7 +473,7 @@
+ 			};
+ 
+ 			gpt3: timer@302f0000 {
+-				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
++				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
+ 				reg = <0x302f0000 0x10000>;
+ 				interrupts = <GIC_SPI 53 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_GPT3_ROOT_CLK>,
+@@ -483,7 +483,7 @@
+ 			};
+ 
+ 			gpt4: timer@30300000 {
+-				compatible = "fsl,imx7d-gpt", "fsl,imx6sx-gpt";
++				compatible = "fsl,imx7d-gpt", "fsl,imx6dl-gpt";
+ 				reg = <0x30300000 0x10000>;
+ 				interrupts = <GIC_SPI 52 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX7D_GPT4_ROOT_CLK>,
 -- 
 2.42.0
 
