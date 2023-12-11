@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-6148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A6E80D90E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B2B80D9F3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6A0A1C21670
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AE501F20CA6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:58:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B39051C38;
-	Mon, 11 Dec 2023 18:50:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9435524B1;
+	Mon, 11 Dec 2023 18:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mT/ANmLJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YfKVJPAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D625102A;
-	Mon, 11 Dec 2023 18:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E2CC433C7;
-	Mon, 11 Dec 2023 18:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99FCD321B8;
+	Mon, 11 Dec 2023 18:57:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D136C433C8;
+	Mon, 11 Dec 2023 18:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320641;
-	bh=TJ0kbHIo38RCTR6wUtjWZtsMd4dU+edX+Us3aq3066Y=;
+	s=korg; t=1702321067;
+	bh=BYdlKJIyTW66eYRiiBTe2LxbqBB9+Ai5XGAIGPZGJBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mT/ANmLJcprGAevLxS/5d64rH/viSzTB9Y6rXeq5RTYj/yTrFqgtnq5+dqqZBLBbT
-	 LUyiDlUnu3cMgZAcSIIPt2NzZhocavsoVxRUrir7PBHEOf6Wds1NSiRbhsgo4n7iDP
-	 MuH5TbYKRR7/4dnthaMFvggJo+VB9dnn1WtgEXyA=
+	b=YfKVJPAsmbxsD6RUoa9mgfzmgw9C+1KKOH2lLoV5/KSn6VKvdraqiFO1Ky65MAD3t
+	 lvuq8FVQI+4zwX+EayY0lJQB+dffqzpUO0zXvu5ABNw628JKPZQp+ctS14cM9cy1PO
+	 gKbrG3WI3aLQvltATh4y1URO9UVDeGtN/d5I7DxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Fabio Estevam <festevam@denx.de>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/194] coresight: etm4x: Make etm4_remove_dev() return void
+Subject: [PATCH 5.15 067/141] ARM: dts: imx6ul-pico: Describe the Ethernet PHY clock
 Date: Mon, 11 Dec 2023 19:22:06 +0100
-Message-ID: <20231211182042.669741427@linuxfoundation.org>
+Message-ID: <20231211182029.460430466@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,68 +52,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit c5f231f1a7e18d28e02b282d33541d31358360e4 ]
+[ Upstream commit d951f8f5f23a9417b7952f22b33784c73caa1ebb ]
 
-etm4_remove_dev() returned zero unconditionally. Make it return void
-instead, which makes it clear in the callers that there is no error to
-handle. Simplify etm4_remove_platform_dev() accordingly.
+Since commit c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK
+specific PHY fixup")thet Ethernet PHY is no longer configured via code
+in board file.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20230518201629.260672-1-u.kleine-koenig@pengutronix.de
-Stable-dep-of: 348ddab81f7b ("coresight: etm4x: Remove bogous __exit annotation for some functions")
+This caused Ethernet to stop working.
+
+Fix this problem by describing the clocks and clock-names to the
+Ethernet PHY node so that the KSZ8081 chip can be clocked correctly.
+
+Fixes: c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific PHY fixup")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/imx6ul-pico.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 1cf7478da6ee8..fd52fd64c6b13 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -2072,7 +2072,7 @@ static void clear_etmdrvdata(void *info)
- 	etmdrvdata[cpu] = NULL;
- }
- 
--static int __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
-+static void __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
- {
- 	etm_perf_symlink(drvdata->csdev, false);
- 	/*
-@@ -2094,7 +2094,6 @@ static int __exit etm4_remove_dev(struct etmv4_drvdata *drvdata)
- 	cscfg_unregister_csdev(drvdata->csdev);
- 	coresight_unregister(drvdata->csdev);
- 
--	return 0;
- }
- 
- static void __exit etm4_remove_amba(struct amba_device *adev)
-@@ -2107,13 +2106,12 @@ static void __exit etm4_remove_amba(struct amba_device *adev)
- 
- static int __exit etm4_remove_platform_dev(struct platform_device *pdev)
- {
--	int ret = 0;
- 	struct etmv4_drvdata *drvdata = dev_get_drvdata(&pdev->dev);
- 
- 	if (drvdata)
--		ret = etm4_remove_dev(drvdata);
-+		etm4_remove_dev(drvdata);
- 	pm_runtime_disable(&pdev->dev);
--	return ret;
-+	return 0;
- }
- 
- static const struct amba_id etm4_ids[] = {
+diff --git a/arch/arm/boot/dts/imx6ul-pico.dtsi b/arch/arm/boot/dts/imx6ul-pico.dtsi
+index 357ffb2f5ad61..dd6790852b0d6 100644
+--- a/arch/arm/boot/dts/imx6ul-pico.dtsi
++++ b/arch/arm/boot/dts/imx6ul-pico.dtsi
+@@ -121,6 +121,8 @@
+ 			max-speed = <100>;
+ 			interrupt-parent = <&gpio5>;
+ 			interrupts = <6 IRQ_TYPE_LEVEL_LOW>;
++			clocks = <&clks IMX6UL_CLK_ENET_REF>;
++			clock-names = "rmii-ref";
+ 		};
+ 	};
+ };
 -- 
 2.42.0
 
