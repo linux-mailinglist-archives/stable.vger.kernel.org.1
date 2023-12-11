@@ -1,224 +1,204 @@
-Return-Path: <stable+bounces-6072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2389380D89B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6AA80D543
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0BA128195C
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A67CB20E9F
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0AB51C2C;
-	Mon, 11 Dec 2023 18:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DAC65102B;
+	Mon, 11 Dec 2023 18:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6I3oBC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bvbT7IIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284A54437B;
-	Mon, 11 Dec 2023 18:47:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51A1C433C8;
-	Mon, 11 Dec 2023 18:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EFB05101B;
+	Mon, 11 Dec 2023 18:21:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3CFC433C8;
+	Mon, 11 Dec 2023 18:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320436;
-	bh=2c+eamILThX6jo5Q/W08EZhislQk4bqCEJNPTTDbkE4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6I3oBC1PvXxxKORXuX+0CSlVUpQPjHVHtv7J/72K4c8m05RgDa93dbfUEoP6eSUA
-	 +L9h4DZ/J6Pkv0dJQvmPsYcui5npIJ938RROvRNrGeSZic1dv21Dyob9BpBeHFQagO
-	 S2UZ4msgHs3XMKgFvWnVGDOkSi78owWk3CQRhRzQ=
+	s=korg; t=1702318915;
+	bh=/y2AqvR7v0OF7Z1YN/M4YkkW1nmYR1wzU5yk3k6CAK0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bvbT7IIzYA/XZWA2627gK8c7ZBNoJzbJDVDWB8RVyOol8TySimKcwduVS1qVwj6bC
+	 eC1a7Osa0gMjmBWf+bGJxa29CER+exoG4QWjli9N4H00vgBjABe3h5qLi1r1zHBbLV
+	 hJ2GE+IAkNSHM2qdzj/y2l51Rwrm8Zf4sRK7js7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/194] drop_monitor: Require CAP_SYS_ADMIN when joining "events" group
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: [PATCH 4.14 00/25] 4.14.333-rc1 review
 Date: Mon, 11 Dec 2023 19:20:51 +0100
-Message-ID: <20231211182039.230858080@linuxfoundation.org>
+Message-ID: <20231211182008.665944227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.333-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-4.14.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 4.14.333-rc1
+X-KernelTest-Deadline: 2023-12-13T18:20+00:00
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 4.14.333 release.
+There are 25 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 13 Dec 2023 18:19:59 +0000.
+Anything received after that time might be too late.
 
-From: Ido Schimmel <idosch@nvidia.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.333-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
+and the diffstat can be found below.
 
-[ Upstream commit e03781879a0d524ce3126678d50a80484a513c4b ]
+thanks,
 
-The "NET_DM" generic netlink family notifies drop locations over the
-"events" multicast group. This is problematic since by default generic
-netlink allows non-root users to listen to these notifications.
+greg k-h
 
-Fix by adding a new field to the generic netlink multicast group
-structure that when set prevents non-root users or root without the
-'CAP_SYS_ADMIN' capability (in the user namespace owning the network
-namespace) from joining the group. Set this field for the "events"
-group. Use 'CAP_SYS_ADMIN' rather than 'CAP_NET_ADMIN' because of the
-nature of the information that is shared over this group.
+-------------
+Pseudo-Shortlog of commits:
 
-Note that the capability check in this case will always be performed
-against the initial user namespace since the family is not netns aware
-and only operates in the initial network namespace.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 4.14.333-rc1
 
-A new field is added to the structure rather than using the "flags"
-field because the existing field uses uAPI flags and it is inappropriate
-to add a new uAPI flag for an internal kernel check. In net-next we can
-rework the "flags" field to use internal flags and fold the new field
-into it. But for now, in order to reduce the amount of changes, add a
-new field.
+Ido Schimmel <idosch@nvidia.com>
+    drop_monitor: Require 'CAP_SYS_ADMIN' when joining "events" group
 
-Since the information can only be consumed by root, mark the control
-plane operations that start and stop the tracing as root-only using the
-'GENL_ADMIN_PERM' flag.
+Ido Schimmel <idosch@nvidia.com>
+    psample: Require 'CAP_NET_ADMIN' when joining "packets" group
 
-Tested using [1].
+Ido Schimmel <idosch@nvidia.com>
+    genetlink: add CAP_NET_ADMIN test for multicast bind
 
-Before:
+Ido Schimmel <idosch@nvidia.com>
+    netlink: don't call ->netlink_bind with table lock held
 
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix missing error check for sb_set_blocksize call
 
-After:
+Claudio Imbrenda <imbrenda@linux.ibm.com>
+    KVM: s390/mm: Properly reset no-dat
 
- # capsh -- -c ./dm_repo
- # capsh --drop=cap_sys_admin -- -c ./dm_repo
- Failed to join "events" multicast group
+Ronald Wahl <ronald.wahl@raritan.com>
+    serial: 8250_omap: Add earlycon support for the AM654 UART controller
 
-[1]
- $ cat dm.c
- #include <stdio.h>
- #include <netlink/genl/ctrl.h>
- #include <netlink/genl/genl.h>
- #include <netlink/socket.h>
+Daniel Mack <daniel@zonque.org>
+    serial: sc16is7xx: address RX timeout interrupt errata
 
- int main(int argc, char **argv)
- {
- 	struct nl_sock *sk;
- 	int grp, err;
+Arnd Bergmann <arnd@arndb.de>
+    ARM: PL011: Fix DMA support
 
- 	sk = nl_socket_alloc();
- 	if (!sk) {
- 		fprintf(stderr, "Failed to allocate socket\n");
- 		return -1;
- 	}
+Cameron Williams <cang1@live.co.uk>
+    parport: Add support for Brainboxes IX/UC/PX parallel cards
 
- 	err = genl_connect(sk);
- 	if (err) {
- 		fprintf(stderr, "Failed to connect socket\n");
- 		return err;
- 	}
+Daniel Borkmann <daniel@iogearbox.net>
+    packet: Move reference count in packet_sock to atomic_long_t
 
- 	grp = genl_ctrl_resolve_grp(sk, "NET_DM", "events");
- 	if (grp < 0) {
- 		fprintf(stderr,
- 			"Failed to resolve \"events\" multicast group\n");
- 		return grp;
- 	}
+Petr Pavlu <petr.pavlu@suse.com>
+    tracing: Fix a possible race when disabling buffered events
 
- 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
- 	if (err) {
- 		fprintf(stderr, "Failed to join \"events\" multicast group\n");
- 		return err;
- 	}
+Petr Pavlu <petr.pavlu@suse.com>
+    tracing: Fix incomplete locking when disabling buffered events
 
- 	return 0;
- }
- $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o dm_repo dm.c
+Steven Rostedt (Google) <rostedt@goodmis.org>
+    tracing: Always update snapshot buffer size
 
-Fixes: 9a8afc8d3962 ("Network Drop Monitor: Adding drop monitor implementation & Netlink protocol")
-Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://lore.kernel.org/r/20231206213102.1824398-3-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- include/net/genetlink.h | 2 ++
- net/core/drop_monitor.c | 4 +++-
- net/netlink/genetlink.c | 3 +++
- 3 files changed, 8 insertions(+), 1 deletion(-)
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
 
-diff --git a/include/net/genetlink.h b/include/net/genetlink.h
-index 9f97f73615b69..b9e5a22ae3ff9 100644
---- a/include/net/genetlink.h
-+++ b/include/net/genetlink.h
-@@ -12,10 +12,12 @@
-  * struct genl_multicast_group - generic netlink multicast group
-  * @name: name of the multicast group, names are per-family
-  * @flags: GENL_* flags (%GENL_ADMIN_PERM or %GENL_UNS_ADMIN_PERM)
-+ * @cap_sys_admin: whether %CAP_SYS_ADMIN is required for binding
-  */
- struct genl_multicast_group {
- 	char			name[GENL_NAMSIZ];
- 	u8			flags;
-+	u8			cap_sys_admin:1;
- };
- 
- struct genl_ops;
-diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index f084a4a6b7ab2..8e0a90b45df22 100644
---- a/net/core/drop_monitor.c
-+++ b/net/core/drop_monitor.c
-@@ -181,7 +181,7 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
- }
- 
- static const struct genl_multicast_group dropmon_mcgrps[] = {
--	{ .name = "events", },
-+	{ .name = "events", .cap_sys_admin = 1 },
- };
- 
- static void send_dm_alert(struct work_struct *work)
-@@ -1604,11 +1604,13 @@ static const struct genl_small_ops dropmon_ops[] = {
- 		.cmd = NET_DM_CMD_START,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_STOP,
- 		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
- 		.doit = net_dm_cmd_trace,
-+		.flags = GENL_ADMIN_PERM,
- 	},
- 	{
- 		.cmd = NET_DM_CMD_CONFIG_GET,
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index 3e16527beb914..505d3b910cc29 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -1438,6 +1438,9 @@ static int genl_bind(struct net *net, int group)
- 		if ((grp->flags & GENL_UNS_ADMIN_PERM) &&
- 		    !ns_capable(net->user_ns, CAP_NET_ADMIN))
- 			ret = -EPERM;
-+		if (grp->cap_sys_admin &&
-+		    !ns_capable(net->user_ns, CAP_SYS_ADMIN))
-+			ret = -EPERM;
- 
- 		break;
- 	}
--- 
-2.42.0
+Jason Zhang <jason.zhang@rock-chips.com>
+    ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
 
+Dinghao Liu <dinghao.liu@zju.edu.cn>
+    scsi: be2iscsi: Fix a memleak in beiscsi_init_wrb_handle()
+
+Petr Pavlu <petr.pavlu@suse.com>
+    tracing: Fix a warning when allocating buffered events fails
+
+Armin Wolf <W_Armin@gmx.de>
+    hwmon: (acpi_power_meter) Fix 4.29 MW bug
+
+Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+    RDMA/bnxt_re: Correct module description string
+
+Eric Dumazet <edumazet@google.com>
+    tcp: do not accept ACK of bytes we never sent
+
+Yonglong Liu <liuyonglong@huawei.com>
+    net: hns: fix fake link up on xge port
+
+YuanShang <YuanShang.Mao@amd.com>
+    drm/amdgpu: correct chunk_ptr to a pointer to chunk.
+
+Alex Pakhunov <alexey.pakhunov@spacex.com>
+    tg3: Increment tx_dropped in tg3_tso_bug()
+
+Alex Pakhunov <alexey.pakhunov@spacex.com>
+    tg3: Move the [rt]x_dropped counters to tg3_napi
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                          |   4 +-
+ arch/s390/mm/pgtable.c                            |   2 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c            |   2 +-
+ drivers/hwmon/acpi_power_meter.c                  |   4 +
+ drivers/infiniband/hw/bnxt_re/main.c              |   2 +-
+ drivers/net/ethernet/broadcom/tg3.c               |  42 ++++++--
+ drivers/net/ethernet/broadcom/tg3.h               |   4 +-
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c |  29 ++++++
+ drivers/parport/parport_pc.c                      |  21 ++++
+ drivers/scsi/be2iscsi/be_main.c                   |   1 +
+ drivers/tty/serial/8250/8250_early.c              |   1 +
+ drivers/tty/serial/amba-pl011.c                   | 112 +++++++++++-----------
+ drivers/tty/serial/sc16is7xx.c                    |  12 +++
+ fs/nilfs2/sufile.c                                |  44 +++++++--
+ fs/nilfs2/the_nilfs.c                             |   6 +-
+ include/net/genetlink.h                           |   3 +
+ kernel/trace/trace.c                              |  42 ++++----
+ net/core/drop_monitor.c                           |   4 +-
+ net/ipv4/tcp_input.c                              |   6 +-
+ net/netlink/af_netlink.c                          |   4 +-
+ net/netlink/genetlink.c                           |  35 +++++++
+ net/packet/af_packet.c                            |  16 ++--
+ net/packet/internal.h                             |   2 +-
+ net/psample/psample.c                             |   3 +-
+ sound/core/pcm.c                                  |   1 +
+ 25 files changed, 286 insertions(+), 116 deletions(-)
 
 
 
