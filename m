@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-6025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33C280D860
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7604480D604
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F404E1C2160B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 310842823A6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F5A51036;
-	Mon, 11 Dec 2023 18:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826F051034;
+	Mon, 11 Dec 2023 18:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZU4HfQOc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSUNg6NV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBCF34437B;
-	Mon, 11 Dec 2023 18:45:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FFB2C433C8;
-	Mon, 11 Dec 2023 18:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62A7FBE1;
+	Mon, 11 Dec 2023 18:30:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF63EC433C8;
+	Mon, 11 Dec 2023 18:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320309;
-	bh=AJZMtLC2foOR8RSBNjWxif2bv+V/l16chBCLYHO5Zms=;
+	s=korg; t=1702319426;
+	bh=YhnsODmt1MSG6rqOqdzwu3gMInhth8cHiGYT7qqweLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZU4HfQOcJH02l2TyFIGN8bOVWK1w8plSZ73Jio8vCLE+8E/aPk3ldCbGRr1hvsn4A
-	 ZM6JXc7e23L6cr1OEIGFZHpuw7oZ+9Ffrj5YSGzNfKhYzjDYI7x/yHlokbW9SRRjH/
-	 ZWmBPDU39h1YUoR2dTpNItZ6VXAl+E63/LGMyuHg=
+	b=DSUNg6NV2i8UY1PVJ3Bu1e+KcXlI35MsNxt9si9YY+pDhlKRLpEtdbEheRlSXh9W+
+	 8IVh8Syg4yT/6QK/JCYfz8ld6nf8u3fhq4GWyrduyZ/7fBPlMWHV5DJhJ5x5G+urdG
+	 YrRJuxxNCchz3RyrKnrAOJKpnH1u+Wfr3N/z76qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Liao <liaoyu15@huawei.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Liu Tie <liutie4@huawei.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/194] hrtimers: Push pending hrtimers away from outgoing CPU earlier
-Date: Mon, 11 Dec 2023 19:19:52 +0100
-Message-ID: <20231211182036.713066483@linuxfoundation.org>
+Subject: [PATCH 6.6 100/244] ASoC: codecs: lpass-tx-macro: set active_decimator correct default value
+Date: Mon, 11 Dec 2023 19:19:53 +0100
+Message-ID: <20231211182050.269226816@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,157 +53,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 5c0930ccaad5a74d74e8b18b648c5eb21ed2fe94 ]
+[ Upstream commit a2f35ed1d237c459100adb0c39bb811d7f170977 ]
 
-2b8272ff4a70 ("cpu/hotplug: Prevent self deadlock on CPU hot-unplug")
-solved the straight forward CPU hotplug deadlock vs. the scheduler
-bandwidth timer. Yu discovered a more involved variant where a task which
-has a bandwidth timer started on the outgoing CPU holds a lock and then
-gets throttled. If the lock required by one of the CPU hotplug callbacks
-the hotplug operation deadlocks because the unthrottling timer event is not
-handled on the dying CPU and can only be recovered once the control CPU
-reaches the hotplug state which pulls the pending hrtimers from the dead
-CPU.
+The -1 value for active_decimator[dai_id] is considered as "not set",
+but at probe the table is initialized a 0, this prevents enabling the
+DEC0 Mixer since it will be considered as already set.
 
-Solve this by pushing the hrtimers away from the dying CPU in the dying
-callbacks. Nothing can queue a hrtimer on the dying CPU at that point because
-all other CPUs spin in stop_machine() with interrupts disabled and once the
-operation is finished the CPU is marked offline.
+Initialize the table entries as -1 to fix tx_macro_tx_mixer_put().
 
-Reported-by: Yu Liao <liaoyu15@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Liu Tie <liutie4@huawei.com>
-Link: https://lore.kernel.org/r/87a5rphara.ffs@tglx
+Fixes: 1c6a7f5250ce ("ASoC: codecs: tx-macro: fix active_decimator array")
+Fixes: c1057a08af43 ("ASoC: codecs: tx-macro: fix kcontrol put")
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231116-topic-sm8x50-upstream-tx-macro-fix-active-decimator-set-v1-1-6edf402f4b6f@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/cpuhotplug.h |  1 +
- include/linux/hrtimer.h    |  4 ++--
- kernel/cpu.c               |  8 +++++++-
- kernel/time/hrtimer.c      | 33 ++++++++++++---------------------
- 4 files changed, 22 insertions(+), 24 deletions(-)
+ sound/soc/codecs/lpass-tx-macro.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-index c7e0d80dbf6a5..67575bc8a7e29 100644
---- a/include/linux/cpuhotplug.h
-+++ b/include/linux/cpuhotplug.h
-@@ -196,6 +196,7 @@ enum cpuhp_state {
- 	CPUHP_AP_ARM_CORESIGHT_CTI_STARTING,
- 	CPUHP_AP_ARM64_ISNDEP_STARTING,
- 	CPUHP_AP_SMPCFD_DYING,
-+	CPUHP_AP_HRTIMERS_DYING,
- 	CPUHP_AP_X86_TBOOT_DYING,
- 	CPUHP_AP_ARM_CACHE_B15_RAC_DYING,
- 	CPUHP_AP_ONLINE,
-diff --git a/include/linux/hrtimer.h b/include/linux/hrtimer.h
-index 0ee140176f102..f2044d5a652b5 100644
---- a/include/linux/hrtimer.h
-+++ b/include/linux/hrtimer.h
-@@ -531,9 +531,9 @@ extern void sysrq_timer_list_show(void);
+diff --git a/sound/soc/codecs/lpass-tx-macro.c b/sound/soc/codecs/lpass-tx-macro.c
+index 3e33418898e82..ebddfa74ce0a0 100644
+--- a/sound/soc/codecs/lpass-tx-macro.c
++++ b/sound/soc/codecs/lpass-tx-macro.c
+@@ -2021,6 +2021,11 @@ static int tx_macro_probe(struct platform_device *pdev)
  
- int hrtimers_prepare_cpu(unsigned int cpu);
- #ifdef CONFIG_HOTPLUG_CPU
--int hrtimers_dead_cpu(unsigned int cpu);
-+int hrtimers_cpu_dying(unsigned int cpu);
- #else
--#define hrtimers_dead_cpu	NULL
-+#define hrtimers_cpu_dying	NULL
- #endif
+ 	tx->dev = dev;
  
- #endif
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 0e4d362e90825..551468d9c5a85 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1733,7 +1733,7 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 	[CPUHP_HRTIMERS_PREPARE] = {
- 		.name			= "hrtimers:prepare",
- 		.startup.single		= hrtimers_prepare_cpu,
--		.teardown.single	= hrtimers_dead_cpu,
-+		.teardown.single	= NULL,
- 	},
- 	[CPUHP_SMPCFD_PREPARE] = {
- 		.name			= "smpcfd:prepare",
-@@ -1800,6 +1800,12 @@ static struct cpuhp_step cpuhp_hp_states[] = {
- 		.startup.single		= NULL,
- 		.teardown.single	= smpcfd_dying_cpu,
- 	},
-+	[CPUHP_AP_HRTIMERS_DYING] = {
-+		.name			= "hrtimers:dying",
-+		.startup.single		= NULL,
-+		.teardown.single	= hrtimers_cpu_dying,
-+	},
++	/* Set active_decimator default value */
++	tx->active_decimator[TX_MACRO_AIF1_CAP] = -1;
++	tx->active_decimator[TX_MACRO_AIF2_CAP] = -1;
++	tx->active_decimator[TX_MACRO_AIF3_CAP] = -1;
 +
- 	/* Entry state on starting. Interrupts enabled from here on. Transient
- 	 * state for synchronsization */
- 	[CPUHP_AP_ONLINE] = {
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index e4f0e3b0c4f4f..5561dabc9b225 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -2216,29 +2216,22 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
- 	}
- }
- 
--int hrtimers_dead_cpu(unsigned int scpu)
-+int hrtimers_cpu_dying(unsigned int dying_cpu)
- {
- 	struct hrtimer_cpu_base *old_base, *new_base;
--	int i;
-+	int i, ncpu = cpumask_first(cpu_active_mask);
- 
--	BUG_ON(cpu_online(scpu));
--	tick_cancel_sched_timer(scpu);
-+	tick_cancel_sched_timer(dying_cpu);
-+
-+	old_base = this_cpu_ptr(&hrtimer_bases);
-+	new_base = &per_cpu(hrtimer_bases, ncpu);
- 
--	/*
--	 * this BH disable ensures that raise_softirq_irqoff() does
--	 * not wakeup ksoftirqd (and acquire the pi-lock) while
--	 * holding the cpu_base lock
--	 */
--	local_bh_disable();
--	local_irq_disable();
--	old_base = &per_cpu(hrtimer_bases, scpu);
--	new_base = this_cpu_ptr(&hrtimer_bases);
- 	/*
- 	 * The caller is globally serialized and nobody else
- 	 * takes two locks at once, deadlock is not possible.
- 	 */
--	raw_spin_lock(&new_base->lock);
--	raw_spin_lock_nested(&old_base->lock, SINGLE_DEPTH_NESTING);
-+	raw_spin_lock(&old_base->lock);
-+	raw_spin_lock_nested(&new_base->lock, SINGLE_DEPTH_NESTING);
- 
- 	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
- 		migrate_hrtimer_list(&old_base->clock_base[i],
-@@ -2249,15 +2242,13 @@ int hrtimers_dead_cpu(unsigned int scpu)
- 	 * The migration might have changed the first expiring softirq
- 	 * timer on this CPU. Update it.
- 	 */
--	hrtimer_update_softirq_timer(new_base, false);
-+	__hrtimer_get_next_event(new_base, HRTIMER_ACTIVE_SOFT);
-+	/* Tell the other CPU to retrigger the next event */
-+	smp_call_function_single(ncpu, retrigger_next_event, NULL, 0);
- 
--	raw_spin_unlock(&old_base->lock);
- 	raw_spin_unlock(&new_base->lock);
-+	raw_spin_unlock(&old_base->lock);
- 
--	/* Check, if we got expired work to do */
--	__hrtimer_peek_ahead_timers();
--	local_irq_enable();
--	local_bh_enable();
- 	return 0;
- }
- 
+ 	/* set MCLK and NPL rates */
+ 	clk_set_rate(tx->mclk, MCLK_FREQ);
+ 	clk_set_rate(tx->npl, MCLK_FREQ);
 -- 
 2.42.0
 
