@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-5833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF7080D766
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7155980D7F0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D0701C2128D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11F26B20E24
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4D455C12;
-	Mon, 11 Dec 2023 18:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC23A524B0;
+	Mon, 11 Dec 2023 18:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zGQ14T6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2a8D2Lt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C737C54BF9;
-	Mon, 11 Dec 2023 18:36:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B762C433C7;
-	Mon, 11 Dec 2023 18:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945E6FBE1;
+	Mon, 11 Dec 2023 18:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17433C433C7;
+	Mon, 11 Dec 2023 18:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319787;
-	bh=sG3ynemljxaafH5g5jf1WTpAiRdB+Cnh4KRjm+vAcdw=;
+	s=korg; t=1702320068;
+	bh=V95+z+Y82A/FdFpcZfgogQqt8n3wGR7uaU7dfHtpjrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zGQ14T6HUBkX3JtnSsdRBIKc1DaCJZoK+dofPo3HNQBLpQtB2ZwCR88aNKTBoX/Z0
-	 VRBhukSvuvRIHLr3a2EHblrXvhYPVfzWIcemoXDmS8E18xxS2x35Bon0I5dPlFAkT+
-	 U2EL90iY9kPo642I9UjzUTuH6RmV3PrrgSEDmbE4=
+	b=m2a8D2LtyvzAh9oOnbfFib9tOQSEYiAQUtytcaZ6wkMuOolOxR0zLA8tNhu8oA5TU
+	 PEBTVM7dtbn8pcJj2Yw2SZzvlLPDLshZrs0Mao/wLrN2iRLciN6+Gq36cpsRfDvI1A
+	 QNgxj/E//yuBoB2Ezfr7IFpyVNazwVywn2sRWVjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Gonda <pgonda@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 232/244] KVM: SVM: Update EFER software model on CR0 trap for SEV-ES
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 62/97] ring-buffer: Force absolute timestamp on discard of event
 Date: Mon, 11 Dec 2023 19:22:05 +0100
-Message-ID: <20231211182056.434438029@linuxfoundation.org>
+Message-ID: <20231211182022.411548255@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,79 +55,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 4cdf351d3630a640ab6a05721ef055b9df62277f upstream.
+[ Upstream commit b2dd797543cfa6580eac8408dd67fa02164d9e56 ]
 
-In general, activating long mode involves setting the EFER_LME bit in
-the EFER register and then enabling the X86_CR0_PG bit in the CR0
-register. At this point, the EFER_LMA bit will be set automatically by
-hardware.
+There's a race where if an event is discarded from the ring buffer and an
+interrupt were to happen at that time and insert an event, the time stamp
+is still used from the discarded event as an offset. This can screw up the
+timings.
 
-In the case of SVM/SEV guests where writes to CR0 are intercepted, it's
-necessary for the host to set EFER_LMA on behalf of the guest since
-hardware does not see the actual CR0 write.
+If the event is going to be discarded, set the "before_stamp" to zero.
+When a new event comes in, it compares the "before_stamp" with the
+"write_stamp" and if they are not equal, it will insert an absolute
+timestamp. This will prevent the timings from getting out of sync due to
+the discarded event.
 
-In the case of SEV-ES guests where writes to CR0 are trapped instead of
-intercepted, the hardware *does* see/record the write to CR0 before
-exiting and passing the value on to the host, so as part of enabling
-SEV-ES support commit f1c6366e3043 ("KVM: SVM: Add required changes to
-support intercepts under SEV-ES") dropped special handling of the
-EFER_LMA bit with the understanding that it would be set automatically.
+Link: https://lore.kernel.org/linux-trace-kernel/20231206100244.5130f9b3@gandalf.local.home
 
-However, since the guest never explicitly sets the EFER_LMA bit, the
-host never becomes aware that it has been set. This becomes problematic
-when userspace tries to get/set the EFER values via
-KVM_GET_SREGS/KVM_SET_SREGS, since the EFER contents tracked by the host
-will be missing the EFER_LMA bit, and when userspace attempts to pass
-the EFER value back via KVM_SET_SREGS it will fail a sanity check that
-asserts that EFER_LMA should always be set when X86_CR0_PG and EFER_LME
-are set.
-
-Fix this by always inferring the value of EFER_LMA based on X86_CR0_PG
-and EFER_LME, regardless of whether or not SEV-ES is enabled.
-
-Fixes: f1c6366e3043 ("KVM: SVM: Add required changes to support intercepts under SEV-ES")
-Reported-by: Peter Gonda <pgonda@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Message-Id: <20210507165947.2502412-2-seanjc@google.com>
-[A two year old patch that was revived after we noticed the failure in
- KVM_SET_SREGS and a similar patch was posted by Michael Roth.  This is
- Sean's patch, but with Michael's more complete commit message. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 6f6be606e763f ("ring-buffer: Force before_stamp and write_stamp to be different on discard")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c | 19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1873,15 +1873,17 @@ void svm_set_cr0(struct kvm_vcpu *vcpu,
- 	bool old_paging = is_paging(vcpu);
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 0938222b45988..7e1148aafd284 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -2903,22 +2903,19 @@ rb_try_to_discard(struct ring_buffer_per_cpu *cpu_buffer,
+ 			local_read(&bpage->write) & ~RB_WRITE_MASK;
+ 		unsigned long event_length = rb_event_length(event);
  
- #ifdef CONFIG_X86_64
--	if (vcpu->arch.efer & EFER_LME && !vcpu->arch.guest_state_protected) {
-+	if (vcpu->arch.efer & EFER_LME) {
- 		if (!is_paging(vcpu) && (cr0 & X86_CR0_PG)) {
- 			vcpu->arch.efer |= EFER_LMA;
--			svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
-+			if (!vcpu->arch.guest_state_protected)
-+				svm->vmcb->save.efer |= EFER_LMA | EFER_LME;
- 		}
++		/*
++		 * For the before_stamp to be different than the write_stamp
++		 * to make sure that the next event adds an absolute
++		 * value and does not rely on the saved write stamp, which
++		 * is now going to be bogus.
++		 */
++		rb_time_set(&cpu_buffer->before_stamp, 0);
++
+ 		/* Something came in, can't discard */
+ 		if (!rb_time_cmpxchg(&cpu_buffer->write_stamp,
+ 				       write_stamp, write_stamp - delta))
+ 			return 0;
  
- 		if (is_paging(vcpu) && !(cr0 & X86_CR0_PG)) {
- 			vcpu->arch.efer &= ~EFER_LMA;
--			svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
-+			if (!vcpu->arch.guest_state_protected)
-+				svm->vmcb->save.efer &= ~(EFER_LMA | EFER_LME);
- 		}
- 	}
- #endif
+-		/*
+-		 * It's possible that the event time delta is zero
+-		 * (has the same time stamp as the previous event)
+-		 * in which case write_stamp and before_stamp could
+-		 * be the same. In such a case, force before_stamp
+-		 * to be different than write_stamp. It doesn't
+-		 * matter what it is, as long as its different.
+-		 */
+-		if (!delta)
+-			rb_time_set(&cpu_buffer->before_stamp, 0);
+-
+ 		/*
+ 		 * If an event were to come in now, it would see that the
+ 		 * write_stamp and the before_stamp are different, and assume
+-- 
+2.42.0
+
 
 
 
