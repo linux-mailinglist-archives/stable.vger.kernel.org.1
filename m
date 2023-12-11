@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-6090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8462380D8B5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F33C280D63A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9291F21A64
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AFD31C21561
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD71951C2D;
-	Mon, 11 Dec 2023 18:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E007FBE1;
+	Mon, 11 Dec 2023 18:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfQPt5wV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftLqT/wf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740855102A;
-	Mon, 11 Dec 2023 18:48:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E799EC433C9;
-	Mon, 11 Dec 2023 18:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09FDC2D0;
+	Mon, 11 Dec 2023 18:32:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68011C433C8;
+	Mon, 11 Dec 2023 18:32:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320484;
-	bh=gBZseWC/6O89pYQ45W+x/Oe73vJlOa6kdyXZ7ulbFsI=;
+	s=korg; t=1702319549;
+	bh=C9/owswsWOMHNsw+TcRE57AiiCN8sgqasPFB7Vu95Ig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfQPt5wVpXMRIT9cfPxvvColy81ICBlwfqZHyEvfZosjkLqxQ/sGC3EnSH0lDE1k4
-	 PiNvHn5HEcAyZHraeubBSxfU6ru04XY33SUr8M1HrqoP4nVB9XSkBFED6hEZGBtFIw
-	 6fQxjgVh6ZRcpYhd0Emjpv5TybRt1+8NiFTPXW5Y=
+	b=ftLqT/wfIF9qBnSjCd87nYlYqxeG6uE34M3hpkppr3jBqnlmdYhuyDjtvUdkHrh9T
+	 B8kmK/JeJQOy3SPHl7n/5aKfVSfkKnrMxtyOJ1G4CbQv5VEZOrejUgsL1NrIbTVWj0
+	 VI4fxciUeg25qWt3Qryic7WJiliZHuMC80ZoITGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/194] octeontx2-af: Add missing mcs flr handler call
+	Su Hui <suhui@nfschina.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Jiaqi Yan <jiaqiyan@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Peter Collingbourne <pcc@google.com>,
+	Tom Rix <trix@redhat.com>,
+	Tony Luck <tony.luck@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 147/244] highmem: fix a memory copy problem in memcpy_from_folio
 Date: Mon, 11 Dec 2023 19:20:40 +0100
-Message-ID: <20231211182038.805722046@linuxfoundation.org>
+Message-ID: <20231211182052.401694968@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit d431abd0a9aa27be379fb5f8304062071b0f5a7e ]
+commit 73424d00dc63ba681856e06cfb0a5abbdb62e2b5 upstream.
 
-If mcs resources are attached to PF/VF. These resources need
-to be freed on FLR. This patch add missing mcs flr call on PF FLR.
+Clang static checker complains that value stored to 'from' is never read.
+And memcpy_from_folio() only copy the last chunk memory from folio to
+destination.  Use 'to += chunk' to replace 'from += chunk' to fix this
+typo problem.
 
-Fixes: bd69476e86fc ("octeontx2-af: cn10k: mcs: Install a default TCAM for normal traffic")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20231130034017.1210429-1-suhui@nfschina.com
+Fixes: b23d03ef7af5 ("highmem: add memcpy_to_folio() and memcpy_from_folio()")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Ira Weiny <ira.weiny@intel.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Peter Collingbourne <pcc@google.com>
+Cc: Tom Rix <trix@redhat.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/highmem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 733add3a9dc6b..d88d86bf07b03 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -2622,6 +2622,9 @@ static void __rvu_flr_handler(struct rvu *rvu, u16 pcifunc)
- 	 */
- 	rvu_npc_free_mcam_entries(rvu, pcifunc, -1);
+diff --git a/include/linux/highmem.h b/include/linux/highmem.h
+index 4cacc0e43b51..be20cff4ba73 100644
+--- a/include/linux/highmem.h
++++ b/include/linux/highmem.h
+@@ -454,7 +454,7 @@ static inline void memcpy_from_folio(char *to, struct folio *folio,
+ 		memcpy(to, from, chunk);
+ 		kunmap_local(from);
  
-+	if (rvu->mcs_blk_cnt)
-+		rvu_mcs_flr_handler(rvu, pcifunc);
-+
- 	mutex_unlock(&rvu->flr_lock);
- }
- 
+-		from += chunk;
++		to += chunk;
+ 		offset += chunk;
+ 		len -= chunk;
+ 	} while (len > 0);
 -- 
-2.42.0
+2.43.0
 
 
 
