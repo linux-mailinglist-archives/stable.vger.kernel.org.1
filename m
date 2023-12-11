@@ -1,49 +1,50 @@
-Return-Path: <stable+bounces-5574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1982780D574
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEA180D999
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C799A281A8D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DDBFB203E0
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9575101E;
-	Mon, 11 Dec 2023 18:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA34951C50;
+	Mon, 11 Dec 2023 18:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcvLCc/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2TFeJI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2903C4F212;
-	Mon, 11 Dec 2023 18:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F35C433C7;
-	Mon, 11 Dec 2023 18:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6E5321B8;
+	Mon, 11 Dec 2023 18:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E123C433C7;
+	Mon, 11 Dec 2023 18:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319086;
-	bh=KSddwmdkjwKWJq6rGwXz2hmrUnxDinyULUxkOYZ1kyw=;
+	s=korg; t=1702320918;
+	bh=IKNMMUcOmzwaHf+5375pBqmX9NsUx8roiXfZkAwC9Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FcvLCc/NyJrPXG3GjY9aJ5xMeEHp9lAQ3E+iiBzMTE3U6DPeQFAd2RbFKIl+r5MEn
-	 ZjpIb2woM7C3WNV6k9WQ5smZacu7tHi4lsBKFMcHwZ0n8BO5hz88a3vG6AvsM+idh+
-	 uNqmO+IBJydsWyZ2HZMXsAgiLdH9kKhJvH2HtUHg=
+	b=k2TFeJI2cwcl/Pj+Be3lG93W2K+VHZ+gWGLkuKGE4/4bU+dfq7gZPHZ7XCzwJXVqV
+	 bJ3FZ5rcSNN4f17RrnyWbIwoNVdf1P4dfAVDjDYSmbprwnNgkGum/yzKmHRFeBJj7X
+	 qA/23O7tvVKHzW5Lr7MiS9fdg2AO7GnoFZGfvKw4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 4.19 33/55] tracing: Always update snapshot buffer size
+	"The UKs National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 044/141] psample: Require CAP_NET_ADMIN when joining "packets" group
 Date: Mon, 11 Dec 2023 19:21:43 +0100
-Message-ID: <20231211182013.458334330@linuxfoundation.org>
+Message-ID: <20231211182028.432708514@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,88 +56,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
+[ Upstream commit 44ec98ea5ea9cfecd31a5c4cc124703cb5442832 ]
 
-It use to be that only the top level instance had a snapshot buffer (for
-latency tracers like wakeup and irqsoff). The update of the ring buffer
-size would check if the instance was the top level and if so, it would
-also update the snapshot buffer as it needs to be the same as the main
-buffer.
+The "psample" generic netlink family notifies sampled packets over the
+"packets" multicast group. This is problematic since by default generic
+netlink allows non-root users to listen to these notifications.
 
-Now that lower level instances also has a snapshot buffer, they too need
-to update their snapshot buffer sizes when the main buffer is changed,
-otherwise the following can be triggered:
+Fix by marking the group with the 'GENL_UNS_ADMIN_PERM' flag. This will
+prevent non-root users or root without the 'CAP_NET_ADMIN' capability
+(in the user namespace owning the network namespace) from joining the
+group.
 
- # cd /sys/kernel/tracing
- # echo 1500 > buffer_size_kb
- # mkdir instances/foo
- # echo irqsoff > instances/foo/current_tracer
- # echo 1000 > instances/foo/buffer_size_kb
+Tested using [1].
 
-Produces:
+Before:
 
- WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
 
-Which is:
+After:
 
-	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+ # capsh -- -c ./psample_repo
+ # capsh --drop=cap_net_admin -- -c ./psample_repo
+ Failed to join "packets" multicast group
 
-	if (ret == -EBUSY) {
-		[..]
-	}
+[1]
+ $ cat psample.c
+ #include <stdio.h>
+ #include <netlink/genl/ctrl.h>
+ #include <netlink/genl/genl.h>
+ #include <netlink/socket.h>
 
-	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
+ int join_grp(struct nl_sock *sk, const char *grp_name)
+ {
+ 	int grp, err;
 
-That's because ring_buffer_swap_cpu() has:
+ 	grp = genl_ctrl_resolve_grp(sk, "psample", grp_name);
+ 	if (grp < 0) {
+ 		fprintf(stderr, "Failed to resolve \"%s\" multicast group\n",
+ 			grp_name);
+ 		return grp;
+ 	}
 
-	int ret = -EINVAL;
+ 	err = nl_socket_add_memberships(sk, grp, NFNLGRP_NONE);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to join \"%s\" multicast group\n",
+ 			grp_name);
+ 		return err;
+ 	}
 
-	[..]
-
-	/* At least make sure the two buffers are somewhat the same */
-	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
-		goto out;
-
-	[..]
- out:
-	return ret;
+ 	return 0;
  }
 
-Instead, update all instances' snapshot buffer sizes when their main
-buffer size is updated.
+ int main(int argc, char **argv)
+ {
+ 	struct nl_sock *sk;
+ 	int err;
 
-Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
+ 	sk = nl_socket_alloc();
+ 	if (!sk) {
+ 		fprintf(stderr, "Failed to allocate socket\n");
+ 		return -1;
+ 	}
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ 	err = genl_connect(sk);
+ 	if (err) {
+ 		fprintf(stderr, "Failed to connect socket\n");
+ 		return err;
+ 	}
+
+ 	err = join_grp(sk, "config");
+ 	if (err)
+ 		return err;
+
+ 	err = join_grp(sk, "packets");
+ 	if (err)
+ 		return err;
+
+ 	return 0;
+ }
+ $ gcc -I/usr/include/libnl3 -lnl-3 -lnl-genl-3 -o psample_repo psample.c
+
+Fixes: 6ae0a6286171 ("net: Introduce psample, a new genetlink channel for packet sampling")
+Reported-by: "The UK's National Cyber Security Centre (NCSC)" <security@ncsc.gov.uk>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20231206213102.1824398-2-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/psample/psample.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -5258,8 +5258,7 @@ static int __tracing_resize_ring_buffer(
- 		return ret;
+diff --git a/net/psample/psample.c b/net/psample/psample.c
+index 118d5d2a81a02..0d9d9936579e0 100644
+--- a/net/psample/psample.c
++++ b/net/psample/psample.c
+@@ -31,7 +31,8 @@ enum psample_nl_multicast_groups {
  
- #ifdef CONFIG_TRACER_MAX_TRACE
--	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
--	    !tr->current_trace->use_max_tr)
-+	if (!tr->current_trace->use_max_tr)
- 		goto out;
+ static const struct genl_multicast_group psample_nl_mcgrps[] = {
+ 	[PSAMPLE_NL_MCGRP_CONFIG] = { .name = PSAMPLE_NL_MCGRP_CONFIG_NAME },
+-	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME },
++	[PSAMPLE_NL_MCGRP_SAMPLE] = { .name = PSAMPLE_NL_MCGRP_SAMPLE_NAME,
++				      .flags = GENL_UNS_ADMIN_PERM },
+ };
  
- 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
+ static struct genl_family psample_nl_family __ro_after_init;
+-- 
+2.42.0
+
 
 
 
