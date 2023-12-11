@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-6160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBA780D91E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4885D80D9DB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7C10B20F5E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F1F281FC8
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6B951C37;
-	Mon, 11 Dec 2023 18:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078B9524D1;
+	Mon, 11 Dec 2023 18:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Sz8Pa0I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b3cj7LgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E465102A;
-	Mon, 11 Dec 2023 18:51:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D04C433C7;
-	Mon, 11 Dec 2023 18:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C84524B3;
+	Mon, 11 Dec 2023 18:56:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D92C433C7;
+	Mon, 11 Dec 2023 18:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320673;
-	bh=OzrXf1VJO433z0oXeLMKmqTimZKb/YVibjeT+6qXhaE=;
+	s=korg; t=1702321018;
+	bh=MlF2aBU5WEzaXkd4IEPiaZLWm8lyXS2LheiLSdcfPQw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Sz8Pa0IoSzYbc4JMwxWskr0GbE3+bbw7LlIU0IuKSjLOJDKmzc8pv4mF3MKiq9UN
-	 xw9YBlcUpri0uCvIm3U9gOPkJNMn+uJ9KAK4qMtuoaR4SmwABKt7tRYpXycT0xgt2X
-	 RaV8QIsS8L8IRJq44nJ8Kw+hcpMwTVdBfwebjMIU=
+	b=b3cj7LgO2tYN0X8qCgdDW7tHJ94Q7I1PBZG3+7IXYuolhsuFzYhY8jx2BJjlDzVnP
+	 cEo7N8zthFqd+cPwpHo/VXj6onbX1UhyPp8PYVdjIEcZKUXgIg6ST41I2G17cmJEYx
+	 biDUKZ5eoQ0pUQ1VM90yWEKUH2nLeeaRuQ5gCjKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hsin-Yi Wang <hsinyi@chromium.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/194] arm64: dts: mt8183: kukui: Fix underscores in node names
+	Jason Zhang <jason.zhang@rock-chips.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 080/141] ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
 Date: Mon, 11 Dec 2023 19:22:19 +0100
-Message-ID: <20231211182043.281913713@linuxfoundation.org>
+Message-ID: <20231211182030.029427448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,437 +52,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsin-Yi Wang <hsinyi@chromium.org>
+From: Jason Zhang <jason.zhang@rock-chips.com>
 
-[ Upstream commit 8980c30141d3986beab815d85762b9c67196ed72 ]
+commit 2b3a7a302c9804e463f2ea5b54dc3a6ad106a344 upstream.
 
-Replace underscores with hyphens in pinctrl node names both for consistency
-and to adhere to the bindings.
+The pcm state can be SNDRV_PCM_STATE_DISCONNECTED at disconnect
+callback, and there is not an entry of SNDRV_PCM_STATE_DISCONNECTED
+in snd_pcm_state_names.
 
-Cc: stable@vger.kernel.org
-Fixes: cd894e274b74 ("arm64: dts: mt8183: Add krane-sku176 board")
-Fixes: 1652dbf7363a ("arm64: dts: mt8183: add scp node")
-Fixes: 27eaf34df364 ("arm64: dts: mt8183: config dsi node")
-Signed-off-by: Hsin-Yi Wang <hsinyi@chromium.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20231026191343.3345279-2-hsinyi@chromium.org
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds the missing entry to resolve this issue.
+
+cat /proc/asound/card2/pcm0p/sub0/status
+That results in stack traces like the following:
+
+[   99.702732][ T5171] Unexpected kernel BRK exception at EL1
+[   99.702774][ T5171] Internal error: BRK handler: f2005512 [#1] PREEMPT SMP
+[   99.703858][ T5171] Modules linked in: bcmdhd(E) (...)
+[   99.747425][ T5171] CPU: 3 PID: 5171 Comm: cat Tainted: G         C OE     5.10.189-android13-4-00003-g4a17384380d8-ab11086999 #1
+[   99.748447][ T5171] Hardware name: Rockchip RK3588 CVTE V10 Board (DT)
+[   99.749024][ T5171] pstate: 60400005 (nZCv daif +PAN -UAO -TCO BTYPE=--)
+[   99.749616][ T5171] pc : snd_pcm_substream_proc_status_read+0x264/0x2bc
+[   99.750204][ T5171] lr : snd_pcm_substream_proc_status_read+0xa4/0x2bc
+[   99.750778][ T5171] sp : ffffffc0175abae0
+[   99.751132][ T5171] x29: ffffffc0175abb80 x28: ffffffc009a2c498
+[   99.751665][ T5171] x27: 0000000000000001 x26: ffffff810cbae6e8
+[   99.752199][ T5171] x25: 0000000000400cc0 x24: ffffffc0175abc60
+[   99.752729][ T5171] x23: 0000000000000000 x22: ffffff802f558400
+[   99.753263][ T5171] x21: ffffff81d8d8ff00 x20: ffffff81020cdc00
+[   99.753795][ T5171] x19: ffffff802d110000 x18: ffffffc014fbd058
+[   99.754326][ T5171] x17: 0000000000000000 x16: 0000000000000000
+[   99.754861][ T5171] x15: 000000000000c276 x14: ffffffff9a976fda
+[   99.755392][ T5171] x13: 0000000065689089 x12: 000000000000d72e
+[   99.755923][ T5171] x11: ffffff802d110000 x10: 00000000000000e0
+[   99.756457][ T5171] x9 : 9c431600c8385d00 x8 : 0000000000000008
+[   99.756990][ T5171] x7 : 0000000000000000 x6 : 000000000000003f
+[   99.757522][ T5171] x5 : 0000000000000040 x4 : ffffffc0175abb70
+[   99.758056][ T5171] x3 : 0000000000000001 x2 : 0000000000000001
+[   99.758588][ T5171] x1 : 0000000000000000 x0 : 0000000000000000
+[   99.759123][ T5171] Call trace:
+[   99.759404][ T5171]  snd_pcm_substream_proc_status_read+0x264/0x2bc
+[   99.759958][ T5171]  snd_info_seq_show+0x54/0xa4
+[   99.760370][ T5171]  seq_read_iter+0x19c/0x7d4
+[   99.760770][ T5171]  seq_read+0xf0/0x128
+[   99.761117][ T5171]  proc_reg_read+0x100/0x1f8
+[   99.761515][ T5171]  vfs_read+0xf4/0x354
+[   99.761869][ T5171]  ksys_read+0x7c/0x148
+[   99.762226][ T5171]  __arm64_sys_read+0x20/0x30
+[   99.762625][ T5171]  el0_svc_common+0xd0/0x1e4
+[   99.763023][ T5171]  el0_svc+0x28/0x98
+[   99.763358][ T5171]  el0_sync_handler+0x8c/0xf0
+[   99.763759][ T5171]  el0_sync+0x1b8/0x1c0
+[   99.764118][ T5171] Code: d65f03c0 b9406102 17ffffae 94191565 (d42aa240)
+[   99.764715][ T5171] ---[ end trace 1eeffa3e17c58e10 ]---
+[   99.780720][ T5171] Kernel panic - not syncing: BRK handler: Fatal exception
+
+Signed-off-by: Jason Zhang <jason.zhang@rock-chips.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231206013139.20506-1-jason.zhang@rock-chips.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../dts/mediatek/mt8183-kukui-jacuzzi.dtsi    |  6 +-
- .../arm64/boot/dts/mediatek/mt8183-kukui.dtsi | 94 +++++++++----------
- 2 files changed, 50 insertions(+), 50 deletions(-)
+ sound/core/pcm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-index 22b806e75401b..dccf367c7ec6c 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui-jacuzzi.dtsi
-@@ -439,20 +439,20 @@ pins2 {
- 	};
+--- a/sound/core/pcm.c
++++ b/sound/core/pcm.c
+@@ -251,6 +251,7 @@ static const char * const snd_pcm_state_
+ 	STATE(DRAINING),
+ 	STATE(PAUSED),
+ 	STATE(SUSPENDED),
++	STATE(DISCONNECTED),
+ };
  
- 	touchscreen_pins: touchscreen-pins {
--		touch_int_odl {
-+		touch-int-odl {
- 			pinmux = <PINMUX_GPIO155__FUNC_GPIO155>;
- 			input-enable;
- 			bias-pull-up;
- 		};
- 
--		touch_rst_l {
-+		touch-rst-l {
- 			pinmux = <PINMUX_GPIO156__FUNC_GPIO156>;
- 			output-high;
- 		};
- 	};
- 
- 	trackpad_pins: trackpad-pins {
--		trackpad_int {
-+		trackpad-int {
- 			pinmux = <PINMUX_GPIO7__FUNC_GPIO7>;
- 			input-enable;
- 			bias-disable; /* pulled externally */
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-index b813ce665e5dd..a428a581c93a8 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-kukui.dtsi
-@@ -423,7 +423,7 @@ &mt6358_vsim2_reg {
- 
- &pio {
- 	aud_pins_default: audiopins {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO97__FUNC_I2S2_MCK>,
- 				<PINMUX_GPIO98__FUNC_I2S2_BCK>,
- 				<PINMUX_GPIO101__FUNC_I2S2_LRCK>,
-@@ -445,7 +445,7 @@ pins_bus {
- 	};
- 
- 	aud_pins_tdm_out_on: audiotdmouton {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO169__FUNC_TDM_BCK_2ND>,
- 				<PINMUX_GPIO170__FUNC_TDM_LRCK_2ND>,
- 				<PINMUX_GPIO171__FUNC_TDM_DATA0_2ND>,
-@@ -457,7 +457,7 @@ pins_bus {
- 	};
- 
- 	aud_pins_tdm_out_off: audiotdmoutoff {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO169__FUNC_GPIO169>,
- 				<PINMUX_GPIO170__FUNC_GPIO170>,
- 				<PINMUX_GPIO171__FUNC_GPIO171>,
-@@ -471,13 +471,13 @@ pins_bus {
- 	};
- 
- 	bt_pins: bt-pins {
--		pins_bt_en {
-+		pins-bt-en {
- 			pinmux = <PINMUX_GPIO120__FUNC_GPIO120>;
- 			output-low;
- 		};
- 	};
- 
--	ec_ap_int_odl: ec_ap_int_odl {
-+	ec_ap_int_odl: ec-ap-int-odl {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO151__FUNC_GPIO151>;
- 			input-enable;
-@@ -485,7 +485,7 @@ pins1 {
- 		};
- 	};
- 
--	h1_int_od_l: h1_int_od_l {
-+	h1_int_od_l: h1-int-od-l {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO153__FUNC_GPIO153>;
- 			input-enable;
-@@ -493,7 +493,7 @@ pins1 {
- 	};
- 
- 	i2c0_pins: i2c0 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO82__FUNC_SDA0>,
- 				 <PINMUX_GPIO83__FUNC_SCL0>;
- 			mediatek,pull-up-adv = <3>;
-@@ -502,7 +502,7 @@ pins_bus {
- 	};
- 
- 	i2c1_pins: i2c1 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO81__FUNC_SDA1>,
- 				 <PINMUX_GPIO84__FUNC_SCL1>;
- 			mediatek,pull-up-adv = <3>;
-@@ -511,7 +511,7 @@ pins_bus {
- 	};
- 
- 	i2c2_pins: i2c2 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO103__FUNC_SCL2>,
- 				 <PINMUX_GPIO104__FUNC_SDA2>;
- 			bias-disable;
-@@ -520,7 +520,7 @@ pins_bus {
- 	};
- 
- 	i2c3_pins: i2c3 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO50__FUNC_SCL3>,
- 				 <PINMUX_GPIO51__FUNC_SDA3>;
- 			mediatek,pull-up-adv = <3>;
-@@ -529,7 +529,7 @@ pins_bus {
- 	};
- 
- 	i2c4_pins: i2c4 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO105__FUNC_SCL4>,
- 				 <PINMUX_GPIO106__FUNC_SDA4>;
- 			bias-disable;
-@@ -538,7 +538,7 @@ pins_bus {
- 	};
- 
- 	i2c5_pins: i2c5 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO48__FUNC_SCL5>,
- 				 <PINMUX_GPIO49__FUNC_SDA5>;
- 			mediatek,pull-up-adv = <3>;
-@@ -547,7 +547,7 @@ pins_bus {
- 	};
- 
- 	i2c6_pins: i2c6 {
--		pins_bus {
-+		pins-bus {
- 			pinmux = <PINMUX_GPIO11__FUNC_SCL6>,
- 				 <PINMUX_GPIO12__FUNC_SDA6>;
- 			bias-disable;
-@@ -555,7 +555,7 @@ pins_bus {
- 	};
- 
- 	mmc0_pins_default: mmc0-pins-default {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO123__FUNC_MSDC0_DAT0>,
- 				 <PINMUX_GPIO128__FUNC_MSDC0_DAT1>,
- 				 <PINMUX_GPIO125__FUNC_MSDC0_DAT2>,
-@@ -570,13 +570,13 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <01>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO124__FUNC_MSDC0_CLK>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <10>;
- 		};
- 
--		pins_rst {
-+		pins-rst {
- 			pinmux = <PINMUX_GPIO133__FUNC_MSDC0_RSTB>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <01>;
-@@ -584,7 +584,7 @@ pins_rst {
- 	};
- 
- 	mmc0_pins_uhs: mmc0-pins-uhs {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO123__FUNC_MSDC0_DAT0>,
- 				 <PINMUX_GPIO128__FUNC_MSDC0_DAT1>,
- 				 <PINMUX_GPIO125__FUNC_MSDC0_DAT2>,
-@@ -599,19 +599,19 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <01>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO124__FUNC_MSDC0_CLK>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <10>;
- 		};
- 
--		pins_ds {
-+		pins-ds {
- 			pinmux = <PINMUX_GPIO131__FUNC_MSDC0_DSL>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-down-adv = <10>;
- 		};
- 
--		pins_rst {
-+		pins-rst {
- 			pinmux = <PINMUX_GPIO133__FUNC_MSDC0_RSTB>;
- 			drive-strength = <MTK_DRIVE_14mA>;
- 			mediatek,pull-up-adv = <01>;
-@@ -619,7 +619,7 @@ pins_rst {
- 	};
- 
- 	mmc1_pins_default: mmc1-pins-default {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO31__FUNC_MSDC1_CMD>,
- 				 <PINMUX_GPIO32__FUNC_MSDC1_DAT0>,
- 				 <PINMUX_GPIO34__FUNC_MSDC1_DAT1>,
-@@ -629,7 +629,7 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <10>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO29__FUNC_MSDC1_CLK>;
- 			input-enable;
- 			mediatek,pull-down-adv = <10>;
-@@ -637,7 +637,7 @@ pins_clk {
- 	};
- 
- 	mmc1_pins_uhs: mmc1-pins-uhs {
--		pins_cmd_dat {
-+		pins-cmd-dat {
- 			pinmux = <PINMUX_GPIO31__FUNC_MSDC1_CMD>,
- 				 <PINMUX_GPIO32__FUNC_MSDC1_DAT0>,
- 				 <PINMUX_GPIO34__FUNC_MSDC1_DAT1>,
-@@ -648,7 +648,7 @@ pins_cmd_dat {
- 			mediatek,pull-up-adv = <10>;
- 		};
- 
--		pins_clk {
-+		pins-clk {
- 			pinmux = <PINMUX_GPIO29__FUNC_MSDC1_CLK>;
- 			drive-strength = <MTK_DRIVE_8mA>;
- 			mediatek,pull-down-adv = <10>;
-@@ -656,15 +656,15 @@ pins_clk {
- 		};
- 	};
- 
--	panel_pins_default: panel_pins_default {
--		panel_reset {
-+	panel_pins_default: panel-pins-default {
-+		panel-reset {
- 			pinmux = <PINMUX_GPIO45__FUNC_GPIO45>;
- 			output-low;
- 			bias-pull-up;
- 		};
- 	};
- 
--	pwm0_pin_default: pwm0_pin_default {
-+	pwm0_pin_default: pwm0-pin-default {
- 		pins1 {
- 			pinmux = <PINMUX_GPIO176__FUNC_GPIO176>;
- 			output-high;
-@@ -676,14 +676,14 @@ pins2 {
- 	};
- 
- 	scp_pins: scp {
--		pins_scp_uart {
-+		pins-scp-uart {
- 			pinmux = <PINMUX_GPIO110__FUNC_TP_URXD1_AO>,
- 				 <PINMUX_GPIO112__FUNC_TP_UTXD1_AO>;
- 		};
- 	};
- 
- 	spi0_pins: spi0 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO85__FUNC_SPI0_MI>,
- 				 <PINMUX_GPIO86__FUNC_GPIO86>,
- 				 <PINMUX_GPIO87__FUNC_SPI0_MO>,
-@@ -693,7 +693,7 @@ pins_spi {
- 	};
- 
- 	spi1_pins: spi1 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO161__FUNC_SPI1_A_MI>,
- 				 <PINMUX_GPIO162__FUNC_SPI1_A_CSB>,
- 				 <PINMUX_GPIO163__FUNC_SPI1_A_MO>,
-@@ -703,20 +703,20 @@ pins_spi {
- 	};
- 
- 	spi2_pins: spi2 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO0__FUNC_SPI2_CSB>,
- 				 <PINMUX_GPIO1__FUNC_SPI2_MO>,
- 				 <PINMUX_GPIO2__FUNC_SPI2_CLK>;
- 			bias-disable;
- 		};
--		pins_spi_mi {
-+		pins-spi-mi {
- 			pinmux = <PINMUX_GPIO94__FUNC_SPI2_MI>;
- 			mediatek,pull-down-adv = <00>;
- 		};
- 	};
- 
- 	spi3_pins: spi3 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO21__FUNC_SPI3_MI>,
- 				 <PINMUX_GPIO22__FUNC_SPI3_CSB>,
- 				 <PINMUX_GPIO23__FUNC_SPI3_MO>,
-@@ -726,7 +726,7 @@ pins_spi {
- 	};
- 
- 	spi4_pins: spi4 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO17__FUNC_SPI4_MI>,
- 				 <PINMUX_GPIO18__FUNC_SPI4_CSB>,
- 				 <PINMUX_GPIO19__FUNC_SPI4_MO>,
-@@ -736,7 +736,7 @@ pins_spi {
- 	};
- 
- 	spi5_pins: spi5 {
--		pins_spi {
-+		pins-spi {
- 			pinmux = <PINMUX_GPIO13__FUNC_SPI5_MI>,
- 				 <PINMUX_GPIO14__FUNC_SPI5_CSB>,
- 				 <PINMUX_GPIO15__FUNC_SPI5_MO>,
-@@ -746,63 +746,63 @@ pins_spi {
- 	};
- 
- 	uart0_pins_default: uart0-pins-default {
--		pins_rx {
-+		pins-rx {
- 			pinmux = <PINMUX_GPIO95__FUNC_URXD0>;
- 			input-enable;
- 			bias-pull-up;
- 		};
--		pins_tx {
-+		pins-tx {
- 			pinmux = <PINMUX_GPIO96__FUNC_UTXD0>;
- 		};
- 	};
- 
- 	uart1_pins_default: uart1-pins-default {
--		pins_rx {
-+		pins-rx {
- 			pinmux = <PINMUX_GPIO121__FUNC_URXD1>;
- 			input-enable;
- 			bias-pull-up;
- 		};
--		pins_tx {
-+		pins-tx {
- 			pinmux = <PINMUX_GPIO115__FUNC_UTXD1>;
- 		};
--		pins_rts {
-+		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
- 			output-enable;
- 		};
--		pins_cts {
-+		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
- 			input-enable;
- 		};
- 	};
- 
- 	uart1_pins_sleep: uart1-pins-sleep {
--		pins_rx {
-+		pins-rx {
- 			pinmux = <PINMUX_GPIO121__FUNC_GPIO121>;
- 			input-enable;
- 			bias-pull-up;
- 		};
--		pins_tx {
-+		pins-tx {
- 			pinmux = <PINMUX_GPIO115__FUNC_UTXD1>;
- 		};
--		pins_rts {
-+		pins-rts {
- 			pinmux = <PINMUX_GPIO47__FUNC_URTS1>;
- 			output-enable;
- 		};
--		pins_cts {
-+		pins-cts {
- 			pinmux = <PINMUX_GPIO46__FUNC_UCTS1>;
- 			input-enable;
- 		};
- 	};
- 
- 	wifi_pins_pwrseq: wifi-pins-pwrseq {
--		pins_wifi_enable {
-+		pins-wifi-enable {
- 			pinmux = <PINMUX_GPIO119__FUNC_GPIO119>;
- 			output-low;
- 		};
- 	};
- 
- 	wifi_pins_wakeup: wifi-pins-wakeup {
--		pins_wifi_wakeup {
-+		pins-wifi-wakeup {
- 			pinmux = <PINMUX_GPIO113__FUNC_GPIO113>;
- 			input-enable;
- 		};
--- 
-2.42.0
-
+ static const char * const snd_pcm_access_names[] = {
 
 
 
