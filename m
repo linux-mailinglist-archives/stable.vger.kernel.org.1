@@ -1,45 +1,53 @@
-Return-Path: <stable+bounces-5784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2187680D6E5
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:36:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 072CE80D97E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBD641F21957
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:36:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 382FF1C216D7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B9E51C2D;
-	Mon, 11 Dec 2023 18:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8364451C59;
+	Mon, 11 Dec 2023 18:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYJQoyF6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R658kcLL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A602DFBE1;
-	Mon, 11 Dec 2023 18:34:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 292FCC433C7;
-	Mon, 11 Dec 2023 18:34:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451F951C38;
+	Mon, 11 Dec 2023 18:54:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD55FC433C7;
+	Mon, 11 Dec 2023 18:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319654;
-	bh=6DeiBfL0m1iYpjFXqr5hseMYsnGkBu5sI48oS4ZI950=;
+	s=korg; t=1702320856;
+	bh=4grfFzBz9hEHPtVkhWwHW/3ZkrJfY2IxyVQtqDJmXnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYJQoyF6BZgk86J95lQ+FW/ofJkWc5YEsQnglkevmQMib5Hvz50vdSw5bNCHV59cH
-	 CzxYdpbW+YmXAjR2v0ckae05x94mpmfRAEZrcXwldZy641h/oxvIyEWMNgX/kaEkIM
-	 7j5BDJt8YuuzKUTwKPsfTFfyOfW9YXzjL0f3lb7c=
+	b=R658kcLLjJ3/sNzRoIrVdHhN5Ct2AH+jCJRDFNnzuSFLXQEHK+BKTEF9WXwYNwDr+
+	 CHGpZ91+5MEmkP/i3lcfAoyBivOnIiZKQ663tCcHEftixlTN+a5d4f1UcvhrxXv9pf
+	 +PvSWIH7/r6Bp/n9nGT9dBmO7pRQzAyc9q099mPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.6 186/244] arm64: dts: mediatek: mt8183-evb: Fix unit_address_vs_reg warning on ntc
+	Randy Dunlap <rdunlap@infradead.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 020/141] hv_netvsc: rndis_filter needs to select NLS
 Date: Mon, 11 Dec 2023 19:21:19 +0100
-Message-ID: <20231211182054.280482361@linuxfoundation.org>
+Message-ID: <20231211182027.406199782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-commit 9dea1c724fc36643e83216c1f5a26613412150db upstream.
+[ Upstream commit 6c89f49964375c904cea33c0247467873f4daf2c ]
 
-The NTC is defined as ntc@0 but it doesn't need any address at all.
-Fix the unit_address_vs_reg warning by dropping the unit address: since
-the node name has to be generic also fully rename it from ntc@0 to
-thermal-sensor.
+rndis_filter uses utf8s_to_utf16s() which is provided by setting
+NLS, so select NLS to fix the build error:
 
-Cc: stable@vger.kernel.org
-Fixes: ff9ea5c62279 ("arm64: dts: mediatek: mt8183-evb: Add node for thermistor")
-Link: https://lore.kernel.org/r/20231025093816.44327-7-angelogioacchino.delregno@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ERROR: modpost: "utf8s_to_utf16s" [drivers/net/hyperv/hv_netvsc.ko] undefined!
+
+Fixes: 1ce09e899d28 ("hyperv: Add support for setting MAC from within guests")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: K. Y. Srinivasan <kys@microsoft.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Link: https://lore.kernel.org/r/20231130055853.19069-1-rdunlap@infradead.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183-evb.dts |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/hyperv/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
-+++ b/arch/arm64/boot/dts/mediatek/mt8183-evb.dts
-@@ -38,7 +38,7 @@
- 		};
- 	};
- 
--	ntc@0 {
-+	thermal-sensor {
- 		compatible = "murata,ncp03wf104";
- 		pullup-uv = <1800000>;
- 		pullup-ohm = <390000>;
+diff --git a/drivers/net/hyperv/Kconfig b/drivers/net/hyperv/Kconfig
+index ca7bf7f897d36..c8cbd85adcf99 100644
+--- a/drivers/net/hyperv/Kconfig
++++ b/drivers/net/hyperv/Kconfig
+@@ -3,5 +3,6 @@ config HYPERV_NET
+ 	tristate "Microsoft Hyper-V virtual network driver"
+ 	depends on HYPERV
+ 	select UCS2_STRING
++	select NLS
+ 	help
+ 	  Select this option to enable the Hyper-V virtual network driver.
+-- 
+2.42.0
+
 
 
 
