@@ -1,125 +1,152 @@
-Return-Path: <stable+bounces-5515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C0180D36B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:14:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BF2080D386
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9285A1F21835
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47C7A281ADF
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 17:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E774D582;
-	Mon, 11 Dec 2023 17:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46AF54D582;
+	Mon, 11 Dec 2023 17:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="X96dM4g3"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SQMaXGj8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FBBEE9;
-	Mon, 11 Dec 2023 09:14:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=RCNf4eOZsNZBVrawgicgoHTfnt8dk8reDpBLuDlxyRQ=; b=X96dM4g3l4No577Bf7WIWEpoad
-	XmPG7kYFvJXG6KjP3FqpW4K9cG3oU3sd8YON/mQMbLyB5y17Y6n28gCfwrjFIUdhsWV6frA7EJaJ1
-	14/MVS8kUVkG/JsrSaIi/u0LbhuncEMp7md/1r5yo6rxmqoKlsh32260jX9+a9S/bUNg=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:56730 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1rCjr5-0003yC-EK; Mon, 11 Dec 2023 12:14:08 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	hvilleneuve@dimonoff.com,
-	jringle@gridpoint.com,
-	tomasz.mon@camlingroup.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	hugo@hugovil.com,
-	stable@vger.kernel.org
-Date: Mon, 11 Dec 2023 12:13:53 -0500
-Message-Id: <20231211171353.2901416-7-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231211171353.2901416-1-hugo@hugovil.com>
-References: <20231211171353.2901416-1-hugo@hugovil.com>
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 078B09B
+	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:18:21 -0800 (PST)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-db537948ea0so4548556276.2
+        for <stable@vger.kernel.org>; Mon, 11 Dec 2023 09:18:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1702315100; x=1702919900; darn=vger.kernel.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d8r3lyrzD5bS7Rw+HcuPdF3gJgvsKK1V3GgffIf9p6M=;
+        b=SQMaXGj8AAAtmRmS/Jqi702O14B0ghlAOzT2CVc7bicPJBhxOLptjBcfvYSr6HZzMq
+         URzwVlYr8tiNfReLnyz1YegHWsMX9KGEnOb9i/kFLRO2TkZTTMj9DohUF3CxmwgBAwUB
+         ZYkRS/DQCcjv770haOobBOv6MNRo55H4JIsTgONUHIEqIpPiiV09wy5YYfKquOSxE1h6
+         DKyKmaiYgfzOd2pBIeLAXkTR+O4dKiZXz7jKFCIxLMPwreuMQo/KkJmzoARX7P7Sd62h
+         v2e7icYglyx956wwSRwmr4La/TwXtjwthq+JtIwsfiRERLba0X9fFTBuVXCrUbui8uRK
+         o7wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702315100; x=1702919900;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d8r3lyrzD5bS7Rw+HcuPdF3gJgvsKK1V3GgffIf9p6M=;
+        b=Ermbo9SOwjrv8RGrxnQ/RHcN7mniXbJyIEabR2VhBiO947onNSXxUdK0SlEL3969pX
+         xgQc6EHkfNx5K3e8SPg013JkPGgjVupyj8n8KiHuuLpKmJ0uNjRjlcbQMcE90rjNqP9v
+         GydPoHsP5GUg8OQoyxWy2dehhgPuNLBaI5hCBsnfxoxknMPtuhGIQ9SSxqh4QpnPGw+F
+         6ndlr+9KaQDWqfGaotMukrQ2u2vkdbXZCN6N6pOwY1INTdJhnnKlNbxwbHoavc6XR0p9
+         7K/8dI9oPg2akTozH/jVs+0mbSR5npEroM4J2SvE9qyj/HqMhwijxRHGdkSm4gNdJesE
+         RTUA==
+X-Gm-Message-State: AOJu0YwkTx1JQIaMrsDQa0zp3JDr7ZiZEQQ4Sb7baiie/rLQOerOEwZG
+	CEhvZCI7R316A6KGRYe7rBqsQNlKSxakzxPrAh01/Q==
+X-Google-Smtp-Source: AGHT+IFsQ5Rm74LBc4iIQqRojyeGTFph1bXtjzhJtldiMwUNhzPbT5RtYu7wmShQyUKzM4CK1MLj2Q==
+X-Received: by 2002:a5b:d45:0:b0:da0:3d0d:3a18 with SMTP id f5-20020a5b0d45000000b00da03d0d3a18mr3073570ybr.39.1702315100047;
+        Mon, 11 Dec 2023 09:18:20 -0800 (PST)
+Received: from ripple.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id v17-20020a259d91000000b00d974c72068fsm2630315ybp.4.2023.12.11.09.18.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Dec 2023 09:18:18 -0800 (PST)
+Date: Mon, 11 Dec 2023 09:18:06 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+X-X-Sender: hugh@ripple.attlocal.net
+To: Greg KH <gregkh@linuxfoundation.org>
+cc: Sasha Levin <sashal@kernel.org>, Hugh Dickins <hughd@google.com>, 
+    stable@vger.kernel.org, willy@infradead.org, akpm@linux-foundation.org, 
+    david@redhat.com, jannh@google.com, 
+    =?ISO-8859-15?Q?Jos=E9_Pekkarinen?= <jose.pekkarinen@foxhound.fi>, 
+    kirill.shutemov@linux.intel.com
+Subject: Re: [PATCH 5.15.y] mm: fix oops when filemap_map_pmd) without
+ prealloc_pte
+In-Reply-To: <2023121120-degree-target-cd18@gregkh>
+Message-ID: <ac3262ba-7398-eef1-1d80-8425e394dc6f@google.com>
+References: <b7fc5151-3d73-b6ca-ce28-f4a4556294bb@google.com> <2023121120-degree-target-cd18@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-Subject: [PATCH v2 6/6] serial: sc16is7xx: fix unconditional activation of THRI interrupt
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+Content-Type: multipart/mixed; boundary="-1463753983-1426648966-1702315098=:3108"
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Commit cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop") changed
-behavior to unconditionnaly set the THRI interrupt in sc16is7xx_tx_proc().
+---1463753983-1426648966-1702315098=:3108
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-For example when sending a 65 bytes message, and assuming the Tx FIFO is
-initially empty, sc16is7xx_handle_tx() will write the first 64 bytes of the
-message to the FIFO and sc16is7xx_tx_proc() will then activate THRI. When
-the THRI IRQ is fired, the driver will write the remaining byte of the
-message to the FIFO, and disable THRI by calling sc16is7xx_stop_tx().
+On Mon, 11 Dec 2023, Greg KH wrote:
+> On Sat, Dec 09, 2023 at 09:18:42PM -0800, Hugh Dickins wrote:
+> > syzbot reports oops in lockdep's __lock_acquire(), called from
+> > __pte_offset_map_lock() called from filemap_map_pages(); or when I run =
+the
+> > repro, the oops comes in pmd_install(), called from filemap_map_pmd()
+> > called from filemap_map_pages(), just before the __pte_offset_map_lock(=
+).
+> >=20
+> > The problem is that filemap_map_pmd() has been assuming that when it fi=
+nds
+> > pmd_none(), a page table has already been prepared in prealloc_pte; and
+> > indeed do_fault_around() has been careful to preallocate one there, whe=
+n
+> > it finds pmd_none(): but what if *pmd became none in between?
+> >=20
+> > My 6.6 mods in mm/khugepaged.c, avoiding mmap_lock for write, have made=
+ it
+> > easy for *pmd to be cleared while servicing a page fault; but even befo=
+re
+> > those, a huge *pmd might be zapped while a fault is serviced.
+> >=20
+> > The difference in symptomatic stack traces comes from the "memory model=
+"
+> > in use: pmd_install() uses pmd_populate() uses page_to_pfn(): in some
+> > models that is strict, and will oops on the NULL prealloc_pte; in other
+> > models, it will construct a bogus value to be populated into *pmd, then
+> > __pte_offset_map_lock() oops when trying to access split ptlock pointer
+> > (or some other symptom in normal case of ptlock embedded not pointer).
+> >=20
+> > Link: https://lore.kernel.org/linux-mm/20231115065506.19780-1-jose.pekk=
+arinen@foxhound.fi/
+> > Link: https://lkml.kernel.org/r/6ed0c50c-78ef-0719-b3c5-60c0c010431c@go=
+ogle.com
+> > Fixes: f9ce0be71d1f ("mm: Cleanup faultaround and finish_fault() codepa=
+ths")
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > Reported-and-tested-by: syzbot+89edd67979b52675ddec@syzkaller.appspotma=
+il.com
+> > Closes: https://lore.kernel.org/linux-mm/0000000000005e44550608a0806c@g=
+oogle.com/
+> > Reviewed-by: David Hildenbrand <david@redhat.com>
+> > Cc: Jann Horn <jannh@google.com>,
+> > Cc: Jos=E9 Pekkarinen <jose.pekkarinen@foxhound.fi>
+> > Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > Cc: <stable@vger.kernel.org>    [5.12+]
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > (cherry picked from commit 9aa1345d66b8132745ffb99b348b1492088da9e2)
+> > Signed-off-by: Hugh Dickins <hughd@google.com>
+> > ---
+> >  mm/filemap.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+>=20
+> Now queued up, thanks.
+>=20
+> greg k-h
 
-When sending a 2 bytes message, sc16is7xx_handle_tx() will write the 2
-bytes of the message to the FIFO and call sc16is7xx_stop_tx(), disabling
-THRI. After sc16is7xx_handle_tx() exits, control returns to
-sc16is7xx_tx_proc() which will unconditionally set THRI. When the THRI IRQ
-is fired, the driver simply acknowledges the interrupt and does nothing
-more, since all the data has already been written to the FIFO. This results
-in 2 register writes and 4 register reads all for nothing and taking
-precious cycles from the I2C/SPI bus.
+Thanks Greg: but Sasha appears to have a competing queue, in which
+he's cherry-picked in a dependency from 5.16 ahead of a clean
+cherry-pick for this one.
 
-Fix this by enabling the THRI interrupt only when we fill the Tx FIFO to
-its maximum capacity and there are remaining bytes to send in the message.
+He posted his the next day: I expect it's more to your taste (pull
+in dependency rather than edit cherry-pick) and it looked fine to me.
+Please sort out with Sasha which goes forward, either will do.
 
-Fixes: cc4c1d05eb10 ("sc16is7xx: Properly resume TX after stop")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
----
- drivers/tty/serial/sc16is7xx.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 7e4b9b52841d..e40e4a99277e 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -687,6 +687,8 @@ static void sc16is7xx_handle_tx(struct uart_port *port)
- 
- 	if (uart_circ_empty(xmit))
- 		sc16is7xx_stop_tx(port);
-+	else
-+		sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
- 	uart_port_unlock_irqrestore(port, flags);
- }
- 
-@@ -815,7 +817,6 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
- {
- 	struct uart_port *port = &(to_sc16is7xx_one(ws, tx_work)->port);
- 	struct sc16is7xx_one *one = to_sc16is7xx_one(port, port);
--	unsigned long flags;
- 
- 	if ((port->rs485.flags & SER_RS485_ENABLED) &&
- 	    (port->rs485.delay_rts_before_send > 0))
-@@ -824,10 +825,6 @@ static void sc16is7xx_tx_proc(struct kthread_work *ws)
- 	mutex_lock(&one->efr_lock);
- 	sc16is7xx_handle_tx(port);
- 	mutex_unlock(&one->efr_lock);
--
--	uart_port_lock_irqsave(port, &flags);
--	sc16is7xx_ier_set(port, SC16IS7XX_IER_THRI_BIT);
--	uart_port_unlock_irqrestore(port, flags);
- }
- 
- static void sc16is7xx_reconf_rs485(struct uart_port *port)
--- 
-2.39.2
-
+Hugh
+---1463753983-1426648966-1702315098=:3108--
 
