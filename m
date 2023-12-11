@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-5822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A58F580D740
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D7080D7B5
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617B6281FB8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 787861F21A7D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4C952F84;
-	Mon, 11 Dec 2023 18:35:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD70524B9;
+	Mon, 11 Dec 2023 18:39:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkeSh9uu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKe9rDs3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5EDF52F72;
-	Mon, 11 Dec 2023 18:35:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C12C433CB;
-	Mon, 11 Dec 2023 18:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FEE20DDE;
+	Mon, 11 Dec 2023 18:39:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F349C433C7;
+	Mon, 11 Dec 2023 18:39:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319756;
-	bh=8emQgtLLFpahAm3MzJYenwFV+xPzAlif6M9QykqcHUQ=;
+	s=korg; t=1702319962;
+	bh=ENKtNXp9U52vRXKDYkYamOaZRnk+D3/AAhXJ5QBvJbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkeSh9uuLpZ4quJ5hkIsG+5IBaLXDq2OrIFa24wQvV9x4XNjHHko7GfljnHQFQxVa
-	 U8Rlqkf+NbkWf9K7BEPfaHnUedQfNjmY9ukniGG5JJkui/HLECDoS5m/nTxqeEw8ga
-	 zsvO8zy5OtPXjtgya1PQgWqZaPZW46bHrWyiykpM=
+	b=qKe9rDs3Cf1aXT0Ceq3v9ldCdl7N1KLQc2FL3hFIv0WrcpfTvFA3YL2TxaR9pC5RG
+	 auaRKfgVorcYRLbU59zsQPN7HCR0u+zywNg2OtVWBDIJ01Wqlud30o+MrOxE7Vs1h7
+	 s1q142QKkw6bafjhfx2KcZMkgzuOr6Psc8BlYu2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH 6.6 222/244] serial: 8250: 8250_omap: Do not start RX DMA on THRI interrupt
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 52/97] tracing: Always update snapshot buffer size
 Date: Mon, 11 Dec 2023 19:21:55 +0100
-Message-ID: <20231211182055.949325881@linuxfoundation.org>
+Message-ID: <20231211182021.974309771@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +55,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronald Wahl <ronald.wahl@raritan.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit c6bb057418876cdfdd29a6f7b8cef54539ee8811 upstream.
+commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
 
-Starting RX DMA on THRI interrupt is too early because TX may not have
-finished yet.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). The update of the ring buffer
+size would check if the instance was the top level and if so, it would
+also update the snapshot buffer as it needs to be the same as the main
+buffer.
 
-This change is inspired by commit 90b8596ac460 ("serial: 8250: Prevent
-starting up DMA Rx on THRI interrupt") and fixes DMA issues I had with
-an AM62 SoC that is using the 8250 OMAP variant.
+Now that lower level instances also has a snapshot buffer, they too need
+to update their snapshot buffer sizes when the main buffer is changed,
+otherwise the following can be triggered:
+
+ # cd /sys/kernel/tracing
+ # echo 1500 > buffer_size_kb
+ # mkdir instances/foo
+ # echo irqsoff > instances/foo/current_tracer
+ # echo 1000 > instances/foo/buffer_size_kb
+
+Produces:
+
+ WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+
+Which is:
+
+	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+
+	if (ret == -EBUSY) {
+		[..]
+	}
+
+	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
+
+That's because ring_buffer_swap_cpu() has:
+
+	int ret = -EINVAL;
+
+	[..]
+
+	/* At least make sure the two buffers are somewhat the same */
+	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
+		goto out;
+
+	[..]
+ out:
+	return ret;
+ }
+
+Instead, update all instances' snapshot buffer sizes when their main
+buffer size is updated.
+
+Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
 
 Cc: stable@vger.kernel.org
-Fixes: c26389f998a8 ("serial: 8250: 8250_omap: Add DMA support for UARTs on K3 SoCs")
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Reviewed-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/r/20231101171431.16495-1-rwahl@gmx.de
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_omap.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ kernel/trace/trace.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1282,10 +1282,12 @@ static int omap_8250_dma_handle_irq(stru
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -5943,8 +5943,7 @@ static int __tracing_resize_ring_buffer(
+ 		return ret;
  
- 	status = serial_port_in(port, UART_LSR);
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
+-	    !tr->current_trace->use_max_tr)
++	if (!tr->current_trace->use_max_tr)
+ 		goto out;
  
--	if (priv->habit & UART_HAS_EFR2)
--		am654_8250_handle_rx_dma(up, iir, status);
--	else
--		status = omap_8250_handle_rx_dma(up, iir, status);
-+	if ((iir & 0x3f) != UART_IIR_THRI) {
-+		if (priv->habit & UART_HAS_EFR2)
-+			am654_8250_handle_rx_dma(up, iir, status);
-+		else
-+			status = omap_8250_handle_rx_dma(up, iir, status);
-+	}
- 
- 	serial8250_modem_status(up);
- 	if (status & UART_LSR_THRE && up->dma->tx_err) {
+ 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 
 
 
