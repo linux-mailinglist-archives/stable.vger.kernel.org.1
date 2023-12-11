@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-6084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E19980D8A9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ADF380D54A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F3ED1C21629
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BFFB1C213FA
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B8351C2B;
-	Mon, 11 Dec 2023 18:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CC65101D;
+	Mon, 11 Dec 2023 18:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPVXaHtS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb3U2wIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714145102A;
-	Mon, 11 Dec 2023 18:47:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED8D7C433C7;
-	Mon, 11 Dec 2023 18:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4A4F212;
+	Mon, 11 Dec 2023 18:22:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFFE5C433C7;
+	Mon, 11 Dec 2023 18:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320468;
-	bh=MqMnIWL3lmg5YDKzr/7izU68XQQ39xFWqVkWOzEJ7OQ=;
+	s=korg; t=1702318940;
+	bh=6va/pOUNOsijhAzL7+Y24ZxW5v4645N+UUAFWURFoP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPVXaHtS+klt3XP1SexI5dRLSK7E8QBFhHVuFAKU//FQMc9vePT+ZaLLGCFRzuFcb
-	 Aic4ED6vjOIpy9lZgOiIgGG72017iTDPqyaikjorlUqWwUvCk4lVgPj7XB6sklg0DA
-	 TBLzVZ93qshbN+xkbIcRTFPxKKLuHjCDozVMG1RE=
+	b=bb3U2wIP9vSE0zeTqbu/MMnWA3uIvGjBkXH0GBHAICEs34M5hQ6sMJcq2Gquyy1bu
+	 Lvo3k/vNIBd51nzwFCSoex7WhdZj00oXIQjfBhQaGTXksC85OJmHJ7cDukK0XrCn7w
+	 Mm60BZNwsukJeTTt26DvFcygAeeZfiXr9lEXH0cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/194] RDMA/rtrs-srv: Check return values while processing info request
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.14 11/25] nilfs2: prevent WARNING in nilfs_sufile_set_segment_usage()
 Date: Mon, 11 Dec 2023 19:21:02 +0100
-Message-ID: <20231211182039.711988785@linuxfoundation.org>
+Message-ID: <20231211182009.113822940@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
+References: <20231211182008.665944227@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,97 +53,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit ed1e52aefa16f15dc2f04054a3baf11726a7460e ]
+commit 675abf8df1353e0e3bde314993e0796c524cfbf0 upstream.
 
-While processing info request, it could so happen that the srv_path goes
-to CLOSING state, cause of any of the error events from RDMA. That state
-change should be picked up while trying to change the state in
-process_info_req, by checking the return value. In case the state change
-call in process_info_req fails, we fail the processing.
+If nilfs2 reads a disk image with corrupted segment usage metadata, and
+its segment usage information is marked as an error for the segment at the
+write location, nilfs_sufile_set_segment_usage() can trigger WARN_ONs
+during log writing.
 
-We should also check the return value for rtrs_srv_path_up, since it
-sends a link event to the client above, and the client can fail for any
-reason.
+Segments newly allocated for writing with nilfs_sufile_alloc() will not
+have this error flag set, but this unexpected situation will occur if the
+segment indexed by either nilfs->ns_segnum or nilfs->ns_nextnum (active
+segment) was marked in error.
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-4-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by inserting a sanity check to treat it as a file system
+corruption.
+
+Since error returns are not allowed during the execution phase where
+nilfs_sufile_set_segment_usage() is used, this inserts the sanity check
+into nilfs_sufile_mark_dirty() which pre-reads the buffer containing the
+segment usage record to be updated and sets it up in a dirty state for
+writing.
+
+In addition, nilfs_sufile_set_segment_usage() is also called when
+canceling log writing and undoing segment usage update, so in order to
+avoid issuing the same kernel warning in that case, in case of
+cancellation, avoid checking the error flag in
+nilfs_sufile_set_segment_usage().
+
+Link: https://lkml.kernel.org/r/20231205085947.4431-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+14e9f834f6ddecece094@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=14e9f834f6ddecece094
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ fs/nilfs2/sufile.c |   42 +++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 35 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index e26488ee36eac..6710887b1a13f 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -715,20 +715,23 @@ static void rtrs_srv_info_rsp_done(struct ib_cq *cq, struct ib_wc *wc)
- 	WARN_ON(wc->opcode != IB_WC_SEND);
- }
+--- a/fs/nilfs2/sufile.c
++++ b/fs/nilfs2/sufile.c
+@@ -513,15 +513,38 @@ int nilfs_sufile_mark_dirty(struct inode
  
--static void rtrs_srv_path_up(struct rtrs_srv_path *srv_path)
-+static int rtrs_srv_path_up(struct rtrs_srv_path *srv_path)
- {
- 	struct rtrs_srv_sess *srv = srv_path->srv;
- 	struct rtrs_srv_ctx *ctx = srv->ctx;
--	int up;
-+	int up, ret = 0;
- 
- 	mutex_lock(&srv->paths_ev_mutex);
- 	up = ++srv->paths_up;
- 	if (up == 1)
--		ctx->ops.link_ev(srv, RTRS_SRV_LINK_EV_CONNECTED, NULL);
-+		ret = ctx->ops.link_ev(srv, RTRS_SRV_LINK_EV_CONNECTED, NULL);
- 	mutex_unlock(&srv->paths_ev_mutex);
- 
- 	/* Mark session as established */
--	srv_path->established = true;
-+	if (!ret)
-+		srv_path->established = true;
+ 	down_write(&NILFS_MDT(sufile)->mi_sem);
+ 	ret = nilfs_sufile_get_segment_usage_block(sufile, segnum, 0, &bh);
+-	if (!ret) {
+-		mark_buffer_dirty(bh);
+-		nilfs_mdt_mark_dirty(sufile);
+-		kaddr = kmap_atomic(bh->b_page);
+-		su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
++	if (ret)
++		goto out_sem;
 +
-+	return ret;
- }
- 
- static void rtrs_srv_path_down(struct rtrs_srv_path *srv_path)
-@@ -857,7 +860,12 @@ static int process_info_req(struct rtrs_srv_con *con,
- 		goto iu_free;
- 	kobject_get(&srv_path->kobj);
- 	get_device(&srv_path->srv->dev);
--	rtrs_srv_change_state(srv_path, RTRS_SRV_CONNECTED);
-+	err = rtrs_srv_change_state(srv_path, RTRS_SRV_CONNECTED);
-+	if (!err) {
-+		rtrs_err(s, "rtrs_srv_change_state(), err: %d\n", err);
-+		goto iu_free;
-+	}
++	kaddr = kmap_atomic(bh->b_page);
++	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
++	if (unlikely(nilfs_segment_usage_error(su))) {
++		struct the_nilfs *nilfs = sufile->i_sb->s_fs_info;
 +
- 	rtrs_srv_start_hb(srv_path);
++		kunmap_atomic(kaddr);
++		brelse(bh);
++		if (nilfs_segment_is_active(nilfs, segnum)) {
++			nilfs_error(sufile->i_sb,
++				    "active segment %llu is erroneous",
++				    (unsigned long long)segnum);
++		} else {
++			/*
++			 * Segments marked erroneous are never allocated by
++			 * nilfs_sufile_alloc(); only active segments, ie,
++			 * the segments indexed by ns_segnum or ns_nextnum,
++			 * can be erroneous here.
++			 */
++			WARN_ON_ONCE(1);
++		}
++		ret = -EIO;
++	} else {
+ 		nilfs_segment_usage_set_dirty(su);
+ 		kunmap_atomic(kaddr);
++		mark_buffer_dirty(bh);
++		nilfs_mdt_mark_dirty(sufile);
+ 		brelse(bh);
+ 	}
++out_sem:
+ 	up_write(&NILFS_MDT(sufile)->mi_sem);
+ 	return ret;
+ }
+@@ -548,9 +571,14 @@ int nilfs_sufile_set_segment_usage(struc
  
- 	/*
-@@ -866,7 +874,11 @@ static int process_info_req(struct rtrs_srv_con *con,
- 	 * all connections are successfully established.  Thus, simply notify
- 	 * listener with a proper event if we are the first path.
- 	 */
--	rtrs_srv_path_up(srv_path);
-+	err = rtrs_srv_path_up(srv_path);
-+	if (err) {
-+		rtrs_err(s, "rtrs_srv_path_up(), err: %d\n", err);
-+		goto iu_free;
+ 	kaddr = kmap_atomic(bh->b_page);
+ 	su = nilfs_sufile_block_get_segment_usage(sufile, segnum, bh, kaddr);
+-	WARN_ON(nilfs_segment_usage_error(su));
+-	if (modtime)
++	if (modtime) {
++		/*
++		 * Check segusage error and set su_lastmod only when updating
++		 * this entry with a valid timestamp, not for cancellation.
++		 */
++		WARN_ON_ONCE(nilfs_segment_usage_error(su));
+ 		su->su_lastmod = cpu_to_le64(modtime);
 +	}
+ 	su->su_nblocks = cpu_to_le32(nblocks);
+ 	kunmap_atomic(kaddr);
  
- 	ib_dma_sync_single_for_device(srv_path->s.dev->ib_dev,
- 				      tx_iu->dma_addr,
--- 
-2.42.0
-
 
 
 
