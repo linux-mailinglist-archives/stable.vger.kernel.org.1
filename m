@@ -1,50 +1,47 @@
-Return-Path: <stable+bounces-5904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7430F80D7BB
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8642380D8D1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E46528171E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80721C21623
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C7A524BF;
-	Mon, 11 Dec 2023 18:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1160E51C2C;
+	Mon, 11 Dec 2023 18:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eTDMt3Wx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbVpDhFD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE020DDE;
-	Mon, 11 Dec 2023 18:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 871F8C433C8;
-	Mon, 11 Dec 2023 18:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74855102A;
+	Mon, 11 Dec 2023 18:49:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E2DC433C7;
+	Mon, 11 Dec 2023 18:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319978;
-	bh=iTF/t5zm7sc+X+fFG6dgXWbJf+4EIkkWtYVI+bwWIaE=;
+	s=korg; t=1702320550;
+	bh=rMpq82bbYe3VJzAwb4ZheKRQMO+PfjYnEM5wXuZcbMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTDMt3WxvIRrBgX5C5Zt9uT7llMtwBX2XvNv7WG7Xql5Z/4CMKuegQ4gum3brScRZ
-	 lGggM/jVKd/r8rBcpkaJSjZXu4QkTBQl7nKm9Xpjd+gHDVze7vmJNQ7Y7H7TyufGgl
-	 dUxacXsx8bRkv0eWhdhB2vzDNc00CscVe3lBKO/E=
+	b=lbVpDhFDjF1x5hqOUaZMh3tI1HZm10jr8X5U8cwSHbf3yC/9RzYnE/Igzyakhr0yx
+	 LimamtGmAiSEXagFLzrbPWfegc2t0ZhHIi6cLU1/1y/l8ELBUYCkgH50Gwim7yRmED
+	 YScQX2uJ1s8ZL/AqNAd+i0RfC3PPPG8bcfPfLU30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 29/97] ionic: fix snprintf format length warning
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.1 102/194] io_uring/af_unix: disable sending io_uring over sockets
 Date: Mon, 11 Dec 2023 19:21:32 +0100
-Message-ID: <20231211182021.026014921@linuxfoundation.org>
+Message-ID: <20231211182040.988288320@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
-References: <20231211182019.802717483@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,50 +53,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 0ceb3860a67652f9d36dfdecfcd2cb3eb2f4537d ]
+commit 705318a99a138c29a512a72c3e0043b3cd7f55f4 upstream.
 
-Our friendly kernel test robot has reminded us that with a new
-check we have a warning about a potential string truncation.
-In this case it really doesn't hurt anything, but it is worth
-addressing especially since there really is no reason to reserve
-so many bytes for our queue names.  It seems that cutting the
-queue name buffer length in half stops the complaint.
+File reference cycles have caused lots of problems for io_uring
+in the past, and it still doesn't work exactly right and races with
+unix_stream_read_generic(). The safest fix would be to completely
+disallow sending io_uring files via sockets via SCM_RIGHT, so there
+are no possible cycles invloving registered files and thus rendering
+SCM accounting on the io_uring side unnecessary.
 
-Fixes: c06107cabea3 ("ionic: more ionic name tweaks")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311300201.lO8v7mKU-lkp@intel.com/
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231204192234.21017-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: 0091bfc81741b ("io_uring/af_unix: defer registered files gc to io_uring release")
+Reported-and-suggested-by: Jann Horn <jannh@google.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/c716c88321939156909cfa1bd8b0faaf1c804103.1701868795.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_dev.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ io_uring/rsrc.h |    7 -------
+ net/core/scm.c  |    6 ++++++
+ 2 files changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-index 6c243b17312c7..64d27e8e07725 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-@@ -191,7 +191,7 @@ struct ionic_desc_info {
- 	void *cb_arg;
- };
+--- a/io_uring/rsrc.h
++++ b/io_uring/rsrc.h
+@@ -79,17 +79,10 @@ int io_sqe_files_register(struct io_ring
  
--#define IONIC_QUEUE_NAME_MAX_SZ		32
-+#define IONIC_QUEUE_NAME_MAX_SZ		16
+ int __io_scm_file_account(struct io_ring_ctx *ctx, struct file *file);
  
- struct ionic_queue {
- 	struct device *dev;
--- 
-2.42.0
-
+-#if defined(CONFIG_UNIX)
+-static inline bool io_file_need_scm(struct file *filp)
+-{
+-	return !!unix_get_socket(filp);
+-}
+-#else
+ static inline bool io_file_need_scm(struct file *filp)
+ {
+ 	return false;
+ }
+-#endif
+ 
+ static inline int io_scm_file_account(struct io_ring_ctx *ctx,
+ 				      struct file *file)
+--- a/net/core/scm.c
++++ b/net/core/scm.c
+@@ -26,6 +26,7 @@
+ #include <linux/nsproxy.h>
+ #include <linux/slab.h>
+ #include <linux/errqueue.h>
++#include <linux/io_uring.h>
+ 
+ #include <linux/uaccess.h>
+ 
+@@ -103,6 +104,11 @@ static int scm_fp_copy(struct cmsghdr *c
+ 
+ 		if (fd < 0 || !(file = fget_raw(fd)))
+ 			return -EBADF;
++		/* don't allow io_uring files */
++		if (io_uring_get_socket(file)) {
++			fput(file);
++			return -EINVAL;
++		}
+ 		*fpp++ = file;
+ 		fpl->count++;
+ 	}
 
 
 
