@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-6136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D275A80D8FF
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 456BC80D9AC
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 882551F21BD9
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D718F1F21C26
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACBA51C38;
-	Mon, 11 Dec 2023 18:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3424E51C50;
+	Mon, 11 Dec 2023 18:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONZSAdpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDVoVJ4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B81D51C2D;
-	Mon, 11 Dec 2023 18:50:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60260C433CA;
-	Mon, 11 Dec 2023 18:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F2D321B8;
+	Mon, 11 Dec 2023 18:55:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC5C433C7;
+	Mon, 11 Dec 2023 18:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320609;
-	bh=+Zx38CsGvvfbxeV7Wn67nB2BcrovlAarP5v4XgXfXYA=;
+	s=korg; t=1702320953;
+	bh=7uHJuYQfoUTVwCEVPhBVXN3muAlCMZW9DWvMzgmKvgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ONZSAdpPZzKXOhvTI+Sh0iE/gO583ivEei0I1Y2gWceP+wJO/Q433LV6eIEBWYRh1
-	 r+cALNJg8bjYGOjQvDTeuOg4P2ldqQzMG9+dEaVCzvNTY05IZvJ3h2NWL3Th1My+yt
-	 YsTufp5AhHf7N++GclLtxptjKpseNDRoD10+/NZ0=
+	b=JDVoVJ4+29qOC50LwCldo2nqG0bSDfp0h+UhsjZKUaAhczmYQj9uDQiCie9sfq9J9
+	 02GsoKPB30K9IXpa3yy5CBTJfNj19XSOXRUrdajp+qjNySP77N+gz+bWgUVQSPUDb5
+	 Oim1JRXo0NZlI3+5DC9gKStqOr/Ww3801ssLHD2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukasz Luba <lukasz.luba@arm.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 125/194] powercap: DTPM: Fix missing cpufreq_cpu_put() calls
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Santosh Kumar Pradhan <santosh.pradhan@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 056/141] RDMA/rtrs-srv: Destroy path files after making sure no IOs in-flight
 Date: Mon, 11 Dec 2023 19:21:55 +0100
-Message-ID: <20231211182042.108602502@linuxfoundation.org>
+Message-ID: <20231211182028.984243022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,79 +55,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukasz Luba <lukasz.luba@arm.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-commit bdefd9913bdd453991ef756b6f7176e8ad80d786 upstream.
+[ Upstream commit c4d32e77fc1006f99eeb78417efc3d81a384072a ]
 
-The policy returned by cpufreq_cpu_get() has to be released with
-the help of cpufreq_cpu_put() to balance its kobject reference counter
-properly.
+Destroying path files may lead to the freeing of rdma_stats. This creates
+the following race.
 
-Add the missing calls to cpufreq_cpu_put() in the code.
+An IO is in-flight, or has just passed the session state check in
+process_read/process_write. The close_work gets triggered and the function
+rtrs_srv_close_work() starts and does destroy path which frees the
+rdma_stats. After this the function process_read/process_write resumes and
+tries to update the stats through the function rtrs_srv_update_rdma_stats
 
-Fixes: 0aea2e4ec2a2 ("powercap/dtpm_cpu: Reset per_cpu variable in the release function")
-Fixes: 0e8f68d7f048 ("powercap/drivers/dtpm: Add CPU energy model based support")
-Cc: v5.16+ <stable@vger.kernel.org> # v5.16+
-Signed-off-by: Lukasz Luba <lukasz.luba@arm.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit solves the problem by moving the destroy path function to a
+later point. This point makes sure any inflights are completed. This is
+done by qp drain, and waiting for all in-flights through ops_id.
+
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Santosh Kumar Pradhan <santosh.pradhan@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://lore.kernel.org/r/20231120154146.920486-6-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/powercap/dtpm_cpu.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/powercap/dtpm_cpu.c
-+++ b/drivers/powercap/dtpm_cpu.c
-@@ -140,6 +140,8 @@ static void pd_release(struct dtpm *dtpm
- 	if (policy) {
- 		for_each_cpu(dtpm_cpu->cpu, policy->related_cpus)
- 			per_cpu(dtpm_per_cpu, dtpm_cpu->cpu) = NULL;
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 3a61615a8ea6a..27bf2b2da9fd6 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -1541,7 +1541,6 @@ static void rtrs_srv_close_work(struct work_struct *work)
+ 
+ 	srv_path = container_of(work, typeof(*srv_path), close_work);
+ 
+-	rtrs_srv_destroy_path_files(srv_path);
+ 	rtrs_srv_stop_hb(srv_path);
+ 
+ 	for (i = 0; i < srv_path->s.con_num; i++) {
+@@ -1561,6 +1560,8 @@ static void rtrs_srv_close_work(struct work_struct *work)
+ 	/* Wait for all completion */
+ 	wait_for_completion(&srv_path->complete_done);
+ 
++	rtrs_srv_destroy_path_files(srv_path);
 +
-+		cpufreq_cpu_put(policy);
- 	}
- 	
- 	kfree(dtpm_cpu);
-@@ -191,12 +193,16 @@ static int __dtpm_cpu_setup(int cpu, str
- 		return 0;
+ 	/* Notify upper layer if we are the last path */
+ 	rtrs_srv_path_down(srv_path);
  
- 	pd = em_cpu_get(cpu);
--	if (!pd || em_is_artificial(pd))
--		return -EINVAL;
-+	if (!pd || em_is_artificial(pd)) {
-+		ret = -EINVAL;
-+		goto release_policy;
-+	}
- 
- 	dtpm_cpu = kzalloc(sizeof(*dtpm_cpu), GFP_KERNEL);
--	if (!dtpm_cpu)
--		return -ENOMEM;
-+	if (!dtpm_cpu) {
-+		ret = -ENOMEM;
-+		goto release_policy;
-+	}
- 
- 	dtpm_init(&dtpm_cpu->dtpm, &dtpm_ops);
- 	dtpm_cpu->cpu = cpu;
-@@ -216,6 +222,7 @@ static int __dtpm_cpu_setup(int cpu, str
- 	if (ret)
- 		goto out_dtpm_unregister;
- 
-+	cpufreq_cpu_put(policy);
- 	return 0;
- 
- out_dtpm_unregister:
-@@ -227,6 +234,8 @@ out_kfree_dtpm_cpu:
- 		per_cpu(dtpm_per_cpu, cpu) = NULL;
- 	kfree(dtpm_cpu);
- 
-+release_policy:
-+	cpufreq_cpu_put(policy);
- 	return ret;
- }
- 
+-- 
+2.42.0
+
 
 
 
