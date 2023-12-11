@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-6089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB3C780D8B3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:48:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5043780D638
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 285FB1C2165D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:48:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 054B4282411
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5902151C42;
-	Mon, 11 Dec 2023 18:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A15FFC06;
+	Mon, 11 Dec 2023 18:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbTuQD6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBWSBrVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122AD51C3C;
-	Mon, 11 Dec 2023 18:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442AEC433C7;
-	Mon, 11 Dec 2023 18:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48AA1C2D0;
+	Mon, 11 Dec 2023 18:32:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A34C433C8;
+	Mon, 11 Dec 2023 18:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320481;
-	bh=l9uU1/cV5uHmUWRFAluGln70bTdxYwdfHu8H8JXeiAk=;
+	s=korg; t=1702319547;
+	bh=dLEs1T7oNvvxZz+6/nm+GWjOXqJZBtxfFfQAa8/UdR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbTuQD6rg4xQRNLL8J6DbPTHSp460IHqy1rtQ1ksQkvmzgyx/qSBqBlOCxFg6uqsU
-	 kYqB+5hoyd//GY3jYoIyOT90DBVuCXFIs6FeeXVjgqmtrvIwswlpV1N2KM6Cffh764
-	 l0ADcGg+XW/VwgwJYnMvJsukO3CFXHAl899ny55E=
+	b=ZBWSBrVDvpi+ALY1JTOEFOLJCrPzG8X4rXdby6cJx4BUjGhuU2/sQAKLZ79y0A+G0
+	 Y9H/fK0xKMfcOWz2c0xrwuGP0mCjUN3jW6va/MIEi3dQnZ0SeF9EuHFHBiGiPvBTve
+	 raxWypf+H5TaxSzQkei7NOTAY/puj3n5THOMPriA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geetha sowjanya <gakula@marvell.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/194] octeontx2-af: Fix mcs stats register address
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 146/244] ring-buffer: Force absolute timestamp on discard of event
 Date: Mon, 11 Dec 2023 19:20:39 +0100
-Message-ID: <20231211182038.752933434@linuxfoundation.org>
+Message-ID: <20231211182052.347360487@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,98 +54,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geetha sowjanya <gakula@marvell.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 3ba98a8c6f8ceb4e01a78f973d8d9017020bbd57 ]
+commit b2dd797543cfa6580eac8408dd67fa02164d9e56 upstream.
 
-This patch adds the miss mcs stats register
-for mcs supported platforms.
+There's a race where if an event is discarded from the ring buffer and an
+interrupt were to happen at that time and insert an event, the time stamp
+is still used from the discarded event as an offset. This can screw up the
+timings.
 
-Fixes: 9312150af8da ("octeontx2-af: cn10k: mcs: Support for stats collection")
-Signed-off-by: Geetha sowjanya <gakula@marvell.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If the event is going to be discarded, set the "before_stamp" to zero.
+When a new event comes in, it compares the "before_stamp" with the
+"write_stamp" and if they are not equal, it will insert an absolute
+timestamp. This will prevent the timings from getting out of sync due to
+the discarded event.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231206100244.5130f9b3@gandalf.local.home
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Fixes: 6f6be606e763f ("ring-buffer: Force before_stamp and write_stamp to be different on discard")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/mcs.c   |  4 +--
- .../ethernet/marvell/octeontx2/af/mcs_reg.h   | 31 ++++++++++++++++---
- 2 files changed, 29 insertions(+), 6 deletions(-)
+ kernel/trace/ring_buffer.c |   19 ++++++++-----------
+ 1 file changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-index bd87507cf8eaa..c1775bd01c2b4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs.c
-@@ -117,7 +117,7 @@ void mcs_get_rx_secy_stats(struct mcs *mcs, struct mcs_secy_stats *stats, int id
- 	reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYTAGGEDCTLX(id);
- 	stats->pkt_tagged_ctl_cnt = mcs_reg_read(mcs, reg);
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3030,23 +3030,20 @@ rb_try_to_discard(struct ring_buffer_per
+ 			local_read(&bpage->write) & ~RB_WRITE_MASK;
+ 		unsigned long event_length = rb_event_length(event);
  
--	reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYUNTAGGEDORNOTAGX(id);
-+	reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYUNTAGGEDX(id);
- 	stats->pkt_untaged_cnt = mcs_reg_read(mcs, reg);
- 
- 	reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYCTLX(id);
-@@ -215,7 +215,7 @@ void mcs_get_sc_stats(struct mcs *mcs, struct mcs_sc_stats *stats,
- 		reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSCNOTVALIDX(id);
- 		stats->pkt_notvalid_cnt = mcs_reg_read(mcs, reg);
- 
--		reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSCUNCHECKEDOROKX(id);
-+		reg = MCSX_CSE_RX_MEM_SLAVE_INPKTSSCUNCHECKEDX(id);
- 		stats->pkt_unchecked_cnt = mcs_reg_read(mcs, reg);
- 
- 		if (mcs->hw->mcs_blks > 1) {
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-index f3ab01fc363c8..f4c6de89002c1 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
-@@ -810,14 +810,37 @@
- 		offset = 0x9d8ull;			\
- 	offset; })
- 
-+#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSCUNCHECKEDX(a) ({	\
-+	u64 offset;					\
-+							\
-+	offset = 0xee80ull;				\
-+	if (mcs->hw->mcs_blks > 1)			\
-+		offset = 0xe818ull;			\
-+	offset += (a) * 0x8ull;				\
-+	offset; })
++		/*
++		 * For the before_stamp to be different than the write_stamp
++		 * to make sure that the next event adds an absolute
++		 * value and does not rely on the saved write stamp, which
++		 * is now going to be bogus.
++		 */
++		rb_time_set(&cpu_buffer->before_stamp, 0);
 +
-+#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYUNTAGGEDX(a) ({	\
-+	u64 offset;					\
-+							\
-+	offset = 0xa680ull;				\
-+	if (mcs->hw->mcs_blks > 1)			\
-+		offset = 0xd018ull;			\
-+	offset += (a) * 0x8ull;				\
-+	offset; })
-+
-+#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSCLATEORDELAYEDX(a)	({	\
-+	u64 offset;						\
-+								\
-+	offset = 0xf680ull;					\
-+	if (mcs->hw->mcs_blks > 1)				\
-+		offset = 0xe018ull;				\
-+	offset += (a) * 0x8ull;					\
-+	offset; })
-+
- #define MCSX_CSE_RX_MEM_SLAVE_INOCTETSSCDECRYPTEDX(a)	(0xe680ull + (a) * 0x8ull)
- #define MCSX_CSE_RX_MEM_SLAVE_INOCTETSSCVALIDATEX(a)	(0xde80ull + (a) * 0x8ull)
--#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYUNTAGGEDORNOTAGX(a)	(0xa680ull + (a) * 0x8ull)
- #define MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYNOTAGX(a)	(0xd218 + (a) * 0x8ull)
--#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYUNTAGGEDX(a)	(0xd018ull + (a) * 0x8ull)
--#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSCUNCHECKEDOROKX(a)	(0xee80ull + (a) * 0x8ull)
- #define MCSX_CSE_RX_MEM_SLAVE_INPKTSSECYCTLX(a)		(0xb680ull + (a) * 0x8ull)
--#define MCSX_CSE_RX_MEM_SLAVE_INPKTSSCLATEORDELAYEDX(a) (0xf680ull + (a) * 0x8ull)
- #define MCSX_CSE_RX_MEM_SLAVE_INPKTSSAINVALIDX(a)	(0x12680ull + (a) * 0x8ull)
- #define MCSX_CSE_RX_MEM_SLAVE_INPKTSSANOTUSINGSAERRORX(a) (0x15680ull + (a) * 0x8ull)
- #define MCSX_CSE_RX_MEM_SLAVE_INPKTSSANOTVALIDX(a)	(0x13680ull + (a) * 0x8ull)
--- 
-2.42.0
-
+ 		/* Something came in, can't discard */
+ 		if (!rb_time_cmpxchg(&cpu_buffer->write_stamp,
+ 				       write_stamp, write_stamp - delta))
+ 			return false;
+ 
+ 		/*
+-		 * It's possible that the event time delta is zero
+-		 * (has the same time stamp as the previous event)
+-		 * in which case write_stamp and before_stamp could
+-		 * be the same. In such a case, force before_stamp
+-		 * to be different than write_stamp. It doesn't
+-		 * matter what it is, as long as its different.
+-		 */
+-		if (!delta)
+-			rb_time_set(&cpu_buffer->before_stamp, 0);
+-
+-		/*
+ 		 * If an event were to come in now, it would see that the
+ 		 * write_stamp and the before_stamp are different, and assume
+ 		 * that this event just added itself before updating
 
 
 
