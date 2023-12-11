@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-5971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB5F80D81A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39EB180D73A
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C3B21F21A22
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8140281E87
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9344951C3F;
-	Mon, 11 Dec 2023 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7255466F;
+	Mon, 11 Dec 2023 18:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atzQfMoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wcVKHhJY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F05FC06;
-	Mon, 11 Dec 2023 18:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC7DAC433C8;
-	Mon, 11 Dec 2023 18:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3A151C44;
+	Mon, 11 Dec 2023 18:35:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DABC433C8;
+	Mon, 11 Dec 2023 18:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320163;
-	bh=aBCsEDmSxaEDScVRFOzssWiLDHNnydC/dEKBzAZH/kA=;
+	s=korg; t=1702319740;
+	bh=vlCvCJhf/WMqkFMk0veq9HJdr72l2PJVk2IfyDk/31A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atzQfMoQT4NCuq67IfV02jxgJ4FB06Xa/TpsYPkwqFjX4qU8RdtZ06zEa+fatqmWZ
-	 PkpHBByVH9ceOU3QVyDlgmJZ/Y7qc8GT5AiBYKgCj5adOlqCjHkCXrf9Lb5iuDUTXL
-	 fxaVs30Z0jW1bg4ILxPtL/412Mc1AtNrwFvGORQ4=
+	b=wcVKHhJYacRwWdJ8FbOx8C9cKG9qOz6BVsP3Dgw3RxNm0ZL0RkRH8m4YIXb6V+pJQ
+	 kf8qyuGD25tRIEzo+uMI789/+ww62Yef5TlJcJPWJyK3uLgmsQ5o56ZGdtcFMqpIYT
+	 jPMOJNMxhHPditx37NdrS7YD+QhDXAZzTJxdLhSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YuanShang <YuanShang.Mao@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/67] drm/amdgpu: correct chunk_ptr to a pointer to chunk.
+	Robert Morris <rtm@csail.mit.edu>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 217/244] smb: client: fix potential NULL deref in parse_dfs_referrals()
 Date: Mon, 11 Dec 2023 19:21:50 +0100
-Message-ID: <20231211182015.345490792@linuxfoundation.org>
+Message-ID: <20231211182055.711924453@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +51,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YuanShang <YuanShang.Mao@amd.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 50d51374b498457c4dea26779d32ccfed12ddaff ]
+commit 92414333eb375ed64f4ae92d34d579e826936480 upstream.
 
-The variable "chunk_ptr" should be a pointer pointing
-to a struct drm_amdgpu_cs_chunk instead of to a pointer
-of that.
+If server returned no data for FSCTL_DFS_GET_REFERRALS, @dfs_rsp will
+remain NULL and then parse_dfs_referrals() will dereference it.
 
-Signed-off-by: YuanShang <YuanShang.Mao@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by returning -EIO when no output data is returned.
+
+Besides, we can't fix it in SMB2_ioctl() as some FSCTLs are allowed to
+return no data as per MS-SMB2 2.2.32.
+
+Fixes: 9d49640a21bf ("CIFS: implement get_dfs_refer for SMB2+")
+Cc: stable@vger.kernel.org
+Reported-by: Robert Morris <rtm@csail.mit.edu>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/smb2ops.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 1a83055211762..f9c725a8991b7 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -141,7 +141,7 @@ static int amdgpu_cs_parser_init(struct amdgpu_cs_parser *p, union drm_amdgpu_cs
- 	}
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -2834,6 +2834,8 @@ smb2_get_dfs_refer(const unsigned int xi
+ 		usleep_range(512, 2048);
+ 	} while (++retry_count < 5);
  
- 	for (i = 0; i < p->nchunks; i++) {
--		struct drm_amdgpu_cs_chunk __user **chunk_ptr = NULL;
-+		struct drm_amdgpu_cs_chunk __user *chunk_ptr = NULL;
- 		struct drm_amdgpu_cs_chunk user_chunk;
- 		uint32_t __user *cdata;
- 
--- 
-2.42.0
-
++	if (!rc && !dfs_rsp)
++		rc = -EIO;
+ 	if (rc) {
+ 		if (!is_retryable_error(rc) && rc != -ENOENT && rc != -EOPNOTSUPP)
+ 			cifs_tcon_dbg(VFS, "%s: ioctl error: rc=%d\n", __func__, rc);
 
 
 
