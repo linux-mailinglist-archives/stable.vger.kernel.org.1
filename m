@@ -1,45 +1,49 @@
-Return-Path: <stable+bounces-5840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE80080D76E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1982780D574
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8994A280AB2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C799A281A8D
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CAA537E1;
-	Mon, 11 Dec 2023 18:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9575101E;
+	Mon, 11 Dec 2023 18:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yboGyl31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcvLCc/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341D7524CF;
-	Mon, 11 Dec 2023 18:36:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFB8C433C7;
-	Mon, 11 Dec 2023 18:36:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2903C4F212;
+	Mon, 11 Dec 2023 18:24:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F35C433C7;
+	Mon, 11 Dec 2023 18:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319807;
-	bh=e+rGSzJl52JYBt4ltlSraw2BVO0sjta6ROmvjlZMhWc=;
+	s=korg; t=1702319086;
+	bh=KSddwmdkjwKWJq6rGwXz2hmrUnxDinyULUxkOYZ1kyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yboGyl311DtnP8GS8zJxk92i07sxjjRB4OFeTmN6bj3rzdmAl+j2e3zXmRPNXQkgZ
-	 jsdKQ6W6GZVq9Ros8At/qtZOgq/IQ6XpQLCA1N9mXEw1u7V506HJFZyoun3XX4SYVP
-	 7H8b2eOk9qjSMeorF8+FdJuSTxK3k19A0ZyCPl7o=
+	b=FcvLCc/NyJrPXG3GjY9aJ5xMeEHp9lAQ3E+iiBzMTE3U6DPeQFAd2RbFKIl+r5MEn
+	 ZjpIb2woM7C3WNV6k9WQ5smZacu7tHi4lsBKFMcHwZ0n8BO5hz88a3vG6AvsM+idh+
+	 uNqmO+IBJydsWyZ2HZMXsAgiLdH9kKhJvH2HtUHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Aladyshev <aladyshev22@gmail.com>
-Subject: [PATCH 6.6 210/244] usb: gadget: f_hid: fix report descriptor allocation
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 4.19 33/55] tracing: Always update snapshot buffer size
 Date: Mon, 11 Dec 2023 19:21:43 +0100
-Message-ID: <20231211182055.386308410@linuxfoundation.org>
+Message-ID: <20231211182013.458334330@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +55,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Aladyshev <aladyshev22@gmail.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit 61890dc28f7d9e9aac8a9471302613824c22fae4 upstream.
+commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
 
-The commit 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs
-cdev") has introduced a bug that leads to hid device corruption after
-the replug operation.
-Reverse device managed memory allocation for the report descriptor
-to fix the issue.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). The update of the ring buffer
+size would check if the instance was the top level and if so, it would
+also update the snapshot buffer as it needs to be the same as the main
+buffer.
 
-Tested:
-This change was tested on the AMD EthanolX CRB server with the BMC
-based on the OpenBMC distribution. The BMC provides KVM functionality
-via the USB gadget device:
-- before: KVM page refresh results in a broken USB device,
-- after: KVM page refresh works without any issues.
+Now that lower level instances also has a snapshot buffer, they too need
+to update their snapshot buffer sizes when the main buffer is changed,
+otherwise the following can be triggered:
 
-Fixes: 89ff3dfac604 ("usb: gadget: f_hid: fix f_hidg lifetime vs cdev")
+ # cd /sys/kernel/tracing
+ # echo 1500 > buffer_size_kb
+ # mkdir instances/foo
+ # echo irqsoff > instances/foo/current_tracer
+ # echo 1000 > instances/foo/buffer_size_kb
+
+Produces:
+
+ WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+
+Which is:
+
+	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+
+	if (ret == -EBUSY) {
+		[..]
+	}
+
+	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
+
+That's because ring_buffer_swap_cpu() has:
+
+	int ret = -EINVAL;
+
+	[..]
+
+	/* At least make sure the two buffers are somewhat the same */
+	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
+		goto out;
+
+	[..]
+ out:
+	return ret;
+ }
+
+Instead, update all instances' snapshot buffer sizes when their main
+buffer size is updated.
+
+Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Konstantin Aladyshev <aladyshev22@gmail.com>
-Link: https://lore.kernel.org/r/20231206080744.253-2-aladyshev22@gmail.com
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_hid.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/trace/trace.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -92,6 +92,7 @@ static void hidg_release(struct device *
- {
- 	struct f_hidg *hidg = container_of(dev, struct f_hidg, dev);
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -5258,8 +5258,7 @@ static int __tracing_resize_ring_buffer(
+ 		return ret;
  
-+	kfree(hidg->report_desc);
- 	kfree(hidg->set_report_buf);
- 	kfree(hidg);
- }
-@@ -1287,9 +1288,9 @@ static struct usb_function *hidg_alloc(s
- 	hidg->report_length = opts->report_length;
- 	hidg->report_desc_length = opts->report_desc_length;
- 	if (opts->report_desc) {
--		hidg->report_desc = devm_kmemdup(&hidg->dev, opts->report_desc,
--						 opts->report_desc_length,
--						 GFP_KERNEL);
-+		hidg->report_desc = kmemdup(opts->report_desc,
-+					    opts->report_desc_length,
-+					    GFP_KERNEL);
- 		if (!hidg->report_desc) {
- 			ret = -ENOMEM;
- 			goto err_put_device;
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
+-	    !tr->current_trace->use_max_tr)
++	if (!tr->current_trace->use_max_tr)
+ 		goto out;
+ 
+ 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 
 
 
