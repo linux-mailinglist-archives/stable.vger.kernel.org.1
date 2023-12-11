@@ -1,46 +1,50 @@
-Return-Path: <stable+bounces-5753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F78080D68B
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFE6F80D883
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF9001F21B2A
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44545B21605
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692CF51C33;
-	Mon, 11 Dec 2023 18:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C80A51C2B;
+	Mon, 11 Dec 2023 18:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnehwB1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0TfbbvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A147C8C8;
-	Mon, 11 Dec 2023 18:32:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68B4C433C9;
-	Mon, 11 Dec 2023 18:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AABC8C8;
+	Mon, 11 Dec 2023 18:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0469C433C7;
+	Mon, 11 Dec 2023 18:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319574;
-	bh=Qt0XRihgkbyuIc1NY82wYTm5ZPGlwYm5NLMdkAeENGc=;
+	s=korg; t=1702320384;
+	bh=wi51PGAZAU0Tm78Pk5ubGhjH9iB3Ceu12rVkVhO4LZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnehwB1owt0BySM8t8eURasA2gkOvCo2gz1+G9/3aMPT2UPwq3ibQk2w1pFmVUsNd
-	 LGwx8l2pahCEUECHkQAP29k+Sd0UG+eLrjP7YkWvBakl3wnyPqxHnmsrZXZ2GGaRoR
-	 LTqIafY35Lfjjnu+J/hzbfTHrUI8kqcn2gVbo5Fs=
+	b=O0TfbbvBw3X375t5yBGhzK1rB9HvVyLq6Xr+ey6eeiiyIkrWtnIBo3nCSlymULFbL
+	 EhUEZaujxRGxVWMPTHGG7iz4M/xUlsdDe5vPbEfvPyhvU1kPYkvgzy1ksOGZMYLXMK
+	 5dWc3porxWJ4JBcYupMJQGjbCxZuzkHiBQmrX4P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Zhang <jason.zhang@rock-chips.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 138/244] ALSA: pcm: fix out-of-bounds in snd_pcm_state_names
+	kernel test robot <lkp@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/194] ionic: fix snprintf format length warning
 Date: Mon, 11 Dec 2023 19:20:31 +0100
-Message-ID: <20231211182051.979786010@linuxfoundation.org>
+Message-ID: <20231211182038.417639037@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,83 +56,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Zhang <jason.zhang@rock-chips.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit 2b3a7a302c9804e463f2ea5b54dc3a6ad106a344 upstream.
+[ Upstream commit 0ceb3860a67652f9d36dfdecfcd2cb3eb2f4537d ]
 
-The pcm state can be SNDRV_PCM_STATE_DISCONNECTED at disconnect
-callback, and there is not an entry of SNDRV_PCM_STATE_DISCONNECTED
-in snd_pcm_state_names.
+Our friendly kernel test robot has reminded us that with a new
+check we have a warning about a potential string truncation.
+In this case it really doesn't hurt anything, but it is worth
+addressing especially since there really is no reason to reserve
+so many bytes for our queue names.  It seems that cutting the
+queue name buffer length in half stops the complaint.
 
-This patch adds the missing entry to resolve this issue.
-
-cat /proc/asound/card2/pcm0p/sub0/status
-That results in stack traces like the following:
-
-[   99.702732][ T5171] Unexpected kernel BRK exception at EL1
-[   99.702774][ T5171] Internal error: BRK handler: f2005512 [#1] PREEMPT SMP
-[   99.703858][ T5171] Modules linked in: bcmdhd(E) (...)
-[   99.747425][ T5171] CPU: 3 PID: 5171 Comm: cat Tainted: G         C OE     5.10.189-android13-4-00003-g4a17384380d8-ab11086999 #1
-[   99.748447][ T5171] Hardware name: Rockchip RK3588 CVTE V10 Board (DT)
-[   99.749024][ T5171] pstate: 60400005 (nZCv daif +PAN -UAO -TCO BTYPE=--)
-[   99.749616][ T5171] pc : snd_pcm_substream_proc_status_read+0x264/0x2bc
-[   99.750204][ T5171] lr : snd_pcm_substream_proc_status_read+0xa4/0x2bc
-[   99.750778][ T5171] sp : ffffffc0175abae0
-[   99.751132][ T5171] x29: ffffffc0175abb80 x28: ffffffc009a2c498
-[   99.751665][ T5171] x27: 0000000000000001 x26: ffffff810cbae6e8
-[   99.752199][ T5171] x25: 0000000000400cc0 x24: ffffffc0175abc60
-[   99.752729][ T5171] x23: 0000000000000000 x22: ffffff802f558400
-[   99.753263][ T5171] x21: ffffff81d8d8ff00 x20: ffffff81020cdc00
-[   99.753795][ T5171] x19: ffffff802d110000 x18: ffffffc014fbd058
-[   99.754326][ T5171] x17: 0000000000000000 x16: 0000000000000000
-[   99.754861][ T5171] x15: 000000000000c276 x14: ffffffff9a976fda
-[   99.755392][ T5171] x13: 0000000065689089 x12: 000000000000d72e
-[   99.755923][ T5171] x11: ffffff802d110000 x10: 00000000000000e0
-[   99.756457][ T5171] x9 : 9c431600c8385d00 x8 : 0000000000000008
-[   99.756990][ T5171] x7 : 0000000000000000 x6 : 000000000000003f
-[   99.757522][ T5171] x5 : 0000000000000040 x4 : ffffffc0175abb70
-[   99.758056][ T5171] x3 : 0000000000000001 x2 : 0000000000000001
-[   99.758588][ T5171] x1 : 0000000000000000 x0 : 0000000000000000
-[   99.759123][ T5171] Call trace:
-[   99.759404][ T5171]  snd_pcm_substream_proc_status_read+0x264/0x2bc
-[   99.759958][ T5171]  snd_info_seq_show+0x54/0xa4
-[   99.760370][ T5171]  seq_read_iter+0x19c/0x7d4
-[   99.760770][ T5171]  seq_read+0xf0/0x128
-[   99.761117][ T5171]  proc_reg_read+0x100/0x1f8
-[   99.761515][ T5171]  vfs_read+0xf4/0x354
-[   99.761869][ T5171]  ksys_read+0x7c/0x148
-[   99.762226][ T5171]  __arm64_sys_read+0x20/0x30
-[   99.762625][ T5171]  el0_svc_common+0xd0/0x1e4
-[   99.763023][ T5171]  el0_svc+0x28/0x98
-[   99.763358][ T5171]  el0_sync_handler+0x8c/0xf0
-[   99.763759][ T5171]  el0_sync+0x1b8/0x1c0
-[   99.764118][ T5171] Code: d65f03c0 b9406102 17ffffae 94191565 (d42aa240)
-[   99.764715][ T5171] ---[ end trace 1eeffa3e17c58e10 ]---
-[   99.780720][ T5171] Kernel panic - not syncing: BRK handler: Fatal exception
-
-Signed-off-by: Jason Zhang <jason.zhang@rock-chips.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231206013139.20506-1-jason.zhang@rock-chips.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c06107cabea3 ("ionic: more ionic name tweaks")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311300201.lO8v7mKU-lkp@intel.com/
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231204192234.21017-2-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/pcm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/pensando/ionic/ionic_dev.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/pcm.c
-+++ b/sound/core/pcm.c
-@@ -253,6 +253,7 @@ static const char * const snd_pcm_state_
- 	STATE(DRAINING),
- 	STATE(PAUSED),
- 	STATE(SUSPENDED),
-+	STATE(DISCONNECTED),
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+index 93a4258421667..13dfcf9f75dad 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
++++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
+@@ -214,7 +214,7 @@ struct ionic_desc_info {
+ 	void *cb_arg;
  };
  
- static const char * const snd_pcm_access_names[] = {
+-#define IONIC_QUEUE_NAME_MAX_SZ		32
++#define IONIC_QUEUE_NAME_MAX_SZ		16
+ 
+ struct ionic_queue {
+ 	struct device *dev;
+-- 
+2.42.0
+
 
 
 
