@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-5969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B180D819
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:42:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B57FE80D579
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:25:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0FE1F21343
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:42:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55C18B20E99
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3889351C35;
-	Mon, 11 Dec 2023 18:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C775101B;
+	Mon, 11 Dec 2023 18:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NksNrDDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1G5KQbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF115FC06;
-	Mon, 11 Dec 2023 18:42:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59686C433C8;
-	Mon, 11 Dec 2023 18:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0994F212;
+	Mon, 11 Dec 2023 18:24:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECA8C433C8;
+	Mon, 11 Dec 2023 18:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320157;
-	bh=ho9Xo0zP5WPr+m49TGFjD6JaAOYDuzesMOuw3biousc=;
+	s=korg; t=1702319099;
+	bh=zcu1BurnRjCXwQLxoETEYQmguxxo52mWRtyoK/8TYVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NksNrDDJ5+W+aSw79NRJuXeraNox8OI262JJ9UPbBVj0gqw/teu1HFN9h4h1r5yUD
-	 1Q7ysj6ukj27RAyr4Ftumci/VuiwUdmkkLTRpIlj6e5IAQ/a584p2mvR5DvQJiPbkc
-	 bmjNpRw/P2QejlwIgk4U0OOOZoYQ92VaATHJLaFY=
+	b=U1G5KQbWS7eDIxKcgmnOHE3vYVraxCD8ttMD4TEGS0EM0c9gScAytYG0MxeCLD6vc
+	 zgZGgUy3DHtisbVeGlcGgW9V61eJn4IRFhOl7KbxayrREzHtS9o1hUxgpiazA2xm83
+	 GG6+4ZE/5iPwEYDz/m7M0FpdcOfi1vKXmNwSPdak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Boerge Struempfel <boerge.struempfel@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 04/67] tg3: Increment tx_dropped in tg3_tso_bug()
+Subject: [PATCH 4.19 38/55] gpiolib: sysfs: Fix error handling on failed export
 Date: Mon, 11 Dec 2023 19:21:48 +0100
-Message-ID: <20231211182015.264396745@linuxfoundation.org>
+Message-ID: <20231211182013.671484691@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
+References: <20231211182012.263036284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +54,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Boerge Struempfel <boerge.struempfel@gmail.com>
 
-[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
+[ Upstream commit 95dd1e34ff5bbee93a28ff3947eceaf6de811b1a ]
 
-tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
-The number of discarded frames should be incremented accordingly.
+If gpio_set_transitory() fails, we should free the GPIO again. Most
+notably, the flag FLAG_REQUESTED has previously been set in
+gpiod_request_commit(), and should be reset on failure.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To my knowledge, this does not affect any current users, since the
+gpio_set_transitory() mainly returns 0 and -ENOTSUPP, which is converted
+to 0. However the gpio_set_transitory() function calles the .set_config()
+function of the corresponding GPIO chip and there are some GPIO drivers in
+which some (unlikely) branches return other values like -EPROBE_DEFER,
+and -EINVAL. In these cases, the above mentioned FLAG_REQUESTED would not
+be reset, which results in the pin being blocked until the next reboot.
+
+Fixes: e10f72bf4b3e ("gpio: gpiolib: Generalise state persistence beyond sleep")
+Signed-off-by: Boerge Struempfel <boerge.struempfel@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpio/gpiolib-sysfs.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index fb2543b6cec10..4cfb0d0ee80cc 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7896,8 +7896,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index e0ccc79b239a5..7a8dfc36a6c15 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -495,14 +495,17 @@ static ssize_t export_store(struct class *class,
+ 	}
  
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs)
-+	if (IS_ERR(segs) || !segs) {
-+		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
-+	}
+ 	status = gpiod_set_transitory(desc, false);
+-	if (!status) {
+-		status = gpiod_export(desc, true);
+-		if (status < 0)
+-			gpiod_free(desc);
+-		else
+-			set_bit(FLAG_SYSFS, &desc->flags);
++	if (status) {
++		gpiod_free(desc);
++		goto done;
+ 	}
  
- 	do {
- 		nskb = segs;
++	status = gpiod_export(desc, true);
++	if (status < 0)
++		gpiod_free(desc);
++	else
++		set_bit(FLAG_SYSFS, &desc->flags);
++
+ done:
+ 	if (status)
+ 		pr_debug("%s: status %d\n", __func__, status);
 -- 
 2.42.0
 
