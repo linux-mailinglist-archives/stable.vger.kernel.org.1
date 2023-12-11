@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-5525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17EE880D535
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:21:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A5480D89E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A371C21410
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:21:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5BD1F218FE
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547A551020;
-	Mon, 11 Dec 2023 18:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 686E951C2B;
+	Mon, 11 Dec 2023 18:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4yU185e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eiGG4FPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CF94F212;
-	Mon, 11 Dec 2023 18:21:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825D9C433C9;
-	Mon, 11 Dec 2023 18:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290944437B;
+	Mon, 11 Dec 2023 18:47:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C68C433C8;
+	Mon, 11 Dec 2023 18:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702318896;
-	bh=eP2Rm+wksTxgqGvBYSDRf1mrrJd4dJzvQemm9zOCIL8=;
+	s=korg; t=1702320444;
+	bh=YYIWtuXxNzQNxT+uq0VL6ifwso9C5kmJSNayBK9nbko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4yU185eZCJTJU3mhbVYjr2Ndz9ehca+rLQ7IeieWPcAx+M0NBwuJi+DdjCnetxc+
-	 WYXXA7DTiIEEk5Ny5Bu6GzGXXXQ2namQV4GpHv2MMIRs5Pb/yRV/EB3dzsxGzcbeEf
-	 8RuBttabNgV4+GU4LMsWu5YKQ+USftUFS8hupEpg=
+	b=eiGG4FPi3WQgT3tjz2GWShwWB7F4SjbbBrpOCBtWeDfDrFq8OSsL2sEgU97F0Qwo+
+	 6Knm1ZWluwXHC0Wek9ykY88n8FEPAgp5Khj0WpHWSmrbSW4mblTu9C2NIwoseZFuPc
+	 cf3B0sLy2OI7lWh12So7eNall+KbisK+uwSAOV/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Pakhunov <alexey.pakhunov@spacex.com>,
-	Vincent Wong <vincent.wong2@spacex.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 02/25] tg3: Increment tx_dropped in tg3_tso_bug()
-Date: Mon, 11 Dec 2023 19:20:53 +0100
-Message-ID: <20231211182008.753768890@linuxfoundation.org>
+Subject: [PATCH 6.1 064/194] RDMA/hns: Fix unnecessary err return when using invalid congest control algorithm
+Date: Mon, 11 Dec 2023 19:20:54 +0100
+Message-ID: <20231211182039.358780126@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182008.665944227@linuxfoundation.org>
-References: <20231211182008.665944227@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Pakhunov <alexey.pakhunov@spacex.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 17dd5efe5f36a96bd78012594fabe21efb01186b ]
+[ Upstream commit efb9cbf66440482ceaa90493d648226ab7ec2ebf ]
 
-tg3_tso_bug() drops a packet if it cannot be segmented for any reason.
-The number of discarded frames should be incremented accordingly.
+Add a default congest control algorithm so that driver won't return
+an error when the configured algorithm is invalid.
 
-Signed-off-by: Alex Pakhunov <alexey.pakhunov@spacex.com>
-Signed-off-by: Vincent Wong <vincent.wong2@spacex.com>
-Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Link: https://lore.kernel.org/r/20231113182350.37472-2-alexey.pakhunov@spacex.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f91696f2f053 ("RDMA/hns: Support congestion control type selection according to the FW")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20231028093242.670325-1-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index 96c7a452a4a97..dc27c81ad5129 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -7872,8 +7872,10 @@ static int tg3_tso_bug(struct tg3 *tp, struct tg3_napi *tnapi,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 8a9d28f81149a..c2ee80546d120 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -4913,10 +4913,15 @@ static int check_cong_type(struct ib_qp *ibqp,
+ 		cong_alg->wnd_mode_sel = WND_LIMIT;
+ 		break;
+ 	default:
+-		ibdev_err(&hr_dev->ib_dev,
+-			  "error type(%u) for congestion selection.\n",
+-			  hr_dev->caps.cong_type);
+-		return -EINVAL;
++		ibdev_warn(&hr_dev->ib_dev,
++			   "invalid type(%u) for congestion selection.\n",
++			   hr_dev->caps.cong_type);
++		hr_dev->caps.cong_type = CONG_TYPE_DCQCN;
++		cong_alg->alg_sel = CONG_DCQCN;
++		cong_alg->alg_sub_sel = UNSUPPORT_CONG_LEVEL;
++		cong_alg->dip_vld = DIP_INVALID;
++		cong_alg->wnd_mode_sel = WND_LIMIT;
++		break;
+ 	}
  
- 	segs = skb_gso_segment(skb, tp->dev->features &
- 				    ~(NETIF_F_TSO | NETIF_F_TSO6));
--	if (IS_ERR(segs) || !segs)
-+	if (IS_ERR(segs) || !segs) {
-+		tnapi->tx_dropped++;
- 		goto tg3_tso_bug_end;
-+	}
- 
- 	do {
- 		nskb = segs;
+ 	return 0;
 -- 
 2.42.0
 
