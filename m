@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-5725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B344380D620
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:31:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4568680D873
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:45:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D92B1F20B59
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:31:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1294B213FD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DBD6FC06;
-	Mon, 11 Dec 2023 18:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE92C5103A;
+	Mon, 11 Dec 2023 18:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WqzNsPqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plr1379r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04BBC2D0;
-	Mon, 11 Dec 2023 18:31:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 687E5C433C7;
-	Mon, 11 Dec 2023 18:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACDEA4437B;
+	Mon, 11 Dec 2023 18:45:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A98C433C7;
+	Mon, 11 Dec 2023 18:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319497;
-	bh=fpnn8h3ifoS/WF/y57WE410hbVoEwJoGwc5dHkEuTBg=;
+	s=korg; t=1702320352;
+	bh=+6ET2YV1w3nYSvqwKgV7upbn4TOcaiwgjtfimT4OLkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WqzNsPqOtYqegJFMAWSmOBxQzpUmDSXkZtTUEgNhL8qhQJhZIKGB6q3IRYOi7kpDP
-	 ALjXNtcp83XTqa+KEMxB+2NOphoJmAt2Rfz3PcKVkwuS5aLIEN8Z9iYHBkCLOK22/r
-	 6uYPc0faXK176Ik2KyzxVN12kNCXLQPmivQyQITA=
+	b=plr1379rv+8a7hRtNxW5d44lQAqFcckPHqGODAfPvN9wNNZPvqsW98hsSG6MRgVMd
+	 4cZF5eZx6QDYLwxpPJhSkRvqRQyjcVJpBojV8diVPP2D4ivRO8PPIencGbJJsD5Bge
+	 vTurSZVQAnYgEseGvqH9Cc6LgkfgptgzKn3TWrnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Vadim Pasternak <vadimp@nvidia.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/244] riscv: fix misaligned access handling of C.SWSP and C.SDSP
+Subject: [PATCH 6.1 030/194] platform/mellanox: Add null pointer checks for devm_kasprintf()
 Date: Mon, 11 Dec 2023 19:20:20 +0100
-Message-ID: <20231211182051.509825039@linuxfoundation.org>
+Message-ID: <20231211182037.934593775@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,55 +55,91 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 22e0eb04837a63af111fae35a92f7577676b9bc8 ]
+[ Upstream commit 2c7c857f5fed997be93047d2de853d7f10c8defe ]
 
-This is a backport of a fix that was done in OpenSBI: ec0559eb315b
-("lib: sbi_misaligned_ldst: Fix handling of C.SWSP and C.SDSP").
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Unlike C.LWSP/C.LDSP, these encodings can be used with the zero
-register, so checking that the rs2 field is non-zero is unnecessary.
+Compile-tested only.
 
-Additionally, the previous check was incorrect since it was checking
-the immediate field of the instruction instead of the rs2 field.
-
-Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Link: https://lore.kernel.org/r/20231103090223.702340-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 1a218d312e65 ("platform/mellanox: mlxbf-pmc: Add Mellanox BlueField PMC driver")
+Suggested-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Suggested-by: Vadim Pasternak <vadimp@nvidia.com>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Reviewed-by: Vadim Pasternak <vadimp@nvidia.com>
+Link: https://lore.kernel.org/r/20231201055447.2356001-1-chentao@kylinos.cn
+[ij: split the change into two]
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/platform/mellanox/mlxbf-pmc.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 378f5b1514435..5348d842c7453 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -342,16 +342,14 @@ int handle_misaligned_store(struct pt_regs *regs)
- 	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
- 		len = 8;
- 		val.data_ulong = GET_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP &&
--		   ((insn >> SH_RD) & 0x1f)) {
-+	} else if ((insn & INSN_MASK_C_SDSP) == INSN_MATCH_C_SDSP) {
- 		len = 8;
- 		val.data_ulong = GET_RS2C(insn, regs);
- #endif
- 	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
- 		len = 4;
- 		val.data_ulong = GET_RS2S(insn, regs);
--	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP &&
--		   ((insn >> SH_RD) & 0x1f)) {
-+	} else if ((insn & INSN_MASK_C_SWSP) == INSN_MATCH_C_SWSP) {
- 		len = 4;
- 		val.data_ulong = GET_RS2C(insn, regs);
- 	} else {
+diff --git a/drivers/platform/mellanox/mlxbf-pmc.c b/drivers/platform/mellanox/mlxbf-pmc.c
+index 2d4bbe99959ef..925bfc4aef8ce 100644
+--- a/drivers/platform/mellanox/mlxbf-pmc.c
++++ b/drivers/platform/mellanox/mlxbf-pmc.c
+@@ -1202,6 +1202,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 	attr->dev_attr.show = mlxbf_pmc_event_list_show;
+ 	attr->nr = blk_num;
+ 	attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL, "event_list");
++	if (!attr->dev_attr.attr.name)
++		return -ENOMEM;
+ 	pmc->block[blk_num].block_attr[i] = &attr->dev_attr.attr;
+ 	attr = NULL;
+ 
+@@ -1214,6 +1216,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  "enable");
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[++i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 	}
+@@ -1240,6 +1244,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  "counter%d", j);
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[++i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 
+@@ -1251,6 +1257,8 @@ static int mlxbf_pmc_init_perftype_counter(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  "event%d", j);
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[++i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 	}
+@@ -1283,6 +1291,8 @@ static int mlxbf_pmc_init_perftype_reg(struct device *dev, int blk_num)
+ 		attr->nr = blk_num;
+ 		attr->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
+ 							  events[j].evt_name);
++		if (!attr->dev_attr.attr.name)
++			return -ENOMEM;
+ 		pmc->block[blk_num].block_attr[i] = &attr->dev_attr.attr;
+ 		attr = NULL;
+ 		i++;
+@@ -1311,6 +1321,8 @@ static int mlxbf_pmc_create_groups(struct device *dev, int blk_num)
+ 	pmc->block[blk_num].block_attr_grp.attrs = pmc->block[blk_num].block_attr;
+ 	pmc->block[blk_num].block_attr_grp.name = devm_kasprintf(
+ 		dev, GFP_KERNEL, pmc->block_name[blk_num]);
++	if (!pmc->block[blk_num].block_attr_grp.name)
++		return -ENOMEM;
+ 	pmc->groups[blk_num] = &pmc->block[blk_num].block_attr_grp;
+ 
+ 	return 0;
 -- 
 2.42.0
 
