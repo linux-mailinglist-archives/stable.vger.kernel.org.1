@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-5994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2572880D837
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:43:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532D880D939
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:51:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4DE22810DE
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:43:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 841D31C216B2
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740D85102F;
-	Mon, 11 Dec 2023 18:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE4F51C46;
+	Mon, 11 Dec 2023 18:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIAItDeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAPDy6z8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F4EFC06;
-	Mon, 11 Dec 2023 18:43:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEFC7C433C7;
-	Mon, 11 Dec 2023 18:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE951C2D;
+	Mon, 11 Dec 2023 18:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08965C433C7;
+	Mon, 11 Dec 2023 18:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320226;
-	bh=kYXl83PZqYb7vcKeFva8qfIn1SB+bwx/MRW6dmYDVEc=;
+	s=korg; t=1702320716;
+	bh=x95pNcdoAJovTlHvGl2r3RAd+M1YWGOGLaETl7gn8xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uIAItDebQ9BLXKS+TJbXqolEOGVsDvgZD8S5u5fpJ4TDuDyOw58+yeyd1e7FUJVPl
-	 D8z507MODMeVsdjSDNaMyPtgeyIodB1+GU85/J/8YIZFf6WzrTfZ4HpQJH3ZZBo/fS
-	 CxQxBKUu7Fkz0tJdNZGXlUQg4k1MnCF6Id7h1GSQ=
+	b=eAPDy6z82WAN2inF4N4Qa+HYHnnhh6+0FnzKMZ0WOjA30nZtnrUKRmvO66DAvztcH
+	 5OOQmRxeKNlt2zrUKkSCqQeV4NJxDtHx95lNpO2YKrnANHF+ER5WA/OCCBke/GhosV
+	 NhOpyzLHV7VmGOKzthmPjR+HB+IZM+DJeWJLVyEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RD Babiera <rdbabiera@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 50/67] usb: typec: class: fix typec_altmode_put_partner to put plugs
+	Candice Li <candice.li@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 164/194] drm/amdgpu: Add I2C EEPROM support on smu v13_0_6
 Date: Mon, 11 Dec 2023 19:22:34 +0100
-Message-ID: <20231211182017.141847875@linuxfoundation.org>
+Message-ID: <20231211182043.966534781@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182015.049134368@linuxfoundation.org>
-References: <20231211182015.049134368@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,56 +54,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Candice Li <candice.li@amd.com>
 
-commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e upstream.
+[ Upstream commit b81fde0dfe402e864ef1ac506eba756c89f1ad32 ]
 
-When typec_altmode_put_partner is called by a plug altmode upon release,
-the port altmode the plug belongs to will not remove its reference to the
-plug. The check to see if the altmode being released evaluates against the
-released altmode's partner instead of the calling altmode itself, so change
-adev in typec_altmode_put_partner to properly refer to the altmode being
-released.
+Support I2C EEPROM on smu v13_0_6.
 
-typec_altmode_set_partner is not run for port altmodes, so also add a check
-in typec_altmode_release to prevent typec_altmode_put_partner() calls on
-port altmode release.
+v2: Move IP_VERSION(13, 0, 6) ahead of IP_VERSION(13, 0, 10).
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231129192349.1773623-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Candice Li <candice.li@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: e0409021e34a ("drm/amdgpu: Update EEPROM I2C address for smu v13_0_0")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -193,7 +193,7 @@ static void typec_altmode_put_partner(st
- 	if (!partner)
- 		return;
- 
--	adev = &partner->adev;
-+	adev = &altmode->adev;
- 
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -465,7 +465,8 @@ static void typec_altmode_release(struct
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	typec_altmode_put_partner(alt);
-+	if (!is_typec_port(dev->parent))
-+		typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+index c2827edb9d3d9..47406456e2707 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+@@ -112,6 +112,7 @@ static bool __is_ras_eeprom_supported(struct amdgpu_device *adev)
+ 	case IP_VERSION(11, 0, 7): /* Sienna cichlid */
+ 	case IP_VERSION(13, 0, 0):
+ 	case IP_VERSION(13, 0, 2): /* Aldebaran */
++	case IP_VERSION(13, 0, 6):
+ 	case IP_VERSION(13, 0, 10):
+ 		return true;
+ 	default:
+@@ -166,6 +167,7 @@ static bool __get_eeprom_i2c_addr(struct amdgpu_device *adev,
+ 			control->i2c_address = EEPROM_I2C_MADDR_0;
+ 		return true;
+ 	case IP_VERSION(13, 0, 0):
++	case IP_VERSION(13, 0, 6):
+ 	case IP_VERSION(13, 0, 10):
+ 		control->i2c_address = EEPROM_I2C_MADDR_4;
+ 		return true;
+-- 
+2.42.0
+
 
 
 
