@@ -1,165 +1,274 @@
-Return-Path: <stable+bounces-5233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B9080BFB7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 04:10:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3938780BFDB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 04:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F7A1F20F8D
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 03:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1CCD1F20F16
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 03:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F90815AF8;
-	Mon, 11 Dec 2023 03:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0282215E8B;
+	Mon, 11 Dec 2023 03:24:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="mTiHkFOr"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92443E8;
-	Sun, 10 Dec 2023 19:10:27 -0800 (PST)
-X-UUID: 2f269539609442659892205517491fd9-20231211
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.33,REQID:62c8136e-073c-4878-b7dd-767f5e0d5c50,IP:25,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:10
-X-CID-INFO: VERSION:1.1.33,REQID:62c8136e-073c-4878-b7dd-767f5e0d5c50,IP:25,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:-15,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-META: VersionHash:364b77b,CLOUDID:8d3a83fd-4a48-46e2-b946-12f04f20af8c,B
-	ulkID:231208215233DWQSX4TV,BulkQuantity:2,Recheck:0,SF:38|24|17|19|44|64|6
-	6|102,TC:nil,Content:0,EDM:-3,IP:-2,URL:0,File:nil,Bulk:40,QS:nil,BEC:nil,
-	COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_FSI,TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
-X-UUID: 2f269539609442659892205517491fd9-20231211
-Received: from node4.com.cn [(39.156.73.12)] by mailgw
-	(envelope-from <xiongxin@kylinos.cn>)
-	(Generic MTA)
-	with ESMTP id 698891748; Mon, 11 Dec 2023 11:10:13 +0800
-Received: from node4.com.cn (localhost [127.0.0.1])
-	by node4.com.cn (NSMail) with SMTP id 2795116001CC8;
-	Mon, 11 Dec 2023 11:10:13 +0800 (CST)
-X-ns-mid: postfix-65767D94-604234385
-Received: from [172.20.116.203] (unknown [172.20.116.203])
-	by node4.com.cn (NSMail) with ESMTPA id CCE7C16001CC8;
-	Mon, 11 Dec 2023 03:10:11 +0000 (UTC)
-Message-ID: <e125491c-4cdb-4870-924a-baeb7453bf78@kylinos.cn>
-Date: Mon, 11 Dec 2023 11:10:11 +0800
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 705DADB
+	for <stable@vger.kernel.org>; Sun, 10 Dec 2023 19:24:29 -0800 (PST)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1d0bb7ff86cso36957025ad.1
+        for <stable@vger.kernel.org>; Sun, 10 Dec 2023 19:24:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1702265068; x=1702869868; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/tzgyxZZ3F1MrQK648sV+RBHv+iatj7u0Jvy/cRG+iw=;
+        b=mTiHkFOrw0ok5Dweta3Crqgb0FyzC3jSrXI+EdQ3Bc4dsDlbgv1J2LZp9vxT6Kt3a0
+         gD5wNCdZEYI5Th9dJojnM4tcH5wDeCMsMwwDGSNO4QUGuR7tSt7ut4DSrc7g4hzwKQqc
+         rsyQVExwbfxMz1cht50zL9sXVQPzNvMw/lX9VIt8LIB3AR55MbXGFOKofz1R2LyZdC9f
+         v0OK/EKF3uLBGCc4qXIHYCuCeDhCsRUtO5qWYkIxp58Yi8UHxp3bqsI3D+FEJ3hghQZ3
+         LDwBWX+iGnWaXl5RayIqv/9Z7K5cr+UbgUGrcppfp4LoTVewlrIG4OYEQQUkhp1Gfn3M
+         0xUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702265068; x=1702869868;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/tzgyxZZ3F1MrQK648sV+RBHv+iatj7u0Jvy/cRG+iw=;
+        b=Qw4ra6+h3pOb5uc3ikRfpCuCghbeavTEwI0NfCDnz8bMM+r4SFejHtX8zMg5xIgaUM
+         dDI/88Jd3sIXHV0T49yeG1VTd+uIadP/4ncT3cAbY1QFzyzY6MYDOUD8L+rDwT56PAwx
+         IDKyLRJuE5Iv3P3ZRMXl+iYDsal8q1jICbPqNeXipzeNCRoYury5QrRHT4FGflxdSp1u
+         7gdkw9v6hwyCLSlTGwbrxYJOSfgh9evZ9A7NUr8GHIloP6cH6ghVciywV8DPyBKsmAM0
+         aA4G7cDYkyfYqSouqSd461zBXajc6lidjXv3PyQO1GZAgz8qoQM2x1qs5OPVdAS1Rf9B
+         culg==
+X-Gm-Message-State: AOJu0YwiDQYm7SizgSubkwYEiivGY7j5Pai/GXBHgDytKrQ68KIcG8Ql
+	sSsHyY0UU3ItCKXzejlQCB5sNX6g5Ec0gqEW9WpR0Q==
+X-Google-Smtp-Source: AGHT+IE5jTa2ZlzjyJ8TIQTiD4v/DWkulySfoC43U39eSMuXfjV3pDqhVQGhob029FEzh71fi/xi9g==
+X-Received: by 2002:a17:902:d386:b0:1d0:9c9d:dcdf with SMTP id e6-20020a170902d38600b001d09c9ddcdfmr3816431pld.39.1702265068395;
+        Sun, 10 Dec 2023 19:24:28 -0800 (PST)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id l16-20020a170902f69000b001cfba46e407sm5427162plg.129.2023.12.10.19.24.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Dec 2023 19:24:27 -0800 (PST)
+Message-ID: <657680eb.170a0220.f765.fc77@mx.google.com>
+Date: Sun, 10 Dec 2023 19:24:27 -0800 (PST)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] irq: Resolve that mask_irq/unmask_irq may not be called
- in pairs
-To: Thomas Gleixner <tglx@linutronix.de>, jikos@kernel.org,
- benjamin.tissoires@redhat.com
-Cc: linux-input@vger.kernel.org, stable@vger.kernel.org,
- Riwen Lu <luriwen@kylinos.cn>
-References: <20231207014003.12919-1-xiongxin@kylinos.cn> <87ttosssxd.ffs@tglx>
-Content-Language: en-US
-From: xiongxin <xiongxin@kylinos.cn>
-In-Reply-To: <87ttosssxd.ffs@tglx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: queue/4.14
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.332-16-g7ab27a94a8578
+Subject: stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.332-16-g7ab27a94a8578)
+To: stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+ kernelci-results@groups.io
+From: "kernelci.org bot" <bot@kernelci.org>
 
-=E5=9C=A8 2023/12/8 21:52, Thomas Gleixner =E5=86=99=E9=81=93:
-> On Thu, Dec 07 2023 at 09:40, xiongxin@kylinos.cn wrote:
->> When an interrupt controller uses a function such as handle_level_irq(=
-)
->> as an interrupt handler and the controller implements the irq_disable(=
-)
->> callback, the following scenario will appear in the i2c-hid driver in
->> the sleep scenario:
->>
->> in the sleep flow, while the user is still triggering the i2c-hid
->> interrupt, we get the following function call:
->>
->>    handle_level_irq()
->>      -> mask_ack_irq()
->>        -> mask_irq()
->> 				i2c_hid_core_suspend()
->> 				  -> disable_irq()
->> 				    -> __irq_disable()
->> 				      -> irq_state_set_disabled()
->> 				      -> irq_state_set_masked()
->>
->>    irq_thread_fn()
->>      -> irq_finalize_oneshot()
->>        -> if (!desc->threads_oneshot && !irqd_irq_disabled() &&
->> 	     irqd_irq_masked())
->>        	 	unmask_threaded_irq()
->> 		  -> unmask_irq()
->>
->> That is, when __irq_disable() is called between mask_irq() and
->> irq_finalize_oneshot(), the code in irq_finalize_oneshot() will cause
->> the !irqd_irq_disabled() fails to enter the unmask_irq() branch, which
->> causes mask_irq/unmask_irq to be called unpaired and the i2c-hid
->> interrupt to be masked.
->>
->> Since mask_irq/unmask_irq and irq_disabled() belong to two different
->> hardware registers or policies, the !irqd_irq_disabled() assertion may
->> not be used to determine whether unmask_irq() needs to be called.
->=20
-> No. That's fundamentally wrong.
->=20
-> Disabled interrupts are disabled and can only be reenabled by the
-> corresponding enable call. The existing code is entirely correct.
->=20
-> What you are trying to do is unmasking a disabled interrupt, which
-> results in inconsistent state.
->=20
-> Which interrupt chip is involved here?
+stable-rc/queue/4.14 build: 16 builds: 0 failed, 16 passed, 21 warnings (v4=
+.14.332-16-g7ab27a94a8578)
 
-i2c hid driver use gpio interrupt controller like=20
-drivers/gpio/gpio-dwapb.c, The gpio interrupt controller code implements=20
-handle_level_irq() and irq_disabled().
->=20
-> Thanks,
->=20
->          tglx
->=20
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/queue%2F4.1=
+4/kernel/v4.14.332-16-g7ab27a94a8578/
 
-According to my code tracking and analysis:
+Tree: stable-rc
+Branch: queue/4.14
+Git Describe: v4.14.332-16-g7ab27a94a8578
+Git Commit: 7ab27a94a8578ca2924a54500024c455c253a88a
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-Normally, when using the i2c hid device, the gpio interrupt controller's=20
-mask_irq() and unmask_irq() are called in pairs.For example, the process=20
-is as follows:
+Warnings Detected:
 
-mask_irq();
+arc:
 
-if (!irqd_irq_disabled() && irqd_irq_masked())
-	unmask_irq();
+arm64:
 
-irq_state_set_disabled();
-irq_state_set_masked();
+arm:
 
-In this process, unmask_irq() will be called, and the following=20
-mask_irq()/unmask_irq() will return directly.
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-board (gcc-10): 3 warnings
 
 
-But when doing a sleep process, such as suspend to RAM,=20
-i2c_hid_core_suspend() of the i2c hid driver is called, which implements=20
-the disable_irq() function, which finally calls __irq_disable(). Because=20
-the desc parameter is set to the __irq_disabled() function without a=20
-lock (desk->lock), the __irq_disabled() function can be called during=20
-the execution of the handle_level_irq() function, which causes the=20
-following:
+Warnings summary:
 
-mask_irq();
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
 
-		irq_state_set_disabled();
-		irq_state_set_masked();
+Section mismatches summary:
 
-if (!irqd_irq_disabled() && irqd_irq_masked())
-	unmask_irq();
+    3    WARNING: modpost: Found 1 section mismatch(es).
 
-In this scenario, unmask_irq() will not be called, and then gpio=20
-corresponding interrupt pin will be masked. Finally, in the suspend()=20
-process driven by gpio interrupt controller, the interrupt mask register=20
-will be saved, and then masked will continue to be read when resuming ()=20
-process. After the kernel resumed, the i2c hid gpio interrupt was masked=20
-and the i2c hid device was unavailable.
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-board (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 war=
+nings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
 
