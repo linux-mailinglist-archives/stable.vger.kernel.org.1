@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97FF80D895
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:47:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F7080D688
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:34:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63BD81F219E3
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:47:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B6201F2111C
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3158B51C2A;
-	Mon, 11 Dec 2023 18:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EF775103A;
+	Mon, 11 Dec 2023 18:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJAL/C3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAgEi0LT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1965C8C8;
-	Mon, 11 Dec 2023 18:47:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D0AC433C7;
-	Mon, 11 Dec 2023 18:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4D3C8C8;
+	Mon, 11 Dec 2023 18:32:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C62C433C9;
+	Mon, 11 Dec 2023 18:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320422;
-	bh=aMoNcS5UhYua3mkC447VUfTsjr7uyB9iMOG11m7GqLY=;
+	s=korg; t=1702319566;
+	bh=IcV79FFZhaCReYOxcdLsEcHNYBqgi5CWhmxGns/OiuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJAL/C3QFx6uNr91h2qRy40Bm5LXKmf91leFGPE8JojlvMBzFWSUXoSerZFS6uts7
-	 UAeeFI8/bgOnT6pf9BcMIDTSFPjXLMuDiEGh8R2s3OAvRWfIBcfRanvuntSgMet849
-	 TKQ8K3mUKg6JMeeUKyO8NIpVcZ8YaGnfkiZM08lY=
+	b=zAgEi0LTcoFP90oesXYtk6fpmswyizcw8KLo+BCdLB+ttGpm+sOJAQanEzpzPwvNM
+	 +qlwiUVSB1RD6UzVYy3w/+Lxe4Wt3sL4lpT/svENuda90XJmrZdP2sk1Hq5UyLHpd7
+	 zwuNcHRS3jhQrtHNDEf4ITBIIw/d7aWfPBCs096M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyuan Mo <hdthky0@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/194] netfilter: nf_tables: validate family when identifying table via handle
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 153/244] tracing: Always update snapshot buffer size
 Date: Mon, 11 Dec 2023 19:20:46 +0100
-Message-ID: <20231211182039.046694656@linuxfoundation.org>
+Message-ID: <20231211182052.686830181@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
+References: <20231211182045.784881756@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,57 +55,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit f6e1532a2697b81da00bfb184e99d15e01e9d98c ]
+commit 7be76461f302ec05cbd62b90b2a05c64299ca01f upstream.
 
-Validate table family when looking up for it via NFTA_TABLE_HANDLE.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). The update of the ring buffer
+size would check if the instance was the top level and if so, it would
+also update the snapshot buffer as it needs to be the same as the main
+buffer.
 
-Fixes: 3ecbfd65f50e ("netfilter: nf_tables: allocate handle and delete objects via handle")
-Reported-by: Xingyuan Mo <hdthky0@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now that lower level instances also has a snapshot buffer, they too need
+to update their snapshot buffer sizes when the main buffer is changed,
+otherwise the following can be triggered:
+
+ # cd /sys/kernel/tracing
+ # echo 1500 > buffer_size_kb
+ # mkdir instances/foo
+ # echo irqsoff > instances/foo/current_tracer
+ # echo 1000 > instances/foo/buffer_size_kb
+
+Produces:
+
+ WARNING: CPU: 2 PID: 856 at kernel/trace/trace.c:1938 update_max_tr_single.part.0+0x27d/0x320
+
+Which is:
+
+	ret = ring_buffer_swap_cpu(tr->max_buffer.buffer, tr->array_buffer.buffer, cpu);
+
+	if (ret == -EBUSY) {
+		[..]
+	}
+
+	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);  <== here
+
+That's because ring_buffer_swap_cpu() has:
+
+	int ret = -EINVAL;
+
+	[..]
+
+	/* At least make sure the two buffers are somewhat the same */
+	if (cpu_buffer_a->nr_pages != cpu_buffer_b->nr_pages)
+		goto out;
+
+	[..]
+ out:
+	return ret;
+ }
+
+Instead, update all instances' snapshot buffer sizes when their main
+buffer size is updated.
+
+Link: https://lkml.kernel.org/r/20231205220010.454662151@goodmis.org
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/trace/trace.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 421211eba838b..05fa5141af516 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -805,7 +805,7 @@ static struct nft_table *nft_table_lookup(const struct net *net,
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6399,8 +6399,7 @@ static int __tracing_resize_ring_buffer(
+ 		return ret;
  
- static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
- 						   const struct nlattr *nla,
--						   u8 genmask, u32 nlpid)
-+						   int family, u8 genmask, u32 nlpid)
- {
- 	struct nftables_pernet *nft_net;
- 	struct nft_table *table;
-@@ -813,6 +813,7 @@ static struct nft_table *nft_table_lookup_byhandle(const struct net *net,
- 	nft_net = nft_pernet(net);
- 	list_for_each_entry(table, &nft_net->tables, list) {
- 		if (be64_to_cpu(nla_get_be64(nla)) == table->handle &&
-+		    table->family == family &&
- 		    nft_active_genmask(table, genmask)) {
- 			if (nft_table_has_owner(table) &&
- 			    nlpid && table->nlpid != nlpid)
-@@ -1537,7 +1538,7 @@ static int nf_tables_deltable(struct sk_buff *skb, const struct nfnl_info *info,
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	if (!(tr->flags & TRACE_ARRAY_FL_GLOBAL) ||
+-	    !tr->current_trace->use_max_tr)
++	if (!tr->current_trace->use_max_tr)
+ 		goto out;
  
- 	if (nla[NFTA_TABLE_HANDLE]) {
- 		attr = nla[NFTA_TABLE_HANDLE];
--		table = nft_table_lookup_byhandle(net, attr, genmask,
-+		table = nft_table_lookup_byhandle(net, attr, family, genmask,
- 						  NETLINK_CB(skb).portid);
- 	} else {
- 		attr = nla[NFTA_TABLE_NAME];
--- 
-2.42.0
-
+ 	ret = ring_buffer_resize(tr->max_buffer.buffer, size, cpu);
 
 
 
