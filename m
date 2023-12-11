@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-6116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AE880D8D8
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 213BF80D9B6
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D5B21F21B50
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:49:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF84F1F218D3
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7408B51C2C;
-	Mon, 11 Dec 2023 18:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4CA51C50;
+	Mon, 11 Dec 2023 18:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fmy2nqjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvd0vzMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7135102A;
-	Mon, 11 Dec 2023 18:49:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A95C433C8;
-	Mon, 11 Dec 2023 18:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7AFB51C44;
+	Mon, 11 Dec 2023 18:56:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3909DC433C8;
+	Mon, 11 Dec 2023 18:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320556;
-	bh=7uw0Z/Dw1y86q6ECovCLba/NuATNlXsPy8r5oN8Kteg=;
+	s=korg; t=1702320975;
+	bh=uImUUe/Mw89v78Q3ahIW5cr+knatHoDamtvh4xtrxzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmy2nqjvyT59WT0qjNzmc9QPFxUqb3E2L7uXIHYWQzFTFIlYfrqK6x8dWArXHzc3c
-	 wFdRzr1UtFXIBQPMfBEaWk2pPfJZP5n4B4GAr+LYjhesz9+PtiKcG86rCMv6jZ0ui2
-	 8gjOiuyezbz5q0NYic9gYmIFLzvU6FmM3kaU7Ol8=
+	b=lvd0vzMPnEzLMUJWUmqAdzBjno40DEyivO7cEtZrE/ju5VHI0ryLU03oJDEssW8BT
+	 nn/F2YtyS2a71R6JwbDuRe0SainvajywhfiiQ4WbFuK+NVj4Rj9CnBLCyaxeJi9l37
+	 LTyPBDrHdKhWBjwIEiEdxjKmJnX9nf4Y0k8CSOrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 104/194] io_uring: fix mutex_unlock with unreferenced ctx
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 035/141] ionic: Fix dim work handling in split interrupt mode
 Date: Mon, 11 Dec 2023 19:21:34 +0100
-Message-ID: <20231211182041.083044695@linuxfoundation.org>
+Message-ID: <20231211182028.057552715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
-References: <20231211182036.606660304@linuxfoundation.org>
+In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
+References: <20231211182026.503492284@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +55,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-commit f7b32e785042d2357c5abc23ca6db1b92c91a070 upstream.
+[ Upstream commit 4115ba677c35f694b62298e55f0e04ce84eed469 ]
 
-Callers of mutex_unlock() have to make sure that the mutex stays alive
-for the whole duration of the function call. For io_uring that means
-that the following pattern is not valid unless we ensure that the
-context outlives the mutex_unlock() call.
+Currently ionic_dim_work() is incorrect when in
+split interrupt mode. This is because the interrupt
+rate is only being changed for the Rx side even for
+dim running on Tx. Fix this by using the qcq from
+the container_of macro. Also, introduce some local
+variables for a bit of cleanup.
 
-mutex_lock(&ctx->uring_lock);
-req_put(req); // typically via io_req_task_submit()
-mutex_unlock(&ctx->uring_lock);
-
-Most contexts are fine: io-wq pins requests, syscalls hold the file,
-task works are taking ctx references and so on. However, the task work
-fallback path doesn't follow the rule.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 04fc6c802d ("io_uring: save ctx put/get for task_work submit")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/io-uring/CAG48ez3xSoYb+45f1RLtktROJrpiDQ1otNvdR+YLQf7m+Krj5Q@mail.gmail.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a6ff85e0a2d9 ("ionic: remove intr coalesce update from napi")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231204192234.21017-3-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_lif.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1377,6 +1377,7 @@ static __cold void io_iopoll_try_reap_ev
- 	if (!(ctx->flags & IORING_SETUP_IOPOLL))
- 		return;
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+index 2cc126d378353..63181866809fd 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+@@ -44,24 +44,24 @@ static void ionic_lif_queue_identify(struct ionic_lif *lif);
+ static void ionic_dim_work(struct work_struct *work)
+ {
+ 	struct dim *dim = container_of(work, struct dim, work);
++	struct ionic_intr_info *intr;
+ 	struct dim_cq_moder cur_moder;
+ 	struct ionic_qcq *qcq;
++	struct ionic_lif *lif;
+ 	u32 new_coal;
  
-+	percpu_ref_get(&ctx->refs);
- 	mutex_lock(&ctx->uring_lock);
- 	while (!wq_list_empty(&ctx->iopoll_list)) {
- 		/* let it sleep and repeat later if can't complete a request */
-@@ -1394,6 +1395,7 @@ static __cold void io_iopoll_try_reap_ev
- 		}
+ 	cur_moder = net_dim_get_rx_moderation(dim->mode, dim->profile_ix);
+ 	qcq = container_of(dim, struct ionic_qcq, dim);
+-	new_coal = ionic_coal_usec_to_hw(qcq->q.lif->ionic, cur_moder.usec);
++	lif = qcq->q.lif;
++	new_coal = ionic_coal_usec_to_hw(lif->ionic, cur_moder.usec);
+ 	new_coal = new_coal ? new_coal : 1;
+ 
+-	if (qcq->intr.dim_coal_hw != new_coal) {
+-		unsigned int qi = qcq->cq.bound_q->index;
+-		struct ionic_lif *lif = qcq->q.lif;
+-
+-		qcq->intr.dim_coal_hw = new_coal;
++	intr = &qcq->intr;
++	if (intr->dim_coal_hw != new_coal) {
++		intr->dim_coal_hw = new_coal;
+ 
+ 		ionic_intr_coal_init(lif->ionic->idev.intr_ctrl,
+-				     lif->rxqcqs[qi]->intr.index,
+-				     qcq->intr.dim_coal_hw);
++				     intr->index, intr->dim_coal_hw);
  	}
- 	mutex_unlock(&ctx->uring_lock);
-+	percpu_ref_put(&ctx->refs);
- }
  
- static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
-@@ -2800,12 +2802,7 @@ static __cold void io_ring_exit_work(str
- 	init_completion(&exit.completion);
- 	init_task_work(&exit.task_work, io_tctx_exit_cb);
- 	exit.ctx = ctx;
--	/*
--	 * Some may use context even when all refs and requests have been put,
--	 * and they are free to do so while still holding uring_lock or
--	 * completion_lock, see io_req_task_submit(). Apart from other work,
--	 * this lock/unlock section also waits them to finish.
--	 */
-+
- 	mutex_lock(&ctx->uring_lock);
- 	while (!list_empty(&ctx->tctx_list)) {
- 		WARN_ON_ONCE(time_after(jiffies, timeout));
+ 	dim->state = DIM_START_MEASURE;
+-- 
+2.42.0
+
 
 
 
