@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-5573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3B980D572
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:24:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2338180D7BD
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D5A91C213FA
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:24:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3660281DE9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4A25101D;
-	Mon, 11 Dec 2023 18:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA6B524D5;
+	Mon, 11 Dec 2023 18:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njUtISy/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3pVGmR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2C84F212;
-	Mon, 11 Dec 2023 18:24:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01A0C433C8;
-	Mon, 11 Dec 2023 18:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 771BC20DDE;
+	Mon, 11 Dec 2023 18:39:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0088C433C9;
+	Mon, 11 Dec 2023 18:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319083;
-	bh=2lYJ72Dc9j6OBEQ5HWSAKMic0j0yRDcgO/a41lP/b3g=;
+	s=korg; t=1702319984;
+	bh=C4YWKODLZ4TF/f58BzT0bPjv9dGodLDbDn7PYm0nwyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njUtISy/PZ4v3Z/W5YQJX6hutTAx5i2qlQAmW90nb4qyIv1dm1vsRgZfkh+Mj6oAD
-	 gStRQFT1fMhIm8zCy1GLckxbF1mZhO7S+vR1l3UI5C/K8+ChY4CQpfch3zx302luSO
-	 nitG1jNjAv4DHUU9lPgkyTae1iOXHplXUEmLo1zk=
+	b=Y3pVGmR4z8KDJW7wLexU065JtkGjQ+3xlbMJdyUTYCToldshNbdB2pV7mbptVqSTw
+	 Zr0o5dyl3yMVrTkm/YYr7h3rkTTreL//fULlDWk9UFQBwNYA/PSuDpyDibmR7KU1II
+	 9Zu5bqVVUlmiaJJIkk39rrV4Go+g2WZOIHqSb5N4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	urbinek@gmail.com,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Suman Ghosh <sumang@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 24/55] hwmon: (acpi_power_meter) Fix 4.29 MW bug
+Subject: [PATCH 5.10 31/97] ipv4: ip_gre: Avoid skb_pull() failure in ipgre_xmit()
 Date: Mon, 11 Dec 2023 19:21:34 +0100
-Message-ID: <20231211182013.095155575@linuxfoundation.org>
+Message-ID: <20231211182021.100322203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182012.263036284@linuxfoundation.org>
-References: <20231211182012.263036284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +55,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 1fefca6c57fb928d2131ff365270cbf863d89c88 ]
+[ Upstream commit 80d875cfc9d3711a029f234ef7d680db79e8fa4b ]
 
-The ACPI specification says:
+In ipgre_xmit(), skb_pull() may fail even if pskb_inet_may_pull() returns
+true. For example, applications can use PF_PACKET to create a malformed
+packet with no IP header. This type of packet causes a problem such as
+uninit-value access.
 
-"If an error occurs while obtaining the meter reading or if the value
-is not available then an Integer with all bits set is returned"
+This patch ensures that skb_pull() can pull the required size by checking
+the skb with pskb_network_may_pull() before skb_pull().
 
-Since the "integer" is 32 bits in case of the ACPI power meter,
-userspace will get a power reading of 2^32 * 1000 miliwatts (~4.29 MW)
-in case of such an error. This was discovered due to a lm_sensors
-bugreport (https://github.com/lm-sensors/lm-sensors/issues/460).
-Fix this by returning -ENODATA instead.
-
-Tested-by: <urbinek@gmail.com>
-Fixes: de584afa5e18 ("hwmon driver for ACPI 4.0 power meters")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231124182747.13956-1-W_Armin@gmx.de
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: c54419321455 ("GRE: Refactor GRE tunneling code.")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Suman Ghosh <sumang@marvell.com>
+Link: https://lore.kernel.org/r/20231202161441.221135-1-syoshida@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/acpi_power_meter.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ipv4/ip_gre.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/acpi_power_meter.c b/drivers/hwmon/acpi_power_meter.c
-index 2f40da04a9445..b1e5ad59ec718 100644
---- a/drivers/hwmon/acpi_power_meter.c
-+++ b/drivers/hwmon/acpi_power_meter.c
-@@ -45,6 +45,7 @@ ACPI_MODULE_NAME(ACPI_POWER_METER_NAME);
- #define POWER_METER_CAN_NOTIFY	(1 << 3)
- #define POWER_METER_IS_BATTERY	(1 << 8)
- #define UNKNOWN_HYSTERESIS	0xFFFFFFFF
-+#define UNKNOWN_POWER		0xFFFFFFFF
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index 9d1a506571043..a6ad0fe1387c0 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -629,15 +629,18 @@ static netdev_tx_t ipgre_xmit(struct sk_buff *skb,
+ 	}
  
- #define METER_NOTIFY_CONFIG	0x80
- #define METER_NOTIFY_TRIP	0x81
-@@ -356,6 +357,9 @@ static ssize_t show_power(struct device *dev,
- 	update_meter(resource);
- 	mutex_unlock(&resource->lock);
- 
-+	if (resource->power == UNKNOWN_POWER)
-+		return -ENODATA;
+ 	if (dev->header_ops) {
++		int pull_len = tunnel->hlen + sizeof(struct iphdr);
 +
- 	return sprintf(buf, "%llu\n", resource->power * 1000);
- }
+ 		if (skb_cow_head(skb, 0))
+ 			goto free_skb;
  
+ 		tnl_params = (const struct iphdr *)skb->data;
+ 
+-		/* Pull skb since ip_tunnel_xmit() needs skb->data pointing
+-		 * to gre header.
+-		 */
+-		skb_pull(skb, tunnel->hlen + sizeof(struct iphdr));
++		if (!pskb_network_may_pull(skb, pull_len))
++			goto free_skb;
++
++		/* ip_tunnel_xmit() needs skb->data pointing to gre header. */
++		skb_pull(skb, pull_len);
+ 		skb_reset_mac_header(skb);
+ 
+ 		if (skb->ip_summed == CHECKSUM_PARTIAL &&
 -- 
 2.42.0
 
