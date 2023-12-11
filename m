@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-5849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DC6980D778
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:39:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B5080D7C9
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:41:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25E25B211B7
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F3DA1F21388
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0193153807;
-	Mon, 11 Dec 2023 18:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D8E537FA;
+	Mon, 11 Dec 2023 18:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6c1PihG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FULVTUXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D4551C53;
-	Mon, 11 Dec 2023 18:37:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22205C433C9;
-	Mon, 11 Dec 2023 18:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF5E52F88;
+	Mon, 11 Dec 2023 18:40:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DEEC433C9;
+	Mon, 11 Dec 2023 18:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319831;
-	bh=+z3Zflr3hkOuymA9vBtcu5skzPc/W7sIGYa+WceYtjY=;
+	s=korg; t=1702320014;
+	bh=SmSG7+P2fMBbQEfaQF41chgt4bHJSqPA21lc7huFEJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6c1PihGjopPqaOUDehb/NZvWtsDdOg3jKZz0AW4zEOscjpHlisNssJsEleL9DofN
-	 VwREelXxlAvFSH21zS7ijhuwXpNgyBNkuGvXtKd5ULywf0/Gg5wGWeYB/RqIlpz6Pt
-	 muCD7ErGf9X9KpnHdLxwQPESAy1v7ytuWbYtv1mQ=
+	b=FULVTUXvn55hVkRWnQMe4erVk5n911vpdC+vLoX8XZx2qxoITNCwAV5Y3VlPEX5/6
+	 awd653iyD4UWbr/tv7qRXQloigZ/Lt3/Fu3Mi7glXaSsKweN7WsXzdBbQ3aEzDRuW4
+	 nQYDBNzUdbHsHlIn9PfQh1XSqU/eHphR3bqseoRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/244] drm/amdgpu: Fix refclk reporting for SMU v13.0.6
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.10 72/97] usb: typec: class: fix typec_altmode_put_partner to put plugs
 Date: Mon, 11 Dec 2023 19:22:15 +0100
-Message-ID: <20231211182056.871611043@linuxfoundation.org>
+Message-ID: <20231211182022.879063891@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +52,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 6b7d211740da2c3a7656be8cbb36f32e6d9c6cbd ]
+commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e upstream.
 
-SMU v13.0.6 SOCs have 100MHz reference clock.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released evaluates against the
+released altmode's partner instead of the calling altmode itself, so change
+adev in typec_altmode_put_partner to properly refer to the altmode being
+released.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 6fce23a4d8c5 ("drm/amdgpu: Restrict extended wait to PSP v13.0.6")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+typec_altmode_set_partner is not run for port altmodes, so also add a check
+in typec_altmode_release to prevent typec_altmode_put_partner() calls on
+port altmode release.
+
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231129192349.1773623-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/typec/class.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index f5be40d7ba367..28094cd7d9c21 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -325,7 +325,8 @@ static u32 soc15_get_xclk(struct amdgpu_device *adev)
- 	u32 reference_clock = adev->clock.spll.reference_freq;
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -194,7 +194,7 @@ static void typec_altmode_put_partner(st
+ 	if (!partner)
+ 		return;
  
- 	if (adev->ip_versions[MP1_HWIP][0] == IP_VERSION(12, 0, 0) ||
--	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(12, 0, 1))
-+	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(12, 0, 1) ||
-+	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(13, 0, 6))
- 		return 10000;
- 	if (adev->ip_versions[MP1_HWIP][0] == IP_VERSION(10, 0, 0) ||
- 	    adev->ip_versions[MP1_HWIP][0] == IP_VERSION(10, 0, 1))
--- 
-2.42.0
-
+-	adev = &partner->adev;
++	adev = &altmode->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -424,7 +424,8 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+ 
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
