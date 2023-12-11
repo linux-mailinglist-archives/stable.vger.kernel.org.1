@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-5774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-6052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E779380D6DC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:35:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE2A780D880
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53CD2B213B1
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:35:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEF901C215F1
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335C152F98;
-	Mon, 11 Dec 2023 18:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D40151C2A;
+	Mon, 11 Dec 2023 18:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcY0XWHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bgkAxEqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D75FC06;
-	Mon, 11 Dec 2023 18:33:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6924FC433CB;
-	Mon, 11 Dec 2023 18:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17F0C8C8;
+	Mon, 11 Dec 2023 18:46:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47853C433CA;
+	Mon, 11 Dec 2023 18:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702319629;
-	bh=pNhvH8vJMgJulFZJZ67BbfdzSeXbNRzdv14WaYFt6LE=;
+	s=korg; t=1702320381;
+	bh=TGzXTfEICl/VoO7YSi5M/+zHWoYDYxCKb4aPeBAGL/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcY0XWHc76XSY8LEGA245aY7AG+uWRE40NOwbl/O6uG+hXnbLtW49TdmpZpn+nKxH
-	 bXgxW2U+cJsW+SDa0e3g6dP7HiDbyiBdJQ4rwcWlW2y58/gR2boP3sLwld1BYiErzC
-	 yjtWpPYJmO9sMSP/KxsWw80mZGFMR5yN7zmCWbvQ=
+	b=bgkAxEqQKzrtFavhsHFEVVF5O84tufq1V/0kB7uPjv/ik5NYX86V8FYmv6mPeUBXa
+	 hl20zN2WwF6W4X8XT4/Z0gJUaewT2Ck7vE4pwynFkHN7dkQD9wgqpibZGOZynl0DxH
+	 CiHMg925XZFXBEIUPtSbsjNLVIcq66r/mhKyNaGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 136/244] io_uring: fix mutex_unlock with unreferenced ctx
-Date: Mon, 11 Dec 2023 19:20:29 +0100
-Message-ID: <20231211182051.884896098@linuxfoundation.org>
+	David Gibson <david@gibson.dropbear.id.au>,
+	Stefano Brivio <sbrivio@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 040/194] tcp: fix mid stream window clamp.
+Date: Mon, 11 Dec 2023 19:20:30 +0100
+Message-ID: <20231211182038.374626631@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182045.784881756@linuxfoundation.org>
-References: <20231211182045.784881756@linuxfoundation.org>
+In-Reply-To: <20231211182036.606660304@linuxfoundation.org>
+References: <20231211182036.606660304@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +56,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-commit f7b32e785042d2357c5abc23ca6db1b92c91a070 upstream.
+[ Upstream commit 58d3aade20cdddbac6c9707ac0f3f5f8c1278b74 ]
 
-Callers of mutex_unlock() have to make sure that the mutex stays alive
-for the whole duration of the function call. For io_uring that means
-that the following pattern is not valid unless we ensure that the
-context outlives the mutex_unlock() call.
+After the blamed commit below, if the user-space application performs
+window clamping when tp->rcv_wnd is 0, the TCP socket will never be
+able to announce a non 0 receive window, even after completely emptying
+the receive buffer and re-setting the window clamp to higher values.
 
-mutex_lock(&ctx->uring_lock);
-req_put(req); // typically via io_req_task_submit()
-mutex_unlock(&ctx->uring_lock);
+Refactor tcp_set_window_clamp() to address the issue: when the user
+decreases the current clamp value, set rcv_ssthresh according to the
+same logic used at buffer initialization, but ensuring reserved mem
+provisioning.
 
-Most contexts are fine: io-wq pins requests, syscalls hold the file,
-task works are taking ctx references and so on. However, the task work
-fallback path doesn't follow the rule.
+To avoid code duplication factor-out the relevant bits from
+tcp_adjust_rcv_ssthresh() in a new helper and reuse it in the above
+scenario.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 04fc6c802d ("io_uring: save ctx put/get for task_work submit")
-Reported-by: Jann Horn <jannh@google.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/io-uring/CAG48ez3xSoYb+45f1RLtktROJrpiDQ1otNvdR+YLQf7m+Krj5Q@mail.gmail.com/
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When increasing the clamp value, give the rcv_ssthresh a chance to grow
+according to previously implemented heuristic.
+
+Fixes: 3aa7857fe1d7 ("tcp: enable mid stream window clamp")
+Reported-by: David Gibson <david@gibson.dropbear.id.au>
+Reported-by: Stefano Brivio <sbrivio@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/705dad54e6e6e9a010e571bf58e0b35a8ae70503.1701706073.git.pabeni@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ include/net/tcp.h |  9 +++++++--
+ net/ipv4/tcp.c    | 22 +++++++++++++++++++---
+ 2 files changed, 26 insertions(+), 5 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -269,6 +269,7 @@ static __cold void io_fallback_req_func(
- 	struct io_kiocb *req, *tmp;
- 	struct io_tw_state ts = { .locked = true, };
- 
-+	percpu_ref_get(&ctx->refs);
- 	mutex_lock(&ctx->uring_lock);
- 	llist_for_each_entry_safe(req, tmp, node, io_task_work.node)
- 		req->io_task_work.func(req, &ts);
-@@ -276,6 +277,7 @@ static __cold void io_fallback_req_func(
- 		return;
- 	io_submit_flush_completions(ctx);
- 	mutex_unlock(&ctx->uring_lock);
-+	percpu_ref_put(&ctx->refs);
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 19646fdec23dc..c3d56b337f358 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1460,17 +1460,22 @@ static inline int tcp_full_space(const struct sock *sk)
+ 	return tcp_win_from_space(sk, READ_ONCE(sk->sk_rcvbuf));
  }
  
- static int io_alloc_hash_table(struct io_hash_table *table, unsigned bits)
-@@ -3138,12 +3140,7 @@ static __cold void io_ring_exit_work(str
- 	init_completion(&exit.completion);
- 	init_task_work(&exit.task_work, io_tctx_exit_cb);
- 	exit.ctx = ctx;
--	/*
--	 * Some may use context even when all refs and requests have been put,
--	 * and they are free to do so while still holding uring_lock or
--	 * completion_lock, see io_req_task_submit(). Apart from other work,
--	 * this lock/unlock section also waits them to finish.
--	 */
+-static inline void tcp_adjust_rcv_ssthresh(struct sock *sk)
++static inline void __tcp_adjust_rcv_ssthresh(struct sock *sk, u32 new_ssthresh)
+ {
+ 	int unused_mem = sk_unused_reserved_mem(sk);
+ 	struct tcp_sock *tp = tcp_sk(sk);
+ 
+-	tp->rcv_ssthresh = min(tp->rcv_ssthresh, 4U * tp->advmss);
++	tp->rcv_ssthresh = min(tp->rcv_ssthresh, new_ssthresh);
+ 	if (unused_mem)
+ 		tp->rcv_ssthresh = max_t(u32, tp->rcv_ssthresh,
+ 					 tcp_win_from_space(sk, unused_mem));
+ }
+ 
++static inline void tcp_adjust_rcv_ssthresh(struct sock *sk)
++{
++	__tcp_adjust_rcv_ssthresh(sk, 4U * tcp_sk(sk)->advmss);
++}
 +
- 	mutex_lock(&ctx->uring_lock);
- 	while (!list_empty(&ctx->tctx_list)) {
- 		WARN_ON_ONCE(time_after(jiffies, timeout));
+ void tcp_cleanup_rbuf(struct sock *sk, int copied);
+ void __tcp_cleanup_rbuf(struct sock *sk, int copied);
+ 
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 288678f17ccaf..58409ea2da0af 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -3473,9 +3473,25 @@ int tcp_set_window_clamp(struct sock *sk, int val)
+ 			return -EINVAL;
+ 		tp->window_clamp = 0;
+ 	} else {
+-		tp->window_clamp = val < SOCK_MIN_RCVBUF / 2 ?
+-			SOCK_MIN_RCVBUF / 2 : val;
+-		tp->rcv_ssthresh = min(tp->rcv_wnd, tp->window_clamp);
++		u32 new_rcv_ssthresh, old_window_clamp = tp->window_clamp;
++		u32 new_window_clamp = val < SOCK_MIN_RCVBUF / 2 ?
++						SOCK_MIN_RCVBUF / 2 : val;
++
++		if (new_window_clamp == old_window_clamp)
++			return 0;
++
++		tp->window_clamp = new_window_clamp;
++		if (new_window_clamp < old_window_clamp) {
++			/* need to apply the reserved mem provisioning only
++			 * when shrinking the window clamp
++			 */
++			__tcp_adjust_rcv_ssthresh(sk, tp->window_clamp);
++
++		} else {
++			new_rcv_ssthresh = min(tp->rcv_wnd, tp->window_clamp);
++			tp->rcv_ssthresh = max(new_rcv_ssthresh,
++					       tp->rcv_ssthresh);
++		}
+ 	}
+ 	return 0;
+ }
+-- 
+2.42.0
+
 
 
 
