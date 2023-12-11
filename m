@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-6263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 456BC80D9AC
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:55:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6393F80D7B7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 19:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D718F1F21C26
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:55:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DFE61F20FEB
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 18:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3424E51C50;
-	Mon, 11 Dec 2023 18:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707A5524C3;
+	Mon, 11 Dec 2023 18:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDVoVJ4+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="097K0VRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F2D321B8;
-	Mon, 11 Dec 2023 18:55:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC5C433C7;
-	Mon, 11 Dec 2023 18:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B56C20DDE;
+	Mon, 11 Dec 2023 18:39:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DF3C433C8;
+	Mon, 11 Dec 2023 18:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1702320953;
-	bh=7uHJuYQfoUTVwCEVPhBVXN3muAlCMZW9DWvMzgmKvgw=;
+	s=korg; t=1702319968;
+	bh=GcawYejRx5O0dtA37411PpsnsVVQxeGARDFb05JM4eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JDVoVJ4+29qOC50LwCldo2nqG0bSDfp0h+UhsjZKUaAhczmYQj9uDQiCie9sfq9J9
-	 02GsoKPB30K9IXpa3yy5CBTJfNj19XSOXRUrdajp+qjNySP77N+gz+bWgUVQSPUDb5
-	 Oim1JRXo0NZlI3+5DC9gKStqOr/Ww3801ssLHD2U=
+	b=097K0VRm+xPT1EVOk2I2awNeEfjmVffqzokHZH3adP3gN0xgGIZTLJSKUcZAspIkn
+	 Z/USMXsLyYCO9Pd5PlX1RT+XmOuUUZKXgVMOb5p1PywtAoxx5C/IUGYDa5jScdELnT
+	 DgQwOiV+YUVGXursAroQdjGQ9XHMiCZ106dL+7lA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Md Haris Iqbal <haris.iqbal@ionos.com>,
-	Santosh Kumar Pradhan <santosh.pradhan@ionos.com>,
-	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 056/141] RDMA/rtrs-srv: Destroy path files after making sure no IOs in-flight
-Date: Mon, 11 Dec 2023 19:21:55 +0100
-Message-ID: <20231211182028.984243022@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 53/97] tracing: Disable snapshot buffer when stopping instance tracers
+Date: Mon, 11 Dec 2023 19:21:56 +0100
+Message-ID: <20231211182022.007193824@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231211182026.503492284@linuxfoundation.org>
-References: <20231211182026.503492284@linuxfoundation.org>
+In-Reply-To: <20231211182019.802717483@linuxfoundation.org>
+References: <20231211182019.802717483@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +55,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Haris Iqbal <haris.iqbal@ionos.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit c4d32e77fc1006f99eeb78417efc3d81a384072a ]
+commit b538bf7d0ec11ca49f536dfda742a5f6db90a798 upstream.
 
-Destroying path files may lead to the freeing of rdma_stats. This creates
-the following race.
+It use to be that only the top level instance had a snapshot buffer (for
+latency tracers like wakeup and irqsoff). When stopping a tracer in an
+instance would not disable the snapshot buffer. This could have some
+unintended consequences if the irqsoff tracer is enabled.
 
-An IO is in-flight, or has just passed the session state check in
-process_read/process_write. The close_work gets triggered and the function
-rtrs_srv_close_work() starts and does destroy path which frees the
-rdma_stats. After this the function process_read/process_write resumes and
-tries to update the stats through the function rtrs_srv_update_rdma_stats
+Consolidate the tracing_start/stop() with tracing_start/stop_tr() so that
+all instances behave the same. The tracing_start/stop() functions will
+just call their respective tracing_start/stop_tr() with the global_array
+passed in.
 
-This commit solves the problem by moving the destroy path function to a
-later point. This point makes sure any inflights are completed. This is
-done by qp drain, and waiting for all in-flights through ops_id.
+Link: https://lkml.kernel.org/r/20231205220011.041220035@goodmis.org
 
-Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
-Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
-Signed-off-by: Santosh Kumar Pradhan <santosh.pradhan@ionos.com>
-Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
-Link: https://lore.kernel.org/r/20231120154146.920486-6-haris.iqbal@ionos.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d9b3fa5e7f6 ("tracing: Move tracing_max_latency into trace_array")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-srv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace.c |  110 +++++++++++++++------------------------------------
+ 1 file changed, 34 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-index 3a61615a8ea6a..27bf2b2da9fd6 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
-@@ -1541,7 +1541,6 @@ static void rtrs_srv_close_work(struct work_struct *work)
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2287,13 +2287,7 @@ int is_tracing_stopped(void)
+ 	return global_trace.stop_count;
+ }
  
- 	srv_path = container_of(work, typeof(*srv_path), close_work);
+-/**
+- * tracing_start - quick start of the tracer
+- *
+- * If tracing is enabled but was stopped by tracing_stop,
+- * this will start the tracer back up.
+- */
+-void tracing_start(void)
++static void tracing_start_tr(struct trace_array *tr)
+ {
+ 	struct trace_buffer *buffer;
+ 	unsigned long flags;
+@@ -2301,119 +2295,83 @@ void tracing_start(void)
+ 	if (tracing_disabled)
+ 		return;
  
--	rtrs_srv_destroy_path_files(srv_path);
- 	rtrs_srv_stop_hb(srv_path);
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (--global_trace.stop_count) {
+-		if (global_trace.stop_count < 0) {
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (--tr->stop_count) {
++		if (WARN_ON_ONCE(tr->stop_count < 0)) {
+ 			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			global_trace.stop_count = 0;
++			tr->stop_count = 0;
+ 		}
+ 		goto out;
+ 	}
  
- 	for (i = 0; i < srv_path->s.con_num; i++) {
-@@ -1561,6 +1560,8 @@ static void rtrs_srv_close_work(struct work_struct *work)
- 	/* Wait for all completion */
- 	wait_for_completion(&srv_path->complete_done);
+ 	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
++	arch_spin_lock(&tr->max_lock);
  
-+	rtrs_srv_destroy_path_files(srv_path);
+-	buffer = global_trace.array_buffer.buffer;
++	buffer = tr->array_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
++	buffer = tr->max_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_enable(buffer);
+ #endif
+ 
+-	arch_spin_unlock(&global_trace.max_lock);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
+-}
+-
+-static void tracing_start_tr(struct trace_array *tr)
+-{
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	if (tracing_disabled)
+-		return;
+-
+-	/* If global, we need to also start the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_start();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-
+-	if (--tr->stop_count) {
+-		if (tr->stop_count < 0) {
+-			/* Someone screwed up their debugging */
+-			WARN_ON_ONCE(1);
+-			tr->stop_count = 0;
+-		}
+-		goto out;
+-	}
+-
+-	buffer = tr->array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_enable(buffer);
++	arch_spin_unlock(&tr->max_lock);
+ 
+  out:
+ 	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+ 
+ /**
+- * tracing_stop - quick stop of the tracer
++ * tracing_start - quick start of the tracer
+  *
+- * Light weight way to stop tracing. Use in conjunction with
+- * tracing_start.
++ * If tracing is enabled but was stopped by tracing_stop,
++ * this will start the tracer back up.
+  */
+-void tracing_stop(void)
++void tracing_start(void)
 +
- 	/* Notify upper layer if we are the last path */
- 	rtrs_srv_path_down(srv_path);
++{
++	return tracing_start_tr(&global_trace);
++}
++
++static void tracing_stop_tr(struct trace_array *tr)
+ {
+ 	struct trace_buffer *buffer;
+ 	unsigned long flags;
  
--- 
-2.42.0
-
+-	raw_spin_lock_irqsave(&global_trace.start_lock, flags);
+-	if (global_trace.stop_count++)
++	raw_spin_lock_irqsave(&tr->start_lock, flags);
++	if (tr->stop_count++)
+ 		goto out;
+ 
+ 	/* Prevent the buffers from switching */
+-	arch_spin_lock(&global_trace.max_lock);
++	arch_spin_lock(&tr->max_lock);
+ 
+-	buffer = global_trace.array_buffer.buffer;
++	buffer = tr->array_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_disable(buffer);
+ 
+ #ifdef CONFIG_TRACER_MAX_TRACE
+-	buffer = global_trace.max_buffer.buffer;
++	buffer = tr->max_buffer.buffer;
+ 	if (buffer)
+ 		ring_buffer_record_disable(buffer);
+ #endif
+ 
+-	arch_spin_unlock(&global_trace.max_lock);
++	arch_spin_unlock(&tr->max_lock);
+ 
+  out:
+-	raw_spin_unlock_irqrestore(&global_trace.start_lock, flags);
++	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
+ }
+ 
+-static void tracing_stop_tr(struct trace_array *tr)
++/**
++ * tracing_stop - quick stop of the tracer
++ *
++ * Light weight way to stop tracing. Use in conjunction with
++ * tracing_start.
++ */
++void tracing_stop(void)
+ {
+-	struct trace_buffer *buffer;
+-	unsigned long flags;
+-
+-	/* If global, we need to also stop the max tracer */
+-	if (tr->flags & TRACE_ARRAY_FL_GLOBAL)
+-		return tracing_stop();
+-
+-	raw_spin_lock_irqsave(&tr->start_lock, flags);
+-	if (tr->stop_count++)
+-		goto out;
+-
+-	buffer = tr->array_buffer.buffer;
+-	if (buffer)
+-		ring_buffer_record_disable(buffer);
+-
+- out:
+-	raw_spin_unlock_irqrestore(&tr->start_lock, flags);
++	return tracing_stop_tr(&global_trace);
+ }
+ 
+ static int trace_save_cmdline(struct task_struct *tsk)
 
 
 
