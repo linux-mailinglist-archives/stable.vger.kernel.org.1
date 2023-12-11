@@ -1,120 +1,74 @@
-Return-Path: <stable+bounces-5448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-5432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBFEB80CC5E
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 15:00:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DF2380CC2E
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED19C1C212D2
-	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 14:00:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1D71C20AB7
+	for <lists+stable@lfdr.de>; Mon, 11 Dec 2023 13:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A31B481A1;
-	Mon, 11 Dec 2023 14:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4364A47A6C;
+	Mon, 11 Dec 2023 13:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qj994toS"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="s88WWIed";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Y1ZfO36D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F1B1F60B
-	for <stable@vger.kernel.org>; Mon, 11 Dec 2023 14:00:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB51C433CD;
-	Mon, 11 Dec 2023 14:00:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1702303228;
-	bh=BsbHfkq9SpAJwpuBRSyj1VLuJD4MJZd6zPZwn3NhUTw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qj994toShXveEVMVScWX3FYj5kUBsB3DWi77jNpnMmvm6j2BGg0zlJMb9hANhYojf
-	 LBuzWfELGFwI2+f+YmVbJPVZqNJcrHv1MU0AFp5vQ7VYQ7gyLLaoEzX5P7PiycvPZs
-	 lwsgBShe8Kqrq5Ft2ssQfMMd50+i8VAf8kswYjiAxEGA5U5QOQXRO7aWfDGKbrFEeH
-	 dCghO83YxUTLnnMNr+5L8b1j/1UQjq0J2qlQ1Pu6qj4BdqpXRQJOOeGQ4MbSkRwSAQ
-	 G5mCTofmdGS1P/Hq3qu25cwqP+78hRCDtbiL6bvSlnKHw8o1C5rjrYe9r+dDbXSOyL
-	 B0SuRx7HxdmWQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	le.ma@amd.com,
-	James.Zhu@amd.com,
-	shane.xiao@amd.com,
-	sonny.jiang@amd.com,
-	Likun.Gao@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 16/19] drm/amdgpu: Add NULL checks for function pointers
-Date: Mon, 11 Dec 2023 08:57:50 -0500
-Message-ID: <20231211135908.385694-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231211135908.385694-1-sashal@kernel.org>
-References: <20231211135908.385694-1-sashal@kernel.org>
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 131744ED0;
+	Mon, 11 Dec 2023 05:57:53 -0800 (PST)
+Date: Mon, 11 Dec 2023 14:57:50 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1702303071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OtPxZyAIr0q83FqrgnW8CYSUeZdYcDZKkr11TEUXgqA=;
+	b=s88WWIed5p6L5JcEQ/6gDQ2ADsNQdVFa5zQ9DxTsSn8kHBjUfI8PG7QdHjl6o7h15GIiCP
+	qlExyefE+anTl/jrQ6zkQiFTnGGZ0nIiZD4+gY0o6cV2YG5KIS0COsWq+nz9ZRq9UDuFIB
+	brmGahG8dkRaJUjhtph6ut/Ysq66wGfjXvQIMLxX2HTjxSkziasXSjhIjY+le2eF2tfU0m
+	9dN1LPFf2oNGIuU7Ju09/Sbup9npASkOAfM7KmkZNX98gyMbrGNZGqbQaJe4thK9UuEKmO
+	KivqoQ8TpOLwc4w8ygDFG7f9B7Ty2lVS4egXittG/CD+tXnN01itv5K0mRUJrg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1702303071;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OtPxZyAIr0q83FqrgnW8CYSUeZdYcDZKkr11TEUXgqA=;
+	b=Y1ZfO36DL0bvoLPgjRbH8hoQDThICl2d/0+e4QHrF8t71kuYefcKZhfxiEc+lYm+dpiDPK
+	b53MOh73dLtA4LAA==
+From: Nam Cao <namcao@linutronix.de>
+To: stable@vger.kernel.org
+Cc: jiajie.ho@starfivetech.com, palmer@rivosinc.com,
+ conor.dooley@microchip.com, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+Subject: Backport riscv kconfig for v6.6
+Message-ID: <20231211145750.7bc2d378@namcao>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.142
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+Hi,
 
-[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
+Please backport 78a03b9f8e6b ("riscv: Kconfig: Add select ARM_AMBA to
+SOC_STARFIVE") to v6.6
 
-Check if function is implemented before making the call.
+Without this, it is not possible to configure the kernel with SPI drivers
+for the Visionfive 2 board.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+This one depends a1a5f2c88725 ("dmaengine: pl330: rename _start to prevent
+build error"), which is already in stable.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index 529bb6c6ac6f5..e8c0e77e1b018 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -1615,9 +1615,11 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
- 
--	adev->nbio.funcs->get_clockgating_state(adev, flags);
-+	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
-+		adev->nbio.funcs->get_clockgating_state(adev, flags);
- 
--	adev->hdp.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
-+		adev->hdp.funcs->get_clock_gating_state(adev, flags);
- 
- 	if (adev->asic_type != CHIP_ALDEBARAN) {
- 
-@@ -1633,9 +1635,11 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
- 	}
- 
- 	/* AMD_CG_SUPPORT_ROM_MGCG */
--	adev->smuio.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
-+		adev->smuio.funcs->get_clock_gating_state(adev, flags);
- 
--	adev->df.funcs->get_clockgating_state(adev, flags);
-+	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
-+		adev->df.funcs->get_clockgating_state(adev, flags);
- }
- 
- static int soc15_common_set_powergating_state(void *handle,
--- 
-2.42.0
+It should be backported to v6.1 too, but it does not apply cleanly. So I
+will send a patch for that.
 
+Best regards,
+Nam
 
